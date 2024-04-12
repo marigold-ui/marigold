@@ -1,9 +1,16 @@
 'use client';
 
 import { type Theme } from '@/ui';
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, {
+  ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 // Context
 // ---------------
@@ -35,15 +42,41 @@ export const MarigoldThemeSwitch = ({
   initial,
   children,
 }: MarigoldThemeSwitchProps) => {
-  const queryTheme = useSearchParams().get('theme');
+  const searchParams = useSearchParams();
+  const themeParam = searchParams.get('theme');
 
-  let localTheme = sessionStorage.getItem('theme');
+  const router = useRouter();
 
-  const [theme, setTheme] = useState(queryTheme ?? localTheme ?? initial);
-  console.log('currentTheme', queryTheme ?? localTheme ?? initial);
+  const [theme, setTheme] = useState<string>(initial);
+  let localTheme: string;
+
+  if (typeof sessionStorage !== 'undefined') {
+    localTheme = sessionStorage.getItem('theme') as string;
+  }
+
   useEffect(() => {
-    sessionStorage.setItem('theme', theme);
+    if (themeParam) {
+      setTheme(themeParam);
+      sessionStorage.setItem('theme', themeParam);
+    } else if (localTheme) {
+      setTheme(localTheme);
+      router.push(`?theme=${localTheme}`);
+    }
+  }, []);
+
+  const isInitialMount = useRef(true); // Ref to track initial mount
+
+  // ...
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      // Skip the effect on initial mount
+      isInitialMount.current = false;
+      return;
+    }
     setTheme(theme);
+    // router.push(`?theme=${theme}`);
+    sessionStorage.setItem('theme', theme);
   }, [theme]);
 
   return (
