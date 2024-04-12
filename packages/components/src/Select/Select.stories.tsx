@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from '@storybook/addons';
+import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { Header } from '../Header';

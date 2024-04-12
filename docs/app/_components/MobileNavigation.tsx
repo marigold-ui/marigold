@@ -2,6 +2,8 @@
 
 import { Button, Dialog, Header, Split } from '@/ui';
 
+import { CommandMenu } from '@/ui/Commandk';
+
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';
 import { ThemeMenu } from './ThemeMenu';
@@ -48,6 +50,9 @@ export const MobileNavigation = () => (
       </Dialog>
     </Dialog.Trigger>
     <Split />
+    <div className="w-full px-3">
+      <CommandMenu />
+    </div>
     <ThemeMenu />
   </div>
 );
