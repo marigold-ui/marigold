@@ -13,14 +13,20 @@ export interface TocProps {
 export const Toc = ({ items, selector }: TocProps) => {
   const elements = JSON.parse(items) as { anchor: string; title: string }[];
 
-  console.log(items);
-  const [isMounted, setIsMounted] = useState(false);
+  const [, setIsMounted] = useState(false);
+
+  const ref = useRef<Element>();
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (typeof window !== 'undefined') {
+      ref.current = document.querySelector('#toc') || undefined;
+      setIsMounted(true);
+    }
+  }, [selector]);
 
-  const toc = document.querySelector('#toc');
+  if (!ref.current || elements.length === 0) {
+    return null;
+  }
 
   const TocPortal = () => (
     <div className="absolute right-0 px-10">
@@ -34,9 +40,8 @@ export const Toc = ({ items, selector }: TocProps) => {
       ))}
     </div>
   );
-  return isMounted
-    ? createPortal(<TocPortal />, toc ? (toc as Element) : document.body)
-    : null;
+
+  return createPortal(<TocPortal />, ref.current);
 };
 
 export const TocContainer = () => {
