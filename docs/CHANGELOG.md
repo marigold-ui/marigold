@@ -1,5 +1,26 @@
 # @marigold/docs
 
+## 7.6.0
+
+### Minor Changes
+
+- [#3841](https://github.com/marigold-ui/marigold/pull/3841) [`05d2ca0`](https://github.com/marigold-ui/marigold/commit/05d2ca03fbac80de9a1b6887932301b0d91691f2) Thanks [@sebald](https://github.com/sebald)! - feat: Allow configure position of menu popover
+
+- [#3708](https://github.com/marigold-ui/marigold/pull/3708) [`af1807b`](https://github.com/marigold-ui/marigold/commit/af1807b4335022bcd12db0d454992ef8bf6b2cc7) Thanks [@aromko](https://github.com/aromko)! - Creating new component `SelectList`
+
+### Patch Changes
+
+- [#3869](https://github.com/marigold-ui/marigold/pull/3869) [`f4af73c`](https://github.com/marigold-ui/marigold/commit/f4af73c3aa53d1c97da2eaca72db57811b5ffaa1) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: add selectlist in guidelines
+
+- [#3866](https://github.com/marigold-ui/marigold/pull/3866) [`b517a2d`](https://github.com/marigold-ui/marigold/commit/b517a2d3d9d654f40768179bcc1b2afeeea39ae9) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-380]feat(docs): add fullscreen view for code demos
+
+- Updated dependencies [[`8d0203f`](https://github.com/marigold-ui/marigold/commit/8d0203f0a1b6bc8a090758745a0ecf94d8180ec4), [`05d2ca0`](https://github.com/marigold-ui/marigold/commit/05d2ca03fbac80de9a1b6887932301b0d91691f2), [`10050d4`](https://github.com/marigold-ui/marigold/commit/10050d4a83ab5cdc984031689cfc05ee52c32700), [`af1807b`](https://github.com/marigold-ui/marigold/commit/af1807b4335022bcd12db0d454992ef8bf6b2cc7), [`e8927dc`](https://github.com/marigold-ui/marigold/commit/e8927dc48a61e4d29e214a58cb7958d7990b8d3f)]:
+  - @marigold/theme-b2b@27.1.5
+  - @marigold/components@7.6.0
+  - @marigold/theme-core@26.1.5
+  - @marigold/icons@1.2.45
+  - @marigold/theme-preset@1.3.10
+
 ## 7.5.4
 
 ### Patch Changes

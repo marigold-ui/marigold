@@ -1,5 +1,18 @@
 # @marigold/theme-b2b
 
+## 27.1.5
+
+### Patch Changes
+
+- [#3864](https://github.com/marigold-ui/marigold/pull/3864) [`8d0203f`](https://github.com/marigold-ui/marigold/commit/8d0203f0a1b6bc8a090758745a0ecf94d8180ec4) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-365]feat: remove the margins from headline in b2b theme
+
+- [#3848](https://github.com/marigold-ui/marigold/pull/3848) [`e8927dc`](https://github.com/marigold-ui/marigold/commit/e8927dc48a61e4d29e214a58cb7958d7990b8d3f) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-68] Change color token of the divider in b2b theme
+
+- Updated dependencies [[`05d2ca0`](https://github.com/marigold-ui/marigold/commit/05d2ca03fbac80de9a1b6887932301b0d91691f2), [`af1807b`](https://github.com/marigold-ui/marigold/commit/af1807b4335022bcd12db0d454992ef8bf6b2cc7)]:
+  - @marigold/components@7.6.0
+  - @marigold/system@7.6.0
+  - @marigold/theme-preset@1.3.10
+
 ## 27.1.4
 
 ### Patch Changes
