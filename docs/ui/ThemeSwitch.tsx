@@ -43,7 +43,7 @@ export const MarigoldThemeSwitch = ({
   children,
 }: MarigoldThemeSwitchProps) => {
   const searchParams = useSearchParams();
-  const themeParam = searchParams.get('theme');
+  const themeParam = searchParams?.get('theme');
 
   const router = useRouter();
 
