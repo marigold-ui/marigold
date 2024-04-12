@@ -58,7 +58,8 @@ export const MarigoldThemeSwitch = ({
     if (themeParam) {
       setTheme(themeParam);
       sessionStorage.setItem('theme', themeParam);
-    } else if (localTheme) {
+    }
+    if (localTheme) {
       setTheme(localTheme);
       router.push(`?theme=${localTheme}`);
     }
