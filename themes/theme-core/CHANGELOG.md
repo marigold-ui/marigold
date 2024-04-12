@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 26.1.5
+
+### Patch Changes
+
+- [#3870](https://github.com/marigold-ui/marigold/pull/3870) [`10050d4`](https://github.com/marigold-ui/marigold/commit/10050d4a83ab5cdc984031689cfc05ee52c32700) Thanks [@aromko](https://github.com/aromko)! - DST-425: add missing styles to the Menu
+
+- Updated dependencies [[`05d2ca0`](https://github.com/marigold-ui/marigold/commit/05d2ca03fbac80de9a1b6887932301b0d91691f2), [`af1807b`](https://github.com/marigold-ui/marigold/commit/af1807b4335022bcd12db0d454992ef8bf6b2cc7)]:
+  - @marigold/components@7.6.0
+  - @marigold/system@7.6.0
+  - @marigold/theme-preset@1.3.10
+
 ## 26.1.4
 
 ### Patch Changes

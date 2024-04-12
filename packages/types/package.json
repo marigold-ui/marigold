@@ -18,13 +18,13 @@
     "directory": "packages/types"
   },
   "dependencies": {
-    "type-fest": "4.10.3"
+    "type-fest": "4.14.0"
   },
   "peerDependencies": {
     "@types/react": "18.x"
   },
   "devDependencies": {
-    "@types/react": "18.2.64"
+    "@types/react": "18.2.73"
   },
   "scripts": {
     "build": "echo types only",
