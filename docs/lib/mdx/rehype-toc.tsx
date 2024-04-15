@@ -30,11 +30,6 @@ export const rehypeTableOfContents = ({ options }: any) => {
       type: 'mdxJsxFlowElement',
       name: 'Toc',
       attributes: [
-        // {
-        //   type: 'mdxJsxAttribute',
-        //   name: 'selector',
-        //   value: options.tocSelector,
-        // },
         {
           type: 'mdxJsxAttribute',
           name: 'items',
