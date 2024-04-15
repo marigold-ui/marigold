@@ -7,6 +7,7 @@ import { Link, List } from '@marigold/components';
 
 export interface TocProps {
   items: string;
+  activeItem?: string;
 }
 
 export const Toc = ({ items }: TocProps) => {
@@ -19,6 +20,9 @@ export const Toc = ({ items }: TocProps) => {
   const [, setIsMounted] = useState(false);
 
   const ref = useRef<Element>();
+
+  const itemId = elements.map(item => item.id);
+  const activeItem = useActiveItem(itemId);
 
   useEffect(() => {
     // const observer = new IntersectionObserver(entries => {});
@@ -38,7 +42,12 @@ export const Toc = ({ items }: TocProps) => {
         On This Page
         {elements.map((i: { title: string; anchor: string; id: string }) => (
           <List.Item key={i.title}>
-            <Link variant="toc" href={i.anchor} key={i.id}>
+            <Link
+              variant="toc"
+              href={i.anchor}
+              key={i.id}
+              data-active={activeItem === i.id ? 'true' : 'false'}
+            >
               {i.title}
             </Link>
           </List.Item>
@@ -52,4 +61,39 @@ export const Toc = ({ items }: TocProps) => {
 
 export const TocContainer = () => {
   return <div id="toc"></div>;
+};
+
+const useActiveItem = (itemIds: string[]) => {
+  const [activeId, setActiveId] = useState('');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: `0% 0% -80% 0%` }
+    );
+
+    itemIds?.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => {
+      itemIds?.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          observer.unobserve(element);
+        }
+      });
+    };
+  }, [itemIds]);
+
+  return activeId;
 };
