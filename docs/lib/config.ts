@@ -52,6 +52,10 @@ export const siteConfig = {
       ],
     },
     {
+      name: 'Patterns',
+      slug: 'patterns',
+    },
+    {
       name: 'Recipes',
       slug: 'recipes',
     },
