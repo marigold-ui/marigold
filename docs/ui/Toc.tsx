@@ -25,7 +25,6 @@ export const Toc = ({ items }: TocProps) => {
   const activeItem = useActiveItem(itemId);
 
   useEffect(() => {
-    // const observer = new IntersectionObserver(entries => {});
     if (typeof window !== 'undefined') {
       ref.current = document.querySelector('#toc') || undefined;
       setIsMounted(true);
