@@ -9,6 +9,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         menu: 'text-secondary-700 hover:bg-secondary-400/20 rounded-lg px-2 py-1',
         sunken:
           'text-text-primary-muted hover:bg-secondary-400/20 bg-secondary-400/10 h-8 w-full justify-start rounded-lg md:w-auto',
+        inverted: 'bg-secondary-100',
       },
       size: {
         small: 'text-sm',
