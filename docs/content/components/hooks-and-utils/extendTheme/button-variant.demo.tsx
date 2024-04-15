@@ -8,7 +8,7 @@ export default () => {
       Button: cva('p-3', {
         variants: {
           variant: {
-            tertiary: 'bg-bg-success text-white',
+            tertiary: 'text-text-base bg-slate-200',
           },
           size: {
             medium: 'px-6 leading-10',
