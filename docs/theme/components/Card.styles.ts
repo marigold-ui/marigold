@@ -6,7 +6,7 @@ export const Card: ThemeComponent<'Card'> = cva(
     variants: {
       variant: {
         default: 'p-6',
-        'no-inset': '',
+        condensed: 'p-4',
         hovering: 'p-6 hover:cursor-pointer hover:shadow-md',
       },
     },
