@@ -1,15 +1,9 @@
 'use client';
 
-import { Inline, Link } from '@/ui';
-
 import { usePathname } from 'next/navigation';
 
-import { CommandMenu } from '@/ui/Commandk';
-
-import { Logo } from './Logo';
 import { NavLink } from './NavLink';
 import { useNavigation } from './Navigation';
-import { ThemeMenu } from './ThemeMenu';
 
 export const SiteNavigation = () => {
   const navigation = useNavigation();
