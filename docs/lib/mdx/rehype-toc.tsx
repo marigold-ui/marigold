@@ -1,19 +1,13 @@
 import { visit } from 'unist-util-visit';
 
-export const rehypeTableOfContents = ({ options }: any) => {
+export const rehypeTableOfContents = () => {
   return (tree: any) => {
     const items: any[] = [];
     // going through all the node tree
     visit(tree, 'element', node => {
-      // if no headline than return
-      if (node.tagName !== 'h2' && node.tagName !== 'h3') {
-        return;
-      }
+      if (!['h2', 'h3'].includes(node.tagName)) return;
       // if a headline than go through the headline children and get the `a` tag
-      const headline = node;
-
-      // pushes the headline list  in an array
-      return items.push(headline);
+      return items.push(node);
     });
 
     const set = Array.from(new Set(items));
