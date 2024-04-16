@@ -44,7 +44,6 @@ export const Toc = ({ items }: TocProps) => {
             <Link
               variant="toc"
               href={i.anchor}
-              key={i.id}
               data-active={activeItem === i.id ? 'true' : 'false'}
             >
               {i.title}
