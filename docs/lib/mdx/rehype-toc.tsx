@@ -19,7 +19,6 @@ export const rehypeTableOfContents = () => {
       };
     });
 
-    //  append it again to mdx
     tree.children.unshift({
       type: 'mdxJsxFlowElement',
       name: 'Toc',
