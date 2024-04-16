@@ -39,14 +39,14 @@ export const Toc = ({ items }: TocProps) => {
     <div className="fixed">
       <List as="ul">
         On This Page
-        {elements.map((i: { title: string; anchor: string; id: string }) => (
-          <List.Item key={i.title}>
+        {elements.map(({ title, id, anchor }) => (
+          <List.Item key={title}>
             <Link
               variant="toc"
-              href={i.anchor}
-              data-active={activeItem === i.id ? 'true' : 'false'}
+              href={anchor}
+              data-active={activeItem === id ? 'true' : 'false'}
             >
-              {i.title}
+              {title}
             </Link>
           </List.Item>
         ))}
