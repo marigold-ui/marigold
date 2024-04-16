@@ -6,7 +6,7 @@ export const Link: ThemeComponent<'Link'> = cva(
     variants: {
       variant: {
         toc: [
-          'text-secondary-500 hover:text-secondary-800  text-sm no-underline',
+          'text-secondary-500 hover:text-secondary-800 text-sm no-underline',
           'data-[active=true]:text-secondary-800',
         ],
       },
