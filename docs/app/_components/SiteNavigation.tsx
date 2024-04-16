@@ -24,32 +24,18 @@ export const SiteNavigation = () => {
   }));
 
   return (
-    <div className="hidden w-full justify-between gap-3 md:flex ">
-      <div className="flex">
-        <div className="flex w-[258px] shrink-0 items-center text-lg uppercase text-[#46505a] lg:w-[282px] xl:w-[336px] [&>*]:flex [&>*]:items-center [&>*]:gap-2 [&>*]:font-bold [&>*]:no-underline">
-          <Link href="/">
-            <Logo className="size-6" />
-            Marigold
-          </Link>
-        </div>
-        <div className="hidden gap-4 md:flex">
-          {sections.map(({ name, slug, link }, index) => (
-            <NavLink
-              variant="main"
-              className="flex items-center gap-6 text-sm font-medium lg:px-1"
-              key={index}
-              current={pathname.includes(slug)}
-              href={link?.href ?? '/'}
-            >
-              {name}
-            </NavLink>
-          ))}
-        </div>
-      </div>
-      <Inline space={4}>
-        <CommandMenu />
-        <ThemeMenu />
-      </Inline>
+    <div className="flex items-center gap-4">
+      {sections.map(({ name, slug, link }, index) => (
+        <NavLink
+          variant="main"
+          className="text-sm font-medium lg:px-1"
+          key={index}
+          current={pathname.includes(slug)}
+          href={link?.href ?? '/'}
+        >
+          {name}
+        </NavLink>
+      ))}
     </div>
   );
 };
