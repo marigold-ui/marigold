@@ -7,7 +7,6 @@ import { Link, List } from '@marigold/components';
 
 export interface TocProps {
   items: string;
-  activeItem?: string;
 }
 
 export const Toc = ({ items }: TocProps) => {
