@@ -39,22 +39,22 @@ export const Toc = ({ data }: TocProps) => {
 
   const TocPortal = () => (
     <div className="fixed">
-      <List as="ul">
-        On This Page
-        {elements.map(({ title, id, anchor, level }: Item) => (
-          <>
+      On This Page
+      {elements.map(({ title, id, anchor, level }: Item) => (
+        <List as="ul">
+          {level === 'h2' && (
             <List.Item key={title}>
-              {level === 'h2' && (
-                <Link
-                  variant="toc"
-                  href={anchor}
-                  data-active={activeItem === id ? 'true' : 'false'}
-                >
-                  {title}
-                </Link>
-              )}
+              <Link
+                variant="toc"
+                href={anchor}
+                data-active={activeItem === id ? 'true' : 'false'}
+              >
+                {title}
+              </Link>
             </List.Item>
-            {level === 'h3' && (
+          )}
+          {level === 'h3' && (
+            <List.Item key={title}>
               <div className="pl-4">
                 <Link
                   variant="toc"
@@ -64,10 +64,10 @@ export const Toc = ({ data }: TocProps) => {
                   {title}
                 </Link>
               </div>
-            )}
-          </>
-        ))}
-      </List>
+            </List.Item>
+          )}
+        </List>
+      ))}
     </div>
   );
 
