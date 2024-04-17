@@ -13,6 +13,7 @@ export const rehypeTableOfContents = () => {
         anchor: link.children[0].properties.href,
         title: link.children[0].children[0].value,
         id: link.properties.id,
+        level: link.tagName,
       };
     });
 

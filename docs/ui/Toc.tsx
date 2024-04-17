@@ -13,6 +13,7 @@ type Item = {
   anchor: string;
   title: string;
   id: string;
+  level: string;
 };
 
 export const Toc = ({ data }: TocProps) => {
@@ -40,16 +41,31 @@ export const Toc = ({ data }: TocProps) => {
     <div className="fixed">
       <List as="ul">
         On This Page
-        {elements.map(({ title, id, anchor }: Item) => (
-          <List.Item key={title}>
-            <Link
-              variant="toc"
-              href={anchor}
-              data-active={activeItem === id ? 'true' : 'false'}
-            >
-              {title}
-            </Link>
-          </List.Item>
+        {elements.map(({ title, id, anchor, level }: Item) => (
+          <>
+            <List.Item key={title}>
+              {level === 'h2' && (
+                <Link
+                  variant="toc"
+                  href={anchor}
+                  data-active={activeItem === id ? 'true' : 'false'}
+                >
+                  {title}
+                </Link>
+              )}
+            </List.Item>
+            {level === 'h3' && (
+              <div className="pl-4">
+                <Link
+                  variant="toc"
+                  href={anchor}
+                  data-active={activeItem === id ? 'true' : 'false'}
+                >
+                  {title}
+                </Link>
+              </div>
+            )}
+          </>
         ))}
       </List>
     </div>
