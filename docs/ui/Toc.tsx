@@ -6,15 +6,17 @@ import { createPortal } from 'react-dom';
 import { Link, List } from '@marigold/components';
 
 export interface TocProps {
-  items: string;
+  data: string;
 }
 
-export const Toc = ({ items }: TocProps) => {
-  const elements = JSON.parse(items) as {
-    anchor: string;
-    title: string;
-    id: string;
-  }[];
+type Item = {
+  anchor: string;
+  title: string;
+  id: string;
+};
+
+export const Toc = ({ data }: TocProps) => {
+  const elements = JSON.parse(data) as Item[];
 
   const [, setIsMounted] = useState(false);
 
@@ -38,7 +40,7 @@ export const Toc = ({ items }: TocProps) => {
     <div className="fixed">
       <List as="ul">
         On This Page
-        {elements.map(({ title, id, anchor }) => (
+        {elements.map(({ title, id, anchor }: Item) => (
           <List.Item key={title}>
             <Link
               variant="toc"
@@ -83,12 +85,7 @@ const useActiveItem = (itemIds: string[]) => {
     });
 
     return () => {
-      itemIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-          observer.unobserve(element);
-        }
-      });
+      observer.disconnect();
     };
   });
 

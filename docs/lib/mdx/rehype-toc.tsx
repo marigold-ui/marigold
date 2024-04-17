@@ -22,7 +22,7 @@ export const rehypeTableOfContents = () => {
       attributes: [
         {
           type: 'mdxJsxAttribute',
-          name: 'items',
+          name: 'data',
           value: JSON.stringify(data),
         },
       ],
