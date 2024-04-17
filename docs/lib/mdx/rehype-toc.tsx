@@ -3,10 +3,8 @@ import { visit } from 'unist-util-visit';
 export const rehypeTableOfContents = () => {
   return (tree: any) => {
     const items: any[] = [];
-    // going through all the node tree
     visit(tree, 'element', node => {
       if (!['h2', 'h3'].includes(node.tagName)) return;
-      // if a headline than go through the headline children and get the `a` tag
       return items.push(node);
     });
 
