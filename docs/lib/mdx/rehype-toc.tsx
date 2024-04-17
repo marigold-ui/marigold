@@ -10,8 +10,7 @@ export const rehypeTableOfContents = () => {
       return items.push(node);
     });
 
-    const set = Array.from(new Set(items));
-    const data = set.map(link => {
+    const data = Array.from(new Set(items)).map(link => {
       return {
         anchor: link.children[0].properties.href,
         title: link?.children[0]?.children[0].value,
