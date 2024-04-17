@@ -90,7 +90,7 @@ const useActiveItem = (itemIds: string[]) => {
           }
         });
       },
-      { rootMargin: '-10% -35% -80% -15%' }
+      { rootMargin: '-10% 0% -80% 0%' }
     );
 
     itemIds.forEach(id => {
