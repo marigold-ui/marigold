@@ -61,15 +61,15 @@ export const SiteMenu = () => {
 
   // register global cmd+k hotkey
   useEffect(() => {
-    const onPress = (e: KeyboardEvent) => {
+    const onKeydown = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(open => !open);
       }
     };
 
-    document.addEventListener('keydown', onPress);
-    return () => document.removeEventListener('keydown', onPress);
+    document.addEventListener('keydown', onKeydown);
+    return () => document.removeEventListener('keydown', onKeydown);
   }, []);
 
   return (
