@@ -68,8 +68,8 @@ export const SiteMenu = () => {
       }
     };
 
-    document.addEventListener('keypress', onPress);
-    return () => document.removeEventListener('keypress', onPress);
+    document.addEventListener('keydown', onPress);
+    return () => document.removeEventListener('keydown', onPress);
   }, []);
 
   return (

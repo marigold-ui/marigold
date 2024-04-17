@@ -106,6 +106,7 @@ const CmdkField = () => {
   if (!mounted) {
     return <></>;
   }
+
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
   if (isMacOS) {
     return (
