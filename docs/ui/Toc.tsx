@@ -75,7 +75,7 @@ const useActiveItem = (itemIds: string[]) => {
       { rootMargin: `0% 0% -80% 0%` }
     );
 
-    itemIds?.forEach(id => {
+    itemIds.forEach(id => {
       const element = document.getElementById(id);
       if (element) {
         observer.observe(element);
@@ -83,14 +83,14 @@ const useActiveItem = (itemIds: string[]) => {
     });
 
     return () => {
-      itemIds?.forEach(id => {
+      itemIds.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
           observer.unobserve(element);
         }
       });
     };
-  }, [itemIds]);
+  });
 
   return activeId;
 };
