@@ -5,7 +5,7 @@ import { SiteNavigation } from './SiteNavigation';
 import { ThemeMenu } from './ThemeMenu';
 
 export const SiteHeader = () => (
-  <header className="border-secondary-200 bg-bg-body sticky top-0 z-10 flex h-14 w-full items-center gap-2 border-b px-3 xl:px-6">
+  <header className="border-secondary-200 bg-bg-body sticky top-0 z-10 flex h-14 w-full items-center gap-2 border-b px-[--page-padding] xl:px-[--page-padding-xl]">
     <div className="md:hidden">
       <MobileNavigation />
     </div>

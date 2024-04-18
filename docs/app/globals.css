@@ -1,3 +1,8 @@
+:root {
+  --page-padding: 0.75rem; /** px-3 */
+  --page-padding-xl: 1.5rem; /** px-6 */
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
