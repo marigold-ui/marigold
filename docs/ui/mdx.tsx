@@ -83,6 +83,8 @@ const typography = {
     className,
     ...props
   }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {
+    const lines = raw.split(/\r\n|\r|\n/).length;
+
     return (
       <div className="relative">
         <pre
@@ -94,7 +96,9 @@ const typography = {
         >
           <div className="absolute right-5 flex justify-end gap-2">
             <CopyButton codeString={raw} />
-            <FullsizeView code={props.children} codeString={raw} />
+            {lines > 5 ? (
+              <FullsizeView code={props.children} codeString={raw} />
+            ) : null}
           </div>
           {props.children}
         </pre>
