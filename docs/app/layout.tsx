@@ -9,7 +9,6 @@ import '@marigold/theme-core/styles.css';
 import { fontSans } from '@/theme/fonts';
 
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
-import { TocContainer } from '@/ui/Toc';
 
 import { Analytics } from './_components/Analytics';
 import { SectionNavigation } from './_components/SectionNavigation';
