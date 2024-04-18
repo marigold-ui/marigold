@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { Link, List } from '@marigold/components';
+import { Link, List, Text } from '@marigold/components';
 
 export interface TocProps {
   data: string;
@@ -38,8 +38,8 @@ export const Toc = ({ data }: TocProps) => {
   }
 
   const TocPortal = () => (
-    <div className="fixed">
-      On This Page
+    <div className="not-prose fixed ">
+      <Text weight="semibold">On This Page</Text>
       {elements.map(({ title, id, anchor, level }: Item) => (
         <List as="ul">
           {level === 'h2' && (
