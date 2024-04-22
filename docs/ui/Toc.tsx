@@ -43,43 +43,39 @@ export const Toc = ({ data }: TocProps) => {
       <Text weight="semibold">On This Page</Text>
       <List as="ul">
         {elements.map(({ title, id, anchor, level }: Item) => (
-          <>
-            <>
-              {level === 'h2' && (
-                <List.Item key={title}>
-                  <Link
-                    variant="toc"
-                    href={anchor}
-                    data-active={activeItem === id ? 'true' : 'false'}
-                  >
-                    {title}
-                  </Link>
-                </List.Item>
-              )}
-            </>
-            <>
-              {level === 'h3' && (
-                <div
-                  className={cn(
-                    'border-secondary-300 hover:border-secondary-800 border-l',
-                    activeItem === id && 'border-secondary-800'
-                  )}
+          <div key={id}>
+            {level === 'h2' && (
+              <List.Item key={title}>
+                <Link
+                  variant="toc"
+                  href={anchor}
+                  data-active={activeItem === id ? 'true' : 'false'}
                 >
-                  <List.Item key={title}>
-                    <div className=" pl-4">
-                      <Link
-                        variant="toc"
-                        href={anchor}
-                        data-active={activeItem === id ? 'true' : 'false'}
-                      >
-                        {title ? title : id}
-                      </Link>
-                    </div>
-                  </List.Item>
-                </div>
-              )}
-            </>
-          </>
+                  {title}
+                </Link>
+              </List.Item>
+            )}
+            {level === 'h3' && (
+              <div
+                className={cn(
+                  'border-secondary-300 hover:border-secondary-800 border-l',
+                  activeItem === id && 'border-secondary-800'
+                )}
+              >
+                <List.Item key={title}>
+                  <div className=" pl-4">
+                    <Link
+                      variant="toc"
+                      href={anchor}
+                      data-active={activeItem === id ? 'true' : 'false'}
+                    >
+                      {title ? title : id}
+                    </Link>
+                  </div>
+                </List.Item>
+              </div>
+            )}
+          </div>
         ))}
       </List>
     </div>
