@@ -45,7 +45,7 @@ export const MarigoldThemeSwitch = ({
   let localTheme: string;
 
   const searchParams = useSearchParams();
-  const themeParam = searchParams?.get('theme');
+  const themeQueryParam = searchParams?.get('theme');
 
   const [theme, setTheme] = useState<string>(initial);
   const router = useRouter();
@@ -54,27 +54,30 @@ export const MarigoldThemeSwitch = ({
     localTheme = sessionStorage.getItem('theme') as string;
   }
 
-  useEffect(() => {
-    if (themeParam) {
-      setTheme(themeParam);
-      sessionStorage.setItem('theme', themeParam);
-    }
-    if (localTheme) {
-      setTheme(localTheme);
-      router.push(`?theme=${localTheme}`);
-    }
-  }, []);
-
   const isInitialMount = useRef(true); // Ref to track initial mount
 
   useEffect(() => {
+    // component did mount
     if (isInitialMount.current) {
       // Skip the effect on initial mount
       isInitialMount.current = false;
+
+      if (themeQueryParam) {
+        setTheme(themeQueryParam);
+        sessionStorage.setItem('theme', themeQueryParam);
+      } else if (localTheme) {
+        setTheme(localTheme);
+        router.push(`?theme=${localTheme}`);
+      }
+
       return;
     }
+
     setTheme(theme);
     sessionStorage.setItem('theme', theme);
+    router.push(`?theme=${theme}`, {
+      scroll: false,
+    });
   }, [theme]);
 
   return (
