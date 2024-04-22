@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Link, List, Text } from '@marigold/components';
+import { cn } from '@marigold/system';
 
 export interface TocProps {
   data: string;
@@ -38,7 +39,7 @@ export const Toc = ({ data }: TocProps) => {
   }
 
   const TocPortal = () => (
-    <div className="not-prose fixed ">
+    <div className="not-prose fixed overflow-auto">
       <Text weight="semibold">On This Page</Text>
       {elements.map(({ title, id, anchor, level }: Item) => (
         <List as="ul">
@@ -54,17 +55,24 @@ export const Toc = ({ data }: TocProps) => {
             </List.Item>
           )}
           {level === 'h3' && (
-            <List.Item key={title}>
-              <div className="pl-4">
-                <Link
-                  variant="toc"
-                  href={anchor}
-                  data-active={activeItem === id ? 'true' : 'false'}
-                >
-                  {title}
-                </Link>
-              </div>
-            </List.Item>
+            <div
+              className={cn(
+                'border-secondary-300 hover:border-secondary-800 border-l',
+                activeItem === id && 'border-secondary-800'
+              )}
+            >
+              <List.Item key={title}>
+                <div className=" pl-4">
+                  <Link
+                    variant="toc"
+                    href={anchor}
+                    data-active={activeItem === id ? 'true' : 'false'}
+                  >
+                    {title}
+                  </Link>
+                </div>
+              </List.Item>
+            </div>
           )}
         </List>
       ))}
