@@ -1,12 +1,9 @@
 'use client';
 
-import { Button, Dialog, Header, Split } from '@/ui';
-
-import { CommandMenu } from '@/ui/Commandk';
+import { Button, Dialog, Header } from '@/ui';
 
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';
-import { ThemeMenu } from './ThemeMenu';
 
 // Helpers
 // ---------------
@@ -30,29 +27,22 @@ const MenuIcon = () => (
 // Component
 // ---------------
 export const MobileNavigation = () => (
-  <div className="flex w-full md:hidden">
-    <Dialog.Trigger>
-      <Button variant="ghost">
-        <MenuIcon />
-      </Button>
-      <Dialog variant="fullscreen" closeButton>
-        {({ close }) => (
-          <>
-            <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
-              <Logo className="size-10" />
-              Marigold
-            </Header>
-            <div className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full bottom-0 right-0 -mr-4 h-[calc(100vh-90px)] overflow-y-auto">
-              <Navigation onClick={close} />
-            </div>
-          </>
-        )}
-      </Dialog>
-    </Dialog.Trigger>
-    <Split />
-    <div className="w-full px-3">
-      <CommandMenu />
-    </div>
-    <ThemeMenu />
-  </div>
+  <Dialog.Trigger>
+    <Button variant="ghost">
+      <MenuIcon />
+    </Button>
+    <Dialog variant="fullscreen" closeButton>
+      {({ close }) => (
+        <>
+          <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
+            <Logo className="size-10" />
+            Marigold
+          </Header>
+          <div className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full bottom-0 right-0 -mr-4 h-[calc(100vh-90px)] overflow-y-auto">
+            <Navigation onClick={close} />
+          </div>
+        </>
+      )}
+    </Dialog>
+  </Dialog.Trigger>
 );
