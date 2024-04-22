@@ -72,7 +72,7 @@ export const Toc = ({ data }: TocProps) => {
                         href={anchor}
                         data-active={activeItem === id ? 'true' : 'false'}
                       >
-                        {title}
+                        {title ? title : id}
                       </Link>
                     </div>
                   </List.Item>

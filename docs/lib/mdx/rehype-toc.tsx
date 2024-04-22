@@ -9,6 +9,7 @@ export const rehypeTableOfContents = () => {
     });
 
     const data = Array.from(new Set(items)).map(link => {
+      console.log(link.children[0]);
       return {
         anchor: link.children[0].properties.href,
         title: link.children[0].children[0].value,
