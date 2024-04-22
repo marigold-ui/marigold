@@ -50,7 +50,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
       <Headline level={1}>{page.title}</Headline>
       <div className="text-text-primary-muted -mt-8">{page.caption}</div>
       <Mdx title={page.title} code={page.body.code} />
-      <div className="absolute left-full top-0 hidden pl-16 xl:block">
+      <div className="absolute left-full top-0 hidden pl-20 xl:block">
         <TocContainer />
       </div>
     </article>
