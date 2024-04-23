@@ -83,14 +83,14 @@ export const SiteMenu = () => {
       </Button>
       <Dialog aria-label="Global Command Menu">
         <Command className={classNames.container}>
-          <div className="flex items-center border-b px-3">
-            <Search className="mr-2 size-4 shrink-0 opacity-50"></Search>
+          <div className="flex items-center gap-2 border-b">
+            <Search className="size-4 opacity-50"></Search>
             <Command.Input
               value={query}
               autoFocus
               onValueChange={setQuery}
               placeholder="Type to search ..."
-              className="placeholder:text-text-primary-muted flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
             />
           </div>
           <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
