@@ -1,7 +1,7 @@
 'use client';
 
 import { siteConfig } from '@/lib/config';
-import { Button, Dialog } from '@/ui';
+import { Button, Dialog, useClassNames } from '@/ui';
 import { Command, CommandGroup } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { useEffect, useState } from 'react';
@@ -72,6 +72,8 @@ export const SiteMenu = () => {
     return () => document.removeEventListener('keydown', onKeydown);
   }, []);
 
+  const classNames = useClassNames({ component: 'Menu', variant: 'command' });
+
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
@@ -80,7 +82,7 @@ export const SiteMenu = () => {
         <Hotkey />
       </Button>
       <Dialog aria-label="Global Command Menu">
-        <Command className="bg-bg-surface text-popover-foreground [&_[cmdk-group-heading]]:text-secondary-400 [&_[cmdk-list-sizer]]:divide-secondary-100 flex size-full w-[500px] flex-col overflow-hidden rounded-md [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2.5 [&_[cmdk-item]]:py-2 [&_[cmdk-item]_svg]:size-5 [&_[cmdk-list-sizer]]:divide-y">
+        <Command className={classNames.container}>
           <div className="flex items-center border-b px-3">
             <Search className="mr-2 size-4 shrink-0 opacity-50"></Search>
             <Command.Input
@@ -99,11 +101,11 @@ export const SiteMenu = () => {
               <CommandGroup
                 heading={name}
                 key={name}
-                className="text-secondary-600 [&_[cmdk-group-heading]]:text-text-primary-muted overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium"
+                className={classNames.section}
               >
                 {items.map(page => (
                   <Command.Item
-                    className="aria-selected:bg-bg-hover aria-selected:text-text-primary relative flex cursor-default select-none flex-col rounded px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50"
+                    className={classNames.item}
                     key={page.slug}
                     value={page.slug}
                     onSelect={() => goto(page.slug)}
