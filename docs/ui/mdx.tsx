@@ -27,6 +27,7 @@ import { CopyButton } from './CopyButton';
 import { FullsizeView } from './FullsizeViewDemo';
 import { PropsTable } from './PropsTable';
 import { TeaserCard, TeaserList } from './TeaserCard';
+import { Toc } from './Toc';
 import {
   AlignmentsX,
   AlignmentsY,
@@ -130,6 +131,7 @@ const components = {
   TeaserCard,
   TeaserList,
   TextAlign,
+  Toc,
   // Marigold Components
   Card,
   Columns,
