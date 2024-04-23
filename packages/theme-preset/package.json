@@ -25,8 +25,8 @@
     "tailwindcss-react-aria-components": "1.1.1"
   },
   "peerDependencies": {
-    "postcss": "8.4.35",
-    "tailwindcss": "3.4.1"
+    "postcss": "8.4.x",
+    "tailwindcss": "3.4.x"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",

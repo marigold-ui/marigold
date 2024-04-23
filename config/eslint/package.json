@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "eslint": "8.x.x",
-    "typescript": "4.8.x || 4.9.x || 5.0.x || 5.2.x || 5.3.x"
+    "typescript": "5.3.x"
   },
   "devDependencies": {
     "eslint": "8.57.0",
