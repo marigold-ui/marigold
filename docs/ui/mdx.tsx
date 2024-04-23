@@ -131,6 +131,7 @@ const components = {
   TeaserCard,
   TeaserList,
   TextAlign,
+  Toc,
   // Marigold Components
   Card,
   Columns,
@@ -140,7 +141,6 @@ const components = {
   Tabs,
   Text,
   Tiles,
-  Toc,
 };
 
 // Props
