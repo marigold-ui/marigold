@@ -83,7 +83,7 @@ export const SiteMenu = () => {
       </Button>
       <Dialog aria-label="Global Command Menu">
         <Command className={classNames.container}>
-          <div className="flex items-center gap-2 border-b">
+          <div className="flex items-center gap-1.5 border-b px-3">
             <Search className="size-4 opacity-50"></Search>
             <Command.Input
               value={query}
