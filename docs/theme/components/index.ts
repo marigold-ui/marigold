@@ -4,6 +4,7 @@ export * from './Dialog.styles';
 export * from './Header.styles';
 export * from './Headline.styles';
 export * from './Link.styles';
+export * from './List.styles';
 export * from './Menu.styles';
 export * from './Message.styles';
 export * from './Popover.styles';
