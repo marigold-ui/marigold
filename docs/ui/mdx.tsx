@@ -9,13 +9,25 @@ import { cn } from '@marigold/system';
 
 import { IconList } from '@/ui/IconList';
 
-import { Headline, Link, Message, Tabs, Text } from './';
+import {
+  Card,
+  Columns,
+  Headline,
+  Link,
+  Message,
+  Stack,
+  Tabs,
+  Text,
+  Tiles,
+} from './';
 import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { FullsizeView } from './FullsizeViewDemo';
 import { PropsTable } from './PropsTable';
+import { TeaserCard, TeaserList } from './TeaserCard';
+import { Toc } from './Toc';
 import {
   AlignmentsX,
   AlignmentsY,
@@ -100,27 +112,35 @@ const typography = {
 // ---------------
 const components = {
   ...typography,
-  // TODO: wrap Marigold's Image/Link with next's image/link component
-  ComponentDemo,
-  Headline,
-  Message,
-  Tabs,
-  Text,
-  IconList,
+  Image,
+  // Docs Components
   AlignmentsX,
   AlignmentsY,
   AppearanceTable,
   BorderRadius,
   Breakpoints,
   ColorTokenTable,
+  ComponentDemo,
   FontSizes,
   FontStyle,
   FontWeights,
   Headlines,
+  IconList,
   PropsTable,
   Spacing,
+  TeaserCard,
+  TeaserList,
   TextAlign,
-  Image,
+  Toc,
+  // Marigold Components
+  Card,
+  Columns,
+  Headline,
+  Message,
+  Stack,
+  Tabs,
+  Text,
+  Tiles,
 };
 
 // Props
