@@ -52,6 +52,7 @@ export const Text = ({
     variant,
     size,
   });
+
   return (
     <p
       {...props}
