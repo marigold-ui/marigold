@@ -39,7 +39,7 @@ export const Toc = ({ data }: TocProps) => {
   }
 
   const TocPortal = () => (
-    <div className="not-prose fixed h-[calc(100vh-20%)] w-64 overflow-hidden hover:overflow-y-auto">
+    <div className="not-prose h-[calc(100vh-20%)] w-64 overflow-hidden hover:overflow-y-auto">
       <Text weight="semibold">On This Page</Text>
       <List as="ul">
         {elements.map(({ title, id, anchor, level }: Item) => (

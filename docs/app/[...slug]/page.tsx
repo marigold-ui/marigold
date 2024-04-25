@@ -46,11 +46,15 @@ export default async function ContentPage({ params }: ContentPageProps) {
   }
 
   return (
-    <article className="prose relative xl:max-w-[70ch]">
-      <Headline level={1}>{page.title}</Headline>
-      <div className="text-text-primary-muted -mt-8">{page.caption}</div>
-      <Mdx title={page.title} code={page.body.code} />
-      <div className="absolute left-full top-0 hidden pl-20 xl:block">
+    <article className="grid grid-cols-1 2xl:grid-cols-[minmax(min-content,70ch)_1fr]">
+      <div className="col-span-full">
+        <Headline level={1}>{page.title}</Headline>
+        <div className="text-text-primary-muted">{page.caption}</div>
+      </div>
+      <div className="prose max-w-[70ch]">
+        <Mdx className="" title={page.title} code={page.body.code} />
+      </div>
+      <div className="col-start-2 hidden 2xl:block">
         <TocContainer />
       </div>
     </article>
