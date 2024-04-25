@@ -1,6 +1,21 @@
 :root {
-  --page-padding: 0.75rem; /** px-3 */
-  --page-padding-xl: 1.5rem; /** px-6 */
+  --page-padding: 2rem;
+  --page-padding-xl: 3rem;
+
+  --page-header-height: 56px;
+
+  --page-sub-nav-absolute-width: 252px;
+  --page-sub-nav-width: calc(
+    var(--page-sub-nav-absolute-width) + var(--page-padding)
+  );
+  --page-sub-nav-width-xl: calc(
+    var(--page-sub-nav-absolute-width) + var(--page-padding-xl)
+  );
+  --page-sub-nav-padding: 2.25rem;
+  --page-sub-nav-padding-xl: 2.5rem;
+
+  --page-main-padding: 4.5rem;
+  --page-main-padding-xl: 5rem;
 }
 
 @tailwind base;

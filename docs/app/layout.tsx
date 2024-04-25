@@ -51,8 +51,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <SiteHeader />
             <aside
               className={[
+                'top-[--page-header-height]',
+                'py-[--page-sub-nav-padding] xl:py-[--page-sub-nav-padding-xl]',
                 'pl-[--page-padding] xl:pl-[--page-padding-xl]',
-                'fixed top-14 z-10 hidden h-[calc(100vh-56px)] w-64 overflow-hidden hover:overflow-y-auto md:block xl:w-72',
+                'h-[calc(100vh-var(--page-header-height))] w-[--page-sub-nav-width] xl:w-[--page-sub-nav-width-xl]',
+                'fixed z-10 hidden overflow-hidden hover:overflow-y-auto md:block',
                 'scrollbar-thin scrollbar-thumb-secondary-400 scrollbar-thumb-rounded-full scrollbar-track-transparent',
                 'border-secondary-200 border-r',
               ].join(' ')}
@@ -60,12 +63,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               {/* current section navigation sidebar */}
               <SectionNavigation />
             </aside>
-            <div className="px-4 md:pl-80 xl:pl-[360px]">
-              <MarigoldProvider theme={theme}>
-                <main className="py-6 xl:py-10">{children}</main>
-              </MarigoldProvider>
+            <main
+              className={[
+                'py-[--page-main-padding] xl:py-[--page-main-padding-xl]',
+                'px-[--page-padding] xl:pr-[--page-padding-xl]',
+                'md:pl-[calc(var(--page-sub-nav-width)+var(--page-main-padding))] xl:pl-[calc(var(--page-sub-nav-width-xl)+var(--page-main-padding-xl))]',
+              ].join(' ')}
+            >
+              <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
               <SiteFooter />
-            </div>
+            </main>
           </MarigoldProvider>
         </MarigoldThemeSwitch>
         <Analytics />
