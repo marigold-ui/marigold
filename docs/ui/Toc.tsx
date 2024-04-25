@@ -39,7 +39,7 @@ export const Toc = ({ data }: TocProps) => {
   }
 
   const TocPortal = () => (
-    <div className="not-prose h-[calc(100vh-20%)] w-64 overflow-hidden hover:overflow-y-auto">
+    <div className="not-prose w-64">
       <Text weight="semibold">On This Page</Text>
       <List as="ul">
         {elements.map(({ title, id, anchor, level }: Item) => (
@@ -85,7 +85,12 @@ export const Toc = ({ data }: TocProps) => {
 };
 
 export const TocContainer = () => {
-  return <div id="toc"></div>;
+  return (
+    <div
+      id="toc"
+      className="sticky top-[calc(var(--page-header-height)+1rem)]"
+    ></div>
+  );
 };
 
 const useActiveItem = (itemIds: string[]) => {
