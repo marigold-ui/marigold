@@ -6,12 +6,15 @@ export const inputSpacing = 'px-1';
 export const inputDisabled =
   'disabled:bg-bg-inverted-disabled disabled:border-border-base-disabled disabled:text-text-base-disabled';
 
+export const inputError = `data-[invalid]:border-border-error`;
+
 export const Input: ThemeComponent<'Input'> = {
   input: cva([
     inputBox,
     inputHeight,
     inputSpacing,
     inputDisabled,
+    inputError,
     '[&[type=file]]:leading-[16px]',
     'leading-[22px]',
     'focus:outline-outline-focus -outline-offset-1 focus:outline focus:outline-2',
