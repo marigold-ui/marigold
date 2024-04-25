@@ -49,7 +49,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <MarigoldThemeSwitch themes={themes} initial="b2b">
           <MarigoldProvider theme={theme}>
             <SiteHeader />
-            <nav
+            <aside
               className={[
                 'top-[--page-header-height]',
                 'py-[--page-sub-nav-padding] xl:py-[--page-sub-nav-padding-xl]',
@@ -62,7 +62,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             >
               {/* current section navigation sidebar */}
               <SectionNavigation />
-            </nav>
+            </aside>
             <main
               className={[
                 'pt-[--page-main-padding] xl:pt-[--page-main-padding-xl]',
