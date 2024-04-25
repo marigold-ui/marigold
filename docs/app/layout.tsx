@@ -65,7 +65,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </aside>
             <main
               className={[
-                'py-[--page-main-padding] xl:py-[--page-main-padding-xl]',
+                'pt-[--page-main-padding] xl:pt-[--page-main-padding-xl]',
                 'px-[--page-padding] xl:pr-[--page-padding-xl]',
                 'md:pl-[calc(var(--page-sub-nav-width)+var(--page-main-padding))] xl:pl-[calc(var(--page-sub-nav-width-xl)+var(--page-main-padding-xl))]',
               ].join(' ')}
