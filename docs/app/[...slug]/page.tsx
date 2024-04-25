@@ -49,7 +49,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
     <article className="grid grid-cols-1 gap-x-28 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
       <div className="col-span-full">
         <Headline level={1}>{page.title}</Headline>
-        <div className="text-text-primary-muted">{page.caption}</div>
+        <div className="text-text-primary-muted leading-8">{page.caption}</div>
       </div>
       <div className="prose max-w-[70ch]">
         <Mdx className="" title={page.title} code={page.body.code} />
