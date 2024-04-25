@@ -52,7 +52,9 @@ export const Text = ({
     variant,
     size,
   });
-
+  if (color) {
+    console.log(theme, color, getColor(theme, color, color /* fallback */));
+  }
   return (
     <p
       {...props}

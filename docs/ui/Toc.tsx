@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Link, List, Text } from '@marigold/components';
@@ -40,10 +40,12 @@ export const Toc = ({ data }: TocProps) => {
 
   const TocPortal = () => (
     <div className="not-prose w-64">
-      <Text weight="semibold">On This Page</Text>
+      <Text weight="semibold" color="secondary-800">
+        On This Page
+      </Text>
       <List as="ul">
         {elements.map(({ title, id, anchor, level }: Item) => (
-          <div key={id}>
+          <Fragment key={id}>
             {level === 'h2' && (
               <List.Item key={title}>
                 <Link
@@ -75,7 +77,7 @@ export const Toc = ({ data }: TocProps) => {
                 </List.Item>
               </div>
             )}
-          </div>
+          </Fragment>
         ))}
       </List>
     </div>
