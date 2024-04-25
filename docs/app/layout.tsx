@@ -70,7 +70,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 'md:pl-[calc(var(--page-sub-nav-width)+var(--page-main-padding))] xl:pl-[calc(var(--page-sub-nav-width-xl)+var(--page-main-padding-xl))]',
               ].join(' ')}
             >
-              <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
+              {children}
               <SiteFooter />
             </main>
           </MarigoldProvider>

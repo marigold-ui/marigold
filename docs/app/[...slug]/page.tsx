@@ -46,7 +46,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
   }
 
   return (
-    <article className="prose relative">
+    <article className="prose relative xl:max-w-[70ch]">
       <Headline level={1}>{page.title}</Headline>
       <div className="text-text-primary-muted -mt-8">{page.caption}</div>
       <Mdx title={page.title} code={page.body.code} />
