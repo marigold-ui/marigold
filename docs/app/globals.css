@@ -14,8 +14,8 @@
   --page-sub-nav-padding: 2.25rem;
   --page-sub-nav-padding-xl: 2.5rem;
 
-  --page-main-padding: 4.5rem;
-  --page-main-padding-xl: 5rem;
+  --page-main-padding: 5rem;
+  --page-main-padding-xl: 5.5rem;
 }
 
 @tailwind base;

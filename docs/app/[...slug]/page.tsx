@@ -46,7 +46,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
   }
 
   return (
-    <article className="grid grid-cols-1 2xl:grid-cols-[minmax(min-content,70ch)_1fr]">
+    <article className="grid grid-cols-1 gap-x-20 gap-y-14 2xl:grid-cols-[minmax(min-content,70ch)_1fr]">
       <div className="col-span-full">
         <Headline level={1}>{page.title}</Headline>
         <div className="text-text-primary-muted">{page.caption}</div>
