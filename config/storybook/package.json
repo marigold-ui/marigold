@@ -49,10 +49,10 @@
     "vite": "5.2.7"
   },
   "peerDependencies": {
-    "@storybook/react": "^8.0.6",
+    "@storybook/react": "8.0.x",
     "react": "18.x",
     "react-dom": "18.x",
-    "typescript": "5.3.3"
+    "typescript": "5.3.x"
   },
   "scripts": {
     "start": "storybook dev -p 6006 -c .storybook/",

@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
+import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
 
 /**
  * Normalizaiton supports "grouped pages". E.g. when we want to put
@@ -175,6 +176,7 @@ export default makeSource({
           },
         },
       ],
+      [rehypeTableOfContents, { selector: '#toc' }],
     ],
   },
 });
