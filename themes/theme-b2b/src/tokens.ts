@@ -212,6 +212,13 @@ export const colors = {
       overlay: white, // used e.g. popover
       sunken: gray[100],
     },
+    // currently only for core theme relevant
+    masterMark: {
+      DEFAULT: '',
+    },
+    adminMark: {
+      DEFAULT: '',
+    },
   },
 
   // Border
