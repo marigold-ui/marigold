@@ -7,21 +7,19 @@ The `<Radio>` and `<Radio.Group>` components allow users to select one option fr
 
 The `<Radio>` should never be used alone, there should always be at least two `<Radio>` from which you can choose. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
 
-## Usage
-
-### Import
-
-To import the component you just have to use this code below.
+## Import
 
 ```tsx onlyCode
 import { Radio } from '@marigold/components';
 ```
 
-### Appearance
+## Appearance
 
 <AppearanceTable component={title} />
 
-### Props
+## Props
+
+### Radio
 
 <PropsTable
   props={[
@@ -53,7 +51,7 @@ import { Radio } from '@marigold/components';
   ]}
 />
 
-### Group Props
+### Radio.Group
 
 <PropsTable
   props={[
@@ -123,9 +121,9 @@ import { Radio } from '@marigold/components';
 
 ## Examples
 
-In this example you can see a simple `<Radio.Group>` within `<Radio>`. There is also a single `<Radio>` disabled.
-
 ### Simple Radio
+
+In this example you can see a simple `<Radio.Group>` within `<Radio>`. There is also a single `<Radio>` disabled.
 
 <ComponentDemo file="./radio.demo.tsx" />
 
