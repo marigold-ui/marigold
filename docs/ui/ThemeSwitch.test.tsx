@@ -38,7 +38,7 @@ test('switches the theme', async () => {
   const { result } = renderHook(() => useThemeSwitch(), { wrapper });
 
   act(() => {
-    result.current.setTheme(coreTheme);
+    result.current.updateTheme(coreTheme);
   });
 
   // @ts-ignore

@@ -3,21 +3,21 @@
 import { type Theme } from '@/ui';
 import React, {
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
 } from 'react';
 
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // Context
 // ---------------
 export interface ThemeSwitchContextType {
   current: string | undefined;
   themes: { [name: string]: Theme };
-  setTheme: Function;
+  updateTheme: Function;
 }
 
 export const Context = React.createContext({
@@ -42,12 +42,12 @@ export const MarigoldThemeSwitch = ({
   initial,
   children,
 }: MarigoldThemeSwitchProps) => {
-  let localTheme: string;
+  let localTheme: string = '';
 
   const searchParams = useSearchParams();
   const themeQueryParam = searchParams?.get('theme');
 
-  const [theme, setTheme] = useState<string>(initial);
+  const [theme, setTheme] = useState<string>(() => initial);
   const router = useRouter();
 
   if (typeof sessionStorage !== 'undefined') {
@@ -56,32 +56,33 @@ export const MarigoldThemeSwitch = ({
 
   const isInitialMount = useRef(true); // Ref to track initial mount
 
+  const updateTheme = useCallback(
+    (theme: string) => {
+      setTheme(theme);
+      sessionStorage.setItem('theme', theme);
+      router.push(`?theme=${theme}`, {
+        scroll: false,
+      });
+    },
+    [router]
+  );
+
   useEffect(() => {
-    // component did mount
     if (isInitialMount.current) {
       // Skip the effect on initial mount
       isInitialMount.current = false;
-
       if (themeQueryParam) {
-        setTheme(themeQueryParam);
-        sessionStorage.setItem('theme', themeQueryParam);
+        updateTheme(themeQueryParam);
       } else if (localTheme) {
-        setTheme(localTheme);
-        router.push(`?theme=${localTheme}`);
+        updateTheme(localTheme);
       }
 
       return;
     }
-
-    setTheme(theme);
-    sessionStorage.setItem('theme', theme);
-    router.push(`?theme=${theme}`, {
-      scroll: false,
-    });
-  }, [theme]);
+  }, [localTheme, themeQueryParam, updateTheme]);
 
   return (
-    <Context.Provider value={{ current: theme, themes, setTheme }}>
+    <Context.Provider value={{ current: theme, themes, updateTheme }}>
       {children}
     </Context.Provider>
   );
