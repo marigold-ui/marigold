@@ -31,6 +31,11 @@ test('get', () => {
         very: {
           deep: 'deeeeply-nested-value',
         },
+        even: {
+          more: {
+            deep: 'can anybody hear me!?',
+          },
+        },
         DEFAULT: 'this-is-just-for-reference',
       },
     },
@@ -45,10 +50,18 @@ test('get', () => {
   expect(get(obj, 'nested.value.very.deep')).toMatchInlineSnapshot(
     `"deeeeply-nested-value"`
   );
+  expect(get(obj, 'nested.value.even.more.deep')).toMatchInlineSnapshot(
+    `"can anybody hear me!?"`
+  );
 
   expect(get(obj, 'nested.value')).toMatchInlineSnapshot(`
 {
   "DEFAULT": "this-is-just-for-reference",
+  "even": {
+    "more": {
+      "deep": "can anybody hear me!?",
+    },
+  },
   "very": {
     "deep": "deeeeply-nested-value",
   },
@@ -66,6 +79,11 @@ test('getColor', () => {
         DEFAULT: 'default-accent-color',
         hover: 'accent-hover-color',
       },
+      text: {
+        primary: {
+          muted: 'muted-color',
+        },
+      },
     },
   };
 
@@ -77,6 +95,9 @@ test('getColor', () => {
   expect(getColor(theme, 'brand-100')).toMatchInlineSnapshot(`"brand-color"`);
   expect(getColor(theme, 'accent-hover')).toMatchInlineSnapshot(
     `"accent-hover-color"`
+  );
+  expect(getColor(theme, 'text-primary-muted')).toMatchInlineSnapshot(
+    `"muted-color"`
   );
 
   // Support Tailwinds DEFAULT
