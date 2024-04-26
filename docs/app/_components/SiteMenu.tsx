@@ -40,11 +40,7 @@ const Hotkey = () => {
 
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
 
-  return (
-    <kbd className="hidden h-5 w-10 items-center justify-center rounded-md text-xs lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
-      <span className="text-xs">{isMacOS ? '⌘' : 'Ctrl+'}</span>K
-    </kbd>
-  );
+  return <span className="opacity-50">({isMacOS ? '⌘' : 'Ctrl+'}K)</span>;
 };
 
 // Component
@@ -75,8 +71,7 @@ export const SiteMenu = () => {
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
-        <span className="hidden xl:inline-flex ">Search documentation...</span>
-        <span className="inline-flex xl:hidden ">Search...</span>
+        Search...
         <Hotkey />
       </Button>
       <Dialog aria-label="Global Command Menu">
