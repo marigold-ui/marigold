@@ -1,7 +1,7 @@
 'use client';
 
 import { siteConfig } from '@/lib/config';
-import { Button, Dialog } from '@/ui';
+import { Button, Dialog, useClassNames } from '@/ui';
 import { Command, CommandGroup } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { useEffect, useState } from 'react';
@@ -40,11 +40,7 @@ const Hotkey = () => {
 
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
 
-  return (
-    <kbd className="hidden h-5 w-10 items-center justify-center rounded-md text-xs lg:inline-flex lg:border lg:border-gray-300 lg:bg-gray-200">
-      <span className="text-xs">{isMacOS ? '⌘' : 'Ctrl+'}</span>K
-    </kbd>
-  );
+  return <span className="opacity-50">({isMacOS ? '⌘' : 'Ctrl+'}K)</span>;
 };
 
 // Component
@@ -72,23 +68,24 @@ export const SiteMenu = () => {
     return () => document.removeEventListener('keydown', onKeydown);
   }, []);
 
+  const classNames = useClassNames({ component: 'Menu', variant: 'command' });
+
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
-        <span className="hidden xl:inline-flex ">Search documentation...</span>
-        <span className="inline-flex xl:hidden ">Search...</span>
+        Search...
         <Hotkey />
       </Button>
       <Dialog aria-label="Global Command Menu">
-        <Command className="bg-bg-surface text-popover-foreground [&_[cmdk-group-heading]]:text-secondary-400 [&_[cmdk-list-sizer]]:divide-secondary-100 flex size-full w-[500px] flex-col overflow-hidden rounded-md [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2.5 [&_[cmdk-item]]:py-2 [&_[cmdk-item]_svg]:size-5 [&_[cmdk-list-sizer]]:divide-y">
-          <div className="flex items-center border-b px-3">
-            <Search className="mr-2 size-4 shrink-0 opacity-50"></Search>
+        <Command className={classNames.container}>
+          <div className="flex items-center gap-1.5 border-b px-3">
+            <Search className="size-4 opacity-50"></Search>
             <Command.Input
               value={query}
               autoFocus
               onValueChange={setQuery}
               placeholder="Type to search ..."
-              className="placeholder:text-text-primary-muted flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
             />
           </div>
           <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
@@ -99,11 +96,11 @@ export const SiteMenu = () => {
               <CommandGroup
                 heading={name}
                 key={name}
-                className="text-secondary-600 [&_[cmdk-group-heading]]:text-text-primary-muted overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium"
+                className={classNames.section}
               >
                 {items.map(page => (
                   <Command.Item
-                    className="aria-selected:bg-bg-hover aria-selected:text-text-primary relative flex cursor-default select-none flex-col rounded px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50"
+                    className={classNames.item}
                     key={page.slug}
                     value={page.slug}
                     onSelect={() => goto(page.slug)}

@@ -27,6 +27,7 @@ const gray = {
   50: '#ffffff',
   100: '#f7f5f2',
   200: '#e3e3e3',
+  250: '#dbdbdb',
   300: '#e7e4e0',
   350: '#cfcfcf',
   400: '#cecac3',
@@ -208,6 +209,13 @@ export const colors = {
       raised: gray[50],
       overlay: gray[50],
       sunken: gray[200],
+    },
+    // used for core permissions
+    masterMark: {
+      DEFAULT: gray[250],
+    },
+    adminMark: {
+      DEFAULT: black,
     },
   },
 
