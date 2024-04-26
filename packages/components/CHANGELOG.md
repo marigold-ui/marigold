@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 7.6.0
+
+### Minor Changes
+
+- [#3841](https://github.com/marigold-ui/marigold/pull/3841) [`05d2ca0`](https://github.com/marigold-ui/marigold/commit/05d2ca03fbac80de9a1b6887932301b0d91691f2) Thanks [@sebald](https://github.com/sebald)! - feat: Allow configure position of menu popover
+
+- [#3708](https://github.com/marigold-ui/marigold/pull/3708) [`af1807b`](https://github.com/marigold-ui/marigold/commit/af1807b4335022bcd12db0d454992ef8bf6b2cc7) Thanks [@aromko](https://github.com/aromko)! - Creating new component `SelectList`
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@7.6.0
+  - @marigold/icons@1.2.45
+
 ## 7.5.4
 
 ### Patch Changes

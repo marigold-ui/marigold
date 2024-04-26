@@ -5,7 +5,7 @@ export default () => {
   const currentTheme = useTheme();
   const theme = extendTheme(
     {
-      Card: cva('bg-orange-400 text-white'),
+      Card: cva('text-text-base bg-slate-200'),
     },
     currentTheme
   );

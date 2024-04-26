@@ -6,7 +6,7 @@ export default () => {
   const theme = extendTheme(
     {
       Tabs: {
-        tabpanel: cva('bg-bg-accent rounded-md p-3 text-white'),
+        tabpanel: cva('text-text-base rounded-md bg-slate-200 p-3'),
       },
     },
     currentTheme

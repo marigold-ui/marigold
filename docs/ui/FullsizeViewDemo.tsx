@@ -15,19 +15,26 @@ export const FullsizeView = ({ code, codeString }: FullsizeViewProps) => {
       <Button className="hidden border-none p-0 outline-0 md:block">
         <svg width="20px" height="20px" viewBox="0 0 24 24">
           <path
-            className="size-5 fill-white"
-            d="M18.5625 18.5625H5.4375V5.4375H12V3.5625H5.4375C4.39687 3.5625 3.5625 4.40625 3.5625 5.4375V18.5625C3.5625 19.5938 4.39687 20.4375 5.4375 20.4375H18.5625C19.5938 20.4375 20.4375 19.5938 20.4375 18.5625V12H18.5625V18.5625ZM13.8648 3.5625V5.44042H17.2356L8.00565 14.6704L9.32959 15.9943L18.5596 6.76436V10.1352H20.4375V3.5625H13.8648Z"
-          ></path>
+            className="fill-white"
+            fillRule="evenodd"
+            d="M15 3.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.56l-3.97 3.97a.75.75 0 1 1-1.06-1.06l3.97-3.97h-2.69a.75.75 0 0 1-.75-.75Zm-12 0A.75.75 0 0 1 3.75 3h4.5a.75.75 0 0 1 0 1.5H5.56l3.97 3.97a.75.75 0 0 1-1.06 1.06L4.5 5.56v2.69a.75.75 0 0 1-1.5 0v-4.5Zm11.47 11.78a.75.75 0 1 1 1.06-1.06l3.97 3.97v-2.69a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-.75.75h-4.5a.75.75 0 0 1 0-1.5h2.69l-3.97-3.97Zm-4.94-1.06a.75.75 0 0 1 0 1.06L5.56 19.5h2.69a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 1 1.5 0v2.69l3.97-3.97a.75.75 0 0 1 1.06 0Z"
+            clipRule="evenodd"
+          />
         </svg>
       </Button>
       <Dialog>
         {/* need to add the background color here otherwise it will not be displayed */}
-        <div className="not-prose h-[90vh] w-full overflow-y-auto rounded-lg bg-[#1f2937] p-10">
-          <div className="flex justify-end gap-2">
-            <CopyButton codeString={codeString} />
+        {({ close }) => (
+          <div className="not-prose h-[90vh] w-full overflow-y-auto rounded-lg bg-[#1f2937] p-6">
+            <div className="flex justify-end gap-2">
+              <CopyButton codeString={codeString} />
+              <Button variant="inverted" onPress={close}>
+                Close
+              </Button>
+            </div>
+            <pre className="[&>code]:bg-transparent">{code}</pre>
           </div>
-          <pre className="[&>code]:bg-transparent">{code}</pre>
-        </div>
+        )}
       </Dialog>
     </Dialog.Trigger>
   );

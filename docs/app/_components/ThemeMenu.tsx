@@ -10,7 +10,7 @@ export const ThemeMenu = () => {
 
   return (
     <Menu
-      label={<Theme />}
+      label={<Theme className="text-secondary-600" />}
       onAction={current => updateTheme(current)}
       placement="bottom end"
     >

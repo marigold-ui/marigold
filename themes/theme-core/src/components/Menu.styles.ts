@@ -5,6 +5,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     'bg-bg-surface list-none break-words rounded-[2px] border p-0',
     'sm:max-h-[75ch] md:max-h-[75vh] lg:max-h-[45vh]',
     'flex flex-col overflow-y-auto overflow-x-hidden',
+    'border-border-inverted bg-surface-overlay border-solid',
   ]),
   item: cva([
     'cursor-pointer p-1 focus:outline-0',
@@ -13,5 +14,5 @@ export const Menu: ThemeComponent<'Menu'> = {
     'text-xs',
     'data-[selected]:bg-bg-selected',
   ]),
-  section: cva('text-text-base  border-t p-1 text-xs font-normal'),
+  section: cva('text-text-base border-t p-1 text-xs font-normal'),
 };
