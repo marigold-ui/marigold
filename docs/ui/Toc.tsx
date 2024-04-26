@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Link, List, Text } from '@marigold/components';
@@ -39,11 +39,13 @@ export const Toc = ({ data }: TocProps) => {
   }
 
   const TocPortal = () => (
-    <div className="not-prose fixed h-[calc(100vh-20%)] w-64 overflow-hidden hover:overflow-y-auto">
-      <Text weight="semibold">On This Page</Text>
+    <div className="not-prose w-64">
+      <Text weight="semibold" color="secondary-800">
+        On This Page
+      </Text>
       <List as="ul">
         {elements.map(({ title, id, anchor, level }: Item) => (
-          <div key={id}>
+          <Fragment key={id}>
             {level === 'h2' && (
               <List.Item key={title}>
                 <Link
@@ -75,7 +77,7 @@ export const Toc = ({ data }: TocProps) => {
                 </List.Item>
               </div>
             )}
-          </div>
+          </Fragment>
         ))}
       </List>
     </div>
@@ -85,7 +87,12 @@ export const Toc = ({ data }: TocProps) => {
 };
 
 export const TocContainer = () => {
-  return <div id="toc"></div>;
+  return (
+    <div
+      id="toc"
+      className="sticky top-[calc(var(--page-header-height)+1rem)]"
+    ></div>
+  );
 };
 
 const useActiveItem = (itemIds: string[]) => {

@@ -146,13 +146,14 @@ const components = {
 // Props
 // ---------------
 interface MdxProps {
+  className?: string;
   title?: string;
   code: string;
 }
 
 // Component
 // ---------------
-export const Mdx = ({ title, code }: MdxProps) => {
+export const Mdx = ({ className, title, code }: MdxProps) => {
   const Component = useMDXComponent(code, { title });
-  return <Component components={components as any} />;
+  return <Component className={className} components={components as any} />;
 };

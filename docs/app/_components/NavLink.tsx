@@ -8,7 +8,7 @@ const styles = cva([], {
   variants: {
     variant: {
       default: [
-        'text-secondary-500 -ml-px block border-l border-transparent py-1 pl-4 text-sm',
+        'text-secondary-500 -ml-px block border-l border-transparent py-2 pl-4 text-sm',
       ],
       main: ['text-secondary-600'],
     },
