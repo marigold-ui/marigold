@@ -50,8 +50,8 @@ export const MarigoldThemeSwitch = ({
   const [theme, setTheme] = useState<string>(() => initial);
   const router = useRouter();
 
-  if (typeof sessionStorage !== 'undefined') {
-    localTheme = sessionStorage.getItem('theme') as string;
+  if (typeof localStorage !== 'undefined') {
+    localTheme = localStorage.getItem('theme') as string;
   }
 
   const isInitialMount = useRef(true); // Ref to track initial mount
@@ -59,7 +59,7 @@ export const MarigoldThemeSwitch = ({
   const updateTheme = useCallback(
     (theme: string) => {
       setTheme(theme);
-      sessionStorage.setItem('theme', theme);
+      localStorage.setItem('theme', theme);
       router.push(`?theme=${theme}`, {
         scroll: false,
       });
