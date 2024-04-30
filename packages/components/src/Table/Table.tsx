@@ -38,6 +38,7 @@ export interface TableProps
   size?: string;
   stretch?: boolean;
   stickyHeader?: boolean;
+  disableKeyboardNavigation?: boolean;
 }
 
 // Table Component
@@ -47,6 +48,7 @@ export const Table: Table = ({
   size,
   stretch,
   selectionMode = 'none',
+  disableKeyboardNavigation = false,
   stickyHeader,
   ...props
 }: TableProps) => {
@@ -60,6 +62,15 @@ export const Table: Table = ({
       // TODO: It this necessary?
       props.selectionBehavior !== 'replace',
   });
+
+  /**
+   * Behavior is a bit flacky with the table when using a keyboard
+   * so we test here for undefined here to be save.
+   */
+  if (disableKeyboardNavigation !== undefined) {
+    state.isKeyboardNavigationDisabled = disableKeyboardNavigation;
+  }
+
   const { gridProps } = useTable(props, state, tableRef);
   const classNames = useClassNames({
     component: 'Table',
