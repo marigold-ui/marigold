@@ -59,7 +59,10 @@ export const decorators: any = [
             {Object.keys(THEME).map(key => (
               <OverlayContainerProvider value={`portalContainer-${key}`}>
                 <Frame key={key} id={key} title={`Theme "${key}"`}>
-                  <MarigoldProvider theme={THEME[key as ThemeNames]}>
+                  <MarigoldProvider
+                    theme={THEME[key as ThemeNames]}
+                    className="bg-bg-surface"
+                  >
                     <div className="p-4" data-theme={key}>
                       {Story()}
                     </div>
@@ -72,7 +75,10 @@ export const decorators: any = [
       }
       case 'core': {
         return (
-          <MarigoldProvider theme={THEME[theme as ThemeNames]}>
+          <MarigoldProvider
+            theme={THEME[theme as ThemeNames]}
+            className="bg-bg-surface"
+          >
             <div className="h-screen p-6">
               <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
             </div>
@@ -81,7 +87,10 @@ export const decorators: any = [
       }
       default: {
         return (
-          <MarigoldProvider theme={THEME[theme as ThemeNames]}>
+          <MarigoldProvider
+            theme={THEME[theme as ThemeNames]}
+            className="bg-bg-surface"
+          >
             <div className="h-screen p-6">{Story()}</div>
           </MarigoldProvider>
         );
