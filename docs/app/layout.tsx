@@ -1,5 +1,6 @@
 'use-client';
 
+import { siteConfig } from '@/lib/config';
 import { b2bTheme, coreTheme, theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
 
@@ -46,7 +47,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={`${fontSans.className} min-h-screen`}>
-        <MarigoldThemeSwitch themes={themes} initial="b2b">
+        <MarigoldThemeSwitch themes={themes} initial={siteConfig.defaultTheme}>
           <MarigoldProvider theme={theme}>
             <SiteHeader />
             <aside
