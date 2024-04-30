@@ -92,6 +92,6 @@ export const getColor = (
   path: string,
   fallback?: any
 ): any => {
-  const result = get(theme.colors || {}, path.replace('-', '.'), fallback);
+  const result = get(theme.colors || {}, path.replace(/-/g, '.'), fallback);
   return isObject(result) ? result['DEFAULT'] : result;
 };

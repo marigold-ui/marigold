@@ -1,5 +1,11 @@
 # @marigold/jest-config
 
+## 1.2.1
+
+### Patch Changes
+
+- [#3880](https://github.com/marigold-ui/marigold/pull/3880) [`4a59427`](https://github.com/marigold-ui/marigold/commit/4a59427fc1d4c14b1971c07778de1977cdde5dda) Thanks [@sebald](https://github.com/sebald)! - chore: cleanup peerdeeps
+
 ## 1.2.0
 
 ### Minor Changes

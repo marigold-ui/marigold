@@ -1,7 +1,6 @@
 ---
 title: Table
 caption: Component for building tables.
-badge: updated
 ---
 
 The `<Table>` component allows to present data in a table format. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, as well as, helps with accessibility by providing keyboard navigation.
@@ -10,21 +9,19 @@ You can sort with the `<Table>` and add a `selectionMode` property with which yo
 
 The component is divided into several parts. So there are the `<Table.Header>`, `<Table.Body>`, `<Table.Column>`, `<Table.Row>` and `<Table.Cell>`.
 
-## Usage
-
-### Import
-
-To import the component you just have to use this code below.
+## Import
 
 ```tsx
 import { Table } from '@marigold/components';
 ```
 
-### Appearance
+## Appearance
 
 <AppearanceTable component={title} />
 
-### Props
+## Props
+
+### Table
 
 <PropsTable
   props={[
@@ -70,10 +67,60 @@ import { Table } from '@marigold/components';
       description: 'Handler that is called when the sort direction changes.',
       default: 'none',
     },
+    {
+      property: 'disableKeyboardNavigation',
+      type: 'boolean',
+      description:
+        'Disable keyboard navigation. Use if you have input fields in your table. Be aware that this is bad for accessibility.',
+      default: 'false',
+    },
   ]}
 />
 
-### Table Body Props
+### Table.Header
+
+<PropsTable />
+
+### Table.Column
+
+<PropsTable
+  props={[
+    {
+      property: 'key',
+      type: 'Key',
+      description: 'The key for the Column.',
+      default: 'none',
+    },
+    {
+      property: 'align',
+      type: 'center | left | right | justify | char',
+      description: 'Control the alignment of Column.',
+      default: 'left',
+    },
+    {
+      property: 'allowsSorting',
+      type: 'boolean',
+      description: 'Whether the column allows sorting.',
+      default: 'true',
+    },
+    {
+      property: 'isRowHeader',
+      type: 'boolean',
+      description:
+        'Whether a column is a row header and should be announced by assistive technology during row navigation.',
+      default: 'true',
+    },
+    {
+      property: 'width',
+      type: 'string | number',
+      description:
+        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
+      default: 'auto',
+    },
+  ]}
+/>
+
+### Table.Body
 
 <PropsTable
   props={[
@@ -105,7 +152,7 @@ import { Table } from '@marigold/components';
   ]}
 />
 
-### Table Row Props
+### Table.Row
 
 <PropsTable
   props={[
@@ -163,44 +210,9 @@ import { Table } from '@marigold/components';
   ]}
 />
 
-### Table Column Props
+### Table.Cell
 
-<PropsTable
-  props={[
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for the Column.',
-      default: 'none',
-    },
-    {
-      property: 'align',
-      type: 'center | left | right | justify | char',
-      description: 'Control the alignment of Column.',
-      default: 'left',
-    },
-    {
-      property: 'allowsSorting',
-      type: 'boolean',
-      description: 'Whether the column allows sorting.',
-      default: 'true',
-    },
-    {
-      property: 'isRowHeader',
-      type: 'boolean',
-      description:
-        'Whether a column is a row header and should be announced by assistive technology during row navigation.',
-      default: 'true',
-    },
-    {
-      property: 'width',
-      type: 'string | number',
-      description:
-        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
-      default: 'auto',
-    },
-  ]}
-/>
+<PropsTable />
 
 ## Examples
 

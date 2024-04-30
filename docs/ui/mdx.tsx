@@ -9,13 +9,25 @@ import { cn } from '@marigold/system';
 
 import { IconList } from '@/ui/IconList';
 
-import { Headline, Link, Message, Tabs, Text } from './';
+import {
+  Card,
+  Columns,
+  Headline,
+  Link,
+  Message,
+  Stack,
+  Tabs,
+  Text,
+  Tiles,
+} from './';
 import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { FullsizeView } from './FullsizeViewDemo';
 import { PropsTable } from './PropsTable';
+import { TeaserCard, TeaserList } from './TeaserCard';
+import { Toc } from './Toc';
 import {
   AlignmentsX,
   AlignmentsY,
@@ -72,6 +84,8 @@ const typography = {
     className,
     ...props
   }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {
+    const lines = raw.split(/\r\n|\r|\n/).length;
+
     return (
       <div className="relative">
         <pre
@@ -83,7 +97,9 @@ const typography = {
         >
           <div className="absolute right-5 flex justify-end gap-2">
             <CopyButton codeString={raw} />
-            <FullsizeView code={props.children} codeString={raw} />
+            {lines > 5 ? (
+              <FullsizeView code={props.children} codeString={raw} />
+            ) : null}
           </div>
           {props.children}
         </pre>
@@ -96,39 +112,48 @@ const typography = {
 // ---------------
 const components = {
   ...typography,
-  // TODO: wrap Marigold's Image/Link with next's image/link component
-  ComponentDemo,
-  Headline,
-  Message,
-  Tabs,
-  Text,
-  IconList,
+  Image,
+  // Docs Components
   AlignmentsX,
   AlignmentsY,
   AppearanceTable,
   BorderRadius,
   Breakpoints,
   ColorTokenTable,
+  ComponentDemo,
   FontSizes,
   FontStyle,
   FontWeights,
   Headlines,
+  IconList,
   PropsTable,
   Spacing,
+  TeaserCard,
+  TeaserList,
   TextAlign,
-  Image,
+  Toc,
+  // Marigold Components
+  Card,
+  Columns,
+  Headline,
+  Message,
+  Stack,
+  Tabs,
+  Text,
+  Tiles,
 };
 
 // Props
 // ---------------
 interface MdxProps {
+  className?: string;
   title?: string;
   code: string;
 }
 
 // Component
 // ---------------
-export const Mdx = ({ title, code }: MdxProps) => {
+export const Mdx = ({ className, title, code }: MdxProps) => {
   const Component = useMDXComponent(code, { title });
-  return <Component components={components as any} />;
+  return <Component className={className} components={components as any} />;
 };

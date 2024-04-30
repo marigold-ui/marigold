@@ -40,6 +40,7 @@ export const TableCell = ({ cell, align = 'left' }: TableCellProps) => {
 
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
+
   return (
     <td
       ref={ref}
