@@ -60,12 +60,25 @@ export const MarigoldThemeSwitch = ({
     (theme: string) => {
       setTheme(theme);
       localStorage.setItem('theme', theme);
-      router.push(`?theme=${theme}`, {
+
+      const currentUrl = new URL(window.location.href);
+      const searchParams = new URLSearchParams(currentUrl.search);
+
+      searchParams.set('theme', theme);
+
+      const newUrl = `${currentUrl.pathname}?${searchParams.toString()}${currentUrl.hash}`;
+
+      router.replace(newUrl, {
         scroll: false,
       });
     },
     [router]
   );
+
+  /**
+   * Change when we have deep link
+   * first check of there is queryParam for theme
+   */
 
   useEffect(() => {
     if (isInitialMount.current) {
