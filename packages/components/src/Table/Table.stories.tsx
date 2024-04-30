@@ -716,7 +716,11 @@ export const InputTable: Story = {
 
     return (
       <Stack space={3}>
-        <Table aria-label="Example dynamic collection table" {...args}>
+        <Table
+          aria-label="Example dynamic collection table"
+          disableKeyboardNavigation
+          {...args}
+        >
           <Table.Header columns={columns}>
             {column => <Table.Column>{column.name}</Table.Column>}
           </Table.Header>

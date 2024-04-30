@@ -9,21 +9,19 @@ The `<Tabs.List>` component is used within Tabs to group tabs that a user can sw
 
 The `<Tabs.Item>` component provides a title for an individual item within a TabList.
 
-## Usage
-
-### Import
-
-To import the component you just have to use this code below.
+## Import
 
 ```tsx
 import { Tabs } from '@marigold/components';
 ```
 
-### Appearance
+## Appearance
 
 <AppearanceTable component={title} />
 
-### Props
+## Props
+
+### Tabs
 
 <PropsTable
   props={[
@@ -69,6 +67,63 @@ import { Tabs } from '@marigold/components';
       type: '(key: Key) => any',
       description: 'Callback executed when a new tab is selected.',
       default: '-',
+    },
+  ]}
+/>
+
+### Tabs.List
+
+<PropsTable
+  props={[
+    {
+      property: 'children',
+      type: 'ReactNode',
+      default: 'none',
+      description: 'The children of the component.',
+    },
+    {
+      property: 'items',
+      type: 'Iterable<object>',
+      description: 'Item objects in the collection.',
+      default: 'none',
+    },
+    {
+      property: 'space (required)',
+      type: 'number',
+      description: 'The space between tab items.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Tabs.Item
+
+<PropsTable
+  props={[
+    {
+      property: 'id',
+      type: 'Key',
+      description: 'The unique id of the tab.',
+      default: 'none',
+    },
+  ]}
+/>
+
+### Tabs.TabPanel
+
+<PropsTable
+  props={[
+    {
+      property: 'id',
+      type: 'Key',
+      description: 'The unique id of the panel, referencing a tab.',
+      default: 'none',
+    },
+    {
+      property: 'children',
+      type: 'ReactNode',
+      default: 'none',
+      description: 'The children of the component.',
     },
   ]}
 />

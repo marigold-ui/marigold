@@ -1,5 +1,13 @@
 # @marigold/system
 
+## 7.7.0
+
+### Patch Changes
+
+- [#3885](https://github.com/marigold-ui/marigold/pull/3885) [`72ece08`](https://github.com/marigold-ui/marigold/commit/72ece08fe8009ee19b05c2ad8796658dfa91ebb8) Thanks [@sebald](https://github.com/sebald)! - fix: `getColor` correctly works with deeply nested values
+
+- [#3880](https://github.com/marigold-ui/marigold/pull/3880) [`4a59427`](https://github.com/marigold-ui/marigold/commit/4a59427fc1d4c14b1971c07778de1977cdde5dda) Thanks [@sebald](https://github.com/sebald)! - chore: cleanup peerdeeps
+
 ## 7.6.0
 
 ## 7.5.4

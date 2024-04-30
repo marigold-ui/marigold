@@ -1,5 +1,16 @@
 # @marigold/theme-b2b
 
+## 27.1.6
+
+### Patch Changes
+
+- [#3879](https://github.com/marigold-ui/marigold/pull/3879) [`78889c6`](https://github.com/marigold-ui/marigold/commit/78889c6a205085b355c3838792b8a9b3989a51f7) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-64]: add mastermark/adminmark as token in our system
+
+- Updated dependencies [[`72ece08`](https://github.com/marigold-ui/marigold/commit/72ece08fe8009ee19b05c2ad8796658dfa91ebb8), [`3f02ea1`](https://github.com/marigold-ui/marigold/commit/3f02ea15fab7b27907b0b478d479d6f2766e3ab2), [`4a59427`](https://github.com/marigold-ui/marigold/commit/4a59427fc1d4c14b1971c07778de1977cdde5dda)]:
+  - @marigold/components@7.7.0
+  - @marigold/system@7.7.0
+  - @marigold/theme-preset@1.3.11
+
 ## 27.1.5
 
 ### Patch Changes
