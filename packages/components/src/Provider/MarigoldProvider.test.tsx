@@ -119,3 +119,25 @@ test('cascading without a selector is allowed when inner theme has not root styl
     )
   ).not.toThrowError();
 });
+
+test('using classname prop', () => {
+  const outerTheme = {
+    name: 'outer',
+    colors: {
+      primary: 'coral',
+    },
+    components: {
+      Button: cva(),
+    },
+  };
+
+  render(
+    <MarigoldProvider theme={outerTheme} className="bg-slate-400">
+      child
+    </MarigoldProvider>
+  );
+  const theme = screen.getByText('child');
+
+  console.log(theme?.className);
+  expect(theme?.className).toMatchInlineSnapshot(`"bg-slate-400"`);
+});
