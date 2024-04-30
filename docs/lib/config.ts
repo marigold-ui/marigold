@@ -1,5 +1,6 @@
 export const siteConfig = {
   version: process.env.version,
+  defaultTheme: 'core',
   navigation: [
     {
       name: 'Introduction',
