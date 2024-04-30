@@ -33,7 +33,7 @@ test('returns the theme', () => {
 
 test('switches the theme', async () => {
   const useRouter = require('next/navigation').useRouter;
-  useRouter.mockReturnValue({ push: jest.fn() });
+  useRouter.mockReturnValue({ replace: jest.fn() });
 
   const { result } = renderHook(() => useThemeSwitch(), { wrapper });
 
