@@ -75,11 +75,6 @@ export const MarigoldThemeSwitch = ({
     [router]
   );
 
-  /**
-   * Change when we have deep link
-   * first check of there is queryParam for theme
-   */
-
   useEffect(() => {
     if (isInitialMount.current) {
       // Skip the effect on initial mount
