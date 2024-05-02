@@ -9,7 +9,12 @@ export interface MarigoldProviderProps<T extends Theme>
 // ---------------
 export function MarigoldProvider<T extends Theme>({
   children,
+  className,
   theme,
 }: MarigoldProviderProps<T>) {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme} className={className}>
+      {children}
+    </ThemeProvider>
+  );
 }
