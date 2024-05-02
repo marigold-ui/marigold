@@ -39,6 +39,7 @@ const _DatePicker = ({
   variant,
   size,
   open,
+  granularity = 'day',
   ...rest
 }: DatePickerProps) => {
   const props: RAC.DatePickerProps<DateValue> = {
@@ -47,6 +48,7 @@ const _DatePicker = ({
     isRequired: required,
     isInvalid: error,
     isOpen: open,
+    granularity,
     ...rest,
   };
 

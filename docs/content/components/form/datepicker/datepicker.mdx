@@ -108,6 +108,20 @@ import { DatePicker } from '@marigold/components';
         'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width ',
       default: 'full',
     },
+    {
+      property: 'isDateUnavailable',
+      type: '(date: DateValue) => boolean',
+      description:
+        'Callback that is called for each date of the calendar. If it returns true, then the date is unavailable.',
+      default: 'none',
+    },
+    {
+      property: 'granularity',
+      type: '"day" | "hour" | "minute" | "second"',
+      description:
+        'Determines the smallest unit that is displayed in the date picker. By default, this is "day" for dates, and "minute" for times.',
+      default: '"day"',
+    },
   ]}
 />
 
@@ -148,3 +162,12 @@ The `minValue` and `maxValue` props can also be used to perform builtin validati
 The `value` and `onChange` props can be used to control the `DatePicker`.
 
 <ComponentDemo file="./date-picker-controlled.demo.tsx" />
+
+### Passing a Date
+
+When using a datepicker, relying on the standard JavaScript Date object for its value can result in timezone inconsistencies and incorrect date display. That's why the datepicker uses a specific `DateValue` type from [@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) instead. This library handles correct international date manipulation across calendars, time zones, and other localization concerns.
+
+<Message type="info" messageTitle="@internationalized/date">
+  `@internationalized/date` is a peer dependency. If it's not already in your
+  project, you'll need to install it.
+</Message>
