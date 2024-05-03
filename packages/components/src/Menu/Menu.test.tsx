@@ -168,8 +168,8 @@ test('closes menu when trigger is clicked', () => {
   );
 
   const button = screen.getByText('Choose');
-  fireEvent.click(button);
-  fireEvent.click(button);
+  user.click(button);
+  user.click(button);
 
   const burger = screen.queryByText('Burger');
   const pizza = screen.queryByText('Pizza');

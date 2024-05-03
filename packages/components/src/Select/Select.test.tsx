@@ -15,6 +15,10 @@ import { Header } from '../Header';
 import { setup } from '../test.utils';
 import { Select } from './Select';
 
+// Setup
+// ---------------
+const user = userEvent.setup();
+
 const theme: Theme = {
   name: 'test',
   components: {
@@ -185,7 +189,7 @@ test('option list opens when button is clicked', () => {
   expect(button).toHaveAttribute('aria-expanded', 'true');
 });
 
-test('option list closes when button is clicked', () => {
+test('option list closes when button is clicked', async () => {
   render(
     <Select data-testid="select-id">
       <Select.Option id="Harry Potter">Harry Potter</Select.Option>
@@ -196,13 +200,14 @@ test('option list closes when button is clicked', () => {
     </Select>
   );
   const button = screen.getByRole('button');
-  fireEvent.click(button);
+
+  await user.click(button);
   expect(button).toHaveAttribute('aria-expanded');
 
   const options = screen.getByRole('listbox');
   expect(options).toBeVisible();
 
-  fireEvent.click(button);
+  await user.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'false');
   expect(options).not.toBeVisible();
 });
