@@ -26,7 +26,7 @@ export function ThemeProvider<T extends Theme>({
   const root = theme.root?.();
   return (
     <InternalContext.Provider value={theme}>
-      <div className={cn(root ? root : '', className)}>{children}</div>
+      <div className={cn(root, className)}>{children}</div>
     </InternalContext.Provider>
   );
 }
