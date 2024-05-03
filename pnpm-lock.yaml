@@ -478,6 +478,9 @@ importers:
       '@react-aria/interactions':
         specifier: 3.21.1
         version: 3.21.1(react@18.2.0)
+      '@react-aria/menu':
+        specifier: 3.13.1
+        version: 3.13.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@react-aria/overlays':
         specifier: 3.21.1
         version: 3.21.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
