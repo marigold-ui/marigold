@@ -41,6 +41,7 @@
     "@react-aria/visually-hidden": "3.8.10",
     "@react-stately/collections": "3.10.5",
     "@react-stately/data": "3.11.2",
+    "@react-stately/menu": "3.6.1",
     "@react-stately/table": "3.11.6",
     "@react-stately/tree": "3.7.6",
     "@react-types/shared": "3.22.1",
