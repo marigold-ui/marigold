@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 26.1.7
+
+### Patch Changes
+
+- [#3901](https://github.com/marigold-ui/marigold/pull/3901) [`99d68a4`](https://github.com/marigold-ui/marigold/commit/99d68a42e1c4b9fbf70bf3a182270922bb042e0c) Thanks [@sebald](https://github.com/sebald)! - refa: apply surface color in core theme again
+
+- Updated dependencies [[`f57caec`](https://github.com/marigold-ui/marigold/commit/f57caecd8c964ba2012bf1fcab9b15a15a58080d), [`a54d186`](https://github.com/marigold-ui/marigold/commit/a54d186bf53da1a0afa6ee22a7711a803a155d6a)]:
+  - @marigold/components@7.7.1
+  - @marigold/system@7.7.1
+  - @marigold/theme-preset@1.3.12
+
 ## 26.1.6
 
 ### Patch Changes
