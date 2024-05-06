@@ -1,4 +1,3 @@
-import { Key } from 'react';
 import { MenuItem } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
@@ -7,9 +6,7 @@ import { useClassNames } from '@marigold/system';
 // Props
 // ---------------
 type RemovedProps = 'style' | 'className';
-export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {
-  onAction?: (key: Key) => void;
-}
+export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {}
 
 // Component
 // ---------------
