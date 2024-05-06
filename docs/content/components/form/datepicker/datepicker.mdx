@@ -108,37 +108,71 @@ import { DatePicker } from '@marigold/components';
         'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width ',
       default: 'full',
     },
+    {
+      property: 'isDateUnavailable',
+      type: '(date: DateValue) => boolean',
+      description:
+        'Callback that is called for each date of the calendar. If it returns true, then the date is unavailable.',
+      default: 'none',
+    },
+    {
+      property: 'granularity',
+      type: '"day" | "hour" | "minute" | "second"',
+      description:
+        'Determines the smallest unit that is displayed in the date picker. By default, this is "day" for dates, and "minute" for times.',
+      default: '"day"',
+    },
   ]}
 />
 
 ## Examples
 
-### Simple DatePicker
+### Simple (uncontrolled)
 
 This example shows a regular `<DatePicker>` without any special props.
 
 <ComponentDemo file="./date-picker-basic.demo.tsx" />
 
-### Disabled DatePicker
+### Disabled
 
 You can disable the `<DatePicker>` so that the user can't interact with it anymo re.
 
 <ComponentDemo file="./date-picker-disabled.demo.tsx" />
 
-### Required DatePicker
+### Required
 
 If you want a `<DatePicker>` to be required, you just have to add the property `required`. With that the small required icon appears next to the label.
 
 <ComponentDemo file="./date-picker-required.demo.tsx" />
 
-### DatePicker With an Error
+### With an Error
 
 This example shows how to use the `error` with the `errorMessage`.
 
 <ComponentDemo file="./date-picker-error.demo.tsx" />
 
-### DatePicker With Minimum and maximum values
+### DatePicker with min/max Values
 
 The `minValue` and `maxValue` props can also be used to perform builtin validation. This prevents the user from selecting dates outside the valid range in the calendar .
 
 <ComponentDemo file="./date-picker-min-max.demo.tsx" />
+
+### Controlled
+
+The `value` and `onChange` props can be used to control the `DatePicker`.
+
+<ComponentDemo file="./date-picker-controlled.demo.tsx" />
+
+### Using a Date Object
+
+When using a datepicker, relying on the standard JavaScript `Date` object for its value can result in timezone inconsistencies and incorrect date display. That's why the datepicker uses a specific `DateValue` type from [@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) instead. This library handles correct international date manipulation across calendars, time zones, and other localization concerns.
+
+<Message type="info" messageTitle="@internationalized/date">
+  `@internationalized/date` is a peer dependency. If it's not already in your
+  project, you'll need to install it.
+</Message>
+
+The simplest way to parse a Date for the datepicker is by using `parseAbsoluteToLocal`. This function converts an absolute date and time into the current user's local time zone.
+If you're already using a date library like [date-fns](https://date-fns.org/), you can also utilizing `parseDate`. Ensure that you only pass the date part to `parseDate`, excluding the time and timezone information.
+
+<ComponentDemo file="./date-picker-with-date.demo.tsx" />

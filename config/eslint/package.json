@@ -19,7 +19,7 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@babel/core": "7.24.3",
+    "@babel/core": "7.24.4",
     "@babel/eslint-parser": "^7.22.10",
     "@babel/plugin-syntax-flow": "^7.16.7",
     "@babel/plugin-transform-react-jsx": "^7.17.3",

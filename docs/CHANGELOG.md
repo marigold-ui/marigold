@@ -1,5 +1,20 @@
 # @marigold/docs
 
+## 7.7.1
+
+### Patch Changes
+
+- [#3893](https://github.com/marigold-ui/marigold/pull/3893) [`f57caec`](https://github.com/marigold-ui/marigold/commit/f57caecd8c964ba2012bf1fcab9b15a15a58080d) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add className to MarigoldProvider
+
+- [#3898](https://github.com/marigold-ui/marigold/pull/3898) [`a54d186`](https://github.com/marigold-ui/marigold/commit/a54d186bf53da1a0afa6ee22a7711a803a155d6a) Thanks [@sebald](https://github.com/sebald)! - feat: Ensure datepicker shows only date by default
+
+- Updated dependencies [[`f57caec`](https://github.com/marigold-ui/marigold/commit/f57caecd8c964ba2012bf1fcab9b15a15a58080d), [`a54d186`](https://github.com/marigold-ui/marigold/commit/a54d186bf53da1a0afa6ee22a7711a803a155d6a), [`99d68a4`](https://github.com/marigold-ui/marigold/commit/99d68a42e1c4b9fbf70bf3a182270922bb042e0c)]:
+  - @marigold/components@7.7.1
+  - @marigold/theme-core@26.1.7
+  - @marigold/theme-b2b@27.1.7
+  - @marigold/icons@1.2.47
+  - @marigold/theme-preset@1.3.12
+
 ## 7.7.0
 
 ### Minor Changes

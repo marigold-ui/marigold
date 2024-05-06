@@ -104,7 +104,7 @@ export const StandardMenu: Story = {
 export const OnActionMenu: Story = {
   render: args => {
     return (
-      <Menu label="Choose" onAction={alert} {...args}>
+      <Menu label="Choose" onAction={key => alert(key)} {...args}>
         <Menu.Item id="burger">🍔 Burger</Menu.Item>
         <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
         <Menu.Item id="salad">🥗 Salad</Menu.Item>
