@@ -67,45 +67,6 @@ import { Dialog } from '@marigold/components';
   ]}
 />
 
-### Dialog.Controller
-
-<PropsTable
-  props={[
-    {
-      property: 'open',
-      type: 'boolean',
-      description: 'Whether the overlay is open by default (controlled).',
-      default: 'false',
-    },
-    {
-      property: 'onOpenChange',
-      type: '(isOpen: boolean) => void',
-      description:
-        "Handler that is called when the overlay's open state changes.",
-      default: 'none',
-    },
-    {
-      property: 'dismissable',
-      type: 'boolean',
-      description:
-        'Whether to close the overlay when the user interacts outside it.',
-      default: 'true',
-    },
-    {
-      property: 'keyboardDismissable',
-      type: 'boolean',
-      description:
-        'Whether pressing the escape key to close the overlay should be disabled.',
-      default: 'true',
-    },
-    {
-      property: 'children',
-      type: 'ReactNode',
-      description: 'Children of the component.',
-    },
-  ]}
-/>
-
 ## Examples
 
 ### Form Dialog
