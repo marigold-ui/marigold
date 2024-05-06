@@ -203,8 +203,7 @@ test('closes menu when clicked outside', async () => {
   expect(pizza).not.toBeInTheDocument();
 });
 
-// test('return selected item')
-test('return action item', () => {
+test('return action item', async () => {
   const spy = jest.fn();
   render(
     <ThemeProvider theme={theme}>
@@ -216,10 +215,10 @@ test('return action item', () => {
   );
 
   const button = screen.getByText('Choose');
-  fireEvent.click(button);
+  await user.click(button);
 
   const burger = screen.getByText('Burger');
-  fireEvent.click(burger);
+  await user.click(burger);
 
   expect(spy).toHaveBeenCalledWith('burger');
   expect(spy).not.toHaveBeenCalledWith('pizza');
