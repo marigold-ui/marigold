@@ -11,21 +11,19 @@ A special thing is also that you can have props on the `<Dialog.Trigger>` and on
 
 The `<Dialog>` can also be used if you want to controll it for example within a `<Menu>`.
 
-## Usage
-
-### Import
-
-To import the component you just have to use this code below.
+## Import
 
 ```tsx
 import { Dialog } from '@marigold/components';
 ```
 
-### Appearance
+## Appearance
 
 <AppearanceTable component={title} />
 
-### Props
+## Props
+
+### Dialog
 
 <PropsTable
   props={[
@@ -43,49 +41,10 @@ import { Dialog } from '@marigold/components';
   ]}
 />
 
-### Trigger props
+### Dialog.Trigger
 
 <PropsTable
   props={[
-    {
-      property: 'dismissable',
-      type: 'boolean',
-      description:
-        'Whether to close the overlay when the user interacts outside it.',
-      default: 'true',
-    },
-    {
-      property: 'keyboardDismissable',
-      type: 'boolean',
-      description:
-        'Whether pressing the escape key to close the overlay should be disabled.',
-      default: 'true',
-    },
-    {
-      property: 'children',
-      type: 'ReactNode',
-      description: 'Children of the component.',
-    },
-  ]}
-/>
-
-### Controller props
-
-<PropsTable
-  props={[
-    {
-      property: 'open',
-      type: 'boolean',
-      description: 'Whether the overlay is open by default (controlled).',
-      default: 'false',
-    },
-    {
-      property: 'onOpenChange',
-      type: '(isOpen: boolean) => void',
-      description:
-        "Handler that is called when the overlay's open state changes.",
-      default: 'none',
-    },
     {
       property: 'dismissable',
       type: 'boolean',

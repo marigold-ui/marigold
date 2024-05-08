@@ -17,17 +17,13 @@ import { Button, MarigoldProvider } from '@marigold/components';
 </MarigoldProvider>;
 ```
 
-## Usage
-
-### Import
-
-To import the component you just have to use this code below.
+## Import
 
 ```tsx
 import { MarigoldProvider } from '@marigold/components';
 ```
 
-### Props
+## Props
 
 <PropsTable
   props={[
@@ -42,6 +38,12 @@ import { MarigoldProvider } from '@marigold/components';
       type: 'Theme',
       default: 'none',
       description: 'The use that should be used within the provider context.',
+    },
+    {
+      property: 'className',
+      type: 'string',
+      default: 'none',
+      description: 'Set a className to the outer div from your app.',
     },
 
 ]}

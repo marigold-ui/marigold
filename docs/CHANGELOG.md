@@ -1,5 +1,46 @@
 # @marigold/docs
 
+## 7.7.1
+
+### Patch Changes
+
+- [#3893](https://github.com/marigold-ui/marigold/pull/3893) [`f57caec`](https://github.com/marigold-ui/marigold/commit/f57caecd8c964ba2012bf1fcab9b15a15a58080d) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add className to MarigoldProvider
+
+- [#3898](https://github.com/marigold-ui/marigold/pull/3898) [`a54d186`](https://github.com/marigold-ui/marigold/commit/a54d186bf53da1a0afa6ee22a7711a803a155d6a) Thanks [@sebald](https://github.com/sebald)! - feat: Ensure datepicker shows only date by default
+
+- Updated dependencies [[`f57caec`](https://github.com/marigold-ui/marigold/commit/f57caecd8c964ba2012bf1fcab9b15a15a58080d), [`a54d186`](https://github.com/marigold-ui/marigold/commit/a54d186bf53da1a0afa6ee22a7711a803a155d6a), [`99d68a4`](https://github.com/marigold-ui/marigold/commit/99d68a42e1c4b9fbf70bf3a182270922bb042e0c)]:
+  - @marigold/components@7.7.1
+  - @marigold/theme-core@26.1.7
+  - @marigold/theme-b2b@27.1.7
+  - @marigold/icons@1.2.47
+  - @marigold/theme-preset@1.3.12
+
+## 7.7.0
+
+### Minor Changes
+
+- [#3892](https://github.com/marigold-ui/marigold/pull/3892) [`3f02ea1`](https://github.com/marigold-ui/marigold/commit/3f02ea15fab7b27907b0b478d479d6f2766e3ab2) Thanks [@sebald](https://github.com/sebald)! - feat: Allow to disable keyboard navigation on `Table`
+
+### Patch Changes
+
+- [#3891](https://github.com/marigold-ui/marigold/pull/3891) [`4ac7cc6`](https://github.com/marigold-ui/marigold/commit/4ac7cc684bfdda4a6eebb312712aec4711182ec1) Thanks [@sebald](https://github.com/sebald)! - docs: make `core` the default theme
+
+- [#3871](https://github.com/marigold-ui/marigold/pull/3871) [`64f9892`](https://github.com/marigold-ui/marigold/commit/64f98925842753832cfe4321cfff4027021f6846) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-381]:docs: Reintroduce Table of Contents to docs
+
+- [#3868](https://github.com/marigold-ui/marigold/pull/3868) [`3eac2f9`](https://github.com/marigold-ui/marigold/commit/3eac2f947935038653925c84a5fb1539d86cb59d) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-235]docs: add contact us page in docs
+
+- [#3879](https://github.com/marigold-ui/marigold/pull/3879) [`78889c6`](https://github.com/marigold-ui/marigold/commit/78889c6a205085b355c3838792b8a9b3989a51f7) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-64]: add mastermark/adminmark as token in our system
+
+- [#3881](https://github.com/marigold-ui/marigold/pull/3881) [`355eb6a`](https://github.com/marigold-ui/marigold/commit/355eb6a7864a0e01722d9db7596369c0ee9f79c1) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-405]:chore: adjust Command styles and menu
+
+- Updated dependencies [[`b62872d`](https://github.com/marigold-ui/marigold/commit/b62872dd557a8c35d56bc09d12b960752a466d46), [`72ece08`](https://github.com/marigold-ui/marigold/commit/72ece08fe8009ee19b05c2ad8796658dfa91ebb8), [`3f02ea1`](https://github.com/marigold-ui/marigold/commit/3f02ea15fab7b27907b0b478d479d6f2766e3ab2), [`5ea2604`](https://github.com/marigold-ui/marigold/commit/5ea26047d1b53f86a7a56f40e378172b69580593), [`78889c6`](https://github.com/marigold-ui/marigold/commit/78889c6a205085b355c3838792b8a9b3989a51f7), [`4a59427`](https://github.com/marigold-ui/marigold/commit/4a59427fc1d4c14b1971c07778de1977cdde5dda)]:
+  - @marigold/theme-core@26.1.6
+  - @marigold/components@7.7.0
+  - @marigold/theme-b2b@27.1.6
+  - @marigold/eslint-config@0.4.15
+  - @marigold/icons@1.2.46
+  - @marigold/theme-preset@1.3.11
+
 ## 7.6.0
 
 ### Minor Changes

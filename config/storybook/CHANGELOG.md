@@ -1,5 +1,27 @@
 # @marigold/storybook-config
 
+## 1.1.39
+
+### Patch Changes
+
+- [#3893](https://github.com/marigold-ui/marigold/pull/3893) [`f57caec`](https://github.com/marigold-ui/marigold/commit/f57caecd8c964ba2012bf1fcab9b15a15a58080d) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add className to MarigoldProvider
+
+- Updated dependencies [[`f57caec`](https://github.com/marigold-ui/marigold/commit/f57caecd8c964ba2012bf1fcab9b15a15a58080d), [`a54d186`](https://github.com/marigold-ui/marigold/commit/a54d186bf53da1a0afa6ee22a7711a803a155d6a), [`99d68a4`](https://github.com/marigold-ui/marigold/commit/99d68a42e1c4b9fbf70bf3a182270922bb042e0c)]:
+  - @marigold/components@7.7.1
+  - @marigold/theme-core@26.1.7
+  - @marigold/theme-b2b@27.1.7
+
+## 1.1.38
+
+### Patch Changes
+
+- [#3880](https://github.com/marigold-ui/marigold/pull/3880) [`4a59427`](https://github.com/marigold-ui/marigold/commit/4a59427fc1d4c14b1971c07778de1977cdde5dda) Thanks [@sebald](https://github.com/sebald)! - chore: cleanup peerdeeps
+
+- Updated dependencies [[`b62872d`](https://github.com/marigold-ui/marigold/commit/b62872dd557a8c35d56bc09d12b960752a466d46), [`72ece08`](https://github.com/marigold-ui/marigold/commit/72ece08fe8009ee19b05c2ad8796658dfa91ebb8), [`3f02ea1`](https://github.com/marigold-ui/marigold/commit/3f02ea15fab7b27907b0b478d479d6f2766e3ab2), [`5ea2604`](https://github.com/marigold-ui/marigold/commit/5ea26047d1b53f86a7a56f40e378172b69580593), [`78889c6`](https://github.com/marigold-ui/marigold/commit/78889c6a205085b355c3838792b8a9b3989a51f7), [`4a59427`](https://github.com/marigold-ui/marigold/commit/4a59427fc1d4c14b1971c07778de1977cdde5dda)]:
+  - @marigold/theme-core@26.1.6
+  - @marigold/components@7.7.0
+  - @marigold/theme-b2b@27.1.6
+
 ## 1.1.37
 
 ### Patch Changes

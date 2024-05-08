@@ -170,7 +170,9 @@ export const AsyncLoading: StoryObj<typeof ComboBox> = {
         {...args}
       >
         {(item: { name: string }) => (
-          <ComboBox.Item key={item.name}>{item.name}</ComboBox.Item>
+          <ComboBox.Item key={item.name} id={item.name}>
+            {item.name}
+          </ComboBox.Item>
         )}
       </ComboBox>
     );

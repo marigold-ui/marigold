@@ -1,5 +1,6 @@
 export const siteConfig = {
   version: process.env.version,
+  defaultTheme: 'core',
   navigation: [
     {
       name: 'Introduction',
@@ -18,16 +19,8 @@ export const siteConfig = {
           slug: 'application',
         },
         {
-          name: 'Formatters',
-          slug: 'formatters',
-        },
-        {
           name: 'Layout',
           slug: 'layout',
-        },
-        {
-          name: 'Navigation',
-          slug: 'navigation',
         },
         {
           name: 'Form',
@@ -38,12 +31,20 @@ export const siteConfig = {
           slug: 'collection',
         },
         {
+          name: 'Navigation',
+          slug: 'navigation',
+        },
+        {
           name: 'Overlay',
           slug: 'overlay',
         },
         {
           name: 'Content',
           slug: 'content',
+        },
+        {
+          name: 'Formatters',
+          slug: 'formatters',
         },
         {
           name: 'Hooks and Utils',
