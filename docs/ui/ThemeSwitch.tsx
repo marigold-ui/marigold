@@ -65,7 +65,6 @@ export const MarigoldThemeSwitch = ({
       const searchParams = new URLSearchParams(currentUrl.search);
 
       searchParams.set('theme', theme);
-
       const newUrl = `${currentUrl.pathname}?${searchParams.toString()}${currentUrl.hash}`;
 
       router.replace(newUrl, {
@@ -77,17 +76,16 @@ export const MarigoldThemeSwitch = ({
 
   useEffect(() => {
     if (isInitialMount.current) {
-      // Skip the effect on initial mount
       isInitialMount.current = false;
       if (themeQueryParam) {
         updateTheme(themeQueryParam);
       } else if (localTheme) {
         updateTheme(localTheme);
+      } else {
+        updateTheme(initial);
       }
-
-      return;
     }
-  }, [localTheme, themeQueryParam, updateTheme]);
+  }, [localTheme, themeQueryParam, updateTheme, initial]);
 
   return (
     <Context.Provider value={{ current: theme, themes, updateTheme }}>
