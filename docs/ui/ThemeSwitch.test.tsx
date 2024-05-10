@@ -9,10 +9,16 @@ const themes = {
   coreTheme,
 };
 
+const useRouter = require('next/navigation').useRouter;
+
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
   useSearchParams: jest.fn(),
 }));
+
+beforeEach(() => {
+  useRouter.mockReturnValue({ replace: jest.fn() });
+});
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -32,8 +38,7 @@ test('returns the theme', () => {
 });
 
 test('switches the theme', async () => {
-  const useRouter = require('next/navigation').useRouter;
-  useRouter.mockReturnValue({ replace: jest.fn() });
+  // useRouter.mockReturnValue({ replace: jest.fn() });
 
   const { result } = renderHook(() => useThemeSwitch(), { wrapper });
 
