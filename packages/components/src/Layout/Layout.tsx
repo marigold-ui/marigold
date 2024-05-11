@@ -31,7 +31,7 @@ export interface LayoutProps extends GapSpaceProp {
   // TODO: make rows/columns more strict (tailwind values?)
   columns: TemplateValue[];
   rows: TemplateValue[];
-  // height?
+  // TODO: height?
   /**
    * Children of the layout.
    */
