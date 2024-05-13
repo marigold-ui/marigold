@@ -17,6 +17,7 @@ export const Basic = {
       areas={['header header', 'sidebar main', 'footer footer']}
       columns={[1, 4]}
       rows={['80px', 'auto', '80px']}
+      height={80}
       space={1}
     >
       <Layout.Slot name="header">
@@ -26,7 +27,7 @@ export const Basic = {
         <div className="size-full bg-slate-600" />
       </Layout.Slot>
       <Layout.Slot name="main">
-        <div className="h-60 w-full bg-slate-600" />
+        <div className="size-full bg-slate-600" />
       </Layout.Slot>
       <Layout.Slot name="footer">
         <div className="size-full bg-slate-600" />

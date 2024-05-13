@@ -1,14 +1,20 @@
 import type { ReactNode } from 'react';
 
-import type { GapSpaceProp } from '@marigold/system';
-import { cn, gapSpace } from '@marigold/system';
+import type { GapSpaceProp, HeightProp } from '@marigold/system';
+import { cn, gapSpace, height as twHeight } from '@marigold/system';
 
 import { Slot } from './LayoutSlot';
 
 // Helpers
 // ---------------
-// TODO: What to allow here? cast number so fractions? Allow tailwind values for sizing (e.g. "4" -> "16px"?)
-export type TemplateValue = string | number;
+export type TemplateValue =
+  | 'none'
+  | 'auto'
+  | 'min-content'
+  | 'max-content'
+  // Allow autocomplete with fixed template strings (see https://github.com/microsoft/TypeScript/issues/29729)
+  | (string & {})
+  | number;
 
 const parseGridAreas = (areas: string[]) =>
   areas.map(area => `"${area}"`).join('\n');
@@ -26,12 +32,10 @@ const parseTemplateValue = (values: TemplateValue[]) =>
 
 // Props
 // ---------------
-export interface LayoutProps extends GapSpaceProp {
+export interface LayoutProps extends GapSpaceProp, HeightProp {
   areas: string[];
-  // TODO: make rows/columns more strict (tailwind values?)
   columns: TemplateValue[];
   rows: TemplateValue[];
-  // TODO: height?
   /**
    * Children of the layout.
    */
@@ -45,16 +49,19 @@ export const Layout = ({
   areas,
   columns,
   rows,
+  height = 'auto',
   space = 0,
+  ...props
 }: LayoutProps) => {
   return (
     <div
-      className={cn('grid', gapSpace[space])}
+      className={cn('grid', gapSpace[space], twHeight[height])}
       style={{
         gridTemplateAreas: parseGridAreas(areas),
         gridTemplateColumns: parseTemplateValue(columns),
         gridTemplateRows: parseTemplateValue(rows),
       }}
+      {...props}
     >
       {children}
     </div>
