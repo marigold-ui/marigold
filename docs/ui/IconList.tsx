@@ -56,7 +56,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
           <div
             className={cn(
               isCopied || isHovered ? 'opacity-1' : 'opacity-0',
-              'absolute flex size-full select-none items-center justify-center whitespace-nowrap bg-white font-medium tracking-wider'
+              'bg-bg-surface absolute flex size-full select-none items-center justify-center whitespace-nowrap font-medium tracking-wider'
             )}
           >
             {isCopied ? 'COPIED!' : 'COPY SVG'}
