@@ -5,11 +5,28 @@ import { b2bTheme, coreTheme } from '../theme';
 import { MarigoldThemeSwitch, useThemeSwitch } from './ThemeSwitch';
 
 const themes = {
-  b2bTheme: b2bTheme,
-  coreTheme: coreTheme,
+  b2bTheme,
+  coreTheme,
 };
+
+const useRouter = require('next/navigation').useRouter;
+
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+  useSearchParams: jest.fn(),
+}));
+
+beforeEach(() => {
+  useRouter.mockReturnValue({ replace: jest.fn() });
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+  jest.resetAllMocks();
+});
+
 const wrapper = ({ children }: { children?: ReactNode }) => (
-  <MarigoldThemeSwitch themes={themes} initial="b2bTheme">
+  <MarigoldThemeSwitch themes={themes} initial="b2b">
     {children}
   </MarigoldThemeSwitch>
 );
@@ -17,13 +34,16 @@ const wrapper = ({ children }: { children?: ReactNode }) => (
 test('returns the theme', () => {
   const { result } = renderHook(() => useThemeSwitch(), { wrapper });
 
-  expect(result.current.current).toMatchInlineSnapshot(`"b2bTheme"`);
+  expect(result.current.current).toMatchInlineSnapshot(`"b2b"`);
 });
 
 test('switches the theme', async () => {
+  // useRouter.mockReturnValue({ replace: jest.fn() });
+
   const { result } = renderHook(() => useThemeSwitch(), { wrapper });
+
   act(() => {
-    result.current.setTheme(coreTheme);
+    result.current.updateTheme(coreTheme);
   });
 
   // @ts-ignore
