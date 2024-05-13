@@ -52,21 +52,16 @@ const IconListItem = ({ icon }: IconListItemProps) => {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <div className="grid h-24 place-items-center">
+        <div className="relative grid h-24 place-items-center">
           <div
             className={cn(
-              isCopied || isHovered ? 'block' : 'hidden',
-              'select-none whitespace-nowrap font-medium tracking-wider'
+              isCopied || isHovered ? 'opacity-1' : 'opacity-0',
+              'absolute flex size-full select-none items-center justify-center whitespace-nowrap bg-white font-medium tracking-wider'
             )}
           >
             {isCopied ? 'COPIED!' : 'COPY SVG'}
           </div>
-          <Component
-            width={48}
-            height={48}
-            ref={svgRef as any}
-            className={cn(isHovered || isCopied ? 'hidden' : 'block')}
-          />
+          <Component width={48} height={48} ref={svgRef as any} />
         </div>
       </Card>
       <Text size="small" align="center">
