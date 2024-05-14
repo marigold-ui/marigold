@@ -29,7 +29,7 @@ export default () => (
       'social-media event-2 tickets',
     ]}
     columns={[3, 2, 3]}
-    rows={['200px', '80px', '60px', '140px']}
+    rows={['160px', '60px', '40px', '100px']}
     space={4}
   >
     <Grid.Slot name="event-1">

@@ -1,5 +1,11 @@
 import { Grid } from '@marigold/components';
 
+const Block = ({ title }: { title: string }) => (
+  <div className="size-full content-center bg-black/50 text-center text-base font-bold text-white">
+    {title}
+  </div>
+);
+
 export default () => (
   <Grid
     areas={['header header', 'sidebar main', 'footer footer']}
@@ -9,16 +15,16 @@ export default () => (
     space={1}
   >
     <Grid.Slot name="header">
-      <div className="size-full bg-slate-600" />
+      <Block title="header" />
     </Grid.Slot>
     <Grid.Slot name="sidebar">
-      <div className="size-full bg-slate-600" />
+      <Block title="sidebar" />
     </Grid.Slot>
     <Grid.Slot name="main">
-      <div className="size-full bg-slate-600" />
+      <Block title="main" />
     </Grid.Slot>
     <Grid.Slot name="footer">
-      <div className="size-full bg-slate-600" />
+      <Block title="footer" />
     </Grid.Slot>
   </Grid>
 );

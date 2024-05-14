@@ -1,9 +1,14 @@
 ---
 title: Grid
 caption: When things get more complex.
+badge: new
 ---
 
-The `Grid` component is a versatile tool to arrange child elements within a two-dimensional grid structure ([CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)). It allows full control over columns and rows sizes, spacing between children, and the overall height. However, due to its extensive customization options, it's best suited for situations where simpler layout components like Tiles or Columns aren't sufficient.
+The `Grid` component is a versatile tool to arrange child elements (`Grid.Slot`) within a two-dimensional grid structure ([CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)). It allows full control over columns and rows sizes, spacing between children, and the overall height. However, due to its extensive customization options, it's best suited for situations where simpler layout components like Tiles or Columns aren't sufficient.
+
+<Message messageTitle="Order-agnostic!">
+Note that the `<Grid.Slot>` elements don't have to be arranged in any specific order. They will be automatically placed based on their `name` prop.
+</Message>
 
 ## Import
 
@@ -12,6 +17,8 @@ import { Grid } from '@marigold/components';
 ```
 
 ## Props
+
+### Grid
 
 <PropsTable
   props={[
@@ -39,7 +46,18 @@ import { Grid } from '@marigold/components';
       property: 'space',
       type: 'GapSpaceProp',
       description: 'Space between the elements.',
-      default: 'none',
+    },
+  ]}
+/>
+
+### Grid.Slot
+
+<PropsTable
+  props={[
+    {
+      property: 'name',
+      type: 'string',
+      description: 'Area name where the element should be placed.',
     },
   ]}
 />
@@ -48,8 +66,12 @@ import { Grid } from '@marigold/components';
 
 ### Holy Grail
 
+Below you find an example demonstrating how to create the [holy grail layout](<https://en.wikipedia.org/wiki/Holy_grail_(web_design)>) using the `<Grid>` component below.
+
 <ComponentDemo file="./grid-holy-grail.demo.tsx" />
 
 ### Bento
+
+The `Grid` component can also be used to create [bento layouts](https://bootcamp.uxdesign.cc/web-design-trend-bento-box-95814d99ac62). Here is an examples for a more complex grid, where every element has its own dimensions.
 
 <ComponentDemo file="./grid-bento.demo.tsx" />
