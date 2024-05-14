@@ -1,17 +1,17 @@
 import { render, screen } from '@testing-library/react';
 
-import { Layout } from './Layout';
+import { Grid } from './Grid';
 
 test('default space is "0"', () => {
   render(
-    <Layout
+    <Grid
       data-testid="layout"
       areas={['header']}
       columns={['auto']}
       rows={['auto']}
     >
-      <Layout.Slot name="header" />
-    </Layout>
+      <Grid.Slot name="header" />
+    </Grid>
   );
 
   const layout = screen.getByTestId('layout');
@@ -20,15 +20,15 @@ test('default space is "0"', () => {
 
 test('allows to set spacing', () => {
   render(
-    <Layout
+    <Grid
       data-testid="layout"
       areas={['header']}
       columns={['auto']}
       rows={['auto']}
       space={1}
     >
-      <Layout.Slot name="header" />
-    </Layout>
+      <Grid.Slot name="header" />
+    </Grid>
   );
 
   const layout = screen.getByTestId('layout');
@@ -37,14 +37,14 @@ test('allows to set spacing', () => {
 
 test('default height is "auto"', () => {
   render(
-    <Layout
+    <Grid
       data-testid="layout"
       areas={['header']}
       columns={['auto']}
       rows={['auto']}
     >
-      <Layout.Slot name="header" />
-    </Layout>
+      <Grid.Slot name="header" />
+    </Grid>
   );
 
   const layout = screen.getByTestId('layout');
@@ -53,15 +53,15 @@ test('default height is "auto"', () => {
 
 test('allows to set height', () => {
   render(
-    <Layout
+    <Grid
       data-testid="layout"
       areas={['header']}
       columns={['auto']}
       rows={['auto']}
       height={96}
     >
-      <Layout.Slot name="header" />
-    </Layout>
+      <Grid.Slot name="header" />
+    </Grid>
   );
 
   const layout = screen.getByTestId('layout');
@@ -70,15 +70,15 @@ test('allows to set height', () => {
 
 test('allows to define a grid', () => {
   render(
-    <Layout
+    <Grid
       data-testid="layout"
       areas={['header', 'content', 'footer']}
       columns={['500px']}
       rows={['100px', 'auto', '100px']}
       height={96}
     >
-      <Layout.Slot name="header" />
-    </Layout>
+      <Grid.Slot name="header" />
+    </Grid>
   );
 
   const layout = screen.getByTestId('layout');
@@ -91,15 +91,15 @@ test('allows to define a grid', () => {
 
 test('converts numbers to fractions in a grid', () => {
   render(
-    <Layout
+    <Grid
       data-testid="layout"
       areas={['header', 'content', 'footer']}
       columns={[1]}
       rows={[1, 2, 1]}
       height={96}
     >
-      <Layout.Slot name="header" />
-    </Layout>
+      <Grid.Slot name="header" />
+    </Grid>
   );
 
   const layout = screen.getByTestId('layout');

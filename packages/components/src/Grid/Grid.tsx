@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import type { GapSpaceProp, HeightProp } from '@marigold/system';
 import { cn, gapSpace, height as twHeight } from '@marigold/system';
 
-import { Slot } from './LayoutSlot';
+import { Slot } from './GridSlot';
 
 // Helpers
 // ---------------
@@ -32,7 +32,7 @@ const parseTemplateValue = (values: TemplateValue[]) =>
 
 // Props
 // ---------------
-export interface LayoutProps extends GapSpaceProp, HeightProp {
+export interface GridProps extends GapSpaceProp, HeightProp {
   areas: string[];
   columns: TemplateValue[];
   rows: TemplateValue[];
@@ -44,7 +44,7 @@ export interface LayoutProps extends GapSpaceProp, HeightProp {
 
 // Component
 // ---------------
-export const Layout = ({
+export const Grid = ({
   children,
   areas,
   columns,
@@ -52,7 +52,7 @@ export const Layout = ({
   height = 'auto',
   space = 0,
   ...props
-}: LayoutProps) => {
+}: GridProps) => {
   return (
     <div
       className={cn('grid', gapSpace[space], twHeight[height])}
@@ -68,4 +68,4 @@ export const Layout = ({
   );
 };
 
-Layout.Slot = Slot;
+Grid.Slot = Slot;
