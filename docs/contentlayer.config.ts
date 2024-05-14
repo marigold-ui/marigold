@@ -71,29 +71,6 @@ export const ContentPage = defineDocumentType(() => ({
         return path.length < 3 ? null : path.at(1);
       },
     },
-
-    /**
-     * flattened Path:
-     *
-     * - pages/concepts/layouts
-     * - components/button/button
-     * - hooks/useTheme/useTheme
-     *
-     * [ 'components', 'footer', 'footer' ] footer footer
-     */
-
-    // section: {
-    //   type: 'string',
-    //   resolve: doc => doc._raw.sourceFileDir.split('/').at(-1),
-    // },
-    // slug: {
-    //   type: 'string',
-    //   resolve: doc => doc._raw.flattenedPath.replace('pages', ''),
-    // },
-    // slugAsParams: {
-    //   type: 'string',
-    //   resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
-    // },
   },
 }));
 
