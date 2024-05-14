@@ -4,6 +4,7 @@ import React from 'react';
 import { Delete, Search } from '@marigold/icons';
 
 import { Button } from '../Button';
+import { FieldGroup } from '../FieldBase';
 import { Input } from './Input';
 
 const meta = {
@@ -93,41 +94,53 @@ export const WithLeadingIcons: Story = {
 
 export const WithAction: Story = {
   render: args => (
-    <Input
-      placeholder="Placeholder..."
-      action={
-        <Button
-          size="small"
-          variant="text"
-          onPress={() => alert('Action executed')}
-        >
-          <Delete />
-        </Button>
-      }
-      {...args}
-    />
+    <FieldGroup labelWidth="200px">
+      <Input
+        placeholder="Placeholder..."
+        action={
+          <Button
+            size="small"
+            variant="text"
+            onPress={() => alert('Action executed')}
+          >
+            <Delete />
+          </Button>
+        }
+        {...args}
+      />
+    </FieldGroup>
   ),
 };
 
 export const WithIcons: Story = {
   render: args => (
-    <Input
-      placeholder="Placeholder..."
-      icon={<Search />}
-      action={
-        <Button size="small" variant="text">
-          <Delete />
-        </Button>
-      }
-      {...args}
-    />
+    <FieldGroup labelWidth="200px">
+      <Input
+        placeholder="Placeholder..."
+        icon={<Search />}
+        action={
+          <Button size="small" variant="text">
+            <Delete />
+          </Button>
+        }
+        {...args}
+      />
+    </FieldGroup>
   ),
 };
 
 export const FileInput: Story = {
-  render: args => <Input placeholder="Placeholder..." {...args} type="file" />,
+  render: args => (
+    <FieldGroup labelWidth="200px">
+      <Input placeholder="Placeholder..." {...args} type="file" />
+    </FieldGroup>
+  ),
 };
 
 export const ColorPicker: Story = {
-  render: args => <Input placeholder="Placeholder..." {...args} type="color" />,
+  render: args => (
+    <FieldGroup labelWidth="200px">
+      <Input placeholder="Placeholder..." {...args} type="color" />
+    </FieldGroup>
+  ),
 };

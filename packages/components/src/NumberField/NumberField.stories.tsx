@@ -2,6 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
+import { FieldGroup } from '../FieldBase';
 import { Inline } from '../Inline';
 import { NumberField } from './NumberField';
 
@@ -106,18 +107,26 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = { render: args => <NumberField {...args} /> };
+export const Basic: Story = {
+  render: args => (
+    <FieldGroup labelWidth="200px">
+      <NumberField {...args} />
+    </FieldGroup>
+  ),
+};
 
 export const WithFormatting: Story = {
   render: args => (
-    <NumberField
-      defaultValue={10}
-      formatOptions={{
-        style: 'currency',
-        currency: 'EUR',
-      }}
-      {...args}
-    />
+    <FieldGroup labelWidth="200px">
+      <NumberField
+        defaultValue={10}
+        formatOptions={{
+          style: 'currency',
+          currency: 'EUR',
+        }}
+        {...args}
+      />
+    </FieldGroup>
   ),
 };
 

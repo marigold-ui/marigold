@@ -33,17 +33,22 @@ export interface ComponentDemoProps {
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
+  disableLabelWidth?: boolean;
 }
 
 // Component
 // ---------------
-export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
+export const ComponentDemo = ({
+  name,
+  children,
+  disableLabelWidth,
+}: ComponentDemoProps) => {
   const Demo = registry[name].demo;
   const { current, themes } = useThemeSwitch();
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
-    current === 'core' ? (
-      <FieldGroup labelWidth="100px">{children}</FieldGroup>
+    current === 'core' && !disableLabelWidth ? (
+      <FieldGroup labelWidth={'100px'}>{children}</FieldGroup>
     ) : (
       children
     );
