@@ -1,0 +1,49 @@
+---
+title: Layout
+caption: When things get more complex.
+---
+
+The `Layout` component is a versatile tool to arrange child elements within a two-dimensional grid structure ([CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)). It allows full control over columns and rows sizes, spacing between children, and the overall height. However, due to its extensive customization options, it's best suited for situations where simpler layout components like Tiles or Columns aren't sufficient.
+
+## Import
+
+```tsx
+import { Layout } from '@marigold/components';
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      property: 'areas',
+      type: 'string[]',
+      description: 'Define grid areas.',
+    },
+    {
+      property: 'columns',
+      type: '(string | number)[]',
+      description: 'Defines column sizes.',
+    },
+    {
+      property: 'rows',
+      type: '(string | number)[]',
+      description: 'Defines row sizes.',
+    },
+    {
+      property: 'height',
+      type: 'Height',
+      description: 'Defines height of the component.',
+    },
+    {
+      property: 'space',
+      type: 'GapSpaceProp',
+      description: 'Space between the elements.',
+      default: 'none',
+    },
+  ]}
+/>
+
+## Examples
+
+### Holy Grail
