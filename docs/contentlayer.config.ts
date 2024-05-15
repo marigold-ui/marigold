@@ -126,8 +126,8 @@ export default makeSource({
        */
       () => tree => {
         visit(tree, node => {
-          if (node?.type === 'element' && node?.tagName === 'div') {
-            if (!('data-rehype-pretty-code-fragment' in node.properties)) {
+          if (node?.type === 'element' && node?.tagName === 'figure') {
+            if (!('data-rehype-pretty-code-figure' in node.properties)) {
               return;
             }
             for (const child of node.children) {
