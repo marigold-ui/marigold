@@ -11,7 +11,10 @@ export const CopyButton = ({ codeString }: CopyProps) => {
     successDuration: 1000,
   });
   return (
-    <Button onPress={setCopied} className="border-none p-0 outline-0">
+    <Button
+      onPress={setCopied}
+      className="translate-y-px border-none p-0 outline-0"
+    >
       {isCopied ? (
         <svg
           className="size-5 fill-white"

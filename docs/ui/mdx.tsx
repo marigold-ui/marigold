@@ -84,13 +84,19 @@ const typography = {
     className,
     ...props
   }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {
-    const lines = raw.split(/\r\n|\r|\n/).length;
+    const lines = raw.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
 
     return (
       <>
-        <div className="absolute right-5 top-5 flex justify-end gap-2">
+        <div
+          className={cn(
+            'absolute right-4 flex justify-end gap-2',
+            // vertical center if only one line
+            lines > 1 ? 'top-4' : 'top-1/2 -translate-y-1/2'
+          )}
+        >
           <CopyButton codeString={raw} />
-          {lines > 5 ? (
+          {lines >= 5 ? (
             <FullsizeView code={props.children} codeString={raw} />
           ) : null}
         </div>
