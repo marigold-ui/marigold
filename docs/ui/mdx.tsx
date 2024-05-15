@@ -80,7 +80,7 @@ const typography = {
   ),
   // `raw` is source code to be copied
   pre: ({
-    raw,
+    raw = '',
     className,
     ...props
   }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {

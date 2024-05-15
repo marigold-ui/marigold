@@ -86,8 +86,10 @@ export default makeSource({
     rehypePlugins: [
       [rehypeComponentDemo, { contentDirPath }],
       rehypeSlug,
-      // to inject the source code and other stuff inside `pre` element props
-      // needed to copy code
+      /**
+       * Inject the source code and other stuff inside `pre` element props
+       * (required for the copy code feature)
+       */
       () => tree => {
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'pre') {
@@ -118,7 +120,10 @@ export default makeSource({
           },
         },
       ],
-      // needed to copy code
+      /**
+       * Add the "raw" code string to the nodes property so we can access it in the
+       * app (e.g. for the copy code feature).
+       */
       () => tree => {
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'div') {
