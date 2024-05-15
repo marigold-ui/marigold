@@ -19,6 +19,11 @@
   --page-main-padding-xl: 5.5rem;
 }
 
+/* Rehype Pretty Code Plugin Styling */
+[data-rehype-pretty-code-figure] {
+  position: relative;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

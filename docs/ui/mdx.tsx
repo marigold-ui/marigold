@@ -87,7 +87,13 @@ const typography = {
     const lines = raw.split(/\r\n|\r|\n/).length;
 
     return (
-      <div className="relative">
+      <>
+        <div className="absolute right-5 top-5 flex justify-end gap-2">
+          <CopyButton codeString={raw} />
+          {lines > 5 ? (
+            <FullsizeView code={props.children} codeString={raw} />
+          ) : null}
+        </div>
         <pre
           className={cn(
             'max-h-[650px] overflow-x-auto rounded-lg px-3 py-4 [&>code]:bg-transparent',
@@ -95,15 +101,9 @@ const typography = {
           )}
           {...props}
         >
-          <div className="absolute right-5 flex justify-end gap-2">
-            <CopyButton codeString={raw} />
-            {lines > 5 ? (
-              <FullsizeView code={props.children} codeString={raw} />
-            ) : null}
-          </div>
           {props.children}
         </pre>
-      </div>
+      </>
     );
   },
 };
