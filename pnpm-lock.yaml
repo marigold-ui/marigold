@@ -366,9 +366,6 @@ importers:
       eslint-config-next:
         specifier: 14.1.4
         version: 14.1.4(eslint@8.57.0)(typescript@5.3.3)
-      mdast-util-from-markdown:
-        specifier: 2.0.0
-        version: 2.0.0
       mdast-util-toc:
         specifier: 7.0.1
         version: 7.0.1

@@ -1,4 +1,3 @@
-import { fromMarkdown } from 'mdast-util-from-markdown';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Node } from 'unist';
@@ -68,11 +67,8 @@ export const rehypeComponentDemo = ({
 }: RehypeComponentDemoConfig) => {
   return async (tree: RehypeTree, f: any) => {
     const file = f as VFile;
-    visit(tree, (node: RehypeNode) => {
-      if (node?.tagName === 'p') {
-        // console.log(JSON.stringify(node));
-      }
 
+    visit(tree, (node: RehypeNode) => {
       // 1. Find our demo component component
       if (node.name === 'ComponentDemo') {
         // 2. Find out which demo to use
@@ -108,52 +104,27 @@ export const rehypeComponentDemo = ({
             }
           );
 
-          const doc = `
-          \`\`\`
-          int main(void) {
-             **return 0;**
-          }
-          \`\`\`
-          `;
-          const test = fromMarkdown(doc);
-          // console.log(test);
-          node.children?.push({
-            type: 'element',
-            tagName: 'p',
-            properties: {},
-            children: [
-              {
-                type: 'text',
-                value: 'This is just a test',
-              },
-            ],
-            position: {
-              start: { line: 9, column: 1, offset: 298 },
-              end: { line: 9, column: 66, offset: 363 },
-            },
-          });
-
           // 5. Render the code as children
-          // node.children?.push(
-          //   u('element', {
-          //     tagName: 'pre',
-          //     children: [
-          //       u('element', {
-          //         tagName: 'code',
-          //         properties: {
-          //           className: ['language-tsx'],
-          //           metastring: `${lineHighlighting}+${wordHighlighting}`,
-          //         },
-          //         children: [
-          //           {
-          //             type: 'text',
-          //             value: source,
-          //           },
-          //         ],
-          //       }),
-          //     ],
-          //   })
-          // );
+          node.children?.push(
+            u('element', {
+              tagName: 'pre',
+              children: [
+                u('element', {
+                  tagName: 'code',
+                  properties: {
+                    className: 'language-tsx',
+                    metastring: `${lineHighlighting}+${wordHighlighting}`,
+                  },
+                  children: [
+                    {
+                      type: 'text',
+                      value: source,
+                    },
+                  ],
+                }),
+              ],
+            })
+          );
         } catch (err) {
           console.log(err);
         }
