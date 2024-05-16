@@ -4,6 +4,8 @@ import Link, { LinkProps } from 'next/link';
 
 import { type VariantProps, cn, cva } from '@marigold/system';
 
+import { useThemeSwitch } from '@/ui/ThemeSwitch';
+
 const styles = cva([], {
   variants: {
     variant: {
@@ -54,13 +56,18 @@ export const NavLink = ({
   current,
   className,
   children,
+  href,
   ...props
-}: NavLinkProps) => (
-  <Link
-    {...props}
-    className={cn(styles({ variant, current, className }))}
-    aria-current={current ? 'page' : undefined}
-  >
-    {children}
-  </Link>
-);
+}: NavLinkProps) => {
+  const { current: currentTheme } = useThemeSwitch();
+  return (
+    <Link
+      {...props}
+      className={cn(styles({ variant, current, className }))}
+      aria-current={current ? 'page' : undefined}
+      href={`${href}${currentTheme ? `?theme=${currentTheme}` : ''}`}
+    >
+      {children}
+    </Link>
+  );
+};

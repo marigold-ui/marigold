@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-core",
-  "version": "26.1.7",
+  "version": "26.1.8",
   "description": "Marigold Core Theme",
   "license": "MIT",
   "keywords": [
@@ -47,7 +47,6 @@
     "cssnano": "6.1.2",
     "postcss": "8.4.35",
     "tailwindcss": "3.4.1",
-    "tailwindcss-scoped-preflight": "2.1.0",
     "tsup": "8.0.2"
   },
   "dependencies": {
