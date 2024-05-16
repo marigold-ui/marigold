@@ -1,5 +1,16 @@
 # @marigold/theme-b2b
 
+## 27.1.8
+
+### Patch Changes
+
+- [#3889](https://github.com/marigold-ui/marigold/pull/3889) [`f0c0bc1`](https://github.com/marigold-ui/marigold/commit/f0c0bc18b0ad22984ad344e99222a7119c47ed36) Thanks [@sebald](https://github.com/sebald)! - refa(DSTSUP-73): Improve elevation (more distinguisable)
+
+- Updated dependencies []:
+  - @marigold/system@7.7.2
+  - @marigold/components@7.7.2
+  - @marigold/theme-preset@1.3.13
+
 ## 27.1.7
 
 ### Patch Changes
