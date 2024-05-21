@@ -108,11 +108,12 @@ export const rehypeComponentDemo = ({
           node.children?.push(
             u('element', {
               tagName: 'pre',
+              properties: {},
               children: [
                 u('element', {
                   tagName: 'code',
                   properties: {
-                    className: 'language-tsx',
+                    className: ['language-tsx'],
                     metastring: `${lineHighlighting}+${wordHighlighting}`,
                   },
                   children: [
