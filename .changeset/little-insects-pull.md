@@ -4,4 +4,4 @@
 "@marigold/system": minor
 ---
 
-feat: Introduce `Template` component
+feat: Introduce `Grid` component
