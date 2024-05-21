@@ -1,5 +1,20 @@
 # @marigold/docs
 
+## 7.7.2
+
+### Patch Changes
+
+- [#3908](https://github.com/marigold-ui/marigold/pull/3908) [`20fb4f4`](https://github.com/marigold-ui/marigold/commit/20fb4f4868747b3a965688aebe48f3247d397d57) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing icons into docs to be copied in the right way
+
+- [#3865](https://github.com/marigold-ui/marigold/pull/3865) [`5eafe50`](https://github.com/marigold-ui/marigold/commit/5eafe50e4f03ab782b6dcb03bed82ec9b9460fc2) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-379]: Docs: The selected theme on marigold docs is now persisted in the local storage.
+
+- Updated dependencies [[`3e448ed`](https://github.com/marigold-ui/marigold/commit/3e448ede593cc4e4070366a1e6ac1ac8870dc102), [`bdd23ec`](https://github.com/marigold-ui/marigold/commit/bdd23ec48895543b9a4bd3d925c47dd02da8aefd), [`f0c0bc1`](https://github.com/marigold-ui/marigold/commit/f0c0bc18b0ad22984ad344e99222a7119c47ed36)]:
+  - @marigold/theme-core@26.1.8
+  - @marigold/theme-b2b@27.1.8
+  - @marigold/components@7.7.2
+  - @marigold/icons@1.2.48
+  - @marigold/theme-preset@1.3.13
+
 ## 7.7.1
 
 ### Patch Changes
