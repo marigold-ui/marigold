@@ -49,7 +49,7 @@ const Hotkey = () => {
 
 // Component
 // ---------------
-export const SiteMenu = (value: string) => {
+export const SiteMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -158,7 +158,7 @@ export const SiteMenu = (value: string) => {
                 ))}
               </CommandGroup>
             ))}
-            {/* add links command */}
+            {/* links command */}
             {links.map(({ name, items }) => (
               <CommandGroup
                 heading={name}
@@ -177,7 +177,7 @@ export const SiteMenu = (value: string) => {
                 ))}
               </CommandGroup>
             ))}
-            {/* tokens */}
+            {/* tokens copy command */}
             <CommandGroup
               heading="Colors"
               key="color"
