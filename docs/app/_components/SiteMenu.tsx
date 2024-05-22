@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 
 import { Search } from '@marigold/icons';
 
+import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { useHasMounted } from '@/ui/useHasMounted';
 
 // Helpers
@@ -55,6 +56,12 @@ export const SiteMenu = () => {
     setOpen(false);
   };
 
+  const { updateTheme } = useThemeSwitch();
+  const changeTheme = (theme: string) => {
+    updateTheme(theme);
+    setOpen(false);
+  };
+
   // register global cmd+k hotkey
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
@@ -70,6 +77,47 @@ export const SiteMenu = () => {
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
 
+  // todo: add in new file?
+  const links = [
+    {
+      name: 'Links',
+      items: [
+        {
+          name: 'Slack',
+          href: 'https://reservix.slack.com/archives/C02727BNZ3J',
+        },
+        {
+          name: 'Jira',
+          href: 'https://reservix.atlassian.net/jira/software/projects/DST/boards/134',
+        },
+        {
+          name: 'Figma Core Kit',
+          href: 'https://www.figma.com/design/NbTUW9zk15nN8idlfsEttS/%F0%9F%8C%BC-Marigold-CORE?t=VfTLYo5foFEjRxFY-0',
+        },
+        {
+          name: 'Support Center',
+          href: 'https://reservix.atlassian.net/servicedesk/customer/portal/77',
+        },
+      ],
+    },
+  ];
+
+  const themes = [
+    {
+      name: 'Theme',
+      items: [
+        {
+          name: 'Change to Core Theme',
+          theme: 'core',
+        },
+        {
+          name: 'Change to B2B Theme',
+          theme: 'b2b',
+        },
+      ],
+    },
+  ];
+
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
@@ -79,7 +127,7 @@ export const SiteMenu = () => {
       <Dialog aria-label="Global Command Menu">
         <Command className={classNames.container}>
           <div className="flex items-center gap-1.5 border-b px-3">
-            <Search className="size-4 opacity-50"></Search>
+            <Search className="size-4 opacity-50" />
             <Command.Input
               value={query}
               autoFocus
@@ -106,6 +154,44 @@ export const SiteMenu = () => {
                     onSelect={() => goto(page.slug)}
                   >
                     {page.title}
+                  </Command.Item>
+                ))}
+              </CommandGroup>
+            ))}
+            {/* update themes command */}
+            {themes.map(({ name, items }) => (
+              <CommandGroup
+                heading={name}
+                key={name}
+                className={classNames.section}
+              >
+                {items.map(page => (
+                  <Command.Item
+                    className={classNames.item}
+                    key={page.theme}
+                    value={page.theme}
+                    onSelect={() => changeTheme(page.theme)}
+                  >
+                    {page.name}
+                  </Command.Item>
+                ))}
+              </CommandGroup>
+            ))}
+            {/* add links command */}
+            {links.map(({ name, items }) => (
+              <CommandGroup
+                heading={name}
+                key={name}
+                className={classNames.section}
+              >
+                {items.map(page => (
+                  <Command.Item
+                    className={classNames.item}
+                    key={page.href}
+                    value={page.href}
+                    onSelect={() => window.open(page.href, '_blank')}
+                  >
+                    {page.name}
                   </Command.Item>
                 ))}
               </CommandGroup>
