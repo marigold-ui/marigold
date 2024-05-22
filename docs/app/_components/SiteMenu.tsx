@@ -7,6 +7,8 @@ import { Button, Dialog, useClassNames } from '@/ui';
 import { Command, CommandGroup } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { useEffect, useState } from 'react';
+import { useCopyToClipboard } from 'react-use';
+import useClipboard from 'react-use-clipboard';
 
 import { useRouter } from 'next/navigation';
 
@@ -48,7 +50,7 @@ const Hotkey = () => {
 
 // Component
 // ---------------
-export const SiteMenu = () => {
+export const SiteMenu = (value: string) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -61,6 +63,12 @@ export const SiteMenu = () => {
   const { updateTheme } = useThemeSwitch();
   const changeTheme = (theme: string) => {
     updateTheme(theme);
+    setOpen(false);
+  };
+
+  const [, setCopy] = useCopyToClipboard();
+  const copy = (value: string) => {
+    setCopy(value);
     setOpen(false);
   };
 
@@ -175,8 +183,9 @@ export const SiteMenu = () => {
                   className={classNames.item}
                   key={token}
                   value={token}
+                  onSelect={() => copy(token.replace('-DEFAULT', ''))}
                 >
-                  {token}
+                  {token.replace('-DEFAULT', '')}
                 </Command.Item>
               ))}
             </CommandGroup>
