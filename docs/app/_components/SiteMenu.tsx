@@ -1,8 +1,9 @@
 'use client';
 
+import { links, themes } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
 import { Button, Dialog, useClassNames } from '@/ui';
-import { Command, CommandGroup } from 'cmdk';
+import { Command, CommandGroup, CommandItem } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { useEffect, useState } from 'react';
 
@@ -77,47 +78,6 @@ export const SiteMenu = () => {
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
 
-  // todo: add in new file?
-  const links = [
-    {
-      name: 'Links',
-      items: [
-        {
-          name: 'Slack',
-          href: 'https://reservix.slack.com/archives/C02727BNZ3J',
-        },
-        {
-          name: 'Jira',
-          href: 'https://reservix.atlassian.net/jira/software/projects/DST/boards/134',
-        },
-        {
-          name: 'Figma Core Kit',
-          href: 'https://www.figma.com/design/NbTUW9zk15nN8idlfsEttS/%F0%9F%8C%BC-Marigold-CORE?t=VfTLYo5foFEjRxFY-0',
-        },
-        {
-          name: 'Support Center',
-          href: 'https://reservix.atlassian.net/servicedesk/customer/portal/77',
-        },
-      ],
-    },
-  ];
-
-  const themes = [
-    {
-      name: 'Theme',
-      items: [
-        {
-          name: 'Change to Core Theme',
-          theme: 'core',
-        },
-        {
-          name: 'Change to B2B Theme',
-          theme: 'b2b',
-        },
-      ],
-    },
-  ];
-
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
@@ -165,14 +125,14 @@ export const SiteMenu = () => {
                 key={name}
                 className={classNames.section}
               >
-                {items.map(page => (
+                {items.map(item => (
                   <Command.Item
                     className={classNames.item}
-                    key={page.theme}
-                    value={page.theme}
-                    onSelect={() => changeTheme(page.theme)}
+                    key={item.theme}
+                    value={item.name}
+                    onSelect={() => changeTheme(item.theme)}
                   >
-                    {page.name}
+                    {item.name}
                   </Command.Item>
                 ))}
               </CommandGroup>
