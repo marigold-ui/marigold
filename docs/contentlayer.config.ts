@@ -84,18 +84,19 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
+      // Code Highliting and Demos
+      // ---------------
       [rehypeComponentDemo, { contentDirPath }],
-      rehypeSlug,
       /**
-       * Inject the source code and other stuff inside `pre` element props
+       * Inject the source code into the `pre` element
        * (required for the copy code feature)
        */
       () => tree => {
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'pre') {
-            const [codeEl] = node.children;
-            if (codeEl.tagName !== 'code') return;
-            node.raw = codeEl.children?.[0].value;
+            const [child] = node.children;
+            if (child.tagName !== 'code') return;
+            node.raw = child.children?.[0].value;
           }
         });
       },
@@ -138,24 +139,14 @@ export default makeSource({
           }
         });
       },
+
+      // Headings and TOC Plugins
+      // ---------------
+      rehypeSlug,
       [
         rehypeAutolinkHeadings,
         {
           behavior: 'wrap',
-          properties: {
-            class: [
-              'relative',
-              'no-underline',
-              'before:absolute',
-              'before:-left-6',
-              'before:inset-y-0',
-              'before:flex',
-              'before:items-center',
-              'before:text-secondary-400',
-              'before:text-2xl',
-              `hover:before:content-['#']`,
-            ].join(' '),
-          },
         },
       ],
       [rehypeTableOfContents, { selector: '#toc' }],

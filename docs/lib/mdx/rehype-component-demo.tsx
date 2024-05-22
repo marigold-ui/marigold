@@ -137,7 +137,6 @@ export const rehypeComponentDemo = ({
                      * to be an array on the <code> element.
                      */
                     className: ['language-tsx'],
-                    // TODO: fix autolinker styles
                     // TODO: fix fullscreen demo, style improvements?
                     /**
                      * See https://rehype-pretty.pages.dev/#meta-strings
