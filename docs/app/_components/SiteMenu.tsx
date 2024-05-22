@@ -1,5 +1,6 @@
 'use client';
 
+import { registry } from '@/.registry';
 import { links, themeswitch } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
@@ -94,6 +95,10 @@ export const SiteMenu = () => {
 
   const tokens = iterateTokens(themes[current].colors || {});
 
+  const demos = Object.entries(registry);
+
+  demos.map(item => console.log(item[1]));
+  // console.log('#######', demos);
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
@@ -213,6 +218,12 @@ export const SiteMenu = () => {
                 </Command.Item>
               ))}
             </CommandGroup>
+            {/* demos copy command */}
+            <CommandGroup
+              heading="Demos"
+              key="demo"
+              className={classNames.section}
+            ></CommandGroup>
           </Command.List>
         </Command>
       </Dialog>
