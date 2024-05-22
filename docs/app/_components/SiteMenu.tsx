@@ -86,8 +86,6 @@ export const SiteMenu = () => {
 
   const tokens = iterateTokens(themes[current].colors || {});
 
-  console.log(tokens);
-
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
@@ -166,6 +164,22 @@ export const SiteMenu = () => {
                 ))}
               </CommandGroup>
             ))}
+            {/* tokens */}
+            <CommandGroup
+              heading="Colors"
+              key="color"
+              className={classNames.section}
+            >
+              {tokens.map(([token]) => (
+                <Command.Item
+                  className={classNames.item}
+                  key={token}
+                  value={token}
+                >
+                  {token}
+                </Command.Item>
+              ))}
+            </CommandGroup>
           </Command.List>
         </Command>
       </Dialog>
