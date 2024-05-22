@@ -83,10 +83,10 @@ const typography = {
       return <figure {...props} />;
     }
 
-    const { children, raw, ...rest } = props;
+    const { children, className, raw, ...rest } = props;
     const lines = raw.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
     return (
-      <figure {...rest}>
+      <figure className={cn('relative', className)} {...rest}>
         <div
           className={cn(
             'absolute right-3 flex justify-end gap-3',
@@ -106,8 +106,8 @@ const typography = {
   pre: ({ className, ...props }: HTMLAttributes<HTMLPreElement>) => (
     <pre
       className={cn(
-        'not-prose *:bg-transparent',
-        'max-h-[650px] rounded-lg px-3 py-4',
+        'not-prose *:bg-transparent *:p-0 [&_[data-line]]:leading-[22px]',
+        'max-h-[650px] rounded-lg px-[--pre-padding-x] py-4',
         'scrollbar-thin scrollbar-thumb-[#606e97] scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
         className
       )}

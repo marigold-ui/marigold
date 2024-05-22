@@ -17,11 +17,8 @@
 
   --page-main-padding: 5rem;
   --page-main-padding-xl: 5.5rem;
-}
 
-/* Rehype Pretty Code Plugin Styling */
-[data-rehype-pretty-code-figure] {
-  position: relative;
+  --pre-padding-x: 1rem;
 }
 
 @tailwind base;

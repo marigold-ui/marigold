@@ -115,7 +115,8 @@ export default makeSource({
           onVisitHighlightedLine(node: LineElement) {
             node.properties.className = [
               ...(node.properties.className || []),
-              'bg-gray-700 px-2 py-0.5 rounded-sm',
+              'bg-white/10',
+              'px-[--pre-padding-x] -mx-[--pre-padding-x]',
             ];
           },
           onVisitHighlightedChars(node: LineElement) {

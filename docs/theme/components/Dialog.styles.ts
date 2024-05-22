@@ -8,16 +8,15 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       },
     },
   }),
-  container: cva('bg-bg-surface relative', {
+  container: cva('bg-bg-surface', {
     variants: {
       variant: {
-        default: 'rounded-lg shadow-lg',
+        default: 'relative rounded-lg shadow-lg',
         codeblock: [
-          'relative',
-          'px-8 py-6',
+          'static px-0 py-6',
           'max-h-[96vh] w-full overflow-y-auto rounded-lg bg-[#292d3e] shadow-lg',
           'scrollbar-thin scrollbar-thumb-[#606e97] scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
-          '*:max-h-none *:min-w-[75vw] *:p-0',
+          '*:max-h-none *:min-w-[75vw]',
         ],
         fullscreen: 'h-screen w-screen px-4 pb-8 pt-10',
       },
