@@ -95,10 +95,10 @@ const typography = {
             lines > 1 ? 'top-4' : 'top-1/2 -translate-y-1/2'
           )}
         >
-          <CopyButton codeString={raw} />
           {lines >= 5 ? (
             <FullsizeView code={props.children} codeString={raw} />
           ) : null}
+          <CopyButton codeString={raw} />
         </div>
         <pre
           className={cn(
