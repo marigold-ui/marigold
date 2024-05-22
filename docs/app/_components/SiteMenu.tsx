@@ -3,7 +3,7 @@
 import { links, themeswitch } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
-import { Button, Dialog, useClassNames } from '@/ui';
+import { Button, Dialog, Inline, Split, useClassNames } from '@/ui';
 import { Command, CommandGroup } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { useEffect, useState } from 'react';
@@ -11,9 +11,10 @@ import { useCopyToClipboard } from 'react-use';
 
 import { useRouter } from 'next/navigation';
 
-import { Search } from '@marigold/icons';
+import { ExternalLink, Search } from '@marigold/icons';
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
+import { Theme } from '@/ui/icons/Theme';
 import { useHasMounted } from '@/ui/useHasMounted';
 
 // Helpers
@@ -153,7 +154,13 @@ export const SiteMenu = () => {
                     value={item.name}
                     onSelect={() => changeTheme(item.theme)}
                   >
-                    {item.name}
+                    <Inline space={4} alignY="center">
+                      {item.name}
+                      <Split />
+                      <span className="text-text-primary-muted text-xs">
+                        <Theme />
+                      </span>
+                    </Inline>
                   </Command.Item>
                 ))}
               </CommandGroup>
@@ -172,7 +179,13 @@ export const SiteMenu = () => {
                     value={page.href}
                     onSelect={() => window.open(page.href, '_blank')}
                   >
-                    {page.name}
+                    <Inline space={4} alignY="center">
+                      {page.name}
+                      <Split />
+                      <span className="text-text-primary-muted text-xs">
+                        <ExternalLink />
+                      </span>
+                    </Inline>
                   </Command.Item>
                 ))}
               </CommandGroup>
@@ -190,7 +203,13 @@ export const SiteMenu = () => {
                   value={token}
                   onSelect={() => copy(token.replace('-DEFAULT', ''))}
                 >
-                  {token.replace('-DEFAULT', '')}
+                  <Inline space={4} alignY="center">
+                    {token.replace('-DEFAULT', '')}
+                    <Split />
+                    <span className="text-text-primary-muted text-xs">
+                      copy token
+                    </span>
+                  </Inline>
                 </Command.Item>
               ))}
             </CommandGroup>
