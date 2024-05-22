@@ -13,7 +13,7 @@ export type MdxJsxAttribute =
       name: string;
       value: {
         type: 'mdxJsxAttributeValueExpression';
-        value: string;
+        value: any;
         data: object;
       };
     };
@@ -51,10 +51,29 @@ export interface VFile {
 
 // Helpers
 // ---------------
-const getJsxAttr = (node: RehypeNode, needle: string) =>
-  node.attributes?.find(
+const getJsxAttr = (node: RehypeNode, needle: string) => {
+  const attr = node.attributes?.find(
     ({ type, name }) => type === 'mdxJsxAttribute' && name === needle
   ) as MdxJsxAttribute;
+
+  // Attribute not found
+  if (!attr) {
+    return;
+  }
+
+  // Attr is a string
+  if (typeof attr === 'string') {
+    return attr;
+  }
+
+  // mdxJsxAttribute with string value (e.g. <Component foo="bar"/>)
+  if (typeof attr.value === 'string') {
+    return attr.value;
+  }
+
+  // Complex attribute type (mdxJsxAttribute with a mdxJsxAttributeValueExpression)
+  return attr.value.value;
+};
 
 // Plugin
 // ---------------
@@ -72,12 +91,8 @@ export const rehypeComponentDemo = ({
       // 1. Find our demo component component
       if (node.name === 'ComponentDemo') {
         // 2. Find out which demo to use
-        const demoPath = getJsxAttr(node, 'file')?.value;
-        if (!demoPath) return;
-        if (typeof demoPath !== 'string') return;
-
-        const lineHighlighting = getJsxAttr(node, 'lineHighlighting')?.value;
-        const wordHighlighting = getJsxAttr(node, 'wordHighlighting')?.value;
+        const demoPath = getJsxAttr(node, 'file');
+        if (!demoPath || typeof demoPath !== 'string') return;
 
         try {
           // 3. Load the demo source from the file system
@@ -122,10 +137,12 @@ export const rehypeComponentDemo = ({
                      * to be an array on the <code> element.
                      */
                     className: ['language-tsx'],
-                    // TODO: this is often undefined+undefined
                     // TODO: fix autolinker styles
                     // TODO: fix fullscreen demo, style improvements?
-                    metastring: `${lineHighlighting}+${wordHighlighting}`,
+                    /**
+                     * See https://rehype-pretty.pages.dev/#meta-strings
+                     */
+                    metastring: getJsxAttr(node, 'meta'),
                   },
                   children: [
                     {
