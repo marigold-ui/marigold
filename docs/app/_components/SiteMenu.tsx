@@ -8,7 +8,6 @@ import { Command, CommandGroup } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
-import useClipboard from 'react-use-clipboard';
 
 import { useRouter } from 'next/navigation';
 
@@ -101,7 +100,13 @@ export const SiteMenu = (value: string) => {
         <Hotkey />
       </Button>
       <Dialog aria-label="Global Command Menu">
-        <Command className={classNames.container}>
+        <Command
+          className={classNames.container}
+          filter={(value, query) => {
+            if (value.toLowerCase().includes(query)) return 1;
+            return 0;
+          }}
+        >
           <div className="flex items-center gap-1.5 border-b px-3">
             <Search className="size-4 opacity-50" />
             <Command.Input
@@ -144,7 +149,7 @@ export const SiteMenu = (value: string) => {
                 {items.map(item => (
                   <Command.Item
                     className={classNames.item}
-                    key={item.theme}
+                    key={item.name}
                     value={item.name}
                     onSelect={() => changeTheme(item.theme)}
                   >
