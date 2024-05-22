@@ -108,12 +108,23 @@ export const rehypeComponentDemo = ({
           node.children?.push(
             u('element', {
               tagName: 'pre',
+              /**
+               * Require for `rehype-pretty-code` since it expects every
+               * element to have a `properties` prop.
+               */
               properties: {},
               children: [
                 u('element', {
                   tagName: 'code',
                   properties: {
+                    /**
+                     * Required for `rehype-pretty-code`. Yes, this needs
+                     * to be an array on the <code> element.
+                     */
                     className: ['language-tsx'],
+                    // TODO: this is often undefined+undefined
+                    // TODO: fix autolinker styles
+                    // TODO: fix fullscreen demo, style improvements?
                     metastring: `${lineHighlighting}+${wordHighlighting}`,
                   },
                   children: [
