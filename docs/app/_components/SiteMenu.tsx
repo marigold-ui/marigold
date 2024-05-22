@@ -1,9 +1,10 @@
 'use client';
 
-import { links, themes } from '@/lib/commandlist';
+import { links, themeswitch } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
+import { iterateTokens } from '@/lib/utils';
 import { Button, Dialog, useClassNames } from '@/ui';
-import { Command, CommandGroup, CommandItem } from 'cmdk';
+import { Command, CommandGroup } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { useEffect, useState } from 'react';
 
@@ -77,6 +78,15 @@ export const SiteMenu = () => {
   }, []);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
+  const { current, themes } = useThemeSwitch();
+
+  if (!current) {
+    return null;
+  }
+
+  const tokens = iterateTokens(themes[current].colors || {});
+
+  console.log(tokens);
 
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
@@ -119,7 +129,7 @@ export const SiteMenu = () => {
               </CommandGroup>
             ))}
             {/* update themes command */}
-            {themes.map(({ name, items }) => (
+            {themeswitch.map(({ name, items }) => (
               <CommandGroup
                 heading={name}
                 key={name}

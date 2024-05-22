@@ -22,7 +22,7 @@ export const links = [
   },
 ];
 
-export const themes = [
+export const themeswitch = [
   {
     name: 'Theme Switch',
     items: [
