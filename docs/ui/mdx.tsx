@@ -78,16 +78,21 @@ const typography = {
   hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />
   ),
-  // `raw` is source code to be copied
-  pre: ({
-    raw = '',
-    className,
-    ...props
-  }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {
-    const lines = raw.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
+  /**
+   * `rehype-pretty-code` wraps <pre> elements inside a figure.
+   * We use this figure to retrieve the plain source code and
+   * to add additional buttons to the core preview.
+   */
+  figure: (props: HTMLAttributes<HTMLElement> & { raw: string }) => {
+    // We only care about `rehype-pretty-code` figure elements.
+    if (!('data-rehype-pretty-code-figure' in props)) {
+      return <figure {...props} />;
+    }
 
+    const { children, raw, ...rest } = props;
+    const lines = raw.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
     return (
-      <>
+      <figure {...rest}>
         <div
           className={cn(
             'absolute right-3 flex justify-end gap-3',
@@ -100,18 +105,21 @@ const typography = {
           ) : null}
           <CopyButton codeString={raw} />
         </div>
-        <pre
-          className={cn(
-            'max-h-[650px] overflow-x-auto rounded-lg px-3 py-4 [&>code]:bg-transparent',
-            className
-          )}
-          {...props}
-        >
-          {props.children}
-        </pre>
-      </>
+        {children}
+      </figure>
     );
   },
+  pre: ({ className, ...props }: HTMLAttributes<HTMLPreElement>) => (
+    <pre
+      className={cn(
+        'max-h-[650px] overflow-x-auto rounded-lg px-3 py-4 [&>code]:bg-transparent',
+        className
+      )}
+      {...props}
+    >
+      {props.children}
+    </pre>
+  ),
 };
 
 // MDX Components

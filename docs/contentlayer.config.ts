@@ -88,15 +88,18 @@ export default makeSource({
       // ---------------
       [rehypeComponentDemo, { contentDirPath }],
       /**
-       * Inject the source code into the `pre` element
-       * (required for the copy code feature)
+       * Store the raw code text inside the properties of <pre> elements,
+       * so we can later retrieve it and use it for the copy code feature.
+       *
+       * Note that these <pre> elements will be transformed to <figure> elements by
+       * `rehype-pretty-code`.
        */
       () => tree => {
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'pre') {
             const [child] = node.children;
             if (child.tagName !== 'code') return;
-            node.raw = child.children?.[0].value;
+            node.properties.raw = child.children?.[0].value;
           }
         });
       },
@@ -121,24 +124,6 @@ export default makeSource({
           },
         },
       ],
-      /**
-       * Add the "raw" code string to the nodes property so we can access it in the
-       * app (e.g. for the copy code feature).
-       */
-      () => tree => {
-        visit(tree, node => {
-          if (node?.type === 'element' && node?.tagName === 'figure') {
-            if (!('data-rehype-pretty-code-figure' in node.properties)) {
-              return;
-            }
-            for (const child of node.children) {
-              if (child.tagName === 'pre') {
-                child.properties['raw'] = node.raw;
-              }
-            }
-          }
-        });
-      },
 
       // Headings and TOC Plugins
       // ---------------
