@@ -69,12 +69,6 @@ const typography = {
   blockquote: (props: HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote className="mt-6 border-l-2 pl-6 italic" {...props} />
   ),
-  code: (props: HTMLAttributes<HTMLElement>) => (
-    <code
-      className="my-0 inline-grid rounded bg-black/10 px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
-      {...props}
-    />
-  ),
   hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />
   ),
@@ -112,13 +106,21 @@ const typography = {
   pre: ({ className, ...props }: HTMLAttributes<HTMLPreElement>) => (
     <pre
       className={cn(
-        'max-h-[650px] overflow-x-auto rounded-lg px-3 py-4 [&>code]:bg-transparent',
+        'not-prose *:bg-transparent',
+        'max-h-[650px] rounded-lg px-3 py-4',
+        'scrollbar-thin scrollbar-thumb-[#606e97] scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
         className
       )}
       {...props}
     >
       {props.children}
     </pre>
+  ),
+  code: (props: HTMLAttributes<HTMLElement>) => (
+    <code
+      className="my-0 inline-grid rounded bg-black/10 px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
+      {...props}
+    />
   ),
 };
 
