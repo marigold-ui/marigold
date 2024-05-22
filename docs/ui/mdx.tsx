@@ -90,7 +90,7 @@ const typography = {
       <>
         <div
           className={cn(
-            'absolute right-4 flex justify-end gap-2',
+            'absolute right-3 flex justify-end gap-3',
             // vertical center if only one line
             lines > 1 ? 'top-4' : 'top-1/2 -translate-y-1/2'
           )}

@@ -22,18 +22,17 @@ export const FullsizeView = ({ code, codeString }: FullsizeViewProps) => {
           />
         </svg>
       </Button>
-      <Dialog>
-        {/* need to add the background color here otherwise it will not be displayed */}
+      <Dialog variant="codeblock">
         {({ close }) => (
-          <div className="not-prose h-[90vh] w-full overflow-y-auto rounded-lg bg-[#1f2937] p-6">
-            <div className="flex justify-end gap-2">
+          <>
+            <div className="absolute right-6 top-6 flex justify-end gap-4">
               <CopyButton codeString={codeString} />
-              <Button variant="inverted" onPress={close}>
+              <Button variant="inverted" size="small" onPress={close}>
                 Close
               </Button>
             </div>
-            <pre className="[&>code]:bg-transparent">{code}</pre>
-          </div>
+            <pre>{code}</pre>
+          </>
         )}
       </Dialog>
     </Dialog.Trigger>

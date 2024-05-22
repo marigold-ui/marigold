@@ -12,6 +12,11 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     variants: {
       variant: {
         default: 'rounded-lg shadow-lg',
+        codeblock: [
+          'relative',
+          'max-h-[96vh] w-full overflow-y-auto rounded-lg bg-[#1f2937] shadow-lg',
+          'not-prose px-8 py-6',
+        ],
         fullscreen: 'h-screen w-screen px-4 pb-8 pt-10',
       },
     },

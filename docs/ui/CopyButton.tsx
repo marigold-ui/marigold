@@ -13,7 +13,7 @@ export const CopyButton = ({ codeString }: CopyProps) => {
   return (
     <Button
       onPress={setCopied}
-      className="translate-y-px border-none p-0 outline-0"
+      className="translate-y-0.5 border-none p-0 outline-0"
     >
       {isCopied ? (
         <svg
