@@ -14,8 +14,8 @@ export const Dialog: ThemeComponent<'Dialog'> = {
         default: 'relative rounded-lg shadow-lg',
         codeblock: [
           'static px-0 py-6',
-          'max-h-[96vh] w-full overflow-y-auto rounded-lg bg-[#292d3e] shadow-lg',
-          'scrollbar-thin scrollbar-thumb-[#606e97] scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
+          'bg-code-900 max-h-[96vh] w-full overflow-y-auto rounded-lg shadow-lg',
+          'scrollbar-thin scrollbar-thumb-code-500 scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
           '*:max-h-none *:min-w-[75vw]',
         ],
         fullscreen: 'h-screen w-screen px-4 pb-8 pt-10',

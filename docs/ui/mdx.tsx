@@ -108,7 +108,7 @@ const typography = {
       className={cn(
         'not-prose *:bg-transparent *:p-0 [&_[data-line]]:leading-[22px]',
         'max-h-[650px] rounded-lg px-[--pre-padding-x] py-4',
-        'scrollbar-thin scrollbar-thumb-[#606e97] scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
+        'scrollbar-thin scrollbar-thumb-code-500 scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
         className
       )}
       {...props}
