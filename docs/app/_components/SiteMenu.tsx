@@ -223,7 +223,24 @@ export const SiteMenu = () => {
               heading="Demos"
               key="demo"
               className={classNames.section}
-            ></CommandGroup>
+            >
+              {demos.map(item => (
+                <Command.Item
+                  className={classNames.item}
+                  key={item[1].name}
+                  value={item[1].name}
+                  onSelect={() => copy(JSON.stringify(`${item[1].demo}`))}
+                >
+                  <Inline space={4} alignY="center">
+                    {item[1].name}
+                    <Split />
+                    <span className="text-text-primary-muted text-xs">
+                      copy token
+                    </span>
+                  </Inline>
+                </Command.Item>
+              ))}
+            </CommandGroup>
           </Command.List>
         </Command>
       </Dialog>
