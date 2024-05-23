@@ -18,6 +18,14 @@ export const links = [
         name: 'Support Center',
         href: 'https://reservix.atlassian.net/servicedesk/customer/portal/77',
       },
+      {
+        name: 'Storybook',
+        href: 'https://marigold-latest.vercel.app/?path=/story/components-accordion--basic',
+      },
+      {
+        name: 'Starter',
+        href: 'https://stackblitz.com/edit/github-v1evcv?file=src%2FApp.tsx',
+      },
     ],
   },
 ];

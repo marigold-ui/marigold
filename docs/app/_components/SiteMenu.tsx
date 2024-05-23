@@ -5,7 +5,7 @@ import { links, themeswitch } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
 import { Button, Dialog, Inline, Split, useClassNames } from '@/ui';
-import { Command, CommandGroup } from 'cmdk';
+import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
@@ -39,18 +39,21 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
 
 const Hotkey = () => {
   const mounted = useHasMounted();
-
   if (!mounted) {
     return null;
   }
-
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
-
   return <span className="opacity-50">({isMacOS ? '⌘' : 'Ctrl+'}K)</span>;
 };
 
 // Component
 // ---------------
+const SubItem = ({ ...props }) => {
+  const search = useCommandState(state => state.search);
+  if (!search) return null;
+  return <Command.Item {...props} />;
+};
+
 export const SiteMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -89,16 +92,14 @@ export const SiteMenu = () => {
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
 
+  const demos = Object.entries(registry);
+  demos.map(item => console.log(item[1]));
+
   if (!current) {
     return null;
   }
-
   const tokens = iterateTokens(themes[current].colors || {});
 
-  const demos = Object.entries(registry);
-
-  demos.map(item => console.log(item[1]));
-  // console.log('#######', demos);
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
@@ -196,30 +197,33 @@ export const SiteMenu = () => {
               </CommandGroup>
             ))}
             {/* tokens copy command */}
-            <CommandGroup
-              heading="Colors"
-              key="color"
-              className={classNames.section}
-            >
-              {tokens.map(([token]) => (
-                <Command.Item
-                  className={classNames.item}
-                  key={token}
-                  value={token}
-                  onSelect={() => copy(token.replace('-DEFAULT', ''))}
-                >
-                  <Inline space={4} alignY="center">
-                    {token.replace('-DEFAULT', '')}
-                    <Split />
-                    <span className="text-text-primary-muted text-xs">
-                      copy token
-                    </span>
-                  </Inline>
-                </Command.Item>
-              ))}
-            </CommandGroup>
+            {query && (
+              <CommandGroup
+                heading="Colors"
+                key="color"
+                className={classNames.section}
+              >
+                {tokens.map(([token]) => (
+                  <SubItem
+                    className={classNames.item}
+                    key={token}
+                    value={token}
+                    onSelect={() => copy(token.replace('-DEFAULT', ''))}
+                  >
+                    <Inline space={4} alignY="center">
+                      {token.replace('-DEFAULT', '')}
+                      <Split />
+                      <span className="text-text-primary-muted text-xs">
+                        copy token
+                      </span>
+                    </Inline>
+                  </SubItem>
+                ))}
+              </CommandGroup>
+            )}
+
             {/* demos copy command */}
-            <CommandGroup
+            {/* <CommandGroup
               heading="Demos"
               key="demo"
               className={classNames.section}
@@ -229,18 +233,18 @@ export const SiteMenu = () => {
                   className={classNames.item}
                   key={item[1].name}
                   value={item[1].name}
-                  onSelect={() => copy(JSON.stringify(`${item[1].demo}`))}
+                  onSelect={() => copy(JSON.stringify(`${item[1].file}`))}
                 >
                   <Inline space={4} alignY="center">
                     {item[1].name}
                     <Split />
                     <span className="text-text-primary-muted text-xs">
-                      copy token
+                      copy demo
                     </span>
                   </Inline>
                 </Command.Item>
               ))}
-            </CommandGroup>
+            </CommandGroup> */}
           </Command.List>
         </Command>
       </Dialog>
