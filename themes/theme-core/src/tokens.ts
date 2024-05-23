@@ -118,7 +118,7 @@ export const colors = {
     base: {
       DEFAULT: brand[900],
       hover: gray[800],
-      disabled: gray[300],
+      disabled: gray[500],
     },
     inverted: {
       DEFAULT: gray[50],
