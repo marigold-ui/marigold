@@ -120,7 +120,9 @@ export default makeSource({
             ];
           },
           onVisitHighlightedChars(node: LineElement) {
-            node.properties.className = ['bg-gray-700 px-2 py-0.5 rounded-sm'];
+            node.properties.className = [
+              'bg-transparent *:underline *:decoration-2 *:underline-offset-2 *:font-bold',
+            ];
           },
         },
       ],
