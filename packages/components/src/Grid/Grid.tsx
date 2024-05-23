@@ -20,15 +20,7 @@ const parseGridAreas = (areas: string[]) =>
   areas.map(area => `"${area}"`).join('\n');
 
 const parseTemplateValue = (values: TemplateValue[]) =>
-  values
-    .map(val => {
-      if (typeof val === 'number') {
-        return `${val}fr`;
-      }
-
-      return val;
-    })
-    .join(' ');
+  values.map(val => (typeof val === 'number' ? `${val}fr` : val)).join(' ');
 
 // Props
 // ---------------
