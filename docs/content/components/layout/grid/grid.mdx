@@ -4,11 +4,9 @@ caption: When things get more complex.
 badge: new
 ---
 
-The `Grid` component is a versatile tool to arrange child elements (`Grid.Slot`) within a two-dimensional grid structure ([CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)). It allows full control over columns and rows sizes, spacing between children, and the overall height. However, due to its extensive customization options, it's best suited for situations where simpler layout components like Tiles or Columns aren't sufficient.
+The `Grid` component is a versatile tool to arrange child elements (`Grid.Area`) within a two-dimensional grid structure ([CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)). It allows full control over columns and rows sizes, spacing between children, and the overall height. However, due to its extensive customization options, it's best suited for situations where simpler layout components like Tiles or Columns aren't sufficient.
 
-<Message messageTitle="Order-agnostic!">
-The `<Grid.Slot>` elements don't have to be arranged in any specific order. They will be automatically placed based on their `name` prop.
-</Message>
+One of the benefits of using `<Grid>` is that its associated components, `<Grid.Area>`, don't need to be arranged in any specific order. They will be automatically positioned based on their `name` prop. If you'd like to understand more about how grid template areas function, you can find a detailed article [here](https://www.smashingmagazine.com/understanding-css-grid-template-areas/).
 
 ## Import
 
@@ -50,7 +48,7 @@ import { Grid } from '@marigold/components';
   ]}
 />
 
-### Grid.Slot
+### Grid.Area
 
 <PropsTable
   props={[

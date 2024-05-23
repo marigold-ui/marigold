@@ -10,7 +10,7 @@ test('default space is "0"', () => {
       columns={['auto']}
       rows={['auto']}
     >
-      <Grid.Slot name="header" />
+      <Grid.Area name="header" />
     </Grid>
   );
 
@@ -27,7 +27,7 @@ test('allows to set spacing', () => {
       rows={['auto']}
       space={1}
     >
-      <Grid.Slot name="header" />
+      <Grid.Area name="header" />
     </Grid>
   );
 
@@ -43,7 +43,7 @@ test('default height is "auto"', () => {
       columns={['auto']}
       rows={['auto']}
     >
-      <Grid.Slot name="header" />
+      <Grid.Area name="header" />
     </Grid>
   );
 
@@ -60,7 +60,7 @@ test('allows to set height', () => {
       rows={['auto']}
       height={96}
     >
-      <Grid.Slot name="header" />
+      <Grid.Area name="header" />
     </Grid>
   );
 
@@ -77,7 +77,7 @@ test('allows to define a grid', () => {
       rows={['100px', 'auto', '100px']}
       height={96}
     >
-      <Grid.Slot name="header" />
+      <Grid.Area name="header" />
     </Grid>
   );
 
@@ -98,7 +98,7 @@ test('converts numbers to fractions in a grid', () => {
       rows={[1, 2, 1]}
       height={96}
     >
-      <Grid.Slot name="header" />
+      <Grid.Area name="header" />
     </Grid>
   );
 

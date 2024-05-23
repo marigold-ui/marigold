@@ -14,17 +14,17 @@ export default () => (
     height={80}
     space={1}
   >
-    <Grid.Slot name="header">
+    <Grid.Area name="header">
       <Block title="header" />
-    </Grid.Slot>
-    <Grid.Slot name="sidebar">
+    </Grid.Area>
+    <Grid.Area name="sidebar">
       <Block title="sidebar" />
-    </Grid.Slot>
-    <Grid.Slot name="main">
+    </Grid.Area>
+    <Grid.Area name="main">
       <Block title="main" />
-    </Grid.Slot>
-    <Grid.Slot name="footer">
+    </Grid.Area>
+    <Grid.Area name="footer">
       <Block title="footer" />
-    </Grid.Slot>
+    </Grid.Area>
   </Grid>
 );

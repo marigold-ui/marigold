@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import type { GapSpaceProp, HeightProp } from '@marigold/system';
 import { cn, gapSpace, height as twHeight } from '@marigold/system';
 
-import { Slot } from './GridSlot';
+import { GridArea } from './GridArea';
 
 // Helpers
 // ---------------
@@ -68,4 +68,4 @@ export const Grid = ({
   );
 };
 
-Grid.Slot = Slot;
+Grid.Area = GridArea;
