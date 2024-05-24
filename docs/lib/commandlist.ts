@@ -5,6 +5,7 @@ export const links = [
       {
         name: 'Slack',
         href: 'https://reservix.slack.com/archives/C02727BNZ3J',
+        keywords: ['help'],
       },
       {
         name: 'Jira',
@@ -13,10 +14,12 @@ export const links = [
       {
         name: 'Figma Core Kit',
         href: 'https://www.figma.com/design/NbTUW9zk15nN8idlfsEttS/%F0%9F%8C%BC-Marigold-CORE?t=VfTLYo5foFEjRxFY-0',
+        keywords: ['design'],
       },
       {
         name: 'Support Center',
         href: 'https://reservix.atlassian.net/servicedesk/customer/portal/77',
+        keywords: ['help'],
       },
       {
         name: 'Storybook',
@@ -25,6 +28,7 @@ export const links = [
       {
         name: 'Starter',
         href: 'https://stackblitz.com/edit/github-v1evcv?file=src%2FApp.tsx',
+        keywords: ['playground'],
       },
     ],
   },

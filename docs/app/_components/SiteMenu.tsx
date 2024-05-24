@@ -105,8 +105,9 @@ export const SiteMenu = () => {
       <Dialog aria-label="Global Command Menu">
         <Command
           className={classNames.container}
-          filter={(value, query) => {
-            if (value.toLowerCase().includes(query)) return 1;
+          filter={(value, query, keywords) => {
+            const searchValue = `${value} ${keywords}`;
+            if (searchValue.toLowerCase().includes(query)) return 1;
             return 0;
           }}
         >
@@ -180,6 +181,7 @@ export const SiteMenu = () => {
                     key={page.href}
                     value={page.href}
                     onSelect={() => window.open(page.href, '_blank')}
+                    keywords={page.keywords}
                   >
                     <Inline space={4} alignY="center">
                       {page.name}
