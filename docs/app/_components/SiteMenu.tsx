@@ -1,28 +1,17 @@
 'use client';
 
-import { registry } from '@/.registry';
-import FullContainerDemo from '@/content/components/layout/container/full-container.demo';
 import { links, themeswitch } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
-import { Button, Dialog, Icons, Inline, Split, useClassNames } from '@/ui';
+import { Button, Dialog, Inline, Split, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
-import {
-  ComponentType,
-  ReactElement,
-  Suspense,
-  lazy,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { useCopyToClipboard, useDebounce } from 'react-use';
+import { useEffect, useState } from 'react';
+import { useCopyToClipboard } from 'react-use';
 
 import { useRouter } from 'next/navigation';
 
 import { ExternalLink, Search } from '@marigold/icons';
-import { flattenObject } from '@marigold/theme-preset';
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
@@ -30,30 +19,6 @@ import { useHasMounted } from '@/ui/useHasMounted';
 
 // Helpers
 // ---------------
-
-const handleDemo = (demo: ComponentType) => {
-  const demos = Object.entries(demo);
-
-  console.log('#######', demos);
-  const codeString = JSON.stringify(demos[1], (key, value) => {
-    if (typeof value === 'function') {
-      const Component = lazy(() =>
-        import('.registry').then(module => ({
-          default: module.ComponentType,
-        }))
-      );
-      const newVal = (
-        <Suspense>
-          <Component />
-        </Suspense>
-      );
-      console.log(newVal);
-      return newVal.toString();
-    }
-    return value;
-  });
-};
-
 const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
   const items = allContentPages
     .filter(page => page.slug.includes(slug))
@@ -89,11 +54,10 @@ const SubItem = ({ ...props }) => {
   return <Command.Item {...props} />;
 };
 
-export const SiteMenu = async (icons: keyof (typeof Icons)[]) => {
+export const SiteMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const ref = useRef<HTMLDivElement>();
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
@@ -106,18 +70,9 @@ export const SiteMenu = async (icons: keyof (typeof Icons)[]) => {
     setOpen(false);
   };
 
-  const [, setCopy] = useCopyToClipboard();
-  const [isCopied, setCopied] = useState(false);
-  const [isReady, cancel] = useDebounce(() => setCopied(false), 2000, [
-    isCopied,
-  ]);
+  const [, setCopied] = useCopyToClipboard();
   const copy = (value: string) => {
-    if (isReady()) {
-      cancel();
-    }
-
-    setCopy(value);
-    setCopied(true);
+    setCopied(value);
     setOpen(false);
   };
 
@@ -129,7 +84,6 @@ export const SiteMenu = async (icons: keyof (typeof Icons)[]) => {
         setOpen(open => !open);
       }
     };
-
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
   }, []);
@@ -137,13 +91,9 @@ export const SiteMenu = async (icons: keyof (typeof Icons)[]) => {
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
 
-  const demos = Object.entries(registry);
-  // demos.map(item => console.log(item[1]));
-
   if (!current) {
     return null;
   }
-
   const tokens = iterateTokens(themes[current].colors || {});
 
   return (
@@ -267,30 +217,6 @@ export const SiteMenu = async (icons: keyof (typeof Icons)[]) => {
                 ))}
               </CommandGroup>
             )}
-
-            {/* demos copy command */}
-            <CommandGroup
-              heading="Demos"
-              key="demo"
-              className={classNames.section}
-            >
-              {demos.map(item => (
-                <Command.Item
-                  className={classNames.item}
-                  key={item[1].name}
-                  value={item[1].name}
-                  onSelect={() => handleDemo(item[1].demo)}
-                >
-                  <Inline space={4} alignY="center">
-                    {item[1].name}
-                    <Split />
-                    <span className="text-text-primary-muted text-xs">
-                      copy demo
-                    </span>
-                  </Inline>
-                </Command.Item>
-              ))}
-            </CommandGroup>
           </Command.List>
         </Command>
       </Dialog>
