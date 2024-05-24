@@ -206,6 +206,7 @@ export const SiteMenu = () => {
                     className={classNames.item}
                     key={token}
                     value={token}
+                    keywords={['copy']}
                     onSelect={() => copy(token.replace('-DEFAULT', ''))}
                   >
                     <Inline space={4} alignY="center">
