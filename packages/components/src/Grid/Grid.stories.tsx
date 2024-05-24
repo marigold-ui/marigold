@@ -5,7 +5,7 @@ import { cn } from '@marigold/system';
 import { Grid } from './Grid';
 
 const meta = {
-  title: 'Components/Layout',
+  title: 'Components/Grid',
   component: Grid,
 } satisfies Meta<typeof Grid>;
 
