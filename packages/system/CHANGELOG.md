@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 7.8.0
+
+### Minor Changes
+
+- [#3913](https://github.com/marigold-ui/marigold/pull/3913) [`8c4631f`](https://github.com/marigold-ui/marigold/commit/8c4631f53744e9316f4d6ae325602de8287bbe86) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce `Grid` component
+
 ## 7.7.2
 
 ## 7.7.1

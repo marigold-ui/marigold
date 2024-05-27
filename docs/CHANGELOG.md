@@ -1,5 +1,20 @@
 # @marigold/docs
 
+## 7.8.0
+
+### Minor Changes
+
+- [#3913](https://github.com/marigold-ui/marigold/pull/3913) [`8c4631f`](https://github.com/marigold-ui/marigold/commit/8c4631f53744e9316f4d6ae325602de8287bbe86) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce `Grid` component
+
+### Patch Changes
+
+- Updated dependencies [[`8c4631f`](https://github.com/marigold-ui/marigold/commit/8c4631f53744e9316f4d6ae325602de8287bbe86)]:
+  - @marigold/components@7.8.0
+  - @marigold/theme-b2b@27.1.9
+  - @marigold/theme-core@26.1.9
+  - @marigold/icons@1.2.49
+  - @marigold/theme-preset@1.3.14
+
 ## 7.7.2
 
 ### Patch Changes
