@@ -23,7 +23,7 @@
     "directory": "packages/components"
   },
   "dependencies": {
-    "@internationalized/date": "3.5.3",
+    "@internationalized/date": "3.5.4",
     "@marigold/icons": "workspace:*",
     "@marigold/system": "workspace:*",
     "@marigold/types": "workspace:*",
