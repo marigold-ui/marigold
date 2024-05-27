@@ -53,9 +53,7 @@ export const Basic: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    const [value, setValue] = useState(
-      new CalendarDate(2019, 6, 5) as DateValue
-    );
+    const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
     return (
       <>
         <Calendar value={value} onChange={setValue} {...args} />
