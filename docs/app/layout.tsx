@@ -13,6 +13,7 @@ import { fontSans } from '@/theme/fonts';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 
 import { Analytics } from './_components/Analytics';
+import { PortalContaier } from './_components/PortalContainer';
 import { SectionNavigation } from './_components/SectionNavigation';
 import { SiteFooter } from './_components/SiteFooter';
 import { SiteHeader } from './_components/SiteHeader';
@@ -80,6 +81,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <SiteFooter />
               </main>
             </MarigoldProvider>
+            <PortalContaier />
           </MarigoldThemeSwitch>
         </Suspense>
         <Analytics />
