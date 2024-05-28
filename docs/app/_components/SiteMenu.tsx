@@ -3,16 +3,17 @@
 import { links, themeswitch } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
-import { Button, Dialog, Inline, Split, useClassNames } from '@/ui';
+import { Button, Dialog, Icons, Inline, Split, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 
 import { useRouter } from 'next/navigation';
 
 import { ExternalLink, Search } from '@marigold/icons';
 
+import { IconList } from '@/ui/IconList';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
 import { useHasMounted } from '@/ui/useHasMounted';
@@ -58,6 +59,7 @@ export const SiteMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const ref = useRef<SVGElement>();
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
@@ -75,6 +77,32 @@ export const SiteMenu = () => {
     setCopied(value);
     setOpen(false);
   };
+
+  const [svgContent, setSvgContent] = useState('');
+  const getIcon = (icon: keyof typeof Icons, ref: any) => {
+    const Component = Icons[icon];
+    const iconElement = <Component ref={ref} />;
+    return { iconElement, ref, icon };
+  };
+
+  const iconKeys = Object.keys(Icons);
+
+  const iconElements = iconKeys.map((icon: keyof typeof Icons) => {
+    return getIcon(icon, ref);
+  });
+
+  Object.values(iconElements).map(elements => console.log(elements));
+  useEffect(() => {
+    iconElements.forEach(element => {
+      if (element.ref.current) {
+        const svg = element.ref.current.outerHTML.replace(
+          / class="[a-zA-Z0-9:;.\s()\-,]*"/,
+          ''
+        );
+        setSvgContent(svg);
+      }
+    });
+  }, [iconElements]);
 
   // register global cmd+k hotkey
   useEffect(() => {
@@ -220,6 +248,29 @@ export const SiteMenu = () => {
                 ))}
               </CommandGroup>
             )}
+            {/* icon copy command */}
+            <CommandGroup
+              heading="Icons"
+              key="icons"
+              className={classNames.section}
+            >
+              {Object.values(iconElements).map(el => (
+                <Command.Item
+                  key={el.icon}
+                  value={el.icon}
+                  className={classNames.item}
+                  onSelect={() => copy(svgContent)}
+                >
+                  <Inline space={4} alignY="center">
+                    {el.iconElement} {el.icon}
+                    <Split />
+                    <span className="text-text-primary-muted text-xs">
+                      copy icon
+                    </span>
+                  </Inline>
+                </Command.Item>
+              ))}
+            </CommandGroup>
           </Command.List>
         </Command>
       </Dialog>
