@@ -248,7 +248,8 @@ export const SiteMenu = () => {
                     onSelect={() => copy(el.svg)}
                   >
                     <Inline space={4} alignY="center">
-                      {el.iconElement} {el.icon}
+                      {el.iconElement}
+                      {el.icon}
                       <Split />
                       <span className="text-text-primary-muted text-xs">
                         copy icon
