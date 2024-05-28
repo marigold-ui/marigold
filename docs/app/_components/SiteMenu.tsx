@@ -119,7 +119,8 @@ export const SiteMenu = () => {
           className={classNames.container}
           filter={(value, query, keywords) => {
             const searchValue = `${value} ${keywords}`;
-            if (searchValue.toLowerCase().includes(query)) return 1;
+            if (searchValue.toLowerCase().includes(query.toLowerCase()))
+              return 1;
             return 0;
           }}
         >
