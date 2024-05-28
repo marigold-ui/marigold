@@ -168,6 +168,7 @@ export const SiteMenu = () => {
                     className={classNames.item}
                     key={item.name}
                     value={item.name}
+                    keywords={['change', 'theme']}
                     onSelect={() => changeTheme(item.theme)}
                   >
                     <Inline space={4} alignY="center">
