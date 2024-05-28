@@ -1,5 +1,14 @@
 # @marigold/storybook-config
 
+## 1.1.41
+
+### Patch Changes
+
+- Updated dependencies [[`8c4631f`](https://github.com/marigold-ui/marigold/commit/8c4631f53744e9316f4d6ae325602de8287bbe86)]:
+  - @marigold/components@7.8.0
+  - @marigold/theme-b2b@27.1.9
+  - @marigold/theme-core@26.1.9
+
 ## 1.1.40
 
 ### Patch Changes
