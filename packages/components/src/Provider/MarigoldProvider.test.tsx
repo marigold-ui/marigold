@@ -137,7 +137,5 @@ test('using classname prop', () => {
     </MarigoldProvider>
   );
   const theme = screen.getByText('child');
-
-  console.log(theme?.className);
   expect(theme?.className).toMatchInlineSnapshot(`"bg-slate-400"`);
 });
