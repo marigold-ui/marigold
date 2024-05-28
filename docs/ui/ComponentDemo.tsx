@@ -55,9 +55,8 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
           <Card variant="not-inset">
             <div
               data-theme={current}
-              className="flex size-full min-h-[150px] flex-col [&>*:nth-child(2)]:flex [&>*:nth-child(2)]:flex-1 [&>*:nth-child(2)]:place-items-center [&>*:nth-child(2)]:rounded-xl"
+              className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
             >
-              <div id="portalContainer" className="not-prose" />
               <OverlayContainerProvider value="portalContainer">
                 <MarigoldProvider theme={(current && themes[current]) as Theme}>
                   <div className="not-prose size-full overflow-x-auto p-4">

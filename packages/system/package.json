@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "7.7.2",
+  "version": "7.8.0",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@marigold/types": "workspace:*",
-    "@react-aria/i18n": "3.11.0",
+    "@react-aria/i18n": "3.11.1",
     "class-variance-authority": "0.7.0",
     "deepmerge": "4.2.2",
     "react-fast-compare": "3.2.0",
@@ -39,7 +39,7 @@
     "@babel/core": "7.24.4",
     "@marigold/tsconfig": "workspace:*",
     "postcss": "8.4.35",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "tailwindcss": "3.4.1",
     "tsup": "8.0.2"
   },
