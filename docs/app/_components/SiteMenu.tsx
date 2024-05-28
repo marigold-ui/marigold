@@ -240,17 +240,17 @@ export const SiteMenu = () => {
                 key="icons"
                 className={classNames.section}
               >
-                {Object.values(iconElements).map(el => (
+                {Object.values(iconElements).map(elements => (
                   <SubItem
-                    key={el.icon}
-                    value={el.icon}
+                    key={elements.icon}
+                    value={elements.icon}
                     keywords={['copy']}
                     className={classNames.item}
-                    onSelect={() => copy(el.svg)}
+                    onSelect={() => copy(elements.svg)}
                   >
                     <Inline space={4} alignY="center">
-                      {el.iconElement}
-                      {el.icon}
+                      {elements.iconElement}
+                      {elements.icon}
                       <Split />
                       <span className="text-text-primary-muted text-xs">
                         copy icon
