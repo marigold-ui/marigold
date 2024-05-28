@@ -243,6 +243,7 @@ export const SiteMenu = () => {
                   <SubItem
                     key={el.icon}
                     value={el.icon}
+                    keywords={['copy']}
                     className={classNames.item}
                     onSelect={() => copy(el.svg)}
                   >
