@@ -6,7 +6,7 @@ import { iterateTokens } from '@/lib/utils';
 import { Button, Dialog, Icons, Inline, Split, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
-import { RefObject, Suspense, useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard } from 'react-use';
 
@@ -80,11 +80,7 @@ export const SiteMenu = () => {
 
   const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
     const Component = Icons[icon];
-    const iconElement = (
-      <Suspense>
-        <Component ref={ref} />
-      </Suspense>
-    );
+    const iconElement = <Component ref={ref} />;
 
     const svg = ReactDOMServer.renderToString(<Component ref={ref} />);
     return { iconElement, ref, icon, svg };
@@ -108,7 +104,6 @@ export const SiteMenu = () => {
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
-
   if (!current) {
     return null;
   }
@@ -238,7 +233,7 @@ export const SiteMenu = () => {
                 ))}
               </CommandGroup>
             )}
-            {/* icon copy command */}
+            {/* copy icon command */}
             {query && (
               <CommandGroup
                 heading="Icons"
