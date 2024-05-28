@@ -6,14 +6,14 @@ import { iterateTokens } from '@/lib/utils';
 import { Button, Dialog, Icons, Inline, Split, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
-import { useEffect, useRef, useState } from 'react';
+import { RefObject, Suspense, useEffect, useRef, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard } from 'react-use';
 
 import { useRouter } from 'next/navigation';
 
 import { ExternalLink, Search } from '@marigold/icons';
 
-import { IconList } from '@/ui/IconList';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
 import { useHasMounted } from '@/ui/useHasMounted';
@@ -78,31 +78,21 @@ export const SiteMenu = () => {
     setOpen(false);
   };
 
-  const [svgContent, setSvgContent] = useState('');
-  const getIcon = (icon: keyof typeof Icons, ref: any) => {
+  const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
     const Component = Icons[icon];
-    const iconElement = <Component ref={ref} />;
-    return { iconElement, ref, icon };
+    const iconElement = (
+      <Suspense>
+        <Component ref={ref} />
+      </Suspense>
+    );
+
+    const svg = ReactDOMServer.renderToString(<Component ref={ref} />);
+    return { iconElement, ref, icon, svg };
   };
 
-  const iconKeys = Object.keys(Icons);
-
-  const iconElements = iconKeys.map((icon: keyof typeof Icons) => {
-    return getIcon(icon, ref);
+  const iconElements = Object.keys(Icons).map((icon: keyof typeof Icons) => {
+    return getIcon(icon, ref as any);
   });
-
-  Object.values(iconElements).map(elements => console.log(elements));
-  useEffect(() => {
-    iconElements.forEach(element => {
-      if (element.ref.current) {
-        const svg = element.ref.current.outerHTML.replace(
-          / class="[a-zA-Z0-9:;.\s()\-,]*"/,
-          ''
-        );
-        setSvgContent(svg);
-      }
-    });
-  }, [iconElements]);
 
   // register global cmd+k hotkey
   useEffect(() => {
@@ -249,28 +239,30 @@ export const SiteMenu = () => {
               </CommandGroup>
             )}
             {/* icon copy command */}
-            <CommandGroup
-              heading="Icons"
-              key="icons"
-              className={classNames.section}
-            >
-              {Object.values(iconElements).map(el => (
-                <Command.Item
-                  key={el.icon}
-                  value={el.icon}
-                  className={classNames.item}
-                  onSelect={() => copy(svgContent)}
-                >
-                  <Inline space={4} alignY="center">
-                    {el.iconElement} {el.icon}
-                    <Split />
-                    <span className="text-text-primary-muted text-xs">
-                      copy icon
-                    </span>
-                  </Inline>
-                </Command.Item>
-              ))}
-            </CommandGroup>
+            {query && (
+              <CommandGroup
+                heading="Icons"
+                key="icons"
+                className={classNames.section}
+              >
+                {Object.values(iconElements).map(el => (
+                  <SubItem
+                    key={el.icon}
+                    value={el.icon}
+                    className={classNames.item}
+                    onSelect={() => copy(el.svg)}
+                  >
+                    <Inline space={4} alignY="center">
+                      {el.iconElement} {el.icon}
+                      <Split />
+                      <span className="text-text-primary-muted text-xs">
+                        copy icon
+                      </span>
+                    </Inline>
+                  </SubItem>
+                ))}
+              </CommandGroup>
+            )}
           </Command.List>
         </Command>
       </Dialog>
