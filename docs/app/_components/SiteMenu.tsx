@@ -59,7 +59,7 @@ export const SiteMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const ref = useRef<SVGElement>();
+  const ref = useRef<SVGSVGElement>();
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
@@ -81,7 +81,6 @@ export const SiteMenu = () => {
   const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
     const Component = Icons[icon];
     const iconElement = <Component ref={ref} />;
-
     const svg = ReactDOMServer.renderToString(<Component ref={ref} />);
     return { iconElement, ref, icon, svg };
   };
