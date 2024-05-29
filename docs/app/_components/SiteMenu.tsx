@@ -6,7 +6,7 @@ import { iterateTokens } from '@/lib/utils';
 import { Button, Dialog, Icons, Inline, Split, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
 
@@ -48,11 +48,41 @@ const Hotkey = () => {
 
 // Component
 // ---------------
+interface SubItemProps {
+  children: ReactNode;
+  className?: string;
+  value?: string;
+  keywords?: string[];
+  onSelect?: (value: string) => void;
+  copyValue: string;
+}
 
-const SubItem = ({ ...props }) => {
+const SubItem = ({ children, copyValue, ...props }: SubItemProps) => {
   const search = useCommandState(state => state.search);
+
+  const [isCopied, setCopy] = useState(false);
+  const [, setCopied] = useCopyToClipboard();
+  const [isReady, cancel] = useDebounce(() => setCopy(false), 2000, [isCopied]);
+  const copy = (value: string) => {
+    if (isReady()) {
+      cancel();
+    }
+    setCopy(true);
+    setCopied(value);
+  };
+
   if (!search) return null;
-  return <Command.Item {...props} />;
+  return (
+    <Command.Item onSelect={() => copy(copyValue)} {...props}>
+      <Inline space={4} alignY="center">
+        {children}
+        <Split />
+        <span className="text-text-primary-muted text-xs">
+          {isCopied ? 'COPIED!' : 'COPY ICON'}
+        </span>
+      </Inline>
+    </Command.Item>
+  );
 };
 
 export const SiteMenu = () => {
@@ -70,17 +100,6 @@ export const SiteMenu = () => {
   const changeTheme = (theme: string) => {
     updateTheme(theme);
     setOpen(false);
-  };
-
-  const [isCopied, setCopy] = useState(false);
-  const [copied, setCopied] = useCopyToClipboard();
-  const [isReady, cancel] = useDebounce(() => setCopy(false), 2000, [isCopied]);
-  const copy = (value: string) => {
-    if (isReady()) {
-      cancel();
-    }
-    setCopy(true);
-    setCopied(value);
   };
 
   const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
@@ -226,15 +245,9 @@ export const SiteMenu = () => {
                     key={token}
                     value={token}
                     keywords={['copy']}
-                    onSelect={() => copy(token.replace('-DEFAULT', ''))}
+                    copyValue={token.replace('-DEFAULT', '')}
                   >
-                    <Inline space={4} alignY="center">
-                      {token.replace('-DEFAULT', '')}
-                      <Split />
-                      <span className="text-text-primary-muted text-xs">
-                        {copied ? 'COPIED!' : 'COPY TOKEN'}
-                      </span>
-                    </Inline>
+                    {token.replace('-DEFAULT', '')}
                   </SubItem>
                 ))}
               </CommandGroup>
@@ -252,16 +265,10 @@ export const SiteMenu = () => {
                     value={elements.icon}
                     keywords={['copy']}
                     className={classNames.item}
-                    onSelect={() => copy(elements.svg)}
+                    copyValue={elements.svg}
                   >
-                    <Inline space={4} alignY="center">
-                      {elements.iconElement}
-                      {elements.icon}
-                      <Split />
-                      <span className="text-text-primary-muted text-xs">
-                        {isCopied ? 'COPIED!' : 'COPY ICON'}
-                      </span>
-                    </Inline>
+                    {elements.iconElement}
+                    {elements.icon}
                   </SubItem>
                 ))}
               </CommandGroup>
