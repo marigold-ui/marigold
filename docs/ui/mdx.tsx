@@ -3,8 +3,6 @@
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { HTMLAttributes } from 'react';
 
-import Image from 'next/image';
-
 import { cn } from '@marigold/system';
 
 import { IconList } from '@/ui/IconList';
@@ -25,6 +23,7 @@ import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
 import { FullsizeView } from './FullsizeViewDemo';
+import { Image } from './Image';
 import { PropsTable } from './PropsTable';
 import { TeaserCard, TeaserList } from './TeaserCard';
 import { Toc } from './Toc';
