@@ -83,9 +83,6 @@ export const SiteMenu = () => {
     setCopied(value);
   };
 
-  console.log('isCopied', isCopied);
-  console.log('value', copied);
-
   const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
     const Component = Icons[icon];
     const iconElement = <Component ref={ref} />;
