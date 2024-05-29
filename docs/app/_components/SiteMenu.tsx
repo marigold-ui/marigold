@@ -195,8 +195,8 @@ export const SiteMenu = () => {
                     <Inline space={4} alignY="center">
                       {page.name}
                       <Split />
-                      <span className="text-text-primary-muted text-xs">
-                        <ExternalLink />
+                      <span className="text-xs">
+                        <ExternalLink color="text-primary-muted" />
                       </span>
                     </Inline>
                   </Command.Item>
