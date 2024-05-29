@@ -8,12 +8,12 @@ import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { useCopyToClipboard, useDebounce } from 'react-use';
 
 import { useRouter } from 'next/navigation';
 
 import { ExternalLink, Search } from '@marigold/icons';
 
-import { CopyButton } from '@/ui/CopyButton';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
 import { useHasMounted } from '@/ui/useHasMounted';
@@ -71,6 +71,20 @@ export const SiteMenu = () => {
     updateTheme(theme);
     setOpen(false);
   };
+
+  const [isCopied, setCopy] = useState(false);
+  const [copied, setCopied] = useCopyToClipboard();
+  const [isReady, cancel] = useDebounce(() => setCopy(false), 2000, [isCopied]);
+  const copy = (value: string) => {
+    if (isReady()) {
+      cancel();
+    }
+    setCopy(true);
+    setCopied(value);
+  };
+
+  console.log('isCopied', isCopied);
+  console.log('value', copied);
 
   const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
     const Component = Icons[icon];
@@ -194,8 +208,8 @@ export const SiteMenu = () => {
                     <Inline space={4} alignY="center">
                       {page.name}
                       <Split />
-                      <span className="text-xs">
-                        <ExternalLink color="text-primary-muted" />
+                      <span className="text-text-primary-muted text-xs">
+                        <ExternalLink />
                       </span>
                     </Inline>
                   </Command.Item>
@@ -215,15 +229,13 @@ export const SiteMenu = () => {
                     key={token}
                     value={token}
                     keywords={['copy']}
+                    onSelect={() => copy(token.replace('-DEFAULT', ''))}
                   >
                     <Inline space={4} alignY="center">
                       {token.replace('-DEFAULT', '')}
                       <Split />
-                      <span>
-                        <CopyButton
-                          variant="invertedCopy"
-                          codeString={token.replace('-DEFAULT', '')}
-                        />
+                      <span className="text-text-primary-muted text-xs">
+                        {copied ? 'COPIED!' : 'COPY TOKEN'}
                       </span>
                     </Inline>
                   </SubItem>
@@ -241,18 +253,16 @@ export const SiteMenu = () => {
                   <SubItem
                     key={elements.icon}
                     value={elements.icon}
-                    keywords={['copy', 'icons']}
+                    keywords={['copy']}
                     className={classNames.item}
+                    onSelect={() => copy(elements.svg)}
                   >
                     <Inline space={4} alignY="center">
                       {elements.iconElement}
                       {elements.icon}
                       <Split />
-                      <span>
-                        <CopyButton
-                          variant="invertedCopy"
-                          codeString={elements.svg}
-                        />
+                      <span className="text-text-primary-muted text-xs">
+                        {isCopied ? 'COPIED!' : 'COPY ICON'}
                       </span>
                     </Inline>
                   </SubItem>
