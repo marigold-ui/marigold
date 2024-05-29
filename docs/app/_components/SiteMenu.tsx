@@ -8,7 +8,6 @@ import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { useCopyToClipboard, useDebounce } from 'react-use';
 
 import { useRouter } from 'next/navigation';
 
