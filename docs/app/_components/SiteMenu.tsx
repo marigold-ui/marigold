@@ -220,7 +220,7 @@ export const SiteMenu = () => {
                     <Inline space={4} alignY="center">
                       {token.replace('-DEFAULT', '')}
                       <Split />
-                      <span className="text-text-primary-muted text-xs">
+                      <span>
                         <CopyButton
                           variant="invertedCopy"
                           codeString={token.replace('-DEFAULT', '')}
@@ -249,7 +249,7 @@ export const SiteMenu = () => {
                       {elements.iconElement}
                       {elements.icon}
                       <Split />
-                      <span className="text-text-primary-muted text-xs">
+                      <span>
                         <CopyButton
                           variant="invertedCopy"
                           codeString={elements.svg}
