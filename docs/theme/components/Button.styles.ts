@@ -10,6 +10,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         sunken:
           'text-secondary-600 hover:bg-secondary-400/20 bg-secondary-400/10 h-8 justify-start rounded-lg',
         inverted: 'bg-secondary-100',
+        invertedCopy: 'first:fill-text-primary-muted border-none p-0 outline-0',
       },
       size: {
         small: 'text-sm',

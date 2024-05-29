@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 
 import { ExternalLink, Search } from '@marigold/icons';
 
+import { CopyButton } from '@/ui/CopyButton';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
 import { useHasMounted } from '@/ui/useHasMounted';
@@ -70,17 +71,6 @@ export const SiteMenu = () => {
   const changeTheme = (theme: string) => {
     updateTheme(theme);
     setOpen(false);
-  };
-
-  const [isCopied, setCopy] = useState(false);
-  const [, setCopied] = useCopyToClipboard();
-  const [isReady, cancel] = useDebounce(() => setCopy(false), 2000, [isCopied]);
-  const copy = (value: string) => {
-    if (isReady()) {
-      cancel();
-    }
-    setCopied(value);
-    setCopy(true);
   };
 
   const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
@@ -226,13 +216,15 @@ export const SiteMenu = () => {
                     key={token}
                     value={token}
                     keywords={['copy']}
-                    onSelect={() => copy(token.replace('-DEFAULT', ''))}
                   >
                     <Inline space={4} alignY="center">
                       {token.replace('-DEFAULT', '')}
                       <Split />
                       <span className="text-text-primary-muted text-xs">
-                        {isCopied ? 'COPIED!' : 'COPY TOKEN'}
+                        <CopyButton
+                          variant="invertedCopy"
+                          codeString={token.replace('-DEFAULT', '')}
+                        />
                       </span>
                     </Inline>
                   </SubItem>
@@ -250,16 +242,18 @@ export const SiteMenu = () => {
                   <SubItem
                     key={elements.icon}
                     value={elements.icon}
-                    keywords={['copy']}
+                    keywords={['copy', 'icons']}
                     className={classNames.item}
-                    onSelect={() => copy(elements.svg)}
                   >
                     <Inline space={4} alignY="center">
                       {elements.iconElement}
                       {elements.icon}
                       <Split />
                       <span className="text-text-primary-muted text-xs">
-                        {isCopied ? 'COPIED!' : 'COPY ICON'}
+                        <CopyButton
+                          variant="invertedCopy"
+                          codeString={elements.svg}
+                        />
                       </span>
                     </Inline>
                   </SubItem>
