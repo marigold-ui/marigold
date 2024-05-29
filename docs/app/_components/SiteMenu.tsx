@@ -8,7 +8,7 @@ import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { useCopyToClipboard } from 'react-use';
+import { useCopyToClipboard, useDebounce } from 'react-use';
 
 import { useRouter } from 'next/navigation';
 
@@ -72,10 +72,15 @@ export const SiteMenu = () => {
     setOpen(false);
   };
 
+  const [isCopied, setCopy] = useState(false);
   const [, setCopied] = useCopyToClipboard();
+  const [isReady, cancel] = useDebounce(() => setCopy(false), 2000, [isCopied]);
   const copy = (value: string) => {
+    if (isReady()) {
+      cancel();
+    }
     setCopied(value);
-    setOpen(false);
+    setCopy(true);
   };
 
   const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
@@ -227,7 +232,7 @@ export const SiteMenu = () => {
                       {token.replace('-DEFAULT', '')}
                       <Split />
                       <span className="text-text-primary-muted text-xs">
-                        copy token
+                        {isCopied ? 'COPIED!' : 'COPY TOKEN'}
                       </span>
                     </Inline>
                   </SubItem>
@@ -254,7 +259,7 @@ export const SiteMenu = () => {
                       {elements.icon}
                       <Split />
                       <span className="text-text-primary-muted text-xs">
-                        copy icon
+                        {isCopied ? 'COPIED!' : 'COPY ICON'}
                       </span>
                     </Inline>
                   </SubItem>
