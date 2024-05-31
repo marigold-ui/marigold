@@ -1,13 +1,30 @@
 'use client';
 
+import tableProps from '@/.table-props/index.json';
 import { Card, Inline, Table, Text } from '@/ui';
 
 import { BlankCanvas } from './icons';
 
 export interface PropsTableProps {
-  props?: { [key: string]: string }[];
+  component?: string;
 }
-export const PropsTable = ({ props }: PropsTableProps) => {
+
+interface Prop {
+  name: string;
+  type: {
+    name: string;
+  };
+  defaultValue: any;
+  description: string;
+}
+
+export const PropsTable = ({ component }: PropsTableProps) => {
+  const props =
+    component &&
+    (Object.entries((tableProps as any)[component][0].props).map(
+      element => element[1]
+    ) as Prop[]);
+
   return (
     <Card px={3} py={4}>
       {!props ? (
@@ -25,24 +42,24 @@ export const PropsTable = ({ props }: PropsTableProps) => {
               <Table.Column key="description">Description</Table.Column>
             </Table.Header>
             <Table.Body items={props}>
-              {item => (
-                <Table.Row key={item.property}>
+              {(prop: Prop) => (
+                <Table.Row key={prop.name}>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {item.property}
+                      {prop.name}
                     </code>
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {item.type}
+                      {prop.type.name}
                     </code>
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {item.default ? item.default : '-'}
+                      {/* {prop.default ? prop.default : '-'} */}
                     </code>
                   </Table.Cell>
-                  <Table.Cell>{item.description}</Table.Cell>
+                  <Table.Cell>{prop.description}</Table.Cell>
                 </Table.Row>
               )}
             </Table.Body>
