@@ -26,6 +26,7 @@ export async function generateMetadata({
   return page
     ? {
         title: page.title,
+        description: page.caption,
       }
     : {};
 }
