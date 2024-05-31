@@ -25,6 +25,9 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     .filter(page => page.slug.includes(slug))
     .map(({ title, slug, order }) => ({ title, slug, order }));
 
+  const sub = allContentPages.map(page => page);
+
+  console.log('####', sub);
   // sort by order if it's defiened, otherwise sort alphabettically
   items.sort((a, b) => {
     if (typeof a.order === 'number' && typeof b.order === 'number') {
