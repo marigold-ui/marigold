@@ -71,6 +71,23 @@ export const ContentPage = defineDocumentType(() => ({
         return path.length < 3 ? null : path.at(1);
       },
     },
+    headings: {
+      type: 'json',
+      resolve: async doc => {
+        const headingsRegex = /\n(?<flag>#{1,6})\s+(?<content>.+)/g;
+        const headings = Array.from(doc.body.raw.matchAll(headingsRegex)).map(
+          ({ groups }) => {
+            const flag = groups?.flag;
+            const content = groups?.content;
+            return {
+              level: flag.length,
+              text: content,
+            };
+          }
+        );
+        return headings;
+      },
+    },
   },
 }));
 

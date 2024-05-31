@@ -3,7 +3,15 @@
 import { links, themeswitch } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
-import { Button, Dialog, Icons, Inline, Split, useClassNames } from '@/ui';
+import {
+  Button,
+  Dialog,
+  Icons,
+  Inline,
+  Popover,
+  Split,
+  useClassNames,
+} from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
@@ -25,9 +33,8 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     .filter(page => page.slug.includes(slug))
     .map(({ title, slug, order }) => ({ title, slug, order }));
 
-  const sub = allContentPages.map(page => page);
+  const sub = allContentPages.map(page => page.headings);
 
-  console.log('####', sub);
   // sort by order if it's defiened, otherwise sort alphabettically
   items.sort((a, b) => {
     if (typeof a.order === 'number' && typeof b.order === 'number') {
@@ -37,7 +44,7 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     }
   });
 
-  return { name, slug, items };
+  return { name, slug, items, sub };
 });
 
 const Hotkey = () => {
@@ -85,6 +92,94 @@ const SubItem = ({ children, copyValue, ...props }: SubItemProps) => {
         </span>
       </Inline>
     </Command.Item>
+  );
+};
+
+interface SubCommandProps {
+  classNames: {
+    item: string;
+    container: string;
+    section: string;
+  };
+}
+const SubCommand = ({ classNames }: SubCommandProps) => {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+
+  // register global cmd+k hotkey
+  useEffect(() => {
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen(open => !open);
+      }
+    };
+    document.addEventListener('keydown', onKeydown);
+    return () => document.removeEventListener('keydown', onKeydown);
+  }, []);
+
+  groupedPages.map(({ sub }) =>
+    Object.values(sub).map(item =>
+      Object.values(item).map(i => console.log(i.text))
+    )
+  );
+
+  return (
+    <>
+      <Button size="small" onPress={() => setOpen(true)}>
+        more actions
+        <Hotkey />
+      </Button>
+      <Popover
+        aria-label="Sub Command Menu"
+        open={open}
+        onOpenChange={setOpen}
+        isNonModal
+      >
+        <Command
+          filter={(value, query, keywords) => {
+            const searchValue = `${value} ${keywords}`;
+            if (searchValue.toLowerCase().includes(query.toLowerCase()))
+              return 1;
+            return 0;
+          }}
+        >
+          <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
+            {groupedPages.map(({ sub, items }) =>
+              Object.values(items).map(item => (
+                <CommandGroup
+                  heading={item.slug}
+                  key={item.slug}
+                  className={classNames.section}
+                >
+                  {Object.values(sub).map(item =>
+                    Object.values(item).map(item => (
+                      <Command.Item
+                        className={classNames.item}
+
+                        // onSelect={() => goto(page.slug)}
+                      >
+                        {item.text}
+                      </Command.Item>
+                    ))
+                  )}
+                </CommandGroup>
+              ))
+            )}
+          </Command.List>
+          <div className="flex items-center gap-1.5 border-t px-3">
+            <Search className="size-4 opacity-50" />
+            <Command.Input
+              value={query}
+              autoFocus
+              onValueChange={setQuery}
+              placeholder="Type to search ..."
+              className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
+            />
+          </div>
+        </Command>
+      </Popover>
+    </>
   );
 };
 
@@ -278,6 +373,8 @@ export const SiteMenu = () => {
             )}
           </Command.List>
         </Command>
+        {}
+        <SubCommand classNames={classNames} />
       </Dialog>
     </Dialog.Trigger>
   );
