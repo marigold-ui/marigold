@@ -27,3 +27,4 @@ pnpm-lock.yaml
 *.snap
 *.svg
 *.ico
+*.ttf
