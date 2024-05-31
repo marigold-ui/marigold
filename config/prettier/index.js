@@ -8,7 +8,6 @@ module.exports = {
     require.resolve('@trivago/prettier-plugin-sort-imports'),
     require.resolve('prettier-plugin-tailwindcss'),
   ],
-  pluginSearchDirs: ['.'],
   importOrder: [
     '^react/(.*)$',
     '^next/(.*)$',

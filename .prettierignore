@@ -6,6 +6,7 @@
 .husky
 .env.local
 .eslintignore
+.eslintrc
 .gitignore
 .husky
 .next
