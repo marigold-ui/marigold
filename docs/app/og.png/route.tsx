@@ -53,9 +53,20 @@ export const GET = async (req: NextRequest) => {
         }}
       >
         <Flower size="52" position={{ left: -15, bottom: 32 }} rotate="55deg" />
-        <Flower size="24" position={{ left: 20, bottom: -10 }} rotate="55deg" />
-        <Flower size="92" position={{ left: 65, bottom: -20 }} rotate="-10deg" />
-        <Flower size="16" position={{ left: 50, bottom: 82 }} rotate="-10deg" />
+        <Flower size="24" position={{ left: 15, bottom: -10 }} rotate="120deg" />
+        <Flower size="92" position={{ left: 65, bottom: -25 }} rotate="-10deg" />
+        <Flower size="20" position={{ left: 55, bottom: 75 }} rotate="-90deg" />
+        <Flower size="48" position={{ left: 175, bottom: -20 }} rotate="100deg" />
+        <Flower size="28" position={{ left: 15, bottom: 115 }} rotate="35deg" />
+        <Flower size="14" position={{ left: 170, bottom: 40 }} rotate="65deg" />
+
+        <Flower size="84" position={{ right: -20, top: 40 }} rotate="8deg" />
+        <Flower size="20" position={{ right: 15, top: -8 }} rotate="-90deg" />
+        <Flower size="48" position={{ right: 60, top: -10 }} rotate="-90deg" />
+        <Flower size="14" position={{ right: -8, top: 140 }} rotate="65deg" />
+        <Flower size="24" position={{ right: 95, top: 45 }} rotate="65deg" />
+        <Flower size="14" position={{ right: 130, top: 15 }} rotate="8deg" />
+        <Flower size="32" position={{ right: 160, top: -15 }} rotate="8deg" />
 
         <div style={{ display: 'flex', gap: '4px', alignItems: 'center', fontFamily: '"Inter Black"', }}>
             <Logo height="20" width="20"/>
