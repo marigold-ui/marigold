@@ -38,21 +38,8 @@ export const GET = async (req: NextRequest) => {
     new URL('/fonts/Inter-Black.ttf', baseUrl)
   ).then((res) => res.arrayBuffer());
 
-  return new ImageResponse(
-    (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          backgroundColor: colors.bg.body,
-          color: colors.text.primary.DEFAULT,
-        }}
-      >
-        <Flower size="52" position={{ left: -15, bottom: 32 }} rotate="55deg" />
+  const content = title ? <>
+          <Flower size="52" position={{ left: -15, bottom: 32 }} rotate="55deg" />
         <Flower size="24" position={{ left: 15, bottom: -10 }} rotate="120deg" />
         <Flower size="92" position={{ left: 65, bottom: -25 }} rotate="-10deg" />
         <Flower size="20" position={{ left: 55, bottom: 75 }} rotate="-90deg" />
@@ -67,11 +54,28 @@ export const GET = async (req: NextRequest) => {
         <Flower size="24" position={{ right: 95, top: 45 }} rotate="65deg" />
         <Flower size="14" position={{ right: 130, top: 15 }} rotate="8deg" />
         <Flower size="32" position={{ right: 160, top: -15 }} rotate="8deg" />
+  </> :         <div style={{ display: 'flex', gap: '16px', alignItems: 'center', }}>
+            <Logo height="92" width="92"/>
+            <div style={{ fontFamily: '"Inter Black"', color: '#46505a', fontSize: 80, textTransform: 'uppercase', letterSpacing: '-1px' }}>Marigold</div>
+        </div>;
 
-        <div style={{ display: 'flex', gap: '4px', alignItems: 'center', fontFamily: '"Inter Black"', }}>
-            <Logo height="20" width="20"/>
-            <div style={{ fontSize: 20, textTransform: 'uppercase', letterSpacing: 0.5 }}>Marigold</div>
-        </div>
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          backgroundColor: colors.bg.body,
+          color: colors.text.primary.DEFAULT,
+        }}
+      >
+        {content}
+
+        
       </div>
     ),
     {
