@@ -1,6 +1,6 @@
 'use client';
 
-import { useMDXComponent } from 'next-contentlayer/hooks';
+import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { HTMLAttributes } from 'react';
 
 import { cn } from '@marigold/system';
@@ -68,43 +68,59 @@ const typography = {
   blockquote: (props: HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote className="mt-6 border-l-2 pl-6 italic" {...props} />
   ),
+  hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
+    <hr className="my-4 md:my-8" {...props} />
+  ),
+  /**
+   * `rehype-pretty-code` wraps <pre> elements inside a figure.
+   * We use this figure to retrieve the plain source code and
+   * to add additional buttons to the core preview.
+   */
+  figure: (props: HTMLAttributes<HTMLElement> & { raw: string }) => {
+    // We only care about `rehype-pretty-code` figure elements.
+    if (!('data-rehype-pretty-code-figure' in props)) {
+      return <figure {...props} />;
+    }
+
+    const { children, className, raw, ...rest } = props;
+    const lines = raw.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
+    return (
+      <figure className={cn('relative', className)} {...rest}>
+        <div
+          className={cn(
+            'absolute right-3 flex justify-end gap-3',
+            // vertical center if only one line
+            lines > 1 ? 'top-4' : 'top-1/2 -translate-y-1/2'
+          )}
+        >
+          {lines >= 5 ? (
+            <FullsizeView code={props.children} codeString={raw} />
+          ) : null}
+          <CopyButton codeString={raw} />
+        </div>
+        {children}
+      </figure>
+    );
+  },
+  pre: ({ className, ...props }: HTMLAttributes<HTMLPreElement>) => (
+    <pre
+      className={cn(
+        'not-prose *:bg-transparent *:p-0 [&_[data-line]]:leading-[22px]',
+        'max-h-[650px] rounded-lg px-[--pre-padding-x] py-4',
+        'scrollbar-thin scrollbar-thumb-code-500 scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
+        className
+      )}
+      {...props}
+    >
+      {props.children}
+    </pre>
+  ),
   code: (props: HTMLAttributes<HTMLElement>) => (
     <code
       className="my-0 inline-grid rounded bg-black/10 px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
       {...props}
     />
   ),
-  hr: ({ ...props }: HTMLAttributes<HTMLHRElement>) => (
-    <hr className="my-4 md:my-8" {...props} />
-  ),
-  // `raw` is source code to be copied
-  pre: ({
-    raw,
-    className,
-    ...props
-  }: HTMLAttributes<HTMLPreElement> & { raw: string }) => {
-    const lines = raw.split(/\r\n|\r|\n/).length;
-
-    return (
-      <div className="relative">
-        <pre
-          className={cn(
-            'max-h-[650px] overflow-x-auto rounded-lg px-3 py-4 [&>code]:bg-transparent',
-            className
-          )}
-          {...props}
-        >
-          <div className="absolute right-5 flex justify-end gap-2">
-            <CopyButton codeString={raw} />
-            {lines > 5 ? (
-              <FullsizeView code={props.children} codeString={raw} />
-            ) : null}
-          </div>
-          {props.children}
-        </pre>
-      </div>
-    );
-  },
 };
 
 // MDX Components

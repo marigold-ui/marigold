@@ -16,20 +16,16 @@ import { useThemeSwitch } from '@/ui/ThemeSwitch';
 // ---------------
 export interface ComponentDemoProps {
   /**
-   * Used in the rehype plugin
+   * Use to get and parse the demo in rehype
    * @internal
    */
   file: string;
   /**
-   * Used in the rehype plugin
+   * Use to pass the metastring to `rehype-pretty-code`
+   * (see https://rehype-pretty.pages.dev/#meta-strings)
    * @internal
    */
-  wordHighlighting: string;
-  /**
-   * Used in the rehype plugin
-   * @internal
-   */
-  lineHighlighting: string;
+  meta: string;
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
