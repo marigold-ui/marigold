@@ -1,8 +1,8 @@
+import { forwardRef } from 'react';
+import type { ReactNode } from 'react';
+
 import { cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
-
-import { MessageContent } from './MessageContent';
-import { MessageTitle } from './MessageTitle';
 
 // Icons
 // ---------------
@@ -64,32 +64,40 @@ const icons = {
 // Props
 // ---------------
 export interface MessageProps extends Omit<HtmlProps<'div'>, 'className'> {
+  messageTitle: ReactNode;
   variant?: keyof typeof icons;
   size?: string;
 }
 
 // Component
 // ---------------
-export const Message = ({
-  variant = 'info',
-  size,
-  children,
-  ...props
-}: MessageProps) => {
-  const classNames = useClassNames({ component: 'Message', variant, size });
-  const Icon = icons[variant];
+export const Message = forwardRef<HTMLDivElement, MessageProps>(
+  ({ messageTitle, variant = 'info', size, children, ...props }, ref) => {
+    const classNames = useClassNames({ component: 'Message', variant, size });
+    const Icon = icons[variant];
 
-  return (
-    <div {...props} className={cn('grid auto-rows-min', classNames.container)}>
+    return (
       <div
-        className={cn('h-5 w-5 self-center [grid-area:icon]', classNames.icon)}
+        className={cn(
+          'grid auto-rows-min grid-cols-[min-content_auto] gap-1',
+          classNames.container
+        )}
+        ref={ref}
+        {...props}
       >
-        <Icon />
+        <div className={cn('col-span-1 h-5 w-5 self-center', classNames.icon)}>
+          <Icon />
+        </div>
+        <div
+          className={cn(
+            'col-start-2 row-start-1 self-center',
+            classNames.title
+          )}
+        >
+          {messageTitle}
+        </div>
+        <div className={cn('col-start-2', classNames.content)}>{children}</div>
       </div>
-      {children}
-    </div>
-  );
-};
-
-Message.Title = MessageTitle;
-Message.Content = MessageContent;
+    );
+  }
+);
