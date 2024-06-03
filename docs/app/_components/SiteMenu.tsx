@@ -31,9 +31,13 @@ import { useHasMounted } from '@/ui/useHasMounted';
 const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
   const items = allContentPages
     .filter(page => page.slug.includes(slug))
-    .map(({ title, slug, order }) => ({ title, slug, order }));
-
-  const sub = allContentPages.map(page => page.headings);
+    .filter(page => page.headings)
+    .map(({ title, slug, order, headings }) => ({
+      title,
+      slug,
+      order,
+      headings,
+    }));
 
   // sort by order if it's defiened, otherwise sort alphabettically
   items.sort((a, b) => {
@@ -44,7 +48,7 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     }
   });
 
-  return { name, slug, items, sub };
+  return { name, slug, items };
 });
 
 const Hotkey = () => {
@@ -96,88 +100,67 @@ const SubItem = ({ children, copyValue, ...props }: SubItemProps) => {
 };
 
 interface SubCommandProps {
+  slug: string;
+  items: string[];
   classNames: {
     item: string;
     container: string;
     section: string;
   };
+  open?: boolean;
+  onOpenChange?: () => void;
 }
-const SubCommand = ({ classNames }: SubCommandProps) => {
-  const [open, setOpen] = useState(false);
+const SubCommand = ({
+  classNames,
+  slug,
+  items,
+  open,
+  onOpenChange,
+}: SubCommandProps) => {
+  //const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // register global cmd+k hotkey
-  useEffect(() => {
-    const onKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen(open => !open);
-      }
-    };
-    document.addEventListener('keydown', onKeydown);
-    return () => document.removeEventListener('keydown', onKeydown);
-  }, []);
-
-  groupedPages.map(({ sub }) =>
-    Object.values(sub).map(item =>
-      Object.values(item).map(i => console.log(i.text))
-    )
-  );
-
+  console.log(open);
   return (
     <>
-      <Button size="small" onPress={() => setOpen(true)}>
-        more actions
-        <Hotkey />
-      </Button>
       <Popover
         aria-label="Sub Command Menu"
         open={open}
-        onOpenChange={setOpen}
-        isNonModal
+        onOpenChange={onOpenChange}
       >
-        <Command
-          filter={(value, query, keywords) => {
-            const searchValue = `${value} ${keywords}`;
-            if (searchValue.toLowerCase().includes(query.toLowerCase()))
-              return 1;
-            return 0;
-          }}
-        >
-          <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
-            {groupedPages.map(({ sub, items }) =>
-              Object.values(items).map(item => (
-                <CommandGroup
-                  heading={item.slug}
-                  key={item.slug}
-                  className={classNames.section}
-                >
-                  {Object.values(sub).map(item =>
-                    Object.values(item).map(item => (
-                      <Command.Item
-                        className={classNames.item}
+        <div className="z-[50] rounded-md bg-white backdrop-blur">
+          <Command
+            filter={(value, query, keywords) => {
+              const searchValue = `${value} ${keywords}`;
+              if (searchValue.toLowerCase().includes(query.toLowerCase()))
+                return 1;
+              return 0;
+            }}
+          >
+            <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
+              <CommandGroup heading={slug} className={classNames.section}>
+                {loading && <Command.Loading>Hang on…</Command.Loading>}
 
-                        // onSelect={() => goto(page.slug)}
-                      >
-                        {item.text}
-                      </Command.Item>
-                    ))
-                  )}
-                </CommandGroup>
-              ))
-            )}
-          </Command.List>
-          <div className="flex items-center gap-1.5 border-t px-3">
-            <Search className="size-4 opacity-50" />
-            <Command.Input
-              value={query}
-              autoFocus
-              onValueChange={setQuery}
-              placeholder="Type to search ..."
-              className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
-            />
-          </div>
-        </Command>
+                {items.map(item => (
+                  <Command.Item className={classNames.item}>
+                    {item.text}
+                  </Command.Item>
+                ))}
+              </CommandGroup>
+            </Command.List>
+            <div className="flex items-center gap-1.5 border-t px-3">
+              <Search className="size-4 opacity-50" />
+              <Command.Input
+                value={query}
+                autoFocus
+                onValueChange={setQuery}
+                placeholder="Type to search ..."
+                className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
+              />
+            </div>
+          </Command>
+        </div>
       </Popover>
     </>
   );
@@ -186,12 +169,20 @@ const SubCommand = ({ classNames }: SubCommandProps) => {
 export const SiteMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [subOpen, setSubOpen] = useState(false);
   const [query, setQuery] = useState('');
   const ref = useRef<SVGSVGElement>();
+  const [pages, setPages] = useState([]);
+  const subPage = pages[pages.length - 1];
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
+  };
+
+  const handleSub = (slug: string) => {
+    setPages([...pages, slug]);
+    setSubOpen(subOpen => !subOpen);
   };
 
   const { updateTheme } = useThemeSwitch();
@@ -217,6 +208,7 @@ export const SiteMenu = () => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(open => !open);
+        setPages(pages => pages.slice(0, -1));
       }
     };
     document.addEventListener('keydown', onKeydown);
@@ -267,17 +259,33 @@ export const SiteMenu = () => {
                 className={classNames.section}
               >
                 {items.map(page => (
-                  <Command.Item
-                    className={classNames.item}
-                    key={page.slug}
-                    value={page.slug}
-                    onSelect={() => goto(page.slug)}
-                  >
-                    {page.title}
-                  </Command.Item>
+                  <>
+                    <div>
+                      <Command.Item
+                        className={classNames.item}
+                        key={page.slug}
+                        value={page.slug}
+                        onSelect={() => handleSub(page.slug)}
+                      >
+                        {page.title}
+
+                        <Hotkey />
+                      </Command.Item>
+                    </div>
+                    {subPage === page.slug && (
+                      <SubCommand
+                        open={subOpen}
+                        onOpenChange={() => setSubOpen}
+                        classNames={classNames}
+                        items={page.headings}
+                        slug={page.slug}
+                      />
+                    )}
+                  </>
                 ))}
               </CommandGroup>
             ))}
+
             {/* update themes command */}
             {themeswitch.map(({ name, items }) => (
               <CommandGroup
@@ -373,8 +381,6 @@ export const SiteMenu = () => {
             )}
           </Command.List>
         </Command>
-        {}
-        <SubCommand classNames={classNames} />
       </Dialog>
     </Dialog.Trigger>
   );

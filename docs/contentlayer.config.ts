@@ -1,4 +1,5 @@
 import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
+import GithubSlugger from 'github-slugger';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
@@ -72,16 +73,18 @@ export const ContentPage = defineDocumentType(() => ({
       },
     },
     headings: {
-      type: 'json',
+      type: 'string',
       resolve: async doc => {
         const headingsRegex = /\n(?<flag>#{1,6})\s+(?<content>.+)/g;
+        const slugger = new GithubSlugger();
         const headings = Array.from(doc.body.raw.matchAll(headingsRegex)).map(
           ({ groups }) => {
             const flag = groups?.flag;
             const content = groups?.content;
             return {
-              level: flag.length,
+              level: flag?.length,
               text: content,
+              slug: content ? slugger.slug(content) : undefined,
             };
           }
         );
