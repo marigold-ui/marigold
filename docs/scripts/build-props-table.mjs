@@ -6,7 +6,11 @@ import { fileURLToPath } from 'url';
 
 console.log('📑 Generating props table...');
 
-const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json');
+const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
+  shouldRemoveUndefinedFromOptional: true,
+  shouldExtractLiteralValuesFromEnum: false,
+  shouldExtractValuesFromUnion: false,
+});
 
 // Resolve __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -39,16 +43,15 @@ const generatePropsTables = () => {
           file.endsWith('.d.ts')
         );
       });
-
     componentFiles.forEach(file => {
       const filePath = path.join(componentsDir, dir, file);
       const docs = parser.parse(filePath);
+      const props = docs[0]?.props;
       if (docs.length > 0) {
-        allDocs[dir] = docs;
+        allDocs[file] = props;
       }
     });
   });
-
   fs.writeJsonSync(outputFilePath, allDocs, { spaces: 2 });
   console.log(`✅ Successfully generated props table!`);
 };

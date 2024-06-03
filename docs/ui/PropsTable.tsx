@@ -6,7 +6,7 @@ import { Card, Inline, Table, Text } from '@/ui';
 import { BlankCanvas } from './icons';
 
 export interface PropsTableProps {
-  component?: string;
+  componentFile?: string;
 }
 
 interface Prop {
@@ -18,13 +18,13 @@ interface Prop {
   description: string;
 }
 
-export const PropsTable = ({ component }: PropsTableProps) => {
+export const PropsTable = ({ componentFile }: PropsTableProps) => {
+  //make the props iterable
   const props =
-    component &&
-    (Object.entries((tableProps as any)[component][0].props).map(
+    componentFile &&
+    (Object.entries((tableProps as any)[componentFile]).map(
       element => element[1]
     ) as Prop[]);
-
   return (
     <Card px={3} py={4}>
       {!props ? (
