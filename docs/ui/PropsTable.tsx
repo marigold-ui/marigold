@@ -1,30 +1,13 @@
 'use client';
 
-import tableProps from '@/.table-props/index.json';
 import { Card, Inline, Table, Text } from '@/ui';
 
 import { BlankCanvas } from './icons';
 
 export interface PropsTableProps {
-  componentFile?: string;
+  props?: { [key: string]: string }[];
 }
-
-interface Prop {
-  name: string;
-  type: {
-    name: string;
-  };
-  defaultValue: any;
-  description: string;
-}
-
-export const PropsTable = ({ componentFile }: PropsTableProps) => {
-  //make the props iterable
-  const props =
-    componentFile &&
-    (Object.entries((tableProps as any)[componentFile]).map(
-      element => element[1]
-    ) as Prop[]);
+export const PropsTable = ({ props }: PropsTableProps) => {
   return (
     <Card px={3} py={4}>
       {!props ? (
@@ -42,24 +25,24 @@ export const PropsTable = ({ componentFile }: PropsTableProps) => {
               <Table.Column key="description">Description</Table.Column>
             </Table.Header>
             <Table.Body items={props}>
-              {(prop: Prop) => (
-                <Table.Row key={prop.name}>
+              {item => (
+                <Table.Row key={item.property}>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {prop.name}
+                      {item.property}
                     </code>
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {prop.type.name}
+                      {item.type}
                     </code>
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {/* {prop.default ? prop.default : '-'} */}
+                      {item.default ? item.default : '-'}
                     </code>
                   </Table.Cell>
-                  <Table.Cell>{prop.description}</Table.Cell>
+                  <Table.Cell>{item.description}</Table.Cell>
                 </Table.Row>
               )}
             </Table.Body>
