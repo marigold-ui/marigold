@@ -10,6 +10,8 @@ const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
   shouldRemoveUndefinedFromOptional: true,
   shouldExtractLiteralValuesFromEnum: false,
   shouldExtractValuesFromUnion: false,
+
+  // include asserted types for components eg. Autocomplete & Select
   customComponentTypes: ['AutocompleteComponent', 'SelectComponent'],
 });
 
