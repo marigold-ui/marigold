@@ -10,6 +10,7 @@ const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
   shouldRemoveUndefinedFromOptional: true,
   shouldExtractLiteralValuesFromEnum: false,
   shouldExtractValuesFromUnion: false,
+  customComponentTypes: ['AutocompleteComponent', 'SelectComponent'],
 });
 
 // Resolve __dirname for ESM
