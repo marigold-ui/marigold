@@ -100,8 +100,7 @@ const SubItem = ({ children, copyValue, ...props }: SubItemProps) => {
 };
 
 interface SubCommandProps {
-  slug: string;
-  items: string[];
+  slug?: string;
   classNames: {
     item: string;
     container: string;
@@ -110,28 +109,27 @@ interface SubCommandProps {
   open?: boolean;
   onOpenChange?: () => void;
 }
-const SubCommand = ({
-  classNames,
-  slug,
-  items,
-  open,
-  onOpenChange,
-}: SubCommandProps) => {
+const SubCommand = ({ classNames, slug, onOpenChange }: SubCommandProps) => {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
   };
 
+  console.log(open);
   return (
     <>
+      <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
+        more details
+        <Hotkey />
+      </Button>
       <Popover
         aria-label="Sub Command Menu"
         open={open}
-        onOpenChange={onOpenChange}
+        onOpenChange={() => setOpen}
         placement="right bottom"
         shouldCloseOnInteractOutside={() => true}
       >
@@ -145,18 +143,24 @@ const SubCommand = ({
             }}
           >
             <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
-              <CommandGroup heading={slug} className={classNames.section}>
-                {loading && <Command.Loading>Hang on…</Command.Loading>}
-
-                {items.map(item => (
-                  <Command.Item
-                    className={classNames.item}
-                    onSelect={() => goto(`${slug}#${item.slug}`)}
+              {groupedPages.map(({ items }) =>
+                items?.map(item => (
+                  <CommandGroup
+                    heading={item.slug}
+                    className={classNames.section}
                   >
-                    {item.text}
-                  </Command.Item>
-                ))}
-              </CommandGroup>
+                    {loading && <Command.Loading>Hang on…</Command.Loading>}
+                    {Object.values(item.headings).map(sub => (
+                      <Command.Item
+                        className={classNames.item}
+                        onSelect={() => goto(`${item.slug}#${sub.slug}`)}
+                      >
+                        {sub.text}
+                      </Command.Item>
+                    ))}
+                  </CommandGroup>
+                ))
+              )}
             </Command.List>
             <div className="flex items-center gap-1.5 border-t px-3">
               <Search className="size-4 opacity-50" />
@@ -268,29 +272,15 @@ export const SiteMenu = () => {
                 className={classNames.section}
               >
                 {items.map(page => (
-                  <>
-                    <div>
-                      <Command.Item
-                        className={classNames.item}
-                        key={page.slug}
-                        value={page.slug}
-                        onSelect={() => handleSub(page.slug)}
-                      >
-                        {page.title}
-
-                        <Hotkey />
-                      </Command.Item>
-                    </div>
-                    {subPage === page.slug && (
-                      <SubCommand
-                        open={subOpen}
-                        onOpenChange={() => setSubOpen}
-                        classNames={classNames}
-                        items={page.headings}
-                        slug={page.slug}
-                      />
-                    )}
-                  </>
+                  <Command.Item
+                    className={classNames.item}
+                    key={page.slug}
+                    value={page.slug}
+                    onSelect={() => goto(page.slug)}
+                  >
+                    {page.title}
+                    <Hotkey />
+                  </Command.Item>
                 ))}
               </CommandGroup>
             ))}
@@ -389,6 +379,17 @@ export const SiteMenu = () => {
               </CommandGroup>
             )}
           </Command.List>
+          <Inline alignX="right">
+            <Button variant="sunken" size="small">
+              Open Page<span className="opacity-50">↵</span>
+            </Button>
+
+            <SubCommand
+              open={subOpen}
+              onOpenChange={() => setSubOpen}
+              classNames={classNames}
+            />
+          </Inline>
         </Command>
       </Dialog>
     </Dialog.Trigger>
