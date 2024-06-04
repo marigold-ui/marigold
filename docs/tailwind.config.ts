@@ -7,9 +7,6 @@ const config: Config = {
     ...preset.content,
 
     // From docs
-    './theme/root.ts',
-    './theme/*.ts',
-    './theme/**/*.ts',
     './ui/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
 
