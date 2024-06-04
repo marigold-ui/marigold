@@ -51,13 +51,21 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
   return { name, slug, items };
 });
 
-const Hotkey = () => {
+interface HotKeyProps {
+  letter: string;
+}
+const Hotkey = ({ letter }: HotKeyProps) => {
   const mounted = useHasMounted();
   if (!mounted) {
     return null;
   }
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
-  return <span className="opacity-50">({isMacOS ? '⌘' : 'Ctrl+'}K)</span>;
+  return (
+    <span className="opacity-50">
+      ({isMacOS ? '⌘' : 'Ctrl+'}
+      {letter})
+    </span>
+  );
 };
 
 // Component
@@ -125,18 +133,17 @@ const SubCommand = ({
     setCommandOpen();
   };
 
+  // register cmd+d hotkey
   useEffect(() => {
-    const el = listRef.current;
-
-    console.log(el);
-    if (!el) return;
-
-    if (open) {
-      el.style.overflow = 'hidden';
-    } else {
-      el.style.overflow = '';
-    }
-  }, [open, listRef]);
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen(open => !open);
+      }
+    };
+    document.addEventListener('keydown', onKeydown);
+    return () => document.removeEventListener('keydown', onKeydown);
+  }, []);
 
   return (
     <>
@@ -146,7 +153,7 @@ const SubCommand = ({
         onPress={() => setOpen(open => !open)}
       >
         more details
-        <Hotkey />
+        <Hotkey letter="D" />
       </Button>
       <Popover
         aria-label="Sub Command Menu"
@@ -252,7 +259,7 @@ export const SiteMenu = () => {
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
         Search...
-        <Hotkey />
+        <Hotkey letter="K" />
       </Button>
       <Dialog aria-label="Global Command Menu">
         <Command
@@ -295,7 +302,7 @@ export const SiteMenu = () => {
                     onSelect={() => goto(page.slug)}
                   >
                     {page.title}
-                    <Hotkey />
+                    <Hotkey letter="D" />
                   </Command.Item>
                 ))}
               </CommandGroup>
