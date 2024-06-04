@@ -20,7 +20,35 @@ import { Button } from '@marigold/components';
 
 ## Props
 
-<PropsTable component="Button" />
+<PropsTable
+  props={[
+    {
+      property: 'onPress',
+      type: '(e: PressEvent) => void',
+      description:
+        'Handler that is called when the press is released over the target.',
+      default: 'none',
+    },
+    {
+      property: 'disabled',
+      type: 'boolean',
+      description: 'Disables the button.',
+      default: 'false',
+    },
+    {
+      property: 'fullWidth',
+      type: 'boolean',
+      description: 'Stretches the button width with full available space.',
+      default: 'false',
+    },
+    {
+      property: '...',
+      type: '',
+      description: 'Yes you can use all regular attributes of button!',
+      default: '',
+    },
+  ]}
+/>
 
 ## Examples
 
