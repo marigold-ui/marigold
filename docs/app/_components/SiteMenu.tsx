@@ -107,9 +107,14 @@ interface SubCommandProps {
     section: string;
   };
   open?: boolean;
-  onOpenChange?: () => void;
+  setCommandOpen: () => void;
+  listRef: React.RefObject<HTMLElement>;
 }
-const SubCommand = ({ classNames, slug, onOpenChange }: SubCommandProps) => {
+const SubCommand = ({
+  classNames,
+  listRef,
+  setCommandOpen,
+}: SubCommandProps) => {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -117,12 +122,29 @@ const SubCommand = ({ classNames, slug, onOpenChange }: SubCommandProps) => {
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
+    setCommandOpen();
   };
 
-  console.log(open);
+  useEffect(() => {
+    const el = listRef.current;
+
+    console.log(el);
+    if (!el) return;
+
+    if (open) {
+      el.style.overflow = 'hidden';
+    } else {
+      el.style.overflow = '';
+    }
+  }, [open, listRef]);
+
   return (
     <>
-      <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
+      <Button
+        variant="sunken"
+        size="small"
+        onPress={() => setOpen(open => !open)}
+      >
         more details
         <Hotkey />
       </Button>
@@ -131,9 +153,8 @@ const SubCommand = ({ classNames, slug, onOpenChange }: SubCommandProps) => {
         open={open}
         onOpenChange={() => setOpen}
         placement="right bottom"
-        shouldCloseOnInteractOutside={() => true}
       >
-        <div className="z-[50] rounded-md bg-white backdrop-blur">
+        <div className="z-[50] rounded-md bg-white text-sm backdrop-blur">
           <Command
             filter={(value, query, keywords) => {
               const searchValue = `${value} ${keywords}`;
@@ -182,20 +203,13 @@ const SubCommand = ({ classNames, slug, onOpenChange }: SubCommandProps) => {
 export const SiteMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [subOpen, setSubOpen] = useState(false);
   const [query, setQuery] = useState('');
   const ref = useRef<SVGSVGElement>();
-  const [pages, setPages] = useState([]);
-  const subPage = pages[pages.length - 1];
+  const listRef = useRef(null);
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
-  };
-
-  const handleSub = (slug: string) => {
-    setPages([...pages, slug]);
-    setSubOpen(subOpen => !subOpen);
   };
 
   const { updateTheme } = useThemeSwitch();
@@ -221,7 +235,6 @@ export const SiteMenu = () => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(open => !open);
-        setPages(pages => pages.slice(0, -1));
       }
     };
     document.addEventListener('keydown', onKeydown);
@@ -261,7 +274,10 @@ export const SiteMenu = () => {
               className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
             />
           </div>
-          <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
+          <Command.List
+            ref={listRef}
+            className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden"
+          >
             <Command.Empty className="py-6 text-center text-sm">
               No results found.
             </Command.Empty>
@@ -379,15 +395,15 @@ export const SiteMenu = () => {
               </CommandGroup>
             )}
           </Command.List>
-          <Inline alignX="right">
+          <Inline alignX="right" space={2}>
             <Button variant="sunken" size="small">
               Open Page<span className="opacity-50">↵</span>
             </Button>
 
             <SubCommand
-              open={subOpen}
-              onOpenChange={() => setSubOpen}
+              setCommandOpen={() => setOpen(false)}
               classNames={classNames}
+              listRef={listRef}
             />
           </Inline>
         </Command>
