@@ -17,6 +17,8 @@
 
   --page-main-padding: 5rem;
   --page-main-padding-xl: 5.5rem;
+
+  --pre-padding-x: 1rem;
 }
 
 @tailwind base;

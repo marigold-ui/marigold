@@ -16,11 +16,27 @@ const brand = {
   },
 };
 
+// material palenight theme
+const code = {
+  '50': '#f6f7f9',
+  '100': '#ebecf3',
+  '200': '#d3d6e4',
+  '300': '#acb3cd',
+  '400': '#808cb0',
+  '500': '#606e97',
+  '600': '#4b557e',
+  '700': '#3e4666',
+  '800': '#363d56',
+  '900': '#292d3e',
+  '950': '#202231',
+};
+
 export const colors = {
   // Brand
   // ---------------
   ...brand,
   secondary: tw.slate,
+  code,
 
   // Text
   // ---------------
