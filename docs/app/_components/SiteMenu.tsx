@@ -117,17 +117,23 @@ const SubCommand = ({
   open,
   onOpenChange,
 }: SubCommandProps) => {
-  //const [open, setOpen] = useState(false);
+  const router = useRouter();
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [, setOpen] = useState(false);
+  const goto = (slug: string) => {
+    router.push(`/${slug}`);
+    setOpen(false);
+  };
 
-  console.log(open);
   return (
     <>
       <Popover
         aria-label="Sub Command Menu"
         open={open}
         onOpenChange={onOpenChange}
+        placement="right bottom"
+        shouldCloseOnInteractOutside={() => true}
       >
         <div className="z-[50] rounded-md bg-white backdrop-blur">
           <Command
@@ -143,7 +149,10 @@ const SubCommand = ({
                 {loading && <Command.Loading>Hang on…</Command.Loading>}
 
                 {items.map(item => (
-                  <Command.Item className={classNames.item}>
+                  <Command.Item
+                    className={classNames.item}
+                    onSelect={() => goto(`${slug}#${item.slug}`)}
+                  >
                     {item.text}
                   </Command.Item>
                 ))}

@@ -42,6 +42,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     const isSmallScreen = useSmallScreen();
     const portal = usePortalContainer();
 
+    console.log(props);
     return (
       <>
         {isSmallScreen ? (
