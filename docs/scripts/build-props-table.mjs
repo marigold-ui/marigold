@@ -27,10 +27,8 @@ const generatePropsTables = () => {
     .readdirSync(componentsDir)
     .filter(dir => fs.lstatSync(path.join(componentsDir, dir)).isDirectory());
 
-  // Initialize props value
-  const allDocs = {};
-
-  componentDirs.forEach(dir => {
+  // Reduce to gather all docs
+  const allDocs = componentDirs.reduce((acc, dir) => {
     const componentFiles = fs
       .readdirSync(path.join(componentsDir, dir))
       .filter(file => {
@@ -43,15 +41,19 @@ const generatePropsTables = () => {
           file.endsWith('.d.ts')
         );
       });
+
     componentFiles.forEach(file => {
       const filePath = path.join(componentsDir, dir, file);
       const docs = parser.parse(filePath);
       const props = docs[0]?.props;
       if (docs.length > 0) {
-        allDocs[file] = props;
+        acc[file] = props;
       }
     });
-  });
+
+    return acc;
+  }, {});
+
   fs.writeJsonSync(outputFilePath, allDocs, { spaces: 2 });
   console.log(`✅ Successfully generated props table!`);
 };
