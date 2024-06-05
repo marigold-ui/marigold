@@ -19,7 +19,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
-const outputFilePath = path.resolve(__dirname, '../.table-props/index.json');
+const outputFilePath = path.resolve(
+  __dirname,
+  '../.component-props/index.json'
+);
 
 fs.ensureDirSync(path.dirname(outputFilePath));
 
