@@ -1,5 +1,19 @@
 # @marigold/docs
 
+## 7.8.2
+
+### Patch Changes
+
+- [#3934](https://github.com/marigold-ui/marigold/pull/3934) [`de73b5a`](https://github.com/marigold-ui/marigold/commit/de73b5af0f1108e1fbe33feaa62a52348f942e1c) Thanks [@sebald](https://github.com/sebald)! - refa: don't use tailwinds color import
+
+- Updated dependencies [[`de73b5a`](https://github.com/marigold-ui/marigold/commit/de73b5af0f1108e1fbe33feaa62a52348f942e1c)]:
+  - @marigold/theme-docs@2.0.1
+  - @marigold/components@7.8.2
+  - @marigold/icons@1.2.51
+  - @marigold/theme-preset@1.3.16
+  - @marigold/theme-b2b@27.1.11
+  - @marigold/theme-core@26.1.11
+
 ## 7.8.1
 
 ### Patch Changes

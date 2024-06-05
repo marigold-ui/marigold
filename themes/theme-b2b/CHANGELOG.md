@@ -1,5 +1,14 @@
 # @marigold/theme-b2b
 
+## 27.1.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@7.8.2
+  - @marigold/components@7.8.2
+  - @marigold/theme-preset@1.3.16
+
 ## 27.1.10
 
 ### Patch Changes
