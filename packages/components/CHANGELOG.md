@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 7.8.1
+
+### Patch Changes
+
+- [#3924](https://github.com/marigold-ui/marigold/pull/3924) [`290dc0e`](https://github.com/marigold-ui/marigold/commit/290dc0e8b5b5fc1492d391d8e6156bd849f0b37d) Thanks [@sebald](https://github.com/sebald)! - fix: inconsistent naming of `SelectList`
+
+- Updated dependencies []:
+  - @marigold/system@7.8.1
+  - @marigold/icons@1.2.50
+
 ## 7.8.0
 
 ### Minor Changes
