@@ -1,5 +1,69 @@
-import tw from 'tailwindcss/colors';
+// Tailwind Colors
+// ---------------
+/**
+ * We copy/pasted the colors here to not end up with a lot of unused code in our bundle.
+ */
 
+const white = '#fff';
+
+const amber = {
+  50: '#fffbeb',
+  100: '#fef3c7',
+  200: '#fde68a',
+  300: '#fcd34d',
+  400: '#fbbf24',
+  500: '#f59e0b',
+  600: '#d97706',
+  700: '#b45309',
+  800: '#92400e',
+  900: '#78350f',
+  950: '#451a03',
+};
+
+const blue = {
+  50: '#eff6ff',
+  100: '#dbeafe',
+  200: '#bfdbfe',
+  300: '#93c5fd',
+  400: '#60a5fa',
+  500: '#3b82f6',
+  600: '#2563eb',
+  700: '#1d4ed8',
+  800: '#1e40af',
+  900: '#1e3a8a',
+  950: '#172554',
+};
+
+const neutral = {
+  50: '#fafafa',
+  100: '#f5f5f5',
+  200: '#e5e5e5',
+  300: '#d4d4d4',
+  400: '#a3a3a3',
+  500: '#737373',
+  600: '#525252',
+  700: '#404040',
+  800: '#262626',
+  900: '#171717',
+  950: '#0a0a0a',
+};
+
+const slate = {
+  50: '#f8fafc',
+  100: '#f1f5f9',
+  200: '#e2e8f0',
+  300: '#cbd5e1',
+  400: '#94a3b8',
+  500: '#64748b',
+  600: '#475569',
+  700: '#334155',
+  800: '#1e293b',
+  900: '#0f172a',
+  950: '#020617',
+};
+
+// Custom Colors
+// ---------------
 const brand = {
   primary: {
     50: '#fff2e6',
@@ -35,47 +99,47 @@ export const colors = {
   // Brand
   // ---------------
   ...brand,
-  secondary: tw.slate,
+  secondary: slate,
   code,
 
   // Text
   // ---------------
   text: {
     primary: {
-      DEFAULT: tw.slate[950],
-      muted: tw.slate[500],
+      DEFAULT: slate[950],
+      muted: slate[500],
     },
 
     // State
-    info: tw.blue[800],
-    warning: tw.amber[800],
+    info: blue[800],
+    warning: amber[800],
   },
 
   // Background
   // ---------------
   bg: {
-    body: tw.slate[50],
-    hover: tw.neutral[100],
-    muted: tw.slate[100],
+    body: slate[50],
+    hover: neutral[100],
+    muted: slate[100],
 
-    underlay: tw.slate[500],
+    underlay: slate[500],
 
     surface: {
-      DEFAULT: tw.white,
-      raised: tw.slate[200],
-      lowered: tw.slate[700],
-      overlay: tw.white,
+      DEFAULT: white,
+      raised: slate[200],
+      lowered: slate[700],
+      overlay: white,
     },
 
     // Status
-    info: tw.blue[100],
-    warning: tw.amber[50],
+    info: blue[100],
+    warning: amber[50],
   },
 
   // Border
   // ---------------
   border: {
-    DEFAULT: tw.slate[300],
-    primary: tw.slate[950],
+    DEFAULT: slate[300],
+    primary: slate[950],
   },
 };
