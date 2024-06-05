@@ -1,9 +1,9 @@
 import fs from 'fs-extra';
-import globby from 'globby';
 import path from 'path';
 import { dirname } from 'path';
 import reactDocgenTypescript from 'react-docgen-typescript';
 import { fileURLToPath } from 'url';
+import { globby } from 'zx';
 
 console.log('📑 Generating props table...');
 
