@@ -43,7 +43,7 @@
     "build:storybook": "turbo run --filter @marigold/storybook-config... build",
     "build:themes": "turbo run --filter \"@marigold/theme*...\" build",
     "registry": "pnpm --filter @marigold/docs registry",
-    "build-props-table": "pnpm --filter @marigold/docs build-props-table",
+    "build-component-props": "pnpm --filter @marigold/docs build-component-props",
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage --coverageReporters html",
     "test:ci": "jest --config jest.config.js --coverage --ci --no-cache",
