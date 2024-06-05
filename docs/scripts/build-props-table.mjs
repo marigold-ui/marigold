@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import globby from 'globby';
 import path from 'path';
 import { dirname } from 'path';
 import reactDocgenTypescript from 'react-docgen-typescript';
@@ -10,8 +11,6 @@ const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
   shouldRemoveUndefinedFromOptional: true,
   shouldExtractLiteralValuesFromEnum: false,
   shouldExtractValuesFromUnion: false,
-
-  // include asserted types for components eg. Autocomplete & Select
   customComponentTypes: ['AutocompleteComponent', 'SelectComponent'],
 });
 
@@ -24,35 +23,26 @@ const outputFilePath = path.resolve(__dirname, '../.table-props/index.json');
 
 fs.ensureDirSync(path.dirname(outputFilePath));
 
-const generatePropsTables = () => {
-  // Getting all directories
-  const componentDirs = fs
-    .readdirSync(componentsDir)
-    .filter(dir => fs.lstatSync(path.join(componentsDir, dir)).isDirectory());
+const generatePropsTables = async () => {
+  // Getting all component files using globby
+  const componentFiles = await globby([
+    `${componentsDir}/**/*.tsx`,
+
+    // exluded files
+    `!${componentsDir}/**/*.stories.tsx`,
+    `!${componentsDir}/**/*.test.tsx`,
+    `!${componentsDir}/**/*.ts`,
+  ]);
 
   // Reduce to gather all docs
-  const allDocs = componentDirs.reduce((acc, dir) => {
-    const componentFiles = fs
-      .readdirSync(path.join(componentsDir, dir))
-      .filter(file => {
-        // Exclude .stories.tsx, .test.tsx, and .ts files
-        return (
-          (file.endsWith('.tsx') &&
-            !file.endsWith('.stories.tsx') &&
-            !file.endsWith('.test.tsx') &&
-            !file.endsWith('.ts')) ||
-          file.endsWith('.d.ts')
-        );
-      });
+  const allDocs = componentFiles.reduce((acc, filePath) => {
+    const docs = parser.parse(filePath);
+    const props = docs[0]?.props;
 
-    componentFiles.forEach(file => {
-      const filePath = path.join(componentsDir, dir, file);
-      const docs = parser.parse(filePath);
-      const props = docs[0]?.props;
-      if (docs.length > 0) {
-        acc[file] = props;
-      }
-    });
+    if (docs.length > 0) {
+      const fileName = filePath.split('/').at(-1);
+      acc[fileName] = props;
+    }
 
     return acc;
   }, {});
