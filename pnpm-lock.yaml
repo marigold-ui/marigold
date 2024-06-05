@@ -248,7 +248,7 @@ importers:
         version: 8.1.5
       '@storybook/addon-essentials':
         specifier: ^8.0.6
-        version: 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/addon-interactions':
         specifier: ^8.0.6
         version: 8.1.5(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.1)(babel-plugin-macros@3.1.0))
@@ -288,7 +288,7 @@ importers:
         version: 8.1.5
       '@storybook/react-vite':
         specifier: ^8.0.6
-        version: 8.1.5(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.17.2)(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))
+        version: 8.1.5(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.17.2)(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))
       autoprefixer:
         specifier: 10.4.19
         version: 10.4.19(postcss@8.4.35)
@@ -336,6 +336,9 @@ importers:
       '@marigold/theme-core':
         specifier: workspace:*
         version: link:../themes/theme-core
+      '@marigold/theme-docs':
+        specifier: workspace:*
+        version: link:../themes/theme-docs
       '@marigold/theme-preset':
         specifier: workspace:*
         version: link:../packages/theme-preset
@@ -660,6 +663,37 @@ importers:
         version: 8.0.2(@swc/core@1.5.6)(postcss@8.4.35)(typescript@5.4.5)
 
   themes/theme-core:
+    dependencies:
+      '@marigold/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@marigold/system':
+        specifier: workspace:*
+        version: link:../../packages/system
+      '@marigold/theme-preset':
+        specifier: workspace:*
+        version: link:../../packages/theme-preset
+    devDependencies:
+      '@marigold/tsconfig':
+        specifier: workspace:*
+        version: link:../../config/tsconfig
+      autoprefixer:
+        specifier: 10.4.19
+        version: 10.4.19(postcss@8.4.35)
+      cssnano:
+        specifier: 6.1.2
+        version: 6.1.2(postcss@8.4.35)
+      postcss:
+        specifier: 8.4.35
+        version: 8.4.35
+      tailwindcss:
+        specifier: 3.4.1
+        version: 3.4.1
+      tsup:
+        specifier: 8.0.2
+        version: 8.0.2(@swc/core@1.5.6)(postcss@8.4.35)(typescript@5.4.5)
+
+  themes/theme-docs:
     dependencies:
       '@marigold/components':
         specifier: workspace:*
@@ -8350,10 +8384,6 @@ packages:
     resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
     engines: {node: '>=4'}
 
-  postcss-selector-parser@6.0.16:
-    resolution: {integrity: sha512-A0RVJrX+IUkVZbW3ClroRWurercFhieevHB38sr2+l9eUClMqome3LmEmnhlNy+5Mr2EYN6B2Kaw9wYdd+VHiw==}
-    engines: {node: '>=4'}
-
   postcss-selector-parser@6.1.0:
     resolution: {integrity: sha512-UMz42UD0UY0EApS0ZL9o1XnLhSTtvvvLe5Dc2H2O56fvRZi+KulDyf5ctDhhtYJBGKStV2FL1fy6253cmLgqVQ==}
     engines: {node: '>=4'}
@@ -11662,7 +11692,7 @@ snapshots:
       '@changesets/types': 6.0.0
       '@manypkg/get-packages': 1.1.3
       fs-extra: 7.0.1
-      micromatch: 4.0.5
+      micromatch: 4.0.7
 
   '@changesets/errors@0.2.0':
     dependencies:
@@ -11702,7 +11732,7 @@ snapshots:
       '@changesets/types': 6.0.0
       '@manypkg/get-packages': 1.1.3
       is-subdir: 1.2.0
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       spawndamnit: 2.0.0
 
   '@changesets/logger@0.1.0':
@@ -12350,7 +12380,7 @@ snapshots:
       jest-haste-map: 29.7.0
       jest-regex-util: 29.6.3
       jest-util: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       pirates: 4.0.6
       slash: 3.0.0
       write-file-atomic: 4.0.2
@@ -13918,9 +13948,9 @@ snapshots:
       memoizerific: 1.11.3
       ts-dedent: 2.2.0
 
-  '@storybook/addon-controls@8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@storybook/addon-controls@8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@storybook/blocks': 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/blocks': 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       dequal: 2.0.3
       lodash: 4.17.21
       ts-dedent: 2.2.0
@@ -13933,11 +13963,11 @@ snapshots:
       - react-dom
       - supports-color
 
-  '@storybook/addon-docs@8.1.5(@types/react-dom@18.2.23)(prettier@3.3.0)':
+  '@storybook/addon-docs@8.1.5(@types/react-dom@18.2.23)(prettier@3.2.5)':
     dependencies:
       '@babel/core': 7.24.6
       '@mdx-js/react': 3.0.1(@types/react@18.3.3)(react@18.3.1)
-      '@storybook/blocks': 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/blocks': 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/client-logger': 8.1.5
       '@storybook/components': 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/csf-plugin': 8.1.5
@@ -13961,18 +13991,18 @@ snapshots:
       - prettier
       - supports-color
 
-  '@storybook/addon-essentials@8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@storybook/addon-essentials@8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@storybook/addon-actions': 8.1.5
       '@storybook/addon-backgrounds': 8.1.5
-      '@storybook/addon-controls': 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/addon-docs': 8.1.5(@types/react-dom@18.2.23)(prettier@3.3.0)
+      '@storybook/addon-controls': 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/addon-docs': 8.1.5(@types/react-dom@18.2.23)(prettier@3.2.5)
       '@storybook/addon-highlight': 8.1.5
       '@storybook/addon-measure': 8.1.5
       '@storybook/addon-outline': 8.1.5
       '@storybook/addon-toolbars': 8.1.5
       '@storybook/addon-viewport': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.3.0)
+      '@storybook/core-common': 8.1.5(prettier@3.2.5)
       '@storybook/manager-api': 8.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/node-logger': 8.1.5
       '@storybook/preview-api': 8.1.5
@@ -14031,14 +14061,14 @@ snapshots:
     dependencies:
       memoizerific: 1.11.3
 
-  '@storybook/blocks@8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@storybook/blocks@8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@storybook/channels': 8.1.5
       '@storybook/client-logger': 8.1.5
       '@storybook/components': 8.1.5(@types/react-dom@18.2.23)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/core-events': 8.1.5
       '@storybook/csf': 0.1.8
-      '@storybook/docs-tools': 8.1.5(prettier@3.3.0)
+      '@storybook/docs-tools': 8.1.5(prettier@3.2.5)
       '@storybook/global': 5.0.0
       '@storybook/icons': 1.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/manager-api': 8.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -14067,10 +14097,10 @@ snapshots:
       - prettier
       - supports-color
 
-  '@storybook/builder-manager@8.1.5(prettier@3.3.0)':
+  '@storybook/builder-manager@8.1.5(prettier@3.2.5)':
     dependencies:
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@storybook/core-common': 8.1.5(prettier@3.3.0)
+      '@storybook/core-common': 8.1.5(prettier@3.2.5)
       '@storybook/manager': 8.1.5
       '@storybook/node-logger': 8.1.5
       '@types/ejs': 3.1.5
@@ -14088,11 +14118,11 @@ snapshots:
       - prettier
       - supports-color
 
-  '@storybook/builder-vite@8.1.5(prettier@3.3.0)(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))':
+  '@storybook/builder-vite@8.1.5(prettier@3.2.5)(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))':
     dependencies:
       '@storybook/channels': 8.1.5
       '@storybook/client-logger': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.3.0)
+      '@storybook/core-common': 8.1.5(prettier@3.2.5)
       '@storybook/core-events': 8.1.5
       '@storybook/csf-plugin': 8.1.5
       '@storybook/node-logger': 8.1.5
@@ -14137,12 +14167,12 @@ snapshots:
       '@babel/types': 7.24.6
       '@ndelangen/get-tarball': 3.0.9
       '@storybook/codemod': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.3.0)
+      '@storybook/core-common': 8.1.5(prettier@3.2.5)
       '@storybook/core-events': 8.1.5
-      '@storybook/core-server': 8.1.5(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/core-server': 8.1.5(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/csf-tools': 8.1.5
       '@storybook/node-logger': 8.1.5
-      '@storybook/telemetry': 8.1.5(prettier@3.3.0)
+      '@storybook/telemetry': 8.1.5(prettier@3.2.5)
       '@storybook/types': 8.1.5
       '@types/semver': 7.5.8
       '@yarnpkg/fslib': 2.10.3
@@ -14258,7 +14288,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@storybook/core-common@8.1.5(prettier@3.3.0)':
+  '@storybook/core-common@8.1.5(prettier@3.2.5)':
     dependencies:
       '@storybook/core-events': 8.1.5
       '@storybook/csf-tools': 8.1.5
@@ -14281,7 +14311,7 @@ snapshots:
       node-fetch: 2.7.0
       picomatch: 2.3.1
       pkg-dir: 5.0.0
-      prettier-fallback: prettier@3.3.0
+      prettier-fallback: prettier@3.2.5
       pretty-hrtime: 1.0.3
       resolve-from: 5.0.0
       semver: 7.6.2
@@ -14290,7 +14320,7 @@ snapshots:
       ts-dedent: 2.2.0
       util: 0.12.5
     optionalDependencies:
-      prettier: 3.3.0
+      prettier: 3.2.5
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -14304,15 +14334,15 @@ snapshots:
       '@storybook/csf': 0.1.8
       ts-dedent: 2.2.0
 
-  '@storybook/core-server@8.1.5(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@storybook/core-server@8.1.5(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@aw-web-design/x-default-browser': 1.4.126
       '@babel/core': 7.24.6
       '@babel/parser': 7.24.6
       '@discoveryjs/json-ext': 0.5.7
-      '@storybook/builder-manager': 8.1.5(prettier@3.3.0)
+      '@storybook/builder-manager': 8.1.5(prettier@3.2.5)
       '@storybook/channels': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.3.0)
+      '@storybook/core-common': 8.1.5(prettier@3.2.5)
       '@storybook/core-events': 8.1.5
       '@storybook/csf': 0.1.8
       '@storybook/csf-tools': 8.1.5
@@ -14322,7 +14352,7 @@ snapshots:
       '@storybook/manager-api': 8.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/node-logger': 8.1.5
       '@storybook/preview-api': 8.1.5
-      '@storybook/telemetry': 8.1.5(prettier@3.3.0)
+      '@storybook/telemetry': 8.1.5(prettier@3.2.5)
       '@storybook/types': 8.1.5
       '@types/detect-port': 1.3.5
       '@types/diff': 5.2.1
@@ -14419,9 +14449,9 @@ snapshots:
       - encoding
       - supports-color
 
-  '@storybook/docs-tools@8.1.5(prettier@3.3.0)':
+  '@storybook/docs-tools@8.1.5(prettier@3.2.5)':
     dependencies:
-      '@storybook/core-common': 8.1.5(prettier@3.3.0)
+      '@storybook/core-common': 8.1.5(prettier@3.2.5)
       '@storybook/core-events': 8.1.5
       '@storybook/preview-api': 8.1.5
       '@storybook/types': 8.1.5
@@ -14524,13 +14554,13 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@storybook/react-vite@8.1.5(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.17.2)(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))':
+  '@storybook/react-vite@8.1.5(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.17.2)(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))':
     dependencies:
       '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.1(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))
       '@rollup/pluginutils': 5.1.0(rollup@4.17.2)
-      '@storybook/builder-vite': 8.1.5(prettier@3.3.0)(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))
+      '@storybook/builder-vite': 8.1.5(prettier@3.2.5)(typescript@5.3.3)(vite@5.2.12(@types/node@20.14.1))
       '@storybook/node-logger': 8.1.5
-      '@storybook/react': 8.1.5(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.3.3)
+      '@storybook/react': 8.1.5(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.3.3)
       '@storybook/types': 8.1.5
       find-up: 5.0.0
       magic-string: 0.30.10
@@ -14580,10 +14610,10 @@ snapshots:
       - encoding
       - supports-color
 
-  '@storybook/react@8.1.5(prettier@3.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.3.3)':
+  '@storybook/react@8.1.5(prettier@3.2.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.3.3)':
     dependencies:
       '@storybook/client-logger': 8.1.5
-      '@storybook/docs-tools': 8.1.5(prettier@3.3.0)
+      '@storybook/docs-tools': 8.1.5(prettier@3.2.5)
       '@storybook/global': 5.0.0
       '@storybook/preview-api': 8.1.5
       '@storybook/react-dom-shim': 8.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -14626,10 +14656,10 @@ snapshots:
       lodash: 4.17.21
       prettier: 3.3.0
 
-  '@storybook/telemetry@8.1.5(prettier@3.3.0)':
+  '@storybook/telemetry@8.1.5(prettier@3.2.5)':
     dependencies:
       '@storybook/client-logger': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.3.0)
+      '@storybook/core-common': 8.1.5(prettier@3.2.5)
       '@storybook/csf-tools': 8.1.5
       chalk: 4.1.2
       detect-package-manager: 2.0.1
@@ -18447,7 +18477,7 @@ snapshots:
       jest-regex-util: 29.6.3
       jest-util: 29.7.0
       jest-worker: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       walker: 1.0.8
     optionalDependencies:
       fsevents: 2.3.3
@@ -18471,7 +18501,7 @@ snapshots:
       '@types/stack-utils': 2.0.3
       chalk: 4.1.2
       graceful-fs: 4.2.11
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       pretty-format: 29.7.0
       slash: 3.0.0
       stack-utils: 2.0.6
@@ -19948,7 +19978,7 @@ snapshots:
   postcss-calc@9.0.1(postcss@8.4.35):
     dependencies:
       postcss: 8.4.35
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
       postcss-value-parser: 4.2.0
 
   postcss-colormin@6.1.0(postcss@8.4.35):
@@ -19988,13 +20018,6 @@ snapshots:
       read-cache: 1.0.0
       resolve: 1.22.8
 
-  postcss-import@15.1.0(postcss@8.4.38):
-    dependencies:
-      postcss: 8.4.38
-      postcss-value-parser: 4.2.0
-      read-cache: 1.0.0
-      resolve: 1.22.8
-
   postcss-import@16.0.0(postcss@8.4.35):
     dependencies:
       postcss: 8.4.35
@@ -20006,11 +20029,6 @@ snapshots:
     dependencies:
       camelcase-css: 2.0.1
       postcss: 8.4.35
-
-  postcss-js@4.0.1(postcss@8.4.38):
-    dependencies:
-      camelcase-css: 2.0.1
-      postcss: 8.4.38
 
   postcss-load-config@4.0.1(postcss@8.4.38):
     dependencies:
@@ -20054,7 +20072,7 @@ snapshots:
       caniuse-api: 3.0.0
       cssnano-utils: 4.0.2(postcss@8.4.35)
       postcss: 8.4.35
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
 
   postcss-minify-font-values@6.1.0(postcss@8.4.35):
     dependencies:
@@ -20078,7 +20096,7 @@ snapshots:
   postcss-minify-selectors@6.0.4(postcss@8.4.35):
     dependencies:
       postcss: 8.4.35
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
 
   postcss-modules-extract-imports@3.1.0(postcss@8.4.38):
     dependencies:
@@ -20088,13 +20106,13 @@ snapshots:
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.38)
       postcss: 8.4.38
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
       postcss-value-parser: 4.2.0
 
   postcss-modules-scope@3.2.0(postcss@8.4.38):
     dependencies:
       postcss: 8.4.38
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
 
   postcss-modules-values@4.0.0(postcss@8.4.38):
     dependencies:
@@ -20116,12 +20134,7 @@ snapshots:
   postcss-nested@6.0.1(postcss@8.4.35):
     dependencies:
       postcss: 8.4.35
-      postcss-selector-parser: 6.0.16
-
-  postcss-nested@6.0.1(postcss@8.4.38):
-    dependencies:
-      postcss: 8.4.38
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
 
   postcss-normalize-charset@6.0.2(postcss@8.4.35):
     dependencies:
@@ -20190,11 +20203,6 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-selector-parser@6.0.16:
-    dependencies:
-      cssesc: 3.0.0
-      util-deprecate: 1.0.2
-
   postcss-selector-parser@6.1.0:
     dependencies:
       cssesc: 3.0.0
@@ -20209,7 +20217,7 @@ snapshots:
   postcss-unique-selectors@6.0.4(postcss@8.4.35):
     dependencies:
       postcss: 8.4.35
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
 
   postcss-value-parser@4.2.0: {}
 
@@ -21293,7 +21301,7 @@ snapshots:
     dependencies:
       browserslist: 4.23.0
       postcss: 8.4.35
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
 
   stylis@4.3.1: {}
 
@@ -21362,7 +21370,7 @@ snapshots:
       is-glob: 4.0.3
       jiti: 1.21.0
       lilconfig: 2.1.0
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.1
@@ -21371,7 +21379,7 @@ snapshots:
       postcss-js: 4.0.1(postcss@8.4.35)
       postcss-load-config: 4.0.2(postcss@8.4.35)
       postcss-nested: 6.0.1(postcss@8.4.35)
-      postcss-selector-parser: 6.0.16
+      postcss-selector-parser: 6.1.0
       resolve: 1.22.8
       sucrase: 3.35.0
     transitivePeerDependencies:
@@ -21393,11 +21401,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.1
-      postcss: 8.4.38
-      postcss-import: 15.1.0(postcss@8.4.38)
-      postcss-js: 4.0.1(postcss@8.4.38)
-      postcss-load-config: 4.0.2(postcss@8.4.38)
-      postcss-nested: 6.0.1(postcss@8.4.38)
+      postcss: 8.4.35
+      postcss-import: 15.1.0(postcss@8.4.35)
+      postcss-js: 4.0.1(postcss@8.4.35)
+      postcss-load-config: 4.0.2(postcss@8.4.35)
+      postcss-nested: 6.0.1(postcss@8.4.35)
       postcss-selector-parser: 6.1.0
       resolve: 1.22.8
       sucrase: 3.35.0

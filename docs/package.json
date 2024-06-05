@@ -14,6 +14,7 @@
     "@marigold/icons": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
+    "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
     "@react-aria/i18n": "3.11.1",
     "@tailwindcss/typography": "0.5.10",
