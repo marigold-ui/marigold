@@ -20,7 +20,13 @@ export interface AccordionProps
     AriaAccordionProps<object>,
     'children' | 'expandedKeys' | 'disabledKeys' | 'onExpandedChange'
   > {
+  /**
+   * The children of the component
+   */
   children: ItemElement<object>[] | ItemElement<object>;
+  /**
+   * Sets the mode of items open at the same time.
+   */
   selectionMode?: SelectionMode;
 }
 

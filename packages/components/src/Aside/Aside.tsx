@@ -4,9 +4,21 @@ import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 import { NonZeroPercentage } from '@marigold/types';
 
 export interface AsideProps extends GapSpaceProp {
+  /**
+   * The children of the component.
+   */
   children: [ReactElement, ReactElement];
+  /**
+   * The side of the aside content.
+   */
   side?: 'left' | 'right';
+  /**
+   * The side width of the aside content.
+   */
   sideWidth?: string;
+  /**
+   * At which percent the content should wrap.
+   */
   wrap?: NonZeroPercentage;
 }
 
