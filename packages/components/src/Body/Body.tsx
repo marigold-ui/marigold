@@ -6,8 +6,17 @@ import { HtmlProps } from '@marigold/types';
 // Props
 // ---------------
 export interface BodyProps extends Omit<HtmlProps<'section'>, 'className'> {
+  /**
+   * Children of the component
+   */
   children?: ReactNode;
+  /**
+   * The available variants of this component.
+   */
   variant?: string;
+  /**
+   * The available sizes of this component.
+   */
   size?: string;
 }
 

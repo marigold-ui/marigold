@@ -7,15 +7,26 @@ export interface BreakoutProps
   extends Omit<HtmlProps<'div'>, 'className'>,
     AlignmentProp {
   children?: ReactNode;
+
+  /**
+   * Set the height of the breakout element.
+   */
   height?: string;
+
+  /**
+   * Horizontal alignment of the items inside the breakout element.
+   */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
+
+  /**
+   * Vertical alignment of the items inside the breakout element.
+   */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
 }
 
 export const Breakout = ({
   height,
   children,
-  orientation,
   alignX = 'left',
   alignY = 'center',
   ...props

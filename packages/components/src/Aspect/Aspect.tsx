@@ -9,7 +9,14 @@ import { HtmlProps } from '@marigold/types';
 export interface AspectProps
   extends Omit<HtmlProps<'div'>, 'className'>,
     AspectProp {
+  /**
+   * The children of the component.
+   */
   children?: ReactNode;
+
+  /**
+   * The maximum width of the image.
+   */
   maxWidth?: string;
 }
 
