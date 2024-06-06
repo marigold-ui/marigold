@@ -168,6 +168,7 @@ export const SiteMenu = () => {
     // Set default focus to the first item
     if (newPages.length > 0) {
       setFocusedPage(newPages[0]);
+      console.log('focused', focusedPage);
       setSubPage(newPages[0]);
     }
   }, [focusedPage]);
@@ -181,16 +182,34 @@ export const SiteMenu = () => {
       } else if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setIsCommandDPressed(() => !isCommandDPressed); // Track that Command + d was pressed
-        setSubPage(focusedPage); // Set subPage to the focused item
+
+        // Add heading slugs to pages
+        let updatedPages = { ...pages };
+        groupedPages.forEach(({ items }) => {
+          items.forEach(item => {
+            if (item.headings) {
+              updatedPages[item.slug] = Object.values(item.headings).map(
+                heading => heading.slug
+              );
+            }
+          });
+        });
+        setPages(updatedPages);
+        setSubPage(focusedPage);
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
 
-        const current = pages.indexOf(focusedPage);
-        console.log('Before', focusedPage, current);
-        if (e.key === 'ArrowDown') {
-          setFocusedPage(pages[current + 1]);
-          console.log('arrow down', focusedPage);
-        }
+        setFocusedPage(prevFocusedPage => {
+          const currentIndex = Object.keys(pages);
+          console.log('Before', focusedPage, currentIndex);
+          // const slugs = Object.keys(pages);
+          // const currentIndex = slugs.indexOf(prevFocusedPage);
+          console.log('HUHU', currentIndex, prevFocusedPage);
+          if (e.key === 'ArrowDown') {
+            setFocusedPage(pages[currentIndex + 1]);
+            console.log('arrow down', focusedPage);
+          }
+        });
         // setFocusedPage(prevFocusedPage => {
         //   const currentIndex = pages.indexOf(prevFocusedPage);
 
