@@ -157,39 +157,6 @@ export const SiteMenu = () => {
     return getIcon(icon, ref as any);
   });
 
-  // register global cmd+k hotkey
-  useEffect(() => {
-    const onKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen(open => !open);
-      } else if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setIsCommandDPressed(true); // Track that Command + d was pressed
-        setSubPage(focusedPage); // Set subPage to the focused item
-      } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        setFocusedPage(prevFocusedPage => {
-          const currentIndex = pages.indexOf(prevFocusedPage);
-          const nextIndex =
-            e.key === 'ArrowDown'
-              ? (currentIndex + 1) % pages.length
-              : (currentIndex - 1 + pages.length) % pages.length;
-          return pages[nextIndex];
-        });
-      }
-    };
-
-    document.addEventListener('keydown', onKeydown);
-    return () => document.removeEventListener('keydown', onKeydown);
-  }, [pages, focusedPage]);
-
-  useEffect(() => {
-    if (pages.length > 0 && focusedPage === null) {
-      setFocusedPage(pages[0]);
-    }
-  }, [pages, focusedPage]);
-
   useEffect(() => {
     let newPages: string[] = [];
     groupedPages.forEach(({ items }) => {
@@ -198,7 +165,55 @@ export const SiteMenu = () => {
       });
     });
     setPages(newPages);
-  }, []);
+    // Set default focus to the first item
+    if (newPages.length > 0) {
+      setFocusedPage(newPages[0]);
+      setSubPage(newPages[0]);
+    }
+  }, [focusedPage]);
+
+  // register global cmd+k hotkey
+  useEffect(() => {
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen(open => !open);
+      } else if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsCommandDPressed(() => !isCommandDPressed); // Track that Command + d was pressed
+        setSubPage(focusedPage); // Set subPage to the focused item
+      } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+
+        const current = pages.indexOf(focusedPage);
+        console.log('Before', focusedPage, current);
+        if (e.key === 'ArrowDown') {
+          setFocusedPage(pages[current + 1]);
+          console.log('arrow down', focusedPage);
+        }
+        // setFocusedPage(prevFocusedPage => {
+        //   const currentIndex = pages.indexOf(prevFocusedPage);
+
+        //   if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
+        //     return pages[currentIndex + 1];
+        //   } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+        //     return pages[currentIndex - 1];
+        //   }
+        //   return prevFocusedPage; // Return the same page if at the boundary
+        // });
+        console.log('After', focusedPage);
+      }
+    };
+
+    document.addEventListener('keydown', onKeydown);
+    return () => document.removeEventListener('keydown', onKeydown);
+  }, [pages, focusedPage, isCommandDPressed]);
+
+  useEffect(() => {
+    if (pages.length > 0 && focusedPage === null) {
+      setFocusedPage(pages[0]);
+    }
+  }, [pages, focusedPage]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
@@ -207,7 +222,6 @@ export const SiteMenu = () => {
   }
   const tokens = iterateTokens(themes[current].colors || {});
 
-  console.log('PAGES', subPage);
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
