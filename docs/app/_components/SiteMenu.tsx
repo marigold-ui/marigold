@@ -3,15 +3,7 @@
 import { links, themeswitch } from '@/lib/commandlist';
 import { siteConfig } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
-import {
-  Button,
-  Dialog,
-  Icons,
-  Inline,
-  Popover,
-  Split,
-  useClassNames,
-} from '@/ui';
+import { Button, Dialog, Icons, Inline, Split, cn, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
@@ -70,7 +62,7 @@ const Hotkey = ({ letter }: HotKeyProps) => {
 
 // Component
 // ---------------
-interface SubItemProps {
+interface CopyItemProps {
   children: ReactNode;
   className?: string;
   value?: string;
@@ -79,9 +71,8 @@ interface SubItemProps {
   copyValue: string;
 }
 
-const SubItem = ({ children, copyValue, ...props }: SubItemProps) => {
+const CopyItem = ({ children, copyValue, ...props }: CopyItemProps) => {
   const search = useCommandState(state => state.search);
-
   const [isCopied, setCopy] = useState(false);
   const [, setCopied] = useCopyToClipboard();
   const [isReady, cancel] = useDebounce(() => setCopy(false), 2000, [isCopied]);
@@ -107,102 +98,27 @@ const SubItem = ({ children, copyValue, ...props }: SubItemProps) => {
   );
 };
 
-interface SubCommandProps {
-  slug?: string;
-  classNames: {
-    item: string;
-    container: string;
-    section: string;
-  };
-  open?: boolean;
-  setCommandOpen: () => void;
-  listRef: React.RefObject<HTMLElement>;
+interface SubItemProps {
+  content: string;
+  value?: string;
+  className: string;
 }
-const SubCommand = ({
-  classNames,
-  listRef,
-  setCommandOpen,
-}: SubCommandProps) => {
+const SubItem = ({ content, className, ...props }: SubItemProps) => {
   const router = useRouter();
-  const [query, setQuery] = useState('');
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
-    setCommandOpen();
   };
-
-  // register cmd+d hotkey
-  useEffect(() => {
-    const onKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen(open => !open);
-      }
-    };
-    document.addEventListener('keydown', onKeydown);
-    return () => document.removeEventListener('keydown', onKeydown);
-  }, []);
-
   return (
     <>
-      <Button
-        variant="sunken"
-        size="small"
-        onPress={() => setOpen(open => !open)}
+      <Command.Item
+        className={cn('text-text-primary-muted ml-7', className)}
+        onSelect={() => goto(slug)}
+        {...props}
       >
-        more details
-        <Hotkey letter="D" />
-      </Button>
-      <Popover
-        aria-label="Sub Command Menu"
-        open={open}
-        onOpenChange={() => setOpen}
-        placement="right bottom"
-      >
-        <div className="z-[50] rounded-md bg-white text-sm backdrop-blur">
-          <Command
-            filter={(value, query, keywords) => {
-              const searchValue = `${value} ${keywords}`;
-              if (searchValue.toLowerCase().includes(query.toLowerCase()))
-                return 1;
-              return 0;
-            }}
-          >
-            <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
-              {groupedPages.map(({ items }) =>
-                items?.map(item => (
-                  <CommandGroup
-                    heading={item.slug}
-                    className={classNames.section}
-                  >
-                    {loading && <Command.Loading>Hang on…</Command.Loading>}
-                    {Object.values(item.headings).map(sub => (
-                      <Command.Item
-                        className={classNames.item}
-                        onSelect={() => goto(`${item.slug}#${sub.slug}`)}
-                      >
-                        {sub.text}
-                      </Command.Item>
-                    ))}
-                  </CommandGroup>
-                ))
-              )}
-            </Command.List>
-            <div className="flex items-center gap-1.5 border-t px-3">
-              <Search className="size-4 opacity-50" />
-              <Command.Input
-                value={query}
-                autoFocus
-                onValueChange={setQuery}
-                placeholder="Type to search ..."
-                className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
-              />
-            </div>
-          </Command>
-        </div>
-      </Popover>
+        {content}
+      </Command.Item>
     </>
   );
 };
@@ -212,7 +128,12 @@ export const SiteMenu = () => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const ref = useRef<SVGSVGElement>();
-  const listRef = useRef(null);
+
+  const [pages, setPages] = useState(['']);
+  const [subPage, setSubPage] = useState('');
+  const [isCommandDPressed, setIsCommandDPressed] = useState(false);
+  const [focusedPage, setFocusedPage] = useState('');
+  //  const subPage = pages[pages.length - 1];
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
@@ -242,10 +163,41 @@ export const SiteMenu = () => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(open => !open);
+      } else if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsCommandDPressed(true); // Track that Command + d was pressed
+        setSubPage(focusedPage); // Set subPage to the focused item
+      } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        setFocusedPage(prevFocusedPage => {
+          const currentIndex = pages.indexOf(prevFocusedPage);
+          const nextIndex =
+            e.key === 'ArrowDown'
+              ? (currentIndex + 1) % pages.length
+              : (currentIndex - 1 + pages.length) % pages.length;
+          return pages[nextIndex];
+        });
       }
     };
+
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
+  }, [pages, focusedPage]);
+
+  useEffect(() => {
+    if (pages.length > 0 && focusedPage === null) {
+      setFocusedPage(pages[0]);
+    }
+  }, [pages, focusedPage]);
+
+  useEffect(() => {
+    let newPages: string[] = [];
+    groupedPages.forEach(({ items }) => {
+      items.forEach(item => {
+        newPages.push(item.slug);
+      });
+    });
+    setPages(newPages);
   }, []);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
@@ -255,6 +207,7 @@ export const SiteMenu = () => {
   }
   const tokens = iterateTokens(themes[current].colors || {});
 
+  console.log('PAGES', subPage);
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
@@ -281,10 +234,7 @@ export const SiteMenu = () => {
               className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
             />
           </div>
-          <Command.List
-            ref={listRef}
-            className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden"
-          >
+          <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
             <Command.Empty className="py-6 text-center text-sm">
               No results found.
             </Command.Empty>
@@ -295,15 +245,33 @@ export const SiteMenu = () => {
                 className={classNames.section}
               >
                 {items.map(page => (
-                  <Command.Item
-                    className={classNames.item}
-                    key={page.slug}
-                    value={page.slug}
-                    onSelect={() => goto(page.slug)}
-                  >
-                    {page.title}
-                    <Hotkey letter="D" />
-                  </Command.Item>
+                  <>
+                    <Command.Item
+                      className={classNames.item}
+                      key={page.slug}
+                      value={page.slug}
+                      // onSelect={() => goto(page.slug)}
+                      //onSelect={() => handleSelect(page.slug)}
+                    >
+                      <Inline space={4} alignY="center">
+                        {page.title}
+                        <Split />
+                        <Hotkey letter="D" />
+                      </Inline>
+                    </Command.Item>
+                    {isCommandDPressed && page.slug === subPage && (
+                      <>
+                        {Object.values(page.headings).map(sub => (
+                          <SubItem
+                            key={sub.slug}
+                            value={sub.slug}
+                            content={sub.text}
+                            className={classNames.item}
+                          ></SubItem>
+                        ))}
+                      </>
+                    )}
+                  </>
                 ))}
               </CommandGroup>
             ))}
@@ -368,7 +336,7 @@ export const SiteMenu = () => {
                 className={classNames.section}
               >
                 {tokens.map(([token]) => (
-                  <SubItem
+                  <CopyItem
                     className={classNames.item}
                     key={token}
                     value={token}
@@ -376,7 +344,7 @@ export const SiteMenu = () => {
                     copyValue={token.replace('-DEFAULT', '')}
                   >
                     {token.replace('-DEFAULT', '')}
-                  </SubItem>
+                  </CopyItem>
                 ))}
               </CommandGroup>
             )}
@@ -388,7 +356,7 @@ export const SiteMenu = () => {
                 className={classNames.section}
               >
                 {Object.values(iconElements).map(elements => (
-                  <SubItem
+                  <CopyItem
                     key={elements.icon}
                     value={elements.icon}
                     keywords={['copy']}
@@ -397,22 +365,19 @@ export const SiteMenu = () => {
                   >
                     {elements.iconElement}
                     {elements.icon}
-                  </SubItem>
+                  </CopyItem>
                 ))}
               </CommandGroup>
             )}
           </Command.List>
-          <Inline alignX="right" space={2}>
-            <Button variant="sunken" size="small">
-              Open Page<span className="opacity-50">↵</span>
-            </Button>
-
-            <SubCommand
-              setCommandOpen={() => setOpen(false)}
-              classNames={classNames}
-              listRef={listRef}
-            />
-          </Inline>
+          <div className="flex h-10 items-center justify-end gap-4 border-t px-2">
+            <div>
+              Action <span className="opacity-50">↵</span>
+            </div>
+            <div>
+              More Details <Hotkey letter="D" />
+            </div>
+          </div>
         </Command>
       </Dialog>
     </Dialog.Trigger>
