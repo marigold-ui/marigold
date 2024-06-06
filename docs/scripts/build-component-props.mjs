@@ -1,9 +1,6 @@
-import fs from 'fs-extra';
-import path from 'path';
-import { dirname } from 'path';
 import reactDocgenTypescript from 'react-docgen-typescript';
 import { fileURLToPath } from 'url';
-import { globby } from 'zx';
+import { fs, globby, path } from 'zx';
 
 console.log('📑 Generating props table...');
 
@@ -16,7 +13,7 @@ const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
 
 // Resolve __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
 const outputFilePath = path.resolve(
