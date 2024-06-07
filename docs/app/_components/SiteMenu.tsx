@@ -185,18 +185,20 @@ export const SiteMenu = () => {
 
         // Add heading slugs to pages
         let updatedPages = [...pages];
-        // groupedPages.forEach(({ items }) => {
-        //   items.forEach(item => {
-        //     if (item.headings) {
-        //       updatedPages[item.slug] = Object.values(item.headings).map(
-        //         heading => heading.slug
-        //       );
-        //     }
-        //   });
-        // });
+        groupedPages.forEach(({ items }) => {
+          items.forEach(item => {
+            console.log(item.slug, updatedPages);
+
+            if (item.headings) {
+              updatedPages[item.slug] = Object.values(item.headings).map(
+                heading => heading.slug
+              );
+            }
+          });
+        });
         setPages(updatedPages);
         setSubPage(focusedPage);
-        console.log('updatedPages', updatedPages);
+        console.log('subPage', subPage);
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
 
