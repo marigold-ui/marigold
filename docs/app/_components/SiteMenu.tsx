@@ -177,16 +177,32 @@ export const SiteMenu = () => {
     }
   }, [pages, focusedPage, open]);
 
+  // useEffect(() => {
+  //   let newPages: string[] = [];
+  //   groupedPages.forEach(({ items }) => {
+  //     items.forEach(item => {
+  //       newPages.push(item.slug);
+  //     });
+  //   });
+  //   setPages(newPages);
+  // }, []);
   useEffect(() => {
     let newPages: string[] = [];
     groupedPages.forEach(({ items }) => {
       items.forEach(item => {
         newPages.push(item.slug);
+        Object.values(item.headings).map(slug => {
+          return (newPages[item.slug] = slug);
+        });
       });
     });
     setPages(newPages);
-  }, []);
+    setSubPage(focusedPage);
+    setSubPages(pages);
+  }, [focusedPage, pages]);
 
+  console.log('Pages', pages);
+  console.log('SUBP', subPages);
   console.log('focused page', focusedPage);
   // register global cmd+k hotkey
   useEffect(() => {
@@ -199,18 +215,18 @@ export const SiteMenu = () => {
         setCommandPressed(() => !commandPressed);
 
         // Add heading slugs to pages
-        let updatedPages = [...pages];
-        groupedPages.forEach(({ items }) => {
-          items.forEach(item => {
-            if (item.headings) {
-              updatedPages[item.slug] = Object.values(item.headings).map(
-                heading => heading.slug
-              );
-            }
-          });
-        });
-        setPages(updatedPages);
-        setSubPage(focusedPage);
+        // let updatedPages = [...pages];
+        // groupedPages.forEach(({ items }) => {
+        //   items.forEach(item => {
+        //     if (item.headings) {
+        //       updatedPages[item.slug] = Object.values(item.headings).map(
+        //         heading => heading.slug
+        //       );
+        //     }
+        //   });
+        // });
+        // setPages(updatedPages);
+        // setSubPage(focusedPage);
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
         handleKeys(e.key);
