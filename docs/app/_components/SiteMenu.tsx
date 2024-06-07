@@ -129,11 +129,12 @@ export const SiteMenu = () => {
   const [query, setQuery] = useState('');
   const ref = useRef<SVGSVGElement>();
 
-  const [pages, setPages] = useState(['']);
   const [subPage, setSubPage] = useState('');
-  const [isCommandDPressed, setIsCommandDPressed] = useState(false);
+  const [commandPressed, setCommandPressed] = useState(false);
   const [focusedPage, setFocusedPage] = useState('');
-  //  const subPage = pages[pages.length - 1];
+  const [pages, setPages] = useState<string[]>([
+    'introduction/getting-started',
+  ]);
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
@@ -168,10 +169,9 @@ export const SiteMenu = () => {
     // Set default focus to the first item
     if (newPages.length > 0) {
       setFocusedPage(newPages[0]);
-      console.log('focused', focusedPage);
       setSubPage(newPages[0]);
     }
-  }, [focusedPage]);
+  }, []);
 
   // register global cmd+k hotkey
   useEffect(() => {
@@ -181,7 +181,7 @@ export const SiteMenu = () => {
         setOpen(open => !open);
       } else if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setIsCommandDPressed(() => !isCommandDPressed); // Track that Command + d was pressed
+        setCommandPressed(() => !commandPressed);
 
         // Add heading slugs to pages
         let updatedPages = { ...pages };
@@ -200,33 +200,22 @@ export const SiteMenu = () => {
         e.preventDefault();
 
         setFocusedPage(prevFocusedPage => {
-          const currentIndex = Object.keys(pages);
-          console.log('Before', focusedPage, currentIndex);
-          // const slugs = Object.keys(pages);
-          // const currentIndex = slugs.indexOf(prevFocusedPage);
-          console.log('HUHU', currentIndex, prevFocusedPage);
-          if (e.key === 'ArrowDown') {
-            setFocusedPage(pages[currentIndex + 1]);
-            console.log('arrow down', focusedPage);
-          }
-        });
-        // setFocusedPage(prevFocusedPage => {
-        //   const currentIndex = pages.indexOf(prevFocusedPage);
+          const currentIndex = pages.indexOf(prevFocusedPage);
 
-        //   if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
-        //     return pages[currentIndex + 1];
-        //   } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-        //     return pages[currentIndex - 1];
-        //   }
-        //   return prevFocusedPage; // Return the same page if at the boundary
-        // });
-        console.log('After', focusedPage);
+          if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
+            return pages[currentIndex + 1];
+          } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+            return pages[currentIndex - 1];
+          }
+          return prevFocusedPage; // Return the same page if at the boundary
+        });
+        console.log('focusedPage', focusedPage);
       }
     };
 
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
-  }, [pages, focusedPage, isCommandDPressed]);
+  }, [pages, focusedPage, commandPressed]);
 
   useEffect(() => {
     if (pages.length > 0 && focusedPage === null) {
@@ -292,7 +281,7 @@ export const SiteMenu = () => {
                         <Hotkey letter="D" />
                       </Inline>
                     </Command.Item>
-                    {isCommandDPressed && page.slug === subPage && (
+                    {commandPressed && page.slug === subPage && (
                       <>
                         {Object.values(page.headings).map(sub => (
                           <SubItem
