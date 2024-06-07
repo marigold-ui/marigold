@@ -142,6 +142,7 @@ export const SiteMenu = () => {
   const [commandPressed, setCommandPressed] = useState(false);
   const [focusedPage, setFocusedPage] = useState('');
   const [pages, setPages] = useState<string[]>([]);
+  const [subPages, setSubPages] = useState<string[]>([]);
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
@@ -207,19 +208,20 @@ export const SiteMenu = () => {
               );
             }
           });
-          setPages(updatedPages);
-          setSubPage(focusedPage);
         });
+        setPages(updatedPages);
+        setSubPage(focusedPage);
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
-
         setFocusedPage(prevFocusedPage => {
           const currentIndex = pages.indexOf(prevFocusedPage);
 
-          console.log('SUBPA', subPage);
           if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
             if (subPage) {
-              return pages[currentIndex];
+              pages[subPage].forEach(element => {
+                console.log('ELELELEL', element, currentIndex);
+                return pages[currentIndex + 1];
+              });
             }
             return pages[currentIndex + 1];
           } else if (e.key === 'ArrowUp' && currentIndex > 0) {
@@ -235,7 +237,7 @@ export const SiteMenu = () => {
 
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
-  }, [pages, focusedPage, commandPressed]);
+  }, [pages, focusedPage, commandPressed, subPage]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
