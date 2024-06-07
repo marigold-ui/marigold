@@ -187,7 +187,7 @@ export const SiteMenu = () => {
     setPages(newPages);
   }, []);
 
-  console.log('default', focusedPage);
+  console.log('focused page', focusedPage);
   // register global cmd+k hotkey
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
@@ -213,26 +213,24 @@ export const SiteMenu = () => {
         setSubPage(focusedPage);
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
-        setFocusedPage(prevFocusedPage => {
-          const currentIndex = pages.indexOf(prevFocusedPage);
-
-          if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
-            if (subPage) {
-              pages[subPage].forEach(element => {
-                console.log('ELELELEL', element, currentIndex);
-                return pages[currentIndex + 1];
-              });
-            }
-            return pages[currentIndex + 1];
-          } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-            if (subPage) {
-              return pages[currentIndex];
-            }
-            return pages[currentIndex - 1];
-          }
-          return prevFocusedPage; // Return the same page if at the boundary
-        });
+        handleKeys(e.key);
       }
+    };
+
+    const handleKeys = (key: string) => {
+      setFocusedPage(prevFocusedPage => {
+        const currentIndex = pages.indexOf(prevFocusedPage);
+
+        if (key === 'ArrowDown' && currentIndex < pages.length - 1) {
+          return pages[currentIndex + 1];
+        } else if (key === 'ArrowUp' && currentIndex > 0) {
+          if (subPage) {
+            return pages[currentIndex];
+          }
+          return pages[currentIndex - 1];
+        }
+        return prevFocusedPage; // Return the same page if at the boundary
+      });
     };
 
     document.addEventListener('keydown', onKeydown);
