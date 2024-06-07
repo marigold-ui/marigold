@@ -102,14 +102,22 @@ interface SubItemProps {
   content: string;
   slug: string;
   className: string;
+  open: boolean;
+  setOpen: () => void;
 }
-const SubItem = ({ content, className, slug, ...props }: SubItemProps) => {
+const SubItem = ({
+  content,
+  className,
+  slug,
+  open,
+  setOpen,
+  ...props
+}: SubItemProps) => {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
   const goto = (slug: string) => {
-    console.log(slug);
+    console.log(open);
     router.push(`/${slug}`);
-    setOpen(false);
+    setOpen(!open);
   };
   return (
     <>
@@ -133,13 +141,13 @@ export const SiteMenu = () => {
   const [subPage, setSubPage] = useState('');
   const [commandPressed, setCommandPressed] = useState(false);
   const [focusedPage, setFocusedPage] = useState('');
-  const [pages, setPages] = useState<string[]>([
-    'introduction/getting-started',
-  ]);
+  const [pages, setPages] = useState<string[]>([]);
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
+    setFocusedPage(pages[0]);
+    console.log('GOTO FOCIS', focusedPage);
   };
 
   const { updateTheme } = useThemeSwitch();
@@ -160,6 +168,12 @@ export const SiteMenu = () => {
   });
 
   useEffect(() => {
+    if (pages.length > 0 && focusedPage === '') {
+      setFocusedPage(pages[0]);
+    }
+  }, [pages, focusedPage]);
+
+  useEffect(() => {
     let newPages: string[] = [];
     groupedPages.forEach(({ items }) => {
       items.forEach(item => {
@@ -168,12 +182,14 @@ export const SiteMenu = () => {
     });
     setPages(newPages);
     // Set default focus to the first item
+
     if (newPages.length > 0) {
       setFocusedPage(newPages[0]);
       setSubPage(newPages[0]);
     }
   }, []);
 
+  console.log('default', focusedPage);
   // register global cmd+k hotkey
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
@@ -188,19 +204,19 @@ export const SiteMenu = () => {
         let updatedPages = [...pages];
         groupedPages.forEach(({ items }) => {
           items.forEach(item => {
-            if (focusedPage === item.slug) {
-              console.log(focusedPage === item.slug);
-              Object.entries(item.headings).map((heading, index) => {
-                console.log(index, heading);
-              });
-              console.log(updatedPages);
-            }
-            // if (item.headings) {
-            //   updatedPages[item.slug] = Object.values(item.headings).map(
-            //     heading => heading.slug
-            //   );
-            //   console.log(updatedPages[item.slug]);
+            // if (focusedPage === item.slug) {
+            //   console.log(focusedPage === item.slug);
+            //   Object.entries(item.headings).map((heading, index) => {
+            //     console.log(index, heading);
+            //   });
+            //   console.log(updatedPages);
             // }
+            if (item.headings) {
+              updatedPages[item.slug] = Object.values(item.headings).map(
+                heading => heading.slug
+              );
+              console.log(updatedPages[item.slug]);
+            }
           });
           setPages(updatedPages);
           setSubPage(focusedPage);
@@ -212,33 +228,18 @@ export const SiteMenu = () => {
           const currentIndex = pages.indexOf(prevFocusedPage);
 
           if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
-            console.log('DOWN');
-
             return pages[currentIndex + 1];
           } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-            console.log(
-              'UP',
-              currentIndex,
-              pages.length - 2,
-              pages[currentIndex - 1]
-            );
             return pages[currentIndex - 1];
           }
           return prevFocusedPage; // Return the same page if at the boundary
         });
       }
-      console.log('focusedPage', focusedPage);
     };
 
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
   }, [pages, focusedPage, commandPressed]);
-
-  useEffect(() => {
-    if (pages.length > 0 && focusedPage === null) {
-      setFocusedPage(pages[0]);
-    }
-  }, [pages, focusedPage]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
@@ -290,7 +291,6 @@ export const SiteMenu = () => {
                       key={page.slug}
                       value={page.slug}
                       onSelect={() => goto(page.slug)}
-                      //onSelect={() => handleSelect(page.slug)}
                     >
                       <Inline space={4} alignY="center">
                         {page.title}
@@ -301,12 +301,23 @@ export const SiteMenu = () => {
                     {commandPressed && page.slug === subPage && (
                       <>
                         {Object.values(page.headings).map(sub => (
-                          <SubItem
-                            key={sub.slug}
-                            slug={`${page.slug}#${sub.slug}`}
-                            content={sub.text}
-                            className={classNames.item}
-                          ></SubItem>
+                          <Command.Item
+                            className={cn(
+                              'text-text-primary-muted ml-7',
+                              classNames.item
+                            )}
+                            onSelect={() => goto(`${page.slug}#${sub.slug}`)}
+                          >
+                            {sub.text}
+                          </Command.Item>
+
+                          // <SubItem
+                          //   key={sub.slug}
+                          //   slug={`${page.slug}#${sub.slug}`}
+                          //   content={sub.text}
+                          //   className={classNames.item}
+                          //   open={open}
+                          // ></SubItem>
                         ))}
                       </>
                     )}
