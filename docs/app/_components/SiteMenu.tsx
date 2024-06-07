@@ -168,10 +168,10 @@ export const SiteMenu = () => {
   });
 
   useEffect(() => {
-    if (pages.length > 0 && focusedPage === '') {
+    if (open && pages.length > 0 && focusedPage === '') {
       setFocusedPage(pages[0]);
     }
-  }, [pages, focusedPage]);
+  }, [pages, focusedPage, open]);
 
   useEffect(() => {
     let newPages: string[] = [];
@@ -215,7 +215,6 @@ export const SiteMenu = () => {
               updatedPages[item.slug] = Object.values(item.headings).map(
                 heading => heading.slug
               );
-              console.log(updatedPages[item.slug]);
             }
           });
           setPages(updatedPages);
