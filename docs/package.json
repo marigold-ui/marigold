@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "7.8.0",
+  "version": "7.8.1",
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
@@ -15,6 +15,7 @@
     "@marigold/icons": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
+    "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-preset": "workspace:*",
     "@react-aria/i18n": "3.11.1",
     "@tailwindcss/typography": "0.5.10",

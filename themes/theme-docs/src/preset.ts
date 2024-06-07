@@ -10,6 +10,11 @@ export interface PresetConfig {
 }
 
 export const preset = createPreset({
+  content: [
+    './node_modules/@marigold/components/dist/*.js',
+    './node_modules/@marigold/system/dist/*.js',
+    './node_modules/@marigold/theme-docs/dist/index.js',
+  ],
   theme: {
     container: {
       center: true,
