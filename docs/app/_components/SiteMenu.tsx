@@ -147,7 +147,8 @@ export const SiteMenu = () => {
     router.push(`/${slug}`);
     setOpen(false);
     setFocusedPage(pages[0]);
-    console.log('GOTO FOCIS', focusedPage);
+    setSubPage('');
+    setCommandPressed(false);
   };
 
   const { updateTheme } = useThemeSwitch();
@@ -170,6 +171,8 @@ export const SiteMenu = () => {
   useEffect(() => {
     if (open && pages.length > 0 && focusedPage === '') {
       setFocusedPage(pages[0]);
+      setSubPage('');
+      setCommandPressed(false);
     }
   }, [pages, focusedPage, open]);
 
@@ -220,6 +223,9 @@ export const SiteMenu = () => {
             }
             return pages[currentIndex + 1];
           } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+            if (subPage) {
+              return pages[currentIndex];
+            }
             return pages[currentIndex - 1];
           }
           return prevFocusedPage; // Return the same page if at the boundary
