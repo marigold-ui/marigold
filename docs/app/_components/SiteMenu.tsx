@@ -184,18 +184,19 @@ export const SiteMenu = () => {
         setCommandPressed(() => !commandPressed);
 
         // Add heading slugs to pages
-        let updatedPages = { ...pages };
-        groupedPages.forEach(({ items }) => {
-          items.forEach(item => {
-            if (item.headings) {
-              updatedPages[item.slug] = Object.values(item.headings).map(
-                heading => heading.slug
-              );
-            }
-          });
-        });
+        let updatedPages = [...pages];
+        // groupedPages.forEach(({ items }) => {
+        //   items.forEach(item => {
+        //     if (item.headings) {
+        //       updatedPages[item.slug] = Object.values(item.headings).map(
+        //         heading => heading.slug
+        //       );
+        //     }
+        //   });
+        // });
         setPages(updatedPages);
         setSubPage(focusedPage);
+        console.log('updatedPages', updatedPages);
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
 
@@ -203,14 +204,22 @@ export const SiteMenu = () => {
           const currentIndex = pages.indexOf(prevFocusedPage);
 
           if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
+            console.log('DOWN');
+
             return pages[currentIndex + 1];
           } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+            console.log(
+              'UP',
+              currentIndex,
+              pages.length - 2,
+              pages[currentIndex - 1]
+            );
             return pages[currentIndex - 1];
           }
           return prevFocusedPage; // Return the same page if at the boundary
         });
-        console.log('focusedPage', focusedPage);
       }
+      console.log('focusedPage', focusedPage);
     };
 
     document.addEventListener('keydown', onKeydown);
