@@ -100,13 +100,14 @@ const CopyItem = ({ children, copyValue, ...props }: CopyItemProps) => {
 
 interface SubItemProps {
   content: string;
-  value?: string;
+  slug: string;
   className: string;
 }
-const SubItem = ({ content, className, ...props }: SubItemProps) => {
+const SubItem = ({ content, className, slug, ...props }: SubItemProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const goto = (slug: string) => {
+    console.log(slug);
     router.push(`/${slug}`);
     setOpen(false);
   };
@@ -187,18 +188,23 @@ export const SiteMenu = () => {
         let updatedPages = [...pages];
         groupedPages.forEach(({ items }) => {
           items.forEach(item => {
-            console.log(item.slug, updatedPages);
-
-            if (item.headings) {
-              updatedPages[item.slug] = Object.values(item.headings).map(
-                heading => heading.slug
-              );
+            if (focusedPage === item.slug) {
+              console.log(focusedPage === item.slug);
+              Object.entries(item.headings).map((heading, index) => {
+                console.log(index, heading);
+              });
+              console.log(updatedPages);
             }
+            // if (item.headings) {
+            //   updatedPages[item.slug] = Object.values(item.headings).map(
+            //     heading => heading.slug
+            //   );
+            //   console.log(updatedPages[item.slug]);
+            // }
           });
+          setPages(updatedPages);
+          setSubPage(focusedPage);
         });
-        setPages(updatedPages);
-        setSubPage(focusedPage);
-        console.log('subPage', subPage);
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
 
@@ -283,7 +289,7 @@ export const SiteMenu = () => {
                       className={classNames.item}
                       key={page.slug}
                       value={page.slug}
-                      // onSelect={() => goto(page.slug)}
+                      onSelect={() => goto(page.slug)}
                       //onSelect={() => handleSelect(page.slug)}
                     >
                       <Inline space={4} alignY="center">
@@ -297,7 +303,7 @@ export const SiteMenu = () => {
                         {Object.values(page.headings).map(sub => (
                           <SubItem
                             key={sub.slug}
-                            value={sub.slug}
+                            slug={`${page.slug}#${sub.slug}`}
                             content={sub.text}
                             className={classNames.item}
                           ></SubItem>
