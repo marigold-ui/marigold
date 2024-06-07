@@ -181,12 +181,6 @@ export const SiteMenu = () => {
       });
     });
     setPages(newPages);
-    // Set default focus to the first item
-
-    if (newPages.length > 0) {
-      setFocusedPage(newPages[0]);
-      setSubPage(newPages[0]);
-    }
   }, []);
 
   console.log('default', focusedPage);
@@ -204,13 +198,6 @@ export const SiteMenu = () => {
         let updatedPages = [...pages];
         groupedPages.forEach(({ items }) => {
           items.forEach(item => {
-            // if (focusedPage === item.slug) {
-            //   console.log(focusedPage === item.slug);
-            //   Object.entries(item.headings).map((heading, index) => {
-            //     console.log(index, heading);
-            //   });
-            //   console.log(updatedPages);
-            // }
             if (item.headings) {
               updatedPages[item.slug] = Object.values(item.headings).map(
                 heading => heading.slug
@@ -226,7 +213,11 @@ export const SiteMenu = () => {
         setFocusedPage(prevFocusedPage => {
           const currentIndex = pages.indexOf(prevFocusedPage);
 
+          console.log('SUBPA', subPage);
           if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
+            if (subPage) {
+              return pages[currentIndex];
+            }
             return pages[currentIndex + 1];
           } else if (e.key === 'ArrowUp' && currentIndex > 0) {
             return pages[currentIndex - 1];
