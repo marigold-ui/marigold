@@ -98,40 +98,6 @@ const CopyItem = ({ children, copyValue, ...props }: CopyItemProps) => {
   );
 };
 
-interface SubItemProps {
-  content: string;
-  slug: string;
-  className: string;
-  open: boolean;
-  setOpen: () => void;
-}
-const SubItem = ({
-  content,
-  className,
-  slug,
-  open,
-  setOpen,
-  ...props
-}: SubItemProps) => {
-  const router = useRouter();
-  const goto = (slug: string) => {
-    console.log(open);
-    router.push(`/${slug}`);
-    setOpen(!open);
-  };
-  return (
-    <>
-      <Command.Item
-        className={cn('text-text-primary-muted ml-7', className)}
-        onSelect={() => goto(slug)}
-        {...props}
-      >
-        {content}
-      </Command.Item>
-    </>
-  );
-};
-
 export const SiteMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -142,7 +108,7 @@ export const SiteMenu = () => {
   const [commandPressed, setCommandPressed] = useState(false);
   const [focusedPage, setFocusedPage] = useState('');
   const [pages, setPages] = useState<string[]>([]);
-  const [subPages, setSubPages] = useState<string[]>([]);
+  const [subPages, setSubPages] = useState<{ [key: string]: string[] }>({});
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
@@ -177,33 +143,21 @@ export const SiteMenu = () => {
     }
   }, [pages, focusedPage, open]);
 
-  // useEffect(() => {
-  //   let newPages: string[] = [];
-  //   groupedPages.forEach(({ items }) => {
-  //     items.forEach(item => {
-  //       newPages.push(item.slug);
-  //     });
-  //   });
-  //   setPages(newPages);
-  // }, []);
   useEffect(() => {
     let newPages: string[] = [];
     groupedPages.forEach(({ items }) => {
       items.forEach(item => {
         newPages.push(item.slug);
-        Object.values(item.headings).map(slug => {
-          return (newPages[item.slug] = slug);
-        });
+        if (item.headings) {
+          newPages[item.slug] = Object.values(item.headings).map(
+            heading => heading.slug
+          );
+        }
       });
     });
     setPages(newPages);
-    setSubPage(focusedPage);
-    setSubPages(pages);
-  }, [focusedPage, pages]);
+  }, []);
 
-  console.log('Pages', pages);
-  console.log('SUBP', subPages);
-  console.log('focused page', focusedPage);
   // register global cmd+k hotkey
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
@@ -215,18 +169,6 @@ export const SiteMenu = () => {
         setCommandPressed(() => !commandPressed);
 
         // Add heading slugs to pages
-        // let updatedPages = [...pages];
-        // groupedPages.forEach(({ items }) => {
-        //   items.forEach(item => {
-        //     if (item.headings) {
-        //       updatedPages[item.slug] = Object.values(item.headings).map(
-        //         heading => heading.slug
-        //       );
-        //     }
-        //   });
-        // });
-        // setPages(updatedPages);
-        // setSubPage(focusedPage);
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
         handleKeys(e.key);
@@ -236,19 +178,14 @@ export const SiteMenu = () => {
     const handleKeys = (key: string) => {
       setFocusedPage(prevFocusedPage => {
         const currentIndex = pages.indexOf(prevFocusedPage);
-
         if (key === 'ArrowDown' && currentIndex < pages.length - 1) {
           return pages[currentIndex + 1];
         } else if (key === 'ArrowUp' && currentIndex > 0) {
-          if (subPage) {
-            return pages[currentIndex];
-          }
           return pages[currentIndex - 1];
         }
         return prevFocusedPage; // Return the same page if at the boundary
       });
     };
-
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
   }, [pages, focusedPage, commandPressed, subPage]);
@@ -310,7 +247,7 @@ export const SiteMenu = () => {
                         <Hotkey letter="D" />
                       </Inline>
                     </Command.Item>
-                    {commandPressed && page.slug === subPage && (
+                    {commandPressed && page.slug === focusedPage && (
                       <>
                         {Object.values(page.headings).map(sub => (
                           <Command.Item
@@ -322,14 +259,6 @@ export const SiteMenu = () => {
                           >
                             {sub.text}
                           </Command.Item>
-
-                          // <SubItem
-                          //   key={sub.slug}
-                          //   slug={`${page.slug}#${sub.slug}`}
-                          //   content={sub.text}
-                          //   className={classNames.item}
-                          //   open={open}
-                          // ></SubItem>
                         ))}
                       </>
                     )}
