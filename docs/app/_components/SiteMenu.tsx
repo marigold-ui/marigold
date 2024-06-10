@@ -104,17 +104,20 @@ export const SiteMenu = () => {
   const [query, setQuery] = useState('');
   const ref = useRef<SVGSVGElement>();
 
-  const [subPage, setSubPage] = useState('');
   const [commandPressed, setCommandPressed] = useState(false);
   const [focusedPage, setFocusedPage] = useState('');
-  const [pages, setPages] = useState<string[]>([]);
-  const [subPages, setSubPages] = useState<{ [key: string]: string[] }>({});
+  const [items, setItems] = useState<
+    {
+      type: 'page' | 'subpage';
+      slug: string;
+      title?: string;
+      subitems?: any;
+    }[]
+  >([]);
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
-    setFocusedPage(pages[0]);
-    setSubPage('');
     setCommandPressed(false);
   };
 
@@ -136,26 +139,21 @@ export const SiteMenu = () => {
   });
 
   useEffect(() => {
-    if (open && pages.length > 0 && focusedPage === '') {
-      setFocusedPage(pages[0]);
-      setSubPage('');
-      setCommandPressed(false);
-    }
-  }, [pages, focusedPage, open]);
-
-  useEffect(() => {
-    let newPages: string[] = [];
+    let newItems: {
+      type: 'page' | 'subpage';
+      slug: string;
+      subitems: any;
+    }[] = [];
     groupedPages.forEach(({ items }) => {
       items.forEach(item => {
-        newPages.push(item.slug);
-        if (item.headings) {
-          newPages[item.slug] = Object.values(item.headings).map(
-            heading => heading.slug
-          );
-        }
+        newItems.push({
+          type: 'page',
+          slug: item.slug,
+          subitems: item.headings,
+        });
       });
     });
-    setPages(newPages);
+    setItems(newItems);
   }, []);
 
   // register global cmd+k hotkey
@@ -167,28 +165,64 @@ export const SiteMenu = () => {
       } else if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setCommandPressed(() => !commandPressed);
-
-        // Add heading slugs to pages
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
         handleKeys(e.key);
+        console.log('focusedPage', focusedPage);
       }
     };
 
     const handleKeys = (key: string) => {
       setFocusedPage(prevFocusedPage => {
-        const currentIndex = pages.indexOf(prevFocusedPage);
-        if (key === 'ArrowDown' && currentIndex < pages.length - 1) {
-          return pages[currentIndex + 1];
-        } else if (key === 'ArrowUp' && currentIndex > 0) {
-          return pages[currentIndex - 1];
+        const currentIndex = items.findIndex(
+          item => item.slug === prevFocusedPage
+        );
+        if (key === 'ArrowDown') {
+          let nextIndex = currentIndex + 1;
+          // Check if the next item is a subitem, if yes, set focus on it
+          if (items[nextIndex] && items[nextIndex].type === 'subpage') {
+            return items[nextIndex].slug;
+          } else if (items[nextIndex] && items[nextIndex].type === 'page') {
+            return items[nextIndex].slug;
+          } else if (items[nextIndex] && items[nextIndex].subitems) {
+            // Find the first subitem of the next parent item and focus on it
+            for (let i = nextIndex + 1; i < items.length; i++) {
+              if (
+                items[i].type === 'subpage' &&
+                items[i].slug === items[nextIndex].slug
+              ) {
+                return items[i].slug;
+              }
+            }
+          }
+        } else if (key === 'ArrowUp') {
+          let nextIndex = currentIndex - 1;
+          // Check if the previous item is a subitem, if yes, set focus on it
+          if (items[nextIndex] && items[nextIndex].type === 'subpage') {
+            return items[nextIndex].slug;
+          } else if (items[nextIndex] && items[nextIndex].type === 'page') {
+            return items[nextIndex].slug;
+          } else if (items[nextIndex] && items[nextIndex].subitems) {
+            // Find the last subitem of the previous parent item and focus on it
+            for (let i = nextIndex - 1; i >= 0; i--) {
+              if (
+                items[i].type === 'subpage' &&
+                items[i].slug === items[nextIndex].slug
+              ) {
+                return items[i].slug;
+              }
+            }
+          }
         }
-        return prevFocusedPage; // Return the same page if at the boundary
+        // Default behavior, stay on the current focused slug
+        return prevFocusedPage;
       });
     };
+
+    console.log('focusedPage', focusedPage);
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
-  }, [pages, focusedPage, commandPressed, subPage]);
+  }, [commandPressed, items.length, focusedPage, items]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
@@ -233,7 +267,7 @@ export const SiteMenu = () => {
                 key={name}
                 className={classNames.section}
               >
-                {items.map(page => (
+                {items.map((page, index) => (
                   <>
                     <Command.Item
                       className={classNames.item}
