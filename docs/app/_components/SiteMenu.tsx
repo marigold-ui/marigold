@@ -105,6 +105,9 @@ export const SiteMenu = () => {
   const ref = useRef<SVGSVGElement>();
 
   const [commandPressed, setCommandPressed] = useState(false);
+  const [openSubpages, setOpenSubpages] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const [focusedPage, setFocusedPage] = useState('');
   const [items, setItems] = useState<
     {
@@ -119,6 +122,8 @@ export const SiteMenu = () => {
     router.push(`/${slug}`);
     setOpen(false);
     setCommandPressed(false);
+    setFocusedPage('');
+    setOpenSubpages({});
   };
 
   const { updateTheme } = useThemeSwitch();
@@ -141,6 +146,7 @@ export const SiteMenu = () => {
   useEffect(() => {
     if (open && items.length > 0 && focusedPage === '') {
       setFocusedPage(items[0].slug);
+      setOpenSubpages({});
       setCommandPressed(false);
     }
   }, [items, focusedPage, open]);
@@ -172,10 +178,14 @@ export const SiteMenu = () => {
       } else if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setCommandPressed(() => !commandPressed);
+
+        const currentIndex = items.findIndex(item => item.slug === focusedPage);
+        if (items[currentIndex].type === 'page') {
+          handleToggleSubpages(items[currentIndex].slug);
+        }
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
         handleKeys(e.key);
-        console.log('focusedPage', focusedPage);
       }
     };
 
@@ -187,38 +197,27 @@ export const SiteMenu = () => {
         if (key === 'ArrowDown') {
           let nextIndex = currentIndex + 1;
           // Check if the next item is a subitem, if yes, set focus on it
-          if (items[nextIndex] && items[nextIndex].type === 'subpage') {
-            return items[nextIndex].slug;
+          if (Object.keys(openSubpages).length !== 0) {
+            const subs = Object.keys(openSubpages);
+            subs.forEach(element => {
+              console.log('subpages', element);
+              return element;
+            });
           } else if (items[nextIndex] && items[nextIndex].type === 'page') {
+            console.log('huhu');
             return items[nextIndex].slug;
-          } else if (items[nextIndex] && items[nextIndex].subitems) {
-            // Find the first subitem of the next parent item and focus on it
-            for (let i = nextIndex + 1; i < items.length; i++) {
-              if (
-                items[i].type === 'subpage' &&
-                items[i].slug === items[nextIndex].slug
-              ) {
-                return items[i].slug;
-              }
-            }
           }
         } else if (key === 'ArrowUp') {
           let nextIndex = currentIndex - 1;
           // Check if the previous item is a subitem, if yes, set focus on it
-          if (items[nextIndex] && items[nextIndex].type === 'subpage') {
-            return items[nextIndex].slug;
+          if (Object.keys(openSubpages).length !== 0) {
+            const subs = Object.keys(openSubpages);
+            subs.forEach(element => {
+              console.log('subpages', element);
+              return element;
+            });
           } else if (items[nextIndex] && items[nextIndex].type === 'page') {
             return items[nextIndex].slug;
-          } else if (items[nextIndex] && items[nextIndex].subitems) {
-            // Find the last subitem of the previous parent item and focus on it
-            for (let i = nextIndex - 1; i >= 0; i--) {
-              if (
-                items[i].type === 'subpage' &&
-                items[i].slug === items[nextIndex].slug
-              ) {
-                return items[i].slug;
-              }
-            }
           }
         }
         // Default behavior, stay on the current focused slug
@@ -226,10 +225,18 @@ export const SiteMenu = () => {
       });
     };
 
-    console.log('focusedPage', focusedPage);
+    console.log('focused', focusedPage);
+
+    const handleToggleSubpages = (slug: string) => {
+      setOpenSubpages(prevState => ({
+        ...prevState,
+        [slug]: !prevState[slug],
+      }));
+    };
+
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
-  }, [commandPressed, items.length, focusedPage, items]);
+  }, [commandPressed, items.length, focusedPage, items, openSubpages]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
