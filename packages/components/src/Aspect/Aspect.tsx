@@ -16,6 +16,7 @@ export interface AspectProps
 
   /**
    * The maximum width of the image.
+   * @default 100%
    */
   maxWidth?: string;
 }

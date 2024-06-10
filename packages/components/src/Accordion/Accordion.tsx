@@ -26,6 +26,7 @@ export interface AccordionProps
   children: ItemElement<object>[] | ItemElement<object>;
   /**
    * Sets the mode of items open at the same time.
+   * @default single
    */
   selectionMode?: SelectionMode;
 }

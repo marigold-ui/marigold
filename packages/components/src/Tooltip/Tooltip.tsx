@@ -10,9 +10,15 @@ import { TooltipTrigger } from './TooltipTrigger';
 type RemovedProps = 'className' | 'isOpen' | 'style';
 
 export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
+  /**
+   * The children of the coomponent.
+   */
   children?: ReactNode;
   variant?: string;
   size?: string;
+  /**
+   * Whether the element is rendered.
+   */
   open?: RAC.TooltipProps['isOpen'];
 }
 

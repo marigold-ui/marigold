@@ -9,6 +9,10 @@ type RemovedProps = 'className' | 'isDisabled';
 export interface LinkProps extends Omit<RAC.LinkProps, RemovedProps> {
   variant?: string;
   size?: string;
+  /**
+   * The link can't be clicked
+   * @default false
+   */
   disabled?: RAC.LinkProps['isDisabled'];
 }
 

@@ -22,7 +22,15 @@ type RemovedProps =
 
 export interface CalendarProps
   extends Omit<RAC.CalendarProps<DateValue>, RemovedProps> {
+  /**
+   * Disables the Calendar.
+   * @default false
+   */
   disabled?: boolean;
+  /**
+   * Whether the calendar value is immutable.
+   * @default false
+   */
   readOnly?: boolean;
   variant?: string;
   size?: string;

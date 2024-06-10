@@ -8,20 +8,18 @@ import { cn, useClassNames } from '@marigold/system';
 type RemovedProps = 'isDisabled';
 
 export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
-  /**
-   * The available variants of this component.
-   */
   variant?: string;
-  /**
-   * The available sizes of this component.
-   */
   size?: string;
 
   /**
    * Stretches the button width with full available space.
+   * @default false
    */
   fullWidth?: boolean;
 
+  /**
+   * Class of the component.
+   */
   className?: string;
   /**
    * Children of the component
@@ -30,6 +28,7 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
 
   /**
    * Disables the button.
+   * @default false
    */
   disabled?: RAC.ButtonProps['isDisabled'];
 }

@@ -15,11 +15,13 @@ export interface BreakoutProps
 
   /**
    * Horizontal alignment of the items inside the breakout element.
+   * @default left
    */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
 
   /**
    * Vertical alignment of the items inside the breakout element.
+   * @default top
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
 }

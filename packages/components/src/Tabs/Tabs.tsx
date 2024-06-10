@@ -15,6 +15,10 @@ export interface TabsProps
     RAC.TabsProps,
     'className' | 'style' | 'isDisabled' | 'orientation'
   > {
+  /**
+   * Set All TabPanel disabled
+   * @default false
+   */
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
   variant?: string;

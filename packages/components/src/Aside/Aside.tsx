@@ -10,6 +10,7 @@ export interface AsideProps extends GapSpaceProp {
   children: [ReactElement, ReactElement];
   /**
    * The side of the aside content.
+   * @default left
    */
   side?: 'left' | 'right';
   /**
@@ -18,6 +19,7 @@ export interface AsideProps extends GapSpaceProp {
   sideWidth?: string;
   /**
    * At which percent the content should wrap.
+   * @default 50%
    */
   wrap?: NonZeroPercentage;
 }
