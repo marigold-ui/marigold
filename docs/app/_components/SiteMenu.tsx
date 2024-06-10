@@ -198,25 +198,22 @@ export const SiteMenu = () => {
           let nextIndex = currentIndex + 1;
           // Check if the next item is a subitem, if yes, set focus on it
           if (Object.keys(openSubpages).length !== 0) {
-            const subs = Object.keys(openSubpages);
-            subs.forEach(element => {
-              console.log('subpages', element);
-              return element;
+            items[currentIndex].subitems.map(sub => {
+              console.log('sub', sub.slug);
+              return sub.slug;
             });
-          } else if (items[nextIndex] && items[nextIndex].type === 'page') {
-            console.log('huhu');
+          } else {
             return items[nextIndex].slug;
           }
         } else if (key === 'ArrowUp') {
           let nextIndex = currentIndex - 1;
           // Check if the previous item is a subitem, if yes, set focus on it
           if (Object.keys(openSubpages).length !== 0) {
-            const subs = Object.keys(openSubpages);
-            subs.forEach(element => {
-              console.log('subpages', element);
-              return element;
+            items[currentIndex].subitems.map(sub => {
+              console.log(sub.slug);
+              return sub.slug;
             });
-          } else if (items[nextIndex] && items[nextIndex].type === 'page') {
+          } else {
             return items[nextIndex].slug;
           }
         }
