@@ -139,6 +139,13 @@ export const SiteMenu = () => {
   });
 
   useEffect(() => {
+    if (open && items.length > 0 && focusedPage === '') {
+      setFocusedPage(items[0].slug);
+      setCommandPressed(false);
+    }
+  }, [items, focusedPage, open]);
+
+  useEffect(() => {
     let newItems: {
       type: 'page' | 'subpage';
       slug: string;
