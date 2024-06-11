@@ -45,7 +45,7 @@ export interface TableProps
 
   /**
    * Make the column sticky to the top of the table.
-   * @default none
+   * @default true
    */
   stickyHeader?: boolean;
 
