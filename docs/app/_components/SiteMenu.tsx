@@ -35,7 +35,6 @@ interface CustomInputProps {
 
 const CustomInput = ({ onHandlePages, ...props }: CustomInputProps) => {
   const slug = useCommandState(state => state.value);
-
   return (
     <Command.Input
       {...props}
@@ -51,12 +50,6 @@ const CustomInput = ({ onHandlePages, ...props }: CustomInputProps) => {
     />
   );
 };
-interface Page {
-  title: string;
-  slug: string;
-  order?: number;
-  headings?: [slug: string, text: string];
-}
 
 const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
   const items = allContentPages
@@ -255,17 +248,19 @@ export const SiteMenu = () => {
                     </Command.Item>
                     {subPage === page.slug && (
                       <>
-                        {Object.values(page.headings).map(sub => (
-                          <Command.Item
-                            className={cn(
-                              'text-text-primary-muted ml-7',
-                              classNames.item
-                            )}
-                            onSelect={() => goto(`${page.slug}#${sub.slug}`)}
-                          >
-                            {sub.text}
-                          </Command.Item>
-                        ))}
+                        {Object.values(page.headings).map(
+                          (sub: { slug: string; text: string }) => (
+                            <Command.Item
+                              className={cn(
+                                'text-text-primary-muted ml-7',
+                                classNames.item
+                              )}
+                              onSelect={() => goto(`${page.slug}#${sub.slug}`)}
+                            >
+                              {sub.text}
+                            </Command.Item>
+                          )
+                        )}
                       </>
                     )}
                   </>

@@ -5,6 +5,7 @@ import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { visit } from 'unist-util-visit';
+import { object } from 'zod';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
@@ -73,7 +74,7 @@ export const ContentPage = defineDocumentType(() => ({
       },
     },
     headings: {
-      type: 'string',
+      type: 'json',
       resolve: async doc => {
         const headingsRegex = /\n(?<flag>#{1,6})\s+(?<content>.+)/g;
         const slugger = new GithubSlugger();
