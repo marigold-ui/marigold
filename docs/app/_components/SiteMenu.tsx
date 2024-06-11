@@ -6,7 +6,14 @@ import { iterateTokens } from '@/lib/utils';
 import { Button, Dialog, Icons, Inline, Split, cn, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
-import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
+import {
+  ReactNode,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
 
@@ -20,6 +27,37 @@ import { useHasMounted } from '@/ui/useHasMounted';
 
 // Helpers
 // ---------------
+interface CustomInputProps {
+  value: string;
+  onValueChange: () => void;
+  onHandlePages: (val: string) => void;
+}
+
+const CustomInput = ({ onHandlePages, ...props }: CustomInputProps) => {
+  const slug = useCommandState(state => state.value);
+
+  return (
+    <Command.Input
+      {...props}
+      autoFocus
+      placeholder="Type to search ..."
+      className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
+      onKeyDown={e => {
+        if (e.metaKey && e.key === 'd') {
+          e.preventDefault();
+          onHandlePages(slug);
+        }
+      }}
+    />
+  );
+};
+interface Page {
+  title: string;
+  slug: string;
+  order?: number;
+  headings?: [slug: string, text: string];
+}
+
 const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
   const items = allContentPages
     .filter(page => page.slug.includes(slug))
@@ -104,26 +142,16 @@ export const SiteMenu = () => {
   const [query, setQuery] = useState('');
   const ref = useRef<SVGSVGElement>();
 
-  const [commandPressed, setCommandPressed] = useState(false);
-  const [openSubpages, setOpenSubpages] = useState<{ [key: string]: boolean }>(
-    {}
-  );
-  const [focusedPage, setFocusedPage] = useState('');
-  const [items, setItems] = useState<
-    {
-      type: 'page' | 'subpage';
-      slug: string;
-      title?: string;
-      subitems?: any;
-    }[]
-  >([]);
+  const [pages, setPages] = useState(['']);
+  const subPage = pages[pages.length - 1];
+
+  const handlePages = (slug: string) => {
+    setPages([...pages, slug]);
+  };
 
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
-    setCommandPressed(false);
-    setFocusedPage('');
-    setOpenSubpages({});
   };
 
   const { updateTheme } = useThemeSwitch();
@@ -143,30 +171,12 @@ export const SiteMenu = () => {
     return getIcon(icon, ref as any);
   });
 
-  useEffect(() => {
-    if (open && items.length > 0 && focusedPage === '') {
-      setFocusedPage(items[0].slug);
-      setOpenSubpages({});
-      setCommandPressed(false);
-    }
-  }, [items, focusedPage, open]);
-
-  useEffect(() => {
-    let newItems: {
-      type: 'page' | 'subpage';
-      slug: string;
-      subitems: any;
-    }[] = [];
-    groupedPages.forEach(({ items }) => {
-      items.forEach(item => {
-        newItems.push({
-          type: 'page',
-          slug: item.slug,
-          subitems: item.headings,
-        });
-      });
+  const popPage = useCallback(() => {
+    setPages(pages => {
+      const x = [...pages];
+      x.splice(-1, 1);
+      return x;
     });
-    setItems(newItems);
   }, []);
 
   // register global cmd+k hotkey
@@ -175,65 +185,12 @@ export const SiteMenu = () => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(open => !open);
-      } else if (e.key === 'd' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setCommandPressed(() => !commandPressed);
-
-        const currentIndex = items.findIndex(item => item.slug === focusedPage);
-        if (items[currentIndex].type === 'page') {
-          handleToggleSubpages(items[currentIndex].slug);
-        }
-      } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        handleKeys(e.key);
       }
-    };
-
-    const handleKeys = (key: string) => {
-      setFocusedPage(prevFocusedPage => {
-        const currentIndex = items.findIndex(
-          item => item.slug === prevFocusedPage
-        );
-        if (key === 'ArrowDown') {
-          let nextIndex = currentIndex + 1;
-          // Check if the next item is a subitem, if yes, set focus on it
-          if (Object.keys(openSubpages).length !== 0) {
-            items[currentIndex].subitems.map(sub => {
-              console.log('sub', sub.slug);
-              return sub.slug;
-            });
-          } else {
-            return items[nextIndex].slug;
-          }
-        } else if (key === 'ArrowUp') {
-          let nextIndex = currentIndex - 1;
-          // Check if the previous item is a subitem, if yes, set focus on it
-          if (Object.keys(openSubpages).length !== 0) {
-            items[currentIndex].subitems.map(sub => {
-              console.log(sub.slug);
-              return sub.slug;
-            });
-          } else {
-            return items[nextIndex].slug;
-          }
-        }
-        // Default behavior, stay on the current focused slug
-        return prevFocusedPage;
-      });
-    };
-
-    console.log('focused', focusedPage);
-
-    const handleToggleSubpages = (slug: string) => {
-      setOpenSubpages(prevState => ({
-        ...prevState,
-        [slug]: !prevState[slug],
-      }));
     };
 
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
-  }, [commandPressed, items.length, focusedPage, items, openSubpages]);
+  }, [pages, popPage]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
@@ -257,15 +214,19 @@ export const SiteMenu = () => {
               return 1;
             return 0;
           }}
+          onKeyDown={e => {
+            if (e.key === 'Escape' || (e.key === 'Backspace' && !query)) {
+              e.preventDefault();
+              setPages(pages => pages.slice(0, -1));
+            }
+          }}
         >
           <div className="flex items-center gap-1.5 border-b px-3">
             <Search className="size-4 opacity-50" />
-            <Command.Input
+            <CustomInput
               value={query}
-              autoFocus
-              onValueChange={setQuery}
-              placeholder="Type to search ..."
-              className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
+              onValueChange={() => setQuery}
+              onHandlePages={handlePages}
             />
           </div>
           <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
@@ -278,7 +239,7 @@ export const SiteMenu = () => {
                 key={name}
                 className={classNames.section}
               >
-                {items.map((page, index) => (
+                {items.map(page => (
                   <>
                     <Command.Item
                       className={classNames.item}
@@ -292,7 +253,7 @@ export const SiteMenu = () => {
                         <Hotkey letter="D" />
                       </Inline>
                     </Command.Item>
-                    {commandPressed && page.slug === focusedPage && (
+                    {subPage === page.slug && (
                       <>
                         {Object.values(page.headings).map(sub => (
                           <Command.Item
