@@ -1,5 +1,6 @@
 export * from './Cancel';
 export * from './Crop';
+export * from './Download';
 export * from './Edit';
 export * from './ExportFile';
 export * from './FormatBold';
