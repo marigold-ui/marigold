@@ -4,7 +4,6 @@ import React from 'react';
 import { Delete, Search } from '@marigold/icons';
 
 import { Button } from '../Button';
-import { FieldGroup } from '../FieldBase';
 import { Input } from './Input';
 
 const meta = {
