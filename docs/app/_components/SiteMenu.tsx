@@ -201,7 +201,6 @@ export const SiteMenu = () => {
           className={classNames.container}
           filter={(value, query, keywords) => {
             const searchValue = `${value} ${keywords}`;
-
             if (searchValue.toLowerCase().includes(query.toLowerCase()))
               return 1;
             return 0;
@@ -267,7 +266,6 @@ export const SiteMenu = () => {
                 ))}
               </CommandGroup>
             ))}
-
             {/* update themes command */}
             {themeswitch.map(({ name, items }) => (
               <CommandGroup
