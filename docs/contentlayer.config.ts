@@ -73,6 +73,7 @@ export const ContentPage = defineDocumentType(() => ({
         return path.length < 3 ? null : path.at(1);
       },
     },
+    // Collect the headings used for creating a submenu in the command
     headings: {
       type: 'json',
       resolve: async doc => {
@@ -147,7 +148,6 @@ export default makeSource({
           },
         },
       ],
-
       // Headings and TOC Plugins
       // ---------------
       rehypeSlug,
