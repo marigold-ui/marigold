@@ -51,7 +51,6 @@ export const decorators: any = [
 
   (Story: any, { globals, parameters }: any) => {
     const theme = globals.theme || parameters.theme || 'core';
-    console.log(parameters.fieldGroup);
 
     switch (theme) {
       case 'stacked': {
