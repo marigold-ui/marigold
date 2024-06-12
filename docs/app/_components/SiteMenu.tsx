@@ -28,35 +28,6 @@ import { useHasMounted } from '@/ui/useHasMounted';
 
 // Helpers
 // ---------------
-interface CustomInputProps {
-  value: string;
-  onValueChange: Dispatch<SetStateAction<string>>;
-  onHandlePages: (val: string) => void;
-}
-
-const CustomInput = ({
-  value,
-  onValueChange,
-  onHandlePages,
-}: CustomInputProps) => {
-  const slug = useCommandState(state => state.value);
-  return (
-    <Command.Input
-      value={value}
-      onValueChange={onValueChange}
-      autoFocus
-      placeholder="Type to search ..."
-      className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
-      onKeyDown={e => {
-        if (e.metaKey && e.key === 'd') {
-          e.preventDefault();
-          onHandlePages(slug);
-        }
-      }}
-    />
-  );
-};
-
 const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
   const items = allContentPages
     .filter(page => page.slug.includes(slug))
@@ -99,6 +70,34 @@ const Hotkey = ({ letter }: HotKeyProps) => {
 
 // Component
 // ---------------
+interface CustomInputProps {
+  value: string;
+  onValueChange: Dispatch<SetStateAction<string>>;
+  onHandlePages: (val: string) => void;
+}
+
+const CustomInput = ({
+  value,
+  onValueChange,
+  onHandlePages,
+}: CustomInputProps) => {
+  const slug = useCommandState(state => state.value);
+  return (
+    <Command.Input
+      value={value}
+      onValueChange={onValueChange}
+      autoFocus
+      placeholder="Type to search ..."
+      className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
+      onKeyDown={e => {
+        if (e.metaKey && e.key === 'd') {
+          e.preventDefault();
+          onHandlePages(slug);
+        }
+      }}
+    />
+  );
+};
 interface CopyItemProps {
   children: ReactNode;
   className?: string;
