@@ -4,6 +4,9 @@ import { HtmlProps } from '@marigold/types';
 // Props
 // ---------------
 export interface BadgeProps extends Omit<HtmlProps<'div'>, 'className'> {
+  /**
+   * Children of the component
+   */
   children?: React.ReactNode;
   variant?: string;
   size?: string;

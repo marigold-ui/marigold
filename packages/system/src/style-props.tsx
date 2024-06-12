@@ -1,6 +1,13 @@
 export const width = {
-  full: 'w-full',
   auto: 'w-auto',
+  full: 'w-full',
+  fit: 'w-fit',
+  min: 'w-min',
+  max: 'w-max',
+  screen: 'w-screen',
+  svh: 'w-svh',
+  lvh: 'w-lvh',
+  dvh: 'w-dvh',
   px: 'w-px',
   0: 'w-0',
   '0.5': 'w-0.5',
@@ -61,6 +68,78 @@ export const width = {
   '9/12': 'w-9/12',
   '10/12': 'w-10/12',
   '11/12': 'w-11/12',
+};
+
+export const height = {
+  auto: 'h-auto',
+  full: 'h-full',
+  fit: 'h-fit',
+  min: 'h-min',
+  max: 'h-max',
+  screen: 'h-screen',
+  svh: 'h-svh',
+  lvh: 'h-lvh',
+  dvh: 'h-dvh',
+  px: 'h-px',
+  0: 'h-0',
+  '0.5': 'h-0.5',
+  1: 'h-1',
+  '1.5': 'h-1.5',
+  2: 'h-2',
+  '2.5': 'h-2.5',
+  3: 'h-3',
+  '3.5': 'h-3.5',
+  4: 'h-4',
+  5: 'h-5',
+  6: 'h-6',
+  7: 'h-7',
+  8: 'h-8',
+  9: 'h-9',
+  10: 'h-10',
+  11: 'h-11',
+  12: 'h-12',
+  14: 'h-14',
+  16: 'h-16',
+  20: 'h-20',
+  24: 'h-24',
+  28: 'h-28',
+  32: 'h-32',
+  36: 'h-36',
+  40: 'h-40',
+  44: 'h-44',
+  48: 'h-48',
+  52: 'h-52',
+  56: 'h-56',
+  60: 'h-60',
+  64: 'h-64',
+  72: 'h-72',
+  80: 'h-80',
+  96: 'h-96',
+  '1/2': 'h-1/2',
+  '1/3': 'h-1/3',
+  '2/3': 'h-2/3',
+  '1/4': 'h-1/4',
+  '2/4': 'h-2/4',
+  '3/4': 'h-3/4',
+  '1/5': 'h-1/5',
+  '2/5': 'h-2/5',
+  '3/5': 'h-3/5',
+  '1/6': 'h-1/6',
+  '2/6': 'h-2/6',
+  '3/6': 'h-3/6',
+  '4/6': 'h-4/6',
+  '5/6': 'h-5/6',
+  '1/12': 'h-1/12',
+  '2/12': 'h-2/12',
+  '3/12': 'h-3/12',
+  '4/12': 'h-4/12',
+  '5/12': 'h-5/12',
+  '6/12': 'h-6/12',
+  '7/12': 'h-7/12',
+  '8/12': 'h-8/12',
+  '9/12': 'h-9/12',
+  '10/12': 'h-10/12',
+  '11/12': 'h-11/12',
 };
 
 export const fontWeight = {
@@ -519,22 +598,142 @@ export type AlignmentProp = {
     };
   };
 };
-export type CursorProp = { cursor?: keyof typeof cursorStyle };
-export type FontStyleProp = { fontStyle?: keyof typeof textStyle };
-export type FontWeightProp = { weight?: keyof typeof fontWeight };
-export type FontSizeProp = { fontSize?: keyof typeof textSize };
-export type GridColsAlignProp = { align?: keyof typeof gridColsAlign };
-export type GridColumn = { align?: keyof typeof gridColumn };
-export type GapSpaceProp = { space?: keyof typeof gapSpace };
-export type ObjectFitProp = { fit?: keyof typeof objectFit };
-export type ObjectPositionProp = { position?: keyof typeof objectPosition };
-export type PaddingSpaceProp = { space?: keyof typeof paddingSpace };
-export type PaddingSpacePropX = { spaceX?: keyof typeof paddingSpaceX };
-export type PaddingSpacePropY = { spaceY?: keyof typeof paddingSpaceY };
-export type PaddingRightProp = { pr?: keyof typeof paddingRight };
-export type PaddingLeftProp = { pl?: keyof typeof paddingLeft };
-export type PaddingTopProp = { pt?: keyof typeof paddingTop };
-export type PaddingBottomProp = { pb?: keyof typeof paddingBottom };
-export type PlaceItemsProp = { align?: keyof typeof placeItems };
-export type TextAlignProp = { align?: keyof typeof textAlign };
-export type WidthProp = { width?: keyof typeof width };
+export type CursorProp = {
+  /**
+   * Set the cursor for the element.
+   */
+  cursor?: keyof typeof cursorStyle;
+};
+
+export type FontStyleProp = {
+  /**
+   * Set the font style for the text element.
+   */
+  fontStyle?: keyof typeof textStyle;
+};
+
+export type FontWeightProp = {
+  /**
+   * Set the font weight for the text element.
+   */
+  weight?: keyof typeof fontWeight;
+};
+
+export type FontSizeProp = {
+  /**
+   * Set the font size for the text element.
+   */
+  fontSize?: keyof typeof textSize;
+};
+
+export type GridColsAlignProp = {
+  /**
+   * Set the alignment of grid columns.
+   */
+  align?: keyof typeof gridColsAlign;
+};
+
+export type GridColumn = {
+  /**
+   * Set the alignment of a grid column.
+   */
+  align?: keyof typeof gridColumn;
+};
+
+export type GapSpaceProp = {
+  /**
+   * The space between the children.
+   */
+  space?: keyof typeof gapSpace;
+};
+
+export type ObjectFitProp = {
+  /**
+   * Set the object-fit property for the element.
+   */
+  fit?: keyof typeof objectFit;
+};
+
+export type ObjectPositionProp = {
+  /**
+   * Set the object-position property for the element.
+   */
+  position?: keyof typeof objectPosition;
+};
+
+export type PaddingSpaceProp = {
+  /**
+   * Set the padding space for the element.
+   */
+  space?: keyof typeof paddingSpace;
+};
+
+export type PaddingSpacePropX = {
+  /**
+   * Set the horizontal padding space for the element.
+   */
+  spaceX?: keyof typeof paddingSpaceX;
+};
+
+export type PaddingSpacePropY = {
+  /**
+   * Set the vertical padding space for the element.
+   */
+  spaceY?: keyof typeof paddingSpaceY;
+};
+
+export type PaddingRightProp = {
+  /**
+   * Set the right padding for the element.
+   */
+  pr?: keyof typeof paddingRight;
+};
+
+export type PaddingLeftProp = {
+  /**
+   * Set the left padding for the element.
+   */
+  pl?: keyof typeof paddingLeft;
+};
+
+export type PaddingTopProp = {
+  /**
+   * Set the top padding for the element.
+   */
+  pt?: keyof typeof paddingTop;
+};
+
+export type PaddingBottomProp = {
+  /**
+   * Set the bottom padding for the element.
+   */
+  pb?: keyof typeof paddingBottom;
+};
+
+export type PlaceItemsProp = {
+  /**
+   * Set the alignment of place-items property for the element.
+   */
+  align?: keyof typeof placeItems;
+};
+
+export type TextAlignProp = {
+  /**
+   * Set the text alignment for the element.
+   */
+  align?: keyof typeof textAlign;
+};
+
+export type WidthProp = {
+  /**
+   * Set the width of the element.
+   */
+  width?: keyof typeof width;
+};
+
+export type HeightProp = {
+  /**
+   * Set the height of the element.
+   */
+  height?: keyof typeof height;
+};

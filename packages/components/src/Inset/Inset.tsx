@@ -12,13 +12,25 @@ import {
 
 export type InsetProps =
   | {
+      /**
+       * The children of the component
+       */
       children: ReactNode;
       space?: never;
+      /**
+       * Horizontal alignment for the children
+       */
       spaceX?: PaddingSpacePropX['spaceX'];
+      /**
+       * Vertical alignment for the children
+       */
       spaceY?: PaddingSpacePropY['spaceY'];
     }
   | {
       children: ReactNode;
+      /**
+       * The space between the children
+       */
       space?: PaddingSpaceProp['space'];
       spaceX?: never;
       spaceY?: never;

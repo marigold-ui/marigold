@@ -37,8 +37,20 @@ export interface CardProps
   children?: ReactNode;
   variant?: string;
   size?: string;
+
+  /**
+   * Padding of the component.
+   */
   p?: PaddingSpaceProp['space'];
+
+  /**
+   * Padding horizontal (left and right) of the component.
+   */
   px?: PaddingSpacePropX['spaceX'];
+
+  /**
+   * Padding vertical (top and bottom) of the component.
+   */
   py?: PaddingSpacePropY['spaceY'];
 }
 

@@ -10,11 +10,29 @@ import { Dialog } from './Dialog';
 
 export interface DialogTriggerProps
   extends Omit<RAC.DialogTriggerProps, 'isOpen'> {
+  /**
+   * Wheather compnent is rendered.
+   * @default false
+   */
   open?: boolean;
+
+  /**
+   * Whether to close the overlay when the user interacts outside it.
+   * @default false
+   */
   dismissable?: boolean;
+
+  /**
+   * Whether pressing the escape key to close the overlay should be disabled.
+   */
   keyboardDismissable?: boolean;
+
+  /**
+   * If `true`, the dialog will be non-modal, meaning it will not block interaction with the background content.
+   */
   isNonModal?: boolean;
 }
+
 // Component
 // ---------------
 

@@ -15,9 +15,19 @@ import { useAccordionItem } from './useAccordionItem';
 // props
 // ----------------
 export interface AccordionItemProps {
+  /**
+   * Represents a single node in the tree structure, including its key, value, and any child nodes.
+   */
   item: Node<object>;
+  /**
+   *  Manages the state of the tree structure, including selection and expansion of nodes.
+   */
   state: TreeState<object>;
+  /**
+   * Sets title of the accordion item which will be displayed to the button.
+   */
   title: string | ReactNode;
+
   variant?: string;
   size?: string;
 }

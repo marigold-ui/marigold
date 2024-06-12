@@ -1,5 +1,65 @@
 # @marigold/docs
 
+## 7.8.2
+
+### Patch Changes
+
+- [#3934](https://github.com/marigold-ui/marigold/pull/3934) [`de73b5a`](https://github.com/marigold-ui/marigold/commit/de73b5af0f1108e1fbe33feaa62a52348f942e1c) Thanks [@sebald](https://github.com/sebald)! - refa: don't use tailwinds color import
+
+- Updated dependencies [[`de73b5a`](https://github.com/marigold-ui/marigold/commit/de73b5af0f1108e1fbe33feaa62a52348f942e1c)]:
+  - @marigold/theme-docs@2.0.1
+  - @marigold/components@7.8.2
+  - @marigold/icons@1.2.51
+  - @marigold/theme-preset@1.3.16
+  - @marigold/theme-b2b@27.1.11
+  - @marigold/theme-core@26.1.11
+
+## 7.8.1
+
+### Patch Changes
+
+- [#3933](https://github.com/marigold-ui/marigold/pull/3933) [`bc08a48`](https://github.com/marigold-ui/marigold/commit/bc08a48087c31b501b5e4aeb9a992cb97ad9e21d) Thanks [@sebald](https://github.com/sebald)! - feat: new package `@marigold/theme-docs`
+
+- [#3924](https://github.com/marigold-ui/marigold/pull/3924) [`290dc0e`](https://github.com/marigold-ui/marigold/commit/290dc0e8b5b5fc1492d391d8e6156bd849f0b37d) Thanks [@sebald](https://github.com/sebald)! - fix: inconsistent naming of `SelectList`
+
+- Updated dependencies [[`bc08a48`](https://github.com/marigold-ui/marigold/commit/bc08a48087c31b501b5e4aeb9a992cb97ad9e21d), [`290dc0e`](https://github.com/marigold-ui/marigold/commit/290dc0e8b5b5fc1492d391d8e6156bd849f0b37d)]:
+  - @marigold/theme-core@26.1.10
+  - @marigold/theme-docs@2.0.0
+  - @marigold/components@7.8.1
+  - @marigold/theme-b2b@27.1.10
+  - @marigold/icons@1.2.50
+  - @marigold/theme-preset@1.3.15
+
+## 7.8.0
+
+### Minor Changes
+
+- [#3913](https://github.com/marigold-ui/marigold/pull/3913) [`8c4631f`](https://github.com/marigold-ui/marigold/commit/8c4631f53744e9316f4d6ae325602de8287bbe86) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce `Grid` component
+
+### Patch Changes
+
+- Updated dependencies [[`8c4631f`](https://github.com/marigold-ui/marigold/commit/8c4631f53744e9316f4d6ae325602de8287bbe86)]:
+  - @marigold/components@7.8.0
+  - @marigold/theme-b2b@27.1.9
+  - @marigold/theme-core@26.1.9
+  - @marigold/icons@1.2.49
+  - @marigold/theme-preset@1.3.14
+
+## 7.7.2
+
+### Patch Changes
+
+- [#3908](https://github.com/marigold-ui/marigold/pull/3908) [`20fb4f4`](https://github.com/marigold-ui/marigold/commit/20fb4f4868747b3a965688aebe48f3247d397d57) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Fixing icons into docs to be copied in the right way
+
+- [#3865](https://github.com/marigold-ui/marigold/pull/3865) [`5eafe50`](https://github.com/marigold-ui/marigold/commit/5eafe50e4f03ab782b6dcb03bed82ec9b9460fc2) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-379]: Docs: The selected theme on marigold docs is now persisted in the local storage.
+
+- Updated dependencies [[`3e448ed`](https://github.com/marigold-ui/marigold/commit/3e448ede593cc4e4070366a1e6ac1ac8870dc102), [`bdd23ec`](https://github.com/marigold-ui/marigold/commit/bdd23ec48895543b9a4bd3d925c47dd02da8aefd), [`f0c0bc1`](https://github.com/marigold-ui/marigold/commit/f0c0bc18b0ad22984ad344e99222a7119c47ed36)]:
+  - @marigold/theme-core@26.1.8
+  - @marigold/theme-b2b@27.1.8
+  - @marigold/components@7.7.2
+  - @marigold/icons@1.2.48
+  - @marigold/theme-preset@1.3.13
+
 ## 7.7.1
 
 ### Patch Changes

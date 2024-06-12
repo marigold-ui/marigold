@@ -16,7 +16,7 @@ import { SelectListItem } from './SelectListItem';
 
 type RemoveProps = 'style' | 'className' | 'onSelectionChange';
 
-export interface GridListProps
+export interface SelectListProps
   extends Omit<RAC.GridListProps<object>, RemoveProps> {
   onChange?:
     | RAC.GridListProps<object>['onSelectionChange']
@@ -25,12 +25,12 @@ export interface GridListProps
 
 interface SelectListComponent
   extends ForwardRefExoticComponent<
-    GridListProps & RefAttributes<HTMLUListElement>
+    SelectListProps & RefAttributes<HTMLUListElement>
   > {
   Item: typeof SelectListItem;
 }
 
-const _SelectList = forwardRef<HTMLUListElement, GridListProps>(
+const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
   ({ onChange, ...rest }, ref) => {
     const classNames = useClassNames({ component: 'ListBox' });
 

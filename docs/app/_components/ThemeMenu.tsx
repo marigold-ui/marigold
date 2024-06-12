@@ -6,12 +6,12 @@ import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
 
 export const ThemeMenu = () => {
-  const { themes, setTheme } = useThemeSwitch();
+  const { themes, updateTheme } = useThemeSwitch();
 
   return (
     <Menu
       label={<Theme className="text-secondary-600" />}
-      onAction={current => setTheme(current)}
+      onAction={current => updateTheme(current)}
       placement="bottom end"
     >
       {Object.keys(themes).map(name => (

@@ -16,7 +16,13 @@ export interface ImageProps
     ObjectPositionProp {
   variant?: string;
   size?: string;
+  /**
+   * The children of the component.
+   */
   children?: never;
+  /**
+   * specifies an alternate text for an image, if the image cannot be displayed.
+   */
   alt: string;
 }
 

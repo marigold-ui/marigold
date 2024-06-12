@@ -1,5 +1,47 @@
 # @marigold/theme-core
 
+## 26.1.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@7.8.2
+  - @marigold/components@7.8.2
+  - @marigold/theme-preset@1.3.16
+
+## 26.1.10
+
+### Patch Changes
+
+- [#3933](https://github.com/marigold-ui/marigold/pull/3933) [`bc08a48`](https://github.com/marigold-ui/marigold/commit/bc08a48087c31b501b5e4aeb9a992cb97ad9e21d) Thanks [@sebald](https://github.com/sebald)! - feat: new package `@marigold/theme-docs`
+
+- Updated dependencies [[`290dc0e`](https://github.com/marigold-ui/marigold/commit/290dc0e8b5b5fc1492d391d8e6156bd849f0b37d)]:
+  - @marigold/components@7.8.1
+  - @marigold/system@7.8.1
+  - @marigold/theme-preset@1.3.15
+
+## 26.1.9
+
+### Patch Changes
+
+- Updated dependencies [[`8c4631f`](https://github.com/marigold-ui/marigold/commit/8c4631f53744e9316f4d6ae325602de8287bbe86)]:
+  - @marigold/components@7.8.0
+  - @marigold/system@7.8.0
+  - @marigold/theme-preset@1.3.14
+
+## 26.1.8
+
+### Patch Changes
+
+- [#3904](https://github.com/marigold-ui/marigold/pull/3904) [`3e448ed`](https://github.com/marigold-ui/marigold/commit/3e448ede593cc4e4070366a1e6ac1ac8870dc102) Thanks [@sebald](https://github.com/sebald)! - fix(core-theme): adjust disabled color for `input`
+
+- [#3907](https://github.com/marigold-ui/marigold/pull/3907) [`bdd23ec`](https://github.com/marigold-ui/marigold/commit/bdd23ec48895543b9a4bd3d925c47dd02da8aefd) Thanks [@sebald](https://github.com/sebald)! - refa: remove css scoping
+
+- Updated dependencies []:
+  - @marigold/system@7.7.2
+  - @marigold/components@7.7.2
+  - @marigold/theme-preset@1.3.13
+
 ## 26.1.7
 
 ### Patch Changes

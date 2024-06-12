@@ -16,20 +16,16 @@ import { useThemeSwitch } from '@/ui/ThemeSwitch';
 // ---------------
 export interface ComponentDemoProps {
   /**
-   * Used in the rehype plugin
+   * Use to get and parse the demo in rehype
    * @internal
    */
   file: string;
   /**
-   * Used in the rehype plugin
+   * Use to pass the metastring to `rehype-pretty-code`
+   * (see https://rehype-pretty.pages.dev/#meta-strings)
    * @internal
    */
-  wordHighlighting: string;
-  /**
-   * Used in the rehype plugin
-   * @internal
-   */
-  lineHighlighting: string;
+  meta: string;
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
@@ -64,9 +60,8 @@ export const ComponentDemo = ({
           <Card variant="not-inset">
             <div
               data-theme={current}
-              className="flex size-full min-h-[150px] flex-col [&>*:nth-child(2)]:flex [&>*:nth-child(2)]:flex-1 [&>*:nth-child(2)]:place-items-center [&>*:nth-child(2)]:rounded-xl"
+              className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
             >
-              <div id="portalContainer" className="not-prose" />
               <OverlayContainerProvider value="portalContainer">
                 <MarigoldProvider theme={(current && themes[current]) as Theme}>
                   <div className="not-prose size-full overflow-x-auto p-4">

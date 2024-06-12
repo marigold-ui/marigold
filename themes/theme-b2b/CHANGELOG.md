@@ -1,5 +1,43 @@
 # @marigold/theme-b2b
 
+## 27.1.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@7.8.2
+  - @marigold/components@7.8.2
+  - @marigold/theme-preset@1.3.16
+
+## 27.1.10
+
+### Patch Changes
+
+- Updated dependencies [[`290dc0e`](https://github.com/marigold-ui/marigold/commit/290dc0e8b5b5fc1492d391d8e6156bd849f0b37d)]:
+  - @marigold/components@7.8.1
+  - @marigold/system@7.8.1
+  - @marigold/theme-preset@1.3.15
+
+## 27.1.9
+
+### Patch Changes
+
+- Updated dependencies [[`8c4631f`](https://github.com/marigold-ui/marigold/commit/8c4631f53744e9316f4d6ae325602de8287bbe86)]:
+  - @marigold/components@7.8.0
+  - @marigold/system@7.8.0
+  - @marigold/theme-preset@1.3.14
+
+## 27.1.8
+
+### Patch Changes
+
+- [#3889](https://github.com/marigold-ui/marigold/pull/3889) [`f0c0bc1`](https://github.com/marigold-ui/marigold/commit/f0c0bc18b0ad22984ad344e99222a7119c47ed36) Thanks [@sebald](https://github.com/sebald)! - refa(DSTSUP-73): Improve elevation (more distinguisable)
+
+- Updated dependencies []:
+  - @marigold/system@7.7.2
+  - @marigold/components@7.7.2
+  - @marigold/theme-preset@1.3.13
+
 ## 27.1.7
 
 ### Patch Changes
