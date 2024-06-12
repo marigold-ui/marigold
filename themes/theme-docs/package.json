@@ -1,11 +1,11 @@
 {
-  "name": "@marigold/theme-core",
-  "version": "26.1.11",
-  "description": "Marigold Core Theme",
+  "name": "@marigold/theme-docs",
+  "version": "2.0.1",
+  "description": "Marigold Docs Theme",
   "license": "MIT",
   "keywords": [
     "marigold",
-    "core",
+    "docs",
     "theme",
     "styles"
   ],
@@ -39,7 +39,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/marigold-ui/marigold",
-    "directory": "themes/theme-core"
+    "directory": "themes/theme-docs"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
