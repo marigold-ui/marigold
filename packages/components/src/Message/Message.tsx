@@ -64,6 +64,9 @@ const icons = {
 // Props
 // ---------------
 export interface MessageProps extends Omit<HtmlProps<'div'>, 'className'> {
+  /**
+   * Set a message title. This is required.
+   */
   messageTitle: ReactNode;
   variant?: keyof typeof icons;
   size?: string;

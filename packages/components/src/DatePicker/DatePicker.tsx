@@ -21,13 +21,42 @@ type RemovedProps =
 export interface DatePickerProps
   extends Omit<RAC.DatePickerProps<DateValue>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+  /**
+   * If `true`, the date picker is disabled.
+   * @default false
+   */
   disabled?: RAC.DatePickerProps<DateValue>['isDisabled'];
+
+  /**
+   * If `true`, the date picker is required.
+   * @default false
+   */
   required?: RAC.DatePickerProps<DateValue>['isRequired'];
+
+  /**
+   * If `true`, the date picker is readOnly.
+   * @default false
+   */
   readOnly?: RAC.DatePickerProps<DateValue>['isReadOnly'];
+
+  /**
+   * If `true`, the field is considered invalid and if set the errorMessage is shown instead of the `description`.
+   * @default false
+   */
   error?: RAC.DatePickerProps<DateValue>['isInvalid'];
+
+  /**
+   * Whether the calendar is open by default (controlled).
+   * @default false
+   */
   open?: RAC.DatePickerProps<DateValue>['isOpen'];
+
   variant?: string;
   size?: string;
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   */
   width?: WidthProp['width'];
 }
 

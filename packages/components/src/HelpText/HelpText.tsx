@@ -22,7 +22,13 @@ const Icon = ({ className }: { className?: string }) => (
 export interface HelpTextProps {
   variant?: string;
   size?: string;
+  /**
+   * A helpful text.
+   */
   description?: ReactNode;
+  /**
+   * An error message.
+   */
   errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
 }
 
