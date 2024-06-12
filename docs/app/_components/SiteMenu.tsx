@@ -68,7 +68,7 @@ const Hotkey = ({ letter }: HotKeyProps) => {
   );
 };
 
-// Component
+// Components
 // ---------------
 interface CustomInputProps {
   value: string;
