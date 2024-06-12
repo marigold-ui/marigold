@@ -208,7 +208,7 @@ export const SiteMenu = () => {
           onKeyDown={e => {
             if (e.key === 'Escape' || (e.key === 'Backspace' && !query)) {
               e.preventDefault();
-              setPages(pages => pages.slice(0, -1));
+              setPages([]);
             }
           }}
         >
