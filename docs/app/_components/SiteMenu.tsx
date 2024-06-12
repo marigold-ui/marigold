@@ -7,9 +7,10 @@ import { Button, Dialog, Icons, Inline, Split, cn, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import {
+  Dispatch,
   ReactNode,
   RefObject,
-  useCallback,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -29,15 +30,20 @@ import { useHasMounted } from '@/ui/useHasMounted';
 // ---------------
 interface CustomInputProps {
   value: string;
-  onValueChange: () => void;
+  onValueChange: Dispatch<SetStateAction<string>>;
   onHandlePages: (val: string) => void;
 }
 
-const CustomInput = ({ onHandlePages, ...props }: CustomInputProps) => {
+const CustomInput = ({
+  value,
+  onValueChange,
+  onHandlePages,
+}: CustomInputProps) => {
   const slug = useCommandState(state => state.value);
   return (
     <Command.Input
-      {...props}
+      value={value}
+      onValueChange={onValueChange}
       autoFocus
       placeholder="Type to search ..."
       className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
@@ -145,6 +151,7 @@ export const SiteMenu = () => {
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
+    setPages([]);
   };
 
   const { updateTheme } = useThemeSwitch();
@@ -164,14 +171,6 @@ export const SiteMenu = () => {
     return getIcon(icon, ref as any);
   });
 
-  const popPage = useCallback(() => {
-    setPages(pages => {
-      const x = [...pages];
-      x.splice(-1, 1);
-      return x;
-    });
-  }, []);
-
   // register global cmd+k hotkey
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
@@ -183,7 +182,7 @@ export const SiteMenu = () => {
 
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
-  }, [pages, popPage]);
+  }, [pages]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const { current, themes } = useThemeSwitch();
@@ -203,6 +202,7 @@ export const SiteMenu = () => {
           className={classNames.container}
           filter={(value, query, keywords) => {
             const searchValue = `${value} ${keywords}`;
+
             if (searchValue.toLowerCase().includes(query.toLowerCase()))
               return 1;
             return 0;
@@ -218,7 +218,7 @@ export const SiteMenu = () => {
             <Search className="size-4 opacity-50" />
             <CustomInput
               value={query}
-              onValueChange={() => setQuery}
+              onValueChange={setQuery}
               onHandlePages={handlePages}
             />
           </div>
@@ -251,6 +251,7 @@ export const SiteMenu = () => {
                         {Object.values(page.headings).map(
                           (sub: { slug: string; text: string }) => (
                             <Command.Item
+                              value={`${page.slug}${sub.slug}`}
                               className={cn(
                                 'text-text-primary-muted ml-7',
                                 classNames.item
