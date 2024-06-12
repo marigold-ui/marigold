@@ -2,13 +2,15 @@
 import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { FieldGroup } from '../FieldBase';
 import { Header } from '../Header';
 import { Inset } from '../Inset';
 import { Select } from './Select';
 
 const meta = {
   title: 'Components/Select',
+  parameters: {
+    fieldGroup: true,
+  },
   component: Select,
   argTypes: {
     label: {
@@ -88,22 +90,20 @@ export const Basic: StoryObj<typeof Select> = {
     const [selected, setSelected] = useState<string | number>('');
     return (
       <>
-        <FieldGroup labelWidth="200px">
-          <Select
-            {...args}
-            onChange={setSelected}
-            disabledKeys={['Firefly']}
-            placeholder="Select Item"
-          >
-            <Select.Option id="Harry Potter">Harry Potter</Select.Option>
-            <Select.Option id="Lord of the Rings">
-              Lord of the Rings
-            </Select.Option>
-            <Select.Option id="Star Wars">Star Wars</Select.Option>
-            <Select.Option id="Star Trek">Star Trek</Select.Option>
-            <Select.Option id="Firefly">Firefly</Select.Option>
-          </Select>
-        </FieldGroup>
+        <Select
+          {...args}
+          onChange={setSelected}
+          disabledKeys={['Firefly']}
+          placeholder="Select Item"
+        >
+          <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+          <Select.Option id="Lord of the Rings">
+            Lord of the Rings
+          </Select.Option>
+          <Select.Option id="Star Wars">Star Wars</Select.Option>
+          <Select.Option id="Star Trek">Star Trek</Select.Option>
+          <Select.Option id="Firefly">Firefly</Select.Option>
+        </Select>
         <hr />
         <pre>selected: {selected}</pre>
       </>
@@ -115,23 +115,21 @@ export const LongItems: StoryObj<typeof Select> = {
   render: args => {
     return (
       <Inset space={24}>
-        <FieldGroup labelWidth="200px">
-          <Select
-            {...args}
-            label="Favorite character"
-            placeholder="Select your character"
-          >
-            <Select.Option>
-              Mario der Dritte von Emschenhagen bei Bautzen zukünftiger Retter
-              von Peach und Widersacher von Bowser
-            </Select.Option>
-            <Select.Option>Luigi</Select.Option>
-            <Select.Option>Toad</Select.Option>
-            <Select.Option>Yoshi</Select.Option>
-            <Select.Option>Bowser</Select.Option>
-            <Select.Option>Peach</Select.Option>
-          </Select>
-        </FieldGroup>
+        <Select
+          {...args}
+          label="Favorite character"
+          placeholder="Select your character"
+        >
+          <Select.Option>
+            Mario der Dritte von Emschenhagen bei Bautzen zukünftiger Retter von
+            Peach und Widersacher von Bowser
+          </Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+        </Select>
       </Inset>
     );
   },
@@ -141,49 +139,47 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
   render: args => {
     return (
       <Inset space={24}>
-        <FieldGroup labelWidth="200px">
-          <Select
-            {...args}
-            label="Favorite character"
-            placeholder="Select your character"
-          >
-            <Select.Option>Luigi</Select.Option>
-            <Select.Option>Toad</Select.Option>
-            <Select.Option>Yoshi</Select.Option>
-            <Select.Option>Bowser</Select.Option>
-            <Select.Option>Peach</Select.Option>
-            <Select.Option>Luigi</Select.Option>
-            <Select.Option>Toad</Select.Option>
-            <Select.Option>Yoshi</Select.Option>
-            <Select.Option>Bowser</Select.Option>
-            <Select.Option>Peach</Select.Option>
-            <Select.Option>Luigi</Select.Option>
-            <Select.Option>Toad</Select.Option>
-            <Select.Option>Yoshi</Select.Option>
-            <Select.Option>Bowser</Select.Option>
-            <Select.Option>Peach</Select.Option>
-            <Select.Option>Luigi</Select.Option>
-            <Select.Option>Toad</Select.Option>
-            <Select.Option>Yoshi</Select.Option>
-            <Select.Option>Bowser</Select.Option>
-            <Select.Option>Peach</Select.Option>
-            <Select.Option>Luigi</Select.Option>
-            <Select.Option>Toad</Select.Option>
-            <Select.Option>Yoshi</Select.Option>
-            <Select.Option>Bowser</Select.Option>
-            <Select.Option>Peach</Select.Option>
-            <Select.Option>Luigi</Select.Option>
-            <Select.Option>Toad</Select.Option>
-            <Select.Option>Yoshi</Select.Option>
-            <Select.Option>Bowser</Select.Option>
-            <Select.Option>Peach</Select.Option>
-            <Select.Option>Luigi</Select.Option>
-            <Select.Option>Toad</Select.Option>
-            <Select.Option>Yoshi</Select.Option>
-            <Select.Option>Bowser</Select.Option>
-            <Select.Option>Peach</Select.Option>
-          </Select>
-        </FieldGroup>
+        <Select
+          {...args}
+          label="Favorite character"
+          placeholder="Select your character"
+        >
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+          <Select.Option>Luigi</Select.Option>
+          <Select.Option>Toad</Select.Option>
+          <Select.Option>Yoshi</Select.Option>
+          <Select.Option>Bowser</Select.Option>
+          <Select.Option>Peach</Select.Option>
+        </Select>
       </Inset>
     );
   },
@@ -191,80 +187,70 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
 
 export const Sections: StoryObj<typeof Select> = {
   render: args => (
-    <FieldGroup labelWidth="200px">
-      <Select {...args}>
-        <Select.Section>
-          <Header>Fantasy</Header>
-          <Select.Option id="harry-potter">Harry Potter</Select.Option>
-          <Select.Option id="lord-of-the-rings">
-            Lord of the Rings
-          </Select.Option>
-        </Select.Section>
-        <Select.Section>
-          <Header>Sci-Fi</Header>
-          <Select.Option id="star-wars">Star Wars</Select.Option>
-          <Select.Option id="star-trek">Star Trek</Select.Option>
-        </Select.Section>
-      </Select>
-    </FieldGroup>
+    <Select {...args}>
+      <Select.Section>
+        <Header>Fantasy</Header>
+        <Select.Option id="harry-potter">Harry Potter</Select.Option>
+        <Select.Option id="lord-of-the-rings">Lord of the Rings</Select.Option>
+      </Select.Section>
+      <Select.Section>
+        <Header>Sci-Fi</Header>
+        <Select.Option id="star-wars">Star Wars</Select.Option>
+        <Select.Option id="star-trek">Star Trek</Select.Option>
+      </Select.Section>
+    </Select>
   ),
 };
 
 export const SelectedScroll: StoryObj<typeof Select> = {
   render: args => {
     return (
-      <FieldGroup labelWidth="200px">
-        <Select disabledKeys={['Firefly']} {...args}>
-          <Select.Option id="Harry Potter">Harry Potter</Select.Option>
-          <Select.Option id="Lord of the Rings">
-            Lord of the Rings
-          </Select.Option>
-          <Select.Option id="Star Wars">Star Wars</Select.Option>
-          <Select.Option id="Star Trek">Star Trek</Select.Option>
-          <Select.Option id="Avatar - Aufbruch nach Pandora">
-            Avatar - Aufbruch nach Pandora
-          </Select.Option>
-          <Select.Option id="Avatar: The Way of Water">
-            Avatar: The Way of Water
-          </Select.Option>
-          <Select.Option id="Black Adam">Black Adam</Select.Option>
-          <Select.Option id="Black Panther: Wakanda Forever">
-            Black Panther: Wakanda Forever
-          </Select.Option>
-          <Select.Option id="Strange World">Strange World</Select.Option>
-          <Select.Option id="Project Gemini">Project Gemini</Select.Option>
-          <Select.Option id="M3GAN">M3GAN</Select.Option>
-          <Select.Option id="Spider-Man: No Way Home">
-            Spider-Man: No Way Home
-          </Select.Option>
-          <Select.Option id="Jurassic World - Ein neues Zeitalter">
-            Jurassic World - Ein neues Zeitalter
-          </Select.Option>
-          <Select.Option id="Prey">Prey</Select.Option>
-          <Select.Option id="Avengers: Infinity War">
-            Avengers: Infinity War
-          </Select.Option>
-          <Select.Option id="Venom: Let There Be Carnage">
-            Venom: Let There Be Carnage
-          </Select.Option>
-          <Select.Option id="Lightyear">Lightyear</Select.Option>
-          <Select.Option id="Warriors of Future">
-            Warriors of Future
-          </Select.Option>
-          <Select.Option id="Moonfall">Moonfall</Select.Option>
-          <Select.Option id="Nope">Nope</Select.Option>
-          <Select.Option id="Project Wolf Hunting">
-            Project Wolf Hunting
-          </Select.Option>
-          <Select.Option id="Black Panther">Black Panther</Select.Option>
-          <Select.Option id="Eternals">Eternals</Select.Option>
-          <Select.Option id="Interstellar">Interstellar</Select.Option>
-          <Select.Option id="Avengers: Endgame">
-            Avengers: Endgame
-          </Select.Option>
-          <Select.Option id="Dune">Dune</Select.Option>
-        </Select>
-      </FieldGroup>
+      <Select disabledKeys={['Firefly']} {...args}>
+        <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+        <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
+        <Select.Option id="Star Wars">Star Wars</Select.Option>
+        <Select.Option id="Star Trek">Star Trek</Select.Option>
+        <Select.Option id="Avatar - Aufbruch nach Pandora">
+          Avatar - Aufbruch nach Pandora
+        </Select.Option>
+        <Select.Option id="Avatar: The Way of Water">
+          Avatar: The Way of Water
+        </Select.Option>
+        <Select.Option id="Black Adam">Black Adam</Select.Option>
+        <Select.Option id="Black Panther: Wakanda Forever">
+          Black Panther: Wakanda Forever
+        </Select.Option>
+        <Select.Option id="Strange World">Strange World</Select.Option>
+        <Select.Option id="Project Gemini">Project Gemini</Select.Option>
+        <Select.Option id="M3GAN">M3GAN</Select.Option>
+        <Select.Option id="Spider-Man: No Way Home">
+          Spider-Man: No Way Home
+        </Select.Option>
+        <Select.Option id="Jurassic World - Ein neues Zeitalter">
+          Jurassic World - Ein neues Zeitalter
+        </Select.Option>
+        <Select.Option id="Prey">Prey</Select.Option>
+        <Select.Option id="Avengers: Infinity War">
+          Avengers: Infinity War
+        </Select.Option>
+        <Select.Option id="Venom: Let There Be Carnage">
+          Venom: Let There Be Carnage
+        </Select.Option>
+        <Select.Option id="Lightyear">Lightyear</Select.Option>
+        <Select.Option id="Warriors of Future">
+          Warriors of Future
+        </Select.Option>
+        <Select.Option id="Moonfall">Moonfall</Select.Option>
+        <Select.Option id="Nope">Nope</Select.Option>
+        <Select.Option id="Project Wolf Hunting">
+          Project Wolf Hunting
+        </Select.Option>
+        <Select.Option id="Black Panther">Black Panther</Select.Option>
+        <Select.Option id="Eternals">Eternals</Select.Option>
+        <Select.Option id="Interstellar">Interstellar</Select.Option>
+        <Select.Option id="Avengers: Endgame">Avengers: Endgame</Select.Option>
+        <Select.Option id="Dune">Dune</Select.Option>
+      </Select>
     );
   },
 };

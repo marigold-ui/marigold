@@ -5,12 +5,14 @@ import { Key, useState } from 'react';
 import { useAsyncList } from '@react-stately/data';
 
 import { Container } from '../Container';
-import { FieldGroup } from '../FieldBase';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
 
 const meta = {
   title: 'Components/Autocomplete',
+  parameters: {
+    fieldGroup: true,
+  },
   argTypes: {
     label: {
       control: {
@@ -76,17 +78,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <FieldGroup labelWidth="200px">
-      <Autocomplete placeholder="Movie" {...args}>
-        <Autocomplete.Item id="Harry Potter">Harry Potter</Autocomplete.Item>
-        <Autocomplete.Item id="Lord of the Rings">
-          Lord of the Rings
-        </Autocomplete.Item>
-        <Autocomplete.Item id="Star Wars">Star Wars</Autocomplete.Item>
-        <Autocomplete.Item id="Star Trek">Star Trek</Autocomplete.Item>
-        <Autocomplete.Item id="Firefly">Firefly</Autocomplete.Item>
-      </Autocomplete>
-    </FieldGroup>
+    <Autocomplete placeholder="Movie" {...args}>
+      <Autocomplete.Item id="Harry Potter">Harry Potter</Autocomplete.Item>
+      <Autocomplete.Item id="Lord of the Rings">
+        Lord of the Rings
+      </Autocomplete.Item>
+      <Autocomplete.Item id="Star Wars">Star Wars</Autocomplete.Item>
+      <Autocomplete.Item id="Star Trek">Star Trek</Autocomplete.Item>
+      <Autocomplete.Item id="Firefly">Firefly</Autocomplete.Item>
+    </Autocomplete>
   ),
 };
 
@@ -101,25 +101,23 @@ export const Controlled: Story = {
     return (
       <Container size="large">
         <Stack space={4}>
-          <FieldGroup labelWidth="200px">
-            <Autocomplete
-              {...args}
-              value={current}
-              onChange={setCurrent}
-              onSubmit={(key, val) => setSubmitted([key, val])}
-              disabledKeys={['star-trek']}
-            >
-              <Autocomplete.Item id="harry-potter">
-                Harry Potter
-              </Autocomplete.Item>
-              <Autocomplete.Item id="lord-of-the-rings">
-                Lord of the Rings
-              </Autocomplete.Item>
-              <Autocomplete.Item id="star-wars">Star Wars</Autocomplete.Item>
-              <Autocomplete.Item id="star-trek">Star Trek</Autocomplete.Item>
-              <Autocomplete.Item id="firefly">Firefly</Autocomplete.Item>
-            </Autocomplete>
-          </FieldGroup>
+          <Autocomplete
+            {...args}
+            value={current}
+            onChange={setCurrent}
+            onSubmit={(key, val) => setSubmitted([key, val])}
+            disabledKeys={['star-trek']}
+          >
+            <Autocomplete.Item id="harry-potter">
+              Harry Potter
+            </Autocomplete.Item>
+            <Autocomplete.Item id="lord-of-the-rings">
+              Lord of the Rings
+            </Autocomplete.Item>
+            <Autocomplete.Item id="star-wars">Star Wars</Autocomplete.Item>
+            <Autocomplete.Item id="star-trek">Star Trek</Autocomplete.Item>
+            <Autocomplete.Item id="firefly">Firefly</Autocomplete.Item>
+          </Autocomplete>
           <pre>current: {current}</pre>
           <pre>
             submitted: (key: {keyToRender}, value: {submitted[1]})

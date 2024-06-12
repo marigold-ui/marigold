@@ -2,11 +2,13 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import { FieldGroup } from '../FieldBase';
 import { SearchField } from './SearchField';
 
 const meta = {
   title: 'Components/SearchField',
+  parameters: {
+    fieldGroup: true,
+  },
   argTypes: {
     label: {
       control: {
@@ -70,11 +72,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => (
-    <FieldGroup labelWidth="200px">
-      <SearchField {...args} required label="search field" />
-    </FieldGroup>
-  ),
+  render: args => <SearchField {...args} required label="search field" />,
 };
 
 export const Controlled: Story = {
@@ -82,15 +80,13 @@ export const Controlled: Story = {
     const [value, setValue] = useState('');
     return (
       <>
-        <FieldGroup labelWidth="200px">
-          <SearchField
-            {...args}
-            value={value}
-            onChange={setValue}
-            required
-            label="search field"
-          />
-        </FieldGroup>
+        <SearchField
+          {...args}
+          value={value}
+          onChange={setValue}
+          required
+          label="search field"
+        />
         <pre>
           <strong>Input Value:</strong>
           {value}

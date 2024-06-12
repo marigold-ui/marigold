@@ -51,6 +51,7 @@ export const decorators: any = [
 
   (Story: any, { globals, parameters }: any) => {
     const theme = globals.theme || parameters.theme || 'core';
+    console.log(parameters.fieldGroup);
 
     switch (theme) {
       case 'stacked': {
@@ -63,8 +64,12 @@ export const decorators: any = [
                     theme={THEME[key as ThemeNames]}
                     className="bg-bg-surface"
                   >
-                    <div className="p-4" data-theme={key}>
-                      {Story()}
+                    <div className="h-screen p-4" data-theme={key}>
+                      {parameters.fieldGroup ? (
+                        <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
+                      ) : (
+                        Story()
+                      )}
                     </div>
                   </MarigoldProvider>
                 </Frame>
@@ -79,7 +84,13 @@ export const decorators: any = [
             theme={THEME[theme as ThemeNames]}
             className="bg-bg-surface"
           >
-            <div className="h-screen p-6">{Story()}</div>
+            <div className="h-screen p-6">
+              {parameters.fieldGroup ? (
+                <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
+              ) : (
+                Story()
+              )}
+            </div>
           </MarigoldProvider>
         );
       }

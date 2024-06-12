@@ -2,12 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { FieldGroup } from '../FieldBase';
 import { TextArea } from './TextArea';
 
 const meta = {
   title: 'Components/TextArea',
   component: TextArea,
+  parameters: {
+    fieldGroup: true,
+  },
   argTypes: {
     label: {
       control: {
@@ -111,11 +113,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => (
-    <FieldGroup labelWidth="200px">
-      <TextArea {...args} />
-    </FieldGroup>
-  ),
+  render: args => <TextArea {...args} />,
 };
 
 export const Controlled: Story = {
@@ -123,9 +121,7 @@ export const Controlled: Story = {
     const [value, setValue] = React.useState('');
     return (
       <>
-        <FieldGroup labelWidth="200px">
-          <TextArea {...args} value={value} onChange={setValue} />
-        </FieldGroup>
+        <TextArea {...args} value={value} onChange={setValue} />
         <pre>
           <strong>Input Value:</strong>
           {value}

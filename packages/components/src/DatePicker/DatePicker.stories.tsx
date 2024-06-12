@@ -6,11 +6,13 @@ import { DateValue } from 'react-aria-components';
 
 import { I18nProvider } from '@react-aria/i18n';
 
-import { FieldGroup } from '../FieldBase';
 import { DatePicker } from './DatePicker';
 
 const meta = {
   title: 'Components/DatePicker',
+  parameters: {
+    fieldGroup: true,
+  },
   component: DatePicker,
   argTypes: {
     disabled: {
@@ -104,17 +106,15 @@ export const Controlled: Story = {
     return (
       <I18nProvider locale="de-DE">
         <div className="flex items-center gap-4">
-          <FieldGroup labelWidth="200px">
-            <DatePicker
-              label="Date Picker"
-              value={value}
-              defaultValue={value}
-              onChange={() => setValue}
-              description="Controlled date field"
-              errorMessage="This is an error"
-              {...args}
-            />
-          </FieldGroup>
+          <DatePicker
+            label="Date Picker"
+            value={value}
+            defaultValue={value}
+            onChange={() => setValue}
+            description="Controlled date field"
+            errorMessage="This is an error"
+            {...args}
+          />
           <pre style={{ marginTop: '1rem' }}>
             <strong>DateField Value:</strong>
             {'Day:' +
@@ -133,16 +133,14 @@ export const Controlled: Story = {
 export const MinMax: Story = {
   render: args => (
     <I18nProvider locale="de-DE">
-      <FieldGroup labelWidth="200px">
-        <DatePicker
-          label="Date Picker"
-          description="Determine min and max value for date picker"
-          errorMessage="This is an error"
-          minValue={new CalendarDate(2019, 6, 5)}
-          maxValue={new CalendarDate(2019, 6, 20)}
-          {...args}
-        />
-      </FieldGroup>
+      <DatePicker
+        label="Date Picker"
+        description="Determine min and max value for date picker"
+        errorMessage="This is an error"
+        minValue={new CalendarDate(2019, 6, 5)}
+        maxValue={new CalendarDate(2019, 6, 20)}
+        {...args}
+      />
     </I18nProvider>
   ),
 };

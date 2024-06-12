@@ -5,11 +5,13 @@ import { useState } from 'react';
 
 import { I18nProvider } from '@react-aria/i18n';
 
-import { FieldGroup } from '../FieldBase';
 import { DateField, DateFieldProps } from './DateField';
 
 const meta = {
   title: 'Components/DateField',
+  parameters: {
+    fieldGroup: true,
+  },
   argTypes: {
     label: {
       control: {
@@ -103,9 +105,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <I18nProvider locale="de-DE">
-      <FieldGroup labelWidth="200px">
-        <DateField {...args} />
-      </FieldGroup>
+      <DateField {...args} />
     </I18nProvider>
   ),
 };
@@ -115,14 +115,12 @@ export const ControlledDateField: Story = {
     const [value, setValue] = useState<DateValue>();
     return (
       <I18nProvider locale="de-DE">
-        <FieldGroup labelWidth="200px">
-          <DateField
-            label="Date Field"
-            value={value}
-            onChange={setValue}
-            {...args}
-          />
-        </FieldGroup>
+        <DateField
+          label="Date Field"
+          value={value}
+          onChange={setValue}
+          {...args}
+        />
         <pre>
           <strong>DateField Value: </strong>
           {value &&

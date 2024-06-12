@@ -9,6 +9,9 @@ import { Input } from './Input';
 
 const meta = {
   title: 'Components/Input',
+  parameters: {
+    fieldGroup: true,
+  },
   argTypes: {
     type: {
       control: {
@@ -94,53 +97,41 @@ export const WithLeadingIcons: Story = {
 
 export const WithAction: Story = {
   render: args => (
-    <FieldGroup labelWidth="200px">
-      <Input
-        placeholder="Placeholder..."
-        action={
-          <Button
-            size="small"
-            variant="text"
-            onPress={() => alert('Action executed')}
-          >
-            <Delete />
-          </Button>
-        }
-        {...args}
-      />
-    </FieldGroup>
+    <Input
+      placeholder="Placeholder..."
+      action={
+        <Button
+          size="small"
+          variant="text"
+          onPress={() => alert('Action executed')}
+        >
+          <Delete />
+        </Button>
+      }
+      {...args}
+    />
   ),
 };
 
 export const WithIcons: Story = {
   render: args => (
-    <FieldGroup labelWidth="200px">
-      <Input
-        placeholder="Placeholder..."
-        icon={<Search />}
-        action={
-          <Button size="small" variant="text">
-            <Delete />
-          </Button>
-        }
-        {...args}
-      />
-    </FieldGroup>
+    <Input
+      placeholder="Placeholder..."
+      icon={<Search />}
+      action={
+        <Button size="small" variant="text">
+          <Delete />
+        </Button>
+      }
+      {...args}
+    />
   ),
 };
 
 export const FileInput: Story = {
-  render: args => (
-    <FieldGroup labelWidth="200px">
-      <Input placeholder="Placeholder..." {...args} type="file" />
-    </FieldGroup>
-  ),
+  render: args => <Input placeholder="Placeholder..." {...args} type="file" />,
 };
 
 export const ColorPicker: Story = {
-  render: args => (
-    <FieldGroup labelWidth="200px">
-      <Input placeholder="Placeholder..." {...args} type="color" />
-    </FieldGroup>
-  ),
+  render: args => <Input placeholder="Placeholder..." {...args} type="color" />,
 };
