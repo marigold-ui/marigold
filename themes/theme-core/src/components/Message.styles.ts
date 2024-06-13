@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Message: ThemeComponent<'Message'> = {
   container: cva(
-    '[grid-template-areas:"title""content"] bg-bg-base border border-solid px-4 py-2 text-[13px]',
+    'bg-bg-base border border-solid px-4 py-2 text-[13px] [grid-template-areas:"title""content"]',
     {
       variants: {
         variant: {
