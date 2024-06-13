@@ -4,7 +4,7 @@ import { Text } from '../Text';
 import { SectionMessage } from './SectionMessage';
 
 const meta = {
-  title: 'Components/Message',
+  title: 'Components/SectionMessage',
   component: SectionMessage,
   argTypes: {
     variant: {

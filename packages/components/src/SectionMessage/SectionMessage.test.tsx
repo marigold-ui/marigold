@@ -9,7 +9,7 @@ import { SectionMessage } from './SectionMessage';
 const theme: Theme = {
   name: 'test',
   components: {
-    Message: {
+    SectionMessage: {
       container: cva('text-blue-500', {
         variants: {
           variant: {
