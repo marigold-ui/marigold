@@ -151,7 +151,7 @@ const components = {
   Card,
   Columns,
   Headline,
-  Message: SectionMessage,
+  SectionMessage: SectionMessage,
   Stack,
   Tabs,
   Text,

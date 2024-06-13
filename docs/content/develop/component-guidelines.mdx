@@ -65,9 +65,13 @@ Example of how we write tests:
 ```tsx
 test('accepts a variant with parts and an icon', () => {
   render(
-    <Message data-testid="messages" messageTitle="info" variant="warning">
+    <SectionMessage
+      data-testid="messages"
+      messageTitle="info"
+      variant="warning"
+    >
       Danger
-    </Message>
+    </SectionMessage>
   );
 
   const container = screen.getByTestId('messages');
@@ -129,9 +133,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Message {...args}>
+    <SectionMessage {...args}>
       <Text>Hello, I am a simple message.</Text>
-    </Message>
+    </SectionMessage>
   ),
 };
 ```
@@ -198,9 +202,9 @@ type RemovedProps = 'className';
 export interface ComponentProps extends Omit<RAC.ComponentProp, RemovedProps> {}
 ```
 
-<Message messageTitle="Escape hatch">
+<SectionMessage messageTitle="Escape hatch">
 Use a regular `<div>` (or any other HTML element) and add available classes from our theme.
-</Message>
+</SectionMessage>
 
 ### A UI Component must be themable
 
