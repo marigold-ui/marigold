@@ -22,9 +22,29 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   variant?: string;
   size?: string;
   children?: ReactNode;
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default full
+   */
   width?: WidthProp['width'];
+
+  /**
+   * Disables the switch.
+   * @default false
+   */
   disabled?: RAC.SwitchProps['isDisabled'];
+
+  /**
+   * Set the switch to read-only.
+   * @default false
+   */
   readOnly?: RAC.SwitchProps['isReadOnly'];
+
+  /**
+   * With this prop you can set the switch selected.
+   * @default false
+   */
   selected?: RAC.SwitchProps['isSelected'];
 }
 

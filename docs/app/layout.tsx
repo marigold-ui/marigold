@@ -1,5 +1,3 @@
-'use-client';
-
 import { siteConfig } from '@/lib/config';
 import { b2bTheme, coreTheme, theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';

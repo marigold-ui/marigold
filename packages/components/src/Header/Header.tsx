@@ -5,6 +5,9 @@ import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 
 export interface HeaderProps extends Omit<RAC.HeadingProps, 'children'> {
+  /**
+   * The children of the component.
+   */
   children?: ReactNode;
   variant?: string;
   size?: string;

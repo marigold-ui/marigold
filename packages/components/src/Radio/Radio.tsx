@@ -17,8 +17,16 @@ type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
   variant?: string;
   size?: string;
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default full
+   */
   width?: string;
   children?: ReactNode;
+  /**
+   * Set the radio disabled.
+   * @default false
+   */
   disabled?: RAC.RadioProps['isDisabled'];
 }
 

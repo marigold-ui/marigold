@@ -15,13 +15,39 @@ type RemovedProps = 'isOpen' | 'className' | 'style' | 'children';
 export interface MenuProps
   extends Omit<RAC.MenuTriggerProps, RemovedProps>,
     Omit<RAC.MenuProps<object>, RemovedProps> {
+  /**
+   * Whether the menu is open.
+   * @default false
+   */
   open?: RAC.MenuTriggerProps['isOpen'];
+
+  /**
+   * Placement of the popover.
+   * @default 'bottom'
+   */
   placement?: PopoverProps['placement'];
+
+  /**
+   * The label for the menu trigger button.
+   */
   label?: ReactNode;
+
   variant?: string;
   size?: string;
+
+  /**
+   * Handler that is called when an action is performed on an item.
+   */
   onAction?: (key: Key) => void;
+
+  /**
+   * The contents of the menu.
+   */
   children?: ReactNode;
+
+  /**
+   * Whether the menu trigger is disabled.
+   */
   disabled?: boolean;
 }
 

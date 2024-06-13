@@ -18,10 +18,24 @@ import { Label } from '../Label';
 
 export interface SliderProps<T>
   extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label'> {
+  /**
+   * Labels for the thumbs in the slider.
+   */
   thumbLabels?: string[];
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default full
+   */
   width?: WidthProp['width'];
+
   variant?: string;
   size?: string;
+
+  /**
+   * If `true`, the input is disabled.
+   * @default false
+   */
   disabled?: boolean;
 }
 
