@@ -94,10 +94,13 @@ In HTML, forms are build using the `<form>` element, which wraps a set of input 
 
 The simplest way to get data from a form is using the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API during the `onSubmit` event. This can be passed directly to `fetch`, or converted into a regular JavaScript object using `Object.fromEntries`.
 
-<Message messageTitle="Names are important!" variant="info">
-  Make sure to include the name attribute in each field, as it uniquely
-  identifies each form element, facilitating server-side processing and ensuring
-  a key-value pair for data submission.
+<Message variant="info">
+  <Message.Title>Names are important!</Message.Title>
+  <Message.Content>
+    Make sure to include the name attribute in each field, as it uniquely
+    identifies each form element, facilitating server-side processing and
+    ensuring a key-value pair for data submission.
+  </Message.Content>
 </Message>
 
 Below is a basic example of extracting data from an [uncontrolled](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) form. Submitting a promo code won't trigger a regular form submission; instead, it will display the provided data.

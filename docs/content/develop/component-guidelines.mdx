@@ -63,24 +63,30 @@ components
 Example of how we write tests:
 
 ```tsx
-test('accepts a variant with parts and an icon', () => {
+test('accepts a variant with parts and an icon and support grid areas', () => {
   render(
-    <Message data-testid="messages" messageTitle="info" variant="warning">
-      Danger
+    <Message data-testid="messages" variant="warning">
+      <Message.Title>info</Message.Title>
+      <Message.Content>Danger</Message.Content>
     </Message>
   );
-
   const container = screen.getByTestId('messages');
   const title = screen.getByText('info');
   const content = screen.getByText('Danger');
+  // eslint-disable-next-line testing-library/no-node-access
+  const icon = container.firstChild;
 
   expect(container.className).toMatchInlineSnapshot(
-    `"grid auto-rows-min grid-cols-[min-content_auto] gap-1 text-orange-700"`
+    `"grid auto-rows-min text-orange-700"`
   );
-  expect(content.className).toMatchInlineSnapshot(`"col-start-2 items-end"`);
+  expect(content.className).toMatchInlineSnapshot(
+    `"[grid-area:content] items-end"`
+  );
   expect(title.className).toMatchInlineSnapshot(
-    `"col-start-2 row-start-1 self-center font-bold"`
+    `"[grid-area:title] font-bold"`
   );
+
+  expect(icon).toBeInTheDocument();
 });
 ```
 
@@ -108,19 +114,6 @@ const meta = {
       options: ['info', 'warning', 'error'],
       description: 'The variants of the message',
     },
-    messageTitle: {
-      control: {
-        type: 'text',
-      },
-      description: 'Content',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Danger Zone!' },
-      },
-    },
-  },
-  args: {
-    messageTitle: 'Danger Zone!',
   },
 } satisfies Meta<typeof Message>;
 
@@ -130,7 +123,10 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Message {...args}>
-      <Text>Hello, I am a simple message.</Text>
+      <Message.Title>Hint</Message.Title>
+      <Message.Content>
+        <Text>Hello, I am a simple message.</Text>
+      </Message.Content>
     </Message>
   ),
 };
@@ -198,8 +194,11 @@ type RemovedProps = 'className';
 export interface ComponentProps extends Omit<RAC.ComponentProp, RemovedProps> {}
 ```
 
-<Message messageTitle="Escape hatch">
+<Message variant="info">
+  <Message.Title>Escape hatch</Message.Title>
+  <Message.Content>
 Use a regular `<div>` (or any other HTML element) and add available classes from our theme.
+  </Message.Content>
 </Message>
 
 ### A UI Component must be themable
