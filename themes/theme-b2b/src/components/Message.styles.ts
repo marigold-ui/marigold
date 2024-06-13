@@ -3,6 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Message: ThemeComponent<'Message'> = {
   container: cva(
     [
+      '[grid-template-areas:"icon_title""content_content"] grid-cols-[min-content,auto] gap-1',
       'bg-bg-surface border-y-2 border-l-[16px] border-r-2 border-solid text-sm',
       'items-center px-4 pb-4 pt-2',
     ],

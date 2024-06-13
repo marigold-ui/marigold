@@ -1,8 +1,9 @@
 import { cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
-import { MessageContent } from './MessageContent';
-import { MessageTitle } from './MessageTitle';
+import { SectionMessageContext } from './Context';
+import { SectionMessageContent } from './SectionMessageContent';
+import { SectionMessageTitle } from './SectionMessageTitle';
 
 // Icons
 // ---------------
@@ -80,16 +81,24 @@ export const Message = ({
   const Icon = icons[variant];
 
   return (
-    <div {...props} className={cn('grid auto-rows-min', classNames.container)}>
+    <SectionMessageContext.Provider value={{ classNames }}>
       <div
-        className={cn('h-5 w-5 self-center [grid-area:icon]', classNames.icon)}
+        {...props}
+        className={cn('grid auto-rows-min', classNames.container)}
       >
-        <Icon />
+        <div
+          className={cn(
+            'h-5 w-5 self-center [grid-area:icon]',
+            classNames.icon
+          )}
+        >
+          <Icon />
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
+    </SectionMessageContext.Provider>
   );
 };
 
-Message.Title = MessageTitle;
-Message.Content = MessageContent;
+Message.Title = SectionMessageTitle;
+Message.Content = SectionMessageContent;
