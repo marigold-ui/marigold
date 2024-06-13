@@ -142,7 +142,7 @@ test('Should support new variant and existing size', () => {
           {
             variants: {
               variant: {
-                sunken: 'font-bold bg-slate-400',
+                sunken: 'bg-slate-400 font-bold',
               },
             },
           }
