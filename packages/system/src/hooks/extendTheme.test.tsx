@@ -117,9 +117,6 @@ test('Throw an error when the variant is dupplicated', () => {
             variant: {
               tertiary: 'bg-bg-success text-white',
             },
-            size: {
-              medium: 'px-6 leading-10',
-            },
           },
         }),
       },
@@ -129,4 +126,45 @@ test('Throw an error when the variant is dupplicated', () => {
     /* eslint-disable jest/no-conditional-expect */
     expect((err as Error).message).toEqual('tertiary already exists!');
   }
+});
+
+test('Should support new variant and existing size', () => {
+  const newTheme = extendTheme(
+    {
+      Tabs: {
+        container: cva('flex'),
+        tabpanel: cva('border-3 border-solid border-red-400'),
+        tabsList: cva('mb-[10px]'),
+        tab: cva(
+          [
+            'selected:border-red-500  selected:border-b-8  selected:border-solid ',
+          ],
+          {
+            variants: {
+              variant: {
+                sunken: 'font-bold bg-slate-400',
+              },
+            },
+          }
+        ),
+      },
+    },
+    theme
+  );
+  render(
+    <ThemeProvider theme={newTheme}>
+      <Tabs disabledKeys={['2']} variant="sunken" size="medium">
+        <Tabs.List data-testid="tabs-container">
+          <Tabs.Item id="1">tab1</Tabs.Item>
+          <Tabs.Item id="2">tab2</Tabs.Item>
+        </Tabs.List>
+        <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
+        <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
+      </Tabs>
+    </ThemeProvider>
+  );
+
+  const tab = screen.getByText('tab1');
+
+  expect(tab.className).toContain('px-2 pb-2 text-lg');
 });
