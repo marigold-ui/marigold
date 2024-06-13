@@ -5,7 +5,7 @@ import {
   Form,
   Inline,
   Inset,
-  Message,
+  SectionMessage,
   Stack,
   TextField,
 } from '@marigold/components';
@@ -27,7 +27,7 @@ export default () => {
       <Inset space={8}>
         <Stack space={4}>
           {invalid ? (
-            <Message
+            <SectionMessage
               variant="error"
               messageTitle="Whoopsies!"
               role="alert"
@@ -37,7 +37,7 @@ export default () => {
               Please enter both your email address and password to proceed.
               Ensure that all required fields are filled correctly before
               attempting to log in.
-            </Message>
+            </SectionMessage>
           ) : null}
           <Stack space={2} alignX="left">
             <TextField

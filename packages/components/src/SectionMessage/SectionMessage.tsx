@@ -63,7 +63,8 @@ const icons = {
 
 // Props
 // ---------------
-export interface MessageProps extends Omit<HtmlProps<'div'>, 'className'> {
+export interface SectionMessageProps
+  extends Omit<HtmlProps<'div'>, 'className'> {
   /**
    * Set a message title. This is required.
    */
@@ -74,9 +75,13 @@ export interface MessageProps extends Omit<HtmlProps<'div'>, 'className'> {
 
 // Component
 // ---------------
-export const Message = forwardRef<HTMLDivElement, MessageProps>(
+export const SectionMessage = forwardRef<HTMLDivElement, SectionMessageProps>(
   ({ messageTitle, variant = 'info', size, children, ...props }, ref) => {
-    const classNames = useClassNames({ component: 'Message', variant, size });
+    const classNames = useClassNames({
+      component: 'SectionMessage',
+      variant,
+      size,
+    });
     const Icon = icons[variant];
 
     return (

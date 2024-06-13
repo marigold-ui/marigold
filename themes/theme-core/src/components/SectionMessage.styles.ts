@@ -1,6 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Message: ThemeComponent<'Message'> = {
+export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva('bg-bg-base border border-solid px-4 py-2 text-[13px]', {
     variants: {
       variant: {

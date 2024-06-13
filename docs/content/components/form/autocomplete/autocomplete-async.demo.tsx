@@ -2,7 +2,7 @@ import { Key, useState } from 'react';
 
 import {
   Autocomplete,
-  Message,
+  SectionMessage,
   Stack,
   Table,
   useAsyncList,
@@ -71,9 +71,9 @@ export default () => {
           </Table.Body>
         </Table>
       ) : (
-        <Message messageTitle="Empty Result">
+        <SectionMessage messageTitle="Empty Result">
           No Character matched your query, sorry! 😭
-        </Message>
+        </SectionMessage>
       )}
     </Stack>
   );

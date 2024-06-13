@@ -4,7 +4,7 @@ import { createRef } from 'react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
 import { setup } from '../test.utils';
-import { Message } from './Message';
+import { SectionMessage } from './SectionMessage';
 
 const theme: Theme = {
   name: 'test',
@@ -51,9 +51,9 @@ const { render } = setup({ theme });
 
 test('message container supports base styling and themeSection', () => {
   render(
-    <Message data-testid="messages" messageTitle="Default">
+    <SectionMessage data-testid="messages" messageTitle="Default">
       Default
-    </Message>
+    </SectionMessage>
   );
 
   const message = screen.getByTestId('messages');
@@ -62,9 +62,13 @@ test('message container supports base styling and themeSection', () => {
 
 test('accepts a variant with parts and an icon', () => {
   render(
-    <Message data-testid="messages" messageTitle="info" variant="warning">
+    <SectionMessage
+      data-testid="messages"
+      messageTitle="info"
+      variant="warning"
+    >
       Danger
-    </Message>
+    </SectionMessage>
   );
   const container = screen.getByTestId('messages');
   const title = screen.getByText('info');
@@ -85,9 +89,9 @@ test('accepts a variant with parts and an icon', () => {
 
 test('accepts error variant', () => {
   render(
-    <Message data-testid="messages" messageTitle="error" variant="error">
+    <SectionMessage data-testid="messages" messageTitle="error" variant="error">
       Error
-    </Message>
+    </SectionMessage>
   );
 
   const content = screen.getByText('Error');
@@ -97,9 +101,9 @@ test('accepts error variant', () => {
 
 test('accepts size', () => {
   render(
-    <Message data-testid="messages" messageTitle="error" size="small">
+    <SectionMessage data-testid="messages" messageTitle="error" size="small">
       error
-    </Message>
+    </SectionMessage>
   );
   const message = screen.getByTestId(/messages/);
 
@@ -109,9 +113,9 @@ test('accepts size', () => {
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message data-testid="messages" messageTitle="messages">
+      <SectionMessage data-testid="messages" messageTitle="messages">
         Default
-      </Message>
+      </SectionMessage>
     </ThemeProvider>
   );
   const message = screen.getByTestId(/messages/);
@@ -123,9 +127,9 @@ test('forwards ref', () => {
   const ref = createRef<HTMLDivElement>();
   render(
     <ThemeProvider theme={theme}>
-      <Message data-testid="messages" messageTitle="messages" ref={ref}>
+      <SectionMessage data-testid="messages" messageTitle="messages" ref={ref}>
         Default
-      </Message>
+      </SectionMessage>
     </ThemeProvider>
   );
 

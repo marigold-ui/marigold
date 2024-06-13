@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Text } from '../Text';
-import { Message } from './Message';
+import { SectionMessage } from './SectionMessage';
 
 const meta = {
   title: 'Components/Message',
-  component: Message,
+  component: SectionMessage,
   argTypes: {
     variant: {
       control: {
@@ -28,35 +28,35 @@ const meta = {
   args: {
     messageTitle: 'Danger Zone!',
   },
-} satisfies Meta<typeof Message>;
+} satisfies Meta<typeof SectionMessage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Message {...args}>
+    <SectionMessage {...args}>
       <Text>Hello, I am a simple message.</Text>
-    </Message>
+    </SectionMessage>
   ),
 };
 
 export const MultiLineTitle: Story = {
   render: args => (
     <div className="w-60">
-      <Message
+      <SectionMessage
         messageTitle="Hey! You! I am an info box! Please notice me, it might help you!"
         variant={args.variant}
       >
         <Text>I am really not that good at righting copy texts, sorry.</Text>
-      </Message>
+      </SectionMessage>
     </div>
   ),
 };
 
 export const LongMessage: Story = {
   render: args => (
-    <Message {...args}>
+    <SectionMessage {...args}>
       <Text>
         In up so discovery my middleton eagerness dejection explained.
         Estimating excellence ye contrasted insensible as. Oh up unsatiable
@@ -66,6 +66,6 @@ export const LongMessage: Story = {
         alteration everything sympathize impossible his get compliment.
         Collected few extremity suffering met had sportsman.
       </Text>
-    </Message>
+    </SectionMessage>
   ),
 };
