@@ -1,29 +1,22 @@
 'use client';
 
-import { links, siteConfig, themeswitch } from '@/lib/config';
-import { iterateTokens } from '@/lib/utils';
-import { Button, Dialog, Icons, Inline, Split, cn, useClassNames } from '@/ui';
-import { Command, CommandGroup, useCommandState } from 'cmdk';
+import { siteConfig } from '@/lib/config';
+import { Button, Dialog, useClassNames } from '@/ui';
+import { Command, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
-import {
-  Dispatch,
-  ReactNode,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { useCopyToClipboard, useDebounce } from 'react-use';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { Search } from '@marigold/icons';
 
-import { ExternalLink, Search } from '@marigold/icons';
-
-import { useThemeSwitch } from '@/ui/ThemeSwitch';
-import { Theme } from '@/ui/icons/Theme';
 import { useHasMounted } from '@/ui/useHasMounted';
+
+import {
+  ChangeThemeItem,
+  ExternalLinkItem,
+  IconItem,
+  PagesItem,
+  TokenItem,
+} from './CommandItems';
 
 // Helpers
 // ---------------
@@ -53,7 +46,7 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
 interface HotKeyProps {
   letter: string;
 }
-const Hotkey = ({ letter }: HotKeyProps) => {
+export const Hotkey = ({ letter }: HotKeyProps) => {
   const mounted = useHasMounted();
   if (!mounted) {
     return null;
@@ -97,47 +90,10 @@ const CustomInput = ({
     />
   );
 };
-interface CopyItemProps {
-  children: ReactNode;
-  className?: string;
-  value?: string;
-  keywords?: string[];
-  onSelect?: (value: string) => void;
-  copyValue: string;
-}
-
-const CopyItem = ({ children, copyValue, ...props }: CopyItemProps) => {
-  const search = useCommandState(state => state.search);
-  const [isCopied, setCopy] = useState(false);
-  const [, setCopied] = useCopyToClipboard();
-  const [isReady, cancel] = useDebounce(() => setCopy(false), 2000, [isCopied]);
-  const copy = (value: string) => {
-    if (isReady()) {
-      cancel();
-    }
-    setCopy(true);
-    setCopied(value);
-  };
-
-  if (!search) return null;
-  return (
-    <Command.Item onSelect={() => copy(copyValue)} {...props}>
-      <Inline space={4} alignY="center">
-        {children}
-        <Split />
-        <span className="text-text-primary-muted text-xs">
-          {isCopied ? 'COPIED!' : 'COPY ICON'}
-        </span>
-      </Inline>
-    </Command.Item>
-  );
-};
 
 export const SiteMenu = () => {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const ref = useRef<SVGSVGElement>();
 
   const [pages, setPages] = useState(['']);
   const subPage = pages[pages.length - 1];
@@ -145,29 +101,6 @@ export const SiteMenu = () => {
   const handlePages = (slug: string) => {
     setPages([...pages, slug]);
   };
-
-  const goto = (slug: string) => {
-    router.push(`/${slug}`);
-    setOpen(false);
-    setPages([]);
-  };
-
-  const { updateTheme } = useThemeSwitch();
-  const changeTheme = (theme: string) => {
-    updateTheme(theme);
-    setOpen(false);
-  };
-
-  const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
-    const Component = Icons[icon];
-    const iconElement = <Component ref={ref} />;
-    const svg = ReactDOMServer.renderToString(<Component ref={ref} />);
-    return { iconElement, ref, icon, svg };
-  };
-
-  const iconElements = Object.keys(Icons).map((icon: keyof typeof Icons) => {
-    return getIcon(icon, ref as any);
-  });
 
   // register global cmd+k hotkey
   useEffect(() => {
@@ -183,11 +116,6 @@ export const SiteMenu = () => {
   }, [pages]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
-  const { current, themes } = useThemeSwitch();
-  if (!current) {
-    return null;
-  }
-  const tokens = iterateTokens(themes[current].colors || {});
 
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
@@ -224,140 +152,23 @@ export const SiteMenu = () => {
               No results found.
             </Command.Empty>
             {groupedPages.map(({ name, items }) => (
-              <CommandGroup
-                heading={name}
-                key={name}
-                className={classNames.section}
-              >
-                {items.map(page => (
-                  <>
-                    <Command.Item
-                      className={classNames.item}
-                      key={page.slug}
-                      value={page.slug}
-                      onSelect={() => goto(page.slug)}
-                    >
-                      <Inline space={4} alignY="center">
-                        {page.title}
-                        <Split />
-                        <Hotkey letter="D" />
-                      </Inline>
-                    </Command.Item>
-                    {subPage === page.slug && (
-                      <>
-                        {Object.values(page.headings).map(
-                          (sub: { slug: string; text: string }) => (
-                            <Command.Item
-                              value={`${page.slug}${sub.slug}`}
-                              className={cn(
-                                'text-text-primary-muted ml-7',
-                                classNames.item
-                              )}
-                              onSelect={() => goto(`${page.slug}#${sub.slug}`)}
-                            >
-                              {sub.text}
-                            </Command.Item>
-                          )
-                        )}
-                      </>
-                    )}
-                  </>
-                ))}
-              </CommandGroup>
+              <PagesItem
+                name={name}
+                items={items}
+                classNames={classNames}
+                setOpen={setOpen}
+                setPages={setPages}
+                subPage={subPage}
+              />
             ))}
             {/* update themes command */}
-            {themeswitch.map(({ name, items }) => (
-              <CommandGroup
-                heading={name}
-                key={name}
-                className={classNames.section}
-              >
-                {items.map(item => (
-                  <Command.Item
-                    className={classNames.item}
-                    key={item.name}
-                    value={item.name}
-                    keywords={['change', 'theme']}
-                    onSelect={() => changeTheme(item.theme)}
-                  >
-                    <Inline space={4} alignY="center">
-                      {item.name}
-                      <Split />
-                      <span className="text-text-primary-muted text-xs">
-                        <Theme />
-                      </span>
-                    </Inline>
-                  </Command.Item>
-                ))}
-              </CommandGroup>
-            ))}
-            {/* links command */}
-            {links.map(({ name, items }) => (
-              <CommandGroup
-                heading={name}
-                key={name}
-                className={classNames.section}
-              >
-                {items.map(page => (
-                  <Command.Item
-                    className={classNames.item}
-                    key={page.href}
-                    value={page.href}
-                    onSelect={() => window.open(page.href, '_blank')}
-                    keywords={page.keywords}
-                  >
-                    <Inline space={4} alignY="center">
-                      {page.name}
-                      <Split />
-                      <span className="text-text-primary-muted text-xs">
-                        <ExternalLink />
-                      </span>
-                    </Inline>
-                  </Command.Item>
-                ))}
-              </CommandGroup>
-            ))}
+            <ChangeThemeItem setOpen={setOpen} classNames={classNames} />
+            {/* external links command */}
+            <ExternalLinkItem classNames={classNames} />
             {/* tokens copy command */}
-            {query && (
-              <CommandGroup
-                heading="Colors"
-                key="color"
-                className={classNames.section}
-              >
-                {tokens.map(([token]) => (
-                  <CopyItem
-                    className={classNames.item}
-                    key={token}
-                    value={token}
-                    keywords={['copy']}
-                    copyValue={token.replace('-DEFAULT', '')}
-                  >
-                    {token.replace('-DEFAULT', '')}
-                  </CopyItem>
-                ))}
-              </CommandGroup>
-            )}
+            {query && <TokenItem classNames={classNames} />}
             {/* copy icon command */}
-            {query && (
-              <CommandGroup
-                heading="Icons"
-                key="icons"
-                className={classNames.section}
-              >
-                {Object.values(iconElements).map(elements => (
-                  <CopyItem
-                    key={elements.icon}
-                    value={elements.icon}
-                    keywords={['copy']}
-                    className={classNames.item}
-                    copyValue={elements.svg}
-                  >
-                    {elements.iconElement}
-                    {elements.icon}
-                  </CopyItem>
-                ))}
-              </CommandGroup>
-            )}
+            {query && <IconItem classNames={classNames} />}
           </Command.List>
           <div className="flex h-10 items-center justify-end gap-4 border-t px-2 text-xs">
             <div>
