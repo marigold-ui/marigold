@@ -2,6 +2,7 @@ interface NestedStringObject {
   [key: string]: NestedStringObject | string;
 }
 
+// used to iterate through the colors and combine it in the right way e.g. 'bg-surface-sunken'
 export const iterateTokens = (colors: NestedStringObject, prefix = '') => {
   let list: [token: string, color: string][] = [];
 
