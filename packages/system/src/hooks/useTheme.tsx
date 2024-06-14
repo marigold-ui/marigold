@@ -13,7 +13,13 @@ export const useTheme = () => {
 };
 
 export interface ThemeProviderProps<T extends Theme> {
+  /**
+   * The use that should be used within the provider context.
+   */
   theme: T;
+  /**
+   * The children of the component.
+   */
   children: ReactNode;
   className?: string;
 }

@@ -23,59 +23,7 @@ import { Table } from '@marigold/components';
 
 ### Table
 
-<PropsTable
-  props={[
-    {
-      property: 'selectionMode',
-      type: 'none, single, multiple',
-      description: 'The type of selection that is allowed in the collection.',
-      default: 'none',
-    },
-    {
-      property: 'onSelectionChange',
-      type: '(keys: Selection) => any',
-      description: 'Handler that is called when the selection changes.',
-      default: 'none',
-    },
-    {
-      property: 'stretch',
-      type: 'boolean',
-      description: 'Stretch table to fill the container.',
-      default: 'false',
-    },
-    {
-      property: 'stickyHeader',
-      type: 'boolean',
-      description: 'Make the column sticky to the top of the table.',
-      default: 'none',
-    },
-    {
-      property: 'disabledKeys',
-      type: 'Object',
-      description: 'Disabled the selected row.',
-      default: 'none',
-    },
-    {
-      property: 'sortDescriptor',
-      type: 'Object',
-      description: 'The current sorted column and direction.',
-      default: 'none',
-    },
-    {
-      property: 'onSortChange',
-      type: 'function',
-      description: 'Handler that is called when the sort direction changes.',
-      default: 'none',
-    },
-    {
-      property: 'disableKeyboardNavigation',
-      type: 'boolean',
-      description:
-        'Disable keyboard navigation. Use if you have input fields in your table. Be aware that this is bad for accessibility.',
-      default: 'false',
-    },
-  ]}
-/>
+<PropsTable componentFile="Table.tsx" />
 
 ### Table.Header
 
@@ -83,132 +31,15 @@ import { Table } from '@marigold/components';
 
 ### Table.Column
 
-<PropsTable
-  props={[
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for the Column.',
-      default: 'none',
-    },
-    {
-      property: 'align',
-      type: 'center | left | right | justify | char',
-      description: 'Control the alignment of Column.',
-      default: 'left',
-    },
-    {
-      property: 'allowsSorting',
-      type: 'boolean',
-      description: 'Whether the column allows sorting.',
-      default: 'true',
-    },
-    {
-      property: 'isRowHeader',
-      type: 'boolean',
-      description:
-        'Whether a column is a row header and should be announced by assistive technology during row navigation.',
-      default: 'true',
-    },
-    {
-      property: 'width',
-      type: 'string | number',
-      description:
-        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
-      default: 'auto',
-    },
-  ]}
-/>
+<PropsTable componentFile="TableColumnHeader.tsx" />
 
 ### Table.Body
 
-<PropsTable
-  props={[
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for the table body.',
-      default: 'none',
-    },
-    {
-      property: 'items',
-      type: 'Iterable<object>',
-      description: 'Item objects in the table body',
-      default: 'none',
-    },
-    {
-      property: 'loadingState',
-      type: 'error | idle | loading | loadingMore | filtering | sorting',
-      description: 'The current loading state of the table.',
-      default: 'none',
-    },
-    {
-      property: 'onLoadMore',
-      type: '(property) onLoadMore?: (() => any) | undefined',
-      description:
-        'Handler that is called when more items should be loaded, e.g. while scrolling near the bottom.',
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="TableBody.tsx" />
 
 ### Table.Row
 
-<PropsTable
-  props={[
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for table row.',
-      default: 'none',
-    },
-    {
-      property: 'download',
-      type: 'string | boolean | undefined',
-      description:
-        'Causes the browser to download the linked URL. A string may be provided to suggest a file name .',
-      default: 'none',
-    },
-    {
-      property: 'href',
-      type: 'string | undefined',
-      description: 'A URL to link .',
-      default: 'none',
-    },
-    {
-      property: 'ping',
-      type: 'string | undefined',
-      description:
-        'A space-separated list of URLs to ping when the link is followed .',
-      default: 'none',
-    },
-    {
-      property: 'referrerPolicy',
-      type: 'React.HTMLAttributeReferrerPolicy | undefined',
-      description: 'How much of the referrer to send when following the link.',
-      default: 'none',
-    },
-    {
-      property: 'rel',
-      type: 'string | undefined',
-      description:
-        'The relationship between the linked resource and the current page',
-      default: 'none',
-    },
-    {
-      property: 'target',
-      type: 'React.HTMLAttributeAnchorTarget | undefined',
-      description: 'The target window for the link.',
-      default: 'none',
-    },
-    {
-      property: 'textValue',
-      type: 'string | undefined',
-      description: `A string representation of the row's contents, used for features like typeahead.`,
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="TableRow.tsx" />
 
 ### Table.Cell
 
