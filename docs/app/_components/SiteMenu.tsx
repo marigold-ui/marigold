@@ -359,7 +359,7 @@ export const SiteMenu = () => {
               </CommandGroup>
             )}
           </Command.List>
-          <div className="flex h-10 items-center justify-end gap-4 border-t px-2">
+          <div className="flex h-10 items-center justify-end gap-4 border-t px-2 text-xs">
             <div>
               Action <span className="opacity-50">↵</span>
             </div>
