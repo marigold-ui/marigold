@@ -8,9 +8,6 @@ import { NumberField } from './NumberField';
 const meta = {
   title: 'Components/NumberField',
   component: NumberField,
-  parameters: {
-    fieldGroup: true,
-  },
   argTypes: {
     label: {
       control: {

@@ -64,7 +64,7 @@ export const decorators: any = [
                     className="bg-bg-surface"
                   >
                     <div className="h-screen p-4" data-theme={key}>
-                      {parameters.fieldGroup ? (
+                      {!parameters.disableLabelWidth ? (
                         <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
                       ) : (
                         Story()
@@ -84,7 +84,7 @@ export const decorators: any = [
             className="bg-bg-surface"
           >
             <div className="h-screen p-6">
-              {parameters.fieldGroup ? (
+              {!parameters.disableLabelWidth ? (
                 <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
               ) : (
                 Story()

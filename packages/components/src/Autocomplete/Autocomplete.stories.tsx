@@ -10,9 +10,6 @@ import { Autocomplete } from './Autocomplete';
 
 const meta = {
   title: 'Components/Autocomplete',
-  parameters: {
-    fieldGroup: true,
-  },
   argTypes: {
     label: {
       control: {

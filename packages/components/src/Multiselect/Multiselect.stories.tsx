@@ -5,9 +5,6 @@ import { Multiselect } from './Multiselect';
 
 const meta = {
   title: 'Components/Multiselect',
-  parameters: {
-    fieldGroup: true,
-  },
   argTypes: {},
   args: {
     description: 'This is a help text description',

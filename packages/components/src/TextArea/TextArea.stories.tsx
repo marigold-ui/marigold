@@ -7,9 +7,6 @@ import { TextArea } from './TextArea';
 const meta = {
   title: 'Components/TextArea',
   component: TextArea,
-  parameters: {
-    fieldGroup: true,
-  },
   argTypes: {
     label: {
       control: {

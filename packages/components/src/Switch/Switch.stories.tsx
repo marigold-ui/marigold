@@ -4,9 +4,6 @@ import { Switch } from './Switch';
 
 const meta = {
   title: 'Components/Switch',
-  parameters: {
-    fieldGroup: true,
-  },
   component: Switch,
   argTypes: {
     variant: {

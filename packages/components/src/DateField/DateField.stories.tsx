@@ -9,9 +9,6 @@ import { DateField, DateFieldProps } from './DateField';
 
 const meta = {
   title: 'Components/DateField',
-  parameters: {
-    fieldGroup: true,
-  },
   argTypes: {
     label: {
       control: {

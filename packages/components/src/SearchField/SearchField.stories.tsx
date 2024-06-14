@@ -6,9 +6,6 @@ import { SearchField } from './SearchField';
 
 const meta = {
   title: 'Components/SearchField',
-  parameters: {
-    fieldGroup: true,
-  },
   argTypes: {
     label: {
       control: {

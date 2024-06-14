@@ -10,9 +10,6 @@ import { DatePicker } from './DatePicker';
 
 const meta = {
   title: 'Components/DatePicker',
-  parameters: {
-    fieldGroup: true,
-  },
   component: DatePicker,
   argTypes: {
     disabled: {

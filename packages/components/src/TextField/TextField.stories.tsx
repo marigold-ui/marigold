@@ -7,9 +7,6 @@ import { TextField } from './TextField';
 const meta = {
   title: 'Components/TextField',
   component: TextField,
-  parameters: {
-    fieldGroup: true,
-  },
   argTypes: {
     label: {
       control: {

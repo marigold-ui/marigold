@@ -8,9 +8,6 @@ import { Select } from './Select';
 
 const meta = {
   title: 'Components/Select',
-  parameters: {
-    fieldGroup: true,
-  },
   component: Select,
   argTypes: {
     label: {

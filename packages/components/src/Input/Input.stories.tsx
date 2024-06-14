@@ -8,9 +8,6 @@ import { Input } from './Input';
 
 const meta = {
   title: 'Components/Input',
-  parameters: {
-    fieldGroup: true,
-  },
   argTypes: {
     type: {
       control: {
