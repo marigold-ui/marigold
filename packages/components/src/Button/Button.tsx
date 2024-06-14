@@ -10,9 +10,26 @@ type RemovedProps = 'isDisabled';
 export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   variant?: string;
   size?: string;
+
+  /**
+   * Stretches the button width with full available space.
+   * @default false
+   */
   fullWidth?: boolean;
+
+  /**
+   * Class of the component.
+   */
   className?: string;
+  /**
+   * Children of the component
+   */
   children?: ReactNode;
+
+  /**
+   * Disables the button.
+   * @default false
+   */
   disabled?: RAC.ButtonProps['isDisabled'];
 }
 

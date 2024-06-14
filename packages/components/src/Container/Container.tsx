@@ -18,9 +18,20 @@ export interface ContainerProps
     GridColumn,
     GridColsAlignProp {
   children?: ReactNode;
+  /**
+   * The content type of the container.
+   * @default 'content'
+   */
   contentType?: 'content' | 'header';
   size?: keyof typeof content | keyof typeof header;
+  /**
+   * Set alignment the content inside the container.
+   * @default left
+   */
   align?: 'left' | 'right' | 'center';
+  /**
+   * Set alignment of the items inside the container.
+   */
   alignItems?: PlaceItemsProp['align'];
 }
 

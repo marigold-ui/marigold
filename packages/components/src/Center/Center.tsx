@@ -7,6 +7,10 @@ export interface CenterProps
   extends Omit<HtmlProps<'div'>, 'className'>,
     GapSpaceProp {
   children?: ReactNode;
+  /**
+   * The maximum width of the container.
+   * @default 100%
+   */
   maxWidth?: string;
 }
 

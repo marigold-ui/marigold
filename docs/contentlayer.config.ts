@@ -1,4 +1,4 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files';
+import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
@@ -71,29 +71,6 @@ export const ContentPage = defineDocumentType(() => ({
         return path.length < 3 ? null : path.at(1);
       },
     },
-
-    /**
-     * flattened Path:
-     *
-     * - pages/concepts/layouts
-     * - components/button/button
-     * - hooks/useTheme/useTheme
-     *
-     * [ 'components', 'footer', 'footer' ] footer footer
-     */
-
-    // section: {
-    //   type: 'string',
-    //   resolve: doc => doc._raw.sourceFileDir.split('/').at(-1),
-    // },
-    // slug: {
-    //   type: 'string',
-    //   resolve: doc => doc._raw.flattenedPath.replace('pages', ''),
-    // },
-    // slugAsParams: {
-    //   type: 'string',
-    //   resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
-    // },
   },
 }));
 
@@ -107,16 +84,22 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
+      // Code Highliting and Demos
+      // ---------------
       [rehypeComponentDemo, { contentDirPath }],
-      rehypeSlug,
-      // to inject the source code and other stuff inside `pre` element props
-      // needed to copy code
+      /**
+       * Store the raw code text inside the properties of <pre> elements,
+       * so we can later retrieve it and use it for the copy code feature.
+       *
+       * Note that these <pre> elements will be transformed to <figure> elements by
+       * `rehype-pretty-code`.
+       */
       () => tree => {
         visit(tree, node => {
           if (node?.type === 'element' && node?.tagName === 'pre') {
-            const [codeEl] = node.children;
-            if (codeEl.tagName !== 'code') return;
-            node.raw = codeEl.children?.[0].value;
+            const [child] = node.children;
+            if (child.tagName !== 'code') return;
+            node.properties.raw = child.children?.[0].value;
           }
         });
       },
@@ -124,7 +107,6 @@ export default makeSource({
         rehypePrettyCode,
         {
           theme: 'material-theme-palenight',
-          keepBackground: false,
           onVisitLine(node: LineElement) {
             if (node.children.length === 0) {
               node.children = [{ type: 'text', value: ' ' }];
@@ -133,47 +115,25 @@ export default makeSource({
           onVisitHighlightedLine(node: LineElement) {
             node.properties.className = [
               ...(node.properties.className || []),
-              'bg-gray-700 px-2 py-0.5 rounded-sm',
+              'bg-code-800',
+              'px-[--pre-padding-x] -mx-[--pre-padding-x]',
             ];
           },
           onVisitHighlightedChars(node: LineElement) {
-            node.properties.className = ['bg-gray-700 px-2 py-0.5 rounded-sm'];
+            node.properties.className = [
+              'bg-transparent *:underline *:decoration-2 *:underline-offset-2 *:font-bold',
+            ];
           },
         },
       ],
-      // needed to copy code
-      () => tree => {
-        visit(tree, node => {
-          if (node?.type === 'element' && node?.tagName === 'div') {
-            if (!('data-rehype-pretty-code-fragment' in node.properties)) {
-              return;
-            }
-            for (const child of node.children) {
-              if (child.tagName === 'pre') {
-                child.properties['raw'] = node.raw;
-              }
-            }
-          }
-        });
-      },
+
+      // Headings and TOC Plugins
+      // ---------------
+      rehypeSlug,
       [
         rehypeAutolinkHeadings,
         {
           behavior: 'wrap',
-          properties: {
-            class: [
-              'relative',
-              'no-underline',
-              'before:absolute',
-              'before:-left-6',
-              'before:inset-y-0',
-              'before:flex',
-              'before:items-center',
-              'before:text-secondary-400',
-              'before:text-2xl',
-              `hover:before:content-['#']`,
-            ].join(' '),
-          },
         },
       ],
       [rehypeTableOfContents, { selector: '#toc' }],
