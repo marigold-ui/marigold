@@ -151,6 +151,7 @@ export const SiteMenu = () => {
             <Command.Empty className="py-6 text-center text-sm">
               No results found.
             </Command.Empty>
+            {/* pages and subpages command */}
             {groupedPages.map(({ name, items }) => (
               <PagesItem
                 name={name}
