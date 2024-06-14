@@ -95,19 +95,14 @@ export const links = [
         href: 'https://marigold-latest.vercel.app/?path=/story/components-accordion--basic',
       },
       {
-        name: 'Stackblitz',
+        name: 'Marigold Playground',
         href: 'https://stackblitz.com/edit/github-v1evcv?file=src%2FApp.tsx',
-        keywords: ['playground', 'starter'],
+        keywords: ['playground', 'starter', 'stackblitz'],
       },
       {
-        name: 'Reference App',
-        href: 'https://marigold-rapp.vercel.app/',
-        keywords: ['help', 'example', 'code'],
-      },
-      {
-        name: 'Github',
+        name: 'Code Repository',
         href: 'https://github.com/marigold-ui/marigold',
-        keywords: ['code'],
+        keywords: ['code', 'github'],
       },
     ],
   },
