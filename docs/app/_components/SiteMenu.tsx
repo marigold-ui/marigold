@@ -1,7 +1,6 @@
 'use client';
 
-import { links, themeswitch } from '@/lib/commandlist';
-import { siteConfig } from '@/lib/config';
+import { links, siteConfig, themeswitch } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
 import { Button, Dialog, Icons, Inline, Split, cn, useClassNames } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
