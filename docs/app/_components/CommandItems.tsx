@@ -160,11 +160,10 @@ export const ChangeThemeItem = ({
               onSelect={() => changeTheme(item.theme)}
             >
               <Inline space={4} alignY="center">
-                {item.name}
-                <Split />
                 <span className="text-text-primary-muted text-xs">
                   <Theme />
                 </span>
+                {item.name}
               </Inline>
             </Command.Item>
           ))}
@@ -187,11 +186,10 @@ export const ExternalLinkItem = ({ classNames }: CommandItemProps) => (
             keywords={page.keywords}
           >
             <Inline space={4} alignY="center">
-              {page.name}
-              <Split />
               <span className="text-text-primary-muted text-xs">
                 <ExternalLink />
               </span>
+              {page.name}
             </Inline>
           </Command.Item>
         ))}
