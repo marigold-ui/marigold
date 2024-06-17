@@ -1,7 +1,7 @@
 'use client';
 
 import { siteConfig } from '@/lib/config';
-import { Button, Dialog, cn, useClassNames } from '@/ui';
+import { Button, Dialog, Inline, cn, useClassNames } from '@/ui';
 import { Command, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -173,12 +173,19 @@ export const SiteMenu = () => {
             {query && <IconItem classNames={classNames} />}
           </Command.List>
           <div className="flex h-10 items-center justify-end gap-4 border-t px-2 text-xs">
-            <div>
-              Action <span className="opacity-50">↵</span>
-            </div>
-            <div>
-              More Details <Hotkey letter="D" />
-            </div>
+            <Inline space={2} alignY="center">
+              Action
+              <span className="border-border-inverted bg-secondary-400/10 rounded border p-1 opacity-50">
+                ↵
+              </span>
+            </Inline>
+            <Inline space={2} alignY="center">
+              More Details
+              <Hotkey
+                letter="D"
+                className="border-border-inverted bg-secondary-400/10 rounded border p-1"
+              />
+            </Inline>
           </div>
         </Command>
       </Dialog>
