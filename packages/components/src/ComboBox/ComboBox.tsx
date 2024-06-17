@@ -38,14 +38,54 @@ export interface ComboBoxProps
     > {
   variant?: string;
   size?: string;
+
+  /**
+   * If `true`, the input is disabled.
+   * @default false
+   */
   disabled?: RAC.ComboBoxProps<any>['isDisabled'];
+
+  /**
+   * If `true`, the input is required.
+   * @default false
+   */
   required?: RAC.ComboBoxProps<any>['isRequired'];
+
+  /**
+   * If `true`, the input is readOnly.
+   * @default false
+   */
   readOnly?: RAC.ComboBoxProps<any>['isReadOnly'];
+
+  /**
+   * If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.
+   * @default false
+   */
   error?: RAC.ComboBoxProps<any>['isInvalid'];
+
+  /**
+   * The value of the input (uncontrolled).
+   */
   defaultValue?: RAC.ComboBoxProps<any>['defaultInputValue'];
+
+  /**
+   * The value of the input (controlled).
+   */
   value?: RAC.ComboBoxProps<any>['inputValue'];
+
+  /**
+   * Called when the input value changes.
+   */
   onChange?: RAC.ComboBoxProps<any>['onInputChange'];
+
+  /**
+   * ReactNode or function to render the list of items.
+   */
   children?: ReactNode | ((item: any) => ReactNode);
+
+  /**
+   * Set the placeholder for the select.
+   */
   placeholder?: string;
 }
 

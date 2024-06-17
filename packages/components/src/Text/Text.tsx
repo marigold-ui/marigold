@@ -26,8 +26,15 @@ export interface TextProps
     FontWeightProp,
     FontStyleProp,
     CursorProp {
+  /**
+   * The children of the component
+   */
   children?: React.ReactNode;
   variant?: string;
+  /**
+   * Set the text color.
+   * @default currentColor
+   */
   color?: string;
   size?: string;
 }

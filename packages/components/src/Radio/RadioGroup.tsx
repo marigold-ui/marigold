@@ -14,20 +14,75 @@ type RemovedProps =
   | 'isInvalid'
   | 'isRequired'
   | 'isSelected';
+
 export interface RadioGroupProps
   extends Omit<RAC.RadioGroupProps, RemovedProps> {
   variant?: string;
   size?: string;
+
+  /**
+   * Set the label of the radio group.
+   * @default none
+   */
   label?: string;
+
+  /**
+   * Set the radio group help text.
+   * @default none
+   */
   description?: string;
+
+  /**
+   * Set the radio group error message if an error occurs.
+   * @default none
+   */
   errorMessage?: string;
+
+  /**
+   * The children elements of the radio group.
+   */
   children: ReactNode[];
+
+  /**
+   * Control the width of the field.
+   * @default 100%
+   */
   width?: WidthProp['width'];
+
+  /**
+   * If `true`, the radio group is considered invalid and if set the `errorMessage` is shown.
+   * @default false
+   */
   error?: RAC.RadioGroupProps['isInvalid'];
+
+  /**
+   * If `true`, the radio group is required.
+   * @default false
+   */
   required?: RAC.RadioGroupProps['isRequired'];
+
+  /**
+   * If `true`, the radio group is disabled.
+   * @default false
+   */
   disabled?: RAC.RadioGroupProps['isDisabled'];
+
+  /**
+   * Set the radio group as read-only.
+   * @default false
+   */
   readOnly?: boolean;
+
+  /**
+   * The selected value of the radio group.
+   */
   value?: string;
+
+  /**
+   * Set the radio group direction.
+   * @default vertical
+   */
+  orientation?: 'horizontal' | 'vertical';
 }
 
 const _RadioGroup = ({

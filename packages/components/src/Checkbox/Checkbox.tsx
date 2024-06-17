@@ -67,7 +67,15 @@ export interface CheckboxProps
       'size' | 'type' | 'defaultValue' | CustomCheckboxProps
     >,
     Pick<RAC.CheckboxProps, CustomCheckboxProps> {
+  /**
+   * Use when it represents both selected and not selected values.
+   * @default false
+   */
   indeterminate?: boolean;
+  /**
+   * If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`.
+   * @default false
+   */
   error?: boolean;
   variant?: string;
   size?: string;

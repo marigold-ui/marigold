@@ -25,12 +25,47 @@ export interface NumberFieldProps
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default full
+   */
   width?: WidthProp['width'];
+
+  /**
+   * If `true`, the input is disabled.
+   * @default false
+   */
   disabled?: RAC.NumberFieldProps['isDisabled'];
+
+  /**
+   * If `true`, the input is required.
+   * @default false
+   */
   required?: RAC.NumberFieldProps['isRequired'];
+
+  /**
+   * If `true`, the field is considered invalid and if set the errorMessage is shown instead of the `description`.
+   * @default false
+   */
   error?: RAC.NumberFieldProps['isInvalid'];
+
+  /**
+   * If `true`, the input is readOnly.
+   * @default false
+   */
   readOnly?: RAC.NumberFieldProps['isReadOnly'];
+
+  /**
+   * Property for hiding the step buttons of the field.
+   * @default false
+   */
   hideStepper?: boolean;
+
+  /**
+   * Placeholder text for the input field.
+   * @default none
+   */
   placeholder?: string;
 }
 

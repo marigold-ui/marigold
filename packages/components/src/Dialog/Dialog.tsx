@@ -50,7 +50,14 @@ export interface DialogProps
   extends Omit<RAC.DialogProps, 'className' | 'style'> {
   variant?: string;
   size?: string;
+  /**
+   * Show the close button.
+   */
   closeButton?: boolean;
+  /**
+   * If `true`, the dialog will be non-modal, meaning it will not block interaction with the background content.
+   * @default false
+   */
   isNonModal?: boolean;
 }
 

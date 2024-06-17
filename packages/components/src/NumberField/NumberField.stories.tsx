@@ -106,7 +106,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = { render: args => <NumberField {...args} /> };
+export const Basic: Story = {
+  render: args => <NumberField {...args} />,
+};
 
 export const WithFormatting: Story = {
   render: args => (
