@@ -1,7 +1,7 @@
 'use client';
 
 import { siteConfig } from '@/lib/config';
-import { Button, Dialog, useClassNames } from '@/ui';
+import { Button, Dialog, cn, useClassNames } from '@/ui';
 import { Command, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -45,15 +45,16 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
 
 interface HotKeyProps {
   letter: string;
+  className?: string;
 }
-export const Hotkey = ({ letter }: HotKeyProps) => {
+export const Hotkey = ({ letter, className }: HotKeyProps) => {
   const mounted = useHasMounted();
   if (!mounted) {
     return null;
   }
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
   return (
-    <span className="opacity-50">
+    <span className={cn('opacity-50', className)}>
       ({isMacOS ? '⌘' : 'Ctrl+'}
       {letter})
     </span>

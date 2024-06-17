@@ -207,19 +207,17 @@ export const PagesItem = ({
   setPages,
 }: PagesItemProps) => {
   const router = useRouter();
-
   const goto = (slug: string) => {
     router.push(`/${slug}`);
     setOpen(false);
     setPages([]);
   };
-
   return (
     <CommandGroup heading={name} key={name} className={classNames.section}>
       {items.map(page => (
         <>
           <Command.Item
-            className={classNames.item}
+            className={cn(classNames.item, 'group')}
             key={page.slug}
             value={page.slug}
             onSelect={() => goto(page.slug)}
@@ -227,7 +225,7 @@ export const PagesItem = ({
             <Inline space={4} alignY="center">
               {page.title}
               <Split />
-              <Hotkey letter="D" />
+              <Hotkey letter="D" className="hidden group-aria-selected:block" />
             </Inline>
           </Command.Item>
           {subPage === page.slug && (
