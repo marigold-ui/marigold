@@ -48,7 +48,7 @@ const generatePropsTables = async () => {
       const fileName = filePath.split('/').at(-1);
 
       // Filter out 'variant' and 'className' properties;
-      const excludedProps = ['className', 'variant', 'size'];
+      const excludedProps = ['variant', 'size'];
       const filteredProps = Object.keys(props)
         .filter(key => !excludedProps.includes(key))
         .reduce((obj, key) => {
