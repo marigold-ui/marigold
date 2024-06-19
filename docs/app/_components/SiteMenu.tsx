@@ -174,13 +174,13 @@ export const SiteMenu = () => {
           </Command.List>
           <div className="flex h-10 items-center justify-end gap-4 border-t px-2 text-xs">
             <Inline space={2} alignY="center">
-              Action
+              Go
               <span className="border-border-inverted bg-secondary-400/10 rounded border p-1 opacity-50">
                 ↵
               </span>
             </Inline>
             <Inline space={2} alignY="center">
-              More Details
+              Show Sublevels
               <Hotkey
                 letter="D"
                 className="border-border-inverted bg-secondary-400/10 rounded border p-1"
