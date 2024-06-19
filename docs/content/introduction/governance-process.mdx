@@ -1,0 +1,103 @@
+---
+title: Governance Process
+caption: Making Changes and Additions to Marigold.
+order: 6
+badge: new
+---
+
+Our governance process ensures that any changes or additions to the design system are carefully evaluated to maintain consistency, stability, and user-friendliness. We prioritize updates that meet specific user needs, adhere to industry standards, and offer high reusability. This approach, guided by our Governance Values and Principles [link to docs], helps us uphold the quality and integrity of our design system.
+
+To this regard, we have created a flowchart which is divided into 3 phases, that illustrates how we deal with these features and additions.
+
+<iframe
+  className="border-border-base border"
+  width="100%"
+  height="480"
+  src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FXnvTRolISplT6ZKtLYS8KG%2FManaging-Changes-and-Additions-to-the-Design-System%253A-Flowchart%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3Db3p2S27ZxriQPK27-1"
+  allowfullscreen
+/>
+
+## Phase 1: Product Team Discovers a Problem
+
+The product team which is using Marigold runs into a problem or some limitations in its use.
+
+<Columns columns={[5, 5]} space={4}>
+  <div>
+    **Step 1:** The process begins when the product team discovers a problem with
+    Marigold, which could be, for example, a missing, broken, or
+    non-user-friendly component.
+
+    **Step 2:** They should ask themselves the question if the Design System offers an existing alternative to the problem.
+
+    - **Yes:** If a viable alternative exists within the design system, the product team should use it.
+
+    - **No:** If there is no viable alternative, the product team should write a request ([support portal (internal only)](https://reservix.atlassian.net/servicedesk/customer/portal/77)).
+
+    If the product team writes a [Jira Support Ticket (internal only)](https://reservix.atlassian.net/servicedesk/customer/portal/77), this triggers phase 2.
+
+  </div>
+  <div className="overflow-hidden">
+    <Image width={700} height={900} className="hover:scale-125 transition ease-in-out " src="/governance-phase1.png" />
+  </div>
+</Columns>
+
+## Phase 2: Design System Team Evaluates the Request
+
+This phase is only relevant if the product team has written a Jira Support Ticket (internal only). The process starts when a support ticket is received.
+
+<Stack space={4}>
+    <Columns columns={[5, 5]} space={4}>
+        <div>
+            **Step 1:** If we have received a request through our support portal (internal only) we have to check if there is clear evidence of user need:
+
+            - **Yes:** If there is clear evidence of user need, move to the next step.
+
+            - **No:** If there isn't clear evidence, the request is declined, and alternative solutions are offered.
+
+        </div>
+        <div className="overflow-hidden">
+           <Image width={700} height={900} className="hover:scale-125 transition ease-in-out " src="/governance-phase2-1.png" />
+        </div>
+
+    </Columns>
+    <Columns columns={[5, 5]} space={4}>
+        <div>
+            **Step 2:** The next decision we have to make is that we have to check if the requested change feel familiar to our users.
+
+            - **Yes:** If the requested change will feel familiar to users, move to the next step.
+
+            - **No:** If it won't feel familiar, the request is declined, and alternative solutions are offered.
+        </div>
+        <div className="overflow-hidden">
+          <Image width={700} height={900} className="hover:scale-125 transition ease-in-out " src="/governance-phase2-2.png" />
+         </div>
+    </Columns>
+    <Columns columns={[5, 5]} space={4}>
+        <div>
+        **Step 3:** We have to check if the change is likely to be reusable across multiple products.
+
+        - **Yes:** If the change is likely to be reusable across multiple products, we approve the request.
+
+        - **No:** If it isn't likely to be reusable, the request is declined, and alternative solutions are offered.
+        </div>
+        <div className="overflow-hidden">
+          <Image width={700} height={900} className="hover:scale-125 transition ease-in-out " src="/governance-phase2-3.png" />
+        </div>
+    </Columns>
+    <Columns columns={[5, 5]} space={4}>
+        <div>
+
+            **Step 4:** The next step is to determine the estimated timeline, including the roadmap and estimated effort.
+
+            **Step 5:** We have to ask ourselves, if the estimated timeline suits for the product teams.
+
+            - **Yes:** If the estimated timeline works for the product team, the product team waits for delivery and will process with “Phase 3a”.
+
+            - **No:** If the estimated timeline does not work, the process goes to "Phase 3b".
+            </div>
+            <div className="overflow-hidden">
+             <Image width={700} height={900} className="hover:scale-125 transition ease-in-out " src="/governance-phase2-4.png" />
+            </div>
+    </Columns>
+
+</Stack>
