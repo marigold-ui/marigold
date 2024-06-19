@@ -86,7 +86,6 @@ This phase is only relevant if the product team has written a Jira Support Ticke
     </Columns>
     <Columns columns={[5, 5]} space={4}>
         <div>
-
             **Step 4:** The next step is to determine the estimated timeline, including the roadmap and estimated effort.
 
             **Step 5:** We have to ask ourselves, if the estimated timeline suits for the product teams.
@@ -101,3 +100,86 @@ This phase is only relevant if the product team has written a Jira Support Ticke
     </Columns>
 
 </Stack>
+
+## Phase 3a: Design System Team Fulfills the Request
+
+This phase can only be achieved if the estimated time for the request is right for the product team and they are waiting for us to deliver it.
+
+<Columns columns={[5, 5]} space={4}>
+  <div>
+    **Step 1:** We start designing the request or addition if needed.
+
+    **Step 2:** Does the design fulfills WCAG 2.1 AA requirements:
+
+    - **Yes:** If the result meets WCAG 2.1 AA requirements, proceed to testing.
+
+    - **No:** If it does not meet these requirements, the design process must be revisited.
+
+    **Step 3:** Test the design in real-world environments, ideally with real users.
+
+    **Step 4:** We need to check if the solution meets the three key criteria: user need, familiarity, and reusability.
+
+    - **Yes:** If it meets all three criteria, proceed to the voting stage in next step.
+
+    - **No:** If it does not meet the criteria, iterate on the design.
+
+    **Step 5:** The Design System Team and major stakeholders (e.g., UX/UI teams) vote on the solution. Is there agreement?
+
+    - **Yes:** If there is consensus, proceed to documentation.
+
+    - **No:** If there is no consensus, revisit the design and address concerns.
+
+    **Step 6:** We document the approved changes.
+
+    **Step 7:** We merge the changes to the codebase.
+
+    **Step 8:** We communicate the change or addition.
+
+</div>
+  <div className="overflow-hidden">
+    <Image
+      width={700}
+      height={900}
+      className="transition ease-in-out hover:scale-125 "
+      src="/governance-phase3a.png"
+    />
+  </div>
+</Columns>
+
+## Phase 3b: Product Team’s Response if Request Can’t or Won’t Be Fulfilled
+
+If the product team cannot wait for us to deliver a request, they follow this process.
+
+<Columns columns={[5, 5]} space={4}>
+<div>
+    **Step 1:**  We need to know if the product team is still convinced of the need for the request.
+
+    - **Yes:** If the product team is still convinced of the need for the request, they proceed to the next step.
+
+    - **No:** If the product team is no longer convinced of the need for the request, the process ends, and the product team re-examines their requirements.
+
+    **Step 2:** If the product team is still convinced of the need for the request, they begin building their own component or solution, receiving support from the design system team.
+
+    **Step 3:** Throughout the development process, the product team frequently coordinates with the design system team to ensure alignment and adherence to guidelines.
+
+    **Step 4:** The product team ensures that all design tokens and sub-elements used in their solution are sourced from the design system to maintain consistency.
+
+    **Step 5:** The product team takes ownership of the custom solution they have developed. They document the solution and maintain it.
+
+    **Step 6:** In the course of time we need to reflect if there has a viable existing alternative in Marigold become available?
+
+    - **Yes:** If a viable alternative becomes available in the design system, the product team removes their custom solution and implements the official one.
+
+    - **No:** If there is still no alternative available in the design system the product team continue to maintain their custom solution.
+
+</div>
+  <div className="overflow-hidden">
+    <Image
+      width={700}
+      height={900}
+      className="transition ease-in-out hover:scale-125 "
+      src="/governance-phase3b.png"
+    />
+  </div>
+
+</Columns>
