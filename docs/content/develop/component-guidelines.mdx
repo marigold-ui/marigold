@@ -95,6 +95,7 @@ test('accepts a variant with parts and an icon', () => {
 - Add some more complex use cases showing the features of the component.
 - Expose available props as `meta.argTypes`.
 - Available properties should be as specific as possible (e.g. `variant` should not be a string, but rather [a list of available variants](https://storybook.js.org/docs/react/essentials/controls)).
+- By default the Story component will be rendered within the `<FieldGroup labelWidth="200px">` component. Sometimes e.g. `Table.stories.tsx` the `labelWidth` breaks the components in core theme, thats why the parameter `disableLabelWidth` was created. You can use this parameter in the stories meta data to avoid applying the `<FieldGroup>` (the same goes for demos, there you have to write is as property from the `ComponentDemo`).
 
 [Link to latest Storybook](https://marigold-latest.vercel.app/)
 

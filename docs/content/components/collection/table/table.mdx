@@ -23,59 +23,7 @@ import { Table } from '@marigold/components';
 
 ### Table
 
-<PropsTable
-  props={[
-    {
-      property: 'selectionMode',
-      type: 'none, single, multiple',
-      description: 'The type of selection that is allowed in the collection.',
-      default: 'none',
-    },
-    {
-      property: 'onSelectionChange',
-      type: '(keys: Selection) => any',
-      description: 'Handler that is called when the selection changes.',
-      default: 'none',
-    },
-    {
-      property: 'stretch',
-      type: 'boolean',
-      description: 'Stretch table to fill the container.',
-      default: 'false',
-    },
-    {
-      property: 'stickyHeader',
-      type: 'boolean',
-      description: 'Make the column sticky to the top of the table.',
-      default: 'none',
-    },
-    {
-      property: 'disabledKeys',
-      type: 'Object',
-      description: 'Disabled the selected row.',
-      default: 'none',
-    },
-    {
-      property: 'sortDescriptor',
-      type: 'Object',
-      description: 'The current sorted column and direction.',
-      default: 'none',
-    },
-    {
-      property: 'onSortChange',
-      type: 'function',
-      description: 'Handler that is called when the sort direction changes.',
-      default: 'none',
-    },
-    {
-      property: 'disableKeyboardNavigation',
-      type: 'boolean',
-      description:
-        'Disable keyboard navigation. Use if you have input fields in your table. Be aware that this is bad for accessibility.',
-      default: 'false',
-    },
-  ]}
-/>
+<PropsTable componentFile="Table.tsx" />
 
 ### Table.Header
 
@@ -83,132 +31,15 @@ import { Table } from '@marigold/components';
 
 ### Table.Column
 
-<PropsTable
-  props={[
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for the Column.',
-      default: 'none',
-    },
-    {
-      property: 'align',
-      type: 'center | left | right | justify | char',
-      description: 'Control the alignment of Column.',
-      default: 'left',
-    },
-    {
-      property: 'allowsSorting',
-      type: 'boolean',
-      description: 'Whether the column allows sorting.',
-      default: 'true',
-    },
-    {
-      property: 'isRowHeader',
-      type: 'boolean',
-      description:
-        'Whether a column is a row header and should be announced by assistive technology during row navigation.',
-      default: 'true',
-    },
-    {
-      property: 'width',
-      type: 'string | number',
-      description:
-        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width',
-      default: 'auto',
-    },
-  ]}
-/>
+<PropsTable componentFile="TableColumnHeader.tsx" />
 
 ### Table.Body
 
-<PropsTable
-  props={[
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for the table body.',
-      default: 'none',
-    },
-    {
-      property: 'items',
-      type: 'Iterable<object>',
-      description: 'Item objects in the table body',
-      default: 'none',
-    },
-    {
-      property: 'loadingState',
-      type: 'error | idle | loading | loadingMore | filtering | sorting',
-      description: 'The current loading state of the table.',
-      default: 'none',
-    },
-    {
-      property: 'onLoadMore',
-      type: '(property) onLoadMore?: (() => any) | undefined',
-      description:
-        'Handler that is called when more items should be loaded, e.g. while scrolling near the bottom.',
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="TableBody.tsx" />
 
 ### Table.Row
 
-<PropsTable
-  props={[
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for table row.',
-      default: 'none',
-    },
-    {
-      property: 'download',
-      type: 'string | boolean | undefined',
-      description:
-        'Causes the browser to download the linked URL. A string may be provided to suggest a file name .',
-      default: 'none',
-    },
-    {
-      property: 'href',
-      type: 'string | undefined',
-      description: 'A URL to link .',
-      default: 'none',
-    },
-    {
-      property: 'ping',
-      type: 'string | undefined',
-      description:
-        'A space-separated list of URLs to ping when the link is followed .',
-      default: 'none',
-    },
-    {
-      property: 'referrerPolicy',
-      type: 'React.HTMLAttributeReferrerPolicy | undefined',
-      description: 'How much of the referrer to send when following the link.',
-      default: 'none',
-    },
-    {
-      property: 'rel',
-      type: 'string | undefined',
-      description:
-        'The relationship between the linked resource and the current page',
-      default: 'none',
-    },
-    {
-      property: 'target',
-      type: 'React.HTMLAttributeAnchorTarget | undefined',
-      description: 'The target window for the link.',
-      default: 'none',
-    },
-    {
-      property: 'textValue',
-      type: 'string | undefined',
-      description: `A string representation of the row's contents, used for features like typeahead.`,
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="TableRow.tsx" />
 
 ### Table.Cell
 
@@ -220,73 +51,73 @@ import { Table } from '@marigold/components';
 
 In this example you can see the size `compact` from the theme b2b. It reduces the cell spacing. There is also another size, which is called `expanded`, which enlarges the cells.
 
-<ComponentDemo file="./table-compact.demo.tsx" />
+<ComponentDemo file="./table-compact.demo.tsx" disableLabelWidth="true" />
 
 ### Aligned Columns
 
 In this example you can align any Table Column by using `align` property over `<Table.Column align='right'>` .
 
-<ComponentDemo file="./table-aligned.demo.tsx" />
+<ComponentDemo file="./table-aligned.demo.tsx" disableLabelWidth="true" />
 
 ### Fixed Header
 
 We can set the header of the table to be fixed while scrolling by using `stickyHeader` over `<Table stickyHeader>` .
 
-<ComponentDemo file="./table-fixed-header.demo.tsx" />
+<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
 
 ### Selection mode single
 
 If you have set the `selectionMode` to single, then you just can select only one row of the table.
 
-<ComponentDemo file="./table-single-mode.demo.tsx" />
+<ComponentDemo file="./table-single-mode.demo.tsx" disableLabelWidth="true" />
 
 ### Selection mode multiple
 
 This example shows how to use the `selectionMode`, but with the setting that multiple checkboxes appear and you can select as many lines as you want.
 
-<ComponentDemo file="./table-multi-mode.demo.tsx" />
+<ComponentDemo file="./table-multi-mode.demo.tsx" disableLabelWidth="true" />
 
 ### Dynamic collections
 
 You don't have to hard code the table items, you could also create a dynamic collection and iterate through it. That's what the example shows.
 
-<ComponentDemo file="./table-dynamic.demo.tsx" />
+<ComponentDemo file="./table-dynamic.demo.tsx" disableLabelWidth="true" />
 
 ### Disabled Rows
 
 You can also disable certain rows. For that all you have to do is add the property `disabledKeys` with the certain key to the table.
 
-<ComponentDemo file="./table-disabled.demo.tsx" />
+<ComponentDemo file="./table-disabled.demo.tsx" disableLabelWidth="true" />
 
 ### Sorting
 
 The options to sort are ascending or descending. For this purpose the properties (`onSortChange`, `sortDescriptor`) for sorting must be specified.
 
-<ComponentDemo file="./table-sorting.demo.tsx" />
+<ComponentDemo file="./table-sorting.demo.tsx" disableLabelWidth="true" />
 
 ### Async sorting
 
 In this example the `<Table>` is also sortable but its build async. For that you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
 
-<ComponentDemo file="./table-async.demo.tsx" />
+<ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
 
 ### Nested Columns
 
 Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
 
-<ComponentDemo file="./table-nested.demo.tsx" />
+<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
 
 ### Fixed Column width
 
 In a Table you can specify the width of a column using `width` property in the `Table.Column` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table .
 
-<ComponentDemo file="./table-column-width.demo.tsx" />
+<ComponentDemo file="./table-column-width.demo.tsx" disableLabelWidth="true" />
 
 ### Formatters
 
 We have formatting helper for dates and values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
 
-<ComponentDemo file="./table-formatters.demo.tsx" />
+<ComponentDemo file="./table-formatters.demo.tsx" disableLabelWidth="true" />
 
 ### Using input fields
 
@@ -298,4 +129,4 @@ Example for using controlled state with input fields inside a table.
   [here](https://react.dev/learn/updating-objects-in-state#whats-a-mutation).
 </SectionMessage>
 
-<ComponentDemo file="./table-input.demo.tsx" />
+<ComponentDemo file="./table-input.demo.tsx" disableLabelWidth="true" />
