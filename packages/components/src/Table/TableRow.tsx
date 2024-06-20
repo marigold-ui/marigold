@@ -10,11 +10,11 @@ import { GridNode } from '@react-types/grid';
 import { cn, useClassNames, useStateProps } from '@marigold/system';
 
 import { useTableContext } from './Context';
+import { RowProps } from './Table';
 
 // Props
 // ---------------
-export interface TableRowProps {
-  children?: ReactNode;
+export interface TableRowProps extends RowProps {
   row: GridNode<object>;
 }
 
@@ -73,7 +73,7 @@ export const TableRow = ({ children, row }: TableRowProps) => {
       {...mergeProps(rowProps, focusProps, hoverProps)}
       {...stateProps}
     >
-      {children}
+      {children as ReactNode}
     </tr>
   );
 };

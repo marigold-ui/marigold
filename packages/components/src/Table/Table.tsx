@@ -171,14 +171,15 @@ export interface RowProps extends ReactAiaRowProps<any> {
 }
 
 // overriding the column width with WidthProps width
-interface ColumnProps extends Omit<ColumnBaseProps<any>, 'width'>, WidthProp {
+export interface ColumnProps
+  extends Omit<ColumnBaseProps<any>, 'width'>,
+    WidthProp {
   /**
    * Control the alignment of Column.
    * @default left
    */
   align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
 }
-
 /**
  * Necessary since TypeScript can not infer the
  * types of the @react-stately components.
