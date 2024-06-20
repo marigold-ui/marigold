@@ -28,7 +28,7 @@
     "@storybook/source-loader": "^8.0.6",
     "@storybook/test": "^8.0.6",
     "@types/react": "18.3.3",
-    "@vitejs/plugin-react": "4.3.0",
+    "@vitejs/plugin-react": "4.3.1",
     "vite-tsconfig-paths": "4.3.2"
   },
   "devDependencies": {
@@ -46,7 +46,7 @@
     "storybook": "^8.0.6",
     "tailwindcss": "3.4.1",
     "typescript": "5.3.3",
-    "vite": "5.2.12"
+    "vite": "5.3.1"
   },
   "peerDependencies": {
     "@storybook/react": "8.0.x || 8.1.x",
