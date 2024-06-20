@@ -180,7 +180,7 @@ export const SiteMenu = () => {
               </span>
             </Inline>
             <Inline space={2} alignY="center">
-              Show Sublevels
+              Expand
               <Hotkey
                 letter="D"
                 className="border-border-inverted bg-secondary-400/10 rounded border p-1"
