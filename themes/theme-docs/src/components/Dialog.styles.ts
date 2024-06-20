@@ -19,7 +19,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
           '*:max-h-none *:min-w-[75vw]',
         ],
         fullscreen: 'h-screen w-screen px-4 pb-8 pt-10',
-        zoom: 'max-h-[96vh] overflow-scroll *:max-h-none *:min-w-[75vw]',
+        zoom: 'max-h-[96vh] overflow-y-auto *:max-h-none *:min-w-[55vw]',
       },
     },
     defaultVariants: {
