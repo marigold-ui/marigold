@@ -25,129 +25,15 @@ import { Menu } from '@marigold/components';
 
 ### Menu
 
-<PropsTable
-  props={[
-    {
-      property: 'label',
-      type: 'ReactNode',
-      description: 'The label text for the Menu Button.',
-      default: 'none',
-    },
-    {
-      property: 'items',
-      type: 'Iterable<T>',
-      description: 'Items in the Menu. Used for dynamic Menu',
-      default: 'none',
-    },
-    {
-      property: 'onAction',
-      type: '(key: Key) => void',
-      description: 'Handler that should call an action.',
-      default: 'none',
-    },
-    {
-      property: 'selectionMode',
-      type: 'single | multiple',
-      description: 'The type of selection.',
-      default: 'none',
-    },
-    {
-      property: 'selectedKeys',
-      type: 'all |Iterable<Key>',
-      description: 'The selected Keys (id).',
-      default: 'none',
-    },
-    {
-      property: 'onSelectionChange',
-      type: '(key) => any',
-      description: 'Handler for the Selection.',
-      default: 'none',
-    },
-    {
-      property: 'disabledKeys',
-      type: 'Iterable<Key>',
-      description: 'Disabled Keys (id) in the Menu.',
-      default: 'none',
-    },
-    {
-      property: 'open',
-      type: 'boolean',
-      description: 'If the Menu is open.',
-      default: 'false',
-    },
-    {
-      property: 'placement',
-      type: 'Placement',
-      description:
-        'The placement of the element with respect to its anchor element.',
-      default: '"bottom"',
-    },
-  ]}
-/>
+<PropsTable componentFile="Menu.tsx" />
 
 ### Menu.Item
 
-<PropsTable
-  props={[
-    {
-      property: 'id',
-      type: 'Key',
-      description: 'The id for the item.',
-      default: 'none',
-    },
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for the item.',
-      default: 'none',
-    },
-    {
-      property: 'download',
-      type: 'boolean | string',
-      description:
-        'Causes the browser to download the linked URL. A string may be provided to suggest a file name.',
-      default: 'none',
-    },
-    {
-      property: 'href',
-      type: 'string',
-      description: 'A URL linked to.',
-      default: 'none',
-    },
-    {
-      property: 'onOpenChange',
-      type: '() => void',
-      description:
-        "Handler that is called when the overlay's open state changes.",
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="MenuItem.tsx" />
 
 ### Menu.Section
 
-<PropsTable
-  props={[
-    {
-      property: 'title',
-      type: 'string',
-      description: 'The title for the Menu Section.',
-      default: 'none',
-    },
-    {
-      property: 'key',
-      type: 'Key',
-      description: 'The key for the item.',
-      default: 'none',
-    },
-    {
-      property: 'id',
-      type: 'Key',
-      description: 'The id for the item.',
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="MenuSection.tsx" />
 
 ## Examples
 
