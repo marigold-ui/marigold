@@ -9,17 +9,17 @@ import { GridNode } from '@react-types/grid';
 
 import { SortDown, SortUp } from '@marigold/icons';
 import { cn, useStateProps } from '@marigold/system';
-import { WidthProp, width as twWidth } from '@marigold/system';
+import { width as twWidth } from '@marigold/system';
 
 import { useTableContext } from './Context';
+import { ColumnProps } from './Table';
 
 // Sort Icon
 // ---------------
 
 // Props
 // ---------------
-interface TableColumnHeaderProps extends WidthProp {
-  align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
+export interface TableColumnHeaderProps extends Omit<ColumnProps, 'children'> {
   column: GridNode<object>;
 }
 
