@@ -28,7 +28,7 @@
     "@storybook/source-loader": "^8.0.6",
     "@storybook/test": "^8.0.6",
     "@types/react": "18.3.3",
-    "@vitejs/plugin-react": "4.3.0",
+    "@vitejs/plugin-react": "4.3.1",
     "vite-tsconfig-paths": "4.3.2"
   },
   "devDependencies": {
@@ -39,14 +39,14 @@
     "@storybook/preview-api": "^8.0.6",
     "@storybook/react-vite": "^8.0.6",
     "autoprefixer": "10.4.19",
-    "postcss": "8.4.35",
-    "postcss-loader": "8.1.0",
+    "postcss": "8.4.38",
+    "postcss-loader": "8.1.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "storybook": "^8.0.6",
-    "tailwindcss": "3.4.1",
+    "tailwindcss": "3.4.4",
     "typescript": "5.3.3",
-    "vite": "5.2.12"
+    "vite": "5.3.1"
   },
   "peerDependencies": {
     "@storybook/react": "8.0.x || 8.1.x",

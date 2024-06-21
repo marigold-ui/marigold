@@ -19,12 +19,12 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@babel/core": "7.24.6",
+    "@babel/core": "7.24.7",
     "@babel/eslint-parser": "^7.22.10",
     "@babel/plugin-syntax-flow": "^7.16.7",
     "@babel/plugin-transform-react-jsx": "^7.17.3",
-    "@typescript-eslint/eslint-plugin": "7.5.0",
-    "@typescript-eslint/parser": "7.5.0",
+    "@typescript-eslint/eslint-plugin": "7.13.1",
+    "@typescript-eslint/parser": "7.13.1",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",
@@ -32,7 +32,7 @@
     "eslint-plugin-jest": "27.9.0",
     "eslint-plugin-jsx-a11y": "6.8.0",
     "eslint-plugin-prettier": "5.1.3",
-    "eslint-plugin-react": "7.34.1",
+    "eslint-plugin-react": "7.34.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "6.2.0",
     "prettier": "3.2.5"
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "eslint": "8.57.0",
-    "eslint-plugin-tailwindcss": "3.14.2",
+    "eslint-plugin-tailwindcss": "3.17.3",
     "typescript": "5.3.3"
   }
 }
