@@ -1,23 +1,35 @@
 'use client';
 
 import { siteConfig } from '@/lib/config';
-import { Button, Dialog, useClassNames } from '@/ui';
-import { Command, CommandGroup } from 'cmdk';
+import { Button, Dialog, Inline, cn, useClassNames } from '@/ui';
+import { Command, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
-import { useEffect, useState } from 'react';
-
-import { useRouter } from 'next/navigation';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { Search } from '@marigold/icons';
 
 import { useHasMounted } from '@/ui/useHasMounted';
+
+import {
+  ChangeThemeItem,
+  ExternalLinkItem,
+  IconItem,
+  PagesItem,
+  TokenItem,
+} from './CommandItems';
 
 // Helpers
 // ---------------
 const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
   const items = allContentPages
     .filter(page => page.slug.includes(slug))
-    .map(({ title, slug, order }) => ({ title, slug, order }));
+    .filter(page => page.headings)
+    .map(({ title, slug, order, headings }) => ({
+      title,
+      slug,
+      order,
+      headings,
+    }));
 
   // sort by order if it's defiened, otherwise sort alphabettically
   items.sort((a, b) => {
@@ -31,28 +43,64 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
   return { name, slug, items };
 });
 
-const Hotkey = () => {
+interface HotKeyProps {
+  letter: string;
+  className?: string;
+}
+export const Hotkey = ({ letter, className }: HotKeyProps) => {
   const mounted = useHasMounted();
-
   if (!mounted) {
     return null;
   }
-
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
-
-  return <span className="opacity-50">({isMacOS ? '⌘' : 'Ctrl+'}K)</span>;
+  return (
+    <span className={cn('opacity-50', className)}>
+      ({isMacOS ? '⌘' : 'Ctrl+'}
+      {letter})
+    </span>
+  );
 };
 
-// Component
+// Components
 // ---------------
+interface CustomInputProps {
+  value: string;
+  onValueChange: Dispatch<SetStateAction<string>>;
+  onHandlePages: (val: string) => void;
+}
+
+const CustomInput = ({
+  value,
+  onValueChange,
+  onHandlePages,
+}: CustomInputProps) => {
+  const slug = useCommandState(state => state.value);
+  return (
+    <Command.Input
+      value={value}
+      onValueChange={onValueChange}
+      autoFocus
+      placeholder="Type to search ..."
+      className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
+      onKeyDown={e => {
+        if (e.metaKey && e.key === 'd') {
+          e.preventDefault();
+          onHandlePages(slug);
+        }
+      }}
+    />
+  );
+};
+
 export const SiteMenu = () => {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
 
-  const goto = (slug: string) => {
-    router.push(`/${slug}`);
-    setOpen(false);
+  const [pages, setPages] = useState(['']);
+  const subPage = pages[pages.length - 1];
+
+  const handlePages = (slug: string) => {
+    setPages([...pages, slug]);
   };
 
   // register global cmd+k hotkey
@@ -66,7 +114,7 @@ export const SiteMenu = () => {
 
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
-  }, []);
+  }, [pages]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
 
@@ -74,43 +122,71 @@ export const SiteMenu = () => {
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
         Search...
-        <Hotkey />
+        <Hotkey letter="K" />
       </Button>
       <Dialog aria-label="Global Command Menu">
-        <Command className={classNames.container}>
+        <Command
+          className={classNames.container}
+          filter={(value, query, keywords) => {
+            const searchValue = `${value} ${keywords}`;
+            if (searchValue.toLowerCase().includes(query.toLowerCase()))
+              return 1;
+            return 0;
+          }}
+          onKeyDown={e => {
+            if (e.key === 'Escape' || (e.key === 'Backspace' && !query)) {
+              e.preventDefault();
+              setPages([]);
+            }
+          }}
+        >
           <div className="flex items-center gap-1.5 border-b px-3">
-            <Search className="size-4 opacity-50"></Search>
-            <Command.Input
+            <Search className="size-4 opacity-50" />
+            <CustomInput
               value={query}
-              autoFocus
               onValueChange={setQuery}
-              placeholder="Type to search ..."
-              className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
+              onHandlePages={handlePages}
             />
           </div>
           <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
             <Command.Empty className="py-6 text-center text-sm">
               No results found.
             </Command.Empty>
+            {/* pages and subpages command */}
             {groupedPages.map(({ name, items }) => (
-              <CommandGroup
-                heading={name}
-                key={name}
-                className={classNames.section}
-              >
-                {items.map(page => (
-                  <Command.Item
-                    className={classNames.item}
-                    key={page.slug}
-                    value={page.slug}
-                    onSelect={() => goto(page.slug)}
-                  >
-                    {page.title}
-                  </Command.Item>
-                ))}
-              </CommandGroup>
+              <PagesItem
+                name={name}
+                items={items}
+                classNames={classNames}
+                setOpen={setOpen}
+                setPages={setPages}
+                subPage={subPage}
+              />
             ))}
+            {/* update themes command */}
+            <ChangeThemeItem setOpen={setOpen} classNames={classNames} />
+            {/* external links command */}
+            <ExternalLinkItem classNames={classNames} />
+            {/* tokens copy command */}
+            {query && <TokenItem classNames={classNames} />}
+            {/* copy icon command */}
+            {query && <IconItem classNames={classNames} />}
           </Command.List>
+          <div className="flex h-10 items-center justify-end gap-4 border-t px-2 text-xs">
+            <Inline space={2} alignY="center">
+              Go
+              <span className="border-border-inverted bg-secondary-400/10 rounded border p-1 opacity-50">
+                ↵
+              </span>
+            </Inline>
+            <Inline space={2} alignY="center">
+              Expand
+              <Hotkey
+                letter="D"
+                className="border-border-inverted bg-secondary-400/10 rounded border p-1"
+              />
+            </Inline>
+          </div>
         </Command>
       </Dialog>
     </Dialog.Trigger>
