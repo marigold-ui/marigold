@@ -8,7 +8,12 @@ const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
   shouldRemoveUndefinedFromOptional: true,
   shouldExtractLiteralValuesFromEnum: false,
   shouldExtractValuesFromUnion: false,
-  customComponentTypes: ['AutocompleteComponent', 'SelectComponent'],
+  customComponentTypes: [
+    'AutocompleteComponent',
+    'SelectComponent',
+    'ComboBoxComponent',
+    'RadioComponent',
+  ],
 });
 
 // Resolve __dirname for ESM
@@ -28,7 +33,7 @@ const generatePropsTables = async () => {
   const componentFiles = await globby([
     `${componentsDir}/**/*.tsx`,
 
-    // exluded files
+    // excluded files
     `!${componentsDir}/**/*.stories.tsx`,
     `!${componentsDir}/**/*.test.tsx`,
     `!${componentsDir}/**/*.ts`,
@@ -41,7 +46,17 @@ const generatePropsTables = async () => {
 
     if (docs.length > 0) {
       const fileName = filePath.split('/').at(-1);
-      acc[fileName] = props;
+
+      // Filter out 'variant' and 'className' properties;
+      const excludedProps = ['variant', 'size'];
+      const filteredProps = Object.keys(props)
+        .filter(key => !excludedProps.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = props[key];
+          return obj;
+        }, {});
+
+      acc[fileName] = filteredProps;
     }
 
     return acc;

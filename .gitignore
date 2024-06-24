@@ -22,7 +22,6 @@ slack-notification.json
 out
 .contentlayer
 .registry
-.component-props
 
 ## env
 .env*.local
