@@ -20,7 +20,7 @@ const theme: Theme = {
         [
           'bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px]',
           'group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked',
-          ' disabled:bg-dis disabled:opacity-[0.5]',
+          ' disabled:bg-dis disabled:opacity-50',
           'focus:outline-offset[3] focus:outline-none',
           'focus:outline-switch-track-outline-focus',
         ],

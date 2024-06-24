@@ -32,13 +32,13 @@ export const Table: ThemeComponent<'Table'> = {
   ]),
   cell: cva(
     [
-      'text-text-base border-border-base border-b-[1px] p-4',
+      'text-text-base border-border-base border-b p-4',
       'focus:outline-outline-focus',
     ],
     {
       variants: {
         variant: {
-          grid: 'border-x-[1px]',
+          grid: 'border-x',
         },
         size: {
           compact: 'py-2',
