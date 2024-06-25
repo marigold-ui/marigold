@@ -71,8 +71,11 @@ export default () => {
           </Table.Body>
         </Table>
       ) : (
-        <SectionMessage messageTitle="Empty Result">
-          No Character matched your query, sorry! 😭
+        <SectionMessage>
+          <SectionMessage.Title>Empty Result</SectionMessage.Title>
+          <SectionMessage.Content>
+            No Character matched your query, sorry! 😭
+          </SectionMessage.Content>
         </SectionMessage>
       )}
     </Stack>

@@ -27,16 +27,13 @@ export default () => {
       <Inset space={8}>
         <Stack space={4}>
           {invalid ? (
-            <SectionMessage
-              variant="error"
-              messageTitle="Whoopsies!"
-              role="alert"
-              tabIndex={-1}
-              ref={e => e?.focus()}
-            >
-              Please enter both your email address and password to proceed.
-              Ensure that all required fields are filled correctly before
-              attempting to log in.
+            <SectionMessage variant="error" role="alert" tabIndex={-1}>
+              <SectionMessage.Title>Whoopsies!</SectionMessage.Title>
+              <SectionMessage.Content>
+                Please enter both your email address and password to proceed.
+                Ensure that all required fields are filled correctly before
+                attempting to log in.
+              </SectionMessage.Content>
             </SectionMessage>
           ) : null}
           <Stack space={2} alignX="left">
