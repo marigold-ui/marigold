@@ -72,7 +72,7 @@ export interface SectionMessageProps
 
 // Component
 // ---------------
-export const Message = ({
+export const SectionMessage = ({
   variant = 'info',
   size,
   children,
@@ -105,5 +105,5 @@ export const Message = ({
   );
 };
 
-Message.Title = SectionMessageTitle;
-Message.Content = SectionMessageContent;
+SectionMessage.Title = SectionMessageTitle;
+SectionMessage.Content = SectionMessageContent;
