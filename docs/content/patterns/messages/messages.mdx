@@ -1,0 +1,76 @@
+---
+title: Choosing the right feedback message
+caption: Learn which message when to use.
+badge: new
+---
+
+Messages are feedback mechanisms that inform users about important events, actions, conditions, or information within the application.
+
+Appropriate communication of system status is critical to building trust with users, and is Jakob Nielsen’s [first usability heuristic for user interface design](https://www.nngroup.com/articles/ten-usability-heuristics/#toc-1-visibility-of-system-status-1). Too many messages, however, can dilute their usefulness and lead to alert fatigue. Therefore, it’s important to know exactly when and how to use them.
+
+## Key principles
+
+Messages should be:
+
+- **Relevant.** Messages should only be sent when the information significantly impacts the user’s overall experience or current task.
+- **Timely.** Messages should be shown at the moment they’re needed and dismissed once they’re no longer relevant.
+- **Actionable.** Messages should always indicate the way forward, including links or other actions when helpful.
+- **Concise.** Messages should express the most essential information in the fewest words possible.
+
+## When to use
+
+Use messages to provide timely and important updates about events, actions, conditions or information that impact a user’s experience or their successful task completion. Messages can be either task-generated or system-generated.
+
+### Task-generated messages
+
+Task-generated messages respond to specific user actions during a specific task. They provide immediate feedback about the effects of a user’s action.
+
+For example, you may want to send a task-generated message when:
+
+- A change was successfully saved
+- A file couldn’t be opened
+- The user is approaching the maximum number of items they can add to a dataset
+
+### System-generated messages
+
+System-generated messages communicate relevant updates about system status that aren’t triggered by a user’s current task, but may impact their experience or require their attention.
+
+You might send a system-generated message when:
+
+- Scheduled maintenance will impact system performance for a period of time
+- The user’s account will be suspended unless a new payment method is added
+- Connection with the server has been lost
+
+## When not to use
+
+Don’t use messages when the information does not have a significant impact on the user’s current task or overall experience, or when the same information can be communicated in a less obtrusive way. For example:
+
+- To draw attention to a new element or piece of content, you can use a [badge](/components/content/badge).
+- To draw attention to the status of just one UI element, you can use an [icon](/concepts/icon) with a [tooltip](/components/overlay/tooltip) for short, non-essential supporting information. (Tooltips have lower accessibility and usability across device types than messages, so do not use them for critical information.)
+- Messages that describe permanent, non-resolvable aspects or features of a page may be better communicated through headings, description text, or information architecture.
+
+## Message statuses
+
+- **Informational**: Provides relevant information about the system’s features or content that could be worth knowing to the user.
+- **Success**: Confirms that an action was successful.
+- **Warning**: Alerts users to significant issues or changes that may require attention.
+- **Error**: Notifies users of failure states that require immediate action, or that will impede their progress until resolved.
+
+## Message components
+
+------mesage-------
+
+Marigold currently includes three different components for offering feedback messages: Dialogs, section messages and [input field validation](/concepts/validation).
+
+### Dialog
+
+A [dialog](/components/overlay/dialog) is an overlay component that can be used to convey messages to users. Dialogs should only be used to convey messages in high-urgency situations, where the user’s failure to heed the message could have strongly negative results. These dialogs typically take the form of a confirmation dialog, which ask for confirmation that a taken action was intended by the user. In this case, user interaction is required to proceed.
+
+Interruption level: High
+Persistence: Permanent
+Dismissable: Yes (optional)
+Position: Overlaid on the interface, typically in the center of the viewport
+
+### Permanent dismissal
+
+Confirmation dialogs also carry the optional feature of permanent dismissal, that is, a checkbox can be added to ensure the message is never shown again. This can be useful in cases where the user is certain they want to take a potentially dangerous action and is confident they will not need the message again in the future. Use this cautiously.
