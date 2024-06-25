@@ -1,5 +1,4 @@
 import { screen } from '@testing-library/react';
-import { createRef } from 'react';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
@@ -51,8 +50,9 @@ const { render } = setup({ theme });
 
 test('message container supports base styling and themeSection', () => {
   render(
-    <Message data-testid="messages" messageTitle="Default">
-      Default
+    <Message data-testid="messages">
+      <Message.Title>Default</Message.Title>
+      <Message.Content>Default Content</Message.Content>
     </Message>
   );
 
@@ -60,10 +60,11 @@ test('message container supports base styling and themeSection', () => {
   expect(message).toHaveClass(`text-blue-500`);
 });
 
-test('accepts a variant with parts and an icon', () => {
+test('accepts a variant with parts and an icon and support grid areas', () => {
   render(
-    <Message data-testid="messages" messageTitle="info" variant="warning">
-      Danger
+    <Message data-testid="messages" variant="warning">
+      <Message.Title>info</Message.Title>
+      <Message.Content>Danger</Message.Content>
     </Message>
   );
   const container = screen.getByTestId('messages');
@@ -73,11 +74,13 @@ test('accepts a variant with parts and an icon', () => {
   const icon = container.firstChild;
 
   expect(container.className).toMatchInlineSnapshot(
-    `"grid auto-rows-min grid-cols-[min-content_auto] gap-1 text-orange-700"`
+    `"grid auto-rows-min text-orange-700"`
   );
-  expect(content.className).toMatchInlineSnapshot(`"col-start-2 items-end"`);
+  expect(content.className).toMatchInlineSnapshot(
+    `"[grid-area:content] items-end"`
+  );
   expect(title.className).toMatchInlineSnapshot(
-    `"col-start-2 row-start-1 self-center font-bold"`
+    `"[grid-area:title] font-bold"`
   );
 
   expect(icon).toBeInTheDocument();
@@ -85,8 +88,9 @@ test('accepts a variant with parts and an icon', () => {
 
 test('accepts error variant', () => {
   render(
-    <Message data-testid="messages" messageTitle="error" variant="error">
-      Error
+    <Message data-testid="messages" variant="error">
+      <Message.Title>error</Message.Title>
+      <Message.Content>Error</Message.Content>
     </Message>
   );
 
@@ -97,8 +101,9 @@ test('accepts error variant', () => {
 
 test('accepts size', () => {
   render(
-    <Message data-testid="messages" messageTitle="error" size="small">
-      error
+    <Message data-testid="messages" size="small">
+      <Message.Title>error</Message.Title>
+      <Message.Content>Error</Message.Content>
     </Message>
   );
   const message = screen.getByTestId(/messages/);
@@ -109,25 +114,13 @@ test('accepts size', () => {
 test('renders correct HTML element', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Message data-testid="messages" messageTitle="messages">
-        Default
+      <Message data-testid="messages">
+        <Message.Title>messages</Message.Title>
+        <Message.Content>default</Message.Content>
       </Message>
     </ThemeProvider>
   );
   const message = screen.getByTestId(/messages/);
 
   expect(message instanceof HTMLDivElement).toBeTruthy();
-});
-
-test('forwards ref', () => {
-  const ref = createRef<HTMLDivElement>();
-  render(
-    <ThemeProvider theme={theme}>
-      <Message data-testid="messages" messageTitle="messages" ref={ref}>
-        Default
-      </Message>
-    </ThemeProvider>
-  );
-
-  expect(ref.current instanceof HTMLDivElement).toBeTruthy();
 });
