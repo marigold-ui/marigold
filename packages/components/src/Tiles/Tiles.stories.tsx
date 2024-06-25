@@ -74,7 +74,7 @@ export const Boxes: StoryObj<typeof Tiles> = {
 export const DifferentHights: StoryObj<typeof Tiles> = {
   render: args => (
     <Tiles {...args}>
-      <div className=" border border-[#ced4da] bg-[#e9ecef]">
+      <div className="border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
@@ -84,24 +84,24 @@ export const DifferentHights: StoryObj<typeof Tiles> = {
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
       </div>
-      <div className=" border border-[#ced4da] bg-[#e9ecef]">
+      <div className="border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
       </div>
-      <div className=" border border-[#ced4da] bg-[#e9ecef]">
+      <div className="border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
       </div>
-      <div className=" border border-[#ced4da] bg-[#e9ecef]">
+      <div className="border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
       </div>
-      <div className=" border border-[#ced4da] bg-[#e9ecef]">
+      <div className="border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
       </div>
-      <div className=" border border-[#ced4da] bg-[#e9ecef]">
+      <div className="border border-[#ced4da] bg-[#e9ecef]">
         <Text align="center">I love Tiles!</Text>
         <Text align="center">I love Tiles!</Text>
       </div>
@@ -115,7 +115,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
       <div className="border border-[#fa8005] bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <Image
-            src="https://www.pokewiki.de/images/6/63/Sugimori_004.png"
+            src="https://www.pokewiki.de/images/0/09/Hauptartwork_004.png"
             alt="glumanda"
             width={200}
             height={200}
@@ -131,7 +131,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
       <div className="border border-[#fa8005] bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <Image
-            src="https://www.pokewiki.de/images/7/7a/Sugimori_005.png"
+            src="https://www.pokewiki.de/images/0/08/Hauptartwork_005.png"
             alt="glutexo"
             width={200}
             height={200}
@@ -148,7 +148,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
       <div className="border border-[#fa8005] bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <Image
-            src="https://www.pokewiki.de/images/9/96/Sugimori_006.png"
+            src="https://www.pokewiki.de/images/d/de/Hauptartwork_006.png"
             alt="glurak"
             width={250}
             height={200}

@@ -63,9 +63,12 @@ The `value` and `onChange` props can be used to control the `DatePicker`.
 
 When using a datepicker, relying on the standard JavaScript `Date` object for its value can result in timezone inconsistencies and incorrect date display. That's why the datepicker uses a specific `DateValue` type from [@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) instead. This library handles correct international date manipulation across calendars, time zones, and other localization concerns.
 
-<SectionMessage type="info" messageTitle="@internationalized/date">
-  `@internationalized/date` is a peer dependency. If it's not already in your
-  project, you'll need to install it.
+<SectionMessage type="info">
+  <SectionMessage.Title>@internationalized/date</SectionMessage.Title>
+  <SectionMessage.Content>
+    `@internationalized/date` is a peer dependency. If it's not already in your
+    project, you'll need to install it.
+  </SectionMessage.Content>
 </SectionMessage>
 
 The simplest way to parse a Date for the datepicker is by using `parseAbsoluteToLocal`. This function converts an absolute date and time into the current user's local time zone.

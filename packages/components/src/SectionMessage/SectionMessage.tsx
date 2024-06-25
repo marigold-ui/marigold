@@ -1,8 +1,9 @@
-import { forwardRef } from 'react';
-import type { ReactNode } from 'react';
-
 import { cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
+
+import { SectionMessageContext } from './Context';
+import { SectionMessageContent } from './SectionMessageContent';
+import { SectionMessageTitle } from './SectionMessageTitle';
 
 // Icons
 // ---------------
@@ -65,47 +66,44 @@ const icons = {
 // ---------------
 export interface SectionMessageProps
   extends Omit<HtmlProps<'div'>, 'className'> {
-  /**
-   * Set a message title. This is required.
-   */
-  messageTitle: ReactNode;
   variant?: keyof typeof icons;
   size?: string;
 }
 
 // Component
 // ---------------
-export const SectionMessage = forwardRef<HTMLDivElement, SectionMessageProps>(
-  ({ messageTitle, variant = 'info', size, children, ...props }, ref) => {
-    const classNames = useClassNames({
-      component: 'SectionMessage',
-      variant,
-      size,
-    });
-    const Icon = icons[variant];
+export const Message = ({
+  variant = 'info',
+  size,
+  children,
+  ...props
+}: SectionMessageProps) => {
+  const classNames = useClassNames({
+    component: 'SectionMessage',
+    variant,
+    size,
+  });
+  const Icon = icons[variant];
 
-    return (
+  return (
+    <SectionMessageContext.Provider value={{ classNames }}>
       <div
-        className={cn(
-          'grid auto-rows-min grid-cols-[min-content_auto] gap-1',
-          classNames.container
-        )}
-        ref={ref}
         {...props}
+        className={cn('grid auto-rows-min', classNames.container)}
       >
-        <div className={cn('col-span-1 h-5 w-5 self-center', classNames.icon)}>
-          <Icon />
-        </div>
         <div
           className={cn(
-            'col-start-2 row-start-1 self-center',
-            classNames.title
+            'h-5 w-5 self-center [grid-area:icon]',
+            classNames.icon
           )}
         >
-          {messageTitle}
+          <Icon />
         </div>
-        <div className={cn('col-start-2', classNames.content)}>{children}</div>
+        {children}
       </div>
-    );
-  }
-);
+    </SectionMessageContext.Provider>
+  );
+};
+
+Message.Title = SectionMessageTitle;
+Message.Content = SectionMessageContent;

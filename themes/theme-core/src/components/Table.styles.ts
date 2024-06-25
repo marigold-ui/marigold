@@ -1,14 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
-  table: cva('border-collapse', {
-    variants: {
-      variant: {
-        linedTable: ['border-collapse'],
-        grid: ['border-collapse'],
-      },
-    },
-  }),
+  table: cva('border-collapse'),
   header: cva(
     [
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
