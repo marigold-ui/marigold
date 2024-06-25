@@ -6,7 +6,7 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'relative',
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
-      'cursor-default  p-4 text-left',
+      'cursor-default p-4 text-left',
       'text-text-base',
       'after:border-border-base after:absolute after:bottom-0 after:left-0 after:z-[-1] after:size-full after:border-b after:border-solid after:content-[""]',
       'focus:outline-outline-focus',
@@ -15,7 +15,7 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
-          grid: 'after:border-border-base border-border-base border-x after:border-y',
+          grid: 'border-border-base border',
         },
         size: {
           compact: 'py-2',
