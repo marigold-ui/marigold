@@ -1,6 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Message: ThemeComponent<'Message'> = {
+export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva(
     [
       'not-prose items-center rounded-lg p-4',
