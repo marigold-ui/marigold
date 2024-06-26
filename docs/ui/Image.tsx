@@ -33,6 +33,7 @@ export const Image = ({
       <figure className="mx-auto w-fit">
         <NextImage
           {...props}
+          onClick={() => setOpen(!open)}
           className={cn(className, 'hover:cursor-zoom-in')}
         />
         {open && (
@@ -49,16 +50,21 @@ export const Image = ({
         )}
         <figcaption
           className={cn(
-            'text-secondary-400 not-prose mt-0.5 text-right text-[10px]',
+            'text-secondary-400 not-prose mt-0.5',
             attribution && 'hover:text-secondary-500'
           )}
         >
           {attribution ? (
-            <a href={attribution} target="_blank" rel="nofollow noreferrer">
+            <a
+              href={attribution}
+              target="_blank"
+              rel="nofollow noreferrer"
+              className="text-right text-[10px]"
+            >
               {caption}
             </a>
           ) : (
-            caption
+            <span className="text-center text-xs">{caption}</span>
           )}
         </figcaption>
       </figure>
