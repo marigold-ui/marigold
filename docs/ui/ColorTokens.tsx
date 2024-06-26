@@ -77,7 +77,7 @@ export interface ColorCanvasProps {
 
 export const ColorCanvas = ({ children, color }: ColorCanvasProps) => (
   <div
-    className=" w-20 rounded-sm bg-[var(--bg)] p-4"
+    className="w-20 rounded-sm bg-[var(--bg)] p-4"
     style={createVar({ bg: color })}
   >
     {children}

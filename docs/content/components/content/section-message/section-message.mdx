@@ -1,0 +1,47 @@
+---
+title: SectionMessage
+caption: Display a short message with important informations.
+badge: updated
+---
+
+The `<SectionMessage>` component is used to capture the users atention to provide information. It is meant to show only very relevant information. The title should contain the most relevant information about the message.
+
+This component should not be added on a dynymic way.
+
+There are currently three different variants of the `<SectionMessage>` component. The `info` variant is set as default. Inside the `<SectionMessage>` it lends itself to using the [`<Text>`](/componentss/text/) component.
+
+## Import
+
+To import the component you just have to use this code below.
+
+```tsx
+import { SectionMessage } from '@marigold/components';
+```
+
+## Appearance
+
+<AppearanceTable component={title} />
+
+## Props
+
+<PropsTable componentFile="SectionMessage.tsx" />
+
+## Examples
+
+### Info Section Message
+
+This is the default info `<SectionMessage>`. The color is in a blue tone and contains the [`<Info>`](/concepts/icons/#info) icon.
+
+<ComponentDemo file="./section-message-info.demo.tsx" />
+
+### Warning Section Message
+
+Here you can see the warning `<SectionMessage>`. The color is in a yellow tone and contains the[`<Notification>`](/concepts/icons/#info) icon.
+
+<ComponentDemo file="./section-message-warn.demo.tsx" />
+
+### Error Section Message
+
+The error `<SectionMessage>` is colored in a red tone and contains the [`<Exclamation>`](/concepts/icons/#info) icon.
+
+<ComponentDemo file="./section-message-error.demo.tsx" />
