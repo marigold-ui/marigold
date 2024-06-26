@@ -159,3 +159,76 @@ Input field validation is not its own component, but instead a part of input fie
 It is used to provide feedback about a user’s input, typically as part of a form. It is most often used to convey error messages, but can convey other states as well. The user generally cannot proceed with their desired action until they provide a valid input.
 
 <ComponentDemo file="./inputfield-validation.demo.tsx" />
+
+A custom-written validation message is not always required. Browsers come with their own default validation error messages that can be used in place of a customized one. See more on the [Validation](/concepts/validation) page.
+
+### Section message
+
+A [section message](/components/section-message) is a block-level component that is used to alert users to something in a specific section of the screen. It is placed near the affected content in a way that clearly communicates its relationship. This is often directly above the affected section or content, but use your best judgement and place it where it makes the most sense in context.
+
+<ComponentDemo file="./sectionmessage-info.demo.tsx" />
+
+<Image
+  width="900"
+  height="500"
+  src="/dosAndDonts_message_position.png"
+  alt="Do and donts clarity"
+/>
+
+## Placement and appearance
+
+**Positioning**: Place messages in ways that match their urgency, communicate their relationship to the affected content, and are easy to notice.
+
+**Stacking order**: Avoid showing multiple simultaneous messages whenever possible. If multiple messages of the same type must be shown simultaneously or in sequence, stack them in descending order of urgency: Error, Warning, Success, Information.
+
+**Consistency**: Ensure that the color and icon you have chosen match the message you want to convey.
+
+**Responsiveness**: Ensure messages adapt well to different screen sizes.
+
+## User interaction
+
+**Actions**: If appropriate, include ways for users to take action, like dismissing, retrying, or navigating to more details.
+
+**Persistence**: Decide if messages should auto-dismiss after a set time, auto-dismiss after resolution, or remain until dismissed by the user.
+
+<SectionMessage>
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    Auto-dismiss is not currently implemented in any Marigold components, but
+    will be added in an upcoming release. If your team has built auto-dismissal
+    into a component, consider contributing it to the design system. [Send us a
+    Slack message(internal
+    only)](https://reservix.slack.com/archives/C02727BNZ3J)
+  </SectionMessage.Content>
+</SectionMessage>
+
+## Content guidelines
+
+**Conciseness**: Ensure messages are brief and easy to scan.
+
+**Clarity**: Use human-centered language to explain things, not system jargon.
+
+<Image
+  width="900"
+  height="500"
+  src="/dosAndDonts_clarity.png"
+  alt="Do and donts clarity"
+/>
+
+**Helpfulness**: Always communicate how the problem can be resolved and what the user should do next to move forward in their experience. Take responsibility and avoid blaming the user.
+
+**Tone**: Be professional and polite. Match the tone of the message to its purpose.
+
+**Punctuation**: Don’t use end-punctuation in headings. Never use exclamation points.
+
+## References
+
+- [10 Usability Heuristics for User Interface Design](https://www.nngroup.com/articles/ten-usability-heuristics/#toc-1-visibility-of-system-status-1)
+- Understanding and fighting alert fatigue ([English](https://www.atlassian.com/incident-management/on-call/alert-fatigue#The%20-psychology-of-alert-fatigue), [German](https://www.atlassian.com/de/incident-management/on-call/alert-fatigue#What-is-alert-fatigue?))
+- [Web Content Accessililty Guidelines (WCAG) 2.0](https://www.w3.org/TR/WCAG20/#minimize-error)
+
+## Related pages
+
+- [Dialog](/components/overlay/dialog)
+- [SectionMessage](/components/content/section-message)
+- [Validation](/concepts/validation)
