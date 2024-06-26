@@ -33,7 +33,7 @@ export * from './Label';
 export * from './Link';
 export * from './List';
 export * from './Menu';
-export * from './Message';
+export * from './SectionMessage';
 export * from './Multiselect';
 export * from './NumberField';
 export * from './Overlay';

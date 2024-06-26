@@ -65,10 +65,10 @@ Example of how we write tests:
 ```tsx
 test('accepts a variant with parts and an icon and support grid areas', () => {
   render(
-    <Message data-testid="messages" variant="warning">
-      <Message.Title>info</Message.Title>
-      <Message.Content>Danger</Message.Content>
-    </Message>
+    <SectionMessage data-testid="messages" variant="warning">
+      <SectionMessage.Title>info</SectionMessage.Title>
+      <SectionMessage.Content>Danger</SectionMessage.Content>
+    </SectionMessage>
   );
   const container = screen.getByTestId('messages');
   const title = screen.getByText('info');
@@ -123,12 +123,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Message {...args}>
-      <Message.Title>Hint</Message.Title>
-      <Message.Content>
+    <SectionMessage {...args}>
+      <SectionMessage.Title>Hint</SectionMessage.Title>
+      <SectionMessage.Content>
         <Text>Hello, I am a simple message.</Text>
-      </Message.Content>
-    </Message>
+      </SectionMessage.Content>
+    </SectionMessage>
   ),
 };
 ```
@@ -195,12 +195,12 @@ type RemovedProps = 'className';
 export interface ComponentProps extends Omit<RAC.ComponentProp, RemovedProps> {}
 ```
 
-<Message variant="info">
-  <Message.Title>Escape hatch</Message.Title>
-  <Message.Content>
+<SectionMessage variant="info">
+  <SectionMessage.Title>Escape hatch</SectionMessage.Title>
+  <SectionMessage.Content>
 Use a regular `<div>` (or any other HTML element) and add available classes from our theme.
-  </Message.Content>
-</Message>
+  </SectionMessage.Content>
+</SectionMessage>
 
 ### A UI Component must be themable
 
