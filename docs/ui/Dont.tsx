@@ -11,7 +11,7 @@ export const Dont = ({ description, img }: Props) => {
   return (
     <div className="border-border flex flex-col border">
       <Image width={700} height={900} src={img} alt="Don't" />
-      <div className="border-bg-error flex flex-col border-t-8 bg-red-50 p-3">
+      <div className="border-bg-error flex flex-col gap-2 border-t-8 bg-red-50 p-3">
         <div className="flex items-center gap-2">
           <svg
             width="10px"

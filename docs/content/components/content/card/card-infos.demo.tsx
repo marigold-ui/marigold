@@ -28,11 +28,11 @@ export default () => (
     </Card>
     <div className="flex gap-4">
       <Do
-        description="This is the best way to do ... "
+        description="Use one primary call to action to help people to preocee"
         img="/Elevation_Mockup_B2B.png"
       />
       <Dont
-        description="This is the best way to do ... "
+        description="Don’t use many calls to action in one page or container."
         img="/Elevation_Mockup_B2B.png"
       />
     </div>
