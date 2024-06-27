@@ -107,7 +107,7 @@ Below is a basic example of extracting data from an [uncontrolled](https://react
 
 <ComponentDemo file="./building-forms-submit.demo.tsx" />
 
-## Handling complex forms and form state
+## Handling complex Forms and Form State
 
 You can simplify form handling in your React components and avoid repetitive tasks such as manually updating the form state, validating user inputs, and handling form submissions.
 We decided to use `react-form-hook` for this because its reducing re-renders caused by state updates, you don't have much to configure and supports integrating UI libraries.
@@ -117,7 +117,7 @@ In the formular we have used `<TextField>`, `<Select>` and `<Checkbox>` componen
 
 <ComponentDemo file="./building-forms-hook-form.demo.tsx" />
 
-### How to do validation and error signaling
+### How to do Validation and Error Signaling
 
 Some fields are required and throw error messages if you don't fill them out.
 For this to work, `react-hook-form` has a property `formState`, which contains the boolean `isValid`. This prop is set to `true` if the form doesn't have errors. `isValid` will always observe the entire form to validate.
