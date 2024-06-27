@@ -28,7 +28,7 @@
     "babel-jest": "29.7.0",
     "jest-watch-typeahead": "2.2.2",
     "merge-deep": "3.0.3",
-    "react-test-renderer": "18.2.0"
+    "react-test-renderer": "18.3.1"
   },
   "peerDependencies": {
     "jest": "29.x",

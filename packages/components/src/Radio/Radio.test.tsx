@@ -1,6 +1,5 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 
