@@ -6,6 +6,7 @@ import { RadioGroup } from '../Radio/RadioGroup';
 import { Select } from '../Select';
 import { TextField } from '../TextField';
 import { FieldBase } from './FieldBase';
+import type { FieldBaseProps } from './FieldBase';
 import { FieldGroup } from './FieldGroup';
 
 const meta = {
@@ -62,13 +63,23 @@ const meta = {
         defaultValue: { summary: false },
       },
     },
+    isRequired: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Wheter if the field is required',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
   },
   args: {
     errorMessage: 'Something went wrong',
     description: 'This is a help text description',
     label: 'This is the label',
   },
-} satisfies Meta<typeof FieldBase>;
+} satisfies Meta<FieldBaseProps<any>>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
