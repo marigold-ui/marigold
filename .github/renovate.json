@@ -4,7 +4,7 @@
     ":semanticCommitTypeAll(chore)",
     ":rebaseStalePrs"
   ],
-  "schedule": ["earlyMondays"],
+  "schedule": ["before 4am on Monday"],
   "packageRules": [
     {
       "matchDatasources": ["npm"],
