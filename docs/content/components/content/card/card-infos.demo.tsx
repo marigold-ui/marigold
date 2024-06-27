@@ -1,7 +1,7 @@
 import { Card, Headline, Link, Stack, Text } from '@marigold/components';
 
-import { Do } from '@/ui/Do';
-import { Dont } from '@/ui/Dont';
+import { AdviceCard } from '@/ui/AdviceCard';
+import { Image } from '@/ui/Image';
 
 export default () => (
   <div className="flex flex-col gap-4">
@@ -27,14 +27,28 @@ export default () => (
       </Stack>
     </Card>
     <div className="flex gap-4">
-      <Do
+      <AdviceCard
+        type="DO"
         description="Use one primary call to action to help people to preocee"
-        img="/Elevation_Mockup_B2B.png"
-      />
-      <Dont
+      >
+        <Image
+          width={700}
+          height={900}
+          src="/Elevation_Mockup_B2B.png"
+          alt="Don't"
+        />
+      </AdviceCard>
+      <AdviceCard
         description="Don’t use many calls to action in one page or container."
-        img="/Elevation_Mockup_B2B.png"
-      />
+        type="DON'T"
+      >
+        <Image
+          width={700}
+          height={900}
+          src="/Elevation_Mockup_B2B.png"
+          alt="Don't"
+        />
+      </AdviceCard>
     </div>
   </div>
 );
