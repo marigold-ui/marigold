@@ -94,17 +94,20 @@ In HTML, forms are build using the `<form>` element, which wraps a set of input 
 
 The simplest way to get data from a form is using the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API during the `onSubmit` event. This can be passed directly to `fetch`, or converted into a regular JavaScript object using `Object.fromEntries`.
 
-<Message messageTitle="Names are important!" variant="info">
-  Make sure to include the name attribute in each field, as it uniquely
-  identifies each form element, facilitating server-side processing and ensuring
-  a key-value pair for data submission.
-</Message>
+<SectionMessage variant="info">
+  <SectionMessage.Title>Names are important!</SectionMessage.Title>
+  <SectionMessage.Content>
+    Make sure to include the name attribute in each field, as it uniquely
+    identifies each form element, facilitating server-side processing and
+    ensuring a key-value pair for data submission.
+  </SectionMessage.Content>
+</SectionMessage>
 
 Below is a basic example of extracting data from an [uncontrolled](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) form. Submitting a promo code won't trigger a regular form submission; instead, it will display the provided data.
 
 <ComponentDemo file="./building-forms-submit.demo.tsx" />
 
-## Handling complex forms and form state
+## Handling complex Forms and Form State
 
 You can simplify form handling in your React components and avoid repetitive tasks such as manually updating the form state, validating user inputs, and handling form submissions.
 We decided to use `react-form-hook` for this because its reducing re-renders caused by state updates, you don't have much to configure and supports integrating UI libraries.
@@ -114,7 +117,7 @@ In the formular we have used `<TextField>`, `<Select>` and `<Checkbox>` componen
 
 <ComponentDemo file="./building-forms-hook-form.demo.tsx" />
 
-### How to do validation and error signaling
+### How to do Validation and Error Signaling
 
 Some fields are required and throw error messages if you don't fill them out.
 For this to work, `react-hook-form` has a property `formState`, which contains the boolean `isValid`. This prop is set to `true` if the form doesn't have errors. `isValid` will always observe the entire form to validate.

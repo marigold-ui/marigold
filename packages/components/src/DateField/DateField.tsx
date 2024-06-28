@@ -24,10 +24,35 @@ export interface DateFieldProps
   variant?: string;
   size?: string;
   action?: ReactElement;
+
+  /**
+   * If `true`, the date field is required.
+   * @default false
+   */
   required?: RAC.DateFieldProps<DateValue>['isRequired'];
+
+  /**
+   * If `true`, the date field is disabled.
+   * @default false
+   */
   disabled?: RAC.DateFieldProps<DateValue>['isDisabled'];
+
+  /**
+   * If `true`, the field is considered invalid and if set the errorMessage is shown instead of the `description`.
+   * @default false
+   */
   error?: RAC.DateFieldProps<DateValue>['isInvalid'];
+
+  /**
+   * If `true`, the date field is readOnly.
+   * @default false
+   */
   readOnly?: RAC.DateFieldProps<DateValue>['isReadOnly'];
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default 'full'
+   */
   width?: WidthProp['width'];
 }
 

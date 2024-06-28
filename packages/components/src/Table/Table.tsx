@@ -36,8 +36,23 @@ export interface TableProps
     Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
+
+  /**
+   * Stretch table to fill the container.
+   * @default false
+   */
   stretch?: boolean;
+
+  /**
+   * Make the column sticky to the top of the table.
+   * @default true
+   */
   stickyHeader?: boolean;
+
+  /**
+   * Disable keyboard navigation. Use if you have input fields in your table. Be aware that this is bad for accessibility.
+   * @default false
+   */
   disableKeyboardNavigation?: boolean;
 }
 
@@ -46,7 +61,7 @@ export interface TableProps
 export const Table: Table = ({
   variant,
   size,
-  stretch,
+  stretch = false,
   selectionMode = 'none',
   disableKeyboardNavigation = false,
   stickyHeader,
@@ -156,10 +171,15 @@ export interface RowProps extends ReactAiaRowProps<any> {
 }
 
 // overriding the column width with WidthProps width
-interface ColumnProps extends Omit<ColumnBaseProps<any>, 'width'>, WidthProp {
+export interface ColumnProps
+  extends Omit<ColumnBaseProps<any>, 'width'>,
+    WidthProp {
+  /**
+   * Control the alignment of Column.
+   * @default left
+   */
   align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
 }
-
 /**
  * Necessary since TypeScript can not infer the
  * types of the @react-stately components.

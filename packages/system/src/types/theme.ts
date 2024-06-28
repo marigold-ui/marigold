@@ -93,7 +93,7 @@ export type Theme = {
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>
     >;
-    Message?: Record<
+    SectionMessage?: Record<
       'container' | 'icon' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;

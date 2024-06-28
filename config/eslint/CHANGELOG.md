@@ -1,5 +1,11 @@
 # @marigold/eslint-config
 
+## 0.4.16
+
+### Patch Changes
+
+- [#3967](https://github.com/marigold-ui/marigold/pull/3967) [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202) Thanks [@sebald](https://github.com/sebald)! - refa: Update TypeScript and adjust `<NumericFormat>` props
+
 ## 0.4.15
 
 ### Patch Changes

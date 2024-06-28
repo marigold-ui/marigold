@@ -24,7 +24,7 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
           const variants = ['size', 'variant'].reduce((acc, variantItem) => {
             acc[variantItem] = {
               ...newSlot?.variants?.[variantItem],
-              ...mergedSlot?.variants?.variantItem,
+              ...mergedSlot?.variants?.[variantItem],
             };
             return acc;
           }, {});

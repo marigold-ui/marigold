@@ -1,27 +1,10 @@
 'use client';
 
+import { iterateTokens } from '@/lib/utils';
 import { Card, Headline, Table, createVar } from '@/ui';
 import type { ReactNode } from 'react';
 
 import { useThemeSwitch } from './ThemeSwitch';
-
-interface NestedStringObject {
-  [key: string]: NestedStringObject | string;
-}
-
-export const iterateTokens = (colors: NestedStringObject, prefix = '') => {
-  let list: [token: string, color: string][] = [];
-
-  for (const key in colors) {
-    let value = colors[key];
-    if (typeof value === 'object') {
-      list.push(...iterateTokens(value, `${prefix}${key}-`));
-    } else {
-      list.push([`${prefix}${key}`, value]);
-    }
-  }
-  return list;
-};
 
 interface ColorTokenTableProps {
   sections: { [group: string]: [token: string, color: string][] };
@@ -94,7 +77,7 @@ export interface ColorCanvasProps {
 
 export const ColorCanvas = ({ children, color }: ColorCanvasProps) => (
   <div
-    className=" w-20 rounded-sm bg-[var(--bg)] p-4"
+    className="w-20 rounded-sm bg-[var(--bg)] p-4"
     style={createVar({ bg: color })}
   >
     {children}

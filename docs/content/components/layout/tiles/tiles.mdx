@@ -19,36 +19,7 @@ import { Tiles } from '@marigold/components';
 
 ### Props
 
-<PropsTable
-  props={[
-    {
-      property: 'space',
-      type: 'number',
-      description: 'Set space between items',
-      default: 'none',
-    },
-    {
-      property: 'tilesWidth',
-      type: 'string',
-      description: 'Set minimum width for all items inside',
-      default: '250px',
-    },
-    {
-      property: 'equalHeight',
-      type: 'boolean',
-      description:
-        'If you set equalHeight, all items will have the size of the biggest item',
-      default: 'false',
-    },
-    {
-      property: 'stretch',
-      type: 'boolean',
-      description:
-        'Tiles will take stretch to available width and will distribute their width equally. Note that this can make them wider than the specified tiles width, but not smaller than the given "itemWidth". Basically this is full responsive mode.',
-      default: 'false',
-    },
-  ]}
-/>
+<PropsTable componentFile="Tiles.tsx" />
 
 ## Examples
 

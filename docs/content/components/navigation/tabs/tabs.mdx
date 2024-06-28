@@ -23,110 +23,19 @@ import { Tabs } from '@marigold/components';
 
 ### Tabs
 
-<PropsTable
-  props={[
-    {
-      property: 'isDisabled',
-      type: 'boolean',
-      description: 'Set All TabPanel disabled',
-      default: 'false',
-    },
-    {
-      property: 'defaultSelectedKey',
-      type: 'string',
-      description: 'Set the default selected tab',
-      default: '1',
-    },
-    {
-      property: 'selectedKey',
-      type: 'string',
-      description: 'Choose the selected tab',
-      default: 'defaultSelectedKey',
-    },
-    {
-      property: 'disabledKeys',
-      type: 'Array of keys',
-      description: 'Disable particular tabs',
-      default: 'none',
-    },
-    {
-      property: 'gap',
-      type: 'number',
-      description: 'Preset the space between the tabs',
-      default: '1',
-    },
-    {
-      property: 'keyboardActivation',
-      type: 'automatic | manual',
-      description:
-        'Whether tabs are activated automatically on focus or manually.',
-      default: 'automatic',
-    },
-    {
-      property: 'onSelectionChange',
-      type: '(key: Key) => any',
-      description: 'Callback executed when a new tab is selected.',
-      default: '-',
-    },
-  ]}
-/>
+<PropsTable componentFile="Tabs.tsx" />
 
 ### Tabs.List
 
-<PropsTable
-  props={[
-    {
-      property: 'children',
-      type: 'ReactNode',
-      default: 'none',
-      description: 'The children of the component.',
-    },
-    {
-      property: 'items',
-      type: 'Iterable<object>',
-      description: 'Item objects in the collection.',
-      default: 'none',
-    },
-    {
-      property: 'space (required)',
-      type: 'number',
-      description: 'The space between tab items.',
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="TabList.tsx" />
 
 ### Tabs.Item
 
-<PropsTable
-  props={[
-    {
-      property: 'id',
-      type: 'Key',
-      description: 'The unique id of the tab.',
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="Tab.tsx" />
 
 ### Tabs.TabPanel
 
-<PropsTable
-  props={[
-    {
-      property: 'id',
-      type: 'Key',
-      description: 'The unique id of the panel, referencing a tab.',
-      default: 'none',
-    },
-    {
-      property: 'children',
-      type: 'ReactNode',
-      default: 'none',
-      description: 'The children of the component.',
-    },
-  ]}
-/>
+<PropsTable componentFile="TabPanel.tsx" />
 
 ## Examples
 

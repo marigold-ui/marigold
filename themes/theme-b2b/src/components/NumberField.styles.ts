@@ -15,5 +15,5 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     'border-border-base border-solid first-of-type:border-r',
     'border-border-base border-solid last-of-type:border-l ',
   ]),
-  input: cva(['rounded-none border-none outline-offset-[0px]']),
+  input: cva(['rounded-none border-none outline-offset-0']),
 };
