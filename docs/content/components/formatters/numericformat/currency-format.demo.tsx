@@ -29,11 +29,7 @@ export default () => {
           <Radio value="EUR">EUR</Radio>
           <Radio value="JPY">JPY</Radio>
         </Radio.Group>
-        <NumericFormat
-          styleFormat="currency"
-          value={233}
-          currency={currentFormat}
-        />
+        <NumericFormat style="currency" value={233} currency={currentFormat} />
       </Inline>
     </I18nProvider>
   );
