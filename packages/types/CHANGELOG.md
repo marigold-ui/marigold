@@ -1,5 +1,11 @@
 # @marigold/types
 
+## 1.1.1
+
+### Patch Changes
+
+- [#3967](https://github.com/marigold-ui/marigold/pull/3967) [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202) Thanks [@sebald](https://github.com/sebald)! - refa: Update TypeScript and adjust `<NumericFormat>` props
+
 ## 1.1.0
 
 ### Minor Changes

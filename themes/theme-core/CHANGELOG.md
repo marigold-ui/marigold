@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 26.1.12
+
+### Patch Changes
+
+- [#3940](https://github.com/marigold-ui/marigold/pull/3940) [`9c5b80c`](https://github.com/marigold-ui/marigold/commit/9c5b80c7a1dbfef5e1e7c2a557fc17f81640945c) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-461]: refactor `<Message>` component
+
+- Updated dependencies [[`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382), [`d053e37`](https://github.com/marigold-ui/marigold/commit/d053e37f49ef382ea33c7743d0d67d89153ccc9e), [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202), [`9c5b80c`](https://github.com/marigold-ui/marigold/commit/9c5b80c7a1dbfef5e1e7c2a557fc17f81640945c), [`5977cba`](https://github.com/marigold-ui/marigold/commit/5977cba2ce729ea32f9db869e9c19e16032e58ec), [`3f7a4ec`](https://github.com/marigold-ui/marigold/commit/3f7a4ec80a4b56fea3c63e44b71ad86fa36e3d75)]:
+  - @marigold/components@8.0.0
+  - @marigold/system@8.0.0
+  - @marigold/theme-preset@1.3.17
+
 ## 26.1.11
 
 ### Patch Changes
