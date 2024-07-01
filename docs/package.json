@@ -3,8 +3,8 @@
   "version": "8.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm registry && next dev",
-    "build": "pnpm registry && next build",
+    "dev": "pnpm registry && pnpm build-component-props && next dev ",
+    "build": "pnpm registry && pnpm build-component-props && next build",
     "start": "next start",
     "registry": "zx ./scripts/build-registry.mjs",
     "build-component-props": "zx ./scripts/build-component-props.mjs"
