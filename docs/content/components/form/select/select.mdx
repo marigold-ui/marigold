@@ -21,80 +21,15 @@ import { Select } from '@marigold/components';
 
 ### Select
 
-<PropsTable
-  props={[
-    {
-      property: 'label',
-      type: 'string',
-      description: 'Set a label for the select.',
-      default: 'none',
-    },
-    {
-      property: 'placeholder',
-      type: 'string',
-      description: 'Set the placeholder for the select.',
-      default: 'Based on OS language (en and de supported)',
-    },
-    {
-      property: 'disabled',
-      type: 'boolean',
-      description: 'Disables the select.',
-      default: 'false',
-    },
-    {
-      property: 'disabledKeys',
-      type: 'Iterable<Key>',
-      description: 'Sets selected keys disabled.',
-      default: 'none',
-    },
-    {
-      property: 'selectedKey',
-      type: 'Key',
-      description: 'The selected key of the select.',
-      default: 'none',
-    },
-    {
-      property: 'defaultSelectedKey',
-      type: 'Iterable<Key>',
-      description: 'Set a default selected key.',
-      default: 'none',
-    },
-    {
-      property: 'required',
-      type: 'boolean',
-      description: 'Set the select required.',
-      default: 'false',
-    },
-    {
-      property: 'error',
-      type: 'boolean',
-      description: 'Allow to set an error to the select.',
-      default: 'false',
-    },
-    {
-      property: 'errorMessage',
-      type: 'string',
-      description: 'Set the error message for the select.',
-      default: '',
-    },
-    {
-      property: 'width',
-      type: 'string | number',
-      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
-      default: 'full',
-    },
-    {
-      property: 'onChange',
-      type: '(key: Key) => any',
-      description: 'Handler that is called when the selection changes.',
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="Select.tsx" />
+
+### Select.Section
+
+<PropsTable componentFile="ListBoxSection.tsx" />
 
 ### Select.Option
 
-<PropsTable />
+<PropsTable componentFile="ListBoxOption.tsx" />
 
 ## Examples
 
