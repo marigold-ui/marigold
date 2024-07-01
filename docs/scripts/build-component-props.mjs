@@ -13,6 +13,7 @@ const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
     'SelectComponent',
     'ComboBoxComponent',
     'RadioComponent',
+    'SelectListComponent',
   ],
 });
 
