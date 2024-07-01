@@ -21,6 +21,7 @@ const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const systemDir = path.resolve(__dirname, '../../packages/system/src');
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
 const outputFilePath = path.resolve(
   __dirname,
@@ -33,11 +34,15 @@ const generatePropsTables = async () => {
   // Getting all component files using globby
   const componentFiles = await globby([
     `${componentsDir}/**/*.tsx`,
+    `${systemDir}/**/*.tsx`,
 
     // excluded files
     `!${componentsDir}/**/*.stories.tsx`,
     `!${componentsDir}/**/*.test.tsx`,
     `!${componentsDir}/**/*.ts`,
+    `!${systemDir}/**/*.stories.tsx`,
+    `!${systemDir}/**/*.test.tsx`,
+    `!${systemDir}/**/*.ts`,
   ]);
 
   // Reduce to gather all docs
