@@ -1,5 +1,7 @@
 import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
 import GithubSlugger from 'github-slugger';
+import fs from 'node:fs';
+import path from 'node:path';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
@@ -8,6 +10,8 @@ import { visit } from 'unist-util-visit';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
+
+const contentDirPath = './content';
 
 /**
  * Normalizaiton supports "grouped pages". E.g. when we want to put
@@ -92,13 +96,20 @@ export const ContentPage = defineDocumentType(() => ({
         return headings;
       },
     },
+    modified: {
+      type: 'string',
+      resolve: doc => {
+        const { mtime } = fs.statSync(
+          path.resolve(contentDirPath, doc._raw.sourceFilePath)
+        );
+        return mtime.toISOString();
+      },
+    },
   },
 }));
 
 // Config
 // ---------------
-const contentDirPath = './content';
-
 export default makeSource({
   contentDirPath,
   documentTypes: [ContentPage],

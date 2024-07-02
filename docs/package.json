@@ -24,6 +24,7 @@
     "autoprefixer": "10.4.19",
     "cmdk": "1.0.0",
     "contentlayer2": "0.4.6",
+    "dayjs": "1.11.11",
     "eslint": "8.57.0",
     "eslint-config-next": "14.1.4",
     "github-slugger": "2.0.0",
