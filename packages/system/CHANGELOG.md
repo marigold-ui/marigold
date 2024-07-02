@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 8.0.1
+
+### Patch Changes
+
+- [#3979](https://github.com/marigold-ui/marigold/pull/3979) [`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49) Thanks [@sarahgm](https://github.com/sarahgm)! - Fix: fix some props and add command to build step
+
 ## 8.0.0
 
 ### Major Changes

@@ -26,76 +26,7 @@ import { NumericFormat } from '@marigold/system';
 
 ## Props
 
-<PropsTable
-  props={[
-    {
-      property: 'value',
-      type: 'number | bigint',
-      description: 'Value to be formatted.',
-      default: 'none',
-    },
-    {
-      property: 'tabular',
-      type: 'boolean',
-      description: 'Specifies that the digits should take the full width.',
-      default: 'true',
-    },
-    {
-      property: 'minimumFractionDigits',
-      type: 'number',
-      description: 'Minimum number of fraction digits to display.',
-      default: 'none',
-    },
-    {
-      property: 'maximumFractionDigits',
-      type: 'number',
-      description: 'Maximum number of fraction digits to display.',
-      default: 'none',
-    },
-    {
-      property: 'useGrouping',
-      type: 'boolean',
-      description:
-        'Specifies whether to use grouping separators (e.g., thousands separator).',
-      default: 'true',
-    },
-    {
-      property: 'compactDisplay',
-      type: 'long | short',
-      description:
-        ' How to display the number in a compact form. Possible values are "short", "long", and "narrow"',
-      default: 'none',
-    },
-    {
-      property: 'currency',
-      type: 'string',
-      description:
-        'Specifies the currency code to use when the style is set to currency',
-      default: 'none',
-    },
-    {
-      property: 'currencyDisplay',
-      type: 'string',
-      description:
-        'Specifies whether to display the currency symbol or sign. Possible values are "standard" (default), "accounting", and "code"',
-      default: 'standard',
-    },
-    {
-      property: 'currencySign',
-      type: 'string',
-      description:
-        'Specifies whether to display the currency symbol or sign. Possible values are "standard" (default), "accounting", and "code"',
-      default: 'none',
-    },
-    {
-      property: 'style',
-      type: 'string',
-      description:
-        'Specifies the formatting style for the number. Possible values are "decimal", "currency", "percent", "unit", and "compact"',
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable componentFile="NumericFormat.tsx" />
 
 ## Examples
 
