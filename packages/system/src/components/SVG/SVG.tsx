@@ -6,7 +6,13 @@ import { useTheme } from '../../hooks';
 import { cn, createVar, getColor } from '../../utils';
 
 export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill' | 'style'> {
+  /**
+   * The size of an svg.
+   */
   size?: number | string | number[] | string[];
+  /**
+   * To add a className on svg and icons.
+   */
   className?: string;
 }
 

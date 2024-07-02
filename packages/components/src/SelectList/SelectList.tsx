@@ -18,6 +18,9 @@ type RemoveProps = 'style' | 'className' | 'onSelectionChange';
 
 export interface SelectListProps
   extends Omit<RAC.GridListProps<object>, RemoveProps> {
+  /**
+   * Handler that is called when the selection change.
+   */
   onChange?:
     | RAC.GridListProps<object>['onSelectionChange']
     | Dispatch<SetStateAction<any>>;
@@ -27,6 +30,9 @@ interface SelectListComponent
   extends ForwardRefExoticComponent<
     SelectListProps & RefAttributes<HTMLUListElement>
   > {
+  /**
+   * Items of the SelectList.
+   */
   Item: typeof SelectListItem;
 }
 
