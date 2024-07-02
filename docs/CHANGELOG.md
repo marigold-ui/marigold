@@ -1,5 +1,19 @@
 # @marigold/docs
 
+## 8.0.1
+
+### Patch Changes
+
+- [#3979](https://github.com/marigold-ui/marigold/pull/3979) [`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49) Thanks [@sarahgm](https://github.com/sarahgm)! - Fix: fix some props and add command to build step
+
+- Updated dependencies [[`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49)]:
+  - @marigold/components@8.0.1
+  - @marigold/theme-b2b@27.1.13
+  - @marigold/theme-core@26.1.13
+  - @marigold/theme-docs@2.0.3
+  - @marigold/icons@1.2.53
+  - @marigold/theme-preset@1.3.18
+
 ## 8.0.0
 
 ### Minor Changes
