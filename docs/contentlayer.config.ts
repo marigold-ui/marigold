@@ -1,17 +1,19 @@
 import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
 import GithubSlugger from 'github-slugger';
-import fs from 'node:fs';
-import path from 'node:path';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import { simpleGit } from 'simple-git';
 import { visit } from 'unist-util-visit';
+
+import path from 'node:path';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
 
 const contentDirPath = './content';
+const git = simpleGit();
 
 /**
  * Normalizaiton supports "grouped pages". E.g. when we want to put
@@ -98,11 +100,11 @@ export const ContentPage = defineDocumentType(() => ({
     },
     modified: {
       type: 'string',
-      resolve: doc => {
-        const { mtime } = fs.statSync(
-          path.resolve(contentDirPath, doc._raw.sourceFilePath)
-        );
-        return mtime.toISOString();
+      resolve: async doc => {
+        const file = path.resolve(contentDirPath, doc._raw.sourceFilePath);
+        const log = await git.log({ file });
+
+        return log.latest?.date;
       },
     },
   },

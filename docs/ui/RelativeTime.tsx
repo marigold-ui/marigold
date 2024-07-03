@@ -16,5 +16,5 @@ export const RelativeTime = ({ date }: RelativeTimeProps) => {
         month: 'long',
         day: 'numeric',
       }).format(date)
-    : `${ago(date)} ago`;
+    : `${ago(date)} ago ${date.toISOString()}`;
 };
