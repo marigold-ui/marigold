@@ -59,8 +59,8 @@ export default async function ContentPage({ params }: ContentPageProps) {
       <div className="col-start-2 hidden min-[1400px]:block">
         <TocContainer />
       </div>
-      <div className="text-right">
-        <RelativeTime date={new Date(page.modified)} />
+      <div className="text-text-primary-muted text-xs italic">
+        Last updated: <RelativeTime date={new Date(page.modified)} />
       </div>
     </article>
   );
