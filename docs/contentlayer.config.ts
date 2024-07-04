@@ -110,8 +110,6 @@ export const ContentPage = defineDocumentType(() => ({
          */
         const log = await git.log({ file });
 
-        console.log(log.latest!.message);
-
         return log.latest?.date;
       },
     },
