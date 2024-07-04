@@ -102,6 +102,12 @@ export const ContentPage = defineDocumentType(() => ({
       type: 'string',
       resolve: async doc => {
         const file = path.resolve(contentDirPath, doc._raw.sourceFilePath);
+        /**
+         * 🚨🚨🚨 IMPORTANT 🚨🚨🚨
+         *
+         * Note that this needs VERCEL_DEEP_CLONE=true set in vercel, otherwise
+         * vercel will use a shallow clone to build!
+         */
         const log = await git.log({ file });
 
         console.log(log.latest!.date, log.latest!.hash, log.latest!.message);
