@@ -104,6 +104,9 @@ export const ContentPage = defineDocumentType(() => ({
         const file = path.resolve(contentDirPath, doc._raw.sourceFilePath);
         const log = await git.log({ file });
 
+        const current = await git.revparse('HEAD');
+        console.log(current);
+
         return log.latest?.date;
       },
     },
