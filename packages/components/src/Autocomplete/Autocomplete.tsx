@@ -200,8 +200,8 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     };
 
     return (
-      <FieldBase as={ComboBox} ref={ref} {...props}>
-        <AutocompleteInput onSubmit={onSubmit} onClear={onClear} />
+      <FieldBase as={ComboBox} {...props}>
+        <AutocompleteInput onSubmit={onSubmit} onClear={onClear} ref={ref} />
         <Popover>
           <ListBox>{children}</ListBox>
         </Popover>
