@@ -23,7 +23,7 @@ export default () => (
         <Table.Cell>Central Park</Table.Cell>
         <Table.Cell>
           <I18nProvider locale="en-US">
-            <NumericFormat styleFormat="currency" value={50} currency="USD" />
+            <NumericFormat style="currency" value={50} currency="USD" />
           </I18nProvider>
         </Table.Cell>
         <Table.Cell>123456789</Table.Cell>
@@ -38,7 +38,7 @@ export default () => (
         <Table.Cell>Red Carpet Theater</Table.Cell>
         <Table.Cell>
           <I18nProvider locale="en-US">
-            <NumericFormat styleFormat="currency" value={100} currency="USD" />
+            <NumericFormat style="currency" value={100} currency="USD" />
           </I18nProvider>
         </Table.Cell>
         <Table.Cell>987654321</Table.Cell>
@@ -53,11 +53,7 @@ export default () => (
         <Table.Cell>Convention Center</Table.Cell>
         <Table.Cell>
           <I18nProvider locale="en-US">
-            <NumericFormat
-              styleFormat="currency"
-              value={200.12}
-              currency="USD"
-            />
+            <NumericFormat style="currency" value={200.12} currency="USD" />
           </I18nProvider>
         </Table.Cell>
         <Table.Cell>246813579</Table.Cell>
@@ -72,7 +68,7 @@ export default () => (
         <Table.Cell>Stadium</Table.Cell>
         <Table.Cell>
           <I18nProvider locale="en-US">
-            <NumericFormat styleFormat="currency" value={75} currency="USD" />
+            <NumericFormat style="currency" value={75} currency="USD" />
           </I18nProvider>
         </Table.Cell>
         <Table.Cell>135792468</Table.Cell>
