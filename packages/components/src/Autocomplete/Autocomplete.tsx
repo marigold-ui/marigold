@@ -51,11 +51,9 @@ const AutocompleteInput = ({
   return (
     <SearchInput
       ref={ref}
-      // @ts-ignore
-      className={cn(
-        classNames,
-        state?.inputValue === '' ? 'hidden' : undefined
-      )}
+      className={{
+        action: cn(state?.inputValue === '' ? 'hidden' : undefined, classNames),
+      }}
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === 'Escape') {
           e.preventDefault();
