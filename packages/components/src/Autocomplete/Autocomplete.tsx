@@ -8,6 +8,8 @@ import React from 'react';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
+import { cn, useClassNames } from '@marigold/system';
+
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox';
@@ -43,13 +45,17 @@ const AutocompleteInput = ({
   ref,
 }: AutocompleteInputProps) => {
   const state = React.useContext(ComboBoxStateContext);
+  // needed to get the triggerwidth on the right button
+  const classNames = useClassNames({ component: 'ComboBox' });
 
   return (
     <SearchInput
       ref={ref}
-      className={{
-        action: state?.inputValue === '' ? 'hidden' : undefined,
-      }}
+      // @ts-ignore
+      className={cn(
+        classNames,
+        state?.inputValue === '' ? 'hidden' : undefined
+      )}
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === 'Escape') {
           e.preventDefault();
@@ -194,8 +200,8 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     };
 
     return (
-      <FieldBase as={ComboBox} {...props}>
-        <AutocompleteInput onSubmit={onSubmit} onClear={onClear} ref={ref} />
+      <FieldBase as={ComboBox} ref={ref} {...props}>
+        <AutocompleteInput onSubmit={onSubmit} onClear={onClear} />
         <Popover>
           <ListBox>{children}</ListBox>
         </Popover>
