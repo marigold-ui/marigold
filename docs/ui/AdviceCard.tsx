@@ -6,7 +6,7 @@ import { cn } from '../../packages/system/dist';
 
 interface Props {
   description: string;
-  type: 'DO' | "DON'T";
+  variant: 'DO' | 'DONT';
   children: ReactNode;
 }
 
@@ -32,21 +32,21 @@ const warningIcon = (
   </svg>
 );
 
-export const AdviceCard = ({ description, type, children }: Props) => {
-  const icon = type === 'DO' ? checkIcon : warningIcon;
+export const AdviceCard = ({ description, variant, children }: Props) => {
+  const icon = variant === 'DO' ? checkIcon : warningIcon;
 
   return (
     <Card p={0}>
       {children}
       <div
         className={cn('flex flex-col gap-1 border-t-8 p-3', {
-          'border-bg-error bg-red-50': type === "DON'T",
-          'border-bg-success bg-green-50': type === 'DO',
+          'border-bg-error bg-red-50': variant === 'DONT',
+          'border-bg-success bg-green-50': variant === 'DO',
         })}
       >
         <div className="flex items-center gap-1">
           {icon}
-          <Headline level={5}>{type}</Headline>
+          <Headline level={5}>{variant}</Headline>
         </div>
         <Text>{description}</Text>
       </div>
