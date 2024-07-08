@@ -8,6 +8,8 @@ import React from 'react';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
+import { cn, useClassNames } from '@marigold/system';
+
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox';
@@ -43,12 +45,14 @@ const AutocompleteInput = ({
   ref,
 }: AutocompleteInputProps) => {
   const state = React.useContext(ComboBoxStateContext);
+  // needed to get the triggerwidth on the right button
+  const classNames = useClassNames({ component: 'ComboBox' });
 
   return (
     <SearchInput
       ref={ref}
       className={{
-        action: state?.inputValue === '' ? 'hidden' : undefined,
+        action: cn(state?.inputValue === '' ? 'hidden' : undefined, classNames),
       }}
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === 'Escape') {
