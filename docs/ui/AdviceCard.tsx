@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Card, Headline, Text } from '@marigold/components';
+import { Text } from '@marigold/components';
 
 import { cn } from '../../packages/system/dist';
 
@@ -36,20 +36,20 @@ export const AdviceCard = ({ description, variant, children }: Props) => {
   const icon = variant === 'DO' ? checkIcon : warningIcon;
 
   return (
-    <Card p={0}>
+    <div className="border-border border">
       {children}
       <div
-        className={cn('flex flex-col gap-1 border-t-8 p-3', {
+        className={cn('flex flex-col gap-2 border-t-4 p-4', {
           'border-bg-error bg-red-50': variant === 'DONT',
           'border-bg-success bg-green-50': variant === 'DO',
         })}
       >
         <div className="flex items-center gap-1">
           {icon}
-          <Headline level={5}>{variant}</Headline>
+          <Text weight="bold">{variant}</Text>
         </div>
         <Text>{description}</Text>
       </div>
-    </Card>
+    </div>
   );
 };
