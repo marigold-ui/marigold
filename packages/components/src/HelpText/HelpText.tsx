@@ -77,8 +77,8 @@ export const HelpText = ({
               : errorMessage) || validation.validationErrors;
 
           return Array.isArray(messages) ? (
-            messages.map(msg => (
-              <div className="flex items-center justify-start gap-1">
+            messages.map((msg, idx) => (
+              <div key={idx} className="flex items-center justify-start gap-1">
                 <Icon className={classNames.icon} />
                 {msg}
               </div>
