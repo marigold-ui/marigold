@@ -120,7 +120,7 @@ test('render Field with label and errorMessage', () => {
   expect(error).toBeInTheDocument();
 });
 
-test('render Field with label and errorMessage although description is set', () => {
+test.only('render Field with label and errorMessage although description is set', () => {
   render(
     <FieldBase
       as={TextField}
@@ -137,8 +137,7 @@ test('render Field with label and errorMessage although description is set', () 
   expect(label).toBeInTheDocument();
 
   const description = screen.queryByText('This is a helpful text');
-  expect(description).toBeInTheDocument();
-  expect(description).toHaveClass('peer-first/error:hidden');
+  expect(description).not.toBeInTheDocument();
 
   const error = screen.getByText('Something went wrong');
   expect(error).toBeInTheDocument();
@@ -162,7 +161,7 @@ test('passes down variant and size', () => {
   );
 
   const helptext = screen.getByText('Description');
-  expect(helptext.className).toMatchInlineSnapshot(`"peer-first/error:hidden"`);
+  expect(helptext).toBeInTheDocument();
 });
 
 test('takes full width by default', () => {

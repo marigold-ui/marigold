@@ -1,8 +1,21 @@
-import { type ReactNode } from 'react';
+import { useContext } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import type { ValidationResult } from 'react-aria-components';
-import { FieldError, Text } from 'react-aria-components';
+import { FieldError, FieldErrorContext, Text } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
+
+// Description
+// ---------------
+const Description = ({ children }: PropsWithChildren) => {
+  const ctx = useContext(FieldErrorContext);
+
+  if (ctx && ctx.isInvalid) {
+    return null;
+  }
+
+  return <Text slot="description">{children}</Text>;
+};
 
 // Icon
 // ---------------
@@ -49,7 +62,7 @@ export const HelpText = ({
 
   return (
     <div className={cn(classNames.container)}>
-      <FieldError {...props} className="peer/error flex flex-col">
+      <FieldError {...props} className="flex flex-col">
         {validation => {
           /**
            * Prefer custom error messages, fallback to native errors ones.
@@ -78,9 +91,7 @@ export const HelpText = ({
           );
         }}
       </FieldError>
-      <Text slot="description" className="peer-first/error:hidden">
-        {description}
-      </Text>
+      <Description>{description}</Description>
     </div>
   );
 };
