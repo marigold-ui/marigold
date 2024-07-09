@@ -10,6 +10,7 @@ export const ThemeMenu = () => {
 
   return (
     <Menu
+      aria-label="Choose a Theme"
       label={<Theme className="text-secondary-600" />}
       onAction={current => updateTheme(current)}
       placement="bottom end"
