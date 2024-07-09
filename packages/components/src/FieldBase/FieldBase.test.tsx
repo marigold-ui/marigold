@@ -120,7 +120,7 @@ test('render Field with label and errorMessage', () => {
   expect(error).toBeInTheDocument();
 });
 
-test.only('render Field with label and errorMessage although description is set', () => {
+test('render Field with label and errorMessage although description is set', () => {
   render(
     <FieldBase
       as={TextField}
