@@ -1,22 +1,15 @@
 import { ReactNode } from 'react';
 
+import type { GridColsAlignProp, PlaceItemsProp } from '@marigold/system';
 import {
-  GridColsAlignProp,
-  GridColumn,
-  PlaceItemsProp,
   cn,
   createVar,
   gridColsAlign,
   gridColumn,
   placeItems,
 } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-export interface ContainerProps
-  extends Omit<HtmlProps<'div'>, 'className'>,
-    PlaceItemsProp,
-    GridColumn,
-    GridColsAlignProp {
+export interface ContainerProps {
   children?: ReactNode;
   /**
    * The content type of the container.
@@ -28,7 +21,7 @@ export interface ContainerProps
    * Set alignment the content inside the container.
    * @default left
    */
-  align?: 'left' | 'right' | 'center';
+  align?: GridColsAlignProp['align'];
   /**
    * Set alignment of the items inside the container.
    */
@@ -53,12 +46,10 @@ export const Container = ({
   align = 'left',
   alignItems = 'none',
   children,
-  ...props
 }: ContainerProps) => {
   const maxWidth = contentType === 'content' ? content[size] : header[size];
   return (
     <div
-      {...props}
       className={cn(
         'grid',
         placeItems[alignItems],
