@@ -26,6 +26,10 @@ export interface HeadlineProps extends TextAlignProp {
    * Children of the component.
    */
   children?: ReactNode;
+  /**
+   * A slot to place the element in.
+   */
+  slot?: string;
 }
 
 const _Headline = ({
