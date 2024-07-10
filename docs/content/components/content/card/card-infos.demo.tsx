@@ -28,7 +28,7 @@ export default () => (
     </Card>
     <div className="flex gap-4">
       <AdviceCard
-        variant="DO"
+        variant="do"
         description="Use one primary call to action to help people to preocee"
       >
         <Image
@@ -40,7 +40,7 @@ export default () => (
       </AdviceCard>
       <AdviceCard
         description="Don’t use many calls to action in one page or container."
-        variant="DONT"
+        variant="dont"
       >
         <Image
           width={700}

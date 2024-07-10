@@ -6,9 +6,14 @@ import { cn } from '../../packages/system/dist';
 
 interface Props {
   description: string;
-  variant: 'DO' | 'DONT';
+  variant: 'do' | 'dont';
   children: ReactNode;
 }
+
+const advice = {
+  do: 'DO',
+  dont: "DON'T",
+};
 
 const checkIcon = (
   <svg
@@ -33,20 +38,20 @@ const warningIcon = (
 );
 
 export const AdviceCard = ({ description, variant, children }: Props) => {
-  const icon = variant === 'DO' ? checkIcon : warningIcon;
+  const icon = variant === 'do' ? checkIcon : warningIcon;
 
   return (
     <div className="border-border border">
       {children}
       <div
         className={cn('flex flex-col gap-2 border-t-4 p-4', {
-          'border-bg-error bg-red-50': variant === 'DONT',
-          'border-bg-success bg-green-50': variant === 'DO',
+          'border-bg-error bg-red-50': variant === 'dont',
+          'border-bg-success bg-green-50': variant === 'do',
         })}
       >
         <div className="flex items-center gap-1">
           {icon}
-          <Text weight="bold">{variant}</Text>
+          <Text weight="bold">{advice[variant]}</Text>
         </div>
         <Text>{description}</Text>
       </div>
