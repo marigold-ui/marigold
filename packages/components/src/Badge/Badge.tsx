@@ -1,9 +1,8 @@
 import { useClassNames } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface BadgeProps extends Omit<HtmlProps<'div'>, 'className'> {
+export interface BadgeProps {
   /**
    * Children of the component
    */
@@ -14,12 +13,8 @@ export interface BadgeProps extends Omit<HtmlProps<'div'>, 'className'> {
 
 // Component
 // ---------------
-export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
+export const Badge = ({ variant, size, children }: BadgeProps) => {
   const classNames = useClassNames({ component: 'Badge', variant, size });
 
-  return (
-    <div {...props} className={classNames}>
-      {children}
-    </div>
-  );
+  return <div className={classNames}>{children}</div>;
 };

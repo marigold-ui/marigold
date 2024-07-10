@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import {
+import type {
   GapSpaceProp,
   PaddingBottomProp,
   PaddingLeftProp,
@@ -9,6 +9,8 @@ import {
   PaddingSpacePropX,
   PaddingSpacePropY,
   PaddingTopProp,
+} from '@marigold/system';
+import {
   cn,
   gapSpace,
   paddingBottom,
@@ -20,16 +22,12 @@ import {
   paddingTop,
   useClassNames,
 } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
 export interface CardProps
-  extends Omit<HtmlProps<'div'>, 'className'>,
-    GapSpaceProp,
+  extends GapSpaceProp,
     PaddingSpaceProp,
-    PaddingSpacePropX,
-    PaddingSpacePropY,
     PaddingRightProp,
     PaddingLeftProp,
     PaddingBottomProp,
@@ -68,12 +66,10 @@ export const Card = ({
   pb,
   pl,
   pr,
-  ...props
 }: CardProps) => {
   const classNames = useClassNames({ component: 'Card', variant, size });
   return (
     <div
-      {...props}
       className={cn(
         'flex flex-col',
         classNames,
