@@ -35,51 +35,49 @@ export const PropsTable = ({ componentFile }: PropsTableProps) => {
           <Text>Sorry! There are currently no props available.</Text>
         </Inline>
       ) : (
-        <div className="overflow-auto">
-          <Scrollable height="550px">
-            <Table
-              aria-label="Table with component props"
-              variant="hover"
-              stickyHeader
-            >
-              <Table.Header>
-                <Table.Column key="property" width="max">
-                  Property
-                </Table.Column>
-                <Table.Column key="type" width="auto">
-                  Type
-                </Table.Column>
-                <Table.Column key="default" width="auto">
-                  Default
-                </Table.Column>
-                <Table.Column key="description" width="1/3">
-                  Description
-                </Table.Column>
-              </Table.Header>
-              <Table.Body>
-                {props.map(prop => (
-                  <Table.Row key={prop.name}>
-                    <Table.Cell>
-                      <code className="before:content-none after:content-none">
-                        {prop.name}
-                      </code>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <code className="before:content-none after:content-none">
-                        {prop.type.name}
-                      </code>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <code className="before:content-none after:content-none">
-                        {prop.defaultValue ? prop.defaultValue.value : '-'}
-                      </code>
-                    </Table.Cell>
-                    <Table.Cell>{prop.description}</Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </Scrollable>
+        <div className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full h-[550px] overflow-auto">
+          <Table
+            aria-label="Table with component props"
+            variant="hover"
+            stickyHeader
+          >
+            <Table.Header>
+              <Table.Column key="property" width="max">
+                Property
+              </Table.Column>
+              <Table.Column key="type" width="auto">
+                Type
+              </Table.Column>
+              <Table.Column key="default" width="auto">
+                Default
+              </Table.Column>
+              <Table.Column key="description" width="1/3">
+                Description
+              </Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {props.map(prop => (
+                <Table.Row key={prop.name}>
+                  <Table.Cell>
+                    <code className="before:content-none after:content-none">
+                      {prop.name}
+                    </code>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <code className="before:content-none after:content-none">
+                      {prop.type.name}
+                    </code>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <code className="before:content-none after:content-none">
+                      {prop.defaultValue ? prop.defaultValue.value : '-'}
+                    </code>
+                  </Table.Cell>
+                  <Table.Cell>{prop.description}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
         </div>
       )}
     </Card>
