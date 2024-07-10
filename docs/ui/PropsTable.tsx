@@ -1,8 +1,8 @@
 'use client';
 
+import tableProps from '@/registry/props.json';
 import { Card, Inline, Table, Text } from '@/ui';
 
-import tableProps from '../.component-props/index.json';
 import { BlankCanvas } from './icons';
 
 export interface PropsTableProps {

@@ -1,13 +1,18 @@
-import reactDocgenTypescript from 'react-docgen-typescript';
+// @ts-check
+import docgen from 'react-docgen-typescript';
 import { fileURLToPath } from 'url';
 import { fs, globby, path } from 'zx';
 
 console.log('📑 Generating props table...');
 
-const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
+const parser = docgen.withCustomConfig('./tsconfig.json', {
   shouldRemoveUndefinedFromOptional: true,
   shouldExtractLiteralValuesFromEnum: false,
   shouldExtractValuesFromUnion: false,
+  skipChildrenPropWithoutDoc: false,
+  propFilter: {
+    skipPropsWithName: ['variant', 'size', 'key'],
+  },
   customComponentTypes: [
     'AutocompleteComponent',
     'SelectComponent',
@@ -23,10 +28,7 @@ const __dirname = path.dirname(__filename);
 
 const systemDir = path.resolve(__dirname, '../../packages/system/src');
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
-const outputFilePath = path.resolve(
-  __dirname,
-  '../.component-props/index.json'
-);
+const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
 
 fs.ensureDirSync(path.dirname(outputFilePath));
 
@@ -51,16 +53,11 @@ const generatePropsTables = async () => {
     const props = docs[0]?.props;
 
     if (docs.length > 0) {
-      const fileName = filePath.split('/').at(-1);
-
-      // Filter out 'variant' and 'className' properties;
-      const excludedProps = ['variant', 'size'];
-      const filteredProps = Object.keys(props)
-        .filter(key => !excludedProps.includes(key))
-        .reduce((obj, key) => {
-          obj[key] = props[key];
-          return obj;
-        }, {});
+      const fileName = path.basename(filePath);
+      const filteredProps = Object.keys(props).reduce((obj, key) => {
+        obj[key] = props[key];
+        return obj;
+      }, {});
 
       acc[fileName] = filteredProps;
     }
