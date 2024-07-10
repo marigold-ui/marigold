@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Inline, Table, Text } from '@/ui';
+import { Card, Inline, Scrollable, Table, Text } from '@/ui';
 
 import tableProps from '../.component-props/index.json';
 import { BlankCanvas } from './icons';
@@ -36,36 +36,50 @@ export const PropsTable = ({ componentFile }: PropsTableProps) => {
         </Inline>
       ) : (
         <div className="overflow-auto">
-          <Table aria-label="Table with component props" variant="hover">
-            <Table.Header>
-              <Table.Column key="property">Property</Table.Column>
-              <Table.Column key="type">Type</Table.Column>
-              <Table.Column key="default">Default</Table.Column>
-              <Table.Column key="description">Description</Table.Column>
-            </Table.Header>
-            <Table.Body items={props}>
-              {(prop: Prop) => (
-                <Table.Row key={prop.name}>
-                  <Table.Cell>
-                    <code className="before:content-none after:content-none">
-                      {prop.name}
-                    </code>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <code className="before:content-none after:content-none">
-                      {prop.type.name}
-                    </code>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <code className="before:content-none after:content-none">
-                      {prop.defaultValue ? prop.defaultValue.value : '-'}
-                    </code>
-                  </Table.Cell>
-                  <Table.Cell>{prop.description}</Table.Cell>
-                </Table.Row>
-              )}
-            </Table.Body>
-          </Table>
+          <Scrollable height="550px">
+            <Table
+              aria-label="Table with component props"
+              variant="hover"
+              stickyHeader
+            >
+              <Table.Header>
+                <Table.Column key="property" width="max">
+                  Property
+                </Table.Column>
+                <Table.Column key="type" width="auto">
+                  Type
+                </Table.Column>
+                <Table.Column key="default" width="auto">
+                  Default
+                </Table.Column>
+                <Table.Column key="description" width="1/3">
+                  Description
+                </Table.Column>
+              </Table.Header>
+              <Table.Body>
+                {props.map(prop => (
+                  <Table.Row key={prop.name}>
+                    <Table.Cell>
+                      <code className="before:content-none after:content-none">
+                        {prop.name}
+                      </code>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <code className="before:content-none after:content-none">
+                        {prop.type.name}
+                      </code>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <code className="before:content-none after:content-none">
+                        {prop.defaultValue ? prop.defaultValue.value : '-'}
+                      </code>
+                    </Table.Cell>
+                    <Table.Cell>{prop.description}</Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </Scrollable>
         </div>
       )}
     </Card>
