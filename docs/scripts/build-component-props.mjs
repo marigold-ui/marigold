@@ -32,41 +32,43 @@ const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
 
 fs.ensureDirSync(path.dirname(outputFilePath));
 
-const generatePropsTables = async () => {
-  // Getting all component files using globby
-  const componentFiles = await globby([
-    `${componentsDir}/**/*.tsx`,
-    `${systemDir}/**/*.tsx`,
+// Getting all component files using globby
+const files = await globby([
+  `${componentsDir}/**/*.tsx`,
+  `${systemDir}/**/*.tsx`,
 
-    // excluded files
-    `!${componentsDir}/**/*.stories.tsx`,
-    `!${componentsDir}/**/*.test.tsx`,
-    `!${componentsDir}/**/*.ts`,
-    `!${systemDir}/**/*.stories.tsx`,
-    `!${systemDir}/**/*.test.tsx`,
-    `!${systemDir}/**/*.ts`,
-  ]);
+  // excluded files
+  `!${componentsDir}/**/*.stories.tsx`,
+  `!${componentsDir}/**/*.test.tsx`,
+  `!${componentsDir}/**/*.ts`,
+  `!${systemDir}/**/*.stories.tsx`,
+  `!${systemDir}/**/*.test.tsx`,
+  `!${systemDir}/**/*.ts`,
+]);
 
-  // Reduce to gather all docs
-  const allDocs = componentFiles.reduce((acc, filePath) => {
-    const docs = parser.parse(filePath);
-    const props = docs[0]?.props;
+const output = {};
 
-    if (docs.length > 0) {
-      const fileName = path.basename(filePath);
-      const filteredProps = Object.keys(props).reduce((obj, key) => {
-        obj[key] = props[key];
-        return obj;
-      }, {});
+files.forEach(file => {
+  const docs = parser.parse(file);
 
-      acc[fileName] = filteredProps;
-    }
+  if (docs.length === 0) {
+    return;
+  }
 
-    return acc;
-  }, {});
+  // TODO: Just use the component name here?
+  const name = path.basename(file);
+  const props = docs[0].props;
 
-  fs.writeJsonSync(outputFilePath, allDocs, { spaces: 2 });
-  console.log(`✅ Successfully generated props table!`);
-};
+  output[name] = {};
 
-generatePropsTables();
+  for (const key in props) {
+    /**
+     * Remove properties we do not need.
+     */
+    const { parent, declarations, ...val } = props[key];
+    output[name][key] = val;
+  }
+});
+
+fs.writeJsonSync(outputFilePath, output);
+console.log(`✅ Successfully generated props table!`);
