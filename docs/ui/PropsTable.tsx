@@ -36,16 +36,14 @@ export const PropsTable = ({ component }: PropsTableProps) => {
         <div className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-auto">
           <Table aria-label="Table with component props" variant="hover">
             <Table.Header>
-              <Table.Column key="property" width="max">
+              <Table.Column key="property" width="1/6">
                 Property
               </Table.Column>
-              <Table.Column key="type" width="auto">
-                Type
+              <Table.Column key="type" width="2/6">
+                Type <span className="text-text-primary-muted">(Default)</span>
               </Table.Column>
-              <Table.Column key="default" width="max">
-                Default
-              </Table.Column>
-              <Table.Column key="description" width="2/3">
+
+              <Table.Column key="description" width="3/6">
                 Description
               </Table.Column>
             </Table.Header>
@@ -59,14 +57,17 @@ export const PropsTable = ({ component }: PropsTableProps) => {
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {prop.type.name}
+                      {prop.type.name}{' '}
+                      <span className="text-text-primary-muted">
+                        ({prop.defaultValue ? prop.defaultValue.value : '-'})
+                      </span>
                     </code>
                   </Table.Cell>
-                  <Table.Cell>
+                  {/* <Table.Cell>
                     <code className="before:content-none after:content-none">
                       {prop.defaultValue ? prop.defaultValue.value : '-'}
                     </code>
-                  </Table.Cell>
+                  </Table.Cell> */}
                   <Table.Cell>{prop.description}</Table.Cell>
                 </Table.Row>
               ))}
