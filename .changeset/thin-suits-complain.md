@@ -1,5 +1,5 @@
 ---
-'@marigold/docs': patch
+'@marigold/docs': minor
 ---
 
 Adding AdviceCard component
