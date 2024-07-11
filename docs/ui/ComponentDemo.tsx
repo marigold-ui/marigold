@@ -1,4 +1,4 @@
-import { registry } from '@/registry';
+import { registry } from '@/registry/demos';
 import {
   Card,
   FieldGroup,
