@@ -40,10 +40,12 @@ export const PropsTable = ({ component }: PropsTableProps) => {
                 Property
               </Table.Column>
               <Table.Column key="type" width="2/6">
-                Type <span className="text-text-primary-muted">(Default)</span>
+                Type
               </Table.Column>
-
-              <Table.Column key="description" width="3/6">
+              <Table.Column key="default" width="1/6">
+                Default
+              </Table.Column>
+              <Table.Column key="description" width="2/6">
                 Description
               </Table.Column>
             </Table.Header>
@@ -57,17 +59,14 @@ export const PropsTable = ({ component }: PropsTableProps) => {
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {prop.type.name}{' '}
-                      <span className="text-text-primary-muted">
-                        ({prop.defaultValue ? prop.defaultValue.value : '-'})
-                      </span>
+                      {prop.type.name}
                     </code>
                   </Table.Cell>
-                  {/* <Table.Cell>
+                  <Table.Cell>
                     <code className="before:content-none after:content-none">
                       {prop.defaultValue ? prop.defaultValue.value : '-'}
                     </code>
-                  </Table.Cell> */}
+                  </Table.Cell>
                   <Table.Cell>{prop.description}</Table.Cell>
                 </Table.Row>
               ))}
