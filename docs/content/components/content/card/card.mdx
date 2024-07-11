@@ -36,3 +36,30 @@ The Example shows how to use the `<Card>` in a common use case with form fields.
 On this example you can see an imformation card with used prop `p`.
 
 <ComponentDemo file="./card-infos.demo.tsx" />
+
+<div className="mt-4 flex flex-col gap-4">
+  <div className="flex gap-4">
+    <DosAndDonts
+      variant="do"
+      description="Use one primary call to action to help people to preocee"
+    >
+      <Image
+        width={700}
+        height={900}
+        src="/Elevation_Mockup_B2B.png"
+        alt="Don't"
+      />
+    </DosAndDonts>
+    <DosAndDonts
+      description="Don’t use many calls to action in one page or container."
+      variant="dont"
+    >
+      <Image
+        width={700}
+        height={900}
+        src="/Elevation_Mockup_B2B.png"
+        alt="Don't"
+      />
+    </DosAndDonts>
+  </div>
+</div>
