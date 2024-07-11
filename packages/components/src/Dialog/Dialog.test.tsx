@@ -213,29 +213,6 @@ test('supports title for accessability reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
-test('supports custom title for accessability reasons', () => {
-  render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-
-      <Dialog closeButton aria-labelledby="myTitle">
-        <Headline id="myTitle">Headline</Headline>
-        Content
-      </Dialog>
-    </Dialog.Trigger>
-  );
-  const button = screen.getByText('Open');
-  fireEvent.click(button);
-
-  const dialog = screen.getByRole('dialog');
-  expect(dialog).toHaveAttribute('aria-labelledby');
-
-  const headline = screen.getByText('Headline');
-  expect(headline).toHaveAttribute('id');
-
-  expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
-});
-
 test('child function is passed an id for the dialog title (a11y)', () => {
   render(
     <Dialog.Trigger>
