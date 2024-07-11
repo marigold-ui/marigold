@@ -8,7 +8,6 @@ import { useState } from 'react';
 import { Theme, cva } from '@marigold/system';
 
 import { Button } from '../Button';
-import { Headline } from '../Headline';
 import { setup } from '../test.utils';
 import { Dialog } from './Dialog';
 
