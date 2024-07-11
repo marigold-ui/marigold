@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Inline, Scrollable, Table, Text } from '@/ui';
+import { Card, Inline, Table, Text } from '@/ui';
 
 import tableProps from '../.component-props/index.json';
 import { BlankCanvas } from './icons';
