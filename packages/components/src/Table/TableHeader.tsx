@@ -3,7 +3,13 @@ import { ReactNode } from 'react';
 import { useTableRowGroup } from '@react-aria/table';
 
 export interface TableHeaderProps {
+  /**
+   * Children of the component.
+   */
   children: ReactNode;
+  /**
+   * Makes the header stick to the viewport.
+   */
   stickyHeader?: boolean;
 }
 
