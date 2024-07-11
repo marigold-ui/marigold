@@ -88,6 +88,7 @@ export const SectionMessage = ({
   return (
     <SectionMessageContext.Provider value={{ classNames }}>
       <div
+        role={variant === 'error' ? 'alert' : undefined}
         {...props}
         className={cn('grid auto-rows-min', classNames.container)}
       >

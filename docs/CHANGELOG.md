@@ -1,5 +1,54 @@
 # @marigold/docs
 
+## 8.0.1
+
+### Patch Changes
+
+- [#3979](https://github.com/marigold-ui/marigold/pull/3979) [`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49) Thanks [@sarahgm](https://github.com/sarahgm)! - Fix: fix some props and add command to build step
+
+- Updated dependencies [[`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49)]:
+  - @marigold/components@8.0.1
+  - @marigold/theme-b2b@27.1.13
+  - @marigold/theme-core@26.1.13
+  - @marigold/theme-docs@2.0.3
+  - @marigold/icons@1.2.53
+  - @marigold/theme-preset@1.3.18
+
+## 8.0.0
+
+### Minor Changes
+
+- [#3927](https://github.com/marigold-ui/marigold/pull/3927) [`317f9eb`](https://github.com/marigold-ui/marigold/commit/317f9ebed863291e45e2e3e1d279afcf9b34ad33) Thanks [@sebald](https://github.com/sebald)! - docs: introduce design principles page
+
+- [#3942](https://github.com/marigold-ui/marigold/pull/3942) [`5977cba`](https://github.com/marigold-ui/marigold/commit/5977cba2ce729ea32f9db869e9c19e16032e58ec) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Keep our documentation props table dynamic
+
+### Patch Changes
+
+- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename <Message> in <SectionMessage>
+
+- [#3967](https://github.com/marigold-ui/marigold/pull/3967) [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202) Thanks [@sebald](https://github.com/sebald)! - refa: Update TypeScript and adjust `<NumericFormat>` props
+
+- [#3957](https://github.com/marigold-ui/marigold/pull/3957) [`aa36186`](https://github.com/marigold-ui/marigold/commit/aa36186f8e8fcffe29c8af575df811690d7702ae) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-449]docs: add values and principles to documentation
+
+- [#3937](https://github.com/marigold-ui/marigold/pull/3937) [`2658e2f`](https://github.com/marigold-ui/marigold/commit/2658e2f075c9aaae89b5817a864313f887c1a8fe) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-79]feat: add new icon for download
+
+- [#3944](https://github.com/marigold-ui/marigold/pull/3944) [`9a7f349`](https://github.com/marigold-ui/marigold/commit/9a7f349a17ae9ab2726d1578bfdf5a64eb0481c9) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-446]docs: adding governance process page
+
+- [#3962](https://github.com/marigold-ui/marigold/pull/3962) [`10c2932`](https://github.com/marigold-ui/marigold/commit/10c2932d9d8db3ac03e1adf52a6de8c0635dfb03) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-465]: adding message pattern to documentation
+
+- [#3940](https://github.com/marigold-ui/marigold/pull/3940) [`9c5b80c`](https://github.com/marigold-ui/marigold/commit/9c5b80c7a1dbfef5e1e7c2a557fc17f81640945c) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-461]: refactor `<Message>` component
+
+- [#3920](https://github.com/marigold-ui/marigold/pull/3920) [`cd3d52d`](https://github.com/marigold-ui/marigold/commit/cd3d52dec9df0f803daef4694ffb73adc56d71c7) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-407]: enhance command menu
+
+- Updated dependencies [[`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382), [`d053e37`](https://github.com/marigold-ui/marigold/commit/d053e37f49ef382ea33c7743d0d67d89153ccc9e), [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202), [`2658e2f`](https://github.com/marigold-ui/marigold/commit/2658e2f075c9aaae89b5817a864313f887c1a8fe), [`9c5b80c`](https://github.com/marigold-ui/marigold/commit/9c5b80c7a1dbfef5e1e7c2a557fc17f81640945c), [`5977cba`](https://github.com/marigold-ui/marigold/commit/5977cba2ce729ea32f9db869e9c19e16032e58ec)]:
+  - @marigold/components@8.0.0
+  - @marigold/theme-b2b@27.1.12
+  - @marigold/eslint-config@0.4.16
+  - @marigold/icons@1.2.52
+  - @marigold/theme-core@26.1.12
+  - @marigold/theme-docs@2.0.2
+  - @marigold/theme-preset@1.3.17
+
 ## 7.8.2
 
 ### Patch Changes

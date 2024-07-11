@@ -8,6 +8,9 @@ export const FieldGroupContext = createContext<FieldGroupContextProps>({});
 export const useFieldGroupContext = () => useContext(FieldGroupContext);
 
 export interface FieldGroupProps {
+  /**
+   * Sets the width of all Fields labels used inside the `FieldGroup`
+   */
   labelWidth?: string;
   children: ReactNode;
 }

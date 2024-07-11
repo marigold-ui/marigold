@@ -124,3 +124,17 @@ test('renders correct HTML element', () => {
 
   expect(message instanceof HTMLDivElement).toBeTruthy();
 });
+
+test('set alert role if variant is "error"', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SectionMessage data-testid="messages" variant="error">
+        <SectionMessage.Title>messages</SectionMessage.Title>
+        <SectionMessage.Content>default</SectionMessage.Content>
+      </SectionMessage>
+    </ThemeProvider>
+  );
+  const message = screen.getByTestId(/messages/);
+
+  expect(message).toHaveAttribute('role', 'alert');
+});

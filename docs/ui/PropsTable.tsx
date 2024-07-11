@@ -1,12 +1,10 @@
-'use client';
-
+import componentProps from '@/registry/props.json';
 import { Card, Inline, Table, Text } from '@/ui';
 
-import tableProps from '../.component-props/index.json';
 import { BlankCanvas } from './icons';
 
 export interface PropsTableProps {
-  componentFile?: string;
+  component?: string;
 }
 
 interface Prop {
@@ -20,11 +18,11 @@ interface Prop {
   description: string;
 }
 
-export const PropsTable = ({ componentFile }: PropsTableProps) => {
+export const PropsTable = ({ component }: PropsTableProps) => {
   //make the props iterable
   const props =
-    componentFile &&
-    (Object.entries((tableProps as any)[componentFile]).map(
+    component &&
+    (Object.entries((componentProps as any)[component]).map(
       element => element[1]
     ) as Prop[]);
   return (

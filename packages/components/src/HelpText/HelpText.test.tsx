@@ -65,7 +65,7 @@ test('uses description base styles', () => {
   );
 
   const element = screen.getByText('This is a help text description');
-  expect(element.className).toMatchInlineSnapshot(`"peer-first/error:hidden"`);
+  expect(element).toBeInTheDocument();
 });
 
 test('show error message when control is invalid', () => {

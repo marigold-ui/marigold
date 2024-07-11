@@ -19,55 +19,7 @@ import { Form } from '@marigold/components';
 
 ## Props
 
-<PropsTable
-  props={[
-    {
-      property: 'validationErrors',
-      type: 'Record<string, string | string[]>',
-      description:
-        'Validation errors for the form, typically returned by a server. This should be set to an object mapping from input names to errors.',
-      default: '-',
-    },
-    {
-      property: 'action',
-      type: `string | FormHTMLAttributes<HTMLFormElement>['action']`,
-      description:
-        'Endpoint where to send the form-data when the form is submitted.',
-      default: '-',
-    },
-    {
-      property: 'method',
-      type: `'get' | 'post' | 'dialog'`,
-      description: 'The HTTP method to submit the form with.',
-      default: '-',
-    },
-    {
-      property: 'onSubmit',
-      type: `(event: FormEvent<HTMLFormElement>) => void`,
-      description: 'Triggered when a user submits the form.',
-      default: '-',
-    },
-    {
-      property: 'onReset',
-      type: `(event: FormEvent<HTMLFormElement>) => void`,
-      description: 'Triggered when a user resets the form.',
-      default: '-',
-    },
-    {
-      property: 'onInvalid',
-      type: `(event: FormEvent<HTMLFormElement>) => void`,
-      description:
-        'Triggered for each invalid field when a user submits the form.',
-      default: '-',
-    },
-    {
-      property: '...',
-      type: '',
-      description: 'Yes you can use all regular attributes of `form`!',
-      default: '',
-    },
-  ]}
-/>
+<PropsTable component={title} />
 
 ## Examples
 

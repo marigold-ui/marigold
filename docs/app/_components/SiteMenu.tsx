@@ -155,6 +155,7 @@ export const SiteMenu = () => {
             {/* pages and subpages command */}
             {groupedPages.map(({ name, items }) => (
               <PagesItem
+                key={name}
                 name={name}
                 items={items}
                 classNames={classNames}

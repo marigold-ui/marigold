@@ -1,18 +1,24 @@
-import reactDocgenTypescript from 'react-docgen-typescript';
+// @ts-check
+import docgen from 'react-docgen-typescript';
 import { fileURLToPath } from 'url';
 import { fs, globby, path } from 'zx';
 
 console.log('📑 Generating props table...');
 
-const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
+const parser = docgen.withCustomConfig('./tsconfig.json', {
   shouldRemoveUndefinedFromOptional: true,
   shouldExtractLiteralValuesFromEnum: false,
   shouldExtractValuesFromUnion: false,
+  skipChildrenPropWithoutDoc: false,
+  propFilter: {
+    skipPropsWithName: ['variant', 'size', 'key'],
+  },
   customComponentTypes: [
     'AutocompleteComponent',
     'SelectComponent',
     'ComboBoxComponent',
     'RadioComponent',
+    'SelectListComponent',
   ],
 });
 
@@ -20,50 +26,44 @@ const parser = reactDocgenTypescript.withCustomConfig('./tsconfig.json', {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const systemDir = path.resolve(__dirname, '../../packages/system/src');
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
-const outputFilePath = path.resolve(
-  __dirname,
-  '../.component-props/index.json'
-);
+const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
 
-fs.ensureDirSync(path.dirname(outputFilePath));
+// Getting all component files using globby
+const files = await globby([
+  `${componentsDir}/**/*.tsx`,
+  `${systemDir}/**/*.tsx`,
 
-const generatePropsTables = async () => {
-  // Getting all component files using globby
-  const componentFiles = await globby([
-    `${componentsDir}/**/*.tsx`,
+  // excluded files
+  `!${componentsDir}/**/*.stories.tsx`,
+  `!${componentsDir}/**/*.test.tsx`,
+  `!${componentsDir}/**/*.ts`,
+  `!${systemDir}/**/*.stories.tsx`,
+  `!${systemDir}/**/*.test.tsx`,
+  `!${systemDir}/**/*.ts`,
+]);
 
-    // excluded files
-    `!${componentsDir}/**/*.stories.tsx`,
-    `!${componentsDir}/**/*.test.tsx`,
-    `!${componentsDir}/**/*.ts`,
-  ]);
+const output = {};
 
-  // Reduce to gather all docs
-  const allDocs = componentFiles.reduce((acc, filePath) => {
-    const docs = parser.parse(filePath);
-    const props = docs[0]?.props;
+files.forEach(file => {
+  const docs = parser.parse(file);
 
-    if (docs.length > 0) {
-      const fileName = filePath.split('/').at(-1);
+  if (docs.length === 0) {
+    return;
+  }
 
-      // Filter out 'variant' and 'className' properties;
-      const excludedProps = ['variant', 'size'];
-      const filteredProps = Object.keys(props)
-        .filter(key => !excludedProps.includes(key))
-        .reduce((obj, key) => {
-          obj[key] = props[key];
-          return obj;
-        }, {});
+  const { name } = path.parse(file);
+  const props = docs[0].props;
 
-      acc[fileName] = filteredProps;
-    }
+  output[name] = {};
 
-    return acc;
-  }, {});
+  for (const key in props) {
+    // Remove properties we do not need.
+    const { parent, declarations, ...val } = props[key];
+    output[name][key] = val;
+  }
+});
 
-  fs.writeJsonSync(outputFilePath, allDocs, { spaces: 2 });
-  console.log(`✅ Successfully generated props table!`);
-};
-
-generatePropsTables();
+await fs.writeJson(outputFilePath, output);
+console.log(`✅ Successfully generated props table!`);

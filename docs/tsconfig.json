@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -31,7 +31,7 @@
       "@/*": ["./*"],
       "@marigold/*/styles.css": ["../themes/*/dist/styles.css"],
       "@marigold/*": ["../packages/*/src", "../themes/*/src"],
-      "@/registry": ["./.registry"],
+      "@/registry/*": ["./.registry/*"],
       "contentlayer/generated": ["./.contentlayer/generated"]
     },
     "strict": false

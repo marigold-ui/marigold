@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 
 import { notFound } from 'next/navigation';
 
+import { RelativeTime } from '@/ui/RelativeTime';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
 
@@ -57,6 +58,9 @@ export default async function ContentPage({ params }: ContentPageProps) {
       </div>
       <div className="col-start-2 hidden min-[1400px]:block">
         <TocContainer />
+      </div>
+      <div className="text-text-primary-muted text-xs italic">
+        Last update: <RelativeTime date={new Date(page.modified)} />
       </div>
     </article>
   );
