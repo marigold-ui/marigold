@@ -13,8 +13,12 @@ export interface BadgeProps {
 
 // Component
 // ---------------
-export const Badge = ({ variant, size, children }: BadgeProps) => {
+export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
   const classNames = useClassNames({ component: 'Badge', variant, size });
 
-  return <div className={classNames}>{children}</div>;
+  return (
+    <div className={classNames} {...props}>
+      {children}
+    </div>
+  );
 };

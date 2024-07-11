@@ -66,10 +66,12 @@ export const Card = ({
   pb,
   pl,
   pr,
+  ...props
 }: CardProps) => {
   const classNames = useClassNames({ component: 'Card', variant, size });
   return (
     <div
+      {...props}
       className={cn(
         'flex flex-col',
         classNames,

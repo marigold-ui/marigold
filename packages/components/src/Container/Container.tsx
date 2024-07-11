@@ -46,10 +46,12 @@ export const Container = ({
   align = 'left',
   alignItems = 'none',
   children,
+  ...props
 }: ContainerProps) => {
   const maxWidth = contentType === 'content' ? content[size] : header[size];
   return (
     <div
+      {...props}
       className={cn(
         'grid',
         placeItems[alignItems],
