@@ -35,12 +35,8 @@ export const PropsTable = ({ componentFile }: PropsTableProps) => {
           <Text>Sorry! There are currently no props available.</Text>
         </Inline>
       ) : (
-        <div className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full h-[550px] overflow-auto">
-          <Table
-            aria-label="Table with component props"
-            variant="hover"
-            stickyHeader
-          >
+        <div className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-auto">
+          <Table aria-label="Table with component props" variant="hover">
             <Table.Header>
               <Table.Column key="property" width="max">
                 Property
@@ -48,10 +44,10 @@ export const PropsTable = ({ componentFile }: PropsTableProps) => {
               <Table.Column key="type" width="auto">
                 Type
               </Table.Column>
-              <Table.Column key="default" width="auto">
+              <Table.Column key="default" width="max">
                 Default
               </Table.Column>
-              <Table.Column key="description" width="1/3">
+              <Table.Column key="description" width="2/3">
                 Description
               </Table.Column>
             </Table.Header>
