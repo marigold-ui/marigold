@@ -30,8 +30,6 @@ const systemDir = path.resolve(__dirname, '../../packages/system/src');
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
 const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
 
-fs.ensureDirSync(path.dirname(outputFilePath));
-
 // Getting all component files using globby
 const files = await globby([
   `${componentsDir}/**/*.tsx`,
@@ -55,20 +53,17 @@ files.forEach(file => {
     return;
   }
 
-  // TODO: Just use the component name here?
-  const name = path.basename(file);
+  const { name } = path.parse(file);
   const props = docs[0].props;
 
   output[name] = {};
 
   for (const key in props) {
-    /**
-     * Remove properties we do not need.
-     */
+    // Remove properties we do not need.
     const { parent, declarations, ...val } = props[key];
     output[name][key] = val;
   }
 });
 
-fs.writeJsonSync(outputFilePath, output);
+await fs.writeJson(outputFilePath, output);
 console.log(`✅ Successfully generated props table!`);
