@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
-  table: cva('text-sm my-0'),
+  table: cva('my-0 text-sm'),
   cell: cva('p-3 text-xs', {
     variants: {
       variant: {
