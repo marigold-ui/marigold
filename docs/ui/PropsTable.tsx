@@ -26,7 +26,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
       element => element[1]
     ) as Prop[]);
   return (
-    <Card px={3} py={4}>
+    <Card px={0} py={2}>
       {!props ? (
         <Inline space={2}>
           <BlankCanvas />
