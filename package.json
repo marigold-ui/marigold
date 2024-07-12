@@ -7,7 +7,7 @@
   "engines": {
     "node": "20.x"
   },
-  "packageManager": "pnpm@9.1.0",
+  "packageManager": "pnpm@9.5.0",
   "dependencies": {
     "@babel/core": "7.24.7",
     "@changesets/changelog-github": "0.5.0",
@@ -63,7 +63,7 @@
     "@parcel/watcher": "2.4.1",
     "autoprefixer": "10.4.19",
     "concurrently": "8.2.2",
-    "next": "14.1.4",
+    "next": "14.2.4",
     "postcss-import": "16.1.0",
     "postcss-loader": "8.1.1",
     "tailwindcss": "3.4.4",
