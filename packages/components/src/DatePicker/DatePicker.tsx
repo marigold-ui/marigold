@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { DatePicker, type DateValue } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
@@ -61,7 +61,7 @@ export interface DatePickerProps
   width?: WidthProp['width'];
 }
 
-const _DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
+const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
   (
     {
       disabled,
