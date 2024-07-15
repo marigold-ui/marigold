@@ -129,8 +129,8 @@ importers:
         specifier: 7.16.0
         version: 7.16.0(eslint@8.57.0)(typescript@5.5.3)
       eslint-config-prettier:
-        specifier: 9.0.0
-        version: 9.0.0(eslint@8.57.0)
+        specifier: 9.1.0
+        version: 9.1.0(eslint@8.57.0)
       eslint-config-react-app:
         specifier: 7.0.1
         version: 7.0.1(@babel/plugin-syntax-flow@7.16.7(@babel/core@7.24.8))(@babel/plugin-transform-react-jsx@7.17.3(@babel/core@7.24.8))(eslint@8.57.0)(jest@29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0))(typescript@5.5.3)
@@ -148,13 +148,13 @@ importers:
         version: 6.9.0(eslint@8.57.0)
       eslint-plugin-prettier:
         specifier: 5.1.3
-        version: 5.1.3(eslint-config-prettier@9.0.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.3.2)
+        version: 5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.3.2)
       eslint-plugin-react:
         specifier: 7.34.4
         version: 7.34.4(eslint@8.57.0)
       eslint-plugin-react-hooks:
-        specifier: 4.6.0
-        version: 4.6.0(eslint@8.57.0)
+        specifier: 4.6.2
+        version: 4.6.2(eslint@8.57.0)
       eslint-plugin-testing-library:
         specifier: 6.2.2
         version: 6.2.2(eslint@8.57.0)(typescript@5.5.3)
@@ -546,7 +546,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       tsup:
         specifier: 8.1.0
-        version: 8.1.0(@swc/core@1.6.13)(postcss@8.4.39)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.39)(typescript@5.5.3)
 
   packages/icons:
     dependencies:
@@ -562,7 +562,7 @@ importers:
         version: link:../../config/tsconfig
       tsup:
         specifier: 8.1.0
-        version: 8.1.0(@swc/core@1.6.13)(postcss@8.4.39)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.39)(typescript@5.5.3)
 
   packages/system:
     dependencies:
@@ -605,7 +605,7 @@ importers:
         version: 3.4.4
       tsup:
         specifier: 8.1.0
-        version: 8.1.0(@swc/core@1.6.13)(postcss@8.4.38)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.38)(typescript@5.5.3)
 
   packages/theme-preset:
     dependencies:
@@ -630,7 +630,7 @@ importers:
         version: 3.4.4
       tsup:
         specifier: 8.1.0
-        version: 8.1.0(@swc/core@1.6.13)(postcss@8.4.38)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.38)(typescript@5.5.3)
 
   packages/types:
     dependencies:
@@ -671,7 +671,7 @@ importers:
         version: 3.4.4
       tsup:
         specifier: 8.1.0
-        version: 8.1.0(@swc/core@1.6.13)(postcss@8.4.38)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.38)(typescript@5.5.3)
 
   themes/theme-core:
     dependencies:
@@ -702,7 +702,7 @@ importers:
         version: 3.4.4
       tsup:
         specifier: 8.1.0
-        version: 8.1.0(@swc/core@1.6.13)(postcss@8.4.38)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.38)(typescript@5.5.3)
 
   themes/theme-docs:
     dependencies:
@@ -733,7 +733,7 @@ importers:
         version: 3.4.4
       tsup:
         specifier: 8.1.0
-        version: 8.1.0(@swc/core@1.6.13)(postcss@8.4.38)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.38)(typescript@5.5.3)
 
 packages:
 
@@ -4266,8 +4266,8 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
-  '@swc/core-darwin-arm64@1.6.13':
-    resolution: {integrity: sha512-SOF4buAis72K22BGJ3N8y88mLNfxLNprTuJUpzikyMGrvkuBFNcxYtMhmomO0XHsgLDzOJ+hWzcgjRNzjMsUcQ==}
+  '@swc/core-darwin-arm64@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-t///AIAWGvrPHfOfok+M3h3Pt6OWPvVSgjXk9KAowiNJ3ImwxOmHqa1jOmUE/tBw3qVBqDY10cbK8ORYa9Vihw==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
@@ -4278,8 +4278,8 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@swc/core-darwin-x64@1.6.13':
-    resolution: {integrity: sha512-AW8akFSC+tmPE6YQQvK9S2A1B8pjnXEINg+gGgw0KRUUXunvu1/OEOeC5L2Co1wAwhD7bhnaefi06Qi9AiwOag==}
+  '@swc/core-darwin-x64@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-QAX/popaNfVuYkk/kRNRgDQykSDyYAB4hycE3U7oEA0BNauQY1qZGg/OERDGGpy5MRPXB5pU2mtjXXy+j51k9w==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [darwin]
@@ -4290,8 +4290,8 @@ packages:
     cpu: [arm]
     os: [linux]
 
-  '@swc/core-linux-arm-gnueabihf@1.6.13':
-    resolution: {integrity: sha512-f4gxxvDXVUm2HLYXRd311mSrmbpQF2MZ4Ja6XCQz1hWAxXdhRl1gpnZ+LH/xIfGSwQChrtLLVrkxdYUCVuIjFg==}
+  '@swc/core-linux-arm-gnueabihf@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-jxpfxs3tUD96iH2q84nekBfwxaGdM/w48BW4f1WWi4J9ruHJbdjAhY9QT2hBsUkaCJLhi+xuYg99QH4snDUcIA==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
@@ -4302,8 +4302,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@swc/core-linux-arm64-gnu@1.6.13':
-    resolution: {integrity: sha512-Nf/eoW2CbG8s+9JoLtjl9FByBXyQ5cjdBsA4efO7Zw4p+YSuXDgc8HRPC+E2+ns0praDpKNZtLvDtmF2lL+2Gg==}
+  '@swc/core-linux-arm64-gnu@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-imEj7+wQAHdU8R+vJ6JPKXV2Q2LdAhEYS1uEwZZTPgeb9IRfHEr7baVVat+7DRmKZIFndNdKrf6xwaAnL3QI3g==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -4314,8 +4314,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@swc/core-linux-arm64-musl@1.6.13':
-    resolution: {integrity: sha512-2OysYSYtdw79prJYuKIiux/Gj0iaGEbpS2QZWCIY4X9sGoETJ5iMg+lY+YCrIxdkkNYd7OhIbXdYFyGs/w5LDg==}
+  '@swc/core-linux-arm64-musl@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-VlAzuUuu8Pp30rgB5m1ZZ2yqYu+Jkv6H+e9hA63OQQg9k2iczROF/8Q5Lj9zVzLctMs/LymKVShW6D0aqmeW+Q==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -4326,8 +4326,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@swc/core-linux-x64-gnu@1.6.13':
-    resolution: {integrity: sha512-PkR4CZYJNk5hcd2+tMWBpnisnmYsUzazI1O5X7VkIGFcGePTqJ/bWlfUIVVExWxvAI33PQFzLbzmN5scyIUyGQ==}
+  '@swc/core-linux-x64-gnu@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-+3dWIQNB30acECjLue4a6csUBgLOyUyJGYiB8mnUDzmn2moHEHR4kccGo7CHvkLTW7M72kwlk2Ke0xCDVkemQw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -4338,8 +4338,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@swc/core-linux-x64-musl@1.6.13':
-    resolution: {integrity: sha512-OdsY7wryTxCKwGQcwW9jwWg3cxaHBkTTHi91+5nm7hFPpmZMz1HivJrWAMwVE7iXFw+M4l6ugB/wCvpYrUAAjA==}
+  '@swc/core-linux-x64-musl@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-I6AHozWHC0JYrv9Mvf03uQNZh03coFJO4U8MvFvxx35Zd0Lc80cPO1J8fO28W8ekA678reVRad2BWCfIQ8Z3rw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -4350,8 +4350,8 @@ packages:
     cpu: [arm64]
     os: [win32]
 
-  '@swc/core-win32-arm64-msvc@1.6.13':
-    resolution: {integrity: sha512-ap6uNmYjwk9M/+bFEuWRNl3hq4VqgQ/Lk+ID/F5WGqczNr0L7vEf+pOsRAn0F6EV+o/nyb3ePt8rLhE/wjHpPg==}
+  '@swc/core-win32-arm64-msvc@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-Ptj7j0dSL2l/CitRQjFoiom/BP4moOGiszlCrOUTlvvMe3moHd8kiS3oQ4TZINT0/3XE0UGjNi298Y7JEP5FRw==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [win32]
@@ -4362,8 +4362,8 @@ packages:
     cpu: [ia32]
     os: [win32]
 
-  '@swc/core-win32-ia32-msvc@1.6.13':
-    resolution: {integrity: sha512-IJ8KH4yIUHTnS/U1jwQmtbfQals7zWPG0a9hbEfIr4zI0yKzjd83lmtS09lm2Q24QBWOCFGEEbuZxR4tIlvfzA==}
+  '@swc/core-win32-ia32-msvc@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-PI4p9CJE+5E5ds4TCSCKiEm1p3MOIrPiT0qcyLMeGyxZLBLDgoOF55hqxeiOHrXv0mmhc6WcH8HNZfbQVv2KqA==}
     engines: {node: '>=10'}
     cpu: [ia32]
     os: [win32]
@@ -4374,8 +4374,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@swc/core-win32-x64-msvc@1.6.13':
-    resolution: {integrity: sha512-f6/sx6LMuEnbuxtiSL/EkR0Y6qUHFw1XVrh6rwzKXptTipUdOY+nXpKoh+1UsBm/r7H0/5DtOdrn3q5ZHbFZjQ==}
+  '@swc/core-win32-x64-msvc@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-xzSg+KcI0ewOa5BuOEJUmQuxWMXrriBfYqY3/irbxfd9WWDHRucP5lootzXFb5tW73iu7jn+wFvxC+nQ5yfXyQ==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
@@ -4389,8 +4389,8 @@ packages:
       '@swc/helpers':
         optional: true
 
-  '@swc/core@1.6.13':
-    resolution: {integrity: sha512-eailUYex6fkfaQTev4Oa3mwn0/e3mQU4H8y1WPuImYQESOQDtVrowwUGDSc19evpBbHpKtwM+hw8nLlhIsF+Tw==}
+  '@swc/core@1.7.0-nightly-20240715.1':
+    resolution: {integrity: sha512-dCcc8LWlYxr2GrOJ/BDcyVeGv7LisVYnmu6Zt65dqVTHbfYwvgrojQgTO77ncS5hNojQWXO27kLxuAhnIRm92g==}
     engines: {node: '>=10'}
     peerDependencies:
       '@swc/helpers': '*'
@@ -6016,8 +6016,8 @@ packages:
       typescript:
         optional: true
 
-  eslint-config-prettier@9.0.0:
-    resolution: {integrity: sha512-IcJsTkJae2S35pRsRAwoCE+925rJJStOdkKnLVgtE+tEpqU0EVVM7OqrwxqgptKdX29NUwC82I5pXsGFIgSevw==}
+  eslint-config-prettier@9.1.0:
+    resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -6133,8 +6133,8 @@ packages:
       eslint-config-prettier:
         optional: true
 
-  eslint-plugin-react-hooks@4.6.0:
-    resolution: {integrity: sha512-oFc7Itz9Qxh2x4gNHStv3BqJq54ExXmfC+a1NjAta66IAN87Wu0R/QArgIS9qKzX3dXKPI9H5crl9QchNMY9+g==}
+  eslint-plugin-react-hooks@4.6.2:
+    resolution: {integrity: sha512-QzliNJq4GinDBcD8gPB5v0wh6g8q3SUi6EFF0x8N/BL9PoVs0atuGc47ozMRyOWAKdwaZ5OnbOEa3WR+dSGKuQ==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
@@ -14391,61 +14391,61 @@ snapshots:
   '@swc/core-darwin-arm64@1.4.11':
     optional: true
 
-  '@swc/core-darwin-arm64@1.6.13':
+  '@swc/core-darwin-arm64@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-darwin-x64@1.4.11':
     optional: true
 
-  '@swc/core-darwin-x64@1.6.13':
+  '@swc/core-darwin-x64@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-linux-arm-gnueabihf@1.4.11':
     optional: true
 
-  '@swc/core-linux-arm-gnueabihf@1.6.13':
+  '@swc/core-linux-arm-gnueabihf@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-linux-arm64-gnu@1.4.11':
     optional: true
 
-  '@swc/core-linux-arm64-gnu@1.6.13':
+  '@swc/core-linux-arm64-gnu@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-linux-arm64-musl@1.4.11':
     optional: true
 
-  '@swc/core-linux-arm64-musl@1.6.13':
+  '@swc/core-linux-arm64-musl@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-linux-x64-gnu@1.4.11':
     optional: true
 
-  '@swc/core-linux-x64-gnu@1.6.13':
+  '@swc/core-linux-x64-gnu@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-linux-x64-musl@1.4.11':
     optional: true
 
-  '@swc/core-linux-x64-musl@1.6.13':
+  '@swc/core-linux-x64-musl@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-win32-arm64-msvc@1.4.11':
     optional: true
 
-  '@swc/core-win32-arm64-msvc@1.6.13':
+  '@swc/core-win32-arm64-msvc@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-win32-ia32-msvc@1.4.11':
     optional: true
 
-  '@swc/core-win32-ia32-msvc@1.6.13':
+  '@swc/core-win32-ia32-msvc@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core-win32-x64-msvc@1.4.11':
     optional: true
 
-  '@swc/core-win32-x64-msvc@1.6.13':
+  '@swc/core-win32-x64-msvc@1.7.0-nightly-20240715.1':
     optional: true
 
   '@swc/core@1.4.11(@swc/helpers@0.5.12)':
@@ -14465,21 +14465,21 @@ snapshots:
       '@swc/core-win32-x64-msvc': 1.4.11
       '@swc/helpers': 0.5.12
 
-  '@swc/core@1.6.13':
+  '@swc/core@1.7.0-nightly-20240715.1':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.9
     optionalDependencies:
-      '@swc/core-darwin-arm64': 1.6.13
-      '@swc/core-darwin-x64': 1.6.13
-      '@swc/core-linux-arm-gnueabihf': 1.6.13
-      '@swc/core-linux-arm64-gnu': 1.6.13
-      '@swc/core-linux-arm64-musl': 1.6.13
-      '@swc/core-linux-x64-gnu': 1.6.13
-      '@swc/core-linux-x64-musl': 1.6.13
-      '@swc/core-win32-arm64-msvc': 1.6.13
-      '@swc/core-win32-ia32-msvc': 1.6.13
-      '@swc/core-win32-x64-msvc': 1.6.13
+      '@swc/core-darwin-arm64': 1.7.0-nightly-20240715.1
+      '@swc/core-darwin-x64': 1.7.0-nightly-20240715.1
+      '@swc/core-linux-arm-gnueabihf': 1.7.0-nightly-20240715.1
+      '@swc/core-linux-arm64-gnu': 1.7.0-nightly-20240715.1
+      '@swc/core-linux-arm64-musl': 1.7.0-nightly-20240715.1
+      '@swc/core-linux-x64-gnu': 1.7.0-nightly-20240715.1
+      '@swc/core-linux-x64-musl': 1.7.0-nightly-20240715.1
+      '@swc/core-win32-arm64-msvc': 1.7.0-nightly-20240715.1
+      '@swc/core-win32-ia32-msvc': 1.7.0-nightly-20240715.1
+      '@swc/core-win32-x64-msvc': 1.7.0-nightly-20240715.1
     optional: true
 
   '@swc/counter@0.1.3': {}
@@ -16465,14 +16465,14 @@ snapshots:
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.9.0(eslint@8.57.0)
       eslint-plugin-react: 7.34.4(eslint@8.57.0)
-      eslint-plugin-react-hooks: 4.6.0(eslint@8.57.0)
+      eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
     optionalDependencies:
       typescript: 5.5.3
     transitivePeerDependencies:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-config-prettier@9.0.0(eslint@8.57.0):
+  eslint-config-prettier@9.1.0(eslint@8.57.0):
     dependencies:
       eslint: 8.57.0
 
@@ -16491,7 +16491,7 @@ snapshots:
       eslint-plugin-jest: 25.7.0(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.5.3))(eslint@8.57.0)(typescript@5.5.3))(eslint@8.57.0)(jest@29.7.0(@types/node@20.14.10)(babel-plugin-macros@3.1.0))(typescript@5.5.3)
       eslint-plugin-jsx-a11y: 6.9.0(eslint@8.57.0)
       eslint-plugin-react: 7.34.4(eslint@8.57.0)
-      eslint-plugin-react-hooks: 4.6.0(eslint@8.57.0)
+      eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
       eslint-plugin-testing-library: 5.11.1(eslint@8.57.0)(typescript@5.5.3)
     optionalDependencies:
       typescript: 5.5.3
@@ -16671,16 +16671,16 @@ snapshots:
       safe-regex-test: 1.0.3
       string.prototype.includes: 2.0.0
 
-  eslint-plugin-prettier@5.1.3(eslint-config-prettier@9.0.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.3.2):
+  eslint-plugin-prettier@5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.3.2):
     dependencies:
       eslint: 8.57.0
       prettier: 3.3.2
       prettier-linter-helpers: 1.0.0
       synckit: 0.8.8
     optionalDependencies:
-      eslint-config-prettier: 9.0.0(eslint@8.57.0)
+      eslint-config-prettier: 9.1.0(eslint@8.57.0)
 
-  eslint-plugin-react-hooks@4.6.0(eslint@8.57.0):
+  eslint-plugin-react-hooks@4.6.2(eslint@8.57.0):
     dependencies:
       eslint: 8.57.0
 
@@ -20871,7 +20871,7 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tsup@8.1.0(@swc/core@1.6.13)(postcss@8.4.38)(typescript@5.5.3):
+  tsup@8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.38)(typescript@5.5.3):
     dependencies:
       bundle-require: 4.0.2(esbuild@0.21.5)
       cac: 6.7.14
@@ -20888,14 +20888,14 @@ snapshots:
       sucrase: 3.35.0
       tree-kill: 1.2.2
     optionalDependencies:
-      '@swc/core': 1.6.13
+      '@swc/core': 1.7.0-nightly-20240715.1
       postcss: 8.4.38
       typescript: 5.5.3
     transitivePeerDependencies:
       - supports-color
       - ts-node
 
-  tsup@8.1.0(@swc/core@1.6.13)(postcss@8.4.39)(typescript@5.5.3):
+  tsup@8.1.0(@swc/core@1.7.0-nightly-20240715.1)(postcss@8.4.39)(typescript@5.5.3):
     dependencies:
       bundle-require: 4.0.2(esbuild@0.21.5)
       cac: 6.7.14
@@ -20912,7 +20912,7 @@ snapshots:
       sucrase: 3.35.0
       tree-kill: 1.2.2
     optionalDependencies:
-      '@swc/core': 1.6.13
+      '@swc/core': 1.7.0-nightly-20240715.1
       postcss: 8.4.39
       typescript: 5.5.3
     transitivePeerDependencies:
