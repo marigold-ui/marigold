@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 8.0.2
+
+### Patch Changes
+
+- [#3992](https://github.com/marigold-ui/marigold/pull/3992) [`ed3bd89`](https://github.com/marigold-ui/marigold/commit/ed3bd8975c535817ca904bd1f17b1a4009950e2b) Thanks [@sebald](https://github.com/sebald)! - refa: use `FieldErrorContext` in `<HelpText>` and fix `key` issue
+
+- [#4005](https://github.com/marigold-ui/marigold/pull/4005) [`c64d71e`](https://github.com/marigold-ui/marigold/commit/c64d71e190ba7b361fefeb94e25daa8715050448) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Add ref to datepicker
+
+- [#3985](https://github.com/marigold-ui/marigold/pull/3985) [`864ed08`](https://github.com/marigold-ui/marigold/commit/864ed08bbc7305292e4777baad795b39e8c171f1) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: adjust the triggerwidth of the autocomplete
+
+- Updated dependencies []:
+  - @marigold/system@8.0.2
+  - @marigold/icons@1.2.54
+
 ## 8.0.1
 
 ### Patch Changes
