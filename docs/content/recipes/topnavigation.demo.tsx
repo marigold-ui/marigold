@@ -19,8 +19,8 @@ const NavItem = ({ children, href, active }: NavItemsProps) => {
         href={href}
         target="_blank"
         className={cn(
-          'pb-4 hover:border-b-8 hover:border-[#78716c] ',
-          active && 'border-b-8 border-[#fa8005]'
+          'hover:border-border-base-hover pb-4 hover:border-b-8',
+          active && 'border-border-selected border-b-8'
         )}
         rel="noreferrer"
       >

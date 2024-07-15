@@ -103,7 +103,7 @@ export const Table: Table = ({
         ref={tableRef}
         className={cn(
           'group/table',
-          'border-collapse whitespace-nowrap',
+          'border-collapse',
           stretch ? 'table w-full' : 'block',
           classNames.table
         )}

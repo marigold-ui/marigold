@@ -10,6 +10,7 @@ module.exports = {
   ],
   pluginSearchDirs: ['.'],
   importOrder: [
+    '^node:(.*)$',
     '^react/(.*)$',
     '^next/(.*)$',
     '^@react-aria/(.*)$',

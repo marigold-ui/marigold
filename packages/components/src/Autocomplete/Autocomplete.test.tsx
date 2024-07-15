@@ -15,6 +15,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Field: cva(),
+    ComboBox: cva(),
     Label: {
       container: cva('', {
         variants: {
