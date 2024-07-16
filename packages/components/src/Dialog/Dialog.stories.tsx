@@ -10,7 +10,6 @@ import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Inline } from '../Inline';
 import { Menu } from '../Menu';
-import { ModalProps } from '../Overlay/Modal';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';

@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 
 import { Radio, Stack } from '@marigold/components';
 
-import { RadioGroup } from './RadioGroup';
-
 const meta = {
   title: 'Components/Radio',
   argTypes: {

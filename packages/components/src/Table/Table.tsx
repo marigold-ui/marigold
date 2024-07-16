@@ -28,12 +28,7 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 
 // Props
 // ---------------
-export interface TableProps
-  extends Pick<
-      AriaTableProps<object>,
-      'focusMode' | 'onRowAction' | 'onCellAction'
-    >,
-    Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
+export interface TableProps extends Pick, Omit {
   variant?: string;
   size?: string;
 
@@ -103,7 +98,7 @@ export const Table: Table = ({
         ref={tableRef}
         className={cn(
           'group/table',
-          'border-collapse',
+          'border-collapse whitespace-nowrap',
           stretch ? 'table w-full' : 'block',
           classNames.table
         )}
@@ -165,20 +160,18 @@ Table.Column = Column as (props: ColumnProps) => JSX.Element;
 Table.Header = Header;
 Table.Row = Row;
 
-export interface RowProps extends ReactAiaRowProps<any> {
+export interface RowProps extends ReactAiaRowProps {
   variant?: string;
   size?: string;
 }
 
 // overriding the column width with WidthProps width
-export interface ColumnProps
-  extends Omit<ColumnBaseProps<any>, 'width'>,
-    WidthProp {
+export interface ColumnProps extends Omit, WidthProp {
   /**
    * Control the alignment of Column.
    * @default left
    */
-  align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
+  align?: Exclude;
 }
 /**
  * Necessary since TypeScript can not infer the

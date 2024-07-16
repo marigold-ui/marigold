@@ -110,7 +110,7 @@ export const OnActionMenu: Story = {
 
 export const SingleSelection: Story = {
   render: args => {
-    const [selectedKeys, setSelected] = useState(new Set());
+    const [selectedKeys, setSelected] = useState<'all' | Iterable>(new Set());
     const selected = Array.from(selectedKeys);
 
     return (
@@ -118,7 +118,7 @@ export const SingleSelection: Story = {
         <Menu
           label="Align"
           selectionMode="single"
-          selectedKeys={selectedKeys as Iterable}
+          selectedKeys={selectedKeys}
           onSelectionChange={key => setSelected(new Set(key))}
           {...args}
         >
@@ -134,7 +134,7 @@ export const SingleSelection: Story = {
 
 export const MultiSelection: Story = {
   render: args => {
-    const [selectedKeys, setSelected] = useState(new Set());
+    const [selectedKeys, setSelected] = useState<'all' | Iterable>(new Set());
     const selected = Array.from(selectedKeys);
 
     return (
@@ -142,7 +142,7 @@ export const MultiSelection: Story = {
         <Menu
           label="Choose"
           selectionMode="multiple"
-          selectedKeys={selectedKeys as Iterable}
+          selectedKeys={selectedKeys}
           onSelectionChange={key => setSelected(new Set(key))}
           {...args}
         >

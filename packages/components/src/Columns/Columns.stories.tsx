@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import {
   Button,
   Columns,
+  ColumnsProps,
   DatePicker,
   FieldGroup,
   Select,
@@ -61,7 +62,7 @@ export default meta;
 type Story = StoryObj;
 
 export const Basic: Story = {
-  render: args => (
+  render: (args: ColumnsProps) => (
     <Columns {...args}>
       <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
       <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
@@ -71,7 +72,7 @@ export const Basic: Story = {
 };
 
 export const ComplexChildren: Story = {
-  render: args => (
+  render: (args: ColumnsProps) => (
     <Columns {...args}>
       <main className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
       <>
@@ -117,7 +118,7 @@ export const MultiRow = () => (
 );
 
 export const FullHeight: Story = {
-  render: args => (
+  render: (args: ColumnsProps) => (
     <div className="h-[300px] bg-[#adb5bd]">
       <Columns {...args}>
         <div className="h-[150px] border border-[#495057] bg-[#e9ecef]" />
