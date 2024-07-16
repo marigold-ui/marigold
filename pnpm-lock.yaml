@@ -32,6 +32,9 @@ importers:
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:config/tsconfig
+      '@parcel/watcher':
+        specifier: 2.4.1
+        version: 2.4.1
       '@testing-library/dom':
         specifier: 10.2.0
         version: 10.2.0
@@ -50,6 +53,12 @@ importers:
       all-contributors-cli:
         specifier: 6.26.1
         version: 6.26.1
+      autoprefixer:
+        specifier: 10.4.19
+        version: 10.4.19(postcss@8.4.39)
+      concurrently:
+        specifier: 8.2.2
+        version: 8.2.2
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -62,31 +71,6 @@ importers:
       jest-environment-jsdom:
         specifier: 29.7.0
         version: 29.7.0
-      prettier:
-        specifier: 3.3.2
-        version: 3.3.2
-      react:
-        specifier: 18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: 18.3.1
-        version: 18.3.1(react@18.3.1)
-      typescript:
-        specifier: 5.5.3
-        version: 5.5.3
-      zx:
-        specifier: 8.1.4
-        version: 8.1.4
-    devDependencies:
-      '@parcel/watcher':
-        specifier: 2.4.1
-        version: 2.4.1
-      autoprefixer:
-        specifier: 10.4.19
-        version: 10.4.19(postcss@8.4.39)
-      concurrently:
-        specifier: 8.2.2
-        version: 8.2.2
       next:
         specifier: 14.2.5
         version: 14.2.5(@babel/core@7.24.8)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -96,18 +80,27 @@ importers:
       postcss-loader:
         specifier: 8.1.1
         version: 8.1.1(postcss@8.4.39)(typescript@5.5.3)
+      prettier:
+        specifier: 3.3.2
+        version: 3.3.2
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
       tailwindcss:
         specifier: 3.4.4
         version: 3.4.4
       turbo:
         specifier: 1.13.4
         version: 1.13.4
-      vite:
-        specifier: 5.3.3
-        version: 5.3.3(@types/node@20.14.10)
-      vite-tsconfig-paths:
-        specifier: 4.3.2
-        version: 4.3.2(typescript@5.5.3)(vite@5.3.3(@types/node@20.14.10))
+      typescript:
+        specifier: 5.5.3
+        version: 5.5.3
+      zx:
+        specifier: 8.1.4
+        version: 8.1.4
 
   config/eslint:
     dependencies:
