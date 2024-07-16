@@ -4,6 +4,7 @@ export default () => (
   <Table
     aria-label="Table with multiple selection"
     selectionMode="multiple"
+    variant="grid"
     size="compact"
   >
     <Table.Header>

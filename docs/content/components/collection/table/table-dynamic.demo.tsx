@@ -47,6 +47,7 @@ export default () => {
       <Table
         aria-label="Example dynamic collection table"
         selectionMode="multiple"
+        stretch
         onSelectionChange={key => setSelectedKeys(new Set(key))}
       >
         <Table.Header columns={columns}>
@@ -60,7 +61,7 @@ export default () => {
           )}
         </Table.Body>
       </Table>
-      <div>Selected rows: {selected.join(', ')}</div>
+      <div className="pt-1">Selected rows: {selected.join(', ')}</div>
     </>
   );
 };
