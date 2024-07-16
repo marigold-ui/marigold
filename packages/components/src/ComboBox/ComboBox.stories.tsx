@@ -35,20 +35,12 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disable ComboBox',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     errorMessage: {
       control: {
@@ -101,7 +93,7 @@ const meta = {
 
 export default meta;
 
-export const Basic: StoryObj<typeof ComboBox> = {
+export const Basic: StoryObj = {
   render: args => {
     return (
       <ComboBox label="Animals" disabledKeys={['snake']} {...args}>
@@ -118,7 +110,7 @@ export const Basic: StoryObj<typeof ComboBox> = {
   },
 };
 
-export const Controlled: StoryObj<typeof ComboBox> = {
+export const Controlled: StoryObj = {
   render: args => {
     const [current, setCurrent] = useState<string | undefined>();
     const [id, setId] = useState<Key | null>();
@@ -146,7 +138,7 @@ export const Controlled: StoryObj<typeof ComboBox> = {
   },
 };
 
-export const AsyncLoading: StoryObj<typeof ComboBox> = {
+export const AsyncLoading: StoryObj = {
   render: args => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {

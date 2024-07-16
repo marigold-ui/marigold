@@ -23,30 +23,18 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disabled',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     indeterminate: {
       control: {
         type: 'boolean',
       },
       description: 'Option to define an indeterminate state',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
       description: 'Read only',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     width: {
       control: {
@@ -74,10 +62,10 @@ const meta = {
     children: 'This is a Checkbox',
     size: 'default',
   },
-} satisfies Meta<typeof Checkbox>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => <Checkbox size="small" {...args} defaultChecked />,

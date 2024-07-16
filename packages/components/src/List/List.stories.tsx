@@ -13,16 +13,12 @@ const meta = {
       },
       options: ['ol', 'ul'],
       description: ' List should be ordered or unordered list',
-      table: {
-        type: 'select',
-        defaultValue: { summary: 'ul' },
-      },
     },
   },
-} satisfies Meta<typeof List>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => (

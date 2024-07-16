@@ -28,20 +28,15 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
   },
   args: {
-    disabled: false,
     href: 'https://marigold-ui.io',
   },
-} satisfies Meta<typeof Link>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => (

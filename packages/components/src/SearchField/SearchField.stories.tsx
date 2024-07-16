@@ -43,18 +43,10 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     readOnly: {
       control: {
         type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
       },
     },
   },
@@ -63,10 +55,10 @@ const meta = {
     description: 'This is a help text description',
     errorMessage: 'Something went wrong',
   },
-} satisfies Meta<typeof SearchField>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => <SearchField {...args} required label="search field" />,

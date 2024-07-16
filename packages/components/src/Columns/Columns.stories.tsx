@@ -29,10 +29,6 @@ const meta = {
       ],
       description:
         'array of numbers to set width of every column. can be any value.',
-      table: {
-        type: { summary: 'select' },
-        defaultValue: { summary: [2, 8, 2] },
-      },
     },
     space: {
       control: {
@@ -46,19 +42,11 @@ const meta = {
       control: {
         type: 'text',
       },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '40em' },
-      },
       description: 'The value at which the columns should be wrap down',
     },
     stretch: {
       control: {
         type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
       },
       description: 'Let columns container fill height',
     },
@@ -67,10 +55,10 @@ const meta = {
     collapseAt: '40em',
     columns: [2, 8, 2],
   },
-} satisfies Meta<typeof Columns>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => (
@@ -104,8 +92,7 @@ const Block = ({
 }) => (
   <div
     style={{ height }}
-    className=" h-[--height] rounded border border-solid border-[#67686c] bg-[#858cab] p-3 text-[#edf2ff]
-     "
+    className="h-[--height] rounded border border-solid border-[#67686c] bg-[#858cab] p-3 text-[#edf2ff]"
   >
     {children}
   </div>

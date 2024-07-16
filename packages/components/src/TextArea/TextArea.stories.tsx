@@ -42,10 +42,6 @@ const meta = {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     errorMessage: {
       control: {
@@ -62,27 +58,15 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     readOnly: {
       control: {
         type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
       },
     },
     width: {
@@ -104,10 +88,10 @@ const meta = {
     errorMessage: 'Something went wrong',
     error: false,
   },
-} satisfies Meta<typeof TextArea>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => <TextArea {...args} />,

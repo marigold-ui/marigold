@@ -20,12 +20,6 @@ const meta = {
       control: {
         type: 'object',
       },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: {
-          summary: '["1"]',
-        },
-      },
     },
     selectionMode: {
       description: 'if the Accordion can open more than one item',
@@ -34,7 +28,9 @@ const meta = {
       },
       options: ['single', 'multiple'],
       table: {
-        defaultValue: 'single',
+        defaultValue: {
+          summary: 'single',
+        },
       },
     },
   },
@@ -45,7 +41,7 @@ const meta = {
 } satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof Accordion>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => (

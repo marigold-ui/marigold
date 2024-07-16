@@ -30,10 +30,6 @@ const meta = {
         'file',
         'color',
       ],
-      table: {
-        type: 'select',
-        defaultValue: { summary: 'text' },
-      },
       description: 'Set the type of the input.',
     },
     disabled: {
@@ -76,10 +72,10 @@ const meta = {
   args: {
     type: 'text',
   },
-} satisfies Meta<typeof Input>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => <Input placeholder="Placeholder..." {...args} />,

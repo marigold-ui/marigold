@@ -49,21 +49,21 @@ const meta = {
     },
     variant: {
       control: {
-        type: 'string',
+        type: 'text',
       },
       description: 'The variant of the tooltip',
     },
     size: {
       control: {
-        type: 'string',
+        type: 'text',
       },
       description: 'The size of the tooltip',
     },
   },
-} satisfies Meta<typeof Tooltip>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const BasicTooltip: Story = {
   render: args => {

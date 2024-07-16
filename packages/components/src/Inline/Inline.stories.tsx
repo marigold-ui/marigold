@@ -11,19 +11,11 @@ const meta = {
       control: {
         type: 'text',
       },
-      table: {
-        type: 'text',
-        defaultValue: { summary: 'not set' },
-      },
       description: 'Set a space value. For this we use Tailwind token.',
     },
     alignX: {
       control: {
         type: 'select',
-      },
-      table: {
-        type: 'text',
-        defaultValue: { summary: 'left' },
       },
       options: ['left', 'center', 'right'],
       description: 'Set the Horizontal Alignment',
@@ -32,18 +24,14 @@ const meta = {
       control: {
         type: 'select',
       },
-      table: {
-        type: 'text',
-        defaultValue: { summary: 'not set' },
-      },
       options: ['top', 'center', 'bottom'],
       description: 'Set the Vertical Alignment',
     },
   },
-} satisfies Meta<typeof Inline>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 const Block = ({ children }: { children: ReactNode }) => (
   <div className="rounded border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">

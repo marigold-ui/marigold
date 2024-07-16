@@ -35,10 +35,6 @@ const meta = {
         type: 'boolean',
       },
       description: 'Is the DateField invalid?',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
 
     errorMessage: {
@@ -64,40 +60,27 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     disabled: {
       control: {
         type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
       },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
   },
   args: {
     label: 'My Label',
     description: 'This is a help text description',
-    error: false,
     errorMessage: 'Something went wrong',
   },
-} satisfies Meta<DateFieldProps>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => (

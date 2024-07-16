@@ -22,36 +22,24 @@ const meta = {
     dismissable: {
       control: { type: 'boolean' },
       description: 'Set dismissable',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: true },
-      },
     },
     keyboardDismissable: {
       control: { type: 'boolean' },
       description: 'Set keyboardDismissable',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: true },
-      },
     },
     open: {
       control: { type: 'boolean' },
       description: 'Set open state',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
   },
   args: {
     dismissable: true,
     keyboardDismissable: true,
   },
-} satisfies Meta<ModalProps>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => {

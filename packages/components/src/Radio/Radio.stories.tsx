@@ -34,30 +34,18 @@ const meta = {
         type: 'boolean',
       },
       description: 'Required',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
       description: 'Disabled',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Error',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     width: {
       control: {
@@ -69,10 +57,10 @@ const meta = {
   args: {
     label: 'Label',
   },
-} satisfies Meta<typeof RadioGroup>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => (

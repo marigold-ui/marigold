@@ -48,30 +48,18 @@ const meta = {
         type: 'text',
       },
       description: 'The width of the field, used Tailwind tokens for this.',
-      table: {
-        type: { summary: 'text' },
-        defaultValue: { summary: 'full' },
-      },
     },
     isInvalid: {
       control: {
         type: 'boolean',
       },
       description: 'Wheter if the field is invalid',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     isRequired: {
       control: {
         type: 'boolean',
       },
       description: 'Wheter if the field is required',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
   },
   args: {
@@ -79,10 +67,10 @@ const meta = {
     description: 'This is a help text description',
     label: 'This is the label',
   },
-} satisfies Meta<FieldBaseProps<any>>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => (

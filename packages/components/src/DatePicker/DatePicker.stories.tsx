@@ -17,10 +17,6 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disable the date picker',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     width: {
       control: {
@@ -34,10 +30,6 @@ const meta = {
         type: 'boolean',
       },
       description: 'Set the date picker required.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     open: {
       control: {
@@ -63,23 +55,16 @@ const meta = {
         type: 'boolean',
       },
       description: 'Sets error for the date picker.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
   },
   args: {
     errorMessage: 'Something went wrong!',
     description: 'This is a description help text.',
-    disabled: false,
-    required: false,
-    error: false,
   },
-} satisfies Meta<typeof DatePicker>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => {

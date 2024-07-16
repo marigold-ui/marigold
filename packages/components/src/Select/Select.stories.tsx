@@ -37,30 +37,18 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disable the select',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     required: {
       control: {
         type: 'boolean',
       },
       description: 'Require the select',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Set error state',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     errorMessage: {
       control: {
@@ -78,11 +66,11 @@ const meta = {
   args: {
     label: 'Select for favorite:',
   },
-} satisfies Meta<typeof Select>;
+} satisfies Meta;
 
 export default meta;
 
-export const Basic: StoryObj<typeof Select> = {
+export const Basic: StoryObj = {
   render: args => {
     const [selected, setSelected] = useState<string | number>('');
     return (
@@ -108,7 +96,7 @@ export const Basic: StoryObj<typeof Select> = {
   },
 };
 
-export const LongItems: StoryObj<typeof Select> = {
+export const LongItems: StoryObj = {
   render: args => {
     return (
       <Inset space={24}>
@@ -132,7 +120,7 @@ export const LongItems: StoryObj<typeof Select> = {
   },
 };
 
-export const LotsOfOptions: StoryObj<typeof Select> = {
+export const LotsOfOptions: StoryObj = {
   render: args => {
     return (
       <Inset space={24}>
@@ -182,7 +170,7 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
   },
 };
 
-export const Sections: StoryObj<typeof Select> = {
+export const Sections: StoryObj = {
   render: args => (
     <Select {...args}>
       <Select.Section>
@@ -199,7 +187,7 @@ export const Sections: StoryObj<typeof Select> = {
   ),
 };
 
-export const SelectedScroll: StoryObj<typeof Select> = {
+export const SelectedScroll: StoryObj = {
   render: args => {
     return (
       <Select disabledKeys={['Firefly']} {...args}>

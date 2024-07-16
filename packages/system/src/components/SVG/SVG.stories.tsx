@@ -23,11 +23,6 @@ const meta = {
         max: 96,
         step: 2,
       },
-      table: {
-        defaultValue: {
-          summary: 24,
-        },
-      },
     },
     color: {
       control: {
@@ -44,7 +39,7 @@ const meta = {
 
 export default meta;
 
-export const Basic: StoryObj<typeof SVG> = {
+export const Basic: StoryObj = {
   render: args => (
     <SVG {...args} viewBox="0 0 24 24">
       <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
@@ -52,7 +47,7 @@ export const Basic: StoryObj<typeof SVG> = {
   ),
 };
 
-export const Filled: StoryObj<typeof SVG> = {
+export const Filled: StoryObj = {
   render: args => (
     <SVG {...args} viewBox="0 0 24 24" className="fill-primary-600">
       <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
@@ -60,7 +55,7 @@ export const Filled: StoryObj<typeof SVG> = {
   ),
 };
 
-export const Responsive: StoryObj<typeof SVG> = {
+export const Responsive: StoryObj = {
   render: args => (
     <SVG
       {...args}

@@ -11,10 +11,6 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
       description: 'If the tooltip is disabled. It will not open.',
     },
     delay: {
@@ -50,27 +46,19 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
       description: 'If the tooltip is open',
     },
     defaultOpen: {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
       description: 'If the tooltip should be default open (uncontrolled)',
     },
   },
-} satisfies Meta<typeof Tooltip.Trigger>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Trigger: Story = {
   render: args => {

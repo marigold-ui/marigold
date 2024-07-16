@@ -10,12 +10,6 @@ const meta = {
       control: {
         type: 'number',
       },
-      table: {
-        type: { summary: 'number' },
-        defaultValue: {
-          summary: 150,
-        },
-      },
       description: 'Sets the size of the SVG.',
     },
     className: {
@@ -32,10 +26,10 @@ const meta = {
   args: {
     size: 150,
   },
-} satisfies Meta<typeof XLoader>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => <XLoader {...args} />,

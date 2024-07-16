@@ -25,18 +25,10 @@ const meta = {
         type: 'boolean',
       },
       description: 'Whether the Slider is disabled',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     maxValue: {
       control: {
         type: 'number',
-      },
-      table: {
-        type: { summary: 'number' },
-        defaultValue: { summary: 500 },
       },
       description: 'The maximum value of the slider',
     },
@@ -46,10 +38,6 @@ const meta = {
         min: 1,
         max: 100,
         step: 1,
-      },
-      table: {
-        type: { summary: 'range' },
-        defaultValue: { summary: 10 },
       },
       description: 'The step size of the slider',
     },
@@ -65,10 +53,10 @@ const meta = {
     step: 10,
     maxValue: 500,
   },
-} satisfies Meta<typeof Slider>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = { render: args => <Slider {...args} /> };
 

@@ -67,9 +67,6 @@ const meta = {
         'end top',
         'end bottom',
       ],
-      table: {
-        defaultValue: 'bottom',
-      },
     },
     selectionMode: {
       description: 'if the Menu can select one MenuItem',
@@ -77,16 +74,13 @@ const meta = {
         type: 'select',
       },
       options: ['none', 'single', 'multiple'],
-      table: {
-        defaultValue: 'none',
-      },
     },
   },
   args: {},
-} satisfies Meta<typeof Menu>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const StandardMenu: Story = {
   render: args => {
@@ -124,7 +118,7 @@ export const SingleSelection: Story = {
         <Menu
           label="Align"
           selectionMode="single"
-          selectedKeys={selectedKeys as Iterable<Key>}
+          selectedKeys={selectedKeys as Iterable}
           onSelectionChange={key => setSelected(new Set(key))}
           {...args}
         >
@@ -148,7 +142,7 @@ export const MultiSelection: Story = {
         <Menu
           label="Choose"
           selectionMode="multiple"
-          selectedKeys={selectedKeys as Iterable<Key>}
+          selectedKeys={selectedKeys as Iterable}
           onSelectionChange={key => setSelected(new Set(key))}
           {...args}
         >

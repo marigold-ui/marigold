@@ -33,10 +33,6 @@ const meta = {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     errorMessage: {
       control: {
@@ -52,27 +48,15 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     readOnly: {
       control: {
         type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
       },
     },
     type: {
@@ -111,10 +95,10 @@ const meta = {
     errorMessage: 'Something went wrong',
     type: 'text',
   },
-} satisfies Meta<typeof TextField>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => <TextField {...args} label="My label is great." />,

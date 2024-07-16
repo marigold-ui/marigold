@@ -40,19 +40,15 @@ const meta = {
         type: 'boolean',
       },
       description: 'Switch disabled state',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
   },
   args: {
     children: 'Default Switch',
   },
-} satisfies Meta<typeof Switch>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => <Switch {...args} />,

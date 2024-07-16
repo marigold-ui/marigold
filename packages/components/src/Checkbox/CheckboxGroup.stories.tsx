@@ -25,40 +25,24 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disabled',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     required: {
       control: {
         type: 'boolean',
       },
       description: 'Required',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
       description: 'Read only',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Error state',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     errorMessage: {
       control: {
@@ -83,14 +67,12 @@ const meta = {
   },
   args: {
     label: 'This is a label',
-    readOnly: false,
-    disabled: false,
     children: 'This is a Checkbox',
   },
-} satisfies Meta<typeof CheckboxGroup>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => {

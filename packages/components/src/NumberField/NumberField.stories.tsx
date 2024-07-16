@@ -34,55 +34,31 @@ const meta = {
         type: 'boolean',
       },
       description: 'Is the input invalid?',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     errorMessage: {
       control: {
         type: 'text',
       },
       description: 'Error Message',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Something went wrong' },
-      },
     },
     required: {
       control: {
         type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
       },
     },
     disabled: {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     readOnly: {
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
     },
     hideStepper: {
       control: {
         type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
       },
     },
     width: {
@@ -95,16 +71,12 @@ const meta = {
   args: {
     description: 'This is a help text description',
     label: 'Label',
-    hideStepper: false,
-    readOnly: false,
-    disabled: false,
     errorMessage: 'Something went wrong',
-    error: false,
   },
-} satisfies Meta<typeof NumberField>;
+} satisfies Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Basic: Story = {
   render: args => <NumberField {...args} />,
