@@ -3,10 +3,9 @@ title: Button
 caption: Whenever you need that clicky thing.
 ---
 
-The `<Button>` is a common form component, that renders a button element, which allows users to perform an action.
-They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
+Buttons are crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
 
-The variant and size of the `<Button>` can be added with the `variant` prop. You can also set the `size`, currently there is just one size available.
+Different types of buttons, such as primary and secondary, help guide users by visually prioritizing actions. Primary buttons are typically used for the most important actions, while secondary buttons provide less critical options.
 
 ## Import
 
@@ -23,6 +22,31 @@ import { Button } from '@marigold/components';
 <PropsTable component={title} />
 
 ## Examples
+
+### Button Variants
+
+(list of all available buttons)
+
+### Link Buttons
+
+https://react-spectrum.adobe.com/react-aria/Button.html#link-buttons
+
+Do not use buttons as navigational elements. Instead, use links when the desired action is to take the user to a new page.
+
+### Using Buttons for Navigation
+
+(don't use links. when to use navigation with a button (form submission))
+
+### Action Buttons
+
+- alignment, secondary + primary
+- TODO: Build an example using "actions" in dialog / message? (we actually don't have a good way to add buttons to a message...)
+
+### Full width
+
+- prop `fullWidth`
+
+---
 
 ### Primary Button
 
