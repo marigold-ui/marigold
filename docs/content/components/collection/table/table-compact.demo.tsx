@@ -1,12 +1,7 @@
 import { Table } from '@marigold/components';
 
 export default () => (
-  <Table
-    aria-label="Table with multiple selection"
-    selectionMode="multiple"
-    variant="grid"
-    size="compact"
-  >
+  <Table aria-label="Table with variant and size" variant="grid" size="compact">
     <Table.Header>
       <Table.Column>Name</Table.Column>
       <Table.Column>Firstname</Table.Column>

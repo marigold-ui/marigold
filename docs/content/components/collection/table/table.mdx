@@ -47,6 +47,8 @@ Don't use the `<Table>` if you need to display complex data or if too many inter
 
 DO AND DONT FOR NOT USE AS LAYOUT
 
+NOT USE TABLE FOR VISUAL PRESANTATION
+
 ## Appearance
 
 <AppearanceTable component={title} />
@@ -111,10 +113,20 @@ Also you see how to use the `align` property on the columns.
 
 <ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
 
-### Formatters
+### Action cells and formatters
 
-We have formatting helper for dates and values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
+If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible.
 
-<ComponentDemo file="./table-formatters.demo.tsx" disableLabelWidth="true" />
+As you may notice the table below is build with help of our formatting helper for dates and values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
 
-If you need to edit the table, you can use a action cell to open a modal and edit the fields related to the content. If that is still not enough reach outside of Marigold.
+<ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
+
+DO AND DONT ONLY USE ONE ACTION CELL
+
+DO AND DONT FORMATTER
+
+### Sticky header
+
+In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it. This makes sense for large data tables where it is relevant to know on which column you are.
+
+<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
