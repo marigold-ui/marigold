@@ -1,43 +1,39 @@
 import React from 'react';
 
-import { Stack, Table, TextField } from '@marigold/components';
+import { Stack, Table, TextArea, TextField } from '@marigold/components';
 
 export default () => {
   const columns = [
-    { name: 'Name', key: 'name' },
-    { name: 'Firstname', key: 'firstname' },
-    { name: 'House', key: 'house' },
-    { name: 'Year of birth', key: 'year' },
+    { name: 'Id', key: 'id' },
+    { name: 'Event', key: 'event' },
+    { name: 'Description', key: 'description' },
+    { name: 'Date', key: 'date' },
   ];
 
   const rowData: { [key: string]: string }[] = [
     {
-      id: '1',
-      name: 'Potter',
-      firstname: 'Harry',
-      house: 'Gryffindor',
-      year: '1980',
+      id: '1234',
+      event: 'Concert',
+      date: '2024-01-10',
+      description: 'Live concert of the worlds best band.',
     },
     {
-      id: '2',
-      name: 'Malfoy',
-      firstname: 'Draco',
-      house: 'Slytherin',
-      year: '1980',
+      id: '82374',
+      event: 'Open Air Festival',
+      date: '2024-07-09',
+      description: 'The best summer event of the year.',
     },
     {
-      id: '3',
-      name: 'Diggory',
-      firstname: 'Cedric',
-      house: 'Hufflepuff',
-      year: '1977',
+      id: '724423',
+      event: 'Live on Stage',
+      date: '2024-11-25',
+      description: 'All live',
     },
     {
-      id: '4',
-      name: 'Lovegood',
-      firstname: 'Luna',
-      house: 'Ravenclaw',
-      year: '1981',
+      id: '23497',
+      event: 'Open Air Summertime',
+      date: '2024-06-01',
+      description: 'Summer is calling.',
     },
   ];
   const [data, setData] = React.useState(rowData);
@@ -54,7 +50,7 @@ export default () => {
 
   return (
     <Stack space={3}>
-      <Table aria-label="Example dynamic collection table">
+      <Table aria-label="Example how to not use the table">
         <Table.Header columns={columns}>
           {column => <Table.Column>{column.name}</Table.Column>}
         </Table.Header>
@@ -62,17 +58,17 @@ export default () => {
           {item => (
             <Table.Row key={item.id}>
               {columnKey =>
-                columnKey !== 'house' ? (
+                columnKey !== 'description' ? (
                   <Table.Cell>{item[columnKey]}</Table.Cell>
                 ) : (
                   <Table.Cell>
-                    <TextField
-                      value={item.house}
+                    <TextArea
+                      value={item.description}
                       disabled={false}
                       onChange={(value: string) =>
-                        handleChange(item.id, value, 'house')
+                        handleChange(item.id, value, 'description')
                       }
-                      aria-label={'house'}
+                      aria-label={'description'}
                     />
                   </Table.Cell>
                 )
