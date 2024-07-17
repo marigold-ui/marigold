@@ -30,6 +30,8 @@ import { Table } from '@marigold/components';
 
 Use the `<Table>` when you need to organize and display large amout of data.
 
+DO FOR HOW TO USE Table
+
 ### Features provided by the `<Table>`:
 
 - Select one or multiple rows
@@ -130,3 +132,18 @@ DO AND DONT FORMATTER
 In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it. This makes sense for large data tables where it is relevant to know on which column you are.
 
 <ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
+
+### Using input fields
+
+Example for using controlled state with input fields inside a table. This is a case you normally should avoid. Find another solution that fits better for your use cases. If you need help finding alternatives please [contact us](../introduction/get-in-touch).
+
+<SectionMessage variant="warning">
+  <SectionMessage.Title>Avoid mutation</SectionMessage.Title>
+  <SectionMessage.Content>
+    It's best practice in React to avoid mutation cause of unpredicatable side
+    effects. For more detailed explanations see
+    [here](https://react.dev/learn/updating-objects-in-state#whats-a-mutation).
+  </SectionMessage.Content>
+</SectionMessage>
+
+<ComponentDemo file="./table-input.demo.tsx" disableLabelWidth="true" />
