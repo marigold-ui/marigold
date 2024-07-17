@@ -3,6 +3,14 @@ import { Card, Inline, Table, Text } from '@/ui';
 
 import { BlankCanvas } from './icons';
 
+// Helper
+// ---------------
+const parseType = (val: string) =>
+  // Remove "()" when the type is wrapped im them (this is done by prettier)
+  val.replace(/^\((.*)\)$/, '$1');
+
+// Types
+// ---------------
 export interface PropsTableProps {
   component?: string;
 }
@@ -18,6 +26,8 @@ interface Prop {
   description: string;
 }
 
+// Component
+// ---------------
 export const PropsTable = ({ component }: PropsTableProps) => {
   //make the props iterable
   const props =
@@ -59,7 +69,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {prop.type.name}
+                      {parseType(prop.type.name)}
                     </code>
                   </Table.Cell>
                   <Table.Cell>
