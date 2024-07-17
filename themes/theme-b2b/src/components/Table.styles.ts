@@ -1,12 +1,12 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
-  table: cva('border-collapse bg-white text-sm'),
+  table: cva('border-collapse whitespace-nowrap bg-white text-sm'),
   header: cva(
     [
-      'relative',
+      'relative ',
       'group-aria-[multiselectable]/table:[&:first-child]:w-12',
-      'cursor-default p-4 text-left',
+      'cursor-default p-4',
       'text-text-base',
       'after:border-border-base after:absolute after:bottom-0 after:left-0 after:z-[-1] after:size-full after:border-b after:border-solid after:content-[""]',
       'focus:outline-outline-focus',

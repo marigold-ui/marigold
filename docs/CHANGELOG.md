@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 8.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`ed3bd89`](https://github.com/marigold-ui/marigold/commit/ed3bd8975c535817ca904bd1f17b1a4009950e2b), [`c64d71e`](https://github.com/marigold-ui/marigold/commit/c64d71e190ba7b361fefeb94e25daa8715050448), [`864ed08`](https://github.com/marigold-ui/marigold/commit/864ed08bbc7305292e4777baad795b39e8c171f1)]:
+  - @marigold/components@8.0.2
+  - @marigold/theme-b2b@27.1.14
+  - @marigold/theme-core@26.1.14
+  - @marigold/theme-docs@2.0.4
+  - @marigold/icons@1.2.54
+  - @marigold/theme-preset@1.3.19
+
 ## 8.0.1
 
 ### Patch Changes
