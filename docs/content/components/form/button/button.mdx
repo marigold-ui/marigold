@@ -38,15 +38,19 @@ Different types of buttons can be utilized through the `variant` prop. Choose th
   </SectionMessage.Content>
 </SectionMessage>
 
-### Link Buttons
+### Full width
 
-https://react-spectrum.adobe.com/react-aria/Button.html#link-buttons
+The width of buttons automatically adjusts to fit the label. Use the `fullWidth` prop to make the button span the entire available width.
 
-Do not use buttons as navigational elements. Instead, use links when the desired action is to take the user to a new page.
+<ComponentDemo file="./button-variants.demo.tsx" />
 
-### Using Buttons for Navigation
+### Navigation with Buttons
 
-(don't use links. when to use navigation with a button (form submission))
+Never use buttons for navigation. Always use links to direct users to a new page. Using buttons for navigation can cause accessibility issues, such as making it difficult for keyboard and screen reader users to interact properly.
+
+The Button component is designed for interactive elements that trigger actions. If you need a link that looks like a button, use the [`<Link>`](/components/content/link) component with the appropriate `variant`.
+
+<ComponentDemo file="./button-link.demo.tsx" />
 
 ### Action Buttons
 

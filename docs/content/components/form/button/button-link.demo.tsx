@@ -1,7 +1,7 @@
-import { Button } from '@marigold/components';
+import { Link } from '@marigold/components';
 
 export default () => (
-  <Button as="a" variant="primary" href="/rx-logo.png" download>
-    Download Logo
-  </Button>
+  <Link variant="primary" href="https://www.reservix.de/">
+    Your Next Adventure
+  </Link>
 );
