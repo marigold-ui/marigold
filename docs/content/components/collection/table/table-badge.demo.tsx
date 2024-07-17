@@ -49,7 +49,7 @@ export default () => {
     },
   ];
   return (
-    <Table size="compact">
+    <Table size="compact" stretch>
       <Table.Header columns={columns}>
         {column => <Table.Column>{column.name}</Table.Column>}
       </Table.Header>
