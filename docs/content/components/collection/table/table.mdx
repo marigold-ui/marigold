@@ -32,7 +32,7 @@ Use the `<Table>` when you need to organize and display large amout of data.
 
 DO FOR HOW TO USE Table
 
-### Features provided by the `<Table>`:
+Features provided by the `<Table>`:
 
 - Select one or multiple rows
 - Action cells
@@ -43,13 +43,21 @@ DO FOR HOW TO USE Table
 - Nesting columns
 - Having fixed column widths
 
+These features will be explained in more detail in the examples further down the page.
+
 ### When not to use?
 
-Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table. Also the component should not be used for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
+Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table. The component should only be used with one action cell at the end of the table and additional with the selection cell with checkboxes at the start of the table.
+
+DO AND DONT ACTION CELL
+
+Also the component should not be used for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
 
 DO AND DONT FOR NOT USE AS LAYOUT
 
-NOT USE TABLE FOR VISUAL PRESANTATION
+NOT USE TABLE FOR VISUAL PRESANTATION (no big images inside etc)
+
+NOT USE TABLE WITH EMPTY HEADERS
 
 ## Appearance
 
@@ -119,7 +127,7 @@ Also you see how to use the `align` property on the columns.
 
 If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible.
 
-As you may notice the table below is build with help of our formatting helper for dates and values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
+As you may notice the table below is build with help of our formatting helper components for dates and numeric values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
 
 <ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
 
@@ -129,13 +137,21 @@ DO AND DONT FORMATTER
 
 ### Sticky header
 
-In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it. This makes sense for large data tables where it is relevant to know on which column you are.
+In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it. When scrolling the context is still given. This makes sense for large data tables where it is relevant to know on which column you are.
 
 <ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
 
-### Using input fields
+### Status indicator
 
-Example for using controlled state with input fields inside a table. This is a case you normally should avoid. Find another solution that fits better for your use cases. If you need help finding alternatives please [contact us](../introduction/get-in-touch).
+<ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
+
+## Exceptions confirm the rule
+
+If you read so far, you noticed that this example may not be confirm with the definition of what the `<Table>` should follow. But expecptions prove the rule.
+
+This example shows how to use input fields within the `<Table>`. For now the Marigold table is only used for presenting data - not interact with certain cells/fields directly, but if you really need input fields in your table you can make this exeption.
+
+This is a case you normally should avoid. Find another solution that fits better for your use cases. If you need help finding alternatives please [contact us](../introduction/get-in-touch).
 
 <SectionMessage variant="warning">
   <SectionMessage.Title>Avoid mutation</SectionMessage.Title>
@@ -145,5 +161,7 @@ Example for using controlled state with input fields inside a table. This is a c
     [here](https://react.dev/learn/updating-objects-in-state#whats-a-mutation).
   </SectionMessage.Content>
 </SectionMessage>
+
+<p />
 
 <ComponentDemo file="./table-input.demo.tsx" disableLabelWidth="true" />
