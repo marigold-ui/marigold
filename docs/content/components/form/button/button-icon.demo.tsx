@@ -2,12 +2,12 @@ import { Button, Inline } from '@marigold/components';
 import { Ticket } from '@marigold/icons';
 
 export default () => (
-  <Inline space={2}>
+  <Inline space={12}>
     <Button variant="primary">
-      <Ticket /> Icon Primary
+      <Ticket /> Buy your Ticket
     </Button>
-    <Button variant="primary" disabled>
-      <Ticket /> Icon Primary
+    <Button variant="icon">
+      <Ticket />
     </Button>
   </Inline>
 );
