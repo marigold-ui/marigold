@@ -1,8 +1,9 @@
 'use client';
 
 import { type Theme } from '@/ui';
-import React, {
+import {
   ReactNode,
+  createContext,
   useCallback,
   useContext,
   useEffect,
@@ -15,19 +16,26 @@ import { useRouter, useSearchParams } from 'next/navigation';
 // Context
 // ---------------
 export interface ThemeSwitchContextType {
-  current: string | undefined;
+  current: string;
   themes: { [name: string]: Theme };
   updateTheme: Function;
 }
 
-export const Context = React.createContext({
-  current: undefined,
-  themes: {},
-} as ThemeSwitchContextType);
+export const Context = createContext<ThemeSwitchContextType | null>(null);
 
 // Hook
 // ---------------
-export const useThemeSwitch = () => useContext(Context);
+export const useThemeSwitch = () => {
+  const ctx = useContext(Context);
+
+  if (!ctx) {
+    throw new Error(
+      'The "useThemeSwitch" hook can only be used within a <MarigoldThemeSwitch> component!'
+    );
+  }
+
+  return ctx;
+};
 
 // Component
 // ---------------
