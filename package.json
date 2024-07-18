@@ -31,7 +31,15 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "typescript": "5.5.3",
-    "zx": "8.1.4"
+    "zx": "8.1.4",
+    "@parcel/watcher": "2.4.1",
+    "autoprefixer": "10.4.19",
+    "concurrently": "8.2.2",
+    "next": "14.2.5",
+    "postcss-import": "16.1.0",
+    "postcss-loader": "8.1.1",
+    "tailwindcss": "3.4.4",
+    "turbo": "1.13.4"
   },
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",
@@ -58,17 +66,5 @@
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install",
     "postinstall": "pnpm build"
-  },
-  "devDependencies": {
-    "@parcel/watcher": "2.4.1",
-    "autoprefixer": "10.4.19",
-    "concurrently": "8.2.2",
-    "next": "14.2.5",
-    "postcss-import": "16.1.0",
-    "postcss-loader": "8.1.1",
-    "tailwindcss": "3.4.4",
-    "turbo": "1.13.4",
-    "vite": "5.3.3",
-    "vite-tsconfig-paths": "4.3.2"
   }
 }

@@ -39,6 +39,10 @@ export const ComponentDemo = ({
   children,
   disableLabelWidth,
 }: ComponentDemoProps) => {
+  if (!registry[name]) {
+    throw Error(`No demo with name "${name}" found in the registry.`);
+  }
+
   const Demo = registry[name].demo;
   const { current, themes } = useThemeSwitch();
 
@@ -51,7 +55,7 @@ export const ComponentDemo = ({
 
   return (
     <>
-      <Tabs defaultSelectedKey="preview">
+      <Tabs variant="demo" defaultSelectedKey="preview">
         <Tabs.List>
           <Tabs.Item id="preview">Preview</Tabs.Item>
           <Tabs.Item id="code">Code</Tabs.Item>
