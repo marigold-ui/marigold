@@ -63,7 +63,7 @@ Do.Description = Description;
 // Dont
 // ---------------
 export const Dont = ({ children }: PropsWithChildren) => (
-  <Container variant="do">
+  <Container variant="dont">
     <Title>
       <svg
         width="10px"
