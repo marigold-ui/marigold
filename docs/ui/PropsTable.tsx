@@ -1,12 +1,18 @@
-'use client';
-
+import componentProps from '@/registry/props.json';
 import { Card, Inline, Table, Text } from '@/ui';
 
-import tableProps from '../.component-props/index.json';
 import { BlankCanvas } from './icons';
 
+// Helper
+// ---------------
+const parseType = (val: string) =>
+  // Remove "()" when the type is wrapped im them (this is done by prettier)
+  val.replace(/^\((.*)\)$/, '$1');
+
+// Types
+// ---------------
 export interface PropsTableProps {
-  componentFile?: string;
+  component?: string;
 }
 
 interface Prop {
@@ -20,31 +26,41 @@ interface Prop {
   description: string;
 }
 
-export const PropsTable = ({ componentFile }: PropsTableProps) => {
+// Component
+// ---------------
+export const PropsTable = ({ component }: PropsTableProps) => {
   //make the props iterable
   const props =
-    componentFile &&
-    (Object.entries((tableProps as any)[componentFile]).map(
+    component &&
+    (Object.entries((componentProps as any)[component]).map(
       element => element[1]
     ) as Prop[]);
   return (
-    <Card px={3} py={4}>
+    <Card px={0} py={2}>
       {!props ? (
         <Inline space={2}>
           <BlankCanvas />
           <Text>Sorry! There are currently no props available.</Text>
         </Inline>
       ) : (
-        <div className="overflow-auto">
+        <div className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-auto">
           <Table aria-label="Table with component props" variant="hover">
             <Table.Header>
-              <Table.Column key="property">Property</Table.Column>
-              <Table.Column key="type">Type</Table.Column>
-              <Table.Column key="default">Default</Table.Column>
-              <Table.Column key="description">Description</Table.Column>
+              <Table.Column key="property" width="1/6">
+                Property
+              </Table.Column>
+              <Table.Column key="type" width="2/6">
+                Type
+              </Table.Column>
+              <Table.Column key="default" width="1/6">
+                Default
+              </Table.Column>
+              <Table.Column key="description" width="2/6">
+                Description
+              </Table.Column>
             </Table.Header>
-            <Table.Body items={props}>
-              {(prop: Prop) => (
+            <Table.Body>
+              {props.map(prop => (
                 <Table.Row key={prop.name}>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
@@ -53,7 +69,7 @@ export const PropsTable = ({ componentFile }: PropsTableProps) => {
                   </Table.Cell>
                   <Table.Cell>
                     <code className="before:content-none after:content-none">
-                      {prop.type.name}
+                      {parseType(prop.type.name)}
                     </code>
                   </Table.Cell>
                   <Table.Cell>
@@ -63,7 +79,7 @@ export const PropsTable = ({ componentFile }: PropsTableProps) => {
                   </Table.Cell>
                   <Table.Cell>{prop.description}</Table.Cell>
                 </Table.Row>
-              )}
+              ))}
             </Table.Body>
           </Table>
         </div>

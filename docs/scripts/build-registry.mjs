@@ -30,5 +30,5 @@ for (const item of demoPath) {
 index += `
 } as const;`;
 
-fs.outputFileSync(path.join(process.cwd(), '.registry/index.tsx'), index);
-console.log(`✅ Successfully built ${demoPath.length} registry items!`);
+fs.outputFileSync(path.join(process.cwd(), '.registry/demos.tsx'), index);
+console.log(`✅ Successfully built ${demoPath.length} registry items!\n`);

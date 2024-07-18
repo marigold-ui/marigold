@@ -145,8 +145,7 @@ test('supports field structure (with error)', () => {
   expect(label).toBeInTheDocument();
 
   const description = screen.queryByText('Some helpful text');
-  expect(description).toBeInTheDocument();
-  expect(description).toHaveClass('peer-first/error:hidden');
+  expect(description).not.toBeInTheDocument();
 
   const error = screen.queryByText('Whoopsie');
   expect(error).toBeInTheDocument();

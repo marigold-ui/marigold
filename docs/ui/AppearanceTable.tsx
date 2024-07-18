@@ -44,7 +44,7 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
       : getKeysFromSlots(styles);
 
   return (
-    <Card px={3} py={4}>
+    <Card px={0} py={2}>
       {appearances?.variant?.length === 0 && appearances?.size?.length === 0 ? (
         <Inline space={2}>
           <BlankCanvas />
@@ -54,7 +54,7 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
         </Inline>
       ) : (
         <div className="overflow-auto">
-          <Table aria-labelledby="appearance table" variant="hover">
+          <Table aria-labelledby="appearance table" variant="hover" stretch>
             <Table.Header>
               <Table.Column key={'property'}>Property</Table.Column>
               <Table.Column key={'type'}>Type</Table.Column>
