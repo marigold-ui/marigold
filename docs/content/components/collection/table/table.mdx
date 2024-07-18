@@ -16,9 +16,6 @@ The `<Table>` is a structured component used to organize and display tabular dat
   </SectionMessage.Content>
 </SectionMessage>
 
-Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
-Use the `<Table>` when you need to organize and display large amout of data.
-
 Here is a full list of features provided by the `<Table>`:
 
 - Select one or multiple rows
@@ -81,9 +78,9 @@ Use the `<Table>` when you need to organize and display large amout of data.
 
 Also the component should not be used for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
 
-DO AND DONT FOR NOT USE AS LAYOUT
+DO AND DONT FOR NOT USE AS LAYOUT USE FOR TABULAR DATA
 
-NOT USE TABLE FOR VISUAL PRESANTATION (no big images inside etc)
+NOT USE TABLE FOR VISUAL PRESANTATION (no big images inside etc, no hirarchy data)
 
 NOT USE TABLE WIeTH EMPTY HEADERS
 
@@ -98,11 +95,18 @@ For the variant, here is `grid` used. You can find all available variants and si
 
 <ComponentDemo file="./table-compact.demo.tsx" disableLabelWidth="true" />
 
-### Dynamic collections
+### Sticky header
 
-You don't have to hard code the table items like in the example above, you could also create a dynamic collection and iterate through it. That's what the example shows. Also the `stretch` property is set to `true`, which allows the table to take the full available space. Here you can also see how the selected rows can be read out.
+Sometimes you need to have context given when scrolling down a table. This makes sense for large data tables where it is relevant to know on which column you are.
+In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it.
 
-<ComponentDemo file="./table-dynamic.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
+
+### Status indicator
+
+This is a example of how you can use other components like the `<Badge>` within the `<Table>`. This is a common use case if you need to add status indicators to the data.
+
+<ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
 
 ### Async sorting
 
@@ -114,14 +118,6 @@ The options to sort are ascending or descending. For this purpose the properties
 To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
 
 <ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
-
-### Nested Columns
-
-Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
-
-Also you see how to use the `align` property on the columns.
-
-<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
 
 ### Action cells and formatters
 
@@ -135,17 +131,19 @@ DO AND DONT ONLY USE ONE ACTION CELL
 
 DO AND DONT FORMATTER ALIGN NUMBERS RIGHT
 
-### Sticky header
+### Dynamic collections
 
-In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it. When scrolling the context is still given. This makes sense for large data tables where it is relevant to know on which column you are.
+You don't have to hard code the table items like in the example above, you could also create a dynamic collection and iterate through it. That's what the example shows. Also the `stretch` property is set to `true`, which allows the table to take the full available space. Here you can also see how the selected rows can be read out.
 
-<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-dynamic.demo.tsx" disableLabelWidth="true" />
 
-### Status indicator
+### Nested Columns
 
-This is a example of how you can use other components like the `<Badge>` within the `<Table>`. This is a common use case if you need to add status indicators to the data.
+Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
 
-<ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
+Also you see how to use the `align` property on the columns.
+
+<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
 
 ## Exceptions confirm the rule
 

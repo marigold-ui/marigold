@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Scrollable, Table } from '@marigold/components';
+import { Scrollable, Stack, Table } from '@marigold/components';
 
 export default () => {
   const [users, setUsers] = useState<
@@ -25,16 +25,21 @@ export default () => {
             <Table.Header>
               <Table.Column>Id</Table.Column>
               <Table.Column>Name</Table.Column>
-              <Table.Column>Username</Table.Column>
-              <Table.Column>E-Mail</Table.Column>
+              <Table.Column>User</Table.Column>
             </Table.Header>
             <Table.Body>
               {users.map(user => (
                 <Table.Row key={`${user.name}-${user.id}`}>
                   <Table.Cell>{user.id}</Table.Cell>
                   <Table.Cell>{user.name}</Table.Cell>
-                  <Table.Cell>{user.username}</Table.Cell>
-                  <Table.Cell>{JSON.stringify(user.email)}</Table.Cell>
+                  <Table.Cell>
+                    <Stack>
+                      {user.username}
+                      <span className="text-text-info text-xs">
+                        {user.email}
+                      </span>
+                    </Stack>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
