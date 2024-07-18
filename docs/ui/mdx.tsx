@@ -12,6 +12,7 @@ import {
   Columns,
   Headline,
   Link,
+  List,
   Scrollable,
   SectionMessage,
   Stack,
@@ -24,7 +25,7 @@ import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
-import { DosAndDonts } from './DosAndDonts';
+import { Do, Dont } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
 import { PropsTable } from './PropsTable';
@@ -131,7 +132,6 @@ const typography = {
 const components = {
   ...typography,
   Image,
-  DosAndDonts,
   Link,
   // Docs Components
   AlignmentsX,
@@ -141,6 +141,8 @@ const components = {
   Breakpoints,
   ColorTokenTable,
   ComponentDemo,
+  Do,
+  Dont,
   FontSizes,
   FontStyle,
   FontWeights,
@@ -156,6 +158,7 @@ const components = {
   Card,
   Columns,
   Headline,
+  List,
   SectionMessage,
   Scrollable,
   Stack,
