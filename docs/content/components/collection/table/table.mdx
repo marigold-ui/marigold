@@ -43,6 +43,141 @@ import { Table } from '@marigold/components';
 
 <AppearanceTable component={title} />
 
+## Usage
+
+### General usage of the component
+
+Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
+Use the `<Table>` when you need to organize and display large amout of data.
+
+Also the component should not be used for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
+
+DOs:
+
+- Do provide clear, descriptive column headers that accurately represent the data.
+- Use for tabular data
+- Use full available space given for the table
+
+Donts:
+
+- Don't use table for layouting
+- Don't overcrowd cells with too much information. Keep it concise and relevant. (Avoid multiline content within cells. (With image)
+- Don't use tables with empty column headers, -> accessibility
+- Don't use tables on too small screen size, -> Readability
+- Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table.
+
+### Applying variant and sizes
+
+In this example you can see the size `compact` from the theme b2b. It reduces the cell spacing. There is also another size, which is called `expanded`, which enlarges the cells.
+For the variant, here is `grid` used. You can find all available variants and sizes according to the theme you use in the appearance section.
+
+### Sticky header
+
+Sometimes you need to have context given when scrolling down a table. This makes sense for large data tables where it is relevant to know on which column you are.
+In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it.
+
+<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
+
+### Status indicator
+
+This is a example of how you can use other components like the `<Badge>` within the `<Table>`. This is a common use case if you need to add status indicators to the data.
+
+DO AND DONT
+
+<ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
+
+<DosAndDonts variant="do" description="halloooo">
+  - Place status badges consistently within the table, preferably in a dedicated
+  status column. This helps users scan and understand the data quickly.
+</DosAndDonts>
+
+<DosAndDonts variant="dont" description="halloooo">
+  - Don't overload the table with too many badges, as it can make the table
+  cluttered and hard to read. - Don't place badges randomly within the table.
+  Inconsistent placement can confuse users and make the table harder to scan.
+</DosAndDonts>
+
+Don't overload the table with too many badges, as it can make the table cluttered and hard to read.
+
+### Async sorting
+
+In this example the `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls are located in the column headers and indicated with an arrow icon.
+For async sorting you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
+
+The options to sort are ascending or descending. For this purpose the properties `onSortChange` and `sortDescriptor` must be specified.
+
+To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
+
+DO:
+
+- enable sorting functionalities to help users organize and find data efficiently.
+- Support sorting if the list can be long, and especially if different merchant tasks benefit from different sort orders.
+
+<ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
+
+### Action cells and formatters
+
+If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible. The component should only be used with one action cell at the end of the table and additional with the selection cell with checkboxes at the start of the table.
+
+As you may notice the table below is build with help of our formatting helper components for dates and numeric values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
+
+<ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
+
+DO:
+
+- Only use one cell at the end of the Table to call actions
+- Just put one component like a button or menu in the action cell
+- Align numeric values and header cells to the right
+- Use our Formatters to provide tabular numerics
+
+Dont:
+
+- Don't use two or more action cells
+- Don't write two or more compoents in one action cell
+
+### Dynamic collections
+
+You don't have to hard code the table items like in the example above, you could also create a dynamic collection and iterate through it. That's what the example shows. Also the `stretch` property is set to `true`, which allows the table to take the full available space. Here you can also see how the selected rows can be read out.
+
+<ComponentDemo file="./table-dynamic.demo.tsx" disableLabelWidth="true" />
+
+### Nested Columns
+
+Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
+
+Also you see how to use the `align` property on the columns.
+
+DO:
+
+- keep nested tables as simple as possible to avoid overwhelming users with too much information at once.
+
+Don't:
+
+- Don't use multiple levels of nested tables. Excessive nesting can make the table complex and difficult to navigate.
+
+<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
+
+## Exceptions confirm the rule
+
+If you read so far, you noticed that this example may not be confirm with the definition of what the `<Table>` should follow. But expecptions prove the rule.
+
+This example shows how to use input fields within the `<Table>`. For now the Marigold table is only used for presenting data - not interact with certain cells/fields directly, but if you really need input fields in your table you can make this exeption with caution.
+
+This is a case you normally should avoid. Find another solution that fits better for your use cases. If you need help finding alternatives please [contact us](../introduction/get-in-touch).
+
+<SectionMessage variant="warning">
+  <SectionMessage.Title>Avoid mutation</SectionMessage.Title>
+  <SectionMessage.Content>
+    It's best practice in React to avoid mutation cause of unpredicatable side
+    effects. For more detailed explanations see
+    [here](https://react.dev/learn/updating-objects-in-state#whats-a-mutation).
+  </SectionMessage.Content>
+</SectionMessage>
+
+<p />
+
+<ComponentDemo file="./table-input.demo.tsx" disableLabelWidth="true" />
+
 ## Props
 
 ### Table
@@ -68,102 +203,3 @@ import { Table } from '@marigold/components';
 ### Table.Cell
 
 <PropsTable component="TableCell" />
-
-## Usage
-
-### General usage of the component
-
-Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
-Use the `<Table>` when you need to organize and display large amout of data.
-
-Also the component should not be used for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
-
-DO AND DONT FOR NOT USE AS LAYOUT USE FOR TABULAR DATA
-
-NOT USE TABLE FOR VISUAL PRESANTATION (no big images inside etc, no hirarchy data)
-
-NOT USE TABLE WIeTH EMPTY HEADERS
-
-NOT USE LIKE event parking conf (use next line), tables dont have labels
-
-Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table.
-
-### Applying variant and sizes
-
-In this example you can see the size `compact` from the theme b2b. It reduces the cell spacing. There is also another size, which is called `expanded`, which enlarges the cells.
-For the variant, here is `grid` used. You can find all available variants and sizes according to the theme you use in the appearance section.
-
-<ComponentDemo file="./table-compact.demo.tsx" disableLabelWidth="true" />
-
-### Sticky header
-
-Sometimes you need to have context given when scrolling down a table. This makes sense for large data tables where it is relevant to know on which column you are.
-In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it.
-
-<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
-
-### Status indicator
-
-This is a example of how you can use other components like the `<Badge>` within the `<Table>`. This is a common use case if you need to add status indicators to the data.
-
-DO AND DONT
-
-<ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
-
-### Async sorting
-
-In this example the `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls are located in the column headers and indicated with an arrow icon.
-For async sorting you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
-
-The options to sort are ascending or descending. For this purpose the properties `onSortChange` and `sortDescriptor` must be specified.
-
-To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
-
-<ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
-
-### Action cells and formatters
-
-If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible. The component should only be used with one action cell at the end of the table and additional with the selection cell with checkboxes at the start of the table.
-
-As you may notice the table below is build with help of our formatting helper components for dates and numeric values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
-
-<ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
-
-DO AND DONT ONLY USE ONE ACTION CELL
-
-DO AND DONT FORMATTER ALIGN NUMBERS RIGHT
-
-### Dynamic collections
-
-You don't have to hard code the table items like in the example above, you could also create a dynamic collection and iterate through it. That's what the example shows. Also the `stretch` property is set to `true`, which allows the table to take the full available space. Here you can also see how the selected rows can be read out.
-
-<ComponentDemo file="./table-dynamic.demo.tsx" disableLabelWidth="true" />
-
-### Nested Columns
-
-Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
-
-Also you see how to use the `align` property on the columns.
-
-<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
-
-## Exceptions confirm the rule
-
-If you read so far, you noticed that this example may not be confirm with the definition of what the `<Table>` should follow. But expecptions prove the rule.
-
-This example shows how to use input fields within the `<Table>`. For now the Marigold table is only used for presenting data - not interact with certain cells/fields directly, but if you really need input fields in your table you can make this exeption with caution.
-
-This is a case you normally should avoid. Find another solution that fits better for your use cases. If you need help finding alternatives please [contact us](../introduction/get-in-touch).
-
-<SectionMessage variant="warning">
-  <SectionMessage.Title>Avoid mutation</SectionMessage.Title>
-  <SectionMessage.Content>
-    It's best practice in React to avoid mutation cause of unpredicatable side
-    effects. For more detailed explanations see
-    [here](https://react.dev/learn/updating-objects-in-state#whats-a-mutation).
-  </SectionMessage.Content>
-</SectionMessage>
-
-<p />
-
-<ComponentDemo file="./table-input.demo.tsx" disableLabelWidth="true" />
