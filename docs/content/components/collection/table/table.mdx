@@ -49,21 +49,34 @@ import { Table } from '@marigold/components';
 
 Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
 
-Also the component should not be used for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
-
-DOs:
-
-- Do provide clear, descriptive column headers that accurately represent the data.
-- Use for tabular data
-- Use full available space given for the table
-
-Donts:
-
-- Don't use table for layouting
-- Don't overcrowd cells with too much information. Keep it concise and relevant. (Avoid multiline content within cells. (With image)
-- Don't use tables with empty column headers, -> accessibility
-- Don't use tables on too small screen size, -> Readability
-- Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table.
+<Columns columns={[1, 1]} space={4}>
+  <Do>
+    <Do.Description>
+      <ul>
+        <li>Only use `<Table>` with tabular data.</li>
+        <li>
+          Provide clear, descriptive column headers that accurately represent
+          the data.
+        </li>
+        <li>Use full available space given for the table if possible.</li>
+      </ul>
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      <ul>
+        <li>Don't use `<Table>` for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).</li>
+        <li>
+          Don't overcrowd cells with too much information. Keep it concise and
+          relevant. (Avoid multiline content within cells). 
+        </li>
+        <li>Don't use tables with empty column headers.</li>
+        <li>Don't use tables on too small screen size.</li>
+        <li>Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table.</li>
+      </ul>
+    </Dont.Description>
+  </Dont>
+</Columns>
 
 ### Applying variant and sizes
 
@@ -92,22 +105,22 @@ This is a example of how you can use other components like the `<Badge>` within 
   </SectionMessage.Content>
 </SectionMessage>
 
-DO AND DONT
-
 <ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
 
-<DosAndDonts variant="do" description="halloooo">
-  - Place status badges consistently within the table, preferably in a dedicated
-  status column. This helps users scan and understand the data quickly.
-</DosAndDonts>
-
-<DosAndDonts variant="dont" description="halloooo">
-  - Don't overload the table with too many badges, as it can make the table
-  cluttered and hard to read. - Don't place badges randomly within the table.
-  Inconsistent placement can confuse users and make the table harder to scan.
-</DosAndDonts>
-
-Don't overload the table with too many badges, as it can make the table cluttered and hard to read.
+<Columns columns={[1, 1]} space={4}>
+  <Do>
+    <Do.Description>
+      Place status badges consistently within the table, preferably in a
+      dedicated status column.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't place badges randomly within the table or overload the table with
+      too many badges.
+    </Dont.Description>
+  </Dont>
+</Columns>
 
 ### Async sorting
 
@@ -118,10 +131,14 @@ The options to sort are ascending or descending. For this purpose the properties
 
 To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
 
-DO:
+{' '}
 
-- enable sorting functionalities to help users organize and find data efficiently.
-- Support sorting if the list can be long, and especially if different merchant tasks benefit from different sort orders.
+<Do>
+  <Do.Description>
+    Enable sorting function to support users organize and find data efficiently,
+    especially if different merchant tasks benefit from different sort orders.
+  </Do.Description>
+</Do>
 
 <ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
 
@@ -131,19 +148,36 @@ If you need to edit the table content, you can use a action cell to open a modal
 
 As you may notice the table below is build with help of our formatting helper components for dates and numeric values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
 
+<Do>
+  <Do.Description>
+    <ul>
+      <li>Align quantitive numeric values and header cells to the right.</li>
+      <li>
+        Use our [formatters](../formatters/numericformat/numericFormat) to
+        provide tabular numerics.
+      </li>
+    </ul>
+  </Do.Description>
+</Do>
+
 <ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
 
-DO:
-
-- Only use one cell at the end of the Table to call actions
-- Just put one component like a button or menu in the action cell
-- Align quantitive numeric values and header cells to the right
-- Use our Formatters to provide tabular numerics
-
-Dont:
-
-- Don't use two or more action cells
-- Don't write two or more compoents in one action cell
+<Columns columns={[1, 1]} space={4}>
+  <Do>
+    <Do.Description>
+      Only use one cell with one action component at the end of the Table to
+      call actions.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      <ul>
+        <li>Don't use two or more action cells</li>
+        <li>Don't write two or more action components in one action cell.</li>
+      </ul>
+    </Dont.Description>
+  </Dont>
+</Columns>
 
 ### Nested Columns
 
@@ -151,15 +185,22 @@ Columns can be nested, which will result in more than one header row to be creat
 
 Also you see how to use the `align` property on the columns.
 
-DO:
-
-- keep nested tables as simple as possible to avoid overwhelming users with too much information at once.
-
-Don't:
-
-- Don't use multiple levels of nested tables. Excessive nesting can make the table complex and difficult to navigate.
-
 <ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
+
+<Columns columns={[1, 1]} space={4}>
+  <Do>
+    <Do.Description>
+      Keep nested tables simple to avoid overwhelming users with too much
+      information at once.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use multiple levels of nested tables, this can make the table
+      complex and difficult to navigate.
+    </Dont.Description>
+  </Dont>
+</Columns>
 
 ## Exceptions confirm the rule
 
