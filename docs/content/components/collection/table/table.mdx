@@ -16,6 +16,9 @@ The `<Table>` is a structured component used to organize and display tabular dat
   </SectionMessage.Content>
 </SectionMessage>
 
+Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
+Use the `<Table>` when you need to organize and display large amout of data.
+
 Here is a full list of features provided by the `<Table>`:
 
 - Select one or multiple rows
@@ -27,7 +30,7 @@ Here is a full list of features provided by the `<Table>`:
 - Nesting columns
 - Having fixed column widths
 
-These features will be explained in more detail in the examples further down the page.
+These features will be explained in more detail in the usage section further down the page.
 
 ### Anatomy
 
@@ -38,29 +41,6 @@ A table is composed of a container element that organizes data into rows and col
 ```tsx
 import { Table } from '@marigold/components';
 ```
-
-## Usage
-
-### When to use?
-
-Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
-Use the `<Table>` when you need to organize and display large amout of data.
-
-### When not to use?
-
-Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table. The component should only be used with one action cell at the end of the table and additional with the selection cell with checkboxes at the start of the table.
-
-DO AND DONT ACTION CELL
-
-Also the component should not be used for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
-
-DO AND DONT FOR NOT USE AS LAYOUT
-
-NOT USE TABLE FOR VISUAL PRESANTATION (no big images inside etc)
-
-NOT USE TABLE WIeTH EMPTY HEADERS
-
-NOT USE LIKE event parking conf (use next line), tables dont have labels
 
 ## Appearance
 
@@ -93,6 +73,23 @@ NOT USE LIKE event parking conf (use next line), tables dont have labels
 <PropsTable component="TableCell" />
 
 ## Usage
+
+### General usage of the component
+
+Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
+Use the `<Table>` when you need to organize and display large amout of data.
+
+Also the component should not be used for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
+
+DO AND DONT FOR NOT USE AS LAYOUT
+
+NOT USE TABLE FOR VISUAL PRESANTATION (no big images inside etc)
+
+NOT USE TABLE WIeTH EMPTY HEADERS
+
+NOT USE LIKE event parking conf (use next line), tables dont have labels
+
+Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table.
 
 ### Applying variant and sizes
 
@@ -128,7 +125,7 @@ Also you see how to use the `align` property on the columns.
 
 ### Action cells and formatters
 
-If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible.
+If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible. The component should only be used with one action cell at the end of the table and additional with the selection cell with checkboxes at the start of the table.
 
 As you may notice the table below is build with help of our formatting helper components for dates and numeric values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
 
