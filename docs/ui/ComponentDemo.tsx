@@ -67,7 +67,7 @@ export const ComponentDemo = ({
               className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
             >
               <OverlayContainerProvider value="portalContainer">
-                <MarigoldProvider theme={(current && themes[current]) as Theme}>
+                <MarigoldProvider theme={themes[current]}>
                   <div className="not-prose size-full overflow-x-auto p-4">
                     <Wrapper>
                       <Demo />
