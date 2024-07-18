@@ -81,6 +81,17 @@ In this example the header of the table is sticky, for that we have to set the p
 
 This is a example of how you can use other components like the `<Badge>` within the `<Table>`. This is a common use case if you need to add status indicators to the data.
 
+<SectionMessage>
+  <SectionMessage.Title>Good to know:</SectionMessage.Title>
+  <SectionMessage.Content>
+    You don't have to hard code the table items, you could also create a dynamic
+    collection and iterate through it. That's what the example shows. Also the
+    `stretch` property is set to `true`, which allows the table to take the full
+    available space. Here you can also see how the selected rows can be read
+    out.
+  </SectionMessage.Content>
+</SectionMessage>
+
 DO AND DONT
 
 <ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
@@ -133,12 +144,6 @@ Dont:
 
 - Don't use two or more action cells
 - Don't write two or more compoents in one action cell
-
-### Dynamic collections
-
-You don't have to hard code the table items like in the example above, you could also create a dynamic collection and iterate through it. That's what the example shows. Also the `stretch` property is set to `true`, which allows the table to take the full available space. Here you can also see how the selected rows can be read out.
-
-<ComponentDemo file="./table-dynamic.demo.tsx" disableLabelWidth="true" />
 
 ### Nested Columns
 
