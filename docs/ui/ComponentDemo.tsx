@@ -8,8 +8,6 @@ import {
 } from '@/ui';
 import type { ReactNode } from 'react';
 
-import { type Theme } from '@marigold/system';
-
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props
