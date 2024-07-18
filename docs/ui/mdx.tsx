@@ -24,6 +24,7 @@ import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
+import { DosAndDonts } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
 import { PropsTable } from './PropsTable';
@@ -130,6 +131,8 @@ const typography = {
 const components = {
   ...typography,
   Image,
+  DosAndDonts,
+  Link,
   // Docs Components
   AlignmentsX,
   AlignmentsY,
