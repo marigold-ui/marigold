@@ -1,5 +1,6 @@
 'use client';
 
+import { getAppearance } from '@/lib/utils';
 import { Card, ConfigSchema, Inline, Table, Text, Theme } from '@/ui';
 
 import { useThemeSwitch } from './ThemeSwitch';
@@ -37,11 +38,7 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
     return null;
   }
 
-  const styles = themes[current].components[component] || {};
-  const appearances =
-    'variants' in styles
-      ? getKeys(styles.variants as ConfigSchema)
-      : getKeysFromSlots(styles);
+  const appearances = getAppearance(component, themes[current]);
 
   return (
     <Card px={0} py={2}>
