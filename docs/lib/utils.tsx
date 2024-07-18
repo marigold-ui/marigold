@@ -29,8 +29,8 @@ const getKeys = (schema: ConfigSchema) => {
 const getKeysFromSlots = (o: {
   [slot: string]: { variants: ConfigSchema };
 }) => {
-  let v = new Set();
-  let s = new Set();
+  let v = new Set<string>();
+  let s = new Set<string>();
 
   Object.values(o).forEach(value => {
     v = new Set([...v, ...Object.keys(value.variants?.variant ?? {})]);
