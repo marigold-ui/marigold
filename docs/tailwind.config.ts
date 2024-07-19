@@ -11,7 +11,7 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
 
     // Docs theme
-    '../../themes/theme-docs/src/**/*.ts',
+    '../themes/theme-docs/src/**/*.ts',
 
     // Demos
     './content/**/*.{js,ts,jsx,tsx,mdx}',
