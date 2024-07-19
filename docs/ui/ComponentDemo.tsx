@@ -46,7 +46,7 @@ export const ComponentDemo = ({
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
     current === 'core' && !disableLabelWidth ? (
-      <FieldGroup labelWidth={'100px'}>{children}</FieldGroup>
+      <FieldGroup labelWidth="100px">{children}</FieldGroup>
     ) : (
       children
     );
@@ -59,7 +59,7 @@ export const ComponentDemo = ({
           <Tabs.Item id="code">Code</Tabs.Item>
         </Tabs.List>
         <Tabs.TabPanel id="preview">
-          <Card variant="not-inset">
+          <Card variant="content" p={0}>
             <div
               data-theme={current}
               className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
