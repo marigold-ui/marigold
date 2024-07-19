@@ -140,7 +140,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
           )}
         >
           <SelectValue />
-          <ChevronDown className="size-4" />
+          <ChevronDown className={cn('size-4', classNames.icon)} />
         </Button>
         <Popover>
           <ListBox items={items}>{props.children}</ListBox>
