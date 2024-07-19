@@ -38,7 +38,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       // Make Popover as wide as trigger element
       className: 'min-w-[--trigger-width]',
     });
-    console.log(placement);
+
     const isSmallScreen = useSmallScreen();
     const portal = usePortalContainer();
 
