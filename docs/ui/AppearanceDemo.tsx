@@ -7,7 +7,7 @@ import {
   Select,
 } from '@/ui';
 import type { Theme } from '@/ui';
-import type { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
@@ -39,6 +39,9 @@ export const AppearanceDemo = ({
   const { current, themes } = useThemeSwitch();
   const theme = themes[current];
   const appearance = getAppearance(component, theme);
+
+  const [selected] = useState({ variant: 'default', size: 'default' });
+
   console.log(appearance);
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
@@ -51,8 +54,8 @@ export const AppearanceDemo = ({
   return (
     <Card variant="content" p={0}>
       <div className="absolute left-4 top-4">
-        <Select label="Variant">
-          <Select.Option id="none">none</Select.Option>
+        <Select label="Variant" selectedKey={selected.variant}>
+          <Select.Option id="default">default</Select.Option>
           {appearance.variant.map(v => (
             <Select.Option key={v} id={v}>
               {v}
