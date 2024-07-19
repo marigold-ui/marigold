@@ -7,7 +7,7 @@ import {
   Select,
 } from '@/ui';
 import type { Theme } from '@/ui';
-import { type ReactNode, useState } from 'react';
+import { Key, type ReactNode, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
@@ -40,7 +40,10 @@ export const AppearanceDemo = ({
   const theme = themes[current];
   const appearance = getAppearance(component, theme);
 
-  const [selected] = useState({ variant: 'default', size: 'default' });
+  const [selected, setSelected] = useState({
+    variant: 'default',
+    size: 'default',
+  });
 
   console.log(appearance);
 
@@ -54,7 +57,13 @@ export const AppearanceDemo = ({
   return (
     <Card variant="content" p={0}>
       <div className="absolute left-4 top-4">
-        <Select label="Variant" selectedKey={selected.variant}>
+        <Select
+          label="Variant"
+          selectedKey={selected.variant}
+          onChange={(val: string) =>
+            setSelected({ variant: val, size: selected.size })
+          }
+        >
           <Select.Option id="default">default</Select.Option>
           {appearance.variant.map(v => (
             <Select.Option key={v} id={v}>

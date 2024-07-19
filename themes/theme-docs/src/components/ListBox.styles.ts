@@ -12,7 +12,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   option: cva([
     'cursor-pointer rounded p-2 outline-none',
     'rac-hover:bg-bg-hover rac-focus:bg-bg-hover',
-    'aria-selected:font-medium',
+    'aria-selected:bg-bg-hover',
   ]),
   section: cva(),
   sectionTitle: cva(),
