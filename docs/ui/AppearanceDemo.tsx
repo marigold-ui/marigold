@@ -59,6 +59,8 @@ export const AppearanceDemo = ({
       <div className="absolute left-4 top-4">
         <Select
           label="Variant"
+          variant="floating"
+          size="small"
           selectedKey={selected.variant}
           onChange={(val: string) =>
             setSelected({ variant: val, size: selected.size })

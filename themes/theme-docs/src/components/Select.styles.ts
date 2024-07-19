@@ -11,31 +11,23 @@ export const Select: ThemeComponent<'Select'> = {
       },
       size: {
         default: '',
-        small: '',
+        small: 'size-3',
       },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
     },
-    compoundVariants: [
-      // {
-      //   variant: 'floating',
-      //   size: 'default',
-      //   // offset the icon to center it
-      //   className: '-mt-3',
-      // },
-    ],
   }),
   select: cva([inputBox, inputBackground, 'outline-none'], {
     variants: {
       variant: {
         default: 'gap-2',
-        floating: 'col-span-full row-start-1 row-end-2',
+        floating: 'col-span-full row-start-1 row-end-2 shadow shadow-black/20',
       },
       size: {
         default: [inputSpacing.default],
-        small: [inputSpacing.small],
+        small: [inputSpacing.small, 'text-sm'],
       },
     },
     defaultVariants: {
@@ -47,6 +39,11 @@ export const Select: ThemeComponent<'Select'> = {
         variant: 'floating',
         size: 'default',
         className: 'h-14 py-1 [&>span]:self-end',
+      },
+      {
+        variant: 'floating',
+        size: 'small',
+        className: 'h-12 py-1 [&>span]:self-end',
       },
     ],
   }),

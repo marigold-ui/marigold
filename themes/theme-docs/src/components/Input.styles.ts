@@ -1,23 +1,23 @@
 // Box
 // ---------------
-export const inputBox = 'border border-border rounded';
+export const inputBox = 'border border-border rounded text-text-primary';
 export const inputBackground = 'bg-white';
 
 // Spacing
 // ---------------
 export const xSpacing = {
   default: 'px-3',
-  small: '',
+  small: 'px-2.5',
 };
 
 export const ySpacing = {
   default: 'py-2',
-  small: '',
+  small: 'py-1.5',
 };
 
 export const inputSpacing = {
   default: `${xSpacing.default} ${ySpacing.default}`,
-  small: '',
+  small: `${xSpacing.small} ${ySpacing.small}`,
 };
 
 // States
