@@ -21,6 +21,7 @@ import {
   Text,
   Tiles,
 } from './';
+import { AppearanceDemo } from './AppearanceDemo';
 import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
@@ -136,6 +137,7 @@ const components = {
   // Docs Components
   AlignmentsX,
   AlignmentsY,
+  AppearanceDemo,
   AppearanceTable,
   BorderRadius,
   Breakpoints,
