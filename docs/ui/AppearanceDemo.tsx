@@ -87,13 +87,10 @@ export const AppearanceDemo = ({
           ))}
         </Select>
       </div>
-      <div
-        data-theme={current}
-        className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
-      >
+      <div data-theme={current}>
         <OverlayContainerProvider value="portalContainer">
           <MarigoldProvider theme={theme}>
-            <div className="not-prose size-full overflow-x-auto px-4 pb-4 pt-14">
+            <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-4 pt-14">
               <Wrapper>
                 <Demo {...selected} />
               </Wrapper>
