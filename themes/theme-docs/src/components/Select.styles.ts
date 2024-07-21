@@ -7,7 +7,7 @@ export const Select: ThemeComponent<'Select'> = {
     variants: {
       variant: {
         default: '',
-        floating: '',
+        floating: 'justify-self-end',
       },
       size: {
         default: '',
@@ -23,11 +23,16 @@ export const Select: ThemeComponent<'Select'> = {
     variants: {
       variant: {
         default: 'gap-2',
-        floating: 'col-span-full row-start-1 row-end-2 shadow shadow-black/20',
+        floating: [
+          'shadow',
+          'col-span-full row-start-1 grid grid-cols-subgrid grid-rows-subgrid',
+          // selected value and caret get moved to 2nd col
+          '*:row-star-1 *:col-start-2 *:text-left',
+        ],
       },
       size: {
         default: [inputSpacing.default],
-        small: [inputSpacing.small, 'text-sm'],
+        small: [inputSpacing.small, 'text-xs'],
       },
     },
     defaultVariants: {
@@ -38,12 +43,12 @@ export const Select: ThemeComponent<'Select'> = {
       {
         variant: 'floating',
         size: 'default',
-        className: 'h-14 py-1 [&>span]:self-end',
+        className: 'px-4 py-1.5',
       },
       {
         variant: 'floating',
         size: 'small',
-        className: 'h-12 py-1 [&>span]:self-end',
+        className: 'px-3',
       },
     ],
   }),

@@ -1,14 +1,13 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-import { xSpacing } from './Input.styles';
-
 export const Label: ThemeComponent<'Label'> = {
   container: cva('', {
     variants: {
       variant: {
         default: '',
         floating: [
-          'pointer-events-none z-10 col-span-full row-start-1 row-end-1',
+          'z-10 col-start-1 row-start-1',
+          'pointer-events-none',
           'text-secondary-400 text-nowrap',
         ],
       },
@@ -25,12 +24,12 @@ export const Label: ThemeComponent<'Label'> = {
       {
         variant: 'floating',
         size: 'default',
-        className: [xSpacing.default, 'pt-2'],
+        className: 'pl-4',
       },
       {
         variant: 'floating',
         size: 'small',
-        className: [xSpacing.small, 'pt-2'],
+        className: 'pl-3',
       },
     ],
   }),

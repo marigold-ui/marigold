@@ -76,7 +76,7 @@ export const AppearanceDemo = ({
           label="Size"
           variant="floating"
           size="small"
-          width={28}
+          width={32}
           selectedKey={selected.size}
           onChange={(val: string) =>
             setSelected({ variant: selected.variant, size: val })
