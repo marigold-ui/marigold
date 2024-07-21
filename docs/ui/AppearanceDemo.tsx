@@ -50,54 +50,62 @@ export const AppearanceDemo = ({
     );
 
   return (
-    <Card variant="content" p={0}>
-      <div className="absolute left-4 top-3 flex gap-2">
-        <Select
-          label="Variant"
-          variant="floating"
-          size="small"
-          width={36}
-          selectedKey={selected.variant}
-          onChange={(val: string) =>
-            setSelected({ variant: val, size: selected.size })
-          }
-        >
-          <Select.Option id="default">default</Select.Option>
-          {appearance.variant.map(v => (
-            <Select.Option key={v} id={v}>
-              {v}
-            </Select.Option>
-          ))}
-        </Select>
-        <Select
-          label="Size"
-          variant="floating"
-          size="small"
-          width={32}
-          selectedKey={selected.size}
-          onChange={(val: string) =>
-            setSelected({ variant: selected.variant, size: val })
-          }
-        >
-          <Select.Option id="default">default</Select.Option>
-          {appearance.size.map(v => (
-            <Select.Option key={v} id={v}>
-              {v}
-            </Select.Option>
-          ))}
-        </Select>
-      </div>
-      <div data-theme={current}>
-        <OverlayContainerProvider value="portalContainer">
-          <MarigoldProvider theme={theme}>
-            <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-4 pt-14">
-              <Wrapper>
-                <Demo {...selected} />
-              </Wrapper>
-            </div>
-          </MarigoldProvider>
-        </OverlayContainerProvider>
-      </div>
-    </Card>
+    <>
+      <p>
+        The appearance of a component can be customized using the{' '}
+        <code>variant</code> and <code>size</code> props. These props adjust the
+        visual style and dimensions of the component, available values are based
+        on the active theme.
+      </p>
+      <Card variant="content" p={0}>
+        <div className="absolute left-4 top-3 flex gap-2">
+          <Select
+            label="Variant"
+            variant="floating"
+            size="small"
+            width={36}
+            selectedKey={selected.variant}
+            onChange={(val: string) =>
+              setSelected({ variant: val, size: selected.size })
+            }
+          >
+            <Select.Option id="default">default</Select.Option>
+            {appearance.variant.map(v => (
+              <Select.Option key={v} id={v}>
+                {v}
+              </Select.Option>
+            ))}
+          </Select>
+          <Select
+            label="Size"
+            variant="floating"
+            size="small"
+            width={32}
+            selectedKey={selected.size}
+            onChange={(val: string) =>
+              setSelected({ variant: selected.variant, size: val })
+            }
+          >
+            <Select.Option id="default">default</Select.Option>
+            {appearance.size.map(v => (
+              <Select.Option key={v} id={v}>
+                {v}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+        <div data-theme={current}>
+          <OverlayContainerProvider value="portalContainer">
+            <MarigoldProvider theme={theme}>
+              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-4 pt-14">
+                <Wrapper>
+                  <Demo {...selected} />
+                </Wrapper>
+              </div>
+            </MarigoldProvider>
+          </OverlayContainerProvider>
+        </div>
+      </Card>
+    </>
   );
 };
