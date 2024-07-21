@@ -1,4 +1,5 @@
 import { getAppearance } from '@/lib/utils';
+import { registry } from '@/registry/demos';
 import {
   Card,
   FieldGroup,
@@ -7,20 +8,10 @@ import {
   Select,
 } from '@/ui';
 import type { Theme } from '@/ui';
-import { Key, type ReactNode, useState } from 'react';
-
-import dynamic from 'next/dynamic';
+import type { ComponentType, ReactNode } from 'react';
+import { useState } from 'react';
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
-
-// Helper
-// ---------------
-
-/**
- * Dynamically load a component from the root import
- */
-const getComponent = (name: string) =>
-  dynamic(() => import('@marigold/components').then((mg: any) => mg[name]));
 
 // Props
 // ---------------
@@ -35,7 +26,13 @@ export const AppearanceDemo = ({
   component,
   disableLabelWidth,
 }: AppearanceDemoProps) => {
-  const Component = getComponent(component);
+  const name = `${component.toLowerCase()}-appearance` as keyof typeof registry;
+
+  if (!registry[name]) {
+    throw Error(`No demo with name "${name}" found in the registry.`);
+  }
+
+  const Demo: ComponentType<any> = registry[name].demo;
   const { current, themes } = useThemeSwitch();
   const theme = themes[current];
   const appearance = getAppearance(component, theme);
@@ -54,7 +51,7 @@ export const AppearanceDemo = ({
 
   return (
     <Card variant="content" p={0}>
-      <div className="absolute left-2 top-2 flex gap-2">
+      <div className="absolute left-4 top-3 flex gap-2">
         <Select
           label="Variant"
           variant="floating"
@@ -96,9 +93,9 @@ export const AppearanceDemo = ({
       >
         <OverlayContainerProvider value="portalContainer">
           <MarigoldProvider theme={theme}>
-            <div className="not-prose size-full overflow-x-auto px-4 pb-4 pt-16">
+            <div className="not-prose size-full overflow-x-auto px-4 pb-4 pt-14">
               <Wrapper>
-                <Component />
+                <Demo {...selected} />
               </Wrapper>
             </div>
           </MarigoldProvider>
