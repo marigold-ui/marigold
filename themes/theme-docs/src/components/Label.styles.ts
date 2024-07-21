@@ -9,6 +9,7 @@ export const Label: ThemeComponent<'Label'> = {
           'z-10 col-start-1 row-start-1',
           'pointer-events-none',
           'text-secondary-400 text-nowrap',
+          'after:content-[":"]',
         ],
       },
       size: {

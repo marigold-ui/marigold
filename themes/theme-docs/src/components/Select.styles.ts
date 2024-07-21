@@ -28,6 +28,8 @@ export const Select: ThemeComponent<'Select'> = {
           'col-span-full row-start-1 grid grid-cols-subgrid grid-rows-subgrid',
           // selected value and caret get moved to 2nd col
           '*:row-star-1 *:col-start-2 *:text-left',
+          // So the button gap is not used to separate label from selected value
+          'gap-[inherit]',
         ],
       },
       size: {
