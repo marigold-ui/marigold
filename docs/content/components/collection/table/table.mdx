@@ -173,8 +173,8 @@ Sometimes the user needs clear visual hierarchy within the table. The main data 
   </Dont>
 </Columns>
 
-Sometimes you need to have context given when scrolling down a table. This makes sense for large data tables where it is relevant to know on which column you are.
-In this example the header of the table is sticky, for that we have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it.
+If you have large data tables you need to have context given when scrolling down a table where it is relevant to know on which column you are.
+For this case you can set the header of the table to sticky, for that you have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it like in the example below.
 
 <ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
 
