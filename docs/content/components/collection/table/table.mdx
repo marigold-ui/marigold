@@ -33,6 +33,14 @@ These features will be explained in more detail in the usage section further dow
 
 A table is composed of a container element that organizes data into rows and columns. Each cell within the table can hold either plain text or focusable elements. If the table allows row selection, the first column of each row include a checkbox for selecting that row. Additionally, if the table supports selecting multiple rows, the first column header will contain a "select all" checkbox.
 
+<Image
+  src="/table-anatomy.jpg"
+  alt="Anatomy of table"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
 ## Import
 
 ```tsx
@@ -53,7 +61,6 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
   <Do>
     <Do.Description>
       <ul>
-        <li>Only use `<Table>` with tabular data.</li>
         <li>
           Provide clear, descriptive column headers that accurately represent
           the data.
@@ -61,22 +68,57 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
         <li>Use full available space given for the table if possible.</li>
       </ul>
     </Do.Description>
+
   </Do>
   <Dont>
     <Dont.Description>
       <ul>
-        <li>Don't use `<Table>` for layouting. If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).</li>
-        <li>
-          Don't overcrowd cells with too much information. Keep it concise and
-          relevant. (Avoid multiline content within cells). 
+      <li>
+          Don't overcrowd cells with too much information or too complex data. Avoid multiline content within cells.
         </li>
-        <li>Don't use tables with empty column headers.</li>
         <li>Don't use tables on too small screen size.</li>
-        <li>Don't use the `<Table>` if you need to display complex data or if too many interactions are required within the table.</li>
       </ul>
     </Dont.Description>
   </Dont>
 </Columns>
+
+<Columns columns={[1, 1]} space={4}>
+  <Do>
+    <Do.Figure>
+      <Image
+      width={700}
+          height={700}
+          unoptimized
+          src="/table-do-content.jpg"
+          alt="Use Table with tabular data"
+        />
+    </Do.Figure>
+    <Do.Description>
+      Only use `<Table>` with tabular data.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table-dont-content.jpg"
+        alt="Dont use tables for layouts"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      <ul>
+        <li>
+        Don't use `<Table>` for layouting. 
+        </li>
+        <li>Don't use tables with empty column headers.</li>
+      </ul>
+    </Dont.Description>
+  </Dont>
+</Columns>
+
+If you need to layout something which needs a table-like look please visit our layout components like [Grid](/components/layout/grid) or [Columns](/components/layout/columns).
 
 ### Applying variant and sizes
 
@@ -130,8 +172,6 @@ For async sorting you must use the `useAsyncList` hook. The hook manages the asy
 The options to sort are ascending or descending. For this purpose the properties `onSortChange` and `sortDescriptor` must be specified.
 
 To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
-
-{' '}
 
 <Do>
   <Do.Description>
@@ -204,9 +244,9 @@ Also you see how to use the `align` property on the columns.
 
 ## Exceptions confirm the rule
 
-If you read so far, you noticed that this example may not be confirm with the definition of what the `<Table>` should follow. But expecptions prove the rule.
+If you read so far, you noticed that this use case may not be confirm with the definition of what the `<Table>` should follow. But expecptions prove the rule.
 
-This example shows how to use input fields within the `<Table>`. For now the Marigold table is only used for presenting data - not interact with certain cells/fields directly, but if you really need input fields in your table you can make this exeption with caution.
+This example below shows how to use input fields within the `<Table>`. For now the Marigold table is only used for presenting data - not interact with certain cells/fields directly, but if you really need input fields in your table you can make this exeption with caution.
 
 This is a case you normally should avoid. Find another solution that fits better for your use cases. If you need help finding alternatives please [contact us](../introduction/get-in-touch).
 
@@ -222,6 +262,12 @@ This is a case you normally should avoid. Find another solution that fits better
 <p />
 
 <ComponentDemo file="./table-input.demo.tsx" disableLabelWidth="true" />
+
+### Suiteable alternatives
+
+If you need to create an actionable list of related items, such as a list of users, you can use our [SelectionList](/components/collection/selectlist) component. Another alternative would be to create a list of [cards](/components/content/card) with a [grid](/components/layout/grid) for layouting the content.
+
+EXAMPLE???
 
 ## Props
 
