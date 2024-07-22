@@ -62,20 +62,24 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
     <Do.Description>
       <ul>
         <li>
+          Keep cell content concise. Use if possible single lines of text.
+        </li>
+        <li>
           Provide clear, descriptive column headers that accurately represent
           the data.
         </li>
         <li>Use full available space given for the table if possible.</li>
       </ul>
     </Do.Description>
-
   </Do>
   <Dont>
     <Dont.Description>
       <ul>
-      <li>
-          Don't overcrowd cells with too much information or too complex data. Avoid multiline content within cells.
+        <li>
+          Don't overcrowd cells with too much information or too complex data.
+          Avoid multiline content within cells.
         </li>
+        <li>Don't use tables with empty column headers.</li>
         <li>Don't use tables on too small screen size.</li>
       </ul>
     </Dont.Description>
@@ -86,16 +90,14 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
   <Do>
     <Do.Figure>
       <Image
-      width={700}
-          height={700}
-          unoptimized
-          src="/table-do-content.jpg"
-          alt="Use Table with tabular data"
-        />
+        width={700}
+        height={700}
+        unoptimized
+        src="/table-do-content.jpg"
+        alt="Use Table with tabular data"
+      />
     </Do.Figure>
-    <Do.Description>
-      Only use `<Table>` with tabular data.
-    </Do.Description>
+    <Do.Description>Only use a table with tabular data.</Do.Description>
   </Do>
   <Dont>
     <Dont.Figure>
@@ -108,12 +110,7 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
       />
     </Dont.Figure>
     <Dont.Description>
-      <ul>
-        <li>
-        Don't use `<Table>` for layouting. 
-        </li>
-        <li>Don't use tables with empty column headers.</li>
-      </ul>
+      Don't use a table for layouting content.
     </Dont.Description>
   </Dont>
 </Columns>

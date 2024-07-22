@@ -18,6 +18,7 @@
 coverage
 dist
 docs/.cache
+docs/public
 docs/public/render-page.js.map
 LICENSE
 storybook-static
