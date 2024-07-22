@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Stack, Table, TextArea, TextField } from '@marigold/components';
+import { Stack, Table, TextArea } from '@marigold/components';
 
 export default () => {
   const columns = [
