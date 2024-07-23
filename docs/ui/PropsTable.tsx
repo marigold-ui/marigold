@@ -46,7 +46,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
   }
 
   return (
-    <Table aria-label="Table with component props" variant="hover">
+    <Table aria-label="Table with component props" variant="hover" stretch>
       <Table.Header>
         <Table.Column key="property" width="1/6">
           Property
