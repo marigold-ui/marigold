@@ -1,21 +1,9 @@
 import { useContext } from 'react';
-import type { PropsWithChildren, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { ValidationResult } from 'react-aria-components';
 import { FieldError, FieldErrorContext, Text } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
-
-// Description
-// ---------------
-const Description = ({ children }: PropsWithChildren) => {
-  const ctx = useContext(FieldErrorContext);
-
-  if (ctx && ctx.isInvalid) {
-    return null;
-  }
-
-  return <Text slot="description">{children}</Text>;
-};
 
 // Icon
 // ---------------
@@ -59,6 +47,12 @@ export const HelpText = ({
     variant,
     size,
   });
+  const ctx = useContext(FieldErrorContext);
+
+  // Prevent rendering anything if no error/description should be shown.
+  if (!description && ctx && !ctx.isInvalid) {
+    return null;
+  }
 
   return (
     <div className={cn(classNames.container)}>
@@ -91,7 +85,9 @@ export const HelpText = ({
           );
         }}
       </FieldError>
-      <Description>{description}</Description>
+      {ctx && ctx.isInvalid ? null : (
+        <Text slot="description">{description}</Text>
+      )}
     </div>
   );
 };
