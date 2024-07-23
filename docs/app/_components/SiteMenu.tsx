@@ -75,6 +75,7 @@ const CustomInput = ({
   onHandlePages,
 }: CustomInputProps) => {
   const slug = useCommandState(state => state.value);
+
   return (
     <Command.Input
       value={value}
@@ -88,6 +89,7 @@ const CustomInput = ({
           onHandlePages(slug);
         }
       }}
+      onFocus={e => e.target.select()}
     />
   );
 };
