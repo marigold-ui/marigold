@@ -4,7 +4,7 @@ caption: Organize and display large amout of data in table format.
 badge: updated
 ---
 
-The `<Table>` is a structured component used to organize and display tabular data in rows and columns for UI. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, as well as, helps with accessibility by providing keyboard navigation.
+The `<Table>` is a structured component used to organize and display tabular data in rows and columns for UI. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, and helps with accessibility by enabling keyboard navigation.
 
 <SectionMessage>
   <SectionMessage.Title>What is meant by data?</SectionMessage.Title>
@@ -136,7 +136,6 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
 ### Applying variant and sizes
 
 Variant and sizes can be applied through properties. You can find all available variants and sizes according to the theme you use in the appearance section. In b2b theme size `compact` for example reduces the cell spacing between the top and bottom. There is also another size, which is called `expanded`, which enlarges the cells.
-For the variant, here is `grid` used.
 
 ### Visual hierarchy and sticky header
 
@@ -182,18 +181,18 @@ For this case you can set the header of the table to sticky, for that you have t
 
 ### Status indicator
 
-This is a example of how you can use other components like the `<Badge>` within the `<Table>`. This is a common use case if you need to add status indicators to the data.
+This is an example of how you can use other components like the `<Badge>` within the `<Table>`. This is a common use case if you need to add status indicators to the data.
 
 <SectionMessage>
-  <SectionMessage.Title>Good to know:</SectionMessage.Title>
+  <SectionMessage.Title>Dynamic Collections:</SectionMessage.Title>
   <SectionMessage.Content>
     You don't have to hard code the table items, you could also create a dynamic
-    collection and iterate through it. That's what the example shows. Also the
-    `stretch` property is set to `true`, which allows the table to take the full
-    available space. Here you can also see how the selected rows can be read
-    out.
+    collection and iterate through it. You can read more about these collections
+    [here](https://react-spectrum.adobe.com/react-aria/collections.html#dynamic-collections).
   </SectionMessage.Content>
 </SectionMessage>
+
+Also in the example below the `stretch` property is set to `true`. This allows the table to take the full available space.
 
 <ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
 
@@ -212,12 +211,11 @@ This is a example of how you can use other components like the `<Badge>` within 
   </Dont>
 </Columns>
 
-### Async sorting
+### Sorting
 
-In this example the `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls are located in the column headers and indicated with an arrow icon.
+In this example the `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls are located in the column headers and indicated with an arrow icon. The options to sort are ascending or descending. For this purpose the properties `onSortChange` and `sortDescriptor` must be specified.
+
 For async sorting you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
-
-The options to sort are ascending or descending. For this purpose the properties `onSortChange` and `sortDescriptor` must be specified.
 
 To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
 
@@ -232,7 +230,7 @@ To specify the width of a column you can use the `width` property in the `<Table
 
 ### Action cells and formatters
 
-If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible. The component should only be used with one action cell at the end of the table and additional with the selection cell with checkboxes at the start of the table.
+If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible. The table should only be used with one action cell at the end of the columns and additional with the selection cell with checkboxes at the start of the columns.
 
 As you may notice the table below is build with help of our formatting helper components for dates and numeric values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
 
@@ -271,7 +269,7 @@ As you may notice the table below is build with help of our formatting helper co
 
 Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
 
-Also you see how to use the `align` property on the columns.
+Also you see how to use the `align` property on the columns. With that you can set the content of a column to left, center or right.
 
 <ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
 
@@ -343,3 +341,8 @@ Is there still not the right alternative for you please [get in touch](../../int
 ### Table.Cell
 
 <PropsTable component="TableCell" />
+
+## Related
+
+- Recipe for [Core Tables](../../recipes/table-recipes)
+- [Async loading hook](../hooks-and-utils/useAsyncListData)
