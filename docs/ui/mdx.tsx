@@ -15,12 +15,14 @@ import {
   List,
   Scrollable,
   SectionMessage,
+  Select,
   Stack,
   Table,
   Tabs,
   Text,
   Tiles,
 } from './';
+import { AppearanceDemo } from './AppearanceDemo';
 import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
@@ -136,6 +138,7 @@ const components = {
   // Docs Components
   AlignmentsX,
   AlignmentsY,
+  AppearanceDemo,
   AppearanceTable,
   BorderRadius,
   Breakpoints,
@@ -159,11 +162,12 @@ const components = {
   Columns,
   Headline,
   List,
-  SectionMessage,
   Scrollable,
+  SectionMessage,
+  Select,
   Stack,
-  Tabs,
   Table,
+  Tabs,
   Text,
   Tiles,
 };
