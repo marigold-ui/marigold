@@ -316,3 +316,25 @@ test('disabled prop and styles', () => {
     `"group/radio relative flex items-center gap-[1ch] w-full"`
   );
 });
+
+test('radio group can be horizontal', () => {
+  const ref = React.createRef<HTMLLabelElement>();
+  render(
+    <ThemeProvider theme={theme}>
+      <Radio.Group label="With Label" orientation="horizontal">
+        <Radio value="1" data-testid="radio-1" ref={ref} disabled>
+          Option 1
+        </Radio>
+        <Radio value="2" data-testid="radio-2">
+          Option 2
+        </Radio>
+      </Radio.Group>
+    </ThemeProvider>
+  );
+
+  const group = screen.getByTestId('group');
+
+  expect(group.className).toMatchInlineSnapshot(
+    `"flex items-start flex-row gap-[1.5ch]"`
+  );
+});
