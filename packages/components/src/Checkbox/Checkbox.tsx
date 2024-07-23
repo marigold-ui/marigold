@@ -1,13 +1,13 @@
-import { forwardRef, useContext } from 'react';
+import { forwardRef } from 'react';
 import { Checkbox } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-import { CheckboxGroupStateContext } from 'react-aria-components';
 
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 
 import { useFieldGroupContext } from '../FieldBase';
 import { CheckboxField } from './CheckBoxField';
+import { useCheckboxGroupContext } from './Context';
 
 // SVG Icon
 const CheckMark = () => (
@@ -19,6 +19,7 @@ const CheckMark = () => (
     />
   </svg>
 );
+
 const IndeterminateMark = () => (
   <svg width="12" height="3" viewBox="0 0 12 3">
     <path
@@ -43,7 +44,7 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
         'flex shrink-0 grow-0 basis-4 items-center justify-center',
         'h-4 w-4 p-px',
         'bg-white',
-        'rounded-[3px] border border-solid border-black ',
+        'rounded-[3px] border border-solid border-black',
         className
       )}
       {...props}
@@ -114,9 +115,13 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     } as const;
 
     const { labelWidth } = useFieldGroupContext();
-    const classNames = useClassNames({ component: 'Checkbox', variant, size });
-
-    const state = useContext(CheckboxGroupStateContext);
+    const group = useCheckboxGroupContext();
+    console.log(group);
+    const classNames = useClassNames({
+      component: 'Checkbox',
+      variant: variant || group?.variant,
+      size: size || group?.size,
+    });
 
     const component = (
       <Checkbox
@@ -141,7 +146,8 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       </Checkbox>
     );
 
-    return !state && labelWidth ? (
+    // Checkbox is not within a group and should indented based on the labelWidth
+    return !group && !!labelWidth ? (
       <CheckboxField labelWidth={labelWidth}>{component}</CheckboxField>
     ) : (
       component

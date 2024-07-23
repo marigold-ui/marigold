@@ -14,7 +14,7 @@ const theme: Theme = {
       container: cva([], {
         variants: {
           size: {
-            small: 'py-1',
+            small: 'text-sm',
           },
         },
       }),
@@ -251,9 +251,7 @@ test('works with a <FieldGroup>', () => {
 test('horiziontal orientation style', () => {
   render(
     <CheckboxGroup label="Group of Checkboxes" orientation="horizontal">
-      <Checkbox value="one" data-testid="checkbox">
-        one
-      </Checkbox>
+      <Checkbox value="one">one</Checkbox>
       <Checkbox value="two">two</Checkbox>
       <Checkbox value="three">three</Checkbox>
     </CheckboxGroup>
@@ -265,4 +263,20 @@ test('horiziontal orientation style', () => {
     );
 
   expect(presentation[0].className).toContain('flex-row gap-[1.5ch]');
+});
+
+test('pass down variant and size to <Checkbox>', () => {
+  render(
+    <CheckboxGroup label="Group of Checkboxes" size="small">
+      <Checkbox value="one" data-testid="one">
+        one
+      </Checkbox>
+    </CheckboxGroup>
+  );
+
+  const one = screen
+    .getAllByTestId('one')
+    .filter(el => el.classList.contains('group/checkbox'))[0];
+
+  expect(one).toHaveClass('text-sm');
 });
