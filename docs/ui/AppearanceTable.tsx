@@ -1,7 +1,7 @@
 'use client';
 
 import { getAppearance } from '@/lib/utils';
-import { Card, ConfigSchema, Inline, Table, Text, Theme } from '@/ui';
+import { Card, Inline, Table, Text, Theme } from '@/ui';
 
 import { useThemeSwitch } from './ThemeSwitch';
 import { BlankCanvas } from './icons';
@@ -9,27 +9,6 @@ import { BlankCanvas } from './icons';
 export interface AppearanceTableProps {
   component: keyof Theme['components'];
 }
-
-const getKeys = (schema: ConfigSchema) => {
-  return {
-    variant: schema?.variant && Object.keys(schema?.variant),
-    size: schema?.size && Object.keys(schema?.size),
-  };
-};
-
-const getKeysFromSlots = (o: {
-  [slot: string]: { variants: ConfigSchema };
-}) => {
-  let v = new Set();
-  let s = new Set();
-
-  Object.values(o).forEach(value => {
-    v = new Set([...v, ...Object.keys(value.variants?.variant ?? {})]);
-    s = new Set([...s, ...Object.keys(value.variants?.size ?? {})]);
-  });
-
-  return { variant: [...v], size: [...s] };
-};
 
 export const AppearanceTable = ({ component }: AppearanceTableProps) => {
   const { current, themes } = useThemeSwitch();
