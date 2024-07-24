@@ -52,7 +52,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             themes={themes}
             initial={siteConfig.defaultTheme}
           >
-            <MarigoldProvider theme={theme}>
+            <MarigoldProvider theme={theme} className="min-h-screen">
               <SiteHeader />
               <aside
                 className={[

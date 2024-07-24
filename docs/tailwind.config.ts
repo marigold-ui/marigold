@@ -10,6 +10,9 @@ const config: Config = {
     './ui/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
 
+    // Docs theme
+    '../themes/theme-docs/src/**/*.ts',
+
     // Demos
     './content/**/*.{js,ts,jsx,tsx,mdx}',
 
@@ -22,8 +25,9 @@ const config: Config = {
   ],
   presets: [preset],
   plugins: [
-    require('@tailwindcss/typography'),
+    require('tailwindcss-animate'),
     require('tailwind-scrollbar')({ nocompatible: true }),
+    require('@tailwindcss/typography'),
   ],
 };
 

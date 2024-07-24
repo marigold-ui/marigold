@@ -1,7 +1,13 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tabs: ThemeComponent<'Tabs'> = {
-  container: cva(''),
+  container: cva('', {
+    variants: {
+      variant: {
+        demo: 'my-6',
+      },
+    },
+  }),
   tabpanel: cva(''),
   tabsList: cva('mb-4 border-b'),
   tab: cva([

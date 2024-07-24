@@ -1,5 +1,5 @@
+import type { ReactNode } from 'react';
 import { Heading } from 'react-aria-components';
-import type RAC from 'react-aria-components';
 
 import {
   TextAlignProp,
@@ -11,10 +11,7 @@ import {
   useTheme,
 } from '@marigold/system';
 
-type RemovedProps = 'className' | 'level';
-export interface HeadlineProps
-  extends Omit<RAC.HeadingProps, RemovedProps>,
-    TextAlignProp {
+export interface HeadlineProps extends TextAlignProp {
   /**
    * Set the color of the headline.
    */
@@ -24,7 +21,15 @@ export interface HeadlineProps
   /**
    * Set a different level from theme, values are from 1 - 6.
    */
-  level?: '1' | '2' | '3' | '4' | '5' | '6' | RAC.HeadingProps['level'];
+  level?: '1' | '2' | '3' | '4' | '5' | '6' | 1 | 2 | 3 | 4 | 5 | 6;
+  /**
+   * Children of the component.
+   */
+  children?: ReactNode;
+  /**
+   * A slot to place the element in.
+   */
+  slot?: string;
 }
 
 const _Headline = ({
@@ -33,7 +38,7 @@ const _Headline = ({
   children,
   align = 'left',
   color,
-  level = 1,
+  level = '1',
   ...props
 }: HeadlineProps) => {
   const theme = useTheme();

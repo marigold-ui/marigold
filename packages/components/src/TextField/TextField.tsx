@@ -90,18 +90,7 @@ export interface TextFieldProps
 // Component
 // ---------------
 const _TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  (
-    {
-      variant,
-      size,
-      required,
-      disabled,
-      readOnly,
-      error,
-      ...rest
-    }: TextFieldProps,
-    ref
-  ) => {
+  ({ required, disabled, readOnly, error, ...rest }: TextFieldProps, ref) => {
     const props: RAC.TextFieldProps = {
       isDisabled: disabled,
       isReadOnly: readOnly,

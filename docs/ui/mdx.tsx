@@ -12,18 +12,22 @@ import {
   Columns,
   Headline,
   Link,
+  List,
   Scrollable,
   SectionMessage,
+  Select,
   Stack,
   Table,
   Tabs,
   Text,
   Tiles,
 } from './';
+import { AppearanceDemo } from './AppearanceDemo';
 import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
+import { Do, Dont } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
 import { PropsTable } from './PropsTable';
@@ -87,7 +91,7 @@ const typography = {
     const { children, className, raw, ...rest } = props;
     const lines = raw.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
     return (
-      <figure className={cn('relative', className)} {...rest}>
+      <figure className={cn('relative mt-0', className)} {...rest}>
         <div
           className={cn(
             'absolute right-3 flex justify-end gap-3',
@@ -130,14 +134,18 @@ const typography = {
 const components = {
   ...typography,
   Image,
+  Link,
   // Docs Components
   AlignmentsX,
   AlignmentsY,
+  AppearanceDemo,
   AppearanceTable,
   BorderRadius,
   Breakpoints,
   ColorTokenTable,
   ComponentDemo,
+  Do,
+  Dont,
   FontSizes,
   FontStyle,
   FontWeights,
@@ -153,11 +161,13 @@ const components = {
   Card,
   Columns,
   Headline,
-  SectionMessage,
+  List,
   Scrollable,
+  SectionMessage,
+  Select,
   Stack,
-  Tabs,
   Table,
+  Tabs,
   Text,
   Tiles,
 };

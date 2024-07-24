@@ -1,5 +1,14 @@
 # @marigold/storybook-config
 
+## 1.1.47
+
+### Patch Changes
+
+- Updated dependencies [[`0bf0940`](https://github.com/marigold-ui/marigold/commit/0bf0940842eca39810cb644e4b3b935eaf0f2f4c), [`94e9a1b`](https://github.com/marigold-ui/marigold/commit/94e9a1be5ec8ed56aabab335b4867903161c60b8), [`db4fa1d`](https://github.com/marigold-ui/marigold/commit/db4fa1d08c80a90b05352bd4ec2e53b0084f843f), [`27bb054`](https://github.com/marigold-ui/marigold/commit/27bb054f81e3e4145bab8a935b264a5ad02c6afd), [`6195189`](https://github.com/marigold-ui/marigold/commit/619518955f1a98046820d9a577355d07da3f819d), [`449de9b`](https://github.com/marigold-ui/marigold/commit/449de9b61c95b1fd848dc31d33143f5e73197383), [`41428b3`](https://github.com/marigold-ui/marigold/commit/41428b3ac939ff970149e046cd31d1d8aacbd9bc), [`5073419`](https://github.com/marigold-ui/marigold/commit/5073419a72d9a0557eb1a3a945298fa7b4558728), [`391dcd1`](https://github.com/marigold-ui/marigold/commit/391dcd18ea761494ac242ffbfe3e356ab6bbdea8)]:
+  - @marigold/components@9.0.0
+  - @marigold/theme-b2b@27.1.15
+  - @marigold/theme-core@26.1.15
+
 ## 1.1.46
 
 ### Patch Changes
