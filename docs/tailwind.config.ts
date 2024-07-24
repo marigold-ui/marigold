@@ -25,8 +25,9 @@ const config: Config = {
   ],
   presets: [preset],
   plugins: [
-    require('@tailwindcss/typography'),
+    require('tailwindcss-animate'),
     require('tailwind-scrollbar')({ nocompatible: true }),
+    require('@tailwindcss/typography'),
   ],
 };
 

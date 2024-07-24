@@ -63,6 +63,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             ref={ref}
             {...props}
             className={classNames}
+            placement={placement}
             offset={0}
             UNSTABLE_portalContainer={portal as Element}
           >

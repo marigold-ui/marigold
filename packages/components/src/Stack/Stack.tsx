@@ -1,16 +1,14 @@
 import { ReactNode } from 'react';
 
-import {
-  AlignmentProp,
-  GapSpaceProp,
-  alignment,
-  cn,
-  gapSpace,
-} from '@marigold/system';
+import type { GapSpaceProp } from '@marigold/system';
+import { alignment, cn, gapSpace } from '@marigold/system';
 
 // Props
 // ---------------
-export interface StackProps extends AlignmentProp, GapSpaceProp {
+export interface StackProps extends GapSpaceProp {
+  /**
+   * Children of the component.
+   */
   children?: ReactNode;
 
   /**

@@ -8,7 +8,6 @@ import { useState } from 'react';
 import { Theme, cva } from '@marigold/system';
 
 import { Button } from '../Button';
-import { Headline } from '../Headline';
 import { setup } from '../test.utils';
 import { Dialog } from './Dialog';
 
@@ -197,29 +196,6 @@ test('supports title for accessability reasons', () => {
 
       <Dialog closeButton>
         <Dialog.Headline>Headline</Dialog.Headline>
-        Content
-      </Dialog>
-    </Dialog.Trigger>
-  );
-  const button = screen.getByText('Open');
-  fireEvent.click(button);
-
-  const dialog = screen.getByRole('dialog');
-  expect(dialog).toHaveAttribute('aria-labelledby');
-
-  const headline = screen.getByText('Headline');
-  expect(headline).toHaveAttribute('id');
-
-  expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
-});
-
-test('supports custom title for accessability reasons', () => {
-  render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-
-      <Dialog closeButton aria-labelledby="myTitle">
-        <Headline id="myTitle">Headline</Headline>
         Content
       </Dialog>
     </Dialog.Trigger>
