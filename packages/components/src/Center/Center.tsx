@@ -1,11 +1,8 @@
 import { ReactNode } from 'react';
 
 import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-export interface CenterProps
-  extends Omit<HtmlProps<'div'>, 'className'>,
-    GapSpaceProp {
+export interface CenterProps extends GapSpaceProp {
   children?: ReactNode;
   /**
    * The maximum width of the container.
