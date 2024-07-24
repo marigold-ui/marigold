@@ -2,8 +2,20 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tabs: ThemeComponent<'Tabs'> = {
   container: cva(''),
-  tabpanel: cva(''),
-  tabsList: cva('mb-[10px]'),
+  tabpanel: cva('', {
+    variants: {
+      variant: {
+        sunken: 'bg-black/10 p-2 px-4',
+      },
+    },
+  }),
+  tabsList: cva('mb-[10px]', {
+    variants: {
+      variant: {
+        sunken: 'm-0 gap-0 space-x-0 leading-none',
+      },
+    },
+  }),
   tab: cva(
     [
       'min-h-[40px]',
@@ -13,6 +25,12 @@ export const Tabs: ThemeComponent<'Tabs'> = {
     ],
     {
       variants: {
+        variant: {
+          sunken: [
+            'm-0 cursor-pointer rounded-t-md p-2 px-4 font-bold outline-none',
+            'hover:bg-black/5 rac-hover:border-none rac-selected:border-none rac-selected:bg-black/10',
+          ],
+        },
         size: {
           small: 'px-1 pb-1',
           medium: 'px-2 pb-2 text-lg',
