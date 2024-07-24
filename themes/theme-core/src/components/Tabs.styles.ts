@@ -28,7 +28,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
         variant: {
           sunken: [
             'm-0 cursor-pointer rounded-t-md p-2 px-4 font-bold outline-none',
-            'hover:bg-black/5 rac-hover:border-none rac-selected:border-none rac-selected:bg-black/10',
+            'rac-hover:border-none rac-selected:border-none rac-selected:bg-black/10 hover:bg-black/5',
           ],
         },
         size: {
