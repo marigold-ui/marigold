@@ -7,7 +7,7 @@ export default () => {
   const error = value.length > 0 && !/^\d+$/.test(value);
 
   return (
-    <FieldGroup labelWidth="20%">
+    <FieldGroup labelWidth="100px">
       <Stack space={2}>
         <TextField label="Name" />
         <TextField
