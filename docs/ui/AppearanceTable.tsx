@@ -1,7 +1,7 @@
 'use client';
 
 import { getAppearance } from '@/lib/utils';
-import { Card, Inline, Table, Text, Theme } from '@/ui';
+import { Inline, Table, Text, Theme } from '@/ui';
 
 import { useThemeSwitch } from './ThemeSwitch';
 import { BlankCanvas } from './icons';
