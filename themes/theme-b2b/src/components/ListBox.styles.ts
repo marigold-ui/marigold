@@ -28,4 +28,5 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   sectionTitle: cva(
     '[&_header]:text-text-accent [&_header]:px-2 [&_header]:pt-2 [&_header]:text-sm'
   ),
+  itemDescription: cva('text-xs'),
 };

@@ -203,7 +203,9 @@ export const SelectedScroll: StoryObj<typeof Select> = {
   render: args => {
     return (
       <Select disabledKeys={['Firefly']} {...args}>
-        <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+        <Select.Option id="Harry Potter" description="best series ever">
+          Harry Potter
+        </Select.Option>
         <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
         <Select.Option id="Star Wars">Star Wars</Select.Option>
         <Select.Option id="Star Trek">Star Trek</Select.Option>

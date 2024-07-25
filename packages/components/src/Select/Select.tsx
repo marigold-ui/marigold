@@ -146,7 +146,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
             classNames.select
           )}
         >
-          <SelectValue />
+          <SelectValue className="[&>[slot=description]]:hidden" />
           <ChevronDown className={cn('size-4', classNames.icon)} />
         </Button>
         <Popover>
