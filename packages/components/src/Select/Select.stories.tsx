@@ -187,13 +187,27 @@ export const Sections: StoryObj<typeof Select> = {
     <Select {...args}>
       <Select.Section>
         <Header>Fantasy</Header>
-        <Select.Option id="harry-potter">Harry Potter</Select.Option>
-        <Select.Option id="lord-of-the-rings">Lord of the Rings</Select.Option>
+        <Select.Option id="harry-potter" description="Best series ever">
+          Harry Potter
+        </Select.Option>
+        <Select.Option
+          id="lord-of-the-rings"
+          description="In the lands of Middle earth"
+        >
+          Lord of the Rings
+        </Select.Option>
       </Select.Section>
       <Select.Section>
         <Header>Sci-Fi</Header>
-        <Select.Option id="star-wars">Star Wars</Select.Option>
-        <Select.Option id="star-trek">Star Trek</Select.Option>
+        <Select.Option
+          id="star-wars"
+          description="A long time ago, in a galaxy far, far away"
+        >
+          Star Wars
+        </Select.Option>
+        <Select.Option id="star-trek" description="What is this">
+          Star Trek
+        </Select.Option>
       </Select.Section>
     </Select>
   ),
@@ -202,10 +216,8 @@ export const Sections: StoryObj<typeof Select> = {
 export const SelectedScroll: StoryObj<typeof Select> = {
   render: args => {
     return (
-      <Select disabledKeys={['Firefly']} {...args}>
-        <Select.Option id="Harry Potter" description="best series ever">
-          Harry Potter
-        </Select.Option>
+      <Select disabledKeys={['Firefly']} open {...args}>
+        <Select.Option id="Harry Potter">Harry Potter</Select.Option>
         <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
         <Select.Option id="Star Wars">Star Wars</Select.Option>
         <Select.Option id="Star Trek">Star Trek</Select.Option>
