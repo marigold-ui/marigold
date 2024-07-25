@@ -2,8 +2,8 @@ import { Stack, TextField } from '@marigold/components';
 
 export default () => (
   <Stack space={2}>
-    <TextField label="EMail" type="email" />
+    <TextField label="E-Mail" type="email" />
     <TextField label="Date" type="date" />
-    <TextField label="Phone Number" type="tel" />
+    <TextField label="Phone number" type="tel" />
   </Stack>
 );
