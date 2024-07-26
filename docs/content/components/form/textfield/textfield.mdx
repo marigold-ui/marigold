@@ -3,11 +3,7 @@ title: TextField
 caption: Component for input forms.
 ---
 
-The `<TextField>` is a form component which allows user to enter text with a keyboard. It consists of a label, an input field and a help text. The latter also contains error messages.
-
-It has many properties that it brings with it. You can set label for labeling the `<TextField>` itself, a `description` which behaves as help text. It is also possible to add error messages by adding the `error` and `errorMessage` prop. Another often used property is the `required` prop.
-
-The `<FieldGroup>` is a component to layout the label and the fieldbase itself. On that you can use `labelWidth` which is a string type to set the width of the label. Because the label is set to the left side in the core theme, it has only an impact on that.
+The `<TextField>` is a form component which allows user to enter and edit text with a keyboard. They typically appear in forms and dialogs.
 
 ## Import
 
@@ -25,44 +21,61 @@ import { TextField } from '@marigold/components';
 
 ## Examples
 
-### Simple Text Field
+### Basic Text Field
 
-This is how a basic `<TextField>` can look like.
+The `TextField` component consists of a label, an input field and a help text.
 
 <ComponentDemo file="./textfield-basic.demo.tsx" />
 
-### Disabled Text Field
+### Form props
 
-If you want to implement a disabled `<TextField>` you have to add the `disabled` property.
+Standard form attributes are supported like `required`, `disabled`, `type`, `placeholder` etc. as well as a `description` which is used to give context about a field's input, such as how the input will be used.
 
-<ComponentDemo file="./textfield-disabled.demo.tsx" />
+<ComponentDemo file="./textfield-props.demo.tsx" />
 
-### Required Text Field
+### Validation
 
-The `required` property adds an required icon to the label.
-
-<ComponentDemo file="./textfield-req.demo.tsx" />
-
-### Text Field with an Error
-
-The example shows how to set the `error` and `errorMessage` properties. If you fill in the field correctly, it will disappear automatically.
+The `error` prop toggles the error state of a field. The `errorMessage` prop can then be used to provide feedback to the user about the error. The message disappears automatically when all requirements are met.
 
 <ComponentDemo file="./textfield-error.demo.tsx" />
 
-### Not every number is a `number`!
+### Width
 
-[Just because the input contains numbers, it is not necessarily correctly to use `input[type=number]`!](https://www.coywolf.news/webmaster/accessible-number-input/) You can also see in the example how the `errorMessage` behaves if a false value is written in the input and how many possibilities you have using props.
+`TextField` also supports the `width` property. For this you can mainly us all available [spacing tokens](../../introduction/design-tokens#spacing).
+But there also some special tokens like `auto`, `fit`, `max`, `full` or even relative values like `3/5`.
 
-<ComponentDemo file="./textfield-number.demo.tsx" />
+<ComponentDemo file="./textfield-width.demo.tsx" />
 
-### Use different input methods
+### Uncontrolled vs. Controlled
 
-In this example you can see different types of inputs, like `email`, `date` or `tel`.
+The component can be uncontrolled or controlled ([see also](../../patterns/building-forms#controlled-or-uncontrolled-components))
 
-<ComponentDemo file="./textfield-types.demo.tsx" />
+<ComponentDemo file="./textfield-controlled.demo.tsx" />
+
+### type="number"
+
+<SectionMessage variant="warning">
+  <SectionMessage.Content>
+    We do not recommend using `type="number"` with a `TextField` due to
+    potential usability issues. For more information see
+    [here](https://technology.blog.gov.uk/2020/02/24/why-the-gov-uk-design-system-team-changed-the-input-type-for-numbers/)
+  </SectionMessage.Content>
+</SectionMessage>
+
+If you need a text field with number validation, you can use [NumberField](./number-field) instead.
 
 ### Using with FieldGroup
 
-This example shows how to use the `<FieldGroup>` together with some form components like the `<TextField>` and `<Radio>`. It is build for the Core and has only impact of that.
+<SectionMessage variant="info">
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    It is build to layout the label and the form field itself. On that you can
+    use `labelWidth` which is a string type to set the width of the label.
+    Because the label is set to the left side in the `core-theme`, it has only
+    an impact on that.
+  </SectionMessage.Content>
+</SectionMessage>
+
+This example shows how to use the `<FieldGroup>` together with some form components like the `<TextField>` and `<Radio>`.
 
 <ComponentDemo file="./textfield-group.demo.tsx" />

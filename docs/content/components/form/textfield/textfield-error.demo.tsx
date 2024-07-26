@@ -1,5 +1,8 @@
-import { TextField } from '@marigold/components';
+import { Inline, TextField } from '@marigold/components';
 
 export default () => (
-  <TextField label="Name" error errorMessage="Something went wrong!" />
+  <Inline space={4} alignX="center">
+    <TextField label="E-Mail" error defaultValue="I'm in error state" />
+    <TextField label="Name" error errorMessage="Please fill in your name" />
+  </Inline>
 );
