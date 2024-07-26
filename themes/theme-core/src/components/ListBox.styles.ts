@@ -19,5 +19,6 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   sectionTitle: cva([font, '[&_header]:px-1.5 [&_header]:font-bold']),
   itemDescription: cva([
     'text-xs text-text-base/70 group-rac-focus/option:text-text-inverted',
+    'group-rac-selected/option:text-text-inverted group-rac-hover/option:text-text-inverted',
   ]),
 };
