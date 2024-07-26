@@ -83,3 +83,13 @@ test('icon and action get classnames from theme', () => {
   const action = screen.getByTestId('action');
   expect(action.className).toContain('bg-slate-400');
 });
+
+test('renders no icon and no action', () => {
+  render(<Input data-testid="input" />);
+
+  const icon = screen.queryByTestId('icon');
+  expect(icon).not.toBeInTheDocument();
+
+  const action = screen.queryByTestId('action');
+  expect(action).not.toBeInTheDocument();
+});
