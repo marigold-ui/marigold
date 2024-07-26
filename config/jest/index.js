@@ -4,6 +4,7 @@ const merge = require('merge-deep');
 /**
  * Base configuration for jest
  */
+/** @type {import('jest').Config} */
 const base = {
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {},
@@ -60,5 +61,9 @@ const base = {
 
 /**
  * Create jest configuration wit optional overrides.
+ */
+
+/**
+ * @param {import('jest').Config} overrides
  */
 module.exports = (overrides = {}) => merge(base, overrides);
