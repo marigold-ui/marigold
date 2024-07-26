@@ -48,8 +48,8 @@ OverlayTray.parameters = {
 export const OverlayModal: StoryObj<typeof Modal> = {
   render: () => (
     <Modal open>
-      <Dialog closeButton aria-labelledby="my-cool-headline">
-        <Headline id="my-cool-headline">This is a headline!</Headline>
+      <Dialog closeButton>
+        <Headline>This is a headline!</Headline>
         <Text>
           Pellentesque habitant morbi tristique senectus et netus et malesuada
           fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
