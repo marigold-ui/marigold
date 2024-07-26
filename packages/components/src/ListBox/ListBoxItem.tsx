@@ -19,6 +19,8 @@ export const _ListBoxItem = ({
   ...props
 }: ListBoxItemProps) => {
   const { classNames } = useListBoxContext();
+
+  console.log(props);
   return (
     <ListBoxItem {...props} className={classNames.option}>
       <Text slot="label">{children}</Text>
