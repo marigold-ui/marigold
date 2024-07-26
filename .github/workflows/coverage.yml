@@ -1,4 +1,4 @@
-name: 'coverage'
+name: Coverage
 on:
   pull_request:
     branches:
@@ -26,4 +26,5 @@ jobs:
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          package-manager: pnpm
           test-script: pnpm test
