@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
+
 import { cn, useClassNames } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
 import { SectionMessageContext } from './Context';
 import { SectionMessageContent } from './SectionMessageContent';
@@ -64,10 +65,13 @@ const icons = {
 
 // Props
 // ---------------
-export interface SectionMessageProps
-  extends Omit<HtmlProps<'div'>, 'className'> {
+export interface SectionMessageProps {
   variant?: keyof typeof icons;
   size?: string;
+  /**
+   * The children of the component.
+   */
+  children?: ReactNode;
 }
 
 // Component

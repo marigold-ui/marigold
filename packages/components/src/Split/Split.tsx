@@ -1,7 +1,3 @@
-import { HtmlProps } from '@marigold/types';
+export interface SplitProps {}
 
-export interface SplitProps extends Omit<HtmlProps<'div'>, 'className'> {}
-
-export const Split = (props: SplitProps) => (
-  <div {...props} role="separator" className="grow" />
-);
+export const Split = () => <div role="separator" className="grow" />;

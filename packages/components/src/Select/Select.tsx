@@ -132,7 +132,14 @@ const _Select = forwardRef<any, SelectProps<object>>(
     const classNames = useClassNames({ component: 'Select', variant, size });
 
     return (
-      <FieldBase isOpen as={Select} ref={ref} {...props}>
+      <FieldBase
+        isOpen
+        as={Select}
+        ref={ref}
+        variant={variant}
+        size={size}
+        {...props}
+      >
         <Button
           className={cn(
             'flex w-full items-center justify-between gap-1 overflow-hidden',
@@ -140,7 +147,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
           )}
         >
           <SelectValue />
-          <ChevronDown className="size-4" />
+          <ChevronDown className={cn('size-4', classNames.icon)} />
         </Button>
         <Popover>
           <ListBox items={items}>{props.children}</ListBox>

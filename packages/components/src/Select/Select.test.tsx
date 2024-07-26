@@ -60,7 +60,7 @@ const theme: Theme = {
           size: { small: 'text-sm' },
         },
       }),
-      icon: cva(),
+      icon: cva('text-zinc-600'),
     },
     Underlay: cva(),
     ListBox: {
@@ -405,6 +405,23 @@ test('supports styling classnames with variants and sizes from theme', () => {
 
   expect(button.className).toContain('text-violet-500');
   expect(button.className).toContain('text-sm');
+});
+
+test('supports applying styles to the caret icon', () => {
+  render(
+    <Select label="Label" data-testid="select">
+      <Select.Section>
+        <Select.Option id="one">one</Select.Option>
+        <Select.Option id="two">two</Select.Option>
+      </Select.Section>
+    </Select>
+  );
+
+  const button = screen.getByRole('button');
+  // eslint-disable-next-line testing-library/no-node-access
+  const icon = button.querySelector('svg');
+
+  expect(icon).toHaveClass('text-zinc-600');
 });
 
 test('set width via props', () => {

@@ -22,6 +22,9 @@ export interface FieldBaseProps<T extends ElementType>
   extends WidthProp,
     Pick<HelpTextProps, 'description' | 'errorMessage'> {
   as?: T;
+  /**
+   * Specifies the label of the field.
+   */
   label?: ReactNode;
   variant?: string;
   size?: string;

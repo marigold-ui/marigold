@@ -8,7 +8,6 @@ export interface CheckboxGroupContextProps {
   width?: WidthProp['width'];
 }
 
-export const CheckboxGroupContext = createContext<CheckboxGroupContextProps>(
-  null as any
-);
+export const CheckboxGroupContext =
+  createContext<CheckboxGroupContextProps | null>(null);
 export const useCheckboxGroupContext = () => useContext(CheckboxGroupContext);
