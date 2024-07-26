@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
+import { Tiles } from '@marigold/components';
 import { cn } from '@marigold/system';
 
 // Shared Child Components
@@ -9,7 +10,7 @@ const Container = ({
   children,
 }: PropsWithChildren<{ variant: 'do' | 'dont' }>) => (
   <div
-    className="group my-6 grid grid-cols-[1fr] grid-rows-[auto_auto_auto] [grid-template-areas:'figure''title''description']"
+    className="group grid grid-cols-[1fr] grid-rows-[minmax(0,min-content)_min-content_auto] [grid-template-areas:'figure''title''description']"
     data-type={variant}
   >
     {children}
@@ -81,3 +82,11 @@ export const Dont = ({ children }: PropsWithChildren) => (
 
 Dont.Figure = Figure;
 Dont.Description = Description;
+
+export const GuidelineTiles = ({ children }: PropsWithChildren) => (
+  <p>
+    <Tiles space={5} stretch tilesWidth="300px">
+      {children}
+    </Tiles>
+  </p>
+);
