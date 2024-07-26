@@ -2,8 +2,9 @@ import { Select } from '@marigold/components';
 
 export default () => (
   <Select
-    label="Select your country"
+    label="Country"
     disabledKeys={['germany', 'denmark', 'elsalvador']}
+    description="Please select your country."
   >
     <Select.Option id="albania">Albania</Select.Option>
     <Select.Option id="czechrepublic">Czech Republic</Select.Option>

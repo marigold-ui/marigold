@@ -35,7 +35,7 @@ import { Select } from '@marigold/components';
 
 ### Standard Select
 
-This example shows a common single select.
+This example shows a common single select. It supports an optional description which can be used to provide more context about the field
 
 <ComponentDemo file="./select-basic.demo.tsx" />
 
@@ -44,6 +44,12 @@ This example shows a common single select.
 In this example you can see how to use the `<Select.Section>` in the `<Select>` itself. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>` .
 
 <ComponentDemo file="./select-section.demo.tsx" />
+
+### Item description - Primary and Secondary Content
+
+If you need to have secondary content shown within an item, you can use the `description` property on the option to write a short description.
+
+<ComponentDemo file="./select-description.demo.tsx" />
 
 ### Disabled Keys
 
