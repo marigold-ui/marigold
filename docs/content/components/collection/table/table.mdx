@@ -51,14 +51,38 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
 
 <Columns columns={[1, 1]} space={4}>
   <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table/table-do-names.jpg"
+        alt="Use tables with clear understandable content"
+      />
+    </Do.Figure>
     <Do.Description>
       Provide clear, descriptive column headers that accurately represent the
       data.
     </Do.Description>
   </Do>
   <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table/table-dont-names.jpg"
+        alt="Dont use tables with empty column headers."
+      />
+    </Dont.Figure>
     <Dont.Description>
-      Don't use tables with empty column headers.
+      <ul>
+        <li>Don't use tables with empty column headers.</li>
+        <li>
+          Avoid using vague or misleading column headers that do not clearly
+          represent the data.
+        </li>
+      </ul>
     </Dont.Description>
   </Dont>
 </Columns>
@@ -71,7 +95,7 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
         height={700}
         unoptimized
         src="/table/table-do-size.jpg"
-        alt="Use tables with clear understandable content"
+        alt="Use tables with available space given."
       />
     </Do.Figure>
     <Do.Description>
