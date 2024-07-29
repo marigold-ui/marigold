@@ -29,7 +29,7 @@ import { AppearanceTable } from './AppearanceTable';
 import { ColorTokenTable } from './ColorTokens';
 import { ComponentDemo } from './ComponentDemo';
 import { CopyButton } from './CopyButton';
-import { Do, Dont } from './DosAndDonts';
+import { Do, Dont, GuidelineTiles } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
 import { PropsTable } from './PropsTable';
@@ -148,6 +148,7 @@ const components = {
   ComponentDemo,
   Do,
   Dont,
+  GuidelineTiles,
   FontSizes,
   FontStyle,
   FontWeights,
