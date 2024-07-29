@@ -30,11 +30,11 @@ const Container = ({ children }: { children: ReactNode }) => (
 interface FlowerProps {
   size: string;
   rotate?: string;
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-  opacity?: number;
+  top?: string;
+  right?: string;
+  bottom?: string;
+  left?: string;
+  opacity?: string;
 }
 
 const Flower = ({
@@ -46,7 +46,12 @@ const Flower = ({
   left,
   opacity = 100,
 }: FlowerProps) => {
-  const position = { top, right, bottom, left };
+  // next/og is weird and doesn't like undefined props...
+  const position = Object.fromEntries(
+    Object.entries({ top, right, bottom, left })
+      .filter(([, val]) => typeof val !== 'undefined')
+      .map(([key, val]) => [key, Number(val)])
+  );
 
   return (
     <Logo
@@ -75,7 +80,14 @@ export const GET = async (req: NextRequest) => {
 
   const content = title ? (
     <Container>
-      <Flower size="92" left={15} bottom={32} />
+      <Flower size="90" rotate="3" left="-58" bottom="212" opacity="0.6" />
+      <Flower size="42" rotate="64" left="41" bottom="187" opacity="0.3" />
+      <Flower size="160" rotate="189" left="-65" bottom="12" opacity="0.9" />
+      <Flower size="125" rotate="-64" left="97" bottom="-71" opacity="0.75" />
+      <Flower size="68" rotate="3" left="107" bottom="94" opacity="0.6" />
+      <Flower size="26" rotate="174" left="177" bottom="68" opacity="0.3" />
+      <Flower size="74" rotate="155" left="242" bottom="-22" opacity="0.75" />
+      <Flower size="39" rotate="71" left="342" bottom="-2" opacity="0.35" />
       <div style={{ fontSize: 100 }}>{title}</div>
     </Container>
   ) : (
