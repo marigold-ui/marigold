@@ -48,7 +48,7 @@ import { Table } from '@marigold/components';
 
 Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
 
-<Columns columns={[1, 1]} space={4}>
+<GuidelineTiles>
   <Do>
     <Do.Figure>
       <Image
@@ -84,9 +84,9 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
       </ul>
     </Dont.Description>
   </Dont>
-</Columns>
+</GuidelineTiles>
 
-<Columns columns={[1, 1]} space={4}>
+<GuidelineTiles>
   <Do>
     <Do.Figure>
       <Image
@@ -115,7 +115,7 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
       Don't use tables if there is not enough space on the screen.
     </Dont.Description>
   </Dont>
-</Columns>
+</GuidelineTiles>
 
 <Dont>
   <Dont.Figure>
@@ -134,7 +134,7 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
 
 Secondary data in a cell is needed when additional context or details are necessary to fully understand the primary data. The primary data of a table cell should always be displayed clearly. It provides better readability and can improve the user experience. Too much secondary data can overwelm users and make the table complexer and harder to read.
 
-<Columns columns={[1, 1]} space={4}>
+<GuidelineTiles>
   <Do>
     <Do.Figure>
       <Image
@@ -165,7 +165,7 @@ Secondary data in a cell is needed when additional context or details are necess
       adding multiple data values within one cell.
     </Dont.Description>
   </Dont>
-</Columns>
+</GuidelineTiles>
 
 <ComponentDemo
   file="./table-secondary-content.demo.tsx"
@@ -184,7 +184,7 @@ This is an example of how you can use the [`<Badge>`](../content/badge) within t
 
 <ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
 
-<Columns columns={[1, 1]} space={4}>
+<GuidelineTiles>
   <Do>
     <Do.Description>
       Place badges consistently within the table, preferably in a dedicated
@@ -197,7 +197,7 @@ This is an example of how you can use the [`<Badge>`](../content/badge) within t
       too many badges.
     </Dont.Description>
   </Dont>
-</Columns>
+</GuidelineTiles>
 
 ### Sorting
 
@@ -235,7 +235,7 @@ If you need to have actions within the table content, you can use a action cell 
 
 <ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
 
-<Columns columns={[1, 1]} space={4}>
+<GuidelineTiles>
   <Do>
     <Do.Description>
       Only use one cell with one action component at the end of the Table to
@@ -250,7 +250,7 @@ If you need to have actions within the table content, you can use a action cell 
       </ul>
     </Dont.Description>
   </Dont>
-</Columns>
+</GuidelineTiles>
 
 ### Nested Columns
 
@@ -260,7 +260,7 @@ Note the usage of `isRowHeader` in the example below. It controls which columns 
 
 <ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
 
-<Columns columns={[1, 1]} space={4}>
+<GuidelineTiles>
   <Do>
     <Do.Description>
       Keep nested columns simple to avoid overwhelming users with too much
@@ -273,7 +273,7 @@ Note the usage of `isRowHeader` in the example below. It controls which columns 
       complex and difficult to navigate.
     </Dont.Description>
   </Dont>
-</Columns>
+</GuidelineTiles>
 
 ## Exceptions confirm the rule
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ActionMenu, I18nProvider, Menu, Table } from '@marigold/components';
+import { I18nProvider, Table } from '@marigold/components';
 import { DateFormat, NumericFormat } from '@marigold/system';
 
 const rows = [
