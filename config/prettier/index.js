@@ -9,6 +9,7 @@ module.exports = {
     require.resolve('prettier-plugin-tailwindcss'),
   ],
   importOrder: [
+    '^node:(.*)$',
     '^react/(.*)$',
     '^next/(.*)$',
     '^@react-aria/(.*)$',

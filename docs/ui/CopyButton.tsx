@@ -12,6 +12,7 @@ export const CopyButton = ({ codeString }: CopyProps) => {
   });
   return (
     <Button
+      aria-label="Copy Code"
       onPress={setCopied}
       className="translate-y-0.5 border-none p-0 outline-0"
     >

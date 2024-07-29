@@ -25,47 +25,11 @@ import { Dialog } from '@marigold/components';
 
 ### Dialog
 
-<PropsTable
-  props={[
-    {
-      property: 'closeButton',
-      type: 'boolean',
-      description: 'Show the close button',
-      default: 'false',
-    },
-    {
-      property: 'children',
-      type: 'ReactNode',
-      description: 'Children of the component.',
-    },
-  ]}
-/>
+<PropsTable component={title} />
 
 ### Dialog.Trigger
 
-<PropsTable
-  props={[
-    {
-      property: 'dismissable',
-      type: 'boolean',
-      description:
-        'Whether to close the overlay when the user interacts outside it.',
-      default: 'true',
-    },
-    {
-      property: 'keyboardDismissable',
-      type: 'boolean',
-      description:
-        'Whether pressing the escape key to close the overlay should be disabled.',
-      default: 'true',
-    },
-    {
-      property: 'children',
-      type: 'ReactNode',
-      description: 'Children of the component.',
-    },
-  ]}
-/>
+<PropsTable component="DialogTrigger" />
 
 ## Examples
 

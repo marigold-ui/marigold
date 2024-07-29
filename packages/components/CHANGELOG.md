@@ -1,5 +1,94 @@
 # @marigold/components
 
+## 9.0.0
+
+### Major Changes
+
+- [#3994](https://github.com/marigold-ui/marigold/pull/3994) [`41428b3`](https://github.com/marigold-ui/marigold/commit/41428b3ac939ff970149e046cd31d1d8aacbd9bc) Thanks [@sebald](https://github.com/sebald)! - fix: remove `HTMLProps` from components
+
+### Patch Changes
+
+- [#4032](https://github.com/marigold-ui/marigold/pull/4032) [`0bf0940`](https://github.com/marigold-ui/marigold/commit/0bf0940842eca39810cb644e4b3b935eaf0f2f4c) Thanks [@sebald](https://github.com/sebald)! - fix([DST-501]): Pass down appearance props and use context from CheckboxGroup to apply label width
+
+- [#4026](https://github.com/marigold-ui/marigold/pull/4026) [`94e9a1b`](https://github.com/marigold-ui/marigold/commit/94e9a1be5ec8ed56aabab335b4867903161c60b8) Thanks [@sebald](https://github.com/sebald)! - fix: correctly apply styles to `<Select>` icon
+
+- [#4028](https://github.com/marigold-ui/marigold/pull/4028) [`db4fa1d`](https://github.com/marigold-ui/marigold/commit/db4fa1d08c80a90b05352bd4ec2e53b0084f843f) Thanks [@sebald](https://github.com/sebald)! - docs: Introduce an appearance demo
+
+- [#4034](https://github.com/marigold-ui/marigold/pull/4034) [`6195189`](https://github.com/marigold-ui/marigold/commit/619518955f1a98046820d9a577355d07da3f819d) Thanks [@sebald](https://github.com/sebald)! - fix([DST-500]): fix popover placement
+
+- [#4033](https://github.com/marigold-ui/marigold/pull/4033) [`449de9b`](https://github.com/marigold-ui/marigold/commit/449de9b61c95b1fd848dc31d33143f5e73197383) Thanks [@sebald](https://github.com/sebald)! - fix([DST-501]): Don't render helptext if there is no error and description.
+
+- [#4027](https://github.com/marigold-ui/marigold/pull/4027) [`391dcd1`](https://github.com/marigold-ui/marigold/commit/391dcd18ea761494ac242ffbfe3e356ab6bbdea8) Thanks [@sebald](https://github.com/sebald)! - fix: pass down appearance props to `FieldBase` in `Select` and `TextField`
+
+- Updated dependencies []:
+  - @marigold/system@9.0.0
+  - @marigold/icons@1.2.55
+
+## 8.0.2
+
+### Patch Changes
+
+- [#3992](https://github.com/marigold-ui/marigold/pull/3992) [`ed3bd89`](https://github.com/marigold-ui/marigold/commit/ed3bd8975c535817ca904bd1f17b1a4009950e2b) Thanks [@sebald](https://github.com/sebald)! - refa: use `FieldErrorContext` in `<HelpText>` and fix `key` issue
+
+- [#4005](https://github.com/marigold-ui/marigold/pull/4005) [`c64d71e`](https://github.com/marigold-ui/marigold/commit/c64d71e190ba7b361fefeb94e25daa8715050448) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Add ref to datepicker
+
+- [#3985](https://github.com/marigold-ui/marigold/pull/3985) [`864ed08`](https://github.com/marigold-ui/marigold/commit/864ed08bbc7305292e4777baad795b39e8c171f1) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: adjust the triggerwidth of the autocomplete
+
+- Updated dependencies []:
+  - @marigold/system@8.0.2
+  - @marigold/icons@1.2.54
+
+## 8.0.1
+
+### Patch Changes
+
+- [#3979](https://github.com/marigold-ui/marigold/pull/3979) [`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49) Thanks [@sarahgm](https://github.com/sarahgm)! - Fix: fix some props and add command to build step
+
+- Updated dependencies [[`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49)]:
+  - @marigold/system@8.0.1
+  - @marigold/icons@1.2.53
+
+## 8.0.0
+
+### Major Changes
+
+- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename <Message> in <SectionMessage>
+
+- [#3967](https://github.com/marigold-ui/marigold/pull/3967) [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202) Thanks [@sebald](https://github.com/sebald)! - refa: Update TypeScript and adjust `<NumericFormat>` props
+
+- [#3940](https://github.com/marigold-ui/marigold/pull/3940) [`9c5b80c`](https://github.com/marigold-ui/marigold/commit/9c5b80c7a1dbfef5e1e7c2a557fc17f81640945c) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-461]: refactor `<Message>` component
+
+### Minor Changes
+
+- [#3942](https://github.com/marigold-ui/marigold/pull/3942) [`5977cba`](https://github.com/marigold-ui/marigold/commit/5977cba2ce729ea32f9db869e9c19e16032e58ec) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Keep our documentation props table dynamic
+
+### Patch Changes
+
+- [#3959](https://github.com/marigold-ui/marigold/pull/3959) [`d053e37`](https://github.com/marigold-ui/marigold/commit/d053e37f49ef382ea33c7743d0d67d89153ccc9e) Thanks [@sebald](https://github.com/sebald)! - chore: make github linter happy
+
+- Updated dependencies [[`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382), [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202), [`2658e2f`](https://github.com/marigold-ui/marigold/commit/2658e2f075c9aaae89b5817a864313f887c1a8fe), [`5977cba`](https://github.com/marigold-ui/marigold/commit/5977cba2ce729ea32f9db869e9c19e16032e58ec), [`3f7a4ec`](https://github.com/marigold-ui/marigold/commit/3f7a4ec80a4b56fea3c63e44b71ad86fa36e3d75)]:
+  - @marigold/system@8.0.0
+  - @marigold/types@1.1.1
+  - @marigold/icons@1.2.52
+
+## 7.8.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @marigold/system@7.8.2
+  - @marigold/icons@1.2.51
+
+## 7.8.1
+
+### Patch Changes
+
+- [#3924](https://github.com/marigold-ui/marigold/pull/3924) [`290dc0e`](https://github.com/marigold-ui/marigold/commit/290dc0e8b5b5fc1492d391d8e6156bd849f0b37d) Thanks [@sebald](https://github.com/sebald)! - fix: inconsistent naming of `SelectList`
+
+- Updated dependencies []:
+  - @marigold/system@7.8.1
+  - @marigold/icons@1.2.50
+
 ## 7.8.0
 
 ### Minor Changes

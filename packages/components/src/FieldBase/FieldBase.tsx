@@ -22,10 +22,19 @@ export interface FieldBaseProps<T extends ElementType>
   extends WidthProp,
     Pick<HelpTextProps, 'description' | 'errorMessage'> {
   as?: T;
+  /**
+   * Specifies the label of the field.
+   */
   label?: ReactNode;
   variant?: string;
   size?: string;
   children?: ReactNode;
+
+  /**
+   * Use RAC prop names here so we can directly pass the components via "as"
+   */
+  isInvalid?: boolean;
+  isRequired?: boolean;
 }
 
 // Component

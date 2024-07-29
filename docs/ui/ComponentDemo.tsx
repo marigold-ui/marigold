@@ -1,4 +1,4 @@
-import { registry } from '@/registry';
+import { registry } from '@/registry/demos';
 import {
   Card,
   FieldGroup,
@@ -7,8 +7,6 @@ import {
   Tabs,
 } from '@/ui';
 import type { ReactNode } from 'react';
-
-import { type Theme } from '@marigold/system';
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
@@ -29,16 +27,25 @@ export interface ComponentDemoProps {
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
+  disableLabelWidth?: boolean;
 }
 
 // Component
 // ---------------
-export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
+export const ComponentDemo = ({
+  name,
+  children,
+  disableLabelWidth,
+}: ComponentDemoProps) => {
+  if (!registry[name]) {
+    throw Error(`No demo with name "${name}" found in the registry.`);
+  }
+
   const Demo = registry[name].demo;
   const { current, themes } = useThemeSwitch();
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
-    current === 'core' ? (
+    current === 'core' && !disableLabelWidth ? (
       <FieldGroup labelWidth="100px">{children}</FieldGroup>
     ) : (
       children
@@ -46,19 +53,19 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
 
   return (
     <>
-      <Tabs defaultSelectedKey="preview">
+      <Tabs variant="demo" defaultSelectedKey="preview">
         <Tabs.List>
           <Tabs.Item id="preview">Preview</Tabs.Item>
           <Tabs.Item id="code">Code</Tabs.Item>
         </Tabs.List>
         <Tabs.TabPanel id="preview">
-          <Card variant="not-inset">
+          <Card variant="content" p={0}>
             <div
               data-theme={current}
               className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
             >
               <OverlayContainerProvider value="portalContainer">
-                <MarigoldProvider theme={(current && themes[current]) as Theme}>
+                <MarigoldProvider theme={themes[current]}>
                   <div className="not-prose size-full overflow-x-auto p-4">
                     <Wrapper>
                       <Demo />

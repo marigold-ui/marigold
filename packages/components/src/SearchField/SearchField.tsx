@@ -23,17 +23,65 @@ type RemovedProps =
 export interface SearchFieldProps
   extends Omit<RAC.SearchFieldProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+  /**
+   * Icon element to display in the search field.
+   */
   icon?: ReactElement;
+
+  /**
+   * Action element to display in the search field.
+   */
   action?: ReactElement;
+
   variant?: string;
   size?: string;
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default full
+   */
   width?: WidthProp['width'];
+
+  /**
+   * If `true`, the input is considered invalid and if set the `errorMessage` is shown instead of the `description`.
+   * @default false
+   */
   error?: RAC.SearchFieldProps['isInvalid'];
+
+  /**
+   * If `true`, the input is disabled.
+   * @default false
+   */
   disabled?: RAC.SearchFieldProps['isDisabled'];
+
+  /**
+   * If `true`, the input is required.
+   * @default false
+   */
   required?: RAC.SearchFieldProps['isRequired'];
+
+  /**
+   * If `true`, the input is readOnly.
+   * @default false
+   */
   readOnly?: RAC.SearchFieldProps['isReadOnly'];
+
+  /**
+   * The current value of the input field.
+   * @default none
+   */
   value?: string;
+
+  /**
+   * The default value of the input field.
+   * @default none
+   */
   defaultValue?: string;
+
+  /**
+   * Placeholder text for the input field.
+   * @default none
+   */
   placeholder?: string;
 }
 

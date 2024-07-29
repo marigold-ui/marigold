@@ -15,20 +15,25 @@ import {
   useClassNames,
   useTheme,
 } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
 // Props
 // ---------------
 export interface TextProps
-  extends Omit<HtmlProps<'p'>, 'className'>,
-    TextAlignProp,
+  extends TextAlignProp,
     FontSizeProp,
     FontWeightProp,
     FontStyleProp,
     CursorProp {
+  /**
+   * The children of the component
+   */
   children?: React.ReactNode;
-  variant?: string;
+  /**
+   * Set the text color.
+   * @default currentColor
+   */
   color?: string;
+  variant?: string;
   size?: string;
 }
 

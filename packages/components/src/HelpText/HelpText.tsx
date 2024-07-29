@@ -1,6 +1,7 @@
-import { type ReactNode } from 'react';
+import { useContext } from 'react';
+import type { ReactNode } from 'react';
 import type { ValidationResult } from 'react-aria-components';
-import { FieldError, Text } from 'react-aria-components';
+import { FieldError, FieldErrorContext, Text } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 
@@ -22,7 +23,13 @@ const Icon = ({ className }: { className?: string }) => (
 export interface HelpTextProps {
   variant?: string;
   size?: string;
+  /**
+   * A helpful text.
+   */
   description?: ReactNode;
+  /**
+   * An error message.
+   */
   errorMessage?: ReactNode | ((v: ValidationResult) => ReactNode);
 }
 
@@ -40,10 +47,16 @@ export const HelpText = ({
     variant,
     size,
   });
+  const ctx = useContext(FieldErrorContext);
+
+  // Prevent rendering anything if no error/description should be shown.
+  if (!description && ctx && !ctx.isInvalid) {
+    return null;
+  }
 
   return (
     <div className={cn(classNames.container)}>
-      <FieldError {...props} className="peer/error flex flex-col">
+      <FieldError {...props} className="flex flex-col">
         {validation => {
           /**
            * Prefer custom error messages, fallback to native errors ones.
@@ -58,8 +71,8 @@ export const HelpText = ({
               : errorMessage) || validation.validationErrors;
 
           return Array.isArray(messages) ? (
-            messages.map(msg => (
-              <div className="flex items-center justify-start gap-1">
+            messages.map((msg, idx) => (
+              <div key={idx} className="flex items-center justify-start gap-1">
                 <Icon className={classNames.icon} />
                 {msg}
               </div>
@@ -72,9 +85,9 @@ export const HelpText = ({
           );
         }}
       </FieldError>
-      <Text slot="description" className="peer-first/error:hidden">
-        {description}
-      </Text>
+      {ctx && ctx.isInvalid ? null : (
+        <Text slot="description">{description}</Text>
+      )}
     </div>
   );
 };

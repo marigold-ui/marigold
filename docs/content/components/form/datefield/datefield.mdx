@@ -19,78 +19,7 @@ import { DateField } from '@marigold/components';
 
 ## Props
 
-<PropsTable
-  props={[
-    {
-      property: 'label',
-      type: 'ReactNode',
-      description: 'The label text. ',
-      default: 'none',
-    },
-    {
-      property: 'description',
-      type: 'ReactNode',
-      description: 'A helpful text.',
-      default: 'none',
-    },
-    {
-      property: 'errorMessage',
-      type: 'ReactNode',
-      description: 'An error message.',
-      default: 'none',
-    },
-    {
-      property: 'error',
-      type: 'boolean',
-      description:
-        'If `true`, the field is considered invalid and if set the errorMessage is shown instead of the `description`.',
-      default: 'false',
-    },
-    {
-      property: 'defaultValue',
-      type: 'DateValue',
-      description: 'The default value of the date field.',
-      default: 'none',
-    },
-    {
-      property: 'value',
-      type: 'DateValue',
-      description: 'The value of the date field.',
-      default: 'none',
-    },
-    {
-      property: 'disabled',
-      type: 'boolean',
-      description: 'If `true`, the date field is disabled.',
-      default: 'false',
-    },
-    {
-      property: 'required',
-      type: 'boolean',
-      description: 'If `true`, the date field is required.',
-      default: 'false',
-    },
-    {
-      property: 'readOnly',
-      type: 'boolean',
-      description: 'If `true`, the date field is readOnly.',
-      default: 'false',
-    },
-    {
-      property: 'onChange',
-      type: 'function',
-      description:
-        "A callback function that is called with the date field's current value changes.",
-      default: 'none',
-    },
-    {
-      property: 'width',
-      type: 'string | number',
-      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
-      default: 'full',
-    },
-  ]}
-/>
+<PropsTable component={title} />
 
 ## Examples
 

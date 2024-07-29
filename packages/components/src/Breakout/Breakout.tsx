@@ -1,24 +1,33 @@
 import { ReactNode } from 'react';
 
-import { AlignmentProp, alignment, cn, createVar } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
+import { alignment, cn, createVar } from '@marigold/system';
 
-export interface BreakoutProps
-  extends Omit<HtmlProps<'div'>, 'className'>,
-    AlignmentProp {
+export interface BreakoutProps {
   children?: ReactNode;
+
+  /**
+   * Set the height of the breakout element.
+   */
   height?: string;
+
+  /**
+   * Horizontal alignment of the items inside the breakout element.
+   * @default left
+   */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
+
+  /**
+   * Vertical alignment of the items inside the breakout element.
+   * @default top
+   */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
 }
 
 export const Breakout = ({
   height,
   children,
-  orientation,
   alignX = 'left',
   alignY = 'center',
-  ...props
 }: BreakoutProps) => {
   return (
     <div
@@ -30,7 +39,6 @@ export const Breakout = ({
         'h-[--height]'
       )}
       style={createVar({ height })}
-      {...props}
     >
       {children}
     </div>

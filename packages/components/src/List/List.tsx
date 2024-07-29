@@ -1,15 +1,21 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { useClassNames } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
 import { ListContext } from './Context';
 import { ListItem } from './ListItem';
 
-export interface ListProps extends Omit<HtmlProps<'ul'>, 'className'> {
+export interface ListProps {
   variant?: string;
   size?: string;
+  /**
+   * Displaying a unordered or ordered list for showing Information.
+   * @default 'ul'
+   */
   as?: 'ul' | 'ol';
+  /**
+   * The children of the component.
+   */
   children?: ReactNode;
 }
 

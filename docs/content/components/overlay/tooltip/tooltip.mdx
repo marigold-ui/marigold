@@ -21,81 +21,11 @@ import { Tooltip } from '@marigold/components';
 
 ### Tooltip
 
-<PropsTable
-  props={[
-    {
-      property: 'offset',
-      type: 'number',
-      description: 'Sets the offset of the tooltip.',
-      default: 'none',
-    },
-    {
-      property: 'crossOffset',
-      type: 'number',
-      description: 'Sets the crossOffset of the tooltip.',
-      default: 'none',
-    },
-    {
-      property: 'placement',
-      type: 'top, bottom, left, right',
-      description: 'Sets the placement of the tooltip',
-      default: 'top',
-    },
-    {
-      property: 'shouldFlip',
-      type: 'boolean',
-      description:
-        'Whether the element should flip its orientation (e.g. top to bottom or left to right) when there is insufficient room for it to render completely.',
-      default: 'top',
-    },
-  ]}
-/>
+<PropsTable component={title} />
 
 ### Tooltip.Trigger
 
-<PropsTable
-  props={[
-    {
-      property: 'disabled',
-      type: 'boolean',
-      description: 'Disables the tooltip.',
-      default: 'false',
-    },
-
-    {
-      property: 'delay',
-      type: 'number',
-      description: 'Sets the delay with which the tooltip should appear.',
-      default: '1000',
-    },
-    {
-      property: 'trigger',
-      type: 'focus',
-      description:
-        'Sets the trigger behavior of the tooltip. Can be switched to just focus.',
-      default: 'undefined',
-    },
-    {
-      property: 'open',
-      type: 'boolean',
-      description: 'Sets the open state of the tooltip.',
-      default: 'undefined',
-    },
-    {
-      property: 'onOpenChange',
-      type: 'function',
-      description: 'Handles the the open state of the tooltip.',
-      default: 'none',
-    },
-    {
-      property: 'closeDelay',
-      type: 'number',
-      description: 'The delay time for the tooltip to close.',
-      default: '500',
-    },
-
-]}
-/>
+<PropsTable component="TooltipTrigger" />
 
 ## Examples
 

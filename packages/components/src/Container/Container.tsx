@@ -1,26 +1,30 @@
 import { ReactNode } from 'react';
 
+import type { GridColsAlignProp, PlaceItemsProp } from '@marigold/system';
 import {
-  GridColsAlignProp,
-  GridColumn,
-  PlaceItemsProp,
   cn,
   createVar,
   gridColsAlign,
   gridColumn,
   placeItems,
 } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-export interface ContainerProps
-  extends Omit<HtmlProps<'div'>, 'className'>,
-    PlaceItemsProp,
-    GridColumn,
-    GridColsAlignProp {
+export interface ContainerProps {
   children?: ReactNode;
+  /**
+   * The content type of the container.
+   * @default 'content'
+   */
   contentType?: 'content' | 'header';
   size?: keyof typeof content | keyof typeof header;
-  align?: 'left' | 'right' | 'center';
+  /**
+   * Set alignment the content inside the container.
+   * @default left
+   */
+  align?: GridColsAlignProp['align'];
+  /**
+   * Set alignment of the items inside the container.
+   */
   alignItems?: PlaceItemsProp['align'];
 }
 

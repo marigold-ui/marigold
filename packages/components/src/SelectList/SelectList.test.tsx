@@ -1,9 +1,8 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { createRef } from 'react';
 import { useDragAndDrop } from 'react-aria-components';
 import { DropIndicator } from 'react-aria-components';
-import { act } from 'react-dom/test-utils';
 
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 

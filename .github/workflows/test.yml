@@ -1,4 +1,4 @@
-name: Test & Coverage
+name: Test
 
 on: ['push']
 
@@ -15,7 +15,7 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3.0.0 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v4.0.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v4
         with:
@@ -26,6 +26,4 @@ jobs:
 
       # Action
       - name: Run Test Coverage
-        run: pnpm test:ci
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        run: pnpm test:ci --ci --no-cache

@@ -28,7 +28,7 @@ export const Input: ThemeComponent<'Input'> = {
     inputHover(),
     inputError('group-error/field'),
     inputSpacing,
-    'leading-[2]',
+    'leading-loose',
     'read-only:focus:border-border-base read-only:focus:outline-none',
     // Extra padding for when an icon/action is present
     'group-data-[icon]/input:pl-8',

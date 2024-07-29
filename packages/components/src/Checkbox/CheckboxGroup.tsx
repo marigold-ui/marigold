@@ -25,14 +25,41 @@ type RemovedProps =
 export interface CheckboxGroupProps
   extends Omit<RAC.CheckboxGroupProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+  /**
+   * The children of the component
+   */
   children?: ReactNode;
   variant?: string;
   size?: string;
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default full
+   */
   width?: WidthProp['width'];
+  /**
+   * Sets all checkboxes to disabled
+   * @default false
+   */
   disabled?: RAC.CheckboxGroupProps['isDisabled'];
+  /**
+   * Sets the checkbox as required.
+   * @default false
+   */
   required?: RAC.CheckboxGroupProps['isRequired'];
+  /**
+   * If `true`, the checkbox is considered invalid and if set the `errorMessage` is shown instead of the `description`.
+   * @default false
+   */
   error?: RAC.CheckboxGroupProps['isInvalid'];
+  /**
+   * Sets the checkbox on read only.
+   * @default false
+   */
   readOnly?: RAC.CheckboxGroupProps['isReadOnly'];
+  /**
+   * Wheather the component is displayed vertically or horizontally.
+   * @default vertical
+   */
   orientation?: Orientation;
 }
 

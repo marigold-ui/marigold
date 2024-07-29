@@ -19,49 +19,15 @@ import { Tag } from '@marigold/components';
 
 <AppearanceTable component={title} />
 
-### Group props
+## Props
 
-<PropsTable
-  props={[
-    {
-      property: 'label',
-      type: 'string',
-      description: 'Set a label for the select.',
-      default: 'none',
-    },
-    {
-      property: 'required',
-      type: 'boolean',
-      description: 'Set the select required.',
-      default: 'false',
-    },
-    {
-      property: 'width',
-      type: 'string | number',
-      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
-      default: 'full',
-    },
-    {
-      property: 'allowsRemoving',
-      type: 'boolean',
-      description: 'Displays a remove button on each tag.',
-      default: 'false',
-    },
-    {
-      property: 'onRemove',
-      type: '(key: Key) => any',
-      description: 'Handler that is called when the remove button is pressed.',
-      default: 'none',
-    },
-    {
-      property: 'renderEmptyState',
-      type: '(props: TagListRenderProps) => ReactNode',
-      description:
-        'Provides content to display when there are no items in the tag list.',
-      default: 'none',
-    },
-  ]}
-/>
+### Tag
+
+<PropsTable component={title} />
+
+### Tag.Group
+
+<PropsTable component="TagGroup" />
 
 ## Examples
 

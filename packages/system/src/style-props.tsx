@@ -598,23 +598,142 @@ export type AlignmentProp = {
     };
   };
 };
-export type CursorProp = { cursor?: keyof typeof cursorStyle };
-export type FontStyleProp = { fontStyle?: keyof typeof textStyle };
-export type FontWeightProp = { weight?: keyof typeof fontWeight };
-export type FontSizeProp = { fontSize?: keyof typeof textSize };
-export type GridColsAlignProp = { align?: keyof typeof gridColsAlign };
-export type GridColumn = { align?: keyof typeof gridColumn };
-export type GapSpaceProp = { space?: keyof typeof gapSpace };
-export type ObjectFitProp = { fit?: keyof typeof objectFit };
-export type ObjectPositionProp = { position?: keyof typeof objectPosition };
-export type PaddingSpaceProp = { space?: keyof typeof paddingSpace };
-export type PaddingSpacePropX = { spaceX?: keyof typeof paddingSpaceX };
-export type PaddingSpacePropY = { spaceY?: keyof typeof paddingSpaceY };
-export type PaddingRightProp = { pr?: keyof typeof paddingRight };
-export type PaddingLeftProp = { pl?: keyof typeof paddingLeft };
-export type PaddingTopProp = { pt?: keyof typeof paddingTop };
-export type PaddingBottomProp = { pb?: keyof typeof paddingBottom };
-export type PlaceItemsProp = { align?: keyof typeof placeItems };
-export type TextAlignProp = { align?: keyof typeof textAlign };
-export type WidthProp = { width?: keyof typeof width };
-export type HeightProp = { height?: keyof typeof height };
+export type CursorProp = {
+  /**
+   * Set the cursor for the element.
+   */
+  cursor?: keyof typeof cursorStyle;
+};
+
+export type FontStyleProp = {
+  /**
+   * Set the font style for the text element.
+   */
+  fontStyle?: keyof typeof textStyle;
+};
+
+export type FontWeightProp = {
+  /**
+   * Set the font weight for the text element.
+   */
+  weight?: keyof typeof fontWeight;
+};
+
+export type FontSizeProp = {
+  /**
+   * Set the font size for the text element.
+   */
+  fontSize?: keyof typeof textSize;
+};
+
+export type GridColsAlignProp = {
+  /**
+   * Set the alignment of grid columns.
+   */
+  align?: keyof typeof gridColsAlign;
+};
+
+export type GridColumn = {
+  /**
+   * Set the alignment of a grid column.
+   */
+  align?: keyof typeof gridColumn;
+};
+
+export type GapSpaceProp = {
+  /**
+   * The space between the children.
+   */
+  space?: keyof typeof gapSpace;
+};
+
+export type ObjectFitProp = {
+  /**
+   * Set the object-fit property for the element.
+   */
+  fit?: keyof typeof objectFit;
+};
+
+export type ObjectPositionProp = {
+  /**
+   * Set the object-position property for the element.
+   */
+  position?: keyof typeof objectPosition;
+};
+
+export type PaddingSpaceProp = {
+  /**
+   * Set the padding space for the element.
+   */
+  space?: keyof typeof paddingSpace;
+};
+
+export type PaddingSpacePropX = {
+  /**
+   * Set the horizontal padding space for the element.
+   */
+  spaceX?: keyof typeof paddingSpaceX;
+};
+
+export type PaddingSpacePropY = {
+  /**
+   * Set the vertical padding space for the element.
+   */
+  spaceY?: keyof typeof paddingSpaceY;
+};
+
+export type PaddingRightProp = {
+  /**
+   * Set the right padding for the element.
+   */
+  pr?: keyof typeof paddingRight;
+};
+
+export type PaddingLeftProp = {
+  /**
+   * Set the left padding for the element.
+   */
+  pl?: keyof typeof paddingLeft;
+};
+
+export type PaddingTopProp = {
+  /**
+   * Set the top padding for the element.
+   */
+  pt?: keyof typeof paddingTop;
+};
+
+export type PaddingBottomProp = {
+  /**
+   * Set the bottom padding for the element.
+   */
+  pb?: keyof typeof paddingBottom;
+};
+
+export type PlaceItemsProp = {
+  /**
+   * Set the alignment of place-items property for the element.
+   */
+  align?: keyof typeof placeItems;
+};
+
+export type TextAlignProp = {
+  /**
+   * Set the text alignment for the element.
+   */
+  align?: keyof typeof textAlign;
+};
+
+export type WidthProp = {
+  /**
+   * Set the width of the element.
+   */
+  width?: keyof typeof width;
+};
+
+export type HeightProp = {
+  /**
+   * Set the height of the element.
+   */
+  height?: keyof typeof height;
+};

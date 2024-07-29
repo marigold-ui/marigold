@@ -1,12 +1,19 @@
 import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
+import GithubSlugger from 'github-slugger';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode, { LineElement } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import { simpleGit } from 'simple-git';
 import { visit } from 'unist-util-visit';
+
+import path from 'node:path';
 
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
+
+const contentDirPath = './content';
+const git = simpleGit();
 
 /**
  * Normalizaiton supports "grouped pages". E.g. when we want to put
@@ -71,13 +78,46 @@ export const ContentPage = defineDocumentType(() => ({
         return path.length < 3 ? null : path.at(1);
       },
     },
+    // Collect the headings used for creating a submenu in the command
+    headings: {
+      type: 'json',
+      resolve: async doc => {
+        const headingsRegex = /\n(?<flag>#{1,6})\s+(?<content>.+)/g;
+        const slugger = new GithubSlugger();
+        const headings = Array.from(doc.body.raw.matchAll(headingsRegex)).map(
+          ({ groups }) => {
+            const flag = groups?.flag;
+            const content = groups?.content;
+            return {
+              level: flag?.length,
+              text: content,
+              slug: content ? slugger.slug(content) : undefined,
+            };
+          }
+        );
+        return headings;
+      },
+    },
+    modified: {
+      type: 'string',
+      resolve: async doc => {
+        const file = path.resolve(contentDirPath, doc._raw.sourceFilePath);
+        /**
+         * 🚨🚨🚨 IMPORTANT 🚨🚨🚨
+         *
+         * Note that this needs VERCEL_DEEP_CLONE=true set in vercel, otherwise
+         * vercel will use a shallow clone to build!
+         */
+        const log = await git.log({ file });
+
+        return log.latest?.date;
+      },
+    },
   },
 }));
 
 // Config
 // ---------------
-const contentDirPath = './content';
-
 export default makeSource({
   contentDirPath,
   documentTypes: [ContentPage],
@@ -126,7 +166,6 @@ export default makeSource({
           },
         },
       ],
-
       // Headings and TOC Plugins
       // ---------------
       rehypeSlug,

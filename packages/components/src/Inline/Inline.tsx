@@ -12,7 +12,15 @@ import {
 // ---------------
 export interface InlineProps extends AlignmentProp, GapSpaceProp {
   children?: ReactNode;
+  /**
+   * Horizontal alignment of the items inside the breakout element.
+   * @default 'left'
+   */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
+  /**
+   * Vertical alignment of the items inside the breakout element.
+   * @default 'center'
+   */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
 }
 

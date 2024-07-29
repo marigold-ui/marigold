@@ -1,17 +1,17 @@
 import { Config } from 'tailwindcss/types/config';
 
-import { preset } from './theme/preset';
+import { preset } from '@marigold/theme-docs/preset';
 
 const config: Config = {
   content: [
     ...preset.content,
 
     // From docs
-    './theme/root.ts',
-    './theme/*.ts',
-    './theme/**/*.ts',
     './ui/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+
+    // Docs theme
+    '../themes/theme-docs/src/**/*.ts',
 
     // Demos
     './content/**/*.{js,ts,jsx,tsx,mdx}',
@@ -25,8 +25,9 @@ const config: Config = {
   ],
   presets: [preset],
   plugins: [
-    require('@tailwindcss/typography'),
+    require('tailwindcss-animate'),
     require('tailwind-scrollbar')({ nocompatible: true }),
+    require('@tailwindcss/typography'),
   ],
 };
 

@@ -21,103 +21,11 @@ import { Radio } from '@marigold/components';
 
 ### Radio
 
-<PropsTable
-  props={[
-    {
-      property: 'value',
-      type: 'string',
-      description: 'Set the value of the radio.',
-      default: 'none%',
-    },
-    {
-      property: 'error',
-      type: 'boolean',
-      description:
-        'If `true`, the radio is considered invalid and if set the `errorMessage` is shown.',
-      default: 'false',
-    },
-    {
-      property: 'width',
-      type: 'string | number',
-      description: `Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width  `,
-      default: 'full',
-    },
-    {
-      property: 'disabled',
-      type: 'boolean',
-      description: 'Set the radio disabled.',
-      default: 'false',
-    },
-  ]}
-/>
+<PropsTable component={title} />
 
 ### Radio.Group
 
-<PropsTable
-  props={[
-    {
-      property: 'label',
-      type: 'string',
-      description: 'Set the label of the radio group.',
-      default: 'none',
-    },
-    {
-      property: 'orientation',
-      type: 'horizontal | vertical',
-      description: 'Set the radio group direction.',
-      default: 'vertical',
-    },
-    {
-      property: 'defaultValue',
-      type: 'string',
-      description: 'Set the default value for the radio group.',
-      default: 'none',
-    },
-    {
-      property: 'error',
-      type: 'boolean',
-      description:
-        'If `true`, the radio is considered invalid and if set the `errorMessage` is shown.',
-      default: 'false',
-    },
-    {
-      property: 'width',
-      type: 'string',
-      description: 'Control the width of the field',
-      default: '100%',
-    },
-    {
-      property: 'readOnly',
-      type: 'boolean',
-      description: 'Set the radio group as read only.',
-      default: 'false',
-    },
-    {
-      property: 'required',
-      type: 'boolean',
-      description: 'Set the radio group required.',
-      default: 'false',
-    },
-    {
-      property: 'disabled',
-      type: 'boolean',
-      description: 'Set the radio group disabled.',
-      default: 'false',
-    },
-    {
-      property: 'description',
-      type: 'string',
-      description: 'Set the radio group helptext.',
-      default: 'none',
-    },
-    {
-      property: 'errorMessage',
-      type: 'string',
-      description: 'Set the radio group error message if an error occures.',
-      default: 'none',
-    },
-  ]}
-/>
+<PropsTable component="RadioGroup" />
 
 ## Examples
 

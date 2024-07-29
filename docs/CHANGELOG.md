@@ -1,5 +1,122 @@
 # @marigold/docs
 
+## 9.0.0
+
+### Major Changes
+
+- [#3994](https://github.com/marigold-ui/marigold/pull/3994) [`41428b3`](https://github.com/marigold-ui/marigold/commit/41428b3ac939ff970149e046cd31d1d8aacbd9bc) Thanks [@sebald](https://github.com/sebald)! - fix: remove `HTMLProps` from components
+
+### Minor Changes
+
+- [#3968](https://github.com/marigold-ui/marigold/pull/3968) [`9f491e3`](https://github.com/marigold-ui/marigold/commit/9f491e3a80d07150d8c239a37269ae889549c4fe) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding AdviceCard component
+
+### Patch Changes
+
+- [#4023](https://github.com/marigold-ui/marigold/pull/4023) [`918b6c4`](https://github.com/marigold-ui/marigold/commit/918b6c40c23e7880c74d557c1ace14a198e5d982) Thanks [@sebald](https://github.com/sebald)! - docs: refa `DonAndDonts` to work without an image
+
+- [#4028](https://github.com/marigold-ui/marigold/pull/4028) [`db4fa1d`](https://github.com/marigold-ui/marigold/commit/db4fa1d08c80a90b05352bd4ec2e53b0084f843f) Thanks [@sebald](https://github.com/sebald)! - docs: Introduce an appearance demo
+
+- [#4034](https://github.com/marigold-ui/marigold/pull/4034) [`6195189`](https://github.com/marigold-ui/marigold/commit/619518955f1a98046820d9a577355d07da3f819d) Thanks [@sebald](https://github.com/sebald)! - fix([DST-500]): fix popover placement
+
+- Updated dependencies [[`0bf0940`](https://github.com/marigold-ui/marigold/commit/0bf0940842eca39810cb644e4b3b935eaf0f2f4c), [`94e9a1b`](https://github.com/marigold-ui/marigold/commit/94e9a1be5ec8ed56aabab335b4867903161c60b8), [`db4fa1d`](https://github.com/marigold-ui/marigold/commit/db4fa1d08c80a90b05352bd4ec2e53b0084f843f), [`27bb054`](https://github.com/marigold-ui/marigold/commit/27bb054f81e3e4145bab8a935b264a5ad02c6afd), [`6195189`](https://github.com/marigold-ui/marigold/commit/619518955f1a98046820d9a577355d07da3f819d), [`449de9b`](https://github.com/marigold-ui/marigold/commit/449de9b61c95b1fd848dc31d33143f5e73197383), [`41428b3`](https://github.com/marigold-ui/marigold/commit/41428b3ac939ff970149e046cd31d1d8aacbd9bc), [`5073419`](https://github.com/marigold-ui/marigold/commit/5073419a72d9a0557eb1a3a945298fa7b4558728), [`391dcd1`](https://github.com/marigold-ui/marigold/commit/391dcd18ea761494ac242ffbfe3e356ab6bbdea8)]:
+  - @marigold/components@9.0.0
+  - @marigold/theme-b2b@27.1.15
+  - @marigold/theme-docs@2.0.5
+  - @marigold/theme-core@26.1.15
+  - @marigold/icons@1.2.55
+  - @marigold/theme-preset@1.3.20
+
+## 8.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`ed3bd89`](https://github.com/marigold-ui/marigold/commit/ed3bd8975c535817ca904bd1f17b1a4009950e2b), [`c64d71e`](https://github.com/marigold-ui/marigold/commit/c64d71e190ba7b361fefeb94e25daa8715050448), [`864ed08`](https://github.com/marigold-ui/marigold/commit/864ed08bbc7305292e4777baad795b39e8c171f1)]:
+  - @marigold/components@8.0.2
+  - @marigold/theme-b2b@27.1.14
+  - @marigold/theme-core@26.1.14
+  - @marigold/theme-docs@2.0.4
+  - @marigold/icons@1.2.54
+  - @marigold/theme-preset@1.3.19
+
+## 8.0.1
+
+### Patch Changes
+
+- [#3979](https://github.com/marigold-ui/marigold/pull/3979) [`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49) Thanks [@sarahgm](https://github.com/sarahgm)! - Fix: fix some props and add command to build step
+
+- Updated dependencies [[`a02f284`](https://github.com/marigold-ui/marigold/commit/a02f284baa1e4bc78dbad960377810a1665a5c49)]:
+  - @marigold/components@8.0.1
+  - @marigold/theme-b2b@27.1.13
+  - @marigold/theme-core@26.1.13
+  - @marigold/theme-docs@2.0.3
+  - @marigold/icons@1.2.53
+  - @marigold/theme-preset@1.3.18
+
+## 8.0.0
+
+### Minor Changes
+
+- [#3927](https://github.com/marigold-ui/marigold/pull/3927) [`317f9eb`](https://github.com/marigold-ui/marigold/commit/317f9ebed863291e45e2e3e1d279afcf9b34ad33) Thanks [@sebald](https://github.com/sebald)! - docs: introduce design principles page
+
+- [#3942](https://github.com/marigold-ui/marigold/pull/3942) [`5977cba`](https://github.com/marigold-ui/marigold/commit/5977cba2ce729ea32f9db869e9c19e16032e58ec) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Keep our documentation props table dynamic
+
+### Patch Changes
+
+- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename <Message> in <SectionMessage>
+
+- [#3967](https://github.com/marigold-ui/marigold/pull/3967) [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202) Thanks [@sebald](https://github.com/sebald)! - refa: Update TypeScript and adjust `<NumericFormat>` props
+
+- [#3957](https://github.com/marigold-ui/marigold/pull/3957) [`aa36186`](https://github.com/marigold-ui/marigold/commit/aa36186f8e8fcffe29c8af575df811690d7702ae) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-449]docs: add values and principles to documentation
+
+- [#3937](https://github.com/marigold-ui/marigold/pull/3937) [`2658e2f`](https://github.com/marigold-ui/marigold/commit/2658e2f075c9aaae89b5817a864313f887c1a8fe) Thanks [@sarahgm](https://github.com/sarahgm)! - [DSTSUP-79]feat: add new icon for download
+
+- [#3944](https://github.com/marigold-ui/marigold/pull/3944) [`9a7f349`](https://github.com/marigold-ui/marigold/commit/9a7f349a17ae9ab2726d1578bfdf5a64eb0481c9) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-446]docs: adding governance process page
+
+- [#3962](https://github.com/marigold-ui/marigold/pull/3962) [`10c2932`](https://github.com/marigold-ui/marigold/commit/10c2932d9d8db3ac03e1adf52a6de8c0635dfb03) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-465]: adding message pattern to documentation
+
+- [#3940](https://github.com/marigold-ui/marigold/pull/3940) [`9c5b80c`](https://github.com/marigold-ui/marigold/commit/9c5b80c7a1dbfef5e1e7c2a557fc17f81640945c) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-461]: refactor `<Message>` component
+
+- [#3920](https://github.com/marigold-ui/marigold/pull/3920) [`cd3d52d`](https://github.com/marigold-ui/marigold/commit/cd3d52dec9df0f803daef4694ffb73adc56d71c7) Thanks [@sarahgm](https://github.com/sarahgm)! - [DST-407]: enhance command menu
+
+- Updated dependencies [[`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382), [`d053e37`](https://github.com/marigold-ui/marigold/commit/d053e37f49ef382ea33c7743d0d67d89153ccc9e), [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202), [`2658e2f`](https://github.com/marigold-ui/marigold/commit/2658e2f075c9aaae89b5817a864313f887c1a8fe), [`9c5b80c`](https://github.com/marigold-ui/marigold/commit/9c5b80c7a1dbfef5e1e7c2a557fc17f81640945c), [`5977cba`](https://github.com/marigold-ui/marigold/commit/5977cba2ce729ea32f9db869e9c19e16032e58ec)]:
+  - @marigold/components@8.0.0
+  - @marigold/theme-b2b@27.1.12
+  - @marigold/eslint-config@0.4.16
+  - @marigold/icons@1.2.52
+  - @marigold/theme-core@26.1.12
+  - @marigold/theme-docs@2.0.2
+  - @marigold/theme-preset@1.3.17
+
+## 7.8.2
+
+### Patch Changes
+
+- [#3934](https://github.com/marigold-ui/marigold/pull/3934) [`de73b5a`](https://github.com/marigold-ui/marigold/commit/de73b5af0f1108e1fbe33feaa62a52348f942e1c) Thanks [@sebald](https://github.com/sebald)! - refa: don't use tailwinds color import
+
+- Updated dependencies [[`de73b5a`](https://github.com/marigold-ui/marigold/commit/de73b5af0f1108e1fbe33feaa62a52348f942e1c)]:
+  - @marigold/theme-docs@2.0.1
+  - @marigold/components@7.8.2
+  - @marigold/icons@1.2.51
+  - @marigold/theme-preset@1.3.16
+  - @marigold/theme-b2b@27.1.11
+  - @marigold/theme-core@26.1.11
+
+## 7.8.1
+
+### Patch Changes
+
+- [#3933](https://github.com/marigold-ui/marigold/pull/3933) [`bc08a48`](https://github.com/marigold-ui/marigold/commit/bc08a48087c31b501b5e4aeb9a992cb97ad9e21d) Thanks [@sebald](https://github.com/sebald)! - feat: new package `@marigold/theme-docs`
+
+- [#3924](https://github.com/marigold-ui/marigold/pull/3924) [`290dc0e`](https://github.com/marigold-ui/marigold/commit/290dc0e8b5b5fc1492d391d8e6156bd849f0b37d) Thanks [@sebald](https://github.com/sebald)! - fix: inconsistent naming of `SelectList`
+
+- Updated dependencies [[`bc08a48`](https://github.com/marigold-ui/marigold/commit/bc08a48087c31b501b5e4aeb9a992cb97ad9e21d), [`290dc0e`](https://github.com/marigold-ui/marigold/commit/290dc0e8b5b5fc1492d391d8e6156bd849f0b37d)]:
+  - @marigold/theme-core@26.1.10
+  - @marigold/theme-docs@2.0.0
+  - @marigold/components@7.8.1
+  - @marigold/theme-b2b@27.1.10
+  - @marigold/icons@1.2.50
+  - @marigold/theme-preset@1.3.15
+
 ## 7.8.0
 
 ### Minor Changes

@@ -6,12 +6,15 @@ order: 4
 
 On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
 
-<Message messageTitle="View the tokens" variant="info">
+<SectionMessage variant="info">
+  <SectionMessage.Title>View the tokens</SectionMessage.Title>
+  <SectionMessage.Content>
   For those interested in understanding our token structure, the most effective way is to explore the JSON structure directly. Note that tokens directly derived from Tailwind CSS are omitted for brevity.
 
 [View tokens as JSON](https://jsonhero.io/j/1IFlkqLbLbSM)
 
-</Message>
+  </SectionMessage.Content>
+</SectionMessage>
 
 ## Naming Convention
 
@@ -35,10 +38,13 @@ The name of a design token describes how it should be used, with each part indic
 
 Color tokens leverage the primitive tokens that form the color palettes of our design system. They provide a systematic approach to managing and applying colors consistently across various elements, while ensuring a cohesive and harmonious visual identity.
 
-<Message messageTitle="Icon Color" variant="info">
-  Text color tokens can also be employed to colorize icons since they all have
-  the `currentColor` CSS rule applied.
-</Message>
+<SectionMessage variant="info">
+  <SectionMessage.Title>Icon Color</SectionMessage.Title>
+  <SectionMessage.Content>
+    Text color tokens can also be employed to colorize icons since they all have
+    the `currentColor` CSS rule applied.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ### Text
 
@@ -174,11 +180,14 @@ There are no semantic values assigned to these tokens, as their usage does not n
 
 Height tokens follow a 4-pixel grid convention, implying that their values are adjusted in increments of 4 pixels. Each token represents a multiplier of that grid. For example, a value of 2 would equate to 8 pixels.
 
-<Message messageTitle="Not mandatory" variant="info">
-  The relevance of height is limited to specific components. In numerous cases,
-  a component's size must align with its contents. Therefore, the use of tokens
-  is not obligatory in every instance.
-</Message>
+<SectionMessage variant="info">
+  <SectionMessage.Title>Not mandatory</SectionMessage.Title>
+  <SectionMessage.Content>
+    The relevance of height is limited to specific components. In numerous
+    cases, a component's size must align with its contents. Therefore, the use
+    of tokens is not obligatory in every instance.
+  </SectionMessage.Content>
+</SectionMessage>
 
 #### Intents
 

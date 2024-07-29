@@ -1,10 +1,8 @@
-import { ReactNode } from 'react';
-
-import { HtmlProps } from '@marigold/types';
+import type { ReactNode } from 'react';
 
 import { useListContext } from './Context';
 
-export interface ListItemProps extends Omit<HtmlProps<'li'>, 'className'> {
+export interface ListItemProps {
   children?: ReactNode;
 }
 

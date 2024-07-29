@@ -14,36 +14,7 @@ import { Columns } from '@marigold/components';
 
 ## Props
 
-<PropsTable
-  props={[
-    {
-      property: 'columns (required)',
-      description:
-        'An array of numbers to set the size of the children. The columns array length and the count of children must be the same. Write "fit" for the column you want to have it fitting the contents width and height.',
-      type: '(number| "fit")[]',
-      default: 'none',
-    },
-    {
-      property: 'space',
-      description: 'Space between the columns.',
-      type: 'ResponsiveStyleValue<string>',
-      default: 'none',
-    },
-    {
-      property: 'collapseAt',
-      description:
-        'Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0" columns will not collapse by default. ',
-      type: 'string | number',
-      default: '0em',
-    },
-    {
-      property: 'stretch',
-      description: 'Stretch to height of parent container.',
-      type: 'boolean',
-      default: 'false',
-    },
-  ]}
-/>
+<PropsTable component={title} />
 
 ## Examples
 

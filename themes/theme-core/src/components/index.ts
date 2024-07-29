@@ -22,7 +22,7 @@ export * from './Link.styles';
 export * from './List.styles';
 export * from './ListBox.styles';
 export * from './Menu.styles';
-export * from './Message.styles';
+export * from './SectionMessage.styles';
 export * from './NumberField.styles';
 export * from './Radio.styles';
 export * from './Select.styles';

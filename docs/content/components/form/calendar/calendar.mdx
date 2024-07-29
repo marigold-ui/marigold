@@ -19,73 +19,7 @@ import { Calendar } from '@marigold/components';
 
 ## Props
 
-<PropsTable
-  props={[
-    {
-      property: 'value',
-      type: 'DateValue',
-      description: 'The current calendar value.',
-      default: 'none',
-    },
-    {
-      property: 'defaultValue',
-      type: 'DateValue',
-      description: 'The default value of calendar.',
-      default: 'none',
-    },
-    {
-      property: 'focusedValue',
-      type: 'DateValue',
-      description: 'Controls the currently focused date within the calendar.',
-      default: 'none',
-    },
-    {
-      property: 'maxValue',
-      type: 'DateValue',
-      description: 'The maximum allowed date that a user may select.',
-      default: 'none',
-    },
-    {
-      property: 'minValue',
-      type: 'DateValue',
-      description: 'The minimum allowed date that a user may select.',
-      default: 'none',
-    },
-    {
-      property: 'validationState',
-      type: 'ValidationState `valid | invalid`',
-      description:
-        'Whether the current selection is valid or invalid according to application logic.',
-      default: 'none',
-    },
-    {
-      property: 'onChange',
-      type: 'function',
-      description:
-        'a callback function that is called when the the date field value changes.',
-      default: 'none',
-    },
-    {
-      property: 'disabled',
-      type: 'boolean',
-      description: 'Disables the Calendar.',
-      default: 'false',
-    },
-    {
-      property: 'readOnly',
-      type: 'boolean',
-      description: 'Whether the calendar value is immutable.',
-      default: 'false',
-    },
-    {
-      property: 'autoFocus',
-      type: 'boolean',
-      description:
-        'Whether to automatically focus the calendar when it mounts.',
-      default: 'false',
-    },
-  ]}
-/>
+<PropsTable component={title} />
 
 ## Examples
 
