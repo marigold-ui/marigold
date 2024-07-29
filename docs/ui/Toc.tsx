@@ -65,7 +65,7 @@ export const Toc = ({ data }: TocProps) => {
                 )}
               >
                 <List.Item key={title}>
-                  <div className=" pl-4">
+                  <div className="pl-4">
                     <Link
                       variant="toc"
                       href={anchor}
