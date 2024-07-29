@@ -81,7 +81,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
                   <Table.Cell>
                     <Markdown
                       // Reset <code> for now
-                      className="*:bg-transparent *:p-0 *:text-xs"
+                      className="text-pretty *:bg-transparent *:p-0 *:text-xs"
                       contents={prop.description}
                     />
                   </Table.Cell>
