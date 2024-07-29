@@ -2,6 +2,8 @@
 
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { HTMLAttributes } from 'react';
+import Md from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 import { cn } from '@marigold/system';
 
@@ -186,3 +188,20 @@ export const Mdx = ({ className, title, code }: MdxProps) => {
   const Component = useMDXComponent(code, { title });
   return <Component className={className} components={components as any} />;
 };
+
+export interface MarkdownProps {
+  className?: string;
+  contents: string;
+}
+
+export const Markdown = ({ className, contents }: MarkdownProps) => (
+  <Md
+    className={className}
+    remarkPlugins={[remarkGfm]}
+    components={components}
+    disallowedElements={['p']}
+    unwrapDisallowed
+  >
+    {contents}
+  </Md>
+);
