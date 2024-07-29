@@ -4,11 +4,10 @@ import type { ReactNode } from 'react';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
 
-import theme from '@marigold/theme-docs';
+import { colors } from '@marigold/theme-docs/tokens';
 
 import { Logo } from '@/ui/Logo';
 
-const colors = theme.colors as any;
 
 // Helper
 // ---------------
