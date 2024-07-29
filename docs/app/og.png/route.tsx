@@ -44,7 +44,7 @@ const Flower = ({
   right,
   bottom,
   left,
-  opacity = 100,
+  opacity = '1',
 }: FlowerProps) => {
   // next/og is weird and doesn't like undefined props...
   const position = Object.fromEntries(
