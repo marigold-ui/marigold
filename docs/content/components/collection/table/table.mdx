@@ -183,9 +183,9 @@ If you have large data tables, setting the header to sticky can provide context 
 
 <ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
 
-### Status indicator
+### Highlight data
 
-This is an example of how you can use other components like the `<Badge>` within the `<Table>`. This is a common use case if you need to add status indicators to the data.
+This is an example of how you can use the `<Badge>` within the `<Table>`. Badges can be used in a table to highlight or categorize certain data, making it easier for users to quickly identify key informationa. This is a common use case if you need to add status indicators, categorizations, labels or tags within the table.
 
 <SectionMessage>
   <SectionMessage.Title>Dynamic Collections:</SectionMessage.Title>
@@ -201,8 +201,8 @@ This is an example of how you can use other components like the `<Badge>` within
 <Columns columns={[1, 1]} space={4}>
   <Do>
     <Do.Description>
-      Place status badges consistently within the table, preferably in a
-      dedicated status column.
+      Place badges consistently within the table, preferably in a dedicated
+      column.
     </Do.Description>
   </Do>
   <Dont>
