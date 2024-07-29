@@ -8,7 +8,6 @@ import { colors } from '@marigold/theme-docs/tokens';
 
 import { Logo } from '@/ui/Logo';
 
-
 // Helper
 // ---------------
 const Container = ({ children }: { children: ReactNode }) => (
@@ -30,26 +29,38 @@ const Container = ({ children }: { children: ReactNode }) => (
 
 interface FlowerProps {
   size: string;
-  position: {
-    top?: number;
-    right?: number;
-    bottom?: number;
-    left?: number;
-  };
-  rotate: string;
+  rotate?: string;
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+  opacity?: number;
 }
 
-const Flower = ({ size, position, rotate }: FlowerProps) => (
-  <Logo
-    height={size}
-    width={size}
-    style={{
-      position: 'absolute',
-      ...position,
-      transform: `rotate(${rotate})`,
-    }}
-  />
-);
+const Flower = ({
+  size,
+  rotate = '0',
+  top,
+  right,
+  bottom,
+  left,
+  opacity = 100,
+}: FlowerProps) => {
+  const position = { top, right, bottom, left };
+
+  return (
+    <Logo
+      height={size}
+      width={size}
+      style={{
+        position: 'absolute',
+        transform: `rotate(${rotate}deg)`,
+        opacity,
+        ...position
+      }}
+    />
+  );
+};
 
 // Handler
 // ---------------
@@ -64,23 +75,8 @@ export const GET = async (req: NextRequest) => {
 
   const content = title ? (
     <Container>
-      <Flower size="52" position={{ left: -15, bottom: 32 }} rotate="55deg" />
-      <Flower size="24" position={{ left: 15, bottom: -10 }} rotate="120deg" />
-      <Flower size="92" position={{ left: 65, bottom: -25 }} rotate="-10deg" />
-      <Flower size="20" position={{ left: 55, bottom: 75 }} rotate="-90deg" />
-      <Flower size="48" position={{ left: 175, bottom: -20 }} rotate="100deg" />
-      <Flower size="28" position={{ left: 15, bottom: 115 }} rotate="35deg" />
-      <Flower size="14" position={{ left: 170, bottom: 40 }} rotate="65deg" />
-
-      <Flower size="84" position={{ right: -20, top: 40 }} rotate="8deg" />
-      <Flower size="20" position={{ right: 15, top: -8 }} rotate="-90deg" />
-      <Flower size="48" position={{ right: 60, top: -10 }} rotate="-90deg" />
-      <Flower size="14" position={{ right: -8, top: 140 }} rotate="65deg" />
-      <Flower size="24" position={{ right: 95, top: 45 }} rotate="65deg" />
-      <Flower size="14" position={{ right: 130, top: 15 }} rotate="8deg" />
-      <Flower size="32" position={{ right: 160, top: -15 }} rotate="8deg" />
-
-      <div style={{ fontSize: 80 }}>{title}</div>
+      <Flower size="92" left={15} bottom={32} />
+      <div style={{ fontSize: 100 }}>{title}</div>
     </Container>
   ) : (
     <Container>
