@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-b2b",
-  "version": "27.1.14",
+  "version": "27.1.15",
   "description": "Marigold B2B Theme",
   "license": "MIT",
   "keywords": [
@@ -18,10 +18,10 @@
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     },
-    "./preset": {
-      "require": "./dist/preset.js",
-      "import": "./dist/preset.mjs",
-      "types": "./dist/preset.d.ts"
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs",
+      "types": "./dist/*.d.ts"
     },
     "./styles.css": "./dist/styles.css"
   },

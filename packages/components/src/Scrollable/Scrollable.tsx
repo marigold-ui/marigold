@@ -1,9 +1,16 @@
 import { ReactNode } from 'react';
 
-import { WidthProp, cn, createVar, width as twWidth } from '@marigold/system';
+import type { WidthProp } from '@marigold/system';
+import { cn, createVar, width as twWidth } from '@marigold/system';
 
 export interface ScrollableProps extends WidthProp {
+  /**
+   * Children of the layout.
+   */
   children?: ReactNode;
+  /**
+   * Specifies the height of the scrollable container.
+   */
   height?: string;
 }
 export const Scrollable = ({

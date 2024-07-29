@@ -1,14 +1,8 @@
-/**
- * Based on https://theme-ui.com/components/aspect-ratio
- */
 import { ReactNode } from 'react';
 
 import { AspectProp, aspect, cn, createVar } from '@marigold/system';
-import { HtmlProps } from '@marigold/types';
 
-export interface AspectProps
-  extends Omit<HtmlProps<'div'>, 'className'>,
-    AspectProp {
+export interface AspectProps extends AspectProp {
   /**
    * The children of the component.
    */
