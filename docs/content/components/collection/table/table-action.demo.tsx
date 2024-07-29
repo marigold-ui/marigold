@@ -1,14 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
 
-import {
-  ActionMenu,
-  Checkbox,
-  I18nProvider,
-  Menu,
-  Stack,
-  Table,
-} from '@marigold/components';
+import { ActionMenu, I18nProvider, Menu, Table } from '@marigold/components';
 import { DateFormat, NumericFormat } from '@marigold/system';
 
 const rows = [
@@ -49,7 +41,7 @@ const rows = [
   },
 ] as const;
 
-const DataTable = ({ editable }: { editable: boolean }) => (
+export default () => (
   <Table
     aria-label="Data Table"
     selectionMode="multiple"
@@ -83,10 +75,7 @@ const DataTable = ({ editable }: { editable: boolean }) => (
           </Table.Cell>
           <Table.Cell>{item.ticketnr}</Table.Cell>
           <Table.Cell>
-            <ActionMenu
-              disabled={!editable}
-              onAction={action => alert(`Action: ${action}`)}
-            >
+            <ActionMenu onAction={action => alert(`Action: ${action}`)}>
               <Menu.Item id="edit">Open in editor</Menu.Item>
               <Menu.Item id="event">Go to event</Menu.Item>
               <Menu.Item id="delete">Delete</Menu.Item>
@@ -97,16 +86,3 @@ const DataTable = ({ editable }: { editable: boolean }) => (
     </Table.Body>
   </Table>
 );
-
-export default () => {
-  const [editable, setEditable] = useState(true);
-
-  return (
-    <Stack space={4}>
-      <Checkbox checked={editable} onChange={setEditable}>
-        Allow editing
-      </Checkbox>
-      <DataTable editable={editable} />
-    </Stack>
-  );
-};

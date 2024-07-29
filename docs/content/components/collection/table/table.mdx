@@ -221,15 +221,13 @@ The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, 
 
 For async sorting you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
 
-To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
-
 <ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
 
-### Action cells and formatters
+### Numeric Values
 
-If you need to edit the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an `<ActionMenu>` is used to make interaction possible. The table should only be used with one action cell at the end of the columns and additional with the selection cell with checkboxes at the start of the columns.
+To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
 
-As you may notice the table below is build with help of our formatting helper components for dates and numeric values. With that you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
+With our formatting helper components for dates and numeric values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
 
 <Do>
   <Do.Description>
@@ -242,6 +240,10 @@ As you may notice the table below is build with help of our formatting helper co
     </ul>
   </Do.Description>
 </Do>
+
+### Action cells
+
+If you need to have actions within the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an [`<ActionMenu>`](../overlay/menu) is used to make interaction possible. The table should only be used with one action cell at the end of the columns and additional with the selection cell with checkboxes at the start of the columns.
 
 <ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
 
