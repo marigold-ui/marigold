@@ -84,9 +84,9 @@ Dont.Figure = Figure;
 Dont.Description = Description;
 
 export const GuidelineTiles = ({ children }: PropsWithChildren) => (
-  <p>
+  <div className="my-5">
     <Tiles space={5} stretch tilesWidth="300px">
       {children}
     </Tiles>
-  </p>
+  </div>
 );
