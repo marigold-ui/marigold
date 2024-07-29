@@ -176,4 +176,4 @@ export const colors = {
     success: green[600],
     error: red[600],
   },
-};
+} as const;
