@@ -1,5 +1,5 @@
 import componentProps from '@/registry/props.json';
-import { Card, Inline, Table, Text } from '@/ui';
+import { Inline, Table, Text } from '@/ui';
 
 import { BlankCanvas } from './icons';
 
