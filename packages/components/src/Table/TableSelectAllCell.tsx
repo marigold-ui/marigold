@@ -58,7 +58,7 @@ export const TableSelectAllCell = ({
   return (
     <th
       ref={ref}
-      className={cn(twWidth[width], ['  leading-none'], classNames?.header)}
+      className={cn(twWidth[width], ['leading-none'], classNames?.header)}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}

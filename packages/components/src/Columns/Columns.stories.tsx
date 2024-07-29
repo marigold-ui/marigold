@@ -104,8 +104,7 @@ const Block = ({
 }) => (
   <div
     style={{ height }}
-    className=" h-[--height] rounded border border-solid border-[#67686c] bg-[#858cab] p-3 text-[#edf2ff]
-     "
+    className="h-[--height] rounded border border-solid border-[#67686c] bg-[#858cab] p-3 text-[#edf2ff]"
   >
     {children}
   </div>
