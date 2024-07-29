@@ -113,9 +113,7 @@ export const ScrollableContent: Story = {
       <Dialog closeButton aria-labelledby="my-cool-headline">
         <Container>
           <Header>
-            <Dialog.Headline id="my-cool-headline">
-              This is a headline!
-            </Dialog.Headline>
+            <Dialog.Headline>This is a headline!</Dialog.Headline>
           </Header>
           <Body>
             <Stack space={2}>
@@ -152,9 +150,7 @@ export const StickyFooter: Story = {
       <Dialog closeButton aria-labelledby="my-cool-headline">
         <div className="flex max-h-[400px] flex-col">
           <Header>
-            <Dialog.Headline id="my-cool-headline">
-              This is a headline!
-            </Dialog.Headline>
+            <Dialog.Headline>This is a headline!</Dialog.Headline>
             <Text>This is some additional text that is always visible!</Text>
           </Header>
           <div className="max-w-[400px] flex-1 overflow-y-auto">

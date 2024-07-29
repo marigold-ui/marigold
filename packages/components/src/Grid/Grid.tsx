@@ -25,8 +25,17 @@ const parseTemplateValue = (values: TemplateValue[]) =>
 // Props
 // ---------------
 export interface GridProps extends GapSpaceProp, HeightProp {
+  /**
+   * Specifies the named grid areas, much like `grid-template-areas`.
+   */
   areas: string[];
+  /**
+   * Specifies the width of each column in the grid.
+   */
   columns: TemplateValue[];
+  /**
+   * Specifies the height of each rows in the grid.
+   */
   rows: TemplateValue[];
   /**
    * Children of the layout.

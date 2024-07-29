@@ -2,7 +2,7 @@
 
 Please include a summary of the change and which issue is fixed when no corresponding ticket is available. Add additional informations the reviewers should know.
 
-[ ] This change requires a UI-Kit update - inform Alex Tirado
+- [] This change requires a UI-Kit update - inform Alex Tirado (@tirado-rx)
 
 # What should be tested?
 
@@ -11,3 +11,7 @@ Please include a summary of the change and which issue is fixed when no correspo
 # Reviewers:
 
 Which persons should review this PR? Add person with @mentions
+
+Examples:
+@marigold-ui/developer
+@marigold-ui/designer

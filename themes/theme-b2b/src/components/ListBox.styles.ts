@@ -5,7 +5,7 @@ const font = 'font-body text-text-base';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
-    'bg-bg-surface border-border-light mt-[2px] rounded-sm border border-solid',
+    'bg-bg-surface border-border-light mt-0.5 rounded-sm border border-solid',
     'data-error:border-border-error',
   ]),
   list: cva([

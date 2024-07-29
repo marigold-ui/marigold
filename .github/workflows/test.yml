@@ -1,4 +1,4 @@
-name: Test & Coverage
+name: Test
 
 on: ['push']
 
@@ -26,8 +26,4 @@ jobs:
 
       # Action
       - name: Run Test Coverage
-        run: pnpm test:ci
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: pnpm test:ci --ci --no-cache

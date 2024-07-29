@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-docs",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Marigold Docs Theme",
   "license": "MIT",
   "keywords": [
@@ -18,10 +18,10 @@
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     },
-    "./preset": {
-      "require": "./dist/preset.js",
-      "import": "./dist/preset.mjs",
-      "types": "./dist/preset.d.ts"
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs",
+      "types": "./dist/*.d.ts"
     },
     "./styles.css": "./dist/styles.css"
   },

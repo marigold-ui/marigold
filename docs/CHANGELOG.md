@@ -1,5 +1,31 @@
 # @marigold/docs
 
+## 9.0.0
+
+### Major Changes
+
+- [#3994](https://github.com/marigold-ui/marigold/pull/3994) [`41428b3`](https://github.com/marigold-ui/marigold/commit/41428b3ac939ff970149e046cd31d1d8aacbd9bc) Thanks [@sebald](https://github.com/sebald)! - fix: remove `HTMLProps` from components
+
+### Minor Changes
+
+- [#3968](https://github.com/marigold-ui/marigold/pull/3968) [`9f491e3`](https://github.com/marigold-ui/marigold/commit/9f491e3a80d07150d8c239a37269ae889549c4fe) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Adding AdviceCard component
+
+### Patch Changes
+
+- [#4023](https://github.com/marigold-ui/marigold/pull/4023) [`918b6c4`](https://github.com/marigold-ui/marigold/commit/918b6c40c23e7880c74d557c1ace14a198e5d982) Thanks [@sebald](https://github.com/sebald)! - docs: refa `DonAndDonts` to work without an image
+
+- [#4028](https://github.com/marigold-ui/marigold/pull/4028) [`db4fa1d`](https://github.com/marigold-ui/marigold/commit/db4fa1d08c80a90b05352bd4ec2e53b0084f843f) Thanks [@sebald](https://github.com/sebald)! - docs: Introduce an appearance demo
+
+- [#4034](https://github.com/marigold-ui/marigold/pull/4034) [`6195189`](https://github.com/marigold-ui/marigold/commit/619518955f1a98046820d9a577355d07da3f819d) Thanks [@sebald](https://github.com/sebald)! - fix([DST-500]): fix popover placement
+
+- Updated dependencies [[`0bf0940`](https://github.com/marigold-ui/marigold/commit/0bf0940842eca39810cb644e4b3b935eaf0f2f4c), [`94e9a1b`](https://github.com/marigold-ui/marigold/commit/94e9a1be5ec8ed56aabab335b4867903161c60b8), [`db4fa1d`](https://github.com/marigold-ui/marigold/commit/db4fa1d08c80a90b05352bd4ec2e53b0084f843f), [`27bb054`](https://github.com/marigold-ui/marigold/commit/27bb054f81e3e4145bab8a935b264a5ad02c6afd), [`6195189`](https://github.com/marigold-ui/marigold/commit/619518955f1a98046820d9a577355d07da3f819d), [`449de9b`](https://github.com/marigold-ui/marigold/commit/449de9b61c95b1fd848dc31d33143f5e73197383), [`41428b3`](https://github.com/marigold-ui/marigold/commit/41428b3ac939ff970149e046cd31d1d8aacbd9bc), [`5073419`](https://github.com/marigold-ui/marigold/commit/5073419a72d9a0557eb1a3a945298fa7b4558728), [`391dcd1`](https://github.com/marigold-ui/marigold/commit/391dcd18ea761494ac242ffbfe3e356ab6bbdea8)]:
+  - @marigold/components@9.0.0
+  - @marigold/theme-b2b@27.1.15
+  - @marigold/theme-docs@2.0.5
+  - @marigold/theme-core@26.1.15
+  - @marigold/icons@1.2.55
+  - @marigold/theme-preset@1.3.20
+
 ## 8.0.2
 
 ### Patch Changes

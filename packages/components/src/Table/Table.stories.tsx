@@ -223,6 +223,23 @@ export const NestedColumns: Story = {
   ),
 };
 
+export const Empty: Story = {
+  render: () => (
+    <Table
+      aria-label="Example table for nested columns"
+      emptyState={() => 'No results found.'}
+    >
+      <Table.Header>
+        <Table.Column>First Name</Table.Column>
+        <Table.Column>Last Name</Table.Column>
+        <Table.Column>Age</Table.Column>
+        <Table.Column>Birthday</Table.Column>
+      </Table.Header>
+      <Table.Body>{[]}</Table.Body>
+    </Table>
+  ),
+};
+
 export const Sorting: Story = {
   render: () => {
     const data = [
