@@ -36,7 +36,7 @@
     "react-docgen-typescript": "2.2.2",
     "react-dom": "18.3.1",
     "react-hook-form": "7.51.2",
-    "react-use": "17.5.0",
+    "react-use": "17.5.1",
     "react-use-clipboard": "1.0.9",
     "rehype-autolink-headings": "7.1.0",
     "rehype-pretty-code": "0.13.2",
