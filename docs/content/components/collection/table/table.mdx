@@ -215,18 +215,13 @@ This is an example of how you can use the [`<Badge>`](../content/badge) within t
 
 ### Sorting
 
-In this example the `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls are located in the column headers and indicated with an arrow icon. The options to sort are ascending or descending. For this purpose the properties `onSortChange` and `sortDescriptor` must be specified.
+Enable the sorting function to help users organize and find data efficiently. This is especially useful since different user tasks may require different sorting orders.
+
+The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, indicated by an arrow icon, are located in the column headers and allow for ascending or descending order. For this purpose the properties `onSortChange` and `sortDescriptor` must be specified.
 
 For async sorting you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
 
 To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
-
-<Do>
-  <Do.Description>
-    Enable sorting function to support users organize and find data efficiently,
-    especially if different merchant tasks benefit from different sort orders.
-  </Do.Description>
-</Do>
 
 <ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
 
