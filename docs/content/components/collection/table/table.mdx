@@ -259,7 +259,9 @@ If you need to have actions within the table content, you can use a action cell 
 
 ### Nested Columns
 
-Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
+Nested columns can be useful in tables when you need to organize complex or hierarchical data in a more structured format. These columns can be nested, which will result in more than one header row to be created.
+
+Note the usage of `isRowHeader` in the example below. It controls which columns are included in the [accessibility name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name) for each row. By default, only the first column is included, meaning the aria label will be on the first column only.
 
 Also you see how to use the `align` property on the columns. With that you can set the content of a column to left, center or right.
 
