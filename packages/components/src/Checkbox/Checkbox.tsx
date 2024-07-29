@@ -140,7 +140,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
 
     const { labelWidth } = useFieldGroupContext();
     const group = useCheckboxGroupContext();
-    console.log(group);
+
     const classNames = useClassNames({
       component: 'Checkbox',
       variant: variant || group?.variant,
