@@ -214,11 +214,11 @@ For async sorting you must use the `useAsyncList` hook. The hook manages the asy
 
 <ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
 
-### Numeric Values
-
-To specify the width of a column you can use the `width` property in the `<Table.Column>` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table.
+### Handling numeric values
 
 With our formatting helper components for dates and numeric values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
+
+Also you see how to use the `align` property on the columns. With that you can set the content of a column to left, center or right.
 
 <ComponentDemo file="./table-numeric.demo.tsx" disableLabelWidth="true" />
 
@@ -263,20 +263,18 @@ Nested columns can be useful in tables when you need to organize complex or hier
 
 Note the usage of `isRowHeader` in the example below. It controls which columns are included in the [accessibility name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name) for each row. By default, only the first column is included, meaning the aria label will be on the first column only.
 
-Also you see how to use the `align` property on the columns. With that you can set the content of a column to left, center or right.
-
 <ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
 
 <Columns columns={[1, 1]} space={4}>
   <Do>
     <Do.Description>
-      Keep nested tables simple to avoid overwhelming users with too much
+      Keep nested columns simple to avoid overwhelming users with too much
       information at once.
     </Do.Description>
   </Do>
   <Dont>
     <Dont.Description>
-      Don't use multiple levels of nested tables, this can make the table
+      Don't use multiple levels of nested columns, this can make the table
       complex and difficult to navigate.
     </Dont.Description>
   </Dont>
@@ -313,7 +311,7 @@ Is there still not the right alternative for you please [get in touch](../../int
 ## Props
 
 <SectionMessage>
-  <SectionMessage.Title>Hint: Dynamic Collections:</SectionMessage.Title>
+  <SectionMessage.Title>Hint: Dynamic Collections</SectionMessage.Title>
   <SectionMessage.Content>
     You don't have to hard code the table items, you could also create a dynamic
     collection and iterate through it. You can read more about these collections
