@@ -56,7 +56,7 @@ const Flower = ({
         position: 'absolute',
         transform: `rotate(${rotate}deg)`,
         opacity,
-        ...position
+        ...position,
       }}
     />
   );
