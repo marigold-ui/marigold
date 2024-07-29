@@ -1,7 +1,8 @@
 import componentProps from '@/registry/props.json';
-import { Card, Inline, Table, Text } from '@/ui';
+import { Inline, Table, Text } from '@/ui';
 
 import { BlankCanvas } from './icons';
+import { Markdown } from './mdx';
 
 // Helper
 // ---------------
@@ -79,7 +80,13 @@ export const PropsTable = ({ component }: PropsTableProps) => {
                 {prop.defaultValue ? prop.defaultValue.value : '-'}
               </code>
             </Table.Cell>
-            <Table.Cell>{prop.description}</Table.Cell>
+            <Table.Cell>
+              <Markdown
+                // Reset <code> for now
+                className="text-pretty *:bg-transparent *:p-0 *:text-xs"
+                contents={prop.description}
+              />
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
