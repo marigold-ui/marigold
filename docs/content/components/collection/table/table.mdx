@@ -135,9 +135,9 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
 
 Variant and sizes can be applied through properties. You can find all available variants and sizes according to the theme you use in the appearance section. In b2b theme size `compact` for example reduces the cell spacing between the top and bottom. There is also another size, which is called `expanded`, which enlarges the cells.
 
-### Visual hierarchy and sticky header
+### Secondary information inside a cell
 
-Sometimes the user needs clear visual hierarchy within the table. The main data of a table cell should always be displayed clearly. It provides better readability and can improve the user experience. On the other hand too much visual hierarchy can overwelm users and make the table comlpexer and harder to read.
+Secondary data in a cell is needed when additional context or details are necessary to fully understand the primary data. The primary data of a table cell should always be displayed clearly. It provides better readability and can improve the user experience. Too much secondary data can overwelm users and make the table comlpexer and harder to read.
 
 <Columns columns={[1, 1]} space={4}>
   <Do>
@@ -172,8 +172,14 @@ Sometimes the user needs clear visual hierarchy within the table. The main data 
   </Dont>
 </Columns>
 
-If you have large data tables you need to have context given when scrolling down a table where it is relevant to know on which column you are.
-For this case you can set the header of the table to sticky, for that you have to set the property `stickyHeader` on the `<Table>` and use our [Scollable](../layout/scrollable) component with a certain height, wrapped around it like in the example below.
+<ComponentDemo
+  file="./table-secondary-content.demo.tsx"
+  disableLabelWidth="true"
+/>
+
+### Sticky header
+
+If you have large data tables, setting the header to sticky can provide context when scrolling. To do this, set the `stickyHeader` property on the `<Table>` and wrap it in the [Scrollable](../layout/scrollable) component with a specified height, as shown in the example below.
 
 <ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
 
