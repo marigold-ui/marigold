@@ -81,77 +81,53 @@ export const GET = async (req: NextRequest) => {
   const content = title ? (
     <Container>
       {/* Corner Flowers */}
-      {/* <Flower size="78" left="-25" bottom="36" rotate="55" />
-      <Flower size="36" left="25" bottom="-15" rotate="120" />
-      <Flower size="42" left="15" bottom="145" rotate="35" />
-      <Flower size="30" left="75" bottom="90" rotate="-90" />
-      <Flower size="138" left="95" bottom="-45" rotate="-10" />
-      <Flower size="28" left="245" bottom="30" rotate="65" />
-      <Flower size="72" left="280" bottom="-20" rotate="100" />
-      <Flower size="20" left="370" bottom="35" rotate="100" />
+      <Flower size="78" left="-25" bottom="36" rotate="55" opacity="0.25" />
+      <Flower size="36" left="25" bottom="-15" rotate="120" opacity="0.5" />
+      <Flower size="42" left="15" bottom="145" rotate="35" opacity="0.3" />
+      <Flower size="30" left="75" bottom="90" rotate="-90" opacity="0.5" />
+      <Flower size="138" left="95" bottom="-45" rotate="-10" opacity="0.4" />
+      <Flower size="28" left="245" bottom="30" rotate="65" opacity="0.5" />
+      <Flower size="72" left="280" bottom="-20" rotate="100" opacity="0.3" />
+      <Flower size="20" left="370" bottom="35" rotate="100" opacity="0.25" />
 
-      <Flower size="126" right="-35" top="50" rotate="8" />
-      <Flower size="21" right="-12" top="200" rotate="65" />
-      <Flower size="35" right="10" top="-15" rotate="-90" />
-      <Flower size="72" right="75" top="-20" rotate="-90" />
-      <Flower size="38" right="115" top="65" rotate="65" />
-      <Flower size="22" right="170" top="15" rotate="8" />
-      <Flower size="48" right="220" top="-20" rotate="8" /> */}
-
-      <Flower size="140" left="-40" top="510" rotate="75" opacity="0.15" />
-      <Flower size="40" left="-30" top="410" rotate="-90" opacity="0.1" />
-      <Flower size="130" left="-30" top="90" rotate="-90" opacity="0.2" />
-      <Flower size="110" left="10" top="265" rotate="0" opacity="0.1" />
-      <Flower size="60" left="100" top="410" rotate="-90" opacity="0.15" />
-      <Flower size="80" left="50" top="-45" rotate="-90" opacity="0.2" />
-      <Flower size="50" left="145" top="185" rotate="-100" opacity="0.2" />
-      <Flower size="100" left="160" top="40" rotate="8" opacity="0.15" />
-      <Flower size="40" left="160" top="520" rotate="-160" opacity="0.2" />
-      <Flower size="80" left="180" top="300" rotate="35" opacity="0.2" />
-      <Flower size="120" left="200" top="580" rotate="180" opacity="0.3" />
-      <Flower size="140" left="250" top="400" rotate="165" opacity="0.2" />
-      <Flower size="180" left="270" top="110" rotate="65" opacity="0.15" />
-      <Flower size="60" left="300" top="-10" rotate="0" opacity="0.25" />
-      <Flower size="40" left="380" top="560" rotate="245" opacity="0.25" />
-      <Flower size="160" left="420" top="290" rotate="95" opacity="0.15" />
-      <Flower size="90" left="430" top="-10" rotate="160" opacity="0.1" />
-      <Flower size="60" left="460" top="500" rotate="195" opacity="0.15" />
-      <Flower size="120" left="460" top="610" rotate="238" opacity="0.15" />
-      <Flower size="60" left="500" top="140" rotate="195" opacity="0.2" />
-      <Flower size="120" left="580" top="500" rotate="34" opacity="0.1" />
-      <Flower size="220" left="580" top="-180" rotate="235" opacity="0.05" />
-      <Flower size="35" left="600" top="90" rotate="235" opacity="0.15" />
-      <Flower size="200" left="620" top="150" rotate="238" opacity="0.1" />
-      <Flower size="45" left="620" top="380" rotate="14" opacity="0.2" />
-      <Flower size="65" left="730" top="60" rotate="4" opacity="0.3" />
-      <Flower size="65" left="735" top="430" rotate="88" opacity="0.2" />
-      <Flower size="200" left="760" top="540" rotate="124" opacity="0.15" />
-      <Flower size="50" left="830" top="-10" rotate="268" opacity="0.2" />
-      <Flower size="120" left="840" top="310" rotate="124" opacity="0.15" />
-      <Flower size="80" left="860" top="110" rotate="198" opacity="0.2" />
-      <Flower size="140" left="940" top="-65" rotate="4" opacity="0.15" />
-      <Flower size="60" left="940" top="220" rotate="4" opacity="0.05" />
-      <Flower size="60" left="960" top="470" rotate="164" opacity="0.15" />
-      <Flower size="40" left="980" top="120" rotate="64" opacity="0.05" />
-      <Flower size="100" left="1010" top="330" rotate="276" opacity="0.2" />
-      <Flower size="140" left="1030" top="520" rotate="8" opacity="0.1" />
-      <Flower size="160" left="1050" top="130" rotate="3" opacity="0.05" />
-      <Flower size="30" left="1100" top="460" rotate="176" opacity="0.15" />
-      <Flower size="80" left="1120" top="10" rotate="210" opacity="0.05" />
-      <Flower size="25" left="1135" top="325" rotate="76" opacity="0.2" />
-      <Flower size="90" left="1150" top="380" rotate="25" opacity="0.15" />
+      <Flower size="126" right="-35" top="50" rotate="8" opacity="0.25" />
+      <Flower size="21" right="-12" top="200" rotate="65" opacity="0.3" />
+      <Flower size="35" right="10" top="-15" rotate="-90" opacity="0.5" />
+      <Flower size="72" right="75" top="-20" rotate="-90" opacity="0.25" />
+      <Flower size="38" right="115" top="65" rotate="65" opacity="0.3" />
+      <Flower size="22" right="170" top="15" rotate="8" opacity="0.4" />
+      <Flower size="48" right="220" top="-20" rotate="8" opacity="0.5" />
 
       <div
         style={{
           display: 'flex',
-          position: 'relative',
           fontSize: 100,
           padding: '24px 48px',
-          borderRadius: 24,
-          background: 'rgba(248,250,252, 0.75)',
         }}
       >
         {title}
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          gap: 4,
+          alignItems: 'center',
+          position: 'absolute',
+          right: 24,
+          bottom: 8,
+        }}
+      >
+        <Logo height="16" width="16" />
+        <div
+          style={{
+            fontFamily: '"Inter Black"',
+            color: '#46505a',
+            fontSize: 18,
+            textTransform: 'uppercase',
+          }}
+        >
+          Marigold
+        </div>
       </div>
     </Container>
   ) : (
