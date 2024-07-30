@@ -174,7 +174,7 @@ This is an example of how you can use the [`<Badge>`](../content/badge) within t
 
 Enable the sorting function to help users organize and find data efficiently. This is especially useful since different user tasks may require different sorting orders.
 
-The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, indicated by an arrow icon, are located in the column headers and allow for ascending or descending order. For this purpose the properties `onSortChange` and `sortDescriptor` must be specified.
+The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, indicated by an arrow icon, are located in the column headers and allow for ascending or descending order. For this purpose the properties `onSortChange` which handles the direction when changing and `sortDescriptor`, containing the current column and direction must be specified.
 
 For async sorting you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
 
