@@ -202,7 +202,9 @@ Also you see how to use the `align` property on the columns. With that you can s
 
 ### Action cells
 
-If you need to have actions within the table content, you can use a action cell to open a modal and edit the fields related to the content. In this example an [`<ActionMenu>`](../overlay/menu) is used to make interaction possible. The table should only be used with one action cell at the end of the columns and additional with the selection cell with checkboxes at the start of the columns.
+Action cells are useful when you need to perform actions. For example, if you need to edit the content of a cell, you can provide an action to open a modal and edit the fields associated with the content.
+
+In this example an [`<ActionMenu>`](../overlay/menu) is used to make interaction possible. The table should only be used with one action cell at the end of the columns and additional with the selection cell with checkboxes at the start of the columns.
 
 <ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
 
@@ -223,7 +225,7 @@ If you need to have actions within the table content, you can use a action cell 
   </Dont>
 </GuidelineTiles>
 
-### Nested Columns
+### Nested columns
 
 Nested columns can be useful in tables when you need to organize complex or hierarchical data in a more structured format. These columns can be nested, which will result in more than one header row to be created.
 
@@ -246,7 +248,7 @@ Note the usage of `isRowHeader` in the example below. It controls which columns 
   </Dont>
 </GuidelineTiles>
 
-## Suitable alternatives
+## Alternative components
 
 Choosing the right alternative to data tables depends on the type of data you have and how you want users to interact with it.
 If you need to create an actionable list of related items, such as a list of users, you can use our [SelectionList](/components/collection/selectlist) component. Alternatively may also a list of [Cards](/components/content/card) work. That is helpful if the data needs to be displayed more visually and a hierarchy should be shown. Keep in mind that you can't compare lists as good as tables.
