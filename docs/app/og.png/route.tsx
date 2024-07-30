@@ -80,14 +80,23 @@ export const GET = async (req: NextRequest) => {
 
   const content = title ? (
     <Container>
-      <Flower size="90" rotate="3" left="-58" bottom="212" opacity="0.6" />
-      <Flower size="42" rotate="64" left="41" bottom="187" opacity="0.3" />
-      <Flower size="160" rotate="189" left="-65" bottom="12" opacity="0.9" />
-      <Flower size="125" rotate="-64" left="97" bottom="-71" opacity="0.75" />
-      <Flower size="68" rotate="3" left="107" bottom="94" opacity="0.6" />
-      <Flower size="26" rotate="174" left="177" bottom="68" opacity="0.3" />
-      <Flower size="74" rotate="155" left="242" bottom="-22" opacity="0.75" />
-      <Flower size="39" rotate="71" left="342" bottom="-2" opacity="0.35" />
+      <Flower size="78" left="-25" bottom="36" rotate="55" />
+      <Flower size="36" left="25" bottom="-15" rotate="120" />
+      <Flower size="42" left="15" bottom="145" rotate="35" />
+      <Flower size="30" left="75" bottom="90" rotate="-90" />
+      <Flower size="138" left="95" bottom="-45" rotate="-10" />
+      <Flower size="28" left="245" bottom="30" rotate="65" />
+      <Flower size="72" left="280" bottom="-20" rotate="100" />
+      <Flower size="20" left="370" bottom="35" rotate="100" />
+
+      <Flower size="126" right="-35" top="50" rotate="8" />
+      <Flower size="21" right="-12" top="200" rotate="65" />
+      <Flower size="35" right="10" top="-15" rotate="-90" />
+      <Flower size="72" right="75" top="-20" rotate="-90" />
+      <Flower size="38" right="115" top="65" rotate="65" />
+      <Flower size="22" right="170" top="15" rotate="8" />
+      <Flower size="48" right="220" top="-20" rotate="8" />
+
       <div style={{ fontSize: 100 }}>{title}</div>
     </Container>
   ) : (
