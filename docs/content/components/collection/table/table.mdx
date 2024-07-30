@@ -38,8 +38,6 @@ A table is composed of a container element that organizes data into rows and col
 
 ## Usage
 
-### General usage of the component
-
 Use a `<Table>` if you need to organize and display large amout of data. This can be to group informations, compare data or taking actions on single records.
 
 <GuidelineTiles>
@@ -124,7 +122,7 @@ Use a `<Table>` if you need to organize and display large amout of data. This ca
   <Dont.Description>Don't use a table for layouting content.</Dont.Description>
 </Dont>
 
-### Secondary information inside a cell
+### Display secondary information
 
 Secondary data in a cell is needed when additional context or details are necessary to fully understand the primary data. The primary data of a table cell should always be displayed clearly. It provides better readability and can improve the user experience. Too much secondary data can overwelm users and make the table complexer and harder to read.
 
@@ -268,25 +266,6 @@ Note the usage of `isRowHeader` in the example below. It controls which columns 
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
-
-## Exceptions confirm the rule
-
-If you read so far, you noticed that this use case may not be confirm with the definition of what the `<Table>` should follow. But exceptions prove the rule.
-
-This example below shows how to use input fields within the `<Table>`. For now the Marigold table is only used for presenting data - not interact with certain cells/fields or edit them directly within the table, but if you really need this in your table you can make this exception with caution. It is not recommended to use and might get removed in the future.
-
-<SectionMessage variant="warning">
-  <SectionMessage.Title>Avoid mutation</SectionMessage.Title>
-  <SectionMessage.Content>
-    It's best practice in React to avoid mutation cause of unpredicatable side
-    effects. For more detailed explanations see
-    [here](https://react.dev/learn/updating-objects-in-state#whats-a-mutation).
-  </SectionMessage.Content>
-</SectionMessage>
-
-<p />
-
-<ComponentDemo file="./table-input.demo.tsx" disableLabelWidth="true" />
 
 ## Suitable alternatives
 
