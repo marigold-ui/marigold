@@ -63,5 +63,3 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 export { _Button as Button };
-
-let x;
