@@ -1,39 +1,20 @@
 ---
 title: Select
-caption: Dropdown for selecting an Option among different options.
+caption: Dropdown for selecting an option among different options.
+badge: updated
 ---
 
-The `<Select>` is a form component to choose one option from a list. A `<Select>` must include the `<Select.Item>`. It can optionally include a `<Select.Section>`, which behaves as divider between two or more category options.
+The `<Select>` is a form component with which you can choose one option from a list with predefined options. It should be used with other form components in a `<Form>`.
 
-It behaves similar to the [`<Menu>`](/components/menu/), but the use case is different. A `<Select>` is used in forms.
+## Anatomy
 
-## Import
-
-```tsx
-import { Select } from '@marigold/components';
-```
+A `<Select>` contains a clickable button element with an arrow down icon to show the direction the list of options opens. `<Select.Option>` represent a possible choice the user can select. Optional you have the choice to add `<Select.Section>` to the options which helps divide the content of options in categories if needed. Also optional you have the possibility to add a short description to the select itself and/ or to the option.
 
 ## Appearance
 
 <AppearanceTable component={title} />
 
-## Props
-
-### Select
-
-<PropsTable component={title} />
-
-### Select.Section
-
-<PropsTable component="ListBoxSection" />
-
-### Select.Option
-
-<PropsTable component="ListBoxItem" />
-
-## Examples
-
-### Standard Select
+## Usage
 
 This example shows a common single select. It supports an optional description which can be used to provide more context about the field.
 
@@ -41,7 +22,7 @@ This example shows a common single select. It supports an optional description w
 
 ### Select with Sections
 
-In this example you can see how to use the `<Select.Section>` in the `<Select>` itself. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>` .
+In this example you can see how to use the `<Select.Section>` in the `<Select>` itself. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>`.
 
 <ComponentDemo file="./select-section.demo.tsx" />
 
@@ -56,3 +37,17 @@ If you need to have primary and secondary content shown within an item, you can 
 You can also set some keys disabled, for that you have to use the `disabledKeys` property.
 
 <ComponentDemo file="./select-disabled-keys.demo.tsx" />
+
+## Props
+
+### Select
+
+<PropsTable component={title} />
+
+### Select.Section
+
+<PropsTable component="ListBoxSection" />
+
+### Select.Option
+
+<PropsTable component="ListBoxItem" />

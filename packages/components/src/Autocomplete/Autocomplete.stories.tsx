@@ -74,7 +74,13 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Autocomplete placeholder="Movie" {...args}>
-      <Autocomplete.Item id="Harry Potter">Harry Potter</Autocomplete.Item>
+      <Autocomplete.Item
+        id="Harry Potter"
+        description="best series ever"
+        textValue="Harry Potter"
+      >
+        Harry Potter
+      </Autocomplete.Item>
       <Autocomplete.Item id="Lord of the Rings">
         Lord of the Rings
       </Autocomplete.Item>
@@ -103,14 +109,21 @@ export const Controlled: Story = {
             onSubmit={(key, val) => setSubmitted([key, val])}
             disabledKeys={['star-trek']}
           >
-            <Autocomplete.Item id="harry-potter">
+            <Autocomplete.Item id="harry-potter" textValue="Harry Potter">
               Harry Potter
             </Autocomplete.Item>
-            <Autocomplete.Item id="lord-of-the-rings">
+            <Autocomplete.Item
+              id="lord-of-the-rings"
+              textValue="Lord of the Rings"
+            >
               Lord of the Rings
             </Autocomplete.Item>
-            <Autocomplete.Item id="star-wars">Star Wars</Autocomplete.Item>
-            <Autocomplete.Item id="star-trek">Star Trek</Autocomplete.Item>
+            <Autocomplete.Item id="star-wars" textValue="Star Wars">
+              Star Wars
+            </Autocomplete.Item>
+            <Autocomplete.Item id="star-trek" textValue="Star Trek">
+              Star Trek
+            </Autocomplete.Item>
             <Autocomplete.Item id="firefly">Firefly</Autocomplete.Item>
           </Autocomplete>
           <pre>current: {current}</pre>
