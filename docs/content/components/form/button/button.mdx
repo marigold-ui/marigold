@@ -47,7 +47,7 @@ Only include one primary button in a page or area of the user interface. This pr
         width={700}
         height={700}
         unoptimized
-        src="/button/button-do-hierachy.jpg"
+        src="/button/button-hierachy-do.jpg"
         alt="Use one primary button per page or area to highlight the most important action"
       />
     </Do.Figure>
@@ -62,7 +62,7 @@ Only include one primary button in a page or area of the user interface. This pr
         width={700}
         height={700}
         unoptimized
-        src="/button/button-dont-hierachy.jpg"
+        src="/button/button-hierachy-dont.jpg"
         alt="Don't include multiple primary buttons in the same area to prevent confusion and visual clutter."
       />
     </Dont.Figure>
@@ -86,7 +86,7 @@ For icon-only buttons, ensure you set an `aria-label` or `aria-labelledby` attri
         width={700}
         height={700}
         unoptimized
-        src="/button/button-do-icon.jpg"
+        src="/button/button-icon-do.jpg"
         alt="Use icons in buttons to provide additional clarity when the icon is highly relevant to the action."
       />
     </Do.Figure>
@@ -101,7 +101,7 @@ For icon-only buttons, ensure you set an `aria-label` or `aria-labelledby` attri
         width={700}
         height={700}
         unoptimized
-        src="/button/button-dont-icon.jpg"
+        src="/button/button-icon-dont.jpg"
         alt="Icons should not be used for decoration."
       />
     </Dont.Figure>
@@ -111,13 +111,51 @@ For icon-only buttons, ensure you set an `aria-label` or `aria-labelledby` attri
   </Dont>
 </GuidelineTiles>
 
-### Full Width
+### Avoid disabled buttons
+
+A disabled button can't be actioned. Keep buttons active and use validation and error messages to guide users on what needs to be done to proceed.
+
+Disabled buttons are problematic as they offer no feedback on why an action is unavailable, are often hard to see due to low contrast, and are inaccessible to keyboard users who cannot focus on them.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-disabled-do.jpg"
+        alt="Use icons in buttons to provide additional clarity when the icon is highly relevant to the action."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use icons in buttons to provide additional clarity when the icon is highly
+      relevant to the action.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-disabled-dont.jpg"
+        alt="Icons should not be used for decoration."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Icons should not be used for decoration.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Full width
 
 The width of buttons automatically adjusts to fit the label. Use the `fullWidth` prop to make the button span the entire available width.
 
 <ComponentDemo file="./button-full-width.demo.tsx" />
 
-### Navigation with Buttons
+### Navigation with buttons
 
 Never use buttons for navigation. Always use links to direct users to a new page. Using buttons for navigation can cause accessibility issues, such as making it difficult for keyboard and screen reader users to interact properly.
 
