@@ -1,25 +1,29 @@
 ---
 title: Button
-caption: Whenever you need that clicky thing.
+caption: Buttons allow users to trigger actions.
 ---
 
-Buttons are crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
+The `<Button>` component is a crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
 
 Different types of buttons, such as primary and secondary, help guide users by visually prioritizing actions. Primary buttons are typically used for the most important actions, while secondary buttons provide less critical options.
+
+## Anatomy
+
+A button consists of a clickable area, often containing a textual label or icon, which users can click or activate using the Space or Enter keys. For buttons with only an icon and no visible text, it's important to set an `aria-label` or `aria-labelledby` prop to provide a descriptive label for assistive technologies.
+
+<Image
+  src="/button/button-anatomy.jpg"
+  alt="Anatomy of button"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
 <AppearanceDemo component={title} />
 
 <AppearanceTable component={title} />
-
-## Usage
-
-### Button Variants
-
-Different types of buttons can be utilized through the `variant` prop. Choose the most suitable one based on your context.
-
-<ComponentDemo file="./button-variants.demo.tsx" />
 
 <SectionMessage type="info">
   <SectionMessage.Title>About the "secondary" Variant</SectionMessage.Title>
@@ -29,6 +33,8 @@ Different types of buttons can be utilized through the `variant` prop. Choose th
     styling.
   </SectionMessage.Content>
 </SectionMessage>
+
+## Usage
 
 ### With Icons
 
