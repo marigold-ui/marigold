@@ -1,5 +1,4 @@
 import { CalendarDate } from '@internationalized/date';
-
 import { Calendar } from '@marigold/components';
 
 export default () => (

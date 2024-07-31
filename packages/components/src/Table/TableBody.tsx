@@ -1,9 +1,6 @@
 import { ReactNode } from 'react';
-
 import { useTableRowGroup } from '@react-aria/table';
-
 import { TableBodyProps as BodyProps } from '@react-stately/table';
-
 import { useTableContext } from './Context';
 
 export interface TableBodyProps extends Omit<BodyProps<object>, 'children'> {

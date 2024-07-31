@@ -1,6 +1,6 @@
 import { ReactNode, forwardRef } from 'react';
-import { Switch } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Switch } from 'react-aria-components';
 import {
   WidthProp,
   cn,

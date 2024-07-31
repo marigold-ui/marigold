@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Button, SelectList } from '@marigold/components';
 
 let pokemons = [

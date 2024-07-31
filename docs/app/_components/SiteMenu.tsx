@@ -5,11 +5,8 @@ import { Button, Dialog, Inline, cn, useClassNames } from '@/ui';
 import { Command, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-
 import { Search } from '@marigold/icons';
-
 import { useHasMounted } from '@/ui/useHasMounted';
-
 import {
   ChangeThemeItem,
   ExternalLinkItem,
