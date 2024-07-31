@@ -1,5 +1,4 @@
 import { siteConfig } from '@/lib/config';
-
 import { Logo } from '@/ui/Logo';
 
 export const SiteFooter = () => (

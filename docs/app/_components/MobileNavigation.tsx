@@ -1,9 +1,7 @@
 'use client';
 
 import { Button, Dialog, Header } from '@/ui';
-
 import { Logo } from '@/ui/Logo';
-
 import { Navigation } from './Navigation';
 
 // Helpers
