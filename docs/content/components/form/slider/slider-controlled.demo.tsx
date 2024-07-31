@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { Slider } from '@marigold/components';
 
 export default () => {

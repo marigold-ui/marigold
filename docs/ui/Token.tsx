@@ -1,5 +1,4 @@
 import { Card, Inline, Stack, Table, alignment, cn, paddingSpace } from '@/ui';
-
 import { useThemeSwitch } from './ThemeSwitch';
 
 export const AlignmentsX = () => {

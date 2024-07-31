@@ -4,7 +4,6 @@
 /* global $, cd, chalk */
 import { getPackagesSync } from '@manypkg/get-packages';
 import watcher from '@parcel/watcher';
-
 import path from 'node:path';
 
 process.env.FORCE_COLOR = 3;
