@@ -3,27 +3,25 @@
 .changeset
 .contentlayer
 .DS_Store
-.husky
 .env.local
 .eslintignore
+.eslintrc
 .gitignore
 .husky
-.next
-.prettierignore
 .next
 .node-version
 .npmrc
 .nvmrc
+.prettierignore
 
 coverage
 dist
-docs/.cache
-docs/public/render-page.js.map
 LICENSE
 storybook-static
 pnpm-lock.yaml
+public
 
-*.png
+favicon.png
 *.snap
 *.svg
 *.ico

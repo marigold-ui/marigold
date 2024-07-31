@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-
 import { Scrollable } from './Scrollable';
 
 test('should be rendered', () => {

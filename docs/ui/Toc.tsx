@@ -2,7 +2,6 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-
 import { Link, List, Text } from '@marigold/components';
 import { cn } from '@marigold/system';
 
@@ -65,7 +64,7 @@ export const Toc = ({ data }: TocProps) => {
                 )}
               >
                 <List.Item key={title}>
-                  <div className=" pl-4">
+                  <div className="pl-4">
                     <Link
                       variant="toc"
                       href={anchor}

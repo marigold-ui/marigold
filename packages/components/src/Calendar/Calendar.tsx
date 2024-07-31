@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components';
-
 import { WidthProp, cn, useClassNames } from '@marigold/system';
-
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarListBox } from './CalendarListBox';
 import MonthControls from './MonthControls';

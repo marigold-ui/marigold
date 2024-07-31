@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-
 import { Stack } from '../Stack';
 import { Aside } from './Aside';
 

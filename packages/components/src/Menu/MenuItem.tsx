@@ -1,6 +1,5 @@
-import { MenuItem } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { MenuItem } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 
 // Props

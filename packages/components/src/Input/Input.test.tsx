@@ -1,8 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { screen } from '@testing-library/react';
-
 import { Theme, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { Input } from './Input';
 

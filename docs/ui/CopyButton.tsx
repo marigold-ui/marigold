@@ -1,5 +1,4 @@
 import useClipboard from 'react-use-clipboard';
-
 import { Button } from '@marigold/components';
 
 interface CopyProps {

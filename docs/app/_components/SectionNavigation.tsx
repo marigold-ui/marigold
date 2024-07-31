@@ -1,9 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-
 import { Badge } from '@marigold/components';
-
 import { NavLink } from './NavLink';
 import { useNavigation } from './Navigation';
 

@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react';
-
 import type { GapSpaceProp, HeightProp } from '@marigold/system';
 import { cn, gapSpace, height as twHeight } from '@marigold/system';
-
 import { GridArea } from './GridArea';
 
 // Helpers

@@ -1,5 +1,4 @@
 import { ThemeComponent, cva } from '@marigold/system';
-
 import { ELEVALTION_RING } from '../mixins';
 
 export const Card: ThemeComponent<'Card'> = cva(

@@ -1,7 +1,5 @@
 import { Button } from 'react-aria-components';
-
 import { AriaButtonProps } from '@react-types/button';
-
 import { cn } from '@marigold/system';
 
 // Icons

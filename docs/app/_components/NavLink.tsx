@@ -1,9 +1,6 @@
 import type { ReactNode } from 'react';
-
 import Link, { LinkProps } from 'next/link';
-
 import { type VariantProps, cn, cva } from '@marigold/system';
-
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 const styles = cva([], {
