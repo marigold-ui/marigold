@@ -1,38 +1,50 @@
 import { useEffect, useState } from 'react';
-import { Scrollable, Table } from '@marigold/components';
+
+import { Scrollable, Stack, Table } from '@marigold/components';
 
 export default () => {
-  const [todos, setTodos] = useState<
-    { userId: string; id: string; title: string; completed: boolean }[]
+  const [users, setUsers] = useState<
+    { id: number; name: string; username: string; email: string }[]
   >([]);
+  const [loading, setLoading] = useState<boolean>();
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos')
+    setLoading(true);
+    fetch('https://jsonplaceholder.typicode.com/users')
       .then(res => res.json())
-      .then(data => setTodos(data));
+      .then(data => {
+        setLoading(false);
+        setUsers(data);
+      });
   }, []);
-  const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
+
   return (
     <>
-      {tableHeaders.length ? (
-        <Scrollable height="400px">
-          <Table aria-label="Todos Table" selectionMode="multiple" stickyHeader>
+      {!loading ? (
+        <Scrollable height="300px">
+          <Table
+            aria-label="user Table"
+            selectionMode="multiple"
+            stickyHeader
+            stretch
+          >
             <Table.Header>
-              {tableHeaders.map((header, index) => (
-                <Table.Column
-                  width={index === tableHeaders.length - 1 ? 'full' : 'auto'}
-                  key={index}
-                >
-                  {header}
-                </Table.Column>
-              ))}
+              <Table.Column>Id</Table.Column>
+              <Table.Column>Name</Table.Column>
+              <Table.Column>User</Table.Column>
             </Table.Header>
             <Table.Body>
-              {todos.map(todo => (
-                <Table.Row key={`${todo.title}-${todo.id}`}>
-                  <Table.Cell>{todo.id}</Table.Cell>
-                  <Table.Cell>{todo.userId}</Table.Cell>
-                  <Table.Cell>{todo.title}</Table.Cell>
-                  <Table.Cell>{JSON.stringify(todo.completed)}</Table.Cell>
+              {users.map(user => (
+                <Table.Row key={`${user.name}-${user.id}`}>
+                  <Table.Cell>{user.id}</Table.Cell>
+                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell>
+                    <Stack>
+                      {user.username}
+                      <span className="text-text-info text-xs">
+                        {user.email}
+                      </span>
+                    </Stack>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
