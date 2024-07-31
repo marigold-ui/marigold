@@ -84,7 +84,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
         <div className="relative">
           <div
             className={cn(
-              'h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed ',
+              'h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed',
               classNames.track
             )}
           >

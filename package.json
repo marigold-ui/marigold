@@ -59,6 +59,7 @@
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
+    "format:fix": "prettier --write \"**/*\" --fix",
     "typecheck": "tsc --noEmit --project tsconfig.check.json",
     "contributor": "all-contributors",
     "changeset": "changeset",

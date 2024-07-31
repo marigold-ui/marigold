@@ -15,7 +15,7 @@ export const AlignmentsX = () => {
               <code className="before:content-none after:content-none">
                 {key}
               </code>
-              <div className=" size-14 rounded bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+              <div className="size-14 rounded bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
             </Stack>
           </div>
         ))}
@@ -38,7 +38,7 @@ export const AlignmentsY = () => {
               <code className="before:content-none after:content-none">
                 {key}
               </code>
-              <div className=" size-14 rounded bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+              <div className="size-14 rounded bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
             </Stack>
           </div>
         ))}
@@ -156,7 +156,7 @@ export const Spacing = () => {
                     <div
                       className={cn(
                         `pl-${key}`,
-                        ' bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] '
+                        'bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)]'
                       )}
                     >
                       <div className="h-3 bg-white"></div>

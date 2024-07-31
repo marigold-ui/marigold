@@ -1,8 +1,9 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import path from 'node:path';
 import { dirname, join } from 'path';
 import { mergeConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
+
+import path from 'node:path';
 
 const projectRoot = path.resolve(__dirname, '../../../');
 
