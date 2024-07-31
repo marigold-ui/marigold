@@ -13,7 +13,7 @@ A button consists of a clickable area, often containing a textual label or icon,
 
 <Image
   src="/button/button-anatomy.jpg"
-  alt="Anatomy of button"
+  alt="Anatomy of a button"
   width={800}
   height={550}
   className="mx-auto block"
@@ -36,13 +36,80 @@ A button consists of a clickable area, often containing a textual label or icon,
 
 ## Usage
 
+### Visual hierarchy
+
+Only include one primary button in a page or area of the user interface. This primary button should represent the most crucial action within that section. Having multiple primary buttons in one area can create confusion and visual clutter, as they vie for the user's attention and detract from the clarity of the intended action.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-do-hierachy.jpg"
+        alt="Use one primary button per page or area to highlight the most important action"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use one primary button per page or area to highlight the most important
+      action
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-dont-hierachy.jpg"
+        alt="Don't include multiple primary buttons in the same area to prevent confusion and visual clutter."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't include multiple primary buttons in the same area to prevent
+      confusion and visual clutter.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
 ### Labels and icons
 
 Buttons should always have a label unless they use an icon that is universally understood and accessible. Icons can accompany the label but should not be purely decorative. Use an icon only when it has a strong association with the label text.
 
 For icon-only buttons, ensure you set an `aria-label` or `aria-labelledby` attribute to provide context and maintain accessibility.
 
-<ComponentDemo file="./button-icon.demo.tsx" />
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-do-icon.jpg"
+        alt="Use icons in buttons to provide additional clarity when the icon is highly relevant to the action."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use icons in buttons to provide additional clarity when the icon is highly
+      relevant to the action.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-dont-icon.jpg"
+        alt="Icons should not be used for decoration."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Icons should not be used for decoration.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ### Full Width
 
