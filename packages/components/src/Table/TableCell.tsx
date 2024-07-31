@@ -1,13 +1,9 @@
 import { useRef } from 'react';
-
 import { useFocusRing } from '@react-aria/focus';
 import { useTableCell } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
-
 import { GridNode } from '@react-types/grid';
-
 import { cn, useStateProps } from '@marigold/system';
-
 import { useTableContext } from './Context';
 
 export interface TableCellProps {

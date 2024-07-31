@@ -1,7 +1,6 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-
 import { NavLink } from './NavLink';
 import { useNavigation } from './Navigation';
 

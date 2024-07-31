@@ -10,7 +10,6 @@ import {
   textSize,
   textStyle,
 } from '@/ui';
-
 import { useThemeSwitch } from './ThemeSwitch';
 
 export const Headlines = () => {

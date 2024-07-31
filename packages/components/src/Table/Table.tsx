@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react';
 import { useRef } from 'react';
-
 import { AriaTableProps, useTable } from '@react-aria/table';
-
 import {
   TableBody as Body,
   Cell,
@@ -14,9 +12,7 @@ import {
   TableStateProps,
   useTableState,
 } from '@react-stately/table';
-
 import { WidthProp, cn, useClassNames } from '@marigold/system';
-
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';

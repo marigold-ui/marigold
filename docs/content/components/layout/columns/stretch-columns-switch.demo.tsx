@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Columns, Stack, Switch } from '@marigold/components';
 
 export default () => {
