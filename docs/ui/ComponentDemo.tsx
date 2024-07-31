@@ -7,7 +7,6 @@ import {
   Tabs,
 } from '@/ui';
 import type { ReactNode } from 'react';
-
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props

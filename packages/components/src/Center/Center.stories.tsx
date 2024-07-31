@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Ticket } from '@marigold/icons';
-
 import { Button } from '../Button';
 import { Headline } from '../Headline';
 import { Stack } from '../Stack';

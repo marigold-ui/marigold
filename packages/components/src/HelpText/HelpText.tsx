@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import type { ReactNode } from 'react';
+import { useContext } from 'react';
 import type { ValidationResult } from 'react-aria-components';
 import { FieldError, FieldErrorContext, Text } from 'react-aria-components';
-
 import { cn, useClassNames } from '@marigold/system';
 
 // Icon

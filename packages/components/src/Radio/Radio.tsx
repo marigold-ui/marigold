@@ -4,8 +4,8 @@ import {
   RefAttributes,
   forwardRef,
 } from 'react';
-import { Radio } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Radio } from 'react-aria-components';
 
 import { cn, useClassNames } from '@marigold/system';
 

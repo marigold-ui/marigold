@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Checkbox, CheckboxGroup } from '@marigold/components';
 
 export default () => {

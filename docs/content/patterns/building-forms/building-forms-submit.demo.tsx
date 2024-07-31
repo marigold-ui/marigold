@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Button, Form, Stack, TextField } from '@marigold/components';
 
 export default () => {

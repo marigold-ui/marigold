@@ -1,6 +1,5 @@
 import { coreTheme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
-
 import {
   Checkbox,
   CheckboxGroup,

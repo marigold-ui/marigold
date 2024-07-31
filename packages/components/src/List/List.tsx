@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
-
 import { useClassNames } from '@marigold/system';
-
 import { ListContext } from './Context';
 import { ListItem } from './ListItem';
 
