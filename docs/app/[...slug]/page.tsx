@@ -33,7 +33,7 @@ export async function generateMetadata({
         appleWebApp: {
           title: 'Marigold Design System',
         },
-        metadataBase: new URL('https://www.marigold-ui.io/'),
+        metadataBase: new URL(baseUrl),
         openGraph: {
           siteName: 'Marigold Design System',
           title: page.title,
