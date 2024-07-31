@@ -1,8 +1,6 @@
-import { Label } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Label } from 'react-aria-components';
 import { SVG, cn, createVar, useClassNames } from '@marigold/system';
-
 import { useFieldGroupContext } from '../FieldBase/FieldGroup';
 
 type RemovedProps = 'className';

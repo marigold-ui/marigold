@@ -2,7 +2,6 @@
 
 import { getAppearance } from '@/lib/utils';
 import { Inline, Table, Text, Theme } from '@/ui';
-
 import { useThemeSwitch } from './ThemeSwitch';
 import { BlankCanvas } from './icons';
 

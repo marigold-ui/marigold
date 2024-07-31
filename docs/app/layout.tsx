@@ -2,14 +2,10 @@ import { siteConfig } from '@/lib/config';
 import { b2bTheme, coreTheme, theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
 import { Suspense } from 'react';
-
 import '@marigold/theme-b2b/styles.css';
 import '@marigold/theme-core/styles.css';
-
 import { fontSans } from '@/theme/fonts';
-
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
-
 import { Analytics } from './_components/Analytics';
 import { PortalContaier } from './_components/PortalContainer';
 import { SectionNavigation } from './_components/SectionNavigation';

@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react';
-
 import { Tiles } from '@marigold/components';
 import { cn } from '@marigold/system';
 

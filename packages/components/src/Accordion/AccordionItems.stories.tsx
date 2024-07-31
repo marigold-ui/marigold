@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-
 import { Headline } from '../Headline';
 import { TextField } from '../TextField';
 import { Accordion } from './Accordion';

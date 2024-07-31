@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-
 import { Facebook } from './social';
 import { ArrowUp } from './ui';
 

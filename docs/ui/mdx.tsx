@@ -4,11 +4,8 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { HTMLAttributes } from 'react';
 import Md from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
 import { cn } from '@marigold/system';
-
 import { IconList } from '@/ui/IconList';
-
 import {
   Card,
   Columns,
