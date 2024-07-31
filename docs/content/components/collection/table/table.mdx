@@ -4,7 +4,7 @@ caption: Organize and display large amout of data in table format.
 badge: updated
 ---
 
-The `<Table>` is a structured component used to organize and display tabular data in rows and columns for UI. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, and helps with accessibility by enabling keyboard navigation.
+The `<Table>` is a structured component used to organize and display tabular data in rows and columns. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, and helps with accessibility by enabling keyboard navigation.
 
 <SectionMessage>
   <SectionMessage.Title>What is tabular data?</SectionMessage.Title>
@@ -20,7 +20,7 @@ These features will be explained in more detail in the usage section further dow
 
 ## Anatomy
 
-A table is composed of a container element that organizes data into rows and columns. Each cell within the table can hold either plain text or focusable elements. If the table allows row selection, the first column of each row include a checkbox for selecting that row. Additionally, if the table supports selecting multiple rows, the first column header will contain a "select all" checkbox.
+A table is composed of a container element that organizes data into rows and columns. Each cell within the table can hold either plain text or focusable elements. If the table allows multiple row selection, the first column of each row include a checkbox for selecting that row. Additionally, if the table supports selecting multiple rows, the first column header will contain a "select all" checkbox.
 
 <Image
   src="/table/table-anatomy.jpg"
@@ -127,8 +127,8 @@ Secondary data in a cell is needed when additional context or details are necess
       />
     </Do.Figure>
     <Do.Description>
-      Keep cell content concise. Normally always use one value for each cell. If
-      needed add related data values in one cell (e.g. username and e-mail).
+      Keep cell content concise. Only add additional data when necessary to help
+      understand the data.
     </Do.Description>
   </Do>
   <Dont>
@@ -142,8 +142,8 @@ Secondary data in a cell is needed when additional context or details are necess
       />
     </Dont.Figure>
     <Dont.Description>
-      Don't overcrowd cells with too much information or too complex data. Avoid
-      adding multiple data values within one cell.
+      Avoid overloading cells with too much information or complex data, and
+      multiple data values in one cell.
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
@@ -181,7 +181,7 @@ Enable the sorting function to help users organize and find data efficiently. Th
 
 The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, indicated by an arrow icon, are located in the column headers and allow for ascending or descending order. For this purpose the properties `onSortChange` which handles the direction when changing and `sortDescriptor`, containing the current column and direction must be specified.
 
-For async sorting you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
+To make async sorting more convenient, you can use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
 
 <ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
 
@@ -196,11 +196,8 @@ Also you see how to use the `align` property on the columns. With that you can s
 <Do>
   <Do.Description>
     <ul>
-      <li>Align quantitive numeric values and header cells to the right.</li>
-      <li>
-        Use our [formatters](../formatters/numericformat/numericFormat) to
-        provide tabular numerics.
-      </li>
+      <li>Align numeric values and their header cells to the right.</li>
+      <li>Format numbers to provide tabular numeric font style.</li>
     </ul>
   </Do.Description>
 </Do>
