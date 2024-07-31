@@ -1,12 +1,10 @@
 import { Key, ReactNode } from 'react';
-import { Menu, MenuTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Menu, MenuTrigger } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-
 import { Button } from '../Button';
-import { Popover } from '../Overlay/Popover';
 import type { PopoverProps } from '../Overlay/Popover';
+import { Popover } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
 

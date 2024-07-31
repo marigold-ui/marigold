@@ -1,5 +1,6 @@
 import { getAppearance } from '@/lib/utils';
 import { registry } from '@/registry/demos';
+import type { Theme } from '@/ui';
 import {
   Card,
   FieldGroup,
@@ -7,10 +8,8 @@ import {
   OverlayContainerProvider,
   Select,
 } from '@/ui';
-import type { Theme } from '@/ui';
 import type { ComponentType, ReactNode } from 'react';
 import { useState } from 'react';
-
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props

@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react';
-import { OverlayArrow, Tooltip } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { OverlayArrow, Tooltip } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-
 import { usePortalContainer } from '../Provider';
 import { TooltipTrigger } from './TooltipTrigger';
 

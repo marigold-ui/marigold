@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
-
 import { Button, Dialog } from '@marigold/components';
-
 import { CopyButton } from './CopyButton';
 
 export interface FullsizeViewProps {

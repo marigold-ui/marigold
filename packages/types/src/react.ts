@@ -25,11 +25,12 @@ export type HtmlPropsWithRef<T extends React.ElementType> = Omit<
 /**
  * Infer the props of a component `C`.
  */
-export type PropsOf<C> = C extends React.FC<infer P>
-  ? P
-  : C extends React.Component<infer Props>
-  ? Props
-  : never;
+export type PropsOf<C> =
+  C extends React.FC<infer P>
+    ? P
+    : C extends React.Component<infer Props>
+      ? Props
+      : never;
 
 /**
  * Like a regular `Omit` but handles when the passed type is `never`.
@@ -94,13 +95,11 @@ type NarrowIntrinsic<E> = E extends keyof JSX.IntrinsicElements ? E : never;
  * This not include any properties added to a polymorphic component based on its
  * instrinstic element type.
  */
-export type OwnProps<C> = C extends PolymorphicComponent<any, infer P>
-  ? P
-  : never;
+export type OwnProps<C> =
+  C extends PolymorphicComponent<any, infer P> ? P : never;
 
-export type IntrinsicElement<C> = C extends PolymorphicComponent<infer I, any>
-  ? I
-  : never;
+export type IntrinsicElement<C> =
+  C extends PolymorphicComponent<infer I, any> ? I : never;
 
 export interface PolymorphicComponent<
   T,

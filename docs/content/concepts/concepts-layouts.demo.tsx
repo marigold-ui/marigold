@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
-
 import { Card, Columns, Stack, Text, Tiles } from '@marigold/components';
-
 import { Rectangle } from '@/ui/Rectangle';
 import { Squircle } from '@/ui/Squircle';
 

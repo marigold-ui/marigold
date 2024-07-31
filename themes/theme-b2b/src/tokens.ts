@@ -279,7 +279,7 @@ export const colors = {
       DEFAULT: blue[400],
     },
   },
-};
+} as const;
 
 // Shadow
 // ---------------
@@ -290,7 +290,7 @@ export const shadow = {
     overlay: boxShadow.lg,
     sunken: boxShadow.none,
   },
-};
+} as const;
 
 // Component Height
 // ---------------
@@ -300,4 +300,4 @@ export const height = {
     sm: '24px', // not used at all
     lg: '48px', // used in button
   },
-};
+} as const;

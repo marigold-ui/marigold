@@ -1,16 +1,14 @@
 import {
   act,
+  cleanup,
   fireEvent,
   renderHook,
   screen,
   within,
 } from '@testing-library/react';
-import { cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-
 import { Theme, cva, useSmallScreen } from '@marigold/system';
-
 import { Header } from '../Header';
 import { setup } from '../test.utils';
 import { Select } from './Select';

@@ -1,7 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
-
 import { Theme, cva } from '@marigold/system';
-
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
 import { Checkbox } from './Checkbox';

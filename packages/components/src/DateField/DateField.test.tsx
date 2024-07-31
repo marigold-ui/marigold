@@ -2,9 +2,7 @@
 import { parseAbsoluteToLocal } from '@internationalized/date';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { Theme, ThemeProvider, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { DateField } from './DateField';
 
