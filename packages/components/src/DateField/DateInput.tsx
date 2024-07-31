@@ -1,9 +1,7 @@
 import { ReactElement } from 'react';
-import { DateInput, Group } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { DateInput, Group } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-
 import { DateSegment } from './DateSegment';
 
 type RemovedProps = 'style' | 'className' | 'children';

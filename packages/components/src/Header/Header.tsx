@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
-import { Header } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Header } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 
 export interface HeaderProps extends Omit<RAC.HeadingProps, 'children'> {

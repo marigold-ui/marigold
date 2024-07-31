@@ -8,9 +8,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-
 import { Theme, ThemeProvider, cva, useSmallScreen } from '@marigold/system';
-
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
