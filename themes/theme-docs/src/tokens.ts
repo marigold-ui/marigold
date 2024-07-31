@@ -34,8 +34,8 @@ const blue = {
   950: '#172554',
 };
 
-const green = {
-  50: '#f0fdf4',
+const lime = {
+  50: '#f7fee7',
   100: '#ecfccb',
   200: '#d9f99d',
   300: '#bef264',
@@ -160,7 +160,7 @@ export const colors = {
     },
 
     // Status
-    success: green[100],
+    success: lime[50],
     error: red[50],
     info: blue[50],
     warning: amber[50],
@@ -173,7 +173,7 @@ export const colors = {
     primary: slate[950],
 
     // status
-    success: green[600],
-    error: red[600],
+    success: lime[500],
+    error: red[400],
   },
 } as const;
