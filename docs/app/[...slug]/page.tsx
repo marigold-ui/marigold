@@ -41,6 +41,10 @@ export async function generateMetadata({
           images: `${baseUrl}/og.png?title=${encodeURIComponent(page.title)}`,
           type: 'website',
         },
+        twitter: {
+          card: 'summary_large_image',
+          creator: '@reservix',
+        },
       }
     : {};
 }
