@@ -1,5 +1,4 @@
 import { createContext, useContext } from 'react';
-
 import { TableState } from '@react-stately/table';
 
 export interface TableContextProps {

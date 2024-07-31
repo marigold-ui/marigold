@@ -1,9 +1,6 @@
 import { ReactNode, useRef } from 'react';
-
 import { useTableHeaderRow } from '@react-aria/table';
-
 import { GridNode } from '@react-types/grid';
-
 import { useTableContext } from './Context';
 
 // Props

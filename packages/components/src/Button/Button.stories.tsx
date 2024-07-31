@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Facebook } from '@marigold/icons';
-
 import { Button } from './Button';
 
 const meta = {

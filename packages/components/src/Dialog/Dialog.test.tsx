@@ -4,9 +4,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
-
 import { Theme, cva } from '@marigold/system';
-
 import { Button } from '../Button';
 import { setup } from '../test.utils';
 import { Dialog } from './Dialog';

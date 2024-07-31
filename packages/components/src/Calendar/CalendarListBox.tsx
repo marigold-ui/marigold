@@ -1,9 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { CalendarStateContext } from 'react-aria-components';
-
 import { ChevronDown } from '@marigold/icons';
 import { cn, useClassNames } from '@marigold/system';
-
 import { useFormattedMonths } from './useFormattedMonths';
 
 interface CalendarButtonListBoxProps {

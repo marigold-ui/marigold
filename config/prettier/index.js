@@ -21,6 +21,6 @@ module.exports = {
     '^@components/(.*)$',
     '^[./]',
   ],
-  importOrderSeparation: true,
+  importOrderSeparation: false,
   importOrderSortSpecifiers: true,
 };

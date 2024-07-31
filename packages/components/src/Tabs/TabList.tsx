@@ -1,8 +1,6 @@
 import { TabList } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
 import { GapSpaceProp, cn, gapSpace } from '@marigold/system';
-
 import { useTabContext } from './Context';
 
 // props

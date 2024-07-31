@@ -1,7 +1,6 @@
 import { Node } from 'unist';
 import { u } from 'unist-builder';
 import { visit } from 'unist-util-visit';
-
 import fs from 'node:fs';
 import path from 'node:path';
 

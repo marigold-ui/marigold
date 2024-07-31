@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-
 import { I18nProvider } from '@react-aria/i18n';
-
 import { DateFormat } from './DateFormat';
 
 test('supports formatting date based on specific locale', () => {

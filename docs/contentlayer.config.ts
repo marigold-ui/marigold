@@ -6,9 +6,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { simpleGit } from 'simple-git';
 import { visit } from 'unist-util-visit';
-
 import path from 'node:path';
-
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
 

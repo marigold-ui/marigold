@@ -12,15 +12,11 @@ import {
 } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
-
 import { useRouter } from 'next/navigation';
-
 import { Inline, Split } from '@marigold/components';
 import { ExternalLink } from '@marigold/icons';
-
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
-
 import { Hotkey } from './SiteMenu';
 
 interface CopyItemProps {

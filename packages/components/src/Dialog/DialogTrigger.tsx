@@ -1,7 +1,6 @@
 import { Children } from 'react';
-import { DialogTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { DialogTrigger } from 'react-aria-components';
 import { Modal } from '../Overlay/Modal';
 import { Dialog } from './Dialog';
 

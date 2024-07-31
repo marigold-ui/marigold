@@ -1,7 +1,5 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
-
 import { createPreset, flattenObject } from '@marigold/theme-preset';
-
 import { screens } from './screens';
 import { colors, height, shadow } from './tokens';
 

@@ -1,15 +1,12 @@
-import {
+import React, {
   ForwardRefExoticComponent,
   Ref,
   RefAttributes,
   forwardRef,
 } from 'react';
-import React from 'react';
-import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox';

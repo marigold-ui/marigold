@@ -1,7 +1,6 @@
 'use client';
 
 import { Button, Dialog, Header } from '@/ui';
-
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';
 

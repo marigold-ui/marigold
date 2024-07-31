@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { Heading } from 'react-aria-components';
-
 import {
   TextAlignProp,
   cn,
