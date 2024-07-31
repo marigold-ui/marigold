@@ -1,5 +1,5 @@
 import { siteConfig } from '@/lib/config';
-import { Logo } from './Logo';
+import { Logo } from '@/ui/Logo';
 
 export const SiteFooter = () => (
   <footer className="border-secondary-200 prose mt-28 flex flex-col items-center justify-between gap-8 border-t py-4 md:flex-row xl:max-w-[70ch]">
