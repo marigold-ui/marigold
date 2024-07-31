@@ -1,5 +1,7 @@
 import { screen } from '@testing-library/react';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
+
 import { setup } from '../test.utils';
 import { SectionMessage } from './SectionMessage';
 

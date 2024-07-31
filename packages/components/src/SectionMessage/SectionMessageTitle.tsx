@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
+
 import { cn } from '@marigold/system';
+
 import { useSectionMessageContext } from './Context';
 
 export interface SectionMessageTitleProps {

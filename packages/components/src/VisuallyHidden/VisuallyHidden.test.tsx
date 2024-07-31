@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import { VisuallyHidden } from './VisuallyHidden';
 
 test('is visually hidden', () => {

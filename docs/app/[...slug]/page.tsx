@@ -1,7 +1,9 @@
 import { Headline } from '@/ui';
 import { allContentPages } from 'contentlayer/generated';
 import { Metadata } from 'next';
+
 import { notFound } from 'next/navigation';
+
 import { RelativeTime } from '@/ui/RelativeTime';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';

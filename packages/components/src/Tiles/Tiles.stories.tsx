@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import { Headline, Image, Stack, Text, Tiles } from '@marigold/components';
 
 const meta = {

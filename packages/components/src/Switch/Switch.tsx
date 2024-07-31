@@ -1,12 +1,14 @@
 import { ReactNode, forwardRef } from 'react';
 import { Switch } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+
 import {
   WidthProp,
   cn,
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
+
 import { Label } from '../Label';
 
 type RemovedProps =

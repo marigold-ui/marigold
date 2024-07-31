@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
+
 import { Text } from './Text';
 
 const theme: Theme = {

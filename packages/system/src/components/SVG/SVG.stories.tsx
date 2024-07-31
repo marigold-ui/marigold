@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+
 import { SVG } from './SVG';
 
 const meta = {

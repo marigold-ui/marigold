@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
+
 import { Inline } from '../Inline';
 import { Stack } from '../Stack';
 import { Split } from './Split';

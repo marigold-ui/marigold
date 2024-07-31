@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { Headline, Scrollable, Stack, Table } from '@marigold/components';
 
 export default () => {

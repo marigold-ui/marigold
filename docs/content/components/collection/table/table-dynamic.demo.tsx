@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Table } from '@marigold/components';
 
 export default () => {

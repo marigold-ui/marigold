@@ -1,7 +1,10 @@
 import { forwardRef } from 'react';
 import { Button } from 'react-aria-components';
+
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+
 import { cn } from '@marigold/system';
+
 import type { InputProps } from './Input';
 import { Input } from './Input';
 

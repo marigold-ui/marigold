@@ -1,4 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
+
 import { inputBackground, inputBox, inputSpacing } from './Input.styles';
 
 export const Select: ThemeComponent<'Select'> = {

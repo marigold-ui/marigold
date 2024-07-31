@@ -1,4 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
+
 import {
   inputBackground,
   inputBox,

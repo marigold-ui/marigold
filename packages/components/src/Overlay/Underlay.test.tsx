@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
+
 import { Underlay } from './Underlay';
 
 const theme: Theme = {

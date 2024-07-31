@@ -1,4 +1,5 @@
 import { boxShadow } from 'tailwindcss/defaultTheme';
+
 import { flattenObject } from './utils';
 
 test.each([

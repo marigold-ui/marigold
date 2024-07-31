@@ -1,4 +1,5 @@
 import { cleanup, renderHook } from '@testing-library/react';
+
 import { useSmallScreen } from './useSmallScreen';
 
 /**

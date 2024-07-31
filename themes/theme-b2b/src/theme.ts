@@ -1,5 +1,6 @@
 import { Theme } from '@marigold/system';
 import { flattenObject } from '@marigold/theme-preset';
+
 import * as components from './components';
 import { root } from './root';
 import { screens } from './screens';

@@ -1,6 +1,8 @@
 import type RAC from 'react-aria-components';
 import { Button, Tag } from 'react-aria-components';
+
 import { cn, useClassNames } from '@marigold/system';
+
 import { TagGroup } from './TagGroup';
 
 interface CloseButtonProps {

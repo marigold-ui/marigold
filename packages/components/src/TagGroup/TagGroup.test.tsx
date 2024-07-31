@@ -1,6 +1,8 @@
 import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
+
 import { Tag } from '.';
 import { Button } from '../Button';
 import { setup } from '../test.utils';

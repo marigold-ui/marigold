@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
+
 import { Button, Inline, Split } from '@marigold/components';
 import { Logout } from '@marigold/icons';
 import { cn } from '@marigold/system';
+
 import { Logo } from './ReservixLogo';
 
 interface NavItemsProps {

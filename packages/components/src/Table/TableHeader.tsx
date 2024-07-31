@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { useTableRowGroup } from '@react-aria/table';
 
 export interface TableHeaderProps {

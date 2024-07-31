@@ -1,6 +1,8 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { Theme, ThemeProvider, cva } from '@marigold/system';
+
 import { Button } from '../Button';
 import { setup } from '../test.utils';
 import { Tooltip } from './Tooltip';

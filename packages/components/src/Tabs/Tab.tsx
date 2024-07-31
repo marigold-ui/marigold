@@ -1,6 +1,8 @@
 import { Tab } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+
 import { cn } from '@marigold/system';
+
 import { useTabContext } from './Context';
 
 // props

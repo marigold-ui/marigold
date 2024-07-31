@@ -8,7 +8,9 @@ import {
 } from 'react';
 import type RAC from 'react-aria-components';
 import { GridList as SelectList } from 'react-aria-components';
+
 import { cn, useClassNames } from '@marigold/system';
+
 import { SelectListContext } from './Context';
 import { SelectListItem } from './SelectListItem';
 

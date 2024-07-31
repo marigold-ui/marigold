@@ -1,11 +1,15 @@
 import { useRef } from 'react';
+
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
 import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
+
 import { GridNode } from '@react-types/grid';
+
 import { SortDown, SortUp } from '@marigold/icons';
 import { cn, width as twWidth, useStateProps } from '@marigold/system';
+
 import { useTableContext } from './Context';
 import { ColumnProps } from './Table';
 

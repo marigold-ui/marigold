@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+
 import { Theme, ThemeProvider } from '@marigold/system';
+
 import { XLoader } from './XLoader';
 
 const theme: Theme = {

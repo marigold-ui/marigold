@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import { Tiles } from '@marigold/components';
 
 test('set tiles width via prop', () => {

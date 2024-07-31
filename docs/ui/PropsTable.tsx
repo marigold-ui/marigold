@@ -1,5 +1,6 @@
 import componentProps from '@/registry/props.json';
 import { Inline, Table, Text } from '@/ui';
+
 import { BlankCanvas } from './icons';
 import { Markdown } from './mdx';
 

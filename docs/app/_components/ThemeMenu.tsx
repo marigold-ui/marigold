@@ -1,6 +1,7 @@
 'use client';
 
 import { Menu } from '@marigold/components';
+
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 import { Theme } from '@/ui/icons/Theme';
 

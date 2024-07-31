@@ -1,5 +1,6 @@
 import { Card, Stack, Tiles } from '@/ui';
 import type { ReactElement } from 'react';
+
 import Link from 'next/link';
 
 export interface TeaserCardProps {

@@ -1,7 +1,9 @@
 import { ReactElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { SearchField } from 'react-aria-components';
+
 import { WidthProp } from '@marigold/system';
+
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 

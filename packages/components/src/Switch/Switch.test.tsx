@@ -1,7 +1,9 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+
 import { Theme, cva } from '@marigold/system';
+
 import { setup } from '../test.utils';
 import { Switch } from './Switch';
 

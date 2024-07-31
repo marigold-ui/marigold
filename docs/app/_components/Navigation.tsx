@@ -3,7 +3,9 @@
 import { siteConfig } from '@/lib/config';
 import { Badge } from '@/ui';
 import { allContentPages } from 'contentlayer/generated';
+
 import { usePathname } from 'next/navigation';
+
 import { NavLink } from './NavLink';
 
 // Types

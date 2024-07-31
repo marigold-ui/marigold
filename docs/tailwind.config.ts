@@ -1,4 +1,5 @@
 import { Config } from 'tailwindcss/types/config';
+
 import { preset } from '@marigold/theme-docs/preset';
 
 const config: Config = {
