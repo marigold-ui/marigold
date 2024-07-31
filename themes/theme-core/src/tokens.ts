@@ -277,7 +277,7 @@ export const colors = {
       DEFAULT: blue[500],
     },
   },
-};
+} as const;
 
 export const shadow = {
   surface: {
@@ -286,7 +286,7 @@ export const shadow = {
     overlay: boxShadow.md,
     sunken: boxShadow.none,
   },
-};
+} as const;
 
 export const height = {
   component: {
@@ -294,4 +294,4 @@ export const height = {
     sm: '16px',
     lg: '32px',
   },
-};
+} as const;
