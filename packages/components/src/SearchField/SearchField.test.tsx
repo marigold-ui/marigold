@@ -1,7 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
-
 import { Theme, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { SearchField } from './SearchField';
 

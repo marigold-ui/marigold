@@ -14,9 +14,7 @@
 import { Children, ReactNode, useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Key } from 'react-aria-components';
-
 import { useListData } from '@react-stately/data';
-
 import { ComboBox } from '../ComboBox';
 import { Tag } from '../TagGroup';
 

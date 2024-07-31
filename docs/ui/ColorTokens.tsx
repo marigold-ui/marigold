@@ -3,7 +3,6 @@
 import { iterateTokens } from '@/lib/utils';
 import { Card, Headline, Table, createVar } from '@/ui';
 import type { ReactNode } from 'react';
-
 import { useThemeSwitch } from './ThemeSwitch';
 
 interface ColorTokenTableProps {

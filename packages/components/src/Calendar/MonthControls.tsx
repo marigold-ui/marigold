@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from 'react-aria-components';
-
 import { ChevronLeft, ChevronRight } from '@marigold/icons';
 import { cn, useClassNames } from '@marigold/system';
 

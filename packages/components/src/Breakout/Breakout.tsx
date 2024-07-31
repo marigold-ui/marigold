@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-
 import { alignment, cn, createVar } from '@marigold/system';
 
 export interface BreakoutProps {

@@ -1,7 +1,6 @@
 import { ReactNode, forwardRef } from 'react';
-import { Button } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Button } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 // Button is currently only component accepting className because of internal use.

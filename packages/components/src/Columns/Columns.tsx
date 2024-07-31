@@ -1,5 +1,4 @@
 import { Children, ReactNode } from 'react';
-
 import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 
 export interface ColumnsProps extends GapSpaceProp {

@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-
 import type { GridColsAlignProp, PlaceItemsProp } from '@marigold/system';
 import {
   cn,
