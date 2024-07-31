@@ -2,6 +2,6 @@ import { Button } from '@marigold/components';
 
 export default () => (
   <Button variant="primary" fullWidth>
-    Submit
+    Proceed to checkout
   </Button>
 );

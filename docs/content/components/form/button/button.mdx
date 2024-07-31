@@ -25,7 +25,7 @@ A button consists of a clickable area, often containing a textual label or icon,
 
 <AppearanceTable component={title} />
 
-<SectionMessage type="info">
+<SectionMessage variant="info">
   <SectionMessage.Title>About the "secondary" Variant</SectionMessage.Title>
   <SectionMessage.Content>
     The core theme does not include a "secondary" button. In the demo above,
@@ -153,26 +153,37 @@ In general, it's best to avoid using disabled buttons. However, if they are nece
 
 <ComponentDemo file="./button-disabled.demo.tsx" />
 
-### Remove unavailable actions
+<SectionMessage variant="warning">
+  <SectionMessage.Title>
+    Never put tooltips on disabled buttons
+  </SectionMessage.Title>
+  <SectionMessage.Content>
+    Tooltips aren't accessible on all devices or by some assistive technologies,
+    and they should never be used on non-interactive elements.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ### Full width
 
-The width of buttons automatically adjusts to fit the label. Use the `fullWidth` prop to make the button span the entire available width.
+Full-width buttons are especially useful for emphasizing primary actions like submitting a form or completing a purchase, as they attract attention and create a strong visual hierarchy. They also enhance usability on mobile devices or in narrow layouts by providing a larger, easier-to-tap target.
 
 <ComponentDemo file="./button-full-width.demo.tsx" />
 
 ### Navigation with buttons
 
-Never use buttons for navigation. Always use links to direct users to a new page. Using buttons for navigation can cause accessibility issues, such as making it difficult for keyboard and screen reader users to interact properly.
+Never use buttons for navigation. Always use the `<Link>` component when navigation to another URL or page. Using buttons for navigation can cause accessibility issues, such as making it difficult for keyboard and screen reader users to interact properly.
 
-The Button component is designed for interactive elements that trigger actions. If you need a link that looks like a button, use the [`<Link>`](/components/content/link) component with the appropriate `variant`.
+In this case the `<Link>` should appear like a button. This is often the case for actions like "Cancel" that redirect users to another page. This approach visually emphasizes the action, making it clear and prominent, while maintaining the accessibility of the app.
 
-<ComponentDemo file="./button-link.demo.tsx" />
+If you need a link that looks like a button, use the [`<Link>`](/components/content/link) component with the appropriate `variant`.
 
-### Action Buttons
-
-- alignment, secondary + primary
-- TODO: Build an example using "actions" in dialog / message? (we actually don't have a good way to add buttons to a message...)
+<GuidelineTiles>
+  <Dont>
+    <Dont.Description>
+      Don't use buttons for navigation purposes.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ## Props
 
