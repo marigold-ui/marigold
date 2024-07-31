@@ -1,13 +1,14 @@
-import { Button, Inline } from '@marigold/components';
-import { Ticket } from '@marigold/icons';
+import { Button, Stack } from '@marigold/components';
+import { Search } from '@marigold/icons';
 
 export default () => (
-  <Inline space={12}>
+  <Stack space={5} alignX="left">
+    <Button variant="primary">Search</Button>
     <Button variant="primary">
-      <Ticket /> Buy your Ticket
+      <Search size={16} /> Search
     </Button>
     <Button variant="icon">
-      <Ticket />
+      <Search />
     </Button>
-  </Inline>
+  </Stack>
 );

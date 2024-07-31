@@ -36,7 +36,11 @@ A button consists of a clickable area, often containing a textual label or icon,
 
 ## Usage
 
-### With Icons
+### Labels and icons
+
+Buttons should always have a label unless they use an icon that is universally understood and accessible. Icons can accompany the label but should not be purely decorative. Use an icon only when it has a strong association with the label text.
+
+For icon-only buttons, ensure you set an `aria-label` or `aria-labelledby` attribute to provide context and maintain accessibility.
 
 <ComponentDemo file="./button-icon.demo.tsx" />
 
