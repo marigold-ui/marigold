@@ -12,7 +12,13 @@ const parser = docgen.withCustomConfig('./tsconfig.json', {
   shouldExtractValuesFromUnion: false,
   skipChildrenPropWithoutDoc: false,
   propFilter: {
-    skipPropsWithName: ['variant', 'size', 'key', 'style'],
+    skipPropsWithName: [
+      'variant',
+      'size',
+      'key',
+      'style',
+      'UNSTABLE_childItems',
+    ],
   },
   customComponentTypes: [
     'AutocompleteComponent',
