@@ -6,6 +6,7 @@ import {
   FieldGroup,
   MarigoldProvider,
   OverlayContainerProvider,
+  SectionMessage,
   Select,
 } from '@/ui';
 import type { ComponentType, ReactNode } from 'react';
@@ -48,6 +49,16 @@ export const AppearanceDemo = ({
       children
     );
 
+  let messageTitle = '';
+  if (appearance.variant.length === 0) {
+    messageTitle = 'variant';
+  } else if (appearance.size.length === 0) {
+    messageTitle = 'size';
+  } else messageTitle = 'variant and size';
+
+  const isVariantOrSizeMissing =
+    appearance.variant.length === 0 || appearance.size.length === 0;
+
   return (
     <>
       <p>
@@ -56,6 +67,16 @@ export const AppearanceDemo = ({
         visual style and dimensions of the component, available values are based
         on the active theme.
       </p>
+      {isVariantOrSizeMissing ? (
+        <SectionMessage variant="info">
+          <SectionMessage.Title>
+            No {messageTitle} available!
+          </SectionMessage.Title>
+          <SectionMessage.Content>
+            There is currently no available option to select.
+          </SectionMessage.Content>
+        </SectionMessage>
+      ) : null}
       <Card variant="content" p={0}>
         <div className="absolute left-4 top-3 flex gap-2">
           <Select
@@ -67,6 +88,7 @@ export const AppearanceDemo = ({
             onChange={(val: string) =>
               setSelected({ variant: val, size: selected.size })
             }
+            disabled={appearance.variant.length === 0 ? true : false}
           >
             <Select.Option id="default">default</Select.Option>
             {appearance.variant.map(v => (
@@ -84,6 +106,7 @@ export const AppearanceDemo = ({
             onChange={(val: string) =>
               setSelected({ variant: selected.variant, size: val })
             }
+            disabled={appearance.size.length === 0 ? true : false}
           >
             <Select.Option id="default">default</Select.Option>
             {appearance.size.map(v => (

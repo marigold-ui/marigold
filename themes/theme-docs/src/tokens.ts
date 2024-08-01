@@ -137,6 +137,7 @@ export const colors = {
       DEFAULT: slate[950],
       muted: slate[500],
     },
+    disabled: slate[200],
 
     // State
     info: blue[800],
