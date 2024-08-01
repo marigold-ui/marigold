@@ -3,6 +3,7 @@ import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { Header } from '../Header';
 import { Inset } from '../Inset';
+import { Text } from '../Text';
 import { Select } from './Select';
 
 const meta = {
@@ -186,26 +187,26 @@ export const Sections: StoryObj<typeof Select> = {
     <Select {...args}>
       <Select.Section>
         <Header>Fantasy</Header>
-        <Select.Option id="harry-potter" description="Best series ever">
-          Harry Potter
+        <Select.Option id="harry-potter">
+          <Text slot="label">Harry Potter</Text>
+          <Text slot="description">About the boy who lived</Text>
         </Select.Option>
-        <Select.Option
-          id="lord-of-the-rings"
-          description="In the lands of Middle earth"
-        >
-          Lord of the Rings
+        <Select.Option id="lord-of-the-rings">
+          <Text slot="label">Lord of the Rings</Text>
+          <Text slot="description">In the lands of Middle earth</Text>
         </Select.Option>
       </Select.Section>
       <Select.Section>
         <Header>Sci-Fi</Header>
-        <Select.Option
-          id="star-wars"
-          description="A long time ago, in a galaxy far, far away"
-        >
-          Star Wars
+        <Select.Option id="star-wars">
+          <Text slot="label">Start Wars</Text>
+          <Text slot="description">
+            A long time ago, in a galaxy far, far away
+          </Text>
         </Select.Option>
-        <Select.Option id="star-trek" description="What is this">
-          Star Trek
+        <Select.Option id="star-trek">
+          <Text slot="label">Star Trek</Text>
+          <Text slot="description">What is this</Text>
         </Select.Option>
       </Select.Section>
     </Select>

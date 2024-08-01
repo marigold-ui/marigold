@@ -77,10 +77,7 @@ export const Basic: Story = {
     <Autocomplete placeholder="Movie" {...args}>
       <Autocomplete.Item id="Harry Potter" textValue="Harry Pottor">
         <Text slot="label">Harry Potter</Text>
-        default to div use text
-        <Text slot="description">
-          sajklfklasjf ljaklsjgfklasjflkjas lkfjsakl{' '}
-        </Text>
+        <Text slot="description">best series ever</Text>
       </Autocomplete.Item>
       <Autocomplete.Item id="Lord of the Rings">
         Lord of the Rings

@@ -1,16 +1,19 @@
-import { Select } from '@marigold/components';
+import { Select, Text } from '@marigold/components';
 
 export default () => (
   <>
     <Select label="Permissions">
-      <Select.Option id="read" description="Read only">
-        Read
+      <Select.Option id="read">
+        <Text slot="label">Read</Text>
+        <Text slot="description">Read only</Text>
       </Select.Option>
-      <Select.Option id="write" description="Read and write only">
-        Write
+      <Select.Option id="write">
+        <Text slot="label">Write</Text>
+        <Text slot="description">Read and write only</Text>
       </Select.Option>
-      <Select.Option id="admin" description="Full access">
-        Admin
+      <Select.Option id="admin">
+        <Text slot="label">Admin</Text>
+        <Text slot="description">Full access</Text>
       </Select.Option>
     </Select>
   </>
