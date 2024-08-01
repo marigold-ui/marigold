@@ -50,12 +50,12 @@ export const AppearanceDemo = ({
     );
 
   let messageTitle = '';
-  if (appearance.variant.length === 0) {
-    messageTitle = 'variant';
+  if (appearance.variant.length === 0 && appearance.size.length === 0) {
+    messageTitle = 'variant and size';
   } else if (appearance.size.length === 0) {
     messageTitle = 'size';
-  } else if (appearance.variant.length === 0 && appearance.size.length === 0) {
-    messageTitle = 'variant and size';
+  } else if (appearance.variant.length === 0) {
+    messageTitle = 'variant';
   }
 
   const isVariantOrSizeMissing =
