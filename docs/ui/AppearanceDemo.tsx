@@ -54,7 +54,9 @@ export const AppearanceDemo = ({
     messageTitle = 'variant';
   } else if (appearance.size.length === 0) {
     messageTitle = 'size';
-  } else messageTitle = 'variant and size';
+  } else if (appearance.variant.length === 0 && appearance.size.length === 0) {
+    messageTitle = 'variant and size';
+  }
 
   const isVariantOrSizeMissing =
     appearance.variant.length === 0 || appearance.size.length === 0;
