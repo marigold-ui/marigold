@@ -1,5 +1,6 @@
 // @ts-check
 import docgen from 'react-docgen-typescript';
+import { codeToHtml } from 'shiki';
 import { fileURLToPath } from 'url';
 import { fs, globby, path } from 'zx';
 
@@ -46,11 +47,11 @@ const files = await globby([
 
 const output = {};
 
-files.forEach(file => {
+for await (const file of files) {
   const docs = parser.parse(file);
 
   if (docs.length === 0) {
-    return;
+    continue;
   }
 
   const { name } = path.parse(file);
@@ -61,9 +62,16 @@ files.forEach(file => {
   for (const key in props) {
     // Remove properties we do not need.
     const { parent, declarations, ...val } = props[key];
+
+    const code = await codeToHtml(val.type.name.replace(/^\((.*)\)$/, '$1'), {
+      lang: 'ts',
+      theme: 'min-light',
+    });
+    val.type.value = code;
+
     output[name][key] = val;
   }
-});
+}
 
 await fs.writeJson(outputFilePath, output);
 console.log(`✅ Successfully generated props table!`);

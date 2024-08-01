@@ -1,13 +1,7 @@
 import componentProps from '@/registry/props.json';
-import { Inline, Table, Text } from '@/ui';
+import { Inline, Stack, Text } from '@/ui';
 import { BlankCanvas } from './icons';
 import { Markdown } from './mdx';
-
-// Helper
-// ---------------
-const parseType = (val: string) =>
-  // Remove "()" when the type is wrapped im them (this is done by prettier)
-  val.replace(/^\((.*)\)$/, '$1');
 
 // Types
 // ---------------
@@ -19,11 +13,13 @@ interface Prop {
   name: string;
   type: {
     name: string;
+    value: string;
   };
   defaultValue: {
     value: any;
   };
   description: string;
+  required: boolean;
 }
 
 // Component
@@ -46,49 +42,40 @@ export const PropsTable = ({ component }: PropsTableProps) => {
   }
 
   return (
-    <Table aria-label="Table with component props" variant="hover" stretch>
-      <Table.Header>
-        <Table.Column key="property" width="1/6">
-          Property
-        </Table.Column>
-        <Table.Column key="type" width="2/6">
-          Type
-        </Table.Column>
-        <Table.Column key="default" width="1/6">
-          Default
-        </Table.Column>
-        <Table.Column key="description" width="2/6">
-          Description
-        </Table.Column>
-      </Table.Header>
-      <Table.Body>
-        {props.map(prop => (
-          <Table.Row key={prop.name}>
-            <Table.Cell>
-              <code className="before:content-none after:content-none">
-                {prop.name}
-              </code>
-            </Table.Cell>
-            <Table.Cell>
-              <code className="before:content-none after:content-none">
-                {parseType(prop.type.name)}
-              </code>
-            </Table.Cell>
-            <Table.Cell>
-              <code className="before:content-none after:content-none">
-                {prop.defaultValue ? prop.defaultValue.value : '-'}
-              </code>
-            </Table.Cell>
-            <Table.Cell>
-              <Markdown
-                // Reset <code> for now
-                className="text-pretty *:bg-transparent *:p-0 *:text-xs"
-                contents={prop.description}
-              />
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
+    <div className="border-secondary-200 divide-y rounded-lg border bg-white/40">
+      {props.map(prop => (
+        <div
+          className="text-text-primary text-text-primary-muted flex flex-col gap-2 px-3 py-3.5 text-sm hover:bg-neutral-100/80"
+          key={prop.name}
+        >
+          <Inline space={2} alignY="center">
+            <code className="before:content-none after:content-none">
+              {prop.name}
+              {prop.required ? '' : '?'}
+            </code>
+            <div
+              dangerouslySetInnerHTML={{ __html: prop.type.value }}
+              className="*:m-0 *:!bg-transparent *:p-0 *:text-xs"
+            />
+          </Inline>
+
+          <Stack space={1}>
+            <Markdown
+              // Reset <code> for now
+              className="text-pretty text-xs *:bg-transparent *:p-0 *:text-xs"
+              contents={prop.description}
+            />
+            {prop.defaultValue ? (
+              <div className="text-xs">
+                Defaults to:{' '}
+                <code className="before:content-none after:content-none">
+                  {prop.defaultValue.value}
+                </code>
+              </div>
+            ) : null}
+          </Stack>
+        </div>
+      ))}
+    </div>
   );
 };

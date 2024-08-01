@@ -56,6 +56,11 @@ export interface TableProps
    * Content to display when there are no rows in the table.
    */
   emptyState?: () => ReactNode;
+
+  /**
+   * Children of the component.
+   */
+  children?: ReactNode;
 }
 
 // Table Component
