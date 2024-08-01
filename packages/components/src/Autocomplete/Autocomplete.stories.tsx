@@ -75,7 +75,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Autocomplete placeholder="Movie" {...args}>
-      <Autocomplete.Item id="Harry Potter" textValue="Harry Pottor">
+      <Autocomplete.Item id="Harry Potter" textValue="Harry Potter">
         <Text slot="label">Harry Potter</Text>
         <Text slot="description">best series ever</Text>
       </Autocomplete.Item>
