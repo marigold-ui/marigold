@@ -45,7 +45,6 @@ const AutocompleteInput = ({
   // needed to get the triggerwidth on the right button
   const classNames = useClassNames({ component: 'ComboBox' });
 
-  console.log(state);
   return (
     <SearchInput
       ref={ref}

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Meta, StoryObj } from '@storybook/react';
 import { Key, useState } from 'react';
+import { Text } from 'react-aria-components';
 import { useAsyncList } from '@react-stately/data';
 import { Container } from '../Container';
 import { Stack } from '../Stack';
@@ -74,12 +75,12 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Autocomplete placeholder="Movie" {...args}>
-      <Autocomplete.Item
-        id="Harry Potter"
-        description="best series ever"
-        textValue="Harry Potter"
-      >
-        Harry Potter
+      <Autocomplete.Item id="Harry Potter" textValue="Harry Pottor">
+        <Text slot="label">Harry Potter</Text>
+        default to div use text
+        <Text slot="description">
+          sajklfklasjf ljaklsjgfklasjflkjas lkfjsakl{' '}
+        </Text>
       </Autocomplete.Item>
       <Autocomplete.Item id="Lord of the Rings">
         Lord of the Rings

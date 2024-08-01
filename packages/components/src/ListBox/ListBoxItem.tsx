@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { ListBoxItem, Text } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
 import { useListBoxContext } from './Context';
 
 export interface ListBoxItemProps
@@ -9,7 +8,7 @@ export interface ListBoxItemProps
   /**
    * To set a short description below the item.
    */
-  description?: string;
+  description?: ReactNode;
   children?: ReactNode;
 }
 
@@ -20,15 +19,9 @@ export const _ListBoxItem = ({
 }: ListBoxItemProps) => {
   const { classNames } = useListBoxContext();
 
-  console.log(props);
   return (
     <ListBoxItem {...props} className={classNames.option}>
-      <Text slot="label">{children}</Text>
-      {description && (
-        <Text slot="description" className={classNames.itemDescription}>
-          {description}
-        </Text>
-      )}
+      {children}
     </ListBoxItem>
   );
 };
