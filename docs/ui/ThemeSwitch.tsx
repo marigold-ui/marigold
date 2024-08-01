@@ -81,18 +81,18 @@ export const MarigoldThemeSwitch = ({
     [router]
   );
 
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      if (themeQueryParam) {
-        updateTheme(themeQueryParam);
-      } else if (localTheme) {
-        updateTheme(localTheme);
-      } else {
-        updateTheme(initial);
-      }
-    }
-  }, [localTheme, themeQueryParam, updateTheme, initial]);
+  // useEffect(() => {
+  //   if (isInitialMount.current) {
+  //     isInitialMount.current = false;
+  //     if (themeQueryParam) {
+  //       updateTheme(themeQueryParam);
+  //     } else if (localTheme) {
+  //       updateTheme(localTheme);
+  //     } else {
+  //       updateTheme(initial);
+  //     }
+  //   }
+  // }, [localTheme, themeQueryParam, updateTheme, initial]);
 
   return (
     <Context.Provider value={{ current: theme, themes, updateTheme }}>
