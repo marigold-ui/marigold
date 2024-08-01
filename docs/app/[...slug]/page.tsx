@@ -1,3 +1,4 @@
+import { baseUrl } from '@/lib/config';
 import { Headline } from '@/ui';
 import { allContentPages } from 'contentlayer/generated';
 import { Metadata } from 'next';
@@ -26,6 +27,22 @@ export async function generateMetadata({
     ? {
         title: page.title,
         description: page.caption,
+        applicationName: 'Marigold Design System',
+        appleWebApp: {
+          title: 'Marigold Design System',
+        },
+        metadataBase: new URL(baseUrl),
+        openGraph: {
+          siteName: 'Marigold Design System',
+          title: page.title,
+          description: page.caption,
+          images: `${baseUrl}/og.png?title=${encodeURIComponent(page.title)}`,
+          type: 'website',
+        },
+        twitter: {
+          card: 'summary_large_image',
+          creator: '@reservix',
+        },
       }
     : {};
 }

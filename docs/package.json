@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
+    "@marigold/system": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",

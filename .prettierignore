@@ -16,6 +16,9 @@
 
 coverage
 dist
+docs/.cache
+docs/public
+docs/public/render-page.js.map
 LICENSE
 storybook-static
 pnpm-lock.yaml
@@ -25,3 +28,4 @@ favicon.png
 *.snap
 *.svg
 *.ico
+*.ttf
