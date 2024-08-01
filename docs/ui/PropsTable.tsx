@@ -45,7 +45,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
     <div className="border-secondary-200 divide-y rounded-lg border bg-white/40">
       {props.map(prop => (
         <div
-          className="text-text-primary text-text-primary-muted flex flex-col gap-2 px-3 py-3.5 text-sm hover:bg-neutral-100/80"
+          className="text-text-primary-muted flex flex-col gap-2 px-3 py-3.5 text-sm"
           key={prop.name}
         >
           <Inline space={2} alignY="center">
