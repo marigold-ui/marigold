@@ -1,4 +1,5 @@
 // @ts-check
+import * as prettier from 'prettier';
 import docgen from 'react-docgen-typescript';
 import { codeToHtml } from 'shiki';
 import { fileURLToPath } from 'url';
@@ -61,6 +62,78 @@ async function transformDefaultValue(val) {
     lang: 'ts',
     theme: 'min-light',
   });
+}
+
+function formatVoidFunctions(text) {
+  const antiPattern = /\=>\s+void/g;
+  const pattern = /\=>\s+xxx/g;
+
+  if (antiPattern.test(text)) {
+    return text.replace(antiPattern, '=> xxx');
+  }
+
+  if (pattern.test(text)) {
+    return text.replace(pattern, '=> void');
+  }
+
+  return text;
+}
+
+function formatLongTypes(text) {
+  const antiPattern = /<\.\.\.>/g;
+  const pattern = /<xxx>/g;
+
+  if (antiPattern.test(text)) {
+    return text.replace(antiPattern, '<xxx>');
+  }
+
+  if (pattern.test(text)) {
+    return text.replace(pattern, '<...>');
+  }
+
+  return text;
+}
+
+async function transformTypeValue(val) {
+  const ignorePrettier = [
+    'any[]',
+    'string | number | readonly string[]',
+    'string[]',
+    '(number | "fit")[]',
+    'TemplateValue[]',
+    '0 | "auto" | "full" | "fit" | "min" | "max" | "screen" | "svh" | "lvh" | "dvh" | "px" | "0.5" | 1 | "1.5" | 2 | "2.5" | 3 | "3.5" | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 14 | 16 | 20 | 24 | 28 | ... 37 more ...',
+    '{ vertical?: { alignY?: "none" | "center" | "top" | "bottom"; alignX?: "none" | "left" | "center" | "right"; } | undefined; horizontal?: { alignX?: "none" | "left" | "center" | "right" | undefined; alignY?: "none" | ... 3 more ... | undefined; } | undefined; } | undefined',
+    '{ input?: string; action?: string; } | undefined',
+    '(path: string, routerOptions: undefined) => void',
+    'ReactNode[]',
+    'number | number[]',
+    'CellElement | CellElement[] | CellRenderer',
+    '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
+    '"Accordion" | "Badge" | "Body" | "Button" | "Card" | "DateField" | "Dialog" | "Divider" | "Field" | "Footer" | "Header" | "Headline" | "Popover" | "HelpText" | "Image" | "Checkbox" | ... 21 more ... | "ComboBox"',
+    'string | { [slot in keyof ThemeComponent<C>]?: string; }',
+    'keyof NumberFormatOptionsCurrencyDisplayRegistry',
+    'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
+    'keyof NumberFormatOptionsSignDisplayRegistry',
+  ];
+
+  if (!ignorePrettier.includes(val.type.name)) {
+    let text = formatVoidFunctions(val.type.name);
+    text = formatLongTypes(text);
+
+    return await prettier
+      .format(text, {
+        printWidth: 85,
+        parser: 'typescript',
+      })
+      .then(text => formatVoidFunctions(text))
+      .then(text => formatLongTypes(text))
+      .then(text =>
+        codeToHtml(text.replace(/^\((.*)\)$/, '$1'), {
+          lang: 'ts',
+          theme: 'min-light',
+        })
+      );
+  }
 }
 
 for await (const file of files) {
