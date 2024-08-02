@@ -26,10 +26,7 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 // Props
 // ---------------
 export interface TableProps
-  extends Pick<
-      AriaTableProps<object>,
-      'focusMode' | 'onRowAction' | 'onCellAction'
-    >,
+  extends Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
     Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
