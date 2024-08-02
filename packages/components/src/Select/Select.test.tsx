@@ -527,7 +527,6 @@ test('supports text slots in select', () => {
   const label = screen.getByText('one');
   const description = screen.getByText('description for one');
 
-  console.log(label);
   expect(label).toBeInTheDocument();
   expect(description).toBeInTheDocument();
 });
