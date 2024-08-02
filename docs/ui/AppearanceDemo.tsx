@@ -50,13 +50,13 @@ export const AppearanceDemo = ({
       children
     );
 
-  let messageTitle = '';
+  let disabledAppearance = '';
   if (appearance.variant.length === 0 && appearance.size.length === 0) {
-    messageTitle = 'variant and size';
+    disabledAppearance = 'variant and size';
   } else if (appearance.size.length === 0) {
-    messageTitle = 'size';
+    disabledAppearance = 'size';
   } else if (appearance.variant.length === 0) {
-    messageTitle = 'variant';
+    disabledAppearance = 'variant';
   }
 
   const isVariantOrSizeMissing =
@@ -112,7 +112,7 @@ export const AppearanceDemo = ({
           {isVariantOrSizeMissing ? (
             <div className="flex items-center gap-2 text-xs">
               <Info size={14} />
-              There is currently no available option for {messageTitle} to
+              There is currently no available option for {disabledAppearance} to
               select.
             </div>
           ) : null}
