@@ -7,15 +7,35 @@ The `<Radio>` and `<Radio.Group>` components allow users to select one option fr
 
 The `<Radio>` should never be used alone, there should always be at least two `<Radio>` from which you can choose. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
 
-## Import
+The `<Radio.Group>` not only groups the radio buttons but also manages their state. This means you can easily control which option is selected by default and dynamically update the selection based on user interactions.
 
 ```tsx
 import { Radio } from '@marigold/components';
 ```
 
+## Anatomy
+
+The radio button component is comprised of a set of clickable circles (the inputs) with text labels positioned to the right. If there is a group of radio buttons, a group label can be added.
+
+<Image
+  src="/radio/radio-anatomy.png"
+  alt="Anatomy of radio component"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Group label:** Describes the group of options or provides guidance for making a selection.
+
+- **Radio button input:** Indicates the state of a radio button. By default, no option will be preselected.
+
+- **Radio button label:** Describes the information you want to select or unselect.
+
 ## Appearance
 
 <AppearanceTable component={title} />
+
+## Usage
 
 ## Props
 
