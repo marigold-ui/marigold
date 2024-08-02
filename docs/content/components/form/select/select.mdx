@@ -8,7 +8,7 @@ The `<Select>` is a form component with which you can choose one option from a l
 
 ## Anatomy
 
-A `<Select>` contains a clickable button element with an arrow down icon to show the direction the list of options opens. `<Select.Option>` represent a possible choice the user can select. Optional you have the choice to add `<Select.Section>` to the options which helps divide the content of options in categories if needed. Also optional you have the possibility to add a short description to the select itself and/ or to the option.
+A select contains a clickable button element with a down arrow to indicate the direction in which the list of options opens. An option represent a possible choice the user can select. Optional you have the choice to add a section to the options which helps divide the content of options in categories. Also optional you have the possibility to add a short description to the select itself and/ or to the option.
 
 <Image
   src="/select/select-anatomy.jpg"
@@ -26,23 +26,42 @@ A `<Select>` contains a clickable button element with an arrow down icon to show
 
 ## Usage
 
-This example shows a common single select. It supports an optional description which can be used to provide more context about the field.
+The select should be used within a form. It supports an optional description which can be used to provide more context about the field.
+As with all form components, the label should always briefly describe what the user expects to achieve. Same goes for the description and the placeholder text.
+
+<p />
+
+<Dont>
+  <Dont.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/select/select-dont-options.jpg"
+      alt="Dont use less than three options"
+    />
+  </Dont.Figure>
+  <Dont.Description>
+    Don't use a select if there are less than three options to choose from. Use
+    instead a [radio group](../form/radio).
+  </Dont.Description>
+</Dont>
 
 ### Select with Sections
 
-In this example you can see how to use the `<Select.Section>` in the `<Select>` itself. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>`.
+You need sections when you need to separate differnt options from each other, this can be for example to categorize related options together. For that you habe to use the `<Select.Section>` component. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>`.
 
 <ComponentDemo file="./select-section.demo.tsx" />
 
 ### Item description
 
-If you need to have primary and secondary content shown within an item, you can use the `description` property on the option to write a short description.
+If you need to have primary and secondary content shown within an option, you can use our [text component](../content/text) with the slot property and set it for the label and description to add a short description for secondary content. The description should support the certain selectable option.
 
 <ComponentDemo file="./select-description.demo.tsx" />
 
 ### Disabled Keys
 
-You can also set some keys disabled, for that you have to use the `disabledKeys` property.
+Sometimes depending on other settings it can be that a select needs to have disabled options to show up. For this case you can set keys disabled through the `disabledKeys` property.
 
 <ComponentDemo file="./select-disabled-keys.demo.tsx" />
 
@@ -59,3 +78,50 @@ You can also set some keys disabled, for that you have to use the `disabledKeys`
 ### Select.Option
 
 <PropsTable component="ListBoxItem" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building forms',
+      href: '../../patterns/building-forms',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Radio group',
+      href: '../../forms/radio',
+      caption: 'Alternative for select with less options.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M2.625 6.75a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0A.75.75 0 0 1 8.25 6h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75ZM2.625 12a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0ZM7.5 12a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12A.75.75 0 0 1 7.5 12Zm-4.875 5.25a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
