@@ -54,7 +54,7 @@ const files = await globby([
 
 //TODO: remove
 const file = [
-  '/Users/marcelkoehler/WebstormProjects/marigold/packages/components/src/Table/Table.tsx',
+  '/Users/marcelkoehler/WebstormProjects/marigold/packages/components/src/Card/Card.tsx',
 ];
 const output = {};
 
@@ -90,6 +90,99 @@ const revertFormatSteps = text => {
   return text;
 };
 
+function replacePropName(val) {
+  let spaceTypeName = 'GapSpaceProp';
+
+  if (
+    val.name === 'space' &&
+    val.declarations !== undefined &&
+    val.declarations.some(declaration =>
+      ['Inset.tsx'].some(fileName => declaration.fileName.includes(fileName))
+    )
+  ) {
+    spaceTypeName = 'PaddingSpaceProp';
+  }
+
+  //TODO: maybe move description to the right prop?
+  const transformations = {
+    width: {
+      typeName: 'WidthProp',
+      description:
+        'Sets the width of the field. You can see allowed tokens [here](https://tailwindcss.com/docs/width).',
+    },
+    space: {
+      typeName: spaceTypeName,
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    height: {
+      typeName: 'HeightProp',
+      description: `${val.description} You can see allowed tokens [here](https://tailwindcss.com/docs/height).`,
+    },
+    p: {
+      typeName: 'PaddingSpaceProp',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    pb: {
+      typeName: 'PaddingBottomProp',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    pt: {
+      typeName: 'PaddingTopProp',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    pl: {
+      typeName: 'PaddingLeftProp',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    pr: {
+      typeName: 'PaddingRightProp',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    py: {
+      typeName: 'PaddingSpacePropY',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    px: {
+      typeName: 'PaddingSpacePropX',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    spaceY: {
+      typeName: 'PaddingSpacePropY',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    spaceX: {
+      typeName: 'PaddingSpacePropX',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
+    },
+    position: {
+      typeName: 'ObjectFitProp',
+      description: `${val.description} You can see allowed tokens [here](https://tailwindcss.com/docs/object-position).`,
+    },
+    fontSize: {
+      typeName: 'FontSizeProp',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#typography).`,
+    },
+    weight: {
+      typeName: 'FontWeightProp',
+      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#typography).`,
+    },
+    cursor: {
+      typeName: 'CursorProp',
+      description: `${val.description} You can see allowed tokens [here](https://tailwindcss.com/docs/cursor).`,
+    },
+    orientation: {
+      typeName: 'AlignmentProp',
+      description: `${val.description}`,
+    },
+  };
+
+  const transformation = transformations[val.name];
+  if (transformation) {
+    val.type.name = transformation.typeName;
+    val.description = transformation.description;
+  }
+}
+
 async function transformTypeValue(val) {
   //List of types prettier can't handle see https://prettier.io/playground
   const ignorePrettier = [
@@ -117,19 +210,18 @@ async function transformTypeValue(val) {
   if (!ignorePrettier.includes(text)) {
     text = applyFormatSteps(text);
 
-    return await prettier
+    text = await prettier
       .format(text, {
         printWidth: 85,
         parser: 'typescript',
       })
-      .then(text => revertFormatSteps(text))
-      .then(text =>
-        codeToHtml(text.replace(/^\((.*)\)$/, '$1'), {
-          lang: 'ts',
-          theme: 'min-light',
-        })
-      );
+      .then(text => revertFormatSteps(text));
   }
+
+  return codeToHtml(text.replace(/^\((.*)\)$/, '$1'), {
+    lang: 'ts',
+    theme: 'min-light',
+  });
 }
 
 for await (const file of files) {
@@ -146,13 +238,9 @@ for await (const file of files) {
 
   for (const key in props) {
     // Remove properties we do not need.
-    const { parent, declarations, ...val } = props[key];
+    const { parent, ...val } = props[key];
 
-    if (val.name === 'width') {
-      val.type.name = 'WidthProp';
-      val.description =
-        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width';
-    }
+    replacePropName(val);
 
     val.type.value = await transformTypeValue(val);
 

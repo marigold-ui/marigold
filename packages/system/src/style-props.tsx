@@ -633,13 +633,6 @@ export type GridColsAlignProp = {
   align?: keyof typeof gridColsAlign;
 };
 
-export type GridColumn = {
-  /**
-   * Set the alignment of a grid column.
-   */
-  align?: keyof typeof gridColumn;
-};
-
 export type GapSpaceProp = {
   /**
    * The space between the children.
