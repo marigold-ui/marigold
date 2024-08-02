@@ -53,6 +53,16 @@ const files = await globby([
 
 const output = {};
 
+async function transformDefaultValue(val) {
+  let x = val.defaultValue.value;
+  x = /^[a-zA-Z]/.test(x) ? `"${x}"` : x;
+
+  return await codeToHtml(`${x}`, {
+    lang: 'ts',
+    theme: 'min-light',
+  });
+}
+
 for await (const file of files) {
   const docs = parser.parse(file);
 
@@ -69,11 +79,17 @@ for await (const file of files) {
     // Remove properties we do not need.
     const { parent, declarations, ...val } = props[key];
 
-    const code = await codeToHtml(val.type.name.replace(/^\((.*)\)$/, '$1'), {
-      lang: 'ts',
-      theme: 'min-light',
-    });
-    val.type.value = code;
+    if (val.name === 'width') {
+      val.type.name = 'WidthProp';
+      val.description =
+        'Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width';
+    }
+
+    val.type.value = await transformTypeValue(val);
+
+    if (val.defaultValue) {
+      val.defaultValue.value = await transformDefaultValue(val);
+    }
 
     output[name][key] = val;
   }
