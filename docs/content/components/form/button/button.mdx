@@ -161,6 +161,9 @@ In general, it's best to avoid using disabled buttons. However, if they are nece
   <SectionMessage.Content>
     Tooltips aren't accessible on all devices or by some assistive technologies,
     and they should never be used on non-interactive elements.
+
+    For more information see the [toolip page](components/overlay/tooltip).
+
   </SectionMessage.Content>
 </SectionMessage>
 
@@ -170,13 +173,13 @@ Full-width buttons are especially useful for emphasizing primary actions like su
 
 <ComponentDemo file="./button-full-width.demo.tsx" />
 
-### Navigation with buttons
+### Button or link
 
-Never use buttons for navigation. Always use the `<Link>` component when navigation to another URL or page. Using buttons for navigation can cause accessibility issues, such as making it difficult for keyboard and screen reader users to interact properly.
+If the user interacts with the element and it results in a URL change or opens a new browser tab, use an anchor element (`<Link>`). For all other interactions that perform actions on the same page, use a button (`<Button>`).
 
-In this case the `<Link>` should appear like a button. This is often the case for actions like "Cancel" that redirect users to another page. This approach visually emphasizes the action, making it clear and prominent, while maintaining the accessibility of the app.
+Understanding this distinction is crucial: anchors handle navigation, while buttons handle page-specific actions. Misusing them can cause accessibility and usability issues, as anchors support tab-opening and navigation, while buttons do not.
 
-If you need a link that looks like a button, use the [`<Link>`](/components/content/link) component with the appropriate `variant`.
+To visually imitate a button element with the `<Link>` component (e.g., a "Cancel" action that redirects users to the previous page), use the [`<Link>`](/components/content/link) component with the corresponding `variant`, usually `secondary`. This way, the action is clear and prominent while keeping its navigation function.
 
 <GuidelineTiles>
   <Dont>
