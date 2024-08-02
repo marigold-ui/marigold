@@ -14,7 +14,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   ]),
   option: cva([
     font,
-    'flex flex-col group/option',
+    'group/option flex flex-col',
     'cursor-pointer p-2 outline-none',
     'rac-hover:bg-bg-selected rac-hover:text-text-base',
     // Need to use data attributes here because `focus-visible` only works with <Select>
@@ -29,7 +29,4 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   sectionTitle: cva(
     '[&_header]:text-text-accent [&_header]:px-2 [&_header]:pt-2 [&_header]:text-sm'
   ),
-  itemDescription: cva([
-    'text-xs text-text-base/70 group-rac-selected/option:text-text-inverted',
-  ]),
 };

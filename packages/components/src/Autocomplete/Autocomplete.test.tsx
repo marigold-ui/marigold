@@ -59,7 +59,6 @@ const theme: Theme = {
       option: cva(),
       section: cva(),
       sectionTitle: cva(),
-      itemDescription: cva(),
     },
     Button: cva(),
   },

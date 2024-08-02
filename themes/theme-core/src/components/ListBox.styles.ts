@@ -8,7 +8,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   list: cva(''),
   option: cva([
     font,
-    'flex flex-col group/option',
+    'group/option flex flex-col',
     'rac-hover:text-text-inverted rac-hover:bg-highlight',
     'cursor-pointer px-1.5 py-0.5 outline-none',
     'rac-focus:text-text-inverted rac-focus:bg-highlight',
@@ -17,8 +17,4 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   ]),
   section: cva('[&:nth-child(n+2)]:pt-2 [&_div]:px-5'),
   sectionTitle: cva([font, '[&_header]:px-1.5 [&_header]:font-bold']),
-  itemDescription: cva([
-    'text-xs text-text-base/70 group-rac-focus/option:text-text-inverted',
-    'group-rac-selected/option:text-text-inverted group-rac-hover/option:text-text-inverted',
-  ]),
 };
