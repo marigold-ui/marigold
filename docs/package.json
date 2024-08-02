@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
+    "@marigold/system": "workspace:*",
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-docs": "workspace:*",
@@ -53,7 +53,7 @@
     "zx": "8.1.4"
   },
   "devDependencies": {
-    "@internationalized/date": "3.5.4",
+    "@internationalized/date": "3.5.5",
     "@types/node": "20.14.12",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
