@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { I18nProvider, Table } from '@marigold/components';
 import { DateFormat, NumericFormat } from '@marigold/system';
 

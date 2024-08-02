@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { ActionMenu, I18nProvider, Menu, Table } from '@marigold/components';
 import { DateFormat } from '@marigold/system';
 
