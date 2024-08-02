@@ -4,13 +4,14 @@ import type { Theme } from '@/ui';
 import {
   Card,
   FieldGroup,
+  Inline,
   MarigoldProvider,
   OverlayContainerProvider,
-  SectionMessage,
   Select,
 } from '@/ui';
 import type { ComponentType, ReactNode } from 'react';
 import { useState } from 'react';
+import { Info } from '@marigold/icons';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props
@@ -69,18 +70,9 @@ export const AppearanceDemo = ({
         visual style and dimensions of the component, available values are based
         on the active theme.
       </p>
-      {isVariantOrSizeMissing ? (
-        <SectionMessage variant="info">
-          <SectionMessage.Title>
-            No {messageTitle} available!
-          </SectionMessage.Title>
-          <SectionMessage.Content>
-            There is currently no available option to select.
-          </SectionMessage.Content>
-        </SectionMessage>
-      ) : null}
+
       <Card variant="content" p={0}>
-        <div className="absolute left-4 top-3 flex gap-2">
+        <div className="absolute left-4 top-3 flex flex-wrap gap-2">
           <Select
             label="Variant"
             variant="floating"
@@ -117,11 +109,18 @@ export const AppearanceDemo = ({
               </Select.Option>
             ))}
           </Select>
+          {isVariantOrSizeMissing ? (
+            <div className="flex items-center gap-2 text-xs">
+              <Info size={14} />
+              There is currently no available option for {messageTitle} to
+              select.
+            </div>
+          ) : null}
         </div>
         <div data-theme={current}>
           <OverlayContainerProvider value="portalContainer">
             <MarigoldProvider theme={theme}>
-              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-4 pt-14">
+              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-10 pt-24">
                 <Wrapper>
                   <Demo {...selected} />
                 </Wrapper>
