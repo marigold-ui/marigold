@@ -10,7 +10,7 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: ['none', 'menuItemLink', 'content'],
+      options: ['none', 'menuItemLink', 'content', 'secondary'],
       description: 'Variants of the link, content only for core.',
     },
     href: {
