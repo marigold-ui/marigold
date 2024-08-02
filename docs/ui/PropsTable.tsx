@@ -66,12 +66,15 @@ export const PropsTable = ({ component }: PropsTableProps) => {
               contents={prop.description}
             />
             {prop.defaultValue ? (
-              <div className="text-xs">
+              <Inline space={2} alignY="center">
                 Defaults to:{' '}
-                <code className="before:content-none after:content-none">
-                  {prop.defaultValue.value}
-                </code>
-              </div>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: prop.defaultValue.value,
+                  }}
+                  className="*:m-0 *:!bg-transparent *:p-0 *:text-xs"
+                />
+              </Inline>
             ) : null}
           </Stack>
         </div>

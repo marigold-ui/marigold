@@ -585,8 +585,6 @@ export const cursorStyle = {
   zoomOut: 'cursor-zoom-out',
 };
 
-export type WidthValues = keyof typeof width;
-
 export type AspectProp = { ratio?: keyof typeof aspect };
 export type AlignmentProp = {
   orientation?: {
@@ -727,10 +725,7 @@ export type TextAlignProp = {
 };
 
 export type WidthProp = {
-  /**
-   * Set the width of the element.
-   */
-  width?: WidthValues;
+  width?: keyof typeof width;
 };
 
 export type HeightProp = {

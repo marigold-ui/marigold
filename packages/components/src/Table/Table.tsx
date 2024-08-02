@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { AriaTableProps, useTable } from '@react-aria/table';
 import {
   TableBody as Body,
@@ -56,11 +55,6 @@ export interface TableProps
    * Content to display when there are no rows in the table.
    */
   emptyState?: () => ReactNode;
-
-  /**
-   * Children of the component.
-   */
-  children?: ReactNode;
 }
 
 // Table Component
@@ -85,7 +79,7 @@ export const Table: Table = ({
       // TODO: It this necessary?
       props.selectionBehavior !== 'replace',
   });
-
+  props.children;
   /**
    * Behavior is a bit flacky with the table when using a keyboard
    * so we test here for undefined here to be save.

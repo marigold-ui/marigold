@@ -52,6 +52,10 @@ const files = await globby([
   `!${systemDir}/**/*.ts`,
 ]);
 
+//TODO: remove
+const file = [
+  '/Users/marcelkoehler/WebstormProjects/marigold/packages/components/src/Table/Table.tsx',
+];
 const output = {};
 
 async function transformDefaultValue(val) {
@@ -72,7 +76,22 @@ function formatText(text, pattern, replacementText) {
   return text;
 }
 
+const applyFormatSteps = text => {
+  text = formatText(text, /\=>\s+void/g, '=> xxx');
+  text = formatText(text, /<\.\.\.>/g, '<xxx>');
+
+  return text;
+};
+
+const revertFormatSteps = text => {
+  text = formatText(text, /\=>\s+xxx/g, '=> void');
+  text = formatText(text, /<xxx>/g, '<...>');
+
+  return text;
+};
+
 async function transformTypeValue(val) {
+  //List of types prettier can't handle see https://prettier.io/playground
   const ignorePrettier = [
     'any[]',
     'string | number | readonly string[]',
@@ -93,18 +112,17 @@ async function transformTypeValue(val) {
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
     'keyof NumberFormatOptionsSignDisplayRegistry',
   ];
+  let text = val.type.name;
 
-  if (!ignorePrettier.includes(val.type.name)) {
-    let text = formatText(val.type.name, /\=>\s+void/g, '=> xxx');
-    text = formatText(text, /<\.\.\.>/g, '<xxx>');
+  if (!ignorePrettier.includes(text)) {
+    text = applyFormatSteps(text);
 
     return await prettier
       .format(text, {
         printWidth: 85,
         parser: 'typescript',
       })
-      .then(text => formatText(text, /\=>\s+xxx/g, '=> void'))
-      .then(text => formatText(text, /<xxx>/g, '<...>'))
+      .then(text => revertFormatSteps(text))
       .then(text =>
         codeToHtml(text.replace(/^\((.*)\)$/, '$1'), {
           lang: 'ts',
