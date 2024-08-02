@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Stack, Table, TextArea } from '@marigold/components';
 
 export default () => {
