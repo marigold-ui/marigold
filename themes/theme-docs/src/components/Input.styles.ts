@@ -24,6 +24,6 @@ export const inputSpacing = {
 // ---------------
 export const inputFocus = '';
 export const inputDisabled =
-  'disabled:cursor-not-allowed disabled:text-text-disabled';
+  'disabled:cursor-not-allowed disabled:text-text-disabled disabled:bg-bg-disabled';
 export const inputError = '';
 export const inputHover = '';
