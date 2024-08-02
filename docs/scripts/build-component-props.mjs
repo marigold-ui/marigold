@@ -64,31 +64,9 @@ async function transformDefaultValue(val) {
   });
 }
 
-function formatVoidFunctions(text) {
-  const antiPattern = /\=>\s+void/g;
-  const pattern = /\=>\s+xxx/g;
-
-  if (antiPattern.test(text)) {
-    return text.replace(antiPattern, '=> xxx');
-  }
-
+function formatText(text, pattern, replacementText) {
   if (pattern.test(text)) {
-    return text.replace(pattern, '=> void');
-  }
-
-  return text;
-}
-
-function formatLongTypes(text) {
-  const antiPattern = /<\.\.\.>/g;
-  const pattern = /<xxx>/g;
-
-  if (antiPattern.test(text)) {
-    return text.replace(antiPattern, '<xxx>');
-  }
-
-  if (pattern.test(text)) {
-    return text.replace(pattern, '<...>');
+    return text.replace(pattern, replacementText);
   }
 
   return text;
@@ -117,16 +95,16 @@ async function transformTypeValue(val) {
   ];
 
   if (!ignorePrettier.includes(val.type.name)) {
-    let text = formatVoidFunctions(val.type.name);
-    text = formatLongTypes(text);
+    let text = formatText(val.type.name, /\=>\s+void/g, '=> xxx');
+    text = formatText(text, /<\.\.\.>/g, '<xxx>');
 
     return await prettier
       .format(text, {
         printWidth: 85,
         parser: 'typescript',
       })
-      .then(text => formatVoidFunctions(text))
-      .then(text => formatLongTypes(text))
+      .then(text => formatText(text, /\=>\s+xxx/g, '=> void'))
+      .then(text => formatText(text, /<xxx>/g, '<...>'))
       .then(text =>
         codeToHtml(text.replace(/^\((.*)\)$/, '$1'), {
           lang: 'ts',
