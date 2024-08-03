@@ -22,23 +22,6 @@ const config: Config = {
     '../packages/{components,system}/**/*.{tsx,ts}',
     '!../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
-  theme: {
-    extend: {
-      animation: {
-        'pulse-light': 'pulse-light 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-      },
-      keyframes: {
-        'pulse-light': {
-          '0%, 100%': {
-            opacity: '1',
-          },
-          '50%': {
-            opacity: '.65',
-          },
-        },
-      },
-    },
-  },
   presets: [preset],
   plugins: [
     require('tailwindcss-animate'),
