@@ -41,6 +41,18 @@ Buttons have a wide range of applications. Their most common usage is to submit 
 
 It is essential that the label and context around the button clearly set expectations for what will happen when the user interacts with it. In user interfaces, buttons guide interactions, providing clear call-to-action elements that help users navigate and complete tasks.
 
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Write button text that is clear, starts with a verb, and helps users
+      confidently take action.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>Keep button labels short and to the point.</Do.Description>
+  </Do>
+</GuidelineTiles>
+
 ### Visual hierarchy
 
 This primary button should represent the most crucial action within that section. Having multiple primary buttons in one section can create confusion and visual clutter, as they compete for the user's attention and detract from the clarity of the intended action.
@@ -78,11 +90,23 @@ This primary button should represent the most crucial action within that section
   </Dont>
 </GuidelineTiles>
 
-### Labels and icons
+### Icons and labels
 
-Buttons should always have a label unless they use an icon that is universally understood and accessible. Icons can accompany the label but should not be purely decorative. Use an icon only when it has a strong association with the label text.
+Icons can reinforce text labels, but they can also cause confusion if they don't clearly match the related text. Buttons should always have a label unless they use an icon that is universally understood and accessible.
 
-For icon-only buttons, ensure you set an `aria-label` or `aria-labelledby` attribute to provide context and maintain accessibility.
+Accompany labels with icons only when they have a strong association with the text, never use icon purely for decoration.
+
+Icon-only buttons should only be used when the icon is universally recognized and its function is clear without additional text, like a pencil for editing. These buttons are particularly useful in compact spaces or mobile interfaces where screen real estate is limited.
+
+<ComponentDemo file="./button-icon.demo.tsx" />
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Keep it accessible</SectionMessage.Title>
+  <SectionMessage.Content>
+    For icon-only buttons, ensure you set an `aria-label` or `aria-labelledby`
+    attribute to provide context and maintain accessibility.
+  </SectionMessage.Content>
+</SectionMessage>
 
 <GuidelineTiles>
   <Do>
@@ -183,9 +207,14 @@ If the user interacts with the element and it results in navigation to another p
 
 Understanding this distinction is crucial: anchors handle navigation, while buttons handle page-specific actions. Misusing them can cause accessibility and usability issues, as anchors support tab-opening and navigation, while buttons do not.
 
-To visually imitate a button element with the `<Link>` component (e.g., a "Cancel" action that redirects users to the previous page), use the [`<Link>`](/components/content/link) component with the corresponding `variant`, usually `secondary`. This way, the action is clear and prominent while keeping its navigation function.
+To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<Link>`](/components/content/link) component with the corresponding `variant`, usually `secondary`. This way, the action is clear and prominent while keeping its navigation function.
 
 <GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use buttons to trigger an event or an action.
+    </Do.Description>
+  </Do>
   <Dont>
     <Dont.Description>
       Don't use buttons for navigation purposes.
