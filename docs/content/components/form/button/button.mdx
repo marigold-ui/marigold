@@ -10,7 +10,7 @@ Different types of buttons, such as primary and secondary, help guide users by v
 
 ## Anatomy
 
-A button consists of a clickable area, often containing a textual label or icon, which users can click or activate using the Space or Enter keys. For buttons with only an icon and no visible text, it's important to set an `aria-label` or `aria-labelledby` prop to provide a descriptive label for assistive technologies.
+A button consists of a pressable area, often containing a textual label or icon, which users can press or activate using the Space or Enter keys.
 
 <Image
   src="/button/button-anatomy.jpg"
@@ -221,6 +221,14 @@ To visually imitate a button element that navigates (e.g., a "Cancel" action tha
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
+
+### Press Event
+
+The `<Button>` component supports user interactions via mouse, keyboard, and touch, handled through the `onPress` prop. This prop is similar to the standard `onClick` event but is normalized for all interaction methods. Additionally, `onPressStart`, `onPressEnd`, and `onPressChange` events are fired during user interaction.
+
+Each handler receives a `PressEvent`, providing details about the target and the type of event that triggered the interaction, like the pointer (mouse, keyboard or touch) that was used.
+
+<ComponentDemo file="./button-press.demo.tsx" />
 
 ## Props
 
