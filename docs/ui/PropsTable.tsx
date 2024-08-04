@@ -9,10 +9,17 @@ const parseType = (val: string) =>
   // Remove "()" when the type is wrapped im them (this is done by prettier)
   val.replace(/^\((.*)\)$/, '$1');
 
+const EmptyState = () => (
+  <Inline space={2}>
+    <BlankCanvas />
+    <Text>Sorry! There are currently no props available.</Text>
+  </Inline>
+);
+
 // Types
 // ---------------
 export interface PropsTableProps {
-  component?: string;
+  component: string;
 }
 
 interface Prop {
@@ -30,23 +37,17 @@ interface Prop {
 // ---------------
 export const PropsTable = ({ component }: PropsTableProps) => {
   //make the props iterable
-  const props =
-    component &&
-    (Object.entries((componentProps as any)[component]).map(
-      element => element[1]
-    ) as Prop[]);
-
-  if (!props) {
-    return (
-      <Inline space={2}>
-        <BlankCanvas />
-        <Text>Sorry! There are currently no props available.</Text>
-      </Inline>
-    );
-  }
+  const props = Object.entries((componentProps as any)[component]).map(
+    element => element[1]
+  ) as Prop[];
 
   return (
-    <Table aria-label="Table with component props" variant="hover" stretch>
+    <Table
+      aria-label="Table with component props"
+      variant="hover"
+      stretch
+      emptyState={EmptyState}
+    >
       <Table.Header>
         <Table.Column key="property" width="1/6">
           Property
