@@ -1,34 +1,17 @@
 ---
 title: Inline
-caption: Component to inline elements with spaces.
+caption: Display children horizontally in a row.
+badge: updated
 ---
 
-The `<Inline>` is a responsive layout component. It's inlining element with space between each element. This component uses the spaces from the given theme or a responsive string.
+The `<Inline>` is a responsive layout component. It is based on CSS Flexbox and will be aligned horizontally in a row. It will wrap if there is no more space given on the screen.
 
-## Import
+## Usage
 
-```tsx
-import { Inline } from '@marigold/components';
-```
-
-## Props
-
-<PropsTable component={title} />
-
-## Examples
-
-### More than two elements
-
-If you have more than two elements you can use the `<Inline>` component. The elements are arranged according to the space required.
+If you have more than two elements you can use the `<Inline>` component to arrange elements horizontally according to the space required.
+For adding the space between the elements you need to use the `space` property and set it to a supported [space value](../../introduction/design-tokens#spacing).
 
 <ComponentDemo file="./inline-elements.demo.tsx" />
-
-### Spacing
-
-The `<Inline>` component can be used to add spacing between elements.
-For this you need the props `space` and you can then place all components inside the `<Inline>` element.
-
-<ComponentDemo file="./inline-spacing.demo.tsx" />
 
 ### Nested Inline
 
@@ -42,3 +25,7 @@ If elements need to be positioned differently on their x and y axis, this can be
 In this case one of the following props is given. Either `alignX` or `alignY`.
 
 <ComponentDemo file="./inline-alignments.demo.tsx" />
+
+## Props
+
+<PropsTable component={title} />
