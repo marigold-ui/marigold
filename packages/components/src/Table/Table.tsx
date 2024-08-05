@@ -26,7 +26,12 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 // ---------------
 export interface TableProps
   extends Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
-    Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
+    Omit<
+      TableStateProps<object>,
+      | 'showSelectionCheckboxes'
+      | 'showDragButtons'
+      | 'allowDuplicateSelectionEvents'
+    > {
   variant?: string;
   size?: string;
 
