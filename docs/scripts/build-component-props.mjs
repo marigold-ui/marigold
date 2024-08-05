@@ -199,11 +199,6 @@ const files = await globby([
   `!${systemDir}/**/*.ts`,
 ]);
 
-//TODO: remove
-const file = [
-  '/Users/marcelkoehler/WebstormProjects/marigold/packages/components/src/Card/Card.tsx',
-];
-
 const output = {};
 
 for await (const file of files) {
