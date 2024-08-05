@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { AriaTableProps, useTable } from '@react-aria/table';
 import {
   TableBody as Body,
@@ -26,10 +25,7 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 // Props
 // ---------------
 export interface TableProps
-  extends Pick<
-      AriaTableProps<object>,
-      'focusMode' | 'onRowAction' | 'onCellAction'
-    >,
+  extends Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
     Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
