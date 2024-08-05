@@ -39,7 +39,7 @@ export default () => {
   ];
 
   return (
-    <Select label="Genres" items={items}>
+    <Select label="Genres" items={items} width="fit">
       {items.map(item => (
         <Select.Section key={item.category}>
           <Header>{item.category}</Header>

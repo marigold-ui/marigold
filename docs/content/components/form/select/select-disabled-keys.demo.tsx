@@ -5,6 +5,7 @@ export default () => (
     label="Country"
     disabledKeys={['germany', 'denmark', 'elsalvador']}
     description="Please select your country."
+    width="fit"
   >
     <Select.Option id="albania">Albania</Select.Option>
     <Select.Option id="czechrepublic">Czech Republic</Select.Option>
