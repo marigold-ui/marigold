@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import { Stack, Table } from '@marigold/components';
 
 export default () => {
