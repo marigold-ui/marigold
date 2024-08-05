@@ -25,11 +25,11 @@ const getSelectWidth = (options: string[]) => {
 
   // Poor mans pattern matching
   switch (true) {
-    case length < 8:
+    case length < 10:
       return 32;
-    case length >= 8 && length < 10:
+    case length >= 10 && length < 12:
       return 36;
-    case length >= 10 && length < 14:
+    case length >= 12 && length < 14:
       return 44;
     default:
       return 48;
