@@ -4,7 +4,6 @@ import type { Theme } from '@/ui';
 import {
   Card,
   FieldGroup,
-  Inline,
   MarigoldProvider,
   OverlayContainerProvider,
   Select,
@@ -13,6 +12,29 @@ import type { ComponentType, ReactNode } from 'react';
 import { useState } from 'react';
 import { Info } from '@marigold/icons';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
+
+// Helpers
+// ---------------
+function getLongestString(list: string[]) {
+  const sortedArray = list.sort((a, b) => b.length - a.length);
+  return sortedArray[0];
+}
+
+const getSelectWidth = (options: string[]) => {
+  const length = (getLongestString(options) || '').length;
+
+  // Poor mans pattern matching
+  switch (true) {
+    case length < 8:
+      return 32;
+    case length >= 8 && length < 10:
+      return 36;
+    case length >= 10 && length < 14:
+      return 44;
+    default:
+      return 48;
+  }
+};
 
 // Props
 // ---------------
@@ -77,7 +99,7 @@ export const AppearanceDemo = ({
             label="Variant"
             variant="floating"
             size="small"
-            width={36}
+            width={getSelectWidth(appearance.variant)}
             selectedKey={selected.variant}
             onChange={(val: string) =>
               setSelected({ variant: val, size: selected.size })
@@ -95,7 +117,7 @@ export const AppearanceDemo = ({
             label="Size"
             variant="floating"
             size="small"
-            width={32}
+            width={getSelectWidth(appearance.size)}
             selectedKey={selected.size}
             onChange={(val: string) =>
               setSelected({ variant: selected.variant, size: val })
@@ -110,7 +132,7 @@ export const AppearanceDemo = ({
             ))}
           </Select>
           {isVariantOrSizeMissing ? (
-            <div className="flex items-center gap-2 text-xs">
+            <div className="text-text-primary-muted flex items-center gap-0.5 text-xs">
               <Info size={14} />
               There is currently no available option for {disabledAppearance} to
               select.
