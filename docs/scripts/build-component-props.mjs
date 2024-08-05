@@ -19,6 +19,7 @@ const parser = docgen.withCustomConfig('./tsconfig.json', {
       'key',
       'style',
       'UNSTABLE_childItems',
+      'UNSAFE_selectionState',
     ],
   },
   customComponentTypes: [
@@ -30,35 +31,7 @@ const parser = docgen.withCustomConfig('./tsconfig.json', {
   ],
 });
 
-// Resolve __dirname for ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const systemDir = path.resolve(__dirname, '../../packages/system/src');
-const componentsDir = path.resolve(__dirname, '../../packages/components/src');
-const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
-
-// Getting all component files using globby
-const files = await globby([
-  `${componentsDir}/**/*.tsx`,
-  `${systemDir}/**/*.tsx`,
-
-  // excluded files
-  `!${componentsDir}/**/*.stories.tsx`,
-  `!${componentsDir}/**/*.test.tsx`,
-  `!${componentsDir}/**/*.ts`,
-  `!${systemDir}/**/*.stories.tsx`,
-  `!${systemDir}/**/*.test.tsx`,
-  `!${systemDir}/**/*.ts`,
-]);
-
-//TODO: remove
-const file = [
-  '/Users/marcelkoehler/WebstormProjects/marigold/packages/components/src/Card/Card.tsx',
-];
-const output = {};
-
-async function transformDefaultValue(val) {
+const transformDefaultValue = async val => {
   let x = val.defaultValue.value;
   x = /^[a-zA-Z]/.test(x) ? `"${x}"` : x;
 
@@ -66,15 +39,15 @@ async function transformDefaultValue(val) {
     lang: 'ts',
     theme: 'min-light',
   });
-}
+};
 
-function formatText(text, pattern, replacementText) {
+const formatText = (text, pattern, replacementText) => {
   if (pattern.test(text)) {
     return text.replace(pattern, replacementText);
   }
 
   return text;
-}
+};
 
 const applyFormatSteps = text => {
   text = formatText(text, /\=>\s+void/g, '=> xxx');
@@ -90,100 +63,80 @@ const revertFormatSteps = text => {
   return text;
 };
 
-function replacePropName(val) {
+const replacePropName = property => {
   let spaceTypeName = 'GapSpaceProp';
 
   if (
-    val.name === 'space' &&
-    val.declarations !== undefined &&
-    val.declarations.some(declaration =>
+    property.name === 'space' &&
+    property.declarations !== undefined &&
+    property.declarations.some(declaration =>
       ['Inset.tsx'].some(fileName => declaration.fileName.includes(fileName))
     )
   ) {
     spaceTypeName = 'PaddingSpaceProp';
   }
 
-  //TODO: maybe move description to the right prop?
   const transformations = {
     width: {
       typeName: 'WidthProp',
-      description:
-        'Sets the width of the field. You can see allowed tokens [here](https://tailwindcss.com/docs/width).',
     },
     space: {
       typeName: spaceTypeName,
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     height: {
       typeName: 'HeightProp',
-      description: `${val.description} You can see allowed tokens [here](https://tailwindcss.com/docs/height).`,
     },
     p: {
       typeName: 'PaddingSpaceProp',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     pb: {
       typeName: 'PaddingBottomProp',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     pt: {
       typeName: 'PaddingTopProp',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     pl: {
       typeName: 'PaddingLeftProp',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     pr: {
       typeName: 'PaddingRightProp',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     py: {
       typeName: 'PaddingSpacePropY',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     px: {
       typeName: 'PaddingSpacePropX',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     spaceY: {
       typeName: 'PaddingSpacePropY',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     spaceX: {
       typeName: 'PaddingSpacePropX',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).`,
     },
     position: {
       typeName: 'ObjectFitProp',
-      description: `${val.description} You can see allowed tokens [here](https://tailwindcss.com/docs/object-position).`,
     },
     fontSize: {
       typeName: 'FontSizeProp',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#typography).`,
     },
     weight: {
       typeName: 'FontWeightProp',
-      description: `${val.description} You can see allowed tokens [here](../../introduction/design-tokens?theme=core#typography).`,
     },
     cursor: {
       typeName: 'CursorProp',
-      description: `${val.description} You can see allowed tokens [here](https://tailwindcss.com/docs/cursor).`,
     },
     orientation: {
       typeName: 'AlignmentProp',
-      description: `${val.description}`,
     },
   };
 
-  const transformation = transformations[val.name];
+  const transformation = transformations[property.name];
   if (transformation) {
-    val.type.name = transformation.typeName;
-    val.description = transformation.description;
+    property.type.name = transformation.typeName;
   }
-}
+};
 
-async function transformTypeValue(val) {
+const transformTypeValue = async val => {
   //List of types prettier can't handle see https://prettier.io/playground
   const ignorePrettier = [
     'any[]',
@@ -222,7 +175,36 @@ async function transformTypeValue(val) {
     lang: 'ts',
     theme: 'min-light',
   });
-}
+};
+
+// Resolve __dirname for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const systemDir = path.resolve(__dirname, '../../packages/system/src');
+const componentsDir = path.resolve(__dirname, '../../packages/components/src');
+const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
+
+// Getting all component files using globby
+const files = await globby([
+  `${componentsDir}/**/*.tsx`,
+  `${systemDir}/**/*.tsx`,
+
+  // excluded files
+  `!${componentsDir}/**/*.stories.tsx`,
+  `!${componentsDir}/**/*.test.tsx`,
+  `!${componentsDir}/**/*.ts`,
+  `!${systemDir}/**/*.stories.tsx`,
+  `!${systemDir}/**/*.test.tsx`,
+  `!${systemDir}/**/*.ts`,
+]);
+
+//TODO: remove
+const file = [
+  '/Users/marcelkoehler/WebstormProjects/marigold/packages/components/src/Card/Card.tsx',
+];
+
+const output = {};
 
 for await (const file of files) {
   const docs = parser.parse(file);
