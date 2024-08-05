@@ -32,8 +32,6 @@ Also you can have a description for the options in the list.
 The select should be used within a form. It supports an optional description which can be used to provide more context about the field.
 As with all form components, the label should always describe what the user expects to achieve. If additional informations is required you can use the description to give a short information for displaying these, or you can provide a placeholder which should represent what is to select.
 
-Same goes for the description and the placeholder text.
-
 <p />
 
 <Dont>
@@ -48,13 +46,13 @@ Same goes for the description and the placeholder text.
   </Dont.Figure>
   <Dont.Description>
     Don't use a select if there are less than three options to choose from. Use
-    instead a [radio group](../form/radio).
+    a [radio group](../form/radio) instead.
   </Dont.Description>
 </Dont>
 
 ### Select with Sections
 
-You need sections when you need to separate differnt options from each other, this can be for example to categorize related options together. For that you habe to use the `<Select.Section>` component. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>`.
+Use sections when it is helpful to group different options from each other, this can be for example to categorize related options together. For that you habe to use the `<Select.Section>` component. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>`.
 
 <ComponentDemo file="./select-section.demo.tsx" />
 
