@@ -25,10 +25,7 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 // Props
 // ---------------
 export interface TableProps
-  extends Pick<
-      AriaTableProps<object>,
-      'focusMode' | 'onRowAction' | 'onCellAction'
-    >,
+  extends Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
     Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
@@ -79,7 +76,7 @@ export const Table: Table = ({
       // TODO: It this necessary?
       props.selectionBehavior !== 'replace',
   });
-  props.children;
+
   /**
    * Behavior is a bit flacky with the table when using a keyboard
    * so we test here for undefined here to be save.

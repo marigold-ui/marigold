@@ -20,7 +20,7 @@ export interface HeadlineProps extends TextAlignProp {
   /**
    * Set a different level.
    */
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  level?: '1' | '2' | '3' | '4' | '5' | '6' | 1 | 2 | 3 | 4 | 5 | 6;
   /**
    * Children of the component.
    */
