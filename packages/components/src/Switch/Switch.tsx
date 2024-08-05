@@ -1,14 +1,12 @@
 import { ReactNode, forwardRef } from 'react';
-import { Switch } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Switch } from 'react-aria-components';
 import {
   WidthProp,
   cn,
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
-
 import { Label } from '../Label';
 
 type RemovedProps =
@@ -84,7 +82,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
         <div className="relative">
           <div
             className={cn(
-              'h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed ',
+              'h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed',
               classNames.track
             )}
           >

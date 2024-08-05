@@ -1,20 +1,26 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
-  table: cva('my-0 text-sm'),
-  cell: cva('p-3 text-xs', {
+  table: cva([
+    'w-full table-fixed overflow-hidden rounded-lg bg-white/40 text-sm',
+    'border-secondary-200 border-separate border-spacing-0 border',
+  ]),
+  header: cva('px-3 pb-2 pt-3 text-start'),
+  row: cva([], {
     variants: {
       variant: {
-        colorTable: 'p-4 align-middle',
+        hover: 'hover:bg-neutral-100/80 ',
       },
     },
   }),
-  header: cva('border-b bg-white px-3 py-2 text-start'),
-  row: cva('divide-y', {
-    variants: {
-      variant: {
-        hover: 'hover:bg-neutral-100/50 ',
+  cell: cva(
+    ['text-text-primary px-3 py-3.5 text-xs', 'border-secondary-200 border-t'],
+    {
+      variants: {
+        variant: {
+          colorTable: 'p-4 align-middle',
+        },
       },
-    },
-  }),
+    }
+  ),
 };

@@ -1,5 +1,4 @@
 import type { Theme } from '@marigold/system';
-
 import * as components from './components';
 import { root } from './root';
 import { colors } from './tokens';

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { ComboBox, Stack, Text } from '@marigold/components';
 
 export default () => {

@@ -4,9 +4,7 @@ import {
   CalendarGrid,
   CalendarGridBody,
 } from 'react-aria-components';
-
 import { cn, useClassNames } from '@marigold/system';
-
 import { CalendarGridHeader } from './CalendarGridHeader';
 
 const _CalendarGrid = () => {

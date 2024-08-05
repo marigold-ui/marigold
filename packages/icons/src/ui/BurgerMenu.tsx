@@ -1,5 +1,4 @@
 import React, { forwardRef } from 'react';
-
 import { SVG, SVGProps } from '@marigold/system';
 
 export const BurgerMenu = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (

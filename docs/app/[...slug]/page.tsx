@@ -1,9 +1,8 @@
+import { baseUrl } from '@/lib/config';
 import { Headline } from '@/ui';
 import { allContentPages } from 'contentlayer/generated';
 import { Metadata } from 'next';
-
 import { notFound } from 'next/navigation';
-
 import { RelativeTime } from '@/ui/RelativeTime';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
@@ -28,6 +27,22 @@ export async function generateMetadata({
     ? {
         title: page.title,
         description: page.caption,
+        applicationName: 'Marigold Design System',
+        appleWebApp: {
+          title: 'Marigold Design System',
+        },
+        metadataBase: new URL(baseUrl),
+        openGraph: {
+          siteName: 'Marigold Design System',
+          title: page.title,
+          description: page.caption,
+          images: `${baseUrl}/api/og.png?title=${encodeURIComponent(page.title)}`,
+          type: 'website',
+        },
+        twitter: {
+          card: 'summary_large_image',
+          creator: '@reservix',
+        },
       }
     : {};
 }

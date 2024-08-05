@@ -1,9 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-
 import { Facebook } from '@marigold/icons';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
-
 import { Button } from './Button';
 
 const theme: Theme = {

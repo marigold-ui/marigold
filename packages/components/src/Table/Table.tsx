@@ -1,7 +1,6 @@
+import type { ReactNode } from 'react';
 import { useRef } from 'react';
-
 import { AriaTableProps, useTable } from '@react-aria/table';
-
 import {
   TableBody as Body,
   Cell,
@@ -13,9 +12,7 @@ import {
   TableStateProps,
   useTableState,
 } from '@react-stately/table';
-
 import { WidthProp, cn, useClassNames } from '@marigold/system';
-
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
@@ -29,10 +26,7 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 // Props
 // ---------------
 export interface TableProps
-  extends Pick<
-      AriaTableProps<object>,
-      'focusMode' | 'onRowAction' | 'onCellAction'
-    >,
+  extends Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
     Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
   variant?: string;
   size?: string;
@@ -54,6 +48,11 @@ export interface TableProps
    * @default false
    */
   disableKeyboardNavigation?: boolean;
+
+  /**
+   * Content to display when there are no rows in the table.
+   */
+  emptyState?: () => ReactNode;
 }
 
 // Table Component
@@ -65,6 +64,7 @@ export const Table: Table = ({
   selectionMode = 'none',
   disableKeyboardNavigation = false,
   stickyHeader,
+  emptyState,
   ...props
 }: TableProps) => {
   const interactive = selectionMode !== 'none';
@@ -132,7 +132,7 @@ export const Table: Table = ({
             </TableHeaderRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody emptyState={emptyState}>
           {...collection.rows.map(
             row =>
               row.type === 'item' && (

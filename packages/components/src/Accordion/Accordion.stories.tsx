@@ -1,13 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
-
+import { Badge } from '../Badge';
 import { Columns } from '../Columns';
 import { FieldGroup } from '../FieldBase';
 import { Headline } from '../Headline';
 import { Inline } from '../Inline';
 import { NumberField } from '../NumberField';
+import { Split } from '../Split';
+import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
 import { Accordion } from './Accordion';
@@ -188,5 +189,35 @@ export const MultiSelect: Story = {
         </Accordion.Item>
       ))}
     </Accordion>
+  ),
+};
+
+export const CoreExample: Story = {
+  render: args => (
+    <div className="w-1/2">
+      <Accordion {...args}>
+        <Accordion.Item
+          key={1}
+          title={
+            <Inline space={2} alignX="left" alignY="center">
+              <Parking className="fill-text-info" />
+              <Text weight="bold">Parking tickets:</Text>
+              <Split />
+              <div className="block group-aria-expanded:hidden">
+                <Badge variant="info">34/100</Badge>
+              </div>
+            </Inline>
+          }
+        >
+          <Stack space={4}>
+            <TextField label="Parking amout" />
+            <Inline space={4} alignY="center" alignX="right">
+              <Text weight="bold">Parking tickets:</Text>
+              <Badge variant="info">34 / 100</Badge>
+            </Inline>
+          </Stack>
+        </Accordion.Item>
+      </Accordion>
+    </div>
   ),
 };

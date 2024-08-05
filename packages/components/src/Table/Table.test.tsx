@@ -1,10 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { useState } from 'react';
-
 import { SortDescriptor } from '@react-types/shared';
-
 import { Theme, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { Table } from './Table';
 
@@ -74,6 +71,38 @@ test('renders contens correctly', () => {
 
   expect(screen.getByText('Malfoy')).toBeInTheDocument();
   expect(screen.getByText('Draco')).toBeInTheDocument();
+});
+
+test('renders empty state when collection is empty', () => {
+  render(
+    <Table aria-label="Example table" emptyState={() => 'Empty'}>
+      <Table.Header columns={columns}>
+        {column => <Table.Column key={column.key}>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body>{[]}</Table.Body>
+    </Table>
+  );
+
+  expect(screen.getByText('Empty')).toBeInTheDocument();
+});
+
+test('renders no empty state when collection has items', async () => {
+  render(
+    <Table aria-label="Example table" emptyState={() => 'Empty'}>
+      <Table.Header columns={columns}>
+        {column => <Table.Column key={column.key}>{column.name}</Table.Column>}
+      </Table.Header>
+      <Table.Body items={rows}>
+        {item => (
+          <Table.Row key={item.id}>
+            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
+  );
+
+  await expect(screen.findByText('Empty')).rejects.toThrow();
 });
 
 test('supports theme with parts', () => {

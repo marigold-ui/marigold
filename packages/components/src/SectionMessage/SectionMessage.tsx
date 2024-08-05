@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
-
 import { cn, useClassNames } from '@marigold/system';
-
 import { SectionMessageContext } from './Context';
 import { SectionMessageContent } from './SectionMessageContent';
 import { SectionMessageTitle } from './SectionMessageTitle';

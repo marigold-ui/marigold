@@ -1,8 +1,6 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-
 import { Theme, ThemeProvider, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { Radio } from './Radio';
 
