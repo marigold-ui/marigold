@@ -6,7 +6,7 @@ import {
   Column,
   ColumnProps as ColumnBaseProps,
   TableHeader as Header,
-  RowProps as ReactAiaRowProps,
+  RowProps as ReactAriaRowProps,
   Row,
   TableStateProps,
   useTableState,
@@ -169,7 +169,7 @@ Table.Column = Column as (props: ColumnProps) => JSX.Element;
 Table.Header = Header;
 Table.Row = Row;
 
-export interface RowProps extends ReactAiaRowProps<any> {
+export interface RowProps extends ReactAriaRowProps<any> {
   variant?: string;
   size?: string;
 }
