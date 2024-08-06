@@ -1,5 +1,5 @@
 import componentProps from '@/registry/props.json';
-import { Inline, Stack, Text } from '@/ui';
+import { Inline, Inset, Stack, Text } from '@/ui';
 import { BlankCanvas } from './icons';
 import { Markdown } from './mdx';
 
@@ -34,14 +34,16 @@ interface Prop {
 // Component
 // ---------------
 export const PropsTable = ({ component }: PropsTableProps) => {
+  const json = (componentProps as any)[component];
+
   //make the props iterable
-  const props = Object.entries((componentProps as any)[component]).map(
-    element => element[1]
-  ) as Prop[];
+  const props = json
+    ? Object.entries<Prop>(json).map(element => element[1])
+    : [];
 
   return (
     <div className="border-secondary-200 divide-y rounded-lg border bg-white/40">
-      {props ? (
+      {props.length ? (
         props.map(prop => (
           <div
             className="text-text-primary-muted flex flex-col gap-2 px-3 py-3.5 text-sm"
@@ -79,7 +81,9 @@ export const PropsTable = ({ component }: PropsTableProps) => {
           </div>
         ))
       ) : (
-        <EmptyState />
+        <Inset space={4}>
+          <EmptyState />
+        </Inset>
       )}
     </div>
   );
