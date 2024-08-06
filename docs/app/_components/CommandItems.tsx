@@ -12,7 +12,7 @@ import {
 } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Inline, Split } from '@marigold/components';
 import { ExternalLink } from '@marigold/icons';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
@@ -203,11 +203,14 @@ export const PagesItem = ({
   setPages,
 }: PagesItemProps) => {
   const router = useRouter();
+  const params = useSearchParams();
+
   const goto = (slug: string) => {
-    router.push(`/${slug}`);
+    router.push(`/${slug}?${params.toString() || 'theme=core'}`);
     setOpen(false);
     setPages([]);
   };
+
   return (
     <CommandGroup heading={name} key={name} className={classNames.section}>
       {items.map(page => (
@@ -229,6 +232,7 @@ export const PagesItem = ({
               {Object.values(page.headings).map(
                 (sub: { slug: string; text: string }) => (
                   <Command.Item
+                    key={sub.slug}
                     value={`${page.slug}${sub.slug}`}
                     className={cn(
                       'text-text-primary-muted ml-7',
