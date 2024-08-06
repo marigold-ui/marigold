@@ -23,16 +23,17 @@ function getLongestString(list: string[]) {
 const getSelectWidth = (options: string[]) => {
   const length = (getLongestString(options) || '').length;
 
+  console.log(length);
   // Poor mans pattern matching
   switch (true) {
     case length < 10:
-      return 32;
+      return 40;
     case length >= 10 && length < 12:
-      return 36;
-    case length >= 12 && length < 14:
       return 44;
-    default:
+    case length >= 12 && length < 14:
       return 48;
+    default:
+      return 52;
   }
 };
 
