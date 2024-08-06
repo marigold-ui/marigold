@@ -157,6 +157,7 @@ const transformTypeValue = async val => {
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
     'keyof NumberFormatOptionsSignDisplayRegistry',
+    'T[]',
   ];
   let text = val.type.name;
 
