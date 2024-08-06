@@ -6,9 +6,9 @@ import { Markdown } from './mdx';
 // Helper
 // ---------------
 const EmptyState = () => (
-  <Inline space={2} alignX="center">
+  <Inline space={2} alignX="center" alignY="center">
     <BlankCanvas />
-    <Text>Sorry! There are currently no props available.</Text>
+    <Text>Component does not have any props.</Text>
   </Inline>
 );
 
