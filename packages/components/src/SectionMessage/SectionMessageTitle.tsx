@@ -3,6 +3,9 @@ import { cn } from '@marigold/system';
 import { useSectionMessageContext } from './Context';
 
 export interface SectionMessageTitleProps {
+  /**
+   * The children of the component.
+   */
   children?: ReactNode;
 }
 
