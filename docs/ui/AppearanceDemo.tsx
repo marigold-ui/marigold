@@ -23,7 +23,6 @@ function getLongestString(list: string[]) {
 const getSelectWidth = (options: string[]) => {
   const length = (getLongestString(options) || '').length;
 
-  console.log(length);
   // Poor mans pattern matching
   switch (true) {
     case length < 10:
