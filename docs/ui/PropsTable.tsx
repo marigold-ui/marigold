@@ -34,6 +34,8 @@ interface Prop {
 // Component
 // ---------------
 export const PropsTable = ({ component }: PropsTableProps) => {
+  console.log(component, (componentProps as any)[component]);
+
   //make the props iterable
   const props = Object.entries((componentProps as any)[component]).map(
     element => element[1]
