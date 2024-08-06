@@ -6,7 +6,7 @@ import {
   Column,
   ColumnProps as ColumnBaseProps,
   TableHeader as Header,
-  RowProps as ReactAiaRowProps,
+  RowProps as ReactAriaRowProps,
   Row,
   TableStateProps,
   useTableState,
@@ -26,7 +26,12 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 // ---------------
 export interface TableProps
   extends Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
-    Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
+    Omit<
+      TableStateProps<object>,
+      | 'showSelectionCheckboxes'
+      | 'showDragButtons'
+      | 'allowDuplicateSelectionEvents'
+    > {
   variant?: string;
   size?: string;
 
@@ -164,7 +169,7 @@ Table.Column = Column as (props: ColumnProps) => JSX.Element;
 Table.Header = Header;
 Table.Row = Row;
 
-export interface RowProps extends ReactAiaRowProps<any> {
+export interface RowProps extends ReactAriaRowProps<any> {
   variant?: string;
   size?: string;
 }
