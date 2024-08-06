@@ -1,10 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Tabs, TabsProps } from './Tabs';
 
 const meta = {
   title: 'Components/Tabs',
   argTypes: {
+    variant: {
+      control: {
+        type: 'select',
+      },
+      options: ['none', 'sunken'],
+      description: 'Variant of the tabs (core only)',
+    },
     disabled: {
       control: { type: 'boolean' },
       description: 'Disable all the tabs',

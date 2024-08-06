@@ -1,16 +1,11 @@
 import { useRef } from 'react';
-
 import { useFocusRing } from '@react-aria/focus';
 import { useHover } from '@react-aria/interactions';
 import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
-
 import { GridNode } from '@react-types/grid';
-
 import { SortDown, SortUp } from '@marigold/icons';
-import { cn, useStateProps } from '@marigold/system';
-import { width as twWidth } from '@marigold/system';
-
+import { cn, width as twWidth, useStateProps } from '@marigold/system';
 import { useTableContext } from './Context';
 import { ColumnProps } from './Table';
 
@@ -64,7 +59,9 @@ export const TableColumnHeader = ({
             <SortDown className="inline-block" />
           )
         ) : (
-          <SortDown className="inline-block" />
+          <span className="invisible">
+            <SortDown className="inline-block" />
+          </span>
         ))}
     </th>
   );

@@ -2,11 +2,8 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect } from 'react';
-
 import { SortDescriptor } from '@react-types/shared';
-
 import { TextArea } from '@marigold/components';
-
 import { Button } from '../Button';
 import { Center } from '../Center';
 import { Checkbox } from '../Checkbox';
@@ -219,6 +216,23 @@ export const NestedColumns: Story = {
           <Table.Cell>December 18</Table.Cell>
         </Table.Row>
       </Table.Body>
+    </Table>
+  ),
+};
+
+export const Empty: Story = {
+  render: () => (
+    <Table
+      aria-label="Example table for nested columns"
+      emptyState={() => 'No results found.'}
+    >
+      <Table.Header>
+        <Table.Column>First Name</Table.Column>
+        <Table.Column>Last Name</Table.Column>
+        <Table.Column>Age</Table.Column>
+        <Table.Column>Birthday</Table.Column>
+      </Table.Header>
+      <Table.Body>{[]}</Table.Body>
     </Table>
   ),
 };
