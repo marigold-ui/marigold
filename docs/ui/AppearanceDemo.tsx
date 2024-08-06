@@ -4,7 +4,6 @@ import type { Theme } from '@/ui';
 import {
   Card,
   FieldGroup,
-  Inline,
   MarigoldProvider,
   OverlayContainerProvider,
   Select,
