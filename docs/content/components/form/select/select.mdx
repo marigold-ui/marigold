@@ -32,23 +32,47 @@ Also you can have a description for the options in the list.
 The select should be used within a form. It supports an optional description which can be used to provide more context about the field.
 As with all form components, the label should always describe what the user expects to achieve. If additional informations is required you can use the description to give a short information for displaying these, or you can provide a placeholder which should represent what is to select.
 
+### Number of options
+
+If there are very few options (e.g., 1-4), consider using radio buttons instead. These can be easier for users to scan and select.
+
+A select is typically suitable for a moderate number of options (e.g., 5-15). This keeps the list manageable and quick to navigate.
+
+When there are too many options (e.g., more than 15-20), usability can suffer. Users might find it cumbersome to scroll through a long list. In such cases, consider alternative approaches like a combobox or autocomplete.
+
 <p />
 
-<Dont>
-  <Dont.Figure>
-    <Image
-      width={700}
-      height={700}
-      unoptimized
-      src="/select/select-dont-options.jpg"
-      alt="Dont use less than three options"
-    />
-  </Dont.Figure>
-  <Dont.Description>
-    Don't use a select if there are less than three options to choose from. Use
-    a [radio group](../form/radio) instead.
-  </Dont.Description>
-</Dont>
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/select/select-do-short.jpg"
+        alt="Use a radio group for 1-4 options"
+      />
+    </Do.Figure>
+    <Do.Description>
+      If there are 1-4 options to choose from, use a [radio group](../form/radio).
+    </Do.Description>
+  </Do>
+
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/select/select-dont-short.jpg"
+        alt="Dont use less than three options"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use a select if there are less than 4 options to choose from.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ### Select with Sections
 
