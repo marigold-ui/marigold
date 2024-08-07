@@ -10,6 +10,14 @@ The `<Link>` component is an interactive element that redirects users to differe
 
 A link consists of text that indicates what the link will direct the user to. To distinguish a link from regular text, it is usually underlined.
 
+<Image
+  src="/link/link-anatomy.jpg"
+  alt="Anatomy of a link"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
 ## Appearance
 
 <AppearanceDemo component={title} />
@@ -18,7 +26,18 @@ A link consists of text that indicates what the link will direct the user to. To
 
 ## Usage
 
+Links serve as essential navigational tools in web design, enabling users to move seamlessly within an application, visit different websites or jump to specific elements on the same page. They can even be used to directly open apps to compose an email or make a call.
+
+Using descriptive and meaningful labels for links is crucial to clearly indicate their destination. Generic phrases can leave users confused and helpless. Overusing links, especially inline, can overwhelm users and obscure their next steps. Use them sparingly to avoid clutter.
+
 NOT: Actions that will change data, change a state, or trigger a high-emphasis action. Use Button instead.
+
+DO: Provide a meaningful descriptive label to the link that clearly indicates the link's destination.
+
+NOT: Use generic phrases like "click here" or "go to" on links.
+
+- Using Anchor with a router
+- download attribute
 
 ## Props
 
