@@ -10,7 +10,31 @@ import {
 } from '@/ui';
 import type { ComponentType, ReactNode } from 'react';
 import { useState } from 'react';
+import { Info } from '@marigold/icons';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
+
+// Helpers
+// ---------------
+function getLongestString(list: string[]) {
+  const sortedArray = list.sort((a, b) => b.length - a.length);
+  return sortedArray[0];
+}
+
+const getSelectWidth = (options: string[]) => {
+  const length = (getLongestString(options) || '').length;
+
+  // Poor mans pattern matching
+  switch (true) {
+    case length < 10:
+      return 40;
+    case length >= 10 && length < 12:
+      return 44;
+    case length >= 12 && length < 14:
+      return 48;
+    default:
+      return 52;
+  }
+};
 
 // Props
 // ---------------
@@ -48,6 +72,18 @@ export const AppearanceDemo = ({
       children
     );
 
+  let disabledAppearance = '';
+  if (appearance.variant.length === 0 && appearance.size.length === 0) {
+    disabledAppearance = 'variant and size';
+  } else if (appearance.size.length === 0) {
+    disabledAppearance = 'size';
+  } else if (appearance.variant.length === 0) {
+    disabledAppearance = 'variant';
+  }
+
+  const isVariantOrSizeMissing =
+    appearance.variant.length === 0 || appearance.size.length === 0;
+
   return (
     <>
       <p>
@@ -56,17 +92,19 @@ export const AppearanceDemo = ({
         visual style and dimensions of the component, available values are based
         on the active theme.
       </p>
+
       <Card variant="content" p={0}>
-        <div className="absolute left-4 top-3 flex gap-2">
+        <div className="absolute left-4 top-3 flex flex-wrap gap-2">
           <Select
             label="Variant"
             variant="floating"
             size="small"
-            width={36}
+            width={getSelectWidth(appearance.variant)}
             selectedKey={selected.variant}
             onChange={(val: string) =>
               setSelected({ variant: val, size: selected.size })
             }
+            disabled={appearance.variant.length === 0 ? true : false}
           >
             <Select.Option id="default">default</Select.Option>
             {appearance.variant.map(v => (
@@ -79,11 +117,12 @@ export const AppearanceDemo = ({
             label="Size"
             variant="floating"
             size="small"
-            width={32}
+            width={getSelectWidth(appearance.size)}
             selectedKey={selected.size}
             onChange={(val: string) =>
               setSelected({ variant: selected.variant, size: val })
             }
+            disabled={appearance.size.length === 0 ? true : false}
           >
             <Select.Option id="default">default</Select.Option>
             {appearance.size.map(v => (
@@ -92,11 +131,18 @@ export const AppearanceDemo = ({
               </Select.Option>
             ))}
           </Select>
+          {isVariantOrSizeMissing ? (
+            <div className="text-text-primary-muted flex items-center gap-0.5 text-xs">
+              <Info size={14} />
+              There is currently no available option for {disabledAppearance} to
+              select.
+            </div>
+          ) : null}
         </div>
         <div data-theme={current}>
           <OverlayContainerProvider value="portalContainer">
             <MarigoldProvider theme={theme}>
-              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-4 pt-14">
+              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-10 pt-24">
                 <Wrapper>
                   <Demo {...selected} />
                 </Wrapper>

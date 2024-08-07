@@ -1,13 +1,14 @@
 import { Button, Inline } from '@marigold/components';
-import { Ticket } from '@marigold/icons';
+import { Edit } from '@marigold/icons';
 
 export default () => (
-  <Inline space={2}>
+  <Inline space={5} alignY="center" alignX="center">
+    <Button variant="primary">Edit</Button>
     <Button variant="primary">
-      <Ticket /> Icon Primary
+      <Edit size={16} /> Edit
     </Button>
-    <Button variant="primary" disabled>
-      <Ticket /> Icon Primary
+    <Button variant="icon" aria-label="Edit">
+      <Edit />
     </Button>
   </Inline>
 );
