@@ -12,7 +12,7 @@ export const Rectangle = ({
   width = '100%',
 }: RectangleProps) => (
   <div
-    className="rounded-sm border-2 border-dashed border-[hsl(29,_37%,_40%)] bg-[hsl(29,_37%,_70%)]"
+    className="border-border bg-bg-body rounded-sm border-2 border-dashed"
     style={{ height: height, width: width }}
   >
     {children}
