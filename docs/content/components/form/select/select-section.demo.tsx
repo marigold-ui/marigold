@@ -21,21 +21,6 @@ export default () => {
       category: 'Metal',
       genres: ['Black Metal', 'Death Metal', 'Heavy Metal', 'Nu Metal'],
     },
-    {
-      category: 'Pop',
-      genres: [
-        'Brit-Pop',
-        'Chanson',
-        'Country-Pop',
-        'Dancefloor',
-        'Disco',
-        'New Wave',
-        'Pop-Klassik',
-        'Pop-Rock',
-        'Rave/Madchester',
-        'Synth Pop',
-      ],
-    },
   ];
 
   return (
