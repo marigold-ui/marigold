@@ -90,28 +90,31 @@ Always specify if a link triggers a download, and make the linked text clear abo
 
 <PropsTable component={title} />
 
-## Examples
+## Related
 
-### Standard Link
-
-The example shows a standard `<Link>`.
-
-<ComponentDemo file="./link-standard.demo.tsx" />
-
-### Link disabled
-
-This example shows a `<Link>` component with the prop `disabled`.
-
-<ComponentDemo file="./link-disabled.demo.tsx" />
-
-### Anchor Link
-
-This is an example of using an anchor link on the web page. If you want to use an anchor link, you must give the target the same ID (without #) as the href property in the link
-
-<ComponentDemo file="./link-anchor.demo.tsx" />
-
-### Link with target
-
-An example of using the `target` `_blank` property. When the target is blank, the web page opens in a new tab.
-
-<ComponentDemo file="./link-target.demo.tsx" />
+<TeaserList
+  items={[
+    {
+      title: 'Button',
+      href: '/components/form/button',
+      caption: 'For triggering actions instead of navigating.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <path d="M21 11V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h6" />
+          <path d="M12 12l4 10 1.7-4.3L22 16z" />
+        </svg>
+      ),
+    },
+  ]}
+/>
