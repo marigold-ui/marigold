@@ -205,8 +205,10 @@ export const PagesItem = ({
   const router = useRouter();
   const params = useSearchParams();
 
-  const goto = (slug: string) => {
-    router.push(`/${slug}?${params.toString() || 'theme=core'}`);
+  const goto = ({ slug, hash }: { slug: string; hash?: string }) => {
+    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
+
+    router.push(url);
     setOpen(false);
     setPages([]);
   };
@@ -219,7 +221,7 @@ export const PagesItem = ({
             className={cn(classNames.item, 'group')}
             key={page.slug}
             value={page.slug}
-            onSelect={() => goto(page.slug)}
+            onSelect={() => goto({ slug: page.slug })}
           >
             <Inline space={4} alignY="center">
               {page.title}
@@ -238,7 +240,7 @@ export const PagesItem = ({
                       'text-text-primary-muted ml-7',
                       classNames.item
                     )}
-                    onSelect={() => goto(`${page.slug}#${sub.slug}`)}
+                    onSelect={() => goto({ slug: page.slug, hash: sub.slug })}
                   >
                     {sub.text}
                   </Command.Item>
