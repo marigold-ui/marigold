@@ -68,6 +68,44 @@ Avoid opening links in new windows or tabs as it can be disorienting for users. 
 
 To support accessibility, ensure that such links include a warning for screen readers to alert users of the new window or tab. For more details on this practice, see the [W3C guidelines](https://www.w3.org/TR/WCAG20-TECHS/G200.html).
 
+### Phone numbers and emails
+
+When using links with phone numbers or emails, it’s important to ensure they serve a clear navigational purpose while triggering specific actions. For example, a phone number link should automatically initiate a call when clicked, and an email link should open the user's email client.
+
+Make sure that the link text and any accompanying icons clearly indicate the action that will be triggered and the intended destination.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/link/link-contact-do.jpg"
+        alt="Clearly indicate the action that will be triggered."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Clearly indicate the action that will be triggered.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/link/link-contact-dont.jpg"
+        alt='Don\’t use vague labels like "Contact Us" without specifying how to reach out.'
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don’t use vague labels like "Contact Us" without specifying how to reach
+      out.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
 ### Buttons or links
 
 For actions that will change data, alter a state, or trigger a high-emphasis action, use a button instead of a link.
@@ -75,10 +113,6 @@ For actions that will change data, alter a state, or trigger a high-emphasis act
 You can find more details on this [on the button component page](/components/form/button#button-or-link).
 
 ---
-
-DO: Provide a meaningful descriptive label to the link that clearly indicates the link's destination.
-
-NOT: Use generic phrases like "click here" or "go to" on links.
 
 Specify download links, including file type and size
 Always specify if a link triggers a download, and make the linked text clear about what exactly will be downloaded. Include file type and size as well.
