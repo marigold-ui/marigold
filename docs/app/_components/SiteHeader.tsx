@@ -1,3 +1,4 @@
+import { Link } from '@/ui';
 import { MobileNavigation } from './MobileNavigation';
 import { SiteLogo } from './SiteLogo';
 import { SiteMenu } from './SiteMenu';
@@ -12,6 +13,11 @@ export const SiteHeader = () => (
     <div className="hidden gap-6 md:flex md:flex-1">
       <SiteLogo />
       <SiteNavigation />
+    </div>
+    <div className="hidden md:block">
+      <Link href="https://marigold-rapp.vercel.app/" variant="cta">
+        <span className="hidden xl:inline">Discover new </span>Tutorials!
+      </Link>
     </div>
     <div className="flex flex-1 flex-col items-stretch md:block md:flex-initial">
       <SiteMenu />

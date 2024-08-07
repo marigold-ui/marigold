@@ -1,18 +1,24 @@
 ---
 title: Button
-caption: Whenever you need that clicky thing.
+caption: Buttons allow users to trigger actions.
+badge: updated
 ---
 
-The `<Button>` is a common form component, that renders a button element, which allows users to perform an action.
-They have multiple styles for various needs, and are ideal for calling attention to where a user needs to do something in order to move forward in a flow.
+The `<Button>` component is a crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
 
-The variant and size of the `<Button>` can be added with the `variant` prop. You can also set the `size`, currently there is just one size available.
+Different types of buttons, such as primary and secondary, help guide users by visually prioritizing actions. Primary buttons are typically used for the most important actions, while secondary buttons provide less critical options.
 
-## Import
+## Anatomy
 
-```tsx
-import { Button } from '@marigold/components';
-```
+A button consists of a pressable area, often containing a textual label or icon, which users can press or activate using the Space or Enter keys.
+
+<Image
+  src="/button/button-anatomy.jpg"
+  alt="Anatomy of a button"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
@@ -20,53 +26,241 @@ import { Button } from '@marigold/components';
 
 <AppearanceTable component={title} />
 
+<SectionMessage variant="info">
+  <SectionMessage.Title>About the "secondary" Variant</SectionMessage.Title>
+  <SectionMessage.Content>
+    The core theme does not include a "secondary" button. In the demo above,
+    this variant will default to a regular button without any additional
+    styling.
+  </SectionMessage.Content>
+</SectionMessage>
+
+## Usage
+
+Buttons have a wide range of applications. Their most common usage is to submit forms, but they are also used for other actions like opening a `<Menu>` or `<Dialog>`.
+
+It is essential that the label and context around the button clearly set expectations for what will happen when the user interacts with it. In user interfaces, buttons guide interactions, providing clear call-to-action elements that help users navigate and complete tasks.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Write button text that is clear, starts with a verb, and helps users
+      confidently take action.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>Keep button labels short and to the point.</Do.Description>
+  </Do>
+</GuidelineTiles>
+
+### Visual hierarchy
+
+This primary button should represent the most crucial action within that section. Having multiple primary buttons in one section can create confusion and visual clutter, as they compete for the user's attention and detract from the clarity of the intended action.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-hierachy-do.jpg"
+        alt="Use one primary button per page or section to highlight the most important action"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use one primary button per page or section to highlight the most important
+      action
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-hierachy-dont.jpg"
+        alt="Don't include multiple primary buttons in the same section to prevent confusion and visual clutter."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't include multiple primary buttons in the same section to prevent
+      confusion and visual clutter.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Icons and labels
+
+Icons can reinforce text labels, but they can also cause confusion if they don't clearly match the related text. Buttons should always have a label unless they use an icon that is universally understood and accessible.
+
+Accompany labels with icons only when they have a strong association with the text, never use icon purely for decoration.
+
+Icon-only buttons should only be used when the icon is universally recognized and its function is clear without additional text, like a pencil for editing. These buttons are particularly useful in compact spaces or mobile interfaces where screen real estate is limited.
+
+<ComponentDemo file="./button-icon.demo.tsx" />
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Keep it accessible</SectionMessage.Title>
+  <SectionMessage.Content>
+    For icon-only buttons, ensure you set an `aria-label` or `aria-labelledby`
+    attribute to provide context and maintain accessibility.
+  </SectionMessage.Content>
+</SectionMessage>
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-icon-do.jpg"
+        alt="Use icons in buttons to provide additional clarity when the icon is highly relevant to the action."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use icons in buttons to provide additional clarity when the icon is highly
+      relevant to the action.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-icon-dont.jpg"
+        alt="Icons should not be used for decoration."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Icons should not be used for decoration.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Avoid disabled buttons
+
+A disabled button can't be actioned. Keep buttons active and use validation and error messages to guide users on what needs to be done to proceed.
+
+Disabled buttons are problematic as they offer no feedback on why an action is unavailable, are often hard to see due to low contrast, and are inaccessible to keyboard users who cannot focus on them.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-disabled-do.jpg"
+        alt="Use validation and error messages to guide users on the necessary steps."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use validation and error messages to guide users on the necessary steps.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/button/button-disabled-dont.jpg"
+        alt="Don't disable form submission buttons, as this doesn't clearly guide users on how to proceed."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't disable form submission buttons, as this doesn't clearly guide users
+      on how to proceed.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+In general, it's best to avoid using disabled buttons. However, if they are necessary, take steps to make them more inclusive. Ensure users don't get stuck by providing additional information. Place a message near the disabled button that explains why it is unavailable and what actions are needed to enable it.
+
+<ComponentDemo file="./button-disabled.demo.tsx" />
+
+<SectionMessage variant="warning">
+  <SectionMessage.Title>
+    Never put tooltips on disabled buttons
+  </SectionMessage.Title>
+  <SectionMessage.Content>
+    Tooltips aren't accessible on all devices or by some assistive technologies,
+    and they should never be used on non-interactive elements.
+
+    For more information see the [toolip page](/components/overlay/tooltip).
+
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Full-width
+
+Full-width buttons are especially useful for emphasizing primary actions like submitting a form or completing a purchase, as they attract attention and create a strong visual hierarchy. They also enhance usability on mobile devices or in narrow layouts by providing a larger, easier-to-tap target.
+
+<ComponentDemo file="./button-full-width.demo.tsx" />
+
+### Button or link
+
+If the user interacts with the element and it results in navigation to another page without submitting a form, use an anchor element (`<Link>`). For all other interactions that perform actions on the same page, use a button (`<Button>`).
+
+Understanding this distinction is crucial: anchors handle navigation, while buttons handle page-specific actions. Misusing them can cause accessibility and usability issues, as anchors support tab-opening and navigation, while buttons do not.
+
+To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<Link>`](/components/content/link) component with the corresponding `variant`, usually `secondary`. This way, the action is clear and prominent while keeping its navigation function.
+
+<ComponentDemo file="./button-link.demo.tsx" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use buttons to trigger an event or an action.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use buttons for navigation purposes.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Press Event
+
+The `<Button>` component supports user interactions via mouse, keyboard, and touch, handled through the `onPress` prop. This prop is similar to the standard `onClick` event but is normalized for all interaction methods. Additionally, `onPressStart`, `onPressEnd`, and `onPressChange` events are fired during user interaction.
+
+Each handler receives a `PressEvent`, providing details about the target and the type of event that triggered the interaction, like the pointer (mouse, keyboard or touch) that was used.
+
+<ComponentDemo file="./button-press.demo.tsx" />
+
 ## Props
 
 <PropsTable component={title} />
 
-## Examples
+## Related
 
-### Primary Button
+<TeaserList
+  items={[
+    {
+      title: 'Link',
+      href: '/components/content/link',
+      caption: 'A component to navigate to another page.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
+          />
+        </svg>
+      ),
+    },
 
-The function of the primary `<Button>` is to achieve the most common or most important goal of the user, it has more visual weight than the secondary `<Button>`. There should not be more than one primary `<Button>` in a screen at the time.
-
-<ComponentDemo file="./button-primary.demo.tsx" />
-
-### Secondary Button
-
-The Secondary `<Button>` is an alternative to the user to the primary `<Button>`. They are used for actions like canceling, skipping, resetting, declining an offer etc.
-
-<ComponentDemo file="./button-secondary.demo.tsx" />
-
-### Ghost Button
-
-Ghost `<Button>` are used for miscellaneous actions, they are important but is not the ones where it is desired that the user focus at the moment.
-
-<ComponentDemo file="./button-ghost.demo.tsx" />
-
-### Suplementary Text Button
-
-The only text `<Button>` can be used in a similar way of a secondary `<Button>`, but they are meant to be less relevant to the user. It is also a good way if you want a `<Button>` that don't really look like one.
-
-<ComponentDemo file="./button-text.demo.tsx" />
-
-### Button with Icon
-
-[Icons](/components/icon/) can be added in order to make clear, what a `<Button>` does. Buttons should not be made only with icons, because every user may understand them on a different way. If you want to have simple icon with a [`<Tooltip>`](/components/tooltip/) you can choose a `<Button>` with an icon.
-
-<ComponentDemo file="./button-icon.demo.tsx" />
-
-### Button Sizes
-
-If there are many actions in one page, is it possible to use small buttons instead of big ones. As well if the page is required to be open on mobile devices.
-Also there is the `fullWidth` property, with that one you can stretch the width of the `<Button>`.
-
-<ComponentDemo file="./button-size.demo.tsx" />
-
-### Button as a Link
-
-Sometimes you want to use an `<a>` tag, instead of a `<button>`, but you still want it to look and behave like a button. This might be the case when you want the user to enable to download a file that is already available via URL. Instead of loading the file on click, you can make use of the [`[download]` attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement/download).
-
-To make this possible, Marigold's `<Button>` component allows to change the rendered element by using the `as` prop, similiar to the [`<Box>`](/components/box/#polymorphic-component) component.
-
-<ComponentDemo file="./button-link.demo.tsx" />
+]}
+/>
