@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Card: ThemeComponent<'Card'> = cva(
   [
-    'bg-bg-surface border-secondary-300 relative overflow-hidden rounded-xl border shadow',
+    'bg-bg-surface border-secondary-300 relative w-full overflow-hidden rounded-xl border shadow',
   ],
   {
     variants: {

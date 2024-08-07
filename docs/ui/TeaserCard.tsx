@@ -28,7 +28,7 @@ export interface TeaserListProps {
 }
 
 export const TeaserList = ({ items }: TeaserListProps) => (
-  <Tiles tilesWidth="300px" space={5} stretch>
+  <Tiles tilesWidth="300px" space={5} stretch equalHeight>
     {items.map(props => (
       <TeaserCard key={props.href} {...props} />
     ))}
