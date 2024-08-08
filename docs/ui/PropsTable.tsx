@@ -42,7 +42,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
     : [];
 
   return (
-    <div className="border-secondary-200 divide-y rounded-lg border bg-white/40">
+    <div className="border-secondary-200 my-5 divide-y rounded-lg border bg-white/40">
       {props.length ? (
         props.map(prop => (
           <div

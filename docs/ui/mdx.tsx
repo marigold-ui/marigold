@@ -30,6 +30,7 @@ import { Do, Dont, GuidelineTiles } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
 import { PropsTable } from './PropsTable';
+import { StorybookHintMessage } from './StorybookHintMessage';
 import { TeaserCard, TeaserList } from './TeaserCard';
 import { Toc } from './Toc';
 import {
@@ -153,6 +154,7 @@ const components = {
   IconList,
   PropsTable,
   Spacing,
+  StorybookHintMessage,
   TeaserCard,
   TeaserList,
   TextAlign,
