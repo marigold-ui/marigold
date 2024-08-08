@@ -27,11 +27,115 @@ The radio button component is comprised of a set of clickable circles (the input
 
 - **Radio button label:** Describes the information you want to select or unselect.
 
-## Appearance
-
-<AppearanceTable component={title} />
-
 ## Usage
+
+Radio buttons are used for mutually exclusive choices, not for multiple choices. Only one radio button can be selected at a time. When a user chooses a new item, the previous choice is automatically deselected.
+
+### Selecting options
+
+If a user can select from multiple options, use checkboxes instead of radio buttons. Radio buttons allow the user to select only one item in a set whereas checkboxes allow the user to select multiple items.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_checkbox_select.jpg"
+        alt="Do use checkboxes when multiple items can be selected"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Do use checkboxes when multiple items can be selected.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_radio_select.jpg"
+        alt="Don't use radio buttons when multiple items can be selected."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use radio buttons when multiple items can be selected.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Overflow content
+
+We recommend radio button labels being fewer than three words.
+
+If you are tight on space, consider rewording the label. Do not truncate radio button label text with an ellipsis.
+
+Long labels may wrap to a second line, and this is preferable to truncation.
+Text should wrap beneath the radio button so the control and label are top aligned.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_multiple_lines.jpg"
+        alt="If the label is long, wrap to a second line."
+      />
+    </Do.Figure>
+    <Do.Description>
+      If the label is long, wrap to a second line.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_trunc_multiple_lines.jpg"
+        alt="Do not truncate radio button label text with an ellipsis."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Do not truncate radio button label text with an ellipsis.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Long lists of options
+
+If you have large number of options to choose from, use `<Select>` component instead.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_select_long_options.jpg"
+        alt="Use select component with long options."
+      />
+    </Do.Figure>
+    <Do.Description>Use select component with long options</Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_long_options.jpg"
+        alt="Don't use radio with long options."
+      />
+    </Dont.Figure>
+    <Dont.Description>Don't use radio with long options.</Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ## Props
 
