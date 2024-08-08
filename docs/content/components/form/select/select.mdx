@@ -30,6 +30,7 @@ Also you can have a description for the options in the list.
 ## Usage
 
 The select should be used within a form. It supports an optional description which can be used to provide more context about the field.
+
 As with all form components, the label should always describe what the user expects to achieve. If additional informations is required you can use the description to give a short information for displaying these, or you can provide a placeholder which should represent what is to select.
 
 ### Number of options
@@ -38,7 +39,7 @@ If there are very few options (e.g., 1-4), consider using radio buttons instead.
 
 A select is typically suitable for a moderate number of options (e.g., 5-15). This keeps the list manageable and quick to navigate.
 
-When there are too many options (e.g., more than 15-20), usability can suffer. Users might find it cumbersome to scroll through a long list. In such cases, consider alternative approaches like a combobox or autocomplete.
+When there are too many options (e.g., more than 15-20), usability can suffer. Users might find it cumbersome to scroll through a long list. In such cases, consider alternative approaches like a [autocomplete](../form/autocomplete) or [combobox](../form/combobox).
 
 <GuidelineTiles>
   <Do>
@@ -47,46 +48,11 @@ When there are too many options (e.g., more than 15-20), usability can suffer. U
         width={700}
         height={700}
         unoptimized
-        src="/select/select-do-short.jpg"
+        src="/select/select-do-lenght.jpg"
         alt="Use a radio group for 1-4 options"
       />
     </Do.Figure>
-    <Do.Description>
-      If there are 1-4 options to choose from, use a [radio
-      group](../form/radio).
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/select/select-dont-short.jpg"
-        alt="Dont use less than three options"
-      />
-    </Dont.Figure>
-    <Dont.Description>
-      Don't use a select if there are less than 4 options to choose from.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
-
-<GuidelineTiles>
-  <Do>
-    <Do.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/select/select-do-long.jpg"
-        alt="Use a radio group for 1-4 options"
-      />
-    </Do.Figure>
-    <Do.Description>
-      If there are 15-20 options to choose from, its recommended to use a
-      [autocomplete](../form/autocomplete) or [combobox](../form/combobox).
-    </Do.Description>
+    <Do.Description>Use a around 5-15 options for the select.</Do.Description>
   </Do>
   <Dont>
     <Dont.Figure>
@@ -104,7 +70,22 @@ When there are too many options (e.g., more than 15-20), usability can suffer. U
   </Dont>
 </GuidelineTiles>
 
-### Select with Sections
+<Dont>
+  <Dont.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/select/select-dont-short.jpg"
+      alt="Dont use less than three options"
+    />
+  </Dont.Figure>
+  <Dont.Description>
+    Don't use a select if there are less than 4 options to choose from.
+  </Dont.Description>
+</Dont>
+
+### Select with sections
 
 Use sections when it is helpful to group different options from each other, this can be for example to categorize related options together. For that you habe to use the `<Select.Section>` component. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>`.
 
@@ -116,7 +97,7 @@ If you need to have primary and secondary content shown within an option, you ca
 
 <ComponentDemo file="./select-description.demo.tsx" />
 
-### Disabled Keys
+### Disabled keys
 
 Sometimes depending on other settings it can be that a select needs to have disabled options to show up. For this case you can set keys disabled through the `disabledKeys` property.
 
