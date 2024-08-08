@@ -1,3 +1,4 @@
+import React from 'react';
 import { Center, Inline, Stack } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
 
