@@ -29,7 +29,7 @@ export default () => {
         <Select.Section key={item.category}>
           <Header>{item.category}</Header>
           {item.genres.map(genre => (
-            <Select.Option>{genre}</Select.Option>
+            <Select.Option key={genre}>{genre}</Select.Option>
           ))}
         </Select.Section>
       ))}
