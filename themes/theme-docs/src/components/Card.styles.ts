@@ -9,7 +9,7 @@ export const Card: ThemeComponent<'Card'> = cva(
         hovering:
           'bg-bg-surface p-6 shadow transition-shadow hover:cursor-pointer hover:shadow-md',
         content: 'bg-bg-surface my-6 shadow',
-        outline: 'bg-bg-surface/40',
+        outline: 'bg-bg-surface/40 my-6',
       },
     },
     defaultVariants: {
