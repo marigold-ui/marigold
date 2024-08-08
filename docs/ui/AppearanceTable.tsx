@@ -1,9 +1,8 @@
 'use client';
 
 import { getAppearance } from '@/lib/utils';
-import { Inline, Table, Text, Theme } from '@/ui';
+import { Table, Theme } from '@/ui';
 import { useThemeSwitch } from './ThemeSwitch';
-import { BlankCanvas } from './icons';
 
 export interface AppearanceTableProps {
   component: keyof Theme['components'];
@@ -17,15 +16,6 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
   }
 
   const appearances = getAppearance(component, themes[current]);
-
-  if (appearances?.variant?.length === 0 && appearances?.size?.length === 0) {
-    return (
-      <Inline space={2}>
-        <BlankCanvas />
-        <Text>Sorry! There are currently no variants and sizes available.</Text>
-      </Inline>
-    );
-  }
 
   return (
     <Table aria-labelledby="appearance table" variant="hover" stretch>
@@ -43,7 +33,9 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
           </Table.Cell>
           <Table.Cell>
             <code className="before:content-none after:content-none">
-              {appearances.variant ? appearances.variant.join(' | ') : '-'}
+              {appearances.variant.length
+                ? appearances.variant.join(' | ')
+                : '-'}
             </code>
           </Table.Cell>
           <Table.Cell>The available variants of this component.</Table.Cell>
@@ -54,7 +46,7 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
           </Table.Cell>
           <Table.Cell>
             <code className="before:content-none after:content-none">
-              {appearances.size ? appearances.size.join(' | ') : '-'}
+              {appearances.size.length ? appearances.size.join(' | ') : '-'}
             </code>
           </Table.Cell>
           <Table.Cell>The available sizes of this component.</Table.Cell>

@@ -36,7 +36,7 @@ export async function generateMetadata({
           siteName: 'Marigold Design System',
           title: page.title,
           description: page.caption,
-          images: `${baseUrl}/og.png?title=${encodeURIComponent(page.title)}`,
+          images: `${baseUrl}/api/og.png?title=${encodeURIComponent(page.title)}`,
           type: 'website',
         },
         twitter: {
