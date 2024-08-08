@@ -1,18 +1,30 @@
-import { Headline, Inline, Text } from '@marigold/components';
+import { Center, Inline, Stack } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
-  <>
-    <Inline space={3} alignY="top">
-      <Headline level={2}>Top</Headline>
-      <Text>Lorem ipsum dolor sit amet.</Text>
-    </Inline>
-    <Inline space={3}>
-      <Headline level={2}>Center</Headline>
-      <Text>Lorem ipsum dolor sit amet.</Text>
-    </Inline>
-    <Inline space={3} alignY="bottom">
-      <Headline level={2}>Bottom</Headline>
-      <Text>Lorem ipsum dolor sit amet.</Text>
-    </Inline>
-  </>
+  <Center>
+    <Stack space={8}>
+      <Inline space={3} alignY="top">
+        <Rectangle height="40px" width="40px" />
+        <Rectangle height="60px" width="60px">
+          <div className="text-text-primary-muted m-auto">Top</div>
+        </Rectangle>
+        <Rectangle height="40px" width="40px" />
+      </Inline>
+      <Inline space={3} alignY="center">
+        <Rectangle height="40px" width="40px" />
+        <Rectangle height="60px" width="60px">
+          <div className="text-text-primary-muted m-auto">Center</div>
+        </Rectangle>
+        <Rectangle height="40px" width="40px" />
+      </Inline>
+      <Inline space={3} alignY="bottom">
+        <Rectangle height="40px" width="40px" />
+        <Rectangle height="60px" width="60px">
+          <div className="text-text-primary-muted m-auto">Bottom</div>
+        </Rectangle>
+        <Rectangle height="40px" width="40px" />
+      </Inline>
+    </Stack>
+  </Center>
 );
