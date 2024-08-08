@@ -13,6 +13,29 @@ import { useState } from 'react';
 import { Info } from '@marigold/icons';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
+// Helpers
+// ---------------
+function getLongestString(list: string[]) {
+  const sortedArray = list.sort((a, b) => b.length - a.length);
+  return sortedArray[0];
+}
+
+const getSelectWidth = (options: string[]) => {
+  const length = (getLongestString(options) || '').length;
+
+  // Poor mans pattern matching
+  switch (true) {
+    case length < 10:
+      return 40;
+    case length >= 10 && length < 12:
+      return 44;
+    case length >= 12 && length < 14:
+      return 48;
+    default:
+      return 52;
+  }
+};
+
 // Props
 // ---------------
 export interface AppearanceDemoProps {
@@ -51,11 +74,11 @@ export const AppearanceDemo = ({
 
   let disabledAppearance = '';
   if (appearance.variant.length === 0 && appearance.size.length === 0) {
-    disabledAppearance = 'variant and size';
+    disabledAppearance = '"variant" and "size"';
   } else if (appearance.size.length === 0) {
-    disabledAppearance = 'size';
+    disabledAppearance = '"size"';
   } else if (appearance.variant.length === 0) {
-    disabledAppearance = 'variant';
+    disabledAppearance = '"variant"';
   }
 
   const isVariantOrSizeMissing =
@@ -76,7 +99,7 @@ export const AppearanceDemo = ({
             label="Variant"
             variant="floating"
             size="small"
-            width={36}
+            width={getSelectWidth(appearance.variant)}
             selectedKey={selected.variant}
             onChange={(val: string) =>
               setSelected({ variant: val, size: selected.size })
@@ -94,7 +117,7 @@ export const AppearanceDemo = ({
             label="Size"
             variant="floating"
             size="small"
-            width={32}
+            width={getSelectWidth(appearance.size)}
             selectedKey={selected.size}
             onChange={(val: string) =>
               setSelected({ variant: selected.variant, size: val })
@@ -109,10 +132,10 @@ export const AppearanceDemo = ({
             ))}
           </Select>
           {isVariantOrSizeMissing ? (
-            <div className="flex items-center gap-2 text-xs">
+            <div className="text-text-primary-muted flex items-center gap-0.5 text-xs">
               <Info size={14} />
-              There is currently no available option for {disabledAppearance} to
-              select.
+              The selected theme does not has any options for{' '}
+              {disabledAppearance}.
             </div>
           ) : null}
         </div>

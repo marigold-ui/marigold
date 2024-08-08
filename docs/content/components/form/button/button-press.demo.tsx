@@ -8,7 +8,7 @@ export default () => {
   return (
     <Stack space={3} alignX="left">
       <Button
-        variant="secondary"
+        variant="primary"
         onPress={() => setCount(count + 1)}
         onPressStart={e => setPointerType(e.pointerType)}
         onPressEnd={() => setPointerType('')}
