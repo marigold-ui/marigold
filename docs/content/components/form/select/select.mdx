@@ -40,8 +40,6 @@ A select is typically suitable for a moderate number of options (e.g., 5-15). Th
 
 When there are too many options (e.g., more than 15-20), usability can suffer. Users might find it cumbersome to scroll through a long list. In such cases, consider alternative approaches like a combobox or autocomplete.
 
-<p />
-
 <GuidelineTiles>
   <Do>
     <Do.Figure>
@@ -54,10 +52,10 @@ When there are too many options (e.g., more than 15-20), usability can suffer. U
       />
     </Do.Figure>
     <Do.Description>
-      If there are 1-4 options to choose from, use a [radio group](../form/radio).
+      If there are 1-4 options to choose from, use a [radio
+      group](../form/radio).
     </Do.Description>
   </Do>
-
   <Dont>
     <Dont.Figure>
       <Image
@@ -70,6 +68,38 @@ When there are too many options (e.g., more than 15-20), usability can suffer. U
     </Dont.Figure>
     <Dont.Description>
       Don't use a select if there are less than 4 options to choose from.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/select/select-do-long.jpg"
+        alt="Use a radio group for 1-4 options"
+      />
+    </Do.Figure>
+    <Do.Description>
+      If there are 15-20 options to choose from, its recommended to use a
+      [autocomplete](../form/autocomplete) or [combobox](../form/combobox).
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/select/select-dont-long.jpg"
+        alt="Dont use less than three options"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use a select if there are more than 15 options to choose from.
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
@@ -135,7 +165,7 @@ Keep in mind that you always should write information why a certain option is di
     },
     {
       title: 'Radio group',
-      href: '../../forms/radio',
+      href: '../form/radio',
       caption: 'Alternative for select with less options.',
       icon: (
         <svg
@@ -152,5 +182,36 @@ Keep in mind that you always should write information why a certain option is di
         </svg>
       ),
     },
-  ]}
+    {
+      title: 'Combobox',
+      href: '../form/combobox',
+      caption: 'Alternative for select with many options.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M2.625 6.75a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0A.75.75 0 0 1 8.25 6h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75ZM2.625 12a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0ZM7.5 12a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12A.75.75 0 0 1 7.5 12Zm-4.875 5.25a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Autocomplete',
+      href: '../form/autocomplete',
+      caption: 'Alternative for select with many options.',
+      icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+
+      ),
+    },
+
+]}
 />
