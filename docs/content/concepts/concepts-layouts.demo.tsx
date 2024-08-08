@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 import { Card, Columns, Stack, Text, Tiles } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
-import { Squircle } from '@/ui/Squircle';
 
 const Annotation = ({ children }: { children: ReactNode }) => (
   <Text variant="caption" align="center">
@@ -30,15 +29,15 @@ export default () => (
       </>
       <>
         <Tiles space={2} tilesWidth="32px">
-          <Squircle />
-          <Squircle />
-          <Squircle />
-          <Squircle />
-          <Squircle />
-          <Squircle />
-          <Squircle />
-          <Squircle />
-          <Squircle />
+          <Rectangle height="30px" width="30px" />
+          <Rectangle height="30px" width="30px" />
+          <Rectangle height="30px" width="30px" />
+          <Rectangle height="30px" width="30px" />
+          <Rectangle height="30px" width="30px" />
+          <Rectangle height="30px" width="30px" />
+          <Rectangle height="30px" width="30px" />
+          <Rectangle height="30px" width="30px" />
+          <Rectangle height="30px" width="30px" />
         </Tiles>
         <Annotation>Tiles</Annotation>
       </>
