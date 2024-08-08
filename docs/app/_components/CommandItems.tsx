@@ -240,7 +240,9 @@ export const PagesItem = ({
                       'text-text-primary-muted ml-7',
                       classNames.item
                     )}
-                    onSelect={() => goto({ slug: page.slug, hash: sub.slug })}
+                    onSelect={() =>
+                      goto({ slug: page.slug, hash: `#${sub.slug}` })
+                    }
                   >
                     {sub.text}
                   </Command.Item>
