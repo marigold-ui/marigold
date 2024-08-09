@@ -39,7 +39,7 @@ const meta = {
       description: 'Disable the select',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     required: {
@@ -49,7 +49,7 @@ const meta = {
       description: 'Require the select',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     error: {
@@ -59,7 +59,7 @@ const meta = {
       description: 'Set error state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     errorMessage: {
@@ -77,6 +77,9 @@ const meta = {
   },
   args: {
     label: 'Select for favorite:',
+    error: false,
+    required: false,
+    disabled: false,
   },
 } satisfies Meta<typeof Select>;
 

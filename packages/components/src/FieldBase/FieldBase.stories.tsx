@@ -59,7 +59,7 @@ const meta = {
       description: 'Wheter if the field is invalid',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     isRequired: {
@@ -69,7 +69,7 @@ const meta = {
       description: 'Wheter if the field is required',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
@@ -77,6 +77,9 @@ const meta = {
     errorMessage: 'Something went wrong',
     description: 'This is a help text description',
     label: 'This is the label',
+    isRequired: false,
+    isInvalid: false,
+    width: 'full',
   },
 } satisfies Meta<FieldBaseProps<any>>;
 

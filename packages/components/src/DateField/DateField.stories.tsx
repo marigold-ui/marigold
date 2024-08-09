@@ -35,10 +35,9 @@ const meta = {
       description: 'Is the DateField invalid?',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
-
     errorMessage: {
       control: {
         type: 'text',
@@ -64,7 +63,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     disabled: {
@@ -73,7 +72,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     readOnly: {
@@ -82,7 +81,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
@@ -91,6 +90,9 @@ const meta = {
     description: 'This is a help text description',
     error: false,
     errorMessage: 'Something went wrong',
+    readOnly: false,
+    disabled: false,
+    required: false,
   },
 } satisfies Meta<DateFieldProps>;
 

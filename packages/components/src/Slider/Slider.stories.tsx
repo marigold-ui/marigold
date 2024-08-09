@@ -26,7 +26,7 @@ const meta = {
       description: 'Whether the Slider is disabled',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     maxValue: {
@@ -35,7 +35,7 @@ const meta = {
       },
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 500 },
+        defaultValue: { summary: '500' },
       },
       description: 'The maximum value of the slider',
     },
@@ -48,7 +48,7 @@ const meta = {
       },
       table: {
         type: { summary: 'range' },
-        defaultValue: { summary: 10 },
+        defaultValue: { summary: '10' },
       },
       description: 'The step size of the slider',
     },
@@ -63,6 +63,7 @@ const meta = {
     children: 'Example Slider',
     step: 10,
     maxValue: 500,
+    disabled: false,
   },
 } satisfies Meta<typeof Slider>;
 
