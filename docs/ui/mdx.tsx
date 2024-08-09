@@ -50,7 +50,9 @@ import {
 // Typography
 // ---------------
 const typography = {
-  p: (props: HTMLAttributes<HTMLParagraphElement>) => <Text {...props} />,
+  p: (props: HTMLAttributes<HTMLParagraphElement>) => (
+    <Text {...props} as="p" />
+  ),
   h1: (props: HTMLAttributes<HTMLHeadingElement>) => (
     <Headline level={1} {...props} />
   ),
