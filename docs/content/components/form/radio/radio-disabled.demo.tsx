@@ -1,12 +1,13 @@
 import { Radio } from '@marigold/components';
 
 export default () => (
-  <Radio.Group label="Radio Group" disabled>
-    <Radio value="1">Option 1</Radio>
-    <Radio value="2">Option 2</Radio>
-    <Radio value="3" disabled>
-      Option 3
+  <Radio.Group label="Choose Your Ticket Category">
+    <Radio value="generalAdmission">🎟️ General Admission</Radio>
+    <Radio value="vipAccess">🌟 VIP Access</Radio>
+    <Radio value="familyPack" disabled>
+      👨‍👩‍👧‍👦 Family Pack (Sold Out)
     </Radio>
-    <Radio value="4">Option 4</Radio>
+    <Radio value="groupTickets">👥 Group Tickets</Radio>
+    <Radio value="studentPass">🎓 Student Pass</Radio>
   </Radio.Group>
 );

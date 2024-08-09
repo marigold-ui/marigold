@@ -7,15 +7,135 @@ The `<Radio>` and `<Radio.Group>` components allow users to select one option fr
 
 The `<Radio>` should never be used alone, there should always be at least two `<Radio>` from which you can choose. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
 
-## Import
+The `<Radio.Group>` not only groups the radio buttons but also manages their state. This means you can easily control which option is selected by default and dynamically update the selection based on user interactions.
 
-```tsx
-import { Radio } from '@marigold/components';
-```
+## Anatomy
 
-## Appearance
+The radio button component is comprised of a set of clickable circles (the inputs) with text labels positioned to the right. If there is a group of radio buttons, a group label can be added.
 
-<AppearanceTable component={title} />
+<Image
+  src="/radio/radio-anatomy.png"
+  alt="Anatomy of radio component"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Group label:** Describes the group of options or provides guidance for making a selection.
+
+- **Radio button input:** Indicates the state of a radio button. By default, no option will be preselected.
+
+- **Radio button label:** Describes the information you want to select or unselect.
+
+## Usage
+
+Radio buttons are used for mutually exclusive choices, not for multiple choices. Only one radio button can be selected at a time. When a user chooses a new item, the previous choice is automatically deselected.
+
+### Selecting options
+
+If a user can select from multiple options, use checkboxes instead of radio buttons. Radio buttons allow the user to select only one item in a set whereas checkboxes allow the user to select multiple items.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_checkbox_select.jpg"
+        alt="Do use checkboxes when multiple items can be selected"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Do use checkboxes when multiple items can be selected.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_radio_select.jpg"
+        alt="Don't use radio buttons when multiple items can be selected."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use radio buttons when multiple items can be selected.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Overflow content
+
+We recommend radio button labels being fewer than three words.
+
+If you are tight on space, consider rewording the label. Do not truncate radio button label text with an ellipsis.
+
+Long labels may wrap to a second line, and this is preferable to truncation.
+Text should wrap beneath the radio button.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_multiple_lines.jpg"
+        alt="If the label is long, wrap to a second line."
+      />
+    </Do.Figure>
+    <Do.Description>
+      If the label is long, wrap to a second line.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_trunc_multiple_lines.jpg"
+        alt="Do not truncate radio button label text with an ellipsis."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Do not truncate radio button label text with an ellipsis.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Long lists of options
+
+If you have large number of options to choose from, use `<Select>` component instead.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_select_long_options.jpg"
+        alt="Use select component with long options."
+      />
+    </Do.Figure>
+    <Do.Description>Use select component with long options</Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/radio/dosAndDonts_long_options.jpg"
+        alt="Don't use radio with long options."
+      />
+    </Dont.Figure>
+    <Dont.Description>Don't use radio with long options.</Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ## Props
 
@@ -52,3 +172,51 @@ In this example the `<Radio.Group>` is required and the `orientation` is set to 
 In this example you can see how an `errorMessage` would look on a `<RadioGroup>`.
 
 <ComponentDemo file="./radio-error.demo.tsx" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building forms',
+      href: '../../patterns/building-forms',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Select',
+      href: '/components/form/select',
+      caption:
+        'Alternative for Radio component when there are a lot of options.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M2.625 6.75a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0A.75.75 0 0 1 8.25 6h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75ZM2.625 12a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0ZM7.5 12a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12A.75.75 0 0 1 7.5 12Zm-4.875 5.25a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
