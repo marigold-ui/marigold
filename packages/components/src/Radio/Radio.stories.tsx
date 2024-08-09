@@ -34,7 +34,7 @@ const meta = {
       description: 'Required',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     disabled: {
@@ -44,7 +44,7 @@ const meta = {
       description: 'Disabled',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     error: {
@@ -54,7 +54,7 @@ const meta = {
       description: 'Error',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     width: {
@@ -66,6 +66,9 @@ const meta = {
   },
   args: {
     label: 'Label',
+    error: false,
+    disabled: false,
+    required: false,
   },
 } satisfies Meta<typeof RadioGroup>;
 

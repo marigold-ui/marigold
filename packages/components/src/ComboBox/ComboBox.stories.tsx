@@ -15,7 +15,7 @@ const meta = {
       description: 'Set the label of the Combobox',
       table: {
         type: { summary: 'text' },
-        defaultValue: { summary: 'not set' },
+        defaultValue: { summary: '' },
       },
     },
     description: {
@@ -35,7 +35,7 @@ const meta = {
       description: 'Disable ComboBox',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     error: {
@@ -45,7 +45,7 @@ const meta = {
       description: 'Is the input invalid?',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     errorMessage: {
@@ -65,7 +65,7 @@ const meta = {
       description: 'Set the placeholder text',
       table: {
         type: { summary: 'text' },
-        defaultValue: { summary: 'not set' },
+        defaultValue: { summary: 'undefined' },
       },
     },
     menuTrigger: {
@@ -94,6 +94,12 @@ const meta = {
   args: {
     description: 'This is a help text description',
     errorMessage: 'Something went wrong',
+    error: false,
+    disabled: false,
+    width: 'full',
+    menuTrigger: 'input',
+    placeholder: undefined,
+    label: '',
   },
 } satisfies Meta;
 
