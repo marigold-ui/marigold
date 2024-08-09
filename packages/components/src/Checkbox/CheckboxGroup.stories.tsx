@@ -16,7 +16,7 @@ const meta = {
       description: 'Label text',
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'Make a Sandwich' },
+        defaultValue: { summary: '' },
       },
     },
     disabled: {
@@ -26,7 +26,7 @@ const meta = {
       description: 'Disabled',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     required: {
@@ -36,7 +36,7 @@ const meta = {
       description: 'Required',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     readOnly: {
@@ -46,7 +46,7 @@ const meta = {
       description: 'Read only',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     error: {
@@ -56,7 +56,7 @@ const meta = {
       description: 'Error state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     errorMessage: {
@@ -81,9 +81,13 @@ const meta = {
     },
   },
   args: {
+    description: 'This is a help text description',
+    errorMessage: 'Something went wrong',
     label: 'This is a label',
     readOnly: false,
     disabled: false,
+    required: false,
+    error: false,
     children: 'This is a Checkbox',
   },
 } satisfies Meta<typeof CheckboxGroup>;

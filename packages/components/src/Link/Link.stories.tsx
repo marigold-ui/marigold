@@ -29,7 +29,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
