@@ -13,10 +13,13 @@ const meta = {
       options: ['ol', 'ul'],
       description: ' List should be ordered or unordered list',
       table: {
-        type: 'select',
+        type: { summary: 'select' },
         defaultValue: { summary: 'ul' },
       },
     },
+  },
+  args: {
+    as: 'ul',
   },
 } satisfies Meta<typeof List>;
 

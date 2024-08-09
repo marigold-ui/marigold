@@ -12,7 +12,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
       description: 'If the tooltip is disabled. It will not open.',
     },
@@ -51,7 +51,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
       description: 'If the tooltip is open',
     },
@@ -61,10 +61,18 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
       description: 'If the tooltip should be default open (uncontrolled)',
     },
+  },
+  args: {
+    disabled: false,
+    delay: 1000,
+    closeDelay: 500,
+    trigger: 'focus',
+    defaultOpen: false,
+    open: false,
   },
 } satisfies Meta<typeof Tooltip.Trigger>;
 

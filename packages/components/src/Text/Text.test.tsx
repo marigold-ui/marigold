@@ -41,7 +41,7 @@ test('uses theme styles', () => {
   );
 });
 
-test('renders a <p> element by default', () => {
+test('renders a <div> element by default', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text>text</Text>
@@ -49,7 +49,21 @@ test('renders a <p> element by default', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text instanceof HTMLParagraphElement).toBeTruthy();
+  expect(text instanceof HTMLDivElement).toBeTruthy();
+});
+
+test('renders a <p>/<span> element', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text as="p">paragraph</Text>
+      <Text as="span">span</Text>
+    </ThemeProvider>
+  );
+  const paragraph = screen.getByText(/paragraph/);
+  const span = screen.getByText(/span/);
+
+  expect(paragraph instanceof HTMLParagraphElement).toBeTruthy();
+  expect(span instanceof HTMLSpanElement).toBeTruthy();
 });
 
 test('style props override theme styles', () => {
@@ -77,7 +91,7 @@ test('get theme color', () => {
 
   const text = screen.getByTestId('text');
   expect(text).toMatchInlineSnapshot(`
-<p
+<div
   class="text-[--color] outline-[--outline] font-["Oswald_Regular"]"
   data-testid="text"
   style="--color: rgb(5 150 105);"

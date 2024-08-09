@@ -24,7 +24,7 @@ const meta = {
       },
       table: {
         defaultValue: {
-          summary: 24,
+          summary: '24',
         },
       },
     },
@@ -38,6 +38,11 @@ const meta = {
         },
       },
     },
+  },
+  args: {
+    size: 24,
+    variant: 'icon',
+    color: undefined,
   },
 } satisfies Meta;
 

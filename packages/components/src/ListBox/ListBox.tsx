@@ -8,7 +8,7 @@ import type RAC from 'react-aria-components';
 import { ListBox } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ListBoxContext } from './Context';
-import { ListBoxItem } from './ListBoxOption';
+import { ListBoxItem } from './ListBoxItem';
 import { Section } from './ListBoxSection';
 
 export interface ListBoxProps

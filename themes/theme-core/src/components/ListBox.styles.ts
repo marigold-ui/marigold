@@ -8,6 +8,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   list: cva(''),
   option: cva([
     font,
+    'group/option flex flex-col',
     'rac-hover:text-text-inverted rac-hover:bg-highlight',
     'cursor-pointer px-1.5 py-0.5 outline-none',
     'rac-focus:text-text-inverted rac-focus:bg-highlight',
