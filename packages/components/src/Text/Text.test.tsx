@@ -52,6 +52,20 @@ test('renders a <div> element by default', () => {
   expect(text instanceof HTMLDivElement).toBeTruthy();
 });
 
+test('renders a <p>/<span> element', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text as="p">paragraph</Text>
+      <Text as="span">span</Text>
+    </ThemeProvider>
+  );
+  const paragraph = screen.getByText(/paragraph/);
+  const span = screen.getByText(/span/);
+
+  expect(paragraph instanceof HTMLParagraphElement).toBeTruthy();
+  expect(span instanceof HTMLSpanElement).toBeTruthy();
+});
+
 test('style props override theme styles', () => {
   render(
     <ThemeProvider theme={theme}>

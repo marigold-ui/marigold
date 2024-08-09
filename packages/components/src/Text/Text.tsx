@@ -36,6 +36,11 @@ export interface TextProps
    * @default currentColor
    */
   color?: string;
+  /**
+   * Element to render
+   * @default "div"
+   */
+  as?: 'div' | 'p' | 'span';
   variant?: string;
   size?: string;
 }
@@ -52,6 +57,7 @@ const _Text = ({
   fontSize,
   fontStyle,
   children,
+  as = 'div',
   ...props
 }: TextProps) => {
   const theme = useTheme();
@@ -64,7 +70,7 @@ const _Text = ({
   return (
     <Text
       {...props}
-      elementType="div"
+      elementType={as}
       className={cn(
         'text-[--color] outline-[--outline]',
         classNames,

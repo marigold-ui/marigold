@@ -42,6 +42,13 @@ const meta = {
       },
       description: 'The font style of the text',
     },
+    as: {
+      control: {
+        type: 'select',
+      },
+      options: ['div', 'p', 'span'],
+      description: 'Element to render as Text',
+    },
     cursor: {
       control: {
         type: 'text',
