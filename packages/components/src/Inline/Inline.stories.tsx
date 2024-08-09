@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
-import { Split } from '../Split';
-import { Switch } from '../Switch';
-import { TextField } from '../TextField';
 import { Inline } from './Inline';
 
 const meta = {
@@ -70,18 +67,6 @@ export const Basic: Story = {
         Larum
       </Block>
       <Block>Löffelstiel!</Block>
-    </Inline>
-  ),
-};
-
-export const FixedItem: Story = {
-  render: args => (
-    <Inline>
-      <TextField label="Von" width={'full'} />
-      <Split />
-      <div className="align-center">
-        <Switch />
-      </div>
     </Inline>
   ),
 };
