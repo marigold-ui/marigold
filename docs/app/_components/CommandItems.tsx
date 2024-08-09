@@ -12,7 +12,7 @@ import {
 } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Inline, Split } from '@marigold/components';
 import { ExternalLink } from '@marigold/icons';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
@@ -37,12 +37,12 @@ interface CommandItemProps {
 }
 
 interface ChangeThemeItemProps extends CommandItemProps {
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpen: Dispatch;
 }
 interface PagesItemProps extends CommandItemProps {
   name: string;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  setPages: Dispatch<SetStateAction<[]>>;
+  setOpen: Dispatch;
+  setPages: Dispatch;
   subPage: string;
   items: {
     title: string;
@@ -106,7 +106,7 @@ export const TokenItem = ({ classNames }: CommandItemProps) => {
 
 export const IconItem = ({ classNames }: CommandItemProps) => {
   const ref = useRef<SVGSVGElement>();
-  const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
+  const getIcon = (icon: keyof typeof Icons, ref: RefObject) => {
     const Component = Icons[icon];
     const iconElement = <Component ref={ref} />;
     const svg = ReactDOMServer.renderToString(<Component ref={ref} />);
@@ -203,11 +203,16 @@ export const PagesItem = ({
   setPages,
 }: PagesItemProps) => {
   const router = useRouter();
-  const goto = (slug: string) => {
-    router.push(`/${slug}`);
+  const params = useSearchParams();
+
+  const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
+    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
+
+    router.push(url);
     setOpen(false);
     setPages([]);
   };
+
   return (
     <CommandGroup heading={name} key={name} className={classNames.section}>
       {items.map(page => (
@@ -216,7 +221,7 @@ export const PagesItem = ({
             className={cn(classNames.item, 'group')}
             key={page.slug}
             value={page.slug}
-            onSelect={() => goto(page.slug)}
+            onSelect={() => goto({ slug: page.slug })}
           >
             <Inline space={4} alignY="center">
               {page.title}
@@ -229,12 +234,15 @@ export const PagesItem = ({
               {Object.values(page.headings).map(
                 (sub: { slug: string; text: string }) => (
                   <Command.Item
+                    key={sub.slug}
                     value={`${page.slug}${sub.slug}`}
                     className={cn(
                       'text-text-primary-muted ml-7',
                       classNames.item
                     )}
-                    onSelect={() => goto(`${page.slug}#${sub.slug}`)}
+                    onSelect={() =>
+                      goto({ slug: page.slug, hash: `#${sub.slug}` })
+                    }
                   >
                     {sub.text}
                   </Command.Item>
