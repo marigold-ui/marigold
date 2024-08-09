@@ -1,11 +1,11 @@
-import { Inline, Text } from '@marigold/components';
-import { Check } from '@marigold/icons';
+import { Inline } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
-  <Inline space={2}>
-    <Check />
-    <Text>Check</Text>
-    <Text>this</Text>
-    <Text>out</Text>
+  <Inline space={8}>
+    <Rectangle height="100px" width="100px" />
+    <Rectangle height="100px" width="100px" />
+    <Rectangle height="100px" width="100px" />
+    <Rectangle height="100px" width="100px" />
   </Inline>
 );

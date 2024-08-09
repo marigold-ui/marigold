@@ -1,24 +1,19 @@
 import { ReactNode } from 'react';
-import {
-  AlignmentProp,
-  GapSpaceProp,
-  alignment,
-  cn,
-  gapSpace,
-} from '@marigold/system';
+import { GapSpaceProp, alignment, cn, gapSpace } from '@marigold/system';
 
 // Props
 // ---------------
-export interface InlineProps extends AlignmentProp, GapSpaceProp {
+export interface InlineProps extends GapSpaceProp {
+  /**
+   * The children of the component.
+   */
   children?: ReactNode;
   /**
-   * Horizontal alignment of the items inside the breakout element.
-   * @default 'left'
+   * Horizontal alignment of the items inside the element.
    */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
   /**
-   * Vertical alignment of the items inside the breakout element.
-   * @default 'center'
+   * Vertical alignment of the items inside the element.
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
 }
@@ -27,9 +22,8 @@ export interface InlineProps extends AlignmentProp, GapSpaceProp {
 // ---------------
 export const Inline = ({
   space = 0,
-  orientation,
-  alignX = orientation?.horizontal?.alignX,
-  alignY = orientation?.horizontal?.alignY,
+  alignX,
+  alignY,
   children,
   ...props
 }: InlineProps) => (

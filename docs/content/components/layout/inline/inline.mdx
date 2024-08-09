@@ -1,44 +1,77 @@
 ---
 title: Inline
-caption: Component to inline elements with spaces.
+caption: Display children horizontally in a row.
+badge: updated
 ---
 
-The `<Inline>` is a responsive layout component. It's inlining element with space between each element. This component uses the spaces from the given theme or a responsive string.
+The `<Inline>` component is a responsive layout component based on CSS Flexbox. It aligns its content horizontally in a row and automatically wraps to a new line when there isn't enough space on the screen.
 
-## Import
+Use the inline component in combination with other layout components to easily [create customized layouts](../../concepts/layouts).
 
-```tsx
-import { Inline } from '@marigold/components';
-```
+## Usage
+
+If you have more than two elements you can use the `<Inline>` component to arrange elements horizontally according to the space required.
+For adding the space between the elements you need to use the `space` property and set it to a supported [space value](../../introduction/design-tokens#spacing).
+
+<ComponentDemo file="./inline-elements.demo.tsx" />
+
+Together with a [`<Split>`](../layout/split) you can use the inline to create as much space as given between two elements while staying in the inline layout.
+
+If you need to display content vertically you should use our [stack component](../layout/stack).
+
+Because of the flex layout the component will wrap its content when there is no more space given to display it in smaller screen sizes, if you still want to have the items in one row, please use our [columns component](../layout/columns) with the fixed column to get this layout.
+
+### Different alignment
+
+The child elements can be positioned differently on their x and y axis.
+Items of various height can be vertically aligned using the `alignY` prop. In the following example you can see it.
+
+<ComponentDemo file="./inline-vertically.demo.tsx" />
+
+For horizontally alignment you can use the `alignX` prop.
+
+<ComponentDemo file="./inline-horizontally.demo.tsx" />
 
 ## Props
 
 <PropsTable component={title} />
 
-## Examples
+## Related
 
-### More than two elements
+<TeaserList
+  items={[
+     {
+      title: 'Columns',
+      href: '../layout/columns',
+      caption: 'Displays children vertically in a grid layout.',
+      icon: (
+     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" />
+</svg>
 
-If you have more than two elements you can use the `<Inline>` component. The elements are arranged according to the space required.
+      ),
+    },
+    {
+      title: 'Split',
+      href: '../layout/split',
+      caption: 'Adds space between two elments in a flex layout.',
+      icon: (
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+        </svg>
 
-<ComponentDemo file="./inline-elements.demo.tsx" />
+      ),
+    },
+     {
+      title: 'Stack',
+      href: '../layout/stack',
+      caption: 'Displays children vertically in a flex layout.',
+      icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25 12 21m0 0-3.75-3.75M12 21V3" />
+        </svg>
+      ),
+    },
 
-### Spacing
-
-The `<Inline>` component can be used to add spacing between elements.
-For this you need the props `space` and you can then place all components inside the `<Inline>` element.
-
-<ComponentDemo file="./inline-spacing.demo.tsx" />
-
-### Nested Inline
-
-`<Inline>` components can also have themselves as component. This can be used to add more spacing within the elements.
-
-<ComponentDemo file="./inline-nested.demo.tsx" />
-
-### Different alignment
-
-If elements need to be positioned differently on their x and y axis, this can be done with the `<Inline>` component.
-In this case one of the following props is given. Either `alignX` or `alignY`.
-
-<ComponentDemo file="./inline-alignments.demo.tsx" />
+]}
+/>
