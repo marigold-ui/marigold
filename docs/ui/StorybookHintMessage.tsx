@@ -1,7 +1,7 @@
 import { Aside, Card, Link, Stack } from '@/ui';
 import { ExternalLink } from './icons/ExternalLink';
 
-const Sotrybook = () => (
+const Storybook = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -31,7 +31,7 @@ export const StorybookHintMessage = ({ component }: { component: string }) => (
   <Card variant="outline" px={3} py={4}>
     <Aside space={4}>
       <div className="flex h-full items-center">
-        <Sotrybook />
+        <Storybook />
       </div>
       <Stack space={2}>
         <div className="text-sm">
