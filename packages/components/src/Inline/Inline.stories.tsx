@@ -11,8 +11,8 @@ const meta = {
         type: 'text',
       },
       table: {
-        type: 'text',
-        defaultValue: { summary: 'not set' },
+        type: { summary: 'text' },
+        defaultValue: { summary: 'undefined' },
       },
       description: 'Set a space value. For this we use Tailwind token.',
     },
@@ -21,7 +21,7 @@ const meta = {
         type: 'select',
       },
       table: {
-        type: 'text',
+        type: { summary: 'text' },
         defaultValue: { summary: 'left' },
       },
       options: ['left', 'center', 'right'],
@@ -32,12 +32,17 @@ const meta = {
         type: 'select',
       },
       table: {
-        type: 'text',
-        defaultValue: { summary: 'not set' },
+        type: { summary: 'text' },
+        defaultValue: { summary: 'undefined' },
       },
       options: ['top', 'center', 'bottom'],
       description: 'Set the Vertical Alignment',
     },
+  },
+  args: {
+    alignX: 'left',
+    alignY: undefined,
+    space: undefined,
   },
 } satisfies Meta<typeof Inline>;
 

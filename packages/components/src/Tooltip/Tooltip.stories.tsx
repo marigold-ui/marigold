@@ -48,13 +48,13 @@ const meta = {
     },
     variant: {
       control: {
-        type: 'string',
+        type: 'text',
       },
       description: 'The variant of the tooltip',
     },
     size: {
       control: {
-        type: 'string',
+        type: 'text',
       },
       description: 'The size of the tooltip',
     },

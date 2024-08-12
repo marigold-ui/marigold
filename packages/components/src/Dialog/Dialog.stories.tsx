@@ -23,7 +23,7 @@ const meta = {
       description: 'Set dismissable',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       },
     },
     keyboardDismissable: {
@@ -31,7 +31,7 @@ const meta = {
       description: 'Set keyboardDismissable',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       },
     },
     open: {
@@ -39,13 +39,14 @@ const meta = {
       description: 'Set open state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
   args: {
     dismissable: true,
     keyboardDismissable: true,
+    open: false,
   },
 } satisfies Meta<ModalProps>;
 
