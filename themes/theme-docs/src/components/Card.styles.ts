@@ -1,15 +1,15 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Card: ThemeComponent<'Card'> = cva(
-  [
-    'bg-bg-surface border-secondary-300 relative overflow-hidden rounded-xl border shadow',
-  ],
+  ['border-secondary-300 relative w-full overflow-hidden rounded-xl border'],
   {
     variants: {
       variant: {
-        default: 'p-6',
-        hovering: 'p-6 transition-shadow hover:cursor-pointer hover:shadow-md',
-        content: 'my-6',
+        default: 'bg-bg-surface p-6 shadow',
+        hovering:
+          'bg-bg-surface p-6 shadow transition-shadow hover:cursor-pointer hover:shadow-md',
+        content: 'bg-bg-surface my-6 shadow',
+        outline: 'bg-bg-surface/40 my-6',
       },
     },
     defaultVariants: {

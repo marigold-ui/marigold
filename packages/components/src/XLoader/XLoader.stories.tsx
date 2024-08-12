@@ -12,7 +12,7 @@ const meta = {
       table: {
         type: { summary: 'number' },
         defaultValue: {
-          summary: 150,
+          summary: '150',
         },
       },
       description: 'Sets the size of the SVG.',

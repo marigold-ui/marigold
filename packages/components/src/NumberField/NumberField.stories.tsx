@@ -35,7 +35,7 @@ const meta = {
       description: 'Is the input invalid?',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     errorMessage: {
@@ -54,7 +54,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     disabled: {
@@ -63,7 +63,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     readOnly: {
@@ -72,7 +72,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     hideStepper: {
@@ -81,7 +81,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     width: {
@@ -99,6 +99,7 @@ const meta = {
     disabled: false,
     errorMessage: 'Something went wrong',
     error: false,
+    required: false,
   },
 } satisfies Meta<typeof NumberField>;
 
