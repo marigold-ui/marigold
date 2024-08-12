@@ -11,7 +11,7 @@ export * from './Link.styles';
 export * from './List.styles';
 export * from './ListBox.styles';
 export * from './Menu.styles';
-export * from './Message.styles';
+export * from './SectionMessage.styles';
 export * from './Popover.styles';
 export * from './Select.styles';
 export * from './Tabs.styles';
