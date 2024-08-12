@@ -6,8 +6,6 @@ badge: updated
 
 The `<Radio>` and `<Radio.Group>` components allow users to select one option from a set of options. They are useful for presenting a list of options to users and collecting their responses.
 
-The `<Radio>` should never be used alone, there should always be at least two `<Radio>` from which you can choose. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
-
 The `<Radio.Group>` not only groups the radio buttons but also manages their state. This means you can easily control which option is selected by default and dynamically update the selection based on user interactions.
 
 ## Anatomy
@@ -30,7 +28,9 @@ The radio button component is comprised of a set of clickable circles (the input
 
 ## Usage
 
-Radio buttons are used for mutually exclusive choices, not for multiple choices. Only one radio button can be selected at a time. When a user chooses a new item, the previous choice is automatically deselected.
+Radio buttons are used for mutually exclusive choices, where only one option can be selected at a time. They are ideal when you want the user to choose a single option from a small list of predefined choices. When a user selects a new option, the previous choice is automatically deselected.
+
+The `<Radio>` should never be used alone, there should always be at least two `<Radio>` from which you can choose. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
 
 ### Selecting options
 
