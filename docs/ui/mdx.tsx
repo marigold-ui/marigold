@@ -30,6 +30,7 @@ import { Do, Dont, GuidelineTiles } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
 import { PropsTable } from './PropsTable';
+import { StorybookHintMessage } from './StorybookHintMessage';
 import { TeaserCard, TeaserList } from './TeaserCard';
 import { Toc } from './Toc';
 import {
@@ -50,7 +51,9 @@ import {
 // Typography
 // ---------------
 const typography = {
-  p: (props: HTMLAttributes<HTMLParagraphElement>) => <Text {...props} />,
+  p: (props: HTMLAttributes<HTMLParagraphElement>) => (
+    <Text {...props} as="p" />
+  ),
   h1: (props: HTMLAttributes<HTMLHeadingElement>) => (
     <Headline level={1} {...props} />
   ),
@@ -153,6 +156,7 @@ const components = {
   IconList,
   PropsTable,
   Spacing,
+  StorybookHintMessage,
   TeaserCard,
   TeaserList,
   TextAlign,

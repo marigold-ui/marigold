@@ -66,7 +66,8 @@ const meta = {
         'end bottom',
       ],
       table: {
-        defaultValue: 'bottom',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'bottom' },
       },
     },
     selectionMode: {
@@ -76,11 +77,16 @@ const meta = {
       },
       options: ['none', 'single', 'multiple'],
       table: {
-        defaultValue: 'none',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'none' },
       },
     },
   },
-  args: {},
+  args: {
+    selectionMode: 'none',
+    placement: 'bottom',
+    label: 'none',
+  },
 } satisfies Meta<typeof Menu>;
 
 export default meta;

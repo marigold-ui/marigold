@@ -1,11 +1,11 @@
 import { ForwardRefExoticComponent, RefAttributes, forwardRef } from 'react';
-import type RAC from 'react-aria-components';
 import {
   Button,
   Select,
   SelectValue,
   ValidationResult,
 } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase/FieldBase';
@@ -144,7 +144,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
             classNames.select
           )}
         >
-          <SelectValue />
+          <SelectValue className="[&>[slot=description]]:hidden" />
           <ChevronDown className={cn('size-4', classNames.icon)} />
         </Button>
         <Popover>

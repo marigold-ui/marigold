@@ -44,7 +44,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     readOnly: {
@@ -53,7 +53,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
@@ -61,6 +61,8 @@ const meta = {
     label: 'Select Favorite:',
     description: 'This is a help text description',
     errorMessage: 'Something went wrong',
+    readOnly: false,
+    disabled: false,
   },
 } satisfies Meta<typeof SearchField>;
 

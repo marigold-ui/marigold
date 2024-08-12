@@ -24,7 +24,7 @@ const meta = {
       description: 'Disabled',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     indeterminate: {
@@ -34,7 +34,7 @@ const meta = {
       description: 'Option to define an indeterminate state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     readOnly: {
@@ -44,7 +44,7 @@ const meta = {
       description: 'Read only',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     size: {
@@ -54,7 +54,7 @@ const meta = {
       options: ['default', 'small'],
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'none' },
+        defaultValue: { summary: 'default' },
       },
       description: 'Padding y (top and bottom)',
       if: { global: 'theme', neq: 'b2b' },

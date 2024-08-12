@@ -29,7 +29,7 @@ const meta = {
         'color',
       ],
       table: {
-        type: 'select',
+        type: { summary: 'select' },
         defaultValue: { summary: 'text' },
       },
       description: 'Set the type of the input.',

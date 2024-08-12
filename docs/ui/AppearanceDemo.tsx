@@ -74,11 +74,11 @@ export const AppearanceDemo = ({
 
   let disabledAppearance = '';
   if (appearance.variant.length === 0 && appearance.size.length === 0) {
-    disabledAppearance = 'variant and size';
+    disabledAppearance = '"variant" and "size"';
   } else if (appearance.size.length === 0) {
-    disabledAppearance = 'size';
+    disabledAppearance = '"size"';
   } else if (appearance.variant.length === 0) {
-    disabledAppearance = 'variant';
+    disabledAppearance = '"variant"';
   }
 
   const isVariantOrSizeMissing =
@@ -134,8 +134,8 @@ export const AppearanceDemo = ({
           {isVariantOrSizeMissing ? (
             <div className="text-text-primary-muted flex items-center gap-0.5 text-xs">
               <Info size={14} />
-              There is currently no available option for {disabledAppearance} to
-              select.
+              The selected theme does not has any options for{' '}
+              {disabledAppearance}.
             </div>
           ) : null}
         </div>
