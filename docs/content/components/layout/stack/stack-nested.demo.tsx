@@ -1,20 +1,23 @@
-import { Headline, Stack, Text } from '@marigold/components';
+import { Stack } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
-  <Stack space={8}>
+  <Stack space={12}>
     <Stack space={4}>
-      <Headline level={2}>Stack Content #1</Headline>
-      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-      <Text>
-        Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
-      </Text>
+      <Rectangle height="50px">
+        {' '}
+        <div className="text-text-primary-muted m-auto">First</div>
+      </Rectangle>
+      <Rectangle height="50px" />
+      <Rectangle height="50px" />
     </Stack>
     <Stack space={4}>
-      <Headline level={2}>Stack Content #2</Headline>
-      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-      <Text>
-        Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
-      </Text>
+      <Rectangle height="50px">
+        {' '}
+        <div className="text-text-primary-muted m-auto">Second</div>
+      </Rectangle>
+      <Rectangle height="50px" />
+      <Rectangle height="50px" />
     </Stack>
   </Stack>
 );
