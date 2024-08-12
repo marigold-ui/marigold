@@ -1,6 +1,5 @@
-import { Separator } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Separator } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 export interface DividerProps extends RAC.SeparatorProps {

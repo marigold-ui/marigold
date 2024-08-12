@@ -1,7 +1,5 @@
 import type { Meta } from '@storybook/react';
-
 import { cn } from '@marigold/system';
-
 import { Grid } from './Grid';
 
 const meta = {

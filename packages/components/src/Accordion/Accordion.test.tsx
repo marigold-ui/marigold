@@ -1,8 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { fireEvent, screen } from '@testing-library/react';
-
 import { Theme, ThemeProvider, cva } from '@marigold/system';
-
 import { Headline } from '../Headline';
 import { setup } from '../test.utils';
 import { Accordion } from './Accordion';

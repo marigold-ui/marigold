@@ -1,7 +1,5 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
-
 import { createPreset } from '@marigold/theme-preset';
-
 import { colors } from './tokens';
 
 export interface PresetConfig {

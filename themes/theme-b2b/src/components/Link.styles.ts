@@ -6,6 +6,10 @@ export const Link: ThemeComponent<'Link'> = cva(
     variants: {
       variant: {
         menuItemLink: 'text-text-base hover:no-underline',
+        secondary: [
+          'px-8 leading-[48px]',
+          'text-text-inverted bg-bg-brand hover:bg-bg-brand-hover',
+        ],
       },
     },
   }

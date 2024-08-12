@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-
 import { Inline } from '../Inline';
 import { NumberField } from './NumberField';
 

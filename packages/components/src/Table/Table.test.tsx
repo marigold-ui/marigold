@@ -1,10 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { useState } from 'react';
-
 import { SortDescriptor } from '@react-types/shared';
-
 import { Theme, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { Table } from './Table';
 

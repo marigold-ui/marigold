@@ -5,11 +5,9 @@ import type {
   ReactNode,
 } from 'react';
 import { forwardRef } from 'react';
-
 import type { WidthProp } from '@marigold/system';
 import { cn, width as twWidth, useClassNames } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
-
 import type { HelpTextProps } from '../HelpText';
 import { HelpText } from '../HelpText';
 import { Label } from '../Label';

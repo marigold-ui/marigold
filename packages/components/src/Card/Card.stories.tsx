@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Close, ExternalLink } from '@marigold/icons';
-
 import { Center } from '../Center';
 import { Container } from '../Container';
 import { Inline } from '../Inline';

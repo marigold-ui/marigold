@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Meta, StoryObj } from '@storybook/react';
 import { Key, useState } from 'react';
-
 import { useAsyncList } from '@react-stately/data';
-
 import { Stack } from '../Stack';
 import { ComboBox } from './ComboBox';
 

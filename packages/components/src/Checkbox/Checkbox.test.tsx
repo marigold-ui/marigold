@@ -1,9 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
-
 import { Theme, cva } from '@marigold/system';
-
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
 import { Checkbox } from './Checkbox';

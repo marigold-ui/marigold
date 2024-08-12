@@ -1,10 +1,8 @@
 import { startOfWeek, today } from '@internationalized/date';
 import { useContext, useMemo } from 'react';
 import { CalendarGridProps, CalendarStateContext } from 'react-aria-components';
-
 import { useCalendarGrid } from '@react-aria/calendar';
 import { useDateFormatter, useLocale } from '@react-aria/i18n';
-
 import { useClassNames } from '@marigold/system';
 
 export function CalendarGridHeader(props: CalendarGridProps) {

@@ -1,25 +1,264 @@
 ---
 title: Table
-caption: Component for building tables.
+caption: Organize and display large amout of data in table format.
+badge: updated
 ---
 
-The `<Table>` component allows to present data in a table format. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, as well as, helps with accessibility by providing keyboard navigation.
+The `<Table>` is a structured component used to organize and display tabular data in rows and columns. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, and helps with accessibility by enabling keyboard navigation.
 
-You can sort with the `<Table>` and add a `selectionMode` property with which you have the possibility to select entire rows.
+<SectionMessage>
+  <SectionMessage.Title>What is tabular data?</SectionMessage.Title>
+  <SectionMessage.Content>
+    Tabular data is a structured form of data that is organized in rows and
+    columns and resembles a table format.
+  </SectionMessage.Content>
+</SectionMessage>
 
-The component is divided into several parts. So there are the `<Table.Header>`, `<Table.Body>`, `<Table.Column>`, `<Table.Row>` and `<Table.Cell>`.
+Our table allows user to selecting one or multiple rows, it includes an action cell, and supports sorting columns. Additionally, it features a sticky header, can stretch to full size, and allows columns to be aligned to the left, center, or right. The table also supports nesting columns and having fixed column widths.
 
-## Import
+These features will be explained in more detail in the usage section further down the page.
 
-```tsx
-import { Table } from '@marigold/components';
-```
+## Anatomy
+
+A table is composed of a container element that organizes data into rows and columns. Each cell within the table can hold either plain text or focusable elements. If the table allows multiple row selection, the first column of each row include a checkbox for selecting that row and the first column header will contain a "select all" checkbox.
+
+<Image
+  src="/table/table-anatomy.jpg"
+  alt="Anatomy of table"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
 
+## Usage
+
+Use a `<Table>` if you need to organize and display large amout of data.
+Grouping informations provide a structured and organized way to display data, making it easier to understand and analyze.
+Tables allow you to group related information in a clear and concise manner, which enhances data readability and comprehension.
+
+They are ideal for comparing data points. Unlike cards, tables enable users to compare multiple rows and columns without having to move their eyes too much or rely on memory.
+Also with the support of single or multiple row actions, they make it convenient to perform data-specific actions such as deleting, sharing, or editing records directly within the table.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table/table-do-names.jpg"
+        alt="Use tables with clear understandable content"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Provide descriptive column headers for each column that accurately
+      represent the data.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table/table-dont-names.jpg"
+        alt="Dont use tables with empty column headers."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid using vague or misleading column headers that do not clearly
+      represent the data.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+<Do>
+  <Do.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/table/table-do-size.jpg"
+      alt="Stretch tables to available width."
+    />
+  </Do.Figure>
+  <Do.Description>Stretch tables to available width.</Do.Description>
+</Do>
+
+<p />
+
+<Dont>
+  <Dont.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/table/table-dont-content.jpg"
+      alt="Dont use tables for layouts"
+    />
+  </Dont.Figure>
+  <Dont.Description>Don't use a table for layouting content.</Dont.Description>
+</Dont>
+
+### Display secondary information
+
+Secondary data in a cell is needed when additional context or details are necessary to fully understand the primary data. The primary data of a table cell should always be displayed clearly. It provides better readability and can improve the user experience. Too much secondary data can overwelm users and make the table complexer and harder to read.
+
+<ComponentDemo
+  file="./table-secondary-content.demo.tsx"
+  disableLabelWidth="true"
+/>
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table/table-do-hierarchy.jpg"
+        alt="Use tables with clear understandable content"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Keep cell content concise. Only add additional data when necessary to help
+      understand the data.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table/table-dont-hierarchy.jpg"
+        alt="Dont use tables with too much informations inside"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid overloading cells with too much information or complex data, and
+      multiple data values in one cell.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Sticky header
+
+If you have large data tables, setting the header to sticky can provide context when scrolling. To do this, set the `stickyHeader` property on the `<Table>` and wrap it in the [Scrollable](../layout/scrollable) component with a specified height, as shown in the example below.
+
+<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
+
+### Highlight data
+
+This is an example of how you can use the [`<Badge>`](../content/badge) within the `<Table>`. Badges can be used in a table to highlight or categorize certain data, making it easier for users to quickly identify key information. This is a common use case if you need to add status indicators, categorizations, labels or tags within the table.
+
+<ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Place badges consistently within the table, preferably in a dedicated
+      column.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't place badges randomly within the table or overload the table with
+      too many badges.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Sorting
+
+Enable the sorting function to help users organize and find data efficiently. This is especially useful since different user tasks may require different sorting orders.
+
+The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, indicated by an arrow icon, are located in the column headers and allow for ascending or descending order. For this purpose the properties `onSortChange` which handles the direction when changing and `sortDescriptor`, containing the current column and direction must be specified.
+
+To make async sorting more convenient, you can use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
+
+<ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
+
+### Handling numeric values
+
+With our formatting helper components for dates and numeric values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
+
+Also you see how to use the `align` property on the columns. With that you can set the content of a column to left, center or right.
+
+<ComponentDemo file="./table-numeric.demo.tsx" disableLabelWidth="true" />
+
+<Do>
+  <Do.Description>
+    <ul>
+      <li>Align numeric values and their header cells to the right.</li>
+      <li>Format numbers to provide tabular numeric font style.</li>
+    </ul>
+  </Do.Description>
+</Do>
+
+### Action on records
+
+Action cells are useful when you need to perform actions. For example, if you need to edit the content of a cell, you can provide an action to open a modal and edit the fields associated with the content.
+
+In this example an [`<ActionMenu>`](../overlay/menu) is used to make interaction possible. The table should only be used with one action cell at the end of the columns.
+
+<ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Only use one cell with one action at the end of the Table to call actions.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      <ul>
+        <li>Don't use two or more action cells</li>
+        <li>Don't write two or more action components in one action cell.</li>
+      </ul>
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Nested columns
+
+Nested columns can be useful in tables when you need to organize complex or hierarchical data in a more structured format. These columns can be nested, which will result in more than one header row to be created.
+
+Note the usage of `isRowHeader` in the example below. It controls which columns are included in the [accessibility name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name) for each row. By default, only the first column is included, meaning the aria label will be on the first column only.
+
+<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Keep nested columns simple to avoid overwhelming users with too much
+      information at once. Only use one level of nesting.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use multiple levels of nested columns, this can make the table
+      complex and difficult to navigate.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
 ## Props
+
+<SectionMessage>
+  <SectionMessage.Title>Hint: Dynamic Collections</SectionMessage.Title>
+  <SectionMessage.Content>
+    You don't have to hard code the table items, you could also create a dynamic
+    collection and iterate through it. You can read more about these collections
+    [here](https://react-spectrum.adobe.com/react-aria/collections.html#dynamic-collections).
+  </SectionMessage.Content>
+</SectionMessage>
 
 ### Table
 
@@ -27,109 +266,100 @@ import { Table } from '@marigold/components';
 
 ### Table.Header
 
-<PropsTable />
+<PropsTable component="Table.Header" />
 
 ### Table.Column
 
-<PropsTable component="TableColumnHeader" />
+<PropsTable component="Table.Column" />
 
 ### Table.Body
 
-<PropsTable component="TableBody" />
+<PropsTable component="Table.Body" />
 
 ### Table.Row
 
-<PropsTable component="TableRow" />
+<PropsTable component="Table.Row" />
 
 ### Table.Cell
 
-<PropsTable component="TableCell" />
+<PropsTable component="Table.Cell" />
 
-## Examples
+## Alternative components
 
-### Compact variant
+Choosing the right alternative to data tables is crucial for effectively displaying your data and enhancing user interaction. Depending on the type of data and the desired user experience, different components can offer different benefits. Here are some alternatives to data tables that might better suit your needs:
 
-In this example you can see the size `compact` from the theme b2b. It reduces the cell spacing. There is also another size, which is called `expanded`, which enlarges the cells.
+<ul>
+  <li>
+    [SelectionList](/components/collection/selectlist): Displays a list of
+    interactive items, useful to create an actionable list of related items,
+    such as a list of users.
+  </li>
+  <li>
+    [Cards](/components/content/card): Helpful if the data needs to be displayed
+    with more visual hierarchy. Keep in mind that you can't compare data in this
+    way not as good as tables, because the eyes have to move much more.
+  </li>
+  <li>
+    [List](/components/content/list): When presenting a simple, linear
+    collection of items, often with less data per item. Easy to read and
+    navigate, especially for data that doesn’t require complex organization.
+  </li>
+  <li>
+    [Grid](/components/layout/grid): Layout in a table-like structure. This
+    gives you full control over the size of the columns and rows and allows you
+    to align them according to your needs.
+  </li>
+  <li>
+    [Columns](/components/layout/columns): Create columns in one row, useful if
+    you need to align content in a table-like way with fewer rows.
+  </li>
+</ul>
 
-<ComponentDemo file="./table-compact.demo.tsx" disableLabelWidth="true" />
+Is there still not the right alternative for you please [get in touch](../../introduction/get-in-touch) with us!
 
-### Aligned Columns
+## Related
 
-In this example you can align any Table Column by using `align` property over `<Table.Column align='right'>` .
-
-<ComponentDemo file="./table-aligned.demo.tsx" disableLabelWidth="true" />
-
-### Fixed Header
-
-We can set the header of the table to be fixed while scrolling by using `stickyHeader` over `<Table stickyHeader>` .
-
-<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
-
-### Selection mode single
-
-If you have set the `selectionMode` to single, then you just can select only one row of the table.
-
-<ComponentDemo file="./table-single-mode.demo.tsx" disableLabelWidth="true" />
-
-### Selection mode multiple
-
-This example shows how to use the `selectionMode`, but with the setting that multiple checkboxes appear and you can select as many lines as you want.
-
-<ComponentDemo file="./table-multi-mode.demo.tsx" disableLabelWidth="true" />
-
-### Dynamic collections
-
-You don't have to hard code the table items, you could also create a dynamic collection and iterate through it. That's what the example shows.
-
-<ComponentDemo file="./table-dynamic.demo.tsx" disableLabelWidth="true" />
-
-### Disabled Rows
-
-You can also disable certain rows. For that all you have to do is add the property `disabledKeys` with the certain key to the table.
-
-<ComponentDemo file="./table-disabled.demo.tsx" disableLabelWidth="true" />
-
-### Sorting
-
-The options to sort are ascending or descending. For this purpose the properties (`onSortChange`, `sortDescriptor`) for sorting must be specified.
-
-<ComponentDemo file="./table-sorting.demo.tsx" disableLabelWidth="true" />
-
-### Async sorting
-
-In this example the `<Table>` is also sortable but its build async. For that you must use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
-
-<ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
-
-### Nested Columns
-
-Columns can be nested, which will result in more than one header row to be created. Note the usage of `isRowHeader` in the example below. By default, only the first column is included in the accessibility name for each row.
-
-<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
-
-### Fixed Column width
-
-In a Table you can specify the width of a column using `width` property in the `Table.Column` component, this allows you to set a fixed width for a specific columnm ensuring consistent column widths throughout the table .
-
-<ComponentDemo file="./table-column-width.demo.tsx" disableLabelWidth="true" />
-
-### Formatters
-
-We have formatting helper for dates and values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat/numericFormat), [DateFormat](../formatters/dateformat/dateFormat) for more informations.
-
-<ComponentDemo file="./table-formatters.demo.tsx" disableLabelWidth="true" />
-
-### Using input fields
-
-Example for using controlled state with input fields inside a table.
-
-<SectionMessage variant="warning">
-  <SectionMessage.Title>Avoid mutation</SectionMessage.Title>
-  <SectionMessage.Content>
-    It's best practice in React to avoid mutation cause of unpredicatable side
-    effects. For more detailed explanations see
-    [here](https://react.dev/learn/updating-objects-in-state#whats-a-mutation).
-  </SectionMessage.Content>
-</SectionMessage>
-
-<ComponentDemo file="./table-input.demo.tsx" disableLabelWidth="true" />
+<TeaserList
+  items={[
+    {
+      title: 'Recipe for Core Table',
+      href: '../../recipes/table-recipes',
+      caption: 'A recipe for a typical core table.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M1.5 5.625c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v12.75c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 18.375V5.625ZM21 9.375A.375.375 0 0 0 20.625 9h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5Zm0 3.75a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5Zm0 3.75a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5ZM10.875 18.75a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5ZM3.375 15h7.5a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375Zm0-3.75h7.5a.375.375 0 0 0 .375-.375v-1.5A.375.375 0 0 0 10.875 9h-7.5A.375.375 0 0 0 3 9.375v1.5c0 .207.168.375.375.375Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'useAsyncListData',
+      href: '../hooks-and-utils/useAsyncListData',
+      caption: 'If you need to load async data into tables.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

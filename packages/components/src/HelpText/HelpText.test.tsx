@@ -1,8 +1,6 @@
 import { screen } from '@testing-library/react';
 import { Input, Label, TextField } from 'react-aria-components';
-
 import { Theme, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { HelpText } from './HelpText';
 

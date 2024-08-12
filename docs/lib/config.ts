@@ -1,3 +1,11 @@
+// Env
+// ---------------
+export const baseUrl =
+  process.env.NEXT_PUBLIC_APP_URL ??
+  `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+
+// Config
+// ---------------
 export const siteConfig = {
   version: process.env.version,
   defaultTheme: 'core',

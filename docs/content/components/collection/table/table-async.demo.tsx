@@ -39,9 +39,11 @@ export default () => {
       aria-label="Example table with client side sorting"
       sortDescriptor={list.sortDescriptor}
       onSortChange={list.sort}
+      stretch
+      variant="linedTable"
     >
       <Table.Header>
-        <Table.Column key="name" allowsSorting>
+        <Table.Column key="name" allowsSorting width="2/5">
           Name
         </Table.Column>
         <Table.Column key="height" allowsSorting>

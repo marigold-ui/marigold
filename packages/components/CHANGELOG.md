@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 9.0.1
+
+### Patch Changes
+
+- [#4056](https://github.com/marigold-ui/marigold/pull/4056) [`5d53af4`](https://github.com/marigold-ui/marigold/commit/5d53af4ef32d8f70ae8d2d84db4fbfdd60998e79) Thanks [@aromko](https://github.com/aromko)! - [DST-504]: Sorting indicator is shown only on sorted column.
+
+- [#4042](https://github.com/marigold-ui/marigold/pull/4042) [`965512c`](https://github.com/marigold-ui/marigold/commit/965512c113938cac629bb6cc518926f0d600b40f) Thanks [@sebald](https://github.com/sebald)! - feat: allow to render an empty state when collection of `<Table>` is empty
+
+- [#4039](https://github.com/marigold-ui/marigold/pull/4039) [`9598df4`](https://github.com/marigold-ui/marigold/commit/9598df4ed6ac3fa72620d3b2b41d47a451a55d79) Thanks [@sarahgm](https://github.com/sarahgm)! - chore[DST-487]: align core styles to marigold
+
+- Updated dependencies []:
+  - @marigold/system@9.0.1
+  - @marigold/icons@1.2.56
+
 ## 9.0.0
 
 ### Major Changes

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { useNumberFormatter } from '@react-aria/i18n';
 
 interface NumericFormatProps extends Intl.NumberFormatOptions {

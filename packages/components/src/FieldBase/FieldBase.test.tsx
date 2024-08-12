@@ -2,9 +2,7 @@ import { screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import React from 'react';
 import { TextField } from 'react-aria-components';
-
 import { Theme, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { FieldBase } from './FieldBase';
 

@@ -1,5 +1,4 @@
 import { CalendarDate } from '@internationalized/date';
-
 import { useDateFormatter } from '@react-aria/i18n';
 
 export function useFormattedMonths(

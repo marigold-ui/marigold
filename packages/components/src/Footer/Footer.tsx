@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-
 import { useClassNames } from '@marigold/system';
 import { HtmlProps } from '@marigold/types';
 

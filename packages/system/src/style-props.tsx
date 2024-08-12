@@ -600,7 +600,7 @@ export type AlignmentProp = {
 };
 export type CursorProp = {
   /**
-   * Set the cursor for the element.
+   * Set the cursor for the element. You can see allowed tokens [here](https://tailwindcss.com/docs/cursor).
    */
   cursor?: keyof typeof cursorStyle;
 };
@@ -614,14 +614,14 @@ export type FontStyleProp = {
 
 export type FontWeightProp = {
   /**
-   * Set the font weight for the text element.
+   * Set the font weight for the text element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#typography).
    */
   weight?: keyof typeof fontWeight;
 };
 
 export type FontSizeProp = {
   /**
-   * Set the font size for the text element.
+   * Set the font size for the text element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#typography).
    */
   fontSize?: keyof typeof textSize;
 };
@@ -633,16 +633,9 @@ export type GridColsAlignProp = {
   align?: keyof typeof gridColsAlign;
 };
 
-export type GridColumn = {
-  /**
-   * Set the alignment of a grid column.
-   */
-  align?: keyof typeof gridColumn;
-};
-
 export type GapSpaceProp = {
   /**
-   * The space between the children.
+   * The space between the children. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).
    */
   space?: keyof typeof gapSpace;
 };
@@ -656,56 +649,56 @@ export type ObjectFitProp = {
 
 export type ObjectPositionProp = {
   /**
-   * Set the object-position property for the element.
+   * Set the object-position property for the element. You can see allowed tokens [here](https://tailwindcss.com/docs/object-position).
    */
   position?: keyof typeof objectPosition;
 };
 
 export type PaddingSpaceProp = {
   /**
-   * Set the padding space for the element.
+   * Set the padding space for the element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).
    */
   space?: keyof typeof paddingSpace;
 };
 
 export type PaddingSpacePropX = {
   /**
-   * Set the horizontal padding space for the element.
+   * Set the horizontal padding space for the element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).
    */
   spaceX?: keyof typeof paddingSpaceX;
 };
 
 export type PaddingSpacePropY = {
   /**
-   * Set the vertical padding space for the element.
+   * Set the vertical padding space for the element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).
    */
   spaceY?: keyof typeof paddingSpaceY;
 };
 
 export type PaddingRightProp = {
   /**
-   * Set the right padding for the element.
+   * Set the right padding for the element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).
    */
   pr?: keyof typeof paddingRight;
 };
 
 export type PaddingLeftProp = {
   /**
-   * Set the left padding for the element.
+   * Set the left padding for the element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).
    */
   pl?: keyof typeof paddingLeft;
 };
 
 export type PaddingTopProp = {
   /**
-   * Set the top padding for the element.
+   * Set the top padding for the element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).
    */
   pt?: keyof typeof paddingTop;
 };
 
 export type PaddingBottomProp = {
   /**
-   * Set the bottom padding for the element.
+   * Set the bottom padding for the element. You can see allowed tokens [here](../../introduction/design-tokens?theme=core#spacing).
    */
   pb?: keyof typeof paddingBottom;
 };
@@ -726,14 +719,14 @@ export type TextAlignProp = {
 
 export type WidthProp = {
   /**
-   * Set the width of the element.
+   * Sets the width of the field. You can see allowed tokens [here](https://tailwindcss.com/docs/width).
    */
   width?: keyof typeof width;
 };
 
 export type HeightProp = {
   /**
-   * Set the height of the element.
+   * Set the height of the element. You can see allowed tokens [here](https://tailwindcss.com/docs/height).
    */
   height?: keyof typeof height;
 };

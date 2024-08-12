@@ -5,14 +5,10 @@ import {
   isValidElement,
   useRef,
 } from 'react';
-
 import { AriaAccordionProps, useAccordion } from '@react-aria/accordion';
-
 import { Item } from '@react-stately/collections';
 import { useTreeState } from '@react-stately/tree';
-
 import { ItemElement, ItemProps, SelectionMode } from '@react-types/shared';
-
 import { AccordionItem } from './AccordionItem';
 
 export interface AccordionProps

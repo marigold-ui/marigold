@@ -1,7 +1,5 @@
 import React, { forwardRef } from 'react';
-
 import { HtmlProps } from '@marigold/types';
-
 import { useTheme } from '../../hooks';
 import { cn, createVar, getColor } from '../../utils';
 

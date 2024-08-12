@@ -1,8 +1,6 @@
-import { Menu, MenuTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Menu, MenuTrigger } from 'react-aria-components';
 import { SVG, useClassNames } from '@marigold/system';
-
 import { Button } from '../Button';
 import { Popover } from '../Overlay/Popover';
 

@@ -23,6 +23,7 @@ export const inputSpacing = {
 // States
 // ---------------
 export const inputFocus = '';
-export const inputDisabled = '';
+export const inputDisabled =
+  'disabled:cursor-not-allowed disabled:text-text-disabled disabled:bg-bg-disabled';
 export const inputError = '';
 export const inputHover = '';

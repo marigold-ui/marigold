@@ -1,8 +1,6 @@
-import { Section } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Section } from 'react-aria-components';
 import { cn } from '@marigold/system';
-
 import { useListBoxContext } from './Context';
 
 export interface SectionProps

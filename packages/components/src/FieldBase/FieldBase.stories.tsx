@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Checkbox, CheckboxGroup } from '../Checkbox';
 import { Radio } from '../Radio';
 import { RadioGroup } from '../Radio/RadioGroup';
 import { Select } from '../Select';
 import { TextField } from '../TextField';
-import { FieldBase } from './FieldBase';
 import type { FieldBaseProps } from './FieldBase';
+import { FieldBase } from './FieldBase';
 import { FieldGroup } from './FieldGroup';
 
 const meta = {

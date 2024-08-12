@@ -1,10 +1,8 @@
 import type { ReactNode } from 'react';
 import { forwardRef } from 'react';
-import { Checkbox } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Checkbox } from 'react-aria-components';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
-
 import { useFieldGroupContext } from '../FieldBase';
 import { CheckboxField } from './CheckBoxField';
 import { useCheckboxGroupContext } from './Context';

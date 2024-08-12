@@ -21,8 +21,8 @@ export const iterateTokens = (colors: NestedStringObject, prefix = '') => {
 
 const getKeys = (schema: ConfigSchema) => {
   return {
-    variant: schema?.variant && Object.keys(schema?.variant),
-    size: schema?.size && Object.keys(schema?.size),
+    variant: schema?.variant ? Object.keys(schema?.variant) : [],
+    size: schema?.size ? Object.keys(schema?.size) : [],
   };
 };
 
@@ -52,6 +52,6 @@ export const getAppearance = (
     'variants' in styles
       ? getKeys(styles.variants as ConfigSchema)
       : getKeysFromSlots(styles);
-
+  console.log(appearances);
   return appearances;
 };

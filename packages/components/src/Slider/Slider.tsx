@@ -6,14 +6,12 @@ import {
   SliderThumb,
   SliderTrack,
 } from 'react-aria-components';
-
 import {
   WidthProp,
   cn,
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
-
 import { Label } from '../Label';
 
 export interface SliderProps<T>

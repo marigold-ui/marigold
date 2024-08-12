@@ -3,7 +3,13 @@ import type { ReactNode } from 'react';
 // Props
 // ---------------
 export interface GridAreaProps {
+  /**
+   * Name of the grid area slot to put the component.
+   */
   name: string;
+  /**
+   * Children of the component.
+   */
   children?: ReactNode;
 }
 

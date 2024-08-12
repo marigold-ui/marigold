@@ -1,7 +1,10 @@
-import { Button } from '@marigold/components';
+import { Button, Inline, Link } from '@marigold/components';
 
 export default () => (
-  <Button as="a" variant="primary" href="/rx-logo.png" download>
-    Download Logo
-  </Button>
+  <Inline space={2} alignY="center" alignX="center">
+    <Button variant="primary">Save</Button>
+    <Link variant="secondary" href="#">
+      Cancel
+    </Link>
+  </Inline>
 );

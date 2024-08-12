@@ -1,22 +1,17 @@
-import type { ReactNode } from 'react';
-import { useRef } from 'react';
-
+import { ReactNode, useRef } from 'react';
 import { AriaTableProps, useTable } from '@react-aria/table';
-
 import {
   TableBody as Body,
   Cell,
   Column,
   ColumnProps as ColumnBaseProps,
   TableHeader as Header,
-  RowProps as ReactAiaRowProps,
+  RowProps as ReactAriaRowProps,
   Row,
   TableStateProps,
   useTableState,
 } from '@react-stately/table';
-
 import { WidthProp, cn, useClassNames } from '@marigold/system';
-
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
@@ -30,11 +25,13 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 // Props
 // ---------------
 export interface TableProps
-  extends Pick<
-      AriaTableProps<object>,
-      'focusMode' | 'onRowAction' | 'onCellAction'
-    >,
-    Omit<TableStateProps<object>, 'showSelectionCheckboxes'> {
+  extends Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
+    Omit<
+      TableStateProps<object>,
+      | 'showSelectionCheckboxes'
+      | 'showDragButtons'
+      | 'allowDuplicateSelectionEvents'
+    > {
   variant?: string;
   size?: string;
 
@@ -172,7 +169,7 @@ Table.Column = Column as (props: ColumnProps) => JSX.Element;
 Table.Header = Header;
 Table.Row = Row;
 
-export interface RowProps extends ReactAiaRowProps<any> {
+export interface RowProps extends ReactAriaRowProps<any> {
   variant?: string;
   size?: string;
 }

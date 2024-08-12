@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Tag } from '@marigold/components';
 
 export default () => {

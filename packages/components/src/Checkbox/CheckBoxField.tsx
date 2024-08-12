@@ -1,5 +1,4 @@
 import { type ReactNode } from 'react';
-
 import { createVar, useClassNames } from '@marigold/system';
 
 export interface CheckboxFieldProps {

@@ -1,14 +1,11 @@
 import type { ReactNode } from 'react';
-import { CheckboxGroup } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { CheckboxGroup } from 'react-aria-components';
 import { Orientation } from '@react-types/shared';
-
-import { cn, useClassNames } from '@marigold/system';
 import type { WidthProp } from '@marigold/system';
-
-import { FieldBase } from '../FieldBase/FieldBase';
+import { cn, useClassNames } from '@marigold/system';
 import type { FieldBaseProps } from '../FieldBase/FieldBase';
+import { FieldBase } from '../FieldBase/FieldBase';
 import { CheckboxGroupContext } from './Context';
 
 // Props

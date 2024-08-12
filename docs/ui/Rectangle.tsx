@@ -2,13 +2,18 @@ import type { ReactNode } from 'react';
 
 export interface RectangleProps {
   height?: string;
+  width?: string;
   children?: ReactNode;
 }
 
-export const Rectangle = ({ children, height }: RectangleProps) => (
+export const Rectangle = ({
+  children,
+  height,
+  width = '100%',
+}: RectangleProps) => (
   <div
-    className="w-full rounded-sm bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] shadow"
-    style={{ height: height }}
+    className="border-border bg-bg-body rounded-sm border-2 border-dashed"
+    style={{ height: height, width: width }}
   >
     {children}
   </div>

@@ -10,7 +10,6 @@ import {
   textSize,
   textStyle,
 } from '@/ui';
-
 import { useThemeSwitch } from './ThemeSwitch';
 
 export const Headlines = () => {
@@ -44,7 +43,7 @@ export const Headlines = () => {
                     <MarigoldProvider
                       theme={(current && themes[current]) as Theme}
                     >
-                      <div className="align-center flex bg-white ">
+                      <div className="align-center flex bg-white">
                         <Headline size={level}>
                           Discover the Beauty of Marigold
                         </Headline>

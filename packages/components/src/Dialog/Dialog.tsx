@@ -1,9 +1,7 @@
 import { useContext } from 'react';
-import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-
 import { Headline, HeadlineProps } from '../Headline';
 import { DialogTrigger } from './DialogTrigger';
 

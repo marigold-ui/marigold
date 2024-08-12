@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-
 import { Grid } from './Grid';
 
 test('default space is "0"', () => {

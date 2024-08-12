@@ -4,9 +4,7 @@
 import { CalendarDate } from '@internationalized/date';
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { Theme, cva } from '@marigold/system';
-
 import { setup } from '../test.utils';
 import { DatePicker } from './DatePicker';
 

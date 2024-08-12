@@ -1,5 +1,4 @@
 import { Children, type ReactElement } from 'react';
-
 import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
 import { NonZeroPercentage } from '@marigold/types';
 

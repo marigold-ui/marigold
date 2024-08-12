@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-
 import { AspectProp, aspect, cn, createVar } from '@marigold/system';
 
 export interface AspectProps extends AspectProp {

@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Modal } from 'react-aria-components';
-
 import { Underlay } from './Underlay';
 
 // Props

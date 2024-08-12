@@ -1,5 +1,4 @@
 import { ThemeComponent, cva } from '@marigold/system';
-
 import { inputDisabled, inputError } from './Input.styles';
 
 export const TextArea: ThemeComponent<'TextArea'> = cva([

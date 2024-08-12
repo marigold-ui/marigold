@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
   table: cva([
-    ' my-0 w-full table-fixed overflow-hidden rounded-lg bg-white/40 text-sm',
+    'w-full overflow-hidden rounded-lg bg-white/40 text-sm',
     'border-secondary-200 border-separate border-spacing-0 border',
   ]),
   header: cva('px-3 pb-2 pt-3 text-start'),

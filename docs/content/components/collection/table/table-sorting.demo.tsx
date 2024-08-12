@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-
 import { SortDescriptor } from '@react-types/shared';
-
 import { Table } from '@marigold/components';
 
 export interface Data {

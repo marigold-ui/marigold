@@ -3,7 +3,6 @@ import { CalendarDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { DateValue } from 'react-aria-components';
-
 import { Calendar } from './Calendar';
 
 const meta = {

@@ -1,5 +1,4 @@
 import { I18nProvider } from '@react-aria/i18n';
-
 import { DateFormat } from '@marigold/system';
 
 export default () => {

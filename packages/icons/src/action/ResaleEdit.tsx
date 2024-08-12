@@ -1,5 +1,4 @@
 import React, { forwardRef } from 'react';
-
 import { SVG, SVGProps } from '@marigold/system';
 
 export const ResaleEdit = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (

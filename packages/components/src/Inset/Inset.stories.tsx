@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-
 import { Inset } from '../Inset';
 
 const meta = {

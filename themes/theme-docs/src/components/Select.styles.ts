@@ -1,6 +1,10 @@
 import { ThemeComponent, cva } from '@marigold/system';
-
-import { inputBackground, inputBox, inputSpacing } from './Input.styles';
+import {
+  inputBackground,
+  inputBox,
+  inputDisabled,
+  inputSpacing,
+} from './Input.styles';
 
 export const Select: ThemeComponent<'Select'> = {
   icon: cva('text-secondary-400', {
@@ -19,7 +23,7 @@ export const Select: ThemeComponent<'Select'> = {
       size: 'default',
     },
   }),
-  select: cva([inputBox, inputBackground, 'outline-none'], {
+  select: cva([inputBox, inputBackground, inputDisabled, 'outline-none'], {
     variants: {
       variant: {
         default: 'gap-2',

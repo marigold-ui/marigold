@@ -1,7 +1,6 @@
 import deepmerge from 'deepmerge';
 import plugin from 'tailwindcss/plugin';
 import type { Config, OptionalConfig } from 'tailwindcss/types/config';
-
 import { defaultTheme } from '@marigold/system';
 
 export const createPreset = (config: Partial<OptionalConfig>) =>

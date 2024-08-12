@@ -1,8 +1,6 @@
-import { Tabs } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { Tabs } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-
 import { TabContext } from './Context';
 import { Tab } from './Tab';
 import { TabList } from './TabList';

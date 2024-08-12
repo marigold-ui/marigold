@@ -1,9 +1,7 @@
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { TextArea, TextField } from 'react-aria-components';
-
 import { WidthProp, useClassNames } from '@marigold/system';
-
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 
 // Props

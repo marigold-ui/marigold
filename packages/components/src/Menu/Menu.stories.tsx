@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Key } from '@react-types/shared';
-
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';

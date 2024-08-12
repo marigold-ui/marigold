@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { Heading } from 'react-aria-components';
-
 import {
   TextAlignProp,
   cn,
@@ -19,7 +18,7 @@ export interface HeadlineProps extends TextAlignProp {
   variant?: string;
   size?: string;
   /**
-   * Set a different level from theme, values are from 1 - 6.
+   * Set a different level.
    */
   level?: '1' | '2' | '3' | '4' | '5' | '6' | 1 | 2 | 3 | 4 | 5 | 6;
   /**

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-
 import { SearchField } from './SearchField';
 
 const meta = {

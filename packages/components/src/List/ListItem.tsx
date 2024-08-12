@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
-
 import { useListContext } from './Context';
 
 export interface ListItemProps {
+  /**
+   * Children of the component.
+   */
   children?: ReactNode;
 }
 

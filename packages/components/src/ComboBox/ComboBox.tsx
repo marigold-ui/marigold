@@ -1,14 +1,12 @@
-import { forwardRef } from 'react';
 import type {
   ForwardRefExoticComponent,
   ReactNode,
   RefAttributes,
 } from 'react';
-import { ComboBox } from 'react-aria-components';
+import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-
+import { ComboBox } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
 import { FieldBase, FieldBaseProps } from '../FieldBase';

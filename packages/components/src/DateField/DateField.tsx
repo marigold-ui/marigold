@@ -1,11 +1,8 @@
 import { ReactElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { DateField, DateValue } from 'react-aria-components';
-
 import { WidthProp } from '@marigold/system';
-
-import { FieldBaseProps } from '../FieldBase';
-import { FieldBase } from '../FieldBase';
+import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { DateInput } from './DateInput';
 
 type RemovedProps =

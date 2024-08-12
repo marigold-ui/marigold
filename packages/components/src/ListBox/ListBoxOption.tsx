@@ -1,6 +1,5 @@
-import { ListBoxItem } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-
+import { ListBoxItem } from 'react-aria-components';
 import { useListBoxContext } from './Context';
 
 export interface ListBoxItemProps

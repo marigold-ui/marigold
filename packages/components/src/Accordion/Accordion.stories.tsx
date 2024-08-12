@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
-
 import { Badge } from '../Badge';
 import { Columns } from '../Columns';
 import { FieldGroup } from '../FieldBase';

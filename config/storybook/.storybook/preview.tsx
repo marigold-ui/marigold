@@ -1,7 +1,6 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
 import 'tailwindcss/tailwind.css';
-
 import {
   FieldGroup,
   MarigoldProvider,
