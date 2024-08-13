@@ -1,21 +1,38 @@
 ---
 title: Checkbox
 caption: Component to select one or more options.
+badge: updated
 ---
 
 The `<Checkbox>` component allows users to select one or more options from a set of options. In order to group multiple checkboxes, use the `<CheckboxGroup>` component.
 
-There are several props for the `<Checkbox>` and the `<CheckboxGroup>`.
+There are several props for the `<Checkbox>` and the `<CheckboxGroup>`, allowing customization of behavior, appearance, and accessibility.
 
-You don't have to click on the `<Checkbox>` itself, you can also just click on the label next to the box.
+You don't have to click on the `<Checkbox>` itself, you can also just click on the label next to the box, making it more user-friendly and accessible.
 
-## Import
+The `<Checkbox>` component supports both controlled and uncontrolled states, giving you flexibility in how you manage the selection.
 
-```tsx
-import { Checkbox, CheckboxGroup } from '@marigold/components';
-```
+## Anatomy
+
+The checkbox component is comprised of a checkbox label and a checkbox input. If there is a group of checkboxes, a group label can be added.
+
+<Image
+  src="/checkbox/checkbox-anatomy.jpg"
+  alt="Anatomy of a checkbox"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Group label:** Communicates what needs to be selected below.
+
+- **Radio button input:** A checkbox input indicating the appropriate state. By default it is unselected.
+
+- **Radio button label:** Describes the information you want to select or unselect.
 
 ## Appearance
+
+<AppearanceDemo component={title} />
 
 <AppearanceTable component={title} />
 
