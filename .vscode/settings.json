@@ -1,7 +1,7 @@
 {
   "[mdx]": {
     "editor.wordWrap": "bounded",
-    "editor.wordWrapColumn": 90
+    "editor.wordWrapColumn": 80
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",

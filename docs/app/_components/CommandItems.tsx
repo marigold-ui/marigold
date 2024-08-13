@@ -37,12 +37,12 @@ interface CommandItemProps {
 }
 
 interface ChangeThemeItemProps extends CommandItemProps {
-  setOpen: Dispatch;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }
 interface PagesItemProps extends CommandItemProps {
   name: string;
-  setOpen: Dispatch;
-  setPages: Dispatch;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  setPages: Dispatch<SetStateAction<[]>>;
   subPage: string;
   items: {
     title: string;
@@ -106,7 +106,7 @@ export const TokenItem = ({ classNames }: CommandItemProps) => {
 
 export const IconItem = ({ classNames }: CommandItemProps) => {
   const ref = useRef<SVGSVGElement>();
-  const getIcon = (icon: keyof typeof Icons, ref: RefObject) => {
+  const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
     const Component = Icons[icon];
     const iconElement = <Component ref={ref} />;
     const svg = ReactDOMServer.renderToString(<Component ref={ref} />);
