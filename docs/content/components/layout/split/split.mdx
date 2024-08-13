@@ -1,33 +1,33 @@
 ---
 title: Split
-caption: Component that creates spacing between two elements.
+caption: Component that creates spacing between two flex elements.
+badge: updated
 ---
 
-`<Split>` is a layout component that allows to split the contents of [`<Inline>`](/components/inline/) and [`<Stack>`](/component/stack/) layouts.
-It should be used if you need to create spacing between elements.
+The `<Split>` behaves as an addition to the [`<Inline>`](/components/inline/) and [`<Stack>`](/component/stack/) components. It creates an empty div between two elements with the CSS Flexbox grow class. With that it allows you to split the contents of two elements inside a flex context.
 
-The component behaves like the common used `flex-grow` attribute.
+## Usage
 
-## Import
+Use the `<Split>` whenever you need to divide elements of a stack or inline into two. It can serve as an alternative to two nested stacks or inlines.
 
-```tsx
-import { Split } from '@marigold/components';
-```
+You of course can also apply the split in any other flexbox context. But we recommend to use it with our given components.
 
-## Props
-
-<PropsTable component={title} />
-
-## Examples
-
-### With Inline
+### With inline
 
 You can see below how to use the `<Split>` within the `<Inline>`.
+To use the split with the inline correctly you have to set the inline as parent and add the split between the two elements you want to seperate.
+With that you can provide as much space as given between the two children.
 
 <ComponentDemo file="./split-inline.demo.tsx" />
 
-### With Stack
+### With stack
 
-That example shows how to use the `<Split>` within the `<Stack>`.
+The same that goes for the inline is also possible with the stack component. You have to set the split as child inside of the stack between two other children.
 
 <ComponentDemo file="./split-stack.demo.tsx" />
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
