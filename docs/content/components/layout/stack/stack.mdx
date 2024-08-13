@@ -12,6 +12,8 @@ Use the stack component in combination with other layout components to easily [c
 
 The use of `<Stack>` is recommended if you have two or more elements that must be the same distance apart. For the space you have to use our supported [space values](../../introduction/design-tokens#spacing).
 
+In this example you can see, the space prop ensures that each child is separated by the same space which maintains visual consistency.
+
 <ComponentDemo file="./stack-spacing.demo.tsx" />
 
 Together with a [`<Split>`](../layout/split) you can use the `<Stack>` to create as much space as given between two elements while staying in the stack layout.
@@ -41,6 +43,10 @@ Sometimes you may need complexer layouts to arrange your elements, with the stac
 <StorybookHintMessage component={title} />
 
 <PropsTable component={title} />
+
+## Alternative components
+
+If you need to have the elements displayed in a row you should use our [inline component](../layout/inline).
 
 ## Related
 
