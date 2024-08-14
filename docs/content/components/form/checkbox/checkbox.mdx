@@ -26,9 +26,9 @@ The checkbox component is comprised of a checkbox label and a checkbox input. If
 
 - **Group label:** Communicates what needs to be selected below.
 
-- **Radio button input:** A checkbox input indicating the appropriate state. By default it is unselected.
+- **Checkbox input:** A checkbox input indicating the appropriate state. By default it is unselected.
 
-- **Radio button label:** Describes the information you want to select or unselect.
+- **Checkbox label:** Describes the information you want to select or unselect.
 
 ## Appearance
 
@@ -41,6 +41,117 @@ The checkbox component is comprised of a checkbox label and a checkbox input. If
 Checkboxes are used when there are multiple items to select in a list. Each checkbox works independently from other checkboxes in the list, therefore checking an additional box does not affect any other selections. Users can select zero, one, or any number of items.
 
 Checkboxes are particularly useful in settings where users need to make non-exclusive selections. They provide a clear and straightforward way to toggle options on or off. When used in a group, they can help simplify complex decision-making processes. Additionally, checkboxes can be combined with other form elements, such as dropdowns to create more dynamic and interactive forms.
+
+### Selecting options
+
+If a user can select only one option from a list, radio buttons should be used instead of checkboxes because checkboxes allow the user to select multiple items in a set whereas radio buttons allow the user to select only one option.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/checkbox/checkbox-do-select.jpg"
+        alt="Do use radio buttons when only one item can be selected."
+      />
+    </Do.Figure>
+    <Do.Description>
+        Do use radio buttons when only one item can be selected.
+    </Do.Description>
+
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/checkbox/checkbox-dont-select.jpg"
+        alt="Don't use checkboxes when only one item can be selected."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+        Don't use checkboxes when only one item can be selected.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Overflow content
+
+We recommend checkbox labels being fewer than three words because shorter checkbox labels improve readability and reduce cognitive load, making it easier for users to quickly understand and select options. This enhances the overall user experience, especially on small screens.
+
+If you are tight on space, consider rewording the label. Do not truncate checkbox label text with an ellipsis.
+
+Long labels may wrap to a second line, and this is preferable to truncation.
+Text should wrap beneath the checkbox.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-do-multipleline.jpg"
+        alt="If the label is long, wrap to a second line."
+      />
+    </Do.Figure>
+    <Do.Description>
+      If the label is long, wrap to a second line.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-dont-multipleline.jpg"
+        alt="Do not truncate checkbox label text with an ellipsis."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Do not truncate checkbox label text with an ellipsis.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Long lists of options
+
+If you have number of options is moderate to large, typically more than 10-15 options use checkbox, but if the options is too large , then use [Multiple Selection Pattern](/patterns/multiple-selection/link) because it minimizes the screen clutter by displaying only the selected items, keeping the interface clean and user-friendly.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/checkbox/checkbox-do-long-options.jpg"
+        alt="Use Multiple selection pattern with long options."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use Multiple selection pattern with long options.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/checkbox/checkbox-dont-long-options.jpg"
+        alt="Don't use checkbox with long list of options."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use checkbox with long list of options.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ## Props
 
