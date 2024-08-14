@@ -2,15 +2,15 @@ import { Radio } from '@marigold/components';
 
 export default () => (
   <Radio.Group
-    label="Radio Group"
+    label="Select Your Parking Option"
     error
-    errorMessage="Oh no! An error occured."
+    errorMessage="Please choose a valid parking option."
   >
-    <Radio value="1">Option 1</Radio>
-    <Radio value="2">Option 2</Radio>
-    <Radio value="3" disabled>
-      Option 3
+    <Radio value="standardParking">🚗 Standard Parking</Radio>
+    <Radio value="premiumParking">🌟 Premium Parking</Radio>
+    <Radio value="valetParking" disabled>
+      🚗 Valet Parking (Unavailable)
     </Radio>
-    <Radio value="4">Option 4</Radio>
+    <Radio value="accessibleParking">♿ Accessible Parking</Radio>
   </Radio.Group>
 );
