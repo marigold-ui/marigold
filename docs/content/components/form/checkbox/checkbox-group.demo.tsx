@@ -11,9 +11,10 @@ export default () => {
         description="Select the activities you'd like to participate in"
       >
         <Checkbox value="concerts">🎸 Concerts</Checkbox>
-        <Checkbox value="workshops">🎨 Workshops</Checkbox>
         <Checkbox value="meetups">🤝 Meetups</Checkbox>
-        <Checkbox value="tours">🚌 Guided Tours</Checkbox>
+        <Checkbox value="tours" disabled>
+          🚌 Guided Tours
+        </Checkbox>
         <Checkbox value="dining">🍽️ Dining Experiences</Checkbox>
         <Checkbox value="exhibitions">🖼️ Art Exhibitions</Checkbox>
         <Checkbox value="sports">⚽ Sports Events</Checkbox>
