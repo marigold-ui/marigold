@@ -54,13 +54,9 @@ test('supports height prop', () => {
 });
 
 test('no align set', () => {
-  render(
-    <Breakout alignY="none" alignX="none" height="200px">
-      breakout
-    </Breakout>
-  );
+  render(<Breakout height="200px">breakout</Breakout>);
   const breakout = screen.getByText(/breakout/);
   expect(breakout.className).toMatchInlineSnapshot(
-    `"col-start-[1_!important] col-end-[-1_!important] w-full flex h-[--height]"`
+    `"col-start-[1_!important] col-end-[-1_!important] w-full justify-start items-center flex h-[--height]"`
   );
 });
