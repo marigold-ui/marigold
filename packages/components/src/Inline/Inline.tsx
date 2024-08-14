@@ -10,10 +10,12 @@ export interface InlineProps extends GapSpaceProp {
   children?: ReactNode;
   /**
    * Horizontal alignment of the items inside the element.
+   * @default left
    */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
   /**
    * Vertical alignment of the items inside the element.
+   * @default center
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
 }
@@ -22,8 +24,8 @@ export interface InlineProps extends GapSpaceProp {
 // ---------------
 export const Inline = ({
   space = 0,
-  alignX,
-  alignY,
+  alignX = 'left',
+  alignY = 'center',
   children,
   ...props
 }: InlineProps) => (
