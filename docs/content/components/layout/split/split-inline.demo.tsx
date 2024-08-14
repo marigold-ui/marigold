@@ -1,10 +1,12 @@
 import { Inline, Split, Text } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
   <Inline space={2}>
-    <Text>Blog</Text>
-    <Text>About</Text>
+    <Rectangle width="50px" height="30px" />
+    <Rectangle width="50px" height="30px" />
+    <Rectangle width="50px" height="30px" />
     <Split />
-    <Text>Login</Text>
+    <Rectangle width="50px" height="30px" />
   </Inline>
 );
