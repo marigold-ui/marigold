@@ -18,13 +18,11 @@ export interface StackProps extends GapSpaceProp {
 
   /**
    * Horizontal alignment for the children.
-   * @default left
    */
   alignX?: keyof typeof alignment.vertical.alignmentX;
 
   /**
    * Vertical alignment for the children.
-   * @default top
    */
   alignY?: keyof typeof alignment.vertical.alignmentY;
 }
@@ -35,8 +33,8 @@ export const Stack = ({
   children,
   space = 0,
   stretch = false,
-  alignX = 'left',
-  alignY = 'top',
+  alignX,
+  alignY,
   ...props
 }: StackProps) => {
   return (

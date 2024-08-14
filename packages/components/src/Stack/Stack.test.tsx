@@ -23,19 +23,17 @@ test('uses spacing from theme', () => {
     </Stack>
   );
   const first = screen.getByText(/first/).parentElement;
-  expect(first?.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-2 items-start justify-start"`
-  );
+  expect(first?.className).toMatchInlineSnapshot(`"flex flex-col gap-2"`);
 });
 
-test('children are aligned by default', () => {
+test('children are not aligned by default', () => {
   render(
     <Stack data-testid="stack">
       <p>first</p>
     </Stack>
   );
   const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass('justify-start items-start');
+  expect(stack).not.toHaveClass('justify-start items-start');
 });
 
 test('allows to align children to the left', () => {
@@ -46,7 +44,7 @@ test('allows to align children to the left', () => {
   );
   const stack = screen.getByTestId('stack');
   expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-start justify-start"`
+    `"flex flex-col gap-0 items-start"`
   );
 });
 
@@ -58,7 +56,7 @@ test('allows to align children to the center', () => {
   );
   const stack = screen.getByTestId('stack');
   expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-center justify-start"`
+    `"flex flex-col gap-0 items-center"`
   );
 });
 
@@ -70,7 +68,7 @@ test('allows to align children to the right', () => {
   );
   const stack = screen.getByTestId('stack');
   expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-end justify-start"`
+    `"flex flex-col gap-0 items-end"`
   );
 });
 
@@ -82,7 +80,7 @@ test('allows to align children to the vertical top', () => {
   );
   const stack = screen.getByTestId('stack');
   expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-start justify-start"`
+    `"flex flex-col gap-0 justify-start"`
   );
 });
 
@@ -94,7 +92,7 @@ test('allows to align children to the vertical center', () => {
   );
   const stack = screen.getByTestId('stack');
   expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-start justify-center"`
+    `"flex flex-col gap-0 justify-center"`
   );
 });
 
@@ -106,7 +104,7 @@ test('allows to align children to the bottom', () => {
   );
   const stack = screen.getByTestId('stack');
   expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-start justify-end"`
+    `"flex flex-col gap-0 justify-end"`
   );
 });
 
