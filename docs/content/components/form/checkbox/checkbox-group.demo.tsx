@@ -16,9 +16,6 @@ export default () => {
         <Checkbox value="tours">🚌 Guided Tours</Checkbox>
         <Checkbox value="dining">🍽️ Dining Experiences</Checkbox>
         <Checkbox value="exhibitions">🖼️ Art Exhibitions</Checkbox>
-        <Checkbox value="markets">🛍️ Local Markets</Checkbox>
-        <Checkbox value="camping">🏕️ Camping Spots</Checkbox>
-        <Checkbox value="parades">🎉 Parades</Checkbox>
         <Checkbox value="sports">⚽ Sports Events</Checkbox>
       </CheckboxGroup>
       <hr />
