@@ -16,7 +16,8 @@ type RemovedProps =
   | 'isInvalid'
   | 'isReadOnly'
   | 'value'
-  | 'defaultValue';
+  | 'defaultValue'
+  | 'slot';
 
 export interface TextFieldProps
   extends Omit<RAC.TextFieldProps, RemovedProps>,
