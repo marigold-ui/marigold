@@ -1,4 +1,4 @@
-import { Inline, Split, Text } from '@marigold/components';
+import { Inline, Split } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
