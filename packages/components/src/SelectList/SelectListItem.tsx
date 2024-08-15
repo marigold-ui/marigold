@@ -12,12 +12,16 @@ export interface SelectListItemProps
 const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
   ({ children, ...props }, ref) => {
     let textValue = typeof children === 'string' ? children : undefined;
+
     const { classNames } = useSelectListContext();
     return (
       <SelectListItem
         textValue={textValue}
         {...props}
-        className={cn('flex items-center', classNames?.option)}
+        className={cn(
+          'items-center group-data-[layout=grid]/list:flex-row',
+          classNames?.option
+        )}
         ref={ref as Ref<HTMLDivElement>}
       >
         {({ selectionMode }) => (
