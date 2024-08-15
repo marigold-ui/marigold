@@ -33,7 +33,7 @@
     "typescript": "5.5.4",
     "zx": "8.1.4",
     "@parcel/watcher": "2.4.1",
-    "autoprefixer": "10.4.19",
+    "autoprefixer": "10.4.20",
     "concurrently": "8.2.2",
     "next": "14.2.5",
     "postcss-import": "16.1.0",
