@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import { Link } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 
-type RemovedProps = 'className' | 'isDisabled';
+type RemovedProps = 'className' | 'isDisabled' | 'slot';
 
 export interface LinkProps extends Omit<RAC.LinkProps, RemovedProps> {
   variant?: string;
