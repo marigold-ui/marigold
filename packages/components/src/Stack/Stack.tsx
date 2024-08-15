@@ -18,13 +18,11 @@ export interface StackProps extends GapSpaceProp {
 
   /**
    * Horizontal alignment for the children.
-   * @default none
    */
   alignX?: keyof typeof alignment.vertical.alignmentX;
 
   /**
    * Vertical alignment for the children.
-   * @default none
    */
   alignY?: keyof typeof alignment.vertical.alignmentY;
 }
