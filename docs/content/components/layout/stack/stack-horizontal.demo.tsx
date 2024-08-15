@@ -1,15 +1,30 @@
-import { Stack, Text } from '@marigold/components';
+import { Divider, Stack } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
-  <>
-    <Stack space={4}>
-      <Text>Left</Text>
+  <Stack space={4}>
+    <Stack space={4} alignX="left">
+      <Rectangle height="30px" width="50px">
+        <div className="text-text-primary-muted m-auto">Left</div>
+      </Rectangle>
+      <Rectangle height="30px" width="50px" />
+      <Rectangle height="30px" width="50px" />
     </Stack>
+    <Divider />
     <Stack space={4} alignX="center">
-      <Text>Center</Text>
+      <Rectangle height="30px" width="50px">
+        <div className="text-text-primary-muted m-auto">Center</div>
+      </Rectangle>
+      <Rectangle height="30px" width="50px" />
+      <Rectangle height="30px" width="50px" />
     </Stack>
+    <Divider />
     <Stack space={4} alignX="right">
-      <Text>Right</Text>
+      <Rectangle height="30px" width="50px">
+        <div className="text-text-primary-muted m-auto">Right</div>
+      </Rectangle>
+      <Rectangle height="30px" width="50px" />
+      <Rectangle height="30px" width="50px" />
     </Stack>
-  </>
+  </Stack>
 );
