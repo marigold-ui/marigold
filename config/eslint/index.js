@@ -32,15 +32,9 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ['docs/.contentlayer/generated/ContentPage/_index.mjs'],
   overrides: [
     {
-      files: [
-        'config/**/*.js',
-        'docs/.contentlayer/**/*.mjs',
-        'docs/scripts/**/*.mjs',
-        'themes/**/*.js',
-      ],
+      files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
       rules: {
         'no-undef': 'off',
         'no-unused-vars': 'off',

@@ -1,6 +1,5 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -15,7 +14,13 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['**/dist', '**/.next', '**/out', '**/storybook-static'], // Specify directories to ignore
+    ignores: [
+      '**/dist',
+      '**/.next',
+      '**/out',
+      '**/storybook-static',
+      '**/docs/.contentlayer/**/**/*.mjs',
+    ], // Specify directories to ignore
   },
   ...compat.extends('@marigold/eslint-config'), // Extend the configuration from '@marigold/eslint-config'
 ];
