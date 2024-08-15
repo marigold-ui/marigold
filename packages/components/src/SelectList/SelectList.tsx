@@ -48,9 +48,10 @@ const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
         <div className={classNames.container}>
           <SelectList
             {...props}
+            layout="grid"
             ref={ref as Ref<HTMLDivElement>}
             className={cn(
-              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
+              'group/list overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
               classNames.list
             )}
           >
