@@ -1,12 +1,12 @@
 import { Radio } from '@marigold/components';
 
 export default () => (
-  <Radio.Group label="Choose dessert" defaultValue="apple">
-    <Radio value="cupcake">🧁 Cupcake</Radio>
-    <Radio value="ice cream">🍨 Ice Cream</Radio>
-    <Radio value="cookie" disabled>
-      🍪 Cookie (sold out)
+  <Radio.Group label="Select Your In-Flight Meal" defaultValue="vegetarian">
+    <Radio value="chicken">🍗 Chicken</Radio>
+    <Radio value="vegetarian">🥗 Vegetarian</Radio>
+    <Radio value="fish" disabled>
+      🐟 Fish (Unavailable)
     </Radio>
-    <Radio value="apple">🍎 Apple</Radio>
+    <Radio value="vegan">🌱 Vegan</Radio>
   </Radio.Group>
 );

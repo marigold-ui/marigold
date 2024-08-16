@@ -1,20 +1,29 @@
-import { Headline, Stack, Text } from '@marigold/components';
+import { Inline, Split, Stack } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
-  <Stack space={8}>
-    <Stack space={4}>
-      <Headline level={2}>Stack Content #1</Headline>
-      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-      <Text>
-        Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
-      </Text>
-    </Stack>
-    <Stack space={4}>
-      <Headline level={2}>Stack Content #2</Headline>
-      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-      <Text>
-        Phasellus ipsum tortor, aliquet dapibus fermentum in, mollis vel metus.
-      </Text>
-    </Stack>
+  <Stack space={10}>
+    <div className="border-border bg-bg-body rounded-sm border-2 border-dashed p-2">
+      <Inline space={8}>
+        <Stack space={2} stretch>
+          <Rectangle height="30px" width="100%" />
+          <Rectangle height="30px" width="100%" />
+          <Rectangle height="30px" width="100%" />
+        </Stack>
+        <Stack space={2}>
+          <Rectangle height="30px" width="70px" />
+          <Rectangle height="30px" width="70px" />
+          <Rectangle height="30px" width="70px" />
+        </Stack>
+        <Split />
+        <Stack space={2}>
+          <Rectangle height="30px" width="70px" />
+          <Rectangle height="30px" width="70px" />
+          <Rectangle height="30px" width="70px" />
+        </Stack>
+      </Inline>
+    </div>
+    <Rectangle height="50px" />
+    <Rectangle height="50px" />
   </Stack>
 );

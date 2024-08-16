@@ -472,13 +472,11 @@ export const paddingBottom = {
 export const alignment = {
   vertical: {
     alignmentX: {
-      none: undefined,
       left: 'items-start',
       center: 'items-center',
       right: 'items-end',
     },
     alignmentY: {
-      none: undefined,
       top: 'justify-start',
       center: 'justify-center',
       bottom: 'justify-end',
@@ -486,13 +484,11 @@ export const alignment = {
   },
   horizontal: {
     alignmentY: {
-      none: undefined,
       top: 'items-start',
       center: 'items-center',
       bottom: 'items-end',
     },
     alignmentX: {
-      none: undefined,
       left: 'justify-start',
       center: 'justify-center',
       right: 'justify-end',

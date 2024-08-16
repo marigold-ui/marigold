@@ -5,6 +5,8 @@ import { codeToHtml } from 'shiki';
 import { fileURLToPath } from 'url';
 import { fs, globby, path } from 'zx';
 
+/* eslint-disable no-useless-escape */
+
 console.log('📑 Generating props table...');
 
 const parser = docgen.withCustomConfig('./tsconfig.json', {
