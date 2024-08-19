@@ -40,26 +40,13 @@ Checkboxes are used when there are multiple items to select in a list. Each chec
 
 Particularly checkboxes are useful in settings where users need to make non-exclusive selections. They provide a clear and straightforward way to toggle options on or off. When used in a group, they can help simplify complex decision-making processes. Additionally, checkboxes can be combined with other form elements.
 
-### Selecting options
+### Choosing and managing options
 
 If a user can select only one option from a list, radio buttons should be used instead of checkboxes because checkboxes allow the user to select multiple items in a set whereas radio buttons allow the user to select only one option.
 
-<GuidelineTiles>
-  <Do>
-    <Do.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/checkbox/checkbox-do-select.jpg"
-        alt="Do use radio buttons when only one item can be selected."
-      />
-    </Do.Figure>
-    <Do.Description>
-        Do use radio buttons when only one item can be selected.
-    </Do.Description>
+If you have number of options is moderate to large, typically more than 10-15 options use checkbox, but if the options is too large , then use [Multiple Selection Pattern](/patterns/multiple-selection/link) because it minimizes the screen clutter by displaying only the selected items, keeping the interface clean and user-friendly.
 
-  </Do>
+<GuidelineTiles>
   <Dont>
     <Dont.Figure>
       <Image
@@ -71,7 +58,21 @@ If a user can select only one option from a list, radio buttons should be used i
       />
     </Dont.Figure>
     <Dont.Description>
-        Don't use checkboxes when only one item can be selected.
+      Don't use checkboxes when only one item can be selected.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/checkbox/checkbox-dont-long-options.jpg"
+        alt="Don't use checkbox with long list of options."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use checkbox with long list of options.
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
@@ -116,28 +117,9 @@ Text should wrap beneath the checkbox.
   </Dont>
 </GuidelineTiles>
 
-### Long lists of options
-
-If you have number of options is moderate to large, typically more than 10-15 options use checkbox, but if the options is too large , then use [Multiple Selection Pattern](/patterns/multiple-selection/link) because it minimizes the screen clutter by displaying only the selected items, keeping the interface clean and user-friendly.
-
-<Dont>
-  <Dont.Figure>
-    <Image
-      width={700}
-      height={700}
-      unoptimized
-      src="/checkbox/checkbox-dont-long-options.jpg"
-      alt="Don't use checkbox with long list of options."
-    />
-  </Dont.Figure>
-  <Dont.Description>
-    Don't use checkbox with long list of options.
-  </Dont.Description>
-</Dont>
+## Props
 
 <StorybookHintMessage component={title} />
-
-## Props
 
 ### Checkbox
 
