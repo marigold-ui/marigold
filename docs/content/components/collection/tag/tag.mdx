@@ -3,23 +3,33 @@ title: Tag
 caption: Component for categorize content
 ---
 
-A `<Tag>` is a content component. This component can be used to categorize content. They can represent keywords or people, and are grouped to describe an item or a search request.
+A `<Tag>` is a small, interactive element that displays a piece of information, typically formatted as a label or badge, it can indicate to different types, statuses, or categories .
+
+## Anatomy
+
+Tags are comprimised of container, text title and dismissable tags include an additional close icon.
+
+<Image
+  src="/tag/tag-anatomy.jpg"
+  alt="Anatomy of a tag"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Tag container:** This is primary element that holds content and icons.
+
+- **Tag label:** Short descriptive text describing the tag.
+
+- **Dismiss icon:** Optional icon to close the tag.
 
 ## Usage
 
-### Import
-
-To import the component you just have to use this code below.
-
-```tsx
-import { Tag } from '@marigold/components';
-```
-
-### Appearance
-
-<AppearanceTable component={title} />
+Tags are components that are often used to label different items, create categorization, filter data, select or deselect options.
 
 ## Props
+
+<StorybookHintMessage component={title} />
 
 ### Tag
 
