@@ -77,8 +77,6 @@ When using tags, it’s important to limit the number to avoid overwhelming the 
 
 <PropsTable component="TagGroup" />
 
-## Examples
-
 ### Tags with a label
 
 In this example we have the `<Tag>` component that has been given the `label`.
@@ -90,3 +88,16 @@ In this example we have the `<Tag>` component that has been given the `label`.
 In this example, the `<Tag>` component receives tags from a dynamic collection and can remove these tags.
 
 <ComponentDemo file="./remove-tag.demo.tsx" />
+
+## Alternative components
+
+Choosing the right alternative to radio buttons is important for providing an optimal user experience, especially when different types of selections are required. Depending on the nature of the choices and the desired interaction, the following components can serve as an alternative to radio buttons:
+
+<ul>
+  <li>
+    [Select](/components/form/select): Ideal when the user needs to choose one
+    option from moderate number of options (e.g., 5-15) to choose from. Unlike
+    radio buttons, which display all options at once, a select component can
+    hide the options until needed, saving space in the UI.
+  </li>
+</ul>
