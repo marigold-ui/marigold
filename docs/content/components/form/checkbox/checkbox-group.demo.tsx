@@ -6,18 +6,18 @@ export default () => {
   return (
     <>
       <CheckboxGroup
-        label="Choose your toppings:"
+        label="Choose your event activities:"
         onChange={setSelected}
-        description="Just click on the options"
+        description="Select the activities you'd like to participate in"
       >
-        <Checkbox value="ham">🐖 Ham</Checkbox>
-        <Checkbox value="beef" disabled>
-          🐄 Beef (out of stock)
+        <Checkbox value="concerts">🎸 Concerts</Checkbox>
+        <Checkbox value="meetups">🤝 Meetups</Checkbox>
+        <Checkbox value="tours" disabled>
+          🚌 Guided Tours
         </Checkbox>
-        <Checkbox value="tuna">🐟 Tuna</Checkbox>
-        <Checkbox value="tomatos">🍅 Tomatos</Checkbox>
-        <Checkbox value="onions">🧅 Onions</Checkbox>
-        <Checkbox value="pineapple">🍍 Pineapple</Checkbox>
+        <Checkbox value="dining">🍽️ Dining Experiences</Checkbox>
+        <Checkbox value="exhibitions">🖼️ Art Exhibitions</Checkbox>
+        <Checkbox value="sports">⚽ Sports Events</Checkbox>
       </CheckboxGroup>
       <hr />
       <pre>Selected values: {selected.join(', ')}</pre>
