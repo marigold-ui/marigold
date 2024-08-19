@@ -27,6 +27,26 @@ Tags are comprimised of container, text title and dismissable tags include an ad
 
 Tags are components that are often used to label different items, create categorization, filter data, select or deselect options.
 
+### Tag Limitations
+
+Tags should not be used as navigational elements that redirect users to entirely different pages or launch new tabs. They are meant to represent or label content within the current context and should maintain a consistent user experience without disrupting the flow by initiating significant context changes.
+
+<Dont>
+  <Dont.Figure>
+    <Image
+      width={700}
+      height={300}
+      unoptimized
+      src="/tag/tag-dont-link.jpg"
+      alt="Do not use tags as links that direct you to an entirely different page or launch you from a current experience to a separate tab"
+    />
+  </Dont.Figure>
+  <Dont.Description>
+    Do not use tags as links that direct you to an entirely different page or
+    launch you from a current experience to a separate tab
+  </Dont.Description>
+</Dont>
+
 ## Props
 
 <StorybookHintMessage component={title} />
