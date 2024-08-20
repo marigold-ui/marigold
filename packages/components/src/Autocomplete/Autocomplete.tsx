@@ -83,7 +83,8 @@ type RemovedProps =
   | 'onInputChange'
   | 'defaultValue'
   | 'validate'
-  | 'validationState';
+  | 'validationState'
+  | 'slot';
 
 export interface AutocompleteProps
   extends Omit<RAC.ComboBoxProps<object>, RemovedProps>,

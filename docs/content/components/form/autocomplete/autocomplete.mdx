@@ -1,23 +1,148 @@
 ---
 title: Autocomplete
 caption: A searchfield that displays a dynamic list of suggestions.
+badge: updated
 ---
 
-The `<Autocomplete>` component is a form element with an associated popup that enables users to select a value from a collection of suggested values. Uusers may either select one of the suggestions from the popup or type a value.
+The `<Autocomplete>` component is an input field that offers suggestions for the user's input as they type. These proposals are based on a predefined set of options.
 
-Suggestions are represented by the `<Autocomplete.Item>` component that must be used as children of the `<Autocomplete>` component.
+It also helps to reduce the effort and time required to input data and to avoid errors that can occur due to typos or misspellings. The suggestions are displayed in a combobox list, and the user can select one of the options or continue typing their own input.
 
-## Import
+## Anatomy
 
-```tsx
-import { Autocomplete } from '@marigold/components';
-```
+Autocomplete is made up of a form input field, label, and overlay of menu options. The label and description aren't required and may be visually hidden. The clear button is shown after typing starts.
 
-## Apperance
+<Image
+  src="/autocomplete/autocomplete-anatomy.jpg"
+  alt="Anatomy of table"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+<ul>
+  <li>
+    <b>Label:</b> Descriptive text guiding the user on what information is
+    required in the input field.
+  </li>
+  <li>
+    <b>Input field:</b> A text box where users can enter or edit data.
+  </li>
+  <li>
+    <b>Help text:</b> Supplementary information displayed below the input field
+    to assist users in filling out the form correctly. Can also be an
+    errormessage.
+  </li>
+  <li>
+    <b>Clear button:</b> A button that allows users to quickly remove all text
+    from the input field.
+  </li>
+  <li>
+    <b>Dropdown arrow:</b> An icon indicating that more options are available;
+    clicking it reveals a list of selectable items.
+  </li>
+  <li>
+    <b>Overlay:</b> Hold a list of all possible options which can be selected.
+  </li>
+</ul>
+
+## Appearance
+
+<AppearanceDemo component={title} />
 
 <AppearanceTable component={title} />
 
-## Props
+## Usage
+
+Use an autocomplete search field (also known as a predictive search) to help users find what they’re looking for faster.
+An autocomplete search field displays suggestions as someone types into the field, just like the Google search bar.
+It is also suitable for fields where people know what they’re looking for, e.g. country of birth, a particular event, or a particular city.
+
+<ComponentDemo file="./autocomplete-async.demo.tsx" />
+
+<Do>
+  <Do.Description>Use an `<Autocomplete>` instead of a long list.</Do.Description>
+</Do>
+
+### Text Label
+
+The label of the `<Autocomplete>` provides a clear and concise description of its purpose, making it easier for users to
+interact with the interface and understand it.
+Always display a label unless the `<Autocomplete>` is next to another component which already has a label.
+
+    <GuidelineTiles>
+      <Do>
+        <Do.Figure>
+          <Image
+            width={700}
+            height={700}
+            unoptimized
+            src="/autocomplete/autocomplete-do-label.jpg"
+            alt="Use a clear and concise text label to clarify the meaning."
+          />
+        </Do.Figure>
+        <Do.Description>
+          Use a clear and concise text label to clarify the meaning.
+        </Do.Description>
+      </Do>
+      <Dont>
+        <Dont.Figure>
+          <Image
+            width={700}
+            height={700}
+            unoptimized
+            src="/autocomplete/autocomplete-dont-label.jpg"
+            alt="Avoid using the Autocomplete without a label unless the Autocomplete is part of a complex scenario and its context is already set."
+          />
+        </Dont.Figure>
+        <Dont.Description>
+          Avoid using the Autocomplete without a label unless the Autocomplete is part of a complex scenario and its
+          context
+          is already set.
+        </Dont.Description>
+      </Dont>
+    </GuidelineTiles>
+
+    ### Item Content
+
+    Consider the width of the Autocomplete and keep the names of the options short and compact so that they fit. Long
+    item
+    names that occupy multiple lines are hard to perceive and should be avoided.
+
+    <GuidelineTiles>
+      <Do>
+        <Do.Figure>
+          <Image
+            width={700}
+            height={700}
+            unoptimized
+            src="/autocomplete/autocomplete-do-content.jpg"
+            alt="Keep the description of the options as short as possible to improve readability."
+          />
+        </Do.Figure>
+        <Do.Description>
+          Keep the description of the options as short as possible to improve readability.
+        </Do.Description>
+      </Do>
+      <Dont>
+        <Dont.Figure>
+          <Image
+            width={700}
+            height={700}
+            unoptimized
+            src="/autocomplete/autocomplete-dont-content.jpg"
+            alt="Avoid using lengthy option descriptions because the text can get truncated and users will find it difficult to read."
+          />
+        </Dont.Figure>
+        <Dont.Description>
+          Avoid using lengthy option descriptions because the text can get truncated and users will find it difficult to
+          read.
+        </Dont.Description>
+      </Dont>
+    </GuidelineTiles>
+
+    ## Props
+    <StorybookHintMessage component={title} />
 
 ### Autocomplete
 
@@ -27,24 +152,48 @@ import { Autocomplete } from '@marigold/components';
 
 <PropsTable component="ListBoxItem" />
 
-## Examples
+    ## Alternative components
 
-### Uncontrolled Usage
+    <ul>
+      <li>
+        [Combobox](/components/form/combobox): A text field that allows the user to
+        select values from a provided items array. Useful when there are mote than
+        15 options.
+      </li>
+      <li>
+        [Radio](/components/form/radio): Component which allows to select only one
+        option from a list. Use it if you have less than 5 options.
+      </li>
+      <li>
+        [Select](/components/form/select): A component with which you can choose exactly one option from a list with
+        predefined options.
+      </li>
+    </ul>
 
-The following example shows how to use the `Autocomplete` component in an uncontrolled manner. States, such as the user typing into the input or updating the suggestions, are automatically handled by the component. The `onSubmit` handler will be called when the user chooses a suggestion or submits their custom value.
+    ## Related
 
-<ComponentDemo file="./autocomplete-uncontrolled.demo.tsx" />
-
-### Controlled Usage with custom Filter
-
-If you want to listen or act while the user is typing into the `Autocomplete` field, you can switch to controlled mode by adding an `onChange` handler and setting the `value` manually.
-
-This is especially helpful if you need to customize the filtering. For example, you may only want to show suggestions when the user has typed at least two characters. Furthermore, you can improve the matching, as shown in the example below. In the demo, the user would not receive a suggestion if they typed "ssp" without the custom filter.
-
-<ComponentDemo file="./autocomplete-controlled.demo.tsx" />
-
-### Working with asynchronous Data
-
-The Autocomplete component supports working with asynchronous data. In the example below, the [`useAsyncList`](/hooks/useAsyncList) hook is used to handle the loading and filtering of data from the server.
-
-<ComponentDemo file="./autocomplete-async.demo.tsx" />
+    <TeaserList
+      items={[
+        {
+          title: 'Building forms',
+          href: '../../patterns/building-forms',
+          caption: 'Learn how to build forms.',
+          icon: (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+              <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+            </svg>
+          ),
+        },
+      ]}
+    />
