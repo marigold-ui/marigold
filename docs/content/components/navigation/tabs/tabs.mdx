@@ -1,25 +1,49 @@
 ---
 title: Tabs
 caption: Component for building tabs.
+badge: updated
 ---
 
-The `<Tabs>` component allows you to organize and navigate between groups of content that are related and at the same level of hierarchy .
+The `<Tabs>` component allows you to organize related content into multiple sections. They allow the user to navigate between groups of information that appear within the same context.
 
 The `<Tabs.List>` component is used within Tabs to group tabs that a user can switch between. The ids of the items within the must match up with a corresponding item inside the .
 
 The `<Tabs.Item>` component provides a title for an individual item within a TabList.
 
-## Import
+## Anatomy
 
-```tsx
-import { Tabs } from '@marigold/components';
-```
+Tabs consist of a tab list with one or more visually separated tabs. Each tab has associated content, and only the selected tab's content is shown. Each tab can be clicked, tapped, or navigated to via arrow keys.
+
+<Image
+  src="/tabs/tabs-anatomy.jpg"
+  alt="Anatomy of tabs"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+<ul>
+  <li><b>Tab list:</b> Holds multiple tabs. Use the `<Tabs.List>` component within `<Tabs>` to group tabs that a user
+    can switch between.</li>
+  <li><b>Tab:</b> Use `<Tabs.Item>` inside `<Tabs.List>` to add a title for an individual item.</li>
+  <li><b>Tab panel:</b> Shows the content to the selected Tab.</li>
+</ul>
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
 
+## Usage
+
+`<Tabs>` are used to organize groups of related content that are at the same level of hierarchy, allowing users to
+navigate views without leaving the page.
+
 ## Props
+
+{' '}
+<StorybookHintMessage component={title} />
 
 ### Tabs
 
@@ -36,23 +60,3 @@ import { Tabs } from '@marigold/components';
 ### Tabs.TabPanel
 
 <PropsTable component="TabPanel" />
-
-## Examples
-
-### Disabled Tab
-
-A `Tab` can be disabled by setting the `isabledKeys` prop.
-
-<ComponentDemo file="./tabs-disabled.demo.tsx" />
-
-### Tabs with default selected key
-
-You can choose the selected key by setting the `defaultSelectedKEy` prop.
-
-<ComponentDemo file="./tabs-selectedKey.demo.tsx" />
-
-### Large Tabs Controllers
-
-You can change the size of tab controller by setting the `size` prop.
-
-<ComponentDemo file="./tabs-large.demo.tsx" />
