@@ -180,6 +180,15 @@ const transformTypeValue = async val => {
   });
 };
 
+const sortPropsByNameAsc = props => {
+  return Object.keys(props)
+    .sort()
+    .reduce((acc, currValue) => {
+      acc[currValue] = props[currValue];
+      return acc;
+    }, {});
+};
+
 // Resolve __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -212,7 +221,7 @@ for await (const file of files) {
   }
 
   const { name } = path.parse(file);
-  const props = docs[0].props;
+  const props = sortPropsByNameAsc(docs[0].props);
 
   output[name] = {};
 
