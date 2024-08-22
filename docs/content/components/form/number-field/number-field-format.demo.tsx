@@ -17,6 +17,7 @@ export default () => (
         minimumFractionDigits: 1,
         maximumFractionDigits: 2,
       }}
+      step={0.1}
       defaultValue={0}
     />
     <NumberField

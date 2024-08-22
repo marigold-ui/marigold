@@ -4,7 +4,8 @@ caption: Component for entering numbers.
 badge: updated
 ---
 
-The `<NumberField>` component allows users to enter numbers with a keyboard. This includes plain numbers as well as percentages, decimals and sums of money.
+The `<NumberField>` component used for capturing numerical input from the user in a form or similar input context. This allows users to input numbers including integers, decimals, and as well as percentages.
+The component also offers steppers which provides lower interaction costs.
 
 ## Anatomy
 
@@ -39,6 +40,9 @@ The stepper buttons make it easier and faster for people to make small numeric c
     with the `hideStepper` property.
   </SectionMessage.Content>
 </SectionMessage>
+
+Also keep in mind using the `width` property is essential to provide a good user experience. So each input field shouldn't be larger than the expected content. For example
+when using stepper buttons it is better to have shorter fields, so that the user can easier reach these buttons (lower interaction costs).
 
 <ComponentDemo
   file="./number-field-stepper.demo.tsx"
