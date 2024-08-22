@@ -11,7 +11,7 @@ import { TabPanel } from './TabPanel';
 export interface TabsProps
   extends Omit<
     RAC.TabsProps,
-    'className' | 'style' | 'isDisabled' | 'orientation'
+    'className' | 'style' | 'isDisabled' | 'orientation' | 'slot'
   > {
   /**
    * Set All TabPanel disabled

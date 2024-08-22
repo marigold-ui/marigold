@@ -6,13 +6,9 @@ badge: updated
 
 The `<Tabs>` component allows you to organize related content into multiple sections. They allow the user to navigate between groups of information that appear within the same context.
 
-The `<Tabs.List>` component is used within Tabs to group tabs that a user can switch between. The ids of the items within the must match up with a corresponding item inside the .
-
-The `<Tabs.Item>` component provides a title for an individual item within a TabList.
-
 ## Anatomy
 
-Tabs consist of a tab list with one or more visually separated tabs. Each tab has associated content, and only the selected tab's content is shown. Each tab can be clicked, tapped, or navigated to via arrow keys.
+`<Tabs>` consist of a tab list with one or more visually separated tabs. Each tab has associated content, and only the selected tab's content is shown. Each tab can be clicked, tapped, or navigated to via arrow keys.
 
 <Image
   src="/tabs/tabs-anatomy.jpg"
@@ -25,9 +21,19 @@ Tabs consist of a tab list with one or more visually separated tabs. Each tab ha
 <ul>
   <li><b>Tab list:</b> Holds multiple tabs. Use the `<Tabs.List>` component within `<Tabs>` to group tabs that a user
     can switch between.</li>
-  <li><b>Tab:</b> Use `<Tabs.Item>` inside `<Tabs.List>` to add a title for an individual item.</li>
+  <li><b>Tab:</b> Use `<Tabs.Item>` inside `<Tabs.List>` to add a title for an individual item. A tab has a clear
+    signifier that marks which tabs is displaying content.</li>
   <li><b>Tab panel:</b> Shows the content to the selected Tab.</li>
 </ul>
+
+<SectionMessage>
+  <SectionMessage.Title>Info</SectionMessage.Title>
+  <SectionMessage.Content>
+    `<Tabs>` is a so called <b>compound component</b>. If you don't know what that means or you want to explore more
+    about it you find a [tutorial](https://marigold-rapp.vercel.app/compound-component) for this topic in our reference
+    app.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ## Appearance
 
@@ -40,9 +46,41 @@ Tabs consist of a tab list with one or more visually separated tabs. Each tab ha
 `<Tabs>` are used to organize groups of related content that are at the same level of hierarchy, allowing users to
 navigate views without leaving the page.
 
-## Props
+  <SectionMessage variant="warning">
+    <SectionMessage.Title>Important note</SectionMessage.Title>
+    <SectionMessage.Content>
+      The example show how to connect the `<Tab.List>` item with the `<Tab.Panel>`. It is <b>necessary</b> that both
+      components using the same `id`.
+    </SectionMessage.Content>
+  </SectionMessage>
 
 {' '}
+<ComponentDemo file="./tabs-basic.demo.tsx" />
+
+{' '}
+<Do>
+  <Do.Description>
+    <ul>
+      <li>use only one row of tabs</li>
+      <li>position the tab list above the tab panel</li>
+      <li>write short tab labels</li>
+    </ul>
+  </Do.Description>
+</Do>
+
+### Arrangement of tabs
+
+Arrange tab content so high-use content is first in the list and selected by default. This maximizes visibility of
+frequently accessed content and lowers its interaction cost.
+
+### Use Descriptive Tab Labels
+
+Users should be able to predict what they’ll find when selecting a tab. Since unselected tabs conceal their content,
+labels with strong information scent are crucial for users to engage with them. Use plain language rather than made-up
+marketing terms.
+
+## Props
+
 <StorybookHintMessage component={title} />
 
 ### Tabs
@@ -60,3 +98,15 @@ navigate views without leaving the page.
 ### Tabs.TabPanel
 
 <PropsTable component="TabPanel" />
+
+## Alternative components
+
+{' '}
+
+<ul>
+  <li>
+    [Accordion](/components/collection/accordion): Accordions are another
+    effective method for collapsing content. Accordions can utilize longer
+    labels and work well to organize short pieces of content such as FAQs.
+  </li>
+</ul>
