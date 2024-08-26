@@ -626,8 +626,8 @@ importers:
         specifier: 4.3.1
         version: 4.3.1
       tailwindcss-react-aria-components:
-        specifier: 1.1.4
-        version: 1.1.4(tailwindcss@3.4.10)
+        specifier: 1.1.5
+        version: 1.1.5(tailwindcss@3.4.10)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
@@ -9122,10 +9122,10 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  tailwindcss-react-aria-components@1.1.4:
-    resolution: {integrity: sha512-Nu425m0jUJ8yFpM29YpJSTEsEZCo5LNKPmOqEoc5bSqu3Y9vT2oEEXALKkaXu4Ay4y1MQxX6EVdCzPcstg6S7A==}
+  tailwindcss-react-aria-components@1.1.5:
+    resolution: {integrity: sha512-0qNr/RlKe5MtDMGMsCFbCoQzpURzEg1raQgnssvOyOWtIIpqleu0lwj8KVRbiZGh8DvX9fNxT+GnfYdiNLJ+Bw==}
     peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
+      tailwindcss: '*'
 
   tailwindcss@3.4.10:
     resolution: {integrity: sha512-KWZkVPm7yJRhdu4SRSl9d4AK2wM3a50UsvgHZO7xY77NQr2V+fIrEuoDGQcbvswWvFGbS2f6e+jC/6WJm1Dl0w==}
@@ -20745,7 +20745,7 @@ snapshots:
     dependencies:
       tailwindcss: 3.4.10
 
-  tailwindcss-react-aria-components@1.1.4(tailwindcss@3.4.10):
+  tailwindcss-react-aria-components@1.1.5(tailwindcss@3.4.10):
     dependencies:
       tailwindcss: 3.4.10
 
