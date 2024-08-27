@@ -65,7 +65,7 @@ In this example you can see a simple `<Menu>` with some items to select. it is u
 
 ### Menu with Sections
 
-To group related MenuItems, you can use `<Menu.Section>` and pass `title` for the group name.
+When you have mutliple menu items that can be categorized under different headings. This is particularly useful in complext menus with many options, you can use `<Menu.Section>` and pass `title` for the group name.
 
 <ComponentDemo file="./menu-section.demo.tsx" />
 
@@ -83,7 +83,7 @@ It is very similar to the normal `<Menu>` component.
 
 <ComponentDemo file="./kebab-menu.demo.tsx" />
 
-### Menu with onOpenChange property
+### Menu with `onOpenChange` property
 
 Here you can see how the properties `open` and `onOpenChange` are used together with a `<Button>`. A function handles the state for the menu. You just can open the `<Menu>` with the external `<Button>` component, not with the menu button.
 A common use Case is also to open the `<Menu>` with the keyboard.
