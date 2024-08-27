@@ -1,14 +1,7 @@
-import {
-  act,
-  cleanup,
-  fireEvent,
-  renderHook,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { cleanup, fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { Theme, ThemeProvider, cva, useSmallScreen } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button';
 import { setup } from '../test.utils';
 import { ActionMenu } from './ActionMenu';
