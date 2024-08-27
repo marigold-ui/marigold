@@ -77,13 +77,13 @@ In this example the `<Menu>` has set its prop `disabeldKeys`. So you can't inter
 
 ### ActionMenu
 
-The `ActionMenu` is often used to offer a quick context-specific actions related to an item or interface element. It's optimized for senarios where speed and efficiency in selecting an action is crucial.
+The `<ActionMenu>` is typically used to provide quick, context-specific actions related to an item or interface element. It is particularly useful in scenarios where speed and efficiency in selecting an action are crucial.
 
-In this example, an `Icon` has been inserted into the `Button` to serve as a kebab menu.
-As shown here, any type of icon can be used within the menu and there are no restrictions.
-It is very similar to the normal `<Menu>` component.
+In this example, the `<ActionMenu>` is used within a table to allow users to perform actions like viewing details of a ticket or deleting a ticket. When "View Details" is selected, a dialog displays key information about the selected ticket, including its ID, event name, and status. The "Delete" option removes the ticket from the list.
 
-<ComponentDemo file="./kebab-menu.demo.tsx" />
+The example shows that the `<ActionMenu>` is very similar to the standard `<Menu>` component, offering flexibility and ease of use in various contexts.
+
+<ComponentDemo file="./menu-action-table.demo.tsx" />
 
 ### Menu with `onOpenChange` property
 

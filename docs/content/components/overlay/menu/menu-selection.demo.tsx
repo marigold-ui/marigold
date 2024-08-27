@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu } from '@marigold/components';
 
 export default () => {
-  const [preferences, setPreferences] = useState(new Set(['newsletter']));
+  const [preferences, setPreferences] = useState(['newsletter']);
   return (
     <>
       <Menu
@@ -15,7 +15,7 @@ export default () => {
         <Menu.Item id="offers">💸 Receive Special Offers</Menu.Item>
         <Menu.Item id="updates">🔔 Get Product Updates</Menu.Item>
         <Menu.Item id="events">🎉 Event Invitations</Menu.Item>
-      </Menu>
+      </Menu>{' '}
       <pre>Your preferences are : {[...preferences].join(', ')}</pre>
     </>
   );
