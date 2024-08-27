@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Menu } from '@marigold/components';
 
 export default () => {
+  const [preferences, setPreferences] = useState(new Set(['newsletter']));
   return (
-    <Menu
-      label="Choose Your Stand"
-      selectionMode="single"
-      selectedKeys={['north_stand']}
-    >
-      <Menu.Item id="north_stand">📣 North Stand (Home Fans)</Menu.Item>
-      <Menu.Item id="south_stand">🎶 South Stand (Away Fans)</Menu.Item>
-      <Menu.Item id="east_stand">🌅 East Stand (Family Section)</Menu.Item>
-      <Menu.Item id="west_stand">🌇 West Stand (VIP Section)</Menu.Item>
-    </Menu>
+    <>
+      <Menu
+        label="Select Your Preference"
+        selectionMode="multiple"
+        selectedKeys={preferences}
+        onSelectionChange={setPreferences as (keys: any) => void}
+      >
+        <Menu.Item id="newsletter">📧 Subscribe to Newsletter</Menu.Item>
+        <Menu.Item id="offers">💸 Receive Special Offers</Menu.Item>
+        <Menu.Item id="updates">🔔 Get Product Updates</Menu.Item>
+        <Menu.Item id="events">🎉 Event Invitations</Menu.Item>
+      </Menu>
+      <pre>Your preferences are : {[...preferences].join(', ')}</pre>
+    </>
   );
 };
