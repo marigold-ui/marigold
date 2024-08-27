@@ -436,42 +436,42 @@ test('dialog can be controlled without a trigger', async () => {
   expect(dialog).not.toBeInTheDocument();
 });
 
-// test('close state has a listener', async () => {
-//   const spy = jest.fn();
+test('close state has a listener', async () => {
+  const spy = jest.fn();
 
-//   const Component = () => {
-//     const [open, setOpen] = useState(false);
+  const Component = () => {
+    const [open, setOpen] = useState(false);
 
-//     return (
-//       <Dialog.Trigger open={open} onOpenChange={setOpen}>
-//         <Button data-testid="button" onPress={() => setOpen(true)}>
-//           Open Dialog
-//         </Button>
-//         <Dialog>
-//           {({ close }) => (
-//             <>
-//               <Dialog.Headline>Headline</Dialog.Headline>
-//               <Button data-testid="close" onPress={close}>
-//                 Close
-//               </Button>
-//             </>
-//           )}
-//         </Dialog>
-//       </Dialog.Trigger>
-//     );
-//   };
+    return (
+      <Dialog.Trigger open={open} onOpenChange={setOpen}>
+        <Button data-testid="button" onPress={() => setOpen(true)}>
+          Open Dialog
+        </Button>
+        <Dialog>
+          {({ close }) => (
+            <>
+              <Dialog.Headline>Headline</Dialog.Headline>
+              <Button data-testid="close" onPress={close}>
+                Close
+              </Button>
+            </>
+          )}
+        </Dialog>
+      </Dialog.Trigger>
+    );
+  };
 
-//   render(<Component />);
+  render(<Component />);
 
-//   expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
+  expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
 
-//   const button = screen.getByTestId('button');
-//   await user.click(button);
+  const button = screen.getByTestId('button');
+  await user.click(button);
 
-//   expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
+  expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
 
-//   const close = screen.getByTestId('close');
-//   await user.click(close);
+  const close = screen.getByTestId('close');
+  await user.click(close);
 
-//   expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
-// });
+  expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
+});
