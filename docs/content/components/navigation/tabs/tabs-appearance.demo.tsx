@@ -1,7 +1,7 @@
-import { Tabs } from '@marigold/components';
+import { Tabs, TabsProps } from '@marigold/components';
 
-export default () => (
-  <Tabs aria-label="tabs" size="large">
+export default (props: TabsProps) => (
+  <Tabs aria-label="tabs" {...props}>
     <Tabs.List aria-label="Input settings">
       <Tabs.Item id="mouse">Mouse Settings</Tabs.Item>
       <Tabs.Item id="keyboard">Keyboard Settings</Tabs.Item>
