@@ -56,32 +56,41 @@ navigate views without leaving the page.
 
 <ComponentDemo file="./tabs-basic.demo.tsx" />
 
-<Do>
-  <Do.Description>
-    <ul>
-      <li>Use only one row of tabs</li>
-      <li>Position the tab list above the tab panel</li>
-      <li>Write short tab labels</li>
-    </ul>
-  </Do.Description>
-</Do>
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      <ul>
+        <li>Use only one row of tabs</li>
+        <li>Position the tab list above the tab panel</li>
+        <li>Write short tab labels</li>
+      </ul>
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>Don't use tabs with only one item.</Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ### Arrangement of tabs
 
 Arrange tab content so the most used content is first in the list and selected by default. This maximizes visibility
 of frequently accessed content and lowers its interaction cost.
 
-### Use descriptive tab labels
+### Tab labels
 
 Users should be able to predict what they’ll find when selecting a tab. Since unselected tabs conceal their content,
 labels with strong information scent are crucial for users to engage with them.
 
-{' '}
 <Do>
-  <Do.Description>
-    Use plain language rather than made-up marketing terms.
-  </Do.Description>
+  <Do.Description>Use short and descriptive tab labels.</Do.Description>
 </Do>
+
+### Don’t mix and match tab types
+
+Mixing in-page and navigation tabs within one tab control will disorient users. In-page tabs should have similar
+content and <b>keep</b> users where they are. Navigation tabs should have dissimilar content and navigate
+users <b>away</b> from the
+current page.
 
 ## Props
 
