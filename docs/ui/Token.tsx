@@ -105,67 +105,59 @@ export const Breakpoints = () => {
   const breaks = themes[current].screens || {};
 
   return (
-    <Card>
-      <div className="overflow-auto">
-        <Table aria-label="breakpoints">
-          <Table.Header>
-            <Table.Column key={'name'}>Name</Table.Column>
-            <Table.Column key={'value'}>Breaks at</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {Object.entries(breaks).map(([key, value]) => (
-              <Table.Row key={key}>
-                <Table.Cell>
-                  <code className="before:content-none after:content-none">
-                    {key}
-                  </code>
-                </Table.Cell>
-                <Table.Cell>{value}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-      </div>
-    </Card>
+    <Table aria-label="breakpoints" stretch>
+      <Table.Header>
+        <Table.Column key={'name'}>Name</Table.Column>
+        <Table.Column key={'value'}>Breaks at</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {Object.entries(breaks).map(([key, value]) => (
+          <Table.Row key={key}>
+            <Table.Cell>
+              <code className="before:content-none after:content-none">
+                {key}
+              </code>
+            </Table.Cell>
+            <Table.Cell>{value}</Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
   );
 };
 
 export const Spacing = () => {
   return (
-    <Card>
-      <div className="overflow-auto">
-        <Table aria-label="spaces" variant="noHover">
-          <Table.Header>
-            <Table.Column key={'name'}>Name</Table.Column>
-            <Table.Column key={'value'}>Value</Table.Column>
-            <Table.Column key={'example'}>Example</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {Object.keys(paddingSpace)
-              .sort((a, b) => parseFloat(a) - parseFloat(b))
-              .map(key => (
-                <Table.Row key={key}>
-                  <Table.Cell>
-                    <code className="before:content-none after:content-none">
-                      {key}
-                    </code>
-                  </Table.Cell>
-                  <Table.Cell>{Number(key) * 4}px</Table.Cell>
-                  <Table.Cell>
-                    <div
-                      className={cn(
-                        `pl-${key}`,
-                        'bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)]'
-                      )}
-                    >
-                      <div className="h-3 bg-white"></div>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-          </Table.Body>
-        </Table>
-      </div>
-    </Card>
+    <Table aria-label="spaces" variant="noHover" stretch>
+      <Table.Header>
+        <Table.Column key={'name'}>Name</Table.Column>
+        <Table.Column key={'value'}>Value</Table.Column>
+        <Table.Column key={'example'}>Example</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {Object.keys(paddingSpace)
+          .sort((a, b) => parseFloat(a) - parseFloat(b))
+          .map(key => (
+            <Table.Row key={key}>
+              <Table.Cell>
+                <code className="before:content-none after:content-none">
+                  {key}
+                </code>
+              </Table.Cell>
+              <Table.Cell>{Number(key) * 4}px</Table.Cell>
+              <Table.Cell>
+                <div
+                  className={cn(
+                    `pl-${key}`,
+                    'bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)]'
+                  )}
+                >
+                  <div className="h-3 bg-white"></div>
+                </div>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+      </Table.Body>
+    </Table>
   );
 };
