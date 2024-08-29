@@ -191,7 +191,7 @@ test('option list opens when button is clicked', () => {
 
 test('option list closes when button is clicked', async () => {
   render(
-    <Select data-testid="select-id">
+    <Select data-testid="select-id" label="Movies">
       <Select.Option id="Harry Potter">Harry Potter</Select.Option>
       <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
       <Select.Option id="Star Wars">Star Wars</Select.Option>
@@ -506,15 +506,15 @@ test('error is there', () => {
 test('supports text slots in select', () => {
   render(
     <Select label="Label">
-      <Select.Option id="one">
+      <Select.Option id="one" textValue="one">
         <Text slot="label">one</Text>
         <Text slot="description">description for one</Text>
       </Select.Option>
-      <Select.Option id="two">
+      <Select.Option id="two" textValue="two">
         <Text slot="label">two</Text>
         <Text slot="description">description for two</Text>
       </Select.Option>
-      <Select.Option id="three">
+      <Select.Option id="three" textValue="three">
         <Text slot="label">three</Text>
         <Text slot="description">description for three</Text>
       </Select.Option>
@@ -524,7 +524,7 @@ test('supports text slots in select', () => {
   const button = screen.getByRole('button');
   fireEvent.click(button);
 
-  const label = screen.getByText('one');
+  const label = screen.getByLabelText('one');
   const description = screen.getByText('description for one');
 
   expect(label).toBeInTheDocument();

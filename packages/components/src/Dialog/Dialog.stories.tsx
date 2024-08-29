@@ -182,7 +182,7 @@ export const StickyFooter: Story = {
 };
 
 export const WithDialogController: Story = {
-  render: args => {
+  render: () => {
     const [open, setDialogOpen] = useState(false);
     const handleAction = (action: 'save' | 'delete') => {
       switch (action) {
@@ -200,10 +200,14 @@ export const WithDialogController: Story = {
     return (
       <>
         <Menu onAction={handleAction} label="Settings">
-          <Menu.Item key="save">Save</Menu.Item>
-          <Menu.Item key="delete">Delete</Menu.Item>
+          <Menu.Item key="save" id="save">
+            Save
+          </Menu.Item>
+          <Menu.Item key="delete" id="delete">
+            Delete
+          </Menu.Item>
         </Menu>
-        <Dialog.Trigger open={open} onOpenChange={setDialogOpen} {...args}>
+        <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
           <Dialog closeButton>
             {({ close }) => (
               <Stack space={5}>

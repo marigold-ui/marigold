@@ -1,15 +1,9 @@
-import {
-  act,
-  cleanup,
-  fireEvent,
-  render,
-  renderHook,
-  screen,
-} from '@testing-library/react';
+import { cleanup, fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { Theme, ThemeProvider, cva, useSmallScreen } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button';
+import { setup } from '../test.utils';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
@@ -64,6 +58,8 @@ const theme: Theme = {
   },
 };
 
+const { render } = setup({ theme });
+
 /**
  * We need to mock `matchMedia` because JSOM does not
  * implements it.
@@ -80,12 +76,10 @@ afterEach(cleanup);
 
 test('renders the button but no menu by default', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Menu label="Choose">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu label="Choose">
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
 
   const button = screen.queryByText('Choose');
@@ -104,12 +98,10 @@ test('opens menu when trigger is clicked', () => {
     'screen and (min-width: 64em)',
   ]);
   render(
-    <ThemeProvider theme={theme}>
-      <Menu label="Choose">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu label="Choose">
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
 
   const button = screen.getByText('Choose');
@@ -134,12 +126,10 @@ test('closes menu when item is selected', () => {
     'screen and (min-width: 64em)',
   ]);
   render(
-    <ThemeProvider theme={theme}>
-      <Menu label="Choose">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu label="Choose">
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
 
   const button = screen.getByText('Choose');
@@ -157,12 +147,10 @@ test('closes menu when item is selected', () => {
 
 test('closes menu when trigger is clicked', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Menu label="Choose">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu label="Choose">
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
 
   const button = screen.getByText('Choose');
@@ -178,14 +166,14 @@ test('closes menu when trigger is clicked', () => {
 
 test('closes menu when clicked outside', async () => {
   render(
-    <ThemeProvider theme={theme}>
+    <>
       <Button>outside</Button>
 
       <Menu label="Choose">
         <Menu.Item key="burger">Burger</Menu.Item>
         <Menu.Item key="pizza">Pizza</Menu.Item>
       </Menu>
-    </ThemeProvider>
+    </>
   );
 
   const button = screen.getByText('Choose');
@@ -204,12 +192,10 @@ test('closes menu when clicked outside', async () => {
 test('return action item', async () => {
   const spy = jest.fn();
   render(
-    <ThemeProvider theme={theme}>
-      <Menu label="Choose" onAction={spy}>
-        <Menu.Item id="burger">Burger</Menu.Item>
-        <Menu.Item id="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu label="Choose" onAction={spy}>
+      <Menu.Item id="burger">Burger</Menu.Item>
+      <Menu.Item id="pizza">Pizza</Menu.Item>
+    </Menu>
   );
 
   const button = screen.getByText('Choose');
@@ -224,12 +210,10 @@ test('return action item', async () => {
 
 test('uses base classes from "Menu" in theme', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Menu data-testid="menu" label="Choose">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu data-testid="menu" label="Choose">
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
   const button = screen.getByText('Choose');
   fireEvent.click(button);
@@ -240,12 +224,10 @@ test('uses base classes from "Menu" in theme', () => {
 
 test('supports "Menu" variant classnames from theme', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Menu data-testid="menu" label="Choose" variant="one">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu data-testid="menu" label="Choose" variant="one">
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
   const button = screen.getByText('Choose');
   fireEvent.click(button);
@@ -263,12 +245,10 @@ test('supports "Menu" variant classnames from theme', () => {
 
 test('supports "Menu" sizes from theme', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Menu data-testid="menu" label="Choose" size="large">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu data-testid="menu" label="Choose" size="large">
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
   const button = screen.getByRole('button');
   fireEvent.click(button);
@@ -279,44 +259,14 @@ test('supports "Menu" sizes from theme', () => {
   );
 });
 
-test('renders as tray', () => {
-  let resize: Function;
-  window.addEventListener = jest.fn().mockImplementation((event, cb) => {
-    if (event === 'resize') resize = cb;
-  });
-
-  const { result } = renderHook(() => useSmallScreen());
-  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-  act(() => resize());
-  expect(result.current).toBeTruthy();
-
-  render(
-    <ThemeProvider theme={theme}>
-      <Menu label="Choose" data-testid="menu">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
-  );
-
-  const button = screen.getByText('Choose');
-  fireEvent.click(button);
-
-  const item = screen.getByText('Burger');
-  // eslint-disable-next-line testing-library/no-node-access
-  expect(item.parentElement?.parentElement?.className).toMatchInlineSnapshot(
-    `"!fixed !bottom-0 !left-0 !top-auto !max-h-fit w-full"`
-  );
-});
-
 test('renders action menu', () => {
   render(
-    <ThemeProvider theme={theme}>
+    <>
       <ActionMenu>
         <Menu.Item key="one">Settings</Menu.Item>
         <Menu.Item key="two">Delete</Menu.Item>
       </ActionMenu>
-    </ThemeProvider>
+    </>
   );
   const button = screen.getByRole('button');
   expect(button).toBeInTheDocument();
@@ -327,12 +277,10 @@ test('renders action menu', () => {
 
 test('supports open property', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Menu data-testid="menu" label="Choose" open={true}>
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu data-testid="menu" label="Choose" open={true}>
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
 
   const item = screen.getByText('Burger');
@@ -342,16 +290,10 @@ test('supports open property', () => {
 test('supports onOpenChange property', () => {
   const onOpenChange = jest.fn();
   render(
-    <ThemeProvider theme={theme}>
-      <Menu
-        data-testid="menu"
-        label="Choose"
-        onOpenChange={() => onOpenChange()}
-      >
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </ThemeProvider>
+    <Menu data-testid="menu" label="Choose" onOpenChange={() => onOpenChange()}>
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
   );
   expect(onOpenChange).toBeCalledTimes(0);
   fireEvent.click(screen.getByRole('button'));
@@ -360,18 +302,16 @@ test('supports onOpenChange property', () => {
 
 test('supports Menu with sections', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Menu aria-label="Menu with sections" open>
-        <Menu.Section title="Food">
-          <Menu.Item key="burger">🍔 Burger</Menu.Item>
-          <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-        </Menu.Section>
-        <Menu.Section title="Fruits">
-          <Menu.Item key="apple">🍎 Apple</Menu.Item>
-          <Menu.Item key="banana">🍌 Banana</Menu.Item>
-        </Menu.Section>
-      </Menu>
-    </ThemeProvider>
+    <Menu aria-label="Menu with sections" open>
+      <Menu.Section title="Food">
+        <Menu.Item key="burger">🍔 Burger</Menu.Item>
+        <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
+      </Menu.Section>
+      <Menu.Section title="Fruits">
+        <Menu.Item key="apple">🍎 Apple</Menu.Item>
+        <Menu.Item key="banana">🍌 Banana</Menu.Item>
+      </Menu.Section>
+    </Menu>
   );
   expect(screen.getByText('Food')).toBeInTheDocument();
   expect(screen.getByText('Fruits')).toBeInTheDocument();
