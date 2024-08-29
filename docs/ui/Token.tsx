@@ -129,7 +129,7 @@ export const Breakpoints = () => {
 
 export const Spacing = () => {
   return (
-    <Table aria-label="spaces" variant="noHover" stretch>
+    <Table aria-label="spaces" stretch>
       <Table.Header>
         <Table.Column key={'name'}>Name</Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>
