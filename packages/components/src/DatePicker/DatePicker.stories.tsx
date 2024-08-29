@@ -108,21 +108,19 @@ export const Controlled: Story = {
           <DatePicker
             label="Date Picker"
             value={value}
-            defaultValue={value}
-            onChange={() => setValue}
+            onChange={setValue}
             description="Controlled date field"
             errorMessage="This is an error"
             {...args}
           />
-          <pre style={{ marginTop: '1rem' }}>
-            <strong>DateField Value:</strong>
-            {'Day:' +
-              value.day +
-              ' Month:' +
-              value.month +
-              ' Year:' +
-              value.year}
-          </pre>
+          {value ? (
+            <pre style={{ marginTop: '1rem' }}>
+              <strong>DateField Value:</strong>
+              {`Day: ${value.day} Month: ${value.month} Year: ${value.year}`}
+            </pre>
+          ) : (
+            <pre>`No value (${value}).`</pre>
+          )}
         </div>
       </I18nProvider>
     );
