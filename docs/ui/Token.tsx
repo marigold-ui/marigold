@@ -1,4 +1,5 @@
 import { Card, Inline, Stack, Table, alignment, cn, paddingSpace } from '@/ui';
+import { Rectangle } from './Rectangle';
 import { useThemeSwitch } from './ThemeSwitch';
 
 export const AlignmentsX = () => {
@@ -6,7 +7,7 @@ export const AlignmentsX = () => {
     <Card>
       <Stack space={3}>
         {Object.entries(alignment.horizontal.alignmentX).map(([key]) => (
-          <div className="h-full bg-[hsl(29,_37%,_95%)] p-2" key={key}>
+          <div className="h-full bg-slate-200 p-2" key={key}>
             <Stack
               alignX={key as keyof typeof alignment.horizontal.alignmentX}
               space={2}
@@ -14,7 +15,7 @@ export const AlignmentsX = () => {
               <code className="before:content-none after:content-none">
                 {key}
               </code>
-              <div className="size-14 rounded bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+              <Rectangle width="3.5rem" height="3.5rem" />
             </Stack>
           </div>
         ))}
@@ -28,7 +29,7 @@ export const AlignmentsY = () => {
     <Card>
       <Stack space={3}>
         {Object.entries(alignment.vertical.alignmentY).map(([key]) => (
-          <div className="h-44 bg-[hsl(29,_37%,_95%)] p-2" key={key}>
+          <div className="h-44 bg-slate-200 p-2" key={key}>
             <Stack
               stretch
               alignY={key as keyof typeof alignment.vertical.alignmentY}
@@ -37,7 +38,7 @@ export const AlignmentsY = () => {
               <code className="before:content-none after:content-none">
                 {key}
               </code>
-              <div className="size-14 rounded bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+              <Rectangle width="3.5rem" height="3.5rem" />
             </Stack>
           </div>
         ))}
@@ -53,43 +54,43 @@ export const BorderRadius = () => (
         <code className="before:content-none after:content-none">
           rounded-sm 2px
         </code>
-        <div className="h-14 w-full rounded-sm bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+        <div className="bg-bg-body h-14 w-full rounded-sm border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
           rounded 4px
         </code>
-        <div className="h-14 w-full rounded bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+        <div className="bg-bg-body h-14 w-full rounded border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
           rounded-md 6px
         </code>
-        <div className="h-14 w-full rounded-md bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+        <div className="bg-bg-body h-14 w-full rounded-md border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
           rounded-lg 8px
         </code>
-        <div className="h-14 w-full rounded-lg bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+        <div className="bg-bg-body h-14 w-full rounded-lg border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
           rounded-xl 12px
         </code>
-        <div className="h-14 w-full rounded-xl bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+        <div className="bg-bg-body h-14 w-full rounded-xl border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
           rounded-2xl 16px
         </code>
-        <div className="h-14 w-full rounded-2xl bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+        <div className="bg-bg-body h-14 w-full rounded-2xl border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
           rounded-full 9999px
         </code>
-        <div className="h-14 w-full rounded-full bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)] px-3 py-2 shadow"></div>
+        <div className="bg-bg-body h-14 w-full rounded-full border-2 border-dashed px-3 py-2"></div>
       </Stack>
     </Inline>
   </Card>
@@ -146,12 +147,7 @@ export const Spacing = () => {
               </Table.Cell>
               <Table.Cell>{Number(key) * 4}px</Table.Cell>
               <Table.Cell>
-                <div
-                  className={cn(
-                    `pl-${key}`,
-                    'bg-gradient-to-r from-[hsl(29,_37%,_70%)] to-[hsl(29,_37%,_40%)]'
-                  )}
-                >
+                <div className={cn(`pl-${key}`, 'bg-slate-300')}>
                   <div className="h-3 bg-white"></div>
                 </div>
               </Table.Cell>
