@@ -1,17 +1,28 @@
 ---
 title: Tooltip
 caption: Component for displaying short information.
+badge: updated
 ---
 
 The `<Tooltip>` components allows to provide additional information to that user. For that the `<Tooltip>` is divided into a `<Tooltip.Trigger>` and the `<Tooltip>` itself. You need to wrap the trigger around the `<Tooltip>` and a simple button, which is necessary for handle actions.
 
 You should use the `<Tooltip>` if you want to show helpful, short information to the user.
 
-## Import
+## Anatomy
 
-```tsx
-import { Tooltip } from '@marigold/components';
-```
+<Image
+  src="/tooltip/tooltip-anatomy.jpg"
+  alt="Anatomy of tooltip"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Trigger:** Indicator and underline that it can be activated on hover or focus.
+
+- **Caret tip:** Closely associates the tooltip to term to be defined.
+
+- **Radio button label:** Describes the information you want to select or unselect.
 
 ## Appearance
 
