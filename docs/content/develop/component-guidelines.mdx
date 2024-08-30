@@ -262,7 +262,7 @@ const Input: ThemeComponent<'Input'> = {
 };
 ```
 
-If needed we add `default` values for the styles. Behind the `cva` statement are the styles that are always applied, in this example text color (which is applied for all variants). But sometimes we need only a default, that is not on all styles.
+To provide overring base styles through variants and sizes we should add `default` values for the styles. Behind the `cva` statement are the styles that are always applied, in this example text color (which is applied for all variants). But sometimes we need only a default, that is not on all styles. In the end only necessary and common classes should be in the base styles.
 
 ```tsx
 export const Select: ThemeComponent<'Select'> = {
