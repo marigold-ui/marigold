@@ -34,6 +34,38 @@ You should use the `<Tooltip>` if you want to show helpful, short information to
 
 ### Tooltip with custom placement
 
+Tooltips can appear above, below, and to each side of the UI element depending on screen real estate and intent.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Be strategic about placing these only on elements you know users struggle
+      with. As best as you can, aim for 2-4 at most per page.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use too many tooltips on a page because it can overwhelm the users.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+<Dont>
+  <Dont.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/switch/switch-dont-settings.jpg"
+      alt="Don't use save actions with switches."
+    />
+  </Dont.Figure>
+  <Dont.Description>
+    Avoid using a switch to select multiple options that require people to save.
+    Switches should be immediate.
+  </Dont.Description>
+</Dont>
+
 In this example the placement of the `<Tooltip>` is set to the right. By default it is set to the top. If there isn't enough space for the placement it moves to the bottom.
 
 <ComponentDemo file="./tooltip-custom.demo.tsx" />
