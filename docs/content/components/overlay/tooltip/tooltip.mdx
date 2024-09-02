@@ -42,7 +42,7 @@ In this example the placement of the `<Tooltip>` is set to the right. By default
 
 ### Effective use of Tooltip
 
-When using tooltips, it's essential to strike the right balance. While tooltips can provide valuable information or guidance, overloading a page with too many can confuse or overwhelm users. Focus on placing tooltips only on elements where users commonly struggle or need extra help. Limiting the number of tooltips ensures they remain effective and don't detract from the overall user experience.
+When using tooltips, it's essential to strike the right balance. While tooltips can provide valuable information or guidance, overloading a page with too many can confuse or overwhelm users. Focus on placing tooltips only on elements where users commonly struggle or need extra help. Limiting the number of tooltips (2-4 at most per page) ensures they remain effective and don't detract from the overall user experience.
 
 <GuidelineTiles>
   <Do>
@@ -58,9 +58,20 @@ When using tooltips, it's essential to strike the right balance. While tooltips 
   </Dont>
 </GuidelineTiles>
 
-{' '}
+### Simple and informative Tooltip
+
+Tooltips should provide clear, concise information without including interactive elements. Focus on delivering helpful content that enhances the user experience without requiring additional actions from the user. Simplicity is key to ensuring that tooltips serve their purpose effectively.
 
 <Dont>
+  <Dont.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/tooltip/tooltip-dont-link.jpg"
+      alt="Don't use interactive elements within a tooltip."
+    />
+  </Dont.Figure>
   <Dont.Description>
     Don't use interactive elements within a tooltip.
   </Dont.Description>
