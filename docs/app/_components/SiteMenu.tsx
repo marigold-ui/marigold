@@ -11,6 +11,7 @@ import {
   ChangeThemeItem,
   ExternalLinkItem,
   IconItem,
+  InternalPage,
   PagesItem,
   TokenItem,
 } from './CommandItems';
@@ -171,6 +172,9 @@ export const SiteMenu = () => {
             {query && <TokenItem classNames={classNames} />}
             {/* copy icon command */}
             {query && <IconItem classNames={classNames} />}
+            {query.length > 6 && (
+              <InternalPage classNames={classNames} setOpen={setOpen} />
+            )}
           </Command.List>
           <div className="flex h-10 items-center justify-end gap-4 border-t px-2 text-xs">
             <Inline space={2} alignY="center">

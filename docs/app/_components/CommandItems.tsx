@@ -1,4 +1,4 @@
-import { links, themeswitch } from '@/lib/config';
+import { internal, links, themeswitch } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
 import { Icons, cn } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
@@ -36,7 +36,7 @@ interface CommandItemProps {
   };
 }
 
-interface ChangeThemeItemProps extends CommandItemProps {
+interface ChangeOpenItemProps extends CommandItemProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 interface PagesItemProps extends CommandItemProps {
@@ -137,7 +137,7 @@ export const IconItem = ({ classNames }: CommandItemProps) => {
 export const ChangeThemeItem = ({
   classNames,
   setOpen,
-}: ChangeThemeItemProps) => {
+}: ChangeOpenItemProps) => {
   const { updateTheme } = useThemeSwitch();
   const changeTheme = (theme: string) => {
     updateTheme(theme);
@@ -253,5 +253,35 @@ export const PagesItem = ({
         </>
       ))}
     </CommandGroup>
+  );
+};
+
+export const InternalPage = ({ classNames, setOpen }: ChangeOpenItemProps) => {
+  const router = useRouter();
+  const params = useSearchParams();
+
+  const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
+    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
+    setOpen(false);
+    router.push(url);
+  };
+
+  return (
+    <>
+      {internal.map(val =>
+        Object.values(val).map(items =>
+          items.map(({ name, slug }) => (
+            <Command.Item
+              className={classNames.item}
+              key={name}
+              value={slug}
+              onSelect={() => goto({ slug: slug })}
+            >
+              {name}
+            </Command.Item>
+          ))
+        )
+      )}
+    </>
   );
 };
