@@ -1,5 +1,11 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import { inputBox, inputHeight, inputSpacing } from './Input.styles';
+import {
+  inputBox,
+  inputDisabled,
+  inputError,
+  inputHeight,
+  inputSpacing,
+} from './Input.styles';
 
 export const Select: ThemeComponent<'Select'> = {
   icon: cva(),
@@ -7,6 +13,8 @@ export const Select: ThemeComponent<'Select'> = {
     inputBox,
     inputHeight,
     inputSpacing,
+    inputError,
+    inputDisabled,
     '[&>[data-placeholder=true]]:text-text-inverted-disabled',
   ]),
 };
