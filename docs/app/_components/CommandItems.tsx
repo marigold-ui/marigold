@@ -52,6 +52,28 @@ interface PagesItemProps extends CommandItemProps {
   }[];
 }
 
+// Helpers
+//----------------
+const useGoto = (
+  setOpen: Dispatch<SetStateAction<boolean>>,
+  setPages?: Dispatch<SetStateAction<[]>>
+) => {
+  const router = useRouter();
+  const params = useSearchParams();
+
+  const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
+    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
+
+    router.push(url);
+    setOpen(false);
+    if (setPages) {
+      setPages([]);
+    }
+  };
+
+  return goto;
+};
+
 // Components
 // ---------------
 export const CopyItem = ({ children, copyValue, ...props }: CopyItemProps) => {
@@ -202,17 +224,7 @@ export const PagesItem = ({
   subPage,
   setPages,
 }: PagesItemProps) => {
-  const router = useRouter();
-  const params = useSearchParams();
-
-  const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
-    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
-
-    router.push(url);
-    setOpen(false);
-    setPages([]);
-  };
-
+  const goto = useGoto(setOpen, setPages);
   return (
     <CommandGroup heading={name} key={name} className={classNames.section}>
       {items.map(page => (
@@ -257,15 +269,7 @@ export const PagesItem = ({
 };
 
 export const InternalPage = ({ classNames, setOpen }: ChangeOpenItemProps) => {
-  const router = useRouter();
-  const params = useSearchParams();
-
-  const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
-    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
-    setOpen(false);
-    router.push(url);
-  };
-
+  const goto = useGoto(setOpen);
   return (
     <>
       {internal.map(val =>
@@ -275,7 +279,7 @@ export const InternalPage = ({ classNames, setOpen }: ChangeOpenItemProps) => {
               className={classNames.item}
               key={name}
               value={slug}
-              onSelect={() => goto({ slug: slug })}
+              onSelect={() => goto({ slug })}
             >
               {name}
             </Command.Item>
