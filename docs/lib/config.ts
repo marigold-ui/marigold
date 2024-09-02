@@ -131,3 +131,14 @@ export const themeswitch = [
     ],
   },
 ];
+
+export const internal = [
+  {
+    items: [
+      {
+        name: 'Internal',
+        slug: '__internal__',
+      },
+    ],
+  },
+];
