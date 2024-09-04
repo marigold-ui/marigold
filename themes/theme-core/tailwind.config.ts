@@ -11,6 +11,7 @@ export default {
     'src/root.ts',
     'src/**/*.*.ts',
     '../../packages/{components,system}/**/*.{tsx,ts}',
+    '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}',
     '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   presets: [preset],
