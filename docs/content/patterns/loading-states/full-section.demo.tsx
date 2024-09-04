@@ -1,7 +1,6 @@
 import { FormEvent, useState } from 'react';
 import {
   Button,
-  Dialog,
   FieldGroup,
   Form,
   Headline,
@@ -17,7 +16,7 @@ export default () => {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve('Data succesfully fetched!');
-      }, 5000);
+      }, 3000);
     });
   };
 
@@ -25,30 +24,21 @@ export default () => {
     e.preventDefault();
 
     setIsLoading(true);
-
     await api();
     setIsLoading(false);
   };
 
   return (
-    <Form onSubmit={handleOnSubmit}>
-      <FieldGroup labelWidth="100px">
-        <Headline level={2}>Book search</Headline>
-        <TextField
-          label="Book name:"
-          description="Please enter a book name"
-          placeholder="Book name"
-        />
-        <Stack alignX="right">
-          {isLoading ? (
-            <Dialog.Trigger open={isLoading}>
-              <Dialog variant="transparent">
-                <div style={{ cursor: 'wait' }}>
-                  <XLoader size={80} color="text-inverted" />
-                </div>
-              </Dialog>
-            </Dialog.Trigger>
-          ) : (
+    <div>
+      <Form onSubmit={handleOnSubmit}>
+        <FieldGroup labelWidth="100px">
+          <Headline level={2}>Book search</Headline>
+          <TextField
+            label="Book name:"
+            description="Please enter a book name"
+            placeholder="Book name"
+          />
+          <Stack alignX="right">
             <Button
               variant="primary"
               size="small"
@@ -57,9 +47,10 @@ export default () => {
             >
               Submit
             </Button>
-          )}
-        </Stack>
-      </FieldGroup>
-    </Form>
+          </Stack>
+        </FieldGroup>
+      </Form>
+      {isLoading && <XLoader mode="fullsize" size={80} />}
+    </div>
   );
 };

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { Dialog, Modal, ModalOverlay } from 'react-aria-components';
-import { Stack } from '@marigold/components';
 import { SVG, SVGProps, useClassNames } from '@marigold/system';
+import { Stack } from '../Stack/Stack';
 
 export interface XLoaderProps extends SVGProps {
   /**
