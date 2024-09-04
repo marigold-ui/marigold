@@ -2,7 +2,9 @@ import { Button, Tooltip } from '@marigold/components';
 
 export default () => (
   <Tooltip.Trigger trigger="focus">
-    <Button>Hover me!</Button>
-    <Tooltip>Tooltip</Tooltip>
+    <Button>Check Availability</Button>
+    <Tooltip>
+      View available seats for this event before proceeding with your booking.
+    </Tooltip>
   </Tooltip.Trigger>
 );
