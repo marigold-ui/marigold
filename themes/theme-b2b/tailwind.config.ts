@@ -11,6 +11,7 @@ export default {
     'src/colors.ts',
     'src/**/*.*.ts',
     '../../packages/{components,system}/**/*.{tsx,ts}',
+    '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}',
     '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}',
   ],
   safelist: [{ pattern: /(bg|text|border|shadow)-./ }],
