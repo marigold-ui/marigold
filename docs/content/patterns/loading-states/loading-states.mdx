@@ -4,6 +4,16 @@ caption: Learn when to use which loading state.
 badge: new
 ---
 
+<SectionMessage variant="warning">
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    This pattern is awaiting validation by Reservix product teams. If your team
+    has decided to implement loading states, please [notify the Design System
+    Team](https://reservix.slack.com/archives/C02727BNZ3J) as soon as possible
+    so that we can observe their implementation.
+  </SectionMessage.Content>
+</SectionMessage>
+
 Loading states provide visual feedback to users indicating that an action they have taken has been received and the system is working on their request.
 
 Loading states help manage user expectations during times of delayed response, and communicate what actions can be taken during and after the loading process. They are crucial for maintaining user engagement and reducing frustration when there are delays in processing user requests.
@@ -80,10 +90,26 @@ At this stage, no feedback is necessary. If the user request finishes processing
 
 At this stage:
 
-1. the XLoader animation appears within an overlay (created via a [dialog](https://www.marigold-ui.io/components/overlay/dialog)) over the container of the loading content.
-   a. If the context requires additional information, add a label. Use labels sparingly, like at the start or end of important tasks or at particularly confusing junctions.
-2. If the button used to start the process is visible and located outside the container of the loading content, it follows the process for inline loading states as well.
-3. The mouse cursor style changes to progress.
+<ol>
+  <li>
+    The XLoader animation appears within an overlay (created via a
+    [dialog](https://www.marigold-ui.io/components/overlay/dialog)) over the
+    container of the loading content.
+  </li>
+  <ol type="a">
+    <li>
+      If the context requires additional information, add a label. Use labels
+      sparingly, like at the start or end of important tasks or at particularly
+      confusing junctions.
+    </li>
+  </ol>
+  <li>
+    If the button used to start the process is visible and located outside the
+    container of the loading content, it follows the process for inline loading
+    states as well.
+  </li>
+  <li>The mouse cursor style changes to progress.</li>
+</ol>
 
 These changes last for a minimum of 1 second regardless of process duration.
 
@@ -114,7 +140,7 @@ Avoid labels with the full-section indicator if possible. If they are needed, ma
 
 ### Feedback messages
 
-Feedback messages that appear after the process has produced a result should clearly communicate what’s happened and, if appropriate, what actions the user can take next. Follow the [content guidelines for feedback messages](https://www.marigold-ui.io/patterns/feedback-messages).
+Feedback messages that appear after the process has returned a result should clearly communicate what’s happened and, if appropriate, what actions the user can take next. Follow the [content guidelines for feedback messages](https://www.marigold-ui.io/patterns/feedback-messages?theme=b2b#content-guidelines).
 
 ## References
 

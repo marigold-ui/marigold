@@ -15,8 +15,8 @@ export default () => {
   const api = (): Promise<string> => {
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve('Data succesfully fetched!');
-      }, 2000);
+        resolve('Data successfully fetched!');
+      }, 3000);
     });
   };
 
@@ -24,7 +24,6 @@ export default () => {
     e.preventDefault();
 
     setIsLoading(true);
-
     await api();
     setIsLoading(false);
   };
@@ -44,10 +43,10 @@ export default () => {
               variant="primary"
               size="small"
               type="submit"
-              className="w-20"
+              className="w-20 !cursor-progress"
               disabled
             >
-              <XLoader size={16} />
+              <XLoader size={16} className="fill-gray-700" />
             </Button>
           ) : (
             <Button
