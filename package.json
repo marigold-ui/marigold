@@ -53,7 +53,7 @@
     "registry": "pnpm --filter @marigold/docs registry",
     "build-component-props": "pnpm --filter @marigold/docs build-component-props",
     "test": "jest --config jest.config.js",
-    "test:coverage": "jest --config jest.config.js --coverage --coverageReporters html",
+    "test:coverage": "jest --config jest.config.js --coverage --coverageReporters text",
     "test:ci": "jest",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist' -o -name '.next' -o -name '.turbo' -o -name 'storybook-static'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
