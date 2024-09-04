@@ -1,23 +1,79 @@
 ---
 title: Tooltip
 caption: Component for displaying short information.
+badge: updated
 ---
 
-The `<Tooltip>` components allows to provide additional information to that user. For that the `<Tooltip>` is divided into a `<Tooltip.Trigger>` and the `<Tooltip>` itself. You need to wrap the trigger around the `<Tooltip>` and a simple button, which is necessary for handle actions.
+The `<Tooltip>` components allow to provide additional description or explanation to the user. For that the `<Tooltip>` is divided into a `<Tooltip.Trigger>` and the `<Tooltip>` itself. You need to wrap the trigger around the `<Tooltip>` and a simple button, which is necessary to trigger open and closing the tooltip.
 
-You should use the `<Tooltip>` if you want to show helpful, short information to the user.
+You should use the `<Tooltip>` to display brief, helpful information that provides additional context or guidance without overwhelming the user.
 
-## Import
+## Anatomy
 
-```tsx
-import { Tooltip } from '@marigold/components';
-```
+<Image
+  src="/tooltip/tooltip-anatomy.jpg"
+  alt="Anatomy of tooltip"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Trigger:** Indicator that can be activated on hover or focus.
+
+- **Caret tip:** Closely associates the tooltip to term to be defined.
+
+- **Tooltip:** Holds the informative text or message.
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
 
+## Usage
+
+When using tooltips, it's essential to strike the right balance. While tooltips can provide valuable information or guidance, overloading a page with too many can confuse or overwhelm users. Focus on placing tooltips only on elements where users commonly struggle or need extra help. Limiting the number of tooltips (2-4 at most per page) ensures they remain effective and don't detract from the overall user experience.
+
+<Dont>
+  <Dont.Description>Don't user more than 4 tooltips per page.</Dont.Description>
+</Dont>
+
+### Tooltip with custom placement
+
+Tooltips can appear above, below, and to each side of the UI element depending on screen real estate and intent.
+
+In this example the placement of the `<Tooltip>` is set to the right. By default it is set to the top. If there isn't enough space for the placement it moves to the bottom.
+
+<ComponentDemo file="./tooltip-placement.demo.tsx" />
+
+### Interactions with tooltips
+
+Tooltips should provide clear, concise information without including interactive elements. Focus on delivering helpful content that enhances the user experience without requiring additional actions from the user. Simplicity is key to ensuring that tooltips serve their purpose effectively.
+
+<Dont>
+  <Dont.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/tooltip/tooltip-dont-link.jpg"
+      alt="Don't use interactive elements within a tooltip."
+    />
+  </Dont.Figure>
+  <Dont.Description>
+    Don't use interactive elements within a tooltip.
+  </Dont.Description>
+</Dont>
+
+### Tooltip only shows when focused
+
+You can use the property `trigger` to the `<Tooltip.Trigger>` and setting it to `focus`. With that you can't hover it anymore, you have to tab in with the keyboard.
+
+<ComponentDemo file="./tooltip-focus.demo.tsx" />
+
 ## Props
+
+<StorybookHintMessage component={title} />
 
 ### Tooltip
 
@@ -26,29 +82,3 @@ import { Tooltip } from '@marigold/components';
 ### Tooltip.Trigger
 
 <PropsTable component="TooltipTrigger" />
-
-## Examples
-
-### Default Tooltip
-
-Here you can see a simple `<Tooltip>` use case. You can hover or tab the button to see the tooltip message.
-
-<ComponentDemo file="./tooltip-basic.demo.tsx" />
-
-### Tooltip with custom placement
-
-In this example the placement of the `<Tooltip>` is set to the right. By default it is set to the top. If there isn't enough space for the placement it moves to the bottom.
-
-<ComponentDemo file="./tooltip-custom.demo.tsx" />
-
-### Tooltip only shows when focused
-
-You can use the property `trigger` to the `<Tooltip.Trigger>` and setting it to `focus`. With that you can't hover it anymore, you have to tab in with the keyboard.
-
-<ComponentDemo file="./tooltip-focus.demo.tsx" />
-
-### Controlled Tooltip
-
-The open state of the tooltip can be controlled via the `open` and `onOpenChange` props.
-
-<ComponentDemo file="./tooltip-pressed.demo.tsx" />
