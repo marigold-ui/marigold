@@ -9,7 +9,7 @@ import { Footer } from '../Footer';
 import { Header } from '../Header';
 import { Inline } from '../Inline';
 import { Menu } from '../Menu';
-import { ModalProps } from '../Overlay/Modal';
+import { Modal, ModalProps } from '../Overlay/Modal';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
@@ -17,6 +17,7 @@ import { Dialog } from './Dialog';
 
 const meta = {
   title: 'Components/Dialog',
+  component: Modal,
   argTypes: {
     dismissable: {
       control: { type: 'boolean' },
@@ -42,11 +43,21 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      description: 'Size of the dialog',
+      options: ['default', 'small', 'medium', 'large'],
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' },
+      },
+    },
   },
   args: {
     dismissable: true,
     keyboardDismissable: true,
-    open: false,
   },
 } satisfies Meta<ModalProps>;
 
@@ -58,7 +69,7 @@ export const Basic: Story = {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog closeButton>
+        <Dialog closeButton size={args.size}>
           <Dialog.Headline>This is a headline!</Dialog.Headline>
           <Text>This is some not so very long text.</Text>
         </Dialog>

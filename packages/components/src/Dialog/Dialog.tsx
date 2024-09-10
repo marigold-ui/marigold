@@ -81,7 +81,7 @@ const _Dialog = ({
   return (
     <Dialog
       {...props}
-      className={cn('relative outline-none', classNames.container)}
+      className={cn('relative w-full outline-none', classNames.container)}
     >
       <>
         {closeButton && <CloseButton className={classNames.closeButton} />}
