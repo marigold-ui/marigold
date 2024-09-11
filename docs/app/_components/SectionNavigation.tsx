@@ -16,6 +16,8 @@ export const SectionNavigation = () => {
     section => section.name.toLocaleLowerCase() === formattedSectionName
   );
 
+  console.log(navigation.find(section => section.name.toLocaleLowerCase()));
+
   return (
     <nav className="flex flex-col gap-2">
       <p className="font-semibold">{currentSection?.name}</p>

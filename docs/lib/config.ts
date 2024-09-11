@@ -19,6 +19,10 @@ export const siteConfig = {
       slug: 'concepts',
     },
     {
+      name: 'Foundations',
+      slug: 'foundations',
+    },
+    {
       name: 'Components',
       slug: 'components',
       subsections: [
@@ -69,8 +73,8 @@ export const siteConfig = {
       slug: 'recipes',
     },
     {
-      name: 'Develop',
-      slug: 'develop',
+      name: 'Resources',
+      slug: 'resources',
     },
   ],
 } as const;
