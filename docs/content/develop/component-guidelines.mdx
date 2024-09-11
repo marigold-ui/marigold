@@ -162,6 +162,8 @@ Component props should always use the regular HTML attribute name (`disabled` an
 
 Props that are event handlers props should start with `on` (e.g., `onSelectionChange`, `onChange`, ...).
 
+Props should have a given description, because these are used by our props table in the documentation.
+
 Props that we need to import because of react-aria-components should be imported as followed:
 
 ```tsx
@@ -257,6 +259,29 @@ const Input: ThemeComponent<'Input'> = {
     'leading-[2]',
     'read-only:focus:border-border-light read-only:focus:outline-none',
   ]),
+};
+```
+
+To prevent overwriting base styles through variants and sizes we should add `default` values for the styles. Behind the `cva` statement are the styles that are always applied, in this example text color (which is applied for all variants). But sometimes we need only a default, that is not on all styles. In the end only necessary and common classes should be in the base styles.
+
+```tsx
+export const Select: ThemeComponent<'Select'> = {
+  icon: cva('text-secondary-400', {
+    variants: {
+      variant: {
+        default: '',
+        floating: 'justify-self-end',
+      },
+      size: {
+        default: '',
+        small: 'size-3',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }),
 };
 ```
 

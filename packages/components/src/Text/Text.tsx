@@ -1,3 +1,5 @@
+import { Text } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 import {
   CursorProp,
   FontSizeProp,
@@ -19,7 +21,8 @@ import {
 // Props
 // ---------------
 export interface TextProps
-  extends TextAlignProp,
+  extends Omit<RAC.TextProps, 'elementType'>,
+    TextAlignProp,
     FontSizeProp,
     FontWeightProp,
     FontStyleProp,
@@ -33,13 +36,18 @@ export interface TextProps
    * @default currentColor
    */
   color?: string;
+  /**
+   * Element to render
+   * @default "div"
+   */
+  as?: 'div' | 'p' | 'span';
   variant?: string;
   size?: string;
 }
 
 // Component
 // ---------------
-export const Text = ({
+const _Text = ({
   variant,
   size,
   color,
@@ -49,6 +57,7 @@ export const Text = ({
   fontSize,
   fontStyle,
   children,
+  as = 'div',
   ...props
 }: TextProps) => {
   const theme = useTheme();
@@ -59,8 +68,9 @@ export const Text = ({
   });
 
   return (
-    <p
+    <Text
       {...props}
+      elementType={as}
       className={cn(
         'text-[--color] outline-[--outline]',
         classNames,
@@ -75,6 +85,8 @@ export const Text = ({
       })}
     >
       {children}
-    </p>
+    </Text>
   );
 };
+
+export { _Text as Text };

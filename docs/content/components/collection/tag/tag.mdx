@@ -1,25 +1,46 @@
 ---
 title: Tag
 caption: Component for categorize content
+badge: updated
 ---
 
-A `<Tag>` is a content component. This component can be used to categorize content. They can represent keywords or people, and are grouped to describe an item or a search request.
+A `<Tag>` is a small, interactive element that displays a piece of information, typically formatted as a label or badge, it can indicate to different types, statuses, or categories.
 
-## Usage
+## Anatomy
 
-### Import
+Tags are comprised of container, tag label and dismissable tags include an additional close icon.
 
-To import the component you just have to use this code below.
+<Image
+  src="/tag/tag-anatomy.jpg"
+  alt="Anatomy of a tag"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
-```tsx
-import { Tag } from '@marigold/components';
-```
+## Appearance
 
-### Appearance
+<AppearanceDemo component={title} />
 
 <AppearanceTable component={title} />
 
+- **Tag container:** This is the primary element that holds content and icons.
+
+- **Tag label:** Short descriptive text describing the tag.
+
+- **Remove icon:** Optional icon to remove the tag.
+
+## Usage
+
+Tags are components that are often used to label different items, create categorization, filter data, select or deselect options.
+
+### Optimal number of tags
+
+When using tags, it’s important to limit the number to avoid overwhelming the user. A general guideline is to use up to 10-15 tags in a single group. This ensures clarity and prevents the intperface from becoming cluttered, making it easier for users to scan and understand the categorized information.
+
 ## Props
+
+<StorybookHintMessage component={title} />
 
 ### Tag
 
@@ -28,8 +49,6 @@ import { Tag } from '@marigold/components';
 ### Tag.Group
 
 <PropsTable component="TagGroup" />
-
-## Examples
 
 ### Tags with a label
 
@@ -42,3 +61,39 @@ In this example we have the `<Tag>` component that has been given the `label`.
 In this example, the `<Tag>` component receives tags from a dynamic collection and can remove these tags.
 
 <ComponentDemo file="./remove-tag.demo.tsx" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Badge](/components/content/badge): Small indicator often used to show a
+    status, count, or notification on another UI element. It's typically less
+    interactive than a Tag and used for highlighting numbers or statuses.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Multiple Selection',
+      href: '/patterns/multiple-selection',
+      caption: 'represents different ways and guideline for muliple selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M2.625 6.75a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0A.75.75 0 0 1 8.25 6h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75ZM2.625 12a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0ZM7.5 12a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12A.75.75 0 0 1 7.5 12Zm-4.875 5.25a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

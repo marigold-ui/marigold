@@ -14,7 +14,8 @@ type RemovedProps =
   | 'isDisabled'
   | 'isReadOnly'
   | 'isSelected'
-  | 'children';
+  | 'children'
+  | 'slot';
 
 export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   variant?: string;

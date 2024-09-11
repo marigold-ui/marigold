@@ -43,7 +43,7 @@ const meta = {
       description: 'Is the input invalid?',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     errorMessage: {
@@ -63,7 +63,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     disabled: {
@@ -72,7 +72,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     readOnly: {
@@ -81,7 +81,7 @@ const meta = {
       },
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     width: {
@@ -102,6 +102,9 @@ const meta = {
     description: 'This is a help text description',
     errorMessage: 'Something went wrong',
     error: false,
+    readOnly: false,
+    disabled: false,
+    required: false,
   },
 } satisfies Meta<typeof TextArea>;
 

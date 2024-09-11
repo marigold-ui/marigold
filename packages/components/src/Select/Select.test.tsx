@@ -10,6 +10,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Theme, cva, useSmallScreen } from '@marigold/system';
 import { Header } from '../Header';
+import { Text } from '../Text';
 import { setup } from '../test.utils';
 import { Select } from './Select';
 
@@ -30,6 +31,7 @@ const theme: Theme = {
       }),
       indicator: cva(),
     },
+    Text: cva(),
     Popover: cva(['mt-0.5'], {
       variants: {
         variant: {
@@ -189,7 +191,7 @@ test('option list opens when button is clicked', () => {
 
 test('option list closes when button is clicked', async () => {
   render(
-    <Select data-testid="select-id">
+    <Select data-testid="select-id" label="Movies">
       <Select.Option id="Harry Potter">Harry Potter</Select.Option>
       <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
       <Select.Option id="Star Wars">Star Wars</Select.Option>
@@ -499,4 +501,32 @@ test('error is there', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Label')[0].parentElement;
   expect(container).toHaveAttribute('data-error');
+});
+
+test('supports text slots in select', () => {
+  render(
+    <Select label="Label">
+      <Select.Option id="one" textValue="one">
+        <Text slot="label">one</Text>
+        <Text slot="description">description for one</Text>
+      </Select.Option>
+      <Select.Option id="two" textValue="two">
+        <Text slot="label">two</Text>
+        <Text slot="description">description for two</Text>
+      </Select.Option>
+      <Select.Option id="three" textValue="three">
+        <Text slot="label">three</Text>
+        <Text slot="description">description for three</Text>
+      </Select.Option>
+    </Select>
+  );
+
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+
+  const label = screen.getByLabelText('one');
+  const description = screen.getByText('description for one');
+
+  expect(label).toBeInTheDocument();
+  expect(description).toBeInTheDocument();
 });

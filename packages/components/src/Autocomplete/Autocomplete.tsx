@@ -49,7 +49,10 @@ const AutocompleteInput = ({
     <SearchInput
       ref={ref}
       className={{
-        action: cn(state?.inputValue === '' ? 'hidden' : undefined, classNames),
+        action: cn(
+          state?.inputValue === '' ? 'invisible' : 'visible',
+          classNames
+        ),
       }}
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === 'Escape') {
@@ -83,7 +86,8 @@ type RemovedProps =
   | 'onInputChange'
   | 'defaultValue'
   | 'validate'
-  | 'validationState';
+  | 'validationState'
+  | 'slot';
 
 export interface AutocompleteProps
   extends Omit<RAC.ComboBoxProps<object>, RemovedProps>,
@@ -195,7 +199,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     };
 
     return (
-      <FieldBase as={ComboBox} {...props}>
+      <FieldBase as={ComboBox} ref={ref} {...props}>
         <AutocompleteInput onSubmit={onSubmit} onClear={onClear} ref={ref} />
         <Popover>
           <ListBox>{children}</ListBox>

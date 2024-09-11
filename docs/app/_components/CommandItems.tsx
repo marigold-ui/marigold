@@ -1,4 +1,4 @@
-import { links, themeswitch } from '@/lib/config';
+import { internal, links, themeswitch } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
 import { Icons, cn } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
@@ -12,7 +12,7 @@ import {
 } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Inline, Split } from '@marigold/components';
 import { ExternalLink } from '@marigold/icons';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
@@ -36,7 +36,7 @@ interface CommandItemProps {
   };
 }
 
-interface ChangeThemeItemProps extends CommandItemProps {
+interface ChangeOpenItemProps extends CommandItemProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 interface PagesItemProps extends CommandItemProps {
@@ -51,6 +51,28 @@ interface PagesItemProps extends CommandItemProps {
     headings: JSON;
   }[];
 }
+
+// Helpers
+//----------------
+const useGoto = (
+  setOpen: Dispatch<SetStateAction<boolean>>,
+  setPages?: Dispatch<SetStateAction<[]>>
+) => {
+  const router = useRouter();
+  const params = useSearchParams();
+
+  const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
+    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
+
+    router.push(url);
+    setOpen(false);
+    if (setPages) {
+      setPages([]);
+    }
+  };
+
+  return goto;
+};
 
 // Components
 // ---------------
@@ -137,7 +159,7 @@ export const IconItem = ({ classNames }: CommandItemProps) => {
 export const ChangeThemeItem = ({
   classNames,
   setOpen,
-}: ChangeThemeItemProps) => {
+}: ChangeOpenItemProps) => {
   const { updateTheme } = useThemeSwitch();
   const changeTheme = (theme: string) => {
     updateTheme(theme);
@@ -202,12 +224,7 @@ export const PagesItem = ({
   subPage,
   setPages,
 }: PagesItemProps) => {
-  const router = useRouter();
-  const goto = (slug: string) => {
-    router.push(`/${slug}`);
-    setOpen(false);
-    setPages([]);
-  };
+  const goto = useGoto(setOpen, setPages);
   return (
     <CommandGroup heading={name} key={name} className={classNames.section}>
       {items.map(page => (
@@ -216,7 +233,7 @@ export const PagesItem = ({
             className={cn(classNames.item, 'group')}
             key={page.slug}
             value={page.slug}
-            onSelect={() => goto(page.slug)}
+            onSelect={() => goto({ slug: page.slug })}
           >
             <Inline space={4} alignY="center">
               {page.title}
@@ -229,12 +246,15 @@ export const PagesItem = ({
               {Object.values(page.headings).map(
                 (sub: { slug: string; text: string }) => (
                   <Command.Item
+                    key={sub.slug}
                     value={`${page.slug}${sub.slug}`}
                     className={cn(
                       'text-text-primary-muted ml-7',
                       classNames.item
                     )}
-                    onSelect={() => goto(`${page.slug}#${sub.slug}`)}
+                    onSelect={() =>
+                      goto({ slug: page.slug, hash: `#${sub.slug}` })
+                    }
                   >
                     {sub.text}
                   </Command.Item>
@@ -245,5 +265,27 @@ export const PagesItem = ({
         </>
       ))}
     </CommandGroup>
+  );
+};
+
+export const InternalPage = ({ classNames, setOpen }: ChangeOpenItemProps) => {
+  const goto = useGoto(setOpen);
+  return (
+    <>
+      {internal.map(val =>
+        Object.values(val).map(items =>
+          items.map(({ name, slug }) => (
+            <Command.Item
+              className={classNames.item}
+              key={name}
+              value={slug}
+              onSelect={() => goto({ slug })}
+            >
+              {name}
+            </Command.Item>
+          ))
+        )
+      )}
+    </>
   );
 };

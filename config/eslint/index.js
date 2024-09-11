@@ -1,7 +1,13 @@
 module.exports = {
+  env: {
+    node: true,
+  },
   extends: [
-    'react-app',
-    'react-app/jest',
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
     'plugin:tailwindcss/recommended',
     'prettier',
   ],
@@ -26,4 +32,15 @@ module.exports = {
       },
     },
   },
+  overrides: [
+    {
+      files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
+      rules: {
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
+        'no-empty': 'off',
+        'no-redeclare': 'off',
+      },
+    },
+  ],
 };

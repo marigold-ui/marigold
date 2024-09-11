@@ -41,12 +41,13 @@ const meta = {
       description: 'Switch disabled state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
   args: {
     children: 'Default Switch',
+    disabled: false,
   },
 } satisfies Meta<typeof Switch>;
 

@@ -22,15 +22,17 @@ export const TableBody = ({ children, emptyState }: TableBodyProps) => {
 
   if (state.collection.size === 0 && emptyState) {
     return (
-      <tr className={classNames?.row} role="row">
-        <td
-          className={classNames?.cell}
-          colSpan={state.collection.size}
-          role="rowheader"
-        >
-          {emptyState()}
-        </td>
-      </tr>
+      <tbody>
+        <tr className={classNames?.row} role="row">
+          <td
+            className={classNames?.cell}
+            colSpan={state.collection.size}
+            role="rowheader"
+          >
+            {emptyState()}
+          </td>
+        </tr>
+      </tbody>
     );
   }
 

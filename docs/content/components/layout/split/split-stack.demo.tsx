@@ -1,12 +1,13 @@
-import { Split, Stack, Text } from '@marigold/components';
+import { Split, Stack } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
   <div className="h-48">
     <Stack space={1} stretch>
-      <Text>It's gonna be ...</Text>
-      <Text>wait for it!</Text>
+      <Rectangle height="30px" />
+      <Rectangle height="30px" />
       <Split />
-      <Text>... legendary!</Text>
+      <Rectangle height="30px" />
     </Stack>
   </div>
 );

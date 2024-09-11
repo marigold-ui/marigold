@@ -1,5 +1,33 @@
 # @marigold/components
 
+## 9.0.2
+
+### Patch Changes
+
+- [#4116](https://github.com/marigold-ui/marigold/pull/4116) [`de0c9e9`](https://github.com/marigold-ui/marigold/commit/de0c9e94584b3f1733bda09722b0e2eb2fc0a8eb) Thanks [@aromko](https://github.com/aromko)! - docs[DST-513]: Revise `<Autocomplete>` component page.
+
+- [#4102](https://github.com/marigold-ui/marigold/pull/4102) [`d700af0`](https://github.com/marigold-ui/marigold/commit/d700af043a720a231cd4f6de03f59b62b945727f) Thanks [@sebald](https://github.com/sebald)! - feat: add `as` prop to Text to render different elements
+
+- [#4071](https://github.com/marigold-ui/marigold/pull/4071) [`406fd1f`](https://github.com/marigold-ui/marigold/commit/406fd1fed939f75a6731d5e0ec4baa40751dedc8) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-503]:Revise Select and add slots to text component
+
+- [#4125](https://github.com/marigold-ui/marigold/pull/4125) [`46f06db`](https://github.com/marigold-ui/marigold/commit/46f06dbb3cc38c17aeb1734fa0b8733c4055fcc4) Thanks [@aromko](https://github.com/aromko)! - docs[DST-517]: revise `<Tabs>` component
+
+- [#4146](https://github.com/marigold-ui/marigold/pull/4146) [`66eae8f`](https://github.com/marigold-ui/marigold/commit/66eae8f4ba8949ebabfcfa26de36a147b7765d38) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: adjust visibility for autocomplete clear button
+
+- [#4143](https://github.com/marigold-ui/marigold/pull/4143) [`77fe4ad`](https://github.com/marigold-ui/marigold/commit/77fe4adb2a9184d52d375eeca4f0993e8d43b7de) Thanks [@aromko](https://github.com/aromko)! - Bugfix: fix datepicker storybook Controlled example
+
+- [#4134](https://github.com/marigold-ui/marigold/pull/4134) [`d35cc6d`](https://github.com/marigold-ui/marigold/commit/d35cc6d7a66996e9da91936e736a7db57a4a2fd3) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix DOM tree for empty tables
+
+- [#4110](https://github.com/marigold-ui/marigold/pull/4110) [`b2b79d4`](https://github.com/marigold-ui/marigold/commit/b2b79d4daf0ab4950a255039729d216023af1764) Thanks [@aromko](https://github.com/aromko)! - docs[DST-511]: Revise switch component.
+
+- [#4115](https://github.com/marigold-ui/marigold/pull/4115) [`0523f69`](https://github.com/marigold-ui/marigold/commit/0523f69e6bd370ae5be57a5b28cc341b3bb34b82) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: fix SelectListItem layout
+
+- [#4103](https://github.com/marigold-ui/marigold/pull/4103) [`b8c991f`](https://github.com/marigold-ui/marigold/commit/b8c991fc249f69fab09d9aa3c6a71923cf8324de) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-507]: revise `<Inline>` page
+
+- Updated dependencies []:
+  - @marigold/system@9.0.2
+  - @marigold/icons@1.2.57
+
 ## 9.0.1
 
 ### Patch Changes

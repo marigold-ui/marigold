@@ -349,6 +349,7 @@ test('dialog supports size', () => {
 test('renders nothing by default', () => {
   render(
     <Dialog.Trigger>
+      <Button>Open</Button>
       <Dialog>
         <Dialog.Headline>Headline</Dialog.Headline>Content
       </Dialog>

@@ -35,7 +35,8 @@ const meta = {
       },
       options: ['single', 'multiple'],
       table: {
-        defaultValue: 'single',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'single' },
       },
     },
   },

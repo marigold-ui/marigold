@@ -3,6 +3,7 @@ import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { Header } from '../Header';
 import { Inset } from '../Inset';
+import { Text } from '../Text';
 import { Select } from './Select';
 
 const meta = {
@@ -38,7 +39,7 @@ const meta = {
       description: 'Disable the select',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     required: {
@@ -48,7 +49,7 @@ const meta = {
       description: 'Require the select',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     error: {
@@ -58,7 +59,7 @@ const meta = {
       description: 'Set error state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     errorMessage: {
@@ -76,6 +77,9 @@ const meta = {
   },
   args: {
     label: 'Select for favorite:',
+    error: false,
+    required: false,
+    disabled: false,
   },
 } satisfies Meta<typeof Select>;
 
@@ -186,13 +190,27 @@ export const Sections: StoryObj<typeof Select> = {
     <Select {...args}>
       <Select.Section>
         <Header>Fantasy</Header>
-        <Select.Option id="harry-potter">Harry Potter</Select.Option>
-        <Select.Option id="lord-of-the-rings">Lord of the Rings</Select.Option>
+        <Select.Option id="harry-potter">
+          <Text slot="label">Harry Potter</Text>
+          <Text slot="description">About the boy who lived</Text>
+        </Select.Option>
+        <Select.Option id="lord-of-the-rings">
+          <Text slot="label">Lord of the Rings</Text>
+          <Text slot="description">In the lands of Middle earth</Text>
+        </Select.Option>
       </Select.Section>
       <Select.Section>
         <Header>Sci-Fi</Header>
-        <Select.Option id="star-wars">Star Wars</Select.Option>
-        <Select.Option id="star-trek">Star Trek</Select.Option>
+        <Select.Option id="star-wars">
+          <Text slot="label">Start Wars</Text>
+          <Text slot="description">
+            A long time ago, in a galaxy far, far away
+          </Text>
+        </Select.Option>
+        <Select.Option id="star-trek">
+          <Text slot="label">Star Trek</Text>
+          <Text slot="description">What is this</Text>
+        </Select.Option>
       </Select.Section>
     </Select>
   ),
@@ -201,7 +219,7 @@ export const Sections: StoryObj<typeof Select> = {
 export const SelectedScroll: StoryObj<typeof Select> = {
   render: args => {
     return (
-      <Select disabledKeys={['Firefly']} {...args}>
+      <Select disabledKeys={['Firefly']} open {...args}>
         <Select.Option id="Harry Potter">Harry Potter</Select.Option>
         <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
         <Select.Option id="Star Wars">Star Wars</Select.Option>

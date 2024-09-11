@@ -52,6 +52,6 @@ export const getAppearance = (
     'variants' in styles
       ? getKeys(styles.variants as ConfigSchema)
       : getKeysFromSlots(styles);
-  console.log(appearances);
+
   return appearances;
 };

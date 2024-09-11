@@ -17,7 +17,7 @@ const meta = {
       description: 'Disable the date picker',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     width: {
@@ -34,7 +34,7 @@ const meta = {
       description: 'Set the date picker required.',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     open: {
@@ -42,7 +42,10 @@ const meta = {
         type: 'boolean',
       },
       description: 'Open the date Picker.',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     errorMessage: {
       control: {
@@ -63,7 +66,7 @@ const meta = {
       description: 'Sets error for the date picker.',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
@@ -73,6 +76,7 @@ const meta = {
     disabled: false,
     required: false,
     error: false,
+    open: false,
   },
 } satisfies Meta<typeof DatePicker>;
 
@@ -104,21 +108,19 @@ export const Controlled: Story = {
           <DatePicker
             label="Date Picker"
             value={value}
-            defaultValue={value}
-            onChange={() => setValue}
+            onChange={setValue}
             description="Controlled date field"
             errorMessage="This is an error"
             {...args}
           />
-          <pre style={{ marginTop: '1rem' }}>
-            <strong>DateField Value:</strong>
-            {'Day:' +
-              value.day +
-              ' Month:' +
-              value.month +
-              ' Year:' +
-              value.year}
-          </pre>
+          {value ? (
+            <pre style={{ marginTop: '1rem' }}>
+              <strong>DateField Value:</strong>
+              {`Day: ${value.day} Month: ${value.month} Year: ${value.year}`}
+            </pre>
+          ) : (
+            <pre>`No value (${value}).`</pre>
+          )}
         </div>
       </I18nProvider>
     );
