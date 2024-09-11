@@ -1,5 +1,52 @@
 # @marigold/docs
 
+## 9.0.2
+
+### Patch Changes
+
+- [#4124](https://github.com/marigold-ui/marigold/pull/4124) [`7c38527`](https://github.com/marigold-ui/marigold/commit/7c38527b46e81c4a5d395e565e867bc8ac6c7163) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-518]: Revise "Menu" Page
+
+- [#4070](https://github.com/marigold-ui/marigold/pull/4070) [`2486dac`](https://github.com/marigold-ui/marigold/commit/2486dacd7f41cb84a270d1519281831767c8c983) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - [DST-505]: Revise "Radio" Examples
+
+- [#4116](https://github.com/marigold-ui/marigold/pull/4116) [`de0c9e9`](https://github.com/marigold-ui/marigold/commit/de0c9e94584b3f1733bda09722b0e2eb2fc0a8eb) Thanks [@aromko](https://github.com/aromko)! - docs[DST-513]: Revise `<Autocomplete>` component page.
+
+- [#4111](https://github.com/marigold-ui/marigold/pull/4111) [`766aef5`](https://github.com/marigold-ui/marigold/commit/766aef5d063ca72a30b032f915150aebdb6f8d4b) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-512]: Revise `<Split>` Page
+
+- [#4102](https://github.com/marigold-ui/marigold/pull/4102) [`d700af0`](https://github.com/marigold-ui/marigold/commit/d700af043a720a231cd4f6de03f59b62b945727f) Thanks [@sebald](https://github.com/sebald)! - feat: add `as` prop to Text to render different elements
+
+- [#4122](https://github.com/marigold-ui/marigold/pull/4122) [`6470e00`](https://github.com/marigold-ui/marigold/commit/6470e00609f642067ec77a397bd375bc9616cf25) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - docs[DST-514]: Revise `<Tag>` component page
+
+- [#4071](https://github.com/marigold-ui/marigold/pull/4071) [`406fd1f`](https://github.com/marigold-ui/marigold/commit/406fd1fed939f75a6731d5e0ec4baa40751dedc8) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-503]:Revise Select and add slots to text component
+
+- [#4125](https://github.com/marigold-ui/marigold/pull/4125) [`46f06db`](https://github.com/marigold-ui/marigold/commit/46f06dbb3cc38c17aeb1734fa0b8733c4055fcc4) Thanks [@aromko](https://github.com/aromko)! - docs[DST-517]: revise `<Tabs>` component
+
+- [#4151](https://github.com/marigold-ui/marigold/pull/4151) [`0a317d9`](https://github.com/marigold-ui/marigold/commit/0a317d9db358892fc4bd92c5f0608f7f13428bef) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add internal page to command menu
+
+- [#4117](https://github.com/marigold-ui/marigold/pull/4117) [`986e90e`](https://github.com/marigold-ui/marigold/commit/986e90e04956ccaa63c0801c423521dd43d28f99) Thanks [@aromko](https://github.com/aromko)! - [DST-515]: The properties of the props tables are now sorted by name ascending.
+
+- [#4105](https://github.com/marigold-ui/marigold/pull/4105) [`a9f3fad`](https://github.com/marigold-ui/marigold/commit/a9f3fad38f5ff0ddfbfc192f23de22f6a296a87b) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-509]:Revise `<Stack>` page
+
+- [#4123](https://github.com/marigold-ui/marigold/pull/4123) [`c684a93`](https://github.com/marigold-ui/marigold/commit/c684a934148a707c0ce34c9f24d81c5970f3296d) Thanks [@aromko](https://github.com/aromko)! - docs[DST-516]: Revise`<NumberField>` component page
+
+- [#4138](https://github.com/marigold-ui/marigold/pull/4138) [`5cdece1`](https://github.com/marigold-ui/marigold/commit/5cdece18edd89338a697a6d8d742887446840c89) Thanks [@sarahgm](https://github.com/sarahgm)! - docs: update internal component guidelines
+
+- [#4110](https://github.com/marigold-ui/marigold/pull/4110) [`b2b79d4`](https://github.com/marigold-ui/marigold/commit/b2b79d4daf0ab4950a255039729d216023af1764) Thanks [@aromko](https://github.com/aromko)! - docs[DST-511]: Revise switch component.
+
+- [#4108](https://github.com/marigold-ui/marigold/pull/4108) [`37a2157`](https://github.com/marigold-ui/marigold/commit/37a21574bd0a0ce9f53944854ca2a00c2377265c) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - docs[DST-512]: Revise `<Checkbox>` Page
+
+- [#4107](https://github.com/marigold-ui/marigold/pull/4107) [`972d536`](https://github.com/marigold-ui/marigold/commit/972d536404fbcba9c5597a2e03bc5b0ee7695f21) Thanks [@aromko](https://github.com/aromko)! - docs-[DST-508]: Revise text field component
+
+- [#4103](https://github.com/marigold-ui/marigold/pull/4103) [`b8c991f`](https://github.com/marigold-ui/marigold/commit/b8c991fc249f69fab09d9aa3c6a71923cf8324de) Thanks [@sarahgm](https://github.com/sarahgm)! - docs[DST-507]: revise `<Inline>` page
+
+- Updated dependencies [[`de0c9e9`](https://github.com/marigold-ui/marigold/commit/de0c9e94584b3f1733bda09722b0e2eb2fc0a8eb), [`d700af0`](https://github.com/marigold-ui/marigold/commit/d700af043a720a231cd4f6de03f59b62b945727f), [`406fd1f`](https://github.com/marigold-ui/marigold/commit/406fd1fed939f75a6731d5e0ec4baa40751dedc8), [`46f06db`](https://github.com/marigold-ui/marigold/commit/46f06dbb3cc38c17aeb1734fa0b8733c4055fcc4), [`66eae8f`](https://github.com/marigold-ui/marigold/commit/66eae8f4ba8949ebabfcfa26de36a147b7765d38), [`77fe4ad`](https://github.com/marigold-ui/marigold/commit/77fe4adb2a9184d52d375eeca4f0993e8d43b7de), [`d35cc6d`](https://github.com/marigold-ui/marigold/commit/d35cc6d7a66996e9da91936e736a7db57a4a2fd3), [`b2b79d4`](https://github.com/marigold-ui/marigold/commit/b2b79d4daf0ab4950a255039729d216023af1764), [`340af20`](https://github.com/marigold-ui/marigold/commit/340af2058b38f8a595567f72a688d40c34335094), [`0523f69`](https://github.com/marigold-ui/marigold/commit/0523f69e6bd370ae5be57a5b28cc341b3bb34b82), [`b8c991f`](https://github.com/marigold-ui/marigold/commit/b8c991fc249f69fab09d9aa3c6a71923cf8324de)]:
+  - @marigold/components@9.0.2
+  - @marigold/theme-b2b@27.2.1
+  - @marigold/theme-core@26.2.1
+  - @marigold/theme-docs@2.1.1
+  - @marigold/system@9.0.2
+  - @marigold/icons@1.2.57
+  - @marigold/theme-preset@1.3.22
+
 ## 9.0.1
 
 ### Patch Changes
