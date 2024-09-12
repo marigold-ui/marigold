@@ -38,7 +38,6 @@ const groupedPages = siteConfig.navigation.map(({ name, slug }) => {
     }
   });
 
-  console.log(items);
   return { name, slug, items };
 });
 
