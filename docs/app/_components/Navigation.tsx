@@ -29,7 +29,7 @@ interface NavigationSection {
 export const useNavigation = (): NavigationSection[] => {
   const navigation = siteConfig.navigation;
 
-  return navigation.map(({ name, slug, subsections = [] }) => {
+  return navigation.map(({ name, slug, subsections = [] }: any) => {
     // Section Page = has a section but NO subsection
     const sectionPages = allContentPages.filter(
       page => page.section === slug && !page.subsection
@@ -44,19 +44,22 @@ export const useNavigation = (): NavigationSection[] => {
         href: `/${page.slug}`,
         badge: page.badge,
       })),
-      subsections: subsections.map(subsection => ({
-        name: subsection.name,
-        links: allContentPages
-          .filter(
-            // Subsection Page = has a section AND a subsection
-            page => page.section === slug && page.subsection === subsection.slug
-          )
-          .map(page => ({
-            name: page.title,
-            href: `/${page.slug}`,
-            badge: page.badge,
-          })),
-      })),
+      subsections: subsections.map(
+        (subsection: { name: string; slug: string }) => ({
+          name: subsection.name,
+          links: allContentPages
+            .filter(
+              // Subsection Page = has a section AND a subsection
+              page =>
+                page.section === slug && page.subsection === subsection.slug
+            )
+            .map(page => ({
+              name: page.title,
+              href: `/${page.slug}`,
+              badge: page.badge,
+            })),
+        })
+      ),
     };
   });
 };
