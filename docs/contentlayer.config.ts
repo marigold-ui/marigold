@@ -114,11 +114,24 @@ export const ContentPage = defineDocumentType(() => ({
   },
 }));
 
+export const Changelog = defineDocumentType(() => ({
+  name: 'Changelog',
+  filePathPattern: 'changelog.md',
+  contentType: 'markdown',
+  computedFields: {
+    // Transforms the page's path to a slug to use with next.js API
+    slug: {
+      type: 'markdown',
+      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
+    },
+  },
+}));
+
 // Config
 // ---------------
 export default makeSource({
   contentDirPath,
-  documentTypes: [ContentPage],
+  documentTypes: [ContentPage, Changelog],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
