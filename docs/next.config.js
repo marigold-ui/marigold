@@ -21,6 +21,15 @@ const nextConfig = {
   env: {
     version: pkg.version,
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/getting-started/overview',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = withContentlayer(nextConfig);
