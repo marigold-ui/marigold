@@ -15,10 +15,6 @@ export const siteConfig = {
       slug: 'getting-started',
     },
     {
-      name: 'Concepts',
-      slug: 'concepts',
-    },
-    {
       name: 'Foundations',
       slug: 'foundations',
     },
