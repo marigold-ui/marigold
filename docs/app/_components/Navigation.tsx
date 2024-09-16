@@ -17,19 +17,19 @@ interface NavigationLink {
 
 interface NavigationSubsection {
   name: string;
-  links: NavigationLink[];
+  links?: NavigationLink[];
 }
 interface NavigationSection {
   name: string;
-  slug: string;
+  slug?: string;
   links: NavigationLink[];
-  subsections: NavigationSubsection[];
+  subsections?: NavigationSubsection[];
 }
 
 export const useNavigation = (): NavigationSection[] => {
-  const navigation = siteConfig.navigation;
+  const navigation = [...siteConfig.navigation] as NavigationSection[];
 
-  return navigation.map(({ name, slug, subsections = [] }: any) => {
+  return navigation.map(({ name, slug, subsections = [] }) => {
     // Section Page = has a section but NO subsection
     const sectionPages = allContentPages.filter(
       page => page.section === slug && !page.subsection
@@ -82,7 +82,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
         <div key={section.name} className="flex flex-col gap-2">
           <div className="font-semibold">{section.name}</div>
           <div className="border-secondary-300 ml-0.5 flex flex-col border-l">
-            {section.links.map(({ name, href, badge }) => (
+            {section?.links.map(({ name, href, badge }) => (
               <NavLink
                 className="flex items-center gap-4"
                 key={href}
@@ -102,7 +102,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
                   {name}
                 </div>
                 <div className="border-secondary-300 ml-0.5 flex flex-col border-l">
-                  {links.map(({ name, href, badge }) => (
+                  {links?.map(({ name, href, badge }) => (
                     <div key={href}>
                       <NavLink
                         className="flex items-center gap-4"
