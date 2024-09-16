@@ -11,8 +11,8 @@ export const siteConfig = {
   defaultTheme: 'core',
   navigation: [
     {
-      name: 'Introduction',
-      slug: 'introduction',
+      name: 'Getting Started',
+      slug: 'getting-started',
     },
     {
       name: 'Concepts',
