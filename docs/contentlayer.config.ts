@@ -6,7 +6,8 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { simpleGit } from 'simple-git';
 import { visit } from 'unist-util-visit';
-import path from 'node:path';
+import { fs } from 'zx/.';
+import path, { basename, dirname } from 'node:path';
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
 
@@ -22,6 +23,13 @@ const git = simpleGit();
  * - components/form/button/button -> components/form/button
  */
 const getNormalizedPath = (val: string) => {
+  // let changelogs = [];
+  // for (let log in changelog) {
+  //   changelogs.push(log);
+  // }
+
+  console.log('VALUE', val);
+
   let paths = val.split('/');
 
   // Support pages that are grouped with their demos into a folder
@@ -34,6 +42,26 @@ const getNormalizedPath = (val: string) => {
 
 // Page Types
 // ---------------
+export const ChangelogPage = defineDocumentType(() => ({
+  name: 'ChangelogPage',
+  filePathPattern: '**/changelog.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string' },
+    description: { type: 'string' },
+    slug: { type: 'string' },
+    version: { type: 'string' },
+    releaseUrl: { type: 'string' },
+    releaseDate: { type: 'string' },
+  },
+  computedFields: {
+    slug: {
+      type: 'string',
+      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
+    },
+  },
+}));
+
 export const ContentPage = defineDocumentType(() => ({
   name: 'ContentPage',
   filePathPattern: '{**,*}/*.mdx',
@@ -100,6 +128,7 @@ export const ContentPage = defineDocumentType(() => ({
       type: 'string',
       resolve: async doc => {
         const file = path.resolve(contentDirPath, doc._raw.sourceFilePath);
+
         /**
          * 🚨🚨🚨 IMPORTANT 🚨🚨🚨
          *
@@ -114,24 +143,26 @@ export const ContentPage = defineDocumentType(() => ({
   },
 }));
 
-export const Changelog = defineDocumentType(() => ({
-  name: 'Changelog',
-  filePathPattern: 'changelog.md',
-  contentType: 'markdown',
-  computedFields: {
-    // Transforms the page's path to a slug to use with next.js API
-    slug: {
-      type: 'markdown',
-      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
-    },
-  },
-}));
+// const mergeContentDirs = (...dirs: string[]) => {
+//   console.log(dirs);
+//   // return dirs.flatMap(dir => {
+//   //   const dirPath = path.join(process.cwd(), dir);
+//   //   return fs.readdirSync(dirPath).map(file => path.join(dir, file));
+//   // });
+// };
+
+// // Paths of multiple content directories
+// let changelogs = [];
+// for (let log in changelog) {
+//   mergeContentDirs(contentDirPath, log);
+//   changelogs.push(log);
+// }
 
 // Config
 // ---------------
 export default makeSource({
   contentDirPath,
-  documentTypes: [ContentPage, Changelog],
+  documentTypes: [ContentPage, ChangelogPage],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
