@@ -5,6 +5,7 @@ export const Link: ThemeComponent<'Link'> = cva(
   {
     variants: {
       variant: {
+        primary: ['bg-text-primary text-white no-underline'],
         toc: [
           'text-secondary-500 hover:text-secondary-800 text-xs no-underline',
           'data-[active=true]:text-secondary-800 font-normal data-[active=true]:font-medium',
