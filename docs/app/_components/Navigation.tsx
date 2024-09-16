@@ -21,9 +21,9 @@ interface NavigationSubsection {
 }
 interface NavigationSection {
   name: string;
-  slug?: string;
+  slug: string;
   links: NavigationLink[];
-  subsections?: NavigationSubsection[];
+  subsections: NavigationSubsection[];
 }
 
 export const useNavigation = (): NavigationSection[] => {
@@ -82,7 +82,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
         <div key={section.name} className="flex flex-col gap-2">
           <div className="font-semibold">{section.name}</div>
           <div className="border-secondary-300 ml-0.5 flex flex-col border-l">
-            {section?.links.map(({ name, href, badge }) => (
+            {section.links.map(({ name, href, badge }) => (
               <NavLink
                 className="flex items-center gap-4"
                 key={href}
