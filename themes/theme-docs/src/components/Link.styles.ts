@@ -4,8 +4,8 @@ export const Link: ThemeComponent<'Link'> = cva(['font-medium'], {
   variants: {
     variant: {
       default: 'underline underline-offset-4',
-      primary: 'bg-text-primary text-white',
-      secondary: 'border-text-primary border-2',
+      primary: 'bg-text-primary text-white leading-none',
+      secondary: 'border-text-primary border-2 leading-none',
       toc: [
         'text-secondary-500 hover:text-secondary-800 text-xs',
         'data-[active=true]:text-secondary-800 font-normal data-[active=true]:font-medium',
@@ -20,7 +20,7 @@ export const Link: ThemeComponent<'Link'> = cva(['font-medium'], {
       inline: '',
       small: 'px-3 py-1.5 text-sm',
       regular: 'px-3 py-2 rounded',
-      large: 'px-8 py-2.5 rounded',
+      large: 'px-8 py-3.5 rounded',
     },
   },
   defaultVariants: {
