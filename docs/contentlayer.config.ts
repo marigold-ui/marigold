@@ -40,25 +40,25 @@ const getNormalizedPath = (val: string) => {
 
 // Page Types
 // ---------------
-// export const ChangelogPage = defineDocumentType(() => ({
-//   name: 'ChangelogPage',
-//   filePathPattern: '**/changelog.mdx',
-//   contentType: 'mdx',
-//   fields: {
-//     title: { type: 'string' },
-//     description: { type: 'string' },
-//     slug: { type: 'string' },
-//     version: { type: 'string' },
-//     releaseUrl: { type: 'string' },
-//     releaseDate: { type: 'string' },
-//   },
-//   computedFields: {
-//     slug: {
-//       type: 'string',
-//       resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
-//     },
-//   },
-// }));
+export const ChangelogPage = defineDocumentType(() => ({
+  name: 'ChangelogPage',
+  filePathPattern: 'changelog/{**,*}/CHANGELOG.md',
+  contentType: 'markdown',
+  fields: {
+    title: { type: 'string' },
+    description: { type: 'string' },
+    slug: { type: 'string' },
+    version: { type: 'string' },
+    releaseUrl: { type: 'string' },
+    releaseDate: { type: 'string' },
+  },
+  computedFields: {
+    slug: {
+      type: 'string',
+      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
+    },
+  },
+}));
 
 export const ContentPage = defineDocumentType(() => ({
   name: 'ContentPage',
@@ -160,7 +160,7 @@ export const ContentPage = defineDocumentType(() => ({
 // ---------------
 export default makeSource({
   contentDirPath,
-  documentTypes: [ContentPage],
+  documentTypes: [ContentPage, ChangelogPage],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

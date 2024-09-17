@@ -1,4 +1,3 @@
-import { mkdir } from 'fs';
 import path from 'path';
 import { fs, globby } from 'zx';
 
@@ -12,13 +11,13 @@ let changelogPath = await globby([
 // generate folder structure for changelogs
 changelogPath.forEach(file => {
   const data = fs.readFileSync(file, 'utf8');
-  const packages = path.dirname(file.replace('../', '@'));
+  let packages = path.dirname(file.replace('../', '@'));
+  const basename = path.basename(file);
+
   const changelogDir = `content/changelog/${packages}`;
+
   fs.mkdirSync(changelogDir, {
     recursive: true,
   });
-  fs.writeFileSync(
-    path.join('content/changelog/', file.replace('../', '@')),
-    data
-  );
+  fs.writeFileSync(path.join(changelogDir, basename), data);
 });
