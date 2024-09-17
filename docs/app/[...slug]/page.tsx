@@ -1,6 +1,6 @@
 import { baseUrl } from '@/lib/config';
 import { Headline } from '@/ui';
-import { allChangelogPages, allContentPages } from 'contentlayer/generated';
+import { allContentPages } from 'contentlayer/generated';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { RelativeTime } from '@/ui/RelativeTime';
@@ -56,9 +56,9 @@ export async function generateStaticParams(): Promise<
   }));
 }
 
-console.log('SLUG', allChangelogPages);
 export default async function ContentPage({ params }: ContentPageProps) {
   const page = await getPageFromParams(params);
+  console.log('SLUG', params.slug);
   if (!page) {
     notFound();
   }

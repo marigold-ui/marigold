@@ -28,8 +28,6 @@ const getNormalizedPath = (val: string) => {
   //   changelogs.push(log);
   // }
 
-  console.log('VALUE', val);
-
   let paths = val.split('/');
 
   // Support pages that are grouped with their demos into a folder
@@ -42,25 +40,25 @@ const getNormalizedPath = (val: string) => {
 
 // Page Types
 // ---------------
-export const ChangelogPage = defineDocumentType(() => ({
-  name: 'ChangelogPage',
-  filePathPattern: '**/changelog.mdx',
-  contentType: 'mdx',
-  fields: {
-    title: { type: 'string' },
-    description: { type: 'string' },
-    slug: { type: 'string' },
-    version: { type: 'string' },
-    releaseUrl: { type: 'string' },
-    releaseDate: { type: 'string' },
-  },
-  computedFields: {
-    slug: {
-      type: 'string',
-      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
-    },
-  },
-}));
+// export const ChangelogPage = defineDocumentType(() => ({
+//   name: 'ChangelogPage',
+//   filePathPattern: '**/changelog.mdx',
+//   contentType: 'mdx',
+//   fields: {
+//     title: { type: 'string' },
+//     description: { type: 'string' },
+//     slug: { type: 'string' },
+//     version: { type: 'string' },
+//     releaseUrl: { type: 'string' },
+//     releaseDate: { type: 'string' },
+//   },
+//   computedFields: {
+//     slug: {
+//       type: 'string',
+//       resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
+//     },
+//   },
+// }));
 
 export const ContentPage = defineDocumentType(() => ({
   name: 'ContentPage',
@@ -162,7 +160,7 @@ export const ContentPage = defineDocumentType(() => ({
 // ---------------
 export default makeSource({
   contentDirPath,
-  documentTypes: [ContentPage, ChangelogPage],
+  documentTypes: [ContentPage],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
