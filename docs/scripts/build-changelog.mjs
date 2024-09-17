@@ -11,13 +11,12 @@ let changelogPath = await globby([
 // generate folder structure for changelogs
 changelogPath.forEach(file => {
   const data = fs.readFileSync(file, 'utf8');
-  let packages = path.dirname(file.replace('../', '@'));
-  const basename = path.basename(file);
+  let packages = path.dirname(file.replace('../', ''));
 
   const changelogDir = `content/changelog/${packages}`;
 
   fs.mkdirSync(changelogDir, {
     recursive: true,
   });
-  fs.writeFileSync(path.join(changelogDir, basename), data);
+  fs.writeFileSync(path.join(changelogDir, path.basename(file)), data);
 });

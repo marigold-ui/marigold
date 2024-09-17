@@ -605,7 +605,7 @@
 
 ### Patch Changes
 
-- [#2297](https://github.com/marigold-ui/marigold/pull/2297) [`f4f308e4`](https://github.com/marigold-ui/marigold/commit/f4f308e4ce390cf1a4f055042498fe6787dd6879) Thanks [@sebald](https://github.com/sebald)! - fix: no fixed viewport for <SVG>
+- [#2297](https://github.com/marigold-ui/marigold/pull/2297) [`f4f308e4`](https://github.com/marigold-ui/marigold/commit/f4f308e4ce390cf1a4f055042498fe6787dd6879) Thanks [@sebald](https://github.com/sebald)! - fix: no fixed viewport for `<SVG>`
 
 * [#2322](https://github.com/marigold-ui/marigold/pull/2322) [`406f186c`](https://github.com/marigold-ui/marigold/commit/406f186c7f91cebbf3d17795361807e902a4dfab) Thanks [@sebald](https://github.com/sebald)! - fix: set viewbox for `<Exlamation>`
 

@@ -24,6 +24,7 @@ export async function generateMetadata({
   params,
 }: ContentPageProps): Promise<Metadata> {
   const page = await getPageFromParams(params);
+
   return page
     ? {
         title: page.title,

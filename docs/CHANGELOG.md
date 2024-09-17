@@ -124,7 +124,7 @@
 
 ### Patch Changes
 
-- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename <Message> in <SectionMessage>
+- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename `<Message>` in `<SectionMessage>`
 
 - [#3967](https://github.com/marigold-ui/marigold/pull/3967) [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202) Thanks [@sebald](https://github.com/sebald)! - refa: Update TypeScript and adjust `<NumericFormat>` props
 

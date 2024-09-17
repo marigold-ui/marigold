@@ -42,17 +42,17 @@ const getNormalizedPath = (val: string) => {
 // ---------------
 export const ChangelogPage = defineDocumentType(() => ({
   name: 'ChangelogPage',
-  filePathPattern: 'changelog/{**,*}/CHANGELOG.md',
-  contentType: 'markdown',
-  fields: {
-    title: { type: 'string' },
-    description: { type: 'string' },
-    slug: { type: 'string' },
-    version: { type: 'string' },
-    releaseUrl: { type: 'string' },
-    releaseDate: { type: 'string' },
-  },
+  filePathPattern: '{**,*}/CHANGELOG.md',
+  contentType: 'mdx',
+  fields: {},
   computedFields: {
+    title: {
+      type: 'string',
+      resolve: doc =>
+        getNormalizedPath(doc._raw.sourceFileDir)
+          .join('/')
+          .replace('changelog/', ''),
+    },
     slug: {
       type: 'string',
       resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
