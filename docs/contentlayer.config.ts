@@ -55,7 +55,23 @@ export const ChangelogPage = defineDocumentType(() => ({
     },
     slug: {
       type: 'string',
-      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
+      resolve: doc => getNormalizedPath(doc._raw.sourceFileDir).join('/'),
+    },
+    // Subsection is the 1st folder level of a page.
+    section: {
+      type: 'string',
+      resolve: doc => {
+        const path = getNormalizedPath(doc._raw.sourceFileDir);
+        return path.length < 2 ? null : path.at(0);
+      },
+    },
+    // Subsection is the 2nd folder level of a page.
+    subsection: {
+      type: 'string',
+      resolve: doc => {
+        const path = getNormalizedPath(doc._raw.sourceFileDir);
+        return path.length < 3 ? null : path.at(1);
+      },
     },
   },
 }));
@@ -140,21 +156,6 @@ export const ContentPage = defineDocumentType(() => ({
     },
   },
 }));
-
-// const mergeContentDirs = (...dirs: string[]) => {
-//   console.log(dirs);
-//   // return dirs.flatMap(dir => {
-//   //   const dirPath = path.join(process.cwd(), dir);
-//   //   return fs.readdirSync(dirPath).map(file => path.join(dir, file));
-//   // });
-// };
-
-// // Paths of multiple content directories
-// let changelogs = [];
-// for (let log in changelog) {
-//   mergeContentDirs(contentDirPath, log);
-//   changelogs.push(log);
-// }
 
 // Config
 // ---------------

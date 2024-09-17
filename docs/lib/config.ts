@@ -72,6 +72,24 @@ export const siteConfig = {
       name: 'Develop',
       slug: 'develop',
     },
+    {
+      name: 'Changelog',
+      slug: 'changelog',
+      subsections: [
+        {
+          name: 'config',
+          slug: 'config',
+        },
+        {
+          name: 'packages',
+          slug: 'packages',
+        },
+        {
+          name: 'themes',
+          slug: 'themes',
+        },
+      ],
+    },
   ],
 } as const;
 

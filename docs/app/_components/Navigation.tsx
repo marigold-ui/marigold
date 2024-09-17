@@ -2,7 +2,7 @@
 
 import { siteConfig } from '@/lib/config';
 import { Badge } from '@/ui';
-import { allContentPages } from 'contentlayer/generated';
+import { allChangelogPages, allContentPages } from 'contentlayer/generated';
 import { usePathname } from 'next/navigation';
 import { NavLink } from './NavLink';
 
@@ -46,16 +46,29 @@ export const useNavigation = (): NavigationSection[] => {
       })),
       subsections: subsections.map(subsection => ({
         name: subsection.name,
-        links: allContentPages
-          .filter(
-            // Subsection Page = has a section AND a subsection
-            page => page.section === slug && page.subsection === subsection.slug
-          )
-          .map(page => ({
-            name: page.title,
-            href: `/${page.slug}`,
-            badge: page.badge,
-          })),
+        links: [
+          ...allContentPages
+            .filter(
+              // Subsection Page = has a section AND a subsection
+              page =>
+                page.section === slug && page.subsection === subsection.slug
+            )
+            .map(page => ({
+              name: page.title,
+              href: `/${page.slug}`,
+              badge: page.badge,
+            })),
+          ...allChangelogPages
+            .filter(
+              // Subsection Page = has a section AND a subsection
+              page =>
+                page.section === slug && page.subsection === subsection.slug
+            )
+            .map(page => ({
+              name: page.title,
+              href: `/${page.slug}`,
+            })),
+        ],
       })),
     };
   });
