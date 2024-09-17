@@ -9,6 +9,7 @@ let changelogPath = await globby([
   '!../docs/{**,*}/**/CHANGELOG.md',
 ]);
 
+// generate folder structure for changelogs
 changelogPath.forEach(file => {
   const data = fs.readFileSync(file, 'utf8');
   const packages = path.dirname(file.replace('../', '@'));
