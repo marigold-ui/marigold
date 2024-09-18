@@ -73,6 +73,27 @@ export const ChangelogPage = defineDocumentType(() => ({
         return path.length < 3 ? null : path.at(1);
       },
     },
+    // get the date of the release of the package
+    releaseDate: {
+      type: 'string',
+      resolve: async doc => {
+        const file = path.resolve(contentDirPath, doc._raw.sourceFilePath);
+
+        /**
+         * 🚨🚨🚨 IMPORTANT 🚨🚨🚨
+         *
+         * Note that this needs VERCEL_DEEP_CLONE=true set in vercel, otherwise
+         * vercel will use a shallow clone to build!
+         */
+        // author_name: 'github-actions[bot]',
+        const log = await git.log({ file });
+        console.log(log.all);
+        return log.latest?.date;
+        // return log.all.map(item => {
+        //   return item.date;
+        // });
+      },
+    },
   },
 }));
 

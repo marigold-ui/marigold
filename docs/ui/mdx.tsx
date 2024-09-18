@@ -187,7 +187,6 @@ interface MdxProps {
 // Component
 // ---------------
 export const Mdx = ({ className, title, code }: MdxProps) => {
-  console.log(code);
   const Component = useMDXComponent(code, { title });
   return <Component className={className} components={components as any} />;
 };
