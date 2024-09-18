@@ -38,9 +38,10 @@ export const Page = () => (
     <div className="grid max-w-screen-md">
       <h2 className="text-4xl font-extrabold">Complex layouts, simplified.</h2>
       <p>
-        Dedicated layout components streamline responsive, consistent design by
-        effortlessly handling alignment and spacing. They allow teams to build
-        flexible, structured layouts quickly without the need for complex CSS.
+        Ready-to-use layout components make it easy to build pages of any
+        complexity. These flexible tools help teams quickly create responsive,
+        structured designs, streamlining the process without the need for
+        complex CSS
       </p>
     </div>
     <div className="grid max-w-screen-md">
@@ -61,4 +62,25 @@ export default Page;
 
 /**
  * teams can focus on building great products, without worrying ...
+ */
+
+/** testimonials */
+
+/**
+ * 
+ * Support:
+
+How to get in touch with the team
+
+Report a Bug link
+
+UI KIT (?) link
+
+ 
+
+Links:
+
+Github, Figma, Storybook
+ * 
+ * 
  */
