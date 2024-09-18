@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button } from '../Button';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
-import { Header } from '../Header';
 import { Inline } from '../Inline';
 import { Menu } from '../Menu';
 import { ModalProps } from '../Overlay/Modal';
@@ -206,9 +205,7 @@ export const WithDialogController: Story = {
           <Dialog closeButton>
             {({ close }) => (
               <Stack space={5}>
-                <Header>
-                  <Dialog.Title>Confirm delete</Dialog.Title>
-                </Header>
+                <Dialog.Title>Confirm delete</Dialog.Title>
                 <Dialog.Content>
                   <Text>Do you really wanna delete this?</Text>
                 </Dialog.Content>
