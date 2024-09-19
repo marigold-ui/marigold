@@ -17,6 +17,7 @@ import {
 } from '@/ui';
 import type { PropsWithChildren } from 'react';
 import { Wifi } from '@marigold/icons';
+import { BlurFade } from '@/ui/BlurFade';
 import { StatusSelect } from './StatusSelect';
 
 const Info = () => (
@@ -37,11 +38,20 @@ const Info = () => (
   </svg>
 );
 
-const Block = ({ children, name }: PropsWithChildren<{ name: string }>) => (
+const Block = ({
+  children,
+  name,
+  order,
+}: PropsWithChildren<{ name: string; order: number }>) => (
   <Grid.Area name={name}>
-    <div className="bg-bg-surface grid h-full place-items-center rounded-lg p-5 shadow">
+    <BlurFade
+      key={name}
+      className="bg-bg-surface grid h-full place-items-center rounded-lg p-5 shadow"
+      delay={0.25 + order * 0.1}
+      inView
+    >
       {children}
-    </div>
+    </BlurFade>
   </Grid.Area>
 );
 
@@ -62,13 +72,13 @@ export const AccessibiltySection = () => (
           rows={['80px', '80px', '60px', '140px']}
           space={2}
         >
-          <Block name="select">
+          <Block name="select" order={1}>
             <StatusSelect />
           </Block>
-          <Block name="loader">
+          <Block name="loader" order={2}>
             <XLoader width="100%" height="100%" />
           </Block>
-          <Block name="checkbox">
+          <Block name="checkbox" order={3}>
             <FieldGroup labelWidth="95px">
               <CheckboxGroup label="Choose whisely">
                 <Checkbox value="ham">Ham</Checkbox>
@@ -79,20 +89,20 @@ export const AccessibiltySection = () => (
               </CheckboxGroup>
             </FieldGroup>
           </Block>
-          <Block name="switch">
+          <Block name="switch" order={4}>
             <FieldGroup labelWidth="20px">
               <Switch aria-label="WiFi" defaultSelected width="fit">
                 <Wifi height="14px" width="14px" />
               </Switch>
             </FieldGroup>
           </Block>
-          <Block name="button">
+          <Block name="button" order={5}>
             <Inline space={4}>
               <Button variant="primary">Save</Button>
               <Button variant="secondary">Cancel</Button>
             </Inline>
           </Block>
-          <Block name="tag">
+          <Block name="tag" order={6}>
             <FieldGroup labelWidth="95px">
               <Tag.Group
                 label="Amenities"
