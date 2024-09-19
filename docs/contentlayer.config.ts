@@ -73,6 +73,26 @@ export const ChangelogPage = defineDocumentType(() => ({
         return path.length < 3 ? null : path.at(1);
       },
     },
+    // Collect the headings used for creating a submenu in the command
+    headings: {
+      type: 'json',
+      resolve: async doc => {
+        const headingsRegex = /\n(?<flag>#{1,6})\s+(?<content>.+)/g;
+        const slugger = new GithubSlugger();
+        const headings = Array.from(doc.body.raw.matchAll(headingsRegex)).map(
+          ({ groups }) => {
+            const flag = groups?.flag;
+            const content = groups?.content;
+            return {
+              level: flag?.length,
+              text: content,
+              slug: content ? slugger.slug(content) : undefined,
+            };
+          }
+        );
+        return headings;
+      },
+    },
     // get the date of the release of the package
     releaseDate: {
       type: 'string',
@@ -87,7 +107,7 @@ export const ChangelogPage = defineDocumentType(() => ({
          */
         // author_name: 'github-actions[bot]',
         const log = await git.log({ file });
-        console.log(log.all);
+
         return log.latest?.date;
         // return log.all.map(item => {
         //   return item.date;
