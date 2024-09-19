@@ -1,4 +1,4 @@
-# @marigold/theme-core
+## What's new for @marigold/theme-core
 
 ## 26.2.1
 

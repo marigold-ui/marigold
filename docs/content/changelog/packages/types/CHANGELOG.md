@@ -1,4 +1,4 @@
-# @marigold/types
+## What's new for @marigold/types
 
 ## 1.1.1
 

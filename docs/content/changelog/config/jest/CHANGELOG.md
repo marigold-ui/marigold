@@ -1,4 +1,4 @@
-# @marigold/jest-config
+## What's new for @marigold/jest-config
 
 ## 1.2.2
 

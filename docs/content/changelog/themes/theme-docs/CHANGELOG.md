@@ -1,4 +1,4 @@
-# @marigold/theme-docs
+## What's new for @marigold/theme-docs
 
 ## 2.1.1
 

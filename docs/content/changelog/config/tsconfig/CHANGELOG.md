@@ -1,4 +1,4 @@
-# @marigold/tsconfig
+## What's new for @marigold/tsconfig
 
 ## 0.4.0
 

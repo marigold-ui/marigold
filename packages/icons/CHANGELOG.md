@@ -667,7 +667,7 @@
 
 ### Minor Changes
 
-- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: <Select>
+- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: `<Select>`
 
 ### Patch Changes
 
@@ -680,7 +680,7 @@
 
 ### Minor Changes
 
-- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: <Select>
+- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: `<Select>`
 
 ### Patch Changes
 
@@ -773,11 +773,11 @@
 
 - [#1506](https://github.com/marigold-ui/marigold/pull/1506) [`7b2a0374`](https://github.com/marigold-ui/marigold/commit/7b2a0374b2ca4546a7e616d99313028da3ef412e) Thanks [@ti10le](https://github.com/ti10le)! - infra(packages): add icons package as dependency to component package
 
-* [#1589](https://github.com/marigold-ui/marigold/pull/1589) [`8cbcb91a`](https://github.com/marigold-ui/marigold/commit/8cbcb91a7b63ce8f10ee79ed76121e5022cbe07b) Thanks [@sebald](https://github.com/sebald)! - feat: normalize <SVG> and move to system package
+* [#1589](https://github.com/marigold-ui/marigold/pull/1589) [`8cbcb91a`](https://github.com/marigold-ui/marigold/commit/8cbcb91a7b63ce8f10ee79ed76121e5022cbe07b) Thanks [@sebald](https://github.com/sebald)! - feat: normalize `<SVG>` and move to system package
 
-  BREAKING: <SVG> moved from `@marigold/icons` to `@marigold/system`
+  BREAKING: `<SVG>` moved from `@marigold/icons` to `@marigold/system`
 
-- [#1550](https://github.com/marigold-ui/marigold/pull/1550) [`846eb640`](https://github.com/marigold-ui/marigold/commit/846eb640ad035c7f3410b4a8a451f8de56e62339) Thanks [@sebald](https://github.com/sebald)! - feat: Merge <Box> and <Element>
+- [#1550](https://github.com/marigold-ui/marigold/pull/1550) [`846eb640`](https://github.com/marigold-ui/marigold/commit/846eb640ad035c7f3410b4a8a451f8de56e62339) Thanks [@sebald](https://github.com/sebald)! - feat: Merge `<Box>` and `<Element>`
 
 * [#1450](https://github.com/marigold-ui/marigold/pull/1450) [`46aede50`](https://github.com/marigold-ui/marigold/commit/46aede50c43e2dce0cacdc8f4c7da55fa18962b9) Thanks [@ti10le](https://github.com/ti10le)! - feature: use Element in SVG + replace useStyles
 

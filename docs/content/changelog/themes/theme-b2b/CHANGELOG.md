@@ -1,4 +1,4 @@
-# @marigold/theme-b2b
+## What's new for @marigold/theme-b2b
 
 ## 27.2.1
 
