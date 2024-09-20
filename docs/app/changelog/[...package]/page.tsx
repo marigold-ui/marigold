@@ -16,7 +16,8 @@ export const ChangeLogPage = ({ params }: any) => {
   return (
     <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
       <div className="col-span-full">
-        <Headline level={1}>{page.title}</Headline>
+        <Headline level={1}>Whats new on</Headline>
+        <Headline level={2}>{page.title}</Headline>
         <div className="text-secondary-400 pt-1">{page.caption}</div>
       </div>
       <div className="prose max-w-[70ch]">

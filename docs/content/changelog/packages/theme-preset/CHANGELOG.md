@@ -1,5 +1,5 @@
 ---
-title: 'Whats new on @marigold/theme-preset'
+title: '@marigold/theme-preset'
 caption: 'Have a look on the latest changes regarding @marigold/theme-preset'
 ---
 

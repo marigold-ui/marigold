@@ -1,5 +1,5 @@
 ---
-title: 'Whats new on @marigold/eslint-config'
+title: '@marigold/eslint-config'
 caption: 'Have a look on the latest changes regarding @marigold/eslint-config'
 ---
 

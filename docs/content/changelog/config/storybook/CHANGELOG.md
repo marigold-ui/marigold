@@ -1,5 +1,5 @@
 ---
-title: 'Whats new on @marigold/storybook-config'
+title: '@marigold/storybook-config'
 caption: 'Have a look on the latest changes regarding @marigold/storybook-config'
 ---
 
