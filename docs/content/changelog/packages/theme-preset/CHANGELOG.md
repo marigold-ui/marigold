@@ -1,4 +1,6 @@
-## What's new for @marigold/theme-preset
+---
+title: '@marigold/theme-preset'
+---
 
 ## 1.3.22
 

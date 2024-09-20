@@ -1,4 +1,6 @@
-## What's new for @marigold/prettier-config
+---
+title: '@marigold/prettier-config'
+---
 
 ## 0.3.1
 

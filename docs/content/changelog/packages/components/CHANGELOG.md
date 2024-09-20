@@ -1,4 +1,6 @@
-## What's new for @marigold/components
+---
+title: '@marigold/components'
+---
 
 ## 9.0.2
 

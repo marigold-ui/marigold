@@ -8,7 +8,7 @@ export const ChangeLogPage = ({ params }: any) => {
   // const page = allChangelogPages.find(page => page.slug === slug);
 
   const slug = params?.package?.join('/');
-  const page = allChangelogPages.find(page => page.title === slug);
+  const page = allChangelogPages.find(page => page.nav === slug);
 
   // slug: 'changelog/themes/theme-docs/CHANGELOG',
   if (!page) {
@@ -21,9 +21,7 @@ export const ChangeLogPage = ({ params }: any) => {
         (heading: { level: number; text: 'string'; slug: 'string' }) => (
           <div key={page.slug}>
             <div className="col-span-full">
-              <Headline level={1}>
-                Whats new: {heading.level == 2 && heading.text}
-              </Headline>
+              <Headline level={1}>{page.title}</Headline>
               <span>
                 <DateFormat
                   value={new Date(page.releaseDate)}

@@ -1,4 +1,6 @@
-## What's new for @marigold/icons
+---
+title: '@marigold/icons'
+---
 
 ## 1.2.57
 

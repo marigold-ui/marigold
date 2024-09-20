@@ -1,4 +1,6 @@
-## What's new for @marigold/eslint-config
+---
+title: '@marigold/eslint-config'
+---
 
 ## 0.4.16
 

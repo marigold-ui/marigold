@@ -1,4 +1,6 @@
-## What's new for @marigold/storybook-config
+---
+title: '@marigold/storybook-config'
+---
 
 ## 1.1.49
 

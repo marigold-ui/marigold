@@ -8,17 +8,19 @@ let changelogPath = await globby([
   '!../docs/{**,*}/**/CHANGELOG.md',
 ]);
 
-const replacePageTitle = sourceText => {
+const addFrontmatter = sourceText => {
   const regex = /^# (.*)$/m;
 
   //const regex = RegExp('#\\s@marigold\\/');
   let matches = regex.exec(sourceText);
 
-  let replacementText = '';
+  let frontmatter = '';
   if (matches) {
     const packageName = matches[1];
-    const replacementText = `## What's new for ${packageName}\n`;
-    return sourceText.replace(regex, replacementText);
+    frontmatter += '---\n';
+    frontmatter += `title: "${packageName}"\n`;
+    frontmatter += '---\n';
+    return sourceText.replace(regex, frontmatter);
   }
   return sourceText;
 };
@@ -49,7 +51,7 @@ changelogPath.forEach(file => {
 
   const changelogDir = `content/changelog/${packages}`;
   let changelogModified = data;
-  changelogModified = replacePageTitle(changelogModified);
+  changelogModified = addFrontmatter(changelogModified);
   //changelogModified += keepOnlySubsetOfEntries(changelogModified, /^## /, 20);
 
   fs.mkdirSync(changelogDir, {

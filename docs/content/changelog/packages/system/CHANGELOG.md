@@ -1,4 +1,6 @@
-## What's new for @marigold/system
+---
+title: '@marigold/system'
+---
 
 ## 9.0.2
 

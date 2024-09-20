@@ -44,9 +44,14 @@ export const ChangelogPage = defineDocumentType(() => ({
   name: 'ChangelogPage',
   filePathPattern: '{**,*}/CHANGELOG.md',
   contentType: 'mdx',
-  fields: {},
-  computedFields: {
+  fields: {
     title: {
+      type: 'string',
+      required: true,
+    },
+  },
+  computedFields: {
+    nav: {
       type: 'string',
       resolve: doc =>
         getNormalizedPath(doc._raw.sourceFileDir)

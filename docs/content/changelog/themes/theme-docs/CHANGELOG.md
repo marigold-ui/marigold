@@ -1,4 +1,6 @@
-## What's new for @marigold/theme-docs
+---
+title: '@marigold/theme-docs'
+---
 
 ## 2.1.1
 
