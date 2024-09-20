@@ -6,8 +6,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { simpleGit } from 'simple-git';
 import { visit } from 'unist-util-visit';
-import { fs } from 'zx/.';
-import path, { basename, dirname } from 'node:path';
+import path from 'node:path';
 import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 import { rehypeTableOfContents } from './lib/mdx/rehype-toc';
 
@@ -115,8 +114,8 @@ export const ChangelogPage = defineDocumentType(() => ({
          * vercel will use a shallow clone to build!
          */
         // author_name: 'github-actions[bot]',
-        const log = await git.log({ file });
-
+        const log = await git.log({ file: file, strictDate: true });
+        console.log('LOG', log);
         return log.latest?.date;
         // return log.all.map(item => {
         //   return item.date;
