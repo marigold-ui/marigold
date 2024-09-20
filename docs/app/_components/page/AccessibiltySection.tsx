@@ -2,21 +2,21 @@
 
 import { coreTheme } from '@/theme';
 import {
+  Badge,
   Button,
-  Checkbox,
-  CheckboxGroup,
   FieldGroup,
   Grid,
   Inline,
   MarigoldProvider,
   NumberField,
   OverlayContainerProvider,
+  Radio,
+  Stack,
   Switch,
   Tag,
   XLoader,
 } from '@/ui';
 import type { PropsWithChildren } from 'react';
-import { Wifi } from '@marigold/icons';
 import { BlurFade } from '@/ui/BlurFade';
 import { StatusSelect } from './StatusSelect';
 
@@ -46,7 +46,7 @@ const Block = ({
   <Grid.Area name={name}>
     <BlurFade
       key={name}
-      className="bg-bg-surface grid h-full place-items-center rounded-lg p-5 shadow"
+      className="bg-bg-surface grid h-full place-items-center rounded-lg border border-black/5 px-2 py-2 shadow"
       delay={0.25 + order * 0.1}
       inView
     >
@@ -61,15 +61,14 @@ export const AccessibiltySection = () => (
       <MarigoldProvider theme={coreTheme} className="bg-transparent">
         <Grid
           areas={[
-            'select select loader',
-            'checkbox switch loader',
-            'x button button',
-            'tag tag y',
-            //   'logo logo tickets',
-            //   'social-media event-2 tickets',
+            'select select radio radio',
+            'button badge radio radio',
+            'button badge loader switch',
+            'number-field badge loader switch',
+            'tag tag tag tag',
           ]}
-          columns={[4, 1, 2]}
-          rows={['80px', '80px', '60px', '140px']}
+          columns={[3, 2, 2, 1]}
+          rows={['70px', '40px', '10px', '50px', '70px']}
           space={2}
         >
           <Block name="select" order={1}>
@@ -78,22 +77,19 @@ export const AccessibiltySection = () => (
           <Block name="loader" order={2}>
             <XLoader width="100%" height="100%" />
           </Block>
-          <Block name="checkbox" order={3}>
-            <FieldGroup labelWidth="95px">
-              <CheckboxGroup label="Choose whisely">
-                <Checkbox value="ham">Ham</Checkbox>
-                <Checkbox value="salami" disabled>
-                  Salami
-                </Checkbox>
-                <Checkbox value="cheese">Cheese</Checkbox>
-              </CheckboxGroup>
+          <Block name="radio" order={3}>
+            <FieldGroup labelWidth="75px">
+              <Radio.Group label="Event type" defaultValue="concerts">
+                <Radio value="concerts">Concerts</Radio>
+                <Radio value="festival">Festival</Radio>
+                <Radio value="sports">Sport</Radio>
+                <Radio value="exhibition">Exhibition</Radio>
+              </Radio.Group>
             </FieldGroup>
           </Block>
           <Block name="switch" order={4}>
-            <FieldGroup labelWidth="20px">
-              <Switch aria-label="WiFi" defaultSelected width="fit">
-                <Wifi height="14px" width="14px" />
-              </Switch>
+            <FieldGroup labelWidth="0px">
+              <Switch aria-label="WiFi" defaultSelected width="fit" />
             </FieldGroup>
           </Block>
           <Block name="button" order={5}>
@@ -102,68 +98,38 @@ export const AccessibiltySection = () => (
               <Button variant="secondary">Cancel</Button>
             </Inline>
           </Block>
-          <Block name="tag" order={6}>
-            <FieldGroup labelWidth="95px">
-              <Tag.Group
-                label="Amenities"
-                selectionMode="multiple"
-                description="Choosing extras may lead to additional charges"
-              >
-                <Tag id="parking">Parking</Tag>
-                <Tag id="locker">Locker</Tag>
-                <Tag id="backstage-pass">Backstage Pass</Tag>
+          <Block name="number-field" order={7}>
+            <FieldGroup labelWidth="40px">
+              <NumberField
+                label="Price"
+                width={36}
+                defaultValue={10}
+                formatOptions={{
+                  style: 'currency',
+                  currency: 'EUR',
+                }}
+              />
+            </FieldGroup>
+          </Block>
+          <Block name="badge" order={6}>
+            <Stack space={2} alignX="center">
+              <Badge variant="success">New arrival</Badge>
+              <Badge variant="warning">Selling fast</Badge>
+              <Badge variant="error">Sold out</Badge>
+            </Stack>
+          </Block>
+          <Block name="tag" order={8}>
+            <FieldGroup labelWidth="40px">
+              <Tag.Group label="Perks" selectionMode="multiple">
+                <Tag id="parking-pass">Parking Pass</Tag>
+                <Tag id="vip">VIP Access</Tag>
+                <Tag id="glamping">Glamping Package</Tag>
                 <Tag id="shuttle-service">Shuttle Service</Tag>
               </Tag.Group>
             </FieldGroup>
           </Block>
-          {/* <Block name="event-1">
-          <Button variant="primary">Don't press</Button>
-          </Block>
-          <Block name="mobile-ticket">
-          <FieldGroup labelWidth="95px">
-          <CheckboxGroup label="Choose whisely">
-          <Checkbox value="ham">Ham</Checkbox>
-          <Checkbox value="salami" disabled>
-          Salami
-          </Checkbox>
-          <Checkbox value="cheese">Cheese</Checkbox>
-          </CheckboxGroup>
-          </FieldGroup>
-          </Block>
-          <Block name="logo">
-          <FieldGroup labelWidth="95px">
-          <NumberField
-          label="Ticket Price"
-          width={48}
-          defaultValue={10}
-          formatOptions={{
-            style: 'currency',
-            currency: 'EUR',
-            }}
-            />
-            </FieldGroup>
-            </Block>
-            <Block name="tickets">
-            <FieldGroup labelWidth="95px">
-            <Switch>Switch</Switch>
-            <Tag.Group
-            label="Amenities"
-            selectionMode="multiple"
-            description="Choosing extras may lead to additional charges"
-            >
-            <Tag id="laundry">Laundry</Tag>
-            <Tag id="fitness">Fitness center</Tag>
-            <Tag id="parking">Parking</Tag>
-            <Tag id="pool">Swimming pool</Tag>
-            <Tag id="breakfast">Breakfast</Tag>
-            </Tag.Group>
-            </FieldGroup>
-            </Block> */}
         </Grid>
       </MarigoldProvider>
     </OverlayContainerProvider>
-    <div className="text-text-primary/40 place-center flex justify-center gap-1 pt-1.5 text-xs">
-      <Info /> Use your keyboard to explore and test the components!
-    </div>
   </div>
 );

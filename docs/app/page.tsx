@@ -36,15 +36,15 @@ export const Page = () => (
               Get started
             </Link>
             <Link variant="secondary" size="large" href="/components">
-              Explore Component
+              Explore Components
             </Link>
           </Inline>
         </Center>
       </div>
     </div>
 
-    <div className="max-w-screen-lg">
-      <div className="grid grid-cols-5 gap-24">
+    <div className="grid max-w-screen-lg gap-[20vw] pt-[5vw]">
+      <div className="grid grid-cols-5 gap-20">
         <div className="col-span-2">
           <SectionHeadline>Built to be accessible</SectionHeadline>
           <SectionContent>
