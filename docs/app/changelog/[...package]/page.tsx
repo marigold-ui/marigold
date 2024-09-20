@@ -17,27 +17,21 @@ export const ChangeLogPage = ({ params }: any) => {
 
   return (
     <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
-      {page.headings.map(
-        (heading: { level: number; text: 'string'; slug: 'string' }) => (
-          <div key={page.slug}>
-            <div className="col-span-full">
-              <Headline level={1}>{page.title}</Headline>
-              <span>
-                <DateFormat
-                  value={new Date(page.releaseDate)}
-                  dateStyle="medium"
-                ></DateFormat>
-              </span>
-            </div>
-            <div className="prose max-w-[70ch]">
-              <Mdx className="" title={page?.title} code={page.body.code} />
-            </div>
-            <div className="col-start-2 hidden min-[1400px]:block">
-              <TocContainer />
-            </div>
-          </div>
-        )
-      )}
+      <div className="col-span-full">
+        <Headline level={1}>{page.title}</Headline>
+        <span>
+          <DateFormat
+            value={new Date(page.releaseDate)}
+            dateStyle="medium"
+          ></DateFormat>
+        </span>
+      </div>
+      <div className="prose max-w-[70ch]">
+        <Mdx className="" title={page?.title} code={page.body.code} />
+      </div>
+      <div className="col-start-2 hidden min-[1400px]:block">
+        <TocContainer />
+      </div>
     </article>
   );
 };
