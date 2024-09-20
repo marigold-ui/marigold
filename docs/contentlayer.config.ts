@@ -102,7 +102,7 @@ export const ChangelogPage = defineDocumentType(() => ({
       },
     },
     // get the date of the release of the package
-    releaseDate: {
+    releases: {
       type: 'string',
       resolve: async doc => {
         const file = path.resolve(contentDirPath, doc._raw.sourceFilePath);
@@ -115,11 +115,12 @@ export const ChangelogPage = defineDocumentType(() => ({
          */
         // author_name: 'github-actions[bot]',
         const log = await git.log({ file: file, strictDate: true });
-        console.log('LOG', log);
-        return log.latest?.date;
-        // return log.all.map(item => {
-        //   return item.date;
-        // });
+        const releases = log.all.filter(
+          release => release.author_name === 'github-actions[bot]'
+        );
+
+        console.log(releases.filter(rel => rel.refs));
+        return { releases };
       },
     },
   },
