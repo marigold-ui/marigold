@@ -1,5 +1,6 @@
 ---
-title: '@marigold/types'
+title: 'Whats new on @marigold/types'
+caption: 'Have a look on the latest changes regarding @marigold/types'
 ---
 
 ## 1.1.1

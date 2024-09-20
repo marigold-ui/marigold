@@ -1,5 +1,6 @@
 ---
-title: '@marigold/jest-config'
+title: 'Whats new on @marigold/jest-config'
+caption: 'Have a look on the latest changes regarding @marigold/jest-config'
 ---
 
 ## 1.2.2

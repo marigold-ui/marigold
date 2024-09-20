@@ -1,5 +1,6 @@
 ---
-title: '@marigold/theme-core'
+title: 'Whats new on @marigold/theme-core'
+caption: 'Have a look on the latest changes regarding @marigold/theme-core'
 ---
 
 ## 26.2.1

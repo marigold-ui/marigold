@@ -1,5 +1,6 @@
 ---
-title: '@marigold/theme-preset'
+title: 'Whats new on @marigold/theme-preset'
+caption: 'Have a look on the latest changes regarding @marigold/theme-preset'
 ---
 
 ## 1.3.22

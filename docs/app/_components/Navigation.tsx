@@ -65,7 +65,7 @@ export const useNavigation = (): NavigationSection[] => {
                 page.section === slug && page.subsection === subsection.slug
             )
             .map(page => ({
-              name: page.title,
+              name: page.nav,
               href: `/${page.slug}`,
             })),
         ],

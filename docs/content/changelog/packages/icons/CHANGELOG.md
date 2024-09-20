@@ -1,5 +1,6 @@
 ---
-title: '@marigold/icons'
+title: 'Whats new on @marigold/icons'
+caption: 'Have a look on the latest changes regarding @marigold/icons'
 ---
 
 ## 1.2.57

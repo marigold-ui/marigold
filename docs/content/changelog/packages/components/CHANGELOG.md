@@ -1,5 +1,6 @@
 ---
-title: '@marigold/components'
+title: 'Whats new on @marigold/components'
+caption: 'Have a look on the latest changes regarding @marigold/components'
 ---
 
 ## 9.0.2

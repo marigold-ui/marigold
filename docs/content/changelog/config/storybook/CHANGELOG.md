@@ -1,5 +1,6 @@
 ---
-title: '@marigold/storybook-config'
+title: 'Whats new on @marigold/storybook-config'
+caption: 'Have a look on the latest changes regarding @marigold/storybook-config'
 ---
 
 ## 1.1.49

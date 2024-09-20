@@ -49,6 +49,10 @@ export const ChangelogPage = defineDocumentType(() => ({
       type: 'string',
       required: true,
     },
+    caption: {
+      type: 'string',
+      required: true,
+    },
   },
   computedFields: {
     nav: {

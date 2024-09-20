@@ -1,5 +1,6 @@
 ---
-title: '@marigold/prettier-config'
+title: 'Whats new on @marigold/prettier-config'
+caption: 'Have a look on the latest changes regarding @marigold/prettier-config'
 ---
 
 ## 0.3.1

@@ -1,5 +1,6 @@
 ---
-title: '@marigold/tsconfig'
+title: 'Whats new on @marigold/tsconfig'
+caption: 'Have a look on the latest changes regarding @marigold/tsconfig'
 ---
 
 ## 0.4.0

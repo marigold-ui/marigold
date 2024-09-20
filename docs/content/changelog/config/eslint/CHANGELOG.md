@@ -1,5 +1,6 @@
 ---
-title: '@marigold/eslint-config'
+title: 'Whats new on @marigold/eslint-config'
+caption: 'Have a look on the latest changes regarding @marigold/eslint-config'
 ---
 
 ## 0.4.16

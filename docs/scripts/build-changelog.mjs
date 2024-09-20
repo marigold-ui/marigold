@@ -18,7 +18,8 @@ const addFrontmatter = sourceText => {
   if (matches) {
     const packageName = matches[1];
     frontmatter += '---\n';
-    frontmatter += `title: "${packageName}"\n`;
+    frontmatter += `title: "Whats new on ${packageName}"\n`;
+    frontmatter += `caption: "Have a look on the latest changes regarding ${packageName}"\n`;
     frontmatter += '---\n';
     return sourceText.replace(regex, frontmatter);
   }

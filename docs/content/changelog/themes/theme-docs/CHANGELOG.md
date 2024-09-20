@@ -1,5 +1,6 @@
 ---
-title: '@marigold/theme-docs'
+title: 'Whats new on @marigold/theme-docs'
+caption: 'Have a look on the latest changes regarding @marigold/theme-docs'
 ---
 
 ## 2.1.1
