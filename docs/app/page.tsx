@@ -1,6 +1,6 @@
 import { Center, Inline, Link } from '@/ui';
 import type { PropsWithChildren } from 'react';
-import { AccessibiltySection } from './_components/page/AccessibiltySection';
+import { AccessibiltySection } from './_components/landingpage/AccessibiltySection';
 
 // Components
 // ---------------
@@ -57,9 +57,9 @@ export const Page = () => (
         </div>
         <AccessibiltySection />
       </div>
-      <div className="grid grid-cols-2 gap-24">
-        <div>asd</div>
-        <div>
+      <div className="grid grid-cols-6 gap-24">
+        <div className="col-span-2">asd</div>
+        <div className="col-span-4">
           <SectionHeadline>Made for collaboration</SectionHeadline>
           <SectionContent>
             Designers and developers iterate together using shared tools like
