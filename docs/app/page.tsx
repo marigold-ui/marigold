@@ -5,7 +5,9 @@ import { AccessibiltySection } from './_components/page/AccessibiltySection';
 // Components
 // ---------------
 const SectionHeadline = ({ children }: PropsWithChildren) => (
-  <h2 className="text-balance pb-4 text-5xl font-extrabold">{children}</h2>
+  <h2 className="text-balance pb-4 text-6xl font-extrabold tracking-tight">
+    {children}
+  </h2>
 );
 
 const SectionContent = ({ children }: PropsWithChildren) => (
@@ -44,8 +46,8 @@ export const Page = () => (
     </div>
 
     <div className="grid max-w-screen-lg gap-[20vw] pt-[5vw]">
-      <div className="grid grid-cols-5 gap-20">
-        <div className="col-span-2">
+      <div className="grid grid-cols-2 gap-16">
+        <div>
           <SectionHeadline>Built to be accessible</SectionHeadline>
           <SectionContent>
             Marigold is designed with accessibility in mind from the ground up.
@@ -58,12 +60,12 @@ export const Page = () => (
       <div className="grid grid-cols-2 gap-24">
         <div>asd</div>
         <div>
-          <SectionHeadline>Designed for collaboration.</SectionHeadline>
+          <SectionHeadline>Made for collaboration</SectionHeadline>
           <SectionContent>
-            All components are built to adapt seamlessly to different brands and
-            visual identities. With flexible theming options, teams can easily
-            tailor components to match unique brand colors, styles, and design
-            needs, ensuring a cohesive experience across diverse products.
+            Designers and developers iterate together using shared tools like
+            design tokens, guidelines, UI patterns, and Storybook. No handoff is
+            necessary. Instead, collaboration throughout the project reduces
+            friction and fosters a unified vision.
           </SectionContent>
         </div>
       </div>

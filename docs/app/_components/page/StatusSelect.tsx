@@ -18,8 +18,8 @@ const options = [
     color: 'bg-yellow-500',
   },
   {
-    id: 'active',
-    label: 'Active',
+    id: 'on-sale',
+    label: 'On Sale',
     color: 'bg-green-500',
   },
   {
@@ -31,7 +31,7 @@ const options = [
 
 export const StatusSelect = () => (
   <FieldGroup labelWidth="40px">
-    <Select label="Status" defaultSelectedKey="active" width={44}>
+    <Select label="Status" defaultSelectedKey="on-sale" width={44}>
       {options.map(o => (
         <Select.Option key={o.id} id={o.id}>
           <Inline space={2} alignY="center">

@@ -6,7 +6,6 @@ import {
   Button,
   FieldGroup,
   Grid,
-  Inline,
   MarigoldProvider,
   NumberField,
   OverlayContainerProvider,
@@ -47,7 +46,7 @@ const Block = ({
     <BlurFade
       key={name}
       className="bg-bg-surface grid h-full place-items-center rounded-lg border border-black/5 px-2 py-2 shadow"
-      delay={0.25 + order * 0.1}
+      delay={0.2 + order * 0.05}
       inView
     >
       {children}
@@ -56,7 +55,7 @@ const Block = ({
 );
 
 export const AccessibiltySection = () => (
-  <div data-theme="core" className="col-span-3 flex flex-col">
+  <div data-theme="core" className="flex flex-col">
     <OverlayContainerProvider value="portalContainer">
       <MarigoldProvider theme={coreTheme} className="bg-transparent">
         <Grid
@@ -93,10 +92,7 @@ export const AccessibiltySection = () => (
             </FieldGroup>
           </Block>
           <Block name="button" order={5}>
-            <Inline space={4}>
-              <Button variant="primary">Save</Button>
-              <Button variant="secondary">Cancel</Button>
-            </Inline>
+            <Button variant="primary">Buy ticket</Button>
           </Block>
           <Block name="number-field" order={7}>
             <FieldGroup labelWidth="40px">
