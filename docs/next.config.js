@@ -22,13 +22,7 @@ const nextConfig = {
     version: pkg.version,
   },
   async redirects() {
-    return [
-      {
-        source: '/components',
-        destination: '/components/provider',
-        permanent: true,
-      },
-    ];
+    return [];
   },
 };
 
