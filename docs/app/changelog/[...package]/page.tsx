@@ -12,6 +12,8 @@ export const ChangeLogPage = ({ params }: any) => {
     notFound();
   }
 
+  console.log(page);
+
   return (
     <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
       <div className="col-span-full">

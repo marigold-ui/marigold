@@ -12,7 +12,7 @@ let changelogPath = await globby([
   '!../docs/{**,*}/**/CHANGELOG.md',
 ]);
 
-const getVersion = async file => {
+const getBadge = async file => {
   const newFile = path.resolve(file);
   const log = await git.log({ file: newFile });
 
@@ -47,7 +47,6 @@ const addFrontmatter = (sourceText, versions) => {
     frontmatter += '---\n';
     frontmatter += `title: "${packageName}"\n`;
     frontmatter += `caption: "Have a look on the latest changes regarding ${packageName}"\n`;
-
     if (hasBadge) {
       frontmatter += `badge: ${versions[0]}\n`;
     }
@@ -64,7 +63,7 @@ changelogPath.forEach(async file => {
 
   const changelogDir = `content/changelog/${packages}`;
   let changelogModified = data;
-  const versions = await getVersion(file);
+  const versions = await getBadge(file);
 
   changelogModified = addFrontmatter(changelogModified, versions);
   fs.mkdirSync(changelogDir, {
