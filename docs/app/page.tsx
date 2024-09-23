@@ -33,11 +33,7 @@ export const Page = () => (
         </p>
         <Center>
           <Inline data-toggle data-toggle-target="#foobar" space={6}>
-            <Link
-              variant="primary"
-              size="large"
-              href="/introduction/getting-started"
-            >
+            <Link variant="primary" size="large" href="/getting-started">
               Get started
             </Link>
             <Link variant="secondary" size="large" href="/components">
@@ -57,9 +53,7 @@ export const Page = () => (
             It leverages React Aria for screen reader and keyboard navigation
             support, ensuring your applications are ready for every user.
           </SectionContent>
-          <Link variant="secondary" size="small" href="/components">
-            Explore Components
-          </Link>
+          <Link href="/foundations/overview">Learn more about Marigold</Link>
         </Stack>
         <AccessibiltySection />
       </div>
