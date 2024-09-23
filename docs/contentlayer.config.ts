@@ -119,8 +119,7 @@ export const ChangelogPage = defineDocumentType(() => ({
           release => release.author_name === 'github-actions[bot]'
         );
 
-        console.log(releases.filter(rel => rel.refs));
-        return { releases };
+        return releases;
       },
     },
   },
