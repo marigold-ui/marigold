@@ -8,13 +8,23 @@ import { SystemSection } from './_components/landingpage/SystemSection';
 // Components
 // ---------------
 const SectionHeadline = ({ children }: PropsWithChildren) => (
-  <h2 className="text-balance text-6xl font-extrabold tracking-tight">
+  <h2 className="text-balance pb-2 text-6xl font-extrabold tracking-tight">
     {children}
   </h2>
 );
 
 const SectionContent = ({ children }: PropsWithChildren) => (
   <p className="text-pretty text-lg">{children}</p>
+);
+
+const SectionLink = ({
+  children,
+  href,
+}: PropsWithChildren<{ href: string }>) => (
+  <Link href={href}>
+    <span className="text-sm">▶︎</span>{' '}
+    <span className="text-lg">{children}</span>
+  </Link>
 );
 
 // Page
@@ -34,7 +44,7 @@ export const Page = () => (
         <Center>
           <Inline data-toggle data-toggle-target="#foobar" space={6}>
             <Link variant="primary" size="large" href="/getting-started">
-              Get started
+              <span className="inline-block translate-y-px">Get started</span>
             </Link>
             <Link variant="secondary" size="large" href="/components">
               Explore Components
@@ -53,6 +63,7 @@ export const Page = () => (
             It leverages React Aria for screen reader and keyboard navigation
             support, ensuring your applications are ready for every user.
           </SectionContent>
+          <SectionLink href="/components">Try out the components</SectionLink>
         </div>
         <AccessibiltySection />
       </div>
@@ -66,6 +77,9 @@ export const Page = () => (
             necessary. Instead, collaboration throughout the project reduces
             friction and fosters a unified vision.
           </SectionContent>
+          <SectionLink href="/foundations">
+            Deep dive into the foundations
+          </SectionLink>
         </div>
       </div>
       <div className="grid grid-cols-8 items-center gap-16">
@@ -77,9 +91,9 @@ export const Page = () => (
             responsive, structured designs, streamlining the process without the
             need for complex CSS.
           </SectionContent>
-          <Link href="/foundations/layouts">
-            <span className="text-sm">▶︎</span> Learn more about layouts
-          </Link>
+          <SectionLink href="/foundations/layouts">
+            Learn more about layouts
+          </SectionLink>
         </div>
         <LayoutSection />
       </div>
@@ -92,6 +106,9 @@ export const Page = () => (
             visual identities. With flexible theming options, teams can easily
             tailor components to match unique brands, styles, and design needs.
           </SectionContent>
+          <SectionLink href="/getting-started/installation#theming">
+            Explore theming possibilities
+          </SectionLink>
         </div>
       </div>
     </div>
