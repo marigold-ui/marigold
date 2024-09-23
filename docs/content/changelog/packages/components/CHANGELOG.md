@@ -1,6 +1,7 @@
 ---
 title: '@marigold/components'
 caption: 'Have a look on the latest changes regarding @marigold/components'
+badge: new
 ---
 
 ## 9.0.2

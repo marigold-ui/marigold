@@ -1,6 +1,7 @@
 ---
 title: '@marigold/theme-docs'
 caption: 'Have a look on the latest changes regarding @marigold/theme-docs'
+badge: new
 ---
 
 ## 2.1.1

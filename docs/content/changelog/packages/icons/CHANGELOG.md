@@ -1,6 +1,7 @@
 ---
 title: '@marigold/icons'
 caption: 'Have a look on the latest changes regarding @marigold/icons'
+badge: new
 ---
 
 ## 1.2.57

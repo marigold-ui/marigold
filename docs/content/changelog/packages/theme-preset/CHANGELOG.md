@@ -1,6 +1,7 @@
 ---
 title: '@marigold/theme-preset'
 caption: 'Have a look on the latest changes regarding @marigold/theme-preset'
+badge: new
 ---
 
 ## 1.3.22

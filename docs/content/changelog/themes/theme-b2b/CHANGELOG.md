@@ -1,6 +1,7 @@
 ---
 title: '@marigold/theme-b2b'
 caption: 'Have a look on the latest changes regarding @marigold/theme-b2b'
+badge: new
 ---
 
 ## 27.2.1

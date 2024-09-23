@@ -12,47 +12,35 @@ let changelogPath = await globby([
   '!../docs/{**,*}/**/CHANGELOG.md',
 ]);
 
-const getVersion = async (sourceText, file) => {
+const getVersion = async file => {
   const newFile = path.resolve(file);
-  const version = /@[0-9]+\.[0-9]+\.[0-9]+/;
-  //const version = /##\s([0-9]+(\.[0-9]+)+).*$/;
   const log = await git.log({ file: newFile });
-
-  const tag = await git.tag();
-  let versionMatches = version.exec(sourceText);
 
   const releases = log.all
     .filter(release => release.author_name === 'github-actions[bot]')
     .map(release => {
-      const matchedVersion = release.refs.match(version);
-      const versionValue = matchedVersion ? matchedVersion[0] : undefined;
-
       const releaseDate = new Date(release.date);
       const today = new Date();
 
+      // to get the difference in days we need to calculate the difference between time and divide it into miliseconds a day has
       const timeDifference = today.getTime() - releaseDate.getTime();
       const aDayInMs = 24 * 60 * 60 * 1000;
-      // to get the difference in days we need to calculate the difference between time and divide it into miliseconds a day has
       const daysDifference = Math.round(timeDifference / aDayInMs);
 
-      console.log(daysDifference);
+      const badge = daysDifference < 30 ? 'new' : undefined;
 
-      return {
-        version: versionValue,
-        date: release.date,
-      };
+      return badge;
     });
 
   return releases;
 };
 
-const addFrontmatter = sourceText => {
+const addFrontmatter = (sourceText, versions) => {
   const regex = /^# (.*)$/m;
 
   let matches = regex.exec(sourceText);
 
-  // const version = /##\s([0-9]+(\.[0-9]+)+)/;
-  // let versionMatches = version.exec(sourceText);
+  const hasBadge = versions.includes('new');
 
   let frontmatter = '';
   if (matches) {
@@ -60,7 +48,10 @@ const addFrontmatter = sourceText => {
     frontmatter += '---\n';
     frontmatter += `title: "${packageName}"\n`;
     frontmatter += `caption: "Have a look on the latest changes regarding ${packageName}"\n`;
-    //frontmatter += `badge: `;
+
+    if (hasBadge) {
+      frontmatter += `badge: ${versions[0]}\n`;
+    }
     frontmatter += '---\n';
     return sourceText.replace(regex, frontmatter);
   }
@@ -68,19 +59,24 @@ const addFrontmatter = sourceText => {
 };
 
 // generate folder structure for changelogs
-changelogPath.forEach(file => {
+changelogPath.forEach(async file => {
   const data = fs.readFileSync(file, 'utf8');
   let packages = path.dirname(file.replace('../', ''));
 
   const changelogDir = `content/changelog/${packages}`;
   let changelogModified = data;
-  changelogModified = addFrontmatter(changelogModified);
+  // Wait for the version information to be fetched asynchronously
+  const versions = await getVersion(file);
 
-  getVersion(changelogModified, file);
+  // Add frontmatter after versions are fetched
+  changelogModified = addFrontmatter(changelogModified, versions);
 
+  // Create the changelog directory if it doesn't exist
   fs.mkdirSync(changelogDir, {
     recursive: true,
   });
+
+  // Write the modified changelog to the new directory
   fs.writeFileSync(
     path.join(changelogDir, path.basename(file)),
     changelogModified,
