@@ -1,4 +1,4 @@
-import { Center, Inline, Link } from '@/ui';
+import { Center, Inline, Link, Stack } from '@/ui';
 import type { PropsWithChildren } from 'react';
 import { AccessibiltySection } from './_components/landingpage/AccessibiltySection';
 import { CollaborationSection } from './_components/landingpage/CollaborationSection';
@@ -8,7 +8,7 @@ import { SystemSection } from './_components/landingpage/SystemSection';
 // Components
 // ---------------
 const SectionHeadline = ({ children }: PropsWithChildren) => (
-  <h2 className="text-balance pb-4 text-6xl font-extrabold tracking-tight">
+  <h2 className="text-balance text-6xl font-extrabold tracking-tight">
     {children}
   </h2>
 );
@@ -50,14 +50,17 @@ export const Page = () => (
 
     <div className="grid max-w-screen-lg gap-[40vh] pt-[5vw]">
       <div className="grid grid-cols-2 items-center gap-16">
-        <div>
+        <Stack space={4} alignX="left">
           <SectionHeadline>Built to be accessible</SectionHeadline>
           <SectionContent>
             Marigold is designed with accessibility in mind from the ground up.
             It leverages React Aria for screen reader and keyboard navigation
             support, ensuring your applications are ready for every user.
           </SectionContent>
-        </div>
+          <Link variant="secondary" size="small" href="/components">
+            Explore Components
+          </Link>
+        </Stack>
         <AccessibiltySection />
       </div>
       <div className="grid grid-cols-5 items-center gap-16">
