@@ -10,10 +10,7 @@ export const SiteNavigation = () => {
   const sections = navigation.map(section => ({
     name: section.name,
     slug: section.slug,
-    link:
-      section.subsections.length > 0
-        ? section.subsections[0].links[0]
-        : section.links[0],
+    link: section.links[0],
   }));
 
   return (

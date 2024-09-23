@@ -25,12 +25,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/introduction/getting-started',
-        permanent: true,
-      },
-      {
-        source: '/components',
-        destination: '/components/provider',
+        destination: '/getting-started/overview',
         permanent: true,
       },
     ];
