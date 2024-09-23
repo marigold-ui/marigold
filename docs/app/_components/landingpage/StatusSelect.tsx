@@ -1,4 +1,4 @@
-import { FieldGroup, Inline, Select, Text } from '@/ui';
+import { FieldGroup, Inline, Select } from '@/ui';
 
 const Indicator = ({ color }: { color: string }) => (
   <span

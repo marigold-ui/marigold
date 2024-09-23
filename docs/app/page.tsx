@@ -1,6 +1,7 @@
 import { Center, Inline, Link } from '@/ui';
 import type { PropsWithChildren } from 'react';
 import { AccessibiltySection } from './_components/landingpage/AccessibiltySection';
+import { CollaborationSection } from './_components/landingpage/CollaborationSection';
 
 // Components
 // ---------------
@@ -45,8 +46,8 @@ export const Page = () => (
       </div>
     </div>
 
-    <div className="grid max-w-screen-lg gap-[20vw] pt-[5vw]">
-      <div className="grid grid-cols-2 gap-16">
+    <div className="grid max-w-screen-lg gap-[25vw] pt-[5vw]">
+      <div className="grid grid-cols-2 items-center gap-16">
         <div>
           <SectionHeadline>Built to be accessible</SectionHeadline>
           <SectionContent>
@@ -57,13 +58,13 @@ export const Page = () => (
         </div>
         <AccessibiltySection />
       </div>
-      <div className="grid grid-cols-6 gap-24">
-        <div className="col-span-2">asd</div>
-        <div className="col-span-4">
+      <div className="grid grid-cols-5 items-center gap-16">
+        <CollaborationSection />
+        <div className="col-span-2">
           <SectionHeadline>Made for collaboration</SectionHeadline>
           <SectionContent>
             Designers and developers iterate together using shared tools like
-            design tokens, guidelines, UI patterns, and Storybook. No handoff is
+            design tokens, guidelines, UI kit, and Storybook. No handoff is
             necessary. Instead, collaboration throughout the project reduces
             friction and fosters a unified vision.
           </SectionContent>
