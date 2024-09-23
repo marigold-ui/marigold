@@ -4,6 +4,8 @@ caption: 'Have a look on the latest changes regarding @marigold/theme-b2b'
 badge: new
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/themes/theme-b2b/CHANGELOG.md)_
+
 ## 27.2.1
 
 ### Patch Changes

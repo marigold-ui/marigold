@@ -37,7 +37,7 @@ export const SectionNavigation = () => {
           <div key={name} className="flex flex-col gap-2.5 pb-4">
             <p className="text-secondary-600 text-sm font-semibold">{name}</p>
             <div className="border-secondary-300 ml-0.5 flex flex-col border-l">
-              {links.map(({ name, href, badge }) => (
+              {links?.map(({ name, href, badge }) => (
                 <div key={href}>
                   <NavLink
                     className="flex items-center gap-4"

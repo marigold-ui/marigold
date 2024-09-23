@@ -4,6 +4,8 @@ caption: 'Have a look on the latest changes regarding @marigold/theme-docs'
 badge: new
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/themes/theme-docs/CHANGELOG.md)_
+
 ## 2.1.1
 
 ### Patch Changes

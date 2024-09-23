@@ -3,6 +3,8 @@ title: '@marigold/jest-config'
 caption: 'Have a look on the latest changes regarding @marigold/jest-config'
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/config/jest/CHANGELOG.md)_
+
 ## 1.2.2
 
 ### Patch Changes

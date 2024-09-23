@@ -3,6 +3,8 @@ title: '@marigold/tsconfig'
 caption: 'Have a look on the latest changes regarding @marigold/tsconfig'
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/config/tsconfig/CHANGELOG.md)_
+
 ## 0.4.0
 
 ### Minor Changes

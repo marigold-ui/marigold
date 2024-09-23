@@ -3,6 +3,8 @@ title: '@marigold/eslint-config'
 caption: 'Have a look on the latest changes regarding @marigold/eslint-config'
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/config/eslint/CHANGELOG.md)_
+
 ## 0.4.16
 
 ### Patch Changes

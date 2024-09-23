@@ -3,6 +3,8 @@ title: '@marigold/types'
 caption: 'Have a look on the latest changes regarding @marigold/types'
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/packages/types/CHANGELOG.md)_
+
 ## 1.1.1
 
 ### Patch Changes

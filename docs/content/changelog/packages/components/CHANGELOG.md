@@ -4,6 +4,8 @@ caption: 'Have a look on the latest changes regarding @marigold/components'
 badge: new
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/packages/components/CHANGELOG.md)_
+
 ## 9.0.2
 
 ### Patch Changes

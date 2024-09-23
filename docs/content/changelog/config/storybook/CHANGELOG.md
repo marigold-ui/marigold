@@ -4,6 +4,8 @@ caption: 'Have a look on the latest changes regarding @marigold/storybook-config
 badge: new
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/config/storybook/CHANGELOG.md)_
+
 ## 1.1.49
 
 ### Patch Changes

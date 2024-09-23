@@ -4,6 +4,8 @@ caption: 'Have a look on the latest changes regarding @marigold/theme-preset'
 badge: new
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/packages/theme-preset/CHANGELOG.md)_
+
 ## 1.3.22
 
 ### Patch Changes

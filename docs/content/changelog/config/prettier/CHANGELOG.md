@@ -3,6 +3,8 @@ title: '@marigold/prettier-config'
 caption: 'Have a look on the latest changes regarding @marigold/prettier-config'
 ---
 
+_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/config/prettier/CHANGELOG.md)_
+
 ## 0.3.1
 
 ### Patch Changes

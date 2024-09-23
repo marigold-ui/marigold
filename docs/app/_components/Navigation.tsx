@@ -31,17 +31,25 @@ export const useNavigation = (): NavigationSection[] => {
 
   return navigation.map(({ name, slug, subsections = [] }) => {
     // Section Page = has a section but NO subsection
-    const sectionPages = allContentPages.filter(
-      page => page.section === slug && !page.subsection
-    );
+    const sectionPages = [
+      ...allContentPages
+        .filter(page => page.section === slug && !page.subsection)
+        .sort((a, b) => (a.order || 1000) - (b.order || 1000)),
+      ...allChangelogPages.filter(
+        page => page.section === slug && !page.subsection
+      ),
+    ];
 
-    sectionPages.sort((a, b) => (a.order || 1000) - (b.order || 1000));
+    sectionPages;
     return {
       name,
       slug,
       links: sectionPages.map(page => ({
         name: page.title,
-        href: `/${page.slug}`,
+        href:
+          page.section === 'changelog'
+            ? `changelog/${page.slug}`
+            : `/${page.slug}`,
         badge: page.badge,
       })),
       subsections: subsections.map(
