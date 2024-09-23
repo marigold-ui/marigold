@@ -1,4 +1,4 @@
-import { Center, Inline, Link, Stack } from '@/ui';
+import { Center, Inline, Link } from '@/ui';
 import type { PropsWithChildren } from 'react';
 import { AccessibiltySection } from './_components/landingpage/AccessibiltySection';
 import { CollaborationSection } from './_components/landingpage/CollaborationSection';
@@ -46,20 +46,19 @@ export const Page = () => (
 
     <div className="grid max-w-screen-lg gap-[40vh] pt-[5vw]">
       <div className="grid grid-cols-2 items-center gap-16">
-        <Stack space={4} alignX="left">
+        <div className="grid gap-4">
           <SectionHeadline>Built to be accessible</SectionHeadline>
           <SectionContent>
             Marigold is designed with accessibility in mind from the ground up.
             It leverages React Aria for screen reader and keyboard navigation
             support, ensuring your applications are ready for every user.
           </SectionContent>
-          <Link href="/foundations/overview">Learn more about Marigold</Link>
-        </Stack>
+        </div>
         <AccessibiltySection />
       </div>
       <div className="grid grid-cols-5 items-center gap-16">
         <CollaborationSection />
-        <div className="col-span-2">
+        <div className="col-span-2 grid gap-4">
           <SectionHeadline>Made for collaboration</SectionHeadline>
           <SectionContent>
             Designers and developers iterate together using shared tools like
@@ -70,7 +69,7 @@ export const Page = () => (
         </div>
       </div>
       <div className="grid grid-cols-8 items-center gap-16">
-        <div className="col-span-5">
+        <div className="col-span-5 grid gap-4">
           <SectionHeadline>Complex layouts, simplified.</SectionHeadline>
           <SectionContent>
             Ready-to-use layout components make it easy to build pages of any
@@ -78,12 +77,15 @@ export const Page = () => (
             responsive, structured designs, streamlining the process without the
             need for complex CSS.
           </SectionContent>
+          <Link href="/foundations/layouts">
+            <span className="text-sm">▶︎</span> Learn more about layouts
+          </Link>
         </div>
         <LayoutSection />
       </div>
       <div className="grid grid-cols-8 items-center gap-16">
         <SystemSection />
-        <div className="col-span-5">
+        <div className="col-span-5 grid gap-4">
           <SectionHeadline>One system, flexible styles.</SectionHeadline>
           <SectionContent>
             All components are built to adapt seamlessly to different brands and
