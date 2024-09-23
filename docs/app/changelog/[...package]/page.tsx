@@ -1,4 +1,4 @@
-import { DateFormat, Headline } from '@/ui';
+import { Headline } from '@/ui';
 import { allChangelogPages } from 'contentlayer/generated';
 import { notFound } from 'next/navigation';
 import { TocContainer } from '@/ui/Toc';
@@ -8,7 +8,6 @@ export const ChangeLogPage = ({ params }: any) => {
   const slug = params?.package?.join('/');
   const page = allChangelogPages.find(page => page.nav === slug);
 
-  // slug: 'changelog/themes/theme-docs/CHANGELOG',
   if (!page) {
     notFound();
   }

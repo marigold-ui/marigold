@@ -104,27 +104,6 @@ export const ChangelogPage = defineDocumentType(() => ({
         return headings;
       },
     },
-    // get the date of the release of the package
-    releases: {
-      type: 'string',
-      resolve: async doc => {
-        const file = path.resolve(contentDirPath, doc._raw.sourceFilePath);
-
-        /**
-         * 🚨🚨🚨 IMPORTANT 🚨🚨🚨
-         *
-         * Note that this needs VERCEL_DEEP_CLONE=true set in vercel, otherwise
-         * vercel will use a shallow clone to build!
-         */
-        // author_name: 'github-actions[bot]',
-        const log = await git.log({ file: file, strictDate: true });
-        const releases = log.all.filter(
-          release => release.author_name === 'github-actions[bot]'
-        );
-
-        return releases;
-      },
-    },
   },
 }));
 

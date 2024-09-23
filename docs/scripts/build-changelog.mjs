@@ -1,4 +1,3 @@
-import { release } from 'os';
 import path from 'path';
 import { simpleGit } from 'simple-git';
 import { fs, globby } from 'zx';
@@ -7,6 +6,7 @@ const git = simpleGit();
 
 // only take the changelogs of the packages
 let changelogPath = await globby([
+  '../docs/CHANGELOG.md',
   '../{**,*}/CHANGELOG.md',
   '!../**/node_modules/**',
   '!../docs/{**,*}/**/CHANGELOG.md',
@@ -22,7 +22,8 @@ const getVersion = async file => {
       const releaseDate = new Date(release.date);
       const today = new Date();
 
-      // to get the difference in days we need to calculate the difference between time and divide it into miliseconds a day has
+      // to get the difference in days we need to calculate
+      // the difference between time and divide it into miliseconds a day has
       const timeDifference = today.getTime() - releaseDate.getTime();
       const aDayInMs = 24 * 60 * 60 * 1000;
       const daysDifference = Math.round(timeDifference / aDayInMs);
@@ -37,9 +38,7 @@ const getVersion = async file => {
 
 const addFrontmatter = (sourceText, versions) => {
   const regex = /^# (.*)$/m;
-
   let matches = regex.exec(sourceText);
-
   const hasBadge = versions.includes('new');
 
   let frontmatter = '';
@@ -65,13 +64,9 @@ changelogPath.forEach(async file => {
 
   const changelogDir = `content/changelog/${packages}`;
   let changelogModified = data;
-  // Wait for the version information to be fetched asynchronously
   const versions = await getVersion(file);
 
-  // Add frontmatter after versions are fetched
   changelogModified = addFrontmatter(changelogModified, versions);
-
-  // Create the changelog directory if it doesn't exist
   fs.mkdirSync(changelogDir, {
     recursive: true,
   });
