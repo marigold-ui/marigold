@@ -1,6 +1,7 @@
 ---
 title: Development Guidelines
 caption: Guidelines for Developers on how to implement Marigold Components.
+order: 4
 ---
 
 ## Definitions
@@ -287,7 +288,7 @@ export const Select: ThemeComponent<'Select'> = {
 
 ### Structure of Color Design Tokens
 
-- [Color design tokens](../introduction/design-tokens) need to have a semantic name that reflects their use case. (e.g., `bg-disabled` for disabled backgrounds)
+- [Color design tokens](../foundations/design-tokens) need to have a semantic name that reflects their use case. (e.g., `bg-disabled` for disabled backgrounds)
 - Every color token needs to have a description when and where to use it.
 - Prevent using the color pallete directly (e.g., instead of using `bg-red-700` use `bg-error`)
 
@@ -316,7 +317,7 @@ Example of structures for surface colors:
 
 ### Usage and Structure of Style Props
 
-- [Style props](../concepts/style-props) are using tokens from TailwindCSS by default.
+- [Style props](../foundations/style-props) are using tokens from TailwindCSS by default.
 - Every layout component should have style props to make its layout adatable.
 - UI Components should have style props when there it is possible to configure properties related to layouting the component (e.g., text alignment, spacing, …).
 - Values of the style props have to correspond to a scale in TailwindCSS (e.g., `width={full}` will be translated to the class `w-full` ).

@@ -17,7 +17,7 @@ interface NavigationLink {
 
 interface NavigationSubsection {
   name: string;
-  links: NavigationLink[];
+  links?: NavigationLink[];
 }
 interface NavigationSection {
   name: string;
@@ -27,7 +27,7 @@ interface NavigationSection {
 }
 
 export const useNavigation = (): NavigationSection[] => {
-  const navigation = siteConfig.navigation;
+  const navigation = [...siteConfig.navigation] as NavigationSection[];
 
   return navigation.map(({ name, slug, subsections = [] }) => {
     // Section Page = has a section but NO subsection
@@ -44,19 +44,22 @@ export const useNavigation = (): NavigationSection[] => {
         href: `/${page.slug}`,
         badge: page.badge,
       })),
-      subsections: subsections.map(subsection => ({
-        name: subsection.name,
-        links: allContentPages
-          .filter(
-            // Subsection Page = has a section AND a subsection
-            page => page.section === slug && page.subsection === subsection.slug
-          )
-          .map(page => ({
-            name: page.title,
-            href: `/${page.slug}`,
-            badge: page.badge,
-          })),
-      })),
+      subsections: subsections.map(
+        (subsection: { name: string; slug: string }) => ({
+          name: subsection.name,
+          links: allContentPages
+            .filter(
+              // Subsection Page = has a section AND a subsection
+              page =>
+                page.section === slug && page.subsection === subsection.slug
+            )
+            .map(page => ({
+              name: page.title,
+              href: `/${page.slug}`,
+              badge: page.badge,
+            })),
+        })
+      ),
     };
   });
 };
@@ -99,7 +102,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
                   {name}
                 </div>
                 <div className="border-secondary-300 ml-0.5 flex flex-col border-l">
-                  {links.map(({ name, href, badge }) => (
+                  {links?.map(({ name, href, badge }) => (
                     <div key={href}>
                       <NavLink
                         className="flex items-center gap-4"
