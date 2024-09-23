@@ -23,12 +23,26 @@ const getVersion = async (sourceText, file) => {
 
   const releases = log.all
     .filter(release => release.author_name === 'github-actions[bot]')
-    .map(release => ({
-      version: release.refs.match(version)[0],
-      date: release.date,
-    }));
+    .map(release => {
+      const matchedVersion = release.refs.match(version);
+      const versionValue = matchedVersion ? matchedVersion[0] : undefined;
 
-  console.log(releases);
+      const releaseDate = new Date(release.date);
+      const today = new Date();
+
+      const timeDifference = today.getTime() - releaseDate.getTime();
+      const aDayInMs = 24 * 60 * 60 * 1000;
+      // to get the difference in days we need to calculate the difference between time and divide it into miliseconds a day has
+      const daysDifference = Math.round(timeDifference / aDayInMs);
+
+      console.log(daysDifference);
+
+      return {
+        version: versionValue,
+        date: release.date,
+      };
+    });
+
   return releases;
 };
 
@@ -60,8 +74,10 @@ changelogPath.forEach(file => {
 
   const changelogDir = `content/changelog/${packages}`;
   let changelogModified = data;
-  changelogModified = addFrontmatter(changelogModified, file);
+  changelogModified = addFrontmatter(changelogModified);
+
   getVersion(changelogModified, file);
+
   fs.mkdirSync(changelogDir, {
     recursive: true,
   });
