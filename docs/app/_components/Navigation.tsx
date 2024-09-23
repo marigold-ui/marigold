@@ -68,6 +68,7 @@ export const useNavigation = (): NavigationSection[] => {
               .map(page => ({
                 name: page.nav,
                 href: `/${page.slug}`,
+                badge: page.badge,
               })),
           ],
         })
