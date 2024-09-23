@@ -56,6 +56,13 @@ const addFrontmatter = (sourceText, versions) => {
   return sourceText;
 };
 
+const appendExternalLinks = (sourceText, path) => {
+  const regex = /^## .*/m;
+  let externalLinks = '';
+  externalLinks += `_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/${path}/CHANGELOG.md)_`;
+  return sourceText.replace(regex, match => `${externalLinks}\n${match}`);
+};
+
 // generate folder structure for changelogs
 changelogPath.forEach(async file => {
   const data = fs.readFileSync(file, 'utf8');
@@ -66,6 +73,7 @@ changelogPath.forEach(async file => {
   const versions = await getBadge(file);
 
   changelogModified = addFrontmatter(changelogModified, versions);
+  changelogModified = appendExternalLinks(changelogModified, packages);
   fs.mkdirSync(changelogDir, {
     recursive: true,
   });
