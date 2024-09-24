@@ -6,7 +6,6 @@ const git = simpleGit();
 
 // only take the changelogs of the packages
 let changelogPath = await globby([
-  '../docs/CHANGELOG.md',
   '../{**,*}/CHANGELOG.md',
   '!../**/node_modules/**',
   '!../docs/{**,*}/**/CHANGELOG.md',
