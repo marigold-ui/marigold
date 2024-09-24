@@ -39,74 +39,6 @@ const getNormalizedPath = (val: string) => {
 
 // Page Types
 // ---------------
-export const ChangelogPage = defineDocumentType(() => ({
-  name: 'ChangelogPage',
-  filePathPattern: '{**,*}/CHANGELOG.md',
-  contentType: 'mdx',
-  fields: {
-    title: {
-      type: 'string',
-      required: true,
-    },
-    caption: {
-      type: 'string',
-      required: true,
-    },
-    badge: {
-      type: 'string',
-    },
-  },
-  computedFields: {
-    nav: {
-      type: 'string',
-      resolve: doc =>
-        getNormalizedPath(doc._raw.sourceFileDir)
-          .join('/')
-          .replace('changelog/', ''),
-    },
-    slug: {
-      type: 'string',
-      resolve: doc => getNormalizedPath(doc._raw.sourceFileDir).join('/'),
-    },
-    // Subsection is the 1st folder level of a page.
-    section: {
-      type: 'string',
-      resolve: doc => {
-        const path = getNormalizedPath(doc._raw.sourceFileDir);
-        return path.length < 2 ? null : path.at(0);
-      },
-    },
-    // Subsection is the 2nd folder level of a page.
-    subsection: {
-      type: 'string',
-      resolve: doc => {
-        const path = getNormalizedPath(doc._raw.sourceFileDir);
-        return path.length < 3 ? null : path.at(1);
-      },
-    },
-    // Collect the headings used for creating a submenu in the command
-    headings: {
-      type: 'json',
-      resolve: async doc => {
-        const headingsRegex = /\n(?<flag>#{1,6})\s+(?<content>.+)/g;
-        const slugger = new GithubSlugger();
-        const headings = Array.from(doc.body.raw.matchAll(headingsRegex)).map(
-          ({ groups }) => {
-            const flag = groups?.flag;
-            const content = groups?.content;
-            return {
-              level: flag?.length,
-              text: content,
-              slug: content ? slugger.slug(content) : undefined,
-            };
-          }
-        );
-        return headings;
-      },
-    },
-  },
-}));
-
 export const ContentPage = defineDocumentType(() => ({
   name: 'ContentPage',
   filePathPattern: '{**,*}/*.mdx',
@@ -192,7 +124,7 @@ export const ContentPage = defineDocumentType(() => ({
 // ---------------
 export default makeSource({
   contentDirPath,
-  documentTypes: [ContentPage, ChangelogPage],
+  documentTypes: [ContentPage],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
