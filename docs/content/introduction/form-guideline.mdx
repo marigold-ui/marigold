@@ -41,10 +41,18 @@ An accessible form input includes a clear label associated with its correspondin
 
 Marigold's form components allow to set these properties like shown below. All form components allow to set a `label`, `description` and `errorMessages` besides some additional control-specific props.
 
-```tsx
-<TextField
-  label="Promo Code"
-  description="You can find the code on the back of your ticket."
-  errorMessage="The promo code was already used."
-/>
-```
+## Label and Help Text
+
+Labels are essential for accessibility and clarity, ensuring that each form field is clearly defined. In most cases, a label should be provided for each form control to describe the expected input.
+
+However, in some specific cases, such as in search bars or simple forms with obvious context, labels might be omitted in favor of alternatives like `aria-label` for accessibility.
+
+Helper Text, on the other hand, should complement the label by providing additional context or validation message.
+
+<ComponentDemo file="./form-guideline-helper-text.demo.tsx" />
+
+### Field States
+
+Form components often exist in various states to indicate how they should behave or be interacted with. These states provide important context for users and ensure proper handling of inputs in different senarios. Below are the common field states used in forms.
+
+<ComponentDemo file="./form-guideline-states.demo.tsx" />
