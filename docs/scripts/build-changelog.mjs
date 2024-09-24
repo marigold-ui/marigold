@@ -63,7 +63,7 @@ const adjustContent = (sourceText, releases) => {
 
   releases.forEach((release, index) => {
     if (versions[index]) {
-      const newContent = `${versions[index]} (Released on ${new Date(release.releaseDate).toDateString()})`;
+      const newContent = `${versions[index]} (Released on ${new Date(release.releaseDate).toLocaleDateString()})`;
       sourceText = sourceText.replace(versions[index], newContent);
     }
   });
