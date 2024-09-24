@@ -11,9 +11,8 @@ let changelogPath = await globby([
   '!../docs/{**,*}/**/CHANGELOG.md',
 ]);
 
-const getBadge = async file => {
-  const newFile = path.resolve(file);
-  const log = await git.log({ file: newFile });
+const getReleaseInformation = async file => {
+  const log = await git.log({ file: path.resolve(file) });
 
   const releases = log.all
     .filter(release => release.author_name === 'github-actions[bot]')
@@ -56,10 +55,26 @@ const addFrontmatter = (sourceText, releases) => {
   return sourceText;
 };
 
+const adjustContent = (sourceText, releases) => {
+  const regex = /## \d{1,2}\.\d{1,2}\.\d{1,2}/gm;
+  const versions = sourceText.match(regex);
+
+  if (!versions) return sourceText;
+
+  releases.forEach((release, index) => {
+    if (versions[index]) {
+      const newContent = `${versions[index]} (Released on ${new Date(release.releaseDate).toDateString()})`;
+      sourceText = sourceText.replace(versions[index], newContent);
+    }
+  });
+
+  return sourceText;
+};
+
 const appendExternalLinks = (sourceText, path) => {
   const regex = /^## .*/m;
   let externalLinks = '';
-  externalLinks += `_[Read the full changelog](https://github.com/marigold-ui/marigold/blob/main/${path}/CHANGELOG.md)_`;
+  externalLinks += `_[View the full changelog on Github](https://github.com/marigold-ui/marigold/blob/main/${path}/CHANGELOG.md)_`;
   return sourceText.replace(regex, match => `${externalLinks}\n${match}`);
 };
 
@@ -70,9 +85,10 @@ changelogPath.forEach(async file => {
 
   const changelogDir = `content/changelog/${packages}`;
   let changelogModified = data;
-  const releases = await getBadge(file);
+  const releases = await getReleaseInformation(file);
 
   changelogModified = addFrontmatter(changelogModified, releases);
+  changelogModified = adjustContent(changelogModified, releases);
   changelogModified = appendExternalLinks(changelogModified, packages);
   fs.mkdirSync(changelogDir, {
     recursive: true,
