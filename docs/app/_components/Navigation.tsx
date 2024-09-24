@@ -46,10 +46,7 @@ export const useNavigation = (): NavigationSection[] => {
       slug,
       links: sectionPages.map(page => ({
         name: page.title,
-        href:
-          page.section === 'changelog'
-            ? `changelog/${page.slug}`
-            : `/${page.slug}`,
+        href: `/${page.slug}`,
         badge: page.badge,
       })),
       subsections: subsections.map(
