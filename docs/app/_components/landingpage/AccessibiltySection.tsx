@@ -56,7 +56,7 @@ export const AccessibiltySection = () => (
             <StatusSelect />
           </Block>
           <Block name="loader" order={2}>
-            <XLoader width="100%" height="100%" />
+            <XLoader className="size-full" />
           </Block>
           <Block name="radio" order={3}>
             <FieldGroup labelWidth="75px">

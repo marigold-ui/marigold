@@ -1,5 +1,6 @@
-import { Card, Center, Headline, Inline, Link } from '@/ui';
+import { Card, Center, Headline, Inline, Link, Stack } from '@/ui';
 import type { PropsWithChildren } from 'react';
+import Image from 'next/image';
 import { BlurFade } from '@/ui/BlurFade';
 import { AccessibiltySection } from './_components/landingpage/AccessibiltySection';
 import { CollaborationSection } from './_components/landingpage/CollaborationSection';
@@ -85,7 +86,7 @@ const BugIcon = ({ className = 'size-7' }) => (
 // Page
 // ---------------
 export const Page = () => (
-  <main className="grid justify-center px-[--page-padding-md] pb-36 xl:px-[--page-padding-xl]">
+  <main className="grid justify-center px-[--page-padding-md] xl:px-[--page-padding-xl]">
     {/* Hero */}
     <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-screen-lg place-items-center text-center">
       <div>
@@ -120,7 +121,7 @@ export const Page = () => (
             It leverages React Aria for screen reader and keyboard navigation
             support, ensuring your applications are ready for every user.
           </SectionContent>
-          <SectionLink href="/components">Try out the components</SectionLink>
+          <SectionLink href="/components">Browse the components</SectionLink>
         </div>
         <AccessibiltySection />
       </div>
@@ -232,39 +233,98 @@ export const Page = () => (
       {/* Links */}
       <div>
         <Headline level={4}>The essentials, just a click away</Headline>
-        <p className="balance leading-7">
-          Design in Figma, develop in Storybook, and contribute on GitHub — all
-          right here.
+        <p className="balance text-text-primary-muted leading-7">
+          Design in Figma, develop in Storybook, contribute on GitHub or
+          prototype in Stackblitz — all right here.
         </p>
-        <div className="grid grid-cols-3 gap-6 pt-6 *:flex *:items-stretch">
+        <div className="grid grid-cols-4 gap-6 pt-6">
           <BlurFade inView delay={0.2}>
-            <Card variant="lowered"></Card>
+            <Link
+              variant="ghost"
+              href="https://www.figma.com/design/NbTUW9zk15nN8idlfsEttS/%F0%9F%8C%BC-Marigold-CORE?node-id=1618-14089&t=cW3eN0w9yRw4nHRi-1"
+            >
+              <Card variant="lowered" size="full">
+                <Stack space={4} alignX="center" stretch>
+                  <Image
+                    className="fill-text-primary h-20"
+                    width={100}
+                    height={80}
+                    alt="Figma Logo"
+                    src="/figma.svg"
+                  />
+                  <p className="text-text text-center text-sm">
+                    Explore the UI Kit in Figma
+                  </p>
+                </Stack>
+              </Card>
+            </Link>
           </BlurFade>
           <BlurFade inView delay={0.3}>
-            <Card variant="lowered"></Card>
+            <Link variant="ghost" href="https://marigold-latest.vercel.app/">
+              <Card variant="lowered" size="full">
+                <Stack space={4} alignX="center" stretch>
+                  <Image
+                    className="h-20"
+                    width={100}
+                    height={80}
+                    alt="Storybook Logo"
+                    src="/storybook-black.svg"
+                  />
+                  <p className="text-center text-sm">
+                    Test components in Storybook
+                  </p>
+                </Stack>
+              </Card>
+            </Link>
           </BlurFade>
           <BlurFade inView delay={0.4}>
-            <Card variant="lowered"></Card>
+            <Link
+              variant="ghost"
+              href="https://github.com/marigold-ui/marigold"
+            >
+              <Card variant="lowered" size="full">
+                <Stack space={4} alignX="center" stretch>
+                  <Image
+                    className="size-20"
+                    width={100}
+                    height={80}
+                    alt="GitHub Logo"
+                    src="/github.svg"
+                  />
+                  <p className="text-center text-sm">
+                    Peek under the hood in GitHub
+                  </p>
+                </Stack>
+              </Card>
+            </Link>
+          </BlurFade>
+          <BlurFade inView delay={0.5}>
+            <Link variant="ghost" href="https://play.marigold-ui.io/">
+              <Card variant="lowered" size="full">
+                <Stack space={4} alignX="center" stretch>
+                  <Image
+                    className="h-20"
+                    width={100}
+                    height={80}
+                    alt="Stackblitz Logo"
+                    src="/stackblitz.svg"
+                  />
+                  <p className="text-center text-sm">
+                    Start building in StackBlitz
+                  </p>
+                </Stack>
+              </Card>
+            </Link>
           </BlurFade>
         </div>
       </div>
+    </div>
+
+    <div className="flex items-center justify-center gap-2 pb-5 pt-48 opacity-15">
+      Build by
+      <Image width={140} height={200} src="/reservix.svg" alt="Reservix GmbH" />
     </div>
   </main>
 );
 
 export default Page;
-
-/**
- * teams can focus on building great products, without worrying ...
- */
-
-/** testimonials 
-
- 
-
-Links:
-
-Github, Figma, Storybook, ui kit
- * 
- * 
- */

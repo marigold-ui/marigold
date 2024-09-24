@@ -38,7 +38,7 @@ export const LayoutSection = () => (
     </BlurFade>
 
     <BlurFade className="grid content-between" inView delay={0.4}>
-      <Columns columns={[3, 1, 2]} space={2} collapseAt="10em">
+      <Columns columns={[3, 1, 2]} space={2} collapseAt="0em">
         <Rectangle variant="primary" height="7.5rem" />
         <Rectangle variant="primary" height="7.5rem" />
         <Rectangle variant="primary" height="7.5rem" />
