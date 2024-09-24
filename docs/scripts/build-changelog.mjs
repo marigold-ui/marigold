@@ -30,16 +30,18 @@ const getBadge = async file => {
 
       const badge = daysDifference < 30 ? 'new' : undefined;
 
-      return badge;
+      return { badge, releaseDate };
     });
 
   return releases;
 };
 
-const addFrontmatter = (sourceText, versions) => {
+const addFrontmatter = (sourceText, releases) => {
   const regex = /^# (.*)$/m;
   let matches = regex.exec(sourceText);
-  const hasBadge = versions.includes('new');
+  const hasBadge = releases.some(release => release.badge === 'new');
+
+  console.log(hasBadge);
 
   let frontmatter = '';
   if (matches) {
@@ -47,8 +49,13 @@ const addFrontmatter = (sourceText, versions) => {
     frontmatter += '---\n';
     frontmatter += `title: "${packageName}"\n`;
     frontmatter += `caption: "Have a look on the latest changes regarding ${packageName}"\n`;
-    if (hasBadge) {
-      frontmatter += `badge: ${versions[0]}\n`;
+    if (
+      releases.filter(release => {
+        release.badge === 'new'
+          ? (frontmatter += `badge: ${release.badge}\n`)
+          : '';
+      })
+    ) {
     }
     frontmatter += '---\n';
     return sourceText.replace(regex, frontmatter);
@@ -70,9 +77,9 @@ changelogPath.forEach(async file => {
 
   const changelogDir = `content/changelog/${packages}`;
   let changelogModified = data;
-  const versions = await getBadge(file);
+  const releases = await getBadge(file);
 
-  changelogModified = addFrontmatter(changelogModified, versions);
+  changelogModified = addFrontmatter(changelogModified, releases);
   changelogModified = appendExternalLinks(changelogModified, packages);
   fs.mkdirSync(changelogDir, {
     recursive: true,
