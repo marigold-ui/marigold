@@ -148,6 +148,7 @@ export const colors = {
   // ---------------
   bg: {
     body: slate[50],
+    inverted: slate[700],
     hover: neutral[100],
     muted: slate[100],
     disabled: slate[100],
@@ -155,9 +156,9 @@ export const colors = {
     underlay: slate[500],
 
     surface: {
-      DEFAULT: white,
+      DEFAULT: slate[50],
       raised: slate[200],
-      lowered: slate[700],
+      lowered: slate[100],
       overlay: white,
     },
 
