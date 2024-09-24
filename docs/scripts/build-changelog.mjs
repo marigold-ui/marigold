@@ -39,9 +39,6 @@ const getBadge = async file => {
 const addFrontmatter = (sourceText, releases) => {
   const regex = /^# (.*)$/m;
   let matches = regex.exec(sourceText);
-  const hasBadge = releases.some(release => release.badge === 'new');
-
-  console.log(hasBadge);
 
   let frontmatter = '';
   if (matches) {
@@ -49,14 +46,11 @@ const addFrontmatter = (sourceText, releases) => {
     frontmatter += '---\n';
     frontmatter += `title: "${packageName}"\n`;
     frontmatter += `caption: "Have a look on the latest changes regarding ${packageName}"\n`;
-    if (
-      releases.filter(release => {
-        release.badge === 'new'
-          ? (frontmatter += `badge: ${release.badge}\n`)
-          : '';
-      })
-    ) {
-    }
+    releases.filter(release => {
+      release.badge === 'new'
+        ? (frontmatter += `badge: ${release.badge}\n`)
+        : '';
+    });
     frontmatter += '---\n';
     return sourceText.replace(regex, frontmatter);
   }
