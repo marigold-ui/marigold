@@ -232,7 +232,7 @@ export const Page = () => (
 
       {/* Links */}
       <div>
-        <Headline level={4}>The essentials, just a click away</Headline>
+        <Headline level={3}>The essentials, just a click away</Headline>
         <p className="balance text-text-primary-muted leading-7">
           Design in Figma, develop in Storybook, contribute on GitHub or
           prototype in Stackblitz — all right here.
