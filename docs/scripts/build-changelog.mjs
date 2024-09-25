@@ -61,10 +61,15 @@ const adjustContent = (sourceText, releases) => {
 
   if (!versions) return sourceText;
 
+  console.log(versions);
   releases.forEach((release, index) => {
     if (versions[index]) {
-      const newContent = `${versions[index]} (Released on ${new Date(release.releaseDate).toLocaleDateString()})`;
-      sourceText = sourceText.replace(versions[index], newContent);
+      const newContent = `${versions[index]} (Released on ${new Date(release.releaseDate).toLocaleDateString('de-DE')})`;
+      console.log(versions[index], newContent);
+      sourceText = sourceText.replace(
+        new RegExp(`${versions[index]}(?=\\n)`),
+        newContent
+      );
     }
   });
 
