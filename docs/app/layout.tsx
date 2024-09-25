@@ -1,6 +1,7 @@
 import { siteConfig } from '@/lib/config';
 import { b2bTheme, coreTheme, theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
+import { Suspense } from 'react';
 import '@marigold/theme-b2b/styles.css';
 import '@marigold/theme-core/styles.css';
 import { fontSans } from '@/theme/fonts';
@@ -40,13 +41,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={`${fontSans.className} min-h-screen`}>
-        <MarigoldThemeSwitch themes={themes} initial={siteConfig.defaultTheme}>
-          <MarigoldProvider theme={theme} className="min-h-screen">
-            <SiteHeader />
-            {children}
-          </MarigoldProvider>
-          <PortalContaier />
-        </MarigoldThemeSwitch>
+        <Suspense>
+          <MarigoldThemeSwitch
+            themes={themes}
+            initial={siteConfig.defaultTheme}
+          >
+            <MarigoldProvider theme={theme} className="min-h-screen">
+              <SiteHeader />
+              {children}
+            </MarigoldProvider>
+            <PortalContaier />
+          </MarigoldThemeSwitch>
+        </Suspense>
         <Analytics />
       </body>
     </html>
