@@ -19,7 +19,7 @@ export const CollaborationSection = () => {
    */
   return (
     <BlurFade
-      className="group col-span-3 grid items-end justify-center [&:hover>:nth-child(1)]:rotate-[-21deg] [&:hover>:nth-child(2)]:rotate-[-10deg] [&:hover>:nth-child(3)]:rotate-[7deg]"
+      className="grid items-end justify-center md:col-span-3 [&:hover>:nth-child(1)]:rotate-[-21deg] [&:hover>:nth-child(2)]:rotate-[-10deg] [&:hover>:nth-child(3)]:rotate-[7deg]"
       inView
       yOffset={16}
       inViewMargin="-180px"

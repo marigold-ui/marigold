@@ -12,7 +12,7 @@ const Annotation = ({ children }: { children: ReactNode }) => (
 );
 
 export const LayoutSection = () => (
-  <div className="col-span-3 grid grid-cols-2 gap-6">
+  <div className="grid grid-cols-2 gap-6 md:col-span-3">
     <BlurFade className="grid content-between" inView delay={0.2}>
       <Inline space={2}>
         {[32, 48, 32, 64, 88, 64, 64, 48, 24].map((width, idx) => (

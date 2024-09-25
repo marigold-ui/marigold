@@ -19,7 +19,7 @@ export const SystemSection = () => {
   const theme = themes[current];
 
   return (
-    <BlurFade className="col-span-3" inView inViewMargin="-100px">
+    <BlurFade className="md:col-span-3" inView inViewMargin="-100px">
       <Card variant="content" p={0}>
         <div className="absolute left-4 top-3 flex flex-wrap gap-2">
           <Select
