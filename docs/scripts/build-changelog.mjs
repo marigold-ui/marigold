@@ -98,7 +98,7 @@ changelogPath.forEach(async file => {
 
   // Write the modified changelog to the new directory
   fs.writeFileSync(
-    path.join(changelogDir, 'changelog.mdx'),
+    path.join(changelogDir, 'whats-new.mdx'),
     changelogModified,
     'utf-8'
   );
