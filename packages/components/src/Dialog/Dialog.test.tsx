@@ -211,6 +211,62 @@ test('supports title for accessability reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
+test('supports dialog contents', () => {
+  render(
+    <Dialog.Trigger>
+      <Button>Open</Button>
+      <Dialog closeButton>
+        <Dialog.Title>Headline</Dialog.Title>
+        <Dialog.Content>Content</Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toHaveAttribute('aria-labelledby');
+  const dialogContent = screen.getByText('Content');
+  expect(dialogContent).toBeInTheDocument();
+});
+
+test('supports dialog actions', () => {
+  render(
+    <Dialog.Trigger>
+      <Button>Open</Button>
+      <Dialog closeButton>
+        <Dialog.Title>Headline</Dialog.Title>
+        <Dialog.Actions>
+          <Button variant="ghost">Cancel</Button>
+          <Button variant="primary">Login</Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Dialog.Trigger>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const cancelButton = screen.getByText('Cancel');
+  expect(cancelButton).toBeInTheDocument();
+
+  const loginButton = screen.getByText('Login');
+  expect(loginButton).toBeInTheDocument();
+});
+
+test('supports dialog footer', () => {
+  render(
+    <Dialog.Trigger>
+      <Button>Open</Button>
+      <Dialog.Footer>Footer</Dialog.Footer>
+    </Dialog.Trigger>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const footer = screen.getByText('Footer');
+  expect(footer).toBeInTheDocument();
+});
+
 test('child function is passed an id for the dialog title (a11y)', () => {
   render(
     <Dialog.Trigger>
