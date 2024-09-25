@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { SVGProps } from 'react';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button';
 import { setup } from '../test.utils';
@@ -315,4 +315,26 @@ test('supports Menu with sections', () => {
   );
   expect(screen.getByText('Food')).toBeInTheDocument();
   expect(screen.getByText('Fruits')).toBeInTheDocument();
+});
+
+test('pass "aria-label" to button (when you use a menu with only an icon)', () => {
+  const Icon = (props: SVGProps<SVGSVGElement>) => (
+    <svg {...props}>
+      <circle cx={12} cy={12} r={10} />
+    </svg>
+  );
+
+  render(
+    <Menu
+      data-testid="menu"
+      aria-label="Descriptive label for the button"
+      label={<Icon />}
+    >
+      <Menu.Item key="burger">Burger</Menu.Item>
+      <Menu.Item key="pizza">Pizza</Menu.Item>
+    </Menu>
+  );
+
+  const btn = screen.getByLabelText('Descriptive label for the button');
+  expect(btn).toBeInTheDocument();
 });
