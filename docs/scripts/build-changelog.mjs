@@ -8,7 +8,6 @@ const git = simpleGit();
 let changelogPath = await globby([
   '../{**,*}/CHANGELOG.md',
   '!../**/node_modules/**',
-  '!../docs/{**,*}/**/CHANGELOG.md',
 ]);
 
 const getReleaseInformation = async file => {
@@ -61,11 +60,9 @@ const adjustContent = (sourceText, releases) => {
 
   if (!versions) return sourceText;
 
-  console.log(versions);
   releases.forEach((release, index) => {
     if (versions[index]) {
       const newContent = `${versions[index]} (Released on ${new Date(release.releaseDate).toLocaleDateString('de-DE')})`;
-      console.log(versions[index], newContent);
       sourceText = sourceText.replace(
         new RegExp(`${versions[index]}(?=\\n)`),
         newContent

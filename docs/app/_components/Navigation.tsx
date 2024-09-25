@@ -28,7 +28,6 @@ interface NavigationSection {
 
 export const useNavigation = (): NavigationSection[] => {
   const navigation = [...siteConfig.navigation] as NavigationSection[];
-
   return navigation.map(({ name, slug, subsections = [] }) => {
     // Section Page = has a section but NO subsection
     const sectionPages = [
@@ -37,7 +36,6 @@ export const useNavigation = (): NavigationSection[] => {
         .sort((a, b) => (a.order || 1000) - (b.order || 1000)),
     ];
 
-    sectionPages;
     return {
       name,
       slug,

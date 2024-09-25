@@ -77,8 +77,8 @@ export const siteConfig = {
       slug: 'changelog',
       subsections: [
         {
-          name: 'config',
-          slug: 'config',
+          name: 'docs',
+          slug: 'docs',
         },
         {
           name: 'packages',
@@ -87,6 +87,10 @@ export const siteConfig = {
         {
           name: 'themes',
           slug: 'themes',
+        },
+        {
+          name: 'config',
+          slug: 'config',
         },
       ],
     },

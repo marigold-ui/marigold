@@ -16,6 +16,7 @@ interface ContentPageProps {
 async function getPageFromParams(params: ContentPageProps['params']) {
   const slug = params?.slug?.join('/');
   const page = allContentPages.find(page => page.slug === slug);
+
   return page || null;
 }
 
