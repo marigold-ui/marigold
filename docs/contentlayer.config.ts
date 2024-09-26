@@ -39,6 +39,29 @@ const getNormalizedPath = (val: string) => {
 
 // Page Types
 // ---------------
+export const Blog = defineDocumentType(() => ({
+  name: 'Blog',
+  filePathPattern: 'changelog/blog/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: {
+      type: 'string',
+      required: true,
+    },
+    date: {
+      type: 'string',
+      required: true,
+    },
+  },
+  computedFields: {
+    // Transforms the page's path to a slug to use with next.js API
+    slug: {
+      type: 'string',
+      resolve: doc => getNormalizedPath(doc._raw.flattenedPath).join('/'),
+    },
+  },
+}));
+
 export const ContentPage = defineDocumentType(() => ({
   name: 'ContentPage',
   filePathPattern: '{**,*}/*.mdx',
@@ -124,7 +147,7 @@ export const ContentPage = defineDocumentType(() => ({
 // ---------------
 export default makeSource({
   contentDirPath,
-  documentTypes: [ContentPage],
+  documentTypes: [ContentPage, Blog],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
