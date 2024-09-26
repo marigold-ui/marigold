@@ -204,7 +204,7 @@ export const WithDialogController: Story = {
         <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
           <Dialog closeButton>
             {({ close }) => (
-              <Stack space={5}>
+              <>
                 <Dialog.Title>Confirm delete</Dialog.Title>
                 <Dialog.Content>
                   <Text>Do you really wanna delete this?</Text>
@@ -219,7 +219,7 @@ export const WithDialogController: Story = {
                     </Button>
                   </Inline>
                 </Dialog.Footer>
-              </Stack>
+              </>
             )}
           </Dialog>
         </Dialog.Trigger>
