@@ -77,16 +77,16 @@ export const siteConfig = {
       slug: 'changelog',
       subsections: [
         {
-          name: 'docs',
-          slug: 'docs',
-        },
-        {
           name: 'packages',
           slug: 'packages',
         },
         {
           name: 'themes',
           slug: 'themes',
+        },
+        {
+          name: 'docs',
+          slug: 'docs',
         },
         {
           name: 'config',
