@@ -71,19 +71,16 @@ export const Form: Story = {
           {({ close }) => (
             <>
               <Dialog.Title>Please log into account</Dialog.Title>
+              <Dialog.Content>
+                <TextField label="Username" />
+                <TextField label="Password" type="password" />
+              </Dialog.Content>
               <Dialog.Actions>
                 <Button variant="ghost" onPress={close}>
                   Cancel
                 </Button>
                 <Button variant="primary">Login</Button>
               </Dialog.Actions>
-              <Dialog.Content>
-                <TextField label="Username" />
-                <TextField label="Password" type="password" />
-              </Dialog.Content>
-              <Dialog.Footer>
-                <Button variant="primary">ok</Button>
-              </Dialog.Footer>
             </>
           )}
         </Dialog>
