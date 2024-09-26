@@ -63,36 +63,27 @@ export default async function ContentPage({ params }: ContentPageProps) {
     notFound();
   }
 
-  if (page?.slug.includes('changelog/') && !page?.slug.includes('overview')) {
-    return (
-      <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
-        <div className="col-span-full">
-          <Headline level={1}>Whats new on</Headline>
-          <Headline level={2}>{page.title}</Headline>
-          <div className="text-secondary-400 pt-1">{page.caption}</div>
-        </div>
-        <div className="prose max-w-[70ch]">
-          <Mdx className="" title={page?.title} code={page.body.code} />
-        </div>
-      </article>
-    );
-  } else {
-    return (
-      <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
-        <div className="col-span-full">
-          <Headline level={1}>{page.title}</Headline>
-          <div className="text-secondary-400 pt-1">{page.caption}</div>
-        </div>
-        <div className="prose max-w-[70ch]">
-          <Mdx className="" title={page.title} code={page.body.code} />
-        </div>
-        <div className="col-start-2 hidden min-[1400px]:block">
-          <TocContainer />
-        </div>
-        <div className="text-text-primary-muted text-xs italic">
-          Last update: <RelativeTime date={new Date(page.modified)} />
-        </div>
-      </article>
-    );
-  }
+  console.log(page?.slug.includes('changelog/'));
+
+  return (
+    <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
+      <div className="col-span-full">
+        <Headline level={1}>{page.title}</Headline>
+        <div className="text-secondary-400 pt-1">{page.caption}</div>
+      </div>
+      <div className="prose max-w-[70ch]">
+        <Mdx className="" title={page.title} code={page.body.code} />
+      </div>
+      {!page?.slug.includes('changelog/') && (
+        <>
+          <div className="col-start-2 hidden min-[1400px]:block">
+            <TocContainer />
+          </div>
+          <div className="text-text-primary-muted text-xs italic">
+            Last update: <RelativeTime date={new Date(page.modified)} />
+          </div>
+        </>
+      )}
+    </article>
+  );
 }

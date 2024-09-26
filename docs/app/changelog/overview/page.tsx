@@ -2,6 +2,7 @@ import { DateFormat, Headline, Text } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 import Link from 'next/link';
 import { TeaserList } from '@/ui/TeaserCard';
+import { Mdx } from '@/ui/mdx';
 
 interface Post {
   title: string;
@@ -10,13 +11,7 @@ interface Post {
   introduction: RegExpMatchArray | null;
 }
 
-export async function generateStaticParams() {
-  return allBlogs.map(post => ({
-    slug: post._raw.flattenedPath,
-  }));
-}
-
-export default async function Page() {
+export default async function Post() {
   // matches everything till the second line break
   const regex = /[\s\S]*?\n[\s\S]*?\n/;
 
@@ -39,7 +34,7 @@ export default async function Page() {
         </div>
       </div>
       <div className="prose max-w-[70ch]">
-        {allBlogs && (
+        {latestPost && (
           <div key={latestPost.title} className="pb-8">
             <Link href={`/${latestPost.slug}`}>
               <Headline level={2}>
