@@ -113,7 +113,7 @@ export const SupportGrid = () => {
             <Headline level="3">Oops, found a bug?</Headline>
           </Inline>
           <p className="balance pt-4 leading-7">
-            Oh no, a bug! Don't worry, we've got a plan for that. Head to our
+            Oh no, a bug! Don't worry, we've got a plan for that. Head to our{' '}
             <Link href="https://reservix.atlassian.net/servicedesk/customer/portal/77">
               support portal
             </Link>{' '}
