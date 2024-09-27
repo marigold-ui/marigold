@@ -157,7 +157,7 @@ export const colors = {
 
     surface: {
       DEFAULT: slate[50],
-      raised: slate[200],
+      raised: slate[50],
       lowered: slate[100],
       overlay: white,
     },
