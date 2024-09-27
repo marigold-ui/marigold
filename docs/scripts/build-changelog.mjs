@@ -10,6 +10,8 @@ let changelogPath = await globby([
   '!../**/node_modules/**',
 ]);
 
+console.log('📑 Building changelogs...');
+
 const getReleaseInformation = async file => {
   const log = await git.log({ file: path.resolve(file) });
 
@@ -102,4 +104,5 @@ changelogPath.forEach(async file => {
     changelogModified,
     'utf-8'
   );
+  console.log(`✅ Successfully built ${path.join(packages, 'whats-new.mdx')}`);
 });
