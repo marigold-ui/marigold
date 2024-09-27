@@ -1,33 +1,17 @@
 ---
 title: MarigoldProvider
-caption: Provider which applies the theme.
+caption: Container for apps using Marigold, providing theming and other essential application-level settings.
 ---
 
-`<MarigoldProvider>` is the container for all Marigold applications. It defines the theme and other application level settings.
-Without the `<MarigoldProvider>` you can't get the theme on your components. So it is necessary to use.
+The `MarigoldProvider` component serves as the wrapper for any application that integrates with Marigold. It is responsible for managing and distributing critical application-level settings, including providing theming to all child components.
 
-You just have to wrap your components around the `<MarigoldProvider>` to make it work.
-If you want to get more information about the setup go to [Getting Started](/getting-started/installation/#bootstrapping).
+By wrapping an app in `MarigoldProvider`, developers can ensure that a consistent theme and other globally relevant configurations are propagated throughout the app's component tree.
 
-```tsx
-import { Button, MarigoldProvider } from '@marigold/components';
+## Appearance
 
-<MarigoldProvider theme={theme}>
-  <Button variant="primary">Hello World!</Button>
-</MarigoldProvider>;
-```
+The MarigoldProvider component does not have its own visual appearance. However, it hosts the root styles of a theme, ensuring that global styles and theming are applied across the entire app.
 
-## Import
-
-```tsx
-import { MarigoldProvider } from '@marigold/components';
-```
-
-## Props
-
-<PropsTable component={title} />
-
-## Examples
+## Usage
 
 ### Provider with Button
 
@@ -40,3 +24,9 @@ import { Button, MarigoldProvider } from '@marigold/components';
   <Button variant="primary">Hello World!</Button>
 </MarigoldProvider>;
 ```
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
