@@ -52,6 +52,10 @@ export const Blog = defineDocumentType(() => ({
       type: 'string',
       required: true,
     },
+    changed: {
+      type: 'list',
+      of: { type: 'string' },
+    },
   },
   computedFields: {
     // Transforms the page's path to a slug to use with next.js API

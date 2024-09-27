@@ -2,25 +2,14 @@
 
 import { allBlogs } from '@/.contentlayer/generated';
 import { Headline } from '@/ui';
-import { notFound, usePathname, useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
 
-interface Blog {
-  params: {
-    slug: string[];
-  };
-}
-
-const BlogPost = async () => {
+const BlogPost = () => {
   const pathname = usePathname();
-
   const currentPath = pathname.replace(/^\//, '');
-
   const currentPost = allBlogs.find(post => post.slug === currentPath);
-
-  console.log(currentPost);
 
   return (
     <>
