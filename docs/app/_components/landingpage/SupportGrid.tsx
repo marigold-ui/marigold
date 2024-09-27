@@ -77,7 +77,7 @@ export const SupportGrid = () => {
               Slack channel
             </Link>{' '}
             (internal only) or head over to our{' '}
-            <Link href="/resources/get-in-touch">Get in Touch</Link> page. We
+            <Link href="/resources/get-in-touch">Get in touch</Link> page. We
             promise we don't bite—and we'll get back to you as quickly as
             possible.
           </p>
