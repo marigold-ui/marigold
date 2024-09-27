@@ -2,7 +2,6 @@ import { DateFormat, Headline, Text } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 import Link from 'next/link';
 import { TeaserList } from '@/ui/TeaserCard';
-import { Mdx } from '@/ui/mdx';
 
 interface Post {
   title: string;
