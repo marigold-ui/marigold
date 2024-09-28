@@ -13,16 +13,41 @@ The MarigoldProvider component does not have its own visual appearance. However,
 
 ## Usage
 
-### Provider with Button
+### Setup
 
-The example shows how the `<MarigoldProvider>` works. As simple as it is you just have to wrap the component around the provider and import a theme. You can click on the theme select on top of the page to see how the `<Button>` changes its theme.
+It is recommended to place `MarigoldProvider` in its own file, alongside other providers you may use, and wrap your root component with it. This approach keeps your project structure organized and ensures that global settings like theming are applied consistently across your app.
+
+<ComponentDemo file="./provider-base.demo.tsx" />
+
+### Overriding root styles
+
+The `MarigoldProvider` supports overriding root styles by passing custom class names to it. This feature is useful when you need to adjust or customize the root styles, depending on the context in which your app is used.
+
+<ComponentDemo file="./provider-root-styles.demo.tsx" />
+
+### Nesting Providers
+
+The `MarigoldProvider` supports nesting themes, allowing you to apply a different theme within a nested provider. This enables sections of your app to have distinct themes, providing flexibility in styling different parts of the application.
+
+Note that in these scenarios, it often makes sense to adjust the root styles using the aforementioned `className` prop.
 
 ```tsx
-import { Button, MarigoldProvider } from '@marigold/components';
+import { Card, MarigoldProvider, Stack } from '@marigold/components';
+import core from '@marigold/theme-core';
+import b2b from '@marigold/theme-core';
 
-<MarigoldProvider theme={theme}>
-  <Button variant="primary">Hello World!</Button>
-</MarigoldProvider>;
+export default () => (
+  <MarigoldProvider theme={core}>
+    <Card p={4}>
+      <Stack space={4}>
+        This area is still using the <strong>core theme</strong>.
+        <MarigoldProvider theme={b2b} className="bg-transparent">
+          This area is still using the <strong>b2b theme</strong>.
+        </MarigoldProvider>
+      </Stack>
+    </Card>
+  </MarigoldProvider>
+);
 ```
 
 ## Props
