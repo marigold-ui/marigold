@@ -78,7 +78,7 @@ export const SupportGrid = () => {
             </Link>{' '}
             (internal only) or head over to our{' '}
             <Link href="/resources/get-in-touch">Get in touch</Link> page. We
-            promise we don't bite—and we'll get back to you as quickly as
+            promise we don't bite and we'll get back to you as quickly as
             possible.
           </p>
         </Card>
@@ -97,7 +97,7 @@ export const SupportGrid = () => {
             <Headline level="3">Contribute to Marigold!</Headline>
           </Inline>
           <p className="balance pt-4 leading-7">
-            Got a great idea or a request? We love to here it! Take a peek at
+            Got a great idea or a request? We love to hear it! Take a peek at
             our{' '}
             <Link href="/getting-started/governance-process">
               contribution guide
