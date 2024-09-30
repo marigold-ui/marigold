@@ -10,7 +10,7 @@ let changelogPath = await globby([
   '!../**/node_modules/**',
 ]);
 
-console.log('📑 Building changelogs...');
+console.log('📑 Generating changelogs...');
 
 const getReleaseInformation = async file => {
   const log = await git.log({ file: path.resolve(file) });

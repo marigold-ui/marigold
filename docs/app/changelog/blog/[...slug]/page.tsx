@@ -1,7 +1,7 @@
 'use client';
 
 import { allBlogs } from '@/.contentlayer/generated';
-import { Headline } from '@/ui';
+import { DateFormat, Headline } from '@/ui';
 import { notFound, usePathname } from 'next/navigation';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
@@ -23,14 +23,12 @@ const BlogPost = () => {
     >
       <div className="col-span-full">
         <Headline level={1}>{currentPost.title}</Headline>
-        <div className="text-secondary-400 pt-1">{currentPost.date}</div>
+        <div className="text-secondary-400 pt-1">
+          <DateFormat value={new Date(currentPost.date)} dateStyle="medium" />
+        </div>
       </div>
       <div className="prose max-w-[70ch]">
-        <Mdx
-          className=""
-          title={currentPost.title}
-          code={currentPost.body.code}
-        />
+        <Mdx title={currentPost.title} code={currentPost.body.code} />
       </div>
       <div className="col-start-2 hidden min-[1400px]:block">
         <TocContainer />
