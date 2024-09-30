@@ -30,7 +30,7 @@ export default function Post() {
       </div>
       <div className="prose max-w-[70ch]">
         {posts.map(post => (
-          <div key={post.title}>
+          <div key={post.title} className="pb-8">
             <Headline level={2}>
               <Link href={`/${post.slug}`}>
                 {post.title} -{' '}
