@@ -9,7 +9,7 @@ interface Post {
   introduction: RegExpMatchArray | null;
 }
 
-export default function Post() {
+export default async function Post() {
   // matches everything till the second line break
   const regex = /[\s\S]*?\n[\s\S]*?\n/;
 
