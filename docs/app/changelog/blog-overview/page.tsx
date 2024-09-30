@@ -1,12 +1,14 @@
-import { DateFormat, Headline, Text } from '@/ui';
+import { DateFormat, Headline, Text, VisuallyHidden } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 import Link from 'next/link';
+import { Mdx } from '@/ui/mdx';
 
 interface Post {
   title: string;
   date: Date;
   slug: string;
   introduction: RegExpMatchArray | null;
+  code: string;
 }
 
 export default function Post() {
@@ -19,6 +21,7 @@ export default function Post() {
       date: new Date(post.date),
       slug: post.slug,
       introduction: post.body.raw.match(regex),
+      code: post.body.code,
     }))
     .sort((a, b) => b.date.getTime() - a.date.getTime());
 
@@ -38,6 +41,9 @@ export default function Post() {
               </Link>
             </Headline>
             <Text>{post.introduction}</Text>
+            <VisuallyHidden>
+              <Mdx code={post.code} />
+            </VisuallyHidden>
           </div>
         ))}
       </div>
