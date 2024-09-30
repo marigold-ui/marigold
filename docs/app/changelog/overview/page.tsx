@@ -37,7 +37,8 @@ export default async function Post() {
           <div key={latestPost.title} className="pb-8">
             <Link href={`/${latestPost.slug}`}>
               <Headline level={2}>
-                {latestPost.title} - <DateFormat value={latestPost.date} />
+                {latestPost.title} -{' '}
+                <DateFormat value={latestPost.date} dateStyle="medium" />
               </Headline>
             </Link>
             <Text>{latestPost.introduction}</Text>
