@@ -20,7 +20,7 @@ export const SiteNavigation = () => {
           variant="main"
           className="text-sm font-medium lg:px-1"
           key={index}
-          current={pathname.includes(slug)}
+          current={pathname.startsWith(`/${slug}`)}
           href={link?.href ?? `/${slug}`}
         >
           {name}
