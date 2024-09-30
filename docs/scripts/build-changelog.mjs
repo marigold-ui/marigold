@@ -85,7 +85,7 @@ const appendExternalLinks = (sourceText, path) => {
 // generate folder structure for changelogs
 changelogPath.forEach(async file => {
   const data = fs.readFileSync(file, 'utf8');
-  let packages = path.dirname(file.replace('../', ''));
+  let packages = path.dirname(file.replace(/^\.\.\//, ''));
 
   const changelogDir = `content/changelog/${packages}`;
   let changelogModified = data;
