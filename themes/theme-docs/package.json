@@ -45,8 +45,8 @@
     "@marigold/tsconfig": "workspace:*",
     "autoprefixer": "10.4.20",
     "cssnano": "7.0.6",
-    "postcss": "8.4.45",
-    "tailwindcss": "3.4.11",
+    "postcss": "8.4.47",
+    "tailwindcss": "3.4.12",
     "tsup": "8.1.0"
   },
   "dependencies": {
