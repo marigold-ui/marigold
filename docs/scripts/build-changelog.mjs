@@ -50,7 +50,7 @@ const addFrontmatter = (sourceText, releases) => {
         ? (frontmatter += `badge: ${release.badge}\n`)
         : '';
     });
-    frontmatter += '---\n';
+    frontmatter += '---';
     return sourceText.replace(regex, frontmatter);
   }
   return sourceText;
