@@ -109,14 +109,14 @@ export const Basic: StoryObj<typeof ComboBox> = {
   render: args => {
     return (
       <ComboBox label="Animals" disabledKeys={['snake']} {...args}>
-        <ComboBox.Item id="red panda">Red Panda</ComboBox.Item>
-        <ComboBox.Item id="cat">Cat</ComboBox.Item>
-        <ComboBox.Item id="dog">Dog</ComboBox.Item>
-        <ComboBox.Item id="aardvark">Aardvark</ComboBox.Item>
-        <ComboBox.Item id="kangaroo">Kangaroo</ComboBox.Item>
-        <ComboBox.Item id="snake">Snake</ComboBox.Item>
-        <ComboBox.Item id="vegan">Vegan</ComboBox.Item>
-        <ComboBox.Item id="mar">Margrita</ComboBox.Item>
+        <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+        <ComboBox.Option id="cat">Cat</ComboBox.Option>
+        <ComboBox.Option id="dog">Dog</ComboBox.Option>
+        <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+        <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+        <ComboBox.Option id="snake">Snake</ComboBox.Option>
+        <ComboBox.Option id="vegan">Vegan</ComboBox.Option>
+        <ComboBox.Option id="mar">Margrita</ComboBox.Option>
       </ComboBox>
     );
   },
@@ -136,11 +136,11 @@ export const Controlled: StoryObj<typeof ComboBox> = {
           label="Animals"
           {...args}
         >
-          <ComboBox.Item id="red panda">Red Panda</ComboBox.Item>
-          <ComboBox.Item id="cat">Cat</ComboBox.Item>
-          <ComboBox.Item id="dog">Dog</ComboBox.Item>
-          <ComboBox.Item id="aardvark">Aardvark</ComboBox.Item>
-          <ComboBox.Item id="kangaroo">Kangaroo</ComboBox.Item>
+          <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+          <ComboBox.Option id="cat">Cat</ComboBox.Option>
+          <ComboBox.Option id="dog">Dog</ComboBox.Option>
+          <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+          <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
         </ComboBox>
         <pre>
           current: {current}, selected: {id?.toString()}
@@ -174,9 +174,9 @@ export const AsyncLoading: StoryObj<typeof ComboBox> = {
         {...args}
       >
         {(item: { name: string }) => (
-          <ComboBox.Item key={item.name} id={item.name}>
+          <ComboBox.Option key={item.name} id={item.name}>
             {item.name}
-          </ComboBox.Item>
+          </ComboBox.Option>
         )}
       </ComboBox>
     );

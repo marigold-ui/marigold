@@ -2,13 +2,13 @@ import { ComboBox } from '@marigold/components';
 
 export default () => (
   <ComboBox defaultSelectedKey={'dog'} label="Animals">
-    <ComboBox.Item id="red panda">Red Panda</ComboBox.Item>
-    <ComboBox.Item id="cat">Cat</ComboBox.Item>
-    <ComboBox.Item id="dog">Dog</ComboBox.Item>
-    <ComboBox.Item id="aardvark">Aardvark</ComboBox.Item>
-    <ComboBox.Item id="kangaroo">Kangaroo</ComboBox.Item>
-    <ComboBox.Item id="snake">Snake</ComboBox.Item>
-    <ComboBox.Item id="vegan">Vegan</ComboBox.Item>
-    <ComboBox.Item id="mar">Margrita</ComboBox.Item>
+    <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+    <ComboBox.Option id="cat">Cat</ComboBox.Option>
+    <ComboBox.Option id="dog">Dog</ComboBox.Option>
+    <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+    <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+    <ComboBox.Option id="snake">Snake</ComboBox.Option>
+    <ComboBox.Option id="vegan">Vegan</ComboBox.Option>
+    <ComboBox.Option id="mar">Margrita</ComboBox.Option>
   </ComboBox>
 );

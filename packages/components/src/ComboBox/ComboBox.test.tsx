@@ -86,10 +86,10 @@ const { render } = setup({ theme });
 test('renders an input', () => {
   render(
     <ComboBox label="Label">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -102,10 +102,10 @@ test('renders an input', () => {
 test('supports width classname', () => {
   render(
     <ComboBox label="Label" data-testid="input-field">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -122,10 +122,10 @@ test('supports classnames', () => {
       variant="one"
       size="small"
     >
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -145,8 +145,8 @@ test('supports classnames', () => {
 test('supports disabled', () => {
   render(
     <ComboBox label="Label" disabled>
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
     </ComboBox>
   );
 
@@ -157,8 +157,8 @@ test('supports disabled', () => {
 test('supports required', () => {
   render(
     <ComboBox label="Label" required>
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
     </ComboBox>
   );
 
@@ -169,8 +169,8 @@ test('supports required', () => {
 test('supports readonly', () => {
   render(
     <ComboBox label="Label" readOnly>
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
     </ComboBox>
   );
 
@@ -185,8 +185,8 @@ test('uses field structure', () => {
       description="Some helpful text"
       errorMessage="Whoopsie"
     >
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
     </ComboBox>
   );
 
@@ -203,10 +203,10 @@ test('uses field structure', () => {
 test('opens the suggestions on user input', async () => {
   render(
     <ComboBox label="Label">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -220,10 +220,10 @@ test('opens the suggestions on user input', async () => {
 test('opens the suggestions on focus', async () => {
   render(
     <ComboBox label="Label" menuTrigger="focus">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -237,10 +237,10 @@ test('opens the suggestions on focus', async () => {
 test('opens the suggestions on arrow down (manual)', async () => {
   render(
     <ComboBox label="Label" menuTrigger="manual">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -254,10 +254,10 @@ test('opens the suggestions on arrow down (manual)', async () => {
 test('shows suggestions based on user input', async () => {
   render(
     <ComboBox label="Label">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -274,10 +274,10 @@ test('shows suggestions based on user input', async () => {
 test('supports disabling suggestions', async () => {
   render(
     <ComboBox label="Label" disabledKeys={['spinach']}>
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -291,10 +291,10 @@ test('supports disabling suggestions', async () => {
 test('supporst showing a help text', () => {
   render(
     <ComboBox label="Label" description="This is a description">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -309,10 +309,10 @@ test('supporst showing an error', () => {
       error
       errorMessage="Error!"
     >
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -322,10 +322,10 @@ test('supporst showing an error', () => {
 test('supports default value', () => {
   render(
     <ComboBox label="Label" defaultValue="garlic">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
@@ -339,10 +339,10 @@ test('can be controlled', async () => {
     return (
       <>
         <ComboBox label="Label" value={value} onChange={setValue}>
-          <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-          <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-          <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-          <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+          <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+          <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+          <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+          <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
         </ComboBox>
         <span data-testid="output">{value}</span>
       </>
@@ -360,10 +360,10 @@ test('can be controlled', async () => {
 test('supports autocompletion', async () => {
   render(
     <ComboBox label="Label">
-      <ComboBox.Item id="spinach">Spinach</ComboBox.Item>
-      <ComboBox.Item id="carrots">Carrots</ComboBox.Item>
-      <ComboBox.Item id="broccoli">Broccoli</ComboBox.Item>
-      <ComboBox.Item id="garlic">Garlic</ComboBox.Item>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
 
