@@ -41,9 +41,9 @@ export default function Post() {
               </Link>
             </Headline>
             <Text>{post.introduction}</Text>
-            <VisuallyHidden>
+            {/* <VisuallyHidden>
               <Mdx code={post.code} />
-            </VisuallyHidden>
+            </VisuallyHidden> */}
           </div>
         ))}
       </div>
