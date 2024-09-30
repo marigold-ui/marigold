@@ -3,7 +3,9 @@ title: Accessibility
 caption:
 ---
 
-todo: small intro text
+Delivering valuable, inspirational, and accessible experiences for all users, including those with disabilities, is everyone’s responsibility. We are committed to creating products where no one is left behind or faces a confusing or exclusionary experience. We continually iterate on Marigold to provide you with built-in accessibility features across our components, foundations, guidelines, and tooling.
+
+However, how you use Marigold also affects the accessibility of a product. Read this page to learn about accessibility in general. Then, while you're working, use the accessibility guidelines for each component to help you make products that anyone can use.
 
 ## What is Accessibility?
 
@@ -11,9 +13,14 @@ Accessibility means making websites and apps easy for everyone to use, including
 
 Here are the main areas to focus on:
 
-- **Perceivability**: Make sure everyone can see and use the content (like adding alt text for images and using readable colors).
-- **Operability**: Ensure the app works with different ways of navigating, like using a keyboard instead of a mouse.
-- **Understandability**: Keep content clear and easy to follow, with simple layouts and helpful error messages.
-- **Robustness**: Design your app to work across devices and assistive tools by using proper HTML and ARIA labels.
+#### Perceivability
+
+Make sure everyone can perceive and understand the content on your app. This includes providing **alt text** for images so that users who are visually impaired can understand the image content through screen readers. Additionally, ensure **color contrast** is high enough to be readable by those with low vision or color blindness. For example, avoid light text on light backgrounds and provide text alternatives for multimedia content like video captions for users who are deaf or hard of hearing.
+
+- **Operability**: Ensure the app can be navigated and used in different ways. This means making sure users can operate your app with a **keyboard** instead of a mouse, which is essential for people with mobility impairments who may not be able to use a traditional pointing device. For example, make sure all interactive elements like buttons and links are reachable via keyboard tabbing, and add visible focus indicators to show which element is selected. Also, allow sufficient time for users to complete tasks without being timed out.
+
+- **Understandability**: Keep your content and interface clear and straightforward. Use **simple and concise language** so users of all literacy levels can easily understand the information. Provide **helpful error messages** that guide users on how to fix mistakes rather than displaying confusing or vague alerts. For example, if a user misses a required form field, specify which field needs to be corrected and provide instructions on how to do so. Consistent navigation patterns and predictable interactions also help users feel confident when using your app.
+
+- **Robustness**: Ensure your app is compatible across a wide range of devices, browsers, and assistive technologies. This involves using **semantic HTML** and **ARIA labels** correctly to help assistive technologies like screen readers interpret your content accurately. For example, use headings in a logical order (e.g., `<h1>`, `<h2>`, `<h3>`) to structure content hierarchically, and ensure that form inputs are properly labeled so that screen readers can identify them for visually impaired users. Also, test your app on multiple browsers and devices to ensure a consistent experience.
 
 Keeping these points in mind makes your app more inclusive and user-friendly for everyone!
