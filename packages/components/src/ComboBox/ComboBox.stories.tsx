@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Key, useState } from 'react';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack';
+import { Text } from '../Text';
 import { ComboBox } from './ComboBox';
 
 const meta = {
@@ -99,7 +100,7 @@ const meta = {
     width: 'full',
     menuTrigger: 'input',
     placeholder: undefined,
-    label: '',
+    label: 'Label',
   },
 } satisfies Meta;
 
@@ -181,4 +182,33 @@ export const AsyncLoading: StoryObj<typeof ComboBox> = {
       </ComboBox>
     );
   },
+};
+
+export const Sections: StoryObj<typeof ComboBox> = {
+  render: args => (
+    <ComboBox {...args}>
+      <ComboBox.Section header="Fantasy">
+        <ComboBox.Option id="harry-potter" textValue="Harry Potter">
+          <Text slot="label">Harry Potter</Text>
+          <Text slot="description">About the boy who lived</Text>
+        </ComboBox.Option>
+        <ComboBox.Option id="lord-of-the-rings" textValue="Lord of the Rings">
+          <Text slot="label">Lord of the Rings</Text>
+          <Text slot="description">In the lands of Middle earth</Text>
+        </ComboBox.Option>
+      </ComboBox.Section>
+      <ComboBox.Section header="Sci-Fi">
+        <ComboBox.Option id="star-wars" textValue="Start Wars">
+          <Text slot="label">Start Wars</Text>
+          <Text slot="description">
+            A long time ago, in a galaxy far, far away
+          </Text>
+        </ComboBox.Option>
+        <ComboBox.Option id="star-trek" textValue="Star Trek">
+          <Text slot="label">Star Trek</Text>
+          <Text slot="description">What is this</Text>
+        </ComboBox.Option>
+      </ComboBox.Section>
+    </ComboBox>
+  ),
 };
