@@ -10,7 +10,7 @@ interface Post {
   introduction: RegExpMatchArray | null;
 }
 
-export default async function Post() {
+export default function Post() {
   // matches everything till the second line break
   const regex = /[\s\S]*?\n[\s\S]*?\n/;
 
@@ -35,12 +35,12 @@ export default async function Post() {
       <div className="prose max-w-[70ch]">
         {latestPost && (
           <div key={latestPost.title} className="pb-8">
-            <Link href={`/${latestPost.slug}`}>
-              <Headline level={2}>
+            <Headline level={2}>
+              <Link href={`/${latestPost.slug}`}>
                 {latestPost.title} -{' '}
                 <DateFormat value={latestPost.date} dateStyle="medium" />
-              </Headline>
-            </Link>
+              </Link>
+            </Headline>
             <Text>{latestPost.introduction}</Text>
           </div>
         )}
