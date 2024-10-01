@@ -73,8 +73,8 @@ export const siteConfig = {
       slug: 'resources',
     },
     {
-      name: 'Changelog',
-      slug: 'changelog',
+      name: 'Releases',
+      slug: 'releases',
       subsections: [
         {
           name: 'packages',

@@ -88,7 +88,7 @@ changelogPath.forEach(async file => {
   const data = fs.readFileSync(file, 'utf8');
   let packages = path.dirname(file.replace(/^\.\.\//, ''));
 
-  const changelogDir = `content/changelog/${packages}`;
+  const changelogDir = `content/releases/${packages}`;
   let changelogModified = data;
   const releases = await getReleaseInformation(file);
 
