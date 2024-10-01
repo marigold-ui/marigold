@@ -89,6 +89,28 @@ export const Basic: Story = {
   ),
 };
 
+export const WithSections: Story = {
+  render: args => (
+    <Autocomplete placeholder="Pick a food" {...args}>
+      <Autocomplete.Section header="Veggies">
+        <Autocomplete.Option id="lettuce">Lettuce</Autocomplete.Option>
+        <Autocomplete.Option id="tomato">Tomato</Autocomplete.Option>
+        <Autocomplete.Option id="onion">Onion</Autocomplete.Option>
+      </Autocomplete.Section>
+      <Autocomplete.Section header="Protein">
+        <Autocomplete.Option id="ham">Ham</Autocomplete.Option>
+        <Autocomplete.Option id="tuna">Tuna</Autocomplete.Option>
+        <Autocomplete.Option id="tofu">Tofu</Autocomplete.Option>
+      </Autocomplete.Section>
+      <Autocomplete.Section header="Condiments">
+        <Autocomplete.Option id="mayo">Mayonaise</Autocomplete.Option>
+        <Autocomplete.Option id="mustard">Mustard</Autocomplete.Option>
+        <Autocomplete.Option id="ranch">Ranch</Autocomplete.Option>
+      </Autocomplete.Section>
+    </Autocomplete>
+  ),
+};
+
 export const Controlled: Story = {
   render: args => {
     const [submitted, setSubmitted] = useState<
