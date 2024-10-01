@@ -50,7 +50,7 @@ export default () => {
                 variant="primary"
                 size="small"
                 type="submit"
-                className="w-20 !cursor-progress"
+                className="h-8 w-20 !cursor-progress"
                 disabled
               >
                 <XLoader size={16} className="fill-gray-700" />
@@ -66,7 +66,7 @@ export default () => {
               </Button>
             )}
           </Stack>
-          {searchTerm && `You searched for ${searchTerm}.`}
+          {searchTerm && `You searched for <b>${searchTerm}</b>.`}
         </Stack>
       </FieldGroup>
     </Form>
