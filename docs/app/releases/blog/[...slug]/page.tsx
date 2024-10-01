@@ -1,16 +1,48 @@
-'use client';
-
+import { baseUrl } from '@/lib/config';
 import { DateFormat, Headline } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 import { notFound, usePathname } from 'next/navigation';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
 
-const BlogPost = () => {
+export const getPost = () => {
   const pathname = usePathname();
   const currentPost = allBlogs.find(
     post => post.slug === pathname.replace(/^\//, '')
   );
+
+  return currentPost;
+};
+
+export function generateMetadata() {
+  const page = getPost();
+
+  return page
+    ? {
+        title: page.title,
+        description: page.date,
+        applicationName: 'Marigold Design System',
+        appleWebApp: {
+          title: 'Marigold Design System',
+        },
+        metadataBase: new URL(baseUrl),
+        openGraph: {
+          siteName: 'Marigold Design System',
+          title: page.title,
+          description: page.date,
+          images: `${baseUrl}/api/og.png?title=${encodeURIComponent(page.title)}`,
+          type: 'website',
+        },
+        twitter: {
+          card: 'summary_large_image',
+          creator: '@reservix',
+        },
+      }
+    : {};
+}
+
+const BlogPost = () => {
+  const currentPost = getPost();
 
   if (!currentPost) {
     notFound();
