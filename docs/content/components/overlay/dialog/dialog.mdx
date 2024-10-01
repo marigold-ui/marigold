@@ -3,13 +3,15 @@ title: Dialog
 caption: Component for displaying dialogs.
 ---
 
-The `<Dialog>` is a overlay component. This means it displays a modal as a reaction to an event. It appears in the middle of the display and blurs out the underlay.
+The `<Dialog>` is an overlay component. This means it displays a modal as a reaction to an event. It appears in the middle of the display and blurs out the underlay.
 
-This component can be styled in different parts. It has as parts `closeButton` and `container`, which is the component itself, and these parts can be styled separately.
+This component can be styled in different parts. It has parts like closeButton and container, which is the component itself, and these parts can be styled separately.
 
-A special thing is also that you can have props on the `<Dialog.Trigger>` and on the `<Dialog>` itself. The `closeButton` is an optionally property with which you can close the `<Dialog>`.
+Additionally, the `<Dialog>` is composed of other flexible parts: `<Dialog.Title>`, `<Dialog.Content>`, `<Dialog.Action>`, and `<Dialog.Footer`. The `<Dialog.Content>` holds the primary content or message, while the `<Dialog.Action>` defines interactive buttons for user decisions. `<Dialog.Footer>` can be used to place additional information , ensuring clear separation and organization within the dialog.
 
-The `<Dialog>` can also be used if you want to controll it for example within a `<Menu>`.
+A special feature is that you can also pass props to the `<Dialog.Trigger>` and on the `<Dialog>` itself. The closeButton is an optional property that allows you to close the `<Dialog>`.
+
+The `<Dialog>` can also be controlled programmatically, for example, when used within a `<Menu>`.
 
 ## Import
 

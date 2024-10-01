@@ -15,7 +15,7 @@ interface CloseButtonProps {
 const CloseButton = ({ className }: CloseButtonProps) => {
   const { close } = useContext(OverlayTriggerStateContext);
   return (
-    <div className="flex items-center justify-end [grid-area:button]">
+    <div className="ml-4 flex items-center justify-end [grid-area:button]">
       <button
         className={cn(
           'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
@@ -117,7 +117,7 @@ const _Dialog = ({
     <Dialog
       {...props}
       className={cn(
-        'relative gap-4 outline-none',
+        'relative outline-none [&>*:not(:last-child)]:mb-4',
         "grid [grid-template-areas:'title_button'_'content_content'_'actions_actions'_'footer_footer']",
         classNames.container
       )}
