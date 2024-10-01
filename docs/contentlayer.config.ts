@@ -22,11 +22,6 @@ const git = simpleGit();
  * - components/form/button/button -> components/form/button
  */
 const getNormalizedPath = (val: string) => {
-  // let changelogs = [];
-  // for (let log in changelog) {
-  //   changelogs.push(log);
-  // }
-
   let paths = val.split('/');
 
   // Support pages that are grouped with their demos into a folder
@@ -41,7 +36,7 @@ const getNormalizedPath = (val: string) => {
 // ---------------
 export const Blog = defineDocumentType(() => ({
   name: 'Blog',
-  filePathPattern: 'changelog/blog/*.mdx',
+  filePathPattern: 'releases/blog/*.mdx',
   contentType: 'mdx',
   fields: {
     title: {
