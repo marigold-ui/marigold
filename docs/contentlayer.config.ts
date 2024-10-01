@@ -85,6 +85,9 @@ export const ContentPage = defineDocumentType(() => ({
     badge: {
       type: 'string',
     },
+    toc: {
+      type: 'boolean',
+    },
   },
   computedFields: {
     // Transforms the page's path to a slug to use with next.js API

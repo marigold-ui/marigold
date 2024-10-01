@@ -1,7 +1,7 @@
 'use client';
 
-import { allBlogs } from '@/.contentlayer/generated';
 import { DateFormat, Headline } from '@/ui';
+import { allBlogs } from 'contentlayer/generated';
 import { notFound, usePathname } from 'next/navigation';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';

@@ -71,16 +71,14 @@ export default async function ContentPage({ params }: ContentPageProps) {
       </div>
       <div className="prose max-w-[70ch]">
         <Mdx className="" title={page.title} code={page.body.code} />
+        <div className="text-text-primary-muted text-xs italic">
+          Last update: <RelativeTime date={new Date(page.modified)} />
+        </div>
       </div>
-      {!page?.slug.includes('changelog/') && (
-        <>
-          <div className="col-start-2 hidden min-[1400px]:block">
-            <TocContainer />
-          </div>
-          <div className="text-text-primary-muted text-xs italic">
-            Last update: <RelativeTime date={new Date(page.modified)} />
-          </div>
-        </>
+      {page.toc === false ? null : (
+        <div className="col-start-2 hidden min-[1400px]:block">
+          <TocContainer />
+        </div>
       )}
     </article>
   );

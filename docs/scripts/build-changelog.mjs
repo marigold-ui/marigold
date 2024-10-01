@@ -39,8 +39,8 @@ const addFrontmatter = (sourceText, releases) => {
   const regex = /^# (.*)$/m;
   let matches = regex.exec(sourceText);
 
-  let frontmatter = '';
   if (matches) {
+    let frontmatter = '';
     const packageName = matches[1];
     frontmatter += '---\n';
     frontmatter += `title: "${packageName}"\n`;
@@ -50,6 +50,7 @@ const addFrontmatter = (sourceText, releases) => {
         ? (frontmatter += `badge: ${release.badge}\n`)
         : '';
     });
+    frontmatter += 'toc: false\n';
     frontmatter += '---';
     return sourceText.replace(regex, frontmatter);
   }
@@ -64,7 +65,7 @@ const adjustContent = (sourceText, releases) => {
 
   releases.forEach((release, index) => {
     if (versions[index]) {
-      const newContent = `${versions[index]} (Released on ${new Date(release.releaseDate).toLocaleDateString()})`;
+      const newContent = `${versions[index]} (Released on <DateFormat value={new Date("${release.releaseDate}")} dateStyle="medium" />)`;
       sourceText = sourceText.replace(
         new RegExp(`${versions[index]}(?=\\n)`),
         newContent
