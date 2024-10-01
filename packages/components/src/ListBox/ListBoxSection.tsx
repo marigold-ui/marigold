@@ -6,7 +6,13 @@ import { useListBoxContext } from './Context';
 
 export interface SectionProps
   extends Omit<RAC.SectionProps<object>, 'className' | 'style' | 'children'> {
+  /**
+   * Section header to display.
+   */
   header: ReactNode;
+  /**
+   * Children of the section.
+   */
   children: ReactNode;
 }
 
