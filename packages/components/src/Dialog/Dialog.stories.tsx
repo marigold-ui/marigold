@@ -83,7 +83,7 @@ export const Form: Story = {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog>
+        <Dialog size={args.size}>
           {({ close }) => (
             <>
               <Dialog.Headline>Please log into account</Dialog.Headline>
@@ -109,7 +109,7 @@ export const CustomTitleProps: Story = {
   render: args => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog closeButton aria-labelledby="my-cool-headline">
+      <Dialog size={args.size} closeButton aria-labelledby="my-cool-headline">
         <Dialog.Headline>This is a headline!</Dialog.Headline>
         <Text>This is some not so very long text.</Text>
       </Dialog>
@@ -121,7 +121,7 @@ export const ScrollableContent: Story = {
   render: args => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog closeButton aria-labelledby="my-cool-headline">
+      <Dialog size={args.size} closeButton aria-labelledby="my-cool-headline">
         <Container>
           <Header>
             <Dialog.Headline>This is a headline!</Dialog.Headline>
@@ -158,7 +158,7 @@ export const StickyFooter: Story = {
   render: args => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog closeButton aria-labelledby="my-cool-headline">
+      <Dialog size={args.size} closeButton aria-labelledby="my-cool-headline">
         <div className="flex max-h-[400px] flex-col">
           <Header>
             <Dialog.Headline>This is a headline!</Dialog.Headline>
