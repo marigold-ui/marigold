@@ -1,7 +1,6 @@
-import { DateFormat, Headline, Text, VisuallyHidden } from '@/ui';
+import { DateFormat, Headline, Text } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 import Link from 'next/link';
-import { Mdx } from '@/ui/mdx';
 
 interface Post {
   title: string;
@@ -41,9 +40,6 @@ export default function Post() {
               </Link>
             </Headline>
             <Text>{post.introduction}</Text>
-            <VisuallyHidden>
-              <Mdx code={post.code} />
-            </VisuallyHidden>
           </div>
         ))}
       </div>
