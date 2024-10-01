@@ -362,7 +362,7 @@ test('supports default value via "defaultSelectedKey"', () => {
   expect(three).toHaveAttribute('aria-selected', 'true');
 });
 
-test('supports sections', () => {
+test('supports sections', async () => {
   render(
     <Select label="Label" data-testid="select">
       <Select.Section header="Section 1">
@@ -377,7 +377,7 @@ test('supports sections', () => {
   );
 
   const button = screen.getByRole('button');
-  fireEvent.click(button);
+  await user.click(button);
 
   const options = screen.getByRole('listbox');
   const sectionOne = within(options).getByText('Section 1');

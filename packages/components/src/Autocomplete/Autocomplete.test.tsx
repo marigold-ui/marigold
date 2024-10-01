@@ -259,6 +259,30 @@ test('supports disabling suggestions', async () => {
   expect(spinach).toHaveAttribute('aria-disabled', 'true');
 });
 
+test('supports sections', async () => {
+  render(
+    <Autocomplete label="Label" data-testid="Autocomplete">
+      <Autocomplete.Section header="Section 1">
+        <Autocomplete.Option id="one">one</Autocomplete.Option>
+        <Autocomplete.Option id="two">two</Autocomplete.Option>
+      </Autocomplete.Section>
+      <Autocomplete.Section header="Section 2">
+        <Autocomplete.Option id="three">three</Autocomplete.Option>
+        <Autocomplete.Option id="four">four</Autocomplete.Option>
+      </Autocomplete.Section>
+    </Autocomplete>
+  );
+
+  const input = screen.getAllByLabelText('Label')[0];
+  await user.type(input, 'o');
+
+  const s1 = await screen.findByText('Section 1');
+  const s2 = await screen.findByText('Section 2');
+
+  expect(s1).toBeVisible();
+  expect(s2).toBeVisible();
+});
+
 test('supporst showing a help text', () => {
   render(
     <Autocomplete label="Label" description="This is a description">

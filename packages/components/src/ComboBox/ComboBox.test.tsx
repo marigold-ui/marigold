@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Theme, cva } from '@marigold/system';
@@ -331,6 +331,30 @@ test('supports default value', () => {
 
   const textField = screen.getAllByLabelText('Label')[0];
   expect(textField).toHaveValue('garlic');
+});
+
+test('supports sections', async () => {
+  render(
+    <ComboBox label="Label" data-testid="ComboBox">
+      <ComboBox.Section header="Section 1">
+        <ComboBox.Option id="one">one</ComboBox.Option>
+        <ComboBox.Option id="two">two</ComboBox.Option>
+      </ComboBox.Section>
+      <ComboBox.Section header="Section 2">
+        <ComboBox.Option id="three">three</ComboBox.Option>
+        <ComboBox.Option id="four">four</ComboBox.Option>
+      </ComboBox.Section>
+    </ComboBox>
+  );
+
+  const input = screen.getAllByLabelText('Label')[0];
+  await user.type(input, 'o');
+
+  const s1 = await screen.findByText('Section 1');
+  const s2 = await screen.findByText('Section 2');
+
+  expect(s1).toBeVisible();
+  expect(s2).toBeVisible();
 });
 
 test('can be controlled', async () => {
