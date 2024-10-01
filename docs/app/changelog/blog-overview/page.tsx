@@ -1,21 +1,19 @@
 import { DateFormat, Headline, Text } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 
 interface Post {
-  params: {
-    title: string;
-    date: Date;
-    slug: string;
-    introduction: RegExpMatchArray | null;
-  };
+  title: string;
+  date: Date;
+  slug: string;
+  introduction: RegExpMatchArray | null;
 }
 
-export async function getPageFromParams(): Promise<Post['params'][]> {
+export default function Post() {
+  // matches everything till the second line break
   const regex = /[\s\S]*?\n[\s\S]*?\n/;
 
-  const posts = allBlogs
+  const posts: Post[] = allBlogs
     .map(post => ({
       title: post.title,
       date: new Date(post.date),
@@ -23,15 +21,6 @@ export async function getPageFromParams(): Promise<Post['params'][]> {
       introduction: post.body.raw.match(regex),
     }))
     .sort((a, b) => b.date.getTime() - a.date.getTime());
-
-  return posts;
-}
-
-export default async function Post() {
-  const posts = await getPageFromParams();
-  if (!posts) {
-    notFound();
-  }
 
   return (
     <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
