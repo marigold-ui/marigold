@@ -7,7 +7,6 @@ interface Post {
   date: Date;
   slug: string;
   introduction: RegExpMatchArray | null;
-  code: string;
 }
 
 export default function Post() {
@@ -20,7 +19,6 @@ export default function Post() {
       date: new Date(post.date),
       slug: post.slug,
       introduction: post.body.raw.match(regex),
-      code: post.body.code,
     }))
     .sort((a, b) => b.date.getTime() - a.date.getTime());
 
