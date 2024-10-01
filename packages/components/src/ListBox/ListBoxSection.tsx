@@ -19,10 +19,7 @@ export interface SectionProps
 const _Section = ({ header, children, ...props }: SectionProps) => {
   const { classNames } = useListBoxContext();
   return (
-    <Section
-      {...props}
-      className={cn(classNames.section, classNames.sectionTitle)}
-    >
+    <Section {...props} className={cn(classNames.section, classNames.header)}>
       <Header>{header}</Header>
       {children}
     </Section>

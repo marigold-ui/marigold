@@ -46,7 +46,7 @@ const theme: Theme = {
       list: cva(),
       option: cva(),
       section: cva(),
-      sectionTitle: cva(),
+      header: cva(),
     },
     Popover: cva(['mt-0.5'], {
       variants: {
