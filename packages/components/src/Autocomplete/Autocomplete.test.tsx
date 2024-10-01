@@ -85,10 +85,10 @@ afterEach(cleanup);
 test('renders an input', () => {
   render(
     <Autocomplete label="vegetables">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -101,10 +101,10 @@ test('renders an input', () => {
 test('renders a label', () => {
   render(
     <Autocomplete label="Label">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -116,8 +116,8 @@ test('renders a label', () => {
 test('supports disabled', () => {
   render(
     <Autocomplete label="Label" disabled>
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -128,8 +128,8 @@ test('supports disabled', () => {
 test('supports required', () => {
   render(
     <Autocomplete label="Label" required>
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -140,8 +140,8 @@ test('supports required', () => {
 test('supports readonly', () => {
   render(
     <Autocomplete label="Label" readOnly>
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -156,8 +156,8 @@ test('uses field structure', () => {
       description="Some helpful text"
       errorMessage="Whoopsie"
     >
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -174,10 +174,10 @@ test('uses field structure', () => {
 test('opens the suggestions on user input', async () => {
   render(
     <Autocomplete label="Label">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -191,10 +191,10 @@ test('opens the suggestions on user input', async () => {
 test('opens the suggestions on focus', async () => {
   render(
     <Autocomplete label="Label" menuTrigger="focus">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -208,10 +208,10 @@ test('opens the suggestions on focus', async () => {
 test('opens the suggestions on arrow down (manual)', async () => {
   render(
     <Autocomplete label="Label" menuTrigger="manual">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -225,10 +225,10 @@ test('opens the suggestions on arrow down (manual)', async () => {
 test('shows suggestions based on user input', async () => {
   render(
     <Autocomplete label="Label">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -245,10 +245,10 @@ test('shows suggestions based on user input', async () => {
 test('supports disabling suggestions', async () => {
   render(
     <Autocomplete label="Label" disabledKeys={['spinach']}>
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -262,10 +262,10 @@ test('supports disabling suggestions', async () => {
 test('supporst showing a help text', () => {
   render(
     <Autocomplete label="Label" description="This is a description">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -275,10 +275,10 @@ test('supporst showing a help text', () => {
 test('supporst showing an error', () => {
   render(
     <Autocomplete label="Label" error errorMessage="Error!">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -288,10 +288,10 @@ test('supporst showing an error', () => {
 test('supports default value', () => {
   render(
     <Autocomplete label="Label" defaultValue="garlic">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -304,10 +304,10 @@ test('can be controlled', async () => {
     return (
       <>
         <Autocomplete label="Label" value={value} onChange={setValue}>
-          <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-          <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-          <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-          <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+          <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+          <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+          <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+          <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
         </Autocomplete>
         <span data-testid="output">{value}</span>
       </>
@@ -325,10 +325,10 @@ test('can be controlled', async () => {
 test('supports autocompletion', async () => {
   render(
     <Autocomplete label="Label">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -344,10 +344,10 @@ test('supports autocompletion', async () => {
 test('supports clear input value', async () => {
   render(
     <Autocomplete label="Label">
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 
@@ -365,10 +365,10 @@ test('supports submit handler', async () => {
 
   render(
     <Autocomplete label="Label" onSubmit={spy}>
-      <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-      <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-      <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-      <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   );
 

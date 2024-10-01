@@ -75,16 +75,16 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Autocomplete placeholder="Movie" {...args}>
-      <Autocomplete.Item id="Harry Potter" textValue="Harry Potter">
+      <Autocomplete.Option id="Harry Potter" textValue="Harry Potter">
         <Text slot="label">Harry Potter</Text>
         <Text slot="description">best series ever</Text>
-      </Autocomplete.Item>
-      <Autocomplete.Item id="Lord of the Rings">
+      </Autocomplete.Option>
+      <Autocomplete.Option id="Lord of the Rings">
         Lord of the Rings
-      </Autocomplete.Item>
-      <Autocomplete.Item id="Star Wars">Star Wars</Autocomplete.Item>
-      <Autocomplete.Item id="Star Trek">Star Trek</Autocomplete.Item>
-      <Autocomplete.Item id="Firefly">Firefly</Autocomplete.Item>
+      </Autocomplete.Option>
+      <Autocomplete.Option id="Star Wars">Star Wars</Autocomplete.Option>
+      <Autocomplete.Option id="Star Trek">Star Trek</Autocomplete.Option>
+      <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
 };
@@ -107,22 +107,22 @@ export const Controlled: Story = {
             onSubmit={(key, val) => setSubmitted([key, val])}
             disabledKeys={['star-trek']}
           >
-            <Autocomplete.Item id="harry-potter" textValue="Harry Potter">
+            <Autocomplete.Option id="harry-potter" textValue="Harry Potter">
               Harry Potter
-            </Autocomplete.Item>
-            <Autocomplete.Item
+            </Autocomplete.Option>
+            <Autocomplete.Option
               id="lord-of-the-rings"
               textValue="Lord of the Rings"
             >
               Lord of the Rings
-            </Autocomplete.Item>
-            <Autocomplete.Item id="star-wars" textValue="Star Wars">
+            </Autocomplete.Option>
+            <Autocomplete.Option id="star-wars" textValue="Star Wars">
               Star Wars
-            </Autocomplete.Item>
-            <Autocomplete.Item id="star-trek" textValue="Star Trek">
+            </Autocomplete.Option>
+            <Autocomplete.Option id="star-trek" textValue="Star Trek">
               Star Trek
-            </Autocomplete.Item>
-            <Autocomplete.Item id="firefly">Firefly</Autocomplete.Item>
+            </Autocomplete.Option>
+            <Autocomplete.Option id="firefly">Firefly</Autocomplete.Option>
           </Autocomplete>
           <pre>current: {current}</pre>
           <pre>
@@ -159,7 +159,7 @@ export const Async: Story = {
         {...args}
       >
         {(item: any) => (
-          <Autocomplete.Item id={item.name}>{item.name}</Autocomplete.Item>
+          <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
         )}
       </Autocomplete>
     );

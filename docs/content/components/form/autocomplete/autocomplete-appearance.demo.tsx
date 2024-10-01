@@ -12,16 +12,16 @@ export default () => {
         label="Favorite vegetable:"
         onSubmit={(id, val) => setSubmitted([id, val])}
       >
-        <Autocomplete.Item id="spinach">Spinach</Autocomplete.Item>
-        <Autocomplete.Item id="carrots">Carrots</Autocomplete.Item>
-        <Autocomplete.Item id="broccoli">Broccoli</Autocomplete.Item>
-        <Autocomplete.Item id="garlic">Garlic</Autocomplete.Item>
-        <Autocomplete.Item id="brussels-sprouts">
+        <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+        <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+        <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+        <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
+        <Autocomplete.Option id="brussels-sprouts">
           Brussels Sprouts
-        </Autocomplete.Item>
-        <Autocomplete.Item id="kale">Kale</Autocomplete.Item>
-        <Autocomplete.Item id="peas">Peas</Autocomplete.Item>
-        <Autocomplete.Item id="beets">Beets</Autocomplete.Item>
+        </Autocomplete.Option>
+        <Autocomplete.Option id="kale">Kale</Autocomplete.Option>
+        <Autocomplete.Option id="peas">Peas</Autocomplete.Option>
+        <Autocomplete.Option id="beets">Beets</Autocomplete.Option>
       </Autocomplete>
       <Text weight="black">User subbmitted: "{submitted}"</Text>
     </Stack>
