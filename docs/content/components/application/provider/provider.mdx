@@ -1,6 +1,6 @@
 ---
 title: MarigoldProvider
-caption: Container for apps using Marigold, providing theming and other essential application-level settings.
+caption: Container for apps using Marigold.
 ---
 
 The `<MarigoldProvider>` component serves as the wrapper for any application that integrates with Marigold. It is responsible for managing and distributing critical application-level settings, including providing theming to all child components.
@@ -17,7 +17,15 @@ The `<MarigoldProvider>` component does not have its own visual appearance. Howe
 
 It is recommended to place `MarigoldProvider` in its own file, alongside other providers you may use, and wrap your root component with it. This approach keeps your project structure organized and ensures that global settings like theming are applied consistently across your app.
 
-<ComponentDemo file="./provider-base.demo.tsx" />
+```tsx
+import { PropsWithChildren } from 'react';
+import { MarigoldProvider } from '@marigold/components';
+import theme from '@marigold/theme-core';
+
+export const App = ({ children }: PropsWithChildren) => (
+  <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
+);
+```
 
 ### Overriding root styles
 
