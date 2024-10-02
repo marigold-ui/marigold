@@ -5,7 +5,7 @@ import { Button } from '../Button';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
 import { Inline } from '../Inline';
 import { Menu } from '../Menu';
-import { ModalProps } from '../Overlay/Modal';
+import { Modal, ModalProps } from '../Overlay/Modal';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
@@ -13,6 +13,7 @@ import { Dialog } from './Dialog';
 
 const meta = {
   title: 'Components/Dialog',
+  component: Modal,
   argTypes: {
     dismissable: {
       control: { type: 'boolean' },
@@ -36,6 +37,17 @@ const meta = {
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
+      },
+    },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      description: 'Size of the dialog',
+      options: ['default', 'small', 'medium', 'large'],
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' },
       },
     },
   },
