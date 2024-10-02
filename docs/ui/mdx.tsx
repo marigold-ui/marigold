@@ -47,7 +47,7 @@ import {
   Headlines,
   TextAlign,
 } from './Typography';
-import { LatestPost } from './blog/LastPost';
+import { LatestPost } from './blog/LatestPost';
 import { PostList } from './blog/PostList';
 
 // Typography
