@@ -71,7 +71,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
       </div>
       <div className="prose max-w-[70ch]">
         <Mdx className="" title={page.title} code={page.body.code} />
-        <div className="text-text-primary-muted text-xs italic">
+        <div className="text-text-primary-muted pt-8 text-xs italic">
           Last update: <RelativeTime date={new Date(page.modified)} />
         </div>
       </div>
