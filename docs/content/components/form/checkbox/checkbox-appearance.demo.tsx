@@ -1,10 +1,10 @@
-import { CheckboxGroup, CheckboxGroupProps } from '@marigold/components';
-import { Checkbox } from '@marigold/components';
+import type { CheckboxProps } from '@marigold/components';
+import { Checkbox, FieldGroup } from '@marigold/components';
 
-export default (props: CheckboxGroupProps) => (
-  <CheckboxGroup {...props}>
-    <Checkbox value="ham">Ham</Checkbox>
-    <Checkbox value="cucumber">Cucumber</Checkbox>
-    <Checkbox value="onions">Onions</Checkbox>
-  </CheckboxGroup>
+export default (props: CheckboxProps) => (
+  <FieldGroup labelWidth="0px">
+    <Checkbox {...props}>
+      I agree to the Terms of Service and Privacy Policy
+    </Checkbox>
+  </FieldGroup>
 );
