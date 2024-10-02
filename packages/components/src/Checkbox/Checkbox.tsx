@@ -1,10 +1,15 @@
-import type { ReactNode } from 'react';
+import type {
+  ForwardRefExoticComponent,
+  ReactNode,
+  RefAttributes,
+} from 'react';
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Checkbox } from 'react-aria-components';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { useFieldGroupContext } from '../FieldBase';
 import { CheckboxField } from './CheckBoxField';
+import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 
 // SVG Icon
@@ -105,9 +110,18 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
   children?: ReactNode;
 }
 
+export interface CheckboxComponent
+  extends ForwardRefExoticComponent<
+    CheckboxProps & RefAttributes<HTMLLabelElement>
+  > {
+  /**
+   * Group for checkboxes.
+   */
+  Group: typeof CheckboxGroup;
+}
+
 // Component
 // --------------
-
 const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
   (
     {
@@ -175,6 +189,8 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       component
     );
   }
-);
+) as CheckboxComponent;
+
+_Checkbox.Group = CheckboxGroup;
 
 export { _Checkbox as Checkbox };
