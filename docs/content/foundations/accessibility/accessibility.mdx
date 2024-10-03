@@ -67,6 +67,22 @@ For form elements like text fields, checkboxes, or dropdowns, it’s best to pro
 
 If a visible label isn’t needed or you’re using a control without a built-in label, you’ll need to use the `aria-label` or `aria-labelledby` properties to ensure it’s accessible. Marigold will usually show a console warning if both a visible label and an ARIA label are missing.
 
+To illustrate how labeling works, see the following examples. In the code below, the `<Button>` only shows an icon (✖), so the `aria-label` provides a description (“Close”) for screen readers.
+
+```tsx
+<Button aria-label="Close">✖</Button>
+```
+
+In the following example, the `aria-labelledby` attribute references both the ids of the heading (section-title) and the description (section-description). When the region is focused, a screen reader will announce both “Account Settings” and “Update your username, email, and password here,” providing clear context for the user.
+
+```html
+<h2 id="section-title">Account Settings</h2>
+<p id="section-description">Update your username, email, and password here.</p>
+<div role="region" aria-labelledby="section-title section-description">
+  <!-- Form content goes here -->
+</div>
+```
+
 ### Keyboard navigation
 
 All components have built-in keyboard support, making it easy for users who can’t use a mouse or touch screen to navigate. But it also helps users who prefer using the keyboard to move around more quickly. The keyboard behavior follows the [W3C’s ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/), so it feels natural and familiar to users of common desktop systems.
