@@ -37,4 +37,58 @@ Keeping these points in mind makes your app more inclusive and user-friendly for
 
 ## Creating accessible apps
 
-Thanks to React Aria, Marigold components come with built-in accessibility features, and we provide guidelines in the component documentation to help you follow best practices. However, it's important to remember that ensuring accessibility compliance when using Marigold components is a team effort. Accessibility is a shared responsibility, and everyone plays a part in making products inclusive for all.
+Thanks to [React Aria](https://react-spectrum.adobe.com/react-aria/), Marigold components come with built-in accessibility features, and we provide guidelines in the component documentation to help you follow best practices. However, it's important to remember that ensuring accessibility compliance when using Marigold components is a team effort. Accessibility is a shared responsibility, and everyone plays a part in making products inclusive for all.
+
+<SectionMessage>
+  <SectionMessage.Title>Powered by React Aria</SectionMessage.Title>
+  <SectionMessage.Content>
+    Marigold is built using React Aria, a powerful library of unstyled React
+    components and hooks designed to help create accessible, high-quality UI
+    components. React Aria is essential to the development of Marigold, ensuring
+    our components meet the highest accessibility standards. If you want to
+    learn more, check out [their
+    docs](https://react-spectrum.adobe.com/react-aria/).
+  </SectionMessage.Content>
+</SectionMessage>
+
+Read on to learn more about how to ensure accessibility in your products and what is already taken care of by Marigold.
+
+### ARIA attributes
+
+Marigold implements accessibility support following the WAI-ARIA specification, which defines semantics for UI controls to help assistive technologies like screen readers understand the purpose of DOM elements. When native HTML elements can’t be used for styling or if no native element exists, ARIA is applied to give presentational elements semantic meaning. This allows screen readers and other assistive technology to understand these elements and announce them properly to the user.
+
+However, ARIA only specifies semantics, developers are responsible for implementing behaviors and interactions with JavaScript, using the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/) to ensure proper keyboard interactions and accessibility.
+
+### Labeling
+
+Marigold includes most of the necessary accessibility features by default, but there’s one key thing you need to add: a text label for each control. This label helps screen reader users understand the control they are interacting with.
+
+For form elements like text fields, checkboxes, or dropdowns, it’s best to provide a visible label. Marigold will automatically link this label with the control so that assistive technologies can describe it correctly.
+
+If a visible label isn’t needed or you’re using a control without a built-in label, you’ll need to use the `aria-label` or `aria-labelledby` properties to ensure it’s accessible. Marigold will usually show a console warning if both a visible label and an ARIA label are missing.
+
+### Keyboard navigation
+
+All components have built-in keyboard support, making it easy for users who can’t use a mouse or touch screen to navigate. But it also helps users who prefer using the keyboard to move around more quickly. The keyboard behavior follows the [W3C’s ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/), so it feels natural and familiar to users of common desktop systems.
+
+Keyboard navigation is organized into tab stops, which you can move through using the Tab key (forward) and Shift + Tab (backward). A tab stop can be a single component like a button or text field, or a composite component like a listbox, radio group, or toolbar. Composite components act as one tab stop, with inner elements navigated using the arrow keys.
+
+### Focus management
+
+Focus support, like keyboard navigation, is crucial for users who can’t use a mouse or touch screen. It also benefits power users who prefer faster navigation without switching from the keyboard.
+
+A key feature for keyboard users is the [focus ring](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html), a visual indicator showing which element is currently focused. This helps keyboard users know where they are on the page. The focus ring should only appear during keyboard navigation to avoid distracting mouse and touchscreen users.
+
+Additionally, overlay elements like dialogs, popovers, and menus have special focus behavior to keep focus within them while open. Once they are closed, focus is returned to the element that initially opened them.
+
+### Dynamic content
+
+Apps often dynamically update their user interface, such as when displaying search results or showing alerts. To make these updates accessible, ARIA live regions are used. They enable screen readers to automatically announce changes, ensuring users stay informed without needing to shift focus.
+
+It’s the developer’s responsibility to make sure these dynamic content updates are announce by using ARIA live regions. The aria-live attribute controls how screen readers announce updates to dynamic content. It sets the priority for announcements, with three possible values: `off`, `polite`, and `assertive`.
+
+- `aria-live="polite"` is the most commonly used setting. It ensures that updates are announced when the user is idle, making it ideal for non-urgent information, such as search results.
+- `aria-live="assertive"` should be reserved for critical, time-sensitive updates. It immediately interrupts any ongoing announcements to grab the user’s attention, but because it can be disruptive, it should be used sparingly.
+- `aria-live="off"` doesn’t prevent updates from being announced but limits them to when the element is focused or interacted with.
+
+Choosing the correct `aria-live` setting is crucial to ensure the right balance between informing users and avoiding unnecessary interruptions. To learn more, check out the [guide on MDN](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) or explore the excellent [article by Sara Soueidan](https://www.sarasoueidan.com/blog/accessible-notifications-with-aria-live-regions-part-1/).
