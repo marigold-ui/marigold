@@ -23,7 +23,7 @@ export const LatestPost = () => {
     <div key={latestPost.title} className="pb-12">
       <Headline level={2}>
         <Link href={`/${latestPost.slug}`}>
-          {latestPost.title} -{' '}
+          {`${latestPost.title} - `}
           <DateFormat value={latestPost.date} dateStyle="medium" />
         </Link>
       </Headline>
