@@ -1,4 +1,4 @@
-import { DateFormat, Headline, Link, Text } from '@/ui';
+import { DateFormat, Headline, Link, Stack, Text } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 
 export const PostList = () => {
@@ -23,7 +23,10 @@ export const PostList = () => {
               {post.title} - <DateFormat value={post.date} dateStyle="medium" />
             </Link>
           </Headline>
-          <Text>{post.introduction}</Text>
+          <Stack space={2}>
+            <Text>{post.introduction}</Text>
+            <Link href={`/${post.slug}`}>Read more</Link>
+          </Stack>
         </div>
       ))}
     </>

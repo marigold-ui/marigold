@@ -1,4 +1,4 @@
-import { DateFormat, Headline, Link, Text } from '@/ui';
+import { DateFormat, Headline, Link, Stack, Text } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 
 export const LatestPost = () => {
@@ -20,14 +20,17 @@ export const LatestPost = () => {
   }
 
   return (
-    <div key={latestPost.title} className="pb-8">
+    <div key={latestPost.title} className="pb-12">
       <Headline level={2}>
         <Link href={`/${latestPost.slug}`}>
           {latestPost.title} -{' '}
           <DateFormat value={latestPost.date} dateStyle="medium" />
         </Link>
       </Headline>
-      <Text>{latestPost.introduction}</Text>
+      <Stack space={2}>
+        <Text>{latestPost.introduction}</Text>
+        <Link href={`/${latestPost.slug}`}>Read more</Link>
+      </Stack>
     </div>
   );
 };
