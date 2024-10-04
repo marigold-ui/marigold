@@ -21,6 +21,9 @@ export const LatestPost = () => {
 
   return (
     <div key={latestPost.title} className="pb-12">
+      <div className="text-secondary-400 -mb-14 font-semibold">
+        LATEST RELEASE
+      </div>
       <Headline level={2}>
         <Link href={`/${latestPost.slug}`}>
           {`${latestPost.title} - `}
