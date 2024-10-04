@@ -16,7 +16,7 @@ const items: Event[] = [
     name: 'The Laughing Llamas',
     date: '2024-10-12',
     price: 75,
-    availableTickets: 120,
+    availableTickets: 122,
     status: 'available',
   },
   {
@@ -24,7 +24,7 @@ const items: Event[] = [
     name: "Broadway's Biggest Burrito",
     date: '2024-10-15',
     price: 95,
-    availableTickets: 50,
+    availableTickets: 53,
     status: 'limited',
   },
   {
@@ -40,7 +40,7 @@ const items: Event[] = [
     name: 'The Cheesy Joke Marathon',
     date: '2024-10-20',
     price: 40,
-    availableTickets: 200,
+    availableTickets: 201,
     status: 'available',
   },
   {
@@ -48,7 +48,7 @@ const items: Event[] = [
     name: 'Symphony of Snoring',
     date: '2024-11-05',
     price: 60,
-    availableTickets: 80,
+    availableTickets: 89,
     status: 'available',
   },
   {
@@ -56,7 +56,7 @@ const items: Event[] = [
     name: 'The Great Mustache Showcase',
     date: '2024-12-01',
     price: 25,
-    availableTickets: 300,
+    availableTickets: 336,
     status: 'available',
   },
 ];
