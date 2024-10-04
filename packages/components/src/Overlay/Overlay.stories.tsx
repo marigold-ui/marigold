@@ -19,7 +19,7 @@ const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
   ({ open }, ref) => {
     return (
       <>
-        <MenuTrigger>
+        <MenuTrigger isOpen={open}>
           <Button>Button</Button>
           <Popover ref={ref}>
             <Menu>
