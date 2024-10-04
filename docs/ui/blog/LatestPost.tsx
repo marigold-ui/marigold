@@ -32,9 +32,7 @@ export const LatestPost = () => {
       </Headline>
       <Stack space={2} alignX="left">
         <Text>{latestPost.introduction}</Text>
-        <Link variant="primary" size="small" href={`/${latestPost.slug}`}>
-          ▶︎ Read more
-        </Link>
+        <Link href={`/${latestPost.slug}`}>▶︎ Read more</Link>
       </Stack>
     </div>
   );
