@@ -10,6 +10,7 @@
     "build-component-props": "zx ./scripts/build-component-props.mjs"
   },
   "dependencies": {
+    "@emotion/is-prop-valid": "1.3.0",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",
@@ -28,6 +29,7 @@
     "dayjs": "1.11.13",
     "eslint": "9.11.1",
     "eslint-config-next": "14.2.13",
+    "framer-motion": "11.5.5",
     "github-slugger": "2.0.0",
     "mdast-util-toc": "7.0.1",
     "next": "14.2.13",
