@@ -15,9 +15,9 @@ export const PostList = () => {
     .sort((a, b) => b.date.getTime() - a.date.getTime());
 
   return (
-    <>
+    <Stack space={12}>
       {posts.map(post => (
-        <div key={post.title} className="pb-8">
+        <div key={post.title}>
           <Headline level={2}>
             <Link href={`/${post.slug}`}>
               {post.title} - <DateFormat value={post.date} dateStyle="medium" />
@@ -29,6 +29,6 @@ export const PostList = () => {
           </Stack>
         </div>
       ))}
-    </>
+    </Stack>
   );
 };
