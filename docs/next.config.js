@@ -24,8 +24,33 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/',
+        source: '/getting-started',
         destination: '/getting-started/overview',
+        permanent: true,
+      },
+      {
+        source: '/foundations',
+        destination: '/foundations/overview',
+        permanent: true,
+      },
+      {
+        source: '/components',
+        destination: '/components/overview',
+        permanent: true,
+      },
+      {
+        source: '/patterns',
+        destination: '/patterns/overview',
+        permanent: true,
+      },
+      {
+        source: '/recipes',
+        destination: '/recipes/overview',
+        permanent: true,
+      },
+      {
+        source: '/resources',
+        destination: '/resources/overview',
         permanent: true,
       },
     ];

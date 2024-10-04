@@ -2,7 +2,7 @@
 
 import { Button, Dialog, Header } from '@/ui';
 import { Logo } from '@/ui/Logo';
-import { Navigation } from './Navigation';
+import { Navigation } from '@/ui/navigation/Navigation';
 
 // Helpers
 // ---------------

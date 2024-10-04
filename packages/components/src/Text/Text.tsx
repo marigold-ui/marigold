@@ -17,11 +17,13 @@ import {
   useClassNames,
   useTheme,
 } from '@marigold/system';
+import type { AriaLabelingProps } from '@marigold/types';
 
 // Props
 // ---------------
 export interface TextProps
-  extends Omit<RAC.TextProps, 'elementType'>,
+  extends AriaLabelingProps,
+    Omit<RAC.TextProps, 'elementType'>,
     TextAlignProp,
     FontSizeProp,
     FontWeightProp,
