@@ -23,9 +23,11 @@ export const PostList = () => {
               {post.title} - <DateFormat value={post.date} dateStyle="medium" />
             </Link>
           </Headline>
-          <Stack space={2}>
+          <Stack space={2} alignX="left">
             <Text>{post.introduction}</Text>
-            <Link href={`/${post.slug}`}>Read more</Link>
+            <Link variant="secondary" size="small" href={`/${post.slug}`}>
+              Read more
+            </Link>
           </Stack>
         </div>
       ))}

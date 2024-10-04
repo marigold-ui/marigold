@@ -27,9 +27,11 @@ export const LatestPost = () => {
           <DateFormat value={latestPost.date} dateStyle="medium" />
         </Link>
       </Headline>
-      <Stack space={2}>
+      <Stack space={2} alignX="left">
         <Text>{latestPost.introduction}</Text>
-        <Link href={`/${latestPost.slug}`}>Read more</Link>
+        <Link variant="primary" size="small" href={`/${latestPost.slug}`}>
+          Read more
+        </Link>
       </Stack>
     </div>
   );
