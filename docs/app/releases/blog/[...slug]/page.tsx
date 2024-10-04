@@ -1,16 +1,19 @@
-'use client';
-
 import { DateFormat, Headline } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
-import { notFound, usePathname } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
 
-const BlogPost = () => {
-  const pathname = usePathname();
-  const currentPost = allBlogs.find(
-    post => post.slug === pathname.replace(/^\//, '')
-  );
+interface BlogPostProps {
+  params: {
+    slug: string[];
+  };
+}
+
+const BlogPost = async ({ params }: BlogPostProps) => {
+  const fullPath = `releases/blog/${params.slug}`;
+  const currentPost = allBlogs.find(post => post.slug === fullPath);
+
   if (!currentPost) {
     notFound();
   }
