@@ -25,9 +25,7 @@ export const PostList = () => {
           </Headline>
           <Stack space={2} alignX="left">
             <Text>{post.introduction}</Text>
-            <Link variant="secondary" size="small" href={`/${post.slug}`}>
-              Read more
-            </Link>
+            <Link href={`/${post.slug}`}>▶︎ Read more</Link>
           </Stack>
         </div>
       ))}
