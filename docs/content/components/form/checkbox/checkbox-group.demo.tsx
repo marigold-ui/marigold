@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Checkbox, CheckboxGroup } from '@marigold/components';
+import { Checkbox } from '@marigold/components';
 
 export default () => {
   const [selected, setSelected] = useState<string[]>([]);
   return (
     <>
-      <CheckboxGroup
+      <Checkbox.Group
         label="Choose your event activities:"
         onChange={setSelected}
         description="Select the activities you'd like to participate in"
@@ -18,7 +18,7 @@ export default () => {
         <Checkbox value="dining">🍽️ Dining Experiences</Checkbox>
         <Checkbox value="exhibitions">🖼️ Art Exhibitions</Checkbox>
         <Checkbox value="sports">⚽ Sports Events</Checkbox>
-      </CheckboxGroup>
+      </Checkbox.Group>
       <hr />
       <pre>Selected values: {selected.join(', ')}</pre>
     </>

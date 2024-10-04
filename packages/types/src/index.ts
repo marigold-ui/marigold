@@ -1,4 +1,5 @@
 export * from 'type-fest';
+export * from './html';
 export * from './react';
 
 /**

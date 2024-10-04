@@ -323,7 +323,7 @@ test('dialog has variant classnames', () => {
     'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
   );
   expect(dialog.className).toMatchInlineSnapshot(
-    `"relative outline-none p-5 bg-green-400"`
+    `"relative w-full outline-none p-5 bg-green-400"`
   );
 });
 
