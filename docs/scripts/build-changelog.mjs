@@ -39,6 +39,8 @@ const addFrontmatter = (sourceText, releases) => {
   const regex = /^# (.*)$/m;
   let matches = regex.exec(sourceText);
 
+  if (!matches) return sourceText;
+
   if (matches) {
     let frontmatter = '';
     const packageName = matches[1];
@@ -52,9 +54,9 @@ const addFrontmatter = (sourceText, releases) => {
     });
     frontmatter += 'toc: false\n';
     frontmatter += '---';
+
     return sourceText.replace(regex, frontmatter);
   }
-  return sourceText;
 };
 
 const adjustContent = (sourceText, releases) => {
@@ -64,10 +66,11 @@ const adjustContent = (sourceText, releases) => {
   if (!versions) return sourceText;
 
   releases.forEach((release, index) => {
-    if (versions[index]) {
-      const newContent = `${versions[index]} (Released on <DateFormat value={new Date("${release.releaseDate}")} dateStyle="medium" />)`;
+    const version = versions[index];
+    if (version) {
+      const newContent = `${version} (Released on <DateFormat value={new Date("${release.releaseDate}")} dateStyle="medium" />)`;
       sourceText = sourceText.replace(
-        new RegExp(`${versions[index]}(?=\\n)`),
+        new RegExp(`${version}(?=\\n)`),
         newContent
       );
     }
@@ -78,8 +81,8 @@ const adjustContent = (sourceText, releases) => {
 
 const appendExternalLinks = (sourceText, path) => {
   const regex = /^## .*/m;
-  let externalLinks = '';
-  externalLinks += `_[View the full changelog on Github](https://github.com/marigold-ui/marigold/blob/main/${path}/CHANGELOG.md)_`;
+  let externalLinks = `_[View the full changelog on Github](https://github.com/marigold-ui/marigold/blob/main/${path}/CHANGELOG.md)_`;
+
   return sourceText.replace(regex, match => `${externalLinks}\n${match}`);
 };
 
@@ -101,9 +104,9 @@ changelogPath.forEach(async file => {
 
   // Write the modified changelog to the new directory
   fs.writeFileSync(
-    path.join(changelogDir, 'whats-new.mdx'),
+    path.join(changelogDir, 'release.mdx'),
     changelogModified,
     'utf-8'
   );
-  console.log(`✅ Successfully built ${path.join(packages, 'whats-new.mdx')}`);
+  console.log(`✅ Successfully built ${path.join(packages, 'release.mdx')}`);
 });
