@@ -1,4 +1,5 @@
 export * from './hooks';
+export * from './types';
 
 export * from './Accordion';
 export * from './Aside';

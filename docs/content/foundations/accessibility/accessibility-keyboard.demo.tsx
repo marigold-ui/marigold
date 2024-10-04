@@ -1,5 +1,14 @@
 import { DateFormat, NumericFormat } from '@/ui';
-import { Badge, Headline, Stack, Table } from '@marigold/components';
+import { useState } from 'react';
+import type { Selection } from '@marigold/components';
+import {
+  Badge,
+  Button,
+  Headline,
+  Stack,
+  Table,
+  Text,
+} from '@marigold/components';
 
 interface Event {
   id: number;
@@ -67,47 +76,67 @@ const STATUS = {
   soldout: 'error',
 };
 
-export default () => (
-  <Stack space={2} alignX="left">
-    <Headline id="table-header" level="5">
-      Event List
-    </Headline>
-    <Table
-      aria-labelledby="table-header"
-      variant="linedTable"
-      selectionMode="multiple"
-      stretch
-    >
-      <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Date</Table.Column>
-        <Table.Column align="right">Price</Table.Column>
-        <Table.Column align="right">Available Tickets</Table.Column>
-        <Table.Column align="right">Status</Table.Column>
-      </Table.Header>
-      <Table.Body items={items}>
-        {item => (
-          <Table.Row key={item.id}>
-            <Table.Cell>{item.name}</Table.Cell>
-            <Table.Cell>
-              <DateFormat dateStyle="medium" value={new Date(`${item.date}`)} />
-            </Table.Cell>
-            <Table.Cell>
-              <NumericFormat
-                style="currency"
-                value={item.price}
-                currency="EUR"
-              />
-            </Table.Cell>
-            <Table.Cell>
-              <NumericFormat value={item.availableTickets} tabular />
-            </Table.Cell>
-            <Table.Cell>
-              <Badge variant={STATUS[item.status]}>{item.status}</Badge>
-            </Table.Cell>
-          </Table.Row>
-        )}
-      </Table.Body>
-    </Table>
-  </Stack>
-);
+export default () => {
+  const [selected, setSelected] = useState<Selection>(new Set());
+  const count = selected === 'all' ? selected : selected.size;
+
+  return (
+    <Stack space={6} alignX="right">
+      <Stack space={3} stretch>
+        <header>
+          <Headline id="table-header" level="5">
+            Event List
+          </Headline>
+          <Text id="table-description" color="accent-700">
+            Select events to generate statistics for analysis.
+          </Text>
+        </header>
+        <Table
+          aria-labelledby="table-header table-description"
+          variant="linedTable"
+          selectionMode="multiple"
+          stretch
+          selectedKeys={selected}
+          onSelectionChange={setSelected}
+        >
+          <Table.Header>
+            <Table.Column>Name</Table.Column>
+            <Table.Column>Date</Table.Column>
+            <Table.Column align="right">Price</Table.Column>
+            <Table.Column align="right">Available Tickets</Table.Column>
+            <Table.Column align="right">Status</Table.Column>
+          </Table.Header>
+          <Table.Body items={items}>
+            {item => (
+              <Table.Row key={item.id}>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>
+                  <DateFormat
+                    dateStyle="medium"
+                    value={new Date(`${item.date}`)}
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <NumericFormat
+                    style="currency"
+                    value={item.price}
+                    currency="EUR"
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <NumericFormat value={item.availableTickets} tabular />
+                </Table.Cell>
+                <Table.Cell>
+                  <Badge variant={STATUS[item.status]}>{item.status}</Badge>
+                </Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+      </Stack>
+      <Button variant="primary" disabled={count === 0}>
+        Create statistics for {count} events
+      </Button>
+    </Stack>
+  );
+};
