@@ -30,11 +30,9 @@ export const useNavigation = (): NavigationSection[] => {
   const navigation = [...siteConfig.navigation] as NavigationSection[];
   return navigation.map(({ name, slug, subsections = [] }) => {
     // Section Page = has a section but NO subsection
-    const sectionPages = [
-      ...allContentPages
-        .filter(page => page.section === slug && !page.subsection)
-        .sort((a, b) => (a.order || 1000) - (b.order || 1000)),
-    ];
+    const sectionPages = allContentPages
+      .filter(page => page.section === slug && !page.subsection)
+      .sort((a, b) => (a.order || 1000) - (b.order || 1000));
 
     return {
       name,
