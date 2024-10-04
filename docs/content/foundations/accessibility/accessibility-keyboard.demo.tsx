@@ -1,0 +1,113 @@
+import { DateFormat, NumericFormat } from '@/ui';
+import { Badge, Headline, Stack, Table } from '@marigold/components';
+
+interface Event {
+  id: number;
+  name: string;
+  date: string;
+  price: number;
+  availableTickets: number;
+  status: 'available' | 'limited' | 'soldout';
+}
+
+const items: Event[] = [
+  {
+    id: 1,
+    name: 'The Laughing Llamas',
+    date: '2024-10-12',
+    price: 75,
+    availableTickets: 120,
+    status: 'available',
+  },
+  {
+    id: 2,
+    name: "Broadway's Biggest Burrito",
+    date: '2024-10-15',
+    price: 95,
+    availableTickets: 50,
+    status: 'limited',
+  },
+  {
+    id: 3,
+    name: 'Ultimate Pillow Fight Finals',
+    date: '2024-11-02',
+    price: 150,
+    availableTickets: 0,
+    status: 'soldout',
+  },
+  {
+    id: 4,
+    name: 'The Cheesy Joke Marathon',
+    date: '2024-10-20',
+    price: 40,
+    availableTickets: 200,
+    status: 'available',
+  },
+  {
+    id: 5,
+    name: 'Symphony of Snoring',
+    date: '2024-11-05',
+    price: 60,
+    availableTickets: 80,
+    status: 'available',
+  },
+  {
+    id: 6,
+    name: 'The Great Mustache Showcase',
+    date: '2024-12-01',
+    price: 25,
+    availableTickets: 300,
+    status: 'available',
+  },
+];
+
+const STATUS = {
+  available: 'success',
+  limited: 'warning',
+  soldout: 'error',
+};
+
+export default () => (
+  <Stack space={2} alignX="left">
+    <Headline id="table-header" level="5">
+      Event List
+    </Headline>
+    <Table
+      aria-labelledby="table-header"
+      variant="linedTable"
+      selectionMode="multiple"
+      stretch
+    >
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column>Date</Table.Column>
+        <Table.Column align="right">Price</Table.Column>
+        <Table.Column align="right">Available Tickets</Table.Column>
+        <Table.Column align="right">Status</Table.Column>
+      </Table.Header>
+      <Table.Body items={items}>
+        {item => (
+          <Table.Row key={item.id}>
+            <Table.Cell>{item.name}</Table.Cell>
+            <Table.Cell>
+              <DateFormat dateStyle="medium" value={new Date(`${item.date}`)} />
+            </Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                style="currency"
+                value={item.price}
+                currency="EUR"
+              />
+            </Table.Cell>
+            <Table.Cell>
+              <NumericFormat value={item.availableTickets} tabular />
+            </Table.Cell>
+            <Table.Cell>
+              <Badge variant={STATUS[item.status]}>{item.status}</Badge>
+            </Table.Cell>
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
+  </Stack>
+);
