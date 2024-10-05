@@ -101,6 +101,10 @@ A key feature for keyboard users is the [focus ring](https://www.w3.org/WAI/WCAG
 
 Additionally, overlay elements like dialogs, popovers, and menus have special focus behavior to keep focus within them while open. Once they are closed, focus is returned to the element that initially opened them.
 
+To test this, try the demo below using only your keyboard.
+
+<ComponentDemo file="./accessibility-focus.demo.tsx" disableLabelWidth />
+
 ### Dynamic content
 
 Apps often dynamically update their user interface, such as when displaying search results or showing alerts. To make these updates accessible, ARIA live regions are used. They enable screen readers to automatically announce changes, ensuring users stay informed without needing to shift focus.
