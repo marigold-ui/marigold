@@ -13,25 +13,10 @@ Accessibility means making websites and apps easy for everyone to use, including
 
 Here are the main areas to focus on:
 
-### Perceivability
-
-Make sure everyone can perceive and understand the content on your app. This includes providing alt text for images so that users who are visually impaired can understand the image content through screen readers.
-
-Additionally, ensure color contrast is high enough to be readable by those with low vision or color blindness. For example, avoid light text on light backgrounds and provide text alternatives for multimedia content like video captions for users who are deaf or hard of hearing.
-
-### Operability
-
-Ensure the app can be navigated and used in different ways. This means making sure users can operate your app with a keyboard instead of a mouse, which is essential for people with mobility impairments who may not be able to use a traditional pointing device. For example, make sure all interactive elements like buttons and links are reachable via keyboard tabbing, and allow sufficient time for users to complete tasks without being timed out.
-
-### Understandability
-
-Keep your content and interface clear and easy to navigate. Use simple, concise language to ensure that users of all literacy levels can understand the information effortlessly. Consistent navigation patterns and predictable interactions help users feel confident while using your app.
-
-Additionally, provide helpful error messages that guide users in fixing mistakes, rather than displaying confusing or vague alerts. For instance, if a user misses a required form field, clearly identify which field needs correction and offer specific instructions on how to address the issue.
-
-### Robustness
-
-Ensure your app is compatible across a wide range of devices, browsers, and assistive technologies. This involves using semantic HTML and ARIA labels correctly to help assistive technologies like screen readers interpret your content accurately. For example, use headings in a logical order to structure content hierarchically, and ensure that form inputs are properly labeled so that screen readers can identify them for visually impaired users.
+- **Perceivability:** Ensure everyone can perceive your app by providing alt text for images and maintaining sufficient color contrast for readability. Also, include text alternatives for multimedia content, like captions for videos, to support users with visual or hearing impairments.
+- **Operability:** Make your app usable with a keyboard to support users who cannot use a mouse. Ensure all interactive elements are accessible via keyboard, and allow users enough time to complete tasks without timing out.
+- **Understandability:** Keep your content simple and easy to navigate. Use concise language, consistent navigation patterns, and clear error messages to help users understand and fix mistakes quickly.
+- **Robustness:** Ensure your app works across devices, browsers, and assistive technologies by using semantic HTML and ARIA labels. Structure content logically with proper headings and labeled inputs to support screen reader users.
 
 Keeping these points in mind makes your app more inclusive and user-friendly for everyone!
 
@@ -101,7 +86,7 @@ A key feature for keyboard users is the [focus ring](https://www.w3.org/WAI/WCAG
 
 Additionally, overlay elements like dialogs, popovers, and menus have special focus behavior to keep focus within them while open. Once they are closed, focus is returned to the element that initially opened them.
 
-To test this, try the demo below using only your keyboard.
+To test this, try the demo below using only your keyboard. Tab through all the elements to see how the focus remains contained within the dialog.
 
 <ComponentDemo file="./accessibility-focus.demo.tsx" disableLabelWidth />
 

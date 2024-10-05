@@ -3,7 +3,8 @@ import {
   Center,
   Checkbox,
   Dialog,
-  Header,
+  Headline,
+  Inline,
   Stack,
 } from '@marigold/components';
 
@@ -12,12 +13,30 @@ export default () => (
     <Dialog.Trigger>
       <Button variant="primary">Open notification settings</Button>
       <Dialog closeButton>
-        <Header>Notification settings</Header>
-        <Stack space={4}>
-          <Checkbox>Email Notifications</Checkbox>
-          <Checkbox>Event Reminders</Checkbox>
-          <Checkbox>Promotional Notifications</Checkbox>
-        </Stack>
+        {({ close }) => (
+          <>
+            <Headline id="dialog-headline" level={2}>
+              Notification settings
+            </Headline>
+            <Stack space={4}>
+              <Checkbox.Group aria-labelledby="dialog-headline">
+                <Checkbox value="newsletter" defaultChecked>
+                  Email Newsletter
+                </Checkbox>
+                <Checkbox value="reminder">Event Reminders</Checkbox>
+                <Checkbox value="promo">Promo Notifications</Checkbox>
+              </Checkbox.Group>
+              <Inline space={4}>
+                <Button variant="primary" onPress={close}>
+                  Update
+                </Button>
+                <Button variant="secondary" onPress={close}>
+                  Cancel
+                </Button>
+              </Inline>
+            </Stack>
+          </>
+        )}
       </Dialog>
     </Dialog.Trigger>
   </Center>
