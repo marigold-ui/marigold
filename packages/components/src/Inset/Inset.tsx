@@ -1,16 +1,19 @@
 import { ReactNode } from 'react';
 import {
-  PaddingSpaceProp,
-  PaddingSpacePropX,
-  PaddingSpacePropY,
   cn,
   paddingSpace,
   paddingSpaceX,
   paddingSpaceY,
 } from '@marigold/system';
+import type {
+  PaddingSpaceProp,
+  PaddingSpacePropX,
+  PaddingSpacePropY,
+} from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
 export type InsetProps =
-  | {
+  | (AriaRegionProps & {
       /**
        * The children of the component
        */
@@ -24,7 +27,7 @@ export type InsetProps =
        * Vertical alignment for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
        */
       spaceY?: PaddingSpacePropY['spaceY'];
-    }
+    })
   | {
       children: ReactNode;
       /**
