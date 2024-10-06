@@ -4,8 +4,10 @@ import {
   Button,
   Card,
   Columns,
+  Form,
   Image,
   Inline,
+  Menu,
   Select,
   Stack,
   Text,
@@ -130,73 +132,90 @@ export default () => {
 
   return (
     <Stack space={4}>
-      <Select
-        label="Select a location"
-        aria-controls="locationDetails"
-        width="1/2"
-        selectedKey={selectedLocation}
-        onChange={(key: string) => setSelectedLocation(key)}
+      <Form
+        onSubmit={e => {
+          e.preventDefault();
+          const form = new FormData(e.currentTarget);
+          const location = form.get('location')!;
+          setSelectedLocation(location.toString());
+        }}
       >
-        {locations.map(location => (
-          <Select.Option key={location.id} id={location.id}>
-            {location.name}
-          </Select.Option>
-        ))}
-      </Select>
-      <div role="region" id="locationDetails" aria-live="polite">
-        <Card px={4} py={6}>
-          <Aside sideWidth="160px" space={8}>
-            <Image
-              alt=""
-              src={`/venues/${current.name.toLocaleLowerCase().replaceAll(' ', '-').replace("'", '')}.webp`}
-            />
-            <Stack space={6}>
-              <Stack>
-                <Text weight="extrabold" fontSize="2xl">
-                  {current.name}
-                </Text>
-                <Text fontStyle="italic">{current.type}</Text>
-              </Stack>
-              <Stack>
-                <Text weight="bold">Description</Text>
-                <Text>{current.description}</Text>
-              </Stack>
-              <Columns columns={[1, 1, 1]} space={4}>
-                <Stack>
-                  <Text weight="bold">Address</Text>
-                  <Text>{current.street}</Text>
-                  <Text>{current.city}</Text>
-                </Stack>
-                <Stack>
-                  <Text weight="bold">Capacity</Text>
-                  <Text>{current.capacity}</Text>
-                </Stack>
-                <Stack>
-                  <Text weight="bold">Price</Text>
-                  <Text>
-                    <NumericFormat
-                      style="currency"
-                      value={current.price.from}
-                      currency="EUR"
-                      notation="compact"
-                    />{' '}
-                    to{' '}
-                    <NumericFormat
-                      style="currency"
-                      value={current.price.to}
-                      currency="EUR"
-                      notation="compact"
-                    />
-                  </Text>
-                </Stack>
-              </Columns>
-              <Inline alignX="right">
-                <Button variant="primary">Book location</Button>
-              </Inline>
+        <Inline space={2}>
+          <Select
+            aria-label="Select a location:"
+            name="location"
+            width={48}
+            defaultSelectedKey={selectedLocation}
+          >
+            {locations.map(location => (
+              <Select.Option key={location.id} id={location.id}>
+                {location.name}
+              </Select.Option>
+            ))}
+          </Select>
+          <Button
+            variant="primary"
+            type="submit"
+            aria-controls="locationDetails"
+          >
+            View details
+          </Button>
+        </Inline>
+      </Form>
+      <Card px={4} py={6}>
+        <Aside sideWidth="160px" space={8}>
+          <Image
+            alt=""
+            src={`/venues/${current.name.toLocaleLowerCase().replaceAll(' ', '-').replace("'", '')}.webp`}
+          />
+          <Stack
+            space={6}
+            id="locationDetails"
+            role="region"
+            aria-live="polite"
+          >
+            <Stack>
+              <Text id="locationName" weight="extrabold" fontSize="2xl">
+                {current.name}
+              </Text>
+              <Text fontStyle="italic">{current.type}</Text>
             </Stack>
-          </Aside>
-        </Card>
-      </div>
+            <Stack>
+              <Text weight="bold">Description</Text>
+              <Text>{current.description}</Text>
+            </Stack>
+            <Columns columns={[1, 1, 1]} space={4}>
+              <Stack>
+                <Text weight="bold">Address</Text>
+                <Text>{current.street}</Text>
+                <Text>{current.city}</Text>
+              </Stack>
+              <Stack>
+                <Text weight="bold">Capacity</Text>
+                <Text>{current.capacity}</Text>
+              </Stack>
+              <Stack>
+                <Text weight="bold">Price</Text>
+                <Text>
+                  <NumericFormat
+                    style="currency"
+                    value={current.price.from}
+                    currency="EUR"
+                    notation="compact"
+                  />{' '}
+                  to{' '}
+                  <NumericFormat
+                    style="currency"
+                    value={current.price.to}
+                    currency="EUR"
+                    notation="compact"
+                  />
+                </Text>
+              </Stack>
+            </Columns>
+          </Stack>
+        </Aside>
+      </Card>
     </Stack>
   );
 };
