@@ -1,6 +1,7 @@
 ---
 title: Accessibility
-caption:
+caption: A guide to accessibility best practices for making your product usable for all.
+order: 2
 ---
 
 Delivering valuable, inspirational, and accessible experiences for all users, including those with disabilities, is everyone’s responsibility. We are committed to creating products where no one is left behind or faces a confusing or exclusionary experience. We continually iterate on Marigold to provide you with built-in accessibility features across our components, foundations, guidelines, and tooling.
@@ -105,3 +106,29 @@ Choosing the correct `aria-live` setting is crucial to ensure the right balance 
 Below is a demo showcasing the use of `aria-live` along with an `aria-control`. Changing the selection will update the UI, and the screen reader will announce this change to ensure accessibility.
 
 <ComponentDemo file="./accessibility-aria-live.demo.tsx" />
+
+## Test accessibility yourself
+
+To truly understand the accessibility of your product, test it for yourself using a screen reader. Tools like NVDA, JAWS, and VoiceOver allow you to experience your product as a user who relies on assistive technologies would. Navigate through your app, interact with elements, and listen for how well the content is announced. This hands-on approach helps you catch accessibility issues early and ensure an inclusive experience for all users.
+
+Below is a list of screen readers available for different devices.
+
+- Sure! Here is a list of popular screen readers along with links for macOS, iOS, Windows, and Ubuntu:
+
+### macOS
+
+- **[VoiceOver](https://support.apple.com/guide/voiceover/welcome/mac)** - Built-in screen reader for macOS.
+
+### iOS
+
+- **[VoiceOver](https://support.apple.com/guide/iphone/turn-on-and-set-up-voiceover-iph3e2e415f/ios)** - Built-in screen reader for iPhones and iPads.
+
+### Windows
+
+- **[Narrator](https://support.microsoft.com/en-us/windows/chapter-1-introducing-narrator-c0b27732-4811-c0e6-7f2c-21021c8cf1ed)** - Built-in screen reader for Windows.
+- **[NVDA (NonVisual Desktop Access)](https://www.nvaccess.org/)** - Free, open-source screen reader for Windows.
+- **[JAWS (Job Access With Speech)](https://www.freedomscientific.com/products/software/jaws/)** - A popular screen reader for Windows (commercial).
+
+### Ubuntu (Linux)
+
+- **[Orca](https://help.gnome.org/users/orca/stable/)** - Free, open-source screen reader included with the GNOME desktop environment.
