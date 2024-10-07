@@ -166,7 +166,7 @@ export default () => {
         <Aside sideWidth="160px" space={8}>
           <Image
             alt=""
-            src={`/venues/${current.name.toLocaleLowerCase().replaceAll(' ', '-').replace("'", '')}.webp`}
+            src={`/venues/${current.name.toLocaleLowerCase().replaceAll(' ', '-').replace(/'/g, '')}.webp`}
           />
           <Stack
             space={6}
