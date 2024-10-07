@@ -6,7 +6,7 @@ import {
   OverlayContainerProvider,
   Tabs,
 } from '@/ui';
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props
@@ -40,7 +40,7 @@ export const ComponentDemo = ({
     throw Error(`No demo with name "${name}" found in the registry.`);
   }
 
-  const Demo = registry[name].demo;
+  const Demo: ComponentType<{}> = registry[name].demo;
   const { current, themes } = useThemeSwitch();
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
