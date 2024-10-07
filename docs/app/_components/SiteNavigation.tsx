@@ -1,8 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { NavLink } from './NavLink';
-import { useNavigation } from './Navigation';
+import { NavLink } from '@/ui/navigation/NavLink';
+import { useNavigation } from '@/ui/navigation/Navigation';
 
 export const SiteNavigation = () => {
   const navigation = useNavigation();
