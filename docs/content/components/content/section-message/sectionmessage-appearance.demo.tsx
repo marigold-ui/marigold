@@ -1,11 +1,8 @@
-import {
-  SectionMessage,
-  SectionMessageProps,
-  Text,
-} from '@marigold/components';
+import { SectionMessage, Text } from '@marigold/components';
+import type { SectionMessageProps } from '@marigold/components';
 
 export default (props: SectionMessageProps) => (
-  <SectionMessage>
+  <SectionMessage {...props}>
     <SectionMessage.Title>This page is read-only!</SectionMessage.Title>
     <SectionMessage.Content>
       <Text>
