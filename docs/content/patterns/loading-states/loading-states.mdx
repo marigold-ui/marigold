@@ -49,19 +49,15 @@ Inline indicators are only displayed on a single component, typically a [button]
 
 Don’t use them over navigational links.
 
-#### 0-1 second
-
-At this stage, no feedback is necessary. If the user request finishes processing in this timeframe, simply proceed as usual. All actions that must be disabled for successful processing are disabled.
-
-#### 1–10 seconds
+#### For loading times under 10 seconds
 
 At this stage:
 
-1. The [XLoader](https://www.marigold-ui.io/components/content/xloader) animation replaces the button label.
-2. The button state changes to disabled.
-3. The mouse cursor style changes to progress.
+- The button state changes to disabled. If other actions on the page could affect successful processing, decide if these should be disabled as well.
+- The XLoader animation replaces the button label.
+- The mouse cursor style changes to progress.
 
-These changes last for a minimum of 1 second regardless of process duration.
+These effects last for a minimum of 1 second regardless of process duration.
 
 #### Greater than 10 seconds
 
@@ -82,36 +78,16 @@ Full-section indicators are displayed over large sections of content or the enti
 - large areas of new content are being added.
 - the user must be prevented from interacting with the content in the affected container or page.
 
-#### 0-1 second
-
-At this stage, no feedback is necessary. If the user request finishes processing in this timeframe, simply proceed as usual. All actions that must be disabled for successful processing are disabled.
-
-#### 1-10 seconds
+#### For loading times under 10 seconds
 
 At this stage:
+* Disable any actions that must be disabled for successful processing. (Ignore actions underneath the full-section indicator, as these will be inaccessible regardless.)
+* The XLoader animation appears within an overlay (created via a dialog) over the container of the loading content.
+    * If the context requires additional information, add a label. Use labels sparingly, like at the start or end of important tasks or at particularly confusing junctions.
+* If the button used to start the process is visible and located outside the container of the loading content, ensure it follows the process for inline indicators as well.
+* The mouse cursor style changes to progress.
 
-<ol>
-  <li>
-    The XLoader animation appears within an overlay (created via a
-    [dialog](https://www.marigold-ui.io/components/overlay/dialog)) over the
-    container of the loading content.
-  </li>
-  <ol type="a">
-    <li>
-      If the context requires additional information, add a label. Use labels
-      sparingly, like at the start or end of important tasks or at particularly
-      confusing junctions.
-    </li>
-  </ol>
-  <li>
-    If the button used to start the process is visible and located outside the
-    container of the loading content, it follows the process for inline loading
-    states as well.
-  </li>
-  <li>The mouse cursor style changes to progress.</li>
-</ol>
-
-These changes last for a minimum of 1 second regardless of process duration.
+These effects last for a minimum of 1 second regardless of process duration.
 
 #### Greater than 10 seconds
 
