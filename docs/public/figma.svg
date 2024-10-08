@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 42 61">
+  <path stroke="#1E1E1E" stroke-width="3.5" d="M21 30.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0ZM2 49.5a9.5 9.5 0 0 1 9.5-9.5H21v9.5a9.5 9.5 0 1 1-19 0Z"/>
+  <path stroke="#1E1E1E" stroke-width="3.5" d="M21 2v19h9.5a9.5 9.5 0 1 0 0-19H21ZM2 11.5a9.5 9.5 0 0 0 9.5 9.5H21V2h-9.5A9.5 9.5 0 0 0 2 11.5ZM2 30.5a9.5 9.5 0 0 0 9.5 9.5H21V21h-9.5A9.5 9.5 0 0 0 2 30.5Z"/>
+</svg>

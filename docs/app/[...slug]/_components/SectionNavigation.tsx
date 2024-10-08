@@ -2,8 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 import { Badge } from '@marigold/components';
-import { NavLink } from './NavLink';
-import { useNavigation } from './Navigation';
+import { NavLink } from '@/ui/navigation/NavLink';
+import { useNavigation } from '@/ui/navigation/Navigation';
 
 export const SectionNavigation = () => {
   const navigation = useNavigation();
