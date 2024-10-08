@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 import { SectionMessageContext } from './Context';
 import { SectionMessageContent } from './SectionMessageContent';
@@ -70,6 +70,7 @@ export interface SectionMessageProps {
    * The children of the component.
    */
   children?: ReactNode;
+  closeMessage?: boolean;
 }
 
 // Component
@@ -78,6 +79,7 @@ export const SectionMessage = ({
   variant = 'info',
   size,
   children,
+  closeMessage,
   ...props
 }: SectionMessageProps) => {
   const classNames = useClassNames({
@@ -86,6 +88,14 @@ export const SectionMessage = ({
     size,
   });
   const Icon = icons[variant];
+
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleClose = () => {
+    setIsVisible(false);
+  };
+
+  if (!isVisible) return null;
 
   return (
     <SectionMessageContext.Provider value={{ classNames }}>
@@ -100,8 +110,22 @@ export const SectionMessage = ({
             classNames.icon
           )}
         >
-          <Icon />
+          {Icon && <Icon />}
         </div>
+        {closeMessage && (
+          <button
+            className="h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
+            onClick={handleClose}
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              />
+            </svg>
+          </button>
+        )}
         {children}
       </div>
     </SectionMessageContext.Provider>

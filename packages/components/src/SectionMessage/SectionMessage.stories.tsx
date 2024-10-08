@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <SectionMessage {...args}>
+    <SectionMessage closeMessage {...args}>
       <SectionMessage.Title>Danger Zone!</SectionMessage.Title>
       <SectionMessage.Content>
         <Text>Hello, I am a simple message.</Text>

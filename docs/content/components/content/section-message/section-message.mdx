@@ -1,13 +1,22 @@
 ---
 title: SectionMessage
-caption: Display a short message with important informations.
+caption: Display important informations in a section of a screen.
+badge: updated
 ---
 
-The `<SectionMessage>` component is used to capture the users atention to provide information. It is meant to show only very relevant information. The title should contain the most relevant information about the message.
+The `<SectionMessage>` component is a block-level element designed to alert users about specific content in a designated section of the screen. It is positioned close to the relevant content to clearly indicate its connection. Section messages provide contextual feedback within a section of the page and are persistent, non-modal elements.
 
-This component should not be added on a dynymic way.
+There are currently four different variants of the `<SectionMessage>` component provided. The `info` variant is set as default.
 
-There are currently three different variants of the `<SectionMessage>` component. The `info` variant is set as default. Inside the `<SectionMessage>` it lends itself to using the [`<Text>`](/components/text/) component.
+## Anatomy
+
+<Image
+  src="/sectionmessage/sectionmessage-anatomy.jpg"
+  alt="Anatomy of a SectionMessage"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
@@ -15,21 +24,9 @@ There are currently three different variants of the `<SectionMessage>` component
 
 <AppearanceTable component={title} />
 
-## Props
+## Usage
 
-### SectionMessage
-
-<PropsTable component={title} />
-
-#### SectionMessage.Title
-
-<PropsTable component="SectionMessageTitle" />
-
-#### SectionMessage.Content
-
-<PropsTable component="SectionMessageContent" />
-
-## Examples
+Section messages should be used when you need to display important feedback related to a specific section of the page. Unlike modals, section messages stay on the page without interrupting the user's workflow.
 
 ### Info Section Message
 
@@ -46,3 +43,17 @@ Here you can see the warning `<SectionMessage>`. The color is in a yellow tone a
 The error `<SectionMessage>` is colored in a red tone and contains the [`<Exclamation>`](/foundations/icons/#info) icon.
 
 <ComponentDemo file="./section-message-error.demo.tsx" />
+
+## Props
+
+### SectionMessage
+
+<PropsTable component={title} />
+
+#### SectionMessage.Title
+
+<PropsTable component="SectionMessageTitle" />
+
+#### SectionMessage.Content
+
+<PropsTable component="SectionMessageContent" />
