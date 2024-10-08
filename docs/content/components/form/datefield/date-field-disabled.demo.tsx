@@ -2,8 +2,8 @@ import { DateField } from '@marigold/components';
 
 export default () => (
   <DateField
-    label="Field Disabled"
+    label="Ticket Booking Date"
     disabled
-    description="This field is disabled"
+    description="You can no longer select a date for ticket booking as the deadline has passed."
   />
 );
