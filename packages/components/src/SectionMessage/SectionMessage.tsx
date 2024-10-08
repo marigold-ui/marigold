@@ -70,7 +70,7 @@ export interface SectionMessageProps {
    * The children of the component.
    */
   children?: ReactNode;
-  closeMessage?: boolean;
+  closeButton?: boolean;
 }
 
 // Component
@@ -79,7 +79,7 @@ export const SectionMessage = ({
   variant = 'info',
   size,
   children,
-  closeMessage,
+  closeButton,
   ...props
 }: SectionMessageProps) => {
   const classNames = useClassNames({
@@ -112,7 +112,7 @@ export const SectionMessage = ({
         >
           {Icon && <Icon />}
         </div>
-        {closeMessage && (
+        {closeButton && (
           <button
             className="h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
             onClick={handleClose}
