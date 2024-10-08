@@ -70,6 +70,9 @@ export interface SectionMessageProps {
    * The children of the component.
    */
   children?: ReactNode;
+  /**
+   * Adds a close button, makes the section message dismissable.
+   */
   closeButton?: boolean;
 }
 
@@ -114,10 +117,11 @@ export const SectionMessage = ({
         </div>
         {closeButton && (
           <button
+            aria-label="close"
             className="h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
             onClick={handleClose}
           >
-            <svg viewBox="0 0 20 20" fill="currentColor">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"

@@ -10,6 +10,10 @@ There are currently four different variants of the `<SectionMessage>` component 
 
 ## Anatomy
 
+The section message is build within a container which includes an icon (only in b2b theme) to support the message and a title. The actual content of section messages is located under the title.
+
+Optionally, you can add a button to close the message.
+
 <Image
   src="/sectionmessage/sectionmessage-anatomy.jpg"
   alt="Anatomy of a SectionMessage"
@@ -26,15 +30,35 @@ There are currently four different variants of the `<SectionMessage>` component 
 
 ## Usage
 
-Section messages should be used when you need to display important feedback related to a specific section of the page. Unlike modals, section messages stay on the page without interrupting the user's workflow.
+Section messages are ideal for displaying important feedback related to a specific section of the page. Unlike modal dialogs, which interrupt the user's workflow, section messages remain visible without blocking interaction with other parts of the interface.
 
-### Info Section Message
+<Do>
+  <Do.Description>
+    <ul>
+      <li>
+        The section message title should make the topic or purpose of the
+        message clear.
+      </li>
+      <li>
+        The content provides a brief description of the event that has occurred
+        on the page
+      </li>
+    </ul>
+  </Do.Description>
+</Do>
 
-This is the default info `<SectionMessage>`. The color is in a blue tone and contains the [`<Info>`](/foundations/icons/#info) icon.
+### Position
 
-<ComponentDemo file="./section-message-info.demo.tsx" />
+They should be positioned close to the relevant content, typically directly above, to ensure users can easily identify the relationship between the message and the affected area.
 
-### Warning Section Message
+<Image
+  width="900"
+  height="500"
+  src="/dosAndDonts_message_position.png"
+  alt="Do and donts clarity"
+/>
+
+### Dismissable message
 
 Here you can see the warning `<SectionMessage>`. The color is in a yellow tone and contains the[`<Notification>`](/foundations/icons/#info) icon.
 
@@ -45,6 +69,8 @@ The error `<SectionMessage>` is colored in a red tone and contains the [`<Exclam
 <ComponentDemo file="./section-message-error.demo.tsx" />
 
 ## Props
+
+<StorybookHintMessage component={title} />
 
 ### SectionMessage
 
