@@ -53,15 +53,15 @@ Don’t use them over navigational links.
 
 At this stage:
 
-- The button state changes to disabled. If other actions on the page could affect successful processing, decide if these should be disabled as well.
+- The button state changes to `disabled`. If other actions on the page could affect successful processing, decide if these should be disabled as well.
 - The XLoader animation replaces the button label.
-- The mouse cursor style changes to progress.
+- The mouse cursor style changes to `progress`.
 
 These effects last for a minimum of 1 second regardless of process duration.
 
 #### Greater than 10 seconds
 
-Marigold does not currently have a progress bar to show more granular loading states. If no end is in sight, consider if the user needs an “emergency exit” at this point. If so, use the appropriate [feedback message](https://www.marigold-ui.io/patterns/feedback-messages) so the user understands what’s happening and what they can do next. If research indicates that user frustration peaks before this point, consider showing a feedback message sooner and [notify the design system team](https://www.marigold-ui.io/introduction/get-in-touch).
+Marigold does not currently have a progress bar to show more granular loading states. If no end is in sight, consider if the user needs an “emergency exit” at this point. If so, use the appropriate [feedback message](https://www.marigold-ui.io/patterns/feedback-messages) so the user understands what’s happening and what they can do next. If research indicates that user frustration peaks before 10 seconds, consider showing a feedback message sooner and [notify the design system team](https://www.marigold-ui.io/introduction/get-in-touch).
 
 #### Result
 
@@ -83,8 +83,8 @@ Full-section indicators are displayed over large sections of content or the enti
 At this stage:
 
 - Disable any actions that must be disabled for successful processing. (Ignore actions underneath the full-section indicator, as these will be inaccessible regardless.)
-- The XLoader animation appears within an overlay (created via a dialog) over the container of the loading content.
-  - If the context requires additional information, add a label. Use labels sparingly, like at the start or end of important tasks or at particularly confusing junctions.
+- The XLoader animation appears within an overlay (created via a [dialog](https://www.marigold-ui.io/components/overlay/dialog)) over the container of the loading content.
+  - If the context requires additional information, add a label under the XLoader. Use labels sparingly, like at the start or end of important tasks or at particularly confusing junctions.
 - If the button used to start the process is visible and located outside the container of the loading content, ensure it follows the process for inline indicators as well.
 - The mouse cursor style changes to progress.
 
@@ -92,7 +92,7 @@ These effects last for a minimum of 1 second regardless of process duration.
 
 #### Greater than 10 seconds
 
-Marigold does not currently have a progress bar to show more granular loading states. If no end is in sight, consider if the user needs an “emergency exit” at this point. If so, use the appropriate feedback message so they understand what’s happening and what they can do next. If research indicates that user frustration peaks before this point, consider showing a feedback message sooner and [notify the design system team](https://www.marigold-ui.io/introduction/get-in-touch).
+Marigold does not currently have a progress bar to show more granular loading states. If no end is in sight, consider if the user needs an “emergency exit” at this point. If so, use the appropriate feedback message so they understand what’s happening and what they can do next. If research indicates that user frustration peaks before 10 seconds, consider showing a feedback message sooner and [notify the design system team](https://www.marigold-ui.io/introduction/get-in-touch).
 
 #### Results
 
