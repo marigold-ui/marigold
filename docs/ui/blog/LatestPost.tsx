@@ -20,7 +20,7 @@ export const LatestPost = () => {
   }
 
   return (
-    <div key={latestPost.title} className="pb-12">
+    <div key={latestPost.title}>
       <div className="text-secondary-400 -mb-14 font-semibold">
         LATEST RELEASE
       </div>
