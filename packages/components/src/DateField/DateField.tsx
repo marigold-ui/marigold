@@ -20,6 +20,10 @@ export interface DateFieldProps
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
+
+  /**
+   * Optional element (e.g., button or icon) rendered inside the DateField.
+   */
   action?: ReactElement;
 
   /**
