@@ -5,12 +5,11 @@ import {
   Stack,
   Switch,
   TextField,
-  Tiles,
 } from '@marigold/components';
 
 export default () => {
   return (
-    <Tiles tilesWidth="300px" space={6}>
+    <Stack space={8}>
       <Stack space={2}>
         <Headline level={'5'}>Disabled State</Headline>
         <TextField label="username" placeholder="enter user name" disabled />
@@ -46,6 +45,6 @@ export default () => {
           <Select.Option id="dance">Dance</Select.Option>
         </Select>
       </Stack>
-    </Tiles>
+    </Stack>
   );
 };
