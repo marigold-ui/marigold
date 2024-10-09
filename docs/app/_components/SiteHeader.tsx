@@ -14,9 +14,9 @@ export const SiteHeader = () => (
       <SiteLogo />
       <SiteNavigation />
     </div>
-    <div className="hidden md:block">
+    <div className="hidden lg:block">
       <Link href="https://marigold-rapp.vercel.app/" variant="cta">
-        <span className="hidden xl:inline">Discover new </span>Tutorials!
+        <span className="hidden 2xl:inline">Discover new </span>Tutorials!
       </Link>
     </div>
     <div className="flex flex-1 flex-col items-stretch md:block md:flex-initial">

@@ -9,8 +9,9 @@ import {
   useClassNames,
   useTheme,
 } from '@marigold/system';
+import type { AriaLabelingProps } from '@marigold/types';
 
-export interface HeadlineProps extends TextAlignProp {
+export interface HeadlineProps extends AriaLabelingProps, TextAlignProp {
   /**
    * Set the color of the headline.
    */

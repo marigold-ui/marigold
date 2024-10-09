@@ -57,13 +57,14 @@ const _Menu = ({
   disabled,
   open,
   placement,
+  'aria-label': ariaLabel,
   ...props
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
 
   return (
     <MenuTrigger {...props}>
-      <Button variant="menu" disabled={disabled}>
+      <Button variant="menu" disabled={disabled} aria-label={ariaLabel}>
         {label}
       </Button>
       <Popover open={open} placement={placement}>

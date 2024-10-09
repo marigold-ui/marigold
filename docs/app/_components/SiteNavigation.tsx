@@ -1,8 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { NavLink } from './NavLink';
-import { useNavigation } from './Navigation';
+import { NavLink } from '@/ui/navigation/NavLink';
+import { useNavigation } from '@/ui/navigation/Navigation';
 
 export const SiteNavigation = () => {
   const navigation = useNavigation();
@@ -10,10 +10,7 @@ export const SiteNavigation = () => {
   const sections = navigation.map(section => ({
     name: section.name,
     slug: section.slug,
-    link:
-      section.subsections.length > 0
-        ? section.subsections[0].links[0]
-        : section.links[0],
+    link: section.links[0],
   }));
 
   return (

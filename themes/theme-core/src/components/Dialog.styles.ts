@@ -6,7 +6,9 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     {
       variants: {
         size: {
-          medium: 'w-[600px]',
+          small: 'sm:w-[640px]',
+          medium: 'md:w-[768px]',
+          large: 'lg:w-[1024px]',
         },
       },
     }
