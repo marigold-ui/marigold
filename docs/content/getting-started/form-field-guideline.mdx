@@ -41,11 +41,26 @@ An accessible form input includes a clear label associated with its correspondin
 
 Marigold's form components allow to set these properties like shown below. All form components allow to set a `label`, `description` and `errorMessages` besides some additional control-specific props.
 
-## Label and Help Text
+## Label
 
 Labels are essential for accessibility and clarity, ensuring that each form field is clearly defined. In most cases, a label should be provided for each form control to describe the expected input. They are used when fields require specific instructions (e.g., name, email, or password should have a clear label).
 
-However, labels might not be necessary when the purpose of the input is obvious from context. For example, in search bars because the purpose of the input is obvious
+However, labels might not be necessary when the purpose of the input is obvious from context. For example, in search bars because the purpose of the input is obvious.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Do provide a clear, descriptive label for each form field
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don’t make labels overly long or complex.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+## Help Text
 
 Help Text should be used to provide additional clarification or instructions when the label alone isn't enough to explain the input (e.g., complex or uncommon fields). It’s helpful for explaining specific formats or validation rules. However, it shouldn't be used when the input is straightforward and the label is clear, as it can clutter the form and overwhelm the user with unnecessary details.
 
