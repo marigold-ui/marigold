@@ -43,9 +43,9 @@ Marigold's form components allow to set these properties like shown below. All f
 
 ## Label and Help Text
 
-Labels are essential for accessibility and clarity, ensuring that each form field is clearly defined. In most cases, a label should be provided for each form control to describe the expected input.
+Labels are essential for accessibility and clarity, ensuring that each form field is clearly defined. In most cases, a label should be provided for each form control to describe the expected input. They are used when fields require specific instructions (e.g., name, email, or password should have a clear label).
 
-However, in some specific cases, such as in search bars or simple forms with obvious context, labels might be omitted in favor of alternatives like `aria-label` for accessibility.
+However, labels might not be necessary when the purpose of the input is obvious from context. For example, in search bars because the purpose of the input is obvious
 
 Helper Text, on the other hand, should complement the label by providing additional context or validation message.
 
