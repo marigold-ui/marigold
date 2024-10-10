@@ -4,15 +4,15 @@ caption: Component to select one or more options.
 badge: updated
 ---
 
-The `<Checkbox>` component allows users to select one or more options from a set of options. In order to group multiple checkboxes, use the `<Checkbox.Group>` component.
+The `<Checkbox>` component is a form element that allows users to make a binary choice, either selecting or deselecting an option. Multiple checkboxes can be grouped together using `<Checkbox.Group>` to enable the selection of zero, one or any number of options.
 
-There are several props for the `<Checkbox>` and the `<Checkbox.Group>`, allowing customization of behavior, appearance, and accessibility.
-
-You don't have to click on the `<Checkbox>` itself, you can also just click on the label next to the box, making it more user-friendly and accessible.The `<Checkbox>` component supports both controlled and uncontrolled states, giving you flexibility in how you manage the selection.
+It is commonly used in forms, settings, and anywhere users need to make multiple selections or toggle individual options. A `<Checkbox>` can also display an indeterminate state to represent a partially selected group.
 
 ## Anatomy
 
-The checkbox component is comprised of a checkbox label and a checkbox input. If there is a group of checkboxes, a group label can be added.
+A checkbox consists of a clickable box and a label. The box has three states: unchecked, checked, or indeterminate. The label, positioned next to the checkbox, describes the option or action associated with it. Users interact with the checkbox by clicking the box or label to toggle between states.
+
+A checkbox group consists of multiple checkboxes, each with its own label, allowing users to select one or more options within a related set.
 
 <Image
   src="/checkbox/checkbox-anatomy.jpg"
@@ -21,12 +21,6 @@ The checkbox component is comprised of a checkbox label and a checkbox input. If
   height={550}
   className="mx-auto block"
 />
-
-- **Group label:** Communicates what needs to be selected below.
-
-- **Checkbox input:** A checkbox input indicating the appropriate state. By default it is unselected.
-
-- **Checkbox label:** Describes the information you want to select or unselect.
 
 ## Appearance
 
@@ -153,17 +147,9 @@ In this example the `<Checkbox>` are wrapped within the `<Checkbox.Group>`. You 
 
 Choosing the right alternative to checkbox is important for providing an optimal user experience, especially when different types of selections are required. Depending on the nature of the choices and the desired interaction, the following components can serve as an alternative to checkboxes:
 
-<ul>
-  <li>
-    [SelectList](/components/collection/selectlist): shows a list of interactive
-    elements with which you can select several elements at the same time.
-  </li>
-  <li>
-    [TagGroup](/components/collection/tag): It is a type of multiple selection
-    interface that allows users to select multiple options and displays the
-    selected options as tags.
-  </li>
-</ul>
+- [Radio](/components/form/radio): When only one option can be selected from a set, a radio group is an alternative to a checkbox group, as radio buttons restrict the selection to a single option.
+- [SelectList](/components/collection/selectlist): A select list is an alternative to a checkbox when you need more than just a text label to represent options.
+- [TagGroup](/components/collection/tag): A tag group is an alternative to a checkbox when you want to visually highlight selected options as individual tags.
 
 ## Related
 
