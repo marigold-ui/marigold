@@ -225,6 +225,7 @@ export const PagesItem = ({
   setPages,
 }: PagesItemProps) => {
   const goto = useGoto(setOpen, setPages);
+
   return (
     <CommandGroup heading={name} key={name} className={classNames.section}>
       {items.map(page => (
@@ -233,6 +234,7 @@ export const PagesItem = ({
             className={cn(classNames.item, 'group')}
             key={page.slug}
             value={page.slug}
+            keywords={[page.title]}
             onSelect={() => goto({ slug: page.slug })}
           >
             <Inline space={4} alignY="center">

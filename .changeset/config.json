@@ -3,7 +3,7 @@
   "baseBranch": "main",
   "access": "public",
   "changelog": [
-    "@changesets/changelog-github",
+    "@changesets/changelog-git",
     { "repo": "marigold-ui/marigold" }
   ],
   "fixed": [["@marigold/system", "@marigold/components", "@marigold/docs"]]
