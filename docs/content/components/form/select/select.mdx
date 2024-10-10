@@ -71,9 +71,11 @@ When there are too many options (e.g., more than 15-20), usability can suffer. U
   </Dont>
 </GuidelineTiles>
 
-### Select with sections
+### With sections
 
-Use sections when it is helpful to group different options from each other, this can be for example to categorize related options together. For that you habe to use the `<Select.Section>` component. A clear line appears to separate different options, and you can set the title of `<Select.Section>` by using `<Header>` component inside `<Select.Section>`.
+When related options are present, organizing them into sections enhances clarity and usability. Grouping options provides additional context and helps users navigate choices more easily. This approach reduces complexity and allows for additional guidance when needed, ensuring a more intuitive experience.
+
+This can be achieved by wrapping the options in the `<Select.Section>` component. A header is required for each section, which is set using the `header` prop.
 
 <ComponentDemo file="./select-section.demo.tsx" />
 
@@ -99,13 +101,13 @@ Keep in mind that you always should write information why a certain option is di
 
 <PropsTable component={title} />
 
-### Select.Section
-
-<PropsTable component="ListBoxSection" />
-
 ### Select.Option
 
 <PropsTable component="ListBoxItem" />
+
+### Select.Section
+
+<PropsTable component="ListBoxSection" />
 
 ## Alternative components
 

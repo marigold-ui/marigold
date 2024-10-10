@@ -29,5 +29,5 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     }
   ),
   section: cva(),
-  sectionTitle: cva(),
+  header: cva(),
 };

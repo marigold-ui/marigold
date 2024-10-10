@@ -53,7 +53,7 @@ export default () => {
         onSubmit={handleSubmit}
       >
         {(item: any) => (
-          <Autocomplete.Item id={item.name}>{item.name}</Autocomplete.Item>
+          <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
         )}
       </Autocomplete>
       {result === null ? null : result.length > 0 ? (
