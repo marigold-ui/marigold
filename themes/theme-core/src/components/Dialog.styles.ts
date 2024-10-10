@@ -14,7 +14,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     }
   ),
   closeButton: cva([
-    'relative right-[-24px] top-[-8px] size-6',
+    'size-6',
     'bg-bg-brand text-text-inverted',
     'border-border-brand rounded-sm border',
     'hover:bg-bg-brand-hover',
