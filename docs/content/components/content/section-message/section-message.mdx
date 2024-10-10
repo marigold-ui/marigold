@@ -6,13 +6,11 @@ badge: updated
 
 The `<SectionMessage>` component is a block-level element designed to alert users about specific content in a designated section of the screen. It is positioned close to the relevant content to clearly indicate its connection. Section messages provide contextual feedback within a section of the page and are persistent, non-modal elements.
 
-There are currently four different variants of the `<SectionMessage>` component provided. The `info` variant is set as default.
-
 ## Anatomy
 
 The section message is build within a container which includes an icon (only in b2b theme) to support the message and a title. The actual content of section messages is located under the title.
 
-Optionally, you can add a button to close the message.
+Optionally, you can add a button to dismiss the message.
 
 <Image
   src="/sectionmessage/sectionmessage-anatomy.jpg"
@@ -30,7 +28,9 @@ Optionally, you can add a button to close the message.
 
 ## Usage
 
-Section messages are ideal for displaying important feedback related to a specific section of the page. Unlike modal dialogs, which interrupt the user's workflow, section messages remain visible without blocking interaction with other parts of the interface.
+Section messages are ideal for displaying important feedback related to a specific section of the page.
+
+Unlike modal dialogs, which interrupt the user's workflow, section messages remain visible without blocking interaction with other parts of the interface.
 
 <Do>
   <Do.Description>
@@ -60,13 +60,32 @@ They should be positioned close to the relevant content, typically directly abov
 
 ### Dismissable message
 
-Here you can see the warning `<SectionMessage>`. The color is in a yellow tone and contains the[`<Notification>`](/foundations/icons/#info) icon.
+Dismissable messages are used to provide temporary feedback or notifications that the user can manually close or dismiss when they no longer need the information. They are generally used when feedback is helpful but doesn't need to stay on screen permanently.
 
-### Error Section Message
+To provide this, you have to use the `closeButton` property on the `<SectionMessage>`.
 
-The error `<SectionMessage>` is colored in a red tone and contains the [`<Exclamation>`](/foundations/icons/#info) icon.
+<ComponentDemo file="./section-message-dismissable.demo.tsx" />
 
-<ComponentDemo file="./section-message-error.demo.tsx" />
+### Actions
+
+Actions, such as buttons or links, should be placed near the message content to make the next steps intuitive for users. Clear, accessible options help users easily respond to the feedback provided, allowing them to address the issue without disrupting their workflow.
+
+<ComponentDemo file="section-message-action.demo.tsx" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use section messages for providing non-disruptive feedback or
+      notifications, allowing users to address the message when convenient.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      When you need to interact with the message to procced with a task or a
+      flow. Use a dialog instead.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ## Props
 
