@@ -139,7 +139,7 @@ test('set alert role if variant is "error"', () => {
   expect(message).toHaveAttribute('role', 'alert');
 });
 
-test('allow to close button in message', async () => {
+test('allow to close message with button in message', async () => {
   render(
     <ThemeProvider theme={theme}>
       <SectionMessage data-testid="messages" variant="error" closeButton>
