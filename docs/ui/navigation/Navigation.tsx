@@ -28,14 +28,12 @@ interface NavigationSection {
 
 export const useNavigation = (): NavigationSection[] => {
   const navigation = [...siteConfig.navigation] as NavigationSection[];
-
   return navigation.map(({ name, slug, subsections = [] }) => {
     // Section Page = has a section but NO subsection
-    const sectionPages = allContentPages.filter(
-      page => page.section === slug && !page.subsection
-    );
+    const sectionPages = allContentPages
+      .filter(page => page.section === slug && !page.subsection)
+      .sort((a, b) => (a.order || 1000) - (b.order || 1000));
 
-    sectionPages.sort((a, b) => (a.order || 1000) - (b.order || 1000));
     return {
       name,
       slug,
@@ -47,17 +45,19 @@ export const useNavigation = (): NavigationSection[] => {
       subsections: subsections.map(
         (subsection: { name: string; slug: string }) => ({
           name: subsection.name,
-          links: allContentPages
-            .filter(
-              // Subsection Page = has a section AND a subsection
-              page =>
-                page.section === slug && page.subsection === subsection.slug
-            )
-            .map(page => ({
-              name: page.title,
-              href: `/${page.slug}`,
-              badge: page.badge,
-            })),
+          links: [
+            ...allContentPages
+              .filter(
+                // Subsection Page = has a section AND a subsection
+                page =>
+                  page.section === slug && page.subsection === subsection.slug
+              )
+              .map(page => ({
+                name: page.title,
+                href: `/${page.slug}`,
+                badge: page.badge,
+              })),
+          ],
         })
       ),
     };

@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev",
-    "build": "pnpm registry && pnpm build-component-props && next build",
+    "build": "pnpm registry && pnpm build:component-props && pnpm build:changelog && next build",
     "start": "next start",
     "registry": "zx ./scripts/build-registry.mjs",
-    "build-component-props": "zx ./scripts/build-component-props.mjs"
+    "build:component-props": "zx ./scripts/build-component-props.mjs",
+    "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "1.3.0",

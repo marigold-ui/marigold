@@ -8,7 +8,7 @@ export const Table: ThemeComponent<'Table'> = {
       'border-x px-2 font-bold',
       'text-text-inverted bg-gray-400',
       'odd:bg-bg-accent',
-      'focus:outline-outline-focus',
+      'rac-focus-visible:outline outline-2 outline-outline-focus outline-offset-1',
     ],
     {
       variants: {
@@ -26,7 +26,8 @@ export const Table: ThemeComponent<'Table'> = {
   row: cva(
     [
       'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',
-      'selected:bg-bg-selected focus:outline-outline-focus',
+      'selected:bg-bg-selected',
+      'rac-focus-visible:outline outline-2 outline-outline-focus outline-offset-1',
     ],
     {
       variants: {
@@ -37,11 +38,17 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
-  cell: cva(['text-text-base p-2', 'focus:outline-outline-focus'], {
-    variants: {
-      variant: {
-        grid: ['border-border-inverted border'],
+  cell: cva(
+    [
+      'text-text-base p-2',
+      'rac-focus-visible:outline outline-2 outline-outline-focus outline-offset-1',
+    ],
+    {
+      variants: {
+        variant: {
+          grid: ['border-border-inverted border'],
+        },
       },
-    },
-  }),
+    }
+  ),
 };
