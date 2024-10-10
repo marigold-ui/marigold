@@ -1,7 +1,24 @@
 import { forwardRef } from 'react';
-import { SVG, SVGProps } from '@marigold/system';
+import { Dialog, Modal, ModalOverlay } from 'react-aria-components';
+import { SVG, SVGProps, useClassNames } from '@marigold/system';
+import { Stack } from '../Stack/Stack';
 
-export const XLoader = forwardRef<SVGElement, SVGProps>((props, ref) => (
+export interface XLoaderProps extends SVGProps {
+  /**
+   * Show the loader in `fullsize` and blocks interaction with the site or `ìnline` in a certain area.
+   * @default undefined
+   */
+  mode?: LoadingModeKeys;
+}
+
+const LoadingModes = {
+  FullSize: 'fullsize',
+  Inline: 'inline',
+} as const;
+
+type LoadingModeKeys = (typeof LoadingModes)[keyof typeof LoadingModes];
+
+const Loader = forwardRef<SVGElement, XLoaderProps>((props, ref) => (
   <SVG
     id="XLoader"
     xmlns="http://www.w3.org/2000/svg"
@@ -156,3 +173,56 @@ export const XLoader = forwardRef<SVGElement, SVGProps>((props, ref) => (
     </path>
   </SVG>
 ));
+
+const LoaderFullSize = forwardRef<SVGElement, XLoaderProps>(
+  ({ children, ...rest }, ref) => {
+    const className = useClassNames({
+      component: 'Underlay',
+      variant: 'modal',
+      className:
+        'fixed left-0 top-0 z-10 flex h-[--visual-viewport-height] w-screen items-center justify-center bg-gray-950/30 cursor-progress',
+    });
+
+    return (
+      <ModalOverlay defaultOpen className={className} isKeyboardDismissDisabled>
+        <Modal>
+          <Dialog className="text-text-inverted outline-0">
+            <Stack space={2} alignX="center">
+              <Loader {...rest} {...ref} color="text-inverted" size={80} />
+              {children}
+            </Stack>
+          </Dialog>
+        </Modal>
+      </ModalOverlay>
+    );
+  }
+);
+
+const LoaderInline = forwardRef<SVGElement, XLoaderProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <div className="text-text-inverted flex h-full w-full items-center justify-center bg-gray-950/30">
+        <Stack space={2} alignX="center">
+          <Loader {...rest} {...ref} color="text-inverted" size={80} />
+          {children}
+        </Stack>
+      </div>
+    );
+  }
+);
+
+export const XLoader = forwardRef<SVGElement, XLoaderProps>(
+  ({ mode, ...rest }, ref) => {
+    return (
+      <>
+        {mode === LoadingModes.FullSize ? (
+          <LoaderFullSize {...rest} {...ref} />
+        ) : mode === LoadingModes.Inline ? (
+          <LoaderInline {...rest} {...ref} />
+        ) : (
+          <Loader {...rest} {...ref} />
+        )}
+      </>
+    );
+  }
+);

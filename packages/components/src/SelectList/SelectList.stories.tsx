@@ -5,6 +5,9 @@ import { SelectList } from './SelectList';
 
 const meta = {
   title: 'Components/SelectList',
+  parameters: {
+    disableLabelWidth: true,
+  },
   argTypes: {
     selectionMode: {
       control: {

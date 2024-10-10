@@ -119,31 +119,31 @@ export const OnActionMenu: Story = {
 };
 
 export const SingleSelection: Story = {
-  render: args => {
-    const [selectedKeys, setSelected] = useState(new Set());
-    const selected = Array.from(selectedKeys);
+  render: () => {
+    const [selected, setSelected] = useState<Set<'left' | 'center' | 'right'>>(
+      new Set(['center'])
+    );
 
     return (
       <>
         <Menu
           label="Align"
           selectionMode="single"
-          selectedKeys={selectedKeys as Iterable<Key>}
-          onSelectionChange={key => setSelected(new Set(key))}
-          {...args}
+          selectedKeys={selected}
+          onSelectionChange={setSelected as any}
         >
           <Menu.Item id="left">Left</Menu.Item>
           <Menu.Item id="center">Center</Menu.Item>
           <Menu.Item id="right">Right</Menu.Item>
         </Menu>
-        <p>Current selection (controlled): {[selected]}</p>
+        <p>Current selection (controlled): {[...selected].join(', ')}</p>
       </>
     );
   },
 };
 
 export const MultiSelection: Story = {
-  render: args => {
+  render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
     const selected = Array.from(selectedKeys);
 
@@ -154,7 +154,6 @@ export const MultiSelection: Story = {
           selectionMode="multiple"
           selectedKeys={selectedKeys as Iterable<Key>}
           onSelectionChange={key => setSelected(new Set(key))}
-          {...args}
         >
           <Menu.Item id="burger">🍔 Burger</Menu.Item>
           <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
