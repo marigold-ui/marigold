@@ -118,7 +118,7 @@ export const SectionMessage = ({
         {closeButton && (
           <button
             aria-label="close"
-            className="h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
+            className="h-5 w-5 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
             onClick={handleClose}
           >
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
