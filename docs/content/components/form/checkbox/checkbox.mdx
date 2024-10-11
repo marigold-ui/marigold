@@ -148,6 +148,14 @@ In contrast, use a [switch](/components/form/switch) for actions that take effec
   </Dont>
 </GuidelineTiles>
 
+### Indeterminate
+
+The indeterminate state of a checkbox is used when a group of related checkboxes is partially selected, meaning some but not all options are chosen. This state visually indicates that the selection is incomplete or mixed.
+
+It’s commonly used in "Select All" scenarios, where selecting only some of the available options triggers the parent checkbox to show an indeterminate state, helping users understand that not all choices have been selected.
+
+<ComponentDemo file="./checkbox-indeterminate.demo.tsx" />
+
 ## Props
 
 <StorybookHintMessage component={title} />
@@ -159,26 +167,6 @@ In contrast, use a [switch](/components/form/switch) for actions that take effec
 ### Checkbox.Group
 
 <PropsTable component="CheckboxGroup" />
-
-## Examples
-
-### Checkbox disabled
-
-Here you can see how the `disabled` property is to use.
-
-<ComponentDemo file="./checkbox-disabled.demo.tsx" />
-
-### Indeterminate Checkbox
-
-Use indeterminate state when it represents both selected and not selected values.
-
-<ComponentDemo file="./checkbox-indeterminate.demo.tsx" />
-
-### Group checkboxes
-
-In this example the `<Checkbox>` are wrapped within the `<Checkbox.Group>`. You see that the `onChange` property is also set. It has also a helptext within which you can set with the `description` property for the `<Checkbox.Group>`.
-
-<ComponentDemo file="./checkbox-group.demo.tsx" />
 
 ## Alternative components
 
