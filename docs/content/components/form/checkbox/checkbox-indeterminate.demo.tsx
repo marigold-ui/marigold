@@ -1,17 +1,48 @@
-import { Checkbox } from '@marigold/components';
+import { useState } from 'react';
+import { Checkbox, Inset, Stack } from '@marigold/components';
+
+const genres = {
+  rock: 'Rock',
+  pop: 'Pop',
+  jazz: 'Jazz',
+  hiphop: 'Hip-Hop',
+  classical: 'Classical',
+  country: 'Country',
+  electronic: 'Electronic',
+  rnb: 'R&B',
+} as const;
+const size = Object.keys(genres).length;
+
+type Genres = keyof typeof genres;
 
 export default () => {
+  const [selected, setSelected] = useState<Genres[]>(['jazz', 'electronic']);
+  const allProps = {
+    indeterminate: selected.length > 0 && selected.length < size,
+    checked: selected.length === size,
+    onChange: () => {
+      selected.length === size
+        ? setSelected([])
+        : setSelected(Object.keys(genres) as Genres[]);
+    },
+  };
+
   return (
-    <Checkbox.Group label="Favorite genres">
-      <Checkbox>All</Checkbox>
-      <Checkbox>Rock</Checkbox>
-      <Checkbox>Pop</Checkbox>
-      <Checkbox>Jazz</Checkbox>
-      <Checkbox>Hip-Hop</Checkbox>
-      <Checkbox>Classical</Checkbox>
-      <Checkbox>Country</Checkbox>
-      <Checkbox>Electronic</Checkbox>
-      <Checkbox>R&B</Checkbox>
-    </Checkbox.Group>
+    <Stack space={1}>
+      <Checkbox {...allProps}>All</Checkbox>
+      <Inset spaceX={4}>
+        <Checkbox.Group
+          aria-label="Favorite genres"
+          value={selected}
+          onChange={(keys: Genres[]) => setSelected(keys)}
+        >
+          {Object.entries(genres).map(([value, label]) => (
+            <Checkbox key={value} value={value}>
+              {label}
+            </Checkbox>
+          ))}
+        </Checkbox.Group>
+      </Inset>
+    </Stack>
   );
 };
