@@ -66,8 +66,6 @@ However, labels might not be necessary when the purpose of the input is obvious 
 
 Help Text should be used to provide additional clarification or instructions when the label alone isn't enough to explain the input (e.g., complex or uncommon fields). It’s helpful for explaining specific formats or validation rules. However, it shouldn't be used when the input is straightforward and the label is clear, as it can clutter the form and overwhelm the user with unnecessary details.
 
-{' '}
-
 <Dont>
   <Dont.Description>
     Don’t use Help Text as a substitute for a label. It should complement the
@@ -81,7 +79,29 @@ Help Text should be used to provide additional clarification or instructions whe
 
 Form components often exist in various states to indicate how they should behave or be interacted with. These states provide important context for users and ensure proper handling of inputs in different senarios. Below are the common field states used in forms.
 
+#### Disabled State
+
+Fields in a disabled state are non-interactive and prevent user input. They visually indicate that a field is temporarily unavailable.
+
 <ComponentDemo file="./form-guideline-disabled-state.demo.tsx" />
+
+#### Required State
+
+Required fields must be completed before form submission.
+
+<ComponentDemo file="./form-guideline-required-state.demo.tsx" />
+
+#### Error State
+
+Fields in an error state indicate that the entered value is invalid or incorrect. Error messages and visual feedback.
+
+<ComponentDemo file="./form-guideline-error-state.demo.tsx" />
+
+#### ReadOnly State
+
+Read-only fields display data that cannot be modified by the user. They are typically used for information that users can view but not change.
+
+<ComponentDemo file="./form-guideline-readonly-state.demo.tsx" />
 
 ### Validation
 
