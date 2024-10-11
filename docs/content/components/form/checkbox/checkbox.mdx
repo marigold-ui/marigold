@@ -30,31 +30,19 @@ A checkbox group consists of multiple checkboxes, each with its own label, allow
 
 ## Usage
 
+Checkboxes allow user to to toggle a single option or to select multiple options from a list. Each checkbox works independently, so selecting one does not affect the others. Users can choose none, one, or many items.
+
 Checkboxes are used when there are multiple items to select in a list. Each checkbox works independently from other checkboxes in the list, therefore checking an additional box does not affect any other selections. Users can select zero, one, or any number of items. Checkboxes are commonly used in forms where users need to make multiple selections from a set of options.
 
 Particularly checkboxes are useful in settings where users need to make non-exclusive selections. They provide a clear and straightforward way to toggle options on or off. When used in a group, they can help simplify complex decision-making processes. Additionally, checkboxes can be combined with other form elements.
 
-### Choosing and managing options
+### Number of options
 
-If a user can select only one option from a list, radio buttons should be used instead of checkboxes because checkboxes allow the user to select multiple items in a set whereas radio buttons allow the user to select only one option.
+Use checkboxes when there are no more than 10 to 15 options, as too many of them can overwhelm users and clutter the interface. For larger sets of options, refer to the [Multiple Selection Pattern](/patterns/multiple-selection) for a better user experience.
 
-If you have number of options is moderate to large, typically more than 10-15 options use checkbox, but if the options is too large , then use [Multiple Selection Pattern](/patterns/multiple-selection/link) because it minimizes the screen clutter by displaying only the selected items, keeping the interface clean and user-friendly.
+If a user can select only one option from a list, [radio buttons](/components/form/radio) should be used instead, as checkboxes suggest that multiple options can be chosen.
 
 <GuidelineTiles>
-  <Dont>
-    <Dont.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/checkbox/checkbox-dont-select.jpg"
-        alt="Don't use checkboxes when only one item can be selected."
-      />
-    </Dont.Figure>
-    <Dont.Description>
-      Don't use checkboxes when only one item can be selected.
-    </Dont.Description>
-  </Dont>
   <Dont>
     <Dont.Figure>
       <Image
@@ -69,16 +57,27 @@ If you have number of options is moderate to large, typically more than 10-15 op
       Don't use checkbox with long list of options.
     </Dont.Description>
   </Dont>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/checkbox/checkbox-dont-select.jpg"
+        alt="Don't use checkboxes when only one item can be selected."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use checkboxes when only one item can be selected.
+    </Dont.Description>
+  </Dont>
 </GuidelineTiles>
 
-### Overflow content
+### Label Text
 
 We recommend checkbox labels being fewer than three words because shorter checkbox labels improve readability and reduce cognitive load, making it easier for users to quickly understand and select options. This enhances the overall user experience, especially on small screens.
 
-If you are tight on space, consider rewording the label. Do not truncate checkbox label text with an ellipsis.
-
-Long labels may wrap to a second line, and this is preferable to truncation.
-Text should wrap beneath the checkbox.
+If you are tight on space, consider rewording the label. Do not truncate checkbox label text with an ellipsis. Long labels may wrap to a second line, and this is preferable to truncation.
 
 <GuidelineTiles>
   <Do>
@@ -107,6 +106,44 @@ Text should wrap beneath the checkbox.
     </Dont.Figure>
     <Dont.Description>
       Do not truncate checkbox label text with an ellipsis.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Checkbox or switch
+
+Use a checkbox when its effect will only occur after the user submits or confirms the selection. Checkboxes are ideal for allowing users to choose options that need to be finalized through submission, such as in a form.
+
+In contrast, use a [switch](/components/form/switch) for actions that take effect immediately upon toggling, without requiring further confirmation or submission, making switches more suitable for instant settings changes.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-do-submit.jpg"
+        alt="Use checkboxes in forms where the selection will only take effect upon submission."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use checkboxes in forms where the selection will only take effect upon
+      submission.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-dont-submit.jpg"
+        alt="Don't use a checkbox to toggle a state with immediate effect."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use a checkbox to toggle a state with immediate effect.
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
@@ -148,8 +185,8 @@ In this example the `<Checkbox>` are wrapped within the `<Checkbox.Group>`. You 
 Choosing the right alternative to checkbox is important for providing an optimal user experience, especially when different types of selections are required. Depending on the nature of the choices and the desired interaction, the following components can serve as an alternative to checkboxes:
 
 - [Radio](/components/form/radio): When only one option can be selected from a set, a radio group is an alternative to a checkbox group, as radio buttons restrict the selection to a single option.
-- [SelectList](/components/collection/selectlist): A select list is an alternative to a checkbox when you need more than just a text label to represent options.
-- [TagGroup](/components/collection/tag): A tag group is an alternative to a checkbox when you want to visually highlight selected options as individual tags.
+- [SelectList](/components/collection/selectlist): When you need more than just a text label to represent options, a `<SelectList>` can be used instead.
+- [TagGroup](/components/collection/tag): When you want to visually highlight selected options as individual tags or want a horizontal list of options, use the `<Tag>` component.
 
 ## Related
 
