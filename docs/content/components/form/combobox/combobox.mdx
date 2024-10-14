@@ -28,7 +28,7 @@ This is especially helpful if you need to customize the filtering. For example, 
 
 When related options are present, organizing them into sections enhances clarity and usability. Grouping options provides additional context and helps users navigate choices more easily. This approach reduces complexity and allows for additional guidance when needed, ensuring a more intuitive experience.
 
-This can be achieved by wrapping the options in the `<ComboBox.Section>` component. A header is required for each section, which is set using the `header` prop.
+This can be achieved by wrapping the options in the `<ComboBox.Section>` component. A header is required for each section, which is set using the `header` prop. It's important to note that headers are not part of the accessibility tree. As a result, they will not be considered when filtering the option list.
 
 <ComponentDemo file="./combobox-section.demo.tsx" />
 
