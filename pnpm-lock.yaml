@@ -116,7 +116,7 @@ importers:
         version: 7.25.8
       '@babel/eslint-parser':
         specifier: ^7.24.8
-        version: 7.25.7(@babel/core@7.25.8)(eslint@9.12.0(jiti@1.21.6))
+        version: 7.25.8(@babel/core@7.25.8)(eslint@9.12.0(jiti@1.21.6))
       '@babel/plugin-syntax-flow':
         specifier: ^7.24.7
         version: 7.25.7(@babel/core@7.25.8)
@@ -784,8 +784,8 @@ packages:
     resolution: {integrity: sha512-Oixnb+DzmRT30qu9d3tJSQkxuygWm32DFykT4bRoORPa9hZ/L4KhVB/XiRm6KG+roIEM7DBQlmg27kw2HZkdZg==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/eslint-parser@7.25.7':
-    resolution: {integrity: sha512-B+BO9x86VYsQHimucBAL1fxTJKF4wyKY6ZVzee9QgzdZOUfs3BaR6AQrgoGrRI+7IFS1wUz/VyQ+SoBcSpdPbw==}
+  '@babel/eslint-parser@7.25.8':
+    resolution: {integrity: sha512-Po3VLMN7fJtv0nsOjBDSbO1J71UhzShE9MuOSkWEV9IZQXzhZklYtzKZ8ZD/Ij3a0JBv1AG3Ny2L3jvAHQVOGg==}
     engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
     peerDependencies:
       '@babel/core': ^7.11.0
@@ -9833,7 +9833,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/eslint-parser@7.25.7(@babel/core@7.25.8)(eslint@9.12.0(jiti@1.21.6))':
+  '@babel/eslint-parser@7.25.8(@babel/core@7.25.8)(eslint@9.12.0(jiti@1.21.6))':
     dependencies:
       '@babel/core': 7.25.8
       '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
@@ -16272,7 +16272,7 @@ snapshots:
   eslint-config-react-app@7.0.1(@babel/plugin-syntax-flow@7.25.7(@babel/core@7.25.8))(@babel/plugin-transform-react-jsx@7.25.7(@babel/core@7.25.8))(eslint@9.12.0(jiti@1.21.6))(jest@29.7.0(@types/node@22.4.0)(babel-plugin-macros@3.1.0))(typescript@5.5.4):
     dependencies:
       '@babel/core': 7.25.8
-      '@babel/eslint-parser': 7.25.7(@babel/core@7.25.8)(eslint@9.12.0(jiti@1.21.6))
+      '@babel/eslint-parser': 7.25.8(@babel/core@7.25.8)(eslint@9.12.0(jiti@1.21.6))
       '@rushstack/eslint-patch': 1.10.1
       '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@9.12.0(jiti@1.21.6))(typescript@5.5.4))(eslint@9.12.0(jiti@1.21.6))(typescript@5.5.4)
       '@typescript-eslint/parser': 5.62.0(eslint@9.12.0(jiti@1.21.6))(typescript@5.5.4)
