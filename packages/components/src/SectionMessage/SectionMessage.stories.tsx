@@ -13,6 +13,12 @@ const meta = {
       options: ['success', 'info', 'warning', 'error'],
       description: 'The variants of the message',
     },
+    closeButton: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'makes the message dismissable.',
+    },
   },
 } satisfies Meta<typeof SectionMessage>;
 
