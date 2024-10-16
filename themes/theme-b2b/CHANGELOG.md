@@ -1,5 +1,49 @@
 # @marigold/theme-b2b
 
+## 28.0.0
+
+### Major Changes
+
+- 2d9917f: **Breaking changes**
+
+  - `Dialog.Headline` has been renamed to `Dialog.Title`. Please update your code accordingly.
+  - `<Dialog.Content>`, `<Dialog.Actions>`, and `<Dialog.Footer>` have been introduced for better organization and flexibility.
+  - The internal layout now uses grid areas, ensuring consistent ordering and layout of the dialog elements.
+  - Existing implementations of the `<Dialog>` component will need to be updated to use these new subcomponents.
+
+### Minor Changes
+
+- df04623: Adding size to dialog component
+
+### Patch Changes
+
+- caefbe4: refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
+
+  - Added the possibility to use sections with `<Combobox>` and `<Autocomplete>`
+  - Refactored the `<Section>` (from `<Listbox>`) to fit our API, no need for the extra `<Header>` anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
+  - Renamed `<Item>` to `<Option>` in `<Combobox>` and `<Autocomplete>` to align with `<Select>`
+  - Updated the docs for `<Select>`, `<Combobox>` and `<Autocomplete>`
+  - Updated Storybook for `<Select>`, `<Combobox>` and `<Autocomplete>` with section stories
+  - Renamed the part of the `<ListBox>` accordingly (from `sectionTitle` to `header`)
+
+    **BREAKING CHANGE:** We changed the API of the `<Section>` component that is used in `<Select>`, `<Combobox>` and `<Autocomplete>`. It is no longer necessary to add a `Header` within the `<Section>`.
+
+    Use the newly added `header` prop instead. Additionally, to unify the APIs all choices of `<Select>`, `<Combobox>` and `<Autocomplete>` are now called `<Option>` instead of `<Item>`.
+
+- Updated dependencies [caefbe4]
+- Updated dependencies [2d9917f]
+- Updated dependencies [7ea3838]
+- Updated dependencies [f18c8aa]
+- Updated dependencies [d5386e4]
+- Updated dependencies [5c029ec]
+- Updated dependencies [b8cd92a]
+- Updated dependencies [45fb3c4]
+- Updated dependencies [956982a]
+- Updated dependencies [df04623]
+  - @marigold/components@10.0.0
+  - @marigold/system@10.0.0
+  - @marigold/theme-preset@1.3.23
+
 ## 27.2.1
 
 ### Patch Changes

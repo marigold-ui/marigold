@@ -1,5 +1,71 @@
 # @marigold/components
 
+## 10.0.0
+
+### Major Changes
+
+- 2d9917f: **Breaking changes**
+
+  - `Dialog.Headline` has been renamed to `Dialog.Title`. Please update your code accordingly.
+  - `<Dialog.Content>`, `<Dialog.Actions>`, and `<Dialog.Footer>` have been introduced for better organization and flexibility.
+  - The internal layout now uses grid areas, ensuring consistent ordering and layout of the dialog elements.
+  - Existing implementations of the `<Dialog>` component will need to be updated to use these new subcomponents.
+
+### Minor Changes
+
+- 956982a: feat(components): Make `<Text>` and `<Headline>` accessible by allowing ARIA labelling props
+
+  `<Text>` and `<Headline>` will no longer cause type errors when ARIA labelling is used (`aria-label`, `id`, ...).
+
+- df04623: Adding size to dialog component
+
+### Patch Changes
+
+- caefbe4: refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
+
+  - Added the possibility to use sections with `<Combobox>` and `<Autocomplete>`
+  - Refactored the `<Section>` (from `<Listbox>`) to fit our API, no need for the extra `<Header>` anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
+  - Renamed `<Item>` to `<Option>` in `<Combobox>` and `<Autocomplete>` to align with `<Select>`
+  - Updated the docs for `<Select>`, `<Combobox>` and `<Autocomplete>`
+  - Updated Storybook for `<Select>`, `<Combobox>` and `<Autocomplete>` with section stories
+  - Renamed the part of the `<ListBox>` accordingly (from `sectionTitle` to `header`)
+
+    **BREAKING CHANGE:** We changed the API of the `<Section>` component that is used in `<Select>`, `<Combobox>` and `<Autocomplete>`. It is no longer necessary to add a `Header` within the `<Section>`.
+
+    Use the newly added `header` prop instead. Additionally, to unify the APIs all choices of `<Select>`, `<Combobox>` and `<Autocomplete>` are now called `<Option>` instead of `<Item>`.
+
+- 7ea3838: feat(Menu): pass `aria-label` to menu button instead of menu
+- f18c8aa: [DST-494]: add loading states pattern
+
+  [DST-494]: added prop `mode`to the `<XLoader />` to support inline and full-section loading
+
+- d5386e4: fix(components): Display `<Checkbox>` focus ring and adjust focus ring of `<Table>`
+
+  Focus ring was not showing for the `<Checkbox>`. It does now!
+
+- 5c029ec: feat(components): Expose `Selection` type for easy usage with `Table` and other components
+
+  When working with a `<Table>` you can now use
+
+  ```ts
+  import type { Selection } from '@marigold/components';
+  ```
+
+  instead of creating the type.
+
+- b8cd92a: feat: `CheckboxGroup` can now be used as a compound component
+
+  - Refactored the `CheckboxGroup` to be a compound component and align it with other components: `<CheckboxGroup>` -> `<Checkbox.Group>`
+  - Adjusted the Checkbox appearance demo a bit
+
+- 45fb3c4: chore(deps): update react-aria to 1.4
+- Updated dependencies [caefbe4]
+- Updated dependencies [45fb3c4]
+- Updated dependencies [956982a]
+  - @marigold/system@10.0.0
+  - @marigold/types@1.2.0
+  - @marigold/icons@1.2.58
+
 ## 9.0.2
 
 ### Patch Changes

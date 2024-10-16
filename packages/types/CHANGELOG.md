@@ -1,5 +1,13 @@
 # @marigold/types
 
+## 1.2.0
+
+### Minor Changes
+
+- 956982a: feat(components): Make `<Text>` and `<Headline>` accessible by allowing ARIA labelling props
+
+  `<Text>` and `<Headline>` will no longer cause type errors when ARIA labelling is used (`aria-label`, `id`, ...).
+
 ## 1.1.1
 
 ### Patch Changes
