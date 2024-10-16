@@ -68,7 +68,9 @@ export const Page = () => (
             It leverages React Aria for screen reader and keyboard navigation
             support, ensuring your applications are ready for every user.
           </SectionContent>
-          <SectionLink href="/components">Browse the components</SectionLink>
+          <SectionLink href="/foundations/accessibility">
+            Learn more about accessibility
+          </SectionLink>
         </div>
         <AccessibiltySection />
       </div>

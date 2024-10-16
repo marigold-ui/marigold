@@ -1,8 +1,8 @@
 import { Children, type ReactElement } from 'react';
 import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
-import { NonZeroPercentage } from '@marigold/types';
+import type { AriaRegionProps, NonZeroPercentage } from '@marigold/types';
 
-export interface AsideProps extends GapSpaceProp {
+export interface AsideProps extends GapSpaceProp, AriaRegionProps {
   /**
    * The children of the component.
    */

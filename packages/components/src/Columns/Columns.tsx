@@ -1,7 +1,9 @@
 import { Children, ReactNode } from 'react';
-import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
+import { cn, createVar, gapSpace } from '@marigold/system';
+import type { GapSpaceProp } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
-export interface ColumnsProps extends GapSpaceProp {
+export interface ColumnsProps extends GapSpaceProp, AriaRegionProps {
   /**
    * The children of the component.
    */

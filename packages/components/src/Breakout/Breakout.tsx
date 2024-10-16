@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { alignment, cn, createVar } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
-export interface BreakoutProps {
+export interface BreakoutProps extends AriaRegionProps {
   children?: ReactNode;
 
   /**
