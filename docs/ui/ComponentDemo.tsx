@@ -6,7 +6,7 @@ import {
   OverlayContainerProvider,
   Tabs,
 } from '@/ui';
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props
@@ -27,6 +27,7 @@ export interface ComponentDemoProps {
   source: string;
   children?: ReactNode;
   disableLabelWidth?: boolean;
+  labelWidth?: string;
 }
 
 // Component
@@ -35,17 +36,18 @@ export const ComponentDemo = ({
   name,
   children,
   disableLabelWidth,
+  labelWidth = '100px',
 }: ComponentDemoProps) => {
   if (!registry[name]) {
     throw Error(`No demo with name "${name}" found in the registry.`);
   }
 
-  const Demo = registry[name].demo;
+  const Demo: ComponentType<{}> = registry[name].demo;
   const { current, themes } = useThemeSwitch();
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
     current === 'core' && !disableLabelWidth ? (
-      <FieldGroup labelWidth="100px">{children}</FieldGroup>
+      <FieldGroup labelWidth={labelWidth}>{children}</FieldGroup>
     ) : (
       children
     );

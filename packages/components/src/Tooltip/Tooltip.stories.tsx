@@ -64,7 +64,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const BasicTooltip: Story = {
+export const Basic: Story = {
   render: args => {
     return (
       <div className="me-auto ms-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
@@ -84,7 +84,7 @@ export const BasicTooltip: Story = {
   },
 };
 
-export const OpenRemainingTooltip: Story = {
+export const OpenRemaining: Story = {
   render: args => {
     return (
       <div className="me-auto ms-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">

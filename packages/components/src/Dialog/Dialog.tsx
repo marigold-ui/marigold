@@ -1,7 +1,8 @@
-import { useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { Header } from '../Header';
 import { Headline, HeadlineProps } from '../Headline';
 import { DialogTrigger } from './DialogTrigger';
 
@@ -14,7 +15,7 @@ interface CloseButtonProps {
 const CloseButton = ({ className }: CloseButtonProps) => {
   const { close } = useContext(OverlayTriggerStateContext);
   return (
-    <div className="flex justify-end">
+    <div className="ml-4 flex items-center justify-end [grid-area:button]">
       <button
         className={cn(
           'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
@@ -34,13 +35,46 @@ const CloseButton = ({ className }: CloseButtonProps) => {
   );
 };
 
-// Dialog Headline
+// Dialog Title
 // ---------------
-interface DialogHeadlineProps extends Omit<HeadlineProps, 'slot'> {}
+interface DialogTitleProps extends Omit<HeadlineProps, 'slot'> {}
 
-const DialogHeadline = ({ children }: DialogHeadlineProps) => (
-  <Headline slot="title">{children}</Headline>
-);
+const DialogTitle = ({ children }: DialogTitleProps) => {
+  return (
+    <Header className="flex items-center [grid-area:title]">
+      <Headline slot="title">{children}</Headline>
+    </Header>
+  );
+};
+
+// Dialog Content
+// ---------------
+interface DialogContentProps {
+  children: ReactNode;
+}
+const DialogContent = ({ children }: DialogContentProps) => {
+  return <div className="[grid-area:content]">{children}</div>;
+};
+
+// Dialog Actions
+// ---------------
+interface DialogActions {
+  children: React.ReactNode;
+}
+
+const DialogActions = ({ children }: DialogActions) => {
+  return <div className="flex gap-2 [grid-area:actions]">{children}</div>;
+};
+
+// Dialog Footer
+// ---------------
+interface DialogFooterProps {
+  children: ReactNode;
+}
+
+const DialogFooter = ({ children }: DialogFooterProps) => {
+  return <div className="[grid-area:footer]">{children}</div>;
+};
 
 // Props
 // ---------------
@@ -61,6 +95,7 @@ export interface DialogProps
 
 // Component
 // ---------------
+
 const _Dialog = ({
   variant,
   size,
@@ -81,17 +116,22 @@ const _Dialog = ({
   return (
     <Dialog
       {...props}
-      className={cn('relative w-full outline-none', classNames.container)}
+      className={cn(
+        'relative outline-none [&>*:not(:last-child)]:mb-4',
+        "grid [grid-template-areas:'title_button'_'content_content'_'actions_actions'_'footer_footer']",
+        classNames.container
+      )}
     >
-      <>
-        {closeButton && <CloseButton className={classNames.closeButton} />}
-        {children}
-      </>
+      {closeButton && <CloseButton className={classNames.closeButton} />}
+      {children}
     </Dialog>
   );
 };
 
 _Dialog.Trigger = DialogTrigger;
-_Dialog.Headline = DialogHeadline;
+_Dialog.Title = DialogTitle;
+_Dialog.Content = DialogContent;
+_Dialog.Actions = DialogActions;
+_Dialog.Footer = DialogFooter;
 
 export { _Dialog as Dialog };
