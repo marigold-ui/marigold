@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
+import { cn, createVar, gapSpace } from '@marigold/system';
+import type { GapSpaceProp } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
-export interface CenterProps extends GapSpaceProp {
+export interface CenterProps extends GapSpaceProp, AriaRegionProps {
   children?: ReactNode;
   /**
    * The maximum width of the container.

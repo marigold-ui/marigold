@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
-import { GapSpaceProp, alignment, cn, gapSpace } from '@marigold/system';
+import { alignment, cn, gapSpace } from '@marigold/system';
+import type { GapSpaceProp } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface InlineProps extends GapSpaceProp {
+export interface InlineProps extends GapSpaceProp, AriaRegionProps {
   /**
    * The children of the component.
    */

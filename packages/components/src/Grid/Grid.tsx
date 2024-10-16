@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { GapSpaceProp, HeightProp } from '@marigold/system';
 import { cn, gapSpace, height as twHeight } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 import { GridArea } from './GridArea';
 
 // Helpers
@@ -22,7 +23,7 @@ const parseTemplateValue = (values: TemplateValue[]) =>
 
 // Props
 // ---------------
-export interface GridProps extends GapSpaceProp, HeightProp {
+export interface GridProps extends GapSpaceProp, HeightProp, AriaRegionProps {
   /**
    * Specifies the named grid areas, much like `grid-template-areas`.
    */

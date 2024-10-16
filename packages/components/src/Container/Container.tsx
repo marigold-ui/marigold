@@ -7,8 +7,9 @@ import {
   gridColumn,
   placeItems,
 } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
-export interface ContainerProps {
+export interface ContainerProps extends AriaRegionProps {
   children?: ReactNode;
   /**
    * The content type of the container.
