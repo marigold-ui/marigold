@@ -62,8 +62,10 @@ To illustrate how labeling works, see the following examples. In the code below,
 In the following example, the `aria-labelledby` attribute references both the ids of the heading (section-title) and the description (section-description). When the region is focused, a screen reader will announce both “Account Settings” and “Update your username, email, and password here,” providing clear context for the user.
 
 ```html
-<h2 id="section-title">Account Settings</h2>
-<p id="section-description">Update your username, email, and password here.</p>
+<Headline level="2" id="section-title">Account Settings</Headline>
+<Text id="section-description">
+  Update your username, email, and password here.
+</Text>
 <div role="region" aria-labelledby="section-title section-description">
   <!-- Form content goes here -->
 </div>
