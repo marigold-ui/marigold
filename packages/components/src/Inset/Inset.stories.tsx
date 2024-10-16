@@ -44,7 +44,3 @@ export const Basic: Story = {
     </Inset>
   ),
 };
-
-<Inset space={4} aria-controls>
-  asd
-</Inset>;
