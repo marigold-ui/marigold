@@ -176,7 +176,9 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
               indeterminate={isIndeterminate}
               className={classNames.checkbox}
             />
-            <div className={classNames.label}>{children}</div>
+            {children ? (
+              <div className={classNames.label}>{children}</div>
+            ) : null}
           </>
         )}
       </Checkbox>

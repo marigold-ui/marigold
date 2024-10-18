@@ -16,6 +16,7 @@ interface ContentPageProps {
 async function getPageFromParams(params: ContentPageProps['params']) {
   const slug = params?.slug?.join('/');
   const page = allContentPages.find(page => page.slug === slug);
+
   return page || null;
 }
 
@@ -23,6 +24,7 @@ export async function generateMetadata({
   params,
 }: ContentPageProps): Promise<Metadata> {
   const page = await getPageFromParams(params);
+
   return page
     ? {
         title: page.title,
@@ -57,7 +59,6 @@ export async function generateStaticParams(): Promise<
 
 export default async function ContentPage({ params }: ContentPageProps) {
   const page = await getPageFromParams(params);
-
   if (!page) {
     notFound();
   }
@@ -69,14 +70,16 @@ export default async function ContentPage({ params }: ContentPageProps) {
         <div className="text-secondary-400 pt-1">{page.caption}</div>
       </div>
       <div className="prose max-w-[70ch]">
-        <Mdx className="" title={page.title} code={page.body.code} />
+        <Mdx title={page.title} code={page.body.code} />
+        <div className="text-text-primary-muted pt-8 text-xs italic">
+          Last update: <RelativeTime date={new Date(page.modified)} />
+        </div>
       </div>
-      <div className="col-start-2 hidden min-[1400px]:block">
-        <TocContainer />
-      </div>
-      <div className="text-text-primary-muted text-xs italic">
-        Last update: <RelativeTime date={new Date(page.modified)} />
-      </div>
+      {page.toc === false ? null : (
+        <div className="col-start-2 hidden min-[1400px]:block">
+          <TocContainer />
+        </div>
+      )}
     </article>
   );
 }

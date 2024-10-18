@@ -15,7 +15,7 @@ const theme: Theme = {
       list: cva('outline-none'),
       option: cva('p-3 outline-none'),
       section: cva('border outline-none'),
-      sectionTitle: cva('[&_header]:text-text-accent'),
+      header: cva('[&_header]:text-text-accent'),
     },
     Button: cva('bg-green-300'),
     Checkbox: {

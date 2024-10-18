@@ -41,15 +41,9 @@ test('supports base styling classes', () => {
   );
   const button = screen.getByText(/button/);
 
-  expect(button).toMatchInlineSnapshot(`
-<button
-  class="items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600"
-  data-rac=""
-  type="button"
->
-  button
-</button>
-`);
+  expect(button.className).toMatchInlineSnapshot(
+    `"items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600"`
+  );
 });
 
 test('supports default size', () => {
@@ -72,15 +66,6 @@ test('accepts other variants', () => {
   const button = screen.getByText(/button/);
 
   expect(button).toHaveClass('text-secondary-800');
-  expect(button).toMatchInlineSnapshot(`
-<button
-  class="items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600 text-secondary-800"
-  data-rac=""
-  type="button"
->
-  button
-</button>
-`);
 });
 
 test('renders <button> element', () => {

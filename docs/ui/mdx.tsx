@@ -4,7 +4,7 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { HTMLAttributes } from 'react';
 import Md from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { cn } from '@marigold/system';
+import { DateFormat, cn } from '@marigold/system';
 import { IconList } from '@/ui/IconList';
 import {
   Card,
@@ -47,6 +47,8 @@ import {
   Headlines,
   TextAlign,
 } from './Typography';
+import { LatestPost } from './blog/LatestPost';
+import { PostList } from './blog/PostList';
 
 // Typography
 // ---------------
@@ -161,10 +163,14 @@ const components = {
   TeaserList,
   TextAlign,
   Toc,
+  // Blog-related
+  LatestPost,
+  PostList,
   // Marigold Components
   Card,
   Columns,
   Headline,
+  DateFormat,
   List,
   Scrollable,
   SectionMessage,

@@ -9,7 +9,6 @@ import {
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Theme, cva, useSmallScreen } from '@marigold/system';
-import { Header } from '../Header';
 import { Text } from '../Text';
 import { setup } from '../test.utils';
 import { Select } from './Select';
@@ -68,7 +67,7 @@ const theme: Theme = {
       list: cva(),
       option: cva(),
       section: cva(),
-      sectionTitle: cva(),
+      header: cva(),
     },
   },
 };
@@ -363,16 +362,14 @@ test('supports default value via "defaultSelectedKey"', () => {
   expect(three).toHaveAttribute('aria-selected', 'true');
 });
 
-test('supports sections', () => {
+test('supports sections', async () => {
   render(
     <Select label="Label" data-testid="select">
-      <Select.Section>
-        <Header>Section 1</Header>
+      <Select.Section header="Section 1">
         <Select.Option id="one">one</Select.Option>
         <Select.Option id="two">two</Select.Option>
       </Select.Section>
-      <Select.Section>
-        <Header>Section 2</Header>
+      <Select.Section header="Section 2">
         <Select.Option id="three">three</Select.Option>
         <Select.Option id="four">four</Select.Option>
       </Select.Section>
@@ -380,7 +377,7 @@ test('supports sections', () => {
   );
 
   const button = screen.getByRole('button');
-  fireEvent.click(button);
+  await user.click(button);
 
   const options = screen.getByRole('listbox');
   const sectionOne = within(options).getByText('Section 1');
@@ -393,8 +390,7 @@ test('supports sections', () => {
 test('supports styling classnames with variants and sizes from theme', () => {
   render(
     <Select label="Label" data-testid="select" variant="violet" size="small">
-      <Select.Section>
-        <Header>Section 1</Header>
+      <Select.Section header="Section 1">
         <Select.Option id="one">one</Select.Option>
         <Select.Option id="two">two</Select.Option>
       </Select.Section>
@@ -410,7 +406,7 @@ test('supports styling classnames with variants and sizes from theme', () => {
 test('supports applying styles to the caret icon', () => {
   render(
     <Select label="Label" data-testid="select">
-      <Select.Section>
+      <Select.Section header="Section 1">
         <Select.Option id="one">one</Select.Option>
         <Select.Option id="two">two</Select.Option>
       </Select.Section>
@@ -442,8 +438,7 @@ test('forwards ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
   render(
     <Select label="Label" data-testid="select" ref={ref as any}>
-      <Select.Section>
-        <Header>Section 1</Header>
+      <Select.Section header="Section 1">
         <Select.Option id="one">one</Select.Option>
         <Select.Option id="two">two</Select.Option>
       </Select.Section>
@@ -469,8 +464,7 @@ test('renders as tray', () => {
 
   render(
     <Select label="Label" data-testid="select" ref={ref as any}>
-      <Select.Section>
-        <Header>Section 1</Header>
+      <Select.Section header="Section 1">
         <Select.Option id="one">one</Select.Option>
         <Select.Option id="two">two</Select.Option>
       </Select.Section>

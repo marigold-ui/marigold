@@ -28,7 +28,7 @@ export type InsetProps =
        */
       spaceY?: PaddingSpacePropY['spaceY'];
     })
-  | {
+  | (AriaRegionProps & {
       children: ReactNode;
       /**
        * The space between the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
@@ -36,7 +36,7 @@ export type InsetProps =
       space?: PaddingSpaceProp['space'];
       spaceX?: never;
       spaceY?: never;
-    };
+    });
 
 export const Inset = ({ space, spaceX, spaceY, children }: InsetProps) => (
   <div

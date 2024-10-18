@@ -33,6 +33,7 @@ const theme: Theme = {
       }),
     },
     Headline: cva(''),
+    Header: cva(''),
     Underlay: cva('bg-black opacity-5'),
   },
 };
@@ -55,7 +56,7 @@ test('renders children correctly', () => {
     <Dialog.Trigger>
       <Button>Open</Button>
       <Dialog>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -91,7 +92,7 @@ test('dialog can be opened by button', () => {
     <Dialog.Trigger>
       <Button>Open</Button>
       <Dialog>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -109,7 +110,7 @@ test('optionally renders a close button', () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -132,7 +133,7 @@ test('supoorts closing the dialog with escape key', async () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -152,7 +153,7 @@ test('close Dialog by clicking on the Underlay', () => {
     <Dialog.Trigger dismissable>
       <Button>Open</Button>
       <Dialog closeButton>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -193,7 +194,7 @@ test('supports title for accessability reasons', () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -210,12 +211,68 @@ test('supports title for accessability reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
+test('supports dialog contents', () => {
+  render(
+    <Dialog.Trigger>
+      <Button>Open</Button>
+      <Dialog closeButton>
+        <Dialog.Title>Headline</Dialog.Title>
+        <Dialog.Content>Content</Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toHaveAttribute('aria-labelledby');
+  const dialogContent = screen.getByText('Content');
+  expect(dialogContent).toBeInTheDocument();
+});
+
+test('supports dialog actions', () => {
+  render(
+    <Dialog.Trigger>
+      <Button>Open</Button>
+      <Dialog closeButton>
+        <Dialog.Title>Headline</Dialog.Title>
+        <Dialog.Actions>
+          <Button variant="ghost">Cancel</Button>
+          <Button variant="primary">Login</Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Dialog.Trigger>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const cancelButton = screen.getByText('Cancel');
+  expect(cancelButton).toBeInTheDocument();
+
+  const loginButton = screen.getByText('Login');
+  expect(loginButton).toBeInTheDocument();
+});
+
+test('supports dialog footer', () => {
+  render(
+    <Dialog.Trigger>
+      <Button>Open</Button>
+      <Dialog.Footer>Footer</Dialog.Footer>
+    </Dialog.Trigger>
+  );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const footer = screen.getByText('Footer');
+  expect(footer).toBeInTheDocument();
+});
+
 test('child function is passed an id for the dialog title (a11y)', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
       <Dialog>
-        <Dialog.Headline>Custom Headline</Dialog.Headline>
+        <Dialog.Title>Custom Headline</Dialog.Title>
       </Dialog>
     </Dialog.Trigger>
   );
@@ -248,7 +305,7 @@ test('child function is passed an id for the dialog title (a11y)', () => {
 
 //   expect(warn).toHaveBeenCalled();
 //   expect(warn.mock.calls[0][0]).toMatchInlineSnapshot(
-//     `"No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Dialog.Headline> as direct child."`
+//     `"No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Dialog.Title> as direct child."`
 //   );
 //   warn.mockRestore();
 // });
@@ -259,7 +316,7 @@ test('supports focus and open dialog with keyboard', async () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -280,7 +337,7 @@ test('dialog has base classnames', () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -306,7 +363,7 @@ test('dialog has variant classnames', () => {
       <Button>Open</Button>
 
       <Dialog variant="custom" closeButton>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -323,7 +380,7 @@ test('dialog has variant classnames', () => {
     'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
   );
   expect(dialog.className).toMatchInlineSnapshot(
-    `"relative w-full outline-none p-5 bg-green-400"`
+    `"relative outline-none [&>*:not(:last-child)]:mb-4 grid [grid-template-areas:'title_button'_'content_content'_'actions_actions'_'footer_footer'] p-5 bg-green-400"`
   );
 });
 
@@ -333,7 +390,7 @@ test('dialog supports size', () => {
       <Button>Open</Button>
 
       <Dialog size="large" closeButton>
-        <Dialog.Headline>Headline</Dialog.Headline>
+        <Dialog.Title>Headline</Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -351,7 +408,7 @@ test('renders nothing by default', () => {
     <Dialog.Trigger>
       <Button>Open</Button>
       <Dialog>
-        <Dialog.Headline>Headline</Dialog.Headline>Content
+        <Dialog.Title>Headline</Dialog.Title>Content
       </Dialog>
     </Dialog.Trigger>
   );
@@ -370,7 +427,7 @@ test('dialog can be controlled', async () => {
           Open Dialog
         </Button>
         <Dialog>
-          <Dialog.Headline>Headline</Dialog.Headline>
+          <Dialog.Title>Headline</Dialog.Title>
           <Button data-testid="close" onPress={() => setOpen(false)}>
             Close
           </Button>
@@ -408,7 +465,7 @@ test('dialog can be controlled without a trigger', async () => {
         </Button>
         <Dialog.Trigger open={open} onOpenChange={setOpen}>
           <Dialog>
-            <Dialog.Headline>Headline</Dialog.Headline>
+            <Dialog.Title>Headline</Dialog.Title>
             <Button data-testid="close" onPress={() => setOpen(false)}>
               Close
             </Button>
@@ -450,7 +507,7 @@ test('close state has a listener', async () => {
         <Dialog>
           {({ close }) => (
             <>
-              <Dialog.Headline>Headline</Dialog.Headline>
+              <Dialog.Title>Headline</Dialog.Title>
               <Button data-testid="close" onPress={close}>
                 Close
               </Button>

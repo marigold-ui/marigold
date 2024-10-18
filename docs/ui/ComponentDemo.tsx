@@ -27,6 +27,7 @@ export interface ComponentDemoProps {
   source: string;
   children?: ReactNode;
   disableLabelWidth?: boolean;
+  labelWidth?: string;
 }
 
 // Component
@@ -35,6 +36,7 @@ export const ComponentDemo = ({
   name,
   children,
   disableLabelWidth,
+  labelWidth = '100px',
 }: ComponentDemoProps) => {
   if (!registry[name]) {
     throw Error(`No demo with name "${name}" found in the registry.`);
@@ -45,7 +47,7 @@ export const ComponentDemo = ({
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
     current === 'core' && !disableLabelWidth ? (
-      <FieldGroup labelWidth="100px">{children}</FieldGroup>
+      <FieldGroup labelWidth={labelWidth}>{children}</FieldGroup>
     ) : (
       children
     );

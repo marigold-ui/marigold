@@ -94,7 +94,7 @@
 
 ### Major Changes
 
-- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename <Message> in <SectionMessage>
+- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename `<Message>` in `<SectionMessage>`
 
 - [#3967](https://github.com/marigold-ui/marigold/pull/3967) [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202) Thanks [@sebald](https://github.com/sebald)! - refa: Update TypeScript and adjust `<NumericFormat>` props
 
@@ -408,19 +408,19 @@
 
 - [#3542](https://github.com/marigold-ui/marigold/pull/3542) [`3952ee0e8`](https://github.com/marigold-ui/marigold/commit/3952ee0e893704e791bc6a51ed57b3dc80b78ece) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Menu react aria components
 
-  > [!WARNING] > **BREAKCING CHANGE** `<Menu.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Menu.item key="something"/>` to `<Menu.item id="something"/>`.
+  > ` [!WARNING] >` **BREAKCING CHANGE** `<Menu.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Menu.item key="something"/>` to `<Menu.item id="something"/>`.
 
 - [#3535](https://github.com/marigold-ui/marigold/pull/3535) [`e4cfbc7d1`](https://github.com/marigold-ui/marigold/commit/e4cfbc7d1f07015532f359217d2b8d0d74f932bf) Thanks [@OsamaAbdellateef](https://github.com/OsamaAbdellateef)! - Migrate Select component to RAC
 
-  > [!WARNING] > **BREAKCING CHANGE** `<Select.Option>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Select.Option key="something"/>` to `<Select.Option id="something"/>`.
+  > ` [!WARNING] >` **BREAKCING CHANGE** `<Select.Option>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Select.Option key="something"/>` to `<Select.Option id="something"/>`.
 
 - [#3546](https://github.com/marigold-ui/marigold/pull/3546) [`9c61ffe09`](https://github.com/marigold-ui/marigold/commit/9c61ffe09271c4f4b2ab9907472763d222d24f04) Thanks [@sebald](https://github.com/sebald)! - refa: Migrate `ComBox` to RAC
 
-  > [!WARNING] > **BREAKCING CHANGE** `<ComboBox.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<ComboBox.item key="something"/>` to `<ComboBox.item id="something"/>`.
+  > ` [!WARNING] >` **BREAKCING CHANGE** `<ComboBox.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<ComboBox.item key="something"/>` to `<ComboBox.item id="something"/>`.
 
 - [#3550](https://github.com/marigold-ui/marigold/pull/3550) [`30167bb78`](https://github.com/marigold-ui/marigold/commit/30167bb78f11c557c45c19dc25a7d66db805879b) Thanks [@sarahgm](https://github.com/sarahgm)! - RAC: Autocomplete
 
-  > [!WARNING] > **BREAKCING CHANGE** `<Autocomplete.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Autocomplete.item key="something"/>` to `<Autocomplete.item id="something"/>`.
+  > ` [!WARNING] >` **BREAKCING CHANGE** `<Autocomplete.Item>` no longer us the `key` prop as unique identifier, use the `id` prop instead. To migrate, rename all `<Autocomplete.item key="something"/>` to `<Autocomplete.item id="something"/>`.
 
 ### Patch Changes
 
@@ -624,7 +624,7 @@
 
 ### Minor Changes
 
-- [#3430](https://github.com/marigold-ui/marigold/pull/3430) [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refa <Radio> as react-aria-components
+- [#3430](https://github.com/marigold-ui/marigold/pull/3430) [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refa `<Radio>` as react-aria-components
 
 ### Patch Changes
 
@@ -713,7 +713,7 @@
 
 - [#3331](https://github.com/marigold-ui/marigold/pull/3331) [`b9e1d147a`](https://github.com/marigold-ui/marigold/commit/b9e1d147a0ab61393ba4704dc4bef6fce70fe854) Thanks [@sebald](https://github.com/sebald)! - fix: correctly apply spacing in `<Inset>`
 
-- [#3339](https://github.com/marigold-ui/marigold/pull/3339) [`581702881`](https://github.com/marigold-ui/marigold/commit/5817028810f503d941be93b66e63ea545c4f17c3) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add <Card> size to b2b theme
+- [#3339](https://github.com/marigold-ui/marigold/pull/3339) [`581702881`](https://github.com/marigold-ui/marigold/commit/5817028810f503d941be93b66e63ea545c4f17c3) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add `<Card>` size to b2b theme
 
 - Updated dependencies []:
   - @marigold/system@6.2.5
@@ -865,7 +865,7 @@
 
 ### Minor Changes
 
-- [#2892](https://github.com/marigold-ui/marigold/pull/2892) [`aaff48559`](https://github.com/marigold-ui/marigold/commit/aaff485594d34f878217f5906f7ee69e7f66c8f2) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add fontStyle to <Text> component
+- [#2892](https://github.com/marigold-ui/marigold/pull/2892) [`aaff48559`](https://github.com/marigold-ui/marigold/commit/aaff485594d34f878217f5906f7ee69e7f66c8f2) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add fontStyle to `<Text>` component
 
 ### Patch Changes
 
@@ -898,7 +898,7 @@
 
 - [#2807](https://github.com/marigold-ui/marigold/pull/2807) [`f9175829d`](https://github.com/marigold-ui/marigold/commit/f9175829db6ab268a6c9620430a99a69d0d57c7c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: update storybook to version 7 + fix coverage
 
-- [#2824](https://github.com/marigold-ui/marigold/pull/2824) [`33329ace2`](https://github.com/marigold-ui/marigold/commit/33329ace2711b139938af05006ed6f00a65f6b99) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: refa <Input> and <Input.Field> components and support icons
+- [#2824](https://github.com/marigold-ui/marigold/pull/2824) [`33329ace2`](https://github.com/marigold-ui/marigold/commit/33329ace2711b139938af05006ed6f00a65f6b99) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: refa `<Input>` and `<Input.Field>` components and support icons
 
 - [#2805](https://github.com/marigold-ui/marigold/pull/2805) [`c0609c0b3`](https://github.com/marigold-ui/marigold/commit/c0609c0b32bb8075fdeacf88f9c6ce5d8fdf781e) Thanks [@sebald](https://github.com/sebald)! - feat: introduce `<Inset>` component
 
@@ -924,7 +924,7 @@
 
   **BREAKING CHANGE:**
 
-  We deprecated the available short hands for styling on the `<Box>` component (also known as style props), for example `<Box p="small">`. This way it is more clear what to use when -> always the `css` prop.
+  We deprecated the available short hands for styling on the `<Box>` component (also known as style props), for example `<Box p="small">`. This way it is more clear what to use when ->`always the`css` prop.
 
   _How to update your code:_ Basically move all style props to the `css` prop. E.g. `<Box p="small" bg="primary">` becomes `<Box css={{ p: "small, bg; "primary" }}>`.
 
@@ -942,9 +942,9 @@
 
 ### Patch Changes
 
-- [#2741](https://github.com/marigold-ui/marigold/pull/2741) [`f65487486`](https://github.com/marigold-ui/marigold/commit/f65487486ef6849bc9850f5c13bc56ae7fe02b1f) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add <ActionMenu> Component with dots
+- [#2741](https://github.com/marigold-ui/marigold/pull/2741) [`f65487486`](https://github.com/marigold-ui/marigold/commit/f65487486ef6849bc9850f5c13bc56ae7fe02b1f) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add `<ActionMenu>` Component with dots
 
-- [#2756](https://github.com/marigold-ui/marigold/pull/2756) [`f9f71ed9d`](https://github.com/marigold-ui/marigold/commit/f9f71ed9d252f046e2c54d2614c683f62eb83afc) Thanks [@sebald](https://github.com/sebald)! - fix: <Link> whitespace
+- [#2756](https://github.com/marigold-ui/marigold/pull/2756) [`f9f71ed9d`](https://github.com/marigold-ui/marigold/commit/f9f71ed9d252f046e2c54d2614c683f62eb83afc) Thanks [@sebald](https://github.com/sebald)! - fix: `<Link>` whitespace
 
 - [#2726](https://github.com/marigold-ui/marigold/pull/2726) [`0f539b788`](https://github.com/marigold-ui/marigold/commit/0f539b788a72654e834c374810ef677c307fdadb) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency @types/react to v18.0.27
 
@@ -980,19 +980,19 @@
 
 ### Minor Changes
 
-- [#2688](https://github.com/marigold-ui/marigold/pull/2688) [`1bfe10cf`](https://github.com/marigold-ui/marigold/commit/1bfe10cf7ec08136ca67e23a2dc2e97f9c027e59) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add <Fieldbase> to <RadioGroup> and <CheckboxGroup> to support errorMessage and helptext
+- [#2688](https://github.com/marigold-ui/marigold/pull/2688) [`1bfe10cf`](https://github.com/marigold-ui/marigold/commit/1bfe10cf7ec08136ca67e23a2dc2e97f9c027e59) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add `<Fieldbase>` to `<RadioGroup>` and `<CheckboxGroup>` to support errorMessage and helptext
 
 ### Patch Changes
 
 - [#2689](https://github.com/marigold-ui/marigold/pull/2689) [`8675c5f2`](https://github.com/marigold-ui/marigold/commit/8675c5f2d609cddceff7661c2e6d173655adc813) Thanks [@benediktgrether](https://github.com/benediktgrether)! - fix: add in FieldBase component position relative to fix position absolute bug in HiddenSelect component
 
-- [#2683](https://github.com/marigold-ui/marigold/pull/2683) [`7be11c1a`](https://github.com/marigold-ui/marigold/commit/7be11c1a8ba6bca9ac651da75569234b443fcae5) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add <Tray> for responsiveness in <Menu> and <Select>
+- [#2683](https://github.com/marigold-ui/marigold/pull/2683) [`7be11c1a`](https://github.com/marigold-ui/marigold/commit/7be11c1a8ba6bca9ac651da75569234b443fcae5) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: add `<Tray>` for responsiveness in `<Menu>` and `<Select>`
 
 - [#2684](https://github.com/marigold-ui/marigold/pull/2684) [`14463546`](https://github.com/marigold-ui/marigold/commit/144635460ee4c0eb44e1ce9d2cf12709262dc6e6) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: removed icon dependency from @marigold/components
 
 - [#2686](https://github.com/marigold-ui/marigold/pull/2686) [`bb0dea93`](https://github.com/marigold-ui/marigold/commit/bb0dea93c6c24e5271f18ceddc3699d07a53b56a) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: required label
 
-- [#2687](https://github.com/marigold-ui/marigold/pull/2687) [`7954ba24`](https://github.com/marigold-ui/marigold/commit/7954ba241a8ca3bc048177aa32c1fb0f3dd77a9c) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: <Radio> tabs in default selected value instead of first
+- [#2687](https://github.com/marigold-ui/marigold/pull/2687) [`7954ba24`](https://github.com/marigold-ui/marigold/commit/7954ba241a8ca3bc048177aa32c1fb0f3dd77a9c) Thanks [@sarahgm](https://github.com/sarahgm)! - fix: `<Radio>` tabs in default selected value instead of first
 
 - Updated dependencies []:
   - @marigold/system@4.2.0
@@ -1098,7 +1098,7 @@
 
 ### Patch Changes
 
-- [#2575](https://github.com/marigold-ui/marigold/pull/2575) [`0441cd20`](https://github.com/marigold-ui/marigold/commit/0441cd20fcdfc1964b8854ae8910e52586b85a4a) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: <XLoader> component for loading states
+- [#2575](https://github.com/marigold-ui/marigold/pull/2575) [`0441cd20`](https://github.com/marigold-ui/marigold/commit/0441cd20fcdfc1964b8854ae8910e52586b85a4a) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: `<XLoader>` component for loading states
 
 - Updated dependencies []:
   - @marigold/system@3.0.5
@@ -1110,7 +1110,7 @@
 
 - [#2564](https://github.com/marigold-ui/marigold/pull/2564) [`09745fca`](https://github.com/marigold-ui/marigold/commit/09745fca3b285b88c11e129a4a34d5efef71a703) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add card, text style for core
 
-- [#2569](https://github.com/marigold-ui/marigold/pull/2569) [`b20b0111`](https://github.com/marigold-ui/marigold/commit/b20b0111d645939b6210fad8b43690964186cd9c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add gridAutoRows to <Tiles>
+- [#2569](https://github.com/marigold-ui/marigold/pull/2569) [`b20b0111`](https://github.com/marigold-ui/marigold/commit/b20b0111d645939b6210fad8b43690964186cd9c) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add gridAutoRows to `<Tiles>`
 
 - [#2568](https://github.com/marigold-ui/marigold/pull/2568) [`51a95328`](https://github.com/marigold-ui/marigold/commit/51a95328331aa5d3f6d334ef3b205d6b70bf8f0f) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: improve headline with align and color property
 
@@ -1288,7 +1288,7 @@
 
 ### Minor Changes
 
-- [#2236](https://github.com/marigold-ui/marigold/pull/2236) [`a5b7e876`](https://github.com/marigold-ui/marigold/commit/a5b7e876c3a70351fc7fac889af9f89a1ab25f8c) Thanks [@sebald](https://github.com/sebald)! - feat: improve styling options of <List>
+- [#2236](https://github.com/marigold-ui/marigold/pull/2236) [`a5b7e876`](https://github.com/marigold-ui/marigold/commit/a5b7e876c3a70351fc7fac889af9f89a1ab25f8c) Thanks [@sebald](https://github.com/sebald)! - feat: improve styling options of `<List>`
 
 * [#2209](https://github.com/marigold-ui/marigold/pull/2209) [`c346ef60`](https://github.com/marigold-ui/marigold/commit/c346ef60aa4d64e66645ef5966fdf327a1d8337e) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: support forwarding refs in `<Link>`
 
@@ -1337,7 +1337,7 @@
 
 - [#2148](https://github.com/marigold-ui/marigold/pull/2148) [`33c54b37`](https://github.com/marigold-ui/marigold/commit/33c54b37cd96b232c2f81a38af64143be4b02283) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<TextArea>`
 
-* [#2150](https://github.com/marigold-ui/marigold/pull/2150) [`8f3c3e1b`](https://github.com/marigold-ui/marigold/commit/8f3c3e1b92eed5e432667ae8dae0a5f26a6dea3f) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<Select>``
+* [#2150](https://github.com/marigold-ui/marigold/pull/2150) [`8f3c3e1b`](https://github.com/marigold-ui/marigold/commit/8f3c3e1b92eed5e432667ae8dae0a5f26a6dea3f) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref for `<Select>`
 
 - [#2146](https://github.com/marigold-ui/marigold/pull/2146) [`9e6e0671`](https://github.com/marigold-ui/marigold/commit/9e6e0671908491566ac9d5a2f1f316145e7c2d6a) Thanks [@sebald](https://github.com/sebald)! - feat: forward ref of `<Checkbox>`
 
@@ -1392,11 +1392,11 @@
 
 ### Major Changes
 
-- [#2096](https://github.com/marigold-ui/marigold/pull/2096) [`a41bb8a3`](https://github.com/marigold-ui/marigold/commit/a41bb8a39ace6006bfc2351f6d4649305bc1d286) Thanks [@sebald](https://github.com/sebald)! - feat: <Stack> can align on x and y axis
+- [#2096](https://github.com/marigold-ui/marigold/pull/2096) [`a41bb8a3`](https://github.com/marigold-ui/marigold/commit/a41bb8a39ace6006bfc2351f6d4649305bc1d286) Thanks [@sebald](https://github.com/sebald)! - feat: `<Stack>` can align on x and y axis
 
-* [#2081](https://github.com/marigold-ui/marigold/pull/2081) [`93429e12`](https://github.com/marigold-ui/marigold/commit/93429e12e1f31c85fec0d92efd2a7b0013809b41) Thanks [@sebald](https://github.com/sebald)! - refa: separate selection/regular cell + use <Checkbox>
+* [#2081](https://github.com/marigold-ui/marigold/pull/2081) [`93429e12`](https://github.com/marigold-ui/marigold/commit/93429e12e1f31c85fec0d92efd2a7b0013809b41) Thanks [@sebald](https://github.com/sebald)! - refa: separate selection/regular cell + use `<Checkbox>`
 
-- [#2053](https://github.com/marigold-ui/marigold/pull/2053) [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255) Thanks [@sebald](https://github.com/sebald)! - refa: <Dialog>
+- [#2053](https://github.com/marigold-ui/marigold/pull/2053) [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255) Thanks [@sebald](https://github.com/sebald)! - refa: `<Dialog>`
 
 * [#2054](https://github.com/marigold-ui/marigold/pull/2054) [`3c86c3b7`](https://github.com/marigold-ui/marigold/commit/3c86c3b7399a525c2743a1a42b806f862b050cd3) Thanks [@sebald](https://github.com/sebald)! - refa: Move &lt;Label&gt; and &lt;HelpText&gt; to components root
 
@@ -1406,25 +1406,25 @@
   - allows to change placement
   - uses `useComponentStyles`
 
-* [#2092](https://github.com/marigold-ui/marigold/pull/2092) [`4d6da0bb`](https://github.com/marigold-ui/marigold/commit/4d6da0bb8171be6a2cacaa5caea4fc1e11043345) Thanks [@sebald](https://github.com/sebald)! - feat: <Inline> can align on x and y axis
+* [#2092](https://github.com/marigold-ui/marigold/pull/2092) [`4d6da0bb`](https://github.com/marigold-ui/marigold/commit/4d6da0bb8171be6a2cacaa5caea4fc1e11043345) Thanks [@sebald](https://github.com/sebald)! - feat: `<Inline>` can align on x and y axis
 
-- [#2074](https://github.com/marigold-ui/marigold/pull/2074) [`3aa2c100`](https://github.com/marigold-ui/marigold/commit/3aa2c100fce8884cf0e1ae8e848516923f0d8456) Thanks [@sebald](https://github.com/sebald)! - refa: Remove "variant" prop from <Box>, use `useComponentStyles` instead
+- [#2074](https://github.com/marigold-ui/marigold/pull/2074) [`3aa2c100`](https://github.com/marigold-ui/marigold/commit/3aa2c100fce8884cf0e1ae8e848516923f0d8456) Thanks [@sebald](https://github.com/sebald)! - refa: Remove "variant" prop from `<Box>`, use `useComponentStyles` instead
 
 ### Minor Changes
 
-- [#2029](https://github.com/marigold-ui/marigold/pull/2029) [`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104) Thanks [@sebald](https://github.com/sebald)! - feat: Accessible <Radio> and <RadioGroup>
+- [#2029](https://github.com/marigold-ui/marigold/pull/2029) [`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104) Thanks [@sebald](https://github.com/sebald)! - feat: Accessible `<Radio>` and `<RadioGroup>`
 
 * [#2036](https://github.com/marigold-ui/marigold/pull/2036) [`819dab0b`](https://github.com/marigold-ui/marigold/commit/819dab0bfe549f7fb6156cdb9938595ccbe32439) Thanks [@ti10le](https://github.com/ti10le)! - refa: remove align prop from Table
 
-- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: <Select>
+- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: `<Select>`
 
-* [#2052](https://github.com/marigold-ui/marigold/pull/2052) [`bf12129c`](https://github.com/marigold-ui/marigold/commit/bf12129c6d5d21bf372fd6ee7e3a28f6a03326c9) Thanks [@sebald](https://github.com/sebald)! - refa: Remove <ValidationMessage>
+* [#2052](https://github.com/marigold-ui/marigold/pull/2052) [`bf12129c`](https://github.com/marigold-ui/marigold/commit/bf12129c6d5d21bf372fd6ee7e3a28f6a03326c9) Thanks [@sebald](https://github.com/sebald)! - refa: Remove `<ValidationMessage>`
 
 - [#2034](https://github.com/marigold-ui/marigold/pull/2034) [`f761f1ef`](https://github.com/marigold-ui/marigold/commit/f761f1ef65a826eb8c70da2fa03e5caf3393c3b9) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Slider rewrite with react-aria and new styling
 
-* [#2056](https://github.com/marigold-ui/marigold/pull/2056) [`3abbc813`](https://github.com/marigold-ui/marigold/commit/3abbc8130c8b5156f3ca62f237dd59278354eb7c) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce <NumberFields>
+* [#2056](https://github.com/marigold-ui/marigold/pull/2056) [`3abbc813`](https://github.com/marigold-ui/marigold/commit/3abbc8130c8b5156f3ca62f237dd59278354eb7c) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce `<NumberFields>`
 
-- [#2025](https://github.com/marigold-ui/marigold/pull/2025) [`2b5a0967`](https://github.com/marigold-ui/marigold/commit/2b5a0967707534a1650f1258bebdd176c934dedc) Thanks [@sebald](https://github.com/sebald)! - fix: <TextField>/<TextArea> support variant/size
+- [#2025](https://github.com/marigold-ui/marigold/pull/2025) [`2b5a0967`](https://github.com/marigold-ui/marigold/commit/2b5a0967707534a1650f1258bebdd176c934dedc) Thanks [@sebald](https://github.com/sebald)! - fix: `<TextField>`/`<TextArea>` support variant/size
 
 * [#2070](https://github.com/marigold-ui/marigold/pull/2070) [`a4117230`](https://github.com/marigold-ui/marigold/commit/a4117230928f640938f4ce69098bb665b90fe194) Thanks [@sebald](https://github.com/sebald)! - feat: Add `width` prop to fields to control width
 
@@ -1446,25 +1446,25 @@
 
 ### Major Changes
 
-- [#2053](https://github.com/marigold-ui/marigold/pull/2053) [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255) Thanks [@sebald](https://github.com/sebald)! - refa: <Dialog>
+- [#2053](https://github.com/marigold-ui/marigold/pull/2053) [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255) Thanks [@sebald](https://github.com/sebald)! - refa: `<Dialog>`
 
 * [#2054](https://github.com/marigold-ui/marigold/pull/2054) [`3c86c3b7`](https://github.com/marigold-ui/marigold/commit/3c86c3b7399a525c2743a1a42b806f862b050cd3) Thanks [@sebald](https://github.com/sebald)! - refa: Move &lt;Label&gt; and &lt;HelpText&gt; to components root
 
 ### Minor Changes
 
-- [#2029](https://github.com/marigold-ui/marigold/pull/2029) [`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104) Thanks [@sebald](https://github.com/sebald)! - feat: Accessible <Radio> and <RadioGroup>
+- [#2029](https://github.com/marigold-ui/marigold/pull/2029) [`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104) Thanks [@sebald](https://github.com/sebald)! - feat: Accessible `<Radio>` and `<RadioGroup>`
 
 * [#2036](https://github.com/marigold-ui/marigold/pull/2036) [`819dab0b`](https://github.com/marigold-ui/marigold/commit/819dab0bfe549f7fb6156cdb9938595ccbe32439) Thanks [@ti10le](https://github.com/ti10le)! - refa: remove align prop from Table
 
-- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: <Select>
+- [#2048](https://github.com/marigold-ui/marigold/pull/2048) [`2ab80ae6`](https://github.com/marigold-ui/marigold/commit/2ab80ae677be0785cfa6e2bdf9f7ff2f3d38baec) Thanks [@sebald](https://github.com/sebald)! - refa: `<Select>`
 
-* [#2052](https://github.com/marigold-ui/marigold/pull/2052) [`bf12129c`](https://github.com/marigold-ui/marigold/commit/bf12129c6d5d21bf372fd6ee7e3a28f6a03326c9) Thanks [@sebald](https://github.com/sebald)! - refa: Remove <ValidationMessage>
+* [#2052](https://github.com/marigold-ui/marigold/pull/2052) [`bf12129c`](https://github.com/marigold-ui/marigold/commit/bf12129c6d5d21bf372fd6ee7e3a28f6a03326c9) Thanks [@sebald](https://github.com/sebald)! - refa: Remove `<ValidationMessage>`
 
 - [#2034](https://github.com/marigold-ui/marigold/pull/2034) [`f761f1ef`](https://github.com/marigold-ui/marigold/commit/f761f1ef65a826eb8c70da2fa03e5caf3393c3b9) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Slider rewrite with react-aria and new styling
 
-* [#2056](https://github.com/marigold-ui/marigold/pull/2056) [`3abbc813`](https://github.com/marigold-ui/marigold/commit/3abbc8130c8b5156f3ca62f237dd59278354eb7c) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce <NumberFields>
+* [#2056](https://github.com/marigold-ui/marigold/pull/2056) [`3abbc813`](https://github.com/marigold-ui/marigold/commit/3abbc8130c8b5156f3ca62f237dd59278354eb7c) Thanks [@sebald](https://github.com/sebald)! - feat: Introduce `<NumberFields>`
 
-- [#2025](https://github.com/marigold-ui/marigold/pull/2025) [`2b5a0967`](https://github.com/marigold-ui/marigold/commit/2b5a0967707534a1650f1258bebdd176c934dedc) Thanks [@sebald](https://github.com/sebald)! - fix: <TextField>/<TextArea> support variant/size
+- [#2025](https://github.com/marigold-ui/marigold/pull/2025) [`2b5a0967`](https://github.com/marigold-ui/marigold/commit/2b5a0967707534a1650f1258bebdd176c934dedc) Thanks [@sebald](https://github.com/sebald)! - fix: `<TextField>`/`<TextArea>` support variant/size
 
 ### Patch Changes
 
@@ -1481,7 +1481,7 @@
 
 ### Minor Changes
 
-- [#2016](https://github.com/marigold-ui/marigold/pull/2016) [`d79a590a`](https://github.com/marigold-ui/marigold/commit/d79a590aeb7dcbda23ddb40e3f712385c2b11da0) Thanks [@sebald](https://github.com/sebald)! - refa: <Checkbox> and <CheckboxGroup>
+- [#2016](https://github.com/marigold-ui/marigold/pull/2016) [`d79a590a`](https://github.com/marigold-ui/marigold/commit/d79a590aeb7dcbda23ddb40e3f712385c2b11da0) Thanks [@sebald](https://github.com/sebald)! - refa: `<Checkbox>` and `<CheckboxGroup>`
 
 * [#1987](https://github.com/marigold-ui/marigold/pull/1987) [`cc149c9a`](https://github.com/marigold-ui/marigold/commit/cc149c9aaaf11f78a58f0c6d51bc9f12720f18a4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): introduce Table component v1
 
@@ -1489,11 +1489,11 @@
 
 * [#1964](https://github.com/marigold-ui/marigold/pull/1964) [`08ee4bf5`](https://github.com/marigold-ui/marigold/commit/08ee4bf520779e1696b18d2959bed89e0bac2d39) Thanks [@sebald](https://github.com/sebald)! - refa: Use `<Field>` in `<TextArea>`
 
-- [#1997](https://github.com/marigold-ui/marigold/pull/1997) [`37d2fd69`](https://github.com/marigold-ui/marigold/commit/37d2fd69aafedd288490410dc56be1ede43bd41d) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: New component <Content>
+- [#1997](https://github.com/marigold-ui/marigold/pull/1997) [`37d2fd69`](https://github.com/marigold-ui/marigold/commit/37d2fd69aafedd288490410dc56be1ede43bd41d) Thanks [@sarahgm](https://github.com/sarahgm)! - feat: New component `<Content>`
 
 ### Patch Changes
 
-- [#2000](https://github.com/marigold-ui/marigold/pull/2000) [`121e2b3a`](https://github.com/marigold-ui/marigold/commit/121e2b3aa2fd1d87c534c92a9665678abe031d20) Thanks [@sebald](https://github.com/sebald)! - refa: remove unsued elements from <Aspect>
+- [#2000](https://github.com/marigold-ui/marigold/pull/2000) [`121e2b3a`](https://github.com/marigold-ui/marigold/commit/121e2b3aa2fd1d87c534c92a9665678abe031d20) Thanks [@sebald](https://github.com/sebald)! - refa: remove unsued elements from `<Aspect>`
 
 * [#2017](https://github.com/marigold-ui/marigold/pull/2017) [`5dfe5f88`](https://github.com/marigold-ui/marigold/commit/5dfe5f8869c7cd9f5ca912575990b211ee9d3a69) Thanks [@sarahgm](https://github.com/sarahgm)! - Button restructure
 
@@ -1505,7 +1505,7 @@
 
 * [#1999](https://github.com/marigold-ui/marigold/pull/1999) [`413df088`](https://github.com/marigold-ui/marigold/commit/413df088ed497a3dfb4221c31a1b68245f43e984) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: divider restructure
 
-- [#2008](https://github.com/marigold-ui/marigold/pull/2008) [`4ff1e2b6`](https://github.com/marigold-ui/marigold/commit/4ff1e2b6e668db90cfb7e2d04d9365c80dbf4cc2) Thanks [@sebald](https://github.com/sebald)! - refa: <Checkbox> (uses new styling)
+- [#2008](https://github.com/marigold-ui/marigold/pull/2008) [`4ff1e2b6`](https://github.com/marigold-ui/marigold/commit/4ff1e2b6e668db90cfb7e2d04d9365c80dbf4cc2) Thanks [@sebald](https://github.com/sebald)! - refa: `<Checkbox>` (uses new styling)
 
 * [#1992](https://github.com/marigold-ui/marigold/pull/1992) [`59f3e6f3`](https://github.com/marigold-ui/marigold/commit/59f3e6f31c00c422bc95b25fb0faf1b77bc9a273) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Link styles
 
@@ -1517,7 +1517,7 @@
 
 * [#1988](https://github.com/marigold-ui/marigold/pull/1988) [`7c1129dc`](https://github.com/marigold-ui/marigold/commit/7c1129dc140d435e5312f80a57fd48f8498c33ee) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Field Component restructure
 
-- [#2001](https://github.com/marigold-ui/marigold/pull/2001) [`b3246070`](https://github.com/marigold-ui/marigold/commit/b3246070c7bd3dcadb28e30140aead330a6b9ff1) Thanks [@sebald](https://github.com/sebald)! - refa: Use <Headline> instead of <Text>
+- [#2001](https://github.com/marigold-ui/marigold/pull/2001) [`b3246070`](https://github.com/marigold-ui/marigold/commit/b3246070c7bd3dcadb28e30140aead330a6b9ff1) Thanks [@sebald](https://github.com/sebald)! - refa: Use `<Headline>` instead of `<Text>`
 
 * [#2014](https://github.com/marigold-ui/marigold/pull/2014) [`cc01f7dc`](https://github.com/marigold-ui/marigold/commit/cc01f7dc5e9aae665511374b1352efa9f2c942bf) Thanks [@sarahgm](https://github.com/sarahgm)! - Text component restructure
 
@@ -1622,7 +1622,7 @@
 
 - [#1784](https://github.com/marigold-ui/marigold/pull/1784) [`99af3b37`](https://github.com/marigold-ui/marigold/commit/99af3b37de24599138777ed90de0445571c3095e) Thanks [@ti10le](https://github.com/ti10le)! - refa(comp): use interface instead of type
 
-* [#1727](https://github.com/marigold-ui/marigold/pull/1727) [`026300b1`](https://github.com/marigold-ui/marigold/commit/026300b1b539b57785c0eb0282a3d3fd763194bc) Thanks [@sebald](https://github.com/sebald)! - feat(components): <Text> add possibility to change font size via style props
+* [#1727](https://github.com/marigold-ui/marigold/pull/1727) [`026300b1`](https://github.com/marigold-ui/marigold/commit/026300b1b539b57785c0eb0282a3d3fd763194bc) Thanks [@sebald](https://github.com/sebald)! - feat(components): `<Text>` add possibility to change font size via style props
 
 ### Patch Changes
 
@@ -1677,7 +1677,7 @@
 
 - [#1269](https://github.com/marigold-ui/marigold/pull/1269) [`ebb704dd`](https://github.com/marigold-ui/marigold/commit/ebb704dd5fe1697482220face07bd4390ab34293) Thanks [@ti10le](https://github.com/ti10le)! - feature: section to select component
 
-* [#1189](https://github.com/marigold-ui/marigold/pull/1189) [`be8dc989`](https://github.com/marigold-ui/marigold/commit/be8dc989a418884fe12b0c772db71d10657a661d) Thanks [@sebald](https://github.com/sebald)! - feat(components): <Stack> correctly uses whitespace and supports usage as list
+* [#1189](https://github.com/marigold-ui/marigold/pull/1189) [`be8dc989`](https://github.com/marigold-ui/marigold/commit/be8dc989a418884fe12b0c772db71d10657a661d) Thanks [@sebald](https://github.com/sebald)! - feat(components): `<Stack>` correctly uses whitespace and supports usage as list
 
 - [#1378](https://github.com/marigold-ui/marigold/pull/1378) [`b0c967de`](https://github.com/marigold-ui/marigold/commit/b0c967de1097de50ff4de4c3b14a5bd6e236319b) Thanks [@ti10le](https://github.com/ti10le)! - feature: Textarea - make error boolean and add errorMessage
 
@@ -1716,7 +1716,7 @@
 
 * [#1521](https://github.com/marigold-ui/marigold/pull/1521) [`00588fef`](https://github.com/marigold-ui/marigold/commit/00588fef28270bdd0483701ffa8ec1f6bdbc3f01) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp/docs): change Inline component default align + use it in DoAndDont
 
-- [#1616](https://github.com/marigold-ui/marigold/pull/1616) [`ac186e8c`](https://github.com/marigold-ui/marigold/commit/ac186e8c6658bcd6a2892bbe4717c0d60c67e0b4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hardcoded variants in <Dialog>
+- [#1616](https://github.com/marigold-ui/marigold/pull/1616) [`ac186e8c`](https://github.com/marigold-ui/marigold/commit/ac186e8c6658bcd6a2892bbe4717c0d60c67e0b4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hardcoded variants in `<Dialog>`
 
 * [#1639](https://github.com/marigold-ui/marigold/pull/1639) [`71551547`](https://github.com/marigold-ui/marigold/commit/71551547e8da4a65ccb69cd785f1be19256aac3c) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hard coded label from Select
 
@@ -1726,7 +1726,7 @@
 
 - [#1230](https://github.com/marigold-ui/marigold/pull/1230) [`ebd6e26f`](https://github.com/marigold-ui/marigold/commit/ebd6e26f71f675b98b663bc45c6a2d5badddcd47) Thanks [@viktoria-schwarz](https://github.com/viktoria-schwarz)! - feat: add GlobalStyles via theme
 
-* [#1196](https://github.com/marigold-ui/marigold/pull/1196) [`d3a0698f`](https://github.com/marigold-ui/marigold/commit/d3a0698fc6503c208298537c1385a981af93d1d4) Thanks [@ti10le](https://github.com/ti10le)! - Add error and required prop to <Select>
+* [#1196](https://github.com/marigold-ui/marigold/pull/1196) [`d3a0698f`](https://github.com/marigold-ui/marigold/commit/d3a0698fc6503c208298537c1385a981af93d1d4) Thanks [@ti10le](https://github.com/ti10le)! - Add error and required prop to `<Select>`
 
 - [#1513](https://github.com/marigold-ui/marigold/pull/1513) [`686c4572`](https://github.com/marigold-ui/marigold/commit/686c4572bc75a3e2016a1ecc49cba9f4307719af) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): inline Component
 
@@ -1786,15 +1786,15 @@
 
 - [#1621](https://github.com/marigold-ui/marigold/pull/1621) [`2f7b936f`](https://github.com/marigold-ui/marigold/commit/2f7b936f5b07eade00a51cb138c3c492f1e08c9d) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): change Badge default variant
 
-* [#1589](https://github.com/marigold-ui/marigold/pull/1589) [`8cbcb91a`](https://github.com/marigold-ui/marigold/commit/8cbcb91a7b63ce8f10ee79ed76121e5022cbe07b) Thanks [@sebald](https://github.com/sebald)! - feat: normalize <SVG> and move to system package
+* [#1589](https://github.com/marigold-ui/marigold/pull/1589) [`8cbcb91a`](https://github.com/marigold-ui/marigold/commit/8cbcb91a7b63ce8f10ee79ed76121e5022cbe07b) Thanks [@sebald](https://github.com/sebald)! - feat: normalize `<SVG>` and move to system package
 
-  BREAKING: <SVG> moved from `@marigold/icons` to `@marigold/system`
+  BREAKING: `<SVG>` moved from `@marigold/icons` to `@marigold/system`
 
 - [#1641](https://github.com/marigold-ui/marigold/pull/1641) [`c49e5049`](https://github.com/marigold-ui/marigold/commit/c49e5049b1cb9621957ad14fa1e8b7bc8df9505d) Thanks [@sebald](https://github.com/sebald)! - chore(config): Update storyboook configuration and used CSF again
 
 * [#1636](https://github.com/marigold-ui/marigold/pull/1636) [`4aeac33f`](https://github.com/marigold-ui/marigold/commit/4aeac33f619e6f9caee36a71223b312cfe1b9401) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Field fix default variant + remove hardcoded variants
 
-- [#1550](https://github.com/marigold-ui/marigold/pull/1550) [`846eb640`](https://github.com/marigold-ui/marigold/commit/846eb640ad035c7f3410b4a8a451f8de56e62339) Thanks [@sebald](https://github.com/sebald)! - feat: Merge <Box> and <Element>
+- [#1550](https://github.com/marigold-ui/marigold/pull/1550) [`846eb640`](https://github.com/marigold-ui/marigold/commit/846eb640ad035c7f3410b4a8a451f8de56e62339) Thanks [@sebald](https://github.com/sebald)! - feat: Merge `<Box>` and `<Element>`
 
 * [#1509](https://github.com/marigold-ui/marigold/pull/1509) [`12b74338`](https://github.com/marigold-ui/marigold/commit/12b7433843c477ab722e464fde3aa1e1f058ee46) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): improve Column + Columns component
 
@@ -1818,7 +1818,7 @@
 
 * [#1572](https://github.com/marigold-ui/marigold/pull/1572) [`4add22cc`](https://github.com/marigold-ui/marigold/commit/4add22ccf06313b79802919205643a859665c7f3) Thanks [@sebald](https://github.com/sebald)! - feat(components): Harden types in theme
 
-- [#1474](https://github.com/marigold-ui/marigold/pull/1474) [`abdde032`](https://github.com/marigold-ui/marigold/commit/abdde0326428a1fa5db340197e71ca0190e7780e) Thanks [@sebald](https://github.com/sebald)! - refa: remove useStyles from <Alert>
+- [#1474](https://github.com/marigold-ui/marigold/pull/1474) [`abdde032`](https://github.com/marigold-ui/marigold/commit/abdde0326428a1fa5db340197e71ca0190e7780e) Thanks [@sebald](https://github.com/sebald)! - refa: remove useStyles from `<Alert>`
 
 * [#1484](https://github.com/marigold-ui/marigold/pull/1484) [`24367e63`](https://github.com/marigold-ui/marigold/commit/24367e63477a2345b856302115bb59d931da1ba4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove useStyles from Select
 
