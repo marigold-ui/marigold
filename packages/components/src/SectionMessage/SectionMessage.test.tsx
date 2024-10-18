@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { SectionMessage } from './SectionMessage';
@@ -45,6 +46,7 @@ const theme: Theme = {
 };
 
 const { render } = setup({ theme });
+const user = userEvent.setup();
 
 test('message container supports base styling and themeSection', () => {
   render(
@@ -135,4 +137,25 @@ test('set alert role if variant is "error"', () => {
   const message = screen.getByTestId(/messages/);
 
   expect(message).toHaveAttribute('role', 'alert');
+});
+
+test('allow to close message with button in message', async () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <SectionMessage data-testid="messages" variant="error" closeButton>
+        <SectionMessage.Title>messages</SectionMessage.Title>
+        <SectionMessage.Content>default</SectionMessage.Content>
+      </SectionMessage>
+    </ThemeProvider>
+  );
+  const message = screen.getByTestId(/messages/);
+  const button = screen.getByRole('button');
+
+  expect(message).toBeInTheDocument();
+  expect(button).toBeInTheDocument();
+  expect(button).toHaveAttribute('aria-label');
+
+  await user.click(button);
+
+  expect(message).not.toBeInTheDocument();
 });
