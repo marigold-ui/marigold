@@ -15,13 +15,14 @@ interface CloseButtonProps {
 const CloseButton = ({ className }: CloseButtonProps) => {
   const { close } = useContext(OverlayTriggerStateContext);
   return (
-    <div className="ml-4 flex items-center justify-end [grid-area:button]">
+    <div className="absolute right-2 top-2 ml-4">
       <button
         className={cn(
           'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
           className
         )}
         onClick={close}
+        slot="dismiss-button"
       >
         <svg viewBox="0 0 20 20" fill="currentColor">
           <path
@@ -117,8 +118,9 @@ const _Dialog = ({
     <Dialog
       {...props}
       className={cn(
+        'has-[button[slot="dismiss-button"]]:pt-10',
         'relative outline-none [&>*:not(:last-child)]:mb-4',
-        "grid [grid-template-areas:'title_button'_'content_content'_'actions_actions'_'footer_footer']",
+        "grid [grid-template-areas:'title'_'content'_'actions'_'footer']",
         classNames.container
       )}
     >

@@ -65,7 +65,7 @@ export const Basic: Story = {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog closeButton>
+        <Dialog>
           <Dialog.Title>This is a headline!</Dialog.Title>
           <Text>This is some not so very long text.</Text>
         </Dialog>
