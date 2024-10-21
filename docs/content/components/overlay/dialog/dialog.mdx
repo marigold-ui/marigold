@@ -4,37 +4,21 @@ caption: Component for displaying dialogs.
 badge: updated
 ---
 
-The `<Dialog>` is an overlay component. This means it displays a modal as a reaction to an event. It appears in the middle of the display and blurs out the underlay.
+The `<Dialog>` component is a versatile UI element used to display important content that requires user interaction, typically in a modal or popup window. It is designed to temporarily interrupt the user's workflow to present critical information, request confirmation, or facilitate a task without navigating away from the current page.
 
-This component can be styled in different parts. It has parts like closeButton and container, which is the component itself, and these parts can be styled separately.
+Key features of the `<Dialog>` component include customizable content, support for multiple dialog sizes, focus trapping for accessibility, and optional overlay to dim the background. It can be used for alerts, forms, confirmations, or any interactive modal interface.
 
-Additionally, the `<Dialog>` is composed of other flexible parts: `<Dialog.Title>`, `<Dialog.Content>`, `<Dialog.Action>`, and `<Dialog.Footer`. The `<Dialog.Content>` holds the primary content or message, while the `<Dialog.Action>` defines interactive buttons for user decisions. `<Dialog.Footer>` can be used to place additional information , ensuring clear separation and organization within the dialog.
+## Anatomy
 
-A special feature is that you can also pass props to the `<Dialog.Trigger>` and on the `<Dialog>` itself. The closeButton is an optional property that allows you to close the `<Dialog>`.
-
-The `<Dialog>` can also be controlled programmatically, for example, when used within a `<Menu>`.
-
-## Import
-
-```tsx
-import { Dialog } from '@marigold/components';
-```
+TODO
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
 
-## Props
-
-### Dialog
-
-<PropsTable component={title} />
-
-### Dialog.Trigger
-
-<PropsTable component="DialogTrigger" />
-
-## Examples
+## Usage
 
 ### Form Dialog
 
@@ -54,3 +38,29 @@ This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu
 For that you have to use a `<Dialog.Trigger>`, but without that you don't have to use a `<Button>` to trigger the dialog, you can write it directly.
 
 <ComponentDemo file="./menu-open-dialog.demo.tsx" />
+
+## Props
+
+### Dialog
+
+<PropsTable component={title} />
+
+### Dialog.Trigger
+
+<PropsTable component="DialogTrigger" />
+
+### Dialog.Title
+
+<PropsTable component="DialogTitle" />
+
+### Dialog.Content
+
+<PropsTable component="DialogContent" />
+
+### Dialog.Actions
+
+<PropsTable component="DialogActions" />
+
+### Dialog.Footer
+
+<PropsTable component="DialogFooter" />
