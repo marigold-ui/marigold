@@ -65,7 +65,7 @@ export const Basic: Story = {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog>
+        <Dialog closeButton>
           <Dialog.Title>This is a headline!</Dialog.Title>
           <Text>This is some not so very long text.</Text>
         </Dialog>
@@ -82,7 +82,7 @@ export const Form: Story = {
         <Dialog closeButton>
           {({ close }) => (
             <>
-              <Dialog.Title>Please log into account</Dialog.Title>
+              <Dialog.Title>Please log into account </Dialog.Title>
               <Dialog.Content>
                 <TextField label="Username" />
                 <TextField label="Password" type="password" />
