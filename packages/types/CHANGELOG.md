@@ -1,5 +1,17 @@
 # @marigold/types
 
+## 1.2.0
+
+### Minor Changes
+
+- 2babc0b: feat(components): Mark layout components as regions for accessibility.
+
+  Added the ability to mark layout components as regions (ARIA role). This improves accessibility by allowing assistive technologies to identify significant sections of the page, making navigation easier for users with disabilities.
+
+- 956982a: feat(components): Make `<Text>` and `<Headline>` accessible by allowing ARIA labelling props
+
+  `<Text>` and `<Headline>` will no longer cause type errors when ARIA labelling is used (`aria-label`, `id`, ...).
+
 ## 1.1.1
 
 ### Patch Changes
