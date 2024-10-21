@@ -118,7 +118,6 @@ const _Dialog = ({
     <Dialog
       {...props}
       className={cn(
-        // 'has-[button[slot="dismiss-button"]]:pt-10',
         'relative outline-none [&>*:not(:last-child)]:mb-4',
         "grid [grid-template-areas:'title'_'content'_'actions'_'footer']",
         classNames.container
