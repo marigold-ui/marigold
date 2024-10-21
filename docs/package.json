@@ -58,8 +58,8 @@
   "devDependencies": {
     "@internationalized/date": "3.5.6",
     "@types/node": "20.16.12",
-    "@types/react": "18.3.9",
-    "@types/react-dom": "18.3.0",
+    "@types/react": "18.3.11",
+    "@types/react-dom": "18.3.1",
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.5.4",
     "unist-builder": "4.0.0",
