@@ -52,7 +52,7 @@ export const Hotkey = ({ letter, className }: HotKeyProps) => {
   }
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
   return (
-    <span className={cn('opacity-50', className)}>
+    <span className={cn('opacity-50', className)} aria-hidden="true">
       ({isMacOS ? '⌘' : 'Ctrl+'}
       {letter})
     </span>
