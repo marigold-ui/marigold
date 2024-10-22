@@ -81,6 +81,28 @@ We don't explicit need to use a `onChange` event, instead of using useState and 
 
 There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form components already have error properties and error messages build in. Now it should be combined. In the `handleSubmit` function we check if the recived data is valid, if that isn't the case we give the error value to the component and display the error message.
 
+### Third party libraries
+
+#### Zod
+
+Zod is a TypeScript-first schema declaration and validation library. The term "schema" to broadly refer to any data type, from a simple string to a complex nested object.
+
+It's designed to be as developer-friendly as possible. The goal is to eliminate duplicative type declarations. With Zod, you declare a validator once and Zod will automatically infer the static TypeScript type. It's easy to compose simpler types into complex data structures.
+
+In the following example you can see how a form with all its fields can be submitted. The submitted data will be displayed in an alert message.
+
+For validating the form we are using [`zod`](https://zod.dev/). It is a library for building schemas, which can be used to validate inputs. It is especially useful when you have more complex validation rules.
+
+<ComponentDemo file="./validation-zod.demo.tsx" />{' '}
+
+#### react-hook-form
+
+React Hook Form is a library for managing form state and validation in React applications using hooks. It allows you to create forms with minimal boilerplate and provides a simple and efficient way to handle form validation, submission, and error handling.
+
+With React Hook Form, you can easily manage form state without the need for controlled components, making your code cleaner and more concise. It also offers performance benefits by reducing unnecessary re-renders.
+
+For some examples have a look at [Building Forms](/patterns/building-forms#handling-complex-forms-and-form-state) section.
+
 ## Related
 
 <TeaserList
