@@ -1,8 +1,8 @@
 ---
-"@marigold/docs": major
-"@marigold/components": major
-"@marigold/system": major
-"@marigold/theme-b2b": major
+'@marigold/docs': major
+'@marigold/components': major
+'@marigold/system': major
+'@marigold/theme-b2b': major
 ---
 
 refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
