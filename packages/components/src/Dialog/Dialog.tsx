@@ -73,6 +73,7 @@ const _Dialog = ({
       close: state?.close || (() => {}),
     });
   }
+
   return (
     <Dialog
       {...props}
