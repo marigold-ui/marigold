@@ -32,7 +32,7 @@ const SectionLink = ({
 
 // Page
 // ---------------
-export const Page = () => (
+const Page = () => (
   <main className="grid justify-center px-[--page-padding-md] xl:px-[--page-padding-xl]">
     {/* Hero */}
     <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-screen-lg place-items-center text-center">
