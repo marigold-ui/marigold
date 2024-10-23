@@ -4,7 +4,6 @@ import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { DialogActions } from './DialogActions';
 import { DialogContent } from './DialogContent';
-import { DialogFooter } from './DialogFooter';
 import { DialogTitle } from './DialogTitle';
 import { DialogTrigger } from './DialogTrigger';
 
@@ -79,7 +78,7 @@ const _Dialog = ({
       {...props}
       className={cn(
         'relative outline-none [&>*:not(:last-child)]:mb-4',
-        "grid [grid-template-areas:'title_button'_'content_content'_'actions_actions'_'footer_footer']",
+        "grid [grid-template-areas:'title_button'_'content_content'_'actions_actions']",
         classNames.container
       )}
     >
@@ -93,6 +92,5 @@ _Dialog.Trigger = DialogTrigger;
 _Dialog.Title = DialogTitle;
 _Dialog.Content = DialogContent;
 _Dialog.Actions = DialogActions;
-_Dialog.Footer = DialogFooter;
 
 export { _Dialog as Dialog };

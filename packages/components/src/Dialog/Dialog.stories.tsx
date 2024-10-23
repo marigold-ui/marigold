@@ -140,9 +140,9 @@ export const ScrollableContent: Story = {
             </div>
           </Stack>
         </Dialog.Content>
-        <Dialog.Footer>
+        <Dialog.Actions>
           <Button variant="primary">ok</Button>
-        </Dialog.Footer>
+        </Dialog.Actions>
       </Dialog>
     </Dialog.Trigger>
   ),
@@ -175,9 +175,9 @@ export const StickyFooter: Story = {
               </Text>
             </Dialog.Content>
           </div>
-          <Dialog.Footer>
+          <Dialog.Actions>
             <Button variant="primary">Ok</Button>
-          </Dialog.Footer>
+          </Dialog.Actions>
         </div>
       </Dialog>
     </Dialog.Trigger>
@@ -218,7 +218,7 @@ export const WithDialogController: Story = {
                 <Dialog.Content>
                   <Text>Do you really wanna delete this?</Text>
                 </Dialog.Content>
-                <Dialog.Footer>
+                <Dialog.Actions>
                   <Inline space={5}>
                     <Button size="small" variant="ghost" onPress={close}>
                       Cancel
@@ -227,7 +227,7 @@ export const WithDialogController: Story = {
                       Delete
                     </Button>
                   </Inline>
-                </Dialog.Footer>
+                </Dialog.Actions>
               </>
             )}
           </Dialog>

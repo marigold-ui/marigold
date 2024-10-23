@@ -31,6 +31,9 @@ const theme: Theme = {
           },
         },
       }),
+      header: cva(''),
+      content: cva(''),
+      actions: cva(''),
     },
     Headline: cva(''),
     Header: cva(''),
@@ -251,20 +254,6 @@ test('supports dialog actions', () => {
 
   const loginButton = screen.getByText('Login');
   expect(loginButton).toBeInTheDocument();
-});
-
-test('supports dialog footer', () => {
-  render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Dialog.Footer>Footer</Dialog.Footer>
-    </Dialog.Trigger>
-  );
-  const button = screen.getByText('Open');
-  fireEvent.click(button);
-
-  const footer = screen.getByText('Footer');
-  expect(footer).toBeInTheDocument();
 });
 
 test('child function is passed an id for the dialog title (a11y)', () => {

@@ -18,4 +18,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       },
     }
   ),
+  header: cva(''),
+  content: cva(''),
+  actions: cva(''),
 };
