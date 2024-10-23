@@ -19,7 +19,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       },
     }
   ),
-  header: cva(''),
+  header: cva('flex items-center'),
   content: cva(''),
-  actions: cva(''),
+  actions: cva('flex gap-2'),
 };

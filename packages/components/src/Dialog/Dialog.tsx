@@ -64,15 +64,14 @@ const _Dialog = ({
   ...props
 }: DialogProps) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
-  let state = useContext(OverlayTriggerStateContext);
+  const state = useContext(OverlayTriggerStateContext);
 
-  let children = props.children;
-
-  if (typeof children === 'function') {
-    children = children({
-      close: state?.close || (() => {}),
-    });
-  }
+  const children =
+    typeof props.children === 'function'
+      ? props.children({
+          close: state?.close || (() => {}),
+        })
+      : props.children;
 
   return (
     <Dialog

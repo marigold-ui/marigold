@@ -1,9 +1,21 @@
 import type { ReactNode } from 'react';
+import { cn, useClassNames } from '@marigold/system';
 
 export interface DialogContentProps {
   children?: ReactNode;
+  variant?: string;
+  size?: string;
 }
 
-export const DialogContent = ({ children }: DialogContentProps) => (
-  <div className="[grid-area:content]">{children}</div>
-);
+export const DialogContent = ({
+  variant,
+  size,
+  children,
+}: DialogContentProps) => {
+  const classNames = useClassNames({ component: 'Dialog', variant, size });
+  return (
+    <div className={cn('[grid-area:content]', classNames.container)}>
+      {children}
+    </div>
+  );
+};
