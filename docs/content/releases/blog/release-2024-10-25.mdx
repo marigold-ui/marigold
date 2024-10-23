@@ -1,5 +1,5 @@
 ---
-title: Title in Progress
+title: I don't know a title
 date: 2024-10-25
 type: Blog
 changed:
@@ -7,20 +7,24 @@ changed:
   - component/form/select
   - component/form/combobox
   - component/form/autocomplete
+  - component/content/sectionmessage
 ---
 
-This release introduces several major and minor changes, along with patches that improve accessibility, component flexibility, and consistency across the Marigold. Here’s a breakdown:
+Hi Marigold users! Following our recent heads-up about Marigold Version 10.0, we're excited to share the details of this major release. With this update, we're introducing significant breaking changes alongside new features and improvements.
+
+Previously, we informed you that this release is crucial for enhancing flexibility and accessibility within Marigold. Now, let’s dive deeper into what you can expect.
 
 ## Breaking Change
 
 ### Dialog component
 
-- `<Dialog.Headline>` is renamed to `<Dialog.Title>`
-- New subcomponents: `<Dialog.Content>`, `<Dialog.Actions>`, and `<Dialog.Footer>` offer better organization and flexibility.
-- The dialog layout now uses a grid system for consistent ordering and structure.
+We've restructured the `<Dialog>` component for greater customization and usability:
 
-**Why we did this:**
-With this we improved the dialog to be more customazible. It can implement existing styles from the core and has an easier usage for our users.
+- Renamed: `<Dialog.Headline>` is now `<Dialog.Title>`.
+- New Subcomponents: Introduced `<Dialog.Content>`, `<Dialog.Actions>`, and `<Dialog.Footer>` for better organization and flexibility.
+- Grid Layout: The internal dialog layout now uses grid areas to ensure consistent ordering and alignment.
+
+**Why we did this:** These updates allow the dialog to be more customizable and compatible with existing styles from the core system. It simplifies the component structure, making it easier for users to implement.
 
 <SectionMessage>
   <SectionMessage.Title>
@@ -35,61 +39,63 @@ With this we improved the dialog to be more customazible. It can implement exist
 
 - Refactored the Section (from Listbox) to fit our API, no need for the extra Header anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
 
-**Why we did this:** We wanted to get away from the "general reusable" components, like `<Header>` and adjust it as prop for the sections.
+**Why we did this:** We’ve streamlined the usage of the `Section` component, removing the need for a generic reusable `<Header>` and simplifying it into a prop for better clarity and ease of use.
+
+<SectionMessage>
+  <SectionMessage.Title>What you have to do:</SectionMessage.Title>
+  <SectionMessage.Content>
+    Update your headers in the select component.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ### Item component
 
-- Renamed `Item` to `Option` in `<Combobox>` and `<Autocomplete>` to align with `<Select.Option>`
+- Renamed `Item` to `Option` in `<ComboBox>` and `<Autocomplete>` to align with `<Select.Option>`
 
 **Why we did this:** We wanted to align the spelling from the items. Now all selectable options are called options.
 
+<SectionMessage>
+  <SectionMessage.Title>
+  What you have to do:
+  </SectionMessage.Title>
+  <SectionMessage.Content>
+ Update all `<Autocomplete.Item>` and `<ComboBox.Item>` to `<Autocomplete.Option>` and `<ComboBox.Option>`
+  </SectionMessage.Content>
+</SectionMessage>
+
 ## New
 
-We’ve reimagined our theming system from the ground up. You can now:
+### Components
 
-Toggle dark mode in a single click.
-Define custom color schemes with easy CSS variable support.
-Build dynamic themes based on user preferences—no complex CSS required.
+- **Dialog**: Now supports a new size prop for more flexible sizing.
+- **Autocomplete and Combobox**: These components now support sections.
+- **SectionMessage**: added a close button to allow the user to dismiss the `<SectionMessage>` this is now aligned with our feedback message pattern.
+- **XLoader**: added prop `mode` to support inline and full-section loading.
 
-With performance optimizations in v2.0, your app’s UI will load faster and feel more responsive:
+### Types
 
-Smaller bundle sizes: We’ve trimmed down the library for better performance.
-Lazy loading: Load components on demand to keep things snappy.
-Optimized rendering: Minimized reflows and repaints for improved performance.
-♿ 4. Accessibility That Works Out of the Box
-We believe in making the web accessible to all. With improved ARIA support, better keyboard navigation, and enhanced screen reader compatibility, v2.0 ensures your app is usable by everyone.
+- **Selection**: We now expose `Selection` type for easy usage with `<Table>` and other components.
+
+### Accessibility
+
+- **ARIA Role for Layout Components:** Layout components can now be marked as regions, improving accessibility by helping assistive technologies identify key sections of the page.
+- **Accessible ARIA Labelling:** `<Text>` and `<Headline>` components now support ARIA labeling props (aria-label, id, etc.) without causing type errors.
+- **Accessibility page:** Added a [dedicated page](/foundations/accessibility) about Accessibility in our documentation.
+
+### Docs improvements
+
+We’ve introduced several updates to enhance the usability and structure of our documentation:
+
+- **New Landing Page:** As you may already saw, we provided a new landing page for our documentation. With this user-friendly landing page, we can effectively helps visitors orient themselves, understand the purpose of the design system, and the user can easily navigate to relevant sections.
+- **Streamlined Structure:** We also cleaned up the documentation structure, we reduced old content, structured the navigation and tidy up related pages according the new structure.
+- **Component Pages:** Of course we also provided more updated guidelines for component pages, like `<SectionMessag>` or `<MarigoldProvider>`.
+- **Release Blog:** And we now have these new release blog, you are currently reading, to keep users informed about recent changes, new features, and important announcements, ensuring they are always up-to-date with the latest information.
 
 ## Changes
 
-Our documentation has been revamped for clarity and ease of use:
-
-Interactive code examples and live playgrounds for real-time testing.
-Step-by-step guides for React, Vue, and vanilla JS integrations.
-A streamlined customization guide to make theming and extending components simple.
+- **Checkbox Group:** The `<Checkbox.Group>` can now be used as a compound component, aligning it with the structure of other components.
 
 ## Bug fixes
 
-### @marigold/components
-
-- Card Layouts: For building stunning, responsive grids.
-- Advanced Tables: With built-in sorting, filtering, and pagination.
-- Notification Toasts: Fully customizable, ideal for real-time feedback.
-- Sidebars & Drawers: Smooth, mobile-friendly navigation components.
-- Skeleton Loaders: Keep users engaged while content loads.
-
-### @marigold/system
-
-- fixed blablabla
-
-## Why Upgrade to v2.0?
-
-Marigold UI v2.0 offers a significant upgrade in terms of performance, customization, and ease of use. By upgrading, you’ll be able to:
-
-Build UIs faster with new, ready-to-use components.
-Customize every aspect of your design system without hassle.
-Offer a superior user experience with faster loading and better accessibility.
-Migrating from v1.x? We’ve got you covered! Check out our migration guide for an easy, hassle-free update.
-
-## What’s Next for Marigold UI?
-
-We’re just getting started! In the coming months, expect more components, performance improvements, and an upcoming Figma plugin to bridge the gap between design and development.
+- **Focus Fixes:** We’ve addressed an issue where the focus ring wasn’t displaying correctly for `<Checkbox>`, ensuring that it now shows up properly when used in a table context.
+- **Menu Accessibility:** Fixed the issue of passing the aria-label to the menu button, instead its now passed to the menu itself.
