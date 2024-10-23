@@ -82,7 +82,7 @@ export const Form: Story = {
         <Dialog closeButton>
           {({ close }) => (
             <>
-              <Dialog.Title>Please log into account</Dialog.Title>
+              <Dialog.Title>Please log into account </Dialog.Title>
               <Dialog.Content>
                 <TextField label="Username" />
                 <TextField label="Password" type="password" />

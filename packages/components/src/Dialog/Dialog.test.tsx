@@ -369,7 +369,7 @@ test('dialog has variant classnames', () => {
     'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
   );
   expect(dialog.className).toMatchInlineSnapshot(
-    `"relative outline-none [&>*:not(:last-child)]:mb-4 grid [grid-template-areas:'title_button'_'content_content'_'actions_actions'_'footer_footer'] p-5 bg-green-400"`
+    `"relative outline-none [&>*:not(:last-child)]:mb-4 grid [grid-template-areas:'title'_'content'_'actions'_'footer'] p-5 bg-green-400"`
   );
 });
 

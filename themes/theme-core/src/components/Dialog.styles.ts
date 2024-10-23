@@ -8,7 +8,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     'hover:bg-bg-brand-hover',
   ]),
   container: cva(
-    'bg-bg-surface-overlay shadow-surface-overlay rounded-sm px-8 pb-8 pt-4',
+    'bg-bg-surface-overlay shadow-surface-overlay rounded-sm pl-8 pr-12 pb-8 pt-4',
     {
       variants: {
         size: {
