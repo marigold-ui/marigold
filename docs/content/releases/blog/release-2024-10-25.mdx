@@ -1,18 +1,47 @@
 ---
-title: Big news from Marigold
+title: Title in Progress
 date: 2024-10-25
 type: Blog
 changed:
-  - components/content/card
-  - component/layout/inline
-  - component/layout/stack
+  - components/overlay/dialog
+  - component/form/select
+  - component/form/combobox
+  - component/form/autocomplete
 ---
 
-We’re thrilled to introduce Marigold UI v2.0—a major upgrade designed to make building beautiful, accessible interfaces faster and easier than ever. Whether you’re crafting an enterprise-level web app or a sleek personal project, v2.0 offers the tools and flexibility you need to create polished UIs with minimal effort.
+This release introduces several major and minor changes, along with patches that improve accessibility, component flexibility, and consistency across the Marigold. Here’s a breakdown:
 
 ## Breaking Change
 
-We’re thrilled to introduce Marigold UI v2.0—a major upgrade designed to make building beautiful, accessible interfaces faster and easier than ever. Whether you’re crafting an enterprise-level web app or a sleek personal project, v2.0 offers the tools and flexibility you need to create polished UIs with minimal effort.
+### Dialog component
+
+- `<Dialog.Headline>` is renamed to `<Dialog.Title>`
+- New subcomponents: `<Dialog.Content>`, `<Dialog.Actions>`, and `<Dialog.Footer>` offer better organization and flexibility.
+- The dialog layout now uses a grid system for consistent ordering and structure.
+
+**Why we did this:**
+With this we improved the dialog to be more customazible. It can implement existing styles from the core and has an easier usage for our users.
+
+<SectionMessage>
+  <SectionMessage.Title>
+  What you have to do:
+  </SectionMessage.Title>
+  <SectionMessage.Content>
+  Update existing `<Dialog>` component implementations to adopt the new structure.
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Select component
+
+- Refactored the Section (from Listbox) to fit our API, no need for the extra Header anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
+
+**Why we did this:** We wanted to get away from the "general reusable" components, like `<Header>` and adjust it as prop for the sections.
+
+### Item component
+
+- Renamed `Item` to `Option` in `<Combobox>` and `<Autocomplete>` to align with `<Select.Option>`
+
+**Why we did this:** We wanted to align the spelling from the items. Now all selectable options are called options.
 
 ## New
 
