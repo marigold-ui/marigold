@@ -76,7 +76,6 @@ const meta = {
     disabled: false,
     required: false,
     error: false,
-    open: false,
   },
 } satisfies Meta<typeof DatePicker>;
 
@@ -136,6 +135,18 @@ export const MinMax: Story = {
         errorMessage="This is an error"
         minValue={new CalendarDate(2019, 6, 5)}
         maxValue={new CalendarDate(2019, 6, 20)}
+        {...args}
+      />
+    </I18nProvider>
+  ),
+};
+
+export const UnavailableDate: Story = {
+  render: args => (
+    <I18nProvider locale="de-DE">
+      <DatePicker
+        label="Date Picker"
+        dateUnavailable={date => date.toDate('Europe/Berlin').getDate() !== 1}
         {...args}
       />
     </I18nProvider>
