@@ -17,7 +17,7 @@ export const DialogContent = ({
 }: DialogContentProps) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
   return (
-    <div className={cn('[grid-area:content]', classNames.container)}>
+    <div className={cn('[grid-area:content]', classNames.content)}>
       {children}
     </div>
   );
