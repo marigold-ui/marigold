@@ -2,6 +2,9 @@ import type { ReactNode } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 
 export interface DialogActions {
+  /**
+   * Children of the component.
+   */
   children?: ReactNode;
   variant?: string;
   size?: string;
