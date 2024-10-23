@@ -178,8 +178,8 @@ export const ControlledTable: Story = {
 
 // https://react-spectrum.adobe.com/react-aria/useTable.html#nested-columns
 export const NestedColumns: Story = {
-  render: () => (
-    <Table aria-label="Example table for nested columns">
+  render: args => (
+    <Table aria-label="Example table for nested columns" {...args}>
       <Table.Header>
         <Table.Column title="Name">
           <Table.Column isRowHeader>First Name</Table.Column>
@@ -221,10 +221,11 @@ export const NestedColumns: Story = {
 };
 
 export const Empty: Story = {
-  render: () => (
+  render: args => (
     <Table
       aria-label="Example table for nested columns"
       emptyState={() => 'No results found.'}
+      {...args}
     >
       <Table.Header>
         <Table.Column>First Name</Table.Column>
@@ -238,7 +239,7 @@ export const Empty: Story = {
 };
 
 export const Sorting: Story = {
-  render: () => {
+  render: args => {
     const data = [
       {
         name: 'Luke Skywalker',
@@ -325,6 +326,7 @@ export const Sorting: Story = {
           sortDescriptor={descriptor}
           onSortChange={sort}
           selectionMode="multiple"
+          {...args}
         >
           <Table.Header>
             <Table.Column key="name" allowsSorting>
@@ -448,8 +450,12 @@ export const Expanded: Story = {
 };
 
 export const Static: Story = {
-  render: () => (
-    <Table aria-label="Table without interaction" selectionMode="none">
+  render: args => (
+    <Table
+      aria-label="Table without interaction"
+      selectionMode="none"
+      {...args}
+    >
       <Table.Header>
         <Table.Column>Name</Table.Column>
         <Table.Column>Firstname</Table.Column>
@@ -511,8 +517,8 @@ const rows = [
   },
 ] as const;
 
-const DataTable = ({ editable }: { editable: boolean }) => (
-  <Table aria-label="Data Table">
+const DataTable = ({ editable, ...rest }: { editable: boolean }) => (
+  <Table aria-label="Data Table" {...rest}>
     <Table.Header columns={columns}>
       {col => <Table.Column>{col.name}</Table.Column>}
     </Table.Header>
@@ -535,7 +541,7 @@ const DataTable = ({ editable }: { editable: boolean }) => (
 );
 
 export const WithParentProp: Story = {
-  render: () => {
+  render: args => {
     const [editable, setEditable] = React.useState(true);
 
     return (
@@ -543,7 +549,7 @@ export const WithParentProp: Story = {
         <Checkbox checked={editable} onChange={setEditable}>
           Allow editing
         </Checkbox>
-        <DataTable editable={editable} />
+        <DataTable editable={editable} {...args} />
       </Stack>
     );
   },
@@ -594,8 +600,8 @@ export const WithAlignedColumns: Story = {
 };
 
 export const SelectedTable: Story = {
-  render: () => (
-    <Table aria-label="Data Table">
+  render: args => (
+    <Table aria-label="Data Table" {...args}>
       <Table.Header columns={columns}>
         {col => <Table.Column>{col.name}</Table.Column>}
       </Table.Header>
