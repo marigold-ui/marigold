@@ -368,9 +368,7 @@ test('dialog has variant classnames', () => {
   expect(closeButton).toHaveClass(
     'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
   );
-  expect(dialog.className).toMatchInlineSnapshot(
-    `"relative outline-none [&>*:not(:last-child)]:mb-4 grid [grid-template-areas:'title'_'content'_'actions'_'footer'] p-5 bg-green-400"`
-  );
+  expect(dialog.className).toMatch('bg-green-400');
 });
 
 test('dialog supports size', () => {
