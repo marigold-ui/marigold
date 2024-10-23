@@ -29,6 +29,7 @@ import { CopyButton } from './CopyButton';
 import { Do, Dont, GuidelineTiles } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
+import { Logo } from './Logo';
 import { PropsTable } from './PropsTable';
 import { StorybookHintMessage } from './StorybookHintMessage';
 import { TeaserCard, TeaserList } from './TeaserCard';
@@ -156,6 +157,7 @@ const components = {
   FontWeights,
   Headlines,
   IconList,
+  Logo,
   PropsTable,
   Spacing,
   StorybookHintMessage,
