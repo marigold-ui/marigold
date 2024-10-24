@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { TextArea } from '@marigold/components';
+import type { Selection } from '@marigold/components';
 import { Button } from '../Button';
 import { Center } from '../Center';
 import { Checkbox } from '../Checkbox';
@@ -149,7 +150,7 @@ export const ControlledTable: Story = {
         year: '1981',
       },
     ];
-    const [selectedKeys, setSelectedKeys] = useState(new Set());
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
     const selected = Array.from(selectedKeys);
     return (
       <Stack space={3}>
@@ -157,7 +158,7 @@ export const ControlledTable: Story = {
           aria-label="Example dynamic collection table"
           selectionMode="multiple"
           {...args}
-          onSelectionChange={key => setSelectedKeys(new Set(key))}
+          onSelectionChange={setSelectedKeys}
         >
           <Table.Header columns={columns}>
             {column => <Table.Column>{column.name}</Table.Column>}
