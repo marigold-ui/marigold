@@ -1,4 +1,5 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Theme, cva } from '@marigold/system';
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
@@ -38,6 +39,7 @@ const theme: Theme = {
 };
 
 const { render } = setup({ theme });
+const user = userEvent.setup();
 
 test('renders label and group of checkboxes', () => {
   render(
@@ -97,10 +99,9 @@ test('passes down "disabled" to checkboxes', () => {
     </Checkbox.Group>
   );
 
-  // Bug in `react-aria-components` props are spread on input AND label...
-  expect(screen.getAllByTestId('one')[1]).toBeDisabled();
-  expect(screen.getAllByTestId('two')[1]).toBeDisabled();
-  expect(screen.getAllByTestId('three')[1]).toBeDisabled();
+  expect(screen.getByTestId('one')!.querySelector('input')).toBeDisabled();
+  expect(screen.getByTestId('two')!.querySelector('input')).toBeDisabled();
+  expect(screen.getByTestId('three')!.querySelector('input')).toBeDisabled();
 });
 
 test('passes down "read-only" to checkboxes', () => {
@@ -118,16 +119,15 @@ test('passes down "read-only" to checkboxes', () => {
     </Checkbox.Group>
   );
 
-  // Bug in `react-aria-components` props are spread on input AND label...
-  expect(screen.getAllByTestId('one')[1]).toHaveAttribute(
+  expect(screen.getByTestId('one')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
   );
-  expect(screen.getAllByTestId('two')[1]).toHaveAttribute(
+  expect(screen.getByTestId('two')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
   );
-  expect(screen.getAllByTestId('three')[1]).toHaveAttribute(
+  expect(screen.getByTestId('three')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
   );
@@ -149,21 +149,21 @@ test('passes down "error" to checkboxes', () => {
   );
 
   // Bug in `react-aria-components` props are spread on input AND label...
-  expect(screen.getAllByTestId('one')[1]).toHaveAttribute(
+  expect(screen.getByTestId('one')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'
   );
-  expect(screen.getAllByTestId('two')[1]).toHaveAttribute(
+  expect(screen.getByTestId('two')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'
   );
-  expect(screen.getAllByTestId('three')[1]).toHaveAttribute(
+  expect(screen.getByTestId('three')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'
   );
 });
 
-test('controlled', () => {
+test('controlled', async () => {
   const onChange = jest.fn();
   render(
     <Checkbox.Group label="Group of Checkboxes" onChange={onChange}>
@@ -179,16 +179,16 @@ test('controlled', () => {
     </Checkbox.Group>
   );
 
-  fireEvent.click(screen.getAllByTestId('one')[1]);
+  await user.click(screen.getByTestId('one'));
   expect(onChange).toHaveBeenCalledWith(['one']);
 
-  fireEvent.click(screen.getAllByTestId('three')[1]);
+  await user.click(screen.getByTestId('three'));
   expect(onChange).toHaveBeenCalledWith(['one', 'three']);
 
-  fireEvent.click(screen.getAllByTestId('two')[1]);
+  await user.click(screen.getByTestId('two'));
   expect(onChange).toHaveBeenCalledWith(['one', 'three', 'two']);
 
-  fireEvent.click(screen.getAllByTestId('three')[1]);
+  await user.click(screen.getByTestId('three'));
   expect(onChange).toHaveBeenCalledWith(['one', 'two']);
 });
 

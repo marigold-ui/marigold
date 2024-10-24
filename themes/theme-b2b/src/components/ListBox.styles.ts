@@ -26,7 +26,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   section: cva(
     '[&:nth-child(n+1)]:border-border-base border outline-none [&:nth-child(n+1)]:border-t [&:nth-child(n+1)]:border-solid'
   ),
-  sectionTitle: cva(
+  header: cva(
     '[&_header]:text-text-accent [&_header]:px-2 [&_header]:pt-2 [&_header]:text-sm'
   ),
 };

@@ -85,9 +85,9 @@ const Multiselect = ({ label, children, ...props }: MultiSelectProps) => {
         {...props}
       >
         {unselected.map((item: MultiSelectItemProps) => (
-          <ComboBox.Item key={item.id} id={item.id}>
+          <ComboBox.Option key={item.id} id={item.id}>
             {item.children}
-          </ComboBox.Item>
+          </ComboBox.Option>
         ))}
       </ComboBox>
     </div>

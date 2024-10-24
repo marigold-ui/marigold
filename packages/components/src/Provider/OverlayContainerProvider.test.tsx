@@ -37,7 +37,7 @@ const theme: Theme = {
       list: cva(),
       option: cva(),
       section: cva(),
-      sectionTitle: cva(),
+      header: cva(),
     },
     Field: cva(),
   },
@@ -62,7 +62,7 @@ test('renders portal container', async () => {
       <OverlayContainerProvider value="testid">
         <MarigoldProvider theme={theme}>
           <Select label="Label" data-testid="select" defaultOpen>
-            <Select.Section>
+            <Select.Section header="section">
               <Select.Option id="one">one</Select.Option>
               <Select.Option id="two">two</Select.Option>
             </Select.Section>

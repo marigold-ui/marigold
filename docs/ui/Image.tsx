@@ -42,7 +42,9 @@ export const Image = ({
             keyboardDismissable
           >
             <Dialog aria-labelledby="fullsize image" closeButton variant="zoom">
-              <NextImage {...props} />
+              <Dialog.Content>
+                <NextImage {...props} />
+              </Dialog.Content>
             </Dialog>
           </Dialog.Trigger>
         )}
@@ -84,7 +86,9 @@ export const Image = ({
           keyboardDismissable
         >
           <Dialog aria-labelledby="fullsize image" closeButton variant="zoom">
-            <NextImage {...props} />
+            <Dialog.Content>
+              <NextImage {...props} />
+            </Dialog.Content>
           </Dialog>
         </Dialog.Trigger>
       )}

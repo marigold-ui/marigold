@@ -39,8 +39,7 @@ export const TableRow = ({ children, row }: TableRowProps) => {
   const disabled = state.disabledKeys.has(row.key);
   const selected = state.selectionManager.isSelected(row.key);
 
-  // Rows are focused if any cell inside it is focused
-  const { focusProps, isFocusVisible } = useFocusRing({ within: true });
+  const { focusProps, isFocusVisible } = useFocusRing();
   const { hoverProps, isHovered } = useHover({
     isDisabled: disabled || !interactive,
   });

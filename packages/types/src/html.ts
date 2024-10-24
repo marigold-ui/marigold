@@ -30,3 +30,20 @@ export interface AriaLabelingProps {
    */
   'aria-details'?: string;
 }
+
+export interface AriaRegionProps extends AriaLabelingProps {
+  /**
+   * Identifies the element a significant section of content for easier navigation.
+   * When `region` is used as a role, an `aria-label` or `aria-labelledby` must be provided.
+   * See [MDN](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/region_role).
+   */
+  role?: 'region' | (string & {});
+
+  /**
+   * Indicates the level of importance for updates in the live region.
+   * - 'off': Updates are not announced unless focused.
+   * - 'polite': Updates are announced when the user is idle.
+   * - 'assertive': Updates are announced immediately, interrupting other announcements.
+   */
+  'aria-live'?: 'off' | 'polite' | 'assertive';
+}

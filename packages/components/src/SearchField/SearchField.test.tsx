@@ -44,7 +44,7 @@ const theme: Theme = {
       list: cva(),
       option: cva(),
       section: cva(),
-      sectionTitle: cva(),
+      header: cva(),
     },
   },
 };

@@ -1,15 +1,5 @@
 import { useState } from 'react';
-import {
-  Body,
-  Button,
-  Dialog,
-  Footer,
-  Header,
-  Inline,
-  Menu,
-  Stack,
-  Text,
-} from '@marigold/components';
+import { Button, Dialog, Inline, Menu, Text } from '@marigold/components';
 
 export default () => {
   const [open, setDialogOpen] = useState(false);
@@ -28,26 +18,19 @@ export default () => {
 
   return (
     <>
-      <Menu.Trigger>
-        <Button variant="menu" size="small">
-          Settings
-        </Button>
-        <Menu onAction={handleAction}>
-          <Menu.Item key="save">Save</Menu.Item>
-          <Menu.Item key="delete">Delete</Menu.Item>
-        </Menu>
-      </Menu.Trigger>
+      <Menu onAction={handleAction} label="Settings">
+        <Menu.Item id="save">Save</Menu.Item>
+        <Menu.Item id="delete">Delete</Menu.Item>
+      </Menu>
       <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
         <Dialog closeButton>
           {({ close }) => (
-            <Stack space={4}>
-              <Header>
-                <Dialog.Headline>Confirm delete</Dialog.Headline>
-              </Header>
-              <Body>
+            <>
+              <Dialog.Title>Confirm delete</Dialog.Title>
+              <Dialog.Content>
                 <Text>Do you really wanna delete this?</Text>
-              </Body>
-              <Footer>
+              </Dialog.Content>
+              <Dialog.Footer>
                 <Inline space={4}>
                   <Button size="small" variant="ghost" onPress={close}>
                     Cancel
@@ -56,8 +39,8 @@ export default () => {
                     Delete
                   </Button>
                 </Inline>
-              </Footer>
-            </Stack>
+              </Dialog.Footer>
+            </>
           )}
         </Dialog>
       </Dialog.Trigger>

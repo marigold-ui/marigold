@@ -1,38 +1,34 @@
-import { Header, Select } from '@marigold/components';
+import { Select } from '@marigold/components';
 
-export default () => {
-  const items = [
-    { category: 'Comedy', genres: ['Kabarett', 'Satire', 'Stand Up Comedy'] },
-    {
-      category: 'Classic',
-      genres: ['Chor', 'Kammermusik', 'Kantate', 'Klavierkonzert'],
-    },
-    {
-      category: 'Hardcore',
-      genres: [
-        'Hardcore Punk',
-        'Jazzcore',
-        'Mathcore',
-        'Melodic Hardcore',
-        'Metalcore',
-      ],
-    },
-    {
-      category: 'Metal',
-      genres: ['Black Metal', 'Death Metal', 'Heavy Metal', 'Nu Metal'],
-    },
-  ];
+export default () => (
+  <Select label="Genres" width="fit">
+    {options.map(item => (
+      <Select.Section key={item.category} header={item.category}>
+        {item.genres.map(genre => (
+          <Select.Option key={genre}>{genre}</Select.Option>
+        ))}
+      </Select.Section>
+    ))}
+  </Select>
+);
 
-  return (
-    <Select label="Genres" items={items} width="fit">
-      {items.map(item => (
-        <Select.Section key={item.category}>
-          <Header>{item.category}</Header>
-          {item.genres.map(genre => (
-            <Select.Option key={genre}>{genre}</Select.Option>
-          ))}
-        </Select.Section>
-      ))}
-    </Select>
-  );
-};
+const options = [
+  {
+    category: 'Pop and Dance',
+    genres: ['Pop', 'Electropop', 'Dance-pop', 'Teen pop', 'Disco'],
+  },
+  {
+    category: 'Rock and Alternative',
+    genres: [
+      'Hard rock',
+      'Punk rock',
+      'Alternative rock',
+      'Indie rock',
+      'Grunge',
+    ],
+  },
+  {
+    category: 'Hip-Hop and R&B',
+    genres: ['Hip-Hop', 'Rap', 'Trap', 'R&B'],
+  },
+];

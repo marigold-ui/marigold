@@ -37,7 +37,7 @@ const _Modal = forwardRef<
     >
       <Modal
         ref={ref}
-        className="relative flex w-full justify-center sm:w-auto"
+        className="relative flex w-full justify-center"
         {...props}
       >
         {props.children}

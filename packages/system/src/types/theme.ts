@@ -73,7 +73,7 @@ export type Theme = {
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
-      'container' | 'list' | 'option' | 'section' | 'sectionTitle',
+      'container' | 'list' | 'option' | 'section' | 'header',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
