@@ -18,6 +18,7 @@ const _Header = ({ variant, size, ...props }: HeaderProps) => {
     variant,
     size,
   });
+
   return (
     <Header className={classNames} {...props}>
       {props.children}

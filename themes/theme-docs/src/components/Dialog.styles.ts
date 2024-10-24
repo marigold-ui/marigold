@@ -26,4 +26,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
       variant: 'default',
     },
   }),
+  header: cva(''),
+  content: cva(''),
+  actions: cva(''),
 };
