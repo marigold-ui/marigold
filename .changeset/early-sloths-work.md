@@ -8,7 +8,7 @@
 
 - `Dialog.Headline` has been renamed to `Dialog.Title`. Please update your code accordingly.
 
-- `<Dialog.Content>`, `<Dialog.Actions>`, and `<Dialog.Footer>` have been introduced for better organization and flexibility.
+- `<Dialog.Content>` and  `<Dialog.Actions>` have been introduced for better organization and flexibility.
 
 - The internal layout now uses grid areas, ensuring consistent ordering and layout of the dialog elements.
 
