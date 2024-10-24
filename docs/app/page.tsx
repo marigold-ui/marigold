@@ -2,7 +2,7 @@ import { Card, Center, Headline, Inline, Link, Stack } from '@/ui';
 import type { PropsWithChildren } from 'react';
 import Image from 'next/image';
 import { BlurFade } from '@/ui/BlurFade';
-import { AnimatedShinyText } from '@/ui/ShinyButton';
+import { AnimatedShinyText } from '@/ui/ShinyText';
 import { getLatestPost } from '@/ui/blog/LatestPost';
 import { AccessibiltySection } from './_components/landingpage/AccessibiltySection';
 import { CollaborationSection } from './_components/landingpage/CollaborationSection';
