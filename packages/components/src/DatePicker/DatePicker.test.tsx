@@ -67,6 +67,7 @@ const theme: Theme = {
 };
 
 const { render } = setup({ theme });
+const user = userEvent.setup();
 
 describe('DatePicker', () => {
   beforeAll(() => {
@@ -245,7 +246,6 @@ describe('DatePicker', () => {
     });
 
     test('focuses field, move a segment, and open popover and does not blur', async () => {
-      const user = userEvent.setup();
       render(
         <DatePicker
           label="Date"
@@ -264,13 +264,13 @@ describe('DatePicker', () => {
       expect(onFocusChangeSpy).not.toHaveBeenCalled();
       expect(onFocusSpy).not.toHaveBeenCalled();
 
-      await userEvent.tab();
+      await user.tab();
       expect(segments[0]).toHaveFocus();
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
 
-      await userEvent.tab();
+      await user.tab();
       expect(segments[1]).toHaveFocus();
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
@@ -301,13 +301,13 @@ describe('DatePicker', () => {
       expect(onFocusChangeSpy).not.toHaveBeenCalled();
       expect(onFocusSpy).not.toHaveBeenCalled();
 
-      await userEvent.tab();
+      await user.tab();
       expect(segments[0]).toHaveFocus();
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
 
-      await userEvent.click(document.body);
+      await user.click(document.body);
       expect(document.body).toHaveFocus();
       expect(onBlurSpy).toHaveBeenCalledTimes(1);
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(2);
@@ -315,7 +315,6 @@ describe('DatePicker', () => {
     });
 
     test('should open popover and call picker onFocus', async () => {
-      const user = userEvent.setup();
       render(
         <DatePicker
           label="Date"
@@ -341,7 +340,6 @@ describe('DatePicker', () => {
     });
 
     test('should open and close popover and only call blur when focus leaves picker', async () => {
-      const user = userEvent.setup();
       render(
         <DatePicker
           label="Date"
@@ -389,7 +387,7 @@ describe('DatePicker', () => {
       expect(onKeyDownSpy).not.toHaveBeenCalled();
       expect(onKeyUpSpy).not.toHaveBeenCalled();
 
-      await userEvent.tab();
+      await user.tab();
       expect(segments[0]).toHaveFocus();
       expect(onKeyDownSpy).not.toHaveBeenCalled();
       expect(onKeyUpSpy).toHaveBeenCalledTimes(1);
@@ -404,7 +402,6 @@ describe('DatePicker', () => {
     });
 
     test('should trigger key event in popover and focus/blur/key events are not called', async () => {
-      const user = userEvent.setup();
       render(
         <DatePicker
           label="Date"
@@ -449,6 +446,25 @@ test('DatePicker supports width prop', () => {
     <DatePicker data-testid="picker" aria-label="date picker" width={10} />
   );
   const picker = screen.getByTestId('picker');
-  const child = picker.firstChild as HTMLInputElement;
-  expect(child.className).toMatchInlineSnapshot(`""`);
+
+  expect(picker.className).toMatchInlineSnapshot(`"group/field w-10 gap-x-0"`);
+});
+
+test('DatePicker supports data unavailable property', async () => {
+  render(
+    <DatePicker
+      data-testid="picker"
+      aria-label="date picker"
+      dateUnavailable={date => date.toDate('Europe/Berlin').getDate() !== 1}
+    />
+  );
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const popover = screen.getByRole('application');
+  expect(popover).toBeVisible();
+  const date = screen.getAllByRole('gridcell');
+
+  expect(date[1].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
