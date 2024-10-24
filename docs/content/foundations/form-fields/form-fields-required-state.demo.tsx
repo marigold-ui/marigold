@@ -4,7 +4,6 @@ export default () => (
   <Select
     label="Genre"
     placeholder="Select genre"
-    description="Select the genre you want."
     width="fit"
     required
   >
