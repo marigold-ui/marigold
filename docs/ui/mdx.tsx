@@ -10,6 +10,7 @@ import {
   Card,
   Columns,
   Headline,
+  Inline,
   Link,
   List,
   Scrollable,
@@ -171,8 +172,9 @@ const components = {
   // Marigold Components
   Card,
   Columns,
-  Headline,
   DateFormat,
+  Headline,
+  Inline,
   List,
   Scrollable,
   SectionMessage,
