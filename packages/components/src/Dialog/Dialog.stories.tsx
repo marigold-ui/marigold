@@ -1,12 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Body } from '../Body';
 import { Button } from '../Button';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
-import { Container } from '../Container';
-import { Footer } from '../Footer';
-import { Header } from '../Header';
 import { Inline } from '../Inline';
 import { Menu } from '../Menu';
 import { Modal, ModalProps } from '../Overlay/Modal';
@@ -65,12 +61,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => {
+  render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog closeButton size={args.size}>
-          <Dialog.Headline>This is a headline!</Dialog.Headline>
+        <Dialog size={size} closeButton>
+          <Dialog.Title>This is a headline!</Dialog.Title>
           <Text>This is some not so very long text.</Text>
         </Dialog>
       </Dialog.Trigger>
@@ -79,24 +75,24 @@ export const Basic: Story = {
 };
 
 export const Form: Story = {
-  render: args => {
+  render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog size={args.size}>
+        <Dialog size={size} closeButton>
           {({ close }) => (
             <>
-              <Dialog.Headline>Please log into account</Dialog.Headline>
-              <Stack space={4}>
+              <Dialog.Title>Please log into account </Dialog.Title>
+              <Dialog.Content>
                 <TextField label="Username" />
                 <TextField label="Password" type="password" />
-                <Inline space={4}>
-                  <Button variant="ghost" onPress={close}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary">Login</Button>
-                </Inline>
-              </Stack>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button variant="ghost" onPress={close}>
+                  Cancel
+                </Button>
+                <Button variant="primary">Login</Button>
+              </Dialog.Actions>
             </>
           )}
         </Dialog>
@@ -106,66 +102,62 @@ export const Form: Story = {
 };
 
 export const CustomTitleProps: Story = {
-  render: args => (
+  render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog size={args.size} closeButton aria-labelledby="my-cool-headline">
-        <Dialog.Headline>This is a headline!</Dialog.Headline>
-        <Text>This is some not so very long text.</Text>
+      <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
+        <Dialog.Title>This is a headline!</Dialog.Title>
+        <Dialog.Content>
+          <Text>This is some not so very long text.</Text>
+        </Dialog.Content>
       </Dialog>
     </Dialog.Trigger>
   ),
 };
 
 export const ScrollableContent: Story = {
-  render: args => (
+  render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog size={args.size} closeButton aria-labelledby="my-cool-headline">
-        <Container>
-          <Header>
-            <Dialog.Headline>This is a headline!</Dialog.Headline>
-          </Header>
-          <Body>
-            <Stack space={2}>
-              <Text>This is some not so very long text.</Text>
-              <div className="max-h-[200px] overflow-y-auto pb-2 pl-2">
-                <CheckboxGroup>
-                  <Checkbox value="one">One</Checkbox>
-                  <Checkbox value="two">Two</Checkbox>
-                  <Checkbox value="three">Three</Checkbox>
-                  <Checkbox value="four">Four</Checkbox>
-                  <Checkbox value="five">Five</Checkbox>
-                  <Checkbox value="six">Six</Checkbox>
-                  <Checkbox value="seven">Seven</Checkbox>
-                  <Checkbox value="eight">Eight</Checkbox>
-                  <Checkbox value="nine">Nine</Checkbox>
-                  <Checkbox value="ten">Ten</Checkbox>
-                </CheckboxGroup>
-              </div>
-            </Stack>
-          </Body>
-          <Footer>
-            <Button variant="primary">ok</Button>
-          </Footer>
-        </Container>
+      <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
+        <Dialog.Title>This is a headline!</Dialog.Title>
+        <Dialog.Content>
+          <Stack space={2}>
+            <Text>This is some not so very long text.</Text>
+            <div className="max-h-[200px] overflow-y-auto pb-2 pl-2">
+              <CheckboxGroup>
+                <Checkbox value="one">One</Checkbox>
+                <Checkbox value="two">Two</Checkbox>
+                <Checkbox value="three">Three</Checkbox>
+                <Checkbox value="four">Four</Checkbox>
+                <Checkbox value="five">Five</Checkbox>
+                <Checkbox value="six">Six</Checkbox>
+                <Checkbox value="seven">Seven</Checkbox>
+                <Checkbox value="eight">Eight</Checkbox>
+                <Checkbox value="nine">Nine</Checkbox>
+                <Checkbox value="ten">Ten</Checkbox>
+              </CheckboxGroup>
+            </div>
+          </Stack>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button variant="primary">ok</Button>
+        </Dialog.Actions>
       </Dialog>
     </Dialog.Trigger>
   ),
 };
 
 export const StickyFooter: Story = {
-  render: args => (
+  render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog size={args.size} closeButton aria-labelledby="my-cool-headline">
+      <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
+        <Dialog.Title>This is a headline!</Dialog.Title>
         <div className="flex max-h-[400px] flex-col">
-          <Header>
-            <Dialog.Headline>This is a headline!</Dialog.Headline>
-            <Text>This is some additional text that is always visible!</Text>
-          </Header>
+          <Text>This is some additional text that is always visible!</Text>
           <div className="max-w-[400px] flex-1 overflow-y-auto">
-            <Body>
+            <Dialog.Content>
               <Text>
                 Pellentesque habitant morbi tristique senectus et netus et
                 malesuada fames ac turpis egestas. Vestibulum tortor quam,
@@ -181,11 +173,11 @@ export const StickyFooter: Story = {
                 erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis,
                 accumsan porttitor, facilisis luctus, metus
               </Text>
-            </Body>
+            </Dialog.Content>
           </div>
-          <Footer>
+          <Dialog.Actions>
             <Button variant="primary">Ok</Button>
-          </Footer>
+          </Dialog.Actions>
         </div>
       </Dialog>
     </Dialog.Trigger>
@@ -221,14 +213,12 @@ export const WithDialogController: Story = {
         <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
           <Dialog closeButton>
             {({ close }) => (
-              <Stack space={5}>
-                <Header>
-                  <Dialog.Headline>Confirm delete</Dialog.Headline>
-                </Header>
-                <Body>
+              <>
+                <Dialog.Title>Confirm delete</Dialog.Title>
+                <Dialog.Content>
                   <Text>Do you really wanna delete this?</Text>
-                </Body>
-                <Footer>
+                </Dialog.Content>
+                <Dialog.Actions>
                   <Inline space={5}>
                     <Button size="small" variant="ghost" onPress={close}>
                       Cancel
@@ -237,8 +227,8 @@ export const WithDialogController: Story = {
                       Delete
                     </Button>
                   </Inline>
-                </Footer>
-              </Stack>
+                </Dialog.Actions>
+              </>
             )}
           </Dialog>
         </Dialog.Trigger>

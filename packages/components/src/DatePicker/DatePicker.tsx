@@ -10,6 +10,7 @@ import { Popover } from '../Overlay/Popover';
 
 type RemovedProps =
   | 'isDisabled'
+  | 'isDateUnavailable'
   | 'isReadOnly'
   | 'isRequired'
   | 'isInvalid'
@@ -20,6 +21,11 @@ type RemovedProps =
 export interface DatePickerProps
   extends Omit<RAC.DatePickerProps<DateValue>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
+  /**
+   * Callback that is called for each date of the calendar. If it returns true, then the date is unavailable.
+   */
+
+  dateUnavailable?: RAC.DatePickerProps<DateValue>['isDateUnavailable'];
   /**
    * If `true`, the date picker is disabled.
    * @default false
@@ -62,6 +68,7 @@ export interface DatePickerProps
 const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
   (
     {
+      dateUnavailable,
       disabled,
       required,
       readOnly,
@@ -75,6 +82,7 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
     ref
   ) => {
     const props: RAC.DatePickerProps<DateValue> = {
+      isDateUnavailable: dateUnavailable,
       isDisabled: disabled,
       isReadOnly: readOnly,
       isRequired: required,

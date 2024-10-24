@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import { AspectProp, aspect, cn, createVar } from '@marigold/system';
+import { aspect, cn, createVar } from '@marigold/system';
+import type { AspectProp } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
-export interface AspectProps extends AspectProp {
+export interface AspectProps extends AspectProp, AriaRegionProps {
   /**
    * The children of the component.
    */

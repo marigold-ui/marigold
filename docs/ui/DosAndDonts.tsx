@@ -33,7 +33,7 @@ const Figure = ({ children }: PropsWithChildren) => (
 );
 
 const Description = ({ children }: PropsWithChildren) => (
-  <div className="group-data-[type=do]:bg-bg-success group-data-[type=dont]:bg-bg-error px-4 pb-4 text-sm [grid-area:description] *:m-0 *:leading-relaxed">
+  <div className="group-data-[type=do]:bg-bg-success group-data-[type=dont]:bg-bg-error text-pretty px-4 pb-4 text-sm [grid-area:description] *:m-0 *:leading-relaxed">
     {children}
   </div>
 );

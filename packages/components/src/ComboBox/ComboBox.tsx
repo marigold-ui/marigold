@@ -91,7 +91,15 @@ interface ComboBoxComponent
   extends ForwardRefExoticComponent<
     ComboBoxProps & RefAttributes<HTMLInputElement>
   > {
-  Item: typeof ListBox.Item;
+  /**
+   * Options for the Combobox.
+   */
+  Option: typeof ListBox.Item;
+
+  /**
+   * Section for the Combobox, to put options in.
+   */
+  Section: typeof ListBox.Section;
 }
 
 // Component
@@ -143,6 +151,7 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
   }
 ) as ComboBoxComponent;
 
-_ComboBox.Item = ListBox.Item;
+_ComboBox.Option = ListBox.Item;
+_ComboBox.Section = ListBox.Section;
 
 export { _ComboBox as ComboBox };

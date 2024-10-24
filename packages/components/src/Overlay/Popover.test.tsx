@@ -21,6 +21,9 @@ const theme: Theme = {
     Dialog: {
       closeButton: cva('p-3'),
       container: cva('p-2'),
+      header: cva(),
+      content: cva(),
+      actions: cva(),
     },
     Button: cva('bg-red-300'),
     Text: cva('text-black-300'),

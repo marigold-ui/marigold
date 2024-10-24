@@ -1,9 +1,8 @@
-import { Ref, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { GridListItem as SelectListItem } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox';
-import { FieldGroup } from '../FieldBase';
 import { useSelectListContext } from './Context';
 
 export interface SelectListItemProps
@@ -22,15 +21,11 @@ const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
           'items-center group-data-[layout=grid]/list:flex-row',
           classNames?.option
         )}
-        ref={ref as Ref<HTMLDivElement>}
+        ref={ref}
       >
         {({ selectionMode }) => (
           <>
-            {selectionMode === 'multiple' && (
-              <FieldGroup>
-                <Checkbox slot="selection" />
-              </FieldGroup>
-            )}
+            {selectionMode === 'multiple' && <Checkbox slot="selection" />}
             {children}
           </>
         )}
