@@ -16,6 +16,8 @@ export const Link: ThemeComponent<'Link'> = cva(['font-medium'], {
         'transition-all hover:bg-purple-600',
       ],
       ghost: 'hover:underline underline-offset-4',
+      shiny:
+        'border border-text-primary/50 transition-all ease-in hover:bg-secondary-100',
     },
     size: {
       inline: '',
