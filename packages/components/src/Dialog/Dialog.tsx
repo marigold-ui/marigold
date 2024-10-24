@@ -69,7 +69,7 @@ const _Dialog = ({
   const children =
     typeof props.children === 'function'
       ? props.children({
-          close: state?.close || (() => {}),
+          close: state?.close,
         })
       : props.children;
 
