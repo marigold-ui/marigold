@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Dialog, Inline, Menu, Text } from '@marigold/components';
+import { Button, Dialog, Menu } from '@marigold/components';
 
 export default () => {
   const [open, setDialogOpen] = useState(false);
@@ -23,23 +23,22 @@ export default () => {
         <Menu.Item id="delete">Delete</Menu.Item>
       </Menu>
       <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
-        <Dialog closeButton>
+        <Dialog role="alertdialog" closeButton>
           {({ close }) => (
             <>
               <Dialog.Title>Confirm delete</Dialog.Title>
               <Dialog.Content>
-                <Text>Do you really wanna delete this?</Text>
+                Are you sure you want to delete this event? This action cannot
+                be undone.
               </Dialog.Content>
-              <Dialog.Footer>
-                <Inline space={4}>
-                  <Button size="small" variant="ghost" onPress={close}>
-                    Cancel
-                  </Button>
-                  <Button size="small" variant="primary" onPress={close}>
-                    Delete
-                  </Button>
-                </Inline>
-              </Dialog.Footer>
+              <Dialog.Actions>
+                <Button size="small" variant="secondary" onPress={close}>
+                  Cancel
+                </Button>
+                <Button size="small" variant="primary" onPress={close}>
+                  Delete
+                </Button>
+              </Dialog.Actions>
             </>
           )}
         </Dialog>
