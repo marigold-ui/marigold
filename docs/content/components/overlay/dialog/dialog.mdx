@@ -8,6 +8,18 @@ The `<Dialog>` component is a versatile UI element used to display important con
 
 Key features of the `<Dialog>` component include customizable content, support for multiple dialog sizes, focus trapping for accessibility, and optional overlay to dim the background. It can be used for alerts, forms, confirmations, or any interactive modal interface.
 
+## Anatomy
+
+A dialog consists of an optional title, content, actions, an optional close button, and an underlay. The title provides context for the user, while the content holds the main message or interactive elements like forms. The actions section contains controls such as buttons for confirming or canceling. The underlay dims the background to focus attention on the dialog and prevent interaction with other elements on the page. The close button offers way to dismiss the dialog.
+
+<Image
+  src="/dialog/dialog-anatomy.jpg"
+  alt="Anatomy of a dialog"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
 ## Appearance
 
 <AppearanceDemo component={title} />
@@ -15,6 +27,46 @@ Key features of the `<Dialog>` component include customizable content, support f
 <AppearanceTable component={title} />
 
 ## Usage
+
+A dialog is used to capture the user’s attention for tasks that require focus, such as confirming actions, filling out forms, or providing important information. Common use cases include confirmation prompts, data entry, and notifications.
+
+When using a dialog, it’s important to ensure it doesn’t unnecessarily interrupt the user’s workflow and that it provides a clear way to close or complete the interaction. Dialogs should be concise, focused on a single task and while they are highly versatile, dialogs aren’t suitable for every situation. They can be intrusive and should be used sparingly.
+
+### Labeling
+
+To correctly label a dialog, always include a title (`<Dialog.Title>`) or an `aria-label` so users understand its purpose. The title should be concise and descriptive, using a verb-noun combination (e.g., "Edit Profile" or "Confirm Purchase"). If no visible title is used, ensure that the dialog is properly labeled with an `aria-label` for accessibility.
+
+For short, straightforward messages, you can combine the title and the message to make things clearer and avoid repeating information in both the title and content. If you do this, there should be no additional text in the content of the dialog.
+
+<ComponentDemo file="./dialog-title-only.demo.tsx" />
+
+### Content
+
+Keep dialogs simple by limiting the number of interactions. Remove any content or elements that aren't essential to completing the task. For instance, if the dialog is for editing a user's profile information, only include the necessary fields like name and email, rather than unrelated options like notification settings.
+
+It's also best to avoid multi-step processes or requiring users to navigate within the dialog, as this can complicate the experience. If a task is too complex, consider using a dedicated page instead.
+
+Lastly, avoid asking users to make decisions that require information not accessible in the dialog, such as needing to check a different page or document to proceed—since this can frustrate users and disrupt their workflow.
+
+### Dismissing dialogs
+
+When a dialog is open, users cannot interact with the rest of the page until the dialog is closed. To accommodate both mouse and keyboard users, the `<Dialog>` provides multiple ways to close it:
+
+- clicking the cancel button in the `<Dialog.Actions>`,
+- using the optional close button (indicated by an "x"),
+- pressing the "Esc" key, or
+- clicking on the underlay (the dimmed background).
+
+To prevent the dialog from closing when the underlay is (accidentally) clicked, you can set the `dismissable` prop on the `<Dialog.Trigger>` component to `false`. This disables closing the dialog by clicking on the background, ensuring that the dialog remains open until the user interacts with the provided buttons or other close mechanisms.
+
+<ComponentDemo file="./dialog-dismiss.demo.tsx" />
+
+### TODO
+
+- forms
+- open from another element
+
+---
 
 ### Form Dialog
 
@@ -25,8 +77,6 @@ The example shows how to use a `<Dialog>` in a simple form context. You can see 
 ### Dismiss Dialog
 
 If you choose to add `dismissable={false}` to your `<Dialog.Trigger>`, you can't exit the dialog with clicking on the underlay. Notice to add a action button or the `closeButton` property to the `<Dialog>` as shown in the example, without that you can't click out of the dialog. You just have the possibility to use the escape key on your keyboard. But that's also a property you can set to false.
-
-<ComponentDemo file="./dialog-dismiss.demo.tsx" />
 
 ### Dialog opend from Menu
 

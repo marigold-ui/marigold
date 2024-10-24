@@ -9,7 +9,7 @@ export default () => (
           <Dialog.Title level={2}>Please log into account</Dialog.Title>
           <Dialog.Content>
             <Stack space={3}>
-              <TextField label="Username" />
+              <TextField label="Username" autoFocus />
               <TextField label="Password" type="password" />
             </Stack>
           </Dialog.Content>
