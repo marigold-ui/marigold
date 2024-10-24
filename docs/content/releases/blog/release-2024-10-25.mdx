@@ -1,5 +1,5 @@
 ---
-title: I don't know a title
+title: Marigold v10.0.0
 date: 2024-10-25
 type: Blog
 changed:
@@ -16,15 +16,13 @@ Previously, we informed you that this release is crucial for enhancing flexibili
 
 ## Breaking Change
 
-### Dialog component
+### Dialog
 
-We've restructured the `<Dialog>` component for greater customization and usability:
+We've restructured the `<Dialog>` component for greater customization and usability. These updates allow the dialog to be more customizable and compatible with existing styles from the core system. It simplifies the component structure, making it easier for users to implement.
 
 - Renamed: `<Dialog.Headline>` is now `<Dialog.Title>`.
 - New Subcomponents: Introduced `<Dialog.Content>`, `<Dialog.Actions>`, and `<Dialog.Footer>` for better organization and flexibility.
 - Grid Layout: The internal dialog layout now uses grid areas to ensure consistent ordering and alignment.
-
-**Why we did this:** These updates allow the dialog to be more customizable and compatible with existing styles from the core system. It simplifies the component structure, making it easier for users to implement.
 
 <SectionMessage>
   <SectionMessage.Title>
@@ -35,11 +33,11 @@ We've restructured the `<Dialog>` component for greater customization and usabil
   </SectionMessage.Content>
 </SectionMessage>
 
-### Select component
+### Select
+
+We’ve streamlined the usage of the `Section` component, removing the need for a generic reusable `<Header>` and simplifying it into a prop for better clarity and ease of use.
 
 - Refactored the Section (from Listbox) to fit our API, no need for the extra Header anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
-
-**Why we did this:** We’ve streamlined the usage of the `Section` component, removing the need for a generic reusable `<Header>` and simplifying it into a prop for better clarity and ease of use.
 
 <SectionMessage>
   <SectionMessage.Title>What you have to do:</SectionMessage.Title>
@@ -48,11 +46,11 @@ We've restructured the `<Dialog>` component for greater customization and usabil
   </SectionMessage.Content>
 </SectionMessage>
 
-### Item component
+### Autocomplete and ComboBox
+
+We wanted to align the naming between select, autocomplete and combobox. All selectable options are called options instead of items.
 
 - Renamed `Item` to `Option` in `<ComboBox>` and `<Autocomplete>` to align with `<Select.Option>`
-
-**Why we did this:** We wanted to align the spelling from the items. Now all selectable options are called options.
 
 <SectionMessage>
   <SectionMessage.Title>
@@ -63,12 +61,18 @@ We've restructured the `<Dialog>` component for greater customization and usabil
   </SectionMessage.Content>
 </SectionMessage>
 
-## New
+### DatePicker
+
+- Adjusted `isDateUnavailable` property to our code guidelines and call it `dateUnavailable`
+
+## Improvements and Changes
 
 ### Components
 
-- **Dialog**: Now supports a new size prop for more flexible sizing.
 - **Autocomplete and Combobox**: These components now support sections.
+- **Dialog**: Now supports a new size prop for more flexible sizing.
+- **Checkbox Group:** The `<Checkbox.Group>` can now be used as a compound component, aligning it with the structure of other components.
+- **DatePicker:** Added disabled styles for `data-unavailable` in both b2b and core theme
 - **SectionMessage**: added a close button to allow the user to dismiss the `<SectionMessage>` this is now aligned with our feedback message pattern.
 - **XLoader**: added prop `mode` to support inline and full-section loading.
 
@@ -82,7 +86,7 @@ We've restructured the `<Dialog>` component for greater customization and usabil
 - **Accessible ARIA Labelling:** `<Text>` and `<Headline>` components now support ARIA labeling props (aria-label, id, etc.) without causing type errors.
 - **Accessibility page:** Added a [dedicated page](/foundations/accessibility) about Accessibility in our documentation.
 
-### Docs improvements
+### Documentation
 
 We’ve introduced several updates to enhance the usability and structure of our documentation:
 
@@ -90,10 +94,6 @@ We’ve introduced several updates to enhance the usability and structure of our
 - **Streamlined Structure:** We also cleaned up the documentation structure, we reduced old content, structured the navigation and tidy up related pages according the new structure.
 - **Component Pages:** Of course we also provided more updated guidelines for component pages, like `<SectionMessag>` or `<MarigoldProvider>`.
 - **Release Blog:** And we now have these new release blog, you are currently reading, to keep users informed about recent changes, new features, and important announcements, ensuring they are always up-to-date with the latest information.
-
-## Changes
-
-- **Checkbox Group:** The `<Checkbox.Group>` can now be used as a compound component, aligning it with the structure of other components.
 
 ## Bug fixes
 
