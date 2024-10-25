@@ -8,6 +8,18 @@ The `<Dialog>` component is a versatile UI element used to display important con
 
 Key features of the `<Dialog>` component include customizable content, support for multiple dialog sizes, focus trapping for accessibility, and optional overlay to dim the background. It can be used for alerts, forms, confirmations, or any interactive modal interface.
 
+## Anatomy
+
+A dialog consists of an optional title, content, actions, an optional close button, and an underlay. The title provides context for the user, while the content holds the main message or interactive elements like forms. The actions section contains controls such as buttons for confirming or canceling. The underlay dims the background to focus attention on the dialog and prevent interaction with other elements on the page. The close button offers way to dismiss the dialog.
+
+<Image
+  src="/dialog/dialog-anatomy.jpg"
+  alt="Anatomy of a dialog"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
 ## Appearance
 
 <AppearanceDemo component={title} />
@@ -16,26 +28,70 @@ Key features of the `<Dialog>` component include customizable content, support f
 
 ## Usage
 
-### Form Dialog
+A dialog is used to capture the user’s attention for tasks that require focus, such as confirming actions, filling out forms, or providing important information. Common use cases include confirmation prompts, data entry, and notifications.
 
-The example shows how to use a `<Dialog>` in a simple form context. You can see the `closeButton` is not present by default, you have to click on the buttons or on the underlay to exit the dialog.
+When using a dialog, it’s important to ensure it doesn’t unnecessarily interrupt the user’s workflow and that it provides a clear way to close or complete the interaction. Dialogs should be concise, focused on a single task and while they are highly versatile, dialogs aren’t suitable for every situation. They can be intrusive and should be used sparingly.
 
-<ComponentDemo file="./dialog-form.demo.tsx" />
+<Do>
+  <Do.Description>
+    Use a dialog when
+    {/* prettier-ignore */}
+    <ul>
+      <li>an immediate response is needed to continue a user-initiated process,</li>
+      <li>to notify the user of urgent information related to their task, or</li>
+      <li>to confirm a user decision.</li>
+    </ul>
+  </Do.Description>
+</Do>
 
-### Dismiss Dialog
+### Labeling
 
-If you choose to add `dismissable={false}` to your `<Dialog.Trigger>`, you can't exit the dialog with clicking on the underlay. Notice to add a action button or the `closeButton` property to the `<Dialog>` as shown in the example, without that you can't click out of the dialog. You just have the possibility to use the escape key on your keyboard. But that's also a property you can set to false.
+To correctly label a dialog, always include a title (`<Dialog.Title>`) or an `aria-label` so users understand its purpose. The title should be concise and descriptive, using a verb-noun combination (e.g., "Edit Profile" or "Confirm Purchase"). If no visible title is used, ensure that the dialog is properly labeled with an `aria-label` for accessibility.
+
+For short, straightforward messages, you can combine the title and the message to make things clearer and avoid repeating information in both the title and content. If you do this, there should be no additional text in the content of the dialog.
+
+<ComponentDemo file="./dialog-title-only.demo.tsx" />
+
+### Content
+
+Keep dialogs simple by limiting the number of interactions. Remove any content or elements that aren't essential to completing the task. For instance, if the dialog is for editing a user's profile information, only include the necessary fields like name and email, rather than unrelated options like notification settings.
+
+<ComponentDemo file="./dialog-content.demo.tsx" />
+
+It's also best to avoid multi-step processes or requiring users to navigate within the dialog, as this can complicate the experience. If a task is too complex, consider using a dedicated page instead.
+
+Lastly, avoid asking users to make decisions that require information not accessible in the dialog, such as needing to check a different page or document to proceed—since this can frustrate users and disrupt their workflow.
+
+### Dismissal
+
+When a dialog is open, users cannot interact with the rest of the page until the dialog is closed. To accommodate both mouse and keyboard users, the `<Dialog>` provides multiple ways to close it:
+
+- clicking the cancel button in the `<Dialog.Actions>`,
+- using the close button (indicated by an "x"),
+- pressing the "Esc" key, or
+- clicking on the underlay (the dimmed background).
+
+To prevent the dialog from closing when the underlay is (accidentally) clicked, you can set the `dismissable` prop on the `<Dialog.Trigger>` component to `false`. This disables closing the dialog by clicking on the background, ensuring that the dialog remains open until the user interacts with the provided buttons or other close mechanisms.
 
 <ComponentDemo file="./dialog-dismiss.demo.tsx" />
 
-### Dialog opend from Menu
+### Role
 
-This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu.Item>`.
-For that you have to use a `<Dialog.Trigger>`, but without that you don't have to use a `<Button>` to trigger the dialog, you can write it directly.
+When a dialog requires the user's immediate attention, such as for an error or warning, set `role="alertdialog"`. This role ensures that assistive technologies, like screen readers, treat the dialog as high-priority, immediately notifying users of its content.
 
-<ComponentDemo file="./menu-open-dialog.demo.tsx" />
+It is essential for situations where the user must address an issue before continuing, such as critical system errors or warnings about destructive actions. Proper use of `role="alertdialog"` improves accessibility and ensures important messages are not missed.
+
+### Controlled
+
+You can programmatically open a dialog by using the `open` and `onOpenChange` props from the `<Dialog.Trigger>`. This is particularly helpful when the action cannot be initiated by a simple `<Button>` component, such as when selecting an option from a dropdown menu or a context menu that requires additional confirmation before proceeding.
+
+For instance, selecting "Delete" from a menu might trigger a confirmation dialog to ensure the user fully understands the destructive nature of the action and its consequences. This extra step helps prevent accidental deletions by requiring explicit confirmation before proceeding.
+
+<ComponentDemo file="./dialog-from-menu.demo.tsx" />
 
 ## Props
+
+<StorybookHintMessage component={title} />
 
 ### Dialog
 
