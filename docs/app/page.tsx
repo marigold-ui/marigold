@@ -44,7 +44,7 @@ export const Page = () => {
           <Center>
             <Link href={`/${latestPost.slug}`} variant="shiny" size="xsmall">
               <AnimatedShinyText className="transition ease-out">
-                🚀✨ Read last updates!
+                🚀✨ Read latest updates!
               </AnimatedShinyText>
             </Link>
           </Center>
