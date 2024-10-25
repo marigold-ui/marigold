@@ -1,5 +1,69 @@
 # @marigold/theme-core
 
+## 27.0.0
+
+### Major Changes
+
+- 2d9917f: **Breaking changes**
+
+  - `Dialog.Headline` has been renamed to `Dialog.Title`. Please update your code accordingly.
+  - `<Dialog.Content>` and `<Dialog.Actions>` have been introduced for better organization and flexibility.
+  - The internal layout now uses grid areas, ensuring consistent ordering and layout of the dialog elements.
+  - Existing implementations of the `<Dialog>` component will need to be updated to use these new subcomponents.
+
+### Minor Changes
+
+- 6f8e3a2: style(dialog): make `<Dialog>` sizes responsive
+
+  Using `size` with a `<Dialog>` will allow the dialog to be at most sm/md/lg wide. Will use full width on smaller screens.
+
+- 6687af7: refa: remove footer from `<Dialog>` + allow styles
+
+  - dialogs can only have action now
+  - align buttons in `<Dialog.Actions>` correctly
+
+- f3f0ea0: With the changes of the `<Dialog>` component, we also needed to update they docs page.
+
+### Patch Changes
+
+- 65608b4: fix([DSTSUP-94]): Adjust date unavailable property from `<DatePicker>`
+
+  **Breaking Change:** Adjusted `isDateUnavailable` prop to our code guidelines `dateUnavailable`
+
+  Added disabled styles for `data-unavailable` in both b2b and core theme
+
+- 8c539d3: style(core): adjust the underlay color to be darker
+- d5386e4: fix(components): Display `<Checkbox>` focus ring and adjust focus ring of `<Table>`
+
+  Focus ring was not showing for the `<Checkbox>`. It does now!
+
+- f6a132c: docs([DST-582]): revise `<SectionMessage>` page according to new component page structure
+  feat(components): add close button on `<SectionMessage>`
+
+  Revised the `<SectionMessage>` documentation page to our new layout of component pages. And added a close button to allow the user to dismiss the `<SectionMessage>` this is now aligned with our feedback message pattern.
+
+- Updated dependencies [65608b4]
+- Updated dependencies [caefbe4]
+- Updated dependencies [2d9917f]
+- Updated dependencies [6f8e3a2]
+- Updated dependencies [7ea3838]
+- Updated dependencies [6687af7]
+- Updated dependencies [2babc0b]
+- Updated dependencies [f18c8aa]
+- Updated dependencies [d5386e4]
+- Updated dependencies [5c029ec]
+- Updated dependencies [2169b6f]
+- Updated dependencies [bfd2843]
+- Updated dependencies [0e77996]
+- Updated dependencies [b8cd92a]
+- Updated dependencies [45fb3c4]
+- Updated dependencies [f6a132c]
+- Updated dependencies [956982a]
+- Updated dependencies [df04623]
+  - @marigold/components@10.0.0
+  - @marigold/system@10.0.0
+  - @marigold/theme-preset@1.3.23
+
 ## 26.2.1
 
 ### Patch Changes
