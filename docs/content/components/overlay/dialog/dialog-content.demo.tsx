@@ -1,4 +1,10 @@
-import { Button, Dialog, Stack, TextField } from '@marigold/components';
+import {
+  Button,
+  Dialog,
+  FieldGroup,
+  Stack,
+  TextField,
+} from '@marigold/components';
 import { User } from '@marigold/icons';
 
 export default () => (
@@ -8,7 +14,7 @@ export default () => (
     </Button>
     <Dialog>
       {({ close }) => (
-        <>
+        <FieldGroup labelWidth="50px">
           <Dialog.Title level={2}>Edit user info</Dialog.Title>
           <Dialog.Content>
             <Stack space={3}>
@@ -22,7 +28,7 @@ export default () => (
             </Button>
             <Button variant="primary">Update</Button>
           </Dialog.Actions>
-        </>
+        </FieldGroup>
       )}
     </Dialog>
   </Dialog.Trigger>
