@@ -16,11 +16,11 @@ export const Link: ThemeComponent<'Link'> = cva(['font-medium'], {
         'transition-all hover:bg-purple-600',
       ],
       ghost: 'hover:underline underline-offset-4',
-      shiny:
-        'border border-text-primary/50 transition-all ease-in hover:bg-secondary-100',
+      shiny: 'border  bg-slate-100 hover:bg-slate-200 transition-all ease-in',
     },
     size: {
       inline: '',
+      xsmall: 'rounded-full text-xs py-1.5 px-2',
       small: 'px-3 py-1.5 text-sm rounded',
       regular: 'px-3 py-2 rounded',
       large: 'px-8 py-3.5 rounded',

@@ -41,15 +41,13 @@ export const Page = () => {
       {/* Hero */}
       <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-screen-lg place-items-center text-center">
         <div className="-mx-[--page-padding-md] md:mx-0">
-          <div className="pb-8">
-            <Center>
-              <Link href={`/${latestPost.slug}`} variant="shiny" size="small">
-                <AnimatedShinyText className="transition ease-out">
-                  🚀✨ Catch all up changes!
-                </AnimatedShinyText>
-              </Link>
-            </Center>
-          </div>
+          <Center>
+            <Link href={`/${latestPost.slug}`} variant="shiny" size="xsmall">
+              <AnimatedShinyText className="transition ease-out">
+                🚀✨ Read last updates!
+              </AnimatedShinyText>
+            </Link>
+          </Center>
           <h1 className="text-balance text-6xl font-extrabold lg:text-8xl">
             Cultivate beautiful user interfaces
           </h1>
