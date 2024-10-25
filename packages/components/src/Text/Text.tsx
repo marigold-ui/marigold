@@ -69,10 +69,34 @@ const _Text = ({
     size,
   });
 
+  const Component = as;
+
+  if (props.slot) {
+    return (
+      <Text
+        {...props}
+        elementType={as}
+        className={cn(
+          'text-[--color] outline-[--outline]',
+          classNames,
+          fontStyle && textStyle[fontStyle],
+          align && textAlign[align],
+          cursor && cursorStyle[cursor],
+          weight && fontWeight[weight],
+          fontSize && textSize[fontSize]
+        )}
+        style={createVar({
+          color: color && getColor(theme, color, color /* fallback */),
+        })}
+      >
+        {children}
+      </Text>
+    );
+  }
+
   return (
-    <Text
+    <Component
       {...props}
-      elementType={as}
       className={cn(
         'text-[--color] outline-[--outline]',
         classNames,
@@ -87,7 +111,7 @@ const _Text = ({
       })}
     >
       {children}
-    </Text>
+    </Component>
   );
 };
 
