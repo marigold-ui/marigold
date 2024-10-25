@@ -1,5 +1,81 @@
 # @marigold/theme-b2b
 
+## 28.0.0
+
+### Major Changes
+
+- caefbe4: refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
+
+  - Added the possibility to use sections with `<Combobox>` and `<Autocomplete>`
+  - Refactored the `<Section>` (from `<Listbox>`) to fit our API, no need for the extra `<Header>` anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
+  - Renamed `<Item>` to `<Option>` in `<Combobox>` and `<Autocomplete>` to align with `<Select>`
+  - Updated the docs for `<Select>`, `<Combobox>` and `<Autocomplete>`
+  - Updated Storybook for `<Select>`, `<Combobox>` and `<Autocomplete>` with section stories
+  - Renamed the part of the `<ListBox>` accordingly (from `sectionTitle` to `header`)
+
+    **BREAKING CHANGE:** We changed the API of the `<Section>` component that is used in `<Select>`, `<Combobox>` and `<Autocomplete>`. It is no longer necessary to add a `Header` within the `<Section>`.
+
+    Use the newly added `header` prop instead. Additionally, to unify the APIs all choices of `<Select>`, `<Combobox>` and `<Autocomplete>` are now called `<Option>` instead of `<Item>`.
+
+- 2d9917f: **Breaking changes**
+
+  - `Dialog.Headline` has been renamed to `Dialog.Title`. Please update your code accordingly.
+  - `<Dialog.Content>` and `<Dialog.Actions>` have been introduced for better organization and flexibility.
+  - The internal layout now uses grid areas, ensuring consistent ordering and layout of the dialog elements.
+  - Existing implementations of the `<Dialog>` component will need to be updated to use these new subcomponents.
+
+### Minor Changes
+
+- 6f8e3a2: style(dialog): make `<Dialog>` sizes responsive
+
+  Using `size` with a `<Dialog>` will allow the dialog to be at most sm/md/lg wide. Will use full width on smaller screens.
+
+- 6687af7: refa: remove footer from `<Dialog>` + allow styles
+
+  - dialogs can only have action now
+  - align buttons in `<Dialog.Actions>` correctly
+
+- df04623: Adding size to dialog component
+
+### Patch Changes
+
+- 65608b4: fix([DSTSUP-94]): Adjust date unavailable property from `<DatePicker>`
+
+  **Breaking Change:** Adjusted `isDateUnavailable` prop to our code guidelines `dateUnavailable`
+
+  Added disabled styles for `data-unavailable` in both b2b and core theme
+
+- 5798b4d: style(b2b): Adjust disabled label color
+
+  Labels where unreadyble when the field was disabled. They had a really bad constrast on the white background. Use regular text color instead.
+
+- f6a132c: docs([DST-582]): revise `<SectionMessage>` page according to new component page structure
+  feat(components): add close button on `<SectionMessage>`
+
+  Revised the `<SectionMessage>` documentation page to our new layout of component pages. And added a close button to allow the user to dismiss the `<SectionMessage>` this is now aligned with our feedback message pattern.
+
+- Updated dependencies [65608b4]
+- Updated dependencies [caefbe4]
+- Updated dependencies [2d9917f]
+- Updated dependencies [6f8e3a2]
+- Updated dependencies [7ea3838]
+- Updated dependencies [6687af7]
+- Updated dependencies [2babc0b]
+- Updated dependencies [f18c8aa]
+- Updated dependencies [d5386e4]
+- Updated dependencies [5c029ec]
+- Updated dependencies [2169b6f]
+- Updated dependencies [bfd2843]
+- Updated dependencies [0e77996]
+- Updated dependencies [b8cd92a]
+- Updated dependencies [45fb3c4]
+- Updated dependencies [f6a132c]
+- Updated dependencies [956982a]
+- Updated dependencies [df04623]
+  - @marigold/components@10.0.0
+  - @marigold/system@10.0.0
+  - @marigold/theme-preset@1.3.23
+
 ## 27.2.1
 
 ### Patch Changes
@@ -480,7 +556,7 @@
 
 ### Minor Changes
 
-- [#3430](https://github.com/marigold-ui/marigold/pull/3430) [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refa <Radio> as react-aria-components
+- [#3430](https://github.com/marigold-ui/marigold/pull/3430) [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refa `<Radio>` as react-aria-components
 
 ### Patch Changes
 
@@ -547,7 +623,7 @@
 
 ### Patch Changes
 
-- [#3339](https://github.com/marigold-ui/marigold/pull/3339) [`581702881`](https://github.com/marigold-ui/marigold/commit/5817028810f503d941be93b66e63ea545c4f17c3) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add <Card> size to b2b theme
+- [#3339](https://github.com/marigold-ui/marigold/pull/3339) [`581702881`](https://github.com/marigold-ui/marigold/commit/5817028810f503d941be93b66e63ea545c4f17c3) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add `<Card>` size to b2b theme
 
 - Updated dependencies [[`b9e1d147a`](https://github.com/marigold-ui/marigold/commit/b9e1d147a0ab61393ba4704dc4bef6fce70fe854), [`581702881`](https://github.com/marigold-ui/marigold/commit/5817028810f503d941be93b66e63ea545c4f17c3)]:
   - @marigold/components@6.2.5

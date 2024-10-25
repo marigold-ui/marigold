@@ -45,7 +45,7 @@ You might send a system-generated message when:
 Don’t use messages when the information does not have a significant impact on the user’s current task or overall experience, or when the same information can be communicated in a less obtrusive way. For example:
 
 - To draw attention to a new element or piece of content, you can use a [badge](/components/content/badge).
-- To draw attention to the status of just one UI element, you can use an [icon](/concepts/icon) with a [tooltip](/components/overlay/tooltip) for short, non-essential supporting information. (Tooltips have lower accessibility and usability across device types than messages, so do not use them for critical information.)
+- To draw attention to the status of just one UI element, you can use an [icon](/foundations/icon) with a [tooltip](/components/overlay/tooltip) for short, non-essential supporting information. (Tooltips have lower accessibility and usability across device types than messages, so do not use them for critical information.)
 - Messages that describe permanent, non-resolvable aspects or features of a page may be better communicated through headings, description text, or information architecture.
 
 ## Message Statuses
@@ -159,7 +159,7 @@ It is used to provide feedback about a user’s input, typically as part of a fo
 
 <ComponentDemo file="./inputfield-validation.demo.tsx" />
 
-A custom-written validation message is not always required. Browsers come with their own default validation error messages that can be used in place of a customized one. See more on the [Validation](/concepts/validation) page.
+A custom-written validation message is not always required. Browsers come with their own default validation error messages that can be used in place of a customized one. See more on the [Validation](/foundations/validation) page.
 
 ### Section Message
 
@@ -167,12 +167,36 @@ A [section message](/components/section-message) is a block-level component that
 
 <ComponentDemo file="./sectionmessage-info.demo.tsx" />
 
-<Image
-  width="900"
-  height="500"
-  src="/dosAndDonts_message_position.png"
-  alt="Do and donts clarity"
-/>
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/sectionmessage/sectionmessage-do-placement.png"
+        alt="Place section messages near the affected content."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Place section message near the affected content.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/sectionmessage/sectionmessage-dont-placement.png"
+        alt="Don't place section messages in unaffected sections."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't place section messages in unaffected sections.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ## Placement and Appearance
 
@@ -226,8 +250,72 @@ A [section message](/components/section-message) is a block-level component that
 - Understanding and fighting alert fatigue ([English](https://www.atlassian.com/incident-management/on-call/alert-fatigue#The%20-psychology-of-alert-fatigue), [German](https://www.atlassian.com/de/incident-management/on-call/alert-fatigue#What-is-alert-fatigue?))
 - [Web Content Accessililty Guidelines (WCAG) 2.0](https://www.w3.org/TR/WCAG20/#minimize-error)
 
-## Related pages
+## Related
 
-- [Dialog](/components/overlay/dialog)
-- [SectionMessage](/components/content/section-message)
-- [Validation](/concepts/validation)
+<TeaserList
+  items={[
+    {
+      title: 'Dialog',
+      href: '../../components/overlay/dialog',
+      caption: 'Component for displaying dialogs.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Section Message',
+      href: '../../components/content/section-message',
+      caption: 'Display a short message with important informations.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.068.157 2.148.279 3.238.364.466.037.893.281 1.153.671L12 21l2.652-3.978c.26-.39.687-.634 1.153-.67 1.09-.086 2.17-.208 3.238-.365 1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Validation',
+      href: '../../foundations/validation',
+      caption: 'Learn about how to use form validation with Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

@@ -9,6 +9,7 @@ export interface ModalProps extends RAC.ModalOverlayProps {
   open?: boolean;
   dismissable?: boolean;
   keyboardDismissable?: boolean;
+  size?: string;
 }
 
 // Component
@@ -34,7 +35,11 @@ const _Modal = forwardRef<
       open={open}
       variant="modal"
     >
-      <Modal ref={ref} className="relative" {...props}>
+      <Modal
+        ref={ref}
+        className="relative flex w-full justify-center"
+        {...props}
+      >
         {props.children}
       </Modal>
     </Underlay>

@@ -163,7 +163,15 @@ interface AutocompleteComponent
   extends ForwardRefExoticComponent<
     AutocompleteProps & RefAttributes<HTMLInputElement>
   > {
-  Item: typeof ListBox.Item;
+  /**
+   * Options for the Combobox.
+   */
+  Option: typeof ListBox.Item;
+
+  /**
+   * Section for the Combobox, to put options in.
+   */
+  Section: typeof ListBox.Section;
 }
 
 // Component
@@ -209,6 +217,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
   }
 ) as AutocompleteComponent;
 
-_Autocomplete.Item = ListBox.Item;
+_Autocomplete.Option = ListBox.Item;
+_Autocomplete.Section = ListBox.Section;
 
 export { _Autocomplete as Autocomplete };

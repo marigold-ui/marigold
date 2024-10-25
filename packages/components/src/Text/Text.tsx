@@ -17,11 +17,13 @@ import {
   useClassNames,
   useTheme,
 } from '@marigold/system';
+import type { AriaLabelingProps } from '@marigold/types';
 
 // Props
 // ---------------
 export interface TextProps
-  extends Omit<RAC.TextProps, 'elementType'>,
+  extends AriaLabelingProps,
+    Omit<RAC.TextProps, 'elementType'>,
     TextAlignProp,
     FontSizeProp,
     FontWeightProp,
@@ -67,8 +69,10 @@ const _Text = ({
     size,
   });
 
+  const Component = props.slot ? Text : as;
+
   return (
-    <Text
+    <Component
       {...props}
       elementType={as}
       className={cn(
@@ -85,7 +89,7 @@ const _Text = ({
       })}
     >
       {children}
-    </Text>
+    </Component>
   );
 };
 

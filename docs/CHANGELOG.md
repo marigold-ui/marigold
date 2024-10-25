@@ -1,5 +1,110 @@
 # @marigold/docs
 
+## 10.0.0
+
+### Major Changes
+
+- caefbe4: refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
+
+  - Added the possibility to use sections with `<Combobox>` and `<Autocomplete>`
+  - Refactored the `<Section>` (from `<Listbox>`) to fit our API, no need for the extra `<Header>` anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
+  - Renamed `<Item>` to `<Option>` in `<Combobox>` and `<Autocomplete>` to align with `<Select>`
+  - Updated the docs for `<Select>`, `<Combobox>` and `<Autocomplete>`
+  - Updated Storybook for `<Select>`, `<Combobox>` and `<Autocomplete>` with section stories
+  - Renamed the part of the `<ListBox>` accordingly (from `sectionTitle` to `header`)
+
+    **BREAKING CHANGE:** We changed the API of the `<Section>` component that is used in `<Select>`, `<Combobox>` and `<Autocomplete>`. It is no longer necessary to add a `Header` within the `<Section>`.
+
+    Use the newly added `header` prop instead. Additionally, to unify the APIs all choices of `<Select>`, `<Combobox>` and `<Autocomplete>` are now called `<Option>` instead of `<Item>`.
+
+### Minor Changes
+
+- 6687af7: refa: remove footer from `<Dialog>` + allow styles
+
+  - dialogs can only have action now
+  - align buttons in `<Dialog.Actions>` correctly
+
+- f3f0ea0: With the changes of the `<Dialog>` component, we also needed to update they docs page.
+
+### Patch Changes
+
+- 4818227: docs([DST-570]): Added "Release" pages to our documentation
+
+  We now create for each changelog a page on our documentation, it is also possible to create release blog posts.
+  With these pages we improve communication, enhance user experience, and ensure all users have easy access to the latest updates in one central location.
+
+- f18c8aa: [DST-494]: add loading states pattern
+
+  [DST-494]: added prop `mode`to the `<XLoader />` to support inline and full-section loading
+
+- e83566d: docs: remove examples from checkbox page and add guidline section
+
+  - removed the examples section
+  - add a guidline about the difference between a checkbox and a switch
+  - site clean up
+
+- 9ff555b: docs: add landing page to the site
+- 0e77996: docs([DST-572]): Adding a general form guideline in docs explaining different concepts such as when to use lable and help text
+- 380704d: docs[DST-519]: Clean up Marigold Docs/ Improve Navigation
+
+  - deleted old files (scripts, about , release)
+  - updated some faqs
+  - improved the navigation structure
+  - added overview pages
+  - improved folder structure in code (a bit)
+  - adjust some links
+
+- b8cd92a: feat: `CheckboxGroup` can now be used as a compound component
+
+  - Refactored the `CheckboxGroup` to be a compound component and align it with other components: `<CheckboxGroup>` -> `<Checkbox.Group>`
+  - Adjusted the Checkbox appearance demo a bit
+
+- a582035: docs: Update the `MarigoldProvider` page
+
+  Updated the MarigoldProvider page according to our new page layout and information.
+
+- fab9442: docs(Combobox): add info that section headers are not included wehen filtering
+- 45fb3c4: chore(deps): update react-aria to 1.4
+- f6a132c: docs([DST-582]): revise `<SectionMessage>` page according to new component page structure
+  feat(components): add close button on `<SectionMessage>`
+
+  Revised the `<SectionMessage>` documentation page to our new layout of component pages. And added a close button to allow the user to dismiss the `<SectionMessage>` this is now aligned with our feedback message pattern.
+
+- f85bb04: docs: Apply root styles to overlay portal so they are displayed correctly.
+
+  Overlay components (e.g. `<Dialog>` did not display correctly in the docs.
+
+- Updated dependencies [65608b4]
+- Updated dependencies [caefbe4]
+- Updated dependencies [165e184]
+- Updated dependencies [2d9917f]
+- Updated dependencies [6f8e3a2]
+- Updated dependencies [7ea3838]
+- Updated dependencies [6687af7]
+- Updated dependencies [2babc0b]
+- Updated dependencies [8c539d3]
+- Updated dependencies [f18c8aa]
+- Updated dependencies [d5386e4]
+- Updated dependencies [5798b4d]
+- Updated dependencies [5c029ec]
+- Updated dependencies [2169b6f]
+- Updated dependencies [bfd2843]
+- Updated dependencies [9ff555b]
+- Updated dependencies [0e77996]
+- Updated dependencies [b8cd92a]
+- Updated dependencies [45fb3c4]
+- Updated dependencies [f6a132c]
+- Updated dependencies [956982a]
+- Updated dependencies [df04623]
+- Updated dependencies [f3f0ea0]
+  - @marigold/components@10.0.0
+  - @marigold/theme-b2b@28.0.0
+  - @marigold/theme-core@27.0.0
+  - @marigold/system@10.0.0
+  - @marigold/theme-docs@2.2.0
+  - @marigold/icons@1.2.58
+  - @marigold/theme-preset@1.3.23
+
 ## 9.0.2
 
 ### Patch Changes
@@ -124,7 +229,7 @@
 
 ### Patch Changes
 
-- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename <Message> in <SectionMessage>
+- [#3939](https://github.com/marigold-ui/marigold/pull/3939) [`2cde433`](https://github.com/marigold-ui/marigold/commit/2cde433e21bc49e378b96c9d812baf21914cf382) Thanks [@sarahgm](https://github.com/sarahgm)! - feat[DST-481]: rename `<Message>` in `<SectionMessage>`
 
 - [#3967](https://github.com/marigold-ui/marigold/pull/3967) [`0773aa8`](https://github.com/marigold-ui/marigold/commit/0773aa8cd6ee71faf4f0d04f80f33cbe7fc56202) Thanks [@sebald](https://github.com/sebald)! - refa: Update TypeScript and adjust `<NumericFormat>` props
 

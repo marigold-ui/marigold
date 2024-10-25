@@ -71,3 +71,14 @@ export const Basic: Story = {
     </Text>
   ),
 };
+
+export const Slot: Story = {
+  render: args => (
+    <Text slot="description" {...args}>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+      dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
+      massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
+      massa ex ut quam.
+    </Text>
+  ),
+};

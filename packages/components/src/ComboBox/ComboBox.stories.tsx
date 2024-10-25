@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Key, useState } from 'react';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack';
+import { Text } from '../Text';
 import { ComboBox } from './ComboBox';
 
 const meta = {
@@ -99,7 +100,7 @@ const meta = {
     width: 'full',
     menuTrigger: 'input',
     placeholder: undefined,
-    label: '',
+    label: 'Label',
   },
 } satisfies Meta;
 
@@ -109,14 +110,14 @@ export const Basic: StoryObj<typeof ComboBox> = {
   render: args => {
     return (
       <ComboBox label="Animals" disabledKeys={['snake']} {...args}>
-        <ComboBox.Item id="red panda">Red Panda</ComboBox.Item>
-        <ComboBox.Item id="cat">Cat</ComboBox.Item>
-        <ComboBox.Item id="dog">Dog</ComboBox.Item>
-        <ComboBox.Item id="aardvark">Aardvark</ComboBox.Item>
-        <ComboBox.Item id="kangaroo">Kangaroo</ComboBox.Item>
-        <ComboBox.Item id="snake">Snake</ComboBox.Item>
-        <ComboBox.Item id="vegan">Vegan</ComboBox.Item>
-        <ComboBox.Item id="mar">Margrita</ComboBox.Item>
+        <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+        <ComboBox.Option id="cat">Cat</ComboBox.Option>
+        <ComboBox.Option id="dog">Dog</ComboBox.Option>
+        <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+        <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+        <ComboBox.Option id="snake">Snake</ComboBox.Option>
+        <ComboBox.Option id="vegan">Vegan</ComboBox.Option>
+        <ComboBox.Option id="mar">Margrita</ComboBox.Option>
       </ComboBox>
     );
   },
@@ -136,11 +137,11 @@ export const Controlled: StoryObj<typeof ComboBox> = {
           label="Animals"
           {...args}
         >
-          <ComboBox.Item id="red panda">Red Panda</ComboBox.Item>
-          <ComboBox.Item id="cat">Cat</ComboBox.Item>
-          <ComboBox.Item id="dog">Dog</ComboBox.Item>
-          <ComboBox.Item id="aardvark">Aardvark</ComboBox.Item>
-          <ComboBox.Item id="kangaroo">Kangaroo</ComboBox.Item>
+          <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+          <ComboBox.Option id="cat">Cat</ComboBox.Option>
+          <ComboBox.Option id="dog">Dog</ComboBox.Option>
+          <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+          <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
         </ComboBox>
         <pre>
           current: {current}, selected: {id?.toString()}
@@ -174,11 +175,40 @@ export const AsyncLoading: StoryObj<typeof ComboBox> = {
         {...args}
       >
         {(item: { name: string }) => (
-          <ComboBox.Item key={item.name} id={item.name}>
+          <ComboBox.Option key={item.name} id={item.name}>
             {item.name}
-          </ComboBox.Item>
+          </ComboBox.Option>
         )}
       </ComboBox>
     );
   },
+};
+
+export const Sections: StoryObj<typeof ComboBox> = {
+  render: args => (
+    <ComboBox {...args}>
+      <ComboBox.Section header="Fantasy">
+        <ComboBox.Option id="harry-potter" textValue="Harry Potter">
+          <Text slot="label">Harry Potter</Text>
+          <Text slot="description">About the boy who lived</Text>
+        </ComboBox.Option>
+        <ComboBox.Option id="lord-of-the-rings" textValue="Lord of the Rings">
+          <Text slot="label">Lord of the Rings</Text>
+          <Text slot="description">In the lands of Middle earth</Text>
+        </ComboBox.Option>
+      </ComboBox.Section>
+      <ComboBox.Section header="Sci-Fi">
+        <ComboBox.Option id="star-wars" textValue="Start Wars">
+          <Text slot="label">Start Wars</Text>
+          <Text slot="description">
+            A long time ago, in a galaxy far, far away
+          </Text>
+        </ComboBox.Option>
+        <ComboBox.Option id="star-trek" textValue="Star Trek">
+          <Text slot="label">Star Trek</Text>
+          <Text slot="description">What is this</Text>
+        </ComboBox.Option>
+      </ComboBox.Section>
+    </ComboBox>
+  ),
 };

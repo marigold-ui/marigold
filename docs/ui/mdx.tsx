@@ -4,12 +4,13 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { HTMLAttributes } from 'react';
 import Md from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { cn } from '@marigold/system';
+import { DateFormat, cn } from '@marigold/system';
 import { IconList } from '@/ui/IconList';
 import {
   Card,
   Columns,
   Headline,
+  Inline,
   Link,
   List,
   Scrollable,
@@ -29,6 +30,7 @@ import { CopyButton } from './CopyButton';
 import { Do, Dont, GuidelineTiles } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
+import { Logo } from './Logo';
 import { PropsTable } from './PropsTable';
 import { StorybookHintMessage } from './StorybookHintMessage';
 import { TeaserCard, TeaserList } from './TeaserCard';
@@ -47,6 +49,8 @@ import {
   Headlines,
   TextAlign,
 } from './Typography';
+import { LatestPost } from './blog/LatestPost';
+import { PostList } from './blog/PostList';
 
 // Typography
 // ---------------
@@ -154,6 +158,7 @@ const components = {
   FontWeights,
   Headlines,
   IconList,
+  Logo,
   PropsTable,
   Spacing,
   StorybookHintMessage,
@@ -161,10 +166,15 @@ const components = {
   TeaserList,
   TextAlign,
   Toc,
+  // Blog-related
+  LatestPost,
+  PostList,
   // Marigold Components
   Card,
   Columns,
+  DateFormat,
   Headline,
+  Inline,
   List,
   Scrollable,
   SectionMessage,

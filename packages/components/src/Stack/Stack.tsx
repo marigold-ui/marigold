@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
 import type { GapSpaceProp } from '@marigold/system';
 import { alignment, cn, gapSpace } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface StackProps extends GapSpaceProp {
+export interface StackProps extends GapSpaceProp, AriaRegionProps {
   /**
    * Children of the component.
    */

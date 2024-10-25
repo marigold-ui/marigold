@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Header } from '../Header';
 import { ListBox } from './ListBox';
 
 const meta = {
@@ -31,20 +30,17 @@ export const Basic: Story = {
 export const WithSections: Story = {
   render: args => (
     <ListBox aria-labelledby="listbox" {...args}>
-      <ListBox.Section>
-        <Header>Veggies</Header>
+      <ListBox.Section header="Veggies">
         <ListBox.Item id="lettuce">Lettuce</ListBox.Item>
         <ListBox.Item id="tomato">Tomato</ListBox.Item>
         <ListBox.Item id="onion">Onion</ListBox.Item>
       </ListBox.Section>
-      <ListBox.Section>
-        <Header>Protein</Header>
+      <ListBox.Section header="Protein">
         <ListBox.Item id="ham">Ham</ListBox.Item>
         <ListBox.Item id="tuna">Tuna</ListBox.Item>
         <ListBox.Item id="tofu">Tofu</ListBox.Item>
       </ListBox.Section>
-      <ListBox.Section>
-        <Header>Condiments</Header>
+      <ListBox.Section header="Condiments">
         <ListBox.Item id="mayo">Mayonaise</ListBox.Item>
         <ListBox.Item id="mustard">Mustard</ListBox.Item>
         <ListBox.Item id="ranch">Ranch</ListBox.Item>

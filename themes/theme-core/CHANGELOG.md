@@ -1,5 +1,69 @@
 # @marigold/theme-core
 
+## 27.0.0
+
+### Major Changes
+
+- 2d9917f: **Breaking changes**
+
+  - `Dialog.Headline` has been renamed to `Dialog.Title`. Please update your code accordingly.
+  - `<Dialog.Content>` and `<Dialog.Actions>` have been introduced for better organization and flexibility.
+  - The internal layout now uses grid areas, ensuring consistent ordering and layout of the dialog elements.
+  - Existing implementations of the `<Dialog>` component will need to be updated to use these new subcomponents.
+
+### Minor Changes
+
+- 6f8e3a2: style(dialog): make `<Dialog>` sizes responsive
+
+  Using `size` with a `<Dialog>` will allow the dialog to be at most sm/md/lg wide. Will use full width on smaller screens.
+
+- 6687af7: refa: remove footer from `<Dialog>` + allow styles
+
+  - dialogs can only have action now
+  - align buttons in `<Dialog.Actions>` correctly
+
+- f3f0ea0: With the changes of the `<Dialog>` component, we also needed to update they docs page.
+
+### Patch Changes
+
+- 65608b4: fix([DSTSUP-94]): Adjust date unavailable property from `<DatePicker>`
+
+  **Breaking Change:** Adjusted `isDateUnavailable` prop to our code guidelines `dateUnavailable`
+
+  Added disabled styles for `data-unavailable` in both b2b and core theme
+
+- 8c539d3: style(core): adjust the underlay color to be darker
+- d5386e4: fix(components): Display `<Checkbox>` focus ring and adjust focus ring of `<Table>`
+
+  Focus ring was not showing for the `<Checkbox>`. It does now!
+
+- f6a132c: docs([DST-582]): revise `<SectionMessage>` page according to new component page structure
+  feat(components): add close button on `<SectionMessage>`
+
+  Revised the `<SectionMessage>` documentation page to our new layout of component pages. And added a close button to allow the user to dismiss the `<SectionMessage>` this is now aligned with our feedback message pattern.
+
+- Updated dependencies [65608b4]
+- Updated dependencies [caefbe4]
+- Updated dependencies [2d9917f]
+- Updated dependencies [6f8e3a2]
+- Updated dependencies [7ea3838]
+- Updated dependencies [6687af7]
+- Updated dependencies [2babc0b]
+- Updated dependencies [f18c8aa]
+- Updated dependencies [d5386e4]
+- Updated dependencies [5c029ec]
+- Updated dependencies [2169b6f]
+- Updated dependencies [bfd2843]
+- Updated dependencies [0e77996]
+- Updated dependencies [b8cd92a]
+- Updated dependencies [45fb3c4]
+- Updated dependencies [f6a132c]
+- Updated dependencies [956982a]
+- Updated dependencies [df04623]
+  - @marigold/components@10.0.0
+  - @marigold/system@10.0.0
+  - @marigold/theme-preset@1.3.23
+
 ## 26.2.1
 
 ### Patch Changes
@@ -510,7 +574,7 @@
 
 ### Minor Changes
 
-- [#3430](https://github.com/marigold-ui/marigold/pull/3430) [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refa <Radio> as react-aria-components
+- [#3430](https://github.com/marigold-ui/marigold/pull/3430) [`1ce0cabbf`](https://github.com/marigold-ui/marigold/commit/1ce0cabbf8e04cab4345265dbe131d48be773d68) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: refa `<Radio>` as react-aria-components
 
 ### Patch Changes
 
@@ -757,7 +821,7 @@
 
 ### Minor Changes
 
-- [#2690](https://github.com/marigold-ui/marigold/pull/2690) [`258d939f`](https://github.com/marigold-ui/marigold/commit/258d939f39e110d140571ca3766acf281cb8a787) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add <Badge> variant dark.
+- [#2690](https://github.com/marigold-ui/marigold/pull/2690) [`258d939f`](https://github.com/marigold-ui/marigold/commit/258d939f39e110d140571ca3766acf281cb8a787) Thanks [@sarahgm](https://github.com/sarahgm)! - chore: add `<Badge>` variant dark.
 
 ### Patch Changes
 
@@ -995,9 +1059,9 @@
 
 ### Major Changes
 
-- [#2081](https://github.com/marigold-ui/marigold/pull/2081) [`93429e12`](https://github.com/marigold-ui/marigold/commit/93429e12e1f31c85fec0d92efd2a7b0013809b41) Thanks [@sebald](https://github.com/sebald)! - refa: separate selection/regular cell + use <Checkbox>
+- [#2081](https://github.com/marigold-ui/marigold/pull/2081) [`93429e12`](https://github.com/marigold-ui/marigold/commit/93429e12e1f31c85fec0d92efd2a7b0013809b41) Thanks [@sebald](https://github.com/sebald)! - refa: separate selection/regular cell + use `<Checkbox>`
 
-* [#2053](https://github.com/marigold-ui/marigold/pull/2053) [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255) Thanks [@sebald](https://github.com/sebald)! - refa: <Dialog>
+* [#2053](https://github.com/marigold-ui/marigold/pull/2053) [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255) Thanks [@sebald](https://github.com/sebald)! - refa: `<Dialog>`
 
 - [#2069](https://github.com/marigold-ui/marigold/pull/2069) [`c35afcf2`](https://github.com/marigold-ui/marigold/commit/c35afcf21c10bb043041e56e91f954efc2083eff) Thanks [@sebald](https://github.com/sebald)! - refa: `<Tooltip>`
 
@@ -1007,7 +1071,7 @@
 
 ### Minor Changes
 
-- [#2029](https://github.com/marigold-ui/marigold/pull/2029) [`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104) Thanks [@sebald](https://github.com/sebald)! - feat: Accessible <Radio> and <RadioGroup>
+- [#2029](https://github.com/marigold-ui/marigold/pull/2029) [`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104) Thanks [@sebald](https://github.com/sebald)! - feat: Accessible `<Radio>` and `<RadioGroup>`
 
 ### Patch Changes
 
@@ -1024,11 +1088,11 @@
 
 ### Major Changes
 
-- [#2053](https://github.com/marigold-ui/marigold/pull/2053) [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255) Thanks [@sebald](https://github.com/sebald)! - refa: <Dialog>
+- [#2053](https://github.com/marigold-ui/marigold/pull/2053) [`759abe94`](https://github.com/marigold-ui/marigold/commit/759abe94648f7935723cfb47e2097ba918ce1255) Thanks [@sebald](https://github.com/sebald)! - refa: `<Dialog>`
 
 ### Minor Changes
 
-- [#2029](https://github.com/marigold-ui/marigold/pull/2029) [`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104) Thanks [@sebald](https://github.com/sebald)! - feat: Accessible <Radio> and <RadioGroup>
+- [#2029](https://github.com/marigold-ui/marigold/pull/2029) [`bbe8ad99`](https://github.com/marigold-ui/marigold/commit/bbe8ad99f64cea5cc25fa19bb7705c3f9f1b7104) Thanks [@sebald](https://github.com/sebald)! - feat: Accessible `<Radio>` and `<RadioGroup>`
 
 ### Patch Changes
 
@@ -1061,7 +1125,7 @@
 
 - [#1999](https://github.com/marigold-ui/marigold/pull/1999) [`413df088`](https://github.com/marigold-ui/marigold/commit/413df088ed497a3dfb4221c31a1b68245f43e984) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: divider restructure
 
-* [#2008](https://github.com/marigold-ui/marigold/pull/2008) [`4ff1e2b6`](https://github.com/marigold-ui/marigold/commit/4ff1e2b6e668db90cfb7e2d04d9365c80dbf4cc2) Thanks [@sebald](https://github.com/sebald)! - refa: <Checkbox> (uses new styling)
+* [#2008](https://github.com/marigold-ui/marigold/pull/2008) [`4ff1e2b6`](https://github.com/marigold-ui/marigold/commit/4ff1e2b6e668db90cfb7e2d04d9365c80dbf4cc2) Thanks [@sebald](https://github.com/sebald)! - refa: `<Checkbox>` (uses new styling)
 
 - [#1992](https://github.com/marigold-ui/marigold/pull/1992) [`59f3e6f3`](https://github.com/marigold-ui/marigold/commit/59f3e6f31c00c422bc95b25fb0faf1b77bc9a273) Thanks [@sarahgm](https://github.com/sarahgm)! - refa: Link styles
 
@@ -1069,7 +1133,7 @@
 
 - [#1982](https://github.com/marigold-ui/marigold/pull/1982) [`7fc15cb7`](https://github.com/marigold-ui/marigold/commit/7fc15cb7624b5ccb8c282f238fa6954947789731) Thanks [@sebald](https://github.com/sebald)! - refa: Badge uses new styling solution
 
-* [#2001](https://github.com/marigold-ui/marigold/pull/2001) [`b3246070`](https://github.com/marigold-ui/marigold/commit/b3246070c7bd3dcadb28e30140aead330a6b9ff1) Thanks [@sebald](https://github.com/sebald)! - refa: Use <Headline> instead of <Text>
+* [#2001](https://github.com/marigold-ui/marigold/pull/2001) [`b3246070`](https://github.com/marigold-ui/marigold/commit/b3246070c7bd3dcadb28e30140aead330a6b9ff1) Thanks [@sebald](https://github.com/sebald)! - refa: Use `<Headline>` instead of `<Text>`
 
 - [#2014](https://github.com/marigold-ui/marigold/pull/2014) [`cc01f7dc`](https://github.com/marigold-ui/marigold/commit/cc01f7dc5e9aae665511374b1352efa9f2c942bf) Thanks [@sarahgm](https://github.com/sarahgm)! - Text component restructure
 
@@ -1182,7 +1246,7 @@
 
 * [`4f5d51bc`](https://github.com/marigold-ui/marigold/commit/4f5d51bc173b4b286d453c79973c30ec9243af55) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): new colors for radio, checkbox, slider
 
-- [#1616](https://github.com/marigold-ui/marigold/pull/1616) [`ac186e8c`](https://github.com/marigold-ui/marigold/commit/ac186e8c6658bcd6a2892bbe4717c0d60c67e0b4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hardcoded variants in <Dialog>
+- [#1616](https://github.com/marigold-ui/marigold/pull/1616) [`ac186e8c`](https://github.com/marigold-ui/marigold/commit/ac186e8c6658bcd6a2892bbe4717c0d60c67e0b4) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hardcoded variants in `<Dialog>`
 
 * [#1610](https://github.com/marigold-ui/marigold/pull/1610) [`116d6b0f`](https://github.com/marigold-ui/marigold/commit/116d6b0f3ae1db882882daee99901668997c23f2) Thanks [@ti10le](https://github.com/ti10le)! - feat(core-theme): split theme + make more consistent
 
@@ -1204,7 +1268,7 @@
 
 - [#1636](https://github.com/marigold-ui/marigold/pull/1636) [`4aeac33f`](https://github.com/marigold-ui/marigold/commit/4aeac33f619e6f9caee36a71223b312cfe1b9401) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): Field fix default variant + remove hardcoded variants
 
-* [#1474](https://github.com/marigold-ui/marigold/pull/1474) [`abdde032`](https://github.com/marigold-ui/marigold/commit/abdde0326428a1fa5db340197e71ca0190e7780e) Thanks [@sebald](https://github.com/sebald)! - refa: remove useStyles from <Alert>
+* [#1474](https://github.com/marigold-ui/marigold/pull/1474) [`abdde032`](https://github.com/marigold-ui/marigold/commit/abdde0326428a1fa5db340197e71ca0190e7780e) Thanks [@sebald](https://github.com/sebald)! - refa: remove useStyles from `<Alert>`
 
 - [#1632](https://github.com/marigold-ui/marigold/pull/1632) [`c96d54a2`](https://github.com/marigold-ui/marigold/commit/c96d54a21901a72aeb6af71837c9642ace394c78) Thanks [@ti10le](https://github.com/ti10le)! - feat(comp): remove hard coded label variant in checkbox
 

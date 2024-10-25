@@ -40,7 +40,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<
-      'closeButton' | 'container',
+      'closeButton' | 'container' | 'header' | 'content' | 'actions',
       ComponentStyleFunction<string, string>
     >;
     Divider?: ComponentStyleFunction<string, string>;
@@ -73,7 +73,7 @@ export type Theme = {
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
-      'container' | 'list' | 'option' | 'section' | 'sectionTitle',
+      'container' | 'list' | 'option' | 'section' | 'header',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<

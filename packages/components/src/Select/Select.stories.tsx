@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
-import { Header } from '../Header';
 import { Inset } from '../Inset';
 import { Text } from '../Text';
 import { Select } from './Select';
@@ -188,8 +187,7 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
 export const Sections: StoryObj<typeof Select> = {
   render: args => (
     <Select {...args}>
-      <Select.Section>
-        <Header>Fantasy</Header>
+      <Select.Section header="Fantasy">
         <Select.Option id="harry-potter">
           <Text slot="label">Harry Potter</Text>
           <Text slot="description">About the boy who lived</Text>
@@ -199,8 +197,7 @@ export const Sections: StoryObj<typeof Select> = {
           <Text slot="description">In the lands of Middle earth</Text>
         </Select.Option>
       </Select.Section>
-      <Select.Section>
-        <Header>Sci-Fi</Header>
+      <Select.Section header="Sci-Fi">
         <Select.Option id="star-wars">
           <Text slot="label">Start Wars</Text>
           <Text slot="description">

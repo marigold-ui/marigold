@@ -21,10 +21,10 @@
     "directory": "config/jest"
   },
   "dependencies": {
-    "@babel/core": "7.25.2",
-    "@swc/core": "1.7.18",
+    "@babel/core": "7.25.8",
+    "@swc/core": "1.7.36",
     "@swc/jest": "0.2.36",
-    "@types/jest": "29.5.12",
+    "@types/jest": "29.5.13",
     "babel-jest": "29.7.0",
     "jest-watch-typeahead": "2.2.2",
     "merge-deep": "3.0.3",

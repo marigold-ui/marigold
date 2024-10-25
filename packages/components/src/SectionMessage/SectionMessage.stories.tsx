@@ -13,6 +13,12 @@ const meta = {
       options: ['success', 'info', 'warning', 'error'],
       description: 'The variants of the message',
     },
+    closeButton: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'makes the message dismissable.',
+    },
   },
 } satisfies Meta<typeof SectionMessage>;
 
@@ -21,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <SectionMessage {...args}>
+    <SectionMessage closeButton {...args}>
       <SectionMessage.Title>Danger Zone!</SectionMessage.Title>
       <SectionMessage.Content>
         <Text>Hello, I am a simple message.</Text>
