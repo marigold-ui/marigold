@@ -1,5 +1,103 @@
 # @marigold/components
 
+## 10.0.0
+
+### Major Changes
+
+- 65608b4: fix([DSTSUP-94]): Adjust date unavailable property from `<DatePicker>`
+
+  **Breaking Change:** Adjusted `isDateUnavailable` prop to our code guidelines `dateUnavailable`
+
+  Added disabled styles for `data-unavailable` in both b2b and core theme
+
+- caefbe4: refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
+
+  - Added the possibility to use sections with `<Combobox>` and `<Autocomplete>`
+  - Refactored the `<Section>` (from `<Listbox>`) to fit our API, no need for the extra `<Header>` anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
+  - Renamed `<Item>` to `<Option>` in `<Combobox>` and `<Autocomplete>` to align with `<Select>`
+  - Updated the docs for `<Select>`, `<Combobox>` and `<Autocomplete>`
+  - Updated Storybook for `<Select>`, `<Combobox>` and `<Autocomplete>` with section stories
+  - Renamed the part of the `<ListBox>` accordingly (from `sectionTitle` to `header`)
+
+    **BREAKING CHANGE:** We changed the API of the `<Section>` component that is used in `<Select>`, `<Combobox>` and `<Autocomplete>`. It is no longer necessary to add a `Header` within the `<Section>`.
+
+    Use the newly added `header` prop instead. Additionally, to unify the APIs all choices of `<Select>`, `<Combobox>` and `<Autocomplete>` are now called `<Option>` instead of `<Item>`.
+
+- 2d9917f: **Breaking changes**
+
+  - `Dialog.Headline` has been renamed to `Dialog.Title`. Please update your code accordingly.
+  - `<Dialog.Content>` and `<Dialog.Actions>` have been introduced for better organization and flexibility.
+  - The internal layout now uses grid areas, ensuring consistent ordering and layout of the dialog elements.
+  - Existing implementations of the `<Dialog>` component will need to be updated to use these new subcomponents.
+
+### Minor Changes
+
+- 6f8e3a2: style(dialog): make `<Dialog>` sizes responsive
+
+  Using `size` with a `<Dialog>` will allow the dialog to be at most sm/md/lg wide. Will use full width on smaller screens.
+
+- 6687af7: refa: remove footer from `<Dialog>` + allow styles
+
+  - dialogs can only have action now
+  - align buttons in `<Dialog.Actions>` correctly
+
+- 2babc0b: feat(components): Mark layout components as regions for accessibility.
+
+  Added the ability to mark layout components as regions (ARIA role). This improves accessibility by allowing assistive technologies to identify significant sections of the page, making navigation easier for users with disabilities.
+
+- 956982a: feat(components): Make `<Text>` and `<Headline>` accessible by allowing ARIA labelling props
+
+  `<Text>` and `<Headline>` will no longer cause type errors when ARIA labelling is used (`aria-label`, `id`, ...).
+
+- df04623: Adding size to dialog component
+
+### Patch Changes
+
+- 7ea3838: feat(Menu): pass `aria-label` to menu button instead of menu
+- f18c8aa: [DST-494]: add loading states pattern
+
+  [DST-494]: added prop `mode`to the `<XLoader />` to support inline and full-section loading
+
+- d5386e4: fix(components): Display `<Checkbox>` focus ring and adjust focus ring of `<Table>`
+
+  Focus ring was not showing for the `<Checkbox>`. It does now!
+
+- 5c029ec: feat(components): Expose `Selection` type for easy usage with `Table` and other components
+
+  When working with a `<Table>` you can now use
+
+  ```ts
+  import type { Selection } from '@marigold/components';
+  ```
+
+  instead of creating the type.
+
+- 2169b6f: bugfix([DSTSUP-92]): fixed variants in table stories
+
+  At certain stories the control variants doesn't worked properly. Now it should work at least for all table stories.
+
+- bfd2843: chore: refa `<Text>` component. Based on the slot property it now takes the RAC text or not. Needed to prevent other components breaking.
+- 0e77996: docs([DST-572]): Adding a general form guideline in docs explaining different concepts such as when to use lable and help text
+- b8cd92a: feat: `CheckboxGroup` can now be used as a compound component
+
+  - Refactored the `CheckboxGroup` to be a compound component and align it with other components: `<CheckboxGroup>` -> `<Checkbox.Group>`
+  - Adjusted the Checkbox appearance demo a bit
+
+- 45fb3c4: chore(deps): update react-aria to 1.4
+- f6a132c: docs([DST-582]): revise `<SectionMessage>` page according to new component page structure
+  feat(components): add close button on `<SectionMessage>`
+
+  Revised the `<SectionMessage>` documentation page to our new layout of component pages. And added a close button to allow the user to dismiss the `<SectionMessage>` this is now aligned with our feedback message pattern.
+
+- Updated dependencies [caefbe4]
+- Updated dependencies [6687af7]
+- Updated dependencies [2babc0b]
+- Updated dependencies [45fb3c4]
+- Updated dependencies [956982a]
+  - @marigold/system@10.0.0
+  - @marigold/types@1.2.0
+  - @marigold/icons@1.2.58
+
 ## 9.0.2
 
 ### Patch Changes
