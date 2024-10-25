@@ -94,6 +94,7 @@ test('get theme color', () => {
 <div
   class="text-[--color] outline-[--outline] font-["Oswald_Regular"]"
   data-testid="text"
+  elementtype="div"
   style="--color: rgb(5 150 105);"
 />
 `);
