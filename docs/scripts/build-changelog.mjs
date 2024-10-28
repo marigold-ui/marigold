@@ -1,6 +1,5 @@
 import { Octokit } from '@octokit/core';
 import path from 'path';
-import { simpleGit } from 'simple-git';
 import { fs, globby } from 'zx';
 
 require('dotenv').config();
@@ -62,10 +61,9 @@ const getReleaseInformation = async (sourceText, releaseDates) => {
   }
 
   const normalizedVersions = versions.map(version =>
-    version.replace('## ', '').trim()
+    version.replace('## ', '')
   );
 
-  // Match extracted versions from sourceText
   const versionReleaseDates = normalizedVersions.map(version => {
     const releaseInfo = releaseDates.get(version);
 
