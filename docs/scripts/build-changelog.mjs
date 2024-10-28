@@ -22,60 +22,64 @@ if (!process.env.GITHUB_TOKEN) {
   console.log('GITHUB_TOKEN is set.');
 }
 
-const getReleaseInformation = async sourceText => {
-  const regex = /## \d{1,2}\.\d{1,2}\.\d{1,2}/gm;
-  const versions = sourceText.match(regex);
+const octokit = new Octokit({ auth: GITHUB_TOKEN });
+const response = await octokit.request(
+  `https://api.github.com/repos/marigold-ui/marigold/releases`,
+  {
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+  }
+);
 
-  console.log(versions);
+const releases = response.data;
 
-  // const log = await git.log({ file: path.resolve(file) });
-  const octokit = new Octokit({ auth: GITHUB_TOKEN });
-  const response = await octokit.request(
-    `https://api.github.com/repos/marigold-ui/marigold/releases`,
-    {
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    }
-  );
+const releaseDates = releases.map(release => {
+  const releaseDate = new Date(release.published_at);
+  const name = release.name;
+  const today = new Date();
+  const timeDifference = today.getTime() - releaseDate.getTime();
+  const aDayInMs = 24 * 60 * 60 * 1000;
+  const daysDifference = Math.round(timeDifference / aDayInMs);
+  const badge = daysDifference < 30 ? 'new' : undefined;
 
-  const releases = response.data;
+  return { name, badge, releaseDate };
+});
+
+const getReleaseInformation = async (sourceText, releaseDates) => {
   // to get the difference in days we need to calculate
   // the difference between time and divide it into miliseconds a day has
-  const releaseDates = releases.map(release => {
-    const releaseDate = new Date(release.published_at);
-    const today = new Date();
-    const timeDifference = today.getTime() - releaseDate.getTime();
-    const aDayInMs = 24 * 60 * 60 * 1000;
-    const daysDifference = Math.round(timeDifference / aDayInMs);
-    const badge = daysDifference < 30 ? 'new' : undefined;
 
-    console.log(releaseDate, badge);
-    return {
-      badge,
-      releaseDate,
-    };
-  });
+  const regex = /## (\d{1,2}\.\d{1,2}\.\d{1,2})/gm;
+  const versions = sourceText.match(regex);
 
+  console.log(releaseDates);
+  if (!versions) {
+    console.log('No versions found in the source text.');
+    return [];
+  }
+  Object.values(releaseDates).forEach(key =>
+    console.log(key, releaseDates[key])
+  );
   return releaseDates;
-
-  // const releases = log.all
-  //   .filter(release => release.author_name === 'github-actions[bot]')
-  //   .map(release => {
-  //     const releaseDate = new Date(release.date);
-  //     const today = new Date();
-
-  //     // to get the difference in days we need to calculate
-  //     // the difference between time and divide it into miliseconds a day has
-  //     const timeDifference = today.getTime() - releaseDate.getTime();
-  //     const aDayInMs = 24 * 60 * 60 * 1000;
-  //     const daysDifference = Math.round(timeDifference / aDayInMs);
-
-  //     const badge = daysDifference < 30 ? 'new' : undefined;
-
-  //     return { badge, releaseDate };
-  //   });
 };
+
+// const releases = log.all
+//   .filter(release => release.author_name === 'github-actions[bot]')
+//   .map(release => {
+//     const releaseDate = new Date(release.date);
+//     const today = new Date();
+
+//     // to get the difference in days we need to calculate
+//     // the difference between time and divide it into miliseconds a day has
+//     const timeDifference = today.getTime() - releaseDate.getTime();
+//     const aDayInMs = 24 * 60 * 60 * 1000;
+//     const daysDifference = Math.round(timeDifference / aDayInMs);
+
+//     const badge = daysDifference < 30 ? 'new' : undefined;
+
+//     return { badge, releaseDate };
+//   });
 
 const addFrontmatter = (sourceText, releases) => {
   const regex = /^# (.*)$/m;
@@ -128,7 +132,7 @@ changelogPath.forEach(async file => {
 
   const changelogDir = `content/releases/${packages}`;
   let changelogModified = data;
-  const releases = await getReleaseInformation(changelogModified);
+  const releases = await getReleaseInformation(changelogModified, releaseDates);
 
   changelogModified = addFrontmatter(changelogModified, releases);
   changelogModified = adjustContent(changelogModified, releases);
