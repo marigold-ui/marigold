@@ -4,8 +4,7 @@ import { simpleGit } from 'simple-git';
 import { fs, globby } from 'zx';
 
 require('dotenv').config();
-
-const git = simpleGit();
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 // only take the changelogs of the packages
 let changelogPath = await globby([
@@ -14,72 +13,70 @@ let changelogPath = await globby([
 ]);
 
 console.log('📑 Generating changelogs...');
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-if (!process.env.GITHUB_TOKEN) {
-  console.error('GITHUB_TOKEN is not set.');
-} else {
-  console.log('GITHUB_TOKEN is set.');
-}
+const getReleaseData = async () => {
+  const octokit = new Octokit({ auth: GITHUB_TOKEN });
+  const response = await octokit.request(
+    'GET /repos/marigold-ui/marigold/releases',
+    {
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    }
+  );
 
-const octokit = new Octokit({ auth: GITHUB_TOKEN });
-const response = await octokit.request(
-  `https://api.github.com/repos/marigold-ui/marigold/releases`,
-  {
-    headers: {
-      'X-GitHub-Api-Version': '2022-11-28',
-    },
-  }
-);
+  const releases = response.data;
+  const releaseDates = new Map();
 
-const releases = response.data;
+  releases.forEach(release => {
+    const [, version] = release.name.match(/@([^@]+)$/) || [];
+    if (!version) return;
 
-const releaseDates = releases.map(release => {
-  const releaseDate = new Date(release.published_at);
-  const name = release.name;
-  const today = new Date();
-  const timeDifference = today.getTime() - releaseDate.getTime();
-  const aDayInMs = 24 * 60 * 60 * 1000;
-  const daysDifference = Math.round(timeDifference / aDayInMs);
-  const badge = daysDifference < 30 ? 'new' : undefined;
+    const badge = undefined;
+    // Check if the version already exists to avoid duplicates and get date
+    if (!releaseDates.has(version)) {
+      const releaseDate = new Date(release.published_at);
+      const today = new Date();
+      const timeDifference = today.getTime() - releaseDate.getTime();
+      const aDayInMs = 24 * 60 * 60 * 1000;
+      const daysDifference = Math.round(timeDifference / aDayInMs);
 
-  return { name, badge, releaseDate };
-});
+      releaseDates.set(version, {
+        releaseDate: releaseDate,
+        badge: !badge && daysDifference < 30 ? 'new' : undefined,
+      });
+    }
+  });
+
+  return releaseDates;
+};
 
 const getReleaseInformation = async (sourceText, releaseDates) => {
-  // to get the difference in days we need to calculate
-  // the difference between time and divide it into miliseconds a day has
+  const versionRegex = /## (\d{1,2}\.\d{1,2}\.\d{1,2})/gm;
+  const versions = sourceText.match(versionRegex);
 
-  const regex = /## (\d{1,2}\.\d{1,2}\.\d{1,2})/gm;
-  const versions = sourceText.match(regex);
-
-  console.log(releaseDates);
   if (!versions) {
     console.log('No versions found in the source text.');
     return [];
   }
-  Object.values(releaseDates).forEach(key =>
-    console.log(key, releaseDates[key])
+
+  const normalizedVersions = versions.map(version =>
+    version.replace('## ', '').trim()
   );
-  return releaseDates;
+
+  // Match extracted versions from sourceText
+  const versionReleaseDates = normalizedVersions.map(version => {
+    const releaseInfo = releaseDates.get(version);
+
+    return {
+      version,
+      releaseDate: releaseInfo ? releaseInfo.releaseDate : null,
+      badge: releaseInfo ? releaseInfo.badge : undefined,
+    };
+  });
+
+  return versionReleaseDates;
 };
-
-// const releases = log.all
-//   .filter(release => release.author_name === 'github-actions[bot]')
-//   .map(release => {
-//     const releaseDate = new Date(release.date);
-//     const today = new Date();
-
-//     // to get the difference in days we need to calculate
-//     // the difference between time and divide it into miliseconds a day has
-//     const timeDifference = today.getTime() - releaseDate.getTime();
-//     const aDayInMs = 24 * 60 * 60 * 1000;
-//     const daysDifference = Math.round(timeDifference / aDayInMs);
-
-//     const badge = daysDifference < 30 ? 'new' : undefined;
-
-//     return { badge, releaseDate };
-//   });
 
 const addFrontmatter = (sourceText, releases) => {
   const regex = /^# (.*)$/m;
@@ -93,11 +90,10 @@ const addFrontmatter = (sourceText, releases) => {
     frontmatter += '---\n';
     frontmatter += `title: "${packageName}"\n`;
     frontmatter += `caption: "Have a look on the latest changes regarding ${packageName}"\n`;
-    releases.filter(release => {
-      release.badge === 'new'
-        ? (frontmatter += `badge: ${release.badge}\n`)
-        : '';
-    });
+    const hasBadge = releases.some(release => release.badge);
+    if (hasBadge) {
+      frontmatter += `badge: new\n`;
+    }
     frontmatter += 'toc: false\n';
     frontmatter += '---';
 
@@ -132,6 +128,7 @@ changelogPath.forEach(async file => {
 
   const changelogDir = `content/releases/${packages}`;
   let changelogModified = data;
+  const releaseDates = await getReleaseData();
   const releases = await getReleaseInformation(changelogModified, releaseDates);
 
   changelogModified = addFrontmatter(changelogModified, releases);
