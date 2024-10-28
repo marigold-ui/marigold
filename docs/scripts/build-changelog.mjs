@@ -87,8 +87,8 @@ const addFrontmatter = (sourceText, releases) => {
     let frontmatter = '';
     const packageName = matches[1];
     frontmatter += '---\n';
-    frontmatter += `title: "${packageName}"\n`;
-    frontmatter += `caption: "Have a look on the latest changes regarding ${packageName}"\n`;
+    frontmatter += `title: '${packageName}'\n`;
+    frontmatter += `caption: 'Have a look on the latest changes regarding ${packageName}'\n`;
     const hasBadge = releases.some(release => release.badge);
     if (hasBadge) {
       frontmatter += `badge: new\n`;
