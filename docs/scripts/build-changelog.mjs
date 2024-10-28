@@ -36,6 +36,7 @@ const getReleaseData = async () => {
     // Check if the version already exists to avoid duplicates and get date
     if (!releaseDates.has(version)) {
       const releaseDate = new Date(release.published_at);
+
       const today = new Date();
       const timeDifference = today.getTime() - releaseDate.getTime();
       const aDayInMs = 24 * 60 * 60 * 1000;
@@ -109,7 +110,7 @@ const adjustContent = (sourceText, releases) => {
 
   releases.forEach((release, index) => {
     const version = versions[index];
-    if (version) {
+    if (version && release.releaseDate) {
       const newContent = `${version} (Released on <DateFormat value={new Date("${release.releaseDate}")} dateStyle="medium" />)`;
       sourceText = sourceText.replace(
         new RegExp(`${version}(?=\\n)`),
