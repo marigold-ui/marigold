@@ -1,6 +1,9 @@
+import { Octokit } from '@octokit/core';
 import path from 'path';
 import { simpleGit } from 'simple-git';
 import { fs, globby } from 'zx';
+
+require('dotenv').config();
 
 const git = simpleGit();
 
@@ -11,28 +14,67 @@ let changelogPath = await globby([
 ]);
 
 console.log('📑 Generating changelogs...');
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-const getReleaseInformation = async file => {
-  const log = await git.log({ file: path.resolve(file) });
+if (!process.env.GITHUB_TOKEN) {
+  console.error('GITHUB_TOKEN is not set.');
+} else {
+  console.log('GITHUB_TOKEN is set.');
+}
 
-  const releases = log.all
-    .filter(release => release.author_name === 'github-actions[bot]')
-    .map(release => {
-      const releaseDate = new Date(release.date);
-      const today = new Date();
+const getReleaseInformation = async sourceText => {
+  const regex = /## \d{1,2}\.\d{1,2}\.\d{1,2}/gm;
+  const versions = sourceText.match(regex);
 
-      // to get the difference in days we need to calculate
-      // the difference between time and divide it into miliseconds a day has
-      const timeDifference = today.getTime() - releaseDate.getTime();
-      const aDayInMs = 24 * 60 * 60 * 1000;
-      const daysDifference = Math.round(timeDifference / aDayInMs);
+  console.log(versions);
 
-      const badge = daysDifference < 30 ? 'new' : undefined;
+  // const log = await git.log({ file: path.resolve(file) });
+  const octokit = new Octokit({ auth: GITHUB_TOKEN });
+  const response = await octokit.request(
+    `https://api.github.com/repos/marigold-ui/marigold/releases`,
+    {
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    }
+  );
 
-      return { badge, releaseDate };
-    });
+  const releases = response.data;
+  // to get the difference in days we need to calculate
+  // the difference between time and divide it into miliseconds a day has
+  const releaseDates = releases.map(release => {
+    const releaseDate = new Date(release.published_at);
+    const today = new Date();
+    const timeDifference = today.getTime() - releaseDate.getTime();
+    const aDayInMs = 24 * 60 * 60 * 1000;
+    const daysDifference = Math.round(timeDifference / aDayInMs);
+    const badge = daysDifference < 30 ? 'new' : undefined;
 
-  return releases;
+    console.log(releaseDate, badge);
+    return {
+      badge,
+      releaseDate,
+    };
+  });
+
+  return releaseDates;
+
+  // const releases = log.all
+  //   .filter(release => release.author_name === 'github-actions[bot]')
+  //   .map(release => {
+  //     const releaseDate = new Date(release.date);
+  //     const today = new Date();
+
+  //     // to get the difference in days we need to calculate
+  //     // the difference between time and divide it into miliseconds a day has
+  //     const timeDifference = today.getTime() - releaseDate.getTime();
+  //     const aDayInMs = 24 * 60 * 60 * 1000;
+  //     const daysDifference = Math.round(timeDifference / aDayInMs);
+
+  //     const badge = daysDifference < 30 ? 'new' : undefined;
+
+  //     return { badge, releaseDate };
+  //   });
 };
 
 const addFrontmatter = (sourceText, releases) => {
@@ -86,7 +128,7 @@ changelogPath.forEach(async file => {
 
   const changelogDir = `content/releases/${packages}`;
   let changelogModified = data;
-  const releases = await getReleaseInformation(file);
+  const releases = await getReleaseInformation(changelogModified);
 
   changelogModified = addFrontmatter(changelogModified, releases);
   changelogModified = adjustContent(changelogModified, releases);

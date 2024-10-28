@@ -25,6 +25,7 @@ out
 .component-props
 
 ## env
+docs/.env
 .env*.local
 .vercel
 .turbo
