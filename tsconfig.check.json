@@ -9,7 +9,9 @@
     "baseUrl": ".",
     "paths": {
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
-      "~/*": ["docs/src/*"]
+      "@/*": ["docs/*"],
+      "@/registry/*": ["docs/.registry/*"],
+      "contentlayer/generated": ["docs/.contentlayer/generated"]
     }
   },
   "exclude": [
@@ -17,7 +19,6 @@
     "jest.config.js",
     "**/node_modules/*",
     "**/dist/**/*",
-    "**/scripts/template/*",
-    "docs"
+    "**/scripts/template/*"
   ]
 }
