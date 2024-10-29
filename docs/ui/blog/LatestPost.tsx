@@ -1,10 +1,9 @@
 import { DateFormat, Headline, Link, Stack, Text } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 
-export const LatestPost = () => {
+export const getLatestPost = () => {
   // matches everything till the second line break
   const regex = /[\s\S]*?\n[\s\S]*?\n/;
-
   const posts = allBlogs.map(post => ({
     title: post.title,
     date: new Date(post.date),
@@ -14,6 +13,12 @@ export const LatestPost = () => {
 
   const sortedPosts = posts.sort((a, b) => b.date.getTime() - a.date.getTime());
   const latestPost = sortedPosts[0];
+
+  return latestPost;
+};
+
+export const LatestPost = () => {
+  const latestPost = getLatestPost();
 
   if (!latestPost) {
     return null;

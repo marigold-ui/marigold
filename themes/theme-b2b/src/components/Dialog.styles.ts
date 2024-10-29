@@ -11,11 +11,18 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     {
       variants: {
         size: {
-          small: 'sm:w-[640px]',
-          medium: 'md:w-[768px]',
-          large: 'lg:w-[1024px]',
+          default: '',
+          small: 'w-[min(100%,640px)]',
+          medium: 'w-[min(100%,768px)]',
+          large: 'w-[min(100%,1024px)]',
         },
+      },
+      defaultVariants: {
+        size: 'default',
       },
     }
   ),
+  header: cva('flex items-center'),
+  content: cva(''),
+  actions: cva('flex gap-2 justify-end'),
 };

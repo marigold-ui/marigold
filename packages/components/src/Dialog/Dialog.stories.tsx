@@ -61,11 +61,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => {
+  render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog closeButton>
+        <Dialog size={size} closeButton>
           <Dialog.Title>This is a headline!</Dialog.Title>
           <Text>This is some not so very long text.</Text>
         </Dialog>
@@ -75,11 +75,11 @@ export const Basic: Story = {
 };
 
 export const Form: Story = {
-  render: args => {
+  render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
-        <Dialog closeButton>
+        <Dialog size={size} closeButton>
           {({ close }) => (
             <>
               <Dialog.Title>Please log into account </Dialog.Title>
@@ -102,10 +102,10 @@ export const Form: Story = {
 };
 
 export const CustomTitleProps: Story = {
-  render: args => (
+  render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog closeButton aria-labelledby="my-cool-headline">
+      <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
         <Dialog.Title>This is a headline!</Dialog.Title>
         <Dialog.Content>
           <Text>This is some not so very long text.</Text>
@@ -116,10 +116,10 @@ export const CustomTitleProps: Story = {
 };
 
 export const ScrollableContent: Story = {
-  render: args => (
+  render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog closeButton aria-labelledby="my-cool-headline">
+      <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
         <Dialog.Title>This is a headline!</Dialog.Title>
         <Dialog.Content>
           <Stack space={2}>
@@ -140,19 +140,19 @@ export const ScrollableContent: Story = {
             </div>
           </Stack>
         </Dialog.Content>
-        <Dialog.Footer>
+        <Dialog.Actions>
           <Button variant="primary">ok</Button>
-        </Dialog.Footer>
+        </Dialog.Actions>
       </Dialog>
     </Dialog.Trigger>
   ),
 };
 
 export const StickyFooter: Story = {
-  render: args => (
+  render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
-      <Dialog closeButton aria-labelledby="my-cool-headline">
+      <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
         <Dialog.Title>This is a headline!</Dialog.Title>
         <div className="flex max-h-[400px] flex-col">
           <Text>This is some additional text that is always visible!</Text>
@@ -175,9 +175,9 @@ export const StickyFooter: Story = {
               </Text>
             </Dialog.Content>
           </div>
-          <Dialog.Footer>
+          <Dialog.Actions>
             <Button variant="primary">Ok</Button>
-          </Dialog.Footer>
+          </Dialog.Actions>
         </div>
       </Dialog>
     </Dialog.Trigger>
@@ -218,7 +218,7 @@ export const WithDialogController: Story = {
                 <Dialog.Content>
                   <Text>Do you really wanna delete this?</Text>
                 </Dialog.Content>
-                <Dialog.Footer>
+                <Dialog.Actions>
                   <Inline space={5}>
                     <Button size="small" variant="ghost" onPress={close}>
                       Cancel
@@ -227,7 +227,7 @@ export const WithDialogController: Story = {
                       Delete
                     </Button>
                   </Inline>
-                </Dialog.Footer>
+                </Dialog.Actions>
               </>
             )}
           </Dialog>

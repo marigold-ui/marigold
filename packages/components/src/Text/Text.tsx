@@ -69,8 +69,10 @@ const _Text = ({
     size,
   });
 
+  const Component = props.slot ? Text : as;
+
   return (
-    <Text
+    <Component
       {...props}
       elementType={as}
       className={cn(
@@ -87,7 +89,7 @@ const _Text = ({
       })}
     >
       {children}
-    </Text>
+    </Component>
   );
 };
 
