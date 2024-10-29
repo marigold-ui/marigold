@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button } from '../Button';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
-import { Inline } from '../Inline';
 import { Menu } from '../Menu';
 import { Modal, ModalProps } from '../Overlay/Modal';
 import { Stack } from '../Stack';
