@@ -1,48 +1,93 @@
 ---
 title: DateField
-caption: Component for input forms.
+caption: Component for entering date in forms.
+badge: updated
 ---
 
-The `<DateField>` allows users to enter and edit date values using a keyboard. Each part of a date value is displayed in an individually editable segment.
+The `<DateField>` allows users to enter and edit date values using a keyboard. Each part of a date value is displayed in an individually editable segment. These segments are individually focusable and editable by the user, by typing or using the arrow keys to increment and decrement the value. This approach allows values to be formatted and parsed correctly regardless of the locale or date format, and offers an easy and error-free way to edit dates using the keyboard.
 
-The `<DateField>` segments are individually focusable and editable by the user, by typing or using the arrow keys to increment and decrement the value. This approach allows values to be formatted and parsed correctly regardless of the locale or date format, and offers an easy and error-free way to edit dates using the keyboard.
+## Anatomy
 
-## Import
+A `<DateField>` consists of a label and a group of segments representing each unit of a date and time, such as years, months, days, hours, and minutes.
 
-```tsx
-import { DateField } from '@marigold/components';
-```
+<Image
+  src="/datefield/datefield-anatomy.jpg"
+  alt="Anatomy of datefield"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
+
+## Usage
+
+The `<DateField>` component is a versatile input element used for selecting dates in forms. It enhances user experience by providing a structured way to input date information, reducing errors associated with manual entry. With features like labels and descriptions, it clearly communicates its purpose to users. The component can also support default values. Overall, the `<DateField>` is essential for applications requiring date selection, ensuring both accessibility and usability.
 
 ## Props
 
+<StorybookHintMessage component={title} />
+
 <PropsTable component={title} />
 
-## Examples
+## Alternative components
 
-### Simple DateField
+<ul>
+  <li>
+    [DatePicker](/components/form/datepicker): a user interface element that
+    allows users to select a date from a calendar.
+  </li>
+</ul>
 
-This example shows a regular `<DateField>` without any special props.
+## Related
 
-<ComponentDemo file="./date-field-basic.demo.tsx" />
-
-### Disabled DateField
-
-You can disable the `<DateField>` so that the user can't interact with it anymore.
-
-<ComponentDemo file="./date-field-disabled.demo.tsx" />
-
-### Required DateField
-
-If you want a `<DateField>` to be required, you just have to add the property `required`. With that the small required icon appears next to the label.
-
-<ComponentDemo file="./date-field-required.demo.tsx" />
-
-### DateField With an Error
-
-This example shows how to use the `error` with the `errorMessage`.
-
-<ComponentDemo file="./date-field-error.demo.tsx" />
+<TeaserList
+  items={[
+    {
+      title: 'Building forms',
+      href: '../../patterns/building-forms',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form Fields',
+      href: '../../introduction/form-fields',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>
