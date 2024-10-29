@@ -1,0 +1,14 @@
+{
+  "extends": "@marigold/tsconfig/react",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@marigold/*": ["../packages/*/src", "../themes/*/src"],
+      "@/registry/*": ["./.registry/*"],
+      "contentlayer/generated": ["./.contentlayer/generated"]
+    }
+  },
+  "exclude": ["../**/node_modules/*", "../packages/**/"]
+}
