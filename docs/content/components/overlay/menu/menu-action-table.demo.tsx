@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActionMenu, Menu, Table } from '@marigold/components';
+import { ActionMenu, Menu, Stack, Table } from '@marigold/components';
 
 const rows = [
   {
