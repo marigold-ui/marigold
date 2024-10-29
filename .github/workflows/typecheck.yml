@@ -26,4 +26,4 @@ jobs:
 
       # Action
       - name: Typecheck
-        run: pnpm --filter @marigold/docs... typecheck
+        run: pnpm typecheck
