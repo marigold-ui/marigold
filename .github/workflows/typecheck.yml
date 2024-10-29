@@ -23,7 +23,7 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: Build registry and contentlayer
+      - name: Build docs for generated files
         run: pnpm build:docs
 
       # Action
