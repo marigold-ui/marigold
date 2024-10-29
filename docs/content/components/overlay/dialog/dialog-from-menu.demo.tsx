@@ -32,10 +32,8 @@ export default () => {
                 be undone.
               </Dialog.Content>
               <Dialog.Actions>
-                <Button size="small" variant="secondary" onPress={close}>
-                  Cancel
-                </Button>
-                <Button size="small" variant="primary" onPress={close}>
+                <Dialog.Cancel />
+                <Button variant="primary" onPress={close}>
                   Delete
                 </Button>
               </Dialog.Actions>

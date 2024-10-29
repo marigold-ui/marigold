@@ -75,6 +75,13 @@ To prevent the dialog from closing when the underlay is (accidentally) clicked, 
 
 <ComponentDemo file="./dialog-dismiss.demo.tsx" />
 
+<SectionMessage>
+  <SectionMessage.Title>Dedicated cancel button</SectionMessage.Title>
+  <SectionMessage.Content>
+    Marigold includes a built-in `<Dialog.Cancel>` button for easy dialog cancellation. This renders a standarized button that can be adjusted with a custom label text (`<Dialog.Cancel>Close</Dialog.Cancel>`) or other button props (see below) as needed.
+  </SectionMessage.Content>
+</SectionMessage>
+
 ### Role
 
 When a dialog requires the user's immediate attention, such as for an error or warning, set `role="alertdialog"`. This role ensures that assistive technologies, like screen readers, treat the dialog as high-priority, immediately notifying users of its content.
@@ -112,3 +119,7 @@ For instance, selecting "Delete" from a menu might trigger a confirmation dialog
 ### Dialog.Actions
 
 <PropsTable component="DialogActions" />
+
+### Dialog.Cancel
+
+<PropsTable component="DialogCancel" />

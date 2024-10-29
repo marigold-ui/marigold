@@ -67,7 +67,11 @@ export const Basic: Story = {
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
           <Dialog.Title>This is a headline!</Dialog.Title>
-          <Text>This is some not so very long text.</Text>
+          <Dialog.Content>This is some not so very long text.</Dialog.Content>
+          <Dialog.Actions>
+            <Dialog.Cancel />
+            <Button variant="primary">Ok</Button>
+          </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
     );
@@ -80,21 +84,15 @@ export const Form: Story = {
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
-          {({ close }) => (
-            <>
-              <Dialog.Title>Please log into account </Dialog.Title>
-              <Dialog.Content>
-                <TextField label="Username" />
-                <TextField label="Password" type="password" />
-              </Dialog.Content>
-              <Dialog.Actions>
-                <Button variant="ghost" onPress={close}>
-                  Cancel
-                </Button>
-                <Button variant="primary">Login</Button>
-              </Dialog.Actions>
-            </>
-          )}
+          <Dialog.Title>Please log into account </Dialog.Title>
+          <Dialog.Content>
+            <TextField label="Username" />
+            <TextField label="Password" type="password" />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Dialog.Cancel />
+            <Button variant="primary">Login</Button>
+          </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
     );
@@ -219,14 +217,10 @@ export const WithDialogController: Story = {
                   <Text>Do you really wanna delete this?</Text>
                 </Dialog.Content>
                 <Dialog.Actions>
-                  <Inline space={5}>
-                    <Button size="small" variant="ghost" onPress={close}>
-                      Cancel
-                    </Button>
-                    <Button size="small" variant="primary" onPress={close}>
-                      Delete
-                    </Button>
-                  </Inline>
+                  <Dialog.Cancel />
+                  <Button size="small" variant="primary" onPress={close}>
+                    Delete
+                  </Button>
                 </Dialog.Actions>
               </>
             )}

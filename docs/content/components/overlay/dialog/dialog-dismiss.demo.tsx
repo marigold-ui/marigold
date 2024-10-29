@@ -10,7 +10,7 @@ export default () => (
         details pre-filled, except for the date.
       </Dialog.Content>
       <Dialog.Actions>
-        <Button variant="secondary">Cancel</Button>
+        <Dialog.Cancel />
         <Button variant="primary">Duplicate</Button>
       </Dialog.Actions>
     </Dialog>
