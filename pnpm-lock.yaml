@@ -651,8 +651,8 @@ importers:
   packages/types:
     dependencies:
       type-fest:
-        specifier: 4.20.1
-        version: 4.20.1
+        specifier: 4.26.1
+        version: 4.26.1
     devDependencies:
       '@types/react':
         specifier: 18.3.12
@@ -9380,8 +9380,8 @@ packages:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
 
-  type-fest@4.20.1:
-    resolution: {integrity: sha512-R6wDsVsoS9xYOpy8vgeBlqpdOyzJ12HNfQhC/aAKWM3YoCV9TtunJzh/QpkMgeDhkoynDcw5f1y+qF9yc/HHyg==}
+  type-fest@4.26.1:
+    resolution: {integrity: sha512-yOGpmOAL7CkKe/91I5O3gPICmJNLJ1G4zFYVAsRHg7M64biSnPtRj0WNQt++bRkjYOqjWXrhnUw1utzmVErAdg==}
     engines: {node: '>=16'}
 
   type-is@1.6.18:
@@ -11642,7 +11642,7 @@ snapshots:
       remark-parse: 11.0.0
       remark-rehype: 11.1.0
       source-map-support: 0.5.21
-      type-fest: 4.20.1
+      type-fest: 4.26.1
       unified: 11.0.4
     optionalDependencies:
       esbuild: 0.24.0
@@ -11699,7 +11699,7 @@ snapshots:
       memfs: 4.9.2
       oo-ascii-tree: 1.96.0
       ts-pattern: 5.1.1
-      type-fest: 4.20.1
+      type-fest: 4.26.1
 
   '@effect-ts/core@0.60.5':
     dependencies:
@@ -20695,7 +20695,7 @@ snapshots:
 
   type-fest@2.19.0: {}
 
-  type-fest@4.20.1: {}
+  type-fest@4.26.1: {}
 
   type-is@1.6.18:
     dependencies:
