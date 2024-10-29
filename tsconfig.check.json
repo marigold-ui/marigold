@@ -6,6 +6,7 @@
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
     "jsx": "preserve",
+    "strict": false,
     "baseUrl": ".",
     "paths": {
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
@@ -14,11 +15,5 @@
       "contentlayer/generated": ["docs/.contentlayer/generated"]
     }
   },
-  "exclude": [
-    "coverage/*",
-    "jest.config.js",
-    "**/node_modules/*",
-    "**/dist/**/*",
-    "**/scripts/template/*"
-  ]
+  "exclude": ["coverage/*", "jest.config.js", "**/node_modules/*"]
 }
