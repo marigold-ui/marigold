@@ -27,7 +27,7 @@
     "@storybook/addon-interactions": "^8.1.11",
     "@storybook/source-loader": "^8.1.11",
     "@storybook/test": "^8.1.11",
-    "@types/react": "18.3.11",
+    "@types/react": "18.3.12",
     "@vitejs/plugin-react": "4.3.3",
     "vite-tsconfig-paths": "5.0.1"
   },
