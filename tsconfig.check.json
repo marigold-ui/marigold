@@ -6,15 +6,11 @@
   "compilerOptions": {
     "jsx": "preserve",
     "baseUrl": ".",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
     "paths": {
-      "@marigold/*": ["./packages/*/src", "./themes/*/src"],
-      "@/*": ["./docs/*"],
+      "contentlayer/generated": ["./docs/.contentlayer/generated"],
       "@/registry/*": ["./docs/.registry/*"],
-      "contentlayer/generated": ["./docs/.contentlayer/generated"]
+      "@marigold/*": ["./packages/*/src", "./themes/*/src"],
+      "@/*": ["./docs/*"]
     }
   },
   "exclude": ["coverage/*", "jest.config.js", "**/node_modules/*"]
