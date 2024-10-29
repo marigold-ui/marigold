@@ -23,6 +23,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Build registry and contentlayer
+        run: pnpm build:docs
 
       # Action
       - name: Typecheck
