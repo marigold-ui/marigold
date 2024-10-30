@@ -244,7 +244,7 @@ importers:
         specifier: 3.0.1
         version: 3.0.1(@types/react@18.3.12)(react@18.3.1)
       '@storybook/addon-a11y':
-        specifier: ^8.1.11
+        specifier: ^8.2.9
         version: 8.3.6(storybook@8.3.6)
       '@storybook/addon-essentials':
         specifier: ^8.1.11
