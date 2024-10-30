@@ -1,15 +1,5 @@
 import { useState } from 'react';
-import {
-  Body,
-  Button,
-  Dialog,
-  Footer,
-  Header,
-  Inline,
-  Menu,
-  Stack,
-  Text,
-} from '@marigold/components';
+import { Button, Dialog, Menu } from '@marigold/components';
 
 export default () => {
   const [open, setDialogOpen] = useState(false);

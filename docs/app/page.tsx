@@ -34,7 +34,7 @@ const SectionLink = ({
 
 // Page
 // ---------------
-export const Page = () => {
+const Page = () => {
   const latestPost = getLatestPost();
   return (
     <main className="grid justify-center px-[--page-padding-md] xl:px-[--page-padding-xl]">

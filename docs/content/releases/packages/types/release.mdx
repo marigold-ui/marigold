@@ -1,8 +1,21 @@
 ---
 title: '@marigold/types'
 caption: 'Have a look on the latest changes regarding @marigold/types'
+badge: new
 toc: false
 ---
+
+## 1.2.0 (Released on <DateFormat value={new Date("Fri Oct 25 2024 18:15:28 GMT+0200 (Central European Summer Time)")} dateStyle="medium" />)
+
+### Minor Changes
+
+- 2babc0b: feat(components): Mark layout components as regions for accessibility.
+
+  Added the ability to mark layout components as regions (ARIA role). This improves accessibility by allowing assistive technologies to identify significant sections of the page, making navigation easier for users with disabilities.
+
+- 956982a: feat(components): Make `<Text>` and `<Headline>` accessible by allowing ARIA labelling props
+
+  `<Text>` and `<Headline>` will no longer cause type errors when ARIA labelling is used (`aria-label`, `id`, ...).
 
 ## 1.1.1 (Released on <DateFormat value={new Date("Fri Jun 28 2024 13:44:24 GMT+0200 (Central European Summer Time)")} dateStyle="medium" />)
 
