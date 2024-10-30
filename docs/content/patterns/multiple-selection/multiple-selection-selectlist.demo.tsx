@@ -11,9 +11,11 @@ const paymentMethods = [
 export default () => (
   <SelectList
     selectionMode="multiple"
-    label="Payment Methods"
+    aria-label="Payment Methods"
     items={paymentMethods}
   >
-    {item => <SelectList.Item id={item.id}>{item.name}</SelectList.Item>}
+    {(item: { id: string; name: string }) => (
+      <SelectList.Item id={item.id}>{item.name}</SelectList.Item>
+    )}
   </SelectList>
 );
