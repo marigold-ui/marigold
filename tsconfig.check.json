@@ -7,7 +7,6 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "moduleResolution": "Bundler",
-    "module": "ESNext",
     "paths": {
       "contentlayer/generated": ["./docs/.contentlayer/generated"],
       "@/registry/*": ["./docs/.registry/*"],
