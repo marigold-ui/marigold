@@ -6,7 +6,6 @@
   "compilerOptions": {
     "jsx": "preserve",
     "baseUrl": ".",
-    "moduleResolution": "Bundler",
     "paths": {
       "contentlayer/generated": ["./docs/.contentlayer/generated"],
       "@/registry/*": ["./docs/.registry/*"],
@@ -14,7 +13,7 @@
       "@/*": ["./docs/*"],
       // cva does not export the types officially
       "class-variance-authority/dist/types": [
-        "./node_modules/.pnpm/class-variance-authority@0.7.0/node_modules/class-variance-authority/dist/types"
+        "./packages/system/node_modules/class-variance-authority/dist/types"
       ]
     }
   },
