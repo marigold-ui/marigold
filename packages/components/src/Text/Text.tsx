@@ -74,7 +74,7 @@ const _Text = ({
   return (
     <Component
       {...props}
-      elementType={as}
+      elementType={props.slot ? as : undefined}
       className={cn(
         'text-[--color] outline-[--outline]',
         classNames,
