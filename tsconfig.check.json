@@ -18,5 +18,6 @@
       ]
     }
   },
+  "include": ["./docs/.registry/props.json", "./**/*"],
   "exclude": ["coverage/*", "jest.config.js", "**/dist/*", "**/node_modules/*"]
 }
