@@ -6,12 +6,17 @@
   "compilerOptions": {
     "jsx": "preserve",
     "baseUrl": ".",
+    "moduleResolution": "Bundler",
     "paths": {
       "contentlayer/generated": ["./docs/.contentlayer/generated"],
       "@/registry/*": ["./docs/.registry/*"],
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
-      "@/*": ["./docs/*"]
+      "@/*": ["./docs/*"],
+      // cva does not export the types officially
+      "class-variance-authority/dist/types": [
+        "./node_modules/.pnpm/class-variance-authority@0.7.0/node_modules/class-variance-authority/dist/types"
+      ]
     }
   },
-  "exclude": ["coverage/*", "jest.config.js", "**/node_modules/*"]
+  "exclude": ["coverage/*", "jest.config.js", "**/dist/*", "**/node_modules/*"]
 }
