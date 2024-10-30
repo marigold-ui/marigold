@@ -26,4 +26,4 @@ jobs:
 
       # Action
       - name: Typecheck
-        run: pnpm typecheck
+        run: pnpm typecheck --resolveJsonModule
