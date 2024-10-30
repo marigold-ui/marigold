@@ -39,11 +39,11 @@
   },
   "peerDependencies": {
     "eslint": "9.x.x",
-    "typescript": "5.3.x || 5.5.x"
+    "typescript": "5.3.x || 5.5.x || 5.6.x"
   },
   "devDependencies": {
     "eslint": "9.13.0",
     "eslint-plugin-tailwindcss": "3.17.5",
-    "typescript": "5.5.4"
+    "typescript": "5.6.3"
   }
 }
