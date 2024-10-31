@@ -13,6 +13,13 @@ let changelogPath = await globby([
 
 console.log('📑 Generating changelogs...');
 
+const calculateDaysSince = date => {
+  const today = new Date();
+  const timeDifference = today - date;
+  const millisecondsInADay = 24 * 60 * 60 * 1000;
+  return Math.round(timeDifference / millisecondsInADay);
+};
+
 const getReleaseData = async () => {
   const octokit = new Octokit({ auth: GITHUB_TOKEN });
   const response = await octokit.request(
@@ -28,22 +35,18 @@ const getReleaseData = async () => {
   const releaseDates = new Map();
 
   releases.forEach(release => {
-    const [, version] = release.name.match(/@([^@]+)$/) || [];
+    const versionMatch = release.name.match(/@([^@]+)$/);
+    const version = versionMatch ? versionMatch[1] : null;
     if (!version) return;
 
-    const badge = undefined;
-    // Check if the version already exists to avoid duplicates and get date
     if (!releaseDates.has(version)) {
       const releaseDate = new Date(release.published_at);
-
-      const today = new Date();
-      const timeDifference = today.getTime() - releaseDate.getTime();
-      const aDayInMs = 24 * 60 * 60 * 1000;
-      const daysDifference = Math.round(timeDifference / aDayInMs);
+      const daysSinceRelease = calculateDaysSince(releaseDate);
+      const badge = daysSinceRelease < 30 ? 'new' : undefined;
 
       releaseDates.set(version, {
-        releaseDate: releaseDate,
-        badge: !badge && daysDifference < 30 ? 'new' : undefined,
+        releaseDate,
+        badge,
       });
     }
   });
