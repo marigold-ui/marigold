@@ -2,8 +2,10 @@ import { Octokit } from '@octokit/core';
 import path from 'path';
 import { fs, globby } from 'zx';
 
-require('dotenv').config();
+require('dotenv').config({ path: ['.env.local', '.env'] });
+
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
 // only take the changelogs of the packages
 let changelogPath = await globby([
@@ -21,7 +23,6 @@ const calculateDaysSince = date => {
 };
 
 const getReleaseData = async () => {
-  const octokit = new Octokit({ auth: GITHUB_TOKEN });
   const response = await octokit.request(
     'GET /repos/marigold-ui/marigold/releases',
     {
