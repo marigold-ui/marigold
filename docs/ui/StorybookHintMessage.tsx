@@ -1,4 +1,5 @@
 import { Aside, Card, Link, Stack } from '@/ui';
+import { track } from '@vercel/analytics/react';
 import { ExternalLink } from './icons/ExternalLink';
 
 const Storybook = () => (
@@ -27,26 +28,33 @@ const Storybook = () => (
   </svg>
 );
 
-export const StorybookHintMessage = ({ component }: { component: string }) => (
-  <Card variant="outline" px={3} py={4}>
-    <Aside space={4}>
-      <div className="flex h-full items-center">
-        <Storybook />
-      </div>
-      <Stack space={2}>
-        <div className="text-sm">
-          Did you know? You can explore, test, and customize props live in
-          Marigold's storybook. Watch the effects they have in real-time!
+export const StorybookHintMessage = ({ component }: { component: string }) => {
+  const onPress = () => {
+    track('Storybook Visit', { component });
+  };
+
+  return (
+    <Card variant="outline" px={3} py={4}>
+      <Aside space={4}>
+        <div className="flex h-full items-center">
+          <Storybook />
         </div>
-        <div className="text-sm">
-          <Link
-            href={`https://marigold-latest.vercel.app/?path=/story/components-${component.toLocaleLowerCase()}--basic`}
-          >
-            View {component} stories
-            <ExternalLink className="text-text-primary-muted ml-0.5 inline size-[14px] align-text-bottom" />
-          </Link>
-        </div>
-      </Stack>
-    </Aside>
-  </Card>
-);
+        <Stack space={2}>
+          <div className="text-sm">
+            Did you know? You can explore, test, and customize props live in
+            Marigold's storybook. Watch the effects they have in real-time!
+          </div>
+          <div className="text-sm">
+            <Link
+              href={`https://marigold-latest.vercel.app/?path=/story/components-${component.toLocaleLowerCase()}--basic`}
+              onPress={onPress}
+            >
+              View {component} stories
+              <ExternalLink className="text-text-primary-muted ml-0.5 inline size-[14px] align-text-bottom" />
+            </Link>
+          </div>
+        </Stack>
+      </Aside>
+    </Card>
+  );
+};
