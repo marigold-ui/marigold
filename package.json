@@ -38,7 +38,7 @@
     "react-dom": "18.3.1",
     "tailwindcss": "3.4.14",
     "turbo": "2.2.3",
-    "typescript": "5.5.4",
+    "typescript": "5.6.3",
     "zx": "8.1.9"
   },
   "scripts": {
@@ -60,7 +60,7 @@
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
     "format:fix": "prettier --write \"**/*\" --fix",
-    "typecheck": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
+    "typecheck": "pnpm --filter @marigold/docs build && tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "contributor": "all-contributors",
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
