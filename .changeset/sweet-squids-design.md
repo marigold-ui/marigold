@@ -3,4 +3,4 @@
 "@marigold/theme-docs": patch
 ---
 
-docs: make `code` in `<SectionMessage>` look nicer
+docs: adjust font size of `code` in `<SectionMessage>` and make them less distracting
