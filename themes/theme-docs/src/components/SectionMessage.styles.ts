@@ -17,5 +17,5 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   ),
   icon: cva('size-6'),
   title: cva('mb-1 font-bold leading-none tracking-tight'),
-  content: cva('text-sm [&_p]:leading-relaxed'),
+  content: cva('text-sm [&_p]:leading-relaxed [&_code]:text-xs'),
 };
