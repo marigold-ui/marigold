@@ -548,7 +548,7 @@ test('cancel button closes dialog', async () => {
   });
 });
 
-test('render custom cancel button', async () => {
+test('render custom cancel button label', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
