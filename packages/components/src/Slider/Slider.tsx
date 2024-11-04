@@ -12,10 +12,12 @@ import {
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
+import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Label } from '../Label';
 
 export interface SliderProps<T>
-  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label'> {
+  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label'>,
+    Pick<FieldBaseProps<'label'>, 'description'> {
   /**
    * Labels for the thumbs in the slider.
    */
@@ -59,7 +61,8 @@ const _Slider = forwardRef(
       ...rest,
     };
     return (
-      <Slider
+      <FieldBase
+        as={Slider}
         className={cn(
           'grid grid-cols-[auto_1fr] gap-y-1',
           classNames.container,
@@ -91,7 +94,7 @@ const _Slider = forwardRef(
               <div
                 className={cn(
                   'absolute top-[50%] h-2 translate-y-[-50%]',
-                  classNames.rangeTrack
+                  classNames.selectedTrack
                 )}
                 style={
                   state.values.length === 1
@@ -116,7 +119,7 @@ const _Slider = forwardRef(
             </>
           )}
         </SliderTrack>
-      </Slider>
+      </FieldBase>
     );
   }
 );
