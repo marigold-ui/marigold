@@ -16,7 +16,7 @@ export default () => {
         Press me
       </Button>
       <Text>
-        Number of times presse: {count} (
+        Number of times pressed: {count} (
         {pointerType
           ? `Button is pressed via ${pointerType}.`
           : 'Button not pressed.'}

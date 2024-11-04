@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     ":semanticCommitTypeAll(chore)",
     ":rebaseStalePrs"
   ],
@@ -11,59 +11,55 @@
       "minimumReleaseAge": "3 days"
     },
     {
-      "matchPackagePatterns": [
-        "@react-aria",
-        "@react-stately",
-        "@react-types",
-        "@internationalized",
-        "react-aria-components"
-      ],
-      "groupName": "react-aria"
-    },
-    {
-      "matchPackagePatterns": ["eslint"],
-      "groupName": "eslint"
-    },
-    {
-      "matchPackagePatterns": ["jest", "testing-library", "swc"],
-      "groupName": "testing"
-    },
-    {
-      "matchPackagePatterns": ["@storybook", "storybook", "vite"],
-      "groupName": "storybook"
-    },
-    {
-      "matchPackagePatterns": [
-        "rehype",
-        "remark",
-        "mdx",
-        "mdast",
-        "vfile",
-        "unist"
-      ],
-      "groupName": "mdx"
-    },
-    {
-      "matchPackagePatterns": ["next", "contentlayer"],
-      "groupName": "docs"
-    },
-    {
-      "matchPackagePatterns": ["react-hook-form", "zod"],
-      "groupName": "docs-demos"
-    },
-    {
-      "matchPackagePatterns": ["postcss", "tailwind"],
-      "groupName": "tailwind"
-    },
-    {
-      "packageRules": [
-        {
-          "description": "Automerge non-major updates",
-          "matchUpdateTypes": ["minor", "patch"],
-          "matchCurrentVersion": "!/^0/",
-          "automerge": true
-        }
+      "groupName": "react-aria",
+      "matchPackageNames": [
+        "/@react-aria/",
+        "/@react-stately/",
+        "/@react-types/",
+        "/@internationalized/",
+        "/react-aria-components/"
       ]
+    },
+    {
+      "groupName": "eslint",
+      "matchPackageNames": ["/eslint/"]
+    },
+    {
+      "groupName": "testing",
+      "matchPackageNames": ["/jest/", "/testing-library/", "/swc/"]
+    },
+    {
+      "groupName": "storybook",
+      "matchPackageNames": ["/@storybook/", "/storybook/", "/vite/"]
+    },
+    {
+      "groupName": "mdx",
+      "matchPackageNames": [
+        "/rehype/",
+        "/remark/",
+        "/mdx/",
+        "/mdast/",
+        "/vfile/",
+        "/unist/"
+      ]
+    },
+    {
+      "groupName": "docs",
+      "matchPackageNames": ["/next/", "/contentlayer/"]
+    },
+    {
+      "groupName": "docs-demos",
+      "matchPackageNames": ["/react-hook-form/", "/zod/"]
+    },
+    {
+      "groupName": "tailwind",
+      "matchPackageNames": ["/postcss/", "/tailwind/"]
+    },
+    {
+      "description": "Automerge non-major updates",
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
     }
   ],
   "timezone": "Europe/Berlin"

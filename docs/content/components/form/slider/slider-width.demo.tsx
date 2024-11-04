@@ -1,7 +1,7 @@
 import { Slider } from '@marigold/components';
 
 export default () => (
-  <Slider width="180px" aria-label="width">
+  <Slider width="full" aria-label="width">
     Example
   </Slider>
 );

@@ -26,7 +26,7 @@ export default () => {
       <Inset space={8}>
         <Stack space={4}>
           {invalid ? (
-            <SectionMessage variant="error" role="alert" tabIndex={-1}>
+            <SectionMessage variant="error">
               <SectionMessage.Title>Whoopsies!</SectionMessage.Title>
               <SectionMessage.Content>
                 Please enter both your email address and password to proceed.

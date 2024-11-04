@@ -12,6 +12,8 @@ import core from '@marigold/theme-core';
 import '@marigold/theme-core/styles.css';
 
 // Helpers
+
+// Helpers
 // ---------------
 const THEME = {
   core: core,
@@ -26,7 +28,7 @@ type ThemeNames = keyof typeof THEME;
 export const parameters: Preview['parameters'] = {
   layout: 'fullscreen',
   a11y: {
-    element: '#root',
+    element: '#storybook-root',
   },
   options: {
     storySort: {
