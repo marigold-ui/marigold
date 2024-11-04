@@ -370,8 +370,8 @@ importers:
         specifier: 1.0.3
         version: 1.0.3(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       contentlayer2:
-        specifier: 0.5.1
-        version: 0.5.1(esbuild@0.24.0)
+        specifier: 0.5.3
+        version: 0.5.3(esbuild@0.24.0)
       dayjs:
         specifier: 1.11.13
         version: 1.11.13
@@ -397,8 +397,8 @@ importers:
         specifier: 14.2.16
         version: 14.2.16(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-contentlayer2:
-        specifier: 0.5.1
-        version: 0.5.1(contentlayer2@0.5.1(esbuild@0.24.0))(esbuild@0.24.0)(next@14.2.16(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 0.5.3
+        version: 0.5.3(contentlayer2@0.5.3(esbuild@0.24.0))(esbuild@0.24.0)(next@14.2.16(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       postcss:
         specifier: 8.4.47
         version: 8.4.47
@@ -2051,14 +2051,14 @@ packages:
   '@changesets/write@0.3.2':
     resolution: {integrity: sha512-kDxDrPNpUgsjDbWBvUo27PzKX4gqeKOlhibaOXDJA6kuBisGqNHv/HwGJrAu8U/dSf8ZEFIeHIPtvSlZI1kULw==}
 
-  '@contentlayer2/cli@0.5.1':
-    resolution: {integrity: sha512-nwDTAXKBXUg/eORBxXLDA9FoCxaSqhengSb6FjlyBCkrRyJ3IKQhWilld9Ol1xyYfTisI/5iddHa9ZB4kqltNg==}
+  '@contentlayer2/cli@0.5.3':
+    resolution: {integrity: sha512-8xO+piFSNVq5Ad2P3D30nM0BzQh1qQ0Q4kIx2otlLhYe3tdeuf3TCB3nFZTgfOJESnZABxqy6XTcfpmeAfNd/Q==}
 
-  '@contentlayer2/client@0.5.1':
-    resolution: {integrity: sha512-5/mNEEJN47h9AQ11qt9iu3XJCAMhgAPRJRp64+Trgr1iKHRVOWg9VvV+NHL3NCnDqMbJrw7vWICCgdCWn114IQ==}
+  '@contentlayer2/client@0.5.3':
+    resolution: {integrity: sha512-ZlrPpNhK+jNF00f20G6MIlELiEnVjUPuyjXeRHNsq582DzqcdgE/Etqa5O5zJ9/w3fhvyj5N1h7fP0MLFoswPw==}
 
-  '@contentlayer2/core@0.5.1':
-    resolution: {integrity: sha512-PR9uJ5lZC6wSq37uX252LZzNpWLmxJjlOzuxcBvFtmX4aSfOBbykSG/EVlwaLK0dFAT/q0vx+nObg7D2mpQ0YA==}
+  '@contentlayer2/core@0.5.3':
+    resolution: {integrity: sha512-qGDryuO+6Uw0U8JZ9cdrxzieEJkkwuTuT+soycnYFShuvqofb+wkpktnsaTn4wUXLd5ut/ngPrH/9w/IbOlF2w==}
     peerDependencies:
       esbuild: '>=0.17'
       markdown-wasm: 1.x
@@ -2068,14 +2068,14 @@ packages:
       markdown-wasm:
         optional: true
 
-  '@contentlayer2/source-files@0.5.1':
-    resolution: {integrity: sha512-M2Z/LtfU9TwE9z9dH0jqU7UEI80KuFzVvnz51ykRsktfsbZ76n/0fU6ERojiqGS5KgK8Djg3SoxJsY521dvHjQ==}
+  '@contentlayer2/source-files@0.5.3':
+    resolution: {integrity: sha512-kESg2zAJKDQio5rCILpFPhsWklX5xmMdlJa9KSj5UdXMd7/gY+q0GiVqZ2PAmZi5+hG73pVihg9ieC2TEjLSIQ==}
 
-  '@contentlayer2/source-remote-files@0.5.1':
-    resolution: {integrity: sha512-VJRhJEIMXVr8qq4otmND1F8qvjU28fOZ9c9tmLuga2dHbiMiZbnSM4WOOkvJJ4tNJH/3OCfdWgznj/fdP2NyLw==}
+  '@contentlayer2/source-remote-files@0.5.3':
+    resolution: {integrity: sha512-0dxoLfS7EbVR3Xap4MPSmzLvQCGrMwtXVIA4ZmRHLOGzG+vWpaY9BtnCACb/Om4tUQBsCA9oduBjNqRu4Sx+gQ==}
 
-  '@contentlayer2/utils@0.5.1':
-    resolution: {integrity: sha512-cIsQ7ySGAbTZFhp8KdiSwHTYpD5GNmvTmCJtI/zaua23l33DuvEt9KCpZa9CmQ2IQyaGlTHKL2wv994bblCH8w==}
+  '@contentlayer2/utils@0.5.3':
+    resolution: {integrity: sha512-2nTFhZ7xnOevoZQnGP6BSIkTCpNos1PkGJ894gMYSmRMaMkyv+9VE9adoa0sywIA1y01iLU8niqcxJiuCQ1OkQ==}
     peerDependencies:
       '@effect-ts/otel-node': '*'
     peerDependenciesMeta:
@@ -5422,8 +5422,8 @@ packages:
     resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
     engines: {node: '>= 0.6'}
 
-  contentlayer2@0.5.1:
-    resolution: {integrity: sha512-lsLaYijf5OrHXdi7WgHRHpBxWZr+EIB++IAwJj4svOId+2IW9GNTUW4hixKsAp6e/lzOl7ZnW1o1zk6tCLvOSA==}
+  contentlayer2@0.5.3:
+    resolution: {integrity: sha512-0vHdTWsuTgY/dMKxhCc8wILoeaCK5ye42i1gRd1jOoKFXQ6q/eMnSp+gSE81V8wbBa2jv7cjP90xpiRfzaXTWw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -6504,23 +6504,14 @@ packages:
   hast-util-parse-selector@4.0.0:
     resolution: {integrity: sha512-wkQCkSYoOGCRKERFWcxMVMOcYE2K1AaNLU8DXS9arxnLOUEWbOXKXiJUNzEpqZ3JOKpnha3jkFrumEjVliDe7A==}
 
-  hast-util-raw@9.0.3:
-    resolution: {integrity: sha512-ICWvVOF2fq4+7CMmtCPD5CM4QKjPbHpPotE6+8tDooV0ZuyJVUzHsrNX+O5NaRbieTf0F7FfeBOMAwi6Td0+yQ==}
-
   hast-util-to-estree@3.1.0:
     resolution: {integrity: sha512-lfX5g6hqVh9kjS/B9E2gSkvHH4SZNiQFiqWS0x9fENzEl+8W12RqdRxX6d/Cwxi30tPQs3bIO+aolQJNp1bIyw==}
-
-  hast-util-to-html@9.0.1:
-    resolution: {integrity: sha512-hZOofyZANbyWo+9RP75xIDV/gq+OUKx+T46IlwERnKmfpwp81XBFbT9mi26ws+SJchA4RVUQwIBJpqEOBhMzEQ==}
 
   hast-util-to-html@9.0.3:
     resolution: {integrity: sha512-M17uBDzMJ9RPCqLMO92gNNUDuBSq10a25SDBI08iCCxmorf4Yy6sYHK57n9WAbRAAaU+DuR4W6GN9K4DFZesYg==}
 
   hast-util-to-jsx-runtime@2.3.0:
     resolution: {integrity: sha512-H/y0+IWPdsLLS738P8tDnrQ8Z+dj12zQQ6WC11TIM21C8WFVoIxcqWXf2H3hiTVZjF1AWqoimGwrTWecWrnmRQ==}
-
-  hast-util-to-parse5@8.0.0:
-    resolution: {integrity: sha512-3KKrV5ZVI8if87DVSi1vDeByYrkGzg4mEfeu4alwgmmIeARiBLKCZS2uw5Gb6nU9x9Yufyj3iudm6i7nl52PFw==}
 
   hast-util-to-string@3.0.0:
     resolution: {integrity: sha512-OGkAxX1Ua3cbcW6EJ5pT/tslVb90uViVkcJ4ZZIMW/R33DX/AkcJcRrPebPwJkHYwlDHXz4aIwvAAaAdtrACFA==}
@@ -7657,13 +7648,13 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  next-contentlayer2@0.5.1:
-    resolution: {integrity: sha512-thDT4nsPAP6lHZlaHIPI25urR0+XDVSUexoZytze7PAAcEBRfiddrklA7JYZR7rhFgaCspDg1ryc7Six6lYUgw==}
+  next-contentlayer2@0.5.3:
+    resolution: {integrity: sha512-xNuiAJxeQOABiWsjJ6hFv/Ovb9vRujBgamaEjvYXiVecrBtCIyCDF3WpdDx4krfAd9WJRW8TN6OLpyZsG2ApjA==}
     peerDependencies:
-      contentlayer2: 0.5.1
+      contentlayer2: 0.5.3
       next: '>=12.0.0'
-      react: '*'
-      react-dom: '*'
+      react: ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^18 || ^19 || ^19.0.0-rc
 
   next@14.2.16:
     resolution: {integrity: sha512-LcO7WnFu6lYSvCzZoo1dB+IO0xXz5uEv52HF1IUN0IqVTUIZGHuuR10I5efiLadGt+4oZqTcNZyVVEem/TM5nA==}
@@ -11501,10 +11492,10 @@ snapshots:
       human-id: 1.0.2
       prettier: 2.8.8
 
-  '@contentlayer2/cli@0.5.1(esbuild@0.24.0)':
+  '@contentlayer2/cli@0.5.3(esbuild@0.24.0)':
     dependencies:
-      '@contentlayer2/core': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/utils': 0.5.1
+      '@contentlayer2/core': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/utils': 0.5.3
       clipanion: 3.2.1(typanion@3.14.0)
       typanion: 3.14.0
     transitivePeerDependencies:
@@ -11513,18 +11504,18 @@ snapshots:
       - markdown-wasm
       - supports-color
 
-  '@contentlayer2/client@0.5.1(esbuild@0.24.0)':
+  '@contentlayer2/client@0.5.3(esbuild@0.24.0)':
     dependencies:
-      '@contentlayer2/core': 0.5.1(esbuild@0.24.0)
+      '@contentlayer2/core': 0.5.3(esbuild@0.24.0)
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
       - esbuild
       - markdown-wasm
       - supports-color
 
-  '@contentlayer2/core@0.5.1(esbuild@0.24.0)':
+  '@contentlayer2/core@0.5.3(esbuild@0.24.0)':
     dependencies:
-      '@contentlayer2/utils': 0.5.1
+      '@contentlayer2/utils': 0.5.3
       camel-case: 4.1.2
       comment-json: 4.2.3
       gray-matter: 4.0.3
@@ -11535,24 +11526,24 @@ snapshots:
       remark-rehype: 11.1.0
       source-map-support: 0.5.21
       type-fest: 4.26.1
-      unified: 11.0.4
+      unified: 11.0.5
     optionalDependencies:
       esbuild: 0.24.0
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
       - supports-color
 
-  '@contentlayer2/source-files@0.5.1(esbuild@0.24.0)':
+  '@contentlayer2/source-files@0.5.3(esbuild@0.24.0)':
     dependencies:
-      '@contentlayer2/core': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/utils': 0.5.1
+      '@contentlayer2/core': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/utils': 0.5.3
       chokidar: 3.6.0
       fast-glob: 3.3.2
       gray-matter: 4.0.3
       imagescript: 1.3.0
-      micromatch: 4.0.7
+      micromatch: 4.0.8
       ts-pattern: 5.1.1
-      unified: 11.0.4
+      unified: 11.0.5
       yaml: 2.4.1
       zod: 3.23.8
     transitivePeerDependencies:
@@ -11561,18 +11552,18 @@ snapshots:
       - markdown-wasm
       - supports-color
 
-  '@contentlayer2/source-remote-files@0.5.1(esbuild@0.24.0)':
+  '@contentlayer2/source-remote-files@0.5.3(esbuild@0.24.0)':
     dependencies:
-      '@contentlayer2/core': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/source-files': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/utils': 0.5.1
+      '@contentlayer2/core': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/source-files': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/utils': 0.5.3
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
       - esbuild
       - markdown-wasm
       - supports-color
 
-  '@contentlayer2/utils@0.5.1':
+  '@contentlayer2/utils@0.5.3':
     dependencies:
       '@effect-ts/core': 0.60.5
       '@effect-ts/otel': 0.15.1(@effect-ts/core@0.60.5)(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.24.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.24.1(@opentelemetry/api@1.9.0))
@@ -12258,7 +12249,7 @@ snapshots:
       remark-parse: 11.0.0
       remark-rehype: 11.1.0
       source-map: 0.7.4
-      unified: 11.0.4
+      unified: 11.0.5
       unist-util-position-from-estree: 2.0.0
       unist-util-stringify-position: 4.0.0
       unist-util-visit: 5.0.0
@@ -15537,14 +15528,14 @@ snapshots:
 
   content-type@1.0.5: {}
 
-  contentlayer2@0.5.1(esbuild@0.24.0):
+  contentlayer2@0.5.3(esbuild@0.24.0):
     dependencies:
-      '@contentlayer2/cli': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/client': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/core': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/source-files': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/source-remote-files': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/utils': 0.5.1
+      '@contentlayer2/cli': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/client': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/core': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/source-files': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/source-remote-files': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/utils': 0.5.3
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
       - esbuild
@@ -17022,22 +17013,6 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.4
 
-  hast-util-raw@9.0.3:
-    dependencies:
-      '@types/hast': 3.0.4
-      '@types/unist': 3.0.2
-      '@ungap/structured-clone': 1.2.0
-      hast-util-from-parse5: 8.0.1
-      hast-util-to-parse5: 8.0.0
-      html-void-elements: 3.0.0
-      mdast-util-to-hast: 13.1.0
-      parse5: 7.1.2
-      unist-util-position: 5.0.0
-      unist-util-visit: 5.0.0
-      vfile: 6.0.1
-      web-namespaces: 2.0.1
-      zwitch: 2.0.4
-
   hast-util-to-estree@3.1.0:
     dependencies:
       '@types/estree': 1.0.6
@@ -17058,21 +17033,6 @@ snapshots:
       zwitch: 2.0.4
     transitivePeerDependencies:
       - supports-color
-
-  hast-util-to-html@9.0.1:
-    dependencies:
-      '@types/hast': 3.0.4
-      '@types/unist': 3.0.2
-      ccount: 2.0.1
-      comma-separated-tokens: 2.0.3
-      hast-util-raw: 9.0.3
-      hast-util-whitespace: 3.0.0
-      html-void-elements: 3.0.0
-      mdast-util-to-hast: 13.1.0
-      property-information: 6.5.0
-      space-separated-tokens: 2.0.2
-      stringify-entities: 4.0.4
-      zwitch: 2.0.4
 
   hast-util-to-html@9.0.3:
     dependencies:
@@ -17107,16 +17067,6 @@ snapshots:
       vfile-message: 4.0.2
     transitivePeerDependencies:
       - supports-color
-
-  hast-util-to-parse5@8.0.0:
-    dependencies:
-      '@types/hast': 3.0.4
-      comma-separated-tokens: 2.0.3
-      devlop: 1.1.0
-      property-information: 6.5.0
-      space-separated-tokens: 2.0.2
-      web-namespaces: 2.0.1
-      zwitch: 2.0.4
 
   hast-util-to-string@3.0.0:
     dependencies:
@@ -18782,11 +18732,11 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-contentlayer2@0.5.1(contentlayer2@0.5.1(esbuild@0.24.0))(esbuild@0.24.0)(next@14.2.16(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next-contentlayer2@0.5.3(contentlayer2@0.5.3(esbuild@0.24.0))(esbuild@0.24.0)(next@14.2.16(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@contentlayer2/core': 0.5.1(esbuild@0.24.0)
-      '@contentlayer2/utils': 0.5.1
-      contentlayer2: 0.5.1(esbuild@0.24.0)
+      '@contentlayer2/core': 0.5.3(esbuild@0.24.0)
+      '@contentlayer2/utils': 0.5.3
+      contentlayer2: 0.5.3(esbuild@0.24.0)
       next: 14.2.16(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -19777,7 +19727,7 @@ snapshots:
 
   regenerator-transform@0.15.2:
     dependencies:
-      '@babel/runtime': 7.24.4
+      '@babel/runtime': 7.26.0
 
   regex@4.3.3: {}
 
@@ -19861,15 +19811,15 @@ snapshots:
   rehype-stringify@10.0.0:
     dependencies:
       '@types/hast': 3.0.4
-      hast-util-to-html: 9.0.1
-      unified: 11.0.4
+      hast-util-to-html: 9.0.3
+      unified: 11.0.5
 
   remark-frontmatter@5.0.0:
     dependencies:
       '@types/mdast': 4.0.4
       mdast-util-frontmatter: 2.0.1
       micromark-extension-frontmatter: 2.0.0
-      unified: 11.0.4
+      unified: 11.0.5
     transitivePeerDependencies:
       - supports-color
 
@@ -19890,7 +19840,7 @@ snapshots:
       estree-util-is-identifier-name: 3.0.0
       estree-util-value-to-estree: 3.1.1
       toml: 3.0.0
-      unified: 11.0.4
+      unified: 11.0.5
       yaml: 2.4.1
 
   remark-mdx@3.0.1:
