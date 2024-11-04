@@ -78,16 +78,43 @@ const _Slider = forwardRef(
         <SliderTrack
           className={cn('relative col-span-2 h-2 w-full', classNames.track)}
         >
-          {({ state }) =>
-            state.values.map((_, i) => (
-              <SliderThumb
-                className={cn('top-1/2 cursor-pointer', classNames.thumb)}
-                key={i}
-                index={i}
-                aria-label={thumbLabels?.[i]}
+          {({ state }) => (
+            <>
+              {/* track */}
+              <div
+                className={cn(
+                  'absolute top-[50%] h-2 w-full translate-y-[-50%]',
+                  classNames.track
+                )}
               />
-            ))
-          }
+              {/* fill */}
+              <div
+                className={cn(
+                  'absolute top-[50%] h-2 translate-y-[-50%]',
+                  classNames.rangeTrack
+                )}
+                style={
+                  state.values.length === 1
+                    ? { width: state.getThumbPercent(0) * 100 + '%' }
+                    : {
+                        width:
+                          state.getThumbPercent(1) * 100 -
+                          state.getThumbPercent(0) * 100 +
+                          '%',
+                        left: state.getThumbPercent(0) * 100 + '%',
+                      }
+                }
+              />
+              {state.values.map((_, i) => (
+                <SliderThumb
+                  className={cn('top-1/2 cursor-pointer', classNames.thumb)}
+                  key={i}
+                  index={i}
+                  aria-label={thumbLabels?.[i]}
+                />
+              ))}
+            </>
+          )}
         </SliderTrack>
       </Slider>
     );
