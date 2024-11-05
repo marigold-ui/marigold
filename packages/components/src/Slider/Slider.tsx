@@ -19,7 +19,7 @@ export interface SliderProps<T>
   extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label'>,
     Pick<FieldBaseProps<'label'>, 'description'> {
   /**
-   * Labels for the thumbs in the slider.
+   * Labels for the thumbs in the slider. Also used for the name when submitting the form.
    */
   thumbLabels?: string[];
 
