@@ -84,15 +84,25 @@ export const Basic: Story = { render: args => <Slider {...args} /> };
 
 export const ValueFormatting: Story = {
   render: args => (
-    <Slider formatOptions={{ style: 'currency', currency: 'EUR' }} {...args}>
-      this is label
-    </Slider>
+    <Stack space={4}>
+      <Slider {...args} formatOptions={{ style: 'currency', currency: 'EUR' }}>
+        Price
+      </Slider>
+      <Slider
+        {...args}
+        formatOptions={{ style: 'percent' }}
+        step={0.01}
+        maxValue={1}
+      >
+        Percent
+      </Slider>
+    </Stack>
   ),
 };
 
 export const MultipleThumbs: Story = {
   render: args => (
-    <Slider defaultValue={[30, 60]} thumbLabels={['start', 'end']}>
+    <Slider {...args} defaultValue={[30, 60]} thumbLabels={['start', 'end']}>
       Range
     </Slider>
   ),
