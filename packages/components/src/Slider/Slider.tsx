@@ -16,7 +16,7 @@ import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Label } from '../Label';
 
 export interface SliderProps<T>
-  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label'>,
+  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label' | 'orientation'>,
     Pick<FieldBaseProps<'label'>, 'description'> {
   /**
    * Labels for the thumbs in the slider. Also used for the name when submitting the form.
@@ -114,6 +114,7 @@ const _Slider = forwardRef(
                   key={i}
                   index={i}
                   aria-label={thumbLabels?.[i]}
+                  name={thumbLabels?.[i]}
                 />
               ))}
             </>
