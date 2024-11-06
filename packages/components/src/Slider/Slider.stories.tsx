@@ -230,10 +230,10 @@ export const MultiThumbsDisabled: Story = {
 export const Steps: Story = {
   render: args => (
     <Stack space={4}>
-      <Slider {...args} defaultValue={0} maxValue={100} step={0.1}>
+      <Slider {...args} defaultValue={0} maxValue={100} step={10}>
         Small steps
       </Slider>
-      <Slider {...args} defaultValue={0} maxValue={10000} step={1000}>
+      <Slider {...args} defaultValue={0} maxValue={1000} step={100}>
         Big steps
       </Slider>
     </Stack>
