@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { useState } from 'react';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Slider } from './Slider';
@@ -20,6 +20,7 @@ const theme: Theme = {
         'rounded-lg border-none border-transparent',
         'bg-slider-track-background text-transparent',
       ]),
+      selectedTrack: cva(['bg-bg-selected-input/80 rounded-lg']),
       thumb: cva([
         'align-middle',
         'border-slider-thumb-border rounded-lg border-4 border-solid',
@@ -29,6 +30,10 @@ const theme: Theme = {
         ' disabled:bg-slider-thumb-disabled-background  disabled:border-slider-thumb-disabled-border',
       ]),
       output: cva('text-slider-ouput-text text-base font-normal'),
+    },
+    HelpText: {
+      container: cva(),
+      icon: cva(),
     },
   },
 };
@@ -117,7 +122,7 @@ test('takes full width by default', () => {
 
   const container = screen.getByRole('group');
   expect(container.className).toMatchInlineSnapshot(
-    `"grid grid-cols-[auto_1fr] gap-y-1 w-full"`
+    `"group/field grid grid-cols-[auto_1fr] gap-y-1 w-full gap-x-0"`
   );
 });
 
@@ -126,7 +131,7 @@ test('allows to set width via prop', () => {
 
   const container = screen.getByRole('group');
   expect(container.className).toMatchInlineSnapshot(
-    `"grid grid-cols-[auto_1fr] gap-y-1 w-44"`
+    `"group/field grid grid-cols-[auto_1fr] gap-y-1 w-44 gap-x-0"`
   );
 });
 
@@ -135,4 +140,66 @@ test('forwards ref', () => {
   render(<Slider ref={ref as any}>Percent</Slider>);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
+});
+
+test('multiple thumbs', () => {
+  render(
+    <Slider defaultValue={[30, 60]} thumbLabels={['start', 'end']}>
+      Range
+    </Slider>
+  );
+
+  const slider = screen.getAllByRole('slider');
+  expect(slider[0]).toHaveValue('30');
+  expect(slider[1]).toHaveValue('60');
+});
+
+test('supports changing value (controlled) with multiple thumbs', () => {
+  const TestComponent = () => {
+    const [value, setValue] = useState<number | number[]>([25, 75]);
+
+    return (
+      <Slider value={value} onChange={setValue}>
+        Tickets for sale
+      </Slider>
+    );
+  };
+  render(<TestComponent />);
+
+  const slider = screen.getAllByRole('slider');
+  expect(slider[0]).toHaveValue('25');
+  fireEvent.change(slider[0], { target: { value: '15' } });
+  expect(slider[0]).toHaveValue('15');
+  expect(slider[1]).toHaveValue('75');
+  fireEvent.change(slider[1], { target: { value: '80' } });
+  expect(slider[1]).toHaveValue('80');
+});
+
+test('supports disabled prop with multiple thumbs', () => {
+  render(
+    <Slider
+      defaultValue={[20, 30]}
+      maxValue={100}
+      thumbLabels={['start', 'end']}
+      disabled
+    />
+  );
+
+  const inputElements = screen.getAllByRole('slider');
+  inputElements.forEach(inputElement => {
+    expect(inputElement).toHaveAttribute('disabled');
+  });
+});
+
+test('check for aria-labels', () => {
+  const labels = ['start', 'end'];
+
+  render(
+    <Slider defaultValue={[20, 30]} maxValue={100} thumbLabels={labels} />
+  );
+
+  const inputElements = screen.getAllByRole('slider');
+  inputElements.forEach((inputElement, index) => {
+    expect(inputElement).toHaveAccessibleName(labels[index]);
+  });
 });

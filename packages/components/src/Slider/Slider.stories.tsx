@@ -110,7 +110,7 @@ export const MultipleThumbs: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    let [value, setValue] = useState<number | number[]>(25);
+    const [value, setValue] = useState<number | number[]>(25);
 
     return (
       <>
@@ -125,7 +125,7 @@ export const Controlled: Story = {
 
 export const MultiThumbsControlled: Story = {
   render: args => {
-    let [value, setValue] = useState<number | number[]>([25, 75]);
+    const [value, setValue] = useState<number | number[]>([25, 75]);
 
     return (
       <>
