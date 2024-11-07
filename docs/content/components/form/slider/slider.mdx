@@ -47,11 +47,18 @@ To make it work you need at least to define `defaultValues` (uncontrolled) or `v
 
 <ComponentDemo file="./slider-range.demo.tsx" />
 
+### Form
+
+Sliders can also be used in forms. To access the values of multiple thumbs you have to setup the `thumbLabels` prop.
+The default label for a single thumb is <strong>start</strong>.
+
+<ComponentDemo file="./slider-form.demo.tsx" />
+
 ### Label
 
 The label is automatically places on the right spot of the slider and inform users what kind of value(s) they are selecting. You can place the label with the `children` prop.
 
-<ComponentDemo file="./slider-label.demo.tsx" />
+<ComponentDemo file="./slider-do-label.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -61,8 +68,6 @@ The label is automatically places on the right spot of the slider and inform use
   </Do>
 </GuidelineTiles>
 
-### Form
-
 ### Additional description
 
 Sometimes the label isn't enough for the user. In this case, to gather additional support for the user we can use the help text.
@@ -70,7 +75,7 @@ With this we can add helpful hints for the user below the input field. Beside th
 
 The label is automatically places on the right spot of the slider and inform users what kind of value(s) they are selecting. You can place the label with the `children` prop.
 
-<ComponentDemo file="./slider-description.demo.tsx" />
+<ComponentDemo file="./slider-do-description.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -78,7 +83,11 @@ The label is automatically places on the right spot of the slider and inform use
   </Do>
 </GuidelineTiles>
 
-### Error message
+### Custom value scale
+
+By default, slider values are percentages between 0 and 100. A different scale can be used by setting the `minValue` and `maxValue` props.
+
+<ComponentDemo file="./slider-custom-value-scale.demo.tsx" />
 
 ### Precise values
 

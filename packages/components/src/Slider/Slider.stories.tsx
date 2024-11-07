@@ -241,7 +241,5 @@ export const Steps: Story = {
 };
 
 export const MinAndMaxValue: Story = {
-  render: args => (
-    <Slider {...args} defaultValue={0} minValue={50} maxValue={100} />
-  ),
+  render: args => <Slider {...args} minValue={50} maxValue={100} />,
 };
