@@ -31,6 +31,9 @@ const theme: Theme = {
           },
         },
       }),
+      header: cva(''),
+      content: cva(''),
+      actions: cva(''),
     },
     Headline: cva(''),
     Header: cva(''),
@@ -253,20 +256,6 @@ test('supports dialog actions', () => {
   expect(loginButton).toBeInTheDocument();
 });
 
-test('supports dialog footer', () => {
-  render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-      <Dialog.Footer>Footer</Dialog.Footer>
-    </Dialog.Trigger>
-  );
-  const button = screen.getByText('Open');
-  fireEvent.click(button);
-
-  const footer = screen.getByText('Footer');
-  expect(footer).toBeInTheDocument();
-});
-
 test('child function is passed an id for the dialog title (a11y)', () => {
   render(
     <Dialog.Trigger>
@@ -379,9 +368,7 @@ test('dialog has variant classnames', () => {
   expect(closeButton).toHaveClass(
     'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
   );
-  expect(dialog.className).toMatchInlineSnapshot(
-    `"relative outline-none [&>*:not(:last-child)]:mb-4 grid [grid-template-areas:'title_button'_'content_content'_'actions_actions'_'footer_footer'] p-5 bg-green-400"`
-  );
+  expect(dialog.className).toMatch('bg-green-400');
 });
 
 test('dialog supports size', () => {

@@ -69,10 +69,12 @@ const _Text = ({
     size,
   });
 
+  const Component = props.slot ? Text : as;
+
   return (
-    <Text
+    <Component
       {...props}
-      elementType={as}
+      elementType={props.slot ? as : undefined}
       className={cn(
         'text-[--color] outline-[--outline]',
         classNames,
@@ -87,7 +89,7 @@ const _Text = ({
       })}
     >
       {children}
-    </Text>
+    </Component>
   );
 };
 

@@ -56,8 +56,11 @@ const theme: Theme = {
       },
     }),
     Dialog: {
-      container: cva(),
       closeButton: cva(),
+      container: cva(),
+      header: cva(),
+      content: cva(),
+      actions: cva(),
     },
     Underlay: cva('', {
       variants: {

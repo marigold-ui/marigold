@@ -2,6 +2,7 @@
 
 import { siteConfig } from '@/lib/config';
 import { Button, Dialog, Inline, cn, useClassNames } from '@/ui';
+import { track } from '@vercel/analytics/react';
 import { Command, useCommandState } from 'cmdk';
 import { allContentPages } from 'contentlayer/generated';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -52,7 +53,7 @@ export const Hotkey = ({ letter, className }: HotKeyProps) => {
   }
   const isMacOS = window.navigator.userAgent.includes('Mac OS');
   return (
-    <span className={cn('opacity-50', className)}>
+    <span className={cn('opacity-50', className)} aria-hidden="true">
       ({isMacOS ? '⌘' : 'Ctrl+'}
       {letter})
     </span>
@@ -109,6 +110,9 @@ export const SiteMenu = () => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(open => !open);
+        if (open) {
+          track('Use cmkd');
+        }
       }
     };
 
@@ -117,10 +121,14 @@ export const SiteMenu = () => {
   }, [pages]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
+  const onPress = () => {
+    setOpen(true);
+    track('Use cmkd');
+  };
 
   return (
     <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
-      <Button variant="sunken" size="small" onPress={() => setOpen(true)}>
+      <Button variant="sunken" size="small" onPress={onPress}>
         Search...
         <Hotkey letter="K" />
       </Button>

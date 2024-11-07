@@ -10,6 +10,7 @@ import {
   Card,
   Columns,
   Headline,
+  Inline,
   Link,
   List,
   Scrollable,
@@ -29,6 +30,7 @@ import { CopyButton } from './CopyButton';
 import { Do, Dont, GuidelineTiles } from './DosAndDonts';
 import { FullsizeView } from './FullsizeViewDemo';
 import { Image } from './Image';
+import { Logo } from './Logo';
 import { PropsTable } from './PropsTable';
 import { StorybookHintMessage } from './StorybookHintMessage';
 import { TeaserCard, TeaserList } from './TeaserCard';
@@ -127,7 +129,7 @@ const typography = {
   ),
   code: (props: HTMLAttributes<HTMLElement>) => (
     <code
-      className="my-0 inline-grid rounded bg-black/10 px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
+      className="my-0 inline-grid rounded bg-black/5 px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
       {...props}
     />
   ),
@@ -156,6 +158,7 @@ const components = {
   FontWeights,
   Headlines,
   IconList,
+  Logo,
   PropsTable,
   Spacing,
   StorybookHintMessage,
@@ -169,8 +172,9 @@ const components = {
   // Marigold Components
   Card,
   Columns,
-  Headline,
   DateFormat,
+  Headline,
+  Inline,
   List,
   Scrollable,
   SectionMessage,

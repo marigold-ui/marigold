@@ -1,8 +1,11 @@
+import { Octokit } from '@octokit/core';
 import path from 'path';
-import { simpleGit } from 'simple-git';
 import { fs, globby } from 'zx';
 
-const git = simpleGit();
+require('dotenv').config({ path: ['.env.local', '.env'] });
+
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
 // only take the changelogs of the packages
 let changelogPath = await globby([
@@ -12,27 +15,70 @@ let changelogPath = await globby([
 
 console.log('📑 Generating changelogs...');
 
-const getReleaseInformation = async file => {
-  const log = await git.log({ file: path.resolve(file) });
+const calculateDaysSince = date => {
+  const today = new Date();
+  const timeDifference = today - date;
+  const millisecondsInADay = 24 * 60 * 60 * 1000;
+  return Math.round(timeDifference / millisecondsInADay);
+};
 
-  const releases = log.all
-    .filter(release => release.author_name === 'github-actions[bot]')
-    .map(release => {
-      const releaseDate = new Date(release.date);
-      const today = new Date();
+const getReleaseData = async () => {
+  const response = await octokit.request(
+    'GET /repos/marigold-ui/marigold/releases',
+    {
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    }
+  );
 
-      // to get the difference in days we need to calculate
-      // the difference between time and divide it into miliseconds a day has
-      const timeDifference = today.getTime() - releaseDate.getTime();
-      const aDayInMs = 24 * 60 * 60 * 1000;
-      const daysDifference = Math.round(timeDifference / aDayInMs);
+  const releases = response.data;
+  const releaseDates = new Map();
 
-      const badge = daysDifference < 30 ? 'new' : undefined;
+  releases.forEach(release => {
+    const versionMatch = release.name.match(/@([^@]+)$/);
+    const version = versionMatch ? versionMatch[1] : null;
+    if (!version) return;
 
-      return { badge, releaseDate };
-    });
+    if (!releaseDates.has(version)) {
+      const releaseDate = new Date(release.published_at);
+      const daysSinceRelease = calculateDaysSince(releaseDate);
+      const badge = daysSinceRelease < 30 ? 'new' : undefined;
 
-  return releases;
+      releaseDates.set(version, {
+        releaseDate,
+        badge,
+      });
+    }
+  });
+
+  return releaseDates;
+};
+
+const getReleaseInformation = async (sourceText, releaseDates) => {
+  const versionRegex = /## (\d{1,2}\.\d{1,2}\.\d{1,2})/gm;
+  const versions = sourceText.match(versionRegex);
+
+  if (!versions) {
+    console.log('No versions found in the source text.');
+    return [];
+  }
+
+  const normalizedVersions = versions.map(version =>
+    version.replace('## ', '')
+  );
+
+  const versionReleaseDates = normalizedVersions.map(version => {
+    const releaseInfo = releaseDates.get(version);
+
+    return {
+      version,
+      releaseDate: releaseInfo ? releaseInfo.releaseDate : null,
+      badge: releaseInfo ? releaseInfo.badge : undefined,
+    };
+  });
+
+  return versionReleaseDates;
 };
 
 const addFrontmatter = (sourceText, releases) => {
@@ -45,13 +91,12 @@ const addFrontmatter = (sourceText, releases) => {
     let frontmatter = '';
     const packageName = matches[1];
     frontmatter += '---\n';
-    frontmatter += `title: "${packageName}"\n`;
-    frontmatter += `caption: "Have a look on the latest changes regarding ${packageName}"\n`;
-    releases.filter(release => {
-      release.badge === 'new'
-        ? (frontmatter += `badge: ${release.badge}\n`)
-        : '';
-    });
+    frontmatter += `title: '${packageName}'\n`;
+    frontmatter += `caption: 'Have a look on the latest changes regarding ${packageName}'\n`;
+    const hasBadge = releases.some(release => release.badge);
+    if (hasBadge) {
+      frontmatter += `badge: new\n`;
+    }
     frontmatter += 'toc: false\n';
     frontmatter += '---';
 
@@ -67,7 +112,7 @@ const adjustContent = (sourceText, releases) => {
 
   releases.forEach((release, index) => {
     const version = versions[index];
-    if (version) {
+    if (version && release.releaseDate) {
       const newContent = `${version} (Released on <DateFormat value={new Date("${release.releaseDate}")} dateStyle="medium" />)`;
       sourceText = sourceText.replace(
         new RegExp(`${version}(?=\\n)`),
@@ -86,7 +131,8 @@ changelogPath.forEach(async file => {
 
   const changelogDir = `content/releases/${packages}`;
   let changelogModified = data;
-  const releases = await getReleaseInformation(file);
+  const releaseDates = await getReleaseData();
+  const releases = await getReleaseInformation(changelogModified, releaseDates);
 
   changelogModified = addFrontmatter(changelogModified, releases);
   changelogModified = adjustContent(changelogModified, releases);

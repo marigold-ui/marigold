@@ -5,17 +5,24 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   closeButton: cva(''),
   container: cva(
     [
-      'font-body bg-bg-surface-overlay shadow-surface-overlay rounded-sm px-8 pb-8 pt-4',
+      'font-body bg-bg-surface-overlay shadow-surface-overlay rounded-sm pl-8 pr-12 pb-8 pt-4',
       ELEVALTION_RING,
     ],
     {
       variants: {
         size: {
-          small: 'sm:w-[640px]',
-          medium: 'md:w-[768px]',
-          large: 'lg:w-[1024px]',
+          default: '',
+          small: 'w-[min(100%,640px)]',
+          medium: 'w-[min(100%,768px)]',
+          large: 'w-[min(100%,1024px)]',
         },
+      },
+      defaultVariants: {
+        size: 'default',
       },
     }
   ),
+  header: cva('flex items-center'),
+  content: cva(''),
+  actions: cva('flex gap-2 justify-end'),
 };

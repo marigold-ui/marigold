@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 import type { WidthProp } from '@marigold/system';
 import { cn, createVar, width as twWidth } from '@marigold/system';
+import type { AriaRegionProps } from '@marigold/types';
 
-export interface ScrollableProps extends WidthProp {
+export interface ScrollableProps extends WidthProp, AriaRegionProps {
   /**
    * Children of the layout.
    */

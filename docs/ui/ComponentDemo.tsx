@@ -6,6 +6,7 @@ import {
   OverlayContainerProvider,
   Tabs,
 } from '@/ui';
+import { track } from '@vercel/analytics/react';
 import type { ComponentType, ReactNode } from 'react';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
@@ -52,9 +53,17 @@ export const ComponentDemo = ({
       children
     );
 
+  const onSelectionChange = (key: string) => {
+    track('Demo Tab', { tab: key });
+  };
+
   return (
     <>
-      <Tabs variant="demo" defaultSelectedKey="preview">
+      <Tabs
+        variant="demo"
+        defaultSelectedKey="preview"
+        onSelectionChange={onSelectionChange}
+      >
         <Tabs.List>
           <Tabs.Item id="preview">Preview</Tabs.Item>
           <Tabs.Item id="code">Code</Tabs.Item>
