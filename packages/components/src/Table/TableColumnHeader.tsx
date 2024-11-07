@@ -4,13 +4,10 @@ import { useHover } from '@react-aria/interactions';
 import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
-import { SortDown, SortUp } from '@marigold/icons';
 import { cn, width as twWidth, useStateProps } from '@marigold/system';
+import { SortDown, SortUp } from '../icons';
 import { useTableContext } from './Context';
 import { ColumnProps } from './Table';
-
-// Sort Icon
-// ---------------
 
 // Props
 // ---------------
