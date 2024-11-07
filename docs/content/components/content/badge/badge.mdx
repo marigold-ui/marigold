@@ -1,23 +1,40 @@
 ---
 title: Badge
 caption: Component for short notes with one color as status messages
+badge: updated
 ---
 
 A `<Badge>` is a content component. This component can be used to reflect status messages via a short note and a color. The content of a badge can be arbitrary, but it is preferred to use a string and/or a icon.
 
-## Import
+## Anatomy
 
-```tsx
-import { Badge } from '@marigold/components';
-```
+It consists of a container and the content can either be a text or an icon.
+
+<Image
+  src="/badge/badge-anatomy.jpg"
+  alt="Anatomy of badge component"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
+
+## Usage
+
+A `<Badge>` is a component used to provide information on new updates and notifications. It is used with other components and cannot be used alone.
 
 ## Props
 
+<StorybookHintMessage component={title} />
+
 <PropsTable component={title} />
+
+## Related
 
 ## Examples
 
