@@ -1,4 +1,4 @@
-import React, { Ref, forwardRef } from 'react';
+import React, { ReactNode, Ref, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Slider,
@@ -16,7 +16,7 @@ import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Label } from '../Label';
 
 export interface SliderProps<T>
-  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'label' | 'orientation'>,
+  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'orientation'>,
     Pick<FieldBaseProps<'label'>, 'description'> {
   /**
    * Labels for the thumbs in the slider. Also used for the name when submitting the form.
@@ -37,6 +37,13 @@ export interface SliderProps<T>
    * @default false
    */
   disabled?: boolean;
+
+  /**
+   * @deprecated Will be removed in the next major version. Use `label` prop instead.
+   */
+  children?: ReactNode;
+
+  label?: string;
 }
 
 const _Slider = forwardRef(
@@ -47,6 +54,7 @@ const _Slider = forwardRef(
       size,
       width = 'full',
       disabled,
+      label,
       ...rest
     }: SliderProps<T>,
     ref: Ref<HTMLDivElement>
@@ -71,7 +79,10 @@ const _Slider = forwardRef(
         ref={ref}
         {...props}
       >
-        <Label>{props.children as React.ReactNode}</Label>
+        <Label>
+          {(props.children && (props.children as React.ReactNode)) ||
+            (label && (label as React.ReactNode))}
+        </Label>
         <SliderOutput className={cn('flex justify-end', classNames.output)}>
           {({ state }) =>
             state.values.map((_, i) => state.getThumbValueLabel(i)).join(' – ')

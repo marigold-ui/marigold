@@ -38,25 +38,13 @@ The thumbs can be dragged to allow a user to change their value. In addition, th
 ## Usage
 
 Sliders allow users to view and select a value (or range) along a track. They’re ideal for adjusting settings such as volume and brightness.
+A slider’s `step` size defines the increments at which the slider can move, allowing users to make finer or coarser adjustments based on the context—such as adjusting volume in single steps versus increments of ten. Setting an appropriate step size enhances usability, especially for precise inputs.
 
-### Range slider
-
-The slider can be configured with multiple thumbs to select a range of related values. A common use-case of this component is a price range picker that allows a user to set the minimum and maximum price.
-
-To make it work you need at least to define `defaultValues` (uncontrolled) or `value` (controlled) and for accessibility reasons, you should set the `thumbLabels` prop.
-
-<ComponentDemo file="./slider-range.demo.tsx" />
-
-### Form
-
-Sliders can also be used in forms. To access the values of multiple thumbs you have to setup the `thumbLabels` prop.
-The default label for a single thumb is <strong>start</strong>.
-
-<ComponentDemo file="./slider-form.demo.tsx" />
+The `step` default increment is <strong>1</strong>.
 
 ### Label
 
-The label is automatically places on the right spot of the slider and inform users what kind of value(s) they are selecting. You can place the label with the `children` prop.
+The label is automatically places on the right spot of the slider and inform users what value(s) they have selected. You can place it with the `label` prop.
 
 <ComponentDemo file="./slider-do-label.demo.tsx" />
 
@@ -68,38 +56,26 @@ The label is automatically places on the right spot of the slider and inform use
   </Do>
 </GuidelineTiles>
 
-### Additional description
+### Range slider
 
-Sometimes the label isn't enough for the user. In this case, to gather additional support for the user we can use the help text.
-With this we can add helpful hints for the user below the input field. Beside that the help text is placed in close proximity to the associated input field.
+The slider can be configured with multiple thumbs to select a range of related values. A common use-case of this component is a price range picker that allows a user to set the minimum and maximum price.
 
-The label is automatically places on the right spot of the slider and inform users what kind of value(s) they are selecting. You can place the label with the `children` prop.
+To make it work you need at least to define `defaultValues` (uncontrolled) or `value` (controlled) and for accessibility reasons, you should set the `thumbLabels` prop.
 
-<ComponentDemo file="./slider-do-description.demo.tsx" />
+<ComponentDemo file="./slider-range.demo.tsx" />
 
-<GuidelineTiles>
-  <Do>
-    <Do.Description>Explain why certain information is needed.</Do.Description>
-  </Do>
-</GuidelineTiles>
+### Step precision
 
-### Custom value scale
+Selecting a precise value using a slider can be challenging, as it often requires fine motor control, even with a well-designed slider.
+When attempting to pick a single, specific value, users may find themselves overshooting or undershooting the target.
 
-By default, slider values are percentages between 0 and 100. A different scale can be used by setting the `minValue` and `maxValue` props.
+<strong>Task</strong>: Try picking a random number on the slider, then attempt
+to pick the very next number without using the keyboard for assistance. Take
+note of how many attempts it takes to reach that exact number.
 
-<ComponentDemo file="./slider-custom-value-scale.demo.tsx" />
-
-### Precise values
-
-Selecting a precise value using a slider is a difficult task requiring good motor skills, even if the slider is well designed.
-
-<SectionMessage>
-  <SectionMessage.Title>Task</SectionMessage.Title>
-  <SectionMessage.Content>
-    Pick a random number and than try to pick the next number (no keyboard
-    allowed). How many tries did it take you?
-  </SectionMessage.Content>
-</SectionMessage>
+This exercise highlights the difficulty in achieving precise control with sliders, especially at smaller increments.
+For users, this can become frustrating, particularly in applications where exact values are necessary.
+This is why well-considered step sizes and alternative input methods (e.g., `<NumberField>`) are often used alongside sliders to ensure accessibility and ease of use.
 
 <ComponentDemo file="./slider-dont-small-steps.demo.tsx" />
 
@@ -107,10 +83,38 @@ Selecting a precise value using a slider is a difficult task requiring good moto
   <Dont>
     <Dont.Description>
       Don't use too small number steps. If picking an exact value is important
-      to the goal of the interface, choose an alternate UI element.
+      to the goal of the interface, choose an alternate UI element, like
+      NumberField or Combobox.
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
+
+### Value formatting
+
+Values are formatted as a percentage by default, but this can be modified by using the `formatOptions` prop to specify a different format.
+`formatOptions` is compatible with the option parameter of [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) and is applied based on the current locale.
+
+<ComponentDemo file="./slider-format.demo.tsx" />
+
+### Form
+
+Sliders can also be used in forms. To access the values of multiple thumbs you have to setup the `thumbLabels` prop.
+The default label for a single thumb is <strong>start</strong>.
+
+<ComponentDemo file="./slider-form.demo.tsx" />
+
+### Additional description
+
+Sometimes the label isn't enough for the user. In this case, to gather additional support for the user we can use the help text.
+With this we can add helpful hints for the user below the input field. Beside that the help text is placed in close proximity to the associated input field.
+
+<ComponentDemo file="./slider-do-description.demo.tsx" />
+
+### Min and max values
+
+By default, slider values are percentages between 0 and 100. A different scale can be used by setting the `minValue` and `maxValue` props.
+
+<ComponentDemo file="./slider-custom-value-scale.demo.tsx" />
 
 ## Props
 

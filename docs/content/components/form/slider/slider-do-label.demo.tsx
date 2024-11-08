@@ -1,3 +1,3 @@
 import { Slider } from '@marigold/components';
 
-export default () => <Slider>Confidence level</Slider>;
+export default () => <Slider label="Confidence level" />;

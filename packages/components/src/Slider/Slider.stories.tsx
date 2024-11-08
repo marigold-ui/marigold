@@ -15,6 +15,13 @@ const meta = {
   title: 'Components/Slider',
   component: Slider,
   argTypes: {
+    label: {
+      control: 'text',
+      description: 'The label of the slider',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     children: {
       control: 'text',
       description: 'The label of the slider',
@@ -93,18 +100,20 @@ export const ValueFormatting: Story = {
         formatOptions={{ style: 'percent' }}
         step={0.01}
         maxValue={1}
-      >
-        Percent
-      </Slider>
+        label="Percent"
+      />
     </Stack>
   ),
 };
 
 export const MultipleThumbs: Story = {
   render: args => (
-    <Slider {...args} defaultValue={[30, 60]} thumbLabels={['start', 'end']}>
-      Range
-    </Slider>
+    <Slider
+      {...args}
+      defaultValue={[30, 60]}
+      thumbLabels={['start', 'end']}
+      label="Range"
+    />
   ),
 };
 
@@ -114,9 +123,12 @@ export const Controlled: Story = {
 
     return (
       <>
-        <Slider value={value} onChange={setValue} {...args}>
-          Cookies to buy
-        </Slider>
+        <Slider
+          value={value}
+          onChange={setValue}
+          {...args}
+          label="Cookies to buy"
+        />
         <p>Current value: {value}</p>
       </>
     );
@@ -129,9 +141,12 @@ export const MultiThumbsControlled: Story = {
 
     return (
       <>
-        <Slider value={value} onChange={setValue} {...args}>
-          Tickets for sale
-        </Slider>
+        <Slider
+          value={value}
+          onChange={setValue}
+          {...args}
+          label="Tickets for sale"
+        />
         <p>
           Current value: {typeof value !== 'number' ? value?.join(' – ') : null}
         </p>
@@ -230,12 +245,20 @@ export const MultiThumbsDisabled: Story = {
 export const Steps: Story = {
   render: args => (
     <Stack space={4}>
-      <Slider {...args} defaultValue={0} maxValue={100} step={10}>
-        Small steps
-      </Slider>
-      <Slider {...args} defaultValue={0} maxValue={1000} step={100}>
-        Big steps
-      </Slider>
+      <Slider
+        {...args}
+        defaultValue={0}
+        maxValue={100}
+        step={10}
+        label="Small steps"
+      />
+      <Slider
+        {...args}
+        defaultValue={0}
+        maxValue={1000}
+        step={100}
+        label="Big steps"
+      />
     </Stack>
   ),
 };
