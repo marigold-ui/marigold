@@ -130,14 +130,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
     const classNames = useClassNames({ component: 'Select', variant, size });
 
     return (
-      <FieldBase
-        isOpen
-        as={Select}
-        ref={ref}
-        variant={variant}
-        size={size}
-        {...props}
-      >
+      <FieldBase as={Select} ref={ref} variant={variant} size={size} {...props}>
         <Button
           className={cn(
             'flex w-full items-center justify-between gap-1 overflow-hidden',
