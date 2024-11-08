@@ -487,9 +487,6 @@ importers:
       '@internationalized/date':
         specifier: 3.5.6
         version: 3.5.6
-      '@marigold/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@marigold/system':
         specifier: workspace:*
         version: link:../system
@@ -554,6 +551,9 @@ importers:
         specifier: 1.4.1
         version: 1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
+      '@marigold/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig

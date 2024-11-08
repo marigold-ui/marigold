@@ -1,5 +1,6 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import { createPreset } from '@marigold/theme-preset';
+import { screens } from './screens';
 import { colors } from './tokens';
 
 export interface PresetConfig {
@@ -17,9 +18,7 @@ export const preset = createPreset({
     container: {
       center: true,
       padding: '2rem',
-      screens: {
-        '2xl': '1400px',
-      },
+      screens,
     },
     extend: {
       fontFamily: {
