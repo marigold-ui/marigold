@@ -28,15 +28,15 @@ The Label defines the purpose of the Date Field, where users can enter a date di
 
 ## Usage
 
-`<DatePicker>` is used when you need users to select a date accurately, like for booking events, scheduling appointments, or setting deadlines. It’s ideal when date formats might vary, as it standardizes input and reduces mistakes because its visual clarity, format consistency and accuracy. DatePickers are also helpful when users might need guidance on valid date ranges, like selecting only future dates for reservations. Avoid using it for casual date entries where a simple text field would suffice.y
+`<DatePicker>` is used when you need users to select a date accurately, like for booking events, scheduling appointments, or setting deadlines. It’s ideal when date formats might vary, as it standardizes input and reduces mistakes because its visual clarity, format consistency and accuracy. DatePickers are also helpful when users might need guidance on valid date ranges, like selecting only future dates for reservations. Avoid using it for casual date entries where a simple text field would suffice.
 
-### Simple (uncontrolled)
+### Basic Usage (uncontrolled)
 
 This example shows a regular `<DatePicker>` without any special props.
 
 <ComponentDemo file="./date-picker-basic.demo.tsx" />
 
-### DatePicker with min/max Values
+### Min/Max Values
 
 The `minValue` and `maxValue` props can also be used to perform builtin validation. This prevents the user from selecting dates outside the valid range in the calendar .
 
