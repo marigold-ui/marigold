@@ -8,6 +8,24 @@ A `<Card>` component is a versatile UI element used to display content in a conc
 It’s typically presented as a rectangular box with various content elements such as images, text, buttons, and icons.
 Cards are ideal for grouping related information and making it easily digestible, often used to display previews of articles, products, user profiles, and other content types.
 
+## Anatomy
+
+The card component consists of a container which is basically a `<div>`. You can pass any content and components as `children` to the card component.
+
+<Image
+  src="/card/card-anatomy.jpg"
+  alt="Anatomy of card component"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
 ## Usage
 
 The `<Card>` component can be used to present organized, summary-level information across various UI applications.
@@ -26,12 +44,13 @@ According to our design guidelines, the card should be used on top of the [sunke
         height={700}
         unoptimized
         src="/card/card-do-elevation.jpg"
-        alt="Do: Use Card on top of default or sunken layers"
+        alt="Do: Use Card on top of default or sunken layers."
       />
     </Do.Figure>
-    <Do.Description>Use Card on top of default or sunken layers</Do.Description>
+    <Do.Description>
+      Use Card on top of default or sunken layers.
+    </Do.Description>
   </Do>
-
   <Dont>
     <Dont.Figure>
       <Image
