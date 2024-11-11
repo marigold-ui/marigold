@@ -17,19 +17,6 @@ const meta = {
       },
       description: 'Sets the size of the SVG.',
     },
-    className: {
-      control: {
-        type: 'text',
-      },
-      table: {
-        type: { summary: 'string' },
-      },
-      description:
-        'To change the color or something additional, should be used rarely.',
-    },
-  },
-  args: {
-    size: 150,
   },
 } satisfies Meta<typeof XLoader>;
 
