@@ -5,6 +5,8 @@ import {
   Columns,
   DatePicker,
   FieldGroup,
+  Headline,
+  NumberField,
   Select,
   Stack,
   Switch,
@@ -173,5 +175,51 @@ export const WithTwoComponentsAndFixedItem: Story = {
         </Columns>
       </FieldGroup>
     </div>
+  ),
+};
+
+const data = [
+  {
+    price: '2.50',
+    fee: 3.0,
+  },
+  {
+    price: '2.75',
+    fee: 3.0,
+  },
+  {
+    price: '5.50',
+    fee: 6.0,
+  },
+];
+export const TableLike: Story = {
+  render: () => (
+    <Stack space={4}>
+      <Columns columns={[2, 1]} space={2} stretch>
+        <Headline level="4">Price</Headline>
+        <Headline level="4">Fee</Headline>
+      </Columns>
+      <Columns columns={[1, 1, 1]} space={2}>
+        <Stack>
+          {data.map(item => (
+            <div>{item.price}</div>
+          ))}
+        </Stack>
+        <div>results to</div>
+        <Stack>
+          {data.map(item => (
+            <NumberField
+              defaultValue={item.fee}
+              hideStepper
+              width={24}
+              formatOptions={{
+                style: 'currency',
+                currency: 'EUR',
+              }}
+            />
+          ))}
+        </Stack>
+      </Columns>
+    </Stack>
   ),
 };

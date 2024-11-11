@@ -1,22 +1,34 @@
 ---
 title: Columns
-caption: Component with sized columns in one row.
+caption: Position content in one row.
+badge: updated
 ---
 
-The `<Columns>` is a responsive layout component, with sized columns in one row.
-With the `<Columns>` component you can set an array of numbers the size of the children. The columns array length and the count of children must be the same. You can add space between the columns und set a `collapseAt` prop to collapse the columns at a certain width.
+The `<Columns>` component is used to create structured and flexible layouts that organize content efficiently. It is a responsive component with sized columns in one row based on a grid system.
 
-## Import
+## Usage
 
-```tsx
-import { Columns } from '@marigold/components';
-```
+With the `<Columns>` component you specify the numbers of columns to get a layout with evenly distributed column cells. The columns array length and the count of children must be the same.
 
-## Props
+You should use columns for layout content in a row. This can be for example if you have a table-like structure.
 
-<PropsTable component={title} />
+<ComponentDemo file="./table-layout-columns.demo.tsx" />
+demo
 
-## Examples
+You can add space between the columns und set a `collapseAt` prop to collapse the columns at a certain width.
+
+grid layout, responsive, width
+Specify the number of columns to get a column layout with evenly distributed columns.
+
+donts
+
+- dont use too many layout levels if not needed
+-
+
+dos
+
+- use columns for layout content in a row.
+-
 
 ### Columns and a space between them
 
@@ -51,3 +63,37 @@ Here is another interactive example on how to use the `stretch` prop. Note that 
 In this example the `fit` option is set to the `columns` property. The column width will be always fitting the content.
 
 <ComponentDemo file="./fit-width-columns.demo.tsx" />
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
