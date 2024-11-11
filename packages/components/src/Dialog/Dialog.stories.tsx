@@ -68,8 +68,8 @@ export const Basic: Story = {
           <Dialog.Title>This is a headline!</Dialog.Title>
           <Dialog.Content>This is some not so very long text.</Dialog.Content>
           <Dialog.Actions>
-            <Dialog.Cancel />
-            <Button variant="primary">Ok</Button>
+            <Button slot="close">Cancel</Button>
+            <Button slot="confirm">Ok</Button>
           </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
@@ -89,14 +89,8 @@ export const Form: Story = {
             <TextField label="Password" type="password" />
           </Dialog.Content>
           <Dialog.Actions>
-            {({ close }) => (
-              <>
-                <Button variant="secondary" onPress={close}>
-                  Cancel
-                </Button>
-                <Button variant="primary">Login</Button>
-              </>
-            )}
+            <Button slot="close">Cancel</Button>
+            <Button slot="confirm">Login</Button>
           </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
@@ -222,8 +216,8 @@ export const WithDialogController: Story = {
                   <Text>Do you really wanna delete this?</Text>
                 </Dialog.Content>
                 <Dialog.Actions>
-                  <Dialog.Cancel />
-                  <Button size="small" variant="primary" onPress={close}>
+                  <Button slot="close">Cancel</Button>
+                  <Button slot="confirm" size="small" onPress={close}>
                     Delete
                   </Button>
                 </Dialog.Actions>
