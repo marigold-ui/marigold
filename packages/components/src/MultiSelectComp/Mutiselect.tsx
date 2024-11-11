@@ -55,6 +55,7 @@ export const MultiSelect = <T extends SelectedKey>({
 }: MultiselectProps<T>) => {
   const tagGroupIdentifier = useId();
   const triggerRef = useRef<HTMLDivElement | null>(null);
+  // TODO: will be added over the muliselect container
   const [width, setWidth] = useState(0);
 
   const { contains } = useFilter({ sensitivity: 'base' });
@@ -222,7 +223,6 @@ export const MultiSelect = <T extends SelectedKey>({
           // style={{ width: `${width}px` }}
           triggerRef={triggerRef}
           trigger="ComboBox"
-
           // open={triggerState.isOpen}
           // onClose={triggerState.cl`ose()}
         >
