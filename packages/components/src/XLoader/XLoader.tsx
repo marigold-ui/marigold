@@ -2,7 +2,7 @@ import { Dialog, Modal, ModalOverlay } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { Stack } from '../Stack/Stack';
 import type { LoaderProps } from './BaseLoader';
-import { Loader } from './BaseLoader';
+import { BaseLoader } from './BaseLoader';
 
 // Full Size
 // ---------------
@@ -17,9 +17,9 @@ const LoaderFullSize = (props: LoaderProps) => {
   return (
     <ModalOverlay defaultOpen className={className} isKeyboardDismissDisabled>
       <Modal>
-        <Dialog className="text-text-inverted outline-0">
+        <Dialog className="outline-0">
           <Stack space={2} alignX="center">
-            <Loader {...props} className="text-text-inverted" size={80} />
+            <BaseLoader {...props} />
           </Stack>
         </Dialog>
       </Modal>
@@ -29,10 +29,11 @@ const LoaderFullSize = (props: LoaderProps) => {
 
 // Inline
 // ---------------
-const LoaderInline = ({ size = 80, ...props }: LoaderProps) => (
-  <div className="text-text-inverted flex h-full w-full items-center justify-center bg-gray-950/30">
+const LoaderInline = (props: LoaderProps) => (
+  // TODO: Can we move the div into the basloader as a variant?
+  <div className="flex size-full items-center justify-center bg-gray-950/30">
     <Stack space={2} alignX="center">
-      <Loader {...props} className="text-text-inverted" size={80} />
+      <BaseLoader {...props} />
     </Stack>
   </div>
 );
@@ -45,5 +46,5 @@ export const XLoader = ({ mode, ...props }: LoaderProps) =>
   ) : mode === 'inline' ? (
     <LoaderInline {...props} />
   ) : (
-    <Loader {...props} />
+    <BaseLoader {...props} />
   );

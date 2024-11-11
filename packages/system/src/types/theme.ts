@@ -129,6 +129,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ComboBox?: ComponentStyleFunction<string, string>;
+    XLoader?: Record<
+      'container' | 'loader' | 'label',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 
