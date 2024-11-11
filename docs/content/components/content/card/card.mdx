@@ -1,38 +1,78 @@
 ---
 title: Card
 caption: Component to support the structuring of information.
+badge: updated
 ---
 
-The `<Card>` is a content component to group informations inside the UI, as well it provides a better readability and helps the user to find relevant informations in an easy way.
+A `<Card>` component is a versatile UI element used to display content in a concise, visually organized format.
+It’s typically presented as a rectangular box with various content elements such as images, text, buttons, and icons.
+Cards are ideal for grouping related information and making it easily digestible, often used to display previews of articles, products, user profiles, and other content types.
 
-`<Card>` components usually contain images, text, links or action components like buttons.
+## Usage
 
-If you want, you can style the `<Card>` and create custom variants and sizes.
+The `<Card>` component can be used to present organized, summary-level information across various UI applications.
+Using cards enhances the visual hierarchy and organization of content, making it easier for users to browse and engage with various pieces of information.
 
-## Import
+## Elevation layer
 
-```tsx
-import { Card } from '@marigold/components';
-```
+`<Card>` uses the raised elevation layer to create a visual distinction between the card and the background.
+According to our design guidelines, the card should be used on top of the [sunken](../../../foundations/elevation#sunken) or [default](../../../foundations/elevation#default) layer
 
-## Appearance
+<Stack space={8}>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/card/card-do-elevation.jpg"
+        alt="Do: Use Card on top of default or sunken layers"
+      />
+    </Do.Figure>
+    <Do.Description>Use Card on top of default or sunken layers</Do.Description>
+  </Do>
 
-<AppearanceTable component={title} />
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/card/card-dont-elevation.jpg"
+        alt="Don’t use card in cards or same elevation layers"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don’t use card in cards or same elevation layers.
+    </Dont.Description>
+  </Dont>
+</Stack>
 
 ## Props
 
+<StorybookHintMessage component={title} />
+
 <PropsTable component={title} />
 
-## Examples
+## Related
 
-### Card with form fields
-
-The Example shows how to use the `<Card>` in a common use case with form fields.
-
-<ComponentDemo file="./card-form.demo.tsx" />
-
-### Card with some Text
-
-On this example you can see an imformation card with used prop `p`.
-
-<ComponentDemo file="./card-infos.demo.tsx" />
+<TeaserList
+  items={[
+    {
+      title: 'Elevation',
+      href: '../../../foundations/elevation',
+      caption:
+        'This page should introduce you on how to use elevation with Marigold.',
+      icon: (
+        <svg
+          viewBox="0 0 24 24"
+          className="size-6"
+          strokeWidth="1.5"
+          stroke="currentColor"
+        >
+          <path d="M3.5625 6.375H20.4375V8.25H3.5625V6.375ZM3.5625 16.125H20.4375V18H3.5625V16.125ZM20.4375 11.25H3.5625V13.125H20.4375V11.25Z"></path>
+        </svg>
+      ),
+    },
+  ]}
+/>
