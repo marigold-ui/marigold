@@ -89,8 +89,14 @@ export const Form: Story = {
             <TextField label="Password" type="password" />
           </Dialog.Content>
           <Dialog.Actions>
-            <Dialog.Cancel />
-            <Button variant="primary">Login</Button>
+            {({ close }) => (
+              <>
+                <Button variant="secondary" onPress={close}>
+                  Cancel
+                </Button>
+                <Button variant="primary">Login</Button>
+              </>
+            )}
           </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>

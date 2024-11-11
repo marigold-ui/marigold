@@ -3,7 +3,6 @@ import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { DialogActions } from './DialogActions';
-import { DialogCancel } from './DialogCancel';
 import { DialogContent } from './DialogContent';
 import { DialogTitle } from './DialogTitle';
 import { DialogTrigger } from './DialogTrigger';
@@ -93,6 +92,5 @@ _Dialog.Trigger = DialogTrigger;
 _Dialog.Title = DialogTitle;
 _Dialog.Content = DialogContent;
 _Dialog.Actions = DialogActions;
-_Dialog.Cancel = DialogCancel;
 
 export { _Dialog as Dialog };
