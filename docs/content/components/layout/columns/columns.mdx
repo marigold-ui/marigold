@@ -4,15 +4,15 @@ caption: Position content in one row.
 badge: updated
 ---
 
-The `<Columns>` component is used to create structured and flexible layouts that organize content efficiently. It is a responsive component with sized columns in one row based on a flex system.
+The `<Columns>` component is used to create structured and flexible layouts that organize content efficiently. It is a responsive component with sized columns in one row based on a [flex system](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox).
 
 ## Usage
 
-With the `<Columns>` component you specify the numbers of columns to get a layout with evenly distributed column cells. The columns array length and the count of children must be the same.
+With the `<Columns>` component you specify the numbers of columns to get a layout with evenly distributed column cells. The `columns`property defines the width of the children. This is written as array, whose length and the count of children must be the same.
 
 The `<Columns>` component is ideal for arranging content in a row. This can be for example if you have a table-like structure.
 
-In this example the columns are filled with interactive elements. This is a good use case for a column component. Unlike as in `<Table>` you can use the interactive elements without loosing the accessibility features of the component.
+In this example the columns are filled with interactive elements. This is a good use case for a column component. Unlike as in `<Table>` you can use the interactive elements without loosing the accessibility features of the components.
 
 <ComponentDemo file="./table-layout-columns.demo.tsx" />
 
