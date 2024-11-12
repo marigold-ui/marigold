@@ -528,7 +528,7 @@ test('cancel button closes dialog', async () => {
       <Dialog closeButton>
         <Dialog.Title>Headline</Dialog.Title>
         <Dialog.Actions>
-          <Dialog.Cancel />
+          <Button slot="close">Cancel</Button>
         </Dialog.Actions>
       </Dialog>
     </Dialog.Trigger>
@@ -545,28 +545,5 @@ test('cancel button closes dialog', async () => {
   await user.click(cancel);
   await waitFor(() => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-  });
-});
-
-test('render custom cancel button label', async () => {
-  render(
-    <Dialog.Trigger>
-      <Button>Open</Button>
-
-      <Dialog closeButton>
-        <Dialog.Title>Headline</Dialog.Title>
-        <Dialog.Actions>
-          <Dialog.Cancel>Close</Dialog.Cancel>
-        </Dialog.Actions>
-      </Dialog>
-    </Dialog.Trigger>
-  );
-
-  const button = screen.getByText('Open');
-  await user.click(button);
-
-  const cancel = screen.getByText('Close');
-  await waitFor(() => {
-    expect(cancel).toBeInTheDocument();
   });
 });
