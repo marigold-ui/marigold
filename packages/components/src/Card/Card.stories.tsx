@@ -21,9 +21,10 @@ const meta = {
     },
     size: {
       control: {
-        type: 'text',
+        type: 'radio',
       },
       description: 'The size of the card',
+      options: ['default', 'stretch', 'small'],
     },
     p: {
       control: {
