@@ -68,8 +68,10 @@ export const Basic: Story = {
           <Dialog.Title>This is a headline!</Dialog.Title>
           <Dialog.Content>This is some not so very long text.</Dialog.Content>
           <Dialog.Actions>
-            <Button slot="close">Cancel</Button>
-            <Button slot="confirm">Ok</Button>
+            <Button slot="close" variant="secondary">
+              Cancel
+            </Button>
+            <Button variant="primary">Ok</Button>
           </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
@@ -89,8 +91,10 @@ export const Form: Story = {
             <TextField label="Password" type="password" />
           </Dialog.Content>
           <Dialog.Actions>
-            <Button slot="close">Cancel</Button>
-            <Button slot="confirm">Login</Button>
+            <Button slot="close" variant="secondary">
+              Cancel
+            </Button>
+            <Button variant="primary">Login</Button>
           </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
@@ -173,7 +177,9 @@ export const StickyFooter: Story = {
             </Dialog.Content>
           </div>
           <Dialog.Actions>
-            <Button variant="primary">Ok</Button>
+            <Button variant="primary" slot="close">
+              close
+            </Button>
           </Dialog.Actions>
         </div>
       </Dialog>
@@ -216,8 +222,15 @@ export const WithDialogController: Story = {
                   <Text>Do you really wanna delete this?</Text>
                 </Dialog.Content>
                 <Dialog.Actions>
-                  <Button slot="close">Cancel</Button>
-                  <Button slot="confirm" size="small" onPress={close}>
+                  <Button slot="close" variant="secondary">
+                    Cancel
+                  </Button>
+                  <Button
+                    slot="close"
+                    variant="primary"
+                    size="small"
+                    onPress={close}
+                  >
                     Delete
                   </Button>
                 </Dialog.Actions>

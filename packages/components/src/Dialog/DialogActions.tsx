@@ -23,18 +23,8 @@ export interface DialogActions {
 
 export const DialogActions = ({ variant, size, children }: DialogActions) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
-  const closeButtonClassNames = useClassNames({
-    component: 'Button',
-    variant: 'secondary',
-  });
-  const confirmButtonClassNames = useClassNames({
-    component: 'Button',
-    variant: 'primary',
-  });
-
   const { close } = useContext(OverlayTriggerStateContext)!;
-  const closeButtonProps = { className: closeButtonClassNames, onPress: close };
-  const confirmButtonProps = { className: confirmButtonClassNames };
+  const closeButtonProps = { onPress: close };
 
   return (
     <div className={cn('[grid-area:actions]', classNames.actions)}>
@@ -46,7 +36,6 @@ export const DialogActions = ({ variant, size, children }: DialogActions) => {
               slots: {
                 [DEFAULT_SLOT]: {},
                 close: closeButtonProps,
-                confirm: confirmButtonProps,
               },
             },
           ],

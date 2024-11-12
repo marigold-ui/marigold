@@ -22,7 +22,9 @@ export default () => (
           </Stack>
         </Dialog.Content>
         <Dialog.Actions>
-          <Dialog.Cancel />
+          <Button variant="secondary" slot="close">
+            Cancel
+          </Button>
           <Button variant="primary">Update</Button>
         </Dialog.Actions>
       </FieldGroup>

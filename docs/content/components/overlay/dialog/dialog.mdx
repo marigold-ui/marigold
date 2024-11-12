@@ -66,7 +66,7 @@ Lastly, avoid asking users to make decisions that require information not access
 
 When a dialog is open, users cannot interact with the rest of the page until the dialog is closed. To accommodate both mouse and keyboard users, the `<Dialog>` provides multiple ways to close it:
 
-- pressing the `<Dialog.Cancel>` button,
+- pressing the close button (`slot="close"`) inside `<Dialog.Actions>`,
 - using the close button (indicated by an "x"),
 - pressing the "Esc" key, or
 - clicking on the underlay (the dimmed background).
@@ -76,9 +76,9 @@ To prevent the dialog from closing when the underlay is (accidentally) clicked, 
 <ComponentDemo file="./dialog-dismiss.demo.tsx" />
 
 <SectionMessage>
-  <SectionMessage.Title>Dedicated cancel button</SectionMessage.Title>
+  <SectionMessage.Title>Dedicated close button</SectionMessage.Title>
   <SectionMessage.Content>
-    Marigold includes a built-in `<Dialog.Cancel>` button for easy dialog cancellation. This renders a standarized button that can be adjusted with a custom label text (`<Dialog.Cancel>Close</Dialog.Cancel>`) or other button props (see below) as needed.
+    To conveniently create a close button for a dialog, set the `slot` prop to `"close"` on any `<Button>` within `<Dialog.Actions>` component. Pressing the button will then close the dialog.
   </SectionMessage.Content>
 </SectionMessage>
 
@@ -119,7 +119,3 @@ For instance, selecting "Delete" from a menu might trigger a confirmation dialog
 ### Dialog.Actions
 
 <PropsTable component="DialogActions" />
-
-### Dialog.Cancel
-
-<PropsTable component="DialogCancel" />
