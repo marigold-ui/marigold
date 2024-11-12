@@ -12,31 +12,13 @@ With the `<Columns>` component you specify the numbers of columns to get a layou
 
 You should use columns for layout content in a row. This can be for example if you have a table-like structure.
 
+In this example the columns are filled with interactive elements. This is a good use case for a column component. Unlike in tables you can use the interactive elements without loosing the accessibility features.
+
 <ComponentDemo file="./table-layout-columns.demo.tsx" />
-demo
-
-You can add space between the columns und set a `collapseAt` prop to collapse the columns at a certain width.
-
-grid layout, responsive, width
-Specify the number of columns to get a column layout with evenly distributed columns.
-
-donts
-
-- dont use too many layout levels if not needed
--
-
-dos
-
-- use columns for layout content in a row.
--
-
-### Columns and a space between them
-
-The example shows how to use the `space` prop. It defines the gap between the contents.
-
-<ComponentDemo file="./space-columns.demo.tsx" />
 
 ### Columns collapsing at a certain width
+
+You can also add space between the columns und set a `collapseAt` prop to collapse the columns at a certain width. This is convenient for a good responsivness.
 
 The example show how the `collapseAt` prop is to use. If you resize the window of your browser you can see that the columns are collapsing or expanding. Please note that the collapsing or expanding starting in a small range of the `collapseAt` value.
 
@@ -44,6 +26,7 @@ The example show how the `collapseAt` prop is to use. If you resize the window o
 
 ### Page layout
 
+With columns you also have the possibility to create a whole page layout
 Create a page layout with three columns and collapse or expanding at `25em`
 
 <ComponentDemo file="./layout-columns.demo.tsx" />
