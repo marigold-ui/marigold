@@ -26,11 +26,11 @@ const data = [
 
 export default () => {
   return (
-    <div className="w-5/12 p-4">
+    <div className="w-1/2 p-4">
       <Columns columns={[1, 1, 1]} space={2}>
-        <Headline level="4">Name</Headline>
-        <Headline level="4">Price</Headline>
-        <Headline level="4">Fee</Headline>
+        <Headline level="5">Name</Headline>
+        <Headline level="5">Price</Headline>
+        <Headline level="5">Fee</Headline>
       </Columns>
       <Columns columns={[1, 1, 1]} space={2}>
         <Stack>

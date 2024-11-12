@@ -4,48 +4,43 @@ caption: Position content in one row.
 badge: updated
 ---
 
-The `<Columns>` component is used to create structured and flexible layouts that organize content efficiently. It is a responsive component with sized columns in one row based on a grid system.
+The `<Columns>` component is used to create structured and flexible layouts that organize content efficiently. It is a responsive component with sized columns in one row based on a flex system.
 
 ## Usage
 
 With the `<Columns>` component you specify the numbers of columns to get a layout with evenly distributed column cells. The columns array length and the count of children must be the same.
 
-You should use columns for layout content in a row. This can be for example if you have a table-like structure.
+The `<Columns>` component is ideal for arranging content in a row. This can be for example if you have a table-like structure.
 
-In this example the columns are filled with interactive elements. This is a good use case for a column component. Unlike in tables you can use the interactive elements without loosing the accessibility features.
+In this example the columns are filled with interactive elements. This is a good use case for a column component. Unlike as in `<Table>` you can use the interactive elements without loosing the accessibility features of the component.
 
 <ComponentDemo file="./table-layout-columns.demo.tsx" />
 
-### Columns collapsing at a certain width
-
-You can also add space between the columns und set a `collapseAt` prop to collapse the columns at a certain width. This is convenient for a good responsivness.
-
-The example show how the `collapseAt` prop is to use. If you resize the window of your browser you can see that the columns are collapsing or expanding. Please note that the collapsing or expanding starting in a small range of the `collapseAt` value.
-
-<ComponentDemo file="./collapse-columns.demo.tsx" />
-
 ### Page layout
 
-With columns you also have the possibility to create a whole page layout
-Create a page layout with three columns and collapse or expanding at `25em`
+With columns you also have the possibility to create a whole, responsive page layout. This can be helpful if you anyway need to have certain parts of the application.
+
+But also keep in mind to not build too complex nested layouts if it isn't needed, you can visit our foundation about [how to layout](/foundations/layouts) for more informations.
 
 <ComponentDemo file="./layout-columns.demo.tsx" />
 
-### Stretch to Height of Parent
+### Fixed widths
+
+Sometimes you need to set an element at the end or at the start of a column. You can use the `fit` value for the `columns` property to align it to the chosen position. The column width will be always fitting the content. While the other values take the width content based according to the space still available.
+
+<ComponentDemo file="./fit-width-columns.demo.tsx" />
+
+You can also add space between the columns and set a `collapseAt` prop to collapse the columns at a certain width. This is convenient for a good responsivness.
+
+### Stretch to height of parent
 
 By using the `stretch` prop you can make the container to take full width. Note that this is usually not necessary since the columns will expand with their children anyway.
 
 <ComponentDemo file="./stretch-columns.demo.tsx" />
 
-Here is another interactive example on how to use the `stretch` prop. Note that there has to be a parent of the columns that sets a `height`. Otherwhise setting the height in a column to `100%` will not have any effect.
+Here is another interactive example on how to use the `stretch` prop. Note that there has to be a parent of the columns that sets a `height`. Otherwise setting the height in a column to `100%` will not have any effect.
 
 <ComponentDemo file="./stretch-columns-switch.demo.tsx" />
-
-### Column with fitting width
-
-In this example the `fit` option is set to the `columns` property. The column width will be always fitting the content.
-
-<ComponentDemo file="./fit-width-columns.demo.tsx" />
 
 ## Props
 

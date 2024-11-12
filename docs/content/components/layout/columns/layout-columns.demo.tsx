@@ -1,15 +1,16 @@
 import { Columns } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
-  <Columns space={2} columns={[2, 8, 2]} collapseAt="25em">
-    <div className="h-56 border border-slate-300 bg-slate-200 p-1">
-      Left Sidebar
-    </div>
-    <div className="h-56 border border-slate-300 bg-slate-200 p-1">
-      Main Content
-    </div>
-    <div className="h-56 border border-slate-300 bg-slate-200 p-1">
-      Right Sidebar
-    </div>
+  <Columns space={2} columns={[2, 8, 2]} collapseAt="40em">
+    <Rectangle height="300px">
+      <div className="text-text-primary-muted p-2">Left Sidebar</div>
+    </Rectangle>
+    <Rectangle height="300px">
+      <div className="text-text-primary-muted p-2">Main Content</div>
+    </Rectangle>
+    <Rectangle height="300px">
+      <div className="text-text-primary-muted p-2">Right Sidebar</div>
+    </Rectangle>
   </Columns>
 );
