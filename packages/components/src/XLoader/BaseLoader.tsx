@@ -31,7 +31,6 @@ export const BaseLoader = ({
   ...props
 }: LoaderProps) => {
   const className = useClassNames({ component: 'XLoader', variant, size });
-  console.log(className, variant, size);
 
   return (
     <ProgressBar className={className.container} isIndeterminate {...props}>

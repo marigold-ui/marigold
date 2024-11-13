@@ -5,8 +5,15 @@ import { XLoader } from './XLoader';
 const theme: Theme = {
   name: 'test',
   components: {
+    Underlay: cva(''),
     XLoader: {
-      container: cva(),
+      container: cva('', {
+        variants: {
+          variant: {
+            inverted: 'text-text-inverted',
+          },
+        },
+      }),
       label: cva(),
       loader: cva('', {
         variants: {
@@ -22,32 +29,55 @@ const theme: Theme = {
 test('renders loader', () => {
   render(
     <ThemeProvider theme={theme}>
-      <XLoader data-testid="loader" />
+      <XLoader aria-label="loading" />
     </ThemeProvider>
   );
-  const loader = screen.getByTestId('loader');
-  expect(loader instanceof SVGElement).toBeTruthy();
+
+  const loader = screen.getByRole('progressbar');
+  expect(loader).toBeInTheDocument();
 });
 
 test('renders loader with differnet size', () => {
   render(
     <ThemeProvider theme={theme}>
-      <XLoader data-testid="loader" size={24} />
+      <XLoader aria-label="loading" size="large" />
     </ThemeProvider>
   );
-  const loader = screen.getByTestId('loader');
 
-  expect(loader).toHaveClass('flex-none fill-current');
-  expect(loader).toHaveAttribute('width', '24px');
-  expect(loader).toHaveAttribute('height', '24px');
+  const loader = screen.getByRole('progressbar');
+  const icon = loader.querySelector('svg');
+  expect(icon).toHaveClass('size-36');
 });
 
-test('renders loader with differnet color through classname', () => {
+test('render custom label', () => {
   render(
     <ThemeProvider theme={theme}>
-      <XLoader data-testid="loader" className="fill-red-500" />
+      <XLoader>Loading...</XLoader>
     </ThemeProvider>
   );
-  const loader = screen.getByTestId('loader');
-  expect(loader).toHaveClass(`fill-red-500`);
+
+  const label = screen.getByText('Loading...');
+  expect(label).toBeInTheDocument();
+});
+
+test('fullsize uses "inverted" variant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <XLoader mode="fullsize">Loading...</XLoader>
+    </ThemeProvider>
+  );
+
+  const loader = screen.getByRole('progressbar');
+  expect(loader).toHaveClass('text-text-inverted');
+});
+
+test('inline uses "inverted" variant', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <XLoader mode="inline">Loading...</XLoader>
+    </ThemeProvider>
+  );
+
+  const loader = screen.getByRole('progressbar');
+  expect(loader).toHaveClass('text-text-inverted');
 });

@@ -25,7 +25,7 @@ const LoaderFullSize = (props: LoaderProps) => {
   return (
     <ModalOverlay defaultOpen className={className} isKeyboardDismissDisabled>
       <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
-        <Dialog className="outline-0">
+        <Dialog className="outline-0" aria-label="Fullscreen Loader">
           <BaseLoader {...props} />
         </Dialog>
       </Modal>
