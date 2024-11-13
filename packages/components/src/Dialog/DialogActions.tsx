@@ -23,8 +23,8 @@ export interface DialogActions {
 
 export const DialogActions = ({ variant, size, children }: DialogActions) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
-  const { close } = useContext(OverlayTriggerStateContext)!;
-  const closeButtonProps = { onPress: close };
+  const overlayContext = useContext(OverlayTriggerStateContext);
+  const closeButtonProps = { onPress: overlayContext?.close };
 
   return (
     <div className={cn('[grid-area:actions]', classNames.actions)}>
