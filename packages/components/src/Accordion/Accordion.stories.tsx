@@ -53,14 +53,14 @@ export const Basic: Story = {
   render: args => (
     <Accordion {...args}>
       <Accordion.Item key={1} title="Informations">
-        <Headline level={3}>Some Imformations</Headline>
+        <Headline level={3}>Some Informations</Headline>
         <TextField label="Name" />
       </Accordion.Item>
       <Accordion.Item key={2} title="Personal Settings">
         two
       </Accordion.Item>
       <Accordion.Item key={3} title="Billing Adress">
-        <Headline level={3}>Some Imformations</Headline>
+        <Headline level={3}>Some Informations</Headline>
       </Accordion.Item>
     </Accordion>
   ),

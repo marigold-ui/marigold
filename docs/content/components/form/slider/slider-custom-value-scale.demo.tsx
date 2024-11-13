@@ -1,7 +1,5 @@
 import { Slider } from '@marigold/components';
 
 export default () => (
-  <Slider width="full" aria-label="width">
-    Example
-  </Slider>
+  <Slider minValue={50} maxValue={150} label="Cookies to buy" />
 );
