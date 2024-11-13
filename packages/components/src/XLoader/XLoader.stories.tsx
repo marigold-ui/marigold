@@ -5,17 +5,24 @@ const meta = {
   title: 'Components/XLoader',
   component: XLoader,
   argTypes: {
+    mode: {
+      control: {
+        type: 'radio',
+      },
+      description: 'Mode of the Loader.',
+      options: ['default', 'fullsize', 'inline'],
+    },
+    variant: {
+      control: {
+        type: 'text',
+      },
+      description: 'Variant of the Loader.',
+    },
     size: {
       control: {
-        type: 'number',
+        type: 'text',
       },
-      table: {
-        type: { summary: 'number' },
-        defaultValue: {
-          summary: '150',
-        },
-      },
-      description: 'Sets the size of the SVG.',
+      description: 'Size of the Loader.',
     },
   },
 } satisfies Meta<typeof XLoader>;
@@ -28,21 +35,23 @@ export const Basic: Story = {
 };
 
 export const Fullsize: Story = {
+  args: {
+    mode: 'fullsize',
+  },
   render: args => (
     <>
-      <XLoader mode="fullsize" {...args}>
-        Loading cause of fetching data...
-      </XLoader>
+      <XLoader {...args}>Loading data...</XLoader>
     </>
   ),
 };
 
 export const Inline: Story = {
+  args: {
+    mode: 'inline',
+  },
   render: args => (
-    <div className="h-96 w-96" id="xxx">
-      <XLoader mode="inline" {...args}>
-        I'm loading data. Please wait...
-      </XLoader>
+    <div className="h-96 w-96">
+      <XLoader {...args}>Please wait...</XLoader>
     </div>
   ),
 };

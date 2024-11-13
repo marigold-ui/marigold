@@ -14,13 +14,10 @@ export interface LoaderProps
     | 'aria-describedby'
     | 'aria-details'
   > {
-  /** Label of the loader */
-  label?: ReactNode;
   /**
-   * Show the loader in `fullsize` to overlay and block interaction with the site or `ìnline` to show loading for a certain area.
-   * @default undefined
+   * Children of the component that will make up the label.
    */
-  mode?: 'fullsize' | 'inline';
+  children?: ReactNode;
   size?: string;
   variant?: string;
 }
@@ -28,9 +25,9 @@ export interface LoaderProps
 // Base
 // ---------------
 export const BaseLoader = ({
-  label,
   variant,
-  size = 'default',
+  size,
+  children,
   ...props
 }: LoaderProps) => {
   const className = useClassNames({ component: 'XLoader', variant, size });
@@ -41,7 +38,7 @@ export const BaseLoader = ({
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 150 150"
-        fill="curentColor"
+        fill="currentColor"
         className={className.loader}
       >
         <path id="XMLID_1_" d="M35.3 27h26.5l54 74.1H88.7z" />
@@ -189,7 +186,7 @@ export const BaseLoader = ({
           />
         </path>
       </svg>
-      {label ? <Label className={className.label}>{label}</Label> : null}
+      {children ? <Label className={className.label}>{children}</Label> : null}
     </ProgressBar>
   );
 };

@@ -1,7 +1,17 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const XLoader: ThemeComponent<'XLoader'> = {
-  container: cva('text-text-inverted'),
+  container: cva('grid place-items-center', {
+    variants: {
+      variant: {
+        default: '',
+        inverted: 'text-text-inverted',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }),
   loader: cva('', {
     variants: {
       size: {
@@ -13,5 +23,5 @@ export const XLoader: ThemeComponent<'XLoader'> = {
       size: 'default',
     },
   }),
-  label: cva('text-current'),
+  label: cva('text-current text-sm'),
 };

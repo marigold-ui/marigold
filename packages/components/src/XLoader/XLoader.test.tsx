@@ -1,10 +1,22 @@
 import { render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider } from '@marigold/system';
+import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { XLoader } from './XLoader';
 
 const theme: Theme = {
   name: 'test',
-  components: {},
+  components: {
+    XLoader: {
+      container: cva(),
+      label: cva(),
+      loader: cva('', {
+        variants: {
+          size: {
+            large: 'size-36',
+          },
+        },
+      }),
+    },
+  },
 };
 
 test('renders loader', () => {

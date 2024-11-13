@@ -1,8 +1,17 @@
 import { Dialog, Modal, ModalOverlay } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { Stack } from '../Stack/Stack';
 import type { LoaderProps } from './BaseLoader';
 import { BaseLoader } from './BaseLoader';
+
+// Full Size
+// ---------------
+export interface XLoaderProps extends LoaderProps {
+  /**
+   * Show the loader in `fullsize` to overlay and block interaction with the site or `ìnline` to show loading for a certain area.
+   * @default undefined
+   */
+  mode?: 'fullsize' | 'inline';
+}
 
 // Full Size
 // ---------------
@@ -10,17 +19,14 @@ const LoaderFullSize = (props: LoaderProps) => {
   const className = useClassNames({
     component: 'Underlay',
     variant: 'modal',
-    className:
-      'fixed left-0 top-0 z-10 flex h-[--visual-viewport-height] w-screen items-center justify-center bg-gray-950/30 cursor-progress',
+    className: 'fixed left-0 top-0 z-10 h-[--visual-viewport-height] w-screen',
   });
 
   return (
     <ModalOverlay defaultOpen className={className} isKeyboardDismissDisabled>
-      <Modal>
+      <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
         <Dialog className="outline-0">
-          <Stack space={2} alignX="center">
-            <BaseLoader {...props} />
-          </Stack>
+          <BaseLoader {...props} />
         </Dialog>
       </Modal>
     </ModalOverlay>
@@ -29,22 +35,27 @@ const LoaderFullSize = (props: LoaderProps) => {
 
 // Inline
 // ---------------
-const LoaderInline = (props: LoaderProps) => (
-  // TODO: Can we move the div into the basloader as a variant?
-  <div className="flex size-full items-center justify-center bg-gray-950/30">
-    <Stack space={2} alignX="center">
+const LoaderInline = (props: LoaderProps) => {
+  const className = useClassNames({
+    component: 'Underlay',
+    variant: 'modal',
+    className: 'flex size-full items-center justify-center',
+  });
+
+  return (
+    <div className={className}>
       <BaseLoader {...props} />
-    </Stack>
-  </div>
-);
+    </div>
+  );
+};
 
 // Component
 // ---------------
-export const XLoader = ({ mode, ...props }: LoaderProps) =>
+export const XLoader = ({ mode, variant, ...props }: XLoaderProps) =>
   mode === 'fullsize' ? (
-    <LoaderFullSize {...props} />
+    <LoaderFullSize variant="inverted" {...props} />
   ) : mode === 'inline' ? (
-    <LoaderInline {...props} />
+    <LoaderInline variant="inverted" {...props} />
   ) : (
     <BaseLoader {...props} />
   );
