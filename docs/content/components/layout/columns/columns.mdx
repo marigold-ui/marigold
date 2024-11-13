@@ -34,11 +34,27 @@ You can also add space between the columns and set a `collapseAt` prop to collap
 
 ### Stretch to height of parent
 
-By using the `stretch` prop you can make the container to take full height. Note that this is usually not necessary since the columns will expand with their children anyway.
+By using the `stretch` prop you can make the container to take full height.
+
+<SectionMessage>
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    Setting the the `stretch` prop is usually not necessary since the columns
+    will expand with their children anyway.
+  </SectionMessage.Content>
+</SectionMessage>
 
 <ComponentDemo file="./stretch-columns.demo.tsx" />
 
-Here is another interactive example on how to use the `stretch` prop. Note that there has to be a parent of the columns that sets a `height`. Otherwise setting the height in a column to `100%` will not have any effect.
+Here is another interactive example on how to use the `stretch` prop.
+
+<SectionMessage>
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    You must define a parent for the columns that sets a `height`. Otherwise
+    setting the height in a column to `100%` will not have any effect.
+  </SectionMessage.Content>
+</SectionMessage>
 
 <ComponentDemo file="./stretch-columns-switch.demo.tsx" />
 
