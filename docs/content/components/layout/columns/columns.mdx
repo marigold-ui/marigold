@@ -10,15 +10,15 @@ The `<Columns>` component is used to create structured and flexible layouts that
 
 With the `<Columns>` component you specify the numbers of columns to get a layout with evenly distributed column cells. The `columns` property defines the width of the children. This is written as array, whose length and the count of children must be the same.
 
-The `<Columns>` component is ideal for arranging content in a row. This can be for example if you have a table-like structure.
+The `<Columns>` component is ideal for arranging content in a line. This can be for example if you have a table-like structure.
 
-In this example the columns are filled with interactive elements. This is a good use case for a column component. Unlike as in `<Table>` you can use the interactive elements without loosing the accessibility features of the components.
+In this example the columns are filled with **interactive** elements. This is a good use case for a column component. Unlike as in `<Table>` you can use the interactive elements without loosing the accessibility features of the components.
 
 <ComponentDemo file="./table-layout-columns.demo.tsx" />
 
 ### Page layout
 
-With columns you also have the possibility to create a whole, responsive page layout. This can be helpful if you anyway need to have certain parts of the application.
+With `<Columns>` you also have the possibility to create a whole, responsive page layout. This can be helpful if you anyway need to have certain parts of the application.
 
 But also keep in mind to not build too complex nested layouts if it isn't needed, you can visit our foundation about [how to layout](/foundations/layouts) for more informations.
 
@@ -26,7 +26,7 @@ But also keep in mind to not build too complex nested layouts if it isn't needed
 
 ### Fixed widths
 
-Sometimes you need to set an element at the end or at the start of a column. You can use the `fit` value for the `columns` property to align it to the chosen position. The column width will be always fitting the content. While the other values take the width content based according to the space still available.
+Sometimes you need to set an element at the start or at the end of a column. You can use the `fit` value for the `columns` property to align it to the chosen position. The column width will be always fitting the content. While the other values take the width content based according to the space still available.
 
 <ComponentDemo file="./fit-width-columns.demo.tsx" />
 
@@ -34,7 +34,7 @@ You can also add space between the columns and set a `collapseAt` prop to collap
 
 ### Stretch to height of parent
 
-By using the `stretch` prop you can make the container to take full width. Note that this is usually not necessary since the columns will expand with their children anyway.
+By using the `stretch` prop you can make the container to take full height. Note that this is usually not necessary since the columns will expand with their children anyway.
 
 <ComponentDemo file="./stretch-columns.demo.tsx" />
 
