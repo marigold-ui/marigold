@@ -182,17 +182,17 @@ export const WithTwoComponentsAndFixedItem: Story = {
 
 const data = [
   {
-    label: 'Standard',
+    name: 'Standard',
     price: 2.5,
     fee: 3.0,
   },
   {
-    label: 'Advanced',
+    name: 'Advanced',
     price: 2.75,
     fee: 3.0,
   },
   {
-    label: 'Express',
+    name: 'Express',
     price: 5.5,
     fee: 6.0,
   },
@@ -207,8 +207,8 @@ export const TableLike: Story = {
       </Columns>
       <Columns columns={[1, 1, 1]} space={2}>
         <Stack>
-          {data.map(({ label }) => (
-            <TextField defaultValue={label} />
+          {data.map(({ name }) => (
+            <TextField defaultValue={name} />
           ))}
         </Stack>
         <Stack>
