@@ -66,7 +66,8 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           'inline-flex items-center justify-center gap-[0.5ch]',
           classNames,
-          fullWidth ? 'w-full' : undefined
+          fullWidth ? 'w-full' : undefined,
+          pending && '!cursor-progress'
         )}
         isDisabled={disabled || pending ? true : false}
       >

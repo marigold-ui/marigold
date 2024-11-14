@@ -1,11 +1,15 @@
 import { ProgressBar } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { SVG } from '@marigold/system';
 
 interface ProgressCycleProps extends RAC.ProgressBarProps {
   size?: string;
 }
 
-export const ProgressCycle = ({ size, ...props }: ProgressCycleProps) => {
+export const ProgressCycle = ({
+  size = '16',
+  ...props
+}: ProgressCycleProps) => {
   let strokeWidth = 2;
 
   // SVG strokes are centered, so subtract half the stroke width from the radius to create an inner stroke.
@@ -13,13 +17,13 @@ export const ProgressCycle = ({ size, ...props }: ProgressCycleProps) => {
 
   return (
     <ProgressBar {...props}>
-      <svg width={16} height={16} fill="none">
+      <SVG className="fill-none" size={size} aria-hidden="true" role="img">
         <circle
           cx="50%"
           cy="50%"
           r={radius}
           strokeWidth={strokeWidth}
-          className="stroke-border-selected"
+          className="stroke-gray-800"
         />
         <circle
           cx="50%"
@@ -31,10 +35,9 @@ export const ProgressCycle = ({ size, ...props }: ProgressCycleProps) => {
           // Add extra gap between dashes so 0% works in Chrome.
           strokeDasharray="100 200"
           strokeLinecap="round"
-          strokeDashoffset={undefined}
-          className="animate-progress-cycle origin-center -rotate-90 stroke-black/55"
+          className="animate-progress-cycle stroke-text-base-disabled origin-center -rotate-90"
         />
-      </svg>
+      </SVG>
     </ProgressBar>
   );
 };
