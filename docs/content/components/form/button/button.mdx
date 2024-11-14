@@ -1,6 +1,7 @@
 ---
 title: Button
 caption: Buttons allow users to trigger actions.
+badge: updated
 ---
 
 The `<Button>` component is a crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
@@ -193,6 +194,14 @@ In general, it's best to avoid using disabled buttons. However, if they are nece
 
   </SectionMessage.Content>
 </SectionMessage>
+
+### Pending states
+
+The `<Button>` component includes a pending property that can be used to display loading behavior. This visually indicates the progress of system operations, such as downloading, uploading, or processing tasks.
+
+This functionality is especially useful when performing actions like submitting a form or saving changes in your application that require time to complete a request. The button's label should clearly describe the action being performed, providing context for the current state of the process.
+
+<ComponentDemo file="./button-pending.demo.tsx" />
 
 ### Full-width
 
