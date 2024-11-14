@@ -10,7 +10,7 @@ Cards are ideal for grouping related information and making it easily digestible
 
 ## Anatomy
 
-The card component consists of a container which is basically a `<div>`. You can pass any content and components as `children` to the card component.
+The `<Card>` component consists of a container which is basically a `<div>`. You can pass any content and components as `children` to the component.
 
 <Image
   src="/card/card-anatomy.jpg"
@@ -28,44 +28,27 @@ The card component consists of a container which is basically a `<div>`. You can
 
 ## Usage
 
-The `<Card>` component can be used to present organized, summary-level information across various UI applications.
-Using cards enhances the visual hierarchy and organization of content, making it easier for users to browse and engage with various pieces of information.
+The `<Card>` component enhances the visual hierarchy and organization of content, making it easier for users to engage with various pieces of information.
 
 ## Elevation layer
 
 `<Card>` uses the raised elevation layer to create a visual distinction between the card and the background.
 According to our design guidelines, the card should be used on top of the [sunken](../../../foundations/elevation#sunken) or [default](../../../foundations/elevation#default) layer.
 
-<Stack space={8}>
+<ComponentDemo file="./card-elevation.demo.tsx" />
+
+<GuidelineTiles>
   <Do>
-    <Do.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/card/card-do-elevation.jpg"
-        alt="Do: Use Card on top of default or sunken layers."
-      />
-    </Do.Figure>
     <Do.Description>
       Use Card on top of default or sunken layers.
     </Do.Description>
   </Do>
   <Dont>
-    <Dont.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/card/card-dont-elevation.jpg"
-        alt="Don’t use card in cards or same elevation layers"
-      />
-    </Dont.Figure>
     <Dont.Description>
       Don’t use card in cards or same elevation layers.
     </Dont.Description>
   </Dont>
-</Stack>
+</GuidelineTiles>
 
 ## Props
 
