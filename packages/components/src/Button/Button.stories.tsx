@@ -121,7 +121,7 @@ export const Pending: Story = {
     };
     return (
       <Button {...args} onPress={() => handleSubmit()} pending={loading}>
-        Save
+        {loading ? 'Saving' : 'Save'}
       </Button>
     );
   },

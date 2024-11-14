@@ -71,7 +71,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         isDisabled={disabled || pending ? true : false}
       >
-        {pending && <ProgressCycle aria-label="pending" />}
+        {pending && <ProgressCycle aria-label={'pending'} />}
         {children}
       </Button>
     );

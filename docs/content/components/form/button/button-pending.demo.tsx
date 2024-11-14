@@ -13,7 +13,7 @@ export default () => {
   };
   return (
     <Button variant="primary" onPress={() => handleSubmit()} pending={loading}>
-      Save
+      {loading ? 'Saving' : 'Save'}
     </Button>
   );
 };
