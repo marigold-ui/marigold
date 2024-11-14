@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 import { Facebook } from '@marigold/icons';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
+import { setup } from '../test.utils';
 import { Button } from './Button';
 
 const theme: Theme = {
@@ -22,23 +23,17 @@ const theme: Theme = {
   },
 };
 
+const { render } = setup({ theme });
+
 test('sets some base styles', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button>button</Button>
-    </ThemeProvider>
-  );
+  render(<Button>button</Button>);
   const button = screen.getByText(/button/);
 
   expect(button).toHaveClass('flex align-center');
 });
 
 test('supports base styling classes', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button>button</Button>
-    </ThemeProvider>
-  );
+  render(<Button>button</Button>);
   const button = screen.getByText(/button/);
 
   expect(button.className).toMatchInlineSnapshot(
@@ -47,33 +42,21 @@ test('supports base styling classes', () => {
 });
 
 test('supports default size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button size="small">button</Button>
-    </ThemeProvider>
-  );
+  render(<Button size="small">button</Button>);
   const button = screen.getByText(/button/);
 
   expect(button).toHaveClass(`size-10`);
 });
 
 test('accepts other variants', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button variant="secondary">button</Button>
-    </ThemeProvider>
-  );
+  render(<Button variant="secondary">button</Button>);
   const button = screen.getByText(/button/);
 
   expect(button).toHaveClass('text-secondary-800');
 });
 
 test('renders <button> element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button>button</Button>
-    </ThemeProvider>
-  );
+  render(<Button>button</Button>);
   const button = screen.getByText(/button/);
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
@@ -81,12 +64,10 @@ test('renders <button> element', () => {
 
 test('add icon in button works as expected', () => {
   render(
-    <ThemeProvider theme={theme}>
-      <Button>
-        <Facebook size={30} data-testid="facebook" />
-        iconbutton
-      </Button>
-    </ThemeProvider>
+    <Button>
+      <Facebook size={30} data-testid="facebook" />
+      iconbutton
+    </Button>
   );
   const button = screen.getByText(/iconbutton/);
   const icon = screen.getByTestId(/facebook/);
@@ -99,11 +80,9 @@ test('add icon in button works as expected', () => {
 test('supports onPress', () => {
   const onPress = jest.fn();
   render(
-    <ThemeProvider theme={theme}>
-      <Button onPress={onPress} data-testid="button">
-        Some Button
-      </Button>
-    </ThemeProvider>
+    <Button onPress={onPress} data-testid="button">
+      Some Button
+    </Button>
   );
 
   const button = screen.getByTestId('button');
@@ -114,33 +93,31 @@ test('supports onPress', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
-  render(
-    <ThemeProvider theme={theme}>
-      <Button ref={ref}>button</Button>
-    </ThemeProvider>
-  );
+  render(<Button ref={ref}>button</Button>);
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
 
 test('supports disabled prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button disabled>button</Button>
-    </ThemeProvider>
-  );
+  render(<Button disabled>button</Button>);
   const button = screen.getByText(/button/);
   expect(button).toHaveAttribute('disabled');
   expect(button).toHaveClass('disabled:bg-gray-600');
 });
 
 test('allows to take full width', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Button fullWidth>button</Button>
-    </ThemeProvider>
-  );
+  render(<Button fullWidth>button</Button>);
 
   const button = screen.getByText(/button/);
   expect(button).toHaveClass('w-full');
+});
+
+test('pending state', () => {
+  render(<Button pending={true}>button</Button>);
+
+  const button = screen.getByText(/button/);
+  expect(button).toHaveAttribute('disabled');
+
+  const svg = screen.getByRole('progressbar');
+  expect(svg).toBeInTheDocument();
 });
