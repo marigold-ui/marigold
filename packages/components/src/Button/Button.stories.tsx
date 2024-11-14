@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
 
@@ -105,4 +106,23 @@ export const OnPress: Story = {
 
 export const FullWidth: Story = {
   render: args => <Button {...args} fullWidth />,
+};
+
+export const Pending: Story = {
+  render: args => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const handleSubmit = async () => {
+      setLoading(true);
+      try {
+        await new Promise<void>(resolve => setTimeout(resolve, 2000));
+      } finally {
+        setLoading(false);
+      }
+    };
+    return (
+      <Button {...args} onPress={() => handleSubmit()} pending={loading}>
+        Save
+      </Button>
+    );
+  },
 };
