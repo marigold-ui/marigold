@@ -32,6 +32,25 @@ export const preset: Preset = createPreset({
       },
       boxShadow: flattenObject(shadow),
       height: flattenObject(height),
+      animation: {
+        'progress-cycle':
+          'progress-cycle 1s ease-in-out infinite,progress-cycle 1s ease-in-out infinite',
+      },
+      keyframes: {
+        'progress-cycle': {
+          '0%': {
+            transform: 'rotate(0deg)',
+            strokeDashoffset: '75',
+          },
+          '30%': {
+            strokeDashoffset: '20',
+          },
+          '100%': {
+            transform: 'rotate(360deg)',
+            strokeDashoffset: '75',
+          },
+        },
+      },
     },
   },
 });

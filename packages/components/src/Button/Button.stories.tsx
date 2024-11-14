@@ -17,6 +17,16 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
+    pending: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Whether the button is in a pending state.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     fullWidth: {
       control: {
         type: 'boolean',
