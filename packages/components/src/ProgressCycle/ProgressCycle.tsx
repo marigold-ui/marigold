@@ -17,7 +17,6 @@ export const ProgressCycle = ({
     strokeWidth = 4;
   }
 
-  // SVG strokes are centered, so subtract half the stroke width from the radius to create an inner stroke.
   let radius = `calc(50% - ${strokeWidth / 2}px)`;
 
   return (
@@ -35,9 +34,7 @@ export const ProgressCycle = ({
           cy="50%"
           r={radius}
           strokeWidth={strokeWidth}
-          // Normalize the path length to 100 so we can easily set stroke-dashoffset to a percentage.
           pathLength="100"
-          // Add extra gap between dashes so 0% works in Chrome.
           strokeDasharray="100 200"
           strokeLinecap="round"
           className="animate-progress-cycle stroke-text-base-disabled origin-center -rotate-90"
