@@ -69,10 +69,6 @@ export const siteConfig = {
       slug: 'recipes',
     },
     {
-      name: 'Resources',
-      slug: 'resources',
-    },
-    {
       name: 'Releases',
       slug: 'releases',
       subsections: [
