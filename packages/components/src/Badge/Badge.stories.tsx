@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Accessible } from '../icons';
 import { Badge } from './Badge';
 
 const meta = {
@@ -23,6 +24,11 @@ const meta = {
         defaultValue: { summary: 'new' },
       },
     },
+    size: {
+      table: {
+        disable: true,
+      },
+    },
   },
   args: {
     children: 'new',
@@ -34,3 +40,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = { render: args => <Badge {...args} /> };
+
+export const Icon: Story = {
+  parameters: {
+    controls: { exclude: ['children'] },
+  },
+  render: args => (
+    <Badge {...args}>
+      <Accessible />
+    </Badge>
+  ),
+};
