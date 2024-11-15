@@ -1,7 +1,7 @@
 import { Scrollable } from '@marigold/components';
 
 export default () => (
-  <Scrollable height="200px">
+  <Scrollable height="100px">
     <div>
       This is some additional text that is always visible! Pellentesque habitant
       morbi tristique senectus et netus et malesuada fames ac turpis egestas.
