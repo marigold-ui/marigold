@@ -3,6 +3,10 @@ import type RAC from 'react-aria-components';
 import { SVG } from '@marigold/system';
 
 export interface ProgressCycleProps extends RAC.ProgressBarProps {
+  /**
+   * Defines the height and width of the component
+   * @default 16
+   */
   size?: string;
 }
 
