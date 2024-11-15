@@ -1,19 +1,39 @@
 import { useState } from 'react';
-import { Button } from '@marigold/components';
+import { Button, Inline } from '@marigold/components';
 
 export default () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadSubmit, setLoadSubmit] = useState<boolean>(false);
+  const [loadSave, setLoadSave] = useState<boolean>(false);
   const handleSubmit = async () => {
-    setLoading(true);
+    setLoadSubmit(true);
     try {
       await new Promise<void>(resolve => setTimeout(resolve, 2000));
     } finally {
-      setLoading(false);
+      setLoadSubmit(false);
     }
   };
+
+  const handleSave = async () => {
+    setLoadSave(true);
+    try {
+      await new Promise<void>(resolve => setTimeout(resolve, 6000));
+    } finally {
+      setLoadSave(false);
+    }
+  };
+
   return (
-    <Button variant="primary" onPress={() => handleSubmit()} pending={loading}>
-      {loading ? 'Saving' : 'Save'}
-    </Button>
+    <Inline space={4}>
+      <Button variant="primary" onPress={() => handleSave()} pending={loadSave}>
+        {loadSave ? 'Saving' : 'Save'}
+      </Button>
+      <Button
+        variant="primary"
+        onPress={() => handleSubmit()}
+        pending={loadSubmit}
+      >
+        {!loadSubmit && 'Submit'}
+      </Button>
+    </Inline>
   );
 };
