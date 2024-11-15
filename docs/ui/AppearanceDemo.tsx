@@ -61,8 +61,16 @@ export const AppearanceDemo = ({
   const appearance = getAppearance(component, theme);
 
   const [selected, setSelected] = useState({
-    variant: appearance.variant.length ? appearance.variant[0] : 'none',
-    size: appearance.size.length ? appearance.size[0] : 'none',
+    variant: appearance.variant.length
+      ? appearance.variant.includes('default')
+        ? 'default'
+        : appearance.variant[0]
+      : 'none',
+    size: appearance.size.length
+      ? appearance.size.includes('default')
+        ? 'default'
+        : appearance.size[0]
+      : 'none',
   });
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
