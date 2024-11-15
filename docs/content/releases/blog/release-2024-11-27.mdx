@@ -1,0 +1,54 @@
+---
+title: Marigold v10.0.1
+date: 2024-11-27
+type: Blog
+changed:
+  - component/content/badge
+  - component/content/card
+  - component/layout/columns
+  - component/form/datefield
+  - component/form/datepicker
+  - component/content/icon
+  - component/form/slider
+---
+
+Happy fall Marigold users! 🍁 The newest version of Marigold Version 10.0.1 arrives. The good news - no breaking changes this time!
+We've focused on revising more components and improve components based on your feedback. Let's dive into the details.
+
+## Improvements
+
+### Components
+
+#### Select
+
+The `isOpen` prop was set by default. We removed it because it's only needed when the component is controlled.
+
+#### Slider
+
+The `<Slider>` gained a in deep revision:
+
+- documentation were revised to our new documentation structure
+- the stories in Storybook were updated and also new stories were added
+- we've decided to add in general a visible indicator for the selected track
+- it's now possible to use a "range" slider with two thumbs
+- `<Slider>` is also a form component, so the `description` prop (Helptext) can now be used like in other form components
+
+### Documentation
+
+We've revised a lot of components according to our new structure of component documentation pages:
+
+- `<Badge>`
+- `<Card>`
+- `<Columns>`
+- `<DateField>`
+- `<DatePicker>`
+- `<Icon>`
+- `<Slider>`
+
+### Bundle size
+
+We've optimized the bundle size of Marigold by removing the icons dependency from components package. This will help to improve the performance of your applications.
+
+---
+
+Thanks for reading, and we hope you enjoy the new features in Marigold 10.0.1! Be sure to check out the updated documentation for more details, and as always, we're here if you need help.
