@@ -2,7 +2,7 @@ import { ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { ProgressCycle } from './ProgressCycle';
+import { ProgressCycle } from '../ProgressCycle';
 
 // Button is currently only component accepting className because of internal use.
 type RemovedProps = 'isDisabled' | 'isPending';
