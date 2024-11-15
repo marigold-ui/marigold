@@ -2,7 +2,7 @@ import { ProgressBar } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { SVG } from '@marigold/system';
 
-interface ProgressCycleProps extends RAC.ProgressBarProps {
+export interface ProgressCycleProps extends RAC.ProgressBarProps {
   size?: string;
 }
 
@@ -10,7 +10,12 @@ export const ProgressCycle = ({
   size = '16',
   ...props
 }: ProgressCycleProps) => {
-  let strokeWidth = 2;
+  let strokeWidth = 3;
+  if (size <= '24') {
+    strokeWidth = 2;
+  } else if (size >= '32') {
+    strokeWidth = 4;
+  }
 
   // SVG strokes are centered, so subtract half the stroke width from the radius to create an inner stroke.
   let radius = `calc(50% - ${strokeWidth / 2}px)`;
