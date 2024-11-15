@@ -9,7 +9,7 @@ export const Badge: ThemeComponent<'Badge'> = cva(
         inverted: 'text-text-inverted bg-bg-accent',
         success: 'text-text-inverted bg-bg-success',
         info: 'text-text-inverted bg-bg-info',
-        warning: 'bg-bg-warning',
+        warning: 'text-text-inverted bg-bg-warning',
         error: 'text-text-inverted bg-bg-error',
       },
     },
