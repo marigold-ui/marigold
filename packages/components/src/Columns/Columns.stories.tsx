@@ -145,24 +145,6 @@ export const FullHeight: Story = {
   ),
 };
 
-export const WithMoreComponentsAndFixedItem: Story = {
-  render: () => (
-    <div className="bg-bg-surface-sunken p-1">
-      <span>fit is on the last element</span>
-      <Columns columns={[4, 4, 1, 'fit']} space={2} collapseAt="500px">
-        <Select label="Zeitraum" width="full">
-          <Select.Option>letzte Woche</Select.Option>
-          <Select.Option>dieses Jahr</Select.Option>
-          <Select.Option>freier Zeitraum</Select.Option>
-        </Select>
-        <DatePicker label="Von" />
-        I'm a text
-        <Button variant="secondary">Aktualisieren</Button>
-      </Columns>
-    </div>
-  ),
-};
-
 export const WithTwoComponentsAndFixedItem: Story = {
   render: () => (
     <div className="bg-bg-surface-sunken flex flex-col gap-2 p-1">
