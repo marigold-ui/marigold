@@ -188,18 +188,18 @@ In general, it's best to avoid using disabled buttons. However, if they are nece
   </SectionMessage.Title>
   <SectionMessage.Content>
     Tooltips aren't accessible on all devices or by some assistive technologies,
-    and they should never be used on non-interactive elements.
-
-    For more information see the [tooltip page](/components/overlay/tooltip).
-
+    and they should never be used on non-interactive elements. For more
+    information see the [tooltip page](/components/overlay/tooltip).
   </SectionMessage.Content>
 </SectionMessage>
 
 ### Pending states
 
-The `<Button>` component includes a pending property that can be used to display loading behavior. This visually indicates the progress of system operations, such as downloading, uploading, or processing tasks.
+The `<Button>` component includes a pending property that can be used to display loading behavior. This visually indicates the progress of system operations, such as downloading, uploading, or processing tasks. The progress circle always shows an indeterminate progress to signify that the duration of the operation is unknown.
 
-This functionality is especially useful when performing actions like submitting a form or saving changes in your application that require time to complete a request. The button's label should clearly describe the action being performed, providing context for the current state of the process.
+This functionality is especially useful when performing actions like submitting a form or saving changes in your application that require time to complete a request. While the button is in the pending state, it becomes disabled, preventing further interaction until the operation is completed.
+
+The button's label should clearly describe the action being performed, providing context for the current state of the process.
 
 <ComponentDemo file="./button-pending.demo.tsx" />
 
