@@ -115,7 +115,7 @@ export const AppearanceDemo = ({
             disabled={appearance.variant.length === 0 ? true : false}
           >
             {appearance.variant.length === 0 ? (
-              <Select.Option id="none">-</Select.Option>
+              <Select.Option id="none">default</Select.Option>
             ) : null}
             {appearance.variant.map(v => (
               <Select.Option key={v} id={v}>
@@ -135,7 +135,7 @@ export const AppearanceDemo = ({
             disabled={appearance.size.length === 0 ? true : false}
           >
             {appearance.size.length === 0 ? (
-              <Select.Option id="none">-</Select.Option>
+              <Select.Option id="none">default</Select.Option>
             ) : null}
             {appearance.size.map(v => (
               <Select.Option key={v} id={v}>
