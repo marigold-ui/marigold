@@ -1,31 +1,28 @@
 ---
 title: XLoader
-caption: Should be used for loading state.
+caption: Used to indicate the progress of the task.
 ---
 
-The `<XLoader>` component, is a simple `<SVG>` that should be used for loading states.
-It should be displayed when the user is waiting for an upcoming event.
-
-You can use all regular attributes of the `<SVG>`.
-
-## Import
-
-```tsx
-import { XLoader } from '@marigold/components';
-```
+The `<XLoader>` component visually indicates that a task is currently in progress. It can be used as a placeholder for content that is loading or to block interaction with the screen while waiting for a process to complete, such as data fetching or form submission. This ensures users are aware that something is happening in the background, preventing confusion and enhancing the user experience.
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
+
+## Usage
+
+The `<XLoader>` should be used to inform users that a process is currently in progress, particularly when it takes more than a second. They are useful for situations like data fetching, form submissions, or page loads, where visual feedback reassures users that their action is being processed. However, avoid showing a loading indicator for very brief tasks, as it can feel disruptive.
+
+### Fullscreen
+
+The usage as a fullscreen loader should be used sparingly, only when the entire page or a critical section is inaccessible until the task completes.
+
+<ComponentDemo file="./xloader-fullscreen.demo.tsx" />
 
 ## Props
 
+<StorybookHintMessage component={title} />
+
 <PropsTable component={title} />
-
-## Examples
-
-### Use case name
-
-In this Example you can see how to use the `className` and `size` property of the `<XLoader>`.
-
-<ComponentDemo file="./XLoader-props.demo.tsx" />

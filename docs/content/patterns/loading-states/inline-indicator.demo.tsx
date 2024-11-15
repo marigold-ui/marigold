@@ -53,7 +53,7 @@ export default () => {
                 className="h-8 w-20 !cursor-progress"
                 disabled
               >
-                <XLoader size={16} className="fill-gray-700" />
+                <XLoader />
               </Button>
             ) : (
               <Button
