@@ -2,24 +2,17 @@ import { useState } from 'react';
 import { Button, Inline } from '@marigold/components';
 
 export default () => {
-  const [loadSubmit, setLoadSubmit] = useState<boolean>(false);
-  const [loadSave, setLoadSave] = useState<boolean>(false);
+  const [loading, setLoading] = useState<{ submit: boolean; save: boolean }>({
+    submit: false,
+    save: false,
+  });
 
-  const handlePending = async (action: string) => {
-    if (action === 'save') {
-      setLoadSave(true);
-      try {
-        await new Promise<void>(resolve => setTimeout(resolve, 6000));
-      } finally {
-        setLoadSave(false);
-      }
-    } else {
-      setLoadSubmit(true);
-      try {
-        await new Promise<void>(resolve => setTimeout(resolve, 2000));
-      } finally {
-        setLoadSubmit(false);
-      }
+  const handlePending = async (action: string, delay: number) => {
+    setLoading(prev => ({ ...prev, [action]: true }));
+    try {
+      await new Promise<void>(resolve => setTimeout(resolve, delay));
+    } finally {
+      setLoading(prev => ({ ...prev, [action]: false }));
     }
   };
 
@@ -27,17 +20,17 @@ export default () => {
     <Inline space={4}>
       <Button
         variant="primary"
-        onPress={() => handlePending('save')}
-        pending={loadSave}
+        onPress={() => handlePending('save', 6000)}
+        pending={loading.save}
       >
-        {loadSave ? 'Saving' : 'Save'}
+        {loading.save ? 'Saving' : 'Save'}
       </Button>
       <Button
         variant="primary"
-        onPress={() => handlePending('submit')}
-        pending={loadSubmit}
+        onPress={() => handlePending('submit', 2000)}
+        pending={loading.submit}
       >
-        {!loadSubmit && 'Submit'}
+        {!loading.submit && 'Submit'}
       </Button>
     </Inline>
   );
