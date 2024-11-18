@@ -1,34 +1,59 @@
 ---
 title: Aside
 caption: Component to seperate content from the main content.
+badge: updated
 ---
 
-The `<Aside>` is a responsive layout component. It should be used if you want to layout side content next to the main content. The side has a fixed width and the other one(the main content) can have a dynamic width.
+The `<Aside>` component is a responsive layout element designed for displaying side content next to main content. It ensures the side content has a fixed width while the main content dynamically adjusts to fill the remaining space.
 
-If the screen becomes too small for the `<Aside>`, the content will automatically wrap.
+## Usage
 
-It is important to note that the `<Aside>` must have exactly two children, where none is a `<Fragment>`.
+Use the `Aside` for building layouts were you need to have one main content with a dynamic side content. When the screen becomes smaller, for example on mobile, the side content of the component will automatically wrap. You can also adjust this by setting the `wrap` property to a percentage value.
 
-## Import
+<SectionMessage>
+<SectionMessage.Title>
+Important
+</SectionMessage.Title>
+<SectionMessage.Content>
+The `<Aside>` must have exactly two children, where none is a `<Fragment>`.
+</SectionMessage.Content>
+</SectionMessage>
 
-```tsx
-import { Aside } from '@marigold/components';
-```
+The example shows a simple `<Aside>` component. If you have a look on the code tab you get to know to set the `side`, `sideWidth` and `space`. Through `space` you can define the gap between the contents.
+With `sideWidth?` you define the width for the side content and with `side` you define the side on which the side content will appear.
+
+<ComponentDemo file="./aside.demo.tsx" />
 
 ## Props
 
+<StorybookHintMessage component={title} />
+
 <PropsTable component={title} />
 
-## Examples
+## Related
 
-### Space between elements
-
-The example shows how the `space` prop is to use. It defines the gap between the contents.
-
-<ComponentDemo file="./space.demo.tsx" />
-
-### Aside on the right
-
-A simple example on how to set the `side` prop.
-
-<ComponentDemo file="./rightside.demo.tsx" />
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
