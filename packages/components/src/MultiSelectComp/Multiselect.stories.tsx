@@ -1,5 +1,7 @@
 import { useListData } from '@react-stately/data';
+import { MultiCombobox } from './MultiSelectCombobox';
 import { MultiSelect } from './Mutiselect';
+import { useMultiCombobox } from './useMultiCombobox';
 
 const meta = {
   title: 'Components/MultiSelectComp',
@@ -128,23 +130,25 @@ export const Basic = {
     const selectedItems = useListData<any>({
       initialItems: [fruits[0]],
     });
-    return (
-      <MultiSelect
-        label="Fruits"
-        description="These are good fruits"
-        selectedItems={selectedItems}
-        items={fruits}
 
-        // tag={(item) => <MultipleSelect.Tag textValue={item.name}>{item.name}</MultipleSelect.Tag>}
-      >
-        {item => {
-          return (
-            <MultiSelect.Option textValue={item.name}>
-              {item.name}
-            </MultiSelect.Option>
-          );
-        }}
-      </MultiSelect>
+    return (
+      // <MultiSelect
+      //   label="Fruits"
+      //   description="These are good fruits"
+      //   selectedItems={selectedItems}
+      //   items={fruits}
+
+      // // tag={(item) => <MultipleSelect.Tag textValue={item.name}>{item.name}</MultipleSelect.Tag>}
+      // >
+      //   {item => {
+      //     return (
+      //       <MultiSelect.Option textValue={item.name}>
+      //         {item.name}
+      //       </MultiSelect.Option>
+      //     );
+      //   }}
+      // </MultiSelect>
+      <MultiCombobox />
     );
   },
 };
