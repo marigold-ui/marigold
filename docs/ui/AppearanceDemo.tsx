@@ -61,8 +61,16 @@ export const AppearanceDemo = ({
   const appearance = getAppearance(component, theme);
 
   const [selected, setSelected] = useState({
-    variant: 'default',
-    size: 'default',
+    variant: appearance.variant.length
+      ? appearance.variant.includes('default')
+        ? 'default'
+        : appearance.variant[0]
+      : 'none',
+    size: appearance.size.length
+      ? appearance.size.includes('default')
+        ? 'default'
+        : appearance.size[0]
+      : 'none',
   });
 
   const Wrapper = ({ children }: { children: ReactNode }) =>
@@ -106,7 +114,9 @@ export const AppearanceDemo = ({
             }
             disabled={appearance.variant.length === 0 ? true : false}
           >
-            <Select.Option id="default">default</Select.Option>
+            {appearance.variant.length === 0 ? (
+              <Select.Option id="none">default</Select.Option>
+            ) : null}
             {appearance.variant.map(v => (
               <Select.Option key={v} id={v}>
                 {v}
@@ -124,7 +134,9 @@ export const AppearanceDemo = ({
             }
             disabled={appearance.size.length === 0 ? true : false}
           >
-            <Select.Option id="default">default</Select.Option>
+            {appearance.size.length === 0 ? (
+              <Select.Option id="none">default</Select.Option>
+            ) : null}
             {appearance.size.map(v => (
               <Select.Option key={v} id={v}>
                 {v}
