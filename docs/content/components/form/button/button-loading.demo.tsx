@@ -7,7 +7,7 @@ export default () => {
     save: false,
   });
 
-  const handlePending = async (action: string, delay: number) => {
+  const handleLoading = async (action: string, delay: number) => {
     setLoading(prev => ({ ...prev, [action]: true }));
     try {
       await new Promise<void>(resolve => setTimeout(resolve, delay));
@@ -20,14 +20,14 @@ export default () => {
     <Inline space={4}>
       <Button
         variant="primary"
-        onPress={() => handlePending('save', 8000)}
+        onPress={() => handleLoading('save', 8000)}
         loading={loading.save}
       >
         {loading.save ? 'Saving' : 'Save'}
       </Button>
       <Button
         variant="primary"
-        onPress={() => handlePending('submit', 2000)}
+        onPress={() => handleLoading('submit', 2000)}
         loading={loading.submit}
       >
         {!loading.submit && 'Submit'}
