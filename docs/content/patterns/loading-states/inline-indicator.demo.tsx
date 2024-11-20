@@ -48,7 +48,7 @@ export default () => {
               variant="primary"
               size="small"
               type="submit"
-              pending={isLoading}
+              loading={isLoading}
             >
               {!isLoading && 'Submit'}
             </Button>

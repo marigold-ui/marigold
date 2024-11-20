@@ -18,7 +18,7 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
-    pending: {
+    loading: {
       control: {
         type: 'boolean',
       },
@@ -120,7 +120,7 @@ export const Pending: Story = {
       }
     };
     return (
-      <Button {...args} onPress={() => handleSubmit()} pending={loading}>
+      <Button {...args} onPress={() => handleSubmit()} loading={loading}>
         {loading ? 'Saving' : 'Save'}
       </Button>
     );

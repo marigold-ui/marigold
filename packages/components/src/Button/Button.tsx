@@ -35,7 +35,7 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
    * Whether the button is in a pending state.
    * This disables press and hover events while retaining focusability, and announces the pending state to screen readers.
    */
-  pending?: RAC.ButtonProps['isPending'];
+  loading?: RAC.ButtonProps['isPending'];
 }
 
 const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -46,7 +46,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
       size,
       className,
       disabled,
-      pending,
+      loading,
       fullWidth,
       ...props
     },
@@ -67,11 +67,11 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'inline-flex items-center justify-center gap-[0.5ch]',
           classNames,
           fullWidth ? 'w-full' : undefined,
-          pending && '!cursor-progress'
+          loading && '!cursor-progress'
         )}
-        isDisabled={disabled || pending ? true : false}
+        isDisabled={disabled || loading ? true : false}
       >
-        {pending && <ProgressCycle aria-label={'pending'} />}
+        {loading && <ProgressCycle aria-label={'loading'} />}
         {children}
       </Button>
     );

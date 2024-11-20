@@ -21,14 +21,14 @@ export default () => {
       <Button
         variant="primary"
         onPress={() => handlePending('save', 6000)}
-        pending={loading.save}
+        loading={loading.save}
       >
         {loading.save ? 'Saving' : 'Save'}
       </Button>
       <Button
         variant="primary"
         onPress={() => handlePending('submit', 2000)}
-        pending={loading.submit}
+        loading={loading.submit}
       >
         {!loading.submit && 'Submit'}
       </Button>

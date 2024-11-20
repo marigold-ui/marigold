@@ -113,7 +113,7 @@ test('allows to take full width', () => {
 });
 
 test('pending state', () => {
-  render(<Button pending={true}>button</Button>);
+  render(<Button loading={true}>button</Button>);
 
   const button = screen.getByText(/button/);
   expect(button).toHaveAttribute('disabled');
