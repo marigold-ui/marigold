@@ -5,7 +5,7 @@
 "@marigold/theme-core": patch
 ---
 
-feat(DST-596): add pending indicator in `<Button>` component
+feat(DST-596): add loading indicator in `<Button>` component
 
 **BREAKING CHANGE:**
 Renamed `isPending` prop to `loading`.

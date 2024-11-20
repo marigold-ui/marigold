@@ -70,6 +70,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
           loading && '!cursor-progress'
         )}
         isDisabled={disabled || loading ? true : false}
+        aria-busy={loading ? true : false}
       >
         {loading && <ProgressCycle aria-label={'loading'} />}
         {children}

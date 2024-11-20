@@ -112,7 +112,7 @@ test('allows to take full width', () => {
   expect(button).toHaveClass('w-full');
 });
 
-test('pending state', () => {
+test('loading state', () => {
   render(<Button loading={true}>button</Button>);
 
   const button = screen.getByText(/button/);
