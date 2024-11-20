@@ -10,6 +10,7 @@ export const Button: ThemeComponent<'Button'> = cva(
   {
     variants: {
       variant: {
+        default: '',
         primary: [
           'border-border-brand bg-bg-brand text-text-inverted',
           'hover:bg-bg-brand-hover hover:border-border-brand-hover',
@@ -32,8 +33,13 @@ export const Button: ThemeComponent<'Button'> = cva(
         ],
       },
       size: {
+        default: '',
         small: 'py-1',
       },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
     },
   }
 );

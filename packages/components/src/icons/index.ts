@@ -5,3 +5,5 @@ export * from './ChevronLeft';
 
 export * from './SortDown';
 export * from './SortUp';
+
+export * from './Accessible';
