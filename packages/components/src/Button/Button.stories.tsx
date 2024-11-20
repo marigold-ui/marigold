@@ -114,7 +114,7 @@ export const Pending: Story = {
     const handleSubmit = async () => {
       setLoading(true);
       try {
-        await new Promise<void>(resolve => setTimeout(resolve, 6000));
+        await new Promise<void>(resolve => setTimeout(resolve, 8000));
       } finally {
         setLoading(false);
       }

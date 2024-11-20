@@ -20,7 +20,7 @@ export default () => {
     <Inline space={4}>
       <Button
         variant="primary"
-        onPress={() => handlePending('save', 6000)}
+        onPress={() => handlePending('save', 8000)}
         loading={loading.save}
       >
         {loading.save ? 'Saving' : 'Save'}

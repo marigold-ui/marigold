@@ -193,13 +193,15 @@ In general, it's best to avoid using disabled buttons. However, if they are nece
   </SectionMessage.Content>
 </SectionMessage>
 
-### Pending states
+### Loading states
 
-The `<Button>` component includes a pending property that can be used to display loading behavior. This visually indicates the progress of system operations, such as downloading, uploading, or processing tasks. The progress circle always shows an indeterminate progress to signify that the duration of the operation is unknown.
+The `<Button>` component includes a loading property that can be used to display loading behavior. This visually indicates the progress of system operations, such as downloading, uploading, or processing tasks. The progress circle always shows an indeterminate progress to signify that the duration of the operation is unknown.
 
-This functionality is especially useful when performing actions like submitting a form or saving changes in your application that require time to complete a request. While the button is in the pending state, it becomes disabled, preventing further interaction until the operation is completed.
+This functionality is especially useful when performing actions like submitting a form or saving changes in your application that require time to complete a request. While the button is in the loading state, it becomes disabled, preventing further interaction until the operation is completed.
 
-The button's label should clearly describe the action being performed, providing context for the current state of the process, like also mentioned in [Icons and labels](#icons-and-labels). Besides this labels are not always necessary, as you can see in this example, if the action does not take long or the provided action is clear enough you should not use a label.
+The button's label should clearly describe the action being performed, providing context for the current state of the process, like also mentioned in [Icons and labels](#icons-and-labels).
+
+Avoid using visible labels during the loading state, as these appear only briefly and can be difficult to read before disappearing. Only use them if testing shows that users cannot understand what's happening without them.
 
 <ComponentDemo file="./button-pending.demo.tsx" />
 
