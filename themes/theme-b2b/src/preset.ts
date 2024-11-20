@@ -18,14 +18,11 @@ export const preset: Preset = createPreset({
         body: ['Inter', ...fontFamily.sans],
       },
       colors,
-      transitionTimingFunction: {
-        'ease-out': 'ease-out',
-      },
       boxShadow: flattenObject(shadow),
       height: flattenObject(height),
       animation: {
         'progress-cycle':
-          'progress-cycle 1s ease-in-out infinite,progress-cycle 1s ease-in-out infinite',
+          'progress-cycle 1s cubic-bezier(.6, .1, .3, .9) infinite,progress-cycle 1s cubic-bezier(.25, .1, .25, 1.3) infinite',
       },
       keyframes: {
         'progress-cycle': {

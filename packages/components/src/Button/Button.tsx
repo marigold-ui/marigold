@@ -32,8 +32,8 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
    */
   disabled?: RAC.ButtonProps['isDisabled'];
   /**
-   * Whether the button is in a pending state.
-   * This disables press and hover events while retaining focusability, and announces the pending state to screen readers.
+   * Whether the button is in a loading state.
+   * This disables press and hover events while retaining focusability, and announces the loading state to screen readers.
    */
   loading?: RAC.ButtonProps['isPending'];
 }

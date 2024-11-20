@@ -31,7 +31,7 @@ export const ProgressCycle = ({
           cy="50%"
           r={radius}
           strokeWidth={strokeWidth}
-          className="stroke-gray-800"
+          className="stroke-transparent"
         />
         <circle
           cx="50%"
@@ -41,7 +41,7 @@ export const ProgressCycle = ({
           pathLength="100"
           strokeDasharray="100 200"
           strokeLinecap="round"
-          className="animate-progress-cycle stroke-text-base-disabled origin-center -rotate-90"
+          className="animate-progress-cycle origin-center -rotate-90 stroke-gray-800"
         />
       </SVG>
     </ProgressBar>

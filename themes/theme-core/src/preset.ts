@@ -23,9 +23,6 @@ export const preset: Preset = createPreset({
         body: '13px',
       },
       colors,
-      transitionTimingFunction: {
-        'ease-out': 'ease-out',
-      },
       // TODO: Remove gradient
       backgroundImage: {
         highlight: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
@@ -34,7 +31,7 @@ export const preset: Preset = createPreset({
       height: flattenObject(height),
       animation: {
         'progress-cycle':
-          'progress-cycle 1s ease-in-out infinite,progress-cycle 1s ease-in-out infinite',
+          'progress-cycle 1s cubic-bezier(.6, .1, .3, .9) infinite,progress-cycle 1s cubic-bezier(.25, .1, .25, 1.3) infinite',
       },
       keyframes: {
         'progress-cycle': {
