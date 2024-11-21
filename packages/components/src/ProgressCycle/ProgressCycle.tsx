@@ -24,7 +24,7 @@ export const ProgressCycle = ({
   let radius = `calc(50% - ${strokeWidth / 2}px)`;
 
   return (
-    <ProgressBar {...props}>
+    <ProgressBar aria-label="loading" {...props}>
       <SVG
         className="animate-rotate-spinner origin-center fill-none"
         size={size}
