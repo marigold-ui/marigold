@@ -26,3 +26,18 @@ test('supports different sizes', () => {
   expect(progressCycle.firstChild).toHaveAttribute('height', '20px');
   expect(progressCycle.firstChild).toHaveAttribute('width', '20px');
 });
+
+test('supports strokewidth with bigger size', () => {
+  render(<ProgressCycle size="40" />);
+
+  const progressCycle = screen.getByRole('progressbar');
+  expect(progressCycle.firstChild).toHaveAttribute('height', '40px');
+  expect(progressCycle.firstChild).toHaveAttribute('width', '40px');
+});
+
+test('has aria label', () => {
+  render(<ProgressCycle />);
+
+  const progressCycle = screen.getByRole('progressbar');
+  expect(progressCycle).toHaveAttribute('aria-label', 'loading');
+});
