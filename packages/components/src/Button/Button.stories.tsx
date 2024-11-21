@@ -22,7 +22,7 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      description: 'Whether the button is in a pending state.',
+      description: 'Whether the button is in a loading state.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -108,7 +108,7 @@ export const FullWidth: Story = {
   render: args => <Button {...args} fullWidth />,
 };
 
-export const Pending: Story = {
+export const Loading: Story = {
   render: args => {
     const [loading, setLoading] = useState<boolean>(false);
     const handleSubmit = async () => {
