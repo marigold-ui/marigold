@@ -157,6 +157,10 @@ export const internal = [
         name: 'Internal',
         slug: '__internal__',
       },
+      {
+        name: 'Developer Guidelines',
+        slug: '__internal__/component-guidelines',
+      },
     ],
   },
 ];
