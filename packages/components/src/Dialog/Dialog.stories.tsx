@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button } from '../Button';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
-import { Inline } from '../Inline';
 import { Menu } from '../Menu';
 import { Modal, ModalProps } from '../Overlay/Modal';
 import { Stack } from '../Stack';
@@ -67,7 +66,13 @@ export const Basic: Story = {
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
           <Dialog.Title>This is a headline!</Dialog.Title>
-          <Text>This is some not so very long text.</Text>
+          <Dialog.Content>This is some not so very long text.</Dialog.Content>
+          <Dialog.Actions>
+            <Button slot="close" variant="secondary">
+              Cancel
+            </Button>
+            <Button variant="primary">Ok</Button>
+          </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
     );
@@ -80,21 +85,17 @@ export const Form: Story = {
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
-          {({ close }) => (
-            <>
-              <Dialog.Title>Please log into account </Dialog.Title>
-              <Dialog.Content>
-                <TextField label="Username" />
-                <TextField label="Password" type="password" />
-              </Dialog.Content>
-              <Dialog.Actions>
-                <Button variant="ghost" onPress={close}>
-                  Cancel
-                </Button>
-                <Button variant="primary">Login</Button>
-              </Dialog.Actions>
-            </>
-          )}
+          <Dialog.Title>Please log into account </Dialog.Title>
+          <Dialog.Content>
+            <TextField label="Username" />
+            <TextField label="Password" type="password" />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button slot="close" variant="secondary">
+              Cancel
+            </Button>
+            <Button variant="primary">Login</Button>
+          </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
     );
@@ -176,7 +177,9 @@ export const StickyFooter: Story = {
             </Dialog.Content>
           </div>
           <Dialog.Actions>
-            <Button variant="primary">Ok</Button>
+            <Button variant="primary" slot="close">
+              close
+            </Button>
           </Dialog.Actions>
         </div>
       </Dialog>
@@ -219,14 +222,17 @@ export const WithDialogController: Story = {
                   <Text>Do you really wanna delete this?</Text>
                 </Dialog.Content>
                 <Dialog.Actions>
-                  <Inline space={5}>
-                    <Button size="small" variant="ghost" onPress={close}>
-                      Cancel
-                    </Button>
-                    <Button size="small" variant="primary" onPress={close}>
-                      Delete
-                    </Button>
-                  </Inline>
+                  <Button slot="close" variant="secondary">
+                    Cancel
+                  </Button>
+                  <Button
+                    slot="close"
+                    variant="primary"
+                    size="small"
+                    onPress={close}
+                  >
+                    Delete
+                  </Button>
                 </Dialog.Actions>
               </>
             )}
