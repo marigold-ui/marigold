@@ -121,7 +121,7 @@ export const Loading: Story = {
     };
     return (
       <Button {...args} onPress={() => handleSubmit()} loading={loading}>
-        {loading ? 'Saving' : 'Save'}
+        Submit
       </Button>
     );
   },

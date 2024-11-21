@@ -201,7 +201,7 @@ This functionality is especially useful when performing actions like submitting 
 
 The button's label should clearly describe the action being performed, providing context for the current state of the process, like also mentioned in [Icons and labels](#icons-and-labels).
 
-Avoid using visible labels during the loading state, as these appear only briefly and can be difficult to read before disappearing. Only use them if testing shows that users cannot understand what's happening without them.
+When the loading state is activated, visible labels will disappear, as the purpose of the action should already be clear. To ensure accessibility, we provide the loading state with an `aria-label` and `aria-busy`.
 
 <ComponentDemo file="./button-loading.demo.tsx" />
 

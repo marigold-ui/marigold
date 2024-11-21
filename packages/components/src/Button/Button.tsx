@@ -73,7 +73,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
         aria-busy={loading ? true : false}
       >
         {loading && <ProgressCycle aria-label={'loading'} />}
-        {children}
+        {!loading && children}
       </Button>
     );
   }

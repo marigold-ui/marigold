@@ -50,7 +50,7 @@ export default () => {
               type="submit"
               loading={isLoading}
             >
-              {!isLoading && 'Submit'}
+              Submit
             </Button>
           </Stack>
           {searchTerm && `You searched for <b>${searchTerm}</b>.`}
