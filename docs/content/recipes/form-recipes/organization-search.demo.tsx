@@ -4,6 +4,7 @@ import {
   CheckboxGroup,
   FieldGroup,
   Form,
+  Inline,
   Select,
   Stack,
   TextField,
@@ -14,9 +15,9 @@ import coreTheme from '@marigold/theme-core';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   return (
-    <ThemeProvider theme={coreTheme}>
+    <ThemeProvider theme={coreTheme} className="w-[500px]">
       <Form>
-        <Stack space={4} alignX="center">
+        <Stack space={4}>
           <Stack space={1}>
             <FieldGroup labelWidth="300px">
               <TextField label="Suche in Veranstaltername / Kontaktadresse" />
@@ -43,9 +44,11 @@ export default () => {
               </CheckboxGroup>
             </FieldGroup>
           </Stack>
-          <Button variant="primary" type="submit">
-            Suchen
-          </Button>
+          <Inline alignX="right">
+            <Button variant="primary" type="submit">
+              Suchen
+            </Button>
+          </Inline>
         </Stack>
       </Form>
     </ThemeProvider>
