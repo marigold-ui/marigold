@@ -11,8 +11,12 @@ export default (props: DialogProps) => (
         details pre-filled, except for the date.
       </Dialog.Content>
       <Dialog.Actions>
-        <Button variant="secondary">Cancel</Button>
-        <Button variant="primary">Duplicate</Button>
+        <Button variant="secondary" slot="close">
+          Cancel
+        </Button>
+        <Button variant="primary" slot="close">
+          Duplicate
+        </Button>
       </Dialog.Actions>
     </Dialog>
   </Dialog.Trigger>
