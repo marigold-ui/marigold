@@ -115,7 +115,7 @@ test('allows to take full width', () => {
 test('loading state', () => {
   render(<Button loading={true}>button</Button>);
 
-  const button = screen.getByText(/button/);
+  const button = screen.getByRole('button');
   expect(button).toHaveAttribute('disabled');
 
   const svg = screen.getByRole('progressbar');
