@@ -17,7 +17,7 @@ export interface AsideProps extends GapSpaceProp, AriaRegionProps {
    */
   sideWidth?: string;
   /**
-   * At what percentage of the main content's width should the side content wrap beneath it
+   * At what percentage of the content's width should the other content wrap beneath it
    * @default 50%
    */
   wrap?: NonZeroPercentage;
