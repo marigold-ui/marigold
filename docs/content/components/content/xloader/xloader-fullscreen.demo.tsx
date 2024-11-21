@@ -13,7 +13,7 @@ export default () => {
 
   return (
     <>
-      <Button onPress={handlePress}></Button>
+      <Button variant="primary" onPress={handlePress}></Button>
       {loading ? <XLoader mode="fullsize" /> : null}
     </>
   );
