@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Headline } from '../Headline';
 import { List } from '../List';
-import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { Aside } from './Aside';
 
