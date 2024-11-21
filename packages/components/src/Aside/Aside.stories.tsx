@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Headline } from '../Headline';
+import { List } from '../List';
 import { Stack } from '../Stack';
+import { Text } from '../Text';
 import { Aside } from './Aside';
 
 const meta = {
@@ -51,8 +54,8 @@ const meta = {
     },
   },
   args: {
-    side: 'left',
-    space: '0',
+    side: 'right',
+    space: '4',
     wrap: '50%',
     sideWidth: '150px',
   },
@@ -64,13 +67,32 @@ export const Basic: StoryObj<typeof Aside> = {
   render: args => (
     <Aside {...args}>
       <div>
-        Ketchup was once sold as medicine. The condiment was prescribed and sold
-        to people suffering with indigestion back in 1834.
+        <Headline level={1}>How to Grow Your Own Garden</Headline>
+        <Text>
+          Growing your own garden is a rewarding and relaxing activity. It
+          allows you to enjoy fresh produce and connect with nature. In this
+          guide, we’ll walk you through the steps to get started.
+        </Text>
+        <Text>
+          First, choose the right location for your garden. Make sure it gets
+          plenty of sunlight and has good soil drainage...
+        </Text>
       </div>
       <div>
-        There is actually a word for someone giving an opinion on something they
-        know nothing about. An 'ultracrepidarian' is someone who voices thoughts
-        beyond their expertise.
+        <Headline level={2}>Related Articles</Headline>
+        <List>
+          <List.Item>
+            <a href="#">Top 10 Gardening Tips for Beginners</a>
+          </List.Item>
+          <List.Item>
+            <a href="#">The Best Tools for Gardeners</a>
+          </List.Item>
+          <List.Item>
+            <a href="#">How to Compost Effectively</a>
+          </List.Item>
+        </List>
+        <Headline level={2}>Did You Know?</Headline>
+        <Text>Gardening can reduce stress and improve mental health!</Text>
       </div>
     </Aside>
   ),
