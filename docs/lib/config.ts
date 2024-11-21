@@ -69,10 +69,6 @@ export const siteConfig = {
       slug: 'recipes',
     },
     {
-      name: 'Resources',
-      slug: 'resources',
-    },
-    {
       name: 'Releases',
       slug: 'releases',
       subsections: [
@@ -160,6 +156,10 @@ export const internal = [
       {
         name: 'Internal',
         slug: '__internal__',
+      },
+      {
+        name: 'Developer Guidelines',
+        slug: '__internal__/component-guidelines',
       },
     ],
   },
