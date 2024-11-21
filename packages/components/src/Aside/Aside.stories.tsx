@@ -97,33 +97,3 @@ export const Basic: StoryObj<typeof Aside> = {
     </Aside>
   ),
 };
-
-export const InheritWidth: StoryObj<typeof Aside> = {
-  render: args => (
-    <Aside {...args} space={8}>
-      <img
-        src="https://images.dog.ceo/breeds/pug/n02110958_13993.jpg"
-        alt="Pug"
-        width="250px"
-      />
-      <div className="h-full">
-        <Stack stretch>
-          <p>
-            Pugs were originally bred to be lapdogs for Chinese royalty. They
-            lived in luxury with the emperor, his family, and members of the
-            imperial court. They were royal and loyal companions, and were
-            highly valued in society.
-          </p>
-          <p>
-            Pugs were most likely originally bred as lapdogs for Chinese
-            monarchs and were originally known as the lo-chiang-sze or the foo
-            dog. It is unclear as to how long ago the breed actually first
-            appeared. Some believe that Pugs date back to the Han and Tang
-            Dynasties, around 150 BCE, whereas others place the date back even
-            further to the Shang Dynasty, around 400 BCE (Pug).
-          </p>
-        </Stack>
-      </div>
-    </Aside>
-  ),
-};
