@@ -29,11 +29,15 @@ export const preset: Preset = createPreset({
       },
       boxShadow: flattenObject(shadow),
       height: flattenObject(height),
-      animation: {
-        'progress-cycle':
-          'progress-cycle 1s cubic-bezier(.6, .1, .3, .9) infinite,progress-cycle 1s cubic-bezier(.25, .1, .25, 1.3) infinite',
-      },
+      // animation: {
+      //   'progress-cycle':
+      //      'progress-cycle 1s cubic-bezier(.6, .1, .3, .9) infinite,progress-cycle 1s cubic-bezier(.25, .1, .25, 1.3) infinite',
+      // },
       keyframes: {
+        'rotate-spinner': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
         'progress-cycle': {
           '0%': {
             transform: 'rotate(0deg)',
@@ -47,6 +51,10 @@ export const preset: Preset = createPreset({
             strokeDashoffset: '75',
           },
         },
+      },
+      animation: {
+        'rotate-spinner': 'rotate-spinner 2s linear infinite',
+        'progress-cycle': 'progress-cycle 1.5s linear infinite',
       },
     },
   },

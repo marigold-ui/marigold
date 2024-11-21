@@ -25,7 +25,13 @@ export const ProgressCycle = ({
 
   return (
     <ProgressBar {...props}>
-      <SVG className="fill-none" size={size} aria-hidden="true" role="img">
+      <SVG
+        className="animate-rotate-spinner origin-center fill-none"
+        size={size}
+        aria-hidden="true"
+        aria-valuetext="Loading..."
+        role="img"
+      >
         <circle
           cx="50%"
           cy="50%"
@@ -40,6 +46,7 @@ export const ProgressCycle = ({
           strokeWidth={strokeWidth}
           pathLength="100"
           strokeDasharray="100 200"
+          strokeDashoffset="0"
           strokeLinecap="round"
           className="animate-progress-cycle origin-center -rotate-90 stroke-gray-800"
         />
