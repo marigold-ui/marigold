@@ -120,4 +120,7 @@ test('loading state', () => {
 
   const svg = screen.getByRole('progressbar');
   expect(svg).toBeInTheDocument();
+
+  expect(button).toHaveClass('!cursor-progress');
+  expect(button).toHaveAttribute('disabled');
 });
