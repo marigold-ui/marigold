@@ -225,7 +225,10 @@ test('sorting', () => {
       { name: 'Banana', amount: 24 },
     ];
     const [list, setList] = useState(data);
-    const [descriptor, setDescriptor] = useState<SortDescriptor>({});
+    const [descriptor, setDescriptor] = useState<SortDescriptor>({
+      column: '',
+      direction: 'ascending',
+    });
     const sort = ({ column, direction }: SortDescriptor) => {
       const result = list.sort((a: any, b: any) => {
         const first = a[column!];
