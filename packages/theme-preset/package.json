@@ -22,7 +22,7 @@
   "dependencies": {
     "@marigold/system": "workspace:*",
     "deepmerge": "4.3.1",
-    "tailwindcss-react-aria-components": "1.1.6"
+    "tailwindcss-react-aria-components": "1.2.0"
   },
   "peerDependencies": {
     "postcss": "8.4.x",

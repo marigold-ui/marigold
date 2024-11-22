@@ -94,7 +94,13 @@ export const Form: Story = {
             <Button slot="close" variant="secondary">
               Cancel
             </Button>
-            <Button variant="primary">Login</Button>
+            <Button
+              variant="primary"
+              slot="close"
+              onPress={() => alert('Dialog will be closed')}
+            >
+              Login
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>

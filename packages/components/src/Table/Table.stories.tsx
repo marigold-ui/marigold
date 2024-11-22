@@ -3,8 +3,8 @@ import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect } from 'react';
 import { SortDescriptor } from '@react-types/shared';
-import { TextArea } from '@marigold/components';
 import type { Selection } from '@marigold/components';
+import { TextArea } from '@marigold/components';
 import { Button } from '../Button';
 import { Center } from '../Center';
 import { Checkbox } from '../Checkbox';
@@ -304,7 +304,10 @@ export const Sorting: Story = {
       },
     ];
     const [list, setList] = useState(data);
-    const [descriptor, setDescriptor] = useState<SortDescriptor>({});
+    const [descriptor, setDescriptor] = useState<SortDescriptor>({
+      column: '',
+      direction: 'ascending',
+    });
     const sort = ({ column, direction }: SortDescriptor) => {
       const result = list.sort((a: any, b: any) => {
         const first = a[column!];
