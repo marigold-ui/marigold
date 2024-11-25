@@ -14,7 +14,7 @@ interface CloseButtonProps {
 }
 
 const CloseButton = ({ className }: CloseButtonProps) => {
-  const { close } = useContext(OverlayTriggerStateContext);
+  const ctx = useContext(OverlayTriggerStateContext);
   return (
     <div className="absolute right-4 top-4 ml-4">
       <button
@@ -22,7 +22,7 @@ const CloseButton = ({ className }: CloseButtonProps) => {
           'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
           className
         )}
-        onClick={close}
+        onClick={ctx?.close}
         slot="dismiss-button"
       >
         <svg viewBox="0 0 20 20" fill="currentColor">
@@ -69,7 +69,7 @@ const _Dialog = ({
   const children =
     typeof props.children === 'function'
       ? props.children({
-          close: state?.close,
+          close: state?.close ?? (() => {}),
         })
       : props.children;
 

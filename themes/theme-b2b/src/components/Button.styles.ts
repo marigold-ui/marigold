@@ -9,6 +9,7 @@ export const Button: ThemeComponent<'Button'> = cva(
   {
     variants: {
       variant: {
+        default: '',
         primary: [
           'text-text-inverted bg-bg-accent',
           'hover:bg-bg-accent-hover',
@@ -36,8 +37,13 @@ export const Button: ThemeComponent<'Button'> = cva(
         ],
       },
       size: {
+        default: '',
         small: 'px-4 leading-8',
       },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
     },
   }
 );
