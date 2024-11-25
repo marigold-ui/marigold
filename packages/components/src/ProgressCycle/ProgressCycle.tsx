@@ -21,7 +21,7 @@ export const ProgressCycle = ({
     strokeWidth = 4;
   }
 
-  let radius = `calc(50% - ${strokeWidth / 2}px)`;
+  const radius = `calc(50% - ${strokeWidth / 2}px)`;
 
   return (
     <ProgressBar {...props} aria-label="loading" isIndeterminate>
