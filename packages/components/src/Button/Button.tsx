@@ -67,17 +67,18 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'inline-flex items-center justify-center gap-[0.5ch]',
           classNames,
           fullWidth ? 'w-full' : undefined,
-          loading && '!cursor-progress'
+          loading && 'pointer-events-none !cursor-progress'
         )}
-        isDisabled={!!(disabled || loading)}
-        aria-busy={!!loading}
+        isPending={loading}
       >
         {loading ? (
           <>
             <span className="absolute">
               <ProgressCycle />
             </span>
-            <span className="opacity-0">{children}</span>
+            <span className="invisible flex items-center gap-2 opacity-0">
+              {children}
+            </span>
           </>
         ) : (
           children

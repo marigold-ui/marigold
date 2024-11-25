@@ -1,5 +1,5 @@
-import { ProgressBar } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { ProgressBar } from 'react-aria-components';
 import { SVG } from '@marigold/system';
 
 export interface ProgressCycleProps extends RAC.ProgressBarProps {
@@ -24,12 +24,11 @@ export const ProgressCycle = ({
   let radius = `calc(50% - ${strokeWidth / 2}px)`;
 
   return (
-    <ProgressBar aria-label="loading" {...props}>
+    <ProgressBar {...props} aria-label="loading" isIndeterminate>
       <SVG
         className="animate-rotate-spinner origin-center fill-none"
         size={size}
         aria-hidden="true"
-        aria-valuetext="Loading..."
         role="img"
       >
         <circle

@@ -126,3 +126,23 @@ export const Loading: Story = {
     );
   },
 };
+
+export const LoadingWithIcon: Story = {
+  render: args => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const handleSubmit = async () => {
+      setLoading(true);
+      try {
+        await new Promise<void>(resolve => setTimeout(resolve, 4000));
+      } finally {
+        setLoading(false);
+      }
+    };
+    return (
+      <Button {...args} onPress={() => handleSubmit()} loading={loading}>
+        <Facebook />
+        Send message
+      </Button>
+    );
+  },
+};
