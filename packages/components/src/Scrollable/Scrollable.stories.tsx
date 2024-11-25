@@ -63,8 +63,14 @@ export const Vertical: Story = {
 
 export const Horizontal: Story = {
   render: args => (
-    <Scrollable {...args} width="1/2">
+    <Scrollable {...args}>
       <div className="flex gap-2">
+        <Card>
+          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+        </Card>
+        <Card>
+          <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
+        </Card>
         <Card>
           <div className="h-[100px] w-[200px] border border-[#ced4da] bg-[#e9ecef]" />
         </Card>
