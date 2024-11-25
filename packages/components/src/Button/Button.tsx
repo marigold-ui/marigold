@@ -77,9 +77,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
             <span className="absolute">
               <ProgressCycle />
             </span>
-            <span className="invisible flex items-center gap-2 opacity-0">
-              {children}
-            </span>
+            <span className="invisible flex gap-[inherit]">{children}</span>
           </>
         ) : (
           children
