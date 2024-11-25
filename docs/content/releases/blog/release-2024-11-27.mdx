@@ -33,6 +33,14 @@ The `<Slider>` gained a in deep revision:
 - it's now possible to use a "range" slider with two thumbs
 - `<Slider>` is also a form component, so the `description` prop (Helptext) can now be used like in other form components
 
+#### Loading spinner
+
+We were not satisfied with our loading spinner in buttons. So far we have used the `<XLoader>`, which in our opinion was not the best solution, as the loading animation is difficult to recognise in the dots of the X and the `<XLoader>` would have to be displayed larger to make the effect really visible (and therefore informative for users). In addition, the format of the `<XLoader>` does not match the format of the button.
+
+We have therefore revised this and decided to use a new loading spinner. It is now a simple spinner that is displayed in the button, which makes the loading status more recognisable, the information about the loading status is better communicated to users and we have improved accessibility.
+
+You can see the new loading spinner in the button in the [Button documentation](../../components/form/button) and in the [Loading States](../../patterns/loading-states).
+
 ### Documentation
 
 We've revised a lot of components according to our new structure of component documentation pages:
