@@ -8,7 +8,7 @@ The `<Aside>` component is a responsive layout element designed for displaying s
 
 ## Usage
 
-Use the `<Aside>` for building layouts were you need to have one dynamic main content with a fixed side content. When the screen becomes smaller, for example on mobile, the side content of the component will automatically wrap. You can also adjust this by setting the `wrap` property to a percentage value.
+Use the `<Aside>` for building layouts were you need to have one dynamic main content with a fixed side content. On smaller screens, e.g. on mobile devices, the content is automatically shifted one below the other when 50% of the width is reached. You can also adjust this by setting the `wrap` property to a percentage value.
 
 <SectionMessage>
 <SectionMessage.Title>
@@ -31,6 +31,18 @@ With `sideWidth` you define the width for the side content and with `side` you d
 <StorybookHintMessage component={title} />
 
 <PropsTable component={title} />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Grid](/components/layout/grid): When things get more complex the `<Grid>` component is the right choice.
+    It allows you to create complex layouts with multiple columns and rows.
+  </li>
+  <li>
+    [Columns](/components/layout/columns): You can position your content in one row with the `<Columns>` component. The component is used to create structured and flexible layouts that organize content efficiently.
+  </li>
+</ul>
 
 ## Related
 
