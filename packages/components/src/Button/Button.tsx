@@ -69,11 +69,19 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
           fullWidth ? 'w-full' : undefined,
           loading && '!cursor-progress'
         )}
-        isDisabled={disabled || loading ? true : false}
-        aria-busy={loading ? true : false}
+        isDisabled={!!(disabled || loading)}
+        aria-busy={!!loading}
       >
-        {loading && <ProgressCycle />}
-        {!loading && children}
+        {loading ? (
+          <>
+            <span className="absolute">
+              <ProgressCycle />
+            </span>
+            <span className="opacity-0">{children}</span>
+          </>
+        ) : (
+          children
+        )}
       </Button>
     );
   }
