@@ -7,9 +7,9 @@ export const Badge: ThemeComponent<'Badge'> = cva(
       variant: {
         default: 'bg-bg-base',
         inverted: 'text-text-inverted bg-bg-inverted',
-        success: 'bg-bg-success',
+        success: 'text-text-inverted bg-bg-success',
         info: 'text-text-inverted bg-bg-info',
-        warning: 'bg-bg-warning',
+        warning: 'text-text-inverted bg-bg-warning',
         error: 'text-text-inverted bg-bg-error',
       },
     },

@@ -1,40 +1,102 @@
 ---
 title: Badge
 caption: Component for short notes with one color as status messages
+badge: updated
 ---
 
-A `<Badge>` is a content component. This component can be used to reflect status messages via a short note and a color. The content of a badge can be arbitrary, but it is preferred to use a string and/or a icon.
+A `<Badge>` is a content component. This component can be used to reflect status messages via a short note and a color.
 
-## Import
+## Anatomy
 
-```tsx
-import { Badge } from '@marigold/components';
-```
+It consists of a container and the content can either be a text or an icon.
+
+<Image
+  src="/badge/badge-anatomy.jpg"
+  alt="Anatomy of badge component"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
+
+## Usage
+
+A `<Badge>` is a component used to provide information on new updates and notifications. It is used with other components and cannot be used alone. The content of a badge can be arbitrary, but it is preferred to use a string and/or a icon.
+
+### Text Label Length
+
+The Badge is a simple and compact component for use in a limited space in the context of more complex components. When it includes a text label, make sure it fits into the dedicated space.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/badge/badge-do-label-length.jpg"
+        alt="Do: Use short and precise text labels."
+      />
+    </Do.Figure>
+    <Do.Description>Use short and precise text labels.</Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/badge/badge-dont-label-length.jpg"
+        alt="Don't: Use long descriptions for labels."
+      />
+    </Dont.Figure>
+    <Dont.Description>Don't use long descriptions for labels.</Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Color
+
+As the Badge is used as an indicator, its color must be precise and relevant to the message that the badge conveys.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/badge/badge-do-color.jpg"
+        alt="Do: Use the colors wisely and according to the meaning that the Badge implies."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use the colors wisely and according to the meaning that the Badge implies.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/badge/badge-dont-color.jpg"
+        alt="Don't: Avoid using arbitrary colors that would not match the message that the Badge conveys."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid using arbitrary colors that would not match the message that the
+      Badge conveys.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ## Props
 
+<StorybookHintMessage component={title} />
+
 <PropsTable component={title} />
-
-## Examples
-
-### Info Badge
-
-In this example we have the `<Badge>` component that has been given the `variant` info and a string.
-
-<ComponentDemo file="./basic-badge.demo.tsx" />
-
-### Badge with an Icon
-
-In this example, the `<Badge>` component gets an icon component.
-
-<ComponentDemo file="./icon-badge.demo.tsx" />
-
-### Badge with variant
-
-Here you can see the `<Badge>` component with variant dark.
-
-<ComponentDemo file="./badge-dark.demo.tsx" />

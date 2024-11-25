@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
 import {
-  Button,
   Columns,
-  DatePicker,
+  Divider,
   FieldGroup,
-  Select,
+  Headline,
+  NumberField,
   Stack,
   Switch,
   TextField,
@@ -131,30 +131,12 @@ export const FullHeight: Story = {
   render: args => (
     <div className="h-[300px] bg-[#adb5bd]">
       <Columns {...args}>
-        <div className="h-[150px] border border-[#495057] bg-[#e9ecef]" />
-        <div className="h-[150px] border border-[#495057] bg-[#e9ecef]" />
-        <div className="h-full border border-[#495057] bg-[#e9ecef] p-2">
+        <Block height="150px">one</Block>
+        <Block height="150px">two</Block>
+        <Block height="100%">
           I will grow, if you set <code>stretch</code> prop on the{' '}
           <code>Columns</code>!
-        </div>
-      </Columns>
-    </div>
-  ),
-};
-
-export const WithMoreComponentsAndFixedItem: Story = {
-  render: () => (
-    <div className="bg-bg-surface-sunken p-1">
-      fit is on the last element
-      <Columns columns={[4, 10, 4, 'fit']} space={2} collapseAt="500px">
-        <Select label="Zeitraum">
-          <Select.Option>letzte Woche</Select.Option>
-          <Select.Option>dieses Jahr</Select.Option>
-          <Select.Option>freier Zeitraum</Select.Option>
-        </Select>
-        <DatePicker label="Von" />
-        I'm a text
-        <Button variant="secondary">Aktualisieren</Button>
+        </Block>
       </Columns>
     </div>
   ),
@@ -162,16 +144,76 @@ export const WithMoreComponentsAndFixedItem: Story = {
 
 export const WithTwoComponentsAndFixedItem: Story = {
   render: () => (
-    <div className="bg-bg-surface-sunken p-1">
-      fit is on the first element
+    <div className="bg-bg-surface-sunken flex flex-col gap-2 p-1">
+      <span>fit is on the switch element</span>
+      <Divider />
       <FieldGroup labelWidth="100px">
-        <Columns columns={['fit', 12]} space={2} stretch>
+        <Columns columns={[1, 'fit']} space={2} stretch>
           <TextField label="Von" />
-          <div className="align-center">
+          <div className="flex items-center">
             <Switch />
           </div>
         </Columns>
       </FieldGroup>
+    </div>
+  ),
+};
+
+const data = [
+  {
+    name: 'Standard',
+    price: 2.5,
+    fee: 3.0,
+  },
+  {
+    name: 'Advanced',
+    price: 2.75,
+    fee: 3.0,
+  },
+  {
+    name: 'Express',
+    price: 5.5,
+    fee: 6.0,
+  },
+];
+export const TableLike: Story = {
+  render: () => (
+    <div className="w-5/12 p-4">
+      <Columns columns={[1, 1, 1]} space={2}>
+        <Headline level="4">Name</Headline>
+        <Headline level="4">Price</Headline>
+        <Headline level="4">Fee</Headline>
+      </Columns>
+      <Columns columns={[1, 1, 1]} space={2}>
+        <Stack>
+          {data.map(({ name }) => (
+            <TextField defaultValue={name} />
+          ))}
+        </Stack>
+        <Stack>
+          {data.map(({ price }) => (
+            <NumberField
+              defaultValue={price}
+              hideStepper
+              width={20}
+              formatOptions={{ style: 'currency', currency: 'EUR' }}
+            />
+          ))}
+        </Stack>
+        <Stack>
+          {data.map(({ fee }) => (
+            <NumberField
+              defaultValue={fee}
+              hideStepper
+              width={20}
+              formatOptions={{
+                style: 'currency',
+                currency: 'EUR',
+              }}
+            />
+          ))}
+        </Stack>
+      </Columns>
     </div>
   ),
 };
