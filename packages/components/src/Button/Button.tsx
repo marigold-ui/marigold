@@ -70,6 +70,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
           loading && 'pointer-events-none !cursor-progress'
         )}
         isPending={loading}
+        isDisabled={disabled}
       >
         {loading ? (
           <>

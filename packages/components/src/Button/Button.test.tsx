@@ -116,11 +116,11 @@ test('loading state', () => {
   render(<Button loading={true}>button</Button>);
 
   const button = screen.getByRole('button');
-  expect(button).toHaveAttribute('disabled');
+  expect(button).toHaveAttribute('data-pending', 'true');
 
   const svg = screen.getByRole('progressbar');
   expect(svg).toBeInTheDocument();
 
   expect(button).toHaveClass('!cursor-progress');
-  expect(button).toHaveAttribute('disabled');
+  expect(button).toHaveAttribute('data-pending', 'true');
 });
