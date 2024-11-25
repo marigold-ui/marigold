@@ -115,7 +115,7 @@ export const ControlledDateField: Story = {
         <DateField
           label="Date Field"
           value={value}
-          onChange={setValue}
+          onChange={newValue => setValue(newValue!)}
           {...args}
         />
         <pre>

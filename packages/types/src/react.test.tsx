@@ -33,12 +33,6 @@ export const BrokenBox = () => <Box as="span" href="http://example.com"></Box>;
 // @ts-expect-error
 export const BoxHasNoClass = () => <Box className="foo">Hello</Box>;
 
-// Used within forward ref
-export const BoxUsedInForwardRef = React.forwardRef<
-  React.ElementRef<typeof Box>,
-  React.ComponentProps<typeof Box>
->((props, forwardedRef) => <Box {...props} ref={forwardedRef} />);
-
 /**********************************************/
 /*                                            */
 /*               TEST COMPONENTS              */

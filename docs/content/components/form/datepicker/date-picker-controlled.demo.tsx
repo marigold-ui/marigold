@@ -8,7 +8,11 @@ export default () => {
 
   return (
     <Stack space={3}>
-      <DatePicker label="Ticket Date" value={value} onChange={setValue} />
+      <DatePicker
+        label="Ticket Date"
+        value={value}
+        onChange={newValue => setValue(newValue!)}
+      />
       <pre>
         <strong>Current Selected Date: </strong>
         {`Day: ${value.day} Month: ${value.month} Year: ${value.year}`}

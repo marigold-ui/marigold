@@ -59,8 +59,8 @@ const AutocompleteInput = ({
           e.preventDefault();
         }
         if (e.key === 'Enter') {
-          if (state.selectionManager.focusedKey === null) {
-            onSubmit?.(null, state.inputValue);
+          if (state?.selectionManager.focusedKey === null) {
+            onSubmit?.(null, state?.inputValue);
           }
         }
       }}

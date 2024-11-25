@@ -18,7 +18,7 @@ const meta = {
         'the maximum width of the center element. Should be a string value (e.g. 500px)',
       table: {
         defaultValue: {
-          summary: 'not set',
+          summary: '100%',
         },
       },
     },
@@ -42,38 +42,30 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Center {...args}>
-      <div className="h-[100px] w-full border border-solid border-[#ced4da] bg-[#ced4da]" />
+    <Center maxWidth="xxlarge" {...args}>
+      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
     </Center>
   ),
 };
 
 export const Children: Story = {
   render: args => (
-    <Center {...args}>
-      <div className="h-[100px] w-full border border-solid border-[#ced4da] bg-[#ced4da]" />
-      <div className="h-[100px] w-full border border-solid border-[#ced4da] bg-[#ced4da]" />
-      <div className="h-[100px] w-full border border-solid border-[#ced4da] bg-[#ced4da]" />
+    <Center {...args} space={2}>
+      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
+      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
+      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
     </Center>
   ),
 };
 
-export const Icon: Story = {
+export const Nested: Story = {
   render: args => (
     <Center {...args}>
       <div className="size-[40px] bg-blue-700">
-        <Ticket className="fill-white" />
+        <Center {...args}>
+          <Ticket className="fill-white" />
+        </Center>
       </div>
-    </Center>
-  ),
-};
-
-export const SpaceCenter: Story = {
-  render: args => (
-    <Center maxWidth="500px" space={4} {...args}>
-      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
-      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
-      <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
     </Center>
   ),
 };
