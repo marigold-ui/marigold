@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
 
