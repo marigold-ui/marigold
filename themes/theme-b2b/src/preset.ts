@@ -18,11 +18,31 @@ export const preset: Preset = createPreset({
         body: ['Inter', ...fontFamily.sans],
       },
       colors,
-      transitionTimingFunction: {
-        'ease-out': 'ease-out',
-      },
       boxShadow: flattenObject(shadow),
       height: flattenObject(height),
+      keyframes: {
+        'rotate-spinner': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        'progress-cycle': {
+          '0%': {
+            transform: 'rotate(0deg)',
+            strokeDashoffset: '75',
+          },
+          '30%': {
+            strokeDashoffset: '20',
+          },
+          '100%': {
+            transform: 'rotate(360deg)',
+            strokeDashoffset: '75',
+          },
+        },
+      },
+      animation: {
+        'rotate-spinner': 'rotate-spinner 2s linear infinite',
+        'progress-cycle': 'progress-cycle 1.5s linear infinite',
+      },
     },
   },
 });
