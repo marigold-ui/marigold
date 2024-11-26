@@ -1,22 +1,97 @@
-import { useState } from 'react';
-import { Button, XLoader } from '@marigold/components';
+import type { Venue } from '@/lib/data/venues';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
+import {
+  Aside,
+  Button,
+  Card,
+  Image,
+  Scrollable,
+  SectionMessage,
+  Stack,
+  Text,
+  XLoader,
+} from '@marigold/components';
 
-export default () => {
-  const [loading, setLoading] = useState(false);
+const Venues = () => {
+  const { data, status, isFetching } = useQuery<Venue[]>({
+    queryKey: ['venues'],
+    queryFn: async () => {
+      const response = await fetch(`/api/venues?delay=1500&q=`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch venues');
+      }
+      return response.json();
+    },
+    refetchOnWindowFocus: false,
+  });
 
-  const handlePress = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  };
+  if (status === 'pending' || isFetching) {
+    return (
+      <div className="h-[300px] w-full">
+        <XLoader mode="inline" />
+      </div>
+    );
+  }
+
+  if (status === 'error') {
+    return (
+      <SectionMessage variant="error">
+        <SectionMessage.Title>Whoooops...</SectionMessage.Title>
+        <SectionMessage.Content>
+          Looks like something went wrong.
+        </SectionMessage.Content>
+      </SectionMessage>
+    );
+  }
 
   return (
-    <>
-      <Button variant="primary" onPress={handlePress}>
-        Submit
-      </Button>
-      {loading ? <XLoader mode="fullsize" /> : null}
-    </>
+    <Scrollable height="300px">
+      <Stack space={2}>
+        {data.map(v => (
+          <Card key={v.id}>
+            <Aside sideWidth="160px" space={8}>
+              <Image alt="" src={v.image} />
+              <Stack
+                space={6}
+                id="venueDetails"
+                role="region"
+                aria-live="polite"
+              >
+                <Stack>
+                  <Text weight="extrabold" fontSize="2xl">
+                    {v.name}
+                  </Text>
+                  <Text fontStyle="italic">{v.type}</Text>
+                </Stack>
+                <Stack>
+                  <Text weight="bold">Description</Text>
+                  <Text>{v.description}</Text>
+                </Stack>
+              </Stack>
+            </Aside>
+          </Card>
+        ))}
+      </Stack>
+    </Scrollable>
   );
 };
+
+const queryClient = new QueryClient();
+
+export default () => (
+  <QueryClientProvider client={queryClient}>
+    <Stack space={4} alignX="right">
+      <Button
+        variant="primary"
+        onPress={() => queryClient.invalidateQueries({ queryKey: ['venues'] })}
+      >
+        Reload
+      </Button>
+      <Venues />
+    </Stack>
+  </QueryClientProvider>
+);

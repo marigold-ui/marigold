@@ -120,3 +120,5 @@ export const venues = [
     price: { from: 4000, to: 12000 },
   },
 ] as const;
+
+export type Venue = (typeof venues)[number];
