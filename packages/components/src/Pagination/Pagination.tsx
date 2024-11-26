@@ -37,7 +37,7 @@ const _Pagination = forwardRef<HTMLElement, PaginationProps>(
       >
         <Button
           onPress={previousPage}
-          className="rounded bg-gray-200 p-2 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-10 items-center justify-center rounded bg-gray-200 p-2 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ChevronLeft className="h-5 w-5 text-gray-600" />
         </Button>
@@ -52,7 +52,7 @@ const _Pagination = forwardRef<HTMLElement, PaginationProps>(
                 setPage(page);
               }}
               isDisabled={false}
-              className={`rounded px-4 py-2 ${
+              className={`flex w-10 items-center justify-center rounded px-4 py-2 ${
                 isActive
                   ? 'bg-blue-500 font-bold text-white'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -64,8 +64,7 @@ const _Pagination = forwardRef<HTMLElement, PaginationProps>(
         })}
         <Button
           onPress={nextPage}
-          isDisabled={activePage === totalPages}
-          className="rounded bg-gray-200 p-2 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-10 items-center justify-center rounded bg-gray-200 p-2 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ChevronRight className="h-5 w-5 text-gray-600" />
         </Button>
