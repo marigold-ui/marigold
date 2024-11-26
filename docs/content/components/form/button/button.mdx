@@ -1,6 +1,7 @@
 ---
 title: Button
 caption: Buttons allow users to trigger actions.
+badge: updated
 ---
 
 The `<Button>` component is a crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
@@ -187,12 +188,24 @@ In general, it's best to avoid using disabled buttons. However, if they are nece
   </SectionMessage.Title>
   <SectionMessage.Content>
     Tooltips aren't accessible on all devices or by some assistive technologies,
-    and they should never be used on non-interactive elements.
-
-    For more information see the [tooltip page](/components/overlay/tooltip).
-
+    and they should never be used on non-interactive elements. For more
+    information see the [tooltip page](/components/overlay/tooltip).
   </SectionMessage.Content>
 </SectionMessage>
+
+### Loading state
+
+The `<Button>` component includes a `loading` property that can be used to display loading behavior. This visually indicates the progress of system operations, such as downloading, uploading, or processing tasks. The loading spinner always shows an indeterminate progress to signify that the duration of the operation is unknown.
+
+This functionality is especially useful when performing actions like submitting a form or saving changes in your application that require time to complete a request. While the button is in the loading state, it becomes disabled, preventing further interaction until the operation is completed.
+
+The button's label should clearly describe the action being performed, providing context for the current state of the process, like also mentioned in [Icons and labels](#icons-and-labels).
+
+When the loading state is activated, the label becomes hidden. To ensure accessibility, we provide the loading state with an `aria-label` and `aria-busy`.
+
+The `loading` property must be added manually to a Button, and is intended for processes that typically last more than 1 second.
+
+<ComponentDemo file="./button-loading.demo.tsx" />
 
 ### Full-width
 

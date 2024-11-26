@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
@@ -12,6 +13,16 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disable the button',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    loading: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Whether the button is in a loading state.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -59,17 +70,18 @@ const meta = {
     },
     children: {
       control: 'text',
-      description: 'Children of the button',
+      description: 'Label of the button',
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'Click me!' },
+        defaultValue: { summary: undefined },
       },
     },
   },
   args: {
     variant: 'primary',
-    children: 'Click me!',
+    children: 'Submit',
     size: 'default',
+    loading: false,
   },
 } satisfies Meta<typeof Button>;
 
@@ -95,4 +107,60 @@ export const OnPress: Story = {
 
 export const FullWidth: Story = {
   render: args => <Button {...args} fullWidth />,
+};
+
+export const Loading: Story = {
+  parameters: {
+    controls: { exclude: ['loading'] },
+  },
+  render: ({ children, ...args }) => {
+    const [loading, setLoading] = useState<boolean | undefined>(false);
+    const handleSubmit = async () => {
+      //avoid multiple submits while loading
+      if (loading) {
+        return;
+      }
+
+      setLoading(true);
+      try {
+        await new Promise<void>(resolve => setTimeout(resolve, 8000));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    return (
+      <Button {...args} onPress={() => handleSubmit()} loading={loading}>
+        {children}
+      </Button>
+    );
+  },
+};
+
+export const LoadingWithIcon: Story = {
+  parameters: {
+    controls: { exclude: ['loading'] },
+  },
+  render: ({ children, ...args }) => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const handleSubmit = async () => {
+      //avoid multiple submits while loading
+      if (loading) {
+        return;
+      }
+
+      setLoading(true);
+      try {
+        await new Promise<void>(resolve => setTimeout(resolve, 4000));
+      } finally {
+        setLoading(false);
+      }
+    };
+    return (
+      <Button {...args} onPress={() => handleSubmit()} loading={loading}>
+        <Facebook />
+        {children}
+      </Button>
+    );
+  },
 };
