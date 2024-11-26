@@ -70,17 +70,18 @@ const meta = {
     },
     children: {
       control: 'text',
-      description: 'Children of the button',
+      description: 'Label of the button',
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'Click me!' },
+        defaultValue: { summary: undefined },
       },
     },
   },
   args: {
     variant: 'primary',
-    children: 'Click me!',
+    children: 'Submit',
     size: 'default',
+    loading: false,
   },
 } satisfies Meta<typeof Button>;
 
@@ -109,8 +110,11 @@ export const FullWidth: Story = {
 };
 
 export const Loading: Story = {
-  render: args => {
-    const [loading, setLoading] = useState<boolean>(false);
+  parameters: {
+    controls: { exclude: ['loading'] },
+  },
+  render: ({ children, ...args }) => {
+    const [loading, setLoading] = useState<boolean | undefined>(false);
     const handleSubmit = async () => {
       //avoid multiple submits while loading
       if (loading) {
@@ -124,16 +128,20 @@ export const Loading: Story = {
         setLoading(false);
       }
     };
+
     return (
       <Button {...args} onPress={() => handleSubmit()} loading={loading}>
-        Submit
+        {children}
       </Button>
     );
   },
 };
 
 export const LoadingWithIcon: Story = {
-  render: args => {
+  parameters: {
+    controls: { exclude: ['loading'] },
+  },
+  render: ({ children, ...args }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const handleSubmit = async () => {
       //avoid multiple submits while loading
@@ -151,7 +159,7 @@ export const LoadingWithIcon: Story = {
     return (
       <Button {...args} onPress={() => handleSubmit()} loading={loading}>
         <Facebook />
-        Send message
+        {children}
       </Button>
     );
   },
