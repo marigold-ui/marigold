@@ -112,6 +112,11 @@ export const Loading: Story = {
   render: args => {
     const [loading, setLoading] = useState<boolean>(false);
     const handleSubmit = async () => {
+      //avoid multiple submits while loading
+      if (loading) {
+        return;
+      }
+
       setLoading(true);
       try {
         await new Promise<void>(resolve => setTimeout(resolve, 8000));
@@ -131,6 +136,11 @@ export const LoadingWithIcon: Story = {
   render: args => {
     const [loading, setLoading] = useState<boolean>(false);
     const handleSubmit = async () => {
+      //avoid multiple submits while loading
+      if (loading) {
+        return;
+      }
+
       setLoading(true);
       try {
         await new Promise<void>(resolve => setTimeout(resolve, 4000));

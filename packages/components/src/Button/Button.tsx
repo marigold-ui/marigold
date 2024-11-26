@@ -67,7 +67,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'inline-flex items-center justify-center gap-[0.5ch]',
           classNames,
           fullWidth ? 'w-full' : undefined,
-          loading && 'pointer-events-none !cursor-progress'
+          loading && 'cursor-progress'
         )}
         isPending={loading}
         isDisabled={disabled}

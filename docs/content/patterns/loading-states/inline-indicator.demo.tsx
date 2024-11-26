@@ -22,10 +22,15 @@ export default () => {
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    //avoid multiple submits while loading
+    if (isLoading) {
+      return;
+    }
+
     const formData = new FormData(e.target as HTMLFormElement);
     const data: { [bookInput: string]: FormDataEntryValue } =
       Object.fromEntries(formData);
-
     setIsLoading(true);
     const res = await api(data['bookInput'].toString());
     setSearchTerm(res);

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ProgressCycle } from './ProgressCycle';
 
 const meta = {
-  title: 'Components/ProgressCycle',
+  title: 'Components/LoadingSpinner',
   component: ProgressCycle,
   argTypes: {
     size: {

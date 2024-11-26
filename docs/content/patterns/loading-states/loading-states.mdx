@@ -41,7 +41,7 @@ Don’t use loading states for actions that are likely to be processed in less t
 
 <ComponentDemo file="./inline-indicator.demo.tsx" />
 
-Inline indicators are only displayed on a single component, typically a [button](https://www.marigold-ui.io/components/form/button). Use them when:
+Inline indicators are only displayed on a single component, typically a [button](../components/form/button#loading-state). Use them when:
 
 - no or little visible content in the current view will be changed.
 - the process has no or little visual result in the current view.
@@ -54,7 +54,7 @@ Don’t use them over navigational links.
 At this stage:
 
 - The button state changes to `disabled`. If other actions on the page could affect successful processing, decide if these should be disabled as well.
-- The button label changes to the loading spinner.
+- The button's label is hidden and a loading spinner becomes visible.
 - The mouse cursor style changes to `progress`.
 
 These effects last for a minimum of 1 second regardless of process duration.

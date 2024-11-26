@@ -195,13 +195,15 @@ In general, it's best to avoid using disabled buttons. However, if they are nece
 
 ### Loading state
 
-The `<Button>` component includes a `loading` property that can be used to display loading behavior. This visually indicates the progress of system operations, such as downloading, uploading, or processing tasks. The progress circle always shows an indeterminate progress to signify that the duration of the operation is unknown.
+The `<Button>` component includes a `loading` property that can be used to display loading behavior. This visually indicates the progress of system operations, such as downloading, uploading, or processing tasks. The loading spinner always shows an indeterminate progress to signify that the duration of the operation is unknown.
 
 This functionality is especially useful when performing actions like submitting a form or saving changes in your application that require time to complete a request. While the button is in the loading state, it becomes disabled, preventing further interaction until the operation is completed.
 
 The button's label should clearly describe the action being performed, providing context for the current state of the process, like also mentioned in [Icons and labels](#icons-and-labels).
 
-When the loading state is activated, visible labels will disappear, as the purpose of the action should already be clear. To ensure accessibility, we provide the loading state with an `aria-label` and `aria-busy`.
+When the loading state is activated, the label becomes hidden. To ensure accessibility, we provide the loading state with an `aria-label` and `aria-busy`.
+
+The `loading` property must be added manually to a Button, and is intended for processes that typically last more than 1 second.
 
 <ComponentDemo file="./button-loading.demo.tsx" />
 
