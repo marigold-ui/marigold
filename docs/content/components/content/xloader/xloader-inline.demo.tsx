@@ -9,8 +9,10 @@ import {
   Button,
   Card,
   Image,
+  Inline,
   Scrollable,
   SectionMessage,
+  Split,
   Stack,
   Text,
   XLoader,
@@ -84,13 +86,21 @@ const queryClient = new QueryClient();
 
 export default () => (
   <QueryClientProvider client={queryClient}>
-    <Stack space={4} alignX="right">
-      <Button
-        variant="primary"
-        onPress={() => queryClient.invalidateQueries({ queryKey: ['venues'] })}
-      >
-        Reload
-      </Button>
+    <Stack space={2}>
+      <Inline>
+        <Text fontSize="lg" weight="bold">
+          List of Venues
+        </Text>
+        <Split />
+        <Button
+          variant="primary"
+          onPress={() =>
+            queryClient.invalidateQueries({ queryKey: ['venues'] })
+          }
+        >
+          Reload
+        </Button>
+      </Inline>
       <Venues />
     </Stack>
   </QueryClientProvider>

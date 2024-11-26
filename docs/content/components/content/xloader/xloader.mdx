@@ -25,7 +25,9 @@ However, overuse of fullscreen loaders can lead to a frustrating user experience
 
 ### Inline
 
-An inline loader is used to indicate that a specific section of the page is currently processing or loading data. Unlike a fullscreen loader, it only blocks interaction with that section, allowing users to continue interacting with other parts of the page. Use inline loaders for non-blocking tasks, like loading a list of items or submitting a form within a subsection, to maintain a responsive user experience.
+An inline loader is used to indicate that a specific section of the page is currently processing or loading data. Unlike a fullscreen loader, it only blocks interaction with that section, allowing users to continue interacting with other parts of the page.
+
+Use inline loaders for non-blocking tasks, like loading a list of items. They should ideally not cause layout shifts, ensuring the rest of the page remains stable while the content is being loaded, providing a seamless experience for the user.
 
 <ComponentDemo file="./xloader-inline.demo.tsx" />
 
@@ -34,3 +36,31 @@ An inline loader is used to indicate that a specific section of the page is curr
 <StorybookHintMessage component={title} />
 
 <PropsTable component={title} />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Loading States',
+      href: '/patterns/loading-states',
+      caption: 'Learn when to use which loading state.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
