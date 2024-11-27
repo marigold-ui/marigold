@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useKeyboard } from '@react-aria/interactions';
 
 interface KeyboardNavigationProps {
@@ -13,30 +13,34 @@ export function useKeyboardNavigation({
   onPageChange,
 }: KeyboardNavigationProps) {
   const containerRef = useRef<HTMLElement | null>(null);
+  const [focusedPage, setFocusedPage] = useState(page);
 
   const { keyboardProps } = useKeyboard({
     onKeyDown: e => {
-      let newPage = page;
+      let newFocusedPage = focusedPage;
 
-      if (e.key === 'ArrowLeft' && page > 1) {
-        newPage = page - 1;
-      } else if (e.key === 'ArrowRight' && page < totalPages) {
-        newPage = page + 1;
-      } else if (e.key === 'Home' && page !== 1) {
-        newPage = 1;
-      } else if (e.key === 'End' && page !== totalPages) {
-        newPage = totalPages;
+      if (e.key === 'ArrowLeft' && focusedPage > 1) {
+        newFocusedPage = focusedPage - 1;
+      } else if (e.key === 'ArrowRight' && focusedPage < totalPages) {
+        newFocusedPage = focusedPage + 1;
+      } else if (e.key === 'Home' && focusedPage !== 1) {
+        newFocusedPage = 1;
+      } else if (e.key === 'End' && focusedPage !== totalPages) {
+        newFocusedPage = totalPages;
+      } else if (e.key === 'Enter') {
+        if (focusedPage !== page) {
+          onPageChange(focusedPage);
+        }
       }
 
-      if (newPage !== page) {
-        onPageChange(newPage);
+      if (newFocusedPage !== focusedPage) {
+        setFocusedPage(newFocusedPage);
 
-        // Focus the new page button
         requestAnimationFrame(() => {
           const container = containerRef.current;
           if (container) {
             const newPageButton = container.querySelector(
-              `[aria-label="Page ${newPage}"]`
+              `[aria-label="Page ${newFocusedPage}"]`
             ) as HTMLElement;
             if (newPageButton) {
               newPageButton.focus();
