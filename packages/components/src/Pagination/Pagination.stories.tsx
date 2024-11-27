@@ -14,18 +14,16 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: () => {
-    const totalItems = 100; // Total number of items
-    const pageSize = 10; // Items per page
-    const [currentPage, setCurrentPage] = useState(1);
+    const [basicPage, setBasicPage] = useState(1);
 
     return (
       <div>
         <h1>Pagination Example</h1>
-        <p>Selected Page: {currentPage}</p>
+        <p>Selected Page: {basicPage}</p>
         <Pagination
-          totalItems={totalItems}
-          pageSize={pageSize}
-          onChange={setCurrentPage}
+          page={basicPage}
+          totalPages={10}
+          onPageChange={setBasicPage}
         />
       </div>
     );
