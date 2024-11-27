@@ -4,6 +4,7 @@ export const Button: ThemeComponent<'Button'> = cva(
   [
     'border-border-base bg-bg-inverted text-text-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:cursor-none',
     'disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed',
+    'rac-pending:border-border-base-disabled rac-pending:bg-bg-inverted-disabled rac-pending:text-text-base-disabled rac-pending:cursor-not-allowed',
     'outline-outline-focus outline-2 outline-offset-1 focus-visible:outline',
     'hover:bg-bg-inverted-hover',
   ],

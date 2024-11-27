@@ -1,11 +1,4 @@
-import { useContext } from 'react';
 import type { ReactNode } from 'react';
-import {
-  ButtonContext,
-  DEFAULT_SLOT,
-  OverlayTriggerStateContext,
-  Provider,
-} from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 export interface DialogActionsRenderProps {
@@ -23,26 +16,10 @@ export interface DialogActions {
 
 export const DialogActions = ({ variant, size, children }: DialogActions) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
-  const overlayContext = useContext(OverlayTriggerStateContext);
-  const closeButtonProps = { onPress: overlayContext?.close };
 
   return (
     <div className={cn('[grid-area:actions]', classNames.actions)}>
-      <Provider
-        values={[
-          [
-            ButtonContext,
-            {
-              slots: {
-                [DEFAULT_SLOT]: {},
-                close: closeButtonProps,
-              },
-            },
-          ],
-        ]}
-      >
-        {children}
-      </Provider>
+      {children}
     </div>
   );
 };
