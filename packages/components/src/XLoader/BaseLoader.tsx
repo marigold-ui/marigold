@@ -32,7 +32,7 @@ export const BaseLoader = ({
   ...props
 }: LoaderProps) => {
   const className = useClassNames({ component: 'XLoader', variant, size });
-
+  console.log(variant, className);
   return (
     <ProgressBar
       className={className.container}

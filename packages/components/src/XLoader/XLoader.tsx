@@ -53,9 +53,9 @@ const LoaderInline = (props: LoaderProps) => {
 // ---------------
 export const XLoader = ({ mode, variant, ...props }: XLoaderProps) =>
   mode === 'fullsize' ? (
-    <LoaderFullSize variant="inverted" {...props} />
+    <LoaderFullSize variant={variant ?? 'inverted'} {...props} />
   ) : mode === 'inline' ? (
-    <LoaderInline variant="inverted" {...props} />
+    <LoaderInline variant={variant ?? 'inverted'} {...props} />
   ) : (
-    <BaseLoader {...props} />
+    <BaseLoader variant={variant} {...props} />
   );
