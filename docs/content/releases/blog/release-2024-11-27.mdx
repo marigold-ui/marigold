@@ -1,61 +1,58 @@
 ---
-title: Marigold v10.0.1
+title: Marigold v10.1.0
 date: 2024-11-27
 type: Blog
 changed:
   - component/content/badge
   - component/content/card
   - component/layout/columns
+  - component/form/button
   - component/form/datefield
   - component/form/datepicker
   - component/content/icon
   - component/form/slider
 ---
 
-Happy fall Marigold users! 🍁 The newest version of Marigold Version 10.0.1 arrives. The good news - no breaking changes this time!
-We've focused on revising more components and improve components based on your feedback. Let's dive into the details.
+Happy Fall, Marigold users! 🍁 We're excited to announce the release of **Marigold Version 10.1.0**! This update brings improved documentation and several improvements to our components, all inspired by your valuable feedback. Let’s dive into the details!
 
 ## Improvements
 
 ### Components
 
-#### Select
-
-The `isOpen` prop was set by default. We removed it because it's only needed when the component is controlled.
-
 #### Slider
 
-The `<Slider>` gained a in deep revision:
+Along with a complete overhaul of the documentation and stories for our `<Slider>`, the component has received several visual and functional improvements.
 
-- documentation were revised to our new documentation structure
-- the stories in Storybook were updated and also new stories were added
-- we've decided to add in general a visible indicator for the selected track
-- it's now possible to use a "range" slider with two thumbs
-- `<Slider>` is also a form component, so the `description` prop (Helptext) can now be used like in other form components
+We've introduced a visible indicator for the selected track to enhance usability. and the `<Slider>` now supports dual thumbs, allowing users to select a range seamlessly. To make the `<Slider>` even more versatile, it now functions as a standard form component, complete with support for a `name` attribute and an optional help text.
 
 #### Loading spinner
 
-We were not satisfied with our loading spinner in buttons. So far we have used the `<XLoader>`, which in our opinion was not the best solution, as the loading animation is difficult to recognise in the dots of the X and the `<XLoader>` would have to be displayed larger to make the effect really visible (and therefore informative for users). In addition, the format of the `<XLoader>` does not match the format of the button.
+We weren’t satisfied with the `<XLoader>` as a button loading spinner. Its animation was hard to recognize due to the dot design, and it needed to be larger to be effective—making it inconsistent with button formatting. We’ve replaced it with a new, simple spinner that fits seamlessly into buttons. This update improves visibility, better communicates the loading status, and enhances accessibility.
 
-We have therefore revised this and decided to use a new loading spinner. It is now a simple spinner that is displayed in the button, which makes the loading status more recognisable, the information about the loading status is better communicated to users and we have improved accessibility.
-
-You can see the new loading spinner in the button in the [Button documentation](../../components/form/button) and in the [Loading States](../../patterns/loading-states).
+Check out the new loading spinner in the [Button documentation](/components/form/button) and [Loading States](/patterns/loading-states).
 
 ### Documentation
 
-We've revised a lot of components according to our new structure of component documentation pages:
+We’re continuing to enhance our component documentation to provide clearer guidance on their intended usage and best practices. The following pages have been updated:
 
+- `<Aside>`
 - `<Badge>`
 - `<Card>`
+- `<Center>`
 - `<Columns>`
 - `<DateField>`
 - `<DatePicker>`
 - `<Icon>`
+- `<Scrollable>`
 - `<Slider>`
 
 ### Bundle size
 
 We've optimized the bundle size of Marigold by removing the icons dependency from components package. This will help to improve the performance of your applications.
+
+## Bug fixes
+
+This release also includes several bug fixes to improve stability and ensure a smoother experience. Thank you for reporting issues and helping us make Marigold better!
 
 ---
 
