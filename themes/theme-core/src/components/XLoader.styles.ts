@@ -8,9 +8,10 @@ export const XLoader: ThemeComponent<'XLoader'> = {
         inverted: 'text-text-inverted',
       },
       size: {
-        default: 'size-20',
-        large: 'size-36',
-        fit: 'size-full',
+        small: '',
+        default: '',
+        large: '',
+        fit: '',
       },
     },
     defaultVariants: {
@@ -18,16 +19,17 @@ export const XLoader: ThemeComponent<'XLoader'> = {
       size: 'default',
     },
   }),
-  loader: cva('size-full', {
+  loader: cva('', {
     variants: {
       variant: {
         default: '',
         inverted: '',
       },
       size: {
-        default: '',
-        large: '',
-        fit: '',
+        small: 'size-12',
+        default: 'size-20',
+        large: 'size-36',
+        fit: 'size-full',
       },
     },
     defaultVariants: {
