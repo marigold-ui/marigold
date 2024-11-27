@@ -1,7 +1,8 @@
-import { forwardRef } from 'react';
-import { Button } from 'react-aria-components';
 import { ChevronLeft, ChevronRight } from '@marigold/icons';
-import { usePagination } from './usePagination';
+import { PageButton } from './PageButton';
+import { PaginationButton } from './PaginationButton';
+import { useKeyboardNavigation } from './useKeyboardNavigation';
+import { usePageRange } from './usePageRange';
 
 export interface PaginationProps {
   /**
@@ -18,59 +19,52 @@ export interface PaginationProps {
   onChange?: (page: number) => void;
 }
 
-const _Pagination = forwardRef<HTMLElement, PaginationProps>(
-  ({ totalItems, pageSize, onChange }, ref) => {
-    /*const classNames = useClassNames({
-      component: 'Pagination',
-      variant,
-      size,
-    });*/
+const _Pagination = ({ page, totalPages, onPageChange }) => {
+  const { containerRef, keyboardProps } = useKeyboardNavigation({
+    page,
+    totalPages,
+    onPageChange,
+  });
+  const pageRange = usePageRange({ currentPage: page, totalPages });
 
-    const { activePage, totalPages, setPage, nextPage, previousPage } =
-      usePagination({ totalItems, pageSize, onChange });
+  const isFirstPage = page === 1;
+  const isLastPage = page === totalPages;
 
-    return (
-      <nav
-        aria-label="Pagination"
-        ref={ref}
-        className="mt-4 flex items-center justify-center space-x-2"
+  return (
+    <nav
+      ref={containerRef}
+      className="flex items-center justify-center space-x-2"
+      aria-label={`Page ${page} of ${totalPages}`}
+      {...keyboardProps}
+    >
+      <PaginationButton
+        onPress={() => onPageChange(Math.max(1, page - 1))}
+        aria-label="Previous page"
+        isDisabled={isFirstPage}
       >
-        <Button
-          onPress={previousPage}
-          className="flex w-10 items-center justify-center rounded bg-gray-200 p-2 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <ChevronLeft className="h-5 w-5 text-gray-600" />
-        </Button>
-        {Array.from({ length: totalPages }, (_, index) => {
-          const page = index + 1;
-          const isActive = page === activePage;
+        <ChevronLeft className="h-5 w-5" />
+      </PaginationButton>
 
-          return (
-            <Button
-              key={page}
-              onPress={() => {
-                setPage(page);
-              }}
-              isDisabled={false}
-              className={`flex w-10 items-center justify-center rounded px-4 py-2 ${
-                isActive
-                  ? 'bg-blue-500 font-bold text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              {page}
-            </Button>
-          );
-        })}
-        <Button
-          onPress={nextPage}
-          className="flex w-10 items-center justify-center rounded bg-gray-200 p-2 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <ChevronRight className="h-5 w-5 text-gray-600" />
-        </Button>
-      </nav>
-    );
-  }
-);
+      <div className="flex items-center space-x-2">
+        {pageRange.map(pageNumber => (
+          <PageButton
+            key={pageNumber}
+            page={pageNumber}
+            isSelected={pageNumber === page}
+            onPress={() => onPageChange(pageNumber)}
+          />
+        ))}
+      </div>
+
+      <PaginationButton
+        onPress={() => onPageChange(Math.min(totalPages, page + 1))}
+        aria-label="Next page"
+        isDisabled={isLastPage}
+      >
+        <ChevronRight className="h-5 w-5" />
+      </PaginationButton>
+    </nav>
+  );
+};
 
 export { _Pagination as Pagination };
