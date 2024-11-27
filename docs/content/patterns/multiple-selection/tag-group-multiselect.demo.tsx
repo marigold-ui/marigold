@@ -18,10 +18,7 @@ export default () => {
         <Tag id="pool">Swimming pool</Tag>
         <Tag id="breakfast">Breakfast</Tag>
       </Tag.Group>
-      <p>
-        Current selection (controlled):{' '}
-        {selected === 'all' ? 'all' : [...selected].join(', ')}
-      </p>
+      <p>Current selection (controlled): {[...selected].join(', ')}</p>
     </>
   );
 };

@@ -2,7 +2,7 @@
 
 import { siteConfig } from '@/lib/config';
 import { Badge } from '@/ui';
-import { allContentPages } from 'contentlayer/generated';
+import { ContentPage, allContentPages } from 'contentlayer/generated';
 import { usePathname } from 'next/navigation';
 import { NavLink } from './NavLink';
 
@@ -31,13 +31,13 @@ export const useNavigation = (): NavigationSection[] => {
   return navigation.map(({ name, slug, subsections = [] }) => {
     // Section Page = has a section but NO subsection
     const sectionPages = allContentPages
-      .filter(page => page.section === slug && !page.subsection)
+      .filter((page: ContentPage) => page.section === slug && !page.subsection)
       .sort((a, b) => (a.order || 1000) - (b.order || 1000));
 
     return {
       name,
       slug,
-      links: sectionPages.map(page => ({
+      links: sectionPages.map((page: ContentPage) => ({
         name: page.title,
         href: `/${page.slug}`,
         badge: page.badge,
@@ -49,10 +49,10 @@ export const useNavigation = (): NavigationSection[] => {
             ...allContentPages
               .filter(
                 // Subsection Page = has a section AND a subsection
-                page =>
+                (page: ContentPage) =>
                   page.section === slug && page.subsection === subsection.slug
               )
-              .map(page => ({
+              .map((page: ContentPage) => ({
                 name: page.title,
                 href: `/${page.slug}`,
                 badge: page.badge,

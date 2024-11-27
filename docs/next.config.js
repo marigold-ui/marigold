@@ -6,13 +6,9 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   distDir: '.next',
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
-
   transpilePackages: [
     '@marigold/components',
     '@marigold/system',

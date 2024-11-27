@@ -7,7 +7,6 @@ import {
   Form,
   Image,
   Inline,
-  Menu,
   Select,
   Stack,
   Text,

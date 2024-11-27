@@ -7,10 +7,10 @@ import {
 } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
-import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
+import { ChevronDown } from '../icons';
 
 // Props
 // ---------------
@@ -130,14 +130,7 @@ const _Select = forwardRef<any, SelectProps<object>>(
     const classNames = useClassNames({ component: 'Select', variant, size });
 
     return (
-      <FieldBase
-        isOpen
-        as={Select}
-        ref={ref}
-        variant={variant}
-        size={size}
-        {...props}
-      >
+      <FieldBase as={Select} ref={ref} variant={variant} size={size} {...props}>
         <Button
           className={cn(
             'flex w-full items-center justify-between gap-1 overflow-hidden',
