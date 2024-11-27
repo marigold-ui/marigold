@@ -25,9 +25,9 @@ export function PageButton({ page, isSelected, onPress }: PageButtonProps) {
       {...buttonProps}
       {...focusProps}
       ref={ref}
-      className={`flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition-colors duration-200 ${
+      className={`flex h-10 w-10 items-center justify-center text-sm font-medium transition-colors duration-200 ${
         isSelected
-          ? 'bg-blue-600 text-white hover:bg-blue-700'
+          ? 'border-0 border-b-2 border-solid border-b-black bg-none text-black'
           : 'text-gray-700 hover:bg-gray-100'
       } ${isFocusVisible ? 'ring-2 ring-blue-500 ring-offset-2' : ''} focus:outline-none`}
     >
