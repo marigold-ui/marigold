@@ -1,5 +1,65 @@
 # @marigold/components
 
+## 10.1.0
+
+### Minor Changes
+
+- 83ad341: feat(dialog): Introduce a dedicated button to close a dialog
+
+  Make it more convenient to have a button that closes the `<Dialog>`. With this, there is less need to use the child function to access the `close` method. Instead you can now use `<Button slot="close">` to render a close button.
+
+### Patch Changes
+
+- f2bae7e: fix: Remove `isOpen` from `<Select>`
+
+  The `isOpen` prop was set by default. Remove it. Only required when controlled.
+
+- 80a9f5b: fix(Text): Only apply `elementType` when RAC Text component is used.
+- 2d701a6: docs[DST-611]: Revise `<Scrollable>` documentation page
+
+  Revised the `<Scrollable>` page according to our new structure of component documentation pages.
+
+- a917acf: refa: Remove icons dependency from components package
+
+  Make `@marigold/components` not depend on `@marigold/icons` since this might bloat the bundling.
+
+- 22200a0: docs([DST-581]): revise `<DateField>` page according to new component page structure
+
+  Revised the `<DateField>` documentation page to our new layout of component pages.
+
+- 222f674: refa[DST-607]: revise `<Badge>` page
+
+  The `<Badge>` was revised according to our new component guidelines.
+
+- ac29d40: refa[DST-610]: Revise `<Card>` page
+
+  The `<Card>`is now revised according to our new component page guidelines.
+
+- ebc53cb: refa[DST-598]: Improve `<Slider>` component
+
+  The `<Slider>` component appears in a new guise. Functionalities and documentation have been significantly revised. So make sure to check out the Marigold documentation and storybook. It's worth it.
+
+  Some key features are:
+
+  - multithumb or range slider
+  - visual indicator for selected track
+  - use slider in forms
+
+- 3bf3a8e: docs([DST-615]): Revise `<Center>` documentation
+
+  Revised the `<Center>` page according to our new structure of component documentation.
+
+- 2cb5d38: feat(DST-596): add loading indicator in `<Button>` component
+
+  Introduced a new loading indicator for the `<Button>` component's loading state, enhancing the visibility of its loading status. The `<Button>` now supports a loading property for this functionality.
+
+- 313f004: docs([DST-609]): Revise `<Columns>` documentation page
+
+  Revised the `<Columns>` page according to our new structure of component documentation pages.
+
+- Updated dependencies [ebc53cb]
+  - @marigold/system@10.1.0
+
 ## 10.0.0
 
 ### Major Changes
