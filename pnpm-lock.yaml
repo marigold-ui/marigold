@@ -517,6 +517,12 @@ importers:
       '@react-aria/interactions':
         specifier: 3.22.4
         version: 3.22.4(react@18.3.1)
+      '@react-aria/listbox':
+        specifier: 3.13.5
+        version: 3.13.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/menu':
+        specifier: 3.15.5
+        version: 3.15.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-aria/overlays':
         specifier: 3.23.4
         version: 3.23.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -529,6 +535,9 @@ importers:
       '@react-aria/table':
         specifier: 3.15.5
         version: 3.15.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-aria/textfield':
+        specifier: 3.14.10
+        version: 3.14.10(react@18.3.1)
       '@react-aria/utils':
         specifier: 3.25.3
         version: 3.25.3(react@18.3.1)
@@ -544,6 +553,9 @@ importers:
       '@react-stately/data':
         specifier: 3.11.7
         version: 3.11.7(react@18.3.1)
+      '@react-stately/form':
+        specifier: 3.0.6
+        version: 3.0.6(react@18.3.1)
       '@react-stately/list':
         specifier: 3.11.0
         version: 3.11.0(react@18.3.1)
@@ -14309,7 +14321,7 @@ snapshots:
 
   '@swc/helpers@0.5.12':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   '@swc/helpers@0.5.5':
     dependencies:
