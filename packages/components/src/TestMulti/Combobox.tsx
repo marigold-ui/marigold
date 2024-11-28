@@ -1,4 +1,4 @@
-import React, { ForwardedRef, useMemo, useRef, useState } from 'react';
+import React, { ForwardedRef, Key, useMemo, useRef, useState } from 'react';
 import {
   ButtonContext,
   InputContext,
@@ -108,7 +108,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             selectionMode="multiple"
             selectionBehavior="toggle"
           >
-            {item => (
+            {(item: { key: Key; textValue: string }) => (
               <ListBox.Item id={item.key} key={item.key}>
                 {item.textValue}
               </ListBox.Item>
