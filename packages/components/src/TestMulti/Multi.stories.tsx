@@ -131,10 +131,7 @@ export const Basic = {
     });
     return (
       <div>
-        <ComboboxMultiBase
-          selectedKeys={selectedItems.selectedKeys}
-          onSelectionChange={selectedItems.setSelectedKeys}
-        >
+        <ComboboxMultiBase>
           <Item key="One">One</Item>
           <Item key="Two">Two</Item>
         </ComboboxMultiBase>

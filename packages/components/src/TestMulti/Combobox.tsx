@@ -8,6 +8,7 @@ import {
 } from 'react-aria-components';
 import { Provider } from 'react-aria-components';
 import { Button } from '../Button';
+import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
 import { ComboboxMultiProps } from './types';
@@ -39,7 +40,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   let buttonRef = useRef<HTMLButtonElement>(null);
   let inputRef = useRef<HTMLInputElement>(null);
   let listBoxRef = useRef<HTMLDivElement>(null);
-  // // let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
   // let fieldRef = useObjectRef(forwardedRef);
 
   // let layoutDelegate = useListBoxLayout();
@@ -60,9 +60,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     state
   );
 
-  console.log('listBoxProps.selectedKeys', state.selectionManager.selectedKeys);
-
-  console.log('menuWidth', menuWidth);
+  console.log('state.selectionManager', state.selectionManager.selectedKeys);
   return (
     <Provider
       values={[
@@ -83,6 +81,9 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
           {
             ref: listBoxRef,
             disallowEmptySelection: true,
+            items: state.collection,
+            selectionMode: 'multiple',
+            selectionBehavior: 'toggle',
             ...state,
             ...listBoxProps,
           },
@@ -99,16 +100,22 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
         ],
       ]}
     >
-      <Input />
-      <Button>open</Button>
-
-      <Popover>
-        <ListBox>
-          {Array.from(state.collection).map(item => (
-            <ListBox.Item key={item.key}>{item.textValue}</ListBox.Item>
-          ))}
-        </ListBox>
-      </Popover>
+      <FieldBase label="selects">
+        <Input action={<Button>open</Button>} />
+        <Popover>
+          <ListBox
+            items={state.collection}
+            selectionMode="multiple"
+            selectionBehavior="toggle"
+          >
+            {item => (
+              <ListBox.Item id={item.key} key={item.key}>
+                {item.textValue}
+              </ListBox.Item>
+            )}
+          </ListBox>
+        </Popover>
+      </FieldBase>
     </Provider>
   );
 });
