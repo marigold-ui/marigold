@@ -1,21 +1,12 @@
 ---
 title: Aspect
-caption: Component to set responsive images, videos, maps
+caption: Keep media elements at a certain apsect ratio.
+badge: updated
 ---
 
-The `<Aspect>` layout component dynamically modifies the height of an element based on its current width to match a width-to-height ratio. For example, a 4:3 ratio would make an element with a width of `400px` have a height of `300px`. This updates in real time when you resize the screen.
+The `<Aspect>` component keeps media elements like images or videos in their correct aspect ratio, preventing them from looking stretched or squished on different screens. It is particularly useful for creating responsive layouts where consistent media dimensions are important.
 
-## Import
-
-```tsx
-import { Aspect } from '@marigold/components';
-```
-
-## Props
-
-<PropsTable component={title} />
-
-## Examples
+## Usage
 
 ### Ratio Square and maximum width
 
@@ -40,3 +31,37 @@ This Example use a Iframe inside the Aspect Component. The `ratio` prop is set t
 An `<Iframe>` with a video inside the Aspect Component. The `ratio` prop is set to `"widescreen"`.
 
 <ComponentDemo file="./video.demo.tsx" />
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
