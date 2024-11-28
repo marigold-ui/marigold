@@ -9,8 +9,6 @@ const schema = z.object({
   q: z.string().default(''),
 });
 
-// GET
-// ---------------
 export const GET = async (req: NextRequest) => {
   const params = schema.safeParse(
     Object.fromEntries(req.nextUrl.searchParams.entries())
