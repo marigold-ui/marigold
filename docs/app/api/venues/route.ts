@@ -21,8 +21,6 @@ export const GET = async (req: NextRequest) => {
   }
 
   const { q, delay } = params.data;
-
-  // Poor mans matching
   const result = venues.filter(venue =>
     venue.name.toLocaleLowerCase().replaceAll(' ', '').includes(q)
   );
