@@ -13,12 +13,12 @@ const meta = {
       options: ['content', 'header'],
       description: 'choose between content and header',
     },
-    size: {
+    containerWidth: {
       control: {
         type: 'select',
       },
       options: ['small', 'medium', 'large'],
-      description: 'choose between small, medium and large size',
+      description: 'choose between small, medium and large width',
     },
     align: {
       control: {
