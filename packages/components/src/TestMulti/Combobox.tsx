@@ -5,12 +5,20 @@ import {
   ListBoxContext,
   Popover,
   PopoverContext,
+  Tag,
+  TagGroup,
+  TagList,
 } from 'react-aria-components';
-import { Key, Provider } from 'react-aria-components';
+import { Key, Provider, Input as RACInput } from 'react-aria-components';
+import { useFocusRing } from '@react-aria/focus';
+import { mergeProps } from '@react-aria/utils';
+import { cn, useClassNames, useStateProps } from '@marigold/system';
 import { Button } from '../Button';
+import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox';
+import { TextField } from '../TextField';
 import { ComboboxMultiProps } from './types';
 import { useComboboxMulti } from './useComboboxMulti';
 // import { useObjectRef } from "@react-aria/utils";
@@ -25,7 +33,10 @@ export function useStatefulRef<T extends HTMLElement>() {
 
 export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   T extends object,
->(props: ComboboxMultiProps<T>, forwardedRef: ForwardedRef<HTMLDivElement>) {
+>(
+  { size, variant, ...props }: ComboboxMultiProps<T>,
+  forwardedRef: ForwardedRef<HTMLDivElement>
+) {
   let {
     // align = 'start',
     // menuTrigger = 'focus',
@@ -48,19 +59,34 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
 
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
 
-  let { inputProps, buttonProps, listBoxProps } = useComboboxMulti(
-    {
-      ...props,
-      buttonRef,
-      inputRef,
-      // layoutDelegate,
-      listBoxRef,
-      popoverRef: popoverRefLikeValue,
-    },
-    state
-  );
+  const { focusProps, isFocusVisible } = useFocusRing();
 
-  console.log('state.selectionManager', state.selectionManager.selectedKeys);
+  const stateProps = useStateProps({ focusVisible: isFocusVisible, ...props });
+
+  let { inputProps, buttonProps, listBoxProps, labelProps, descriptionProps } =
+    useComboboxMulti(
+      {
+        ...props,
+        buttonRef,
+        inputRef,
+        // layoutDelegate,
+        listBoxRef,
+        popoverRef: popoverRefLikeValue,
+        isFocusVisible,
+        ...focusProps,
+      },
+      state
+    );
+
+  const classNames = useClassNames({
+    component: 'Multiselect',
+    size,
+    variant,
+  });
+
+  console.log('focusProps', focusProps);
+  console.log('stateProps', stateProps);
+
   return (
     <Provider
       values={[
@@ -92,7 +118,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
           PopoverContext,
           {
             ref: popoverRef as ForwardedRef<HTMLElement>,
-            triggerRef: buttonRef,
+            triggerRef: inputRef,
             scrollRef: listBoxRef,
             isNonModal: true,
             ...state,
@@ -101,7 +127,20 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
       ]}
     >
       <FieldBase label="selects">
-        <Input action={<Button>open</Button>} />
+        <div
+          className={cn(classNames.container)}
+          {...mergeProps(inputProps, focusProps, stateProps)}
+        >
+          <TagGroup>
+            <TagList>
+              <Tag key={'3'}>3items</Tag>
+            </TagList>
+          </TagGroup>
+          <RACInput className={classNames.input} />
+          <Button variant="icon">
+            <ChevronDown className="size-4" />
+          </Button>
+        </div>
         <Popover>
           <ListBox>
             {(item: { id: Key; textValue: string }) => (

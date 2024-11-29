@@ -77,4 +77,6 @@ export interface ComboboxMultiProps<T>
   defaultInputValue?: string;
   /** Handler that is called when the ComboBox input value changes. */
   onInputChange?: (value: string) => void;
+  variant?: string;
+  size?: string;
 }

@@ -115,6 +115,10 @@ export type Theme = {
       'container' | 'tabsList' | 'tabpanel' | 'tab',
       ComponentStyleFunction<string, string>
     >;
+    Multiselect?: Record<
+      'container' | 'input' | 'button' | 'tag',
+      ComponentStyleFunction<string, string>
+    >;
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
       | 'calendar'

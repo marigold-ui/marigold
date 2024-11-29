@@ -107,6 +107,8 @@ export const Basic = {
       <ComboboxMultiBase>
         <Item key="One">One</Item>
         <Item key="Two">Two</Item>
+        <Item key="Three">Three</Item>
+        <Item key="Four">Four</Item>
       </ComboboxMultiBase>
     );
   },
