@@ -1,27 +1,45 @@
 interface PageRangeProps {
   currentPage: number;
   totalPages: number;
-  maxVisible?: number;
 }
 
-export function usePageRange({
-  currentPage,
-  totalPages,
-  maxVisible = 5,
-}: PageRangeProps) {
-  const range: number[] = [];
-  const halfVisible = Math.floor(maxVisible / 2);
+export function usePageRange({ currentPage, totalPages }: PageRangeProps) {
+  const getPageRange = () => {
+    // If total pages is 7 or less, show all pages
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
 
-  let start = Math.max(1, currentPage - halfVisible);
-  let end = Math.min(totalPages, start + maxVisible - 1);
+    const pages: (number | 'ellipsis')[] = [1]; // First page is always shown
 
-  if (end - start + 1 < maxVisible) {
-    start = Math.max(1, end - maxVisible + 1);
-  }
+    // Calculate the range around the current page
+    // We can show 3 numbers around current page when we have ellipsis on both sides
+    // Or 4 numbers when we only have ellipsis on one side
 
-  for (let i = start; i <= end; i++) {
-    range.push(i);
-  }
+    if (currentPage <= 4) {
+      // Near the start, show 1 2 3 4 5 ... 10
+      for (let i = 2; i <= 5; i++) {
+        pages.push(i);
+      }
+      pages.push('ellipsis');
+    } else if (currentPage >= totalPages - 3) {
+      // Near the end, show 1 ... 6 7 8 9 10
+      pages.push('ellipsis');
+      for (let i = totalPages - 4; i < totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // In the middle, show 1 ... 4 5 6 ... 10
+      pages.push('ellipsis');
+      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+        pages.push(i);
+      }
+      pages.push('ellipsis');
+    }
 
-  return range;
+    pages.push(totalPages); // Last page is always shown
+    return pages;
+  };
+
+  return getPageRange();
 }

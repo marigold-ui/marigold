@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from '@marigold/icons';
+import { Ellipsis } from './Ellipsis';
 import { PageButton } from './PageButton';
 import { PaginationButton } from './PaginationButton';
 import { useKeyboardNavigation } from './useKeyboardNavigation';
@@ -29,7 +30,7 @@ const _Pagination = ({ page, totalPages, onPageChange }) => {
 
   const isFirstPage = page === 1;
   const isLastPage = page === totalPages;
-
+  console.log(pageRange);
   return (
     <nav
       ref={containerRef}
@@ -46,14 +47,18 @@ const _Pagination = ({ page, totalPages, onPageChange }) => {
       </PaginationButton>
 
       <div className="flex items-center space-x-2">
-        {pageRange.map(pageNumber => (
-          <PageButton
-            key={pageNumber}
-            page={pageNumber}
-            isSelected={pageNumber === page}
-            onPress={() => onPageChange(pageNumber)}
-          />
-        ))}
+        {pageRange.map((pageNumber, index) =>
+          pageNumber === 'ellipsis' ? (
+            <Ellipsis key={`ellipsis-${index}`} />
+          ) : (
+            <PageButton
+              key={pageNumber}
+              page={pageNumber}
+              isSelected={pageNumber === page}
+              onPress={() => onPageChange(pageNumber)}
+            />
+          )
+        )}
       </div>
 
       <PaginationButton
