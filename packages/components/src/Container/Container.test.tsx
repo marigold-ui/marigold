@@ -49,7 +49,7 @@ test('supports size small', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  console.log(container.style);
+
   expect(container).toMatchInlineSnapshot(`
 <div
   class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1] gap-0"
