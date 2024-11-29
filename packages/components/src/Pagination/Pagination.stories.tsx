@@ -13,7 +13,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: () => {
+  render: args => {
     const [basicPage, setBasicPage] = useState(1);
 
     return (
@@ -21,9 +21,10 @@ export const Basic: Story = {
         <h1>Pagination Example</h1>
         <p>Selected Page: {basicPage}</p>
         <Pagination
+          {...args}
           page={basicPage}
           totalPages={10}
-          onPageChange={setBasicPage}
+          onChange={setBasicPage}
         />
       </div>
     );
