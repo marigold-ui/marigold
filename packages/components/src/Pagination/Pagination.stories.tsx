@@ -14,6 +14,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => {
+    return <Pagination {...args} totalPages={10} page={5} />;
+  },
+};
+
+export const Controlled: Story = {
+  render: args => {
     const [basicPage, setBasicPage] = useState(1);
 
     return (
@@ -28,5 +34,17 @@ export const Basic: Story = {
         />
       </div>
     );
+  },
+};
+
+export const OnePage: Story = {
+  render: args => {
+    return <Pagination {...args} totalPages={1} />;
+  },
+};
+
+export const OneHundredPages: Story = {
+  render: args => {
+    return <Pagination {...args} totalPages={100} defaultPage={93} />;
   },
 };
