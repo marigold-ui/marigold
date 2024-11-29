@@ -55,14 +55,17 @@ const header = {
 
 export const Container = ({
   contentType = 'content',
-  size = 'medium',
+  containerWidth = 'medium',
   align = 'left',
   alignItems = 'none',
   space = 0,
   children,
   ...props
 }: ContainerProps) => {
-  const maxWidth = contentType === 'content' ? content[size] : header[size];
+  const maxWidth =
+    contentType === 'content'
+      ? content[props.size ?? containerWidth]
+      : header[props.size ?? containerWidth];
   return (
     <div
       {...props}
