@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from '@marigold/icons';
 import { Ellipsis } from './Ellipsis';
 import { PageButton } from './PageButton';
@@ -8,48 +8,68 @@ import { usePageRange } from './usePageRange';
 
 export interface PaginationProps {
   /**
-   * Current selected page.
+   * The initial page. (uncontrolled)
    */
-  page: number;
+  defaultPage?: number;
+  /**
+   * The current page. (controlled)
+   */
+  page?: number;
   /**
    * The number of total pages.
    */
   totalPages: number;
   /**
-   * Handler that is called when the page changes.
+   * Handler that is called when the pagination active page changes.
    */
-  onChange: (page: number) => void;
+  onChange?: (page: number) => void;
 }
 
-const _Pagination = ({ page, totalPages, onChange }: PaginationProps) => {
+const _Pagination = ({
+  defaultPage = 1,
+  page,
+  totalPages,
+  onChange = () => {},
+}: PaginationProps) => {
+  const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
+
   const { containerRef, keyboardProps, setFocusedPage, setVisiblePages } =
     useKeyboardNavigation({
-      page,
+      page: currentPage,
       totalPages,
-      onChange,
+      onChange: newPage => {
+        setCurrentPage(newPage);
+        onChange(newPage);
+      },
     });
-  const pageRange = usePageRange({ currentPage: page, totalPages });
 
-  const isFirstPage = page === 1;
-  const isLastPage = page === totalPages;
+  const pageRange = usePageRange({ currentPage, totalPages });
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
 
   useEffect(() => {
     setVisiblePages(pageRange);
   }, [pageRange]);
 
   useEffect(() => {
-    setFocusedPage(page);
-  }, [page]);
+    setFocusedPage(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    onChange(newPage);
+  };
 
   return (
     <nav
       ref={containerRef}
       className="flex items-center justify-center space-x-2"
-      aria-label={`Page ${page} of ${totalPages}`}
+      aria-label={`Page ${currentPage} of ${totalPages}`}
       {...keyboardProps}
     >
       <PaginationButton
-        onPress={() => onChange(Math.max(1, page - 1))}
+        onPress={() => handlePageChange(Math.max(1, currentPage - 1))}
         aria-label="Previous page"
         isDisabled={isFirstPage}
       >
@@ -64,15 +84,15 @@ const _Pagination = ({ page, totalPages, onChange }: PaginationProps) => {
             <PageButton
               key={pageNumber}
               page={pageNumber}
-              isSelected={pageNumber === page}
-              onPress={() => onChange(pageNumber)}
+              isSelected={pageNumber === currentPage}
+              onPress={() => handlePageChange(pageNumber)}
             />
           )
         )}
       </div>
 
       <PaginationButton
-        onPress={() => onChange(Math.min(totalPages, page + 1))}
+        onPress={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
         aria-label="Next page"
         isDisabled={isLastPage}
       >
