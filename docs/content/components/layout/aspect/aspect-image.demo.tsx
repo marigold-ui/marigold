@@ -1,44 +1,22 @@
-import { Aspect, Image } from '@marigold/components';
+import { Aspect, Image, Stack } from '@marigold/components';
 
 export default () => (
-  <div className="grid auto-rows-max grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-2 gap-y-4">
-    <Aspect ratio="portrait">
+  <Stack space={4}>
+    <Aspect ratio="ultrawide">
       <Image
-        src="/marigold-abstract.webp"
+        src="/marigold-field.webp"
         fit="cover"
-        alt="an abstract marigold flower"
-      />
-    </Aspect>
-    <Aspect ratio="square">
-      <Image src="/marigold-abstract.webp" alt="an abstract marigold flower" />
-    </Aspect>
-    <Aspect ratio="landscape">
-      <Image
-        src="/marigold-abstract.webp"
-        fit="cover"
-        alt="an abstract marigold flower"
-      />
-    </Aspect>
-    <Aspect ratio="golden">
-      <Image
-        src="/marigold-abstract.webp"
-        fit="cover"
-        alt="an abstract marigold flower"
-      />
-    </Aspect>
-    <Aspect ratio="widescreen">
-      <Image
-        src="/marigold-abstract.webp"
-        fit="cover"
-        alt="an abstract marigold flower"
+        position="bottom"
+        alt="a field of marigold flowers and a bright blue sky"
       />
     </Aspect>
     <Aspect ratio="ultrawide">
       <Image
-        src="/marigold-abstract.webp"
+        src="/marigold-field.webp"
         fit="cover"
-        alt="an abstract marigold flower"
+        position="top"
+        alt="a field of marigold flowers and a bright blue sky"
       />
     </Aspect>
-  </div>
+  </Stack>
 );
