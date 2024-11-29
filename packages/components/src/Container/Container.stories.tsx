@@ -34,6 +34,16 @@ const meta = {
       options: ['left', 'center', 'right', 'none'],
       description: 'set alignment of the items inside the container',
     },
+    space: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: { summary: '0' },
+      },
+      description:
+        'Value representing the space between the two elements, for that we use tailwind tokens.',
+    },
   },
 } satisfies Meta<typeof Container>;
 

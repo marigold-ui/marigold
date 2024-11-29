@@ -10,16 +10,16 @@ test('supports default contentType content', () => {
   );
   const container = screen.getByTestId(/container/);
   expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
-      data-testid="container"
-      style="--maxWidth: 45ch;"
-    >
-      <p>
-        Coding makes fun
-      </p>
-    </div>
-  `);
+<div
+  class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1] gap-0"
+  data-testid="container"
+  style="--maxWidth: 45ch;"
+>
+  <p>
+    Coding makes fun
+  </p>
+</div>
+`);
 });
 
 test('supports contentType header', () => {
@@ -30,16 +30,16 @@ test('supports contentType header', () => {
   );
   const container = screen.getByTestId(/container/);
   expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
-      data-testid="container"
-      style="--maxWidth: 25ch;"
-    >
-      <p>
-        sdf
-      </p>
-    </div>
-  `);
+<div
+  class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1] gap-0"
+  data-testid="container"
+  style="--maxWidth: 25ch;"
+>
+  <p>
+    sdf
+  </p>
+</div>
+`);
 });
 
 test('supports size small', () => {
@@ -49,17 +49,18 @@ test('supports size small', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
+  console.log(container.style);
   expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
-      data-testid="container"
-      style="--maxWidth: 20ch;"
-    >
-      <p>
-        sdf
-      </p>
-    </div>
-  `);
+<div
+  class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1] gap-0"
+  data-testid="container"
+  style="--maxWidth: 20ch;"
+>
+  <p>
+    sdf
+  </p>
+</div>
+`);
 });
 
 test('supports size large', () => {
@@ -70,16 +71,16 @@ test('supports size large', () => {
   );
   const container = screen.getByTestId(/container/);
   expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
-      data-testid="container"
-      style="--maxWidth: 60ch;"
-    >
-      <p>
-        sdf
-      </p>
-    </div>
-  `);
+<div
+  class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1] gap-0"
+  data-testid="container"
+  style="--maxWidth: 60ch;"
+>
+  <p>
+    sdf
+  </p>
+</div>
+`);
 });
 
 test('supports default align container left', () => {
@@ -140,4 +141,15 @@ test('supports align items right', () => {
   );
   const container = screen.getByTestId(/container/);
   expect(container).toHaveClass(`place-items-end`);
+});
+
+test('accepts and uses spacing from theme', () => {
+  render(
+    <Container space={2} data-testid="container">
+      <p>one</p>
+      <p>two</p>
+    </Container>
+  );
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveClass(`gap-2`);
 });

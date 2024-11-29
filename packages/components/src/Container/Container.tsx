@@ -1,15 +1,20 @@
 import { ReactNode } from 'react';
-import type { GridColsAlignProp, PlaceItemsProp } from '@marigold/system';
+import type {
+  GapSpaceProp,
+  GridColsAlignProp,
+  PlaceItemsProp,
+} from '@marigold/system';
 import {
   cn,
   createVar,
+  gapSpace,
   gridColsAlign,
   gridColumn,
   placeItems,
 } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface ContainerProps extends AriaRegionProps {
+export interface ContainerProps extends GapSpaceProp, AriaRegionProps {
   children?: ReactNode;
   /**
    * The content type of the container.
@@ -45,6 +50,7 @@ export const Container = ({
   size = 'medium',
   align = 'left',
   alignItems = 'none',
+  space = 0,
   children,
   ...props
 }: ContainerProps) => {
@@ -56,7 +62,8 @@ export const Container = ({
         'grid',
         placeItems[alignItems],
         gridColsAlign[align],
-        gridColumn[align]
+        gridColumn[align],
+        gapSpace[space]
       )}
       style={createVar({ maxWidth })}
     >
