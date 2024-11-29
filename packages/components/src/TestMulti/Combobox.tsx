@@ -1,4 +1,4 @@
-import React, { ForwardedRef, Key, useMemo, useRef, useState } from 'react';
+import React, { ForwardedRef, useMemo, useRef, useState } from 'react';
 import {
   ButtonContext,
   InputContext,
@@ -6,7 +6,7 @@ import {
   Popover,
   PopoverContext,
 } from 'react-aria-components';
-import { Provider } from 'react-aria-components';
+import { Key, Provider } from 'react-aria-components';
 import { Button } from '../Button';
 import { FieldBase } from '../FieldBase';
 import { Input } from '../Input';
@@ -103,15 +103,9 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
       <FieldBase label="selects">
         <Input action={<Button>open</Button>} />
         <Popover>
-          <ListBox
-            items={state.collection}
-            selectionMode="multiple"
-            selectionBehavior="toggle"
-          >
-            {(item: { key: Key; textValue: string }) => (
-              <ListBox.Item id={item.key} key={item.key}>
-                {item.textValue}
-              </ListBox.Item>
+          <ListBox>
+            {(item: { id: Key; textValue: string }) => (
+              <ListBox.Item id={item.id}>{item.textValue}</ListBox.Item>
             )}
           </ListBox>
         </Popover>
