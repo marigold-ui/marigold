@@ -3,7 +3,7 @@ interface PageRangeProps {
   totalPages: number;
 }
 
-export function usePageRange({ currentPage, totalPages }: PageRangeProps) {
+export const usePageRange = ({ currentPage, totalPages }: PageRangeProps) => {
   const getPageRange = () => {
     // If total pages is 7 or less, show all pages
     if (totalPages <= 7) {
@@ -42,4 +42,4 @@ export function usePageRange({ currentPage, totalPages }: PageRangeProps) {
   };
 
   return getPageRange();
-}
+};
