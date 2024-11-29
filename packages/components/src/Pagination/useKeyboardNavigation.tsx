@@ -5,7 +5,7 @@ import { PaginationProps } from './Pagination';
 export function useKeyboardNavigation({
   page,
   totalPages,
-  onChange,
+  onChange = () => {},
 }: PaginationProps) {
   const containerRef = useRef<HTMLElement | null>(null);
   const [focusedPage, setFocusedPage] = useState(1);
