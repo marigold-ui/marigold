@@ -8,17 +8,24 @@ The `<Aspect>` component keeps media elements like images or videos in their cor
 
 ## Usage
 
+When using the "aspect" component to maintain the aspect ratio of media elements, choose an appropriate predefined ratio to ensure a consistent and visually appealing layout. The available aspect ratios include:
+
+- **square**: For media that should have equal width and height.
+- **landscape**: Suitable for wider-than-tall elements, commonly used for photos and videos.
+- **portrait**: Ideal for media taller than they are wide, like profile pictures.
+- **widescreen**: Useful for standard video content with a 16:9 ratio.
+- **ultrawide**: Best for extra-wide content, such as panoramic media.
+- **golden**: Reflects the golden ratio, providing a balanced and aesthetically pleasing aspect.
+
+Select a ratio based on the type of media and the context in which it is displayed to achieve the best visual effect.
+
+<ComponentDemo file="./aspect-ratio.demo.tsx" />
+
 ### Ratio Square and maximum width
 
 The example shows how the `ratio` and the `maxWidth` props with a image component inside is to use. The `ratio` has his default value `square`.
 
 <ComponentDemo file="./ratio-square.demo.tsx" />
-
-### Ratio Golden
-
-An Example that shows the `ratio` prop set to `"golden"`.
-
-<ComponentDemo file="./golden-aspect.demo.tsx" />
 
 ### Map
 
@@ -31,6 +38,14 @@ This Example use a Iframe inside the Aspect Component. The `ratio` prop is set t
 An `<Iframe>` with a video inside the Aspect Component. The `ratio` prop is set to `"widescreen"`.
 
 <ComponentDemo file="./video.demo.tsx" />
+
+### Max Width
+
+Setting a max width is useful when you want to prevent a media element from growing too large, especially on wider screens. It helps maintain a balanced layout by ensuring the media stays within a reasonable size.
+
+The max width can be controlled using the `maxWidth` prop, allowing you to easily set a limit that fits your layout needs.
+
+<ComponentDemo file="./aspect-max-width.demo.tsx" />
 
 ## Props
 
