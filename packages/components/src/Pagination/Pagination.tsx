@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from '@marigold/icons';
 import { Ellipsis } from './Ellipsis';
 import { PageButton } from './PageButton';
@@ -7,30 +8,39 @@ import { usePageRange } from './usePageRange';
 
 export interface PaginationProps {
   /**
-   * The total number of items.
+   * Current selected page.
    */
-  totalItems: number;
+  page: number;
   /**
-   * The number of items to display on a page.
+   * The number of total pages.
    */
-  pageSize: number;
+  totalPages: number;
   /**
    * Handler that is called when the page changes.
    */
-  onChange?: (page: number) => void;
+  onChange: (page: number) => void;
 }
 
-const _Pagination = ({ page, totalPages, onPageChange }) => {
-  const { containerRef, keyboardProps } = useKeyboardNavigation({
-    page,
-    totalPages,
-    onPageChange,
-  });
+const _Pagination = ({ page, totalPages, onChange }: PaginationProps) => {
+  const { containerRef, keyboardProps, setFocusedPage, setVisiblePages } =
+    useKeyboardNavigation({
+      page,
+      totalPages,
+      onChange,
+    });
   const pageRange = usePageRange({ currentPage: page, totalPages });
 
   const isFirstPage = page === 1;
   const isLastPage = page === totalPages;
-  console.log(pageRange);
+
+  useEffect(() => {
+    setVisiblePages(pageRange);
+  }, [pageRange]);
+
+  useEffect(() => {
+    setFocusedPage(page);
+  }, [page]);
+
   return (
     <nav
       ref={containerRef}
@@ -39,7 +49,7 @@ const _Pagination = ({ page, totalPages, onPageChange }) => {
       {...keyboardProps}
     >
       <PaginationButton
-        onPress={() => onPageChange(Math.max(1, page - 1))}
+        onPress={() => onChange(Math.max(1, page - 1))}
         aria-label="Previous page"
         isDisabled={isFirstPage}
       >
@@ -55,14 +65,14 @@ const _Pagination = ({ page, totalPages, onPageChange }) => {
               key={pageNumber}
               page={pageNumber}
               isSelected={pageNumber === page}
-              onPress={() => onPageChange(pageNumber)}
+              onPress={() => onChange(pageNumber)}
             />
           )
         )}
       </div>
 
       <PaginationButton
-        onPress={() => onPageChange(Math.min(totalPages, page + 1))}
+        onPress={() => onChange(Math.min(totalPages, page + 1))}
         aria-label="Next page"
         isDisabled={isLastPage}
       >
