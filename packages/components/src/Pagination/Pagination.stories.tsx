@@ -4,7 +4,6 @@ import { Pagination } from './Pagination';
 
 const meta = {
   title: 'Components/Pagination',
-  component: Pagination,
   argTypes: {},
   args: {},
 } satisfies Meta<typeof Pagination>;
@@ -13,9 +12,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => {
-    return <Pagination {...args} totalPages={10} page={5} />;
-  },
+  render: args => <Pagination {...args} totalPages={10} page={5} />,
 };
 
 export const Controlled: Story = {
@@ -38,13 +35,9 @@ export const Controlled: Story = {
 };
 
 export const OnePage: Story = {
-  render: args => {
-    return <Pagination {...args} totalPages={1} />;
-  },
+  render: args => <Pagination {...args} totalPages={1} />,
 };
 
 export const OneHundredPages: Story = {
-  render: args => {
-    return <Pagination {...args} totalPages={100} defaultPage={93} />;
-  },
+  render: args => <Pagination {...args} totalPages={100} defaultPage={93} />,
 };
