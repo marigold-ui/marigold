@@ -21,7 +21,15 @@ export interface ContainerProps extends GapSpaceProp, AriaRegionProps {
    * @default 'content'
    */
   contentType?: 'content' | 'header';
+  /**
+   * @deprecated use `containerWidth` instead
+   */
   size?: keyof typeof content | keyof typeof header;
+
+  /**
+   * Width of the container.
+   */
+  containerWidth?: keyof typeof content | keyof typeof header;
   /**
    * Set alignment the content inside the container.
    * @default left
