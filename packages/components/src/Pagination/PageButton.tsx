@@ -7,7 +7,7 @@ interface PageButtonProps {
   onPress: () => void;
 }
 
-export function PageButton({ page, isSelected, onPress }: PageButtonProps) {
+export const PageButton = ({ page, isSelected, onPress }: PageButtonProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
 
   return (
@@ -19,11 +19,11 @@ export function PageButton({ page, isSelected, onPress }: PageButtonProps) {
         isSelected
           ? 'border-0 border-b-2 border-solid border-b-black bg-none text-black'
           : 'text-gray-700 hover:bg-gray-100'
-      } `}
+      }`}
       onPress={onPress}
       variant="text"
     >
       {page}
     </Button>
   );
-}
+};
