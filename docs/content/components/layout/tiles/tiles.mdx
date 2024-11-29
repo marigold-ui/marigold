@@ -1,25 +1,15 @@
 ---
 title: Tiles
-caption: For structuring layout as a responsive grid.
+caption: Structures the layout responsively in a grid system.
+badge: updated
 ---
 
-The `<Tiles>` component is related to the CSS grid context. Use the `<Tiles>` if you want to layout some items in a responsive way.
+The `<Tiles>` component is based on [CSS grid](https://www.w3schools.com/css/css_grid.asp) system. With the grid you have the possibility to create equal wide tiles.
+Use the `<Tiles>` if you want to layout some items in a responsive way.
 
 It should be noted that `<Tiles>` is used for children with the same width. If you want to set different widths for the children use [`<Columns>`](/components/columns/) instead.
 
 It's possible to display the children elements with some spacing or set a minimum width for all items inside `<Tiles>`.
-
-## Import
-
-To import the component you just have to use this code below.
-
-```tsx
-import { Tiles } from '@marigold/components';
-```
-
-### Props
-
-<PropsTable component={title} />
 
 ## Examples
 
@@ -52,3 +42,9 @@ Using the `stretch` property will make the tiles fully responsive. Meaning, they
 A full example of a use case with `<Tiles>` and `<Card>` inside it.
 
 <ComponentDemo file="./tiles-complex.demo.tsx" />
+
+### Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
