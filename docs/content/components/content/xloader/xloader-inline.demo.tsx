@@ -98,7 +98,7 @@ export default () => (
             queryClient.invalidateQueries({ queryKey: ['venues'] })
           }
         >
-          Reload
+          Trigger reload
         </Button>
       </Inline>
       <Venues />
