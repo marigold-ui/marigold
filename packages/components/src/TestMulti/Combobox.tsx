@@ -1,23 +1,31 @@
-import React, { ForwardedRef, useMemo, useRef, useState } from 'react';
+import React, {
+  ForwardedRef,
+  RefObject,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   ButtonContext,
   InputContext,
   ListBoxContext,
-  Popover,
-  PopoverContext, // Tag,
-  // TagGroup,
-  // TagList,
+  PopoverContext,
+  Tag,
+  TagGroup,
+  TagList,
 } from 'react-aria-components';
 import { Key, Provider, Input as RACInput } from 'react-aria-components';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
+import { useObjectRef, useResizeObserver } from '@react-aria/utils';
+import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase';
 import { ListBox } from '../ListBox';
-import { Tag } from '../TagGroup';
+import { Popover } from '../Overlay';
 import { ComboboxMultiProps } from './types';
 import { useComboboxMulti } from './useComboboxMulti';
-// import { useObjectRef } from "@react-aria/utils";
 import { useComboboxMultiState } from './useComboboxMultiState';
 
 export function useStatefulRef<T extends HTMLElement>() {
@@ -25,6 +33,33 @@ export function useStatefulRef<T extends HTMLElement>() {
   return useMemo(() => {
     return [{ current }, statefulRef] as const;
   }, [current, statefulRef]);
+}
+
+export function usePopoverStyles({
+  fieldRef,
+}: {
+  fieldRef: RefObject<HTMLDivElement>;
+}) {
+  // Measure the width of the input and the button to inform the width of the menu (below).
+  let [menuWidth, setMenuWidth] = useState<number>();
+
+  let onResize = useCallback(() => {
+    if (fieldRef.current) {
+      let fullWidth = fieldRef.current.offsetWidth;
+      setMenuWidth(fullWidth);
+    }
+  }, [setMenuWidth]);
+
+  useResizeObserver({
+    ref: fieldRef,
+    onResize: onResize,
+  });
+
+  useLayoutEffect(onResize, [onResize]);
+
+  return {
+    width: menuWidth,
+  };
 }
 
 export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
@@ -47,11 +82,11 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   let buttonRef = useRef<HTMLButtonElement>(null);
   let inputRef = useRef<HTMLInputElement>(null);
   let listBoxRef = useRef<HTMLDivElement>(null);
-  // let fieldRef = useObjectRef(forwardedRef);
+  let fieldRef = useObjectRef(forwardedRef);
 
   // let layoutDelegate = useListBoxLayout();
   let state = useComboboxMultiState(props);
-  // console.log("state", state)
+  console.log('state', state.selectionManager.select);
 
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
 
@@ -73,6 +108,10 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     size,
     variant,
   });
+
+  const popoverStyles = usePopoverStyles({ fieldRef });
+
+  console.log('listBoxProps', listBoxProps);
 
   return (
     <Provider
@@ -105,21 +144,23 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
           PopoverContext,
           {
             ref: popoverRef as ForwardedRef<HTMLElement>,
-            triggerRef: inputRef,
+            triggerRef: fieldRef,
             scrollRef: listBoxRef,
             isNonModal: true,
+            style: popoverStyles,
+            placement: 'bottom start',
             ...state,
           },
         ],
       ]}
     >
       <FieldBase label="selects">
-        <div className={cn(classNames.container)}>
-          <div tabIndex={-1}>
-            <Tag.Group>
-              <Tag key={'3'}>3items</Tag>
-            </Tag.Group>
-          </div>
+        <div className={cn(classNames.container)} ref={fieldRef}>
+          <TagGroup>
+            <TagList>
+              <Tag key={'3'}>3 selected</Tag>
+            </TagList>
+          </TagGroup>
           <RACInput className={classNames.input} />
           <Button variant="icon">
             <ChevronDown className="size-4" />
@@ -136,3 +177,5 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     </Provider>
   );
 });
+
+// input + tag + button
