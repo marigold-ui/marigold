@@ -19,25 +19,17 @@ const meta = {
         'ultrawide',
         'golden',
       ],
-      description: 'choose between content and header',
-      table: {
-        type: { summary: 'select' },
-        defaultValue: { summary: 'square' },
-      },
+      description: 'Choose an aspect ratio for the image',
     },
     maxWidth: {
       control: {
         type: 'text',
       },
       description: 'Maximum width',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '500px' },
-      },
     },
   },
   args: {
-    maxWidth: '500px',
+    maxWidth: '300px',
     ratio: 'square',
   },
 } satisfies Meta<typeof Aspect>;
@@ -51,17 +43,7 @@ export const Basic: Story = {
       <Image
         src="https://images.unsplash.com/photo-1472457897821-70d3819a0e24?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2669&q=80"
         alt="some image"
-      />
-    </Aspect>
-  ),
-};
-
-export const CutImage: Story = {
-  render: args => (
-    <Aspect {...args}>
-      <Image
-        src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-        alt="event_image"
+        fit="cover"
       />
     </Aspect>
   ),
