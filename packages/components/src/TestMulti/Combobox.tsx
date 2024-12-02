@@ -4,21 +4,17 @@ import {
   InputContext,
   ListBoxContext,
   Popover,
-  PopoverContext,
-  Tag,
-  TagGroup,
-  TagList,
+  PopoverContext, // Tag,
+  // TagGroup,
+  // TagList,
 } from 'react-aria-components';
 import { Key, Provider, Input as RACInput } from 'react-aria-components';
-import { useFocusRing } from '@react-aria/focus';
-import { mergeProps } from '@react-aria/utils';
 import { cn, useClassNames, useStateProps } from '@marigold/system';
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase';
-import { Input } from '../Input';
 import { ListBox } from '../ListBox';
-import { TextField } from '../TextField';
+import { Tag } from '../TagGroup';
 import { ComboboxMultiProps } from './types';
 import { useComboboxMulti } from './useComboboxMulti';
 // import { useObjectRef } from "@react-aria/utils";
@@ -59,10 +55,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
 
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
 
-  const { focusProps, isFocusVisible } = useFocusRing();
-
-  const stateProps = useStateProps({ focusVisible: isFocusVisible, ...props });
-
   let { inputProps, buttonProps, listBoxProps, labelProps, descriptionProps } =
     useComboboxMulti(
       {
@@ -72,8 +64,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
         // layoutDelegate,
         listBoxRef,
         popoverRef: popoverRefLikeValue,
-        isFocusVisible,
-        ...focusProps,
       },
       state
     );
@@ -83,9 +73,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     size,
     variant,
   });
-
-  console.log('focusProps', focusProps);
-  console.log('stateProps', stateProps);
 
   return (
     <Provider
@@ -127,15 +114,12 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
       ]}
     >
       <FieldBase label="selects">
-        <div
-          className={cn(classNames.container)}
-          {...mergeProps(inputProps, focusProps, stateProps)}
-        >
-          <TagGroup>
-            <TagList>
+        <div className={cn(classNames.container)}>
+          <div tabIndex={-1}>
+            <Tag.Group>
               <Tag key={'3'}>3items</Tag>
-            </TagList>
-          </TagGroup>
+            </Tag.Group>
+          </div>
           <RACInput className={classNames.input} />
           <Button variant="icon">
             <ChevronDown className="size-4" />
