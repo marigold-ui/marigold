@@ -68,7 +68,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
               />
               {prop.defaultValue ? (
                 <Inline space={2} alignY="center">
-                  Defaults to:{' '}
+                  <span className="text-xs">Defaults to: </span>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: prop.defaultValue.value,
