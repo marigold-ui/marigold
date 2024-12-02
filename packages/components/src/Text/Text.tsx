@@ -69,12 +69,17 @@ const _Text = ({
     size,
   });
 
+  /**
+   * Use `<Text>` when a `slot` is used. Make sure `elementType`
+   * prop is only used in combindation the `<Text>`.
+   */
   const Component = props.slot ? Text : as;
+  const elementType = props.slot ? { elementType: as } : {};
 
   return (
     <Component
       {...props}
-      elementType={props.slot ? as : undefined}
+      {...elementType}
       className={cn(
         'text-[--color] outline-[--outline]',
         classNames,
