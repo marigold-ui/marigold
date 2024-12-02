@@ -1,5 +1,30 @@
 # @marigold/theme-docs
 
+## 2.2.1
+
+### Patch Changes
+
+- 05f84b1: docs: adjust font size of `code` in `<SectionMessage>` and make them less distracting
+- b4036c6: docs([DST-587]): revise `<DatePicker>` page according to new component page structure
+
+  Revised the `<DatePicker>` documentation page to our new layout of component pages.
+
+- Updated dependencies [f2bae7e]
+- Updated dependencies [80a9f5b]
+- Updated dependencies [2d701a6]
+- Updated dependencies [a917acf]
+- Updated dependencies [83ad341]
+- Updated dependencies [22200a0]
+- Updated dependencies [222f674]
+- Updated dependencies [ac29d40]
+- Updated dependencies [ebc53cb]
+- Updated dependencies [3bf3a8e]
+- Updated dependencies [2cb5d38]
+- Updated dependencies [313f004]
+  - @marigold/components@10.1.0
+  - @marigold/system@10.1.0
+  - @marigold/theme-preset@1.3.24
+
 ## 2.2.0
 
 ### Minor Changes

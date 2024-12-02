@@ -1,5 +1,26 @@
 # @marigold/storybook-config
 
+## 1.1.51
+
+### Patch Changes
+
+- 3e09fce: docs: Added/activated a11y addon to storybook. In all components is now a panel called Accessibility which shows how accessible our components are and if there are some violations or incomplete issues.
+- Updated dependencies [f2bae7e]
+- Updated dependencies [80a9f5b]
+- Updated dependencies [2d701a6]
+- Updated dependencies [a917acf]
+- Updated dependencies [83ad341]
+- Updated dependencies [22200a0]
+- Updated dependencies [222f674]
+- Updated dependencies [ac29d40]
+- Updated dependencies [ebc53cb]
+- Updated dependencies [3bf3a8e]
+- Updated dependencies [2cb5d38]
+- Updated dependencies [313f004]
+  - @marigold/components@10.1.0
+  - @marigold/theme-b2b@28.0.1
+  - @marigold/theme-core@27.0.1
+
 ## 1.1.50
 
 ### Patch Changes

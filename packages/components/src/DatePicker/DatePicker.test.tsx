@@ -4,6 +4,7 @@
 import { CalendarDate } from '@internationalized/date';
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { I18nProvider } from 'react-aria-components';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { DatePicker } from './DatePicker';
@@ -452,11 +453,13 @@ test('DatePicker supports width prop', () => {
 
 test('DatePicker supports data unavailable property', async () => {
   render(
-    <DatePicker
-      data-testid="picker"
-      aria-label="date picker"
-      dateUnavailable={date => date.toDate('Europe/Berlin').getDate() !== 1}
-    />
+    <I18nProvider locale="de-DE">
+      <DatePicker
+        data-testid="picker"
+        aria-label="date picker"
+        dateUnavailable={date => date.toDate('Europe/Berlin').getDate() !== 1}
+      />
+    </I18nProvider>
   );
 
   const button = screen.getByRole('button');

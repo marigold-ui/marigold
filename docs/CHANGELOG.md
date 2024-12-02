@@ -1,5 +1,92 @@
 # @marigold/docs
 
+## 10.1.0
+
+### Minor Changes
+
+- 83ad341: feat(dialog): Introduce a dedicated button to close a dialog
+
+  Make it more convenient to have a button that closes the `<Dialog>`. With this, there is less need to use the child function to access the `close` method. Instead you can now use `<Button slot="close">` to render a close button.
+
+### Patch Changes
+
+- 2d701a6: docs[DST-611]: Revise `<Scrollable>` documentation page
+
+  Revised the `<Scrollable>` page according to our new structure of component documentation pages.
+
+- 22200a0: docs([DST-581]): revise `<DateField>` page according to new component page structure
+
+  Revised the `<DateField>` documentation page to our new layout of component pages.
+
+- 222f674: refa[DST-607]: revise `<Badge>` page
+
+  The `<Badge>` was revised according to our new component guidelines.
+
+- ac29d40: refa[DST-610]: Revise `<Card>` page
+
+  The `<Card>`is now revised according to our new component page guidelines.
+
+- 19c3317: docs: move resources pages to introduction (and hide develoepr guidelines)
+- 1bb2729: docs: fix link to `<Icon>` page
+- 6aa9707: docs([DST-614]): Revise `<Aside>` documentation
+
+  Revised the `<Aside>` page according to our new structure of component documentation.
+
+- 06d9f71: docs: fix release date in changelogs
+
+  Now using the Github-Api
+
+- ebc53cb: refa[DST-598]: Improve `<Slider>` component
+
+  The `<Slider>` component appears in a new guise. Functionalities and documentation have been significantly revised. So make sure to check out the Marigold documentation and storybook. It's worth it.
+
+  Some key features are:
+
+  - multithumb or range slider
+  - visual indicator for selected track
+  - use slider in forms
+
+- 05f84b1: docs: adjust font size of `code` in `<SectionMessage>` and make them less distracting
+- b84e19c: docs: fix broken links (MultiSelect and Building Forms)
+- 3cd1451: docs: adjust menu demo with dialog
+- 3bf3a8e: docs([DST-615]): Revise `<Center>` documentation
+
+  Revised the `<Center>` page according to our new structure of component documentation.
+
+- b4036c6: docs([DST-587]): revise `<DatePicker>` page according to new component page structure
+
+  Revised the `<DatePicker>` documentation page to our new layout of component pages.
+
+- 2cb5d38: feat(DST-596): add loading indicator in `<Button>` component
+
+  Introduced a new loading indicator for the `<Button>` component's loading state, enhancing the visibility of its loading status. The `<Button>` now supports a loading property for this functionality.
+
+- 313f004: docs([DST-609]): Revise `<Columns>` documentation page
+
+  Revised the `<Columns>` page according to our new structure of component documentation pages.
+
+- Updated dependencies [f2bae7e]
+- Updated dependencies [80a9f5b]
+- Updated dependencies [2d701a6]
+- Updated dependencies [a917acf]
+- Updated dependencies [83ad341]
+- Updated dependencies [22200a0]
+- Updated dependencies [222f674]
+- Updated dependencies [ac29d40]
+- Updated dependencies [ebc53cb]
+- Updated dependencies [05f84b1]
+- Updated dependencies [3bf3a8e]
+- Updated dependencies [b4036c6]
+- Updated dependencies [2cb5d38]
+- Updated dependencies [313f004]
+  - @marigold/components@10.1.0
+  - @marigold/theme-b2b@28.0.1
+  - @marigold/theme-core@27.0.1
+  - @marigold/system@10.1.0
+  - @marigold/theme-docs@2.2.1
+  - @marigold/icons@1.2.59
+  - @marigold/theme-preset@1.3.24
+
 ## 10.0.0
 
 ### Major Changes

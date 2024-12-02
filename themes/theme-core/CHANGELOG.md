@@ -1,5 +1,43 @@
 # @marigold/theme-core
 
+## 27.0.1
+
+### Patch Changes
+
+- 222f674: refa[DST-607]: revise `<Badge>` page
+
+  The `<Badge>` was revised according to our new component guidelines.
+
+- ebc53cb: refa[DST-598]: Improve `<Slider>` component
+
+  The `<Slider>` component appears in a new guise. Functionalities and documentation have been significantly revised. So make sure to check out the Marigold documentation and storybook. It's worth it.
+
+  Some key features are:
+
+  - multithumb or range slider
+  - visual indicator for selected track
+  - use slider in forms
+
+- 2cb5d38: feat(DST-596): add loading indicator in `<Button>` component
+
+  Introduced a new loading indicator for the `<Button>` component's loading state, enhancing the visibility of its loading status. The `<Button>` now supports a loading property for this functionality.
+
+- Updated dependencies [f2bae7e]
+- Updated dependencies [80a9f5b]
+- Updated dependencies [2d701a6]
+- Updated dependencies [a917acf]
+- Updated dependencies [83ad341]
+- Updated dependencies [22200a0]
+- Updated dependencies [222f674]
+- Updated dependencies [ac29d40]
+- Updated dependencies [ebc53cb]
+- Updated dependencies [3bf3a8e]
+- Updated dependencies [2cb5d38]
+- Updated dependencies [313f004]
+  - @marigold/components@10.1.0
+  - @marigold/system@10.1.0
+  - @marigold/theme-preset@1.3.24
+
 ## 27.0.0
 
 ### Major Changes
