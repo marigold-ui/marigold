@@ -2,13 +2,7 @@
 
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import {
-  cleanup,
-  fireEvent,
-  prettyDOM,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components';
 import { Theme, cva } from '@marigold/system';
