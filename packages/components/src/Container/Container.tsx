@@ -37,7 +37,7 @@ export interface ContainerProps extends GapSpaceProp, AriaRegionProps {
    * Width of the container.
    * @default 'default'
    */
-  textLength?: keyof typeof containerTextLength;
+  contentLength?: keyof typeof containerTextLength;
   /**
    * Set alignment the content inside the container.
    * @default 'left'
@@ -52,7 +52,7 @@ export interface ContainerProps extends GapSpaceProp, AriaRegionProps {
 // Component
 // ---------------
 export const Container = ({
-  textLength = 'default',
+  contentLength = 'default',
   align = 'left',
   alignItems = 'none',
   space = 0,
@@ -69,8 +69,8 @@ export const Container = ({
       gapSpace[space]
     )}
     style={createVar({
-      maxTextWidth: containerTextLength[textLength],
-      maxHeadlineWidth: containerHeadlineLength[textLength],
+      maxTextWidth: containerTextLength[contentLength],
+      maxHeadlineWidth: containerHeadlineLength[contentLength],
     })}
   >
     {children}

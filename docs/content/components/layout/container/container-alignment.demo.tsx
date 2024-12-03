@@ -1,7 +1,7 @@
 import { Aspect, Container, Headline, Image, Text } from '@marigold/components';
 
 export default () => (
-  <Container space={4} textLength="short" align="center" alignItems="center">
+  <Container space={4} contentLength="short" align="center" alignItems="center">
     <Headline level="3">Taking care of Marigolds</Headline>
     <Aspect maxWidth="250px" ratio="ultrawide">
       <Image

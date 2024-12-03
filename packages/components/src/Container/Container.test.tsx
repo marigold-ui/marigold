@@ -24,7 +24,7 @@ test('supports default contentType content', () => {
 
 test('supports contentType header', () => {
   render(
-    <Container contentType="header" data-testid="container">
+    <Container data-testid="container">
       <p>sdf</p>
     </Container>
   );
@@ -44,7 +44,7 @@ test('supports contentType header', () => {
 
 test('supports short text length', () => {
   render(
-    <Container textLength="short" data-testid="container">
+    <Container contentLength="short" data-testid="container">
       <p>sdf</p>
     </Container>
   );
@@ -65,7 +65,7 @@ test('supports short text length', () => {
 
 test('supports long text length', () => {
   render(
-    <Container textLength="long" data-testid="container">
+    <Container contentLength="long" data-testid="container">
       <p>sdf</p>
     </Container>
   );

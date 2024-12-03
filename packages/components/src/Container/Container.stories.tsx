@@ -6,14 +6,7 @@ const meta = {
   title: 'Components/Container',
   component: Container,
   argTypes: {
-    contentType: {
-      control: {
-        type: 'select',
-      },
-      options: ['content', 'header'],
-      description: 'choose between content and header',
-    },
-    textLength: {
+    contentLength: {
       control: {
         type: 'select',
       },
@@ -62,14 +55,6 @@ export const Content: Story = {
         evil lord Darth Vader, obsessed with finding young Skywalker, has
         dispatched thousands of remote probes into the far reaches of space....
       </p>
-    </Container>
-  ),
-};
-
-export const Header: Story = {
-  render: args => (
-    <Container contentType="header" {...args}>
-      <h1>Star Wars - The Empire Strikes Back</h1>
     </Container>
   ),
 };

@@ -13,22 +13,19 @@ The `<Container>` component is ideal for situations where you need to limit the 
 - **Hero Sections**: Use the `<Container>` for hero banners with headlines and call-to-action buttons. Limiting the width keeps the focus on the main message, avoiding the visual dispersion that comes with overly wide text blocks.
 - **Centering Content**: The `<Container>` is also useful when you need to center content on the page while ensuring it doesn't stretch too far, providing a consistent and polished appearance.
 
-To apply text length limits, use the `<Text>` and `<Headline>` components within the `<Container>` component.
+To limit text length, use the `<Text>` and `<Headline>` components inside the `<Container>`. This will automatically adjust the content length to make it easier to read.
 
 <ComponentDemo file="./container-appearance.demo.tsx" />
 
-### Length and spacing
+### Dynamic width
 
-The `<Container>` component lets you adjust the length of its content using the `textLength` prop. This helps to optimally use the available space in a layout.
+The width of the `<Container>` is not fixed; it adjusts based on the font size to ensure the optimal reading length, which is determined by the number of characters per line. This results in the `<Container>` varying in size depending on its content.
 
-In addition, the `space` prop can be used to set the amount of whitespace between the items inside the `<Container>`. This is helpful for ensuring the elements have consistent spacing, which makes the layout look clean and easy to use.
+<ComponentDemo file="./container-dynamic-width.demo.tsx" />
 
-<SectionMessage>
-  <SectionMessage.Title>Dynamic container sizing</SectionMessage.Title>
-  <SectionMessage.Content>The width of the `<Container>` is not fixed but adjusts based on the font size, as the optimal reading length is determined by the number of characters per line.</SectionMessage.Content>
-</SectionMessage>
+### Content length
 
-<ComponentDemo file="./container-length-space.demo.tsx" />
+Using the `contentLength` ...
 
 ### Alignment
 
