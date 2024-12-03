@@ -22,7 +22,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Pagination {...args} totalPages={10} page={5} />,
+  render: args => (
+    <Pagination {...args} totalItems={100} pageSize={10} page={5} />
+  ),
 };
 
 export const Controlled: Story = {
@@ -36,7 +38,8 @@ export const Controlled: Story = {
         <Pagination
           {...args}
           page={basicPage}
-          totalPages={10}
+          totalItems={100}
+          pageSize={10}
           onChange={setBasicPage}
         />
       </div>
@@ -45,11 +48,13 @@ export const Controlled: Story = {
 };
 
 export const OnePage: Story = {
-  render: args => <Pagination {...args} totalPages={1} />,
+  render: args => <Pagination {...args} totalItems={10} pageSize={10} />,
 };
 
 export const OneHundredPages: Story = {
-  render: args => <Pagination {...args} totalPages={100} defaultPage={93} />,
+  render: args => (
+    <Pagination {...args} totalItems={1000} pageSize={10} defaultPage={93} />
+  ),
 };
 
 export const FullScreenSize: Story = {
@@ -57,7 +62,7 @@ export const FullScreenSize: Story = {
     <Inline alignY="center">
       <Text fontSize="sm">Showing 93 of 100</Text>
       <Split />
-      <Pagination {...args} totalPages={100} defaultPage={93} />
+      <Pagination {...args} totalItems={1000} pageSize={10} defaultPage={93} />
       <Split />
       <Select width={16} aria-label="Page size" defaultSelectedKey="10">
         <Select.Option id="10">10</Select.Option>
@@ -107,9 +112,14 @@ export const WithTable: Story = {
           </Table.Body>
         </Table>
         <Inline alignY="center">
-          <Text fontSize="sm">blabla</Text>
+          <Text fontSize="sm">Showing 1-10 of 10 pages</Text>
           <Split />
-          <Pagination {...args} totalPages={100} defaultPage={93} />
+          <Pagination
+            {...args}
+            totalItems={100}
+            pageSize={10}
+            defaultPage={1}
+          />
           <Split />
           <FieldGroup labelWidth="60px">
             <Select width={28} label="Page size" defaultSelectedKey="10">
