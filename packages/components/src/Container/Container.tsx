@@ -34,11 +34,6 @@ export const gridColumn = {
 export interface ContainerProps extends GapSpaceProp, AriaRegionProps {
   children?: ReactNode;
   /**
-   * The content type of the container.
-   * @default 'content'
-   */
-  contentType?: 'content' | 'header';
-  /**
    * Width of the container.
    * @default 'default'
    */
@@ -57,7 +52,6 @@ export interface ContainerProps extends GapSpaceProp, AriaRegionProps {
 // Component
 // ---------------
 export const Container = ({
-  contentType = 'content',
   textLength = 'default',
   align = 'left',
   alignItems = 'none',

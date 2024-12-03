@@ -42,9 +42,9 @@ test('supports contentType header', () => {
 `);
 });
 
-test('supports width small', () => {
+test('supports short text length', () => {
   render(
-    <Container textLength="small" data-testid="container">
+    <Container textLength="short" data-testid="container">
       <p>sdf</p>
     </Container>
   );
@@ -63,9 +63,9 @@ test('supports width small', () => {
 `);
 });
 
-test('supports width large', () => {
+test('supports long text length', () => {
   render(
-    <Container textLength="large" data-testid="container">
+    <Container textLength="long" data-testid="container">
       <p>sdf</p>
     </Container>
   );

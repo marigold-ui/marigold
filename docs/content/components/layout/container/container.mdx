@@ -13,40 +13,28 @@ The `<Container>` component is ideal for situations where you need to limit the 
 - **Hero Sections**: Use the `<Container>` for hero banners with headlines and call-to-action buttons. Limiting the width keeps the focus on the main message, avoiding the visual dispersion that comes with overly wide text blocks.
 - **Centering Content**: The `<Container>` is also useful when you need to center content on the page while ensuring it doesn't stretch too far, providing a consistent and polished appearance.
 
+To apply text length limits, use the `<Text>` and `<Headline>` components within the `<Container>` component.
+
 <ComponentDemo file="./container-appearance.demo.tsx" />
 
-### Content types
+### Length and spacing
 
-The `<Container>` component can switch between different content types via the `contentType` prop. This flexibility is important because regular content (e.g., text) often requires more width for optimal readability compared to shorter content like headlines. Use the correct `contentType` based on the type of content you are displaying to achieve the best reading experience. By default the `<Container>` expects regular text as its content.
-
-<ComponentDemo file="./container-content-type.demo.tsx" />
-
-### Width and spacing
-
-The `<Container>` component lets you adjust the width of its content using the `containerWidth` prop. This helps to optimally use the available space in a layout.
+The `<Container>` component lets you adjust the length of its content using the `textLength` prop. This helps to optimally use the available space in a layout.
 
 In addition, the `space` prop can be used to set the amount of whitespace between the items inside the `<Container>`. This is helpful for ensuring the elements have consistent spacing, which makes the layout look clean and easy to use.
 
 <SectionMessage>
   <SectionMessage.Title>Dynamic container sizing</SectionMessage.Title>
-  <SectionMessage.Content>The width of the `<Container>` is not fixed but adjusts based on the font size, as the optimal reading length is determined by the number of characters per line. This is why the first paragraph in the demo below is wider than the others.</SectionMessage.Content>
+  <SectionMessage.Content>The width of the `<Container>` is not fixed but adjusts based on the font size, as the optimal reading length is determined by the number of characters per line.</SectionMessage.Content>
 </SectionMessage>
 
-<ComponentDemo file="./container-width-space.demo.tsx" />
+<ComponentDemo file="./container-length-space.demo.tsx" />
 
 ### Alignment
 
-### Container sizes
+The `<Container>` component lets you align text and other elements to the left, center, or right, giving you flexibility in arranging content. This is helpful when you need to make some parts of the layout stand out, like centering a hero section. Good alignment makes the page look organized and improves how users experience the site.
 
-In this example the `size` prop is set to small. You can also choose medium or large size. It sets the width of the content of the container.
-
-<ComponentDemo file="./small-container.demo.tsx" />
-
-## Text Container
-
-In some cases, the width of the content can be smaller than the container's width. You can use the `align` prop to align the container left, center or right. The `alignItems` props allows you to align the children left, center or right.
-
-<ComponentDemo file="./full-container.demo.tsx" />
+<ComponentDemo file="./container-alignment.demo.tsx" />
 
 ## Props
 
