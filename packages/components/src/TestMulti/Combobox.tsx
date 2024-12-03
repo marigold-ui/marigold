@@ -86,7 +86,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
 
   // let layoutDelegate = useListBoxLayout();
   let state = useComboboxMultiState(props);
-  console.log('state', state.selectionManager.select);
 
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
 
@@ -111,8 +110,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
 
   const popoverStyles = usePopoverStyles({ fieldRef });
 
-  console.log('listBoxProps', listBoxProps);
-
   return (
     <Provider
       values={[
@@ -136,6 +133,10 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             items: state.collection,
             selectionMode: 'multiple',
             selectionBehavior: 'toggle',
+            defaultSelectedKeys: props.defaultSelectedKeys,
+            onSelectionChange: keys =>
+              state.selectionManager.setSelectedKeys(keys),
+            selectedKeys: state.selectionManager.selectedKeys,
             ...state,
             ...listBoxProps,
           },
@@ -154,13 +155,19 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
         ],
       ]}
     >
-      <FieldBase label="selects">
+      <FieldBase>
         <div className={cn(classNames.container)} ref={fieldRef}>
-          <TagGroup>
-            <TagList>
-              <Tag key={'3'}>3 selected</Tag>
-            </TagList>
-          </TagGroup>
+          {state.selectionManager.selectedKeys.size ? (
+            <TagGroup>
+              <TagList>
+                <Tag key={'3'}>
+                  Selected {state.selectionManager.selectedKeys.size}
+                </Tag>
+              </TagList>
+            </TagGroup>
+          ) : (
+            ''
+          )}
           <RACInput className={classNames.input} />
           <Button variant="icon">
             <ChevronDown className="size-4" />
@@ -177,5 +184,3 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     </Provider>
   );
 });
-
-// input + tag + button

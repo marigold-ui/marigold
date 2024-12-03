@@ -105,6 +105,7 @@ export const Basic = {
   render: () => {
     return (
       <ComboboxMultiBase>
+        {/* TODO: Add item over multiselect component and use id instead of key */}
         <Item key="One">One</Item>
         <Item key="Two">Two</Item>
         <Item key="Three">Three</Item>
