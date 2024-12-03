@@ -16,9 +16,13 @@ export interface PaginationProps {
    */
   page?: number;
   /**
-   * The number of total pages.
+   * The number of total items.
    */
-  totalPages: number;
+  totalItems: number;
+  /**
+   * The number of items per page.
+   */
+  pageSize: number;
   /**
    * Handler that is called when the pagination active page changes.
    */
@@ -28,10 +32,12 @@ export interface PaginationProps {
 const _Pagination = ({
   defaultPage = 1,
   page,
-  totalPages,
+  totalItems,
+  pageSize,
   onChange = () => {},
 }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
+  const totalPages = Math.ceil(totalItems / pageSize);
 
   const { containerRef, keyboardProps, setFocusedPage, setVisiblePages } =
     useKeyboardNavigation({
