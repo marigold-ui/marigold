@@ -1,12 +1,17 @@
 import { useRef, useState } from 'react';
 import { useKeyboard } from '@react-aria/interactions';
-import { PaginationProps } from './Pagination';
+
+interface UseKeyboardNavigationProps {
+  page?: number;
+  totalPages: number;
+  onChange?: (page: number) => void;
+}
 
 export const useKeyboardNavigation = ({
   page,
   totalPages,
   onChange = () => {},
-}: PaginationProps) => {
+}: UseKeyboardNavigationProps) => {
   const containerRef = useRef<HTMLElement | null>(null);
   const [focusedPage, setFocusedPage] = useState(1);
   const visiblePages = useRef<(number | 'ellipsis')[]>([]);
