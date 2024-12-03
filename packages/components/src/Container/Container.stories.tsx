@@ -13,7 +13,7 @@ const meta = {
       options: ['content', 'header'],
       description: 'choose between content and header',
     },
-    containerWidth: {
+    textLength: {
       control: {
         type: 'select',
       },

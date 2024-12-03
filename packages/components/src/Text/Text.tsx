@@ -77,6 +77,7 @@ const _Text = ({
       elementType={props.slot ? as : undefined}
       className={cn(
         'text-[--color] outline-[--outline]',
+        'max-w-[--maxTextWidth]', // possibly set by a <Container>
         classNames,
         fontStyle && textStyle[fontStyle],
         align && textAlign[align],

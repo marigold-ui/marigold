@@ -44,7 +44,7 @@ test('supports contentType header', () => {
 
 test('supports width small', () => {
   render(
-    <Container containerWidth="small" data-testid="container">
+    <Container textLength="small" data-testid="container">
       <p>sdf</p>
     </Container>
   );
@@ -65,7 +65,7 @@ test('supports width small', () => {
 
 test('supports width large', () => {
   render(
-    <Container containerWidth="large" data-testid="container">
+    <Container textLength="large" data-testid="container">
       <p>sdf</p>
     </Container>
   );
