@@ -1,6 +1,7 @@
 ---
 title: Container
 caption: Keep content at an optimal reading width.
+badge: updated
 ---
 
 The `<Container>` component is designed to limit the width of its content, ensuring an optimal reading experience. By constraining the content width, it helps maintain readability and prevents text from becoming difficult to follow on wide screens.
@@ -25,9 +26,11 @@ The width of the `<Container>` is not fixed; it adjusts based on the font size t
 
 ### Content length
 
-The length of the content within the `<Container>` can be adjusted using the `contentLength` property. This is useful when you want to customize the reading experience based on the type of content. For example, you might want to shorten the line length for smaller text blocks like quotes or testimonials, while allowing more characters per line for larger bodies of text, such as articles or blog posts. Adjusting `contentLength` helps to maintain readability and improve the overall user experience depending on the context.
+The length of the content within the `<Container>` can be adjusted using the `contentLength` property. This is useful when you want to customize the reading experience based on the type of content.
 
-todo: example with testimonials
+For example, you might want to shorten the line length for smaller text blocks like quotes or testimonials, while allowing more characters per line for larger bodies of text, such as articles or blog posts. Adjusting `contentLength` helps to maintain readability and improve the overall user experience depending on the context.
+
+<ComponentDemo file="./container-content-length.demo.tsx" />
 
 ### Alignment
 

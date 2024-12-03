@@ -6,7 +6,7 @@ import type { AriaRegionProps } from '@marigold/types';
 // Helpers
 // ---------------
 const containerTextLength = {
-  short: '45ch',
+  short: '40ch',
   default: '60ch',
   long: '80ch',
 };
