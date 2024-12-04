@@ -30,7 +30,7 @@ const App = () => {
    * with a server. Regular form request via the `action` attribute work too!)
    */
   const mutation = useMutation<any, ValidationError, string>({
-    mutationFn: (email: string) => post('/api/demo/subscribe', { email }),
+    mutationFn: (email: string) => post('/api/subscribe', { email }),
   });
 
   // Form handling
