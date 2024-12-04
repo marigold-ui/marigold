@@ -6,6 +6,17 @@ import { PaginationButton } from './PaginationButton';
 import { useKeyboardNavigation } from './useKeyboardNavigation';
 import { usePageRange } from './usePageRange';
 
+/*
+TODO:
+ - use own Pagination styles
+ - use compound component? - not yet
+ - show results (User can read the results per page and the total number of results)
+ - implementation of total pages = 0 (s. Figma)
+ - useBUtton maybe
+ - use data attributes like data-selected instead of isSelected
+ - Tests
+  */
+
 export interface PaginationProps {
   /**
    * The initial page. (uncontrolled)
