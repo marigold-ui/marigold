@@ -14,7 +14,7 @@ export const PageButton = ({ page, isSelected, onPress }: PageButtonProps) => {
   const classNames = useClassNames({
     component: 'Pagination',
   });
-  console.log(classNames);
+
   return (
     <Button
       aria-label={`Page ${page}`}
