@@ -10,19 +10,9 @@ The `<Tiles>` component is based on [CSS grid](https://www.w3schools.com/css/css
 
 `<Tiles>` serves as a versatile container, ideal for constructing panels, cards, lists, and other content components that organize and group information.
 
+Tiles also automatically wraps children to a new line if the space given is not enough to show the `<Tiles>` in one row.
+
 It's possible to display the children elements with some spacing through `space` prop or set a minimum width for all items inside `<Tiles>` with `tilesWidth` prop.
-
-### Spacing Tiles
-
-An example on how to use the `space` prop. The default is none. You can set it to any value.
-
-<ComponentDemo file="./tiles-spacing.demo.tsx" />
-
-### Tiles with tilesWidth
-
-This Example shows how to use the `tilesWidth` property on `<Tiles>`.
-
-<ComponentDemo file="./tiles-itemwidth.demo.tsx" />
 
 ### Tiles with equal Heights
 
