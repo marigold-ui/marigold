@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-aria-components';
+import { useButton } from '@react-aria/button';
 import { useClassNames } from '@marigold/system';
 
 interface PageButtonProps {
@@ -8,23 +8,24 @@ interface PageButtonProps {
   onPress: () => void;
 }
 
-export const PageButton = ({ page, isSelected, onPress }: PageButtonProps) => {
+export const PageButton = (props: PageButtonProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
-
   const classNames = useClassNames({
     component: 'Pagination',
   });
+  let { buttonProps } = useButton(props, ref);
+  let { page, isSelected } = props;
 
   return (
-    <Button
+    <button
+      ref={ref}
+      {...buttonProps}
       aria-label={`Page ${page}`}
       aria-current={isSelected ? 'page' : undefined}
-      ref={ref}
       className={classNames}
-      onPress={onPress}
       data-selected={isSelected}
     >
       {page}
-    </Button>
+    </button>
   );
 };
