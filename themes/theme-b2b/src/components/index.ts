@@ -42,3 +42,4 @@ export * from './TextArea.styles';
 export * from './Tooltip.styles';
 export * from './Underlay.styles';
 export * from './XLoader.styles';
+export * from './Pagination.styles';
