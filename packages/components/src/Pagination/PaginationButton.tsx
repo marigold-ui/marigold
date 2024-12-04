@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-aria-components';
+import { useButton } from '@react-aria/button';
 import { useClassNames } from '@marigold/system';
 
 interface PaginationButtonProps {
@@ -10,29 +10,24 @@ interface PaginationButtonProps {
   isDisabled?: boolean;
 }
 
-export const PaginationButton = ({
-  onPress,
-  children,
-  isSelected,
-  isDisabled,
-  ...props
-}: PaginationButtonProps) => {
+export const PaginationButton = (props: PaginationButtonProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
-
   const classNames = useClassNames({
     component: 'Pagination',
   });
+  let { buttonProps } = useButton(props, ref);
+  let { children, isSelected, isDisabled, ...rest } = props;
 
   return (
-    <Button
-      {...props}
+    <button
       ref={ref}
-      onPress={onPress}
-      isDisabled={isDisabled}
+      {...buttonProps}
+      {...rest}
+      disabled={isDisabled}
       className={classNames}
       data-selected={isSelected}
     >
       {children}
-    </Button>
+    </button>
   );
 };
