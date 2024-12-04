@@ -12,7 +12,7 @@ export default () => (
     <Headline level="3">
       Welcome to The Giggle Grounds - Laughville's New Comedy Hub!
     </Headline>
-    <Breakout alignX="right">
+    <Breakout>
       <Aspect ratio="ultrawide">
         <Image src="/venues/comedy-show.webp" alt="" />
       </Aspect>
