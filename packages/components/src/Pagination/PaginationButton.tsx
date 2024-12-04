@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from '@marigold/components';
+import { Button } from 'react-aria-components';
+import { useClassNames } from '@marigold/system';
 
 interface PaginationButtonProps {
   onPress: () => void;
@@ -18,18 +19,18 @@ export const PaginationButton = ({
 }: PaginationButtonProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
 
+  const classNames = useClassNames({
+    component: 'Pagination',
+  });
+
   return (
     <Button
       {...props}
       ref={ref}
       onPress={onPress}
-      variant="text"
-      disabled={isDisabled}
-      className={`flex !h-10 !w-10 items-center justify-center ${
-        isSelected
-          ? 'border-0 border-b-2 border-solid border-b-black bg-none text-black'
-          : 'text-gray-700 hover:bg-gray-100'
-      } `}
+      isDisabled={isDisabled}
+      className={classNames}
+      data-selected={isSelected}
     >
       {children}
     </Button>
