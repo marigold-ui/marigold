@@ -35,7 +35,7 @@ export function useStatefulRef<T extends HTMLElement>() {
   }, [current, statefulRef]);
 }
 
-export function usePopoverStyles({
+export function usePopoverWidth({
   fieldRef,
 }: {
   fieldRef: RefObject<HTMLDivElement>;
@@ -45,8 +45,7 @@ export function usePopoverStyles({
 
   let onResize = useCallback(() => {
     if (fieldRef.current) {
-      let fullWidth = fieldRef.current.offsetWidth;
-      setMenuWidth(fullWidth);
+      setMenuWidth(fieldRef.current.offsetWidth);
     }
   }, [setMenuWidth]);
 
@@ -108,7 +107,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     variant,
   });
 
-  const popoverStyles = usePopoverStyles({ fieldRef });
+  const popoverWidth = usePopoverWidth({ fieldRef });
 
   return (
     <Provider
@@ -134,9 +133,11 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             selectionMode: 'multiple',
             selectionBehavior: 'toggle',
             defaultSelectedKeys: props.defaultSelectedKeys,
-            onSelectionChange: keys =>
-              state.selectionManager.setSelectedKeys(keys),
-            selectedKeys: state.selectionManager.selectedKeys,
+            onSelectionChange: keys => {
+              state.selectionManager.setSelectedKeys(keys);
+            },
+            selectedKeys:
+              props.selectedKeys ?? state.selectionManager.selectedKeys,
             ...state,
             ...listBoxProps,
           },
@@ -148,7 +149,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             triggerRef: fieldRef,
             scrollRef: listBoxRef,
             isNonModal: true,
-            style: popoverStyles,
+            style: popoverWidth,
             placement: 'bottom start',
             ...state,
           },
