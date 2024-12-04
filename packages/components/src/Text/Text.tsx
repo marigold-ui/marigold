@@ -71,7 +71,7 @@ const _Text = ({
 
   /**
    * Use `<Text>` when a `slot` is used. Make sure `elementType`
-   * prop is only used in combindation the `<Text>`.
+   * prop is only used in combination the `<Text>`.
    */
   const Component = props.slot ? Text : as;
   const elementType = props.slot ? { elementType: as } : {};
