@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from '@marigold/components';
+import { Button } from 'react-aria-components';
+import { useClassNames } from '@marigold/system';
 
 interface PageButtonProps {
   page: number;
@@ -10,18 +11,18 @@ interface PageButtonProps {
 export const PageButton = ({ page, isSelected, onPress }: PageButtonProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
 
+  const classNames = useClassNames({
+    component: 'Pagination',
+  });
+  console.log(classNames);
   return (
     <Button
       aria-label={`Page ${page}`}
       aria-current={isSelected ? 'page' : undefined}
       ref={ref}
-      className={`flex !h-10 !w-10 items-center justify-center ${
-        isSelected
-          ? 'border-0 border-b-2 border-solid border-b-black bg-none text-black'
-          : 'text-gray-700 hover:bg-gray-100'
-      }`}
+      className={classNames}
       onPress={onPress}
-      variant="text"
+      data-selected={isSelected}
     >
       {page}
     </Button>
