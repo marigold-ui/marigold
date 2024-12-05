@@ -135,7 +135,9 @@ test('accepts variant and size classnames', () => {
   expect(button).toHaveAttribute('aria-expanded', 'true');
 
   const item = screen.getByText('infos');
-  expect(item.className).toMatchInlineSnapshot(`"text-[--color] text-left"`);
+  expect(item.className).toMatchInlineSnapshot(
+    `"text-[--color] max-w-[--maxHeadlineWidth] text-left"`
+  );
 });
 
 test('default full width', () => {
@@ -152,7 +154,7 @@ test('default full width', () => {
   const button = screen.getByText('Information');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"text-[--color] max-w-[--maxHeadlineWidth] text-left"`
+    `"inline-flex items-center justify-center gap-[0.5ch]"`
   );
 });
 
