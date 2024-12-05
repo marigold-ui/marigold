@@ -8,27 +8,25 @@ The `<Tiles>` component is based on [CSS grid](https://www.w3schools.com/css/css
 
 ## Usage
 
-`<Tiles>` serves as a versatile container, ideal for constructing panels, cards, lists, and other content components that organize and group information.
+`<Tiles>` serves as a versatile container, ideal for constructing panels, cards, lists, and other content components that organize and group information They automatically wraps children to a new line if the space given is not enough to show the `<Tiles>` in one row.
 
-Tiles also automatically wraps children to a new line if the space given is not enough to show the `<Tiles>` in one row.
+It's possible to display the items with some spacing through `space` prop or set a minimum width for all items inside `<Tiles>` with `tilesWidth` prop.
 
-It's possible to display the children elements with some spacing through `space` prop or set a minimum width for all items inside `<Tiles>` with `tilesWidth` prop.
+### Equal heights
 
-### Tiles with equal Heights
-
-The Example shows how to use the `equalHeight` property, which is a boolean that can be used to size the items of the `<Tiles>`. You can see that all items have the size of the large Pikachu card. It is necessary if you want all items in the largest size of a child.
+The Example shows how to use the `equalHeight` property, which is a boolean value that can be used to size the items of the `<Tiles>`. In this case, all items adopt the size of the largest card, making it essential when you want all items to match the largest child’s dimensions.
 
 <ComponentDemo file="./tiles-autoRows.demo.tsx" />
 
-### Tiles with and without stretch
+### Stretch width
 
-Using the `stretch` property will make the tiles fully responsive. Meaning, they will distribute available width between them while not getting smaller then the given `tilesWidth`,
+Using the `stretch` property will make the tiles fully responsive. Meaning, they will distribute available width between them while not getting smaller then the given `tilesWidth`.
 
 <ComponentDemo file="./tiles-stretch.demo.tsx" />
 
-### Complexe Tiles with Boxes and Stacks
+### Complex tiles example
 
-A full example of a use case with `<Tiles>` and `<Card>` inside it.
+This is a good example of how to use `<Tiles>` with cards and content.
 
 <ComponentDemo file="./tiles-complex.demo.tsx" />
 

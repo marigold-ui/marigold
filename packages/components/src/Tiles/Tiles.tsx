@@ -13,7 +13,7 @@ export interface TilesProps extends GapSpaceProp, AriaRegionProps {
    * Set minimum width for all items inside.
    * @default '250px'
    */
-  tilesWidth: string;
+  tilesWidth?: string;
 
   /**
    * Tiles will stretch to available width and will distribute their width equally. Note that this can make them wider than the specified tiles width, but not smaller than the given "tilesWidth". Basically, this is full responsive mode.
