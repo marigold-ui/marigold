@@ -22,7 +22,7 @@ export interface TilesProps extends GapSpaceProp, AriaRegionProps {
   stretch?: boolean;
 
   /**
-   * If true, all items will have the size of the biggest item.
+   * If true, all items will have the height of the biggest item.
    * @default false
    */
   equalHeight?: boolean;

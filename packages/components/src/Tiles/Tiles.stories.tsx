@@ -47,71 +47,10 @@ const meta = {
 
 export default meta;
 
-export const Boxes: StoryObj<typeof Tiles> = {
-  render: args => (
-    <>
-      <Tiles {...args}>
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-      </Tiles>
-      <br />
-      <Tiles {...args}>
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-        <div className="h-[100px] border border-[#ced4da] bg-[#e9ecef]" />
-      </Tiles>
-    </>
-  ),
-};
-
-export const DifferentHights: StoryObj<typeof Tiles> = {
+export const Basic: StoryObj<typeof Tiles> = {
   render: args => (
     <Tiles {...args}>
-      <div className="border border-[#ced4da] bg-[#e9ecef]">
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-      </div>
-      <div className="border border-[#ced4da] bg-[#e9ecef]">
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-      </div>
-      <div className="border border-[#ced4da] bg-[#e9ecef]">
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-      </div>
-      <div className="border border-[#ced4da] bg-[#e9ecef]">
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-      </div>
-      <div className="border border-[#ced4da] bg-[#e9ecef]">
-        <Text align="center">I love Tiles!</Text>
-      </div>
-      <div className="border border-[#ced4da] bg-[#e9ecef]">
-        <Text align="center">I love Tiles!</Text>
-        <Text align="center">I love Tiles!</Text>
-      </div>
-    </Tiles>
-  ),
-};
-
-export const Stacks: StoryObj<typeof Tiles> = {
-  render: args => (
-    <Tiles {...args}>
-      <div className="border border-[#fa8005] bg-orange-100 p-1">
+      <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <Image
             src="https://www.pokewiki.de/images/0/09/Hauptartwork_004.png"
@@ -127,7 +66,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
           </Text>
         </Stack>
       </div>
-      <div className="border border-[#fa8005] bg-orange-100 p-1">
+      <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <Image
             src="https://www.pokewiki.de/images/0/08/Hauptartwork_005.png"
@@ -144,7 +83,7 @@ export const Stacks: StoryObj<typeof Tiles> = {
           </Text>
         </Stack>
       </div>
-      <div className="border border-[#fa8005] bg-orange-100 p-1">
+      <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
           <Image
             src="https://www.pokewiki.de/images/d/de/Hauptartwork_006.png"
@@ -161,6 +100,44 @@ export const Stacks: StoryObj<typeof Tiles> = {
             aus Kanto.
           </Text>
         </Stack>
+      </div>
+    </Tiles>
+  ),
+};
+
+export const DifferentHights: StoryObj<typeof Tiles> = {
+  render: args => (
+    <Tiles {...args}>
+      <div className="border border-slate-300 bg-slate-100">
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+      </div>
+      <div className="border border-slate-300 bg-slate-100">
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+      </div>
+      <div className="border border-slate-300 bg-slate-100">
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+      </div>
+      <div className="border border-slate-300 bg-slate-100">
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
+      </div>
+      <div className="border border-slate-300 bg-slate-100">
+        <Text align="center">I love Tiles!</Text>
+      </div>
+      <div className="border border-slate-300 bg-slate-100">
+        <Text align="center">I love Tiles!</Text>
+        <Text align="center">I love Tiles!</Text>
       </div>
     </Tiles>
   ),

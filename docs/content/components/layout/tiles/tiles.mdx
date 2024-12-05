@@ -4,7 +4,7 @@ caption: Structures the layout responsively in a grid system.
 badge: updated
 ---
 
-The `<Tiles>` component is based on [CSS grid](https://www.w3schools.com/css/css_grid.asp) system. With the grid you have the possibility to create equal wide tiles.
+The `<Tiles>` component is based on [CSS grid](https://www.w3schools.com/css/css_grid.asp) system. With the grid you have the possibility to create equal wide `<Tiles>`.
 
 ## Usage
 
@@ -14,6 +14,7 @@ It's possible to display the items with some spacing through `space` prop or set
 
 ### Equal heights
 
+If you need to have the items in the `<Tiles>` take the same height, you can use the `equalHeight` property
 The Example shows how to use the `equalHeight` property, which is a boolean value that can be used to size the items of the `<Tiles>`. In this case, all items adopt the size of the largest card, making it essential when you want all items to match the largest child’s dimensions.
 
 <ComponentDemo file="./tiles-autoRows.demo.tsx" />
@@ -26,11 +27,11 @@ Using the `stretch` property will make the tiles fully responsive. Meaning, they
 
 ### Complex tiles example
 
-This is a good example of how to use `<Tiles>` with cards and content.
+This is a more realistic example of how to use `<Tiles>` with cards and content. You can see that the tiles are filled with cards, inside the cards is the content of a venue displayed.
 
 <ComponentDemo file="./tiles-complex.demo.tsx" />
 
-### Props
+## Props
 
 <StorybookHintMessage component={title} />
 
@@ -38,10 +39,36 @@ This is a good example of how to use `<Tiles>` with cards and content.
 
 ## Alternative components
 
-It should be noted that `<Tiles>` is used for children with the same width.
-
 <ul>
   <li>
-    [`<Columns>`](/components/columns/): If you want to set different widths for the children use [`<Columns>`](/components/columns/) instead.
+    [Columns](/components/columns/): It should be noted that `<Tiles>` is used for children with the same width. If you want to set different widths for the children use [`<Columns>`](/components/columns/) instead.
 </li>
 </ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
