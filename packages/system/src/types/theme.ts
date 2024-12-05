@@ -116,7 +116,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Multiselect?: Record<
-      'container' | 'input' | 'button' | 'tag',
+      'container' | 'input' | 'button' | 'tag' | 'listItems' | 'closeButton',
       ComponentStyleFunction<string, string>
     >;
     Underlay?: ComponentStyleFunction<string, string>;

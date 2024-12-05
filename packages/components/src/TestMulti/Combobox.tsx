@@ -1,4 +1,5 @@
 import React, {
+  ForwardRefExoticComponent,
   ForwardedRef,
   RefObject,
   useCallback,
@@ -18,13 +19,14 @@ import {
   TagGroup,
   TagList,
 } from 'react-aria-components';
-import { Key, Provider, Input as RACInput } from 'react-aria-components';
+import { Input, Provider } from 'react-aria-components';
 import { useObjectRef, useResizeObserver } from '@react-aria/utils';
 import { Item } from '@react-stately/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
 import { FieldBase } from '../FieldBase';
+import { ListItem } from '../List/ListItem';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
 import { ComboboxMultiProps } from './types';
@@ -64,6 +66,27 @@ export function usePopoverWidth({
   };
 }
 
+interface CloseButtonProps {
+  className: string;
+}
+
+export const CloseButton = ({ className }: CloseButtonProps) => {
+  return (
+    <Button slot="remove" className={className}>
+      <svg viewBox="0 0 20 20" fill="currentColor" width={20} height={20}>
+        <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path>
+      </svg>
+    </Button>
+  );
+};
+
+interface ComboboxMultiComponent
+  extends ForwardRefExoticComponent<ComboboxMultiProps<object>> {
+  Option: typeof ListItem;
+}
+
+//Component
+// ---------------
 export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   T extends object,
 >(
@@ -112,6 +135,12 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   });
 
   const popoverWidth = usePopoverWidth({ fieldRef });
+
+  const clearSelectedKeys = () => {
+    state.selectionManager.clearSelection();
+  };
+
+  console.log('isOpen', state.isOpen);
 
   return (
     <Provider
@@ -163,24 +192,25 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
       <FieldBase>
         <div className={cn(classNames.container)} ref={fieldRef}>
           {state.selectionManager.selectedKeys.size ? (
-            <TagGroup>
-              <TagList>
-                <Tag key={'3'}>
+            <TagGroup onRemove={clearSelectedKeys}>
+              <TagList className={classNames.listItems}>
+                <Tag className={classNames.tag}>
                   Selected {state.selectionManager.selectedKeys.size}
+                  <CloseButton className={classNames.closeButton} />
                 </Tag>
               </TagList>
             </TagGroup>
           ) : (
             ''
           )}
-          <RACInput className={classNames.input} />
+          <Input className={classNames.input} />
           <Button variant="icon">
             <ChevronDown className="size-4" />
           </Button>
         </div>
         <Popover>
           <ListBox>
-            {(item: { id: Key; textValue: string }) => (
+            {(item: { id: any; textValue: string }) => (
               <ListBox.Item id={item.id}>{item.textValue}</ListBox.Item>
             )}
           </ListBox>
@@ -188,6 +218,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
       </FieldBase>
     </Provider>
   );
-});
+}) as ComboboxMultiComponent;
 
 ComboboxMultiBase.Option = Item;

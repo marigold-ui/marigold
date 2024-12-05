@@ -1,4 +1,3 @@
-import { Item } from '@react-stately/collections';
 import { ComboboxMultiBase } from './Combobox';
 
 const meta = {
@@ -104,8 +103,7 @@ export default meta;
 export const Basic = {
   render: () => {
     return (
-      <ComboboxMultiBase>
-        {/* TODO: Add item over multiselect component and use id instead of key */}
+      <ComboboxMultiBase label="select">
         <ComboboxMultiBase.Option key="One">One</ComboboxMultiBase.Option>
         <ComboboxMultiBase.Option key="Two">Two</ComboboxMultiBase.Option>
         <ComboboxMultiBase.Option key="Three">Three</ComboboxMultiBase.Option>

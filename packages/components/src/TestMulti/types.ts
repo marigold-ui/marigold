@@ -9,6 +9,7 @@ import {
   TextInputBase,
   Validation,
 } from '@react-types/shared';
+import { FieldBaseProps } from '../FieldBase';
 
 type CommonProps = {
   /**
@@ -59,6 +60,7 @@ export interface ComboboxMultiValidationValue {
 }
 export interface ComboboxMultiProps<T>
   extends CollectionBase<T>,
+    Omit<FieldBaseProps<any>, 'children'>,
     Omit<MultipleSelection, 'disallowEmptySelection'>,
     Omit<AsyncLoadable, 'isLoading'>,
     TextInputBase,
