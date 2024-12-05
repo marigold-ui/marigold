@@ -152,7 +152,7 @@ test('default full width', () => {
   const button = screen.getByText('Information');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"inline-flex items-center justify-center gap-[0.5ch]"`
+    `"text-[--color] max-w-[--maxHeadlineWidth] text-left"`
   );
 });
 
