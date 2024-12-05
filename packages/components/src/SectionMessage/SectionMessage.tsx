@@ -74,6 +74,8 @@ export interface SectionMessageProps {
    * Adds a close button, makes the section message dismissable.
    */
   closeButton?: boolean;
+  dismissable?: boolean;
+  onClose?: () => void;
 }
 
 // Component
@@ -83,6 +85,8 @@ export const SectionMessage = ({
   size,
   children,
   closeButton,
+  dismissable,
+  onClose,
   ...props
 }: SectionMessageProps) => {
   const classNames = useClassNames({
@@ -92,13 +96,7 @@ export const SectionMessage = ({
   });
   const Icon = icons[variant];
 
-  const [isVisible, setIsVisible] = useState(true);
-
-  const handleClose = () => {
-    setIsVisible(false);
-  };
-
-  if (!isVisible) return null;
+  if (dismissable) return null;
 
   return (
     <SectionMessageContext.Provider value={{ classNames }}>
@@ -119,7 +117,7 @@ export const SectionMessage = ({
           <button
             aria-label="close"
             className="h-5 w-5 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
-            onClick={handleClose}
+            onClick={onClose}
           >
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path
