@@ -125,6 +125,7 @@ export function useComboboxMulti<T extends object>(
   // ---------------------------------------------------------------------------
 
   let onKeyDown = (e: KeyboardEvent) => {
+    console.log('onkeydown triggered');
     // Ignore composition events for CJK input
     if (e.nativeEvent.isComposing) {
       return;
@@ -152,6 +153,7 @@ export function useComboboxMulti<T extends object>(
         state.close();
         break;
       case 'ArrowDown':
+        console.log('trigger arrow down');
         state.open('first');
         break;
       case 'ArrowUp':

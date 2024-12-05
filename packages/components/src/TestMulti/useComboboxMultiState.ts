@@ -25,7 +25,7 @@ export interface ComboboxMultiStateOptions<T>
 
 export interface ComboboxMultiState<T>
   extends ListState<T>,
-    MenuTriggerState,
+    MenuTriggerState, // try overlay trigger state instead of menu
     FormValidationState {
   /** Whether the select is currently focused. */
   // readonly isFocused: boolean,

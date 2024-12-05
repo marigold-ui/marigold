@@ -11,6 +11,8 @@ import {
   ButtonContext,
   InputContext,
   ListBoxContext,
+  ListStateContext,
+  OverlayTriggerStateContext,
   PopoverContext,
   Tag,
   TagGroup,
@@ -18,6 +20,7 @@ import {
 } from 'react-aria-components';
 import { Key, Provider, Input as RACInput } from 'react-aria-components';
 import { useObjectRef, useResizeObserver } from '@react-aria/utils';
+import { Item } from '@react-stately/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
@@ -67,15 +70,16 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   { size, variant, ...props }: ComboboxMultiProps<T>,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
-  let {
-    // align = 'start',
-    // menuTrigger = 'focus',
-    // shouldFlip = true,
-    // direction = 'bottom',
-    // loadingState,
-    menuWidth,
-    // onLoadMore,
-  } = props;
+  // let {
+  //   // align = 'start',
+  //   // menuTrigger = 'focus',
+  //   // shouldFlip = true,
+  //   // direction = 'bottom',
+  //   // loadingState,
+  //   menuWidth,
+  //   // onLoadMore,
+  //   children,
+  // } = props;
 
   // let isAsync = loadingState != null;
   let buttonRef = useRef<HTMLButtonElement>(null);
@@ -120,7 +124,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             value: props.inputValue,
             onChange: props.onInputChange as any,
             ...inputProps,
-            ...buttonProps,
+            // ...buttonProps,
           },
         ],
         [ButtonContext, { ref: buttonRef, ...buttonProps }],
@@ -138,20 +142,20 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             },
             selectedKeys:
               props.selectedKeys ?? state.selectionManager.selectedKeys,
-            ...state,
             ...listBoxProps,
           },
         ],
+        // [ListStateContext, state],
+        [OverlayTriggerStateContext, state],
         [
           PopoverContext,
           {
             ref: popoverRef as ForwardedRef<HTMLElement>,
-            triggerRef: fieldRef,
+            triggerRef: inputRef,
             scrollRef: listBoxRef,
             isNonModal: true,
             style: popoverWidth,
             placement: 'bottom start',
-            ...state,
           },
         ],
       ]}
@@ -185,3 +189,5 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     </Provider>
   );
 });
+
+ComboboxMultiBase.Option = Item;
