@@ -37,6 +37,22 @@ TODO:
  - use own Pagination styles (check)
 */
 
+/*
+TODO:
+ - styles needs to be checked
+ - Tests
+ - refactoring
+ - use compound component? - not yet
+ - show results (User can read the results per page and the total number of results)
+ -
+ - example with table (check)
+ - implementation of total pages = 0 (s. Figma) (check)
+ - make arrow controls accessible (check)
+ - useButton maybe (check)
+ - use data attributes like data-selected instead of isSelected (check)
+ - use own Pagination styles (check)
+*/
+
 export interface PaginationProps {
   /**
    * The initial page. (uncontrolled)
