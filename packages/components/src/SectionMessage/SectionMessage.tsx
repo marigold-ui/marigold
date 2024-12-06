@@ -75,7 +75,9 @@ export interface SectionMessageProps {
    * Adds a close button, makes the section message dismissable.
    */
   closeButton?: boolean;
-  dismissable?: boolean;
+  /**
+   * Handler that is calledn when the sectionmessage is dismissable.
+   */
   onClose?: () => void;
 }
 
@@ -95,12 +97,13 @@ export const SectionMessage = ({
     size,
   });
   const Icon = icons[variant];
-
   const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = () => {
-    onClose?.();
     setIsVisible(false);
+    if (onClose) {
+      onClose();
+    }
   };
 
   if (!isVisible) return null;
