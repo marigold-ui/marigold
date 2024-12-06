@@ -57,6 +57,10 @@ export const OneHundredPages: Story = {
   ),
 };
 
+export const NoData: Story = {
+  render: args => <Pagination {...args} totalItems={0} pageSize={10} />,
+};
+
 export const FullScreenSize: Story = {
   render: args => (
     <Inline alignY="center">
@@ -74,62 +78,78 @@ export const FullScreenSize: Story = {
 };
 
 export const WithTable: Story = {
-  render: args => (
-    <div className="w-[450px]">
-      <Stack alignX="left">
-        <Table aria-label="label" stretch {...args}>
-          <Table.Header>
-            <Table.Column>Name</Table.Column>
-            <Table.Column>Firstname</Table.Column>
-            <Table.Column>House</Table.Column>
-            <Table.Column>Year of birth</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            <Table.Row key={1}>
-              <Table.Cell>Potter</Table.Cell>
-              <Table.Cell>Harry</Table.Cell>
-              <Table.Cell>Gryffindor</Table.Cell>
-              <Table.Cell>1980</Table.Cell>
-            </Table.Row>
-            <Table.Row key={2}>
-              <Table.Cell>Malfoy</Table.Cell>
-              <Table.Cell>Draco</Table.Cell>
-              <Table.Cell>Slytherin</Table.Cell>
-              <Table.Cell>1980</Table.Cell>
-            </Table.Row>
-            <Table.Row key={3}>
-              <Table.Cell>Diggory</Table.Cell>
-              <Table.Cell>Cedric</Table.Cell>
-              <Table.Cell>Hufflepuff</Table.Cell>
-              <Table.Cell>1977</Table.Cell>
-            </Table.Row>
-            <Table.Row key={4}>
-              <Table.Cell>Lovegood</Table.Cell>
-              <Table.Cell>Luna</Table.Cell>
-              <Table.Cell>Ravenclaw</Table.Cell>
-              <Table.Cell>1981</Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table>
-        <Inline alignY="center">
-          <Text fontSize="sm">Showing 1-10 of 10 pages</Text>
-          <Split />
-          <Pagination
-            {...args}
-            totalItems={100}
-            pageSize={10}
-            defaultPage={1}
-          />
-          <Split />
-          <FieldGroup labelWidth="60px">
-            <Select width={28} label="Page size" defaultSelectedKey="10">
-              <Select.Option id="10">10</Select.Option>
-              <Select.Option id="20">20</Select.Option>
-              <Select.Option id={'30'}>30</Select.Option>
-            </Select>
-          </FieldGroup>
-        </Inline>
-      </Stack>
-    </div>
-  ),
+  render: args => {
+    interface User {
+      id: number;
+      name: string;
+      email: string;
+      role: string;
+      status: 'active' | 'inactive';
+    }
+
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const mockData: User[] = Array.from({ length: 55 }, (_, i) => ({
+      id: i + 1,
+      name: `User ${i + 1}`,
+      email: `user${i + 1}@example.com`,
+      role: i % 3 === 0 ? 'Admin' : 'User',
+      status: i % 4 === 0 ? 'inactive' : 'active',
+    }));
+
+    const pageSize = 10;
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const currentData = mockData.slice(startIndex, endIndex);
+    console.log(currentData);
+
+    return (
+      <div className="w-[800px]">
+        <Stack alignX="left" space={4}>
+          <Table aria-label="label" stretch {...args}>
+            <Table.Header>
+              <Table.Column>ID</Table.Column>
+              <Table.Column>Name</Table.Column>
+              <Table.Column>Email</Table.Column>
+              <Table.Column>Role</Table.Column>
+              <Table.Column>Status</Table.Column>
+            </Table.Header>
+            <Table.Body items={currentData}>
+              {item => (
+                <Table.Row key={item.id}>
+                  <Table.Cell>{item.id}</Table.Cell>
+                  <Table.Cell>{item.name}</Table.Cell>
+                  <Table.Cell>{item.email}</Table.Cell>
+                  <Table.Cell>{item.role}</Table.Cell>
+                  <Table.Cell>{item.status}</Table.Cell>
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
+          <Inline alignY="center" space={4}>
+            <Text fontSize="sm">
+              Showing {startIndex + 1} - {endIndex} of{' '}
+              {Math.ceil(mockData.length / pageSize)} pages
+            </Text>
+            <Split />
+            <Pagination
+              {...args}
+              totalItems={mockData.length}
+              pageSize={10}
+              page={currentPage}
+              onChange={setCurrentPage}
+            />
+            <Split />
+            <FieldGroup labelWidth="60px">
+              <Select width={28} label="Page size" defaultSelectedKey="10">
+                <Select.Option id="10">10</Select.Option>
+                <Select.Option id="20">20</Select.Option>
+                <Select.Option id={'30'}>30</Select.Option>
+              </Select>
+            </FieldGroup>
+          </Inline>
+        </Stack>
+      </div>
+    );
+  },
 };
