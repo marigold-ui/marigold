@@ -1,5 +1,5 @@
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
 import { Text } from '../Text';
 import { SectionMessage } from './SectionMessage';
 
@@ -73,15 +73,14 @@ export const LongMessage: Story = {
 
 export const ControlledSectionMessage: Story = {
   render: args => {
-    const [remove, setRemove] = useState(false);
-    console.log(remove);
+    const [dismiss, setDismissable] = useState(false);
+
     return (
       <>
         <SectionMessage
           {...args}
           closeButton
-          dismissable
-          onClose={() => setRemove(true)}
+          onClose={() => setDismissable(true)}
         >
           <SectionMessage.Content>
             I am really not that good at righting copy texts, sorry.
@@ -91,7 +90,7 @@ export const ControlledSectionMessage: Story = {
           </SectionMessage.Title>
         </SectionMessage>
         <br />
-        <span>Removed: {remove ? 'removed' : 'not removed'}</span>
+        <span>Successfully dismissed: {dismiss ? '✅' : '❌'}</span>
       </>
     );
   },
