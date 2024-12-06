@@ -5,9 +5,8 @@ import { useClassNames } from '@marigold/system';
 interface PageButtonProps {
   page: number;
   isSelected?: boolean;
-  isFocused?: boolean;
-  onPress: () => void;
-  onFocus?: () => void;
+  isDisabled?: boolean;
+  onPress?: () => void;
   registerRef?: (ref: HTMLButtonElement | null) => void;
 }
 
@@ -17,7 +16,7 @@ export const PageButton = (props: PageButtonProps) => {
     component: 'Pagination',
   });
   let { buttonProps } = useButton(props, ref);
-  let { page, isSelected, registerRef } = props;
+  let { page, isSelected, registerRef, isDisabled } = props;
 
   useEffect(() => {
     if (registerRef) {
@@ -34,6 +33,7 @@ export const PageButton = (props: PageButtonProps) => {
       aria-current={isSelected ? 'page' : undefined}
       className={classNames}
       data-selected={isSelected}
+      disabled={isDisabled}
     >
       {page}
     </button>
