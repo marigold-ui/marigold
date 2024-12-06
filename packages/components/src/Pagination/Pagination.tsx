@@ -13,14 +13,29 @@ import { usePageRange } from './usePageRange';
 TODO:
  - use compound component? - not yet
  - show results (User can read the results per page and the total number of results)
- - implementation of total pages = 0 (s. Figma)
- - make arrow controls accessible
  - Tests
  -
+ - example with table (check)
+ - implementation of total pages = 0 (s. Figma) (check)
+ - make arrow controls accessible (check)
  - useButton maybe (check)
  - use data attributes like data-selected instead of isSelected (check)
  - use own Pagination styles (check)
-  */
+*/
+
+/*
+TODO:
+ - use compound component? - not yet
+ - show results (User can read the results per page and the total number of results)
+ - Tests
+ -
+ - example with table (check)
+ - implementation of total pages = 0 (s. Figma) (check)
+ - make arrow controls accessible (check)
+ - useButton maybe (check)
+ - use data attributes like data-selected instead of isSelected (check)
+ - use own Pagination styles (check)
+*/
 
 export interface PaginationProps {
   /**
@@ -87,7 +102,7 @@ const _Pagination = ({
   }, [currentPage, setFocusedItem]);
 
   const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === totalPages;
+  const isLastPage = currentPage === totalPages || totalPages === 0;
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -112,20 +127,24 @@ const _Pagination = ({
       </PaginationButton>
 
       <div className="flex items-center space-x-2">
-        {pageRange.map((pageNumber, index) =>
-          pageNumber === 'ellipsis' ? (
-            <Ellipsis key={`ellipsis-${index}`} />
-          ) : (
-            <PageButton
-              key={pageNumber}
-              page={pageNumber}
-              isSelected={pageNumber === currentPage}
-              onPress={() => handlePageChange(pageNumber)}
-              registerRef={ref =>
-                registerRef(NavigationTypes.Page, pageNumber, ref)
-              }
-            />
+        {totalPages > 0 ? (
+          pageRange.map((pageNumber, index) =>
+            pageNumber === 'ellipsis' ? (
+              <Ellipsis key={`ellipsis-${index}`} />
+            ) : (
+              <PageButton
+                key={pageNumber}
+                page={pageNumber}
+                isSelected={pageNumber === currentPage}
+                onPress={() => handlePageChange(pageNumber)}
+                registerRef={ref =>
+                  registerRef(NavigationTypes.Page, pageNumber, ref)
+                }
+              />
+            )
           )
+        ) : (
+          <PageButton key={1} page={1} isDisabled />
         )}
       </div>
 
