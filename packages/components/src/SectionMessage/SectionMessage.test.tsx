@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { SectionMessage } from './SectionMessage';
@@ -157,5 +158,33 @@ test('allow to close message with button in message', async () => {
 
   await user.click(button);
 
+  expect(message).not.toBeInTheDocument();
+});
+
+test('support controlled dismiss message', async () => {
+  const Controlled = () => {
+    const [close, setClose] = useState(false);
+    return (
+      <ThemeProvider theme={theme}>
+        <SectionMessage
+          data-testid="messages"
+          closeButton
+          dismissable={!close}
+          onDismiss={() => setClose(true)}
+        >
+          <SectionMessage.Title>messages</SectionMessage.Title>
+          <SectionMessage.Content>default</SectionMessage.Content>
+        </SectionMessage>
+      </ThemeProvider>
+    );
+  };
+  render(<Controlled />);
+  const message = screen.getByTestId(/messages/);
+  const button = screen.getByRole('button');
+
+  expect(message).toBeInTheDocument();
+  expect(button).toBeInTheDocument();
+
+  await user.click(button);
   expect(message).not.toBeInTheDocument();
 });

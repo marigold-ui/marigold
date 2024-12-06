@@ -73,14 +73,15 @@ export const LongMessage: Story = {
 
 export const ControlledSectionMessage: Story = {
   render: args => {
-    const [dismiss, setDismissable] = useState(false);
+    const [deleteSuccessful, setDeleteSuccessful] = useState<boolean>(false);
 
     return (
       <>
         <SectionMessage
           {...args}
           closeButton
-          onClose={() => setDismissable(true)}
+          dismissable={!deleteSuccessful}
+          onDismiss={() => setDeleteSuccessful(true)}
         >
           <SectionMessage.Content>
             I am really not that good at righting copy texts, sorry.
@@ -90,7 +91,7 @@ export const ControlledSectionMessage: Story = {
           </SectionMessage.Title>
         </SectionMessage>
         <br />
-        <span>Successfully dismissed: {dismiss ? '✅' : '❌'}</span>
+        <span>Successfully dismissed: {deleteSuccessful ? '✅' : '❌'}</span>
       </>
     );
   },

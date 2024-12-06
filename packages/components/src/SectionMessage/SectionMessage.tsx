@@ -76,9 +76,13 @@ export interface SectionMessageProps {
    */
   closeButton?: boolean;
   /**
-   * Handler that is calledn when the sectionmessage is dismissable.
+   * Handler that is called when you need to controll the dismissable message.
    */
-  onClose?: () => void;
+  onDismiss?: () => void;
+  /**
+   * If the message is dismissable (controlled).
+   */
+  dismissable?: boolean;
 }
 
 // Component
@@ -88,7 +92,8 @@ export const SectionMessage = ({
   size,
   children,
   closeButton,
-  onClose,
+  dismissable,
+  onDismiss,
   ...props
 }: SectionMessageProps) => {
   const classNames = useClassNames({
@@ -97,16 +102,19 @@ export const SectionMessage = ({
     size,
   });
   const Icon = icons[variant];
-  const [isVisible, setIsVisible] = useState(true);
 
-  const handleClose = () => {
-    setIsVisible(false);
-    if (onClose) {
-      onClose();
+  const isUncontrolled = dismissable === undefined;
+  const [internalVisible, setInternalVisible] = useState(true);
+  const isCurrentlyVisible = isUncontrolled ? internalVisible : dismissable;
+
+  const handleDismissable = () => {
+    onDismiss?.();
+    if (isUncontrolled) {
+      setInternalVisible(false);
     }
   };
 
-  if (!isVisible) return null;
+  if (!isCurrentlyVisible) return null;
 
   return (
     <SectionMessageContext.Provider value={{ classNames }}>
@@ -127,7 +135,7 @@ export const SectionMessage = ({
           <Button
             aria-label="close"
             className="h-5 w-5 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
-            onPress={handleClose}
+            onPress={handleDismissable}
           >
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path
