@@ -3,7 +3,10 @@ import { ChevronLeft, ChevronRight } from '@marigold/icons';
 import { Ellipsis } from './Ellipsis';
 import { PageButton } from './PageButton';
 import { PaginationButton } from './PaginationButton';
-import { useKeyboardNavigation } from './useKeyboardNavigation';
+import {
+  NavigationTypes,
+  useKeyboardNavigation,
+} from './useKeyboardNavigation';
 import { usePageRange } from './usePageRange';
 
 /*
@@ -11,9 +14,10 @@ TODO:
  - use compound component? - not yet
  - show results (User can read the results per page and the total number of results)
  - implementation of total pages = 0 (s. Figma)
- - useButton maybe
+ - make arrow controls accessible
  - Tests
  -
+ - useButton maybe (check)
  - use data attributes like data-selected instead of isSelected (check)
  - use own Pagination styles (check)
   */
@@ -51,7 +55,7 @@ const _Pagination = ({
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
 
-  const { containerRef, keyboardProps, setFocusedPage, setVisiblePages } =
+  const { registerRef, keyboardProps, setNavigationItems, setFocusedItem } =
     useKeyboardNavigation({
       page: currentPage,
       totalPages,
@@ -63,16 +67,27 @@ const _Pagination = ({
 
   const pageRange = usePageRange({ currentPage, totalPages });
 
+  useEffect(() => {
+    const items = [
+      { type: NavigationTypes.Prev, value: currentPage - 1 },
+      ...pageRange.map(value => ({
+        type:
+          typeof value === 'number'
+            ? NavigationTypes.Page
+            : NavigationTypes.Ellipsis,
+        value,
+      })),
+      { type: NavigationTypes.Next, value: currentPage + 1 },
+    ];
+    setNavigationItems(items);
+  }, [pageRange, currentPage, setNavigationItems]);
+
+  useEffect(() => {
+    setFocusedItem({ type: NavigationTypes.Page, value: currentPage });
+  }, [currentPage, setFocusedItem]);
+
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
-
-  useEffect(() => {
-    setVisiblePages(pageRange);
-  }, [pageRange]);
-
-  useEffect(() => {
-    setFocusedPage(currentPage);
-  }, [currentPage]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -81,15 +96,17 @@ const _Pagination = ({
 
   return (
     <nav
-      ref={containerRef}
       className="flex items-center justify-center space-x-2"
       aria-label={`Page ${currentPage} of ${totalPages}`}
       {...keyboardProps}
     >
       <PaginationButton
         onPress={() => handlePageChange(Math.max(1, currentPage - 1))}
-        aria-label="Previous page"
+        aria-label="Page previous"
         isDisabled={isFirstPage}
+        registerRef={ref =>
+          registerRef(NavigationTypes.Prev, currentPage - 1, ref)
+        }
       >
         <ChevronLeft className="h-5 w-5" />
       </PaginationButton>
@@ -104,6 +121,9 @@ const _Pagination = ({
               page={pageNumber}
               isSelected={pageNumber === currentPage}
               onPress={() => handlePageChange(pageNumber)}
+              registerRef={ref =>
+                registerRef(NavigationTypes.Page, pageNumber, ref)
+              }
             />
           )
         )}
@@ -111,8 +131,11 @@ const _Pagination = ({
 
       <PaginationButton
         onPress={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-        aria-label="Next page"
+        aria-label="Page next"
         isDisabled={isLastPage}
+        registerRef={ref =>
+          registerRef(NavigationTypes.Next, currentPage + 1, ref)
+        }
       >
         <ChevronRight className="h-5 w-5" />
       </PaginationButton>

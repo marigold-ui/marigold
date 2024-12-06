@@ -1,8 +1,23 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useKeyboard } from '@react-aria/interactions';
 
+export const NavigationTypes = {
+  Prev: 'prev',
+  Next: 'next',
+  Page: 'page',
+  Ellipsis: 'ellipsis',
+} as const;
+
+export type NavigationKeys =
+  (typeof NavigationTypes)[keyof typeof NavigationTypes];
+
+interface NavigationItem {
+  type: NavigationKeys;
+  value: number | 'ellipsis';
+}
+
 interface UseKeyboardNavigationProps {
-  page?: number;
+  page: number;
   totalPages: number;
   onChange?: (page: number) => void;
 }
@@ -13,73 +28,134 @@ export const useKeyboardNavigation = ({
   onChange = () => {},
 }: UseKeyboardNavigationProps) => {
   const containerRef = useRef<HTMLElement | null>(null);
-  const [focusedPage, setFocusedPage] = useState(1);
-  const visiblePages = useRef<(number | 'ellipsis')[]>([]);
+  const [focusedItem, setFocusedItem] = useState<NavigationItem>({
+    type: 'page',
+    value: page,
+  });
+  const navigationItems = useRef<NavigationItem[]>([]);
+  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
-  const findNextVisiblePage = (
-    current: number,
-    direction: 'next' | 'prev'
-  ): number => {
-    const targetPage = direction === 'next' ? current + 1 : current - 1;
+  const isItemDisabled = useCallback(
+    (item: NavigationItem): boolean => {
+      if (item.type === NavigationTypes.Prev) return page <= 1;
+      if (item.type === NavigationTypes.Next) return page >= totalPages;
+      return item.type === NavigationTypes.Ellipsis;
+    },
+    [page, totalPages]
+  );
 
-    // If the target page is visible, return it
-    if (visiblePages.current.includes(targetPage)) {
-      return targetPage;
-    }
+  const findNextFocusableItem = useCallback(
+    (current: NavigationItem, direction: 'next' | 'prev'): NavigationItem => {
+      const items = navigationItems.current.filter(
+        item => !isItemDisabled(item)
+      );
+      const currentIndex = items.findIndex(
+        item => item.type === current.type && item.value === current.value
+      );
 
-    // If we hit an ellipsis, jump to the next visible page
-    const pages = visiblePages.current.filter(
-      (p): p is number => typeof p === 'number'
-    );
-    if (direction === 'next') {
-      return pages.find(p => p > current) ?? current;
-    } else {
-      return pages.reverse().find(p => p < current) ?? current;
-    }
-  };
+      if (currentIndex === -1) {
+        // If current item is not found or disabled, find the first enabled item
+        return items[0] || { type: NavigationTypes.Page, value: page };
+      }
+
+      const nextIndex =
+        direction === 'next'
+          ? (currentIndex + 1) % items.length
+          : (currentIndex - 1 + items.length) % items.length;
+
+      return items[nextIndex];
+    },
+    [isItemDisabled, page]
+  );
+
+  const focusItem = useCallback(
+    (item: NavigationItem) => {
+      if (isItemDisabled(item)) return;
+
+      const key = `${item.type}-${item.value}`;
+      const element = buttonRefs.current.get(key);
+      if (element && typeof element.focus === 'function') {
+        element.focus();
+        setFocusedItem(item);
+      }
+    },
+    [isItemDisabled]
+  );
 
   const { keyboardProps } = useKeyboard({
     onKeyDown: e => {
-      let newFocusedPage = focusedPage;
+      let newFocusedItem = focusedItem;
 
-      if (e.key === 'ArrowLeft' && focusedPage > 1) {
-        newFocusedPage = findNextVisiblePage(focusedPage, 'prev');
-      } else if (e.key === 'ArrowRight' && focusedPage < totalPages) {
-        newFocusedPage = findNextVisiblePage(focusedPage, 'next');
-      } else if (e.key === 'Home' && focusedPage !== 1) {
-        newFocusedPage = 1;
-      } else if (e.key === 'End' && focusedPage !== totalPages) {
-        newFocusedPage = totalPages;
-      } else if (e.key === 'Enter') {
-        if (focusedPage !== page) {
-          onChange(focusedPage);
-        }
+      switch (e.key) {
+        case 'ArrowLeft':
+          newFocusedItem = findNextFocusableItem(focusedItem, 'prev');
+          break;
+        case 'ArrowRight':
+          newFocusedItem = findNextFocusableItem(focusedItem, 'next');
+          break;
+        case 'Home':
+          newFocusedItem =
+            navigationItems.current.find(item => !isItemDisabled(item)) ||
+            focusedItem;
+          break;
+        case 'End':
+          newFocusedItem =
+            [...navigationItems.current]
+              .reverse()
+              .find(item => !isItemDisabled(item)) || focusedItem;
+          break;
+        case 'Enter':
+        case ' ':
+          if (isItemDisabled(focusedItem)) return;
+          if (
+            focusedItem.type === NavigationTypes.Page &&
+            typeof focusedItem.value === 'number'
+          ) {
+            onChange(focusedItem.value);
+          } else if (focusedItem.type === NavigationTypes.Prev && page > 1) {
+            onChange(page - 1);
+          } else if (
+            focusedItem.type === NavigationTypes.Next &&
+            page < totalPages
+          ) {
+            onChange(page + 1);
+          }
+          break;
+        default:
+          return;
       }
 
-      if (newFocusedPage !== focusedPage) {
-        setFocusedPage(newFocusedPage);
-
-        requestAnimationFrame(() => {
-          const container = containerRef.current;
-          if (container) {
-            const newPageButton = container.querySelector(
-              `[aria-label="Page ${newFocusedPage}"]`
-            ) as HTMLElement;
-            if (newPageButton) {
-              newPageButton.focus();
-            }
-          }
-        });
+      if (newFocusedItem !== focusedItem) {
+        focusItem(newFocusedItem);
       }
     },
   });
 
+  const registerRef = useCallback(
+    (
+      type: NavigationKeys,
+      value: number | 'ellipsis',
+      ref: HTMLButtonElement | null
+    ) => {
+      const key = `${type}-${value}`;
+      if (ref) {
+        buttonRefs.current.set(key, ref);
+      } else {
+        buttonRefs.current.delete(key);
+      }
+    },
+    []
+  );
+
+  const setNavigationItems = useCallback((items: NavigationItem[]) => {
+    navigationItems.current = items;
+  }, []);
+
   return {
     containerRef,
     keyboardProps,
-    setFocusedPage,
-    setVisiblePages: (pages: (number | 'ellipsis')[]) => {
-      visiblePages.current = pages;
-    },
+    registerRef,
+    setNavigationItems,
+    setFocusedItem,
   };
 };
