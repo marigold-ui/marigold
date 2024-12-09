@@ -1,5 +1,15 @@
 # @marigold/system
 
+## 10.1.1
+
+### Patch Changes
+
+- 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
+
+  - Refactored the `<XLoader>` component to be more accessible
+  - Updated the `<XLoader>` documentation page
+  - Adjusted styling to fit regular underlay styles when using "fullsize" mode
+
 ## 10.1.0
 
 ### Patch Changes
