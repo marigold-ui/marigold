@@ -140,8 +140,8 @@ export const WithTable: Story = {
               onChange={setCurrentPage}
             />
             <Split />
-            <FieldGroup labelWidth="60px">
-              <Select width={28} label="Page size" defaultSelectedKey="10">
+            <FieldGroup labelWidth="70px">
+              <Select width={32} label="Page size" defaultSelectedKey="10">
                 <Select.Option id="10">10</Select.Option>
                 <Select.Option id="20">20</Select.Option>
                 <Select.Option id={'30'}>30</Select.Option>
