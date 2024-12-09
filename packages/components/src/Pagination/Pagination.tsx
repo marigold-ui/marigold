@@ -9,57 +9,6 @@ import {
 } from './useKeyboardNavigation';
 import { usePageRange } from './usePageRange';
 
-/*
-TODO:
- - Tests
- - translations
- - refactoring
- - use compound component? - not yet
- - show results (User can read the results per page and the total number of results)
- -
- - styles needs to be checked (check)
- - example with table (check)
- - implementation of total pages = 0 (s. Figma) (check)
- - make arrow controls accessible (check)
- - useButton maybe (check)
- - use data attributes like data-selected instead of isSelected (check)
- - use own Pagination styles (check)
-*/
-
-/*
-TODO:
- - Tests
- - translations
- - refactoring
- - use compound component? - not yet
- - show results (User can read the results per page and the total number of results)
- -
- - styles needs to be checked (check)
- - example with table (check)
- - implementation of total pages = 0 (s. Figma) (check)
- - make arrow controls accessible (check)
- - useButton maybe (check)
- - use data attributes like data-selected instead of isSelected (check)
- - use own Pagination styles (check)
-*/
-
-/*
-TODO:
- - Tests
- - translations
- - refactoring
- - use compound component? - not yet
- - show results (User can read the results per page and the total number of results)
- -
- - styles needs to be checked (check)
- - example with table (check)
- - implementation of total pages = 0 (s. Figma) (check)
- - make arrow controls accessible (check)
- - useButton maybe (check)
- - use data attributes like data-selected instead of isSelected (check)
- - use own Pagination styles (check)
-*/
-
 export interface PaginationProps {
   /**
    * The initial page. (uncontrolled)
