@@ -11,40 +11,47 @@ import { usePageRange } from './usePageRange';
 
 /*
 TODO:
- - use compound component? - not yet
- - show results (User can read the results per page and the total number of results)
  - Tests
- -
- - example with table (check)
- - implementation of total pages = 0 (s. Figma) (check)
- - make arrow controls accessible (check)
- - useButton maybe (check)
- - use data attributes like data-selected instead of isSelected (check)
- - use own Pagination styles (check)
-*/
-
-/*
-TODO:
- - use compound component? - not yet
- - show results (User can read the results per page and the total number of results)
- - Tests
- -
- - example with table (check)
- - implementation of total pages = 0 (s. Figma) (check)
- - make arrow controls accessible (check)
- - useButton maybe (check)
- - use data attributes like data-selected instead of isSelected (check)
- - use own Pagination styles (check)
-*/
-
-/*
-TODO:
- - styles needs to be checked
- - Tests
+ - translations
  - refactoring
  - use compound component? - not yet
  - show results (User can read the results per page and the total number of results)
  -
+ - styles needs to be checked (check)
+ - example with table (check)
+ - implementation of total pages = 0 (s. Figma) (check)
+ - make arrow controls accessible (check)
+ - useButton maybe (check)
+ - use data attributes like data-selected instead of isSelected (check)
+ - use own Pagination styles (check)
+*/
+
+/*
+TODO:
+ - Tests
+ - translations
+ - refactoring
+ - use compound component? - not yet
+ - show results (User can read the results per page and the total number of results)
+ -
+ - styles needs to be checked (check)
+ - example with table (check)
+ - implementation of total pages = 0 (s. Figma) (check)
+ - make arrow controls accessible (check)
+ - useButton maybe (check)
+ - use data attributes like data-selected instead of isSelected (check)
+ - use own Pagination styles (check)
+*/
+
+/*
+TODO:
+ - Tests
+ - translations
+ - refactoring
+ - use compound component? - not yet
+ - show results (User can read the results per page and the total number of results)
+ -
+ - styles needs to be checked (check)
  - example with table (check)
  - implementation of total pages = 0 (s. Figma) (check)
  - make arrow controls accessible (check)
@@ -86,14 +93,16 @@ const _Pagination = ({
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    onChange(newPage);
+  };
+
   const { registerRef, keyboardProps, setNavigationItems, setFocusedItem } =
     useKeyboardNavigation({
       page: currentPage,
       totalPages,
-      onChange: newPage => {
-        setCurrentPage(newPage);
-        onChange(newPage);
-      },
+      onChange: handlePageChange,
     });
 
   const pageRange = usePageRange({ currentPage, totalPages });
@@ -119,11 +128,6 @@ const _Pagination = ({
 
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages || totalPages === 0;
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    onChange(newPage);
-  };
 
   return (
     <nav
