@@ -1,4 +1,5 @@
 import { type ReactNode, useState } from 'react';
+import { Button } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { SectionMessageContext } from './Context';
 import { SectionMessageContent } from './SectionMessageContent';
@@ -74,6 +75,14 @@ export interface SectionMessageProps {
    * Adds a close button, makes the section message dismissable.
    */
   closeButton?: boolean;
+  /**
+   * Handler that is called when you need to controll the dismissable message.
+   */
+  onDismiss?: () => void;
+  /**
+   * If the message is dismissable (controlled).
+   */
+  dismissable?: boolean;
 }
 
 // Component
@@ -83,6 +92,8 @@ export const SectionMessage = ({
   size,
   children,
   closeButton,
+  dismissable,
+  onDismiss,
   ...props
 }: SectionMessageProps) => {
   const classNames = useClassNames({
@@ -92,13 +103,18 @@ export const SectionMessage = ({
   });
   const Icon = icons[variant];
 
-  const [isVisible, setIsVisible] = useState(true);
+  const isUncontrolled = dismissable === undefined;
+  const [internalVisible, setInternalVisible] = useState(true);
+  const isCurrentlyVisible = isUncontrolled ? internalVisible : dismissable;
 
-  const handleClose = () => {
-    setIsVisible(false);
+  const handleDismissable = () => {
+    onDismiss?.();
+    if (isUncontrolled) {
+      setInternalVisible(false);
+    }
   };
 
-  if (!isVisible) return null;
+  if (!isCurrentlyVisible) return null;
 
   return (
     <SectionMessageContext.Provider value={{ classNames }}>
@@ -116,10 +132,10 @@ export const SectionMessage = ({
           {Icon && <Icon />}
         </div>
         {closeButton && (
-          <button
+          <Button
             aria-label="close"
             className="h-5 w-5 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
-            onClick={handleClose}
+            onPress={handleDismissable}
           >
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path
@@ -128,7 +144,7 @@ export const SectionMessage = ({
                 d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               />
             </svg>
-          </button>
+          </Button>
         )}
         {children}
       </div>
