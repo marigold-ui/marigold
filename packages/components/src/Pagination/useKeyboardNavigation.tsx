@@ -8,11 +8,11 @@ export const NavigationTypes = {
   Ellipsis: 'ellipsis',
 } as const;
 
-export type NavigationKeys =
+export type NavigationTypes =
   (typeof NavigationTypes)[keyof typeof NavigationTypes];
 
 interface NavigationItem {
-  type: NavigationKeys;
+  type: NavigationTypes;
   value: number | 'ellipsis';
 }
 
@@ -133,7 +133,7 @@ export const useKeyboardNavigation = ({
 
   const registerRef = useCallback(
     (
-      type: NavigationKeys,
+      type: NavigationTypes,
       value: number | 'ellipsis',
       ref: HTMLButtonElement | null
     ) => {
