@@ -105,7 +105,7 @@ export const Basic: StoryObj<typeof Tiles> = {
   ),
 };
 
-export const DifferentHights: StoryObj<typeof Tiles> = {
+export const DifferentHeights: StoryObj<typeof Tiles> = {
   render: args => (
     <Tiles {...args}>
       <div className="border border-slate-300 bg-slate-100">
