@@ -1,10 +1,18 @@
-import { Inset } from '@marigold/components';
+import { venues } from '@/lib/data/venues';
+import { Card, Headline, Inline, Inset, Text } from '@marigold/components';
 
-export default () => (
-  <Inset spaceY={5} spaceX={7}>
-    Marigold is usually yellow, orange, red and maroon in color. Each flower
-    consists of large number of petals that overlap. Biggest petals are located
-    on a periphery and smallest in a center of a flower. Flowers contain both
-    male (stamen) and female (pistil) reproductive organs.
-  </Inset>
-);
+export default () => {
+  return (
+    <Card size="small">
+      <Inset spaceX={4} spaceY={8}>
+        <Headline level={3}>{venues[0].name}</Headline>
+        <Inline>
+          <Text fontStyle="italic">
+            {venues[0].city} | {venues[0].type}
+          </Text>
+        </Inline>
+        <Text>{venues[0].description}</Text>
+      </Inset>
+    </Card>
+  );
+};
