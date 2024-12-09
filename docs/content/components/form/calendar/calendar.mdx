@@ -1,33 +1,30 @@
 ---
 title: Calendar
-caption: Component for displaying and selecting date .
+caption: Choosing date from a calendar.
+badge: updated
 ---
 
-The `<Calendar>` is a date selection interface that allows you to choose date using calendar view .
+The `<Calendar>` is a date selection interface that allows you to choose a date using a calendar view.
 
-A `<Calendar>` consists of a grouping element containing one or more date grids (e.g. months), and a previous and next button for navigating between date ranges. Each calendar grid consists of cells containing button elements that can be pressed and navigated to using the arrow keys to select a date.
+## Anatomy
 
-## Import
+The `<Calendar>` consists of a header and a grid section. Inside of the header there are two select lists, one for a month and one for the year. In the grid section there is a grid of selectable dates which you can also enter through keyboard navigation to select a date.
 
-```tsx
-import { Calendar } from '@marigold/components';
-```
+<Image
+  src="/calendar/calendar-anatomy.jpg"
+  alt="Anatomy of calendar"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
 
-## Props
-
-<PropsTable component={title} />
-
-## Examples
-
-### Simple Calendar
-
-In this example you can see a simple `<Calendar> component and you can select the date`.
-
-<ComponentDemo file="./basic-calendar.demo.tsx" />
+## Usage
 
 ### Disabled Calendar
 
@@ -40,3 +37,9 @@ In this example the `<Calendar>` has its prop `disabled`. So you can't interact 
 You can set the range for `<Calendar>` by setting `minValue` and `maxValue` properties
 
 <ComponentDemo file="./range-calendar.demo.tsx" />
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
