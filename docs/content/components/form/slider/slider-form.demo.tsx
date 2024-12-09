@@ -20,26 +20,24 @@ export default () => {
   };
 
   return (
-    <Container size={'large'}>
-      <Form onSubmit={handleSubmit}>
-        <FieldGroup labelWidth={'100px'}>
-          <Stack space={2}>
-            <FieldBase label="Age">
-              <Slider
-                defaultValue={[20, 30]}
-                maxValue={100}
-                thumbLabels={['start', 'end']}
-                width={60}
-              />
-            </FieldBase>
-          </Stack>
-        </FieldGroup>
-        <Inline space={4} alignX={'right'}>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Inline>
-      </Form>
-    </Container>
+    <Form onSubmit={handleSubmit}>
+      <FieldGroup labelWidth={'100px'}>
+        <Stack space={2}>
+          <FieldBase label="Age">
+            <Slider
+              defaultValue={[20, 30]}
+              maxValue={100}
+              thumbLabels={['start', 'end']}
+              width={60}
+            />
+          </FieldBase>
+        </Stack>
+      </FieldGroup>
+      <Inline space={4} alignX={'right'}>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Inline>
+    </Form>
   );
 };
