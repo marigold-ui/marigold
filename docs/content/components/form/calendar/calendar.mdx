@@ -8,7 +8,7 @@ The `<Calendar>` is a date selection interface that allows you to choose a date 
 
 ## Anatomy
 
-The `<Calendar>` consists of a header and a grid section. Inside of the header there are two select lists, one for a month and one for the year. In the grid section there is a grid of selectable dates which you can also enter through keyboard navigation to select a date.
+The `<Calendar>` consists of a header and a grid section. Inside of the header there are two select lists, one for a month and one for the year. In the grid section there is a grid of selectable dates.
 
 <Image
   src="/calendar/calendar-anatomy.jpg"
@@ -26,9 +26,26 @@ The `<Calendar>` consists of a header and a grid section. Inside of the header t
 
 ## Usage
 
-### Determine the max and min value for Calendar
+The `<Calendar>` should be used for experiences where you need to visualize data over an entire month.
 
-You can set the range for `<Calendar>` by setting `minValue` and `maxValue` properties
+For most use cases, it is better to use the `<DatePicker>` instead of the `<Calendar>`. The `<DatePicker>` allows users to input a date directly as text, in addition to selecting one, and offers more robust validation and error messaging capabilities.
+
+### Accessibility
+
+Calendar cells support keyboard navigation (through arrow keys) and selection (through enter or space), with localized screen reader messages provided to announce changes in selection and the visible date range.
+
+<SectionMessage>
+<SectionMessage.Title>Hint</SectionMessage.Title>
+<SectionMessage.Content>Keep in mind to use a `aria-label` when using `<Calendar>` to ensure screen readers have access to it.</SectionMessage.Content>
+</SectionMessage>
+
+### Localization
+
+The `<Calendar>` itself supports many different calendar systems, all based on the users locale system. You can override the locale system by using the `<I18nProvider>`. With that you can use the `locale` prop and set it to any language system.
+
+### Range calendar
+
+With the `minValue` and `maxValue` property, you can set a range in which the date can be selected. This is useful if you need to limit the amout of calendar dates to select.
 
 <ComponentDemo file="./range-calendar.demo.tsx" />
 
@@ -37,3 +54,12 @@ You can set the range for `<Calendar>` by setting `minValue` and `maxValue` prop
 <StorybookHintMessage component={title} />
 
 <PropsTable component={title} />
+
+## Alternative Components
+
+For most use cases, it is better to use the `<DatePicker>` instead of the `<Calendar>`. The `<DatePicker>` allows users to input a date directly as text, in addition to selecting one, and offers more robust validation and error messaging capabilities.
+
+<ul>
+<li>[DateField](/form/datefield/): Use the `<DateField>` if you need to only use text input to select a date.</li>
+<li>[DatePicker](/form/datepicker): Use the `<DatePicker>` for </li>
+</ul>
