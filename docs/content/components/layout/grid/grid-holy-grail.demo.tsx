@@ -1,10 +1,5 @@
 import { Grid } from '@marigold/components';
-
-const Block = ({ title }: { title: string }) => (
-  <div className="size-full content-center bg-black/50 text-center text-base font-bold text-white">
-    {title}
-  </div>
-);
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
   <Grid
@@ -15,16 +10,24 @@ export default () => (
     space={1}
   >
     <Grid.Area name="header">
-      <Block title="header" />
+      <Rectangle height="100%">
+        <div className="text-text-primary-muted m-auto">Header</div>
+      </Rectangle>
     </Grid.Area>
     <Grid.Area name="sidebar">
-      <Block title="sidebar" />
+      <Rectangle height="100%">
+        <div className="text-text-primary-muted m-auto">Sidebar</div>
+      </Rectangle>
     </Grid.Area>
     <Grid.Area name="main">
-      <Block title="main" />
+      <Rectangle height="100%">
+        <div className="text-text-primary-muted m-auto">Main</div>
+      </Rectangle>
     </Grid.Area>
     <Grid.Area name="footer">
-      <Block title="footer" />
+      <Rectangle height="100%">
+        <div className="text-text-primary-muted m-auto">Footer</div>
+      </Rectangle>
     </Grid.Area>
   </Grid>
 );
