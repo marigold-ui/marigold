@@ -76,7 +76,7 @@ export interface SectionMessageProps {
    */
   closeButton?: boolean;
   /**
-   * Handler that is called when you need to controll the dismissable message.
+   * Handler that is called when you need to control the dismissable message.
    */
   onDismiss?: () => void;
   /**
@@ -103,13 +103,12 @@ export const SectionMessage = ({
   });
   const Icon = icons[variant];
 
-  const isUncontrolled = dismissable === undefined;
   const [internalVisible, setInternalVisible] = useState(true);
-  const isCurrentlyVisible = isUncontrolled ? internalVisible : dismissable;
+  const isCurrentlyVisible = dismissable ?? internalVisible;
 
   const handleDismissable = () => {
     onDismiss?.();
-    if (isUncontrolled) {
+    if (dismissable === undefined) {
       setInternalVisible(false);
     }
   };
