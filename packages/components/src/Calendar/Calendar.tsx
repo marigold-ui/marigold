@@ -11,6 +11,8 @@ import YearListBox from './YearListBox';
 // Props
 // ---------------
 type RemovedProps =
+  | 'visibleDuration'
+  | 'pageBehavior'
   | 'isDateUnavailable'
   | 'isDisabled'
   | 'isReadOnly'
