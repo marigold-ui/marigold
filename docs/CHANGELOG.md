@@ -1,5 +1,29 @@
 # @marigold/docs
 
+## 10.1.1
+
+### Patch Changes
+
+- 00af299: docs: Update `<Aspect>` component page
+
+  Revised the whole page with more awesome information and usage examples
+
+- 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
+
+  - Refactored the `<XLoader>` component to be more accessible
+  - Updated the `<XLoader>` documentation page
+  - Adjusted styling to fit regular underlay styles when using "fullsize" mode
+
+- Updated dependencies [85e8cba]
+- Updated dependencies [425ce62]
+  - @marigold/components@10.1.1
+  - @marigold/system@10.1.1
+  - @marigold/theme-b2b@28.0.2
+  - @marigold/theme-core@27.0.2
+  - @marigold/theme-docs@2.2.2
+  - @marigold/icons@1.2.60
+  - @marigold/theme-preset@1.3.25
+
 ## 10.1.0
 
 ### Minor Changes
