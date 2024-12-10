@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { AriaComboBoxProps } from '@react-types/combobox';
 import {
   AsyncLoadable,
@@ -59,7 +60,7 @@ export interface ComboboxMultiValidationValue {
   inputValue: string;
 }
 export interface ComboboxMultiProps<T>
-  extends CollectionBase<T>,
+  extends Omit<CollectionBase<T>, 'children'>,
     Omit<FieldBaseProps<any>, 'children'>,
     Omit<MultipleSelection, 'disallowEmptySelection'>,
     Omit<AsyncLoadable, 'isLoading'>,
@@ -81,4 +82,5 @@ export interface ComboboxMultiProps<T>
   onInputChange?: (value: string) => void;
   variant?: string;
   size?: string;
+  children?: ReactNode | ((item: any) => ReactNode);
 }

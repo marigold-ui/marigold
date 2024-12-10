@@ -32,6 +32,8 @@ const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
     // RAC types are incorrect, this will be passed to the `useListBox` hook
     const listBoxProps: any = { shouldSelectOnPressUp: false };
 
+    console.log('props.children', props.children);
+
     return (
       <ListBoxContext.Provider value={{ classNames }}>
         <div className={classNames.container}>

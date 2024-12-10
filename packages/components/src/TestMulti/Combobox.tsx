@@ -82,7 +82,7 @@ export const CloseButton = ({ className }: CloseButtonProps) => {
 
 interface ComboboxMultiComponent
   extends ForwardRefExoticComponent<ComboboxMultiProps<object>> {
-  Option: typeof ListItem;
+  Option: typeof ListBox.Item;
 }
 
 //Component
@@ -111,7 +111,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   let fieldRef = useObjectRef(forwardedRef);
 
   // let layoutDelegate = useListBoxLayout();
-  let state = useComboboxMultiState(props);
+  let state = useComboboxMultiState({ ...props, children: state.collection });
 
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
 
@@ -140,7 +140,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     state.selectionManager.clearSelection();
   };
 
-  console.log('isOpen', state.isOpen);
+  console.log('props.children', props.children);
 
   return (
     <Provider
@@ -174,7 +174,14 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             ...listBoxProps,
           },
         ],
-        // [ListStateContext, state],
+        [
+          ListStateContext,
+          {
+            collection: state.collection,
+            selectionManager: state.selectionManager,
+            disabledKeys: state.disabledKeys,
+          },
+        ],
         [OverlayTriggerStateContext, state],
         [
           PopoverContext,
@@ -209,15 +216,11 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
           </Button>
         </div>
         <Popover>
-          <ListBox>
-            {(item: { id: any; textValue: string }) => (
-              <ListBox.Item id={item.id}>{item.textValue}</ListBox.Item>
-            )}
-          </ListBox>
+          <ListBox>{props.children}</ListBox>
         </Popover>
       </FieldBase>
     </Provider>
   );
 }) as ComboboxMultiComponent;
 
-ComboboxMultiBase.Option = Item;
+ComboboxMultiBase.Option = ListBox.Item;
