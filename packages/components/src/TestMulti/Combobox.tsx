@@ -180,7 +180,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
           PopoverContext,
           {
             ref: popoverRef as ForwardedRef<HTMLElement>,
-            triggerRef: inputRef,
+            triggerRef: fieldRef,
             scrollRef: listBoxRef,
             isNonModal: true,
             style: popoverWidth,

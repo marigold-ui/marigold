@@ -6,7 +6,8 @@ import {
   useFormValidationState,
 } from '@react-stately/form';
 import { ListCollection, ListState, useListState } from '@react-stately/list';
-import { MenuTriggerState, useMenuTriggerState } from '@react-stately/menu';
+import { MenuTriggerState } from '@react-stately/menu';
+import { useOverlayTriggerState } from '@react-stately/overlays';
 import { useControlledState } from '@react-stately/utils';
 import {
   Collection,
@@ -66,7 +67,7 @@ export function useComboboxMultiState<T extends object>(
     selectionBehavior: 'toggle',
     selectionMode: 'multiple',
   });
-  let triggerState = useMenuTriggerState({
+  let triggerState = useOverlayTriggerState({
     ...props,
     onOpenChange: props.onOpenChange,
     isOpen: undefined,

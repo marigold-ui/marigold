@@ -49,6 +49,7 @@
     "@react-stately/form": "3.0.6",
     "@react-stately/list": "3.11.0",
     "@react-stately/menu": "3.8.3",
+    "@react-stately/overlays": "3.6.12",
     "@react-stately/selection": "3.17.0",
     "@react-stately/table": "3.12.3",
     "@react-stately/tree": "3.8.5",

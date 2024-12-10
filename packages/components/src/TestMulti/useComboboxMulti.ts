@@ -234,12 +234,12 @@ export function useComboboxMulti<T extends object>(
   let triggerLabelProps = useLabels({
     id: menuTriggerProps.id,
     // 'aria-label': stringFormatter.format('buttonLabel'),
-    // 'aria-labelledby': props['aria-labelledby'] || labelProps.id,
+    'aria-labelledby': props['aria-labelledby'] || labelProps.id,
   });
   let listBoxProps = useLabels({
     id: menuProps.id,
     // 'aria-label': stringFormatter.format('listboxLabel'),
-    // 'aria-labelledby': props['aria-labelledby'] || labelProps.id,
+    'aria-labelledby': props['aria-labelledby'] || labelProps.id,
   });
 
   return {
