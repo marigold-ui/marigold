@@ -1,3 +1,3 @@
 import { Calendar } from '@marigold/components';
 
-export default () => <Calendar disabled />;
+export default () => <Calendar />;
