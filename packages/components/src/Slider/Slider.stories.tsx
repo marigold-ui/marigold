@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormEvent, useState } from 'react';
-import {
-  Container,
-  FieldBase,
-  FieldGroup,
-  Inline,
-  Stack,
-} from '@marigold/components';
+import { FieldBase, FieldGroup, Inline, Stack } from '@marigold/components';
 import { Button } from '../Button';
 import { Form } from '../Form/Form';
 import { Slider } from './Slider';
