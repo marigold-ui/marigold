@@ -60,7 +60,7 @@
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern packages/types/src/index.ts --ignore-pattern \".cache\" --ignore-pattern public",
     "format": "prettier --write \"**/*\"",
     "format:fix": "prettier --write \"**/*\" --fix",
-    "typecheck": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
+    "typecheck": "pnpm --filter @marigold/docs build && tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "contributor": "all-contributors",
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
