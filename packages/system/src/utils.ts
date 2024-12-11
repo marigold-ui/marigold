@@ -7,6 +7,7 @@ import {
 } from 'class-variance-authority/dist/types';
 import { twMerge } from 'tailwind-merge';
 
+export type { ClassValue };
 export type { VariantProps } from 'class-variance-authority';
 
 export type ConfigSchema = Record<string, Record<string, ClassValue>>;
