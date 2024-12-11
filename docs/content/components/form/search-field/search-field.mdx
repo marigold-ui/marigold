@@ -1,25 +1,42 @@
 ---
 title: SearchField
 caption: Component which allows user to enter and clear a search query.
+badge: updated
 ---
 
 The `<SearchField>` component is a versatile UI element that enables users to search for specific information within a given context or data set. It offers a user-friendly input field specifically designed for search queries, often accompanied by a search icon or button to initiate the search action.
 
 `<SearchField>` consists of an input element, a label, and an optional clear button. `<SearchField>` automatically manages the labeling and relationships between the elements, and handles keyboard events. Users can press the Escape key to clear the `<SearchField>`, or the Enter key to trigger the `onSubmit` event.
 
-## Import
+## Anatomy
 
-```tsx
-import { SearchField } from '@marigold/components';
-```
+A table is composed of a container element that organizes data into rows and columns. Each cell within the table can hold either plain text or focusable elements. If the table allows multiple row selection, the first column of each row include a checkbox for selecting that row and the first column header will contain a "select all" checkbox.
+
+<Image
+  src="/table/table-anatomy.jpg"
+  alt="Anatomy of table"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
+
+## Usage
 
 ## Props
 
+<StorybookHintMessage component={title} />
+
 <PropsTable component={title} />
+
+## Alternative components
+
+## Related
 
 ## Examples
 
