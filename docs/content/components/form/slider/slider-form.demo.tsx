@@ -1,9 +1,9 @@
 import { FormEvent } from 'react';
 import {
   Button,
+  Center,
   FieldBase,
   FieldGroup,
-  Inline,
   Slider,
   Stack,
 } from '@marigold/components';
@@ -19,24 +19,26 @@ export default () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FieldGroup labelWidth={'100px'}>
-        <Stack space={2}>
-          <FieldBase label="Age">
-            <Slider
-              defaultValue={[20, 30]}
-              maxValue={100}
-              thumbLabels={['start', 'end']}
-              width={60}
-            />
-          </FieldBase>
+    <Center>
+      <Form onSubmit={handleSubmit}>
+        <Stack alignX="right" space={4}>
+          <FieldGroup labelWidth={'100px'}>
+            <Stack space={2}>
+              <FieldBase label="Age">
+                <Slider
+                  defaultValue={[20, 30]}
+                  maxValue={100}
+                  thumbLabels={['start', 'end']}
+                  width={60}
+                />
+              </FieldBase>
+            </Stack>
+          </FieldGroup>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
         </Stack>
-      </FieldGroup>
-      <Inline space={4} alignX={'right'}>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Inline>
-    </Form>
+      </Form>
+    </Center>
   );
 };
