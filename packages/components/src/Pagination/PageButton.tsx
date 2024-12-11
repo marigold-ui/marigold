@@ -34,6 +34,7 @@ export const PageButton = (props: PageButtonProps) => {
       className={classNames}
       data-selected={isSelected}
       disabled={isDisabled}
+      tabIndex={isSelected === true ? 0 : -1}
     >
       {page}
     </button>

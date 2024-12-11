@@ -1,4 +1,5 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { act, fireEvent, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
@@ -69,6 +70,7 @@ describe('Pagination tests', () => {
           aria-label="Page 1"
           class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
           data-selected="true"
+          tabindex="0"
           type="button"
         >
           1
@@ -77,6 +79,7 @@ describe('Pagination tests', () => {
           aria-label="Page 2"
           class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
           data-selected="false"
+          tabindex="-1"
           type="button"
         >
           2
@@ -140,6 +143,7 @@ describe('Pagination tests', () => {
           aria-label="Page 1"
           class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
           disabled=""
+          tabindex="-1"
           type="button"
         >
           1
@@ -316,4 +320,30 @@ describe('Pagination tests', () => {
 
     expect(handleChange).toHaveBeenCalledWith(2);
   });
+
+  test('tabbing should select default page', async () => {
+    render(<Pagination totalItems={20} pageSize={10} defaultPage={1} />);
+
+    await act(() => userEvent.tab());
+
+    expect(screen.getByLabelText('Page 1')).toHaveFocus();
+  });
+
+  it.each([
+    ['Page 1', 1],
+    ['Page previous', 2],
+    ['Page previous', 3],
+    ['Page previous', 4],
+    ['Page previous', 5],
+    ['Page previous', 8],
+  ])(
+    `should focus %s when using tab and default page is Page %i`,
+    async (expected, page) => {
+      render(<Pagination totalItems={50} pageSize={10} defaultPage={page} />);
+
+      await act(() => userEvent.tab());
+
+      expect(screen.getByLabelText(expected)).toHaveFocus();
+    }
+  );
 });
