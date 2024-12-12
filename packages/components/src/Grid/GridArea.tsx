@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 // ---------------
 export interface GridAreaProps {
   /**
-   * Name of the grid area slot to put the component.
+   * Name of the grid area slot.
    */
   name: string;
   /**
