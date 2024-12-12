@@ -1,9 +1,10 @@
 import { Inset } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
-  <Inset space={8}>
-    Marigold has oblong and lanceolate leaves with whole margins. Some varieties
-    of marigold have leaves with toothed edges. Leaves are spirally arranged on
-    the branches.
-  </Inset>
+  <div className="bg-bg-surface-sunken">
+    <Inset space={8}>
+      <Rectangle height="80px" />
+    </Inset>
+  </div>
 );
