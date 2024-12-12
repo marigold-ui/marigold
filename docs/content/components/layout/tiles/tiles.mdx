@@ -12,6 +12,8 @@ The `<Tiles>` is a layout component which is based on [CSS grid](https://www.w3s
 
 It's possible to display the items with some spacing through `space` prop or set a minimum width for all items inside `<Tiles>` with `tilesWidth` prop.
 
+<ComponentDemo file="./tiles-complex.demo.tsx" />
+
 ### Equal heights
 
 If you need to have the items in the `<Tiles>` take the same height, you can use the `equalHeight` property, which is a boolean value that can be used to size the items of the `<Tiles>`. In this case, all items adopt the size of the largest card, making it essential when you want all items to match the largest child’s dimensions.
@@ -23,12 +25,6 @@ If you need to have the items in the `<Tiles>` take the same height, you can use
 Using the `stretch` property will make the tiles fully responsive. Meaning, they will distribute available width between them while not getting smaller then the given `tilesWidth`.
 
 <ComponentDemo file="./tiles-stretch.demo.tsx" />
-
-### Complex tiles example
-
-This is a more realistic example of how to use `<Tiles>` with cards and content. You can see that the tiles are filled with cards, inside the cards is the content of a venue displayed.
-
-<ComponentDemo file="./tiles-complex.demo.tsx" />
 
 ## Props
 
