@@ -346,4 +346,21 @@ describe('Pagination tests', () => {
       expect(screen.getByLabelText(expected)).toHaveFocus();
     }
   );
+
+  test('use control labels', () => {
+    render(
+      <Pagination
+        totalItems={100}
+        pageSize={10}
+        defaultPage={5}
+        controlLabels={['Previous', 'Next']}
+      />
+    );
+
+    const previousButton = screen.getByLabelText('Page previous');
+    const nextPageButton = screen.getByLabelText('Page next');
+
+    expect(previousButton).toHaveTextContent('Previous');
+    expect(nextPageButton).toHaveTextContent('Next');
+  });
 });

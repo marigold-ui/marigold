@@ -152,3 +152,15 @@ export const WithTable: Story = {
     );
   },
 };
+
+export const WithControlLabels: Story = {
+  render: args => (
+    <Pagination
+      {...args}
+      totalItems={100}
+      pageSize={10}
+      page={5}
+      controlLabels={['Previous', 'Next']}
+    />
+  ),
+};

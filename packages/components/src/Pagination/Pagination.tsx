@@ -9,6 +9,11 @@ import {
 } from './useKeyboardNavigation';
 import { usePageRange } from './usePageRange';
 
+/*
+TODO:
+ - label property (controllabels s. Slider?)
+ - results counter?
+*/
 export interface PaginationProps {
   /**
    * The initial page. (uncontrolled)
@@ -30,6 +35,10 @@ export interface PaginationProps {
    * Handler that is called when the pagination active page changes.
    */
   onChange?: (page: number) => void;
+  /**
+   * Labels for the pagination controls.
+   */
+  controlLabels?: [string, string];
 }
 
 const _Pagination = ({
@@ -38,6 +47,7 @@ const _Pagination = ({
   totalItems,
   pageSize,
   onChange = () => {},
+  controlLabels,
 }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -91,6 +101,8 @@ const _Pagination = ({
         registerRef={ref =>
           registerRef(NavigationTypes.Prev, currentPage - 1, ref)
         }
+        controlLabel={controlLabels?.[0]}
+        position="left"
       >
         <ChevronLeft className="h-5 w-5" />
       </PaginationButton>
@@ -124,6 +136,8 @@ const _Pagination = ({
         registerRef={ref =>
           registerRef(NavigationTypes.Next, currentPage + 1, ref)
         }
+        controlLabel={controlLabels?.[1]}
+        position="right"
       >
         <ChevronRight className="h-5 w-5" />
       </PaginationButton>

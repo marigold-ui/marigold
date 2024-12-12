@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useButton } from '@react-aria/button';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 interface PaginationButtonProps {
   onPress: () => void;
@@ -9,6 +9,8 @@ interface PaginationButtonProps {
   isSelected?: boolean;
   children: React.ReactNode;
   registerRef?: (ref: HTMLButtonElement | null) => void;
+  controlLabel?: string;
+  position?: 'left' | 'right';
 }
 
 export const PaginationButton = (props: PaginationButtonProps) => {
@@ -17,7 +19,15 @@ export const PaginationButton = (props: PaginationButtonProps) => {
     component: 'Pagination',
   });
   let { buttonProps } = useButton(props, ref);
-  let { children, isSelected, isDisabled, registerRef, ...rest } = props;
+  let {
+    children,
+    isSelected,
+    isDisabled,
+    registerRef,
+    controlLabel,
+    position,
+    ...rest
+  } = props;
 
   useEffect(() => {
     if (registerRef) {
@@ -32,10 +42,12 @@ export const PaginationButton = (props: PaginationButtonProps) => {
       {...buttonProps}
       {...rest}
       disabled={isDisabled}
-      className={classNames}
+      className={cn(classNames, controlLabel && 'w-24 px-2')}
       data-selected={isSelected}
     >
-      {children}
+      {position === 'left' && children}
+      {controlLabel}
+      {position === 'right' && children}
     </button>
   );
 };
