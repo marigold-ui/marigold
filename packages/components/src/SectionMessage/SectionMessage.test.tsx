@@ -169,8 +169,8 @@ test('support controlled dismiss message', async () => {
         <SectionMessage
           data-testid="messages"
           closeButton
-          dismissable={!close}
-          onDismiss={() => setClose(true)}
+          close={!close}
+          onClose={() => setClose(true)}
         >
           <SectionMessage.Title>messages</SectionMessage.Title>
           <SectionMessage.Content>default</SectionMessage.Content>

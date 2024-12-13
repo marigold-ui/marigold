@@ -80,8 +80,8 @@ export const ControlledSectionMessage: Story = {
         <SectionMessage
           {...args}
           closeButton
-          dismissable={!deleteSuccessful}
-          onDismiss={() => setDeleteSuccessful(true)}
+          close={!deleteSuccessful}
+          onClose={() => setDeleteSuccessful(true)}
         >
           <SectionMessage.Content>
             I am really not that good at righting copy texts, sorry.
