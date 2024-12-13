@@ -21,7 +21,11 @@ import {
 } from 'react-aria-components';
 import { Input, Provider } from 'react-aria-components';
 import { useObjectRef, useResizeObserver } from '@react-aria/utils';
-import { Item, useCollection } from '@react-stately/collections';
+import {
+  CollectionBuilder,
+  Item,
+  useCollection,
+} from '@react-stately/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
@@ -137,8 +141,9 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   console.log(collection);
   let state = useComboboxMultiState({
     ...props,
+    items: props.items,
     children: undefined,
-    collection: collection,
+    collection,
   });
 
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
@@ -169,6 +174,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   };
 
   console.log('props.children', children);
+  console.log('collection', collection);
 
   return (
     <Provider
@@ -189,8 +195,15 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
           ListBoxContext,
           {
             ref: listBoxRef,
+            children:
+              typeof children === 'function'
+                ? children({
+                    isOpen: false,
+                    defaultChildren: null,
+                  })
+                : children,
+            items: props.items ?? props.defaultItems,
             disallowEmptySelection: true,
-            //items: state.collection,
             selectionMode: 'multiple',
             selectionBehavior: 'toggle',
             defaultSelectedKeys: props.defaultSelectedKeys,
@@ -199,10 +212,11 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             },
             selectedKeys:
               props.selectedKeys ?? state.selectionManager.selectedKeys,
+
             ...listBoxProps,
           },
         ],
-        [ListStateContext, state],
+        // [ListStateContext, state],
         [OverlayTriggerStateContext, state],
         [
           PopoverContext,
@@ -236,7 +250,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             <ChevronDown className="size-4" />
           </Button>
         </div>
-        <Popover>
+        <Popover open>
           <ListBox>{children}</ListBox>
         </Popover>
       </FieldBase>

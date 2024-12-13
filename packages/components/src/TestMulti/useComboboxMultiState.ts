@@ -72,20 +72,16 @@ export function useComboboxMultiState<T extends object>(
 ): ComboboxMultiState<T> {
   let { allowsEmptyCollection = false, menuTrigger = 'input' } = props;
   let [showAllItems, setShowAllItems] = useState(false);
-  console.log(props.collection);
+  console.log(props.children);
   let listState = useListState({
     ...props,
     collection: props.collection,
-    children: undefined,
     items: props.items ?? props.defaultItems,
     selectionBehavior: 'toggle',
     selectionMode: 'multiple',
   });
   let triggerState = useOverlayTriggerState({
     ...props,
-    onOpenChange: props.onOpenChange,
-    isOpen: undefined,
-    defaultOpen: undefined,
   });
   let [inputValue, setInputValue] = useControlledState(
     props.inputValue,
