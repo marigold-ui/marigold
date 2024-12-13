@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useFilter } from '@react-aria/i18n';
 import { getChildNodes } from '@react-stately/collections';
 import {
@@ -6,8 +13,10 @@ import {
   useFormValidationState,
 } from '@react-stately/form';
 import { ListCollection, ListState, useListState } from '@react-stately/list';
-import { MenuTriggerState } from '@react-stately/menu';
-import { useOverlayTriggerState } from '@react-stately/overlays';
+import {
+  OverlayTriggerState,
+  useOverlayTriggerState,
+} from '@react-stately/overlays';
 import { useControlledState } from '@react-stately/utils';
 import {
   Collection,
@@ -18,15 +27,16 @@ import {
 import { ComboboxMultiProps } from './types';
 
 export interface ComboboxMultiStateOptions<T>
-  extends Omit<ComboboxMultiProps<T>, 'children'>,
-    CollectionStateBase<T> {
+  extends ComboboxMultiProps<T>,
+    Omit<CollectionStateBase<T>, 'children'> {
   /** Whether the combo box allows the menu to be open when the collection is empty. */
   allowsEmptyCollection?: boolean;
+  children?: ReactNode;
 }
 
 export interface ComboboxMultiState<T>
   extends ListState<T>,
-    MenuTriggerState, // try overlay trigger state instead of menu
+    OverlayTriggerState, // try overlay trigger state instead of menu
     FormValidationState {
   /** Whether the select is currently focused. */
   // readonly isFocused: boolean,
@@ -46,6 +56,7 @@ export interface ComboboxMultiState<T>
   inputValue: string;
   /** Sets the value of the combo box input. */
   setInputValue(value: string): void;
+  children?: ReactNode;
 }
 
 export function usePrevious<T>(value: T) {
@@ -61,8 +72,11 @@ export function useComboboxMultiState<T extends object>(
 ): ComboboxMultiState<T> {
   let { allowsEmptyCollection = false, menuTrigger = 'input' } = props;
   let [showAllItems, setShowAllItems] = useState(false);
+  console.log(props.collection);
   let listState = useListState({
     ...props,
+    collection: props.collection,
+    children: undefined,
     items: props.items ?? props.defaultItems,
     selectionBehavior: 'toggle',
     selectionMode: 'multiple',
