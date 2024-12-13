@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { useFilter } from '@react-aria/i18n';
+import { useOverlayTrigger } from '@react-aria/overlays';
 import { getChildNodes } from '@react-stately/collections';
 import {
   FormValidationState,
@@ -72,7 +73,6 @@ export function useComboboxMultiState<T extends object>(
 ): ComboboxMultiState<T> {
   let { allowsEmptyCollection = false, menuTrigger = 'input' } = props;
   let [showAllItems, setShowAllItems] = useState(false);
-  console.log(props.children);
   let listState = useListState({
     ...props,
     collection: props.collection,
@@ -83,6 +83,7 @@ export function useComboboxMultiState<T extends object>(
   let triggerState = useOverlayTriggerState({
     ...props,
   });
+
   let [inputValue, setInputValue] = useControlledState(
     props.inputValue,
     props.defaultInputValue ?? '',
@@ -264,6 +265,8 @@ function filterNodes<T>(
   filter: FilterFn
 ): Iterable<Node<T>> {
   let filteredNode: Node<T>[] = [];
+
+  console.log('Node', nodes);
   for (let node of nodes) {
     if (node.type === 'section' && node.hasChildNodes) {
       let filtered = filterNodes(

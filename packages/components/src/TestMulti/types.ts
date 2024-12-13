@@ -83,4 +83,5 @@ export interface ComboboxMultiProps<T>
   variant?: string;
   size?: string;
   children?: ReactNode | ((item: any) => ReactNode);
+  isOpen?: boolean;
 }

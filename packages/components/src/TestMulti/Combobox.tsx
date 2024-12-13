@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import {
   ButtonContext,
+  Collection,
   InputContext,
   ListBoxContext,
   ListStateContext,
@@ -18,14 +19,12 @@ import {
   Tag,
   TagGroup,
   TagList,
+  UNSTABLE_CollectionBuilder,
 } from 'react-aria-components';
 import { Input, Provider } from 'react-aria-components';
-import { useObjectRef, useResizeObserver } from '@react-aria/utils';
-import {
-  CollectionBuilder,
-  Item,
-  useCollection,
-} from '@react-stately/collections';
+import { useOverlayTrigger } from '@react-aria/overlays';
+import { mergeProps, useObjectRef, useResizeObserver } from '@react-aria/utils';
+import { Item, useCollection } from '@react-stately/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { ChevronDown } from '../Chevron';
@@ -88,27 +87,43 @@ interface ComboboxMultiComponent
   extends ForwardRefExoticComponent<ComboboxMultiProps<object>> {
   Option: typeof ListBox.Item;
 }
+// Define the node structure expected by React Stately
+interface CollectionNodeType<T> {
+  key: React.Key | null;
+  type: string;
+  props: React.PropsWithChildren<unknown>;
+  render: () => React.ReactNode;
+}
 
-function createNode(node) {
+function createNode(node: React.ReactElement): CollectionNodeType<any> {
   return {
-    key: node.key || node.props.key,
-    type: node.type || 'item',
-    props: node.props,
-    render: () => node.props.children,
+    key: node.key ?? '', // Use the key from React element or fallback
+    type: 'item', // Set 'item' as default type
+    props: node.props, // Pass props as-is
+    render: () => node.props.children, // Function to render children
+    index: 0,
+    textValue:
+      typeof node.props.children === 'string'
+        ? node.props.children
+        : JSON.stringify(node.props.children),
   };
 }
 
 function CustomCollection({ children, ...props }) {
-  // Process children or data using useCollection
-  const nodes = React.Children.map(children, child => createNode(child));
+  const nodes =
+    React.Children.map(children, child =>
+      createNode(child as React.ReactElement)
+    ) || [];
 
-  return useCollection(
-    {
-      ...props,
-      items: nodes,
-    },
-    node => node
-  );
+  const builder = UNSTABLE_CollectionBuilder({
+    content: <Collection {...props} />,
+    children,
+    ...props,
+  });
+
+  console.log('builder:', builder);
+
+  return builder;
 }
 
 //Component
@@ -116,21 +131,15 @@ function CustomCollection({ children, ...props }) {
 export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   T extends object,
 >(
-  { size, variant, children, ...props }: ComboboxMultiProps<T>,
+  {
+    size,
+    variant,
+    children,
+    menuTrigger = 'focus',
+    ...props
+  }: ComboboxMultiProps<T>,
   forwardedRef: ForwardedRef<HTMLDivElement>
 ) {
-  // let {
-  //   // align = 'start',
-  //   // menuTrigger = 'focus',
-  //   // shouldFlip = true,
-  //   // direction = 'bottom',
-  //   // loadingState,
-  //   menuWidth,
-  //   // onLoadMore,
-  //   children,
-  // } = props;
-
-  // let isAsync = loadingState != null;
   let buttonRef = useRef<HTMLButtonElement>(null);
   let inputRef = useRef<HTMLInputElement>(null);
   let listBoxRef = useRef<HTMLDivElement>(null);
@@ -141,6 +150,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
   console.log(collection);
   let state = useComboboxMultiState({
     ...props,
+    menuTrigger,
     items: props.items,
     children: undefined,
     collection,
@@ -148,18 +158,23 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
 
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
 
-  let { inputProps, buttonProps, listBoxProps, labelProps, descriptionProps } =
-    useComboboxMulti(
-      {
-        ...props,
-        buttonRef,
-        inputRef,
-        // layoutDelegate,
-        listBoxRef,
-        popoverRef: popoverRefLikeValue,
-      },
-      state
-    );
+  let { inputProps, buttonProps, listBoxProps } = useComboboxMulti(
+    {
+      ...props,
+      buttonRef,
+      inputRef,
+      // layoutDelegate,
+      listBoxRef,
+      popoverRef: popoverRefLikeValue,
+    },
+    state
+  );
+
+  let { triggerProps } = useOverlayTrigger(
+    { type: 'listbox' },
+    state,
+    popoverRefLikeValue
+  );
 
   const classNames = useClassNames({
     component: 'Multiselect',
@@ -173,9 +188,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     state.selectionManager.clearSelection();
   };
 
-  console.log('props.children', children);
-  console.log('collection', collection);
-
   return (
     <Provider
       values={[
@@ -186,11 +198,14 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             defaultValue: props.defaultInputValue,
             value: props.inputValue,
             onChange: props.onInputChange as any,
-            ...inputProps,
+            ...mergeProps(triggerProps, inputProps),
             // ...buttonProps,
           },
         ],
-        [ButtonContext, { ref: buttonRef, ...buttonProps }],
+        [
+          ButtonContext,
+          { ref: buttonRef, ...mergeProps(triggerProps, buttonProps) },
+        ],
         [
           ListBoxContext,
           {
@@ -202,6 +217,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
                     defaultChildren: null,
                   })
                 : children,
+
             items: props.items ?? props.defaultItems,
             disallowEmptySelection: true,
             selectionMode: 'multiple',
@@ -212,7 +228,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             },
             selectedKeys:
               props.selectedKeys ?? state.selectionManager.selectedKeys,
-
             ...listBoxProps,
           },
         ],
@@ -227,6 +242,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             isNonModal: true,
             style: popoverWidth,
             placement: 'bottom start',
+            ...triggerProps,
           },
         ],
       ]}
@@ -246,11 +262,11 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             ''
           )}
           <Input className={classNames.input} />
-          <Button variant="icon">
+          <Button variant="icon" onPress={() => state.toggle()}>
             <ChevronDown className="size-4" />
           </Button>
         </div>
-        <Popover open>
+        <Popover>
           <ListBox>{children}</ListBox>
         </Popover>
       </FieldBase>

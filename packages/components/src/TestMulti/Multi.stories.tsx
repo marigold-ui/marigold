@@ -104,10 +104,18 @@ export const Basic = {
   render: () => {
     return (
       <ComboboxMultiBase label="select">
-        <ComboboxMultiBase.Option key="One">One</ComboboxMultiBase.Option>
-        <ComboboxMultiBase.Option key="Two">Two</ComboboxMultiBase.Option>
-        <ComboboxMultiBase.Option key="Three">Three</ComboboxMultiBase.Option>
-        <ComboboxMultiBase.Option key="Four">Four</ComboboxMultiBase.Option>
+        <ComboboxMultiBase.Option id="One" key="One">
+          One
+        </ComboboxMultiBase.Option>
+        <ComboboxMultiBase.Option id="Two" key="Two">
+          Two
+        </ComboboxMultiBase.Option>
+        <ComboboxMultiBase.Option id="Three" key="Three">
+          Three
+        </ComboboxMultiBase.Option>
+        <ComboboxMultiBase.Option id="Four" key="Four">
+          Four
+        </ComboboxMultiBase.Option>
       </ComboboxMultiBase>
     );
   },
