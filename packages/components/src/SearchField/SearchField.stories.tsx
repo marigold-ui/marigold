@@ -84,6 +84,7 @@ export const Controlled: Story = {
           onChange={setValue}
           required
           label="search field"
+          placeholder="Type something"
         />
         <pre>
           <strong>Input Value:</strong>
