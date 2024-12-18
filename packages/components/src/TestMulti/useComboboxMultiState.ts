@@ -71,38 +71,56 @@ export function usePrevious<T>(value: T) {
 export function useComboboxMultiState<T extends object>(
   props: ComboboxMultiStateOptions<T>
 ): ComboboxMultiState<T> {
-  let { allowsEmptyCollection = false, menuTrigger = 'input' } = props;
-  let [showAllItems, setShowAllItems] = useState(false);
-  let listState = useListState({
+  const { allowsEmptyCollection = false, menuTrigger = 'input' } = props;
+  const [showAllItems, setShowAllItems] = useState(false);
+
+  // Define a custom createCollection function
+  const customCreateCollection = useCallback((items, children) => {
+    // Example: Add custom logic for your collection creation
+    const collection = new BaseCollection(items);
+
+    // Add custom metadata or modify the collection items
+    for (let item of collection) {
+      item.customMetadata = `Custom: ${item.key}`;
+    }
+
+    return collection;
+  }, []);
+
+  const listState = useListState({
     ...props,
+    children: undefined, // children are provided explicitly, not from props
     collection: props.collection,
     items: props.items ?? props.defaultItems,
     selectionBehavior: 'toggle',
     selectionMode: 'multiple',
+    createCollection: customCreateCollection, // Pass your custom function here
   });
-  let triggerState = useOverlayTriggerState({
+
+  // Remaining logic...
+  const triggerState = useOverlayTriggerState({
     ...props,
   });
 
-  let [inputValue, setInputValue] = useControlledState(
+  // Input value and controlled state
+  const [inputValue, setInputValue] = useControlledState(
     props.inputValue,
     props.defaultInputValue ?? '',
     props.onInputChange
   );
-  let lastInputValue = usePrevious(inputValue);
+  const lastInputValue = usePrevious(inputValue);
 
-  // Preserve original collection so we can show all items on demand
-  let { collection } = listState;
-  let originalCollection = collection;
-  let { contains } = useFilter({ sensitivity: 'base' });
-  let filteredCollection = useMemo(() => {
-    // No filter if items are controlled
+  // Preserving original collection and filtering
+  const { collection } = listState;
+  const originalCollection = collection;
+  const { contains } = useFilter({ sensitivity: 'base' });
+  const filteredCollection = useMemo(() => {
     if (props.items != null) {
       return collection;
     }
-
     return filterCollection(collection, inputValue, contains);
   }, [collection, inputValue, contains, props.items]);
+
   let [lastCollection, setLastCollection] = useState(filteredCollection);
   let updateLastCollection = useCallback(() => {
     setLastCollection(showAllItems ? originalCollection : filteredCollection);

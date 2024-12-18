@@ -24,7 +24,8 @@ import {
 import { Input, Provider } from 'react-aria-components';
 import { useOverlayTrigger } from '@react-aria/overlays';
 import { mergeProps, useObjectRef, useResizeObserver } from '@react-aria/utils';
-import { Item, useCollection } from '@react-stately/collections';
+import { Item, getFirstItem, useCollection } from '@react-stately/collections';
+import { ListCollection } from '@react-stately/list';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { FieldBase } from '../FieldBase';
@@ -98,6 +99,7 @@ interface CollectionNodeType<T> {
 function createNode(node: React.ReactElement): CollectionNodeType<any> {
   return {
     key: node.key ?? '', // Use the key from React element or fallback
+    getKey: node => node.key,
     type: 'item', // Set 'item' as default type
     props: node.props, // Pass props as-is
     render: () => node.props.children, // Function to render children
@@ -108,22 +110,12 @@ function createNode(node: React.ReactElement): CollectionNodeType<any> {
         : JSON.stringify(node.props.children),
   };
 }
-
-function CustomCollection({ children, ...props }) {
+function CustomCollection({ children }: { children: React.ReactNode }) {
   const nodes =
     React.Children.map(children, child =>
       createNode(child as React.ReactElement)
     ) || [];
-
-  const builder = UNSTABLE_CollectionBuilder({
-    content: <Collection {...props} />,
-    children,
-    ...props,
-  });
-
-  console.log('builder:', builder);
-
-  return builder;
+  return new ListCollection(nodes); // Using ListCollection from React Stately
 }
 
 //Component
