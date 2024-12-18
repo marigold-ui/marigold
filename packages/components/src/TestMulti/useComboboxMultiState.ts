@@ -40,19 +40,19 @@ export interface ComboboxMultiState<T>
     OverlayTriggerState, // try overlay trigger state instead of menu
     FormValidationState {
   /** Whether the select is currently focused. */
-  // readonly isFocused: boolean,
+  readonly isFocused: boolean;
 
   /** Sets whether the select is focused. */
-  // setFocused(isFocused: boolean): void,
+  setFocused(isFocused: boolean): void;
 
   /** Controls which item will be auto focused when the menu opens. */
-  // readonly focusStrategy: FocusStrategy | null,
+  readonly focusStrategy: FocusStrategy | null;
 
   /** Opens the menu. */
-  // open(focusStrategy?: FocusStrategy | null): void,
+  open(focusStrategy?: FocusStrategy | null): void;
 
   /** Toggles the menu. */
-  // toggle(focusStrategy?: FocusStrategy | null): void
+  toggle(focusStrategy?: FocusStrategy | null): void;
   /** The current value of the combo box input. */
   inputValue: string;
   /** Sets the value of the combo box input. */
@@ -71,21 +71,8 @@ export function usePrevious<T>(value: T) {
 export function useComboboxMultiState<T extends object>(
   props: ComboboxMultiStateOptions<T>
 ): ComboboxMultiState<T> {
-  const { allowsEmptyCollection = false, menuTrigger = 'input' } = props;
+  const { allowsEmptyCollection = false, menuTrigger = 'focus' } = props;
   const [showAllItems, setShowAllItems] = useState(false);
-
-  // Define a custom createCollection function
-  const customCreateCollection = useCallback((items, children) => {
-    // Example: Add custom logic for your collection creation
-    const collection = new BaseCollection(items);
-
-    // Add custom metadata or modify the collection items
-    for (let item of collection) {
-      item.customMetadata = `Custom: ${item.key}`;
-    }
-
-    return collection;
-  }, []);
 
   const listState = useListState({
     ...props,
@@ -94,8 +81,9 @@ export function useComboboxMultiState<T extends object>(
     items: props.items ?? props.defaultItems,
     selectionBehavior: 'toggle',
     selectionMode: 'multiple',
-    createCollection: customCreateCollection, // Pass your custom function here
   });
+
+  const [focusedKey, setFocusedKey] = useState<React.Key | null>(null);
 
   // Remaining logic...
   const triggerState = useOverlayTriggerState({
@@ -159,12 +147,14 @@ export function useComboboxMultiState<T extends object>(
         setShowAllItems(true);
       }
 
-      triggerState.open(focusStrategy);
+      setFocusedKey(listState.selectionManager.focusedKey);
+      triggerState.open();
     }
   };
 
   let toggle = (focusStrategy: FocusStrategy | null = null) => {
-    let displayAllItems = menuTrigger === 'focus';
+    let displayAllItems = menuTrigger === 'input';
+    setFocusedKey(listState.selectionManager.focusedKey);
     // If the menu is closed and there is nothing to display, early return so
     // toggle isn't called to prevent extraneous onOpenChange
     if (
@@ -184,7 +174,8 @@ export function useComboboxMultiState<T extends object>(
       setShowAllItems(true);
     }
 
-    triggerState.toggle(focusStrategy);
+    triggerState.toggle();
+    setFocusedKey(listState.selectionManager.focusedKey);
 
     // keep the old collection while closing the menu
     if (triggerState.isOpen) {
@@ -250,9 +241,12 @@ export function useComboboxMultiState<T extends object>(
 
   return {
     ...validation,
-    focusStrategy: triggerState.focusStrategy,
+    ...triggerState,
+    focusStrategy: 'first',
     isOpen: triggerState.isOpen,
     setOpen: triggerState.setOpen,
+    isFocused: listState.selectionManager.focusedKey === focusedKey,
+    setFocused: () => listState.selectionManager.focusedKey,
     toggle,
     open,
     close: commit,
