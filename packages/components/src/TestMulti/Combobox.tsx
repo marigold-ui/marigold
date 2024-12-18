@@ -148,6 +148,8 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     collection,
   });
 
+  console.log(state);
+
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
 
   let { inputProps, buttonProps, listBoxProps } = useComboboxMulti(

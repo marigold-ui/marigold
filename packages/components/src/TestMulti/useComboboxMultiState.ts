@@ -124,6 +124,7 @@ export function useComboboxMultiState<T extends object>(
     setInputValue('');
     closeMenu();
   };
+
   let open = (focusStrategy: FocusStrategy | null = null) => {
     let displayAllItems = menuTrigger === 'focus';
     // Prevent open operations from triggering if there is nothing to display:
@@ -132,6 +133,7 @@ export function useComboboxMultiState<T extends object>(
     // - This is to prevent comboboxes with empty defaultItems from opening but
     //   allow controlled items comboboxes to open even if the inital list is
     //   empty.
+
     if (
       allowsEmptyCollection ||
       filteredCollection.size > 0 ||
@@ -146,15 +148,17 @@ export function useComboboxMultiState<T extends object>(
         // Show all items if menu is manually opened. Ignored if items are controlled
         setShowAllItems(true);
       }
-
-      setFocusedKey(listState.selectionManager.focusedKey);
+      if (focusStrategy === 'first') {
+        setFocusedKey(listState.collection.getFirstKey());
+      } else {
+        setFocusedKey(listState.selectionManager.focusedKey);
+      }
       triggerState.open();
     }
   };
 
   let toggle = (focusStrategy: FocusStrategy | null = null) => {
     let displayAllItems = menuTrigger === 'input';
-    setFocusedKey(listState.selectionManager.focusedKey);
     // If the menu is closed and there is nothing to display, early return so
     // toggle isn't called to prevent extraneous onOpenChange
     if (
@@ -175,7 +179,6 @@ export function useComboboxMultiState<T extends object>(
     }
 
     triggerState.toggle();
-    setFocusedKey(listState.selectionManager.focusedKey);
 
     // keep the old collection while closing the menu
     if (triggerState.isOpen) {
@@ -246,7 +249,7 @@ export function useComboboxMultiState<T extends object>(
     isOpen: triggerState.isOpen,
     setOpen: triggerState.setOpen,
     isFocused: listState.selectionManager.focusedKey === focusedKey,
-    setFocused: () => listState.selectionManager.focusedKey,
+    setFocused: () => listState.selectionManager.setFocusedKey('first'),
     toggle,
     open,
     close: commit,
