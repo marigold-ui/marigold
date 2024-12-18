@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date';
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
 import { DateValue } from 'react-aria-components';
 import { I18nProvider } from '@react-aria/i18n';
+import { Stack } from '../Stack';
 import { DatePicker } from './DatePicker';
 
 const meta = {
@@ -69,6 +70,16 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
+    readOnly: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'set readOnly for date picker .',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
   },
   args: {
     errorMessage: 'Something went wrong!',
@@ -103,11 +114,11 @@ export const Controlled: Story = {
 
     return (
       <I18nProvider locale="de-DE">
-        <div className="flex items-center gap-4">
+        <Stack>
           <DatePicker
             label="Date Picker"
             value={value}
-            onChange={setValue}
+            onChange={newValue => setValue(newValue!)}
             description="Controlled date field"
             errorMessage="This is an error"
             {...args}
@@ -120,7 +131,7 @@ export const Controlled: Story = {
           ) : (
             <pre>`No value (${value}).`</pre>
           )}
-        </div>
+        </Stack>
       </I18nProvider>
     );
   },

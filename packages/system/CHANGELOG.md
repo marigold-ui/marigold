@@ -1,5 +1,19 @@
 # @marigold/system
 
+## 10.1.0
+
+### Patch Changes
+
+- ebc53cb: refa[DST-598]: Improve `<Slider>` component
+
+  The `<Slider>` component appears in a new guise. Functionalities and documentation have been significantly revised. So make sure to check out the Marigold documentation and storybook. It's worth it.
+
+  Some key features are:
+
+  - multithumb or range slider
+  - visual indicator for selected track
+  - use slider in forms
+
 ## 10.0.0
 
 ### Major Changes

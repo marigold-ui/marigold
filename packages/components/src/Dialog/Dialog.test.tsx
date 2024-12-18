@@ -519,3 +519,31 @@ test('close state has a listener', async () => {
 
   expect(spy.mock.calls).toMatchInlineSnapshot(`[]`);
 });
+
+test('cancel button closes dialog', async () => {
+  render(
+    <Dialog.Trigger>
+      <Button>Open</Button>
+
+      <Dialog closeButton>
+        <Dialog.Title>Headline</Dialog.Title>
+        <Dialog.Actions>
+          <Button slot="close">Cancel</Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Dialog.Trigger>
+  );
+
+  const button = screen.getByText('Open');
+  await user.click(button);
+
+  const cancel = screen.getByText('Cancel');
+  await waitFor(() => {
+    expect(cancel).toBeInTheDocument();
+  });
+
+  await user.click(cancel);
+  await waitFor(() => {
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+});

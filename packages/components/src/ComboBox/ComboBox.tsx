@@ -8,11 +8,11 @@ import type RAC from 'react-aria-components';
 import { ComboBox } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { Button } from '../Button';
-import { ChevronDown } from '../Chevron';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
+import { ChevronDown } from '../icons';
 
 // Props
 // ---------------

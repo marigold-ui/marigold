@@ -1,3 +1,4 @@
+import { track } from '@vercel/analytics/react';
 import useClipboard from 'react-use-clipboard';
 import { Button } from '@marigold/components';
 
@@ -9,10 +10,16 @@ export const CopyButton = ({ codeString }: CopyProps) => {
   const [isCopied, setCopied] = useClipboard(codeString, {
     successDuration: 1000,
   });
+
+  const onPress = () => {
+    setCopied();
+    track('Copy Code');
+  };
+
   return (
     <Button
       aria-label="Copy Code"
-      onPress={setCopied}
+      onPress={onPress}
       className="translate-y-0.5 border-none p-0 outline-0"
     >
       {isCopied ? (

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { DateValue } from '@internationalized/date';
+import { CalendarDate, DateValue } from '@internationalized/date';
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
 import { I18nProvider } from '@react-aria/i18n';
 import { DateField, DateFieldProps } from './DateField';
 
@@ -109,13 +109,13 @@ export const Basic: Story = {
 
 export const ControlledDateField: Story = {
   render: args => {
-    const [value, setValue] = useState<DateValue>();
+    const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
     return (
       <I18nProvider locale="de-DE">
         <DateField
           label="Date Field"
           value={value}
-          onChange={setValue}
+          onChange={newValue => setValue(newValue!)}
           {...args}
         />
         <pre>

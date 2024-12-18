@@ -54,24 +54,15 @@ export default () => (
             <TextField label="Fax" />
             <TextField type="email" label="E-Mail" />
           </Stack>
-          <Stack space={1}>
-            {/* This shouldn't be used, we need to fix it */}
-            <FieldBase label="nach Kundennummern suchen">
-              <Inline space={1}>
-                <TextField arial-label="Search" type="search" width={36} />
-                <Button variant="secondary" size="small">
-                  Suchen
-                </Button>
-                <Button variant="secondary" size="small">
-                  Felder leeren
-                </Button>
-              </Inline>
-            </FieldBase>
-            <TextArea
-              label="Interne Info zum Kunden"
-              description="noch 1000 Zeichen"
-            />
-          </Stack>
+          <Inline space={1}>
+            <TextField label="Kundennummern suchen" type="search" width="2/3" />
+            <Button variant="secondary" size="small">
+              Suchen
+            </Button>
+            <Button variant="secondary" size="small">
+              Felder leeren
+            </Button>
+          </Inline>
           <Stack space={1}>
             <TextField label="Buchungszeichen" />
             <TextArea
@@ -79,11 +70,11 @@ export default () => (
               description="noch 1000 Zeichen"
             />
           </Stack>
-          <Inline space={2} alignX="center">
+          <Inline space={2} alignX="right">
+            <Button variant="secondary">Zurück</Button>
             <Button variant="primary" type="submit">
               Speichern
             </Button>
-            <Button variant="link">| Zurück</Button>
           </Inline>
         </FieldGroup>
       </Stack>

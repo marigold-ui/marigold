@@ -44,11 +44,11 @@ const Page = () => {
           <Center>
             <Link href={`/${latestPost.slug}`} variant="shiny" size="xsmall">
               <AnimatedShinyText className="transition ease-out">
-                🚀✨ Read latest updates!
+                🚀✨ View latest updates!
               </AnimatedShinyText>
             </Link>
           </Center>
-          <h1 className="text-balance text-6xl font-extrabold lg:text-8xl">
+          <h1 className="text-balance pt-0.5 text-6xl font-extrabold lg:text-8xl">
             Cultivate beautiful user interfaces
           </h1>
           <p className="text-text-primary/60 text-balance pb-10 pt-4 text-lg font-light leading-relaxed lg:pb-24 lg:pt-10 lg:text-xl">

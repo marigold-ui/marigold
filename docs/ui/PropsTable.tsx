@@ -63,12 +63,12 @@ export const PropsTable = ({ component }: PropsTableProps) => {
             <Stack space={1}>
               <Markdown
                 // Reset <code> for now
-                className="text-pretty text-xs *:bg-transparent *:p-0 *:text-xs"
+                className="text-pretty text-xs *:bg-transparent *:p-0 *:text-xs [&_ul]:pl-4"
                 contents={prop.description}
               />
               {prop.defaultValue ? (
                 <Inline space={2} alignY="center">
-                  Defaults to:{' '}
+                  <span className="text-xs">Defaults to: </span>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: prop.defaultValue.value,

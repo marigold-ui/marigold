@@ -66,7 +66,7 @@ Lastly, avoid asking users to make decisions that require information not access
 
 When a dialog is open, users cannot interact with the rest of the page until the dialog is closed. To accommodate both mouse and keyboard users, the `<Dialog>` provides multiple ways to close it:
 
-- clicking the cancel button in the `<Dialog.Actions>`,
+- pressing the close button (`slot="close"`) inside `<Dialog.Actions>`,
 - using the close button (indicated by an "x"),
 - pressing the "Esc" key, or
 - clicking on the underlay (the dimmed background).
@@ -74,6 +74,13 @@ When a dialog is open, users cannot interact with the rest of the page until the
 To prevent the dialog from closing when the underlay is (accidentally) clicked, you can set the `dismissable` prop on the `<Dialog.Trigger>` component to `false`. This disables closing the dialog by clicking on the background, ensuring that the dialog remains open until the user interacts with the provided buttons or other close mechanisms.
 
 <ComponentDemo file="./dialog-dismiss.demo.tsx" />
+
+<SectionMessage>
+  <SectionMessage.Title>Dedicated close button</SectionMessage.Title>
+  <SectionMessage.Content>
+    To conveniently create a close button for a dialog, set the `slot` prop to `"close"` on any `<Button>` within `<Dialog.Actions>` component. Pressing the button will then close the dialog.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ### Role
 

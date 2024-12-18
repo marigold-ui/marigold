@@ -1,20 +1,12 @@
-import { Card, Scrollable } from '@marigold/components';
+import { Scrollable } from '@marigold/components';
+import { Rectangle } from '@/ui/Rectangle';
 
 export default () => (
-  <Scrollable width="1/2">
-    <div className="flex gap-2 p-4">
-      <Card>
-        <div className="h-[100px] w-[200px]" />
-      </Card>
-      <Card>
-        <div className="h-[100px] w-[200px]" />
-      </Card>
-      <Card>
-        <div className="h-[100px] w-[200px]" />
-      </Card>
-      <Card>
-        <div className="h-[100px] w-[200px]" />
-      </Card>
+  <Scrollable>
+    <div className="inline-flex gap-2 p-2">
+      {Array.from({ length: 10 }).map((_, index) => (
+        <Rectangle key={index} height="100px" width="200px" />
+      ))}
     </div>
   </Scrollable>
 );

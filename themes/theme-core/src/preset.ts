@@ -23,15 +23,39 @@ export const preset: Preset = createPreset({
         body: '13px',
       },
       colors,
-      transitionTimingFunction: {
-        'ease-out': 'ease-out',
-      },
       // TODO: Remove gradient
       backgroundImage: {
         highlight: 'linear-gradient(#3875d7 20%, #2a62bc 90%)',
       },
       boxShadow: flattenObject(shadow),
       height: flattenObject(height),
+      // animation: {
+      //   'progress-cycle':
+      //      'progress-cycle 1s cubic-bezier(.6, .1, .3, .9) infinite,progress-cycle 1s cubic-bezier(.25, .1, .25, 1.3) infinite',
+      // },
+      keyframes: {
+        'rotate-spinner': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        'progress-cycle': {
+          '0%': {
+            transform: 'rotate(0deg)',
+            strokeDashoffset: '75',
+          },
+          '30%': {
+            strokeDashoffset: '20',
+          },
+          '100%': {
+            transform: 'rotate(360deg)',
+            strokeDashoffset: '75',
+          },
+        },
+      },
+      animation: {
+        'rotate-spinner': 'rotate-spinner 2s linear infinite',
+        'progress-cycle': 'progress-cycle 1.5s linear infinite',
+      },
     },
   },
 });

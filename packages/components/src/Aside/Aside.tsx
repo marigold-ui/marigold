@@ -13,11 +13,11 @@ export interface AsideProps extends GapSpaceProp, AriaRegionProps {
    */
   side?: 'left' | 'right';
   /**
-   * The side width of the aside content.
+   * The width of the side content.
    */
   sideWidth?: string;
   /**
-   * At which percent the content should wrap.
+   * At what percentage of the content's width should the other content wrap beneath it
    * @default 50%
    */
   wrap?: NonZeroPercentage;
