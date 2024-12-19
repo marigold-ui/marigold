@@ -2,10 +2,12 @@ import { cx } from 'class-variance-authority';
 import { cva as _cva } from 'class-variance-authority';
 import {
   ClassProp,
+  ClassValue,
   StringToBoolean,
 } from 'class-variance-authority/dist/types';
 import { twMerge } from 'tailwind-merge';
 
+export type { ClassValue };
 export type { VariantProps } from 'class-variance-authority';
 
 export type ConfigSchema = Record<string, Record<string, ClassValue>>;
@@ -40,17 +42,6 @@ export const cva = <T>(base?: ClassValue, config?: Config<T>) => {
 
   return styles;
 };
-
-export type ClassDictionary = Record<string, any>;
-export type ClassArray = ClassValue[];
-export type ClassValue =
-  | ClassArray
-  | ClassDictionary
-  | string
-  | number
-  | null
-  | boolean
-  | undefined;
 
 export const cn = (...inputs: ClassValue[]) => twMerge(cx(inputs));
 

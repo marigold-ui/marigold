@@ -9,7 +9,7 @@ const meta = {
 
 export default meta;
 
-export const Basic = {
+export const HolyGrail = {
   render: () => (
     <Grid
       areas={['header header', 'sidebar main', 'footer footer']}
