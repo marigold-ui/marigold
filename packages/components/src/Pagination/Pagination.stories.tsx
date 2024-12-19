@@ -10,25 +10,54 @@ import {
   Table,
   Text,
 } from '@marigold/components';
-import { Pagination } from './Pagination';
+import { Pagination, PaginationProps } from './Pagination';
 
 const meta = {
   title: 'Components/Pagination',
-  argTypes: {},
-  args: {},
+  argTypes: {
+    totalItems: {
+      control: {
+        type: 'number',
+      },
+      description: 'The number of total items.',
+    },
+    pageSize: {
+      control: {
+        type: 'number',
+      },
+      description: 'The number of items per page.',
+    },
+    controlLabels: {
+      control: 'object',
+      description: 'Labels for the pagination controls.',
+      table: {
+        type: { summary: 'array' },
+        defaultValue: { summary: 'e.g. ["Previous", "Next"]' },
+      },
+    },
+  },
+  args: {
+    totalItems: 100,
+    pageSize: 10,
+  },
 } satisfies Meta<typeof Pagination>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => (
-    <Pagination {...args} totalItems={100} pageSize={10} page={5} />
+  render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => (
+    <Pagination
+      {...rest}
+      totalItems={totalItems!}
+      pageSize={pageSize!}
+      defaultPage={5}
+    />
   ),
 };
 
 export const Controlled: Story = {
-  render: args => {
+  render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => {
     const [basicPage, setBasicPage] = useState(1);
 
     return (
@@ -36,10 +65,10 @@ export const Controlled: Story = {
         <h1>Pagination Example</h1>
         <p>Selected Page: {basicPage}</p>
         <Pagination
-          {...args}
+          {...rest}
+          totalItems={totalItems!}
+          pageSize={pageSize!}
           page={basicPage}
-          totalItems={100}
-          pageSize={10}
           onChange={setBasicPage}
         />
       </div>
@@ -48,27 +77,48 @@ export const Controlled: Story = {
 };
 
 export const OnePage: Story = {
+  parameters: {
+    controls: { exclude: ['totalItems', 'pageSize'] },
+  },
   render: args => <Pagination {...args} totalItems={10} pageSize={10} />,
 };
 
 export const OneHundredPages: Story = {
-  render: args => (
-    <Pagination {...args} totalItems={1000} pageSize={10} defaultPage={93} />
+  render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
+    <Pagination
+      {...rest}
+      totalItems={1000}
+      pageSize={pageSize!}
+      defaultPage={93}
+    />
   ),
 };
 
 export const NoData: Story = {
+  parameters: {
+    controls: { exclude: ['totalItems', 'pageSize'] },
+  },
   render: args => <Pagination {...args} totalItems={0} pageSize={10} />,
 };
 
 export const FullScreenSize: Story = {
-  render: args => (
+  render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
     <Inline alignY="center">
       <Text fontSize="sm">Showing 93 of 100</Text>
       <Split />
-      <Pagination {...args} totalItems={1000} pageSize={10} defaultPage={93} />
+      <Pagination
+        {...rest}
+        totalItems={1000}
+        defaultPage={93}
+        pageSize={pageSize!}
+      />
       <Split />
-      <Select width={16} aria-label="Page size" defaultSelectedKey="10">
+      <Select
+        width={16}
+        aria-label="Page size"
+        defaultSelectedKey="10"
+        label="Results per page"
+      >
         <Select.Option id="10">10</Select.Option>
         <Select.Option id="20">20</Select.Option>
         <Select.Option id="30">30</Select.Option>
@@ -78,6 +128,9 @@ export const FullScreenSize: Story = {
 };
 
 export const WithTable: Story = {
+  parameters: {
+    controls: { exclude: ['totalItems', 'pageSize'] },
+  },
   render: args => {
     interface User {
       id: number;
@@ -88,6 +141,7 @@ export const WithTable: Story = {
     }
 
     const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
 
     const mockData: User[] = Array.from({ length: 55 }, (_, i) => ({
       id: i + 1,
@@ -97,7 +151,6 @@ export const WithTable: Story = {
       status: i % 4 === 0 ? 'inactive' : 'active',
     }));
 
-    const pageSize = 10;
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     const currentData = mockData.slice(startIndex, endIndex);
@@ -127,20 +180,24 @@ export const WithTable: Story = {
           </Table>
           <Inline alignY="center" space={4}>
             <Text fontSize="sm">
-              Showing {startIndex + 1} - {endIndex} of{' '}
-              {Math.ceil(mockData.length / pageSize)} pages
+              Showing {startIndex + 1} - {endIndex} of {mockData.length}
             </Text>
             <Split />
             <Pagination
               {...args}
               totalItems={mockData.length}
-              pageSize={10}
+              pageSize={pageSize}
               page={currentPage}
               onChange={setCurrentPage}
             />
             <Split />
-            <FieldGroup labelWidth="70px">
-              <Select width={32} label="Page size" defaultSelectedKey="10">
+            <FieldGroup labelWidth="100px">
+              <Select
+                width={40}
+                label="Results per page"
+                selectedKey={pageSize.toString()}
+                onChange={val => setPageSize(parseInt(val.toString()))}
+              >
                 <Select.Option id="10">10</Select.Option>
                 <Select.Option id="20">20</Select.Option>
                 <Select.Option id={'30'}>30</Select.Option>
@@ -154,11 +211,14 @@ export const WithTable: Story = {
 };
 
 export const WithControlLabels: Story = {
-  render: args => (
+  parameters: {
+    controls: { exclude: ['totalItems', 'pageSize'] },
+  },
+  render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
     <Pagination
-      {...args}
+      {...rest}
       totalItems={100}
-      pageSize={10}
+      pageSize={pageSize!}
       page={5}
       controlLabels={['Previous', 'Next']}
     />
