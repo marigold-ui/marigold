@@ -149,16 +149,16 @@ test('allow to close message with button in message', async () => {
       </SectionMessage>
     </ThemeProvider>
   );
-  const message = screen.getByTestId(/messages/);
+  const message = screen.getAllByTestId(/messages/);
   const button = screen.getByRole('button');
 
-  expect(message).toBeInTheDocument();
+  expect(message[0]).toBeInTheDocument();
   expect(button).toBeInTheDocument();
   expect(button).toHaveAttribute('aria-label');
 
   await user.click(button);
 
-  expect(message).not.toBeInTheDocument();
+  expect(message[0]).not.toBeInTheDocument();
 });
 
 test('support controlled dismiss message', async () => {
@@ -179,12 +179,12 @@ test('support controlled dismiss message', async () => {
     );
   };
   render(<Controlled />);
-  const message = screen.getByTestId(/messages/);
+  const message = screen.getAllByTestId(/messages/);
   const button = screen.getByRole('button');
 
-  expect(message).toBeInTheDocument();
+  expect(message[0]).toBeInTheDocument();
   expect(button).toBeInTheDocument();
 
   await user.click(button);
-  expect(message).not.toBeInTheDocument();
+  expect(message[0]).not.toBeInTheDocument();
 });

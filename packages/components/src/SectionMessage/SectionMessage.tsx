@@ -107,7 +107,7 @@ export const SectionMessage = ({
   const [internalVisible, setInternalVisible] = useState(true);
   const isCurrentlyVisible = close ?? internalVisible;
 
-  const { buttonProps } = useButton({ ...props }, buttonRef);
+  const { buttonProps } = useButton(props, buttonRef);
 
   const handleClose = () => {
     onClose?.();
