@@ -115,7 +115,7 @@ function CustomCollection({ children }: { children: React.ReactNode }) {
     React.Children.map(children, child =>
       createNode(child as React.ReactElement)
     ) || [];
-  return new ListCollection(nodes); // Using ListCollection from React Stately
+  return new ListCollection(nodes);
 }
 
 //Component
@@ -148,7 +148,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
     collection,
   });
 
-  console.log(state);
+  console.log('state', state);
 
   let [popoverRefLikeValue, popoverRef] = useStatefulRef<HTMLDivElement>();
 
@@ -204,14 +204,6 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
           ListBoxContext,
           {
             ref: listBoxRef,
-            children:
-              typeof children === 'function'
-                ? children({
-                    isOpen: false,
-                    defaultChildren: null,
-                  })
-                : children,
-
             items: props.items ?? props.defaultItems,
             disallowEmptySelection: true,
             selectionMode: 'multiple',
@@ -225,7 +217,7 @@ export const ComboboxMultiBase = React.forwardRef(function ComboboxMultiBase<
             ...listBoxProps,
           },
         ],
-        // [ListStateContext, state],
+        [ListStateContext, state],
         [OverlayTriggerStateContext, state],
         [
           PopoverContext,

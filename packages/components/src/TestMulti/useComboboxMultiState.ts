@@ -83,7 +83,9 @@ export function useComboboxMultiState<T extends object>(
     selectionMode: 'multiple',
   });
 
-  const [focusedKey, setFocusedKey] = useState<React.Key | null>(null);
+  const [focusedKey, setFocusedKey] = useState<React.Key | null>(
+    listState.collection.getFirstKey()
+  );
 
   // Remaining logic...
   const triggerState = useOverlayTriggerState({
@@ -148,11 +150,8 @@ export function useComboboxMultiState<T extends object>(
         // Show all items if menu is manually opened. Ignored if items are controlled
         setShowAllItems(true);
       }
-      if (focusStrategy === 'first') {
-        setFocusedKey(listState.collection.getFirstKey());
-      } else {
-        setFocusedKey(listState.selectionManager.focusedKey);
-      }
+
+      console.log('key', focusedKey);
       triggerState.open();
     }
   };
@@ -244,12 +243,11 @@ export function useComboboxMultiState<T extends object>(
 
   return {
     ...validation,
-    ...triggerState,
     focusStrategy: 'first',
     isOpen: triggerState.isOpen,
     setOpen: triggerState.setOpen,
     isFocused: listState.selectionManager.focusedKey === focusedKey,
-    setFocused: () => listState.selectionManager.setFocusedKey('first'),
+    setFocused: () => setFocusedKey(listState.selectionManager.focusedKey),
     toggle,
     open,
     close: commit,
