@@ -1,5 +1,4 @@
 import { type ReactNode, useRef, useState } from 'react';
-import { Button } from 'react-aria-components';
 import { useButton } from '@react-aria/button';
 import { cn, useClassNames } from '@marigold/system';
 import { SectionMessageContext } from './Context';
