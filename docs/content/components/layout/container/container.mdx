@@ -10,9 +10,9 @@ The `<Container>` component is designed to limit the width of its content, ensur
 
 The `<Container>` component is ideal for situations where you need to limit the width of content to ensure better readability and layout consistency. Here are some common use cases where the `<Container>` component is particularly useful:
 
-- **Text-Centric Pages**: Pages that contain mostly text, such as FAQ pages, user guides, or terms of service, benefit from the `<Container>` component, as it ensures the text is easy to follow and comfortable to read.
-- **Hero Sections**: Use the `<Container>` for hero banners with headlines and call-to-action buttons. Limiting the width keeps the focus on the main message, avoiding the visual dispersion that comes with overly wide text blocks.
-- **Centering Content**: The `<Container>` is also useful when you need to center content on the page while ensuring it doesn't stretch too far, providing a consistent and polished appearance.
+- **Text-centric pages**: Pages that contain mostly text, such as FAQ pages, user guides, or terms of service, benefit from the `<Container>` component, as it ensures the text is easy to follow and comfortable to read.
+- **Hero sections**: Use the `<Container>` for hero banners with headlines and call-to-action buttons. Limiting the width keeps the focus on the main message, avoiding the visual dispersion that comes with overly wide text blocks.
+- **Centering content**: The `<Container>` is also useful when you need to center content on the page while ensuring it doesn't stretch too far, providing a consistent and polished appearance.
 
 To limit text length, use the `<Text>` and `<Headline>` components inside the `<Container>`. This will automatically adjust the content length to make it easier to read.
 
@@ -20,7 +20,7 @@ To limit text length, use the `<Text>` and `<Headline>` components inside the `<
 
 ### Dynamic width
 
-The width of the `<Container>` is not fixed; it adjusts based on the font size to ensure the optimal reading length, which is determined by the number of characters per line. This results in the `<Container>` varying in size depending on its content.
+The width of the `<Container>` is not fixed. It adjusts based on the font size to ensure the optimal reading length, which is determined by the number of characters per line. This results in the `<Container>` varying in size depending on its content.
 
 <ComponentDemo file="./container-dynamic-width.demo.tsx" />
 
@@ -40,7 +40,7 @@ The `<Container>` component can be combined with other layout components, such a
 
 ### Alignment
 
-The `<Container>` component lets you align text and other elements to the left, center, or right, giving you flexibility in arranging content. This is helpful when you need to make some parts of the layout stand out, like centering a hero section. Good alignment makes the page look organized and improves how users experience the site.
+Using the `align` and `alignItems` prop, the `<Container>` component lets you align text and other elements to the left, center, or right, giving you flexibility in arranging content. This is helpful when you need to make some parts of the layout stand out, like centering a hero section. Good alignment makes the page look organized and improves how users experience the site.
 
 <ComponentDemo file="./container-alignment.demo.tsx" />
 

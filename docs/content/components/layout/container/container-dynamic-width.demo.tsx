@@ -25,7 +25,7 @@ export default () => {
           Golden petals catch the sun,Blooming bright till day is done.In the
           garden, standing bold,A gentle spark, the marigold.
         </Text>
-        <Text>
+        <Text fontSize={fontSize}>
           Dew drops fall and sparkle clear,Nature's beauty, always near.Orange
           flames in sunlight hold,Cheerful blooms, the marigold.
         </Text>
