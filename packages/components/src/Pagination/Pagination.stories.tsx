@@ -103,27 +103,31 @@ export const NoData: Story = {
 
 export const FullScreenSize: Story = {
   render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Inline alignY="center">
-      <Text fontSize="sm">Showing 93 of 100</Text>
-      <Split />
-      <Pagination
-        {...rest}
-        totalItems={1000}
-        defaultPage={93}
-        pageSize={pageSize!}
-      />
-      <Split />
-      <Select
-        width={16}
-        aria-label="Page size"
-        defaultSelectedKey="10"
-        label="Results per page"
-      >
-        <Select.Option id="10">10</Select.Option>
-        <Select.Option id="20">20</Select.Option>
-        <Select.Option id="30">30</Select.Option>
-      </Select>
-    </Inline>
+    <div className="w-[900px]">
+      <Inline alignY="center">
+        <Text fontSize="sm">Showing "visible results" of "total results"</Text>
+        <Split />
+        <Pagination
+          {...rest}
+          totalItems={1000}
+          defaultPage={93}
+          pageSize={pageSize!}
+        />
+        <Split />
+        <FieldGroup labelWidth="100px">
+          <Select
+            width={40}
+            aria-label="Page size"
+            defaultSelectedKey="10"
+            label="Results per page"
+          >
+            <Select.Option id="10">10</Select.Option>
+            <Select.Option id="20">20</Select.Option>
+            <Select.Option id="30">30</Select.Option>
+          </Select>
+        </FieldGroup>
+      </Inline>
+    </div>
   ),
 };
 
@@ -210,7 +214,7 @@ export const WithTable: Story = {
   },
 };
 
-export const WithControlLabels: Story = {
+export const WithButtonLabels: Story = {
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
