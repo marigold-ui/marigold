@@ -164,13 +164,14 @@ test('allow to close message with button in message', async () => {
 test('support controlled dismiss message', async () => {
   const Controlled = () => {
     const [close, setClose] = useState(false);
+
     return (
       <ThemeProvider theme={theme}>
         <SectionMessage
           data-testid="messages"
           closeButton
           close={!close}
-          onClose={() => setClose(true)}
+          onCloseChange={setClose}
         >
           <SectionMessage.Title>messages</SectionMessage.Title>
           <SectionMessage.Content>default</SectionMessage.Content>

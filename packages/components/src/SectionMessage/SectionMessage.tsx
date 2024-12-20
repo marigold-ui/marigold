@@ -78,7 +78,7 @@ export interface SectionMessageProps {
   /**
    * Handler that is called when you need to control the dismissable message to close.
    */
-  onClose?: () => void;
+  onCloseChange?: (close: boolean) => void;
   /**
    * If the message should be closed/dismissed (controlled).
    */
@@ -93,7 +93,7 @@ export const SectionMessage = ({
   children,
   closeButton,
   close,
-  onClose,
+  onCloseChange,
   ...props
 }: SectionMessageProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -110,7 +110,7 @@ export const SectionMessage = ({
   const { buttonProps } = useButton(props, buttonRef);
 
   const handleClose = () => {
-    onClose?.();
+    onCloseChange && close && onCloseChange(close);
     if (close === undefined) {
       setInternalVisible(false);
     }
