@@ -34,7 +34,7 @@ const Venues = () => {
   if (status === 'pending' || isFetching) {
     return (
       <div className="h-[300px] w-full">
-        <XLoader mode="inline" />
+        <XLoader mode="section" />
       </div>
     );
   }

@@ -16,7 +16,7 @@ export default () => {
       <Button variant="primary" onPress={handlePress}>
         Submit
       </Button>
-      {loading ? <XLoader mode="fullsize" /> : null}
+      {loading ? <XLoader mode="fullscreen" /> : null}
     </>
   );
 };
