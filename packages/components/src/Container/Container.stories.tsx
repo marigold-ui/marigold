@@ -1,38 +1,44 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Aspect } from '../Aspect';
+import { Image } from '../Image';
+import { Text } from '../Text';
 import { Container } from './Container';
 
 const meta = {
   title: 'Components/Container',
   component: Container,
   argTypes: {
-    contentType: {
+    contentLength: {
       control: {
         type: 'select',
       },
-      options: ['content', 'header'],
-      description: 'choose between content and header',
-    },
-    size: {
-      control: {
-        type: 'select',
-      },
-      options: ['small', 'medium', 'large'],
-      description: 'choose between small, medium and large size',
+      options: ['short', 'default', 'long'],
+      description: 'Length of the content',
     },
     align: {
       control: {
         type: 'select',
       },
       options: ['left', 'center', 'right'],
-      description: 'set alignment the content inside the container',
+      description: 'Set alignment the content inside the container',
     },
     alignItems: {
       control: {
         type: 'select',
       },
-      options: ['left', 'center', 'right', 'none'],
-      description: 'set alignment of the items inside the container',
+      options: ['left', 'center', 'right'],
+      description: 'Set alignment of the items inside the container',
+    },
+    space: {
+      control: {
+        type: 'text',
+      },
+      table: {
+        defaultValue: { summary: '0' },
+      },
+      description:
+        'Value representing the space between the two elements, for that we use tailwind tokens.',
     },
   },
 } satisfies Meta<typeof Container>;
@@ -40,10 +46,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Content: Story = {
+export const Base: Story = {
+  args: {
+    space: 4,
+  },
   render: args => (
     <Container {...args}>
-      <p>
+      <Text>
         It is a dark time for the Rebellion. Although the Death Star has been
         destroyed, Imperial troops have driven the Rebel forces from their
         hidden base and pursued them across the galaxy. Evading the dreaded
@@ -51,48 +60,14 @@ export const Content: Story = {
         has established a new secret base on the remote ice world of Hoth. The
         evil lord Darth Vader, obsessed with finding young Skywalker, has
         dispatched thousands of remote probes into the far reaches of space....
-      </p>
+      </Text>
+      <Aspect maxWidth="400px" ratio="ultrawide">
+        <Image
+          src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Grogu"
+          fit="cover"
+        />
+      </Aspect>
     </Container>
-  ),
-};
-
-export const Header: Story = {
-  render: args => (
-    <Container contentType="header" {...args}>
-      <h1>Star Wars - The Empire Strikes Back</h1>
-    </Container>
-  ),
-};
-
-export const InnerContent: Story = {
-  render: args => (
-    <div className="bg-blue-100 p-1">
-      <Container {...args}>
-        <h2>Star Wars - The Empire Strikes Back</h2>
-        <div className="w-full pt-1">
-          <p>
-            It is a dark time for the Rebellion. Although the Death Star has
-            been destroyed, Imperial troops have driven the Rebel forces from
-            their hidden base and pursued them across the galaxy. Evading the
-            dreaded Imperial Starfleet, a group of freedom fighters led by Luke
-            Skywalker has established a new secret base on the remote ice world
-            of Hoth. The evil lord Darth Vader, obsessed with finding young
-            Skywalker, has dispatched thousands of remote probes into the far
-            reaches of space....
-          </p>
-        </div>
-        <div className="width-[20ch]">
-          <ul>
-            <li>Luke</li>
-            <li>Leia</li>
-            <li>Han Solo</li>
-            <li>Chewbacca</li>
-            <li>R2D2</li>
-            <li>C3PO</li>
-            <li>Darth Vader</li>
-          </ul>
-        </div>
-      </Container>
-    </div>
   ),
 };
