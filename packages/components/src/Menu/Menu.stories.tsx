@@ -95,7 +95,7 @@ type Story = StoryObj<typeof meta>;
 export const StandardMenu: Story = {
   render: args => {
     return (
-      <Menu label="Hogwarts Houses" {...args}>
+      <Menu {...args} label="Hogwarts Houses">
         <Menu.Item id="gryffindor">🦁 Gryffindor</Menu.Item>
         <Menu.Item id="hufflepuff">🦡 Hufflepuff</Menu.Item>
         <Menu.Item id="ravenclaw">🐦‍⬛ Ravenclaw</Menu.Item>
@@ -108,7 +108,7 @@ export const StandardMenu: Story = {
 export const OnActionMenu: Story = {
   render: args => {
     return (
-      <Menu label="Choose" onAction={key => alert(key)} {...args}>
+      <Menu {...args} label="Choose" onAction={key => alert(key)}>
         <Menu.Item id="burger">🍔 Burger</Menu.Item>
         <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
         <Menu.Item id="salad">🥗 Salad</Menu.Item>
@@ -168,7 +168,7 @@ export const MultiSelection: Story = {
 
 export const MenuSection: Story = {
   render: args => (
-    <Menu label="Menu with sections" {...args}>
+    <Menu {...args} label="Menu with sections">
       <Menu.Section title="Food">
         <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
         <Menu.Item id="salad">🥗 Salad</Menu.Item>
@@ -187,9 +187,9 @@ export const MenuSection: Story = {
 export const DisabledKeys: Story = {
   render: args => (
     <Menu
+      {...args}
       label="Menu with sections"
       disabledKeys={['mango', 'salad']}
-      {...args}
     >
       <Menu.Section title="Food">
         <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
@@ -208,7 +208,7 @@ export const DisabledKeys: Story = {
 
 export const LinksMenu: Story = {
   render: args => (
-    <Menu label="Links" {...args}>
+    <Menu {...args} label="Links">
       <Menu.Item href="https://adobe.com/" target="_blank">
         Adobe
       </Menu.Item>
