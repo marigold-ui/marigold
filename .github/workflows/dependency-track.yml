@@ -1,0 +1,50 @@
+name: Generate and Upload SBOM to Dependency-Track
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  generate-and-upload-sbom:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Install CycloneDX CLI
+      - name: Install CycloneDX CLI
+        run: |
+          curl -sL https://github.com/CycloneDX/cyclonedx-cli/releases/latest/download/cyclonedx-linux-x64.tar.gz | tar xz
+          chmod +x cyclonedx
+          sudo mv cyclonedx /usr/local/bin/
+
+      # Step 3: Generate SBOM
+      - name: Generate SBOM
+        run: |
+          cyclonedx -o $DEPENDENCY_TRACK_FILE
+
+      # Step 4: Upload SBOM to Dependency-Track
+      - name: Upload SBOM to Dependency-Track
+        env:
+          DEPENDENCY_TRACK_API_KEY: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
+          DEPENDENCY_TRACK_SERVER: ${{ secrets.DEPENDENCY_TRACK_SERVER }}
+          DEPENDENCY_TRACK_PROJECT_NAME: ${{ secrets.DEPENDENCY_TRACK_PROJECT_NAME }}
+          DEPENDENCY_TRACK_PARENT_PROJECT: ${{ secrets.DEPENDENCY_TRACK_PARENT_PROJECT }}
+          DEPENDENCY_TRACK_PROJECT_VERSION: ${{ secrets.DEPENDENCY_TRACK_PROJECT_VERSION }}
+          DEPENDENCY_TRACK_FILE: ${{ secrets.DEPENDENCY_TRACK_FILE }}
+        run: |
+          curl -X POST \
+            -H "Content-Type: multipart/form-data" \
+            -H "X-API-Key: $DEPENDENCY_TRACK_API_KEY" \
+            -F "autoCreate=true" \
+            -F "projectName=$DEPENDENCY_TRACK_PROJECT_NAME" \
+            -F "parentName=$DEPENDENCY_TRACK_PARENT_PROJECT" \
+            -F "projectVersion=$DEPENDENCY_TRACK_PROJECT_VERSION" \
+            -F "bom=@$DEPENDENCY_TRACK_FILE" \
+            "$DEPENDENCY_TRACK_SERVER/api/v1/bom"
