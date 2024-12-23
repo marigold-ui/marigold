@@ -182,7 +182,7 @@ export const WithTable: Story = {
               )}
             </Table.Body>
           </Table>
-          <Inline alignY="center" space={4}>
+          <Inline alignY="center" space={11}>
             <Text fontSize="sm">
               Showing {startIndex + 1} - {endIndex} of {mockData.length}
             </Text>
@@ -195,10 +195,10 @@ export const WithTable: Story = {
               onChange={setCurrentPage}
             />
             <Split />
-            <FieldGroup labelWidth="100px">
+            <Inline alignY="center" space={4}>
+              <Text fontSize="sm">Results per page</Text>
               <Select
-                width={40}
-                label="Results per page"
+                width={'fit'}
                 selectedKey={pageSize.toString()}
                 onChange={val => setPageSize(parseInt(val.toString()))}
               >
@@ -206,7 +206,7 @@ export const WithTable: Story = {
                 <Select.Option id="20">20</Select.Option>
                 <Select.Option id={'30'}>30</Select.Option>
               </Select>
-            </FieldGroup>
+            </Inline>
           </Inline>
         </Stack>
       </div>
