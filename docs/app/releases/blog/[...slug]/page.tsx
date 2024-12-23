@@ -7,12 +7,11 @@ import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
 
 interface BlogPostProps {
-  params: {
-    slug: string[];
-  };
+  params: Promise<{ slug: string[] }>;
 }
 async function getPostFromParams(params: BlogPostProps['params']) {
-  const fullPath = `releases/blog/${params.slug}`;
+  const { slug } = await params;
+  const fullPath = `releases/blog/${slug}`;
   const currentPost = allBlogs.find(post => post.slug === fullPath);
 
   return currentPost || null;
