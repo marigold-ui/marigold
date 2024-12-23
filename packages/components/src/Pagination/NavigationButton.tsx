@@ -13,7 +13,7 @@ interface PaginationButtonProps {
   position?: 'left' | 'right';
 }
 
-export const PaginationButton = (props: PaginationButtonProps) => {
+export const NavigationButton = (props: PaginationButtonProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
   const classNames = useClassNames({
     component: 'Pagination',

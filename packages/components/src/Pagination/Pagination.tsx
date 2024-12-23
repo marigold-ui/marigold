@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight } from '@marigold/icons';
+import { ChevronLeft, ChevronRight } from '../icons';
 import { Ellipsis } from './Ellipsis';
+import { NavigationButton } from './NavigationButton';
 import { PageButton } from './PageButton';
-import { PaginationButton } from './PaginationButton';
 import {
   NavigationTypes,
   useKeyboardNavigation,
@@ -94,7 +94,7 @@ const _Pagination = ({
       aria-label={`Page ${currentPage} of ${totalPages}`}
       {...keyboardProps}
     >
-      <PaginationButton
+      <NavigationButton
         onPress={() => handlePageChange(Math.max(1, currentPage - 1))}
         aria-label="Page previous"
         isDisabled={isFirstPage}
@@ -105,7 +105,7 @@ const _Pagination = ({
         position="left"
       >
         <ChevronLeft className="h-5 w-5" />
-      </PaginationButton>
+      </NavigationButton>
 
       <div className="flex items-center space-x-2">
         {totalPages > 0 ? (
@@ -116,7 +116,7 @@ const _Pagination = ({
               <PageButton
                 key={pageNumber}
                 page={pageNumber}
-                isSelected={pageNumber === currentPage}
+                selected={pageNumber === currentPage}
                 onPress={() => handlePageChange(pageNumber)}
                 registerRef={ref =>
                   registerRef(NavigationTypes.Page, pageNumber, ref)
@@ -129,7 +129,7 @@ const _Pagination = ({
         )}
       </div>
 
-      <PaginationButton
+      <NavigationButton
         onPress={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
         aria-label="Page next"
         isDisabled={isLastPage}
@@ -140,7 +140,7 @@ const _Pagination = ({
         position="right"
       >
         <ChevronRight className="h-5 w-5" />
-      </PaginationButton>
+      </NavigationButton>
     </nav>
   );
 };
