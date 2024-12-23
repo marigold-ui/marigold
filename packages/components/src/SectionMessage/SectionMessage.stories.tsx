@@ -1,4 +1,7 @@
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '../Button';
+import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { SectionMessage } from './SectionMessage';
 
@@ -68,4 +71,30 @@ export const LongMessage: Story = {
       </SectionMessage.Content>
     </SectionMessage>
   ),
+};
+
+export const ControlledSectionMessage: Story = {
+  render: args => {
+    const [deleteSuccessful, setDeleteSuccessful] = useState<boolean>(false);
+
+    return (
+      <Stack space={4} alignX="left">
+        <SectionMessage
+          {...args}
+          closeButton
+          close={!deleteSuccessful}
+          onCloseChange={setDeleteSuccessful}
+        >
+          <SectionMessage.Content>
+            I am really not that good at righting copy texts, sorry.
+          </SectionMessage.Content>
+          <SectionMessage.Title>
+            Hey! You! I am an info box! Please notice me, it might help you!
+          </SectionMessage.Title>
+        </SectionMessage>
+        <span>Successfully dismissed: {deleteSuccessful ? '✅' : '❌'}</span>
+        <Button onPressChange={setDeleteSuccessful}>show message again</Button>
+      </Stack>
+    );
+  },
 };

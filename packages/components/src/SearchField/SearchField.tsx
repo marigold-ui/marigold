@@ -22,11 +22,6 @@ export interface SearchFieldProps
   extends Omit<RAC.SearchFieldProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
-   * Icon element to display in the search field.
-   */
-  icon?: ReactElement;
-
-  /**
    * Action element to display in the search field.
    */
   action?: ReactElement;
