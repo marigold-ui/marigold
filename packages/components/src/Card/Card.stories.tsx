@@ -76,7 +76,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Container contentType="content" size="medium">
+    <Container>
       <Card {...args}>
         <h2>Professor Severus Snape</h2>
         <section>
