@@ -8,13 +8,11 @@ import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
 
 interface ContentPageProps {
-  params: {
-    slug: string[];
-  };
+  params: Promise<{ slug: string[] }>;
 }
 
 async function getPageFromParams(params: ContentPageProps['params']) {
-  const slug = params?.slug?.join('/');
+  const slug = (await params)?.slug?.join('/');
   const page = allContentPages.find(page => page.slug === slug);
 
   return page || null;
@@ -49,9 +47,7 @@ export async function generateMetadata({
     : {};
 }
 
-export async function generateStaticParams(): Promise<
-  ContentPageProps['params'][]
-> {
+export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
   return allContentPages.map(page => ({
     slug: page.slug.split('/'),
   }));
