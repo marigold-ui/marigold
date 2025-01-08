@@ -24,7 +24,7 @@
     "@octokit/core": "6.1.2",
     "@react-aria/i18n": "3.12.4",
     "@tailwindcss/typography": "0.5.15",
-    "@tanstack/react-query": "5.62.10",
+    "@tanstack/react-query": "5.62.11",
     "@vercel/analytics": "1.4.1",
     "autoprefixer": "10.4.20",
     "cmdk": "1.0.4",
@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@internationalized/date": "3.6.0",
-    "@types/node": "20.17.10",
+    "@types/node": "20.17.11",
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "tailwindcss-animate": "1.0.7",
