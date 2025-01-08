@@ -1,4 +1,4 @@
-import { DateFormat, Headline, Link, Stack, Text } from '@/ui';
+import { DateFormat, Headline, Link, Stack } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
 import { Markdown } from '../mdx';
 
