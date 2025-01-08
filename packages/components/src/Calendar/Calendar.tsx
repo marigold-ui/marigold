@@ -11,6 +11,9 @@ import YearListBox from './YearListBox';
 // Props
 // ---------------
 type RemovedProps =
+  | 'visibleDuration'
+  | 'pageBehavior'
+  | 'isDateUnavailable'
   | 'isDisabled'
   | 'isReadOnly'
   | 'isInvalid'
@@ -32,7 +35,14 @@ export interface CalendarProps
   readOnly?: boolean;
   variant?: string;
   size?: string;
+  /**
+   * Width of the calendar.
+   */
   width?: WidthProp['width'];
+  /**
+   * Callback that is called for each date of the calendar. If it returns true, then the date is unavailable.
+   */
+  dateUnavailable?: RAC.CalendarProps<DateValue>['isDateUnavailable'];
 }
 
 type ViewMapKeys = 'month' | 'year';
@@ -43,11 +53,13 @@ export const _Calendar = ({
   readOnly,
   size,
   variant,
+  dateUnavailable,
   ...rest
 }: CalendarProps) => {
   const props: RAC.CalendarProps<DateValue> = {
     isDisabled: disabled,
     isReadOnly: readOnly,
+    isDateUnavailable: dateUnavailable,
     ...rest,
   };
 

@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Card } from '../Card';
+import { Headline } from '../Headline';
+import { Inline } from '../Inline';
 import { Inset } from '../Inset';
+import { Text } from '../Text';
 
 const meta = {
   title: 'Components/Inset',
@@ -31,16 +35,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Inset {...args}>
-      <p>
-        It is a dark time for the Rebellion. Although the Death Star has been
-        destroyed, Imperial troops have driven the Rebel forces from their
-        hidden base and pursued them across the galaxy. Evading the dreaded
-        Imperial Starfleet, a group of freedom fighters led by Luke Skywalker
-        has established a new secret base on the remote ice world of Hoth. The
-        evil lord Darth Vader, obsessed with finding young Skywalker, has
-        dispatched thousands of remote probes into the far reaches of space....
-      </p>
-    </Inset>
+    <Card size="small">
+      <Inset space={4} {...args}>
+        <Headline level={3}>The Giggle Grounds</Headline>
+        <Inline>
+          <Text fontStyle="italic">Laughville | Outdoor Amphitheater</Text>
+        </Inline>
+        <Text>
+          A charming open-air venue perfect for comedy shows under the stars,
+          bringing laughter to every corner of Laughville.
+        </Text>
+      </Inset>
+    </Card>
   ),
 };

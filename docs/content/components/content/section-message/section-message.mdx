@@ -1,6 +1,7 @@
 ---
 title: SectionMessage
 caption: Display important informations in a section of a screen.
+badge: updated
 ---
 
 The `<SectionMessage>` component is a block-level element designed to alert users about specific content in a designated section on the page. It is positioned close to the relevant content to clearly indicate its connection. Section messages provide contextual feedback within a section of the page and are persistent, non-modal elements.
@@ -85,6 +86,8 @@ Dismissable messages are used to provide temporary feedback or notifications tha
 To provide this, you have to use the `closeButton` property on the `<SectionMessage>`.
 
 <ComponentDemo file="./section-message-dismissable.demo.tsx" />
+
+You can also control the dismissable message by using the `close` and `onClose` property.
 
 ### Actions
 

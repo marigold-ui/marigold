@@ -80,6 +80,7 @@ export type Theme = {
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>
     >;
+    Pagination?: ComponentStyleFunction<string, string>;
     Radio?: Record<
       'container' | 'label' | 'radio' | 'group',
       ComponentStyleFunction<string, string>
@@ -129,6 +130,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ComboBox?: ComponentStyleFunction<string, string>;
+    XLoader?: Record<
+      'container' | 'loader' | 'label',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 

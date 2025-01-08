@@ -4,7 +4,6 @@ const pkg = require('./package.json');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  swcMinify: true,
   distDir: '.next',
   eslint: {
     ignoreDuringBuilds: true,

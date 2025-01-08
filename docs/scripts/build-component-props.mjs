@@ -156,6 +156,8 @@ const transformTypeValue = async val => {
     'CellElement | CellElement[] | CellRenderer',
     '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
     '"Accordion" | "Badge" | "Body" | "Button" | "Card" | "DateField" | "Dialog" | "Divider" | "Field" | "Footer" | "Header" | "Headline" | "Popover" | "HelpText" | "Image" | "Checkbox" | ... 21 more ... | "ComboBox"',
+    '"Accordion" | "Badge" | "Body" | "Button" | "Card" | "DateField" | "Dialog" | "Divider" | "Field" | "Footer" | "Header" | "Headline" | "Popover" | "HelpText" | "Image" | "Checkbox" | ... 22 more ... | "XLoader"',
+    '"Accordion" | "Badge" | "Body" | "Button" | "Card" | "DateField" | "Dialog" | "Divider" | "Field" | "Footer" | "Header" | "Headline" | "Popover" | "HelpText" | "Image" | "Checkbox" | ... 23 more ... | "XLoader"',
     'string | { [slot in keyof ThemeComponent<C>]?: string; }',
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
