@@ -46,7 +46,7 @@
     "autoprefixer": "10.4.20",
     "cssnano": "7.0.6",
     "postcss": "8.4.49",
-    "tailwindcss": "3.4.16",
+    "tailwindcss": "3.4.17",
     "tsup": "8.3.5"
   },
   "dependencies": {

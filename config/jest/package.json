@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@babel/core": "7.26.0",
-    "@swc/core": "1.7.42",
+    "@swc/core": "1.10.6",
     "@swc/jest": "0.2.37",
     "@types/jest": "29.5.14",
     "babel-jest": "29.7.0",
@@ -38,8 +38,8 @@
   },
   "devDependencies": {
     "jest": "29.7.0",
-    "jest-transform-css": "6.0.1",
+    "jest-transform-css": "6.0.2",
     "react": "18.3.1",
-    "typescript": "5.6.3"
+    "typescript": "5.7.2"
   }
 }
