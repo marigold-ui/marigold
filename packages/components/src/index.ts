@@ -39,6 +39,7 @@ export * from './SectionMessage';
 export * from './Multiselect';
 export * from './NumberField';
 export * from './Overlay';
+export * from './Pagination';
 export * from './Provider';
 export * from './Radio';
 export * from './SearchField';
