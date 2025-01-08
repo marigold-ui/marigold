@@ -1,5 +1,33 @@
 # @marigold/theme-core
 
+## 27.0.2
+
+### Patch Changes
+
+- d52e52f: docs([DST-624]): Revise `<Calendar>` page and change some properties
+
+  - Revised the page according to our new template.
+  - Rename `isDateUnavailable` to `dateUnavailable`.
+  - Remove the props: `visibleDuration` and `pageBehavior`.
+  - Added outline focus styles for keyboard navigation in both themes.
+
+- 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
+
+  - Refactored the `<XLoader>` component to be more accessible
+  - Updated the `<XLoader>` documentation page
+  - Adjusted styling to fit regular underlay styles when using "fullsize" mode
+
+- Updated dependencies [17fd7b4]
+- Updated dependencies [93f783a]
+- Updated dependencies [d52e52f]
+- Updated dependencies [d326823]
+- Updated dependencies [85e8cba]
+- Updated dependencies [38d461d]
+- Updated dependencies [425ce62]
+  - @marigold/components@10.1.1
+  - @marigold/system@10.1.1
+  - @marigold/theme-preset@1.3.25
+
 ## 27.0.1
 
 ### Patch Changes
