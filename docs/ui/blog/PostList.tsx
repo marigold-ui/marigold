@@ -1,5 +1,6 @@
 import { DateFormat, Headline, Link, Stack, Text } from '@/ui';
 import { allBlogs } from 'contentlayer/generated';
+import { Markdown } from '../mdx';
 
 export const PostList = () => {
   // matches everything till the second line break
@@ -10,7 +11,7 @@ export const PostList = () => {
       title: post.title,
       date: new Date(post.date),
       slug: post.slug,
-      introduction: post.body.raw.match(regex),
+      introduction: post.body.raw.match(regex)?.[0] || '',
     }))
     .sort((a, b) => b.date.getTime() - a.date.getTime());
 
@@ -24,7 +25,7 @@ export const PostList = () => {
             </Link>
           </Headline>
           <Stack space={2} alignX="left">
-            <Text>{post.introduction}</Text>
+            <Markdown contents={post.introduction}></Markdown>
             <Link href={`/${post.slug}`}>▶︎ Read more</Link>
           </Stack>
         </div>
