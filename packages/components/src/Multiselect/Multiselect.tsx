@@ -1,6 +1,7 @@
 import {
   ForwardRefExoticComponent,
   Key,
+  KeyboardEvent,
   ReactNode,
   RefAttributes,
   forwardRef,
@@ -232,6 +233,15 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
       }
       clearInput();
     }, [selectedItems, onItemCleared]);
+
+    const onKeyDownCapture = useCallback(
+      (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Backspace' && fieldState.inputValue === '') {
+          popLast();
+        }
+      },
+      [popLast, fieldState.inputValue]
+    );
 
     return (
       // container
