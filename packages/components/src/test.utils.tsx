@@ -7,7 +7,10 @@ export interface SetupProps<T extends Theme>
 
 export const setup: Function = <T extends Theme>({ theme }: SetupProps<T>) => {
   return {
-    render: (element: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+    render: (
+      element: ReactElement<any>,
+      options?: Omit<RenderOptions, 'wrapper'>
+    ) =>
       render(element, {
         wrapper: ({ children }) => (
           <ThemeProvider theme={theme}>{children}</ThemeProvider>

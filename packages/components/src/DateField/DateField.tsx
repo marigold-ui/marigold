@@ -24,7 +24,7 @@ export interface DateFieldProps
   /**
    * Optional element (e.g., button or icon) rendered inside the DateField.
    */
-  action?: ReactElement;
+  action?: ReactElement<any>;
 
   /**
    * If `true`, the date field is required.

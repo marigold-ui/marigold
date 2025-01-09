@@ -47,15 +47,15 @@
     "react-aria-components": "1.5.0"
   },
   "peerDependencies": {
-    "react": "18.x",
-    "react-dom": "18.x"
+    "react": "19.x",
+    "react-dom": "19.x"
   },
   "devDependencies": {
     "@marigold/icons": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "18.3.18",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "@types/react": "19.0.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "tsup": "8.3.5"
   },
   "scripts": {

@@ -39,9 +39,9 @@
     "next": "15.1.4",
     "next-contentlayer2": "0.5.3",
     "postcss": "8.4.49",
-    "react": "18.3.1",
+    "react": "19.0.0",
     "react-docgen-typescript": "2.2.2",
-    "react-dom": "18.3.1",
+    "react-dom": "19.0.0",
     "react-hook-form": "7.54.2",
     "react-markdown": "9.0.3",
     "react-use": "17.6.0",
@@ -61,10 +61,10 @@
   "devDependencies": {
     "@internationalized/date": "3.6.0",
     "@types/node": "20.17.11",
-    "@types/react": "18.3.18",
-    "@types/react-dom": "18.3.5",
+    "@types/react": "19.0.4",
+    "@types/react-dom": "19.0.2",
     "tailwindcss-animate": "1.0.7",
-    "typescript": "5.7.2",
+    "typescript": "5.7.3",
     "unist-builder": "4.0.0",
     "unist-util-visit": "5.0.0"
   }

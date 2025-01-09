@@ -8,8 +8,8 @@ import { cn, useClassNames } from '@marigold/system';
 type RemovedProps = 'className' | 'style' | 'size';
 
 export interface InputProps extends Omit<RAC.InputProps, RemovedProps> {
-  icon?: ReactElement;
-  action?: ReactElement;
+  icon?: ReactElement<any>;
+  action?: ReactElement<any>;
   variant?: string;
   size?: string;
   className?: string;
