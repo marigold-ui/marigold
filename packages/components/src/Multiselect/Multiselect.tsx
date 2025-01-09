@@ -6,11 +6,13 @@ import {
   RefAttributes,
   forwardRef,
   useCallback,
+  useEffect,
   useId,
   useRef,
   useState,
 } from 'react';
 import type RAC from 'react-aria-components';
+import { Tag, TagGroup, TagList } from 'react-aria-components';
 import { useFilter } from '@react-aria/i18n';
 import { ListData, useListData } from '@react-stately/data';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
@@ -148,7 +150,7 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
       sensitivity: 'base',
     });
 
-    const selectedKeys = selectedItems.items.map(item => item.id);
+    const selectedKeys = selectedItems?.items?.map(item => item.id);
 
     const filter = useCallback(
       (item: { id: string; name: string }, filterText: string) => {
@@ -220,12 +222,12 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
     };
 
     const popLast = useCallback(() => {
-      if (selectedItems.items.length === 0) {
+      if (selectedItems.items?.length === 0) {
         return;
       }
 
       // Getting the last selected item
-      const endKey = selectedItems.items.at(-1);
+      const endKey = selectedItems.items?.at(-1);
 
       if (endKey) {
         selectedItems.remove(endKey.id);
@@ -243,9 +245,34 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
       [popLast, fieldState.inputValue]
     );
 
+    useEffect(() => {
+      const trigger = triggerRef.current;
+      if (!trigger) return;
+
+      const observer = new ResizeObserver(entries => {
+        for (const entry of entries) {
+          setWidth(entry.target.clientWidth);
+        }
+      });
+
+      observer.observe(trigger);
+      return () => {
+        observer.unobserve(trigger);
+      };
+    }, [triggerRef]);
+
+    const triggerButtonRef = useRef<HTMLButtonElement | null>(null);
+
     return (
       // container
-      <div>wfe</div>
+      <div>
+        <TagGroup>
+          <TagList>
+            <Tag>Osama</Tag>
+            <Tag>Osama</Tag>
+          </TagList>
+        </TagGroup>
+      </div>
     );
   }
 );
