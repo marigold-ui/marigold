@@ -171,16 +171,20 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
       inputValue: '',
     });
 
+    const clearInput = () => {
+      setFieldState({
+        inputValue: '',
+        selectedKey: null,
+      });
+    };
+
     const onRemove = useCallback(
       (keys: Set<Key>) => {
         // TODO: clarify why this is an array
         const key = keys.values().next().value;
         if (key) {
           selectedItems.remove(key);
-          setFieldState({
-            inputValue: '',
-            selectedKey: null,
-          });
+          clearInput();
           onItemCleared?.(key);
         }
       },
@@ -200,10 +204,7 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
 
       if (!selectedKeys.includes(id)) {
         selectedItems.append(item);
-        setFieldState({
-          inputValue: '',
-          selectedKey: null,
-        });
+        clearInput();
         onItemInserted?.(id);
       }
     };
@@ -217,7 +218,20 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
       accessibleList.setFilterText(value);
     };
 
-    const popLast = useCallback(() => {}, []);
+    const popLast = useCallback(() => {
+      if (selectedItems.items.length === 0) {
+        return;
+      }
+
+      // Getting the last selected item
+      const endKey = selectedItems.items.at(-1);
+
+      if (endKey) {
+        selectedItems.remove(endKey.id);
+        onItemCleared?.(endKey.id);
+      }
+      clearInput();
+    }, [selectedItems, onItemCleared]);
 
     return (
       // container
