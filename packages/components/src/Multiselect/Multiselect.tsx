@@ -1,10 +1,17 @@
 import {
   ForwardRefExoticComponent,
+  Key,
   ReactNode,
   RefAttributes,
   forwardRef,
+  useCallback,
+  useId,
+  useRef,
+  useState,
 } from 'react';
 import type RAC from 'react-aria-components';
+import { useFilter } from '@react-aria/i18n';
+import { ListData, useListData } from '@react-stately/data';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { ListBox } from '../ListBox';
 
@@ -20,9 +27,10 @@ type RemovedProps =
   | 'isReadOnly'
   | 'defaultInputValue'
   | 'inputValue'
-  | 'onInputChange';
+  | 'onInputChange'
+  | 'items';
 
-export interface MultiselectProps
+export interface MultiselectProps<T extends object>
   extends Omit<RAC.ComboBoxProps<any>, RemovedProps>,
     Pick<
       FieldBaseProps<'label'>,
@@ -30,6 +38,11 @@ export interface MultiselectProps
     > {
   variant?: string;
   size?: string;
+
+  items: { id: string; name: string }[];
+
+  // TODO: Remove any 🙂
+  selectedItems: ListData<any>;
 
   /**
    * If `true`, the input is disabled.
@@ -70,6 +83,8 @@ export interface MultiselectProps
    */
   onChange?: RAC.ComboBoxProps<any>['onInputChange'];
 
+  onItemCleared?: (key: Key) => void;
+
   /**
    * ReactNode or function to render the list of items.
    */
@@ -83,7 +98,7 @@ export interface MultiselectProps
 
 interface MultiselectComponent
   extends ForwardRefExoticComponent<
-    MultiselectProps & RefAttributes<HTMLInputElement>
+    MultiselectProps<object> & RefAttributes<HTMLInputElement>
   > {
   /**
    * Options for the Combobox.
@@ -99,7 +114,7 @@ interface MultiselectComponent
 // Component
 // ---------------
 
-export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps>(
+export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
   (
     {
       variant,
@@ -111,11 +126,72 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps>(
       defaultValue,
       value,
       onChange,
+      onItemCleared,
       children,
+      selectedItems,
+      items,
       ...rest
     },
     ref
   ) => {
-    return <div>Hello there</div>;
+    const tagGroupIdentifier = useId();
+    const triggerRef = useRef<HTMLDivElement | null>(null);
+    const [width, setWidth] = useState(0);
+
+    const { contains } = useFilter({
+      sensitivity: 'base',
+    });
+
+    const selectedKeys = selectedItems.items.map(item => item.id);
+
+    const filter = useCallback(
+      (item: { id: string; name: string }, filterText: string) => {
+        return (
+          !selectedKeys.includes(item.id) && contains(item.name, filterText)
+        );
+      },
+      [contains, selectedKeys]
+    );
+
+    const accessibleList = useListData({
+      initialItems: items,
+      filter,
+    });
+
+    const [fieldState, setFieldState] = useState<{
+      selectedKey: Key | null;
+      inputValue: string;
+    }>({
+      selectedKey: null,
+      inputValue: '',
+    });
+
+    const onRemove = useCallback(
+      (keys: Set<Key>) => {
+        // TODO: clarify why this is an array
+        const key = keys.values().next().value;
+        if (key) {
+          selectedItems.remove(key);
+          setFieldState({
+            inputValue: '',
+            selectedKey: null,
+          });
+          onItemCleared?.(key);
+        }
+      },
+      [selectedItems, onItemCleared]
+    );
+
+    return (
+      // container
+      <div>wfe</div>
+    );
   }
 );
+
+/**
+ * -container
+ *  --tag group (we use their tag group giving it the same styles like ours)
+ *  --fieldbase
+ *  ---input
+ */
