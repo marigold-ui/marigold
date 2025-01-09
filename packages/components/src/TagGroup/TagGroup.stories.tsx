@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Key, useState } from 'react';
+import { Key } from 'react';
 import { Tag } from '.';
 
 const meta = {
