@@ -9,7 +9,7 @@ type RemovedProps = 'style' | 'className' | 'children';
 export interface DateInputProps extends Omit<RAC.DateInputProps, RemovedProps> {
   variant?: string;
   size?: string;
-  action?: ReactElement;
+  action?: ReactElement<any>;
 }
 
 const _DateInput = ({ variant, size, action, ...props }: DateInputProps) => {

@@ -1,5 +1,6 @@
 import {
   Children,
+  type JSX,
   ReactElement,
   cloneElement,
   isValidElement,
@@ -88,7 +89,7 @@ export const Accordion = ({ children, ...props }: AccordionProps) => {
 export interface AccordionOwnItemProps<T> extends ItemProps<T> {
   variant?: string;
   size?: string;
-  title: string | ReactElement;
+  title: string | ReactElement<any>;
 }
 
 Accordion.Item = Item as <T>(props: AccordionOwnItemProps<T>) => JSX.Element;

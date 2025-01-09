@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { type JSX, useRef } from 'react';
 import { useFocusRing } from '@react-aria/focus';
 import { useTableCell } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
