@@ -83,7 +83,11 @@ export interface MultiselectProps<T extends object>
    */
   onChange?: RAC.ComboBoxProps<any>['onInputChange'];
 
+  // TODO: Add description
   onItemCleared?: (key: Key) => void;
+
+  // TODO: Add description
+  onItemInserted?: (key: Key) => void;
 
   /**
    * ReactNode or function to render the list of items.
@@ -127,6 +131,7 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
       value,
       onChange,
       onItemCleared,
+      onItemInserted,
       children,
       selectedItems,
       items,
@@ -181,6 +186,38 @@ export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
       },
       [selectedItems, onItemCleared]
     );
+
+    const onSelectionChange = (id: Key) => {
+      if (!id) {
+        return;
+      }
+      /**
+       * first use key to get the selectedItem from the accessible list
+       * after getting this item from the accessible list push/append it into selectedItems
+       * the selectedKeys will automatically updated since selectitems is one of its dependencies
+       */
+      const item = accessibleList.getItem(id);
+
+      if (!selectedKeys.includes(id)) {
+        selectedItems.append(item);
+        setFieldState({
+          inputValue: '',
+          selectedKey: null,
+        });
+        onItemInserted?.(id);
+      }
+    };
+
+    const onInputChange = (value: string) => {
+      setFieldState(prev => ({
+        inputValue: value,
+        selectedKey: value === '' ? null : prev.selectedKey,
+      }));
+
+      accessibleList.setFilterText(value);
+    };
+
+    const popLast = useCallback(() => {}, []);
 
     return (
       // container
