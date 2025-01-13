@@ -64,13 +64,16 @@ const Multiselect = <T extends SelectedKey>({
   size,
   ...props
 }: MultipleSelectProps<T>) => {
-  const items = React.Children.toArray(children as React.ReactNode[])
-    .filter((child): child is React.ReactElement => React.isValidElement(child))
-    .map((child, index) => ({
-      id: child.props.id || `item-${index}`,
-      name: child.props.textValue || child.props.children,
-      ...child.props,
-    }));
+  const items =
+    props.items ||
+    React.Children.toArray(children as React.ReactNode[])
+      .filter((child): child is React.ReactElement =>
+        React.isValidElement(child)
+      )
+      .map((child, index) => ({
+        id: child.props.id || `item-${index}`,
+        name: child.props.textValue || child.props.children,
+      }));
 
   const tagGroupIdentifier = React.useId();
   const triggerRef = React.useRef<HTMLDivElement | null>(null);
@@ -276,6 +279,7 @@ const Multiselect = <T extends SelectedKey>({
               trigger="ComboBox"
             >
               <ListBox
+                items={accessibleList.items}
                 renderEmptyState={() =>
                   renderEmptyState ? (
                     renderEmptyState(fieldState.inputValue)
@@ -295,9 +299,10 @@ const Multiselect = <T extends SelectedKey>({
                   )
                 }
                 selectionMode="multiple"
-                items={accessibleList.items}
               >
-                {item => <ListBox.Item id={item.id}>{item.name}</ListBox.Item>}
+                {(item: { name: string; id: any }) => (
+                  <ListBox.Item id={item.id}>{item.name}</ListBox.Item>
+                )}
               </ListBox>
             </Popover>
           </ComboBox>

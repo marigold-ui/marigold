@@ -58,37 +58,3 @@ export const Basic: StoryObj<typeof Multiselect> = {
     );
   },
 };
-
-// export const Controlled: StoryObj<typeof Multiselect> = {
-//   render: () => {
-//     // Question: Why should we use selectedItems however we can use selectedKeys
-//     const [selectedItems, setSelectedItems] = useState([
-//       { id: 10, name: 'Lemon' },
-//       { id: 11, name: 'Mango' },
-//     ]);
-//     console.log('currentSelectedITems', selectedItems);
-//     return (
-//       <>
-//         <Multiselect
-//           className="max-w-xs"
-//           label="Fruits"
-//           tag={item => (
-//             <Multiselect.Tag textValue={item.name}>{item.name}</Multiselect.Tag>
-//           )}
-//           selectedItems={selectedItems}
-//           onSele
-//         >
-//           <Multiselect.Option textValue={'Watermelon'} id={20}>
-//             Watermelon
-//           </Multiselect.Option>
-//           <Multiselect.Option textValue={'Nectarine'} id={12}>
-//             Nectarine
-//           </Multiselect.Option>
-//           <Multiselect.Option textValue={'Strawberry'} id={17}>
-//             Strawberry
-//           </Multiselect.Option>
-//         </Multiselect>
-//       </>
-//     );
-//   },
-// };
