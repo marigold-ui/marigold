@@ -1,285 +1,323 @@
-import {
-  ForwardRefExoticComponent,
+'use client';
+
+import * as React from 'react';
+import { useState } from 'react';
+import type {
+  ComboBoxProps as ComboBoxPrimitiveProps,
   Key,
-  KeyboardEvent,
-  ReactNode,
-  RefAttributes,
-  forwardRef,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react';
-import type RAC from 'react-aria-components';
-import { Tag, TagGroup, TagList } from 'react-aria-components';
+  ValidationResult,
+} from 'react-aria-components';
+import {
+  ComboBox,
+  Input,
+  ListBoxItem,
+  Tag,
+  TagGroup,
+  TagList,
+} from 'react-aria-components';
 import { useFilter } from '@react-aria/i18n';
-import { ListData, useListData } from '@react-stately/data';
+import { VisuallyHidden } from '@react-aria/visually-hidden';
+import { ListData } from '@react-stately/data';
+import { useListData } from '@react-stately/data';
+import { cn, cva, useClassNames } from '@marigold/system';
+import { Button } from '../Button';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { ListBox } from '../ListBox';
+// import type { FieldProps } from "./field"
+import { Popover } from '../Overlay';
 
-// Props
-// ---------------
-type RemovedProps =
-  | 'className'
-  | 'style'
-  | 'children'
-  | 'isDisabled'
-  | 'isRequired'
-  | 'isInvalid'
-  | 'isReadOnly'
-  | 'defaultInputValue'
-  | 'inputValue'
-  | 'onInputChange'
-  | 'items';
+interface SelectedKey {
+  id: Key;
+  name: string;
+}
 
-export interface MultiselectProps<T extends object>
-  extends Omit<RAC.ComboBoxProps<any>, RemovedProps>,
-    Pick<
-      FieldBaseProps<'label'>,
-      'width' | 'label' | 'description' | 'errorMessage'
+interface MultipleSelectProps<T extends object>
+  extends Omit<FieldBaseProps<any>, 'children'>,
+    Omit<
+      ComboBoxPrimitiveProps<T>,
+      | 'children'
+      | 'validate'
+      | 'allowsEmptyCollection'
+      | 'inputValue'
+      | 'selectedKey'
+      | 'className'
+      | 'value'
+      | 'onSelectionChange'
+      | 'onInputChange'
     > {
   variant?: string;
   size?: string;
-
-  items: { id: string; name: string }[];
-
-  // TODO: Remove any 🙂
-  selectedItems: ListData<any>;
-
-  /**
-   * If `true`, the input is disabled.
-   * @default false
-   */
-  disabled?: RAC.ComboBoxProps<any>['isDisabled'];
-
-  /**
-   * If `true`, the input is required.
-   * @default false
-   */
-  required?: RAC.ComboBoxProps<any>['isRequired'];
-
-  /**
-   * If `true`, the input is readOnly.
-   * @default false
-   */
-  readOnly?: RAC.ComboBoxProps<any>['isReadOnly'];
-
-  /**
-   * If `true`, the field is considered invalid and if set the `errorMessage` is shown instead of the `description`.
-   * @default false
-   */
-  error?: RAC.ComboBoxProps<any>['isInvalid'];
-
-  /**
-   * The value of the input (uncontrolled).
-   */
-  defaultValue?: RAC.ComboBoxProps<any>['defaultInputValue'];
-
-  /**
-   * The value of the input (controlled).
-   */
-  value?: RAC.ComboBoxProps<any>['inputValue'];
-
-  /**
-   * Called when the input value changes.
-   */
-  onChange?: RAC.ComboBoxProps<any>['onInputChange'];
-
-  // TODO: Add description
-  onItemCleared?: (key: Key) => void;
-
-  // TODO: Add description
+  items: Array<T>;
+  selectedItems?: Array<T>;
+  className?: string;
   onItemInserted?: (key: Key) => void;
-
-  /**
-   * ReactNode or function to render the list of items.
-   */
-  children?: ReactNode | ((item: any) => ReactNode);
-
-  /**
-   * Set the placeholder for the select.
-   */
-  placeholder?: string;
+  onItemCleared?: (key: Key) => void;
+  renderEmptyState?: (inputValue: string) => React.ReactNode;
+  tag: (item: T) => React.ReactNode;
+  children: React.ReactNode | ((item: T) => React.ReactNode);
+  errorMessage?: string | ((validation: ValidationResult) => string);
 }
 
-interface MultiselectComponent
-  extends ForwardRefExoticComponent<
-    MultiselectProps<object> & RefAttributes<HTMLInputElement>
-  > {
-  /**
-   * Options for the Combobox.
-   */
-  Option: typeof ListBox.Item;
+const Multiselect = <T extends SelectedKey>({
+  children,
+  items,
+  selectedItems = [],
+  onItemCleared,
+  onItemInserted,
+  className,
+  name,
+  renderEmptyState,
+  errorMessage,
+  variant,
+  size,
+  ...props
+}: MultipleSelectProps<T>) => {
+  if (!items) {
+    return;
+  }
+  const tagGroupIdentifier = React.useId();
+  const triggerRef = React.useRef<HTMLDivElement | null>(null);
+  const [width, setWidth] = React.useState(0);
 
-  /**
-   * Section for the Combobox, to put options in.
-   */
-  Section: typeof ListBox.Section;
-}
+  const { contains } = useFilter({ sensitivity: 'base' });
+  const selectedItemsElements = useListData({
+    initialItems: selectedItems,
+  });
 
-// Component
-// ---------------
-
-export const Multiselect = forwardRef<HTMLInputElement, MultiselectProps<any>>(
-  (
-    {
-      variant,
-      size,
-      required,
-      disabled,
-      readOnly,
-      error,
-      defaultValue,
-      value,
-      onChange,
-      onItemCleared,
-      onItemInserted,
-      children,
-      selectedItems,
-      items,
-      ...rest
+  console.log('selectedItemsElements.items', selectedItemsElements.items);
+  const selectedKeys = selectedItemsElements?.items?.map(i => i.id);
+  console.log('selectedKeys', selectedKeys);
+  const filter = React.useCallback(
+    (item: T, filterText: string) => {
+      return (
+        !selectedKeys?.includes(item.id) && contains(item.name, filterText)
+      );
     },
-    ref
-  ) => {
-    const tagGroupIdentifier = useId();
-    const triggerRef = useRef<HTMLDivElement | null>(null);
-    const [width, setWidth] = useState(0);
+    [contains, selectedItemsElements]
+  );
 
-    const { contains } = useFilter({
-      sensitivity: 'base',
-    });
+  const accessibleList = useListData({
+    initialItems: items,
+    filter,
+  });
 
-    const selectedKeys = selectedItems?.items?.map(item => item.id);
+  const [fieldState, setFieldState] = useState<{
+    selectedKey: Key | null;
+    inputValue: string;
+  }>({
+    selectedKey: null,
+    inputValue: '',
+  });
 
-    const filter = useCallback(
-      (item: { id: string; name: string }, filterText: string) => {
-        return (
-          !selectedKeys.includes(item.id) && contains(item.name, filterText)
-        );
-      },
-      [contains, selectedKeys]
-    );
+  const onRemove = React.useCallback(
+    (keys: Set<Key>) => {
+      // keys => [currentKey] -> keys[0].value
+      const key = keys.values().next().value;
+      if (key) {
+        selectedItemsElements.remove(key);
+        setFieldState({
+          inputValue: '',
+          selectedKey: null,
+        });
+        onItemCleared?.(key);
+      }
+    },
+    [selectedItems, onItemCleared]
+  );
 
-    const accessibleList = useListData({
-      initialItems: items,
-      filter,
-    });
+  const onSelectionChange = (id: Key | null) => {
+    console.log('call');
+    if (!id) {
+      return;
+    }
 
-    const [fieldState, setFieldState] = useState<{
-      selectedKey: Key | null;
-      inputValue: string;
-    }>({
-      selectedKey: null,
-      inputValue: '',
-    });
+    const item = accessibleList.getItem(id);
 
-    const clearInput = () => {
+    if (!item) {
+      return;
+    }
+
+    if (!selectedKeys?.includes(id)) {
+      console.log('successfully', item);
+      selectedItemsElements?.append(item);
+      console.log('selectedItems', selectedItems);
       setFieldState({
         inputValue: '',
-        selectedKey: null,
+        selectedKey: id,
       });
+      onItemInserted?.(id);
+    }
+
+    accessibleList.setFilterText('');
+  };
+
+  const onInputChange = (value: string) => {
+    setFieldState(prev => ({
+      inputValue: value,
+      selectedKey: value === '' ? null : prev.selectedKey,
+    }));
+
+    accessibleList.setFilterText(value);
+  };
+
+  const popLast = React.useCallback(() => {
+    if (selectedItemsElements.items?.length == 0) {
+      return;
+    }
+
+    const endKey = selectedItemsElements.items?.at(-1);
+
+    if (endKey !== null) {
+      selectedItemsElements.remove(endKey.id);
+      onItemCleared?.(endKey.id);
+    }
+
+    setFieldState({
+      inputValue: '',
+      selectedKey: null,
+    });
+  }, [selectedItemsElements, onItemCleared]);
+
+  const onKeyDownCapture = React.useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Backspace' && fieldState.inputValue === '') {
+        popLast();
+      }
+    },
+    [popLast, fieldState.inputValue]
+  );
+
+  React.useEffect(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        setWidth(entry.target.clientWidth);
+      }
+    });
+
+    observer.observe(trigger);
+    return () => {
+      observer.unobserve(trigger);
     };
+  }, [triggerRef]);
 
-    const onRemove = useCallback(
-      (keys: Set<Key>) => {
-        // TODO: clarify why this is an array
-        const key = keys.values().next().value;
-        if (key) {
-          selectedItems.remove(key);
-          clearInput();
-          onItemCleared?.(key);
-        }
-      },
-      [selectedItems, onItemCleared]
-    );
+  const triggerButtonRef = React.useRef<HTMLButtonElement | null>(null);
 
-    const onSelectionChange = (id: Key) => {
-      if (!id) {
-        return;
-      }
-      /**
-       * first use key to get the selectedItem from the accessible list
-       * after getting this item from the accessible list push/append it into selectedItems
-       * the selectedKeys will automatically updated since selectitems is one of its dependencies
-       */
-      const item = accessibleList.getItem(id);
+  const classNames = useClassNames({
+    component: 'MultiSelect',
+    size,
+    variant,
+  });
 
-      if (!selectedKeys.includes(id)) {
-        selectedItems.append(item);
-        clearInput();
-        onItemInserted?.(id);
-      }
-    };
+  return (
+    <div>
+      <FieldBase {...props} aria-label="Available items">
+        <div ref={triggerRef} className={classNames.container}>
+          {selectedItemsElements.items.length !== 0 ? (
+            <TagGroup
+              aria-label="Selected items"
+              id={tagGroupIdentifier}
+              onRemove={onRemove}
+              className={'flex items-center'}
+            >
+              <TagList
+                items={selectedItemsElements?.items}
+                className={classNames.listItems}
+              >
+                <Tag className={classNames.tag}>
+                  selectedItems {selectedItemsElements.items.length}
+                </Tag>
+                {/* {(item) => <Tag>{item.name}</Tag>} */}
+              </TagList>
+            </TagGroup>
+          ) : null}
+          <ComboBox
+            {...props}
+            allowsEmptyCollection
+            aria-label="Available items"
+            items={accessibleList?.items}
+            selectedKey={fieldState.selectedKey}
+            inputValue={fieldState.inputValue}
+            onSelectionChange={onSelectionChange}
+            onInputChange={onInputChange}
+            className={'flex-1 items-center'}
+          >
+            <div className="flex">
+              <Input
+                className={cn(classNames.input, 'flex-1')}
+                onBlur={() => {
+                  setFieldState({
+                    inputValue: '',
+                    selectedKey: null,
+                  });
+                  accessibleList.setFilterText('');
+                }}
+                onKeyDownCapture={onKeyDownCapture}
+              />
+              <button
+                type="button"
+                onClick={() => triggerButtonRef.current?.click()}
+                tabIndex={-1}
+              >
+                chev down
+              </button>
+              <VisuallyHidden>
+                <Button
+                  slot="remove"
+                  type="button"
+                  aria-label="Remove"
+                  size="square-petite"
+                  ref={triggerButtonRef}
+                >
+                  chev down
+                </Button>
+              </VisuallyHidden>
+            </div>
+            <Popover
+              style={{ width: `${width}px` }}
+              triggerRef={triggerRef}
+              trigger="ComboBox"
+            >
+              <ListBox
+                renderEmptyState={() =>
+                  renderEmptyState ? (
+                    renderEmptyState(fieldState.inputValue)
+                  ) : (
+                    <p className="block p-3">
+                      {fieldState.inputValue ? (
+                        <>
+                          No results found for:{' '}
+                          <strong className="text-fg font-medium">
+                            {fieldState.inputValue}
+                          </strong>
+                        </>
+                      ) : (
+                        `No options`
+                      )}
+                    </p>
+                  )
+                }
+                selectionMode="multiple"
+              >
+                {children}
+              </ListBox>
+            </Popover>
+          </ComboBox>
+        </div>
+      </FieldBase>
 
-    const onInputChange = (value: string) => {
-      setFieldState(prev => ({
-        inputValue: value,
-        selectedKey: value === '' ? null : prev.selectedKey,
-      }));
+      {props.description && <p>{props.description}</p>}
+      {/* {<p>{errorMessage}</p>} */}
+      {name && (
+        <input hidden name={name} value={selectedKeys.join(',')} readOnly />
+      )}
+    </div>
+  );
+};
 
-      accessibleList.setFilterText(value);
-    };
+Multiselect.Tag = Tag;
+Multiselect.Option = ListBox.Item;
 
-    const popLast = useCallback(() => {
-      if (selectedItems.items?.length === 0) {
-        return;
-      }
-
-      // Getting the last selected item
-      const endKey = selectedItems.items?.at(-1);
-
-      if (endKey) {
-        selectedItems.remove(endKey.id);
-        onItemCleared?.(endKey.id);
-      }
-      clearInput();
-    }, [selectedItems, onItemCleared]);
-
-    const onKeyDownCapture = useCallback(
-      (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Backspace' && fieldState.inputValue === '') {
-          popLast();
-        }
-      },
-      [popLast, fieldState.inputValue]
-    );
-
-    useEffect(() => {
-      const trigger = triggerRef.current;
-      if (!trigger) return;
-
-      const observer = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          setWidth(entry.target.clientWidth);
-        }
-      });
-
-      observer.observe(trigger);
-      return () => {
-        observer.unobserve(trigger);
-      };
-    }, [triggerRef]);
-
-    const triggerButtonRef = useRef<HTMLButtonElement | null>(null);
-
-    return (
-      // container
-      <div>
-        <TagGroup>
-          <TagList>
-            <Tag>Osama</Tag>
-            <Tag>Osama</Tag>
-          </TagList>
-        </TagGroup>
-      </div>
-    );
-  }
-);
-
-/**
- * -container
- *  --tag group (we use their tag group giving it the same styles like ours)
- *  --fieldbase
- *  ---input
- */
+export { Multiselect, type SelectedKey };
