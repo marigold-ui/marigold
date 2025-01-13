@@ -7,19 +7,11 @@ import type {
   Key,
   ValidationResult,
 } from 'react-aria-components';
-import {
-  ComboBox,
-  Input,
-  ListBoxItem,
-  Tag,
-  TagGroup,
-  TagList,
-} from 'react-aria-components';
+import { ComboBox, Input, Tag, TagGroup, TagList } from 'react-aria-components';
 import { useFilter } from '@react-aria/i18n';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
-import { ListData } from '@react-stately/data';
 import { useListData } from '@react-stately/data';
-import { cn, cva, useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { ListBox } from '../ListBox';
