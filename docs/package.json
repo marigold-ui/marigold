@@ -33,7 +33,7 @@
     "dotenv": "16.4.7",
     "eslint": "9.17.0",
     "eslint-config-next": "15.1.4",
-    "framer-motion": "11.16.0",
+    "framer-motion": "11.16.4",
     "github-slugger": "2.0.0",
     "mdast-util-toc": "7.1.0",
     "next": "15.1.4",
