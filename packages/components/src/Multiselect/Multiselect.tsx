@@ -39,8 +39,9 @@ interface MultipleSelectProps<T extends object>
     > {
   variant?: string;
   size?: string;
-  items: Array<T>;
+  items?: Array<T>;
   selectedItems?: Array<T>;
+  defaultSelectedItems?: Array<T>;
   className?: string;
   onItemInserted?: (key: Key) => void;
   onItemCleared?: (key: Key) => void;
@@ -52,8 +53,7 @@ interface MultipleSelectProps<T extends object>
 
 const Multiselect = <T extends SelectedKey>({
   children,
-  items,
-  selectedItems = [],
+  defaultSelectedItems,
   onItemCleared,
   onItemInserted,
   className,
@@ -64,28 +64,34 @@ const Multiselect = <T extends SelectedKey>({
   size,
   ...props
 }: MultipleSelectProps<T>) => {
-  if (!items) {
-    return;
-  }
+  const items = React.Children.toArray(children as React.ReactNode[])
+    .filter((child): child is React.ReactElement => React.isValidElement(child))
+    .map((child, index) => ({
+      id: child.props.id || `item-${index}`,
+      name: child.props.textValue || child.props.children,
+      ...child.props,
+    }));
+
   const tagGroupIdentifier = React.useId();
   const triggerRef = React.useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = React.useState(0);
 
   const { contains } = useFilter({ sensitivity: 'base' });
-  const selectedItemsElements = useListData({
-    initialItems: selectedItems,
+  const selectedItems = useListData({
+    initialItems: props.selectedItems || defaultSelectedItems,
   });
 
-  console.log('selectedItemsElements.items', selectedItemsElements.items);
-  const selectedKeys = selectedItemsElements?.items?.map(i => i.id);
-  console.log('selectedKeys', selectedKeys);
+  const selectedKeys = selectedItems?.items?.map(i => i.id);
   const filter = React.useCallback(
     (item: T, filterText: string) => {
+      console.log(
+        !selectedKeys?.includes(item.id) && contains(item.name, filterText)
+      );
       return (
         !selectedKeys?.includes(item.id) && contains(item.name, filterText)
       );
     },
-    [contains, selectedItemsElements]
+    [contains, selectedItems]
   );
 
   const accessibleList = useListData({
@@ -106,7 +112,7 @@ const Multiselect = <T extends SelectedKey>({
       // keys => [currentKey] -> keys[0].value
       const key = keys.values().next().value;
       if (key) {
-        selectedItemsElements.remove(key);
+        selectedItems.remove(key);
         setFieldState({
           inputValue: '',
           selectedKey: null,
@@ -118,7 +124,6 @@ const Multiselect = <T extends SelectedKey>({
   );
 
   const onSelectionChange = (id: Key | null) => {
-    console.log('call');
     if (!id) {
       return;
     }
@@ -130,9 +135,7 @@ const Multiselect = <T extends SelectedKey>({
     }
 
     if (!selectedKeys?.includes(id)) {
-      console.log('successfully', item);
-      selectedItemsElements?.append(item);
-      console.log('selectedItems', selectedItems);
+      selectedItems?.append(item);
       setFieldState({
         inputValue: '',
         selectedKey: id,
@@ -153,14 +156,14 @@ const Multiselect = <T extends SelectedKey>({
   };
 
   const popLast = React.useCallback(() => {
-    if (selectedItemsElements.items?.length == 0) {
+    if (selectedItems.items?.length == 0) {
       return;
     }
 
-    const endKey = selectedItemsElements.items?.at(-1);
+    const endKey = selectedItems.items?.at(-1);
 
-    if (endKey !== null) {
-      selectedItemsElements.remove(endKey.id);
+    if (endKey) {
+      selectedItems.remove(endKey.id);
       onItemCleared?.(endKey.id);
     }
 
@@ -168,7 +171,7 @@ const Multiselect = <T extends SelectedKey>({
       inputValue: '',
       selectedKey: null,
     });
-  }, [selectedItemsElements, onItemCleared]);
+  }, [selectedItems, onItemCleared]);
 
   const onKeyDownCapture = React.useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -207,7 +210,7 @@ const Multiselect = <T extends SelectedKey>({
     <div>
       <FieldBase {...props} aria-label="Available items">
         <div ref={triggerRef} className={classNames.container}>
-          {selectedItemsElements.items.length !== 0 ? (
+          {selectedItems.items.length !== 0 ? (
             <TagGroup
               aria-label="Selected items"
               id={tagGroupIdentifier}
@@ -215,11 +218,11 @@ const Multiselect = <T extends SelectedKey>({
               className={'flex items-center'}
             >
               <TagList
-                items={selectedItemsElements?.items}
+                items={selectedItems?.items}
                 className={classNames.listItems}
               >
                 <Tag className={classNames.tag}>
-                  selectedItems {selectedItemsElements.items.length}
+                  selectedItems {selectedItems.items.length}
                 </Tag>
                 {/* {(item) => <Tag>{item.name}</Tag>} */}
               </TagList>
@@ -292,8 +295,9 @@ const Multiselect = <T extends SelectedKey>({
                   )
                 }
                 selectionMode="multiple"
+                items={accessibleList.items}
               >
-                {children}
+                {item => <ListBox.Item id={item.id}>{item.name}</ListBox.Item>}
               </ListBox>
             </Popover>
           </ComboBox>
