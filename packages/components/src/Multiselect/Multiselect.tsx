@@ -57,12 +57,19 @@ interface MultipleSelectProps<T extends object>
 export const CloseButton = ({
   className,
   clearSelectedItems,
+  disabled,
 }: {
   className: string;
+  disabled?: boolean;
   clearSelectedItems: () => void;
 }) => {
   return (
-    <Button slot="remove" className={className} onPress={clearSelectedItems}>
+    <Button
+      slot="remove"
+      className={className}
+      onPress={clearSelectedItems}
+      disabled={disabled}
+    >
       <svg viewBox="0 0 20 20" fill="currentColor" width={20} height={20}>
         <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path>
       </svg>
@@ -130,22 +137,6 @@ const Multiselect = <T extends SelectedKey>({
     selectedKey: null,
     inputValue: '',
   });
-
-  const onRemove = React.useCallback(
-    (keys: Set<Key>) => {
-      // keys => [currentKey] -> keys[0].value
-      const key = keys.values().next().value;
-      if (key) {
-        selectedItems.remove(key);
-        setFieldState({
-          inputValue: '',
-          selectedKey: null,
-        });
-        onItemCleared?.(key);
-      }
-    },
-    [selectedItems, onItemCleared]
-  );
 
   const onSelectionChange = (id: Key | null) => {
     if (!id) {
@@ -245,7 +236,7 @@ const Multiselect = <T extends SelectedKey>({
             <TagGroup
               aria-label="Selected items"
               id={tagGroupIdentifier}
-              onRemove={onRemove}
+              // onRemove={onRemove}
               className={'flex items-center'}
             >
               <TagList
@@ -257,6 +248,7 @@ const Multiselect = <T extends SelectedKey>({
                   <CloseButton
                     className={classNames.closeButton}
                     clearSelectedItems={clearSelectedItems}
+                    disabled={disabled || readOnly}
                   />
                 </Tag>
                 {/* {(item) => <Tag>{item.name}</Tag>} */}
@@ -370,9 +362,8 @@ export const BasicComponent = () => {
       label="Fruits"
       items={fruits}
       selectedItems={selectedItems}
-      // error
-      // errorMessage={'something went wrong'}
       description={'some description here'}
+      readOnly
     >
       {item => (
         <Multiselect.Option textValue={item.name}>
