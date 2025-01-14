@@ -37,6 +37,10 @@ interface MultipleSelectProps<T extends object>
       | 'onSelectionChange'
       | 'onInputChange'
     > {
+  disabled?: boolean;
+  required?: boolean;
+  readOnly?: boolean;
+  error?: boolean;
   variant?: string;
   size?: string;
   items?: Array<T>;
@@ -67,19 +71,34 @@ export const CloseButton = ({
 };
 
 const Multiselect = <T extends SelectedKey>({
-  children,
-  selectedItems,
-  onItemCleared,
-  onItemInserted,
-  className,
-  name,
-  renderEmptyState,
-  errorMessage,
-  variant,
-  size,
-  items,
-  ...props
+  disabled,
+  required,
+  readOnly,
+  error,
+  ...rest
 }: MultipleSelectProps<T>) => {
+  const {
+    children,
+    selectedItems,
+    onItemCleared,
+    onItemInserted,
+    className,
+    name,
+    renderEmptyState,
+    errorMessage,
+    variant,
+    size,
+    items,
+    ...props
+  }: MultipleSelectProps<T> & { isDisabled?: boolean } = {
+    isDisabled: disabled,
+    isReadOnly: readOnly,
+    isRequired: required,
+    isInvalid: error,
+    error,
+    ...rest,
+  };
+
   const tagGroupIdentifier = React.useId();
   const triggerRef = React.useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = React.useState(0);
@@ -253,7 +272,7 @@ const Multiselect = <T extends SelectedKey>({
             inputValue={fieldState.inputValue}
             onSelectionChange={onSelectionChange}
             onInputChange={onInputChange}
-            className={'flex-1 items-center'}
+            className={'size-full flex-1 items-center'}
           >
             <Input
               className={cn('size-full', classNames.input)}
@@ -315,9 +334,6 @@ const Multiselect = <T extends SelectedKey>({
           </ComboBox>
         </div>
       </FieldBase>
-
-      {props.description && <p>{props.description}</p>}
-      {/* {<p>{errorMessage}</p>} */}
       {name && (
         <input hidden name={name} value={selectedKeys.join(',')} readOnly />
       )}
@@ -354,6 +370,9 @@ export const BasicComponent = () => {
       label="Fruits"
       items={fruits}
       selectedItems={selectedItems}
+      error
+      errorMessage={'something went wrong'}
+      description={'some description here'}
     >
       {item => (
         <Multiselect.Option textValue={item.name}>

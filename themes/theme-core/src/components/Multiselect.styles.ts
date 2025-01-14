@@ -1,18 +1,18 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import {
-  inputBox,
-  inputDisabled,
-  inputError,
-  inputSpacing,
-} from './Input.styles';
+import { inputBox, inputDisabled, inputSpacing } from './Input.styles';
 
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
-  container: cva('bg-bg-base'),
-  input: cva([
+  container: cva([
     inputBox,
     inputSpacing,
     inputDisabled,
-    inputError,
+    'flex items-center gap-1',
+    'has-[input[data-invalid=true]]:border-border-error',
+    // 'leading-[22px]',
+    'has-[input[data-focused=true]]:outline-outline-focus -outline-offset-1 has-[input[data-focused=true]]:outline has-[input[data-focused=true]]:outline-2',
+    // 'read-only:border-transparent read-only:bg-transparent',
+  ]),
+  input: cva([
     'bg-transparent',
     'leading-[22px]',
     'focus:outline-none outline-none border-0',
@@ -22,6 +22,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'group-data-[action]/input:pr-8',
     'placeholder:text-text-inverted-disabled',
   ]),
+
   action: cva(''),
   tag: cva([
     'border-border-base bg-bg-base flex items-center gap-1 rounded border ',
