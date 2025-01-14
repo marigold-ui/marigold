@@ -3,15 +3,13 @@ import {
   inputBox,
   inputDisabled,
   inputError,
-  inputHeight,
   inputSpacing,
 } from './Input.styles';
 
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
-  container: cva('flex bg-bg-base'),
+  container: cva('bg-bg-base'),
   input: cva([
     inputBox,
-    inputHeight,
     inputSpacing,
     inputDisabled,
     inputError,
@@ -33,5 +31,8 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   listItems: cva('flex flex-wrap items-center gap-1'),
   closeButton: cva(
     'size-4 cursor-pointer border-none bg-transparent p-0 leading-normal outline-0'
+  ),
+  icon: cva(
+    'absolute right-2 size-4 h-full border-none p-0 bg-transparent disabled:bg-transparent hover:bg-transparent overflow-hidden'
   ),
 };

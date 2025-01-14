@@ -81,7 +81,13 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     MultiSelect?: Record<
-      'container' | 'tag' | 'input' | 'action' | 'listItems' | 'closeButton',
+      | 'container'
+      | 'tag'
+      | 'input'
+      | 'action'
+      | 'listItems'
+      | 'closeButton'
+      | 'icon',
       ComponentStyleFunction<string, string>
     >;
     Pagination?: ComponentStyleFunction<string, string>;

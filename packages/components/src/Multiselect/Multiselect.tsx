@@ -10,13 +10,13 @@ import type {
 import { ComboBox, Input, Tag, TagGroup, TagList } from 'react-aria-components';
 import { useFilter } from '@react-aria/i18n';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
-import { useListData } from '@react-stately/data';
+import { ListData, useListData } from '@react-stately/data';
 import { cn, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { ListBox } from '../ListBox';
-// import type { FieldProps } from "./field"
 import { Popover } from '../Overlay';
+import { ChevronDown } from '../icons';
 
 interface SelectedKey {
   id: Key;
@@ -40,20 +40,35 @@ interface MultipleSelectProps<T extends object>
   variant?: string;
   size?: string;
   items?: Array<T>;
-  selectedItems?: Array<T>;
+  selectedItems: ListData<T>;
   defaultSelectedItems?: Array<T>;
   className?: string;
   onItemInserted?: (key: Key) => void;
   onItemCleared?: (key: Key) => void;
   renderEmptyState?: (inputValue: string) => React.ReactNode;
-  tag: (item: T) => React.ReactNode;
   children: React.ReactNode | ((item: T) => React.ReactNode);
   errorMessage?: string | ((validation: ValidationResult) => string);
 }
 
+export const CloseButton = ({
+  className,
+  clearSelectedItems,
+}: {
+  className: string;
+  clearSelectedItems: () => void;
+}) => {
+  return (
+    <Button slot="remove" className={className} onPress={clearSelectedItems}>
+      <svg viewBox="0 0 20 20" fill="currentColor" width={20} height={20}>
+        <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path>
+      </svg>
+    </Button>
+  );
+};
+
 const Multiselect = <T extends SelectedKey>({
   children,
-  defaultSelectedItems,
+  selectedItems,
   onItemCleared,
   onItemInserted,
   className,
@@ -62,27 +77,14 @@ const Multiselect = <T extends SelectedKey>({
   errorMessage,
   variant,
   size,
+  items,
   ...props
 }: MultipleSelectProps<T>) => {
-  const items =
-    props.items ||
-    React.Children.toArray(children as React.ReactNode[])
-      .filter((child): child is React.ReactElement =>
-        React.isValidElement(child)
-      )
-      .map((child, index) => ({
-        id: child.props.id || `item-${index}`,
-        name: child.props.textValue || child.props.children,
-      }));
-
   const tagGroupIdentifier = React.useId();
   const triggerRef = React.useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = React.useState(0);
 
   const { contains } = useFilter({ sensitivity: 'base' });
-  const selectedItems = useListData({
-    initialItems: props.selectedItems || defaultSelectedItems,
-  });
 
   const selectedKeys = selectedItems?.items?.map(i => i.id);
   const filter = React.useCallback(
@@ -179,7 +181,7 @@ const Multiselect = <T extends SelectedKey>({
   const onKeyDownCapture = React.useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Backspace' && fieldState.inputValue === '') {
-        popLast();
+        clearSelectedItems();
       }
     },
     [popLast, fieldState.inputValue]
@@ -209,10 +211,17 @@ const Multiselect = <T extends SelectedKey>({
     variant,
   });
 
+  const clearSelectedItems = () => {
+    selectedItems.items.forEach(item => selectedItems.remove(item.id));
+  };
+
   return (
-    <div>
+    <>
       <FieldBase {...props} aria-label="Available items">
-        <div ref={triggerRef} className={classNames.container}>
+        <div
+          ref={triggerRef}
+          className={cn('relative flex', classNames.container)}
+        >
           {selectedItems.items.length !== 0 ? (
             <TagGroup
               aria-label="Selected items"
@@ -226,6 +235,10 @@ const Multiselect = <T extends SelectedKey>({
               >
                 <Tag className={classNames.tag}>
                   selectedItems {selectedItems.items.length}
+                  <CloseButton
+                    className={classNames.closeButton}
+                    clearSelectedItems={clearSelectedItems}
+                  />
                 </Tag>
                 {/* {(item) => <Tag>{item.name}</Tag>} */}
               </TagList>
@@ -242,38 +255,34 @@ const Multiselect = <T extends SelectedKey>({
             onInputChange={onInputChange}
             className={'flex-1 items-center'}
           >
-            <div className="flex">
-              <Input
-                className={cn(classNames.input, 'flex-1')}
-                onBlur={() => {
-                  setFieldState({
-                    inputValue: '',
-                    selectedKey: null,
-                  });
-                  accessibleList.setFilterText('');
-                }}
-                onKeyDownCapture={onKeyDownCapture}
-              />
-              <button
+            <Input
+              className={cn('size-full', classNames.input)}
+              onBlur={() => {
+                setFieldState({
+                  inputValue: '',
+                  selectedKey: null,
+                });
+                accessibleList.setFilterText('');
+              }}
+              onKeyDownCapture={onKeyDownCapture}
+            />
+            <Button className={classNames.icon}>
+              <ChevronDown className={'size-4'} />
+            </Button>
+            <VisuallyHidden>
+              <Button
+                slot="remove"
                 type="button"
-                onClick={() => triggerButtonRef.current?.click()}
-                tabIndex={-1}
+                aria-label="Remove"
+                size="square-petite"
+                ref={triggerButtonRef}
               >
-                chev down
-              </button>
-              <VisuallyHidden>
-                <Button
-                  slot="remove"
-                  type="button"
-                  aria-label="Remove"
-                  size="square-petite"
-                  ref={triggerButtonRef}
-                >
-                  chev down
-                </Button>
-              </VisuallyHidden>
-            </div>
+                <ChevronDown className={'size-4'} />
+              </Button>
+            </VisuallyHidden>
+
             <Popover
+              //@ts-ignore
               style={{ width: `${width}px` }}
               triggerRef={triggerRef}
               trigger="ComboBox"
@@ -300,9 +309,7 @@ const Multiselect = <T extends SelectedKey>({
                 }
                 selectionMode="multiple"
               >
-                {(item: { name: string; id: any }) => (
-                  <ListBox.Item id={item.id}>{item.name}</ListBox.Item>
-                )}
+                {children}
               </ListBox>
             </Popover>
           </ComboBox>
@@ -314,7 +321,7 @@ const Multiselect = <T extends SelectedKey>({
       {name && (
         <input hidden name={name} value={selectedKeys.join(',')} readOnly />
       )}
-    </div>
+    </>
   );
 };
 
@@ -322,3 +329,37 @@ Multiselect.Tag = Tag;
 Multiselect.Option = ListBox.Item;
 
 export { Multiselect, type SelectedKey };
+
+const fruits = [
+  { id: 10, name: 'Lemon' },
+  { id: 11, name: 'Mango' },
+  { id: 12, name: 'Nectarine' },
+  { id: 13, name: 'Orange' },
+  { id: 14, name: 'Papaya' },
+  { id: 15, name: 'Quince' },
+  { id: 16, name: 'Raspberry' },
+  { id: 17, name: 'Strawberry' },
+  { id: 18, name: 'Tangerine' },
+  { id: 19, name: 'Ugli Fruit' },
+  { id: 20, name: 'Watermelon' },
+];
+
+export const BasicComponent = () => {
+  const selectedItems = useListData<{ id: Key; name: string }>({
+    initialItems: [fruits[0], fruits[1]],
+  });
+  return (
+    <Multiselect
+      className="max-w-xs"
+      label="Fruits"
+      items={fruits}
+      selectedItems={selectedItems}
+    >
+      {item => (
+        <Multiselect.Option textValue={item.name}>
+          {item.name}
+        </Multiselect.Option>
+      )}
+    </Multiselect>
+  );
+};
