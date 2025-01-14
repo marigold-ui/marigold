@@ -1,11 +1,11 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import { inputBox, inputDisabled, inputSpacing } from './Input.styles';
+import { inputBox, inputSpacing } from './Input.styles';
 
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   container: cva([
     inputBox,
     inputSpacing,
-    inputDisabled,
+    'has-[input:disabled]:bg-bg-inverted-disabled has-[input:disabled]:border-border-base-disabled has-[input:disabled]:text-text-base-disabled has-[input:disabled]:cursor-not-allowed',
     'flex items-center gap-1',
     'has-[input[data-invalid=true]]:border-border-error',
     // 'leading-[22px]',
@@ -16,6 +16,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'bg-transparent',
     'leading-[22px]',
     'focus:outline-none outline-none border-0',
+    'disabled:cursor-not-allowed',
     // 'read-only:border-transparent read-only:bg-transparent',
     // Extra padding for when an icon/action is present
     'group-data-[icon]/input:pl-5',

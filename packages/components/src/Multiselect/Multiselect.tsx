@@ -370,8 +370,8 @@ export const BasicComponent = () => {
       label="Fruits"
       items={fruits}
       selectedItems={selectedItems}
-      error
-      errorMessage={'something went wrong'}
+      // error
+      // errorMessage={'something went wrong'}
       description={'some description here'}
     >
       {item => (
