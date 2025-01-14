@@ -1,7 +1,14 @@
 'use client';
 
-import * as React from 'react';
-import { useState } from 'react';
+import {
+  KeyboardEvent,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 import type {
   ComboBoxProps as ComboBoxPrimitiveProps,
   Key,
@@ -49,8 +56,8 @@ interface MultipleSelectProps<T extends object>
   className?: string;
   onItemInserted?: (key: Key) => void;
   onItemCleared?: (key: Key) => void;
-  renderEmptyState?: (inputValue: string) => React.ReactNode;
-  children: React.ReactNode | ((item: T) => React.ReactNode);
+  renderEmptyState?: (inputValue: string) => ReactNode;
+  children: ReactNode | ((item: T) => ReactNode);
   errorMessage?: string | ((validation: ValidationResult) => string);
 }
 
@@ -106,14 +113,14 @@ const Multiselect = <T extends SelectedKey>({
     ...rest,
   };
 
-  const tagGroupIdentifier = React.useId();
-  const triggerRef = React.useRef<HTMLDivElement | null>(null);
-  const [width, setWidth] = React.useState(0);
+  const tagGroupIdentifier = useId();
+  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const [width, setWidth] = useState(0);
 
   const { contains } = useFilter({ sensitivity: 'base' });
 
   const selectedKeys = selectedItems?.items?.map(i => i.id);
-  const filter = React.useCallback(
+  const filter = useCallback(
     (item: T, filterText: string) => {
       console.log(
         !selectedKeys?.includes(item.id) && contains(item.name, filterText)
@@ -170,7 +177,7 @@ const Multiselect = <T extends SelectedKey>({
     accessibleList.setFilterText(value);
   };
 
-  const popLast = React.useCallback(() => {
+  const popLast = useCallback(() => {
     if (selectedItems.items?.length == 0) {
       return;
     }
@@ -188,8 +195,8 @@ const Multiselect = <T extends SelectedKey>({
     });
   }, [selectedItems, onItemCleared]);
 
-  const onKeyDownCapture = React.useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDownCapture = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Backspace' && fieldState.inputValue === '') {
         clearSelectedItems();
       }
@@ -197,7 +204,7 @@ const Multiselect = <T extends SelectedKey>({
     [popLast, fieldState.inputValue]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const trigger = triggerRef.current;
     if (!trigger) return;
 
@@ -213,7 +220,7 @@ const Multiselect = <T extends SelectedKey>({
     };
   }, [triggerRef]);
 
-  const triggerButtonRef = React.useRef<HTMLButtonElement | null>(null);
+  const triggerButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const classNames = useClassNames({
     component: 'MultiSelect',
@@ -236,7 +243,6 @@ const Multiselect = <T extends SelectedKey>({
             <TagGroup
               aria-label="Selected items"
               id={tagGroupIdentifier}
-              // onRemove={onRemove}
               className={'flex items-center'}
             >
               <TagList
@@ -251,7 +257,6 @@ const Multiselect = <T extends SelectedKey>({
                     disabled={disabled || readOnly}
                   />
                 </Tag>
-                {/* {(item) => <Tag>{item.name}</Tag>} */}
               </TagList>
             </TagGroup>
           ) : null}
@@ -363,7 +368,6 @@ export const BasicComponent = () => {
       items={fruits}
       selectedItems={selectedItems}
       description={'some description here'}
-      readOnly
     >
       {item => (
         <Multiselect.Option textValue={item.name}>
