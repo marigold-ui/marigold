@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Multiselect } from './Multiselect';
+import { ControlledMultiSelect, Multiselect } from './Multiselect';
 
 const meta = {
   title: 'Components/Multiselect',
@@ -14,19 +14,19 @@ const meta = {
 
 export default meta;
 
-const fruits = [
-  { id: 10, name: 'Lemon' },
-  { id: 11, name: 'Mango' },
-  { id: 12, name: 'Nectarine' },
-  { id: 13, name: 'Orange' },
-  { id: 14, name: 'Papaya' },
-  { id: 15, name: 'Quince' },
-  { id: 16, name: 'Raspberry' },
-  { id: 17, name: 'Strawberry' },
-  { id: 18, name: 'Tangerine' },
-  { id: 19, name: 'Ugli Fruit' },
-  { id: 20, name: 'Watermelon' },
-];
+// const fruits = [
+//   { id: 10, name: 'Lemon' },
+//   { id: 11, name: 'Mango' },
+//   { id: 12, name: 'Nectarine' },
+//   { id: 13, name: 'Orange' },
+//   { id: 14, name: 'Papaya' },
+//   { id: 15, name: 'Quince' },
+//   { id: 16, name: 'Raspberry' },
+//   { id: 17, name: 'Strawberry' },
+//   { id: 18, name: 'Tangerine' },
+//   { id: 19, name: 'Ugli Fruit' },
+//   { id: 20, name: 'Watermelon' },
+// ];
 export const Basic: StoryObj<typeof Multiselect> = {
   render: () => {
     // Question: Why should we use selectedItems however we can use selectedKeys
@@ -40,6 +40,7 @@ export const Basic: StoryObj<typeof Multiselect> = {
         <Multiselect
           className="max-w-xs"
           label="Fruits"
+          selectedKeys={[12]}
           tag={item => (
             <Multiselect.Tag textValue={item.name}>{item.name}</Multiselect.Tag>
           )}
@@ -56,5 +57,13 @@ export const Basic: StoryObj<typeof Multiselect> = {
         </Multiselect>
       </>
     );
+  },
+};
+
+export const Controlled: StoryObj<typeof Multiselect> = {
+  render: () => {
+    // Question: Why should we use selectedItems however we can use selectedKeys
+    // const [selectedKeys, setSelectedKeys] = useState([20, 12]);
+    return <ControlledMultiSelect />;
   },
 };

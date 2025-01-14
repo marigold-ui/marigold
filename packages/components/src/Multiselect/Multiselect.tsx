@@ -40,9 +40,10 @@ interface MultipleSelectProps<T extends object>
   variant?: string;
   size?: string;
   items?: Array<T>;
-  selectedItems?: Array<T>;
-  defaultSelectedItems?: Array<T>;
+  selectedKeys?: Array<any>;
+  defaultSelectedKeys?: Array<any>;
   className?: string;
+  onSelectionChange?: (id: Key | null) => void;
   onItemInserted?: (key: Key) => void;
   onItemCleared?: (key: Key) => void;
   renderEmptyState?: (inputValue: string) => React.ReactNode;
@@ -80,16 +81,23 @@ const Multiselect = <T extends SelectedKey>({
   const [width, setWidth] = React.useState(0);
 
   const { contains } = useFilter({ sensitivity: 'base' });
+
+  const selectedKeys = props.selectedKeys || props.defaultSelectedKeys;
+
+  console.log('selectedKeysselectedKeys', selectedKeys);
+
+  const selectedItemsFromKeys = items.filter(item =>
+    selectedKeys?.includes(item.id)
+  );
+
   const selectedItems = useListData({
-    initialItems: props.selectedItems || defaultSelectedItems,
+    initialItems: selectedItemsFromKeys || defaultSelectedItems,
   });
 
-  const selectedKeys = selectedItems?.items?.map(i => i.id);
+  console.log('selectedItemsFromKeys', selectedItemsFromKeys);
+
   const filter = React.useCallback(
     (item: T, filterText: string) => {
-      console.log(
-        !selectedKeys?.includes(item.id) && contains(item.name, filterText)
-      );
       return (
         !selectedKeys?.includes(item.id) && contains(item.name, filterText)
       );
@@ -127,6 +135,7 @@ const Multiselect = <T extends SelectedKey>({
   );
 
   const onSelectionChange = (id: Key | null) => {
+    console.log('idid', id);
     if (!id) {
       return;
     }
@@ -147,6 +156,9 @@ const Multiselect = <T extends SelectedKey>({
     }
 
     accessibleList.setFilterText('');
+    if (props.onSelectionChange) {
+      props.onSelectionChange(id);
+    }
   };
 
   const onInputChange = (value: string) => {
@@ -322,3 +334,32 @@ Multiselect.Tag = Tag;
 Multiselect.Option = ListBox.Item;
 
 export { Multiselect, type SelectedKey };
+
+export const ControlledMultiSelect = () => {
+  const [selectedKeys, setSelectedKeys] = useState([20, 12]);
+  return (
+    <>
+      <Multiselect
+        className="max-w-xs"
+        label="Fruits"
+        selectedKeys={selectedKeys}
+        tag={item => (
+          <Multiselect.Tag textValue={item.name}>{item.name}</Multiselect.Tag>
+        )}
+        onSelectionChange={key => {
+          setSelectedKeys(prev => [...prev, key]);
+        }}
+      >
+        <Multiselect.Option textValue={'Watermelon'} id={20}>
+          Watermelon
+        </Multiselect.Option>
+        <Multiselect.Option textValue={'Nectarine'} id={12}>
+          Nectarine
+        </Multiselect.Option>
+        <Multiselect.Option textValue={'Strawberry'} id={17}>
+          Strawberry
+        </Multiselect.Option>
+      </Multiselect>
+    </>
+  );
+};
