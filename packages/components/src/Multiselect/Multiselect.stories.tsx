@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Meta, StoryObj } from '@storybook/react';
-import { BasicComponent, Multiselect } from './Multiselect';
+import { BasicComponent } from './Multiselect2';
 
 const meta = {
   title: 'Components/Multiselect',
@@ -13,6 +13,6 @@ const meta = {
 
 export default meta;
 
-export const Basic: StoryObj<typeof Multiselect> = {
+export const Basic: StoryObj<any> = {
   render: () => <BasicComponent />,
 };

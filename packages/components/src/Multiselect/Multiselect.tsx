@@ -14,13 +14,24 @@ import type {
   Key,
   ValidationResult,
 } from 'react-aria-components';
-import { ComboBox, Input, Tag, TagGroup, TagList } from 'react-aria-components';
+import {
+  ComboBox,
+  FieldError,
+  FieldErrorContext,
+  Input,
+  Provider,
+  Tag,
+  TagGroup,
+  TagList,
+} from 'react-aria-components';
 import { useFilter } from '@react-aria/i18n';
 import { VisuallyHidden } from '@react-aria/visually-hidden';
 import { ListData, useListData } from '@react-stately/data';
-import { cn, useClassNames } from '@marigold/system';
+import { cn, width as twWidth, useClassNames } from '@marigold/system';
 import { Button } from '../Button';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
+import { HelpText } from '../HelpText';
+import { Label } from '../Label';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay';
 import { ChevronDown } from '../icons';
@@ -53,7 +64,6 @@ interface MultipleSelectProps<T extends object>
   items?: Array<T>;
   selectedItems: ListData<T>;
   defaultSelectedItems?: Array<T>;
-  className?: string;
   onItemInserted?: (key: Key) => void;
   onItemCleared?: (key: Key) => void;
   renderEmptyState?: (inputValue: string) => ReactNode;
@@ -61,7 +71,7 @@ interface MultipleSelectProps<T extends object>
   errorMessage?: string | ((validation: ValidationResult) => string);
 }
 
-export const CloseButton = ({
+const CloseButton = ({
   className,
   clearSelectedItems,
   disabled,
@@ -94,15 +104,15 @@ const Multiselect = <T extends SelectedKey>({
   const {
     children,
     selectedItems,
-    onItemCleared,
-    onItemInserted,
-    className,
     name,
-    renderEmptyState,
     errorMessage,
     variant,
     size,
     items,
+    width = 'full',
+    onItemCleared,
+    onItemInserted,
+    renderEmptyState,
     ...props
   }: MultipleSelectProps<T> & { isDisabled?: boolean } = {
     isDisabled: disabled,
@@ -115,7 +125,7 @@ const Multiselect = <T extends SelectedKey>({
 
   const tagGroupIdentifier = useId();
   const triggerRef = useRef<HTMLDivElement | null>(null);
-  const [width, setWidth] = useState(0);
+  const [fieldWidth, setFieldWidth] = useState(0);
 
   const { contains } = useFilter({ sensitivity: 'base' });
 
@@ -210,7 +220,7 @@ const Multiselect = <T extends SelectedKey>({
 
     const observer = new ResizeObserver(entries => {
       for (const entry of entries) {
-        setWidth(entry.target.clientWidth);
+        setFieldWidth(entry.target.clientWidth);
       }
     });
 
@@ -234,7 +244,15 @@ const Multiselect = <T extends SelectedKey>({
 
   return (
     <>
-      <FieldBase {...props} aria-label="Available items">
+      <div
+        className={cn(
+          'group/field',
+          twWidth[width],
+          classNames.field,
+          !props.label && `gap-x-0`
+        )}
+      >
+        <Label>{props.label}</Label>
         <div
           ref={triggerRef}
           className={cn('relative flex', classNames.container)}
@@ -299,7 +317,7 @@ const Multiselect = <T extends SelectedKey>({
 
             <Popover
               //@ts-ignore
-              style={{ width: `${width}px` }}
+              style={{ width: `${fieldWidth}px` }}
               triggerRef={triggerRef}
               trigger="ComboBox"
             >
@@ -330,7 +348,13 @@ const Multiselect = <T extends SelectedKey>({
             </Popover>
           </ComboBox>
         </div>
-      </FieldBase>
+        <HelpText
+          variant={variant}
+          size={size}
+          description={props.description}
+          errorMessage={errorMessage}
+        />
+      </div>
       {name && (
         <input hidden name={name} value={selectedKeys.join(',')} readOnly />
       )}
@@ -363,11 +387,13 @@ export const BasicComponent = () => {
   });
   return (
     <Multiselect
-      className="max-w-xs"
       label="Fruits"
       items={fruits}
       selectedItems={selectedItems}
-      description={'some description here'}
+      // description={'some description here'}
+      // required
+      error
+      errorMessage={'oops something went wrong '}
     >
       {item => (
         <Multiselect.Option textValue={item.name}>

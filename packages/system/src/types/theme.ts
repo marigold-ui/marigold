@@ -81,6 +81,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     MultiSelect?: Record<
+      | 'field'
       | 'container'
       | 'tag'
       | 'input'
