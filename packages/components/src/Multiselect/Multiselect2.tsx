@@ -130,7 +130,6 @@ const Multiselect2 = ({
         isMulti
         options={intiOptions}
         defaultValue={[intiOptions[0]]}
-        menuIsOpen
         components={{
           Input: props => {
             return (
