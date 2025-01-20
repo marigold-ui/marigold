@@ -59,7 +59,7 @@ export default () => {
           </Stack>
         </FieldGroup>
       </Form>
-      {isLoading && <XLoader mode="fullsize" />}
+      {isLoading && <XLoader mode="fullscreen" />}
     </div>
   );
 };
