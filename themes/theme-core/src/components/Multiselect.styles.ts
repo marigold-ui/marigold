@@ -52,9 +52,9 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   option: cva([
     'font-body text-[13px] text-text-base',
     'flex flex-col',
-    'rac-hover:text-text-inverted rac-hover:bg-highlight',
+    'hover:text-text-inverted hover:bg-highlight',
     'cursor-pointer px-1.5 py-0.5 outline-none',
-    'rac-focus:text-text-inverted rac-focus:bg-highlight',
+    '[&.isFocused]:text-text-inverted [&.isFocused]:bg-highlight',
     'rac-selected:text-text-inverted aria-selected:bg-highlight',
     'rac-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),

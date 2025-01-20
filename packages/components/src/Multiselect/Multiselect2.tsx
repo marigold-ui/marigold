@@ -100,11 +100,7 @@ const Multiselect2 = ({
 
   return (
     <div className={classNames.field}>
-      {props.label && (
-        <Label aria-required={true} {...labelProps}>
-          {props.label}
-        </Label>
-      )}
+      {props.label && <Label {...labelProps}>{props.label}</Label>}
       <Select
         required
         classNames={{
@@ -119,11 +115,8 @@ const Multiselect2 = ({
               'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0',
               classNames.list
             ),
-          option: () =>
-            cn(
-              'hover:bg-red-300 focus:bg-green-300 focus-visible:bg-green-500 focus-within:bg-green-500',
-              classNames.option
-            ),
+          option: ({ isFocused }) =>
+            cn(classNames.option, { isFocused: isFocused }),
         }}
         isClearable={false}
         closeMenuOnSelect={false}
@@ -167,20 +160,6 @@ const Multiselect2 = ({
 Multiselect2.Option = ListBox.Item;
 
 export { Multiselect2 };
-
-// const fruits = [
-//   { id: 10, name: 'Lemon' },
-//   { id: 11, name: 'Mango' },
-//   { id: 12, name: 'Nectarine' },
-//   { id: 13, name: 'Orange' },
-//   { id: 14, name: 'Papaya' },
-//   { id: 15, name: 'Quince' },
-//   { id: 16, name: 'Raspberry' },
-//   { id: 17, name: 'Strawberry' },
-//   { id: 18, name: 'Tangerine' },
-//   { id: 19, name: 'Ugli Fruit' },
-//   { id: 20, name: 'Watermelon' },
-// ];
 
 export const BasicComponent = () => {
   return (
