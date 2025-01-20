@@ -39,7 +39,7 @@
     "@storybook/preview-api": "^8.1.11",
     "@storybook/react-vite": "^8.1.11",
     "autoprefixer": "10.4.20",
-    "postcss": "8.4.49",
+    "postcss": "8.5.1",
     "postcss-loader": "8.1.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
