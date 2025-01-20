@@ -1,5 +1,6 @@
-import { Dialog, Modal, ModalOverlay } from 'react-aria-components';
+import { Dialog, Modal } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
+import { Underlay } from '../Overlay';
 import type { LoaderProps } from './BaseLoader';
 import { BaseLoader } from './BaseLoader';
 
@@ -15,23 +16,15 @@ export interface XLoaderProps extends LoaderProps {
 
 // Full Size
 // ---------------
-const LoaderFullSize = (props: LoaderProps) => {
-  const className = useClassNames({
-    component: 'Underlay',
-    variant: 'modal',
-    className: 'fixed left-0 top-0 z-10 h-[--visual-viewport-height] w-screen',
-  });
-
-  return (
-    <ModalOverlay defaultOpen className={className} isKeyboardDismissDisabled>
-      <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
-        <Dialog className="outline-0" aria-label="Fullscreen Loader">
-          <BaseLoader {...props} />
-        </Dialog>
-      </Modal>
-    </ModalOverlay>
-  );
-};
+const LoaderFullSize = (props: LoaderProps) => (
+  <Underlay defaultOpen keyboardDismissable variant="modal">
+    <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
+      <Dialog className="outline-0" aria-label="Fullscreen Loader">
+        <BaseLoader {...props} />
+      </Dialog>
+    </Modal>
+  </Underlay>
+);
 
 // Inline
 // ---------------
