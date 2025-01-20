@@ -10,12 +10,12 @@ import { Button, Input as _Input } from 'react-aria-components';
 import Select from 'react-select';
 import { InputProps as InputComponentProps } from 'react-select';
 import { useField } from '@react-aria/label';
-import { ListData } from '@react-stately/data';
-import { cn, width as twWidth, useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { AriaLabelingProps } from '@marigold/types';
 import { FieldBaseProps } from '../FieldBase';
 import { Label } from '../Label';
 import { ListBox } from '../ListBox';
+import { ChevronDown } from '../icons';
 
 interface InputProps extends InputComponentProps, AriaLabelingProps {
   className: string;
@@ -24,13 +24,14 @@ interface InputProps extends InputComponentProps, AriaLabelingProps {
 }
 
 const Input = ({ innerRef, className, ...props }: InputProps) => {
+  // innerRef is needed for focusing the input
   return <_Input {...props} ref={innerRef} className={className} />;
 };
 
-interface MultipleSelectProps<T extends object>
+interface MultipleSelectProps
   extends Omit<FieldBaseProps<any>, 'children'>,
     Omit<
-      ComboBoxProps<T>,
+      ComboBoxProps<any>,
       | 'children'
       | 'validate'
       | 'allowsEmptyCollection'
@@ -47,14 +48,12 @@ interface MultipleSelectProps<T extends object>
   error?: boolean;
   variant?: string;
   size?: string;
-  items?: Array<T>;
-  selectedItems: ListData<T>;
-  defaultSelectedItems?: Array<T>;
+  items?: Array<object>;
+  errorMessage?: string | ((validation: ValidationResult) => string);
+  placeholder?: string;
   onItemInserted?: (key: Key) => void;
   onItemCleared?: (key: Key) => void;
   renderEmptyState?: (inputValue: string) => ReactNode;
-  children: ReactNode | ((item: T) => ReactNode);
-  errorMessage?: string | ((validation: ValidationResult) => string);
 }
 
 interface CloseButton
@@ -64,6 +63,7 @@ interface CloseButton
 
 export const CloseButton = (props: CloseButton) => {
   return (
+    // @ts-ignore
     <Button slot="remove" {...props}>
       <svg viewBox="0 0 20 20" fill="currentColor" width={20} height={20}>
         <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path>
@@ -86,7 +86,7 @@ const Multiselect2 = ({
   variant,
   placeholder,
   ...props
-}: any) => {
+}: MultipleSelectProps) => {
   const classNames = useClassNames({
     component: 'MultiSelect',
     size,
@@ -100,21 +100,37 @@ const Multiselect2 = ({
 
   return (
     <div className={classNames.field}>
-      {props.label && <Label {...labelProps}>{props.label}</Label>}
+      {props.label && (
+        <Label aria-required={true} {...labelProps}>
+          {props.label}
+        </Label>
+      )}
       <Select
+        required
         classNames={{
           control: () => classNames.container,
           placeholder: () => 'hidden',
           indicatorsContainer: () => 'h-5',
           indicatorSeparator: () => 'hidden',
           multiValue: () => classNames.tag,
-          // multiValueRemove: () => cn('hover:hidden'),
+          menu: () => cn('shadow-none', classNames.listContainer),
+          menuList: () =>
+            cn(
+              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0',
+              classNames.list
+            ),
+          option: () =>
+            cn(
+              'hover:bg-red-300 focus:bg-green-300 focus-visible:bg-green-500 focus-within:bg-green-500',
+              classNames.option
+            ),
         }}
         isClearable={false}
         closeMenuOnSelect={false}
         isMulti
         options={intiOptions}
         defaultValue={[intiOptions[0]]}
+        menuIsOpen
         components={{
           Input: props => {
             return (
@@ -123,6 +139,7 @@ const Multiselect2 = ({
                 {...props}
                 {...fieldProps}
                 className={classNames.input}
+                // Delete the placeholder when there's selected value
                 placeholder={!props.getValue().length ? placeholder : undefined}
               />
             );
@@ -135,6 +152,12 @@ const Multiselect2 = ({
               />
             );
           },
+          DropdownIndicator: ({ innerProps }) => (
+            // @ts-ignore
+            <button {...innerProps} className={classNames.icon}>
+              <ChevronDown className={'size-4'} />
+            </button>
+          ),
         }}
       />
       <p>help text</p>
@@ -146,19 +169,19 @@ Multiselect2.Option = ListBox.Item;
 
 export { Multiselect2 };
 
-const fruits = [
-  { id: 10, name: 'Lemon' },
-  { id: 11, name: 'Mango' },
-  { id: 12, name: 'Nectarine' },
-  { id: 13, name: 'Orange' },
-  { id: 14, name: 'Papaya' },
-  { id: 15, name: 'Quince' },
-  { id: 16, name: 'Raspberry' },
-  { id: 17, name: 'Strawberry' },
-  { id: 18, name: 'Tangerine' },
-  { id: 19, name: 'Ugli Fruit' },
-  { id: 20, name: 'Watermelon' },
-];
+// const fruits = [
+//   { id: 10, name: 'Lemon' },
+//   { id: 11, name: 'Mango' },
+//   { id: 12, name: 'Nectarine' },
+//   { id: 13, name: 'Orange' },
+//   { id: 14, name: 'Papaya' },
+//   { id: 15, name: 'Quince' },
+//   { id: 16, name: 'Raspberry' },
+//   { id: 17, name: 'Strawberry' },
+//   { id: 18, name: 'Tangerine' },
+//   { id: 19, name: 'Ugli Fruit' },
+//   { id: 20, name: 'Watermelon' },
+// ];
 
 export const BasicComponent = () => {
   return (

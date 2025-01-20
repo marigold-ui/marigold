@@ -86,9 +86,11 @@ export type Theme = {
       | 'tag'
       | 'input'
       | 'action'
-      | 'listItems'
       | 'closeButton'
-      | 'icon',
+      | 'icon'
+      | 'listContainer'
+      | 'list'
+      | 'option',
       ComponentStyleFunction<string, string>
     >;
     Pagination?: ComponentStyleFunction<string, string>;

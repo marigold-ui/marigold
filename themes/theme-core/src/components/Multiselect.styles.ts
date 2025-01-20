@@ -10,7 +10,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     inputSpacing,
     inputHeight,
     // to override react-select height
-    'min-h-6 ',
+    'min-h-6',
     '[&>*:first-child]:p-0',
     'has-[input:disabled]:bg-bg-inverted-disabled has-[input:disabled]:border-border-base-disabled has-[input:disabled]:text-text-base-disabled has-[input:disabled]:cursor-not-allowed',
     'flex items-center gap-1',
@@ -38,11 +38,24 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'border-border-base bg-bg-base flex items-center gap-1 rounded border ',
     'data-[selected]:bg-bg-selected-input data-[selected]:text-text-inverted data-[selected]:border-border-selected',
   ]),
-  listItems: cva('flex flex-wrap items-center gap-1'),
   closeButton: cva(
     'size-4 cursor-pointer border-none bg-transparent p-0 leading-normal outline-0'
   ),
   icon: cva(
-    'absolute right-2 size-4 h-full border-none p-0 bg-transparent disabled:bg-transparent hover:bg-transparent overflow-hidden'
+    'absolute top-0 right-2 size-4 h-full border-none p-0 bg-transparent disabled:bg-transparent hover:bg-transparent overflow-hidden'
   ),
+  listContainer: cva([
+    'my-0.5 rounded-sm',
+    'border-border-inverted border bg-white',
+  ]),
+  list: cva(''),
+  option: cva([
+    'font-body text-[13px] text-text-base',
+    'flex flex-col',
+    'rac-hover:text-text-inverted rac-hover:bg-highlight',
+    'cursor-pointer px-1.5 py-0.5 outline-none',
+    'rac-focus:text-text-inverted rac-focus:bg-highlight',
+    'rac-selected:text-text-inverted aria-selected:bg-highlight',
+    'rac-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
+  ]),
 };
