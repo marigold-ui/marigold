@@ -21,10 +21,10 @@
     "type-fest": "4.31.0"
   },
   "peerDependencies": {
-    "@types/react": "18.x"
+    "@types/react": "19.x"
   },
   "devDependencies": {
-    "@types/react": "19.0.4"
+    "@types/react": "19.0.7"
   },
   "scripts": {
     "build": "echo types only",
