@@ -4,6 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "inputs": [".env"],
       "outputs": [
         "dist/**",
         ".next/**",
@@ -12,5 +13,5 @@
       ]
     }
   },
-  "globalDependencies": ["tsconfig.json, .env"]
+  "globalDependencies": ["tsconfig.json"]
 }
