@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": [".env"],
+      "env": ["GITHUB_TOKEN"],
       "outputs": [
         "dist/**",
         ".next/**",
