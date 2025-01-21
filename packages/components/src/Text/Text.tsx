@@ -82,6 +82,7 @@ const _Text = ({
       {...elementType}
       className={cn(
         'text-[--color] outline-[--outline]',
+        'max-w-[--maxTextWidth]', // possibly set by a <Container>
         classNames,
         fontStyle && textStyle[fontStyle],
         align && textAlign[align],
