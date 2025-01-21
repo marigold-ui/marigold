@@ -68,11 +68,11 @@ Marigold does not currently have a progress bar to show more granular loading st
 - If the process is successful, continue as normal in the user’s flow. Use feedback messages where appropriate to communicate system status.
 - If the process is unsuccessful, display an appropriate error message so the user knows why the process failed and what they can do next.
 
-### Full-section
+### Section and fullscreen indicators
 
 <ComponentDemo file="./full-section.demo.tsx" />
 
-Full-section indicators are displayed over large sections of content or the entire page. Use them when:
+Section and fullscreen indicators are displayed over large sections of content or the entire page. Use them when:
 
 - large areas of existing, visible content in the current view are changing.
 - large areas of new content are being added.
@@ -82,7 +82,7 @@ Full-section indicators are displayed over large sections of content or the enti
 
 At this stage:
 
-- Disable any actions that must be disabled for successful processing. (Ignore actions underneath the full-section indicator, as these will be inaccessible regardless.)
+- Disable any actions that must be disabled for successful processing. (Ignore actions underneath section and fullscreen indicators, as these will be inaccessible regardless.)
 - The XLoader animation appears within an overlay (created via a [dialog](https://www.marigold-ui.io/components/overlay/dialog)) over the container of the loading content.
   - If the context requires additional information, add a label under the XLoader. Use labels sparingly, like at the start or end of important tasks or at particularly confusing junctions.
 - If the button used to start the process is visible and located outside the container of the loading content, ensure it follows the process for inline indicators as well.
@@ -107,7 +107,7 @@ The loading indicator should always be placed in the center of its container.
 
 - Consider if users should have the option to cancel the action if the loading time is too long.
 - Provide an option to retry the action if the loading fails due to network issues or other problems.
-- User actions can be afforded via labels (in full-section indicators) or feedback messages.
+- User actions can be afforded via labels (in section indicators) or feedback messages.
 
 ## Content guidelines
 
