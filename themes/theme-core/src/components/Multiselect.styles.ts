@@ -17,7 +17,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'has-[input[data-invalid=true]]:border-border-error',
     'leading-[22px]',
     'has-[input[data-focused=true]]:outline-outline-focus -outline-offset-1 has-[input[data-focused=true]]:outline has-[input[data-focused=true]]:outline-2',
-    'overflow-hidden has-[input[readonly]]:border-transparent has-[input[readonly]]:bg-transparent',
+    'overflow-hidden has-[input[aria-readonly=true]]:border-transparent has-[input[aria-readonly=true]]:bg-transparent',
   ]),
   input: cva([
     'bg-transparent flex-1 h-full',

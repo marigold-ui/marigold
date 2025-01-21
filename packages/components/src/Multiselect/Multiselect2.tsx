@@ -24,7 +24,8 @@ interface InputProps extends InputComponentProps, AriaLabelingProps {
 
 const Input = ({ innerRef, className, ...props }: InputProps) => {
   // innerRef is needed for focusing the input
-  return <_Input {...props} ref={innerRef} className={className} />;
+  console.log('propsprops', props);
+  return <_Input {...props} ref={innerRef} className={className} readOnly />;
 };
 
 interface MultipleSelectProps
@@ -57,6 +58,7 @@ interface MultipleSelectProps
 
 interface CloseButton
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  isDisabled?: boolean;
   className: string;
 }
 
@@ -80,6 +82,7 @@ const intiOptions = [
 export const Multiselect2 = ({
   disabled,
   required,
+  readOnly = false,
   error,
   size,
   variant,
@@ -101,7 +104,7 @@ export const Multiselect2 = ({
     <div className={classNames.field}>
       {props.label && <Label {...labelProps}>{props.label}</Label>}
       <Select
-        required
+        aria-invalid={error}
         classNames={{
           control: () => classNames.container,
           placeholder: () => 'hidden',
@@ -118,6 +121,8 @@ export const Multiselect2 = ({
             cn(classNames.option, { isFocused: isFocused }),
         }}
         isClearable={false}
+        isSearchable={!readOnly}
+        menuIsOpen={readOnly ? false : undefined}
         closeMenuOnSelect={false}
         isMulti
         options={intiOptions}
@@ -139,6 +144,9 @@ export const Multiselect2 = ({
             return (
               <CloseButton
                 {...innerProps}
+                // react-select doesn't handle readonly so we had to do it manually here
+                // keep to the button disabled in read only to prevent menu from opening
+                isDisabled={disabled || readOnly}
                 className={cn('flex items-center', classNames.closeButton)}
               />
             );

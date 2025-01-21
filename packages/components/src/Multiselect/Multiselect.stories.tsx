@@ -14,7 +14,5 @@ const meta = {
 export default meta;
 
 export const Basic: StoryObj<any> = {
-  render: () => (
-    <Multiselect2 label="label" placeholder="Enter value" isDisabled />
-  ),
+  render: () => <Multiselect2 label="label" placeholder="Enter value" />,
 };
