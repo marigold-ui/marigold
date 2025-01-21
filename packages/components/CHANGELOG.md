@@ -1,5 +1,51 @@
 # @marigold/components
 
+## 10.1.1
+
+### Patch Changes
+
+- 17fd7b4: docs([DST-621]): Revise `<Tiles>` page
+
+  Revised `<Tiles>` page according to our new structure of component pages.
+
+- 93f783a: feat([DSTSUP-98]): introduce controlled dismissable `<SectionMessage>`
+
+  Added possibility to control the dismissable state in `<SectionMessage>`, you can now use `onClose` and `close` to control the closing of a section message.
+
+- d52e52f: docs([DST-624]): Revise `<Calendar>` page and change some properties
+
+  - Revised the page according to our new template.
+  - Rename `isDateUnavailable` to `dateUnavailable`.
+  - Remove the props: `visibleDuration` and `pageBehavior`.
+  - Added outline focus styles for keyboard navigation in both themes.
+
+- d326823: bugfix([DST-627]): replace useState import from storybook
+
+  Some controlled stories in Storybook were incorrect because the useState import from react was used, resulting in an error.
+
+  The stories of the following component were affected:
+
+  - Calendar
+  - DateField
+  - DatePicker
+  - Dialog
+  - HelpText
+  - SearchField
+
+- 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
+
+  - Refactored the `<XLoader>` component to be more accessible
+  - Updated the `<XLoader>` documentation page
+  - Adjusted styling to fit regular underlay styles when using "fullsize" mode
+
+- 38d461d: docs([DST-628]): Revise `<SearchField>` page
+
+  Revised `<SearchField>` documentation page according to the new structure.
+
+- 425ce62: fix(`<Text>`): prevent `elementType` prop from being passed down into the DOM. This is a prop used interally to make `<Text>` polymorphic.
+- Updated dependencies [85e8cba]
+  - @marigold/system@10.1.1
+
 ## 10.1.0
 
 ### Minor Changes
