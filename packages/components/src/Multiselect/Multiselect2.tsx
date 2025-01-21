@@ -14,7 +14,6 @@ import { cn, useClassNames } from '@marigold/system';
 import { AriaLabelingProps } from '@marigold/types';
 import { FieldBaseProps } from '../FieldBase';
 import { Label } from '../Label';
-import { ListBox } from '../ListBox';
 import { ChevronDown } from '../icons';
 
 interface InputProps extends InputComponentProps, AriaLabelingProps {
@@ -78,7 +77,7 @@ const intiOptions = [
   { value: 'vanilla', label: 'Vanilla' },
 ];
 
-const Multiselect2 = ({
+export const Multiselect2 = ({
   disabled,
   required,
   error,
@@ -154,17 +153,5 @@ const Multiselect2 = ({
       />
       <p>help text</p>
     </div>
-  );
-};
-
-Multiselect2.Option = ListBox.Item;
-
-export { Multiselect2 };
-
-export const BasicComponent = () => {
-  return (
-    <>
-      <Multiselect2 label="label" placeholder="Enter value" />
-    </>
   );
 };

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Meta, StoryObj } from '@storybook/react';
-import { BasicComponent } from './Multiselect2';
+import { Multiselect2 } from './Multiselect2';
 
 const meta = {
   title: 'Components/Multiselect',
@@ -14,5 +14,7 @@ const meta = {
 export default meta;
 
 export const Basic: StoryObj<any> = {
-  render: () => <BasicComponent />,
+  render: () => (
+    <Multiselect2 label="label" placeholder="Enter value" isDisabled />
+  ),
 };
