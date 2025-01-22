@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Button, Tag } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
@@ -22,6 +23,7 @@ export const CloseButton = ({ className }: CloseButtonProps) => {
 export interface TagProps extends RAC.TagProps {
   variant?: string;
   size?: string;
+  children?: ReactNode;
 }
 
 const _Tag = ({ variant, size, children, ...props }: TagProps) => {

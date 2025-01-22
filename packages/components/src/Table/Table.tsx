@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from 'react';
+import { type JSX, ReactNode, useRef } from 'react';
 import { AriaTableProps, useTable } from '@react-aria/table';
 import {
   TableBody as Body,

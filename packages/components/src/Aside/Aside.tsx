@@ -6,7 +6,7 @@ export interface AsideProps extends GapSpaceProp, AriaRegionProps {
   /**
    * The children of the component.
    */
-  children: [ReactElement, ReactElement];
+  children: [ReactElement<any>, ReactElement<any>];
   /**
    * The side of the aside content.
    * @default left

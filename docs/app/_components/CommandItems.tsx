@@ -127,7 +127,7 @@ export const TokenItem = ({ classNames }: CommandItemProps) => {
 };
 
 export const IconItem = ({ classNames }: CommandItemProps) => {
-  const ref = useRef<SVGSVGElement>();
+  const ref = useRef<SVGSVGElement>(undefined);
   const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
     const Component = Icons[icon];
     const iconElement = <Component ref={ref} />;
