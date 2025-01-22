@@ -45,9 +45,8 @@ jobs:
         uses: slackapi/slack-github-action@v2.0.0
         with:
           payload-file-path: './slack-notification.json'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_HOOK }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          webhook: ${{ secrets.SLACK_HOOK }}
+          webhook-type: webhook-trigger
 
       # We use the "docs" branch for the production build on vercel
       - name: Updating "docs" branch
