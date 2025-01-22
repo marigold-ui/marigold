@@ -1,5 +1,11 @@
 # @marigold/theme-preset
 
+## 1.3.27
+
+### Patch Changes
+
+- @marigold/system@10.1.3
+
 ## 1.3.26
 
 ### Patch Changes
