@@ -19,6 +19,12 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'has-[input[data-focused=true]]:outline-outline-focus -outline-offset-1 has-[input[data-focused=true]]:outline has-[input[data-focused=true]]:outline-2',
     'overflow-hidden has-[input[aria-readonly=true]]:border-transparent has-[input[aria-readonly=true]]:bg-transparent',
   ]),
+  labelContainer: cva([
+    'leading-6', // align label with input
+    'row-span-2 justify-end',
+    'group-error/field:text-text-error group-required/field:font-bold',
+  ]),
+  labelIndicator: cva(),
   input: cva([
     'bg-transparent flex-1 h-full',
     'leading-[22px]',

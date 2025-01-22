@@ -13,8 +13,8 @@ import { useField } from '@react-aria/label';
 import { cn, useClassNames } from '@marigold/system';
 import { AriaLabelingProps } from '@marigold/types';
 import { FieldBaseProps } from '../FieldBase';
-import { Label } from '../Label';
 import { ChevronDown } from '../icons';
+import { Label } from './Label';
 
 interface InputProps extends InputComponentProps, AriaLabelingProps {
   className: string;
@@ -25,7 +25,7 @@ interface InputProps extends InputComponentProps, AriaLabelingProps {
 const Input = ({ innerRef, className, ...props }: InputProps) => {
   // innerRef is needed for focusing the input
   console.log('propsprops', props);
-  return <_Input {...props} ref={innerRef} className={className} readOnly />;
+  return <_Input {...props} ref={innerRef} className={className} />;
 };
 
 interface MultipleSelectProps
@@ -100,9 +100,21 @@ export const Multiselect2 = ({
     errorMessage: props.errorMessage,
   });
 
+  console.log(classNames.labelContainer);
+
   return (
-    <div className={classNames.field}>
-      {props.label && <Label {...labelProps}>{props.label}</Label>}
+    <div
+      className={cn(classNames.field, 'group/field')}
+      data-required={required}
+      data-error={error}
+      data-readonly={readOnly}
+    >
+      {/* <p className='w-[200px]'>{props.label}</p> */}
+      {props.label && (
+        <Label classNames={classNames} {...labelProps}>
+          {props.label}
+        </Label>
+      )}
       <Select
         aria-invalid={error}
         classNames={{
