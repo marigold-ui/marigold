@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 10.1.3
+
+### Patch Changes
+
+- @marigold/components@10.1.3
+- @marigold/system@10.1.3
+- @marigold/theme-b2b@28.0.4
+- @marigold/theme-core@27.0.4
+- @marigold/theme-docs@2.2.4
+- @marigold/icons@1.2.62
+- @marigold/theme-preset@1.3.27
+
 ## 10.1.2
 
 ### Patch Changes

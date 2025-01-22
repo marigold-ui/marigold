@@ -1,5 +1,13 @@
 # @marigold/theme-core
 
+## 27.0.4
+
+### Patch Changes
+
+- @marigold/components@10.1.3
+- @marigold/system@10.1.3
+- @marigold/theme-preset@1.3.27
+
 ## 27.0.3
 
 ### Patch Changes
