@@ -266,10 +266,10 @@ importers:
         version: 19.0.7
       '@vitejs/plugin-react':
         specifier: 4.3.4
-        version: 4.3.4(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
+        version: 4.3.4(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
       vite-tsconfig-paths:
         specifier: 5.1.4
-        version: 5.1.4(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
+        version: 5.1.4(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
     devDependencies:
       '@storybook/addon-storysource':
         specifier: ^8.1.11
@@ -288,7 +288,7 @@ importers:
         version: 8.3.3(storybook@8.3.3)
       '@storybook/react-vite':
         specifier: ^8.1.11
-        version: 8.4.7(@storybook/test@8.3.3(storybook@8.3.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(rollup@4.30.1)(storybook@8.3.3)(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
+        version: 8.4.7(@storybook/test@8.3.3(storybook@8.3.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(rollup@4.30.1)(storybook@8.3.3)(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
       autoprefixer:
         specifier: 10.4.20
         version: 10.4.20(postcss@8.5.1)
@@ -314,8 +314,8 @@ importers:
         specifier: 5.7.3
         version: 5.7.3
       vite:
-        specifier: 6.0.7
-        version: 6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
+        specifier: 6.0.9
+        version: 6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
 
   config/tsconfig: {}
 
@@ -9737,8 +9737,8 @@ packages:
       vite:
         optional: true
 
-  vite@6.0.7:
-    resolution: {integrity: sha512-RDt8r/7qx9940f8FcOIAH9PTViRrghKaK2K1jY3RaAURrEUbm9Du1mJ72G+jlhtG3WwodnfzY8ORQZbBavZEAQ==}
+  vite@6.0.9:
+    resolution: {integrity: sha512-MSgUxHcaXLtnBPktkbUSoQUANApKYuxZ6DrbVENlIorbhL2dZydTLaZ01tjUoE3szeFzlFk9ANOKk0xurh4MKA==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -12437,11 +12437,11 @@ snapshots:
       '@types/yargs': 17.0.32
       chalk: 4.1.2
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.4.2(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.4.2(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))':
     dependencies:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.7.3)
-      vite: 6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
+      vite: 6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
     optionalDependencies:
       typescript: 5.7.3
 
@@ -14281,13 +14281,13 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@storybook/builder-vite@8.4.7(storybook@8.3.3)(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))':
+  '@storybook/builder-vite@8.4.7(storybook@8.3.3)(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))':
     dependencies:
       '@storybook/csf-plugin': 8.4.7(storybook@8.3.3)
       browser-assert: 1.2.1
       storybook: 8.3.3
       ts-dedent: 2.2.0
-      vite: 6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
+      vite: 6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
 
   '@storybook/cli@8.3.3(@babel/preset-env@7.25.4(@babel/core@7.26.0))':
     dependencies:
@@ -14418,11 +14418,11 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
       storybook: 8.3.3
 
-  '@storybook/react-vite@8.4.7(@storybook/test@8.3.3(storybook@8.3.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(rollup@4.30.1)(storybook@8.3.3)(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))':
+  '@storybook/react-vite@8.4.7(@storybook/test@8.3.3(storybook@8.3.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(rollup@4.30.1)(storybook@8.3.3)(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.4.2(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.4.2(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
       '@rollup/pluginutils': 5.1.0(rollup@4.30.1)
-      '@storybook/builder-vite': 8.4.7(storybook@8.3.3)(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
+      '@storybook/builder-vite': 8.4.7(storybook@8.3.3)(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
       '@storybook/react': 8.4.7(@storybook/test@8.3.3(storybook@8.3.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.3.3)(typescript@5.7.3)
       find-up: 5.0.0
       magic-string: 0.30.5
@@ -14432,7 +14432,7 @@ snapshots:
       resolve: 1.22.8
       storybook: 8.3.3
       tsconfig-paths: 4.2.0
-      vite: 6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
+      vite: 6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
     transitivePeerDependencies:
       - '@storybook/test'
       - rollup
@@ -14995,14 +14995,14 @@ snapshots:
       next: 15.1.4(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
 
-  '@vitejs/plugin-react@4.3.4(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))':
+  '@vitejs/plugin-react@4.3.4(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/plugin-transform-react-jsx-self': 7.25.9(@babel/core@7.26.0)
       '@babel/plugin-transform-react-jsx-source': 7.25.9(@babel/core@7.26.0)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
+      vite: 6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -21539,18 +21539,18 @@ snapshots:
       '@types/unist': 3.0.2
       vfile-message: 4.0.2
 
-  vite-tsconfig-paths@5.1.4(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)):
+  vite-tsconfig-paths@5.1.4(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)):
     dependencies:
       debug: 4.3.7
       globrex: 0.1.2
       tsconfck: 3.1.3(typescript@5.7.3)
     optionalDependencies:
-      vite: 6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
+      vite: 6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@6.0.7(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0):
+  vite@6.0.9(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0):
     dependencies:
       esbuild: 0.24.2
       postcss: 8.5.1
