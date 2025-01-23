@@ -60,7 +60,7 @@ export const BorderRadius = () => (
         <code className="before:content-none after:content-none">
           rounded 4px
         </code>
-        <div className="bg-bg-body h-14 w-full rounded-sm border-2 border-dashed px-3 py-2"></div>
+        <div className="bg-bg-body rounded-xs h-14 w-full border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">

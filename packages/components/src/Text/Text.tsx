@@ -81,7 +81,7 @@ const _Text = ({
       {...props}
       {...elementType}
       className={cn(
-        'text-[--color] outline-[--outline]',
+        'text-(--color) outline-(--outline)',
         classNames,
         fontStyle && textStyle[fontStyle],
         align && textAlign[align],

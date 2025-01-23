@@ -15,7 +15,7 @@ export const Menu: ThemeComponent<'Menu'> = {
       },
     }
   ),
-  item: cva('focus:bg-bg-hover cursor-pointer rounded-sm p-2 outline-hidden', {
+  item: cva('focus:bg-bg-hover cursor-pointer rounded-xs p-2 outline-hidden', {
     variants: {
       variant: {
         command: ['aria-selected:bg-bg-hover px-4 py-1.5'],
