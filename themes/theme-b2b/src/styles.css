@@ -1,5 +1,23 @@
+@layer theme, base, components, utilities;
 @import url('https://fonts.bunny.net/css?family=inter:400,600,700') layer(base);
-@import 'tailwindcss';
+/* from tailwind.config.ts */
+@import 'tailwindcss/utilities' layer(utilities);
+@import 'tailwindcss/theme' layer(theme);
+
+/* from tailwind.config.ts */
+@source 'src/root.ts';
+@source 'src/**/*.*.ts';
+@source '../../packages/{components,system}/**/*.{tsx,ts}';
+@source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
+@source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
+
+/* from preset.ts */
+@source './node_modules/@marigold/theme-b2b/dist/*.js';
+@source './node_modules/@marigold/system/dist/*.js';
+@source './node_modules/@marigold/components/dist/*.js';
+
+/* from tailwind.config.ts */
+@variant theme-b2b (&:where([data-theme="b2b"] *));
 
 @config '../tailwind.config.ts';
 
@@ -18,5 +36,49 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@theme {
+  /* rebuild preset.ts */
+  /* screens.ts */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* fontFamily */
+  --font-body: 'Inter', var(--font-sans);
+
+  /* colors */
+  /* boxShadow */
+  /* height */
+
+  /* animation and keyframes */
+  --animate-rotate-spinner: rotate-spinner 2s linear infinite;
+  --animate-progress-cycle: progress-cycle 1.5s linear infinite;
+
+  @keyframes rotate-spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes progress-cycle {
+    0% {
+      transform: rotate(0deg);
+      stroke-dashoffset: 75;
+    }
+    30% {
+      stroke-dashoffset: 20;
+    }
+    100% {
+      transform: rotate(360deg);
+      stroke-dashoffset: 75;
+    }
   }
 }
