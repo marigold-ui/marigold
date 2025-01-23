@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const inputBox =
-  'border-border-base rounded-sm border outline-none outline-offset-[-1px]';
+  'border-border-base rounded-xs border outline-hidden outline-offset-[-1px]';
 export const inputBackground = 'bg-bg-surface';
 export const inputSpacing = 'px-2';
 
@@ -29,7 +29,7 @@ export const Input: ThemeComponent<'Input'> = {
     inputError('group-error/field'),
     inputSpacing,
     'leading-loose',
-    'read-only:focus:border-border-base read-only:focus:outline-none',
+    'read-only:focus:border-border-base read-only:focus:outline-hidden',
     // Extra padding for when an icon/action is present
     'group-data-[icon]/input:pl-8',
     'group-data-[action]/input:pr-8',

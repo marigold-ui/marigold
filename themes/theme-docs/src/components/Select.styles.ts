@@ -23,12 +23,12 @@ export const Select: ThemeComponent<'Select'> = {
       size: 'default',
     },
   }),
-  select: cva([inputBox, inputBackground, inputDisabled, 'outline-none'], {
+  select: cva([inputBox, inputBackground, inputDisabled, 'outline-hidden'], {
     variants: {
       variant: {
         default: 'gap-2',
         floating: [
-          'shadow',
+          'shadow-sm',
           'col-span-full row-start-1 grid grid-cols-subgrid grid-rows-subgrid',
           // selected value and caret get moved to 2nd col
           '*:row-star-1 *:col-start-2 *:text-left',

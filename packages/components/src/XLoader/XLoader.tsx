@@ -19,12 +19,12 @@ const LoaderFullSize = (props: LoaderProps) => {
   const className = useClassNames({
     component: 'Underlay',
     variant: 'modal',
-    className: 'fixed left-0 top-0 z-10 h-[--visual-viewport-height] w-screen',
+    className: 'fixed left-0 top-0 z-10 h-(--visual-viewport-height) w-screen',
   });
 
   return (
     <ModalOverlay defaultOpen className={className} isKeyboardDismissDisabled>
-      <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
+      <Modal className="h-(--visual-viewport-height) grid cursor-progress place-items-center">
         <Dialog className="outline-0" aria-label="Fullscreen Loader">
           <BaseLoader {...props} />
         </Dialog>

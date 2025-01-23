@@ -19,13 +19,13 @@ const theme: Theme = {
           'bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px]',
           'group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked',
           ' disabled:bg-dis disabled:opacity-50',
-          'focus:outline-offset[3] focus:outline-none',
+          'focus:outline-offset[3] focus:outline-hidden',
           'focus:outline-switch-track-outline-focus',
         ],
         {
           variants: {
             size: {
-              large: 'h-[48] w-[96] rounded-[40]',
+              large: 'h-48 w-96 rounded-[40]',
             },
           },
         }
@@ -33,7 +33,7 @@ const theme: Theme = {
       thumb: cva(['bg-switch-track-background', 'shadow-[1px_1px_4px]'], {
         variants: {
           size: {
-            large: 'top-2 size-[44]',
+            large: 'top-2 size-44',
           },
         },
       }),
@@ -68,7 +68,7 @@ test('supports base styling', () => {
   );
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-50 focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-50 focus:outline-hidden focus:outline-switch-track-outline-focus"`
   );
 });
 
@@ -78,7 +78,7 @@ test('supports a custom variant', () => {
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-50 focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-50 focus:outline-hidden focus:outline-switch-track-outline-focus"`
   );
 });
 
@@ -110,7 +110,7 @@ test('supports disabled prop', () => {
   expect(input).toBeDisabled();
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-50 focus:outline-none focus:outline-switch-track-outline-focus"`
+    `"h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed bg-switch-track-background shadow-switch-track-shadow shadow-[0_0_0_1px] group-selected/switch:bg-switch-track-primary group-selected/switch:shadow-switch-track-checked disabled:bg-dis disabled:opacity-50 focus:outline-hidden focus:outline-switch-track-outline-focus"`
   );
 });
 

@@ -512,23 +512,23 @@ export const textAlign = {
 
 // for responsive reasons we needed to use the `minmax(0, 60ch)` value instead of `fit-content(60ch)`
 export const gridColsAlign = {
-  left: 'grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr]',
-  center: 'grid-cols-[1fr_minmax(0,_var(--maxWidth))_1fr]',
-  right: ' grid-cols-[1fr_1fr_minmax(0,_var(--maxWidth))]',
+  left: 'grid-cols-[minmax(0,var(--maxWidth))_1fr_1fr]',
+  center: 'grid-cols-[1fr_minmax(0,var(--maxWidth))_1fr]',
+  right: ' grid-cols-[1fr_1fr_minmax(0,var(--maxWidth))]',
 };
 
 export const gridColumn = {
-  left: '[&>*]:col-[1]',
-  center: '[&>*]:col-[2]',
-  right: '[&>*]:col-[3]',
+  left: '*:col-[1]',
+  center: '*:col-[2]',
+  right: '*:col-[3]',
 };
 
 export const aspect = {
   square: 'aspect-[1]',
-  landscape: 'aspect-[4/3]',
-  portrait: 'aspect-[3/4]',
-  widescreen: 'aspect-[16/9]',
-  ultrawide: 'aspect-[18/5]',
+  landscape: 'aspect-4/3',
+  portrait: 'aspect-3/4',
+  widescreen: 'aspect-16/9',
+  ultrawide: 'aspect-18/5',
   golden: 'aspect-[1.6180/1]',
 };
 

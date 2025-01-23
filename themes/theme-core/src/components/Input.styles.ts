@@ -1,12 +1,12 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const inputHeight = 'h-component';
-export const inputBox = 'border rounded-sm border-border-inverted bg-white';
+export const inputBox = 'border rounded-xs border-border-inverted bg-white';
 export const inputSpacing = 'px-1';
 export const inputDisabled =
   'disabled:bg-bg-inverted-disabled disabled:border-border-base-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed';
 
-export const inputError = `data-[invalid]:border-border-error`;
+export const inputError = `data-invalid:border-border-error`;
 
 export const Input: ThemeComponent<'Input'> = {
   input: cva([

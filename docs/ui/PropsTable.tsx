@@ -56,7 +56,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
               </code>
               <div
                 dangerouslySetInnerHTML={{ __html: prop.type.value }}
-                className="*:m-0 *:!bg-transparent *:p-0 *:text-xs"
+                className="*:bg-transparent! *:m-0 *:p-0 *:text-xs"
               />
             </Inline>
 
@@ -73,7 +73,7 @@ export const PropsTable = ({ component }: PropsTableProps) => {
                     dangerouslySetInnerHTML={{
                       __html: prop.defaultValue.value,
                     }}
-                    className="*:m-0 *:!bg-transparent *:p-0 *:text-xs"
+                    className="*:bg-transparent! *:m-0 *:p-0 *:text-xs"
                   />
                 </Inline>
               ) : null}

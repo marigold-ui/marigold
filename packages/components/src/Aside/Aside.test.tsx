@@ -38,7 +38,7 @@ test('aside is on the left by default', () => {
   const aside = screen.getByText(/aside/).parentElement;
   const content = screen.getByText(/content/).parentElement;
   expect(aside).toHaveClass('grow');
-  expect(content).toHaveClass('grow-[999]');
+  expect(content).toHaveClass('grow-999');
 });
 
 test('allows to have aisde on the right', () => {
@@ -51,7 +51,7 @@ test('allows to have aisde on the right', () => {
 
   const aside = screen.getByText(/aside/).parentElement;
   const content = screen.getByText(/content/).parentElement;
-  expect(aside).toHaveClass('grow-[999]');
+  expect(aside).toHaveClass('grow-999');
   expect(content).toHaveClass('grow');
 });
 
@@ -77,7 +77,7 @@ test('allows to set a width for the aside element', () => {
   const aside = screen.getByText(/aside/).parentElement;
   expect(aside).toMatchInlineSnapshot(`
     <div
-      class="grow basis-[--sideWidth]"
+      class="grow basis-(--sideWidth)"
       style="--sideWidth: 200px;"
     >
       <div>
@@ -97,7 +97,7 @@ test('wraps at 50% by default', () => {
   const content = screen.getByText(/content/).parentElement;
   expect(content).toMatchInlineSnapshot(`
     <div
-      class="basis-0 grow-[999] [min-inline-size:--wrap]"
+      class="basis-0 grow-999 [min-inline-size:var(--wrap)]"
       style="--wrap: 50%;"
     >
       <div>

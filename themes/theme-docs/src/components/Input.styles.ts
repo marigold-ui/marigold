@@ -1,6 +1,6 @@
 // Box
 // ---------------
-export const inputBox = 'border border-border rounded text-text-primary';
+export const inputBox = 'border border-border rounded-sm text-text-primary';
 export const inputBackground = 'bg-white';
 
 // Spacing

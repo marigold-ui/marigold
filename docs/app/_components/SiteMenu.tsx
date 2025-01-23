@@ -81,7 +81,7 @@ const CustomInput = ({
       onValueChange={onValueChange}
       autoFocus
       placeholder="Type to search ..."
-      className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-none"
+      className="placeholder:text-text-primary-muted outline-hidden h-11 w-full bg-transparent"
       onKeyDown={e => {
         if (e.metaKey && e.key === 'd') {
           e.preventDefault();
@@ -187,7 +187,7 @@ export const SiteMenu = () => {
           <div className="flex h-10 items-center justify-end gap-4 border-t px-2 text-xs">
             <Inline space={2} alignY="center">
               Go
-              <span className="border-border-inverted bg-secondary-400/10 rounded border p-1 opacity-50">
+              <span className="border-border-inverted bg-secondary-400/10 rounded-sm border p-1 opacity-50">
                 ↵
               </span>
             </Inline>
@@ -195,7 +195,7 @@ export const SiteMenu = () => {
               Expand
               <Hotkey
                 letter="D"
-                className="border-border-inverted bg-secondary-400/10 rounded border p-1"
+                className="border-border-inverted bg-secondary-400/10 rounded-sm border p-1"
               />
             </Inline>
           </div>

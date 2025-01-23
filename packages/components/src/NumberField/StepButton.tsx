@@ -43,7 +43,7 @@ const _StepButton = ({ direction, className, ...props }: StepButtonProps) => {
       className={cn(
         [
           'flex items-center justify-center',
-          'cursor-pointer data-[disabled]:cursor-not-allowed',
+          'data-disabled:cursor-not-allowed cursor-pointer',
         ],
         className
       )}
