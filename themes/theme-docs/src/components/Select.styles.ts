@@ -28,7 +28,7 @@ export const Select: ThemeComponent<'Select'> = {
       variant: {
         default: 'gap-2',
         floating: [
-          'shadow-sm',
+          'shadow-xs',
           'col-span-full row-start-1 grid grid-cols-subgrid grid-rows-subgrid',
           // selected value and caret get moved to 2nd col
           '*:row-star-1 *:col-start-2 *:text-left',

@@ -21,7 +21,7 @@ export const Select: ThemeComponent<'Select'> = {
     inputSpacing,
     'appearance-none leading-8',
     'cursor-pointer',
-    '*:data-[placeholder=true]:text-text-base-disabled',
+    'data-[placeholder=true]:*:text-text-base-disabled',
     'aria-expanded:bg-bg-base-active ',
   ]),
 };
