@@ -150,6 +150,83 @@
   /* black */
   --color-black: var(--color-gray-950);
 
+  /* text */
+  --text-base-DEFAULT: var(--color-gray-700);
+  --text-base-hover: var(--color-gray-800);
+  --text-base-disabled: var(--color-gray-400);
+
+  --text-inverted-DEFAULT: var(--color-gray-100);
+  --text-inverted-hover: '';
+  --text-inverted-disabled: '';
+
+  --text-brand-DEFAULT: '';
+  --text-brand-hover: '';
+
+  --text-accent-DEFAULT: var(--color-accent-600);
+  --text-accent-hover: var(--color-accent-700);
+
+  --text-info-DEFAULT: var(--color-blue-500);
+  --text-info-hover: var(--color-blue-700);
+
+  --text-success-DEFAULT: var(--color-green-700);
+  --text-success-hover: var(--color-green-800);
+
+  --text-warning-DEFAULT: var(--color-yellow-500);
+  --text-warning-hover: var(--color-yellow-600);
+
+  --text-error-DEFAULT: var(--color-red-500);
+  --text-error-hover: var(--color-red-600);
+
+  --text-link-DEFAULT: var(--color-blue-400);
+  --text-link-hover: var(--color-blue-500);
+
+  /* background */
+  --bg-base-DEFAULT: var(--color-white);
+  --bg-base-hover: var(--color-gray-300);
+  --bg-base-active: var(--color-gray-200);
+  --bg-base-disabled: var(--color-brand-200);
+
+  --bg-inverted-DEFAULT: var(--color-gray-700);
+  --bg-inverted-hover: '';
+  --bg-inverted-active: '';
+  --bg-inverted-disabled: '';
+
+  --bg-brand-DEFAULT: var(--color-brand-700);
+  --bg-brand-hover: var(--color-brand-600);
+  --bg-brand-active: var(--color-brand-800);
+
+  --bg-accent-DEFAULT: var(--color-accent-600);
+  --bg-accent-hover: var(--color-accent-700);
+  --bg-accent-active: var(--color-accent-800);
+
+  --bg-info-DEFAULT: var(--color-blue-500);
+  --bg-info-hover: var(--color-blue-600);
+  --bg-info-active: var(--color-blue-700);
+
+  --bg-success-DEFAULT: var(--color-green-600);
+  --bg-success-hover: var(--color-green-500);
+  --bg-success-active: var(--color-green-700);
+
+  --bg-warning-DEFAULT: var(--color-yellow-600);
+  --bg-warning-hover: var(--color-yellow-500);
+  --bg-warning-active: var(--color-yellow-700);
+
+  --bg-error-DEFAULT: var(--color-red-600);
+  --bg-error-hover: var(--color-red-500);
+  --bg-error-active: var(--color-red-700);
+
+  --bg-selected-DEFAULT: var(--color-accent-100);
+  --bg-input: var(--color-accent-600);
+
+  --bg-surface-DEFAULT: var(--color-white);
+  --bg-surface-raised: var(--color-white);
+  --bg-surface-overlay: var(--color-white);
+  --bg-surface-sunken: var(--color-gray-100);
+
+  /* currently only for core theme relevant */
+  --bg-mastermark: '';
+  --bg-adminmark: '';
+
   /* boxShadow */
   /* height */
 
