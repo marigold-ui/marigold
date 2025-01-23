@@ -37,10 +37,10 @@ const SectionLink = ({
 const Page = () => {
   const latestPost = getLatestPost();
   return (
-    <main className="grid justify-center px-[--page-padding-md] xl:px-[--page-padding-xl]">
+    <main className="px-(--page-padding-md) xl:px-(--page-padding-xl) grid justify-center">
       {/* Hero */}
-      <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-screen-lg place-items-center text-center">
-        <div className="-mx-[--page-padding-md] md:mx-0">
+      <div className="max-w-(--breakpoint-lg) grid h-[calc(100dvh-var(--page-header-height))] place-items-center text-center">
+        <div className="-mx-(--page-padding-md) md:mx-0">
           <Center>
             <Link href={`/${latestPost.slug}`} variant="shiny" size="xsmall">
               <AnimatedShinyText className="transition ease-out">
@@ -70,7 +70,7 @@ const Page = () => {
       </div>
 
       {/* Features */}
-      <div className="grid max-w-screen-lg gap-[30vh] pt-[5vw] md:gap-[40vh]">
+      <div className="max-w-(--breakpoint-lg) grid gap-[30vh] pt-[5vw] md:gap-[40vh]">
         <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
           <div className="order-last grid gap-4 md:order-first">
             <SectionHeadline>Built to be accessible</SectionHeadline>

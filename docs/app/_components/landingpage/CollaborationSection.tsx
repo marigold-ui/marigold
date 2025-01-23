@@ -6,7 +6,7 @@ const Token = ({ name, value }: { name: string; value: string }) => (
   <>
     <code className="block text-xs">--{name}</code>
     <div
-      className="size-5 rounded-full bg-[--token] shadow-md"
+      className="bg-(--token) size-5 rounded-full shadow-md"
       style={{ '--token': value } as any}
     />
   </>
@@ -36,7 +36,7 @@ export const CollaborationSection = () => {
       </div>
       <div className="col-start-1 row-start-1 w-[300px] origin-bottom rotate-6 transition-transform duration-700">
         <Card px={6} py={4}>
-          <div className="grid grid-cols-[max-content,auto] items-center justify-between gap-5">
+          <div className="grid grid-cols-[max-content_auto] items-center justify-between gap-5">
             <Token name="text-base" value={colors.text.base.DEFAULT} />
             <Token name="text-base-hover" value={colors.text.base.hover} />
             <Token

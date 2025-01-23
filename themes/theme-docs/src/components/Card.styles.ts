@@ -5,10 +5,10 @@ export const Card: ThemeComponent<'Card'> = cva(
   {
     variants: {
       variant: {
-        default: 'bg-bg-surface p-6 shadow border border-secondary-300',
+        default: 'bg-bg-surface p-6 shadow-sm border border-secondary-300',
         hovering:
-          'bg-bg-surface p-6 shadow transition-shadow hover:cursor-pointer hover:shadow-md border border-secondary-300',
-        content: 'bg-bg-surface my-6 shadow border border-secondary-300',
+          'bg-bg-surface p-6 shadow-sm transition-shadow hover:cursor-pointer hover:shadow-md border border-secondary-300',
+        content: 'bg-bg-surface my-6 shadow-sm border border-secondary-300',
         outline: 'bg-white/40 my-6 border border-secondary-200',
         lowered: 'bg-bg-surface-lowered p-6',
         image: '',

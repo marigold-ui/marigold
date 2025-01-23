@@ -1,26 +1,28 @@
-:root {
-  --page-padding: 0.75rem;
-  --page-padding-md: 2rem;
-  --page-padding-xl: 3rem;
+@import 'tailwindcss';
 
-  --page-header-height: 56px;
+@config '../tailwind.config.ts';
 
-  --page-sub-nav-absolute-width: 252px;
-  --page-sub-nav-width: calc(
-    var(--page-sub-nav-absolute-width) + var(--page-padding-md)
-  );
-  --page-sub-nav-width-xl: calc(
-    var(--page-sub-nav-absolute-width) + var(--page-padding-xl)
-  );
-  --page-sub-nav-padding: 2.25rem;
-  --page-sub-nav-padding-xl: 2.5rem;
+@layer base {
+  :root {
+    --page-padding: 0.75rem;
+    --page-padding-md: 2rem;
+    --page-padding-xl: 3rem;
 
-  --page-main-padding: 5rem;
-  --page-main-padding-xl: 5.5rem;
+    --page-header-height: 56px;
 
-  --pre-padding-x: 1rem;
+    --page-sub-nav-absolute-width: 252px;
+    --page-sub-nav-width: calc(
+      var(--page-sub-nav-absolute-width) + var(--page-padding-md)
+    );
+    --page-sub-nav-width-xl: calc(
+      var(--page-sub-nav-absolute-width) + var(--page-padding-xl)
+    );
+    --page-sub-nav-padding: 2.25rem;
+    --page-sub-nav-padding-xl: 2.5rem;
+
+    --page-main-padding: 5rem;
+    --page-main-padding-xl: 5.5rem;
+
+    --pre-padding-x: 1rem;
+  }
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

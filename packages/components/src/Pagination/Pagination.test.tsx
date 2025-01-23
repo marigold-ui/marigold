@@ -9,11 +9,11 @@ const theme: Theme = {
   name: 'test',
   components: {
     Pagination: cva([
-      'border-border-base bg-bg-inverted text-text-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:cursor-none',
+      'border-border-base bg-bg-inverted text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:cursor-none',
       'disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid',
       'outline-outline-focus outline-2 outline-offset-1 focus-visible:outline',
       'h-auto border-none bg-transparent',
-      'flex !h-8 !w-8 items-center justify-center',
+      'flex h-8! w-8! items-center justify-center',
       'data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold',
       'text-gray-700 hover:bg-gray-100',
     ]),
@@ -47,12 +47,12 @@ describe('Pagination tests', () => {
     >
       <button
         aria-label="Page previous"
-        class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
+        class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
         disabled=""
         type="button"
       >
         <svg
-          class="flex-none fill-current text-[--color] h-5 w-5"
+          class="flex-none fill-current text-(--color) h-5 w-5"
           height="24px"
           viewBox="0 0 24 24"
           width="24px"
@@ -68,7 +68,7 @@ describe('Pagination tests', () => {
         <button
           aria-current="page"
           aria-label="Page 1"
-          class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
+          class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
           data-selected="true"
           tabindex="0"
           type="button"
@@ -77,7 +77,7 @@ describe('Pagination tests', () => {
         </button>
         <button
           aria-label="Page 2"
-          class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
+          class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
           data-selected="false"
           tabindex="-1"
           type="button"
@@ -87,11 +87,11 @@ describe('Pagination tests', () => {
       </div>
       <button
         aria-label="Page next"
-        class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
+        class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
         type="button"
       >
         <svg
-          class="flex-none fill-current text-[--color] h-5 w-5"
+          class="flex-none fill-current text-(--color) h-5 w-5"
           height="24px"
           viewBox="0 0 24 24"
           width="24px"
@@ -121,12 +121,12 @@ describe('Pagination tests', () => {
     >
       <button
         aria-label="Page previous"
-        class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
+        class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
         disabled=""
         type="button"
       >
         <svg
-          class="flex-none fill-current text-[--color] h-5 w-5"
+          class="flex-none fill-current text-(--color) h-5 w-5"
           height="24px"
           viewBox="0 0 24 24"
           width="24px"
@@ -141,7 +141,7 @@ describe('Pagination tests', () => {
       >
         <button
           aria-label="Page 1"
-          class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
+          class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
           disabled=""
           tabindex="-1"
           type="button"
@@ -151,12 +151,12 @@ describe('Pagination tests', () => {
       </div>
       <button
         aria-label="Page next"
-        class="border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
+        class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
         disabled=""
         type="button"
       >
         <svg
-          class="flex-none fill-current text-[--color] h-5 w-5"
+          class="flex-none fill-current text-(--color) h-5 w-5"
           height="24px"
           viewBox="0 0 24 24"
           width="24px"
@@ -182,7 +182,7 @@ describe('Pagination tests', () => {
       'flex items-center justify-center space-x-2'
     );
     expect(button[0]).toHaveClass(
-      'border-border-base ease-ease-out h-component cursor-pointer rounded-sm border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex !h-8 !w-8 items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100'
+      'border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100'
     );
   });
 

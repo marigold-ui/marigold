@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tooltip: ThemeComponent<'Tooltip'> = {
   container: cva([
-    'text-text-base border-border-inverted bg-bg-surface rounded-sm border px-1 py-0.5',
+    'text-text-base border-border-inverted bg-bg-surface rounded-xs border px-1 py-0.5',
     'placement-t:mb-1',
     'placement-b:mt-1',
     'placement-r:ml-1',
@@ -12,12 +12,12 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     'fill-bg-surface stroke-border-inverted',
 
     // right
-    '[&>svg]:placement-r:rotate-90',
+    'placement-r:[&>svg]:rotate-90',
 
     // left
-    '[&>svg]:placement-l:-rotate-90',
+    'placement-l:[&>svg]:-rotate-90',
 
     // bottom
-    '[&>svg]:placement-b:rotate-180',
+    'placement-b:[&>svg]:rotate-180',
   ]),
 };

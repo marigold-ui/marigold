@@ -77,7 +77,7 @@ export const _Calendar = ({
   return (
     <Calendar
       className={cn(
-        'flex min-h-[350px] w-[360px] flex-col rounded-sm p-4',
+        'rounded-xs flex min-h-[350px] w-[360px] flex-col p-4',
         classNames.calendar
       )}
       {...props}

@@ -19,7 +19,7 @@ export const Rectangle = ({
   variant = 'default',
 }: RectangleProps) => (
   <div
-    className={`${variants[variant]} flex rounded-sm border-2 border-dashed`}
+    className={`${variants[variant]} rounded-xs flex border-2 border-dashed`}
     style={{ height: height, width: width }}
   >
     {children}

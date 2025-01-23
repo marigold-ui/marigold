@@ -24,7 +24,7 @@ export const SVG = forwardRef<SVGSVGElement, SVGProps>(
         ref={ref}
         width={`${props.width || size}px`}
         height={`${props.height || size}px`}
-        className={cn('flex-none fill-current text-[--color]', className)}
+        className={cn('text-(--color) flex-none fill-current', className)}
         style={createVar({
           color: color && getColor(theme, color, color /* fallback */),
         })}

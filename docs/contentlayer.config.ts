@@ -185,7 +185,7 @@ export default makeSource({
             node.properties.className = [
               ...(node.properties.className || []),
               'bg-code-800',
-              'px-[--pre-padding-x] -mx-[--pre-padding-x]',
+              'px-(--pre-padding-x) -mx-(--pre-padding-x)',
             ];
           },
           onVisitHighlightedChars(node: LineElement) {

@@ -11,7 +11,7 @@ export const CheckboxField = ({ children, labelWidth }: CheckboxFieldProps) => {
 
   return (
     <div className={classNames}>
-      <div className="w-[--labelWidth]" style={createVar({ labelWidth })} />
+      <div className="w-(--labelWidth)" style={createVar({ labelWidth })} />
       {children}
     </div>
   );

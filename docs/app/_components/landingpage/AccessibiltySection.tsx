@@ -28,7 +28,7 @@ const Block = ({
   <Grid.Area name={name}>
     <BlurFade
       key={name}
-      className="bg-bg-surface grid h-full place-items-center rounded-lg border border-black/5 px-2 py-2 shadow"
+      className="bg-bg-surface grid h-full place-items-center rounded-lg border border-black/5 px-2 py-2 shadow-sm"
       delay={0.2 + order * 0.05}
       inView
     >

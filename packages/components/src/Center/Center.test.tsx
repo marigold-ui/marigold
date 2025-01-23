@@ -11,7 +11,7 @@ test('supports classnames per default and maxWidth prop', () => {
   const center = screen.getByTestId(/center/);
   expect(center).toMatchInlineSnapshot(`
     <div
-      class="me-[auto] ms-[auto] box-content flex flex-col items-center justify-center gap-0 max-w-[--maxWidth]"
+      class="me-[auto] ms-[auto] box-content flex flex-col items-center justify-center gap-0 max-w-(--maxWidth)"
       data-testid="center"
       style="--maxWidth: 50ch;"
     >
@@ -31,7 +31,7 @@ test('supports maxWidth from theme sizes', () => {
   const center = screen.getByTestId(/center/);
   expect(center).toMatchInlineSnapshot(`
     <div
-      class="me-[auto] ms-[auto] box-content flex flex-col items-center justify-center gap-0 max-w-[--maxWidth]"
+      class="me-[auto] ms-[auto] box-content flex flex-col items-center justify-center gap-0 max-w-(--maxWidth)"
       data-testid="center"
       style="--maxWidth: 300px;"
     >

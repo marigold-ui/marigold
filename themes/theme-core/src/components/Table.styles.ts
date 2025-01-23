@@ -4,7 +4,7 @@ export const Table: ThemeComponent<'Table'> = {
   table: cva('border-collapse whitespace-nowrap'),
   header: cva(
     [
-      'group-aria-[multiselectable]/table:[&:first-child]:w-12',
+      'group-aria-[multiselectable]/table:first:w-12',
       'border-x px-2 font-bold',
       'text-text-inverted bg-gray-400',
       'odd:bg-bg-accent',
