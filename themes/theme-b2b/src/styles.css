@@ -148,7 +148,7 @@
   --color-white: #ffffff;
 
   /* black */
-  --color-black: --color-gray-950;
+  --color-black: var(--color-gray-950);
 
   /* boxShadow */
   /* height */
