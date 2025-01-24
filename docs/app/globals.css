@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+
 /* demos */
 @source './content/**/*.{js,ts,jsx,tsx,mdx}';
 /* used for anchor links */
@@ -63,7 +64,7 @@
   }
 }
 
-/* TODO: add stuff from preset */
+/* TODO: container stuff from preset */
 @theme {
   /* screens.ts */
   --breakpoint-sm: 640px;
@@ -73,10 +74,23 @@
   --breakpoint-2xl: 1400px;
 
   /* fontFamily */
-  --font-body: 'Inter', var(--font-sans);
+  --font-body: var(--font-sans);
+
+  /* animation */
+  --animate-shiny-text: shiny-text 8s infinite;
+
+  @keyframes shiny-text {
+    0%,
+    90%,
+    100% {
+      background-position: calc(-100% - var(--shiny-width)) 0;
+    }
+    60% {
+      background-position: calc(100% + var(--shiny-width)) 0;
+    }
+  }
 
   /* tokens.ts */
-
   /* white*/
   --color-white: #ffffff;
 
