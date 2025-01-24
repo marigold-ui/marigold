@@ -263,15 +263,15 @@
   --color-outline-focus: var(--color-blue-400);
 
   /* boxShadow */
-  --color-shadow-surface: 0 0 #0000; /* no shadow */
-  --color-shadow-surface-raised: var(--shadow-sm);
-  --color-shadow-surface-overlay: var(--shadow-lg);
-  --color-shadow-surface-sunken: 0 0 #0000;
+  --shadow-surface: 0 0 #0000; /* no shadow */
+  --shadow-surface-raised: var(--shadow-sm);
+  --shadow-surface-overlay: var(--shadow-lg);
+  --shadow-surface-sunken: 0 0 #0000;
 
   /* height */
-  --color-h-component: 32px;
-  --color-h-component-sm: 24px;
-  --color-h-component-lg: 48px;
+  --spacing-component: 32px;
+  --spacing-component-sm: 24px;
+  --spacing-component-lg: 48px;
 
   /* animation and keyframes */
   --animate-rotate-spinner: rotate-spinner 2s linear infinite;
