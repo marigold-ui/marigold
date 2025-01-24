@@ -216,7 +216,7 @@
   --bg-error-active: var(--color-red-700);
 
   --bg-selected-DEFAULT: var(--color-accent-100);
-  --bg-input: var(--color-accent-600);
+  --bg-selected-input: var(--color-accent-600);
 
   --bg-surface-DEFAULT: var(--color-white);
   --bg-surface-raised: var(--color-white);
@@ -269,7 +269,15 @@
   --outline-focus-DEFAULT: var(--color-blue-400);
 
   /* boxShadow */
+  --shadow-surface: 0 0 #0000; /* no shadow */
+  --shadow-surface-raised: var(--shadow-sm);
+  --shadow-surface-overlay: var(--shadow-lg);
+  --shadow-surface-sunken: 0 0 #0000;
+
   /* height */
+  --h-component: 32px;
+  --h-component-sm: 24px;
+  --h-component-lg: 48px;
 
   /* animation and keyframes */
   --animate-rotate-spinner: rotate-spinner 2s linear infinite;
