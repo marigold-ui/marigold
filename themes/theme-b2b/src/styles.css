@@ -1,8 +1,4 @@
-@layer theme, base, components, utilities;
-@import url('https://fonts.bunny.net/css?family=inter:400,600,700') layer(base);
-/* from tailwind.config.ts */
-@import 'tailwindcss/utilities' layer(utilities);
-@import 'tailwindcss/theme' layer(theme);
+@import 'tailwindcss';
 
 /* from tailwind.config.ts */
 @source 'src/root.ts';
@@ -17,9 +13,7 @@
 @source './node_modules/@marigold/components/dist/*.js';
 
 /* from tailwind.config.ts */
-@variant theme-b2b (&:where([data-theme="b2b"] *));
-
-@config '../tailwind.config.ts';
+@custom-variant theme-b2b (&:where([data-theme="b2b"] *));
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -151,133 +145,133 @@
   --color-black: var(--color-gray-950);
 
   /* text */
-  --text-base: var(--color-gray-700);
-  --text-base-hover: var(--color-gray-800);
-  --text-base-disabled: var(--color-gray-400);
+  --color-text-base: var(--color-gray-700);
+  --color-text-base-hover: var(--color-gray-800);
+  --color-text-base-disabled: var(--color-gray-400);
 
-  --text-inverted: var(--color-gray-100);
-  --text-inverted-hover: '';
-  --text-inverted-disabled: '';
+  --color-text-inverted: var(--color-gray-100);
+  --color-text-inverted-hover: '';
+  --color-text-inverted-disabled: '';
 
-  --text-brand: '';
-  --text-brand-hover: '';
+  --color-text-brand: '';
+  --color-text-brand-hover: '';
 
-  --text-accent: var(--color-accent-600);
-  --text-accent-hover: var(--color-accent-700);
+  --color-text-accent: var(--color-accent-600);
+  --color-text-accent-hover: var(--color-accent-700);
 
-  --text-info: var(--color-blue-500);
-  --text-info-hover: var(--color-blue-700);
+  --color-text-info: var(--color-blue-500);
+  --color-text-info-hover: var(--color-blue-700);
 
-  --text-success: var(--color-green-700);
-  --text-success-hover: var(--color-green-800);
+  --color-text-success: var(--color-green-700);
+  --color-text-success-hover: var(--color-green-800);
 
-  --text-warning: var(--color-yellow-500);
-  --text-warning-hover: var(--color-yellow-600);
+  --color-text-warning: var(--color-yellow-500);
+  --color-text-warning-hover: var(--color-yellow-600);
 
-  --text-error: var(--color-red-500);
-  --text-error-hover: var(--color-red-600);
+  --color-text-error: var(--color-red-500);
+  --color-text-error-hover: var(--color-red-600);
 
-  --text-link: var(--color-blue-400);
-  --text-link-hover: var(--color-blue-500);
+  --color-text-link: var(--color-blue-400);
+  --color-text-link-hover: var(--color-blue-500);
 
   /* background */
-  --bg-base: var(--color-white);
-  --bg-base-hover: var(--color-gray-300);
-  --bg-base-active: var(--color-gray-200);
-  --bg-base-disabled: var(--color-brand-200);
+  --color-bg-base: var(--color-white);
+  --color-bg-base-hover: var(--color-gray-300);
+  --color-bg-base-active: var(--color-gray-200);
+  --color-bg-base-disabled: var(--color-brand-200);
 
-  --bg-inverted: var(--color-gray-700);
-  --bg-inverted-hover: '';
-  --bg-inverted-active: '';
-  --bg-inverted-disabled: '';
+  --color-bg-inverted: var(--color-gray-700);
+  --color-bg-inverted-hover: '';
+  --color-bg-inverted-active: '';
+  --color-bg-inverted-disabled: '';
 
-  --bg-brand: var(--color-brand-700);
-  --bg-brand-hover: var(--color-brand-600);
-  --bg-brand-active: var(--color-brand-800);
+  --color-bg-brand: var(--color-brand-700);
+  --color-bg-brand-hover: var(--color-brand-600);
+  --color-bg-brand-active: var(--color-brand-800);
 
-  --bg-accent: var(--color-accent-600);
-  --bg-accent-hover: var(--color-accent-700);
-  --bg-accent-active: var(--color-accent-800);
+  --color-bg-accent: var(--color-accent-600);
+  --color-bg-accent-hover: var(--color-accent-700);
+  --color-bg-accent-active: var(--color-accent-800);
 
-  --bg-info: var(--color-blue-500);
-  --bg-info-hover: var(--color-blue-600);
-  --bg-info-active: var(--color-blue-700);
+  --color-bg-info: var(--color-blue-500);
+  --color-bg-info-hover: var(--color-blue-600);
+  --color-bg-info-active: var(--color-blue-700);
 
-  --bg-success: var(--color-green-600);
-  --bg-success-hover: var(--color-green-500);
-  --bg-success-active: var(--color-green-700);
+  --color-bg-success: var(--color-green-600);
+  --color-bg-success-hover: var(--color-green-500);
+  --color-bg-success-active: var(--color-green-700);
 
-  --bg-warning: var(--color-yellow-600);
-  --bg-warning-hover: var(--color-yellow-500);
-  --bg-warning-active: var(--color-yellow-700);
+  --color-bg-warning: var(--color-yellow-600);
+  --color-bg-warning-hover: var(--color-yellow-500);
+  --color-bg-warning-active: var(--color-yellow-700);
 
-  --bg-error: var(--color-red-600);
-  --bg-error-hover: var(--color-red-500);
-  --bg-error-active: var(--color-red-700);
+  --color-bg-error: var(--color-red-600);
+  --color-bg-error-hover: var(--color-red-500);
+  --color-bg-error-active: var(--color-red-700);
 
-  --bg-selected: var(--color-accent-100);
-  --bg-selected-input: var(--color-accent-600);
+  --color-bg-selected: var(--color-accent-100);
+  --color-bg-selected-input: var(--color-accent-600);
 
-  --bg-surface: var(--color-white);
-  --bg-surface-raised: var(--color-white);
-  --bg-surface-overlay: var(--color-white);
-  --bg-surface-sunken: var(--color-gray-100);
+  --color-bg-surface: var(--color-white);
+  --color-bg-surface-raised: var(--color-white);
+  --color-bg-surface-overlay: var(--color-white);
+  --color-bg-surface-sunken: var(--color-gray-100);
 
   /* currently only for core theme relevant */
-  --bg-mastermark: '';
-  --bg-adminmark: '';
+  --color-bg-mastermark: '';
+  --color-bg-adminmark: '';
 
   /* border */
-  --border-base: var(--color-gray-400);
-  --border-base-hover: var(--color-gray-500);
-  --border-base-active: '';
-  --border-base-disabled: var(--color-gray-400);
+  --color-border-base: var(--color-gray-400);
+  --color-border-base-hover: var(--color-gray-500);
+  --color-border-base-active: '';
+  --color-border-base-disabled: var(--color-gray-400);
 
-  --border-inverted: var(--color-gray-700);
-  --border-inverted-hover: '';
-  --border-inverted-active: '';
-  --border-inverted-disabled: '';
+  --color-border-inverted: var(--color-gray-700);
+  --color-border-inverted-hover: '';
+  --color-border-inverted-active: '';
+  --color-border-inverted-disabled: '';
 
-  --border-brand: '';
-  --border-brand-hover: '';
-  --border-brand-active: '';
+  --color-border-brand: '';
+  --color-border-brand-hover: '';
+  --color-border-brand-active: '';
 
-  --border-accent: '';
-  --border-accent-hover: '';
-  --border-accent-active: '';
+  --color-border-accent: '';
+  --color-border-accent-hover: '';
+  --color-border-accent-active: '';
 
-  --border-info: var(--color-blue-500);
-  --border-info-hover: var(--color-blue-600);
-  --border-info-active: var(--color-blue-700);
+  --color-border-info: var(--color-blue-500);
+  --color-border-info-hover: var(--color-blue-600);
+  --color-border-info-active: var(--color-blue-700);
 
-  --border-success: var(--color-green-700);
-  --border-success-hover: var(--color-green-600);
-  --border-success-active: var(--color-green-800);
+  --color-border-success: var(--color-green-700);
+  --color-border-success-hover: var(--color-green-600);
+  --color-border-success-active: var(--color-green-800);
 
-  --border-warning: var(--color-yellow-500);
-  --border-warning-hover: var(--color-yellow-600);
-  --border-warning-active: var(--color-yellow-700);
+  --color-border-warning: var(--color-yellow-500);
+  --color-border-warning-hover: var(--color-yellow-600);
+  --color-border-warning-active: var(--color-yellow-700);
 
-  --border-error: var(--color-red-500);
-  --border-error-hover: var(--color-red-600);
-  --border-error-active: var(--color-red-700);
+  --color-border-error: var(--color-red-500);
+  --color-border-error-hover: var(--color-red-600);
+  --color-border-error-active: var(--color-red-700);
 
-  --border-selected: var(--color-accent-600);
-  --border-input: var(--color-accent-800);
+  --color-border-selected: var(--color-accent-600);
+  --color-border-input: var(--color-accent-800);
 
   /* outline */
-  --outline-focus: var(--color-blue-400);
+  --color-outline-focus: var(--color-blue-400);
 
   /* boxShadow */
-  --shadow-surface: 0 0 #0000; /* no shadow */
-  --shadow-surface-raised: var(--shadow-sm);
-  --shadow-surface-overlay: var(--shadow-lg);
-  --shadow-surface-sunken: 0 0 #0000;
+  --color-shadow-surface: 0 0 #0000; /* no shadow */
+  --color-shadow-surface-raised: var(--shadow-sm);
+  --color-shadow-surface-overlay: var(--shadow-lg);
+  --color-shadow-surface-sunken: 0 0 #0000;
 
   /* height */
-  --h-component: 32px;
-  --h-component-sm: 24px;
-  --h-component-lg: 48px;
+  --color-h-component: 32px;
+  --color-h-component-sm: 24px;
+  --color-h-component-lg: 48px;
 
   /* animation and keyframes */
   --animate-rotate-spinner: rotate-spinner 2s linear infinite;
