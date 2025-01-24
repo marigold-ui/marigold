@@ -9,6 +9,13 @@
 @source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
 
+/* from preset */
+@source './node_modules/@marigold/theme-docs/dist/*.js';
+@source './node_modules/@marigold/system/dist/*.js';
+@source './node_modules/@marigold/components/dist/*.js';
+
+/* tailwind plugins */
+
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
 /* @plugin 'tailwindcss-scrollbar' */
@@ -56,8 +63,19 @@
   }
 }
 
+/* TODO: add stuff from preset */
 @theme {
-  /* colors */
+  /* screens.ts */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1400px;
+
+  /* fontFamily */
+  --font-body: 'Inter', var(--font-sans);
+
+  /* tokens.ts */
 
   /* white*/
   --color-white: #ffffff;
