@@ -1,4 +1,7 @@
-@import 'tailwindcss';
+@layer theme, base, components, utilities;
+@import url('https://fonts.bunny.net/css?family=inter:400,600,700') layer(base);
+/* from tailwind.config.ts */
+@import 'tailwindcss/theme' layer(theme);
 
 /* from tailwind.config.ts */
 @source 'src/root.ts';
@@ -30,6 +33,12 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {
+  [data-theme='b2b'] {
+    @tailwind utilities;
   }
 }
 
