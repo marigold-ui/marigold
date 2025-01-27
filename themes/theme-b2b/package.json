@@ -53,6 +53,6 @@
     "@marigold/theme-preset": "workspace:*"
   },
   "scripts": {
-    "build": "npx @tailwindcss/cli -i src/styles.css -o dist/styles.css"
+    "build": "NODE_ENV=production tsup && npx @tailwindcss/cli -i src/styles.css -o dist/styles.css"
   }
 }
