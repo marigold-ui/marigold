@@ -19,7 +19,8 @@
 
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
-/* @plugin 'tailwindcss-scrollbar' */
+/* https://github.com/adoxography/tailwind-scrollbar/issues/104 */
+@plugin 'tailwindcss-scrollbar';
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -64,7 +65,13 @@
   }
 }
 
-/* TODO: container stuff from preset */
+/* container stuff from preset https://tailwindcss.com/docs/upgrade-guide#container-configuration /
+screens seems already be created */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+
 @theme {
   /* screens.ts */
   --breakpoint-sm: 640px;
