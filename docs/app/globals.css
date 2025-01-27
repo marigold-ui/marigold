@@ -20,7 +20,7 @@
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
 /* https://github.com/adoxography/tailwind-scrollbar/issues/104 */
-@plugin 'tailwindcss-scrollbar';
+@plugin 'tailwind-scrollbar';
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
