@@ -35,7 +35,6 @@
     "tsup": "8.3.5"
   },
   "scripts": {
-    "build": "tsup src/index.ts",
     "watch": "tsup src/index.ts --watch",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
