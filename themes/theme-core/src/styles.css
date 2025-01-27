@@ -1,5 +1,4 @@
-@import 'tailwindcss';
-
+@layer theme, base, components, utilities;
 /* from tailwind.config.ts */
 @import 'tailwindcss/theme' layer(theme);
 
