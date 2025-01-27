@@ -1,11 +1,11 @@
 import { siteConfig } from '@/lib/config';
-import { coreTheme, theme } from '@/theme';
+import { b2bTheme, coreTheme, theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
 import { Suspense } from 'react';
-import '@marigold/theme-core/styles.css';
 import { fontSans } from '@/theme/fonts';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
-import '../../themes/theme-b2b/output.css';
+import '../../themes/theme-b2b/dist/styles.css';
+import '../../themes/theme-core/dist/styles.css';
 import { Analytics } from './_components/Analytics';
 import { PortalContaier } from './_components/PortalContainer';
 import { SiteHeader } from './_components/SiteHeader';
@@ -31,7 +31,7 @@ export const metadata = {
 // Themes
 // ---------------
 const themes = {
-  // b2b: b2bTheme,
+  b2b: b2bTheme,
   core: coreTheme,
 };
 
