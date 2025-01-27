@@ -14,7 +14,5 @@ const meta = {
 export default meta;
 
 export const Basic: StoryObj<any> = {
-  render: () => (
-    <Multiselect2 label="Label" placeholder="Enter value" required error />
-  ),
+  render: () => <Multiselect2 label="Label" placeholder="Enter value" />,
 };

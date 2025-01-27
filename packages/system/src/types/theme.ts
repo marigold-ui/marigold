@@ -84,8 +84,6 @@ export type Theme = {
       | 'field'
       | 'container'
       | 'tag'
-      | 'labelContainer'
-      | 'labelIndicator'
       | 'input'
       | 'action'
       | 'closeButton'

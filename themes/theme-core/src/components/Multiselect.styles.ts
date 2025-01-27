@@ -19,12 +19,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'has-[input[data-focused=true]]:outline-outline-focus -outline-offset-1 has-[input[data-focused=true]]:outline has-[input[data-focused=true]]:outline-2',
     'overflow-hidden has-[input[aria-readonly=true]]:border-transparent has-[input[aria-readonly=true]]:bg-transparent',
   ]),
-  labelContainer: cva([
-    'leading-6', // align label with input
-    'row-span-2 justify-end',
-    'group-error/field:text-text-error group-required/field:font-bold',
-  ]),
-  labelIndicator: cva(),
+
   input: cva([
     'bg-transparent flex-1 h-full',
     'leading-[22px]',
@@ -58,10 +53,12 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   option: cva([
     'font-body text-[13px] text-text-base',
     'flex flex-col',
-    'hover:text-text-inverted hover:bg-highlight',
+    '[&:not([aria-disabled=true])]:hover:text-text-inverted [&:not([aria-disabled=true])]:hover:bg-highlight',
     'cursor-pointer px-1.5 py-0.5 outline-none',
-    '[&.isFocused]:text-text-inverted [&.isFocused]:bg-highlight',
+    '[&.isFocused:not([aria-disabled=true])]:text-text-inverted [&.isFocused[aria-disabled=true]]:bg-transparent [&.isFocused:not([aria-disabled=true])]:bg-highlight',
     'rac-selected:text-text-inverted aria-selected:bg-highlight',
-    'rac-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
+    'aria-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),
 };
+
+// [&.isFocused:not([aria-disabled='true'])]

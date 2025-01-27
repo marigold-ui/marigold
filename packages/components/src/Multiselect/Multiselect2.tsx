@@ -3,7 +3,9 @@
 import { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import {
   type ComboBoxProps,
+  FieldErrorContext,
   type Key,
+  Provider,
   type ValidationResult,
 } from 'react-aria-components';
 import { Button, Input as _Input } from 'react-aria-components';
@@ -13,8 +15,9 @@ import { useField } from '@react-aria/label';
 import { cn, useClassNames } from '@marigold/system';
 import { AriaLabelingProps } from '@marigold/types';
 import { FieldBaseProps } from '../FieldBase';
+import { HelpText } from '../HelpText';
+import { Label } from '../Label';
 import { ChevronDown } from '../icons';
-import { Label } from './Label';
 
 interface InputProps extends InputComponentProps, AriaLabelingProps {
   className: string;
@@ -24,7 +27,6 @@ interface InputProps extends InputComponentProps, AriaLabelingProps {
 
 const Input = ({ innerRef, className, ...props }: InputProps) => {
   // innerRef is needed for focusing the input
-  console.log('propsprops', props);
   return <_Input {...props} ref={innerRef} className={className} />;
 };
 
@@ -84,9 +86,11 @@ export const Multiselect2 = ({
   required,
   readOnly = false,
   error,
+  errorMessage,
   size,
   variant,
   placeholder,
+  description,
   ...props
 }: MultipleSelectProps) => {
   const classNames = useClassNames({
@@ -97,81 +101,90 @@ export const Multiselect2 = ({
 
   let { labelProps, fieldProps } = useField({
     label: props.label,
-    errorMessage: props.errorMessage,
+    errorMessage,
+    isInvalid: true,
   });
 
-  console.log(classNames.labelContainer);
-
   return (
-    <div
-      className={cn(classNames.field, 'group/field')}
-      data-required={required}
-      data-error={error}
-      data-readonly={readOnly}
+    // TODO: use provider
+    <Provider
+      values={[
+        [
+          FieldErrorContext,
+          {
+            isInvalid: false,
+            validationDetails: {} as any,
+            validationErrors: [],
+          },
+        ],
+      ]}
     >
-      {/* <p className='w-[200px]'>{props.label}</p> */}
-      {props.label && (
-        <Label classNames={classNames} {...labelProps}>
-          {props.label}
-        </Label>
-      )}
-      <Select
-        aria-invalid={error}
-        classNames={{
-          control: () => classNames.container,
-          placeholder: () => 'hidden',
-          indicatorsContainer: () => 'h-5',
-          indicatorSeparator: () => 'hidden',
-          multiValue: () => classNames.tag,
-          menu: () => cn('shadow-none', classNames.listContainer),
-          menuList: () =>
-            cn(
-              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0',
-              classNames.list
-            ),
-          option: ({ isFocused }) =>
-            cn(classNames.option, { isFocused: isFocused }),
-        }}
-        isClearable={false}
-        isSearchable={!readOnly}
-        menuIsOpen={readOnly ? false : undefined}
-        closeMenuOnSelect={false}
-        isMulti
-        options={intiOptions}
-        defaultValue={[intiOptions[0]]}
-        components={{
-          Input: props => {
-            return (
+      <div
+        className={cn(classNames.field, 'group/field')}
+        data-required={required}
+        data-error={error}
+        data-readonly={readOnly}
+      >
+        {props.label && <Label {...labelProps}>{props.label}</Label>}
+        <Select
+          aria-invalid={error}
+          isClearable={false}
+          isSearchable={!readOnly}
+          closeMenuOnSelect={false}
+          isMulti
+          options={intiOptions}
+          defaultValue={[intiOptions[0]]}
+          classNames={{
+            control: () => classNames.container,
+            placeholder: () => 'hidden',
+            indicatorsContainer: () => 'h-5',
+            indicatorSeparator: () => 'hidden',
+            menu: () => cn('shadow-none', classNames.listContainer),
+            menuList: () =>
+              cn(
+                'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0',
+                classNames.list
+              ),
+            option: ({ isFocused }) =>
+              cn(classNames.option, { isFocused: isFocused }),
+            multiValue: () => classNames.tag,
+          }}
+          components={{
+            Input: props => {
+              return (
+                // @ts-ignore
+                <Input
+                  {...props}
+                  {...fieldProps}
+                  className={classNames.input}
+                  // Delete the placeholder when there's selected value
+                  placeholder={
+                    !props.getValue().length ? placeholder : undefined
+                  }
+                />
+              );
+            },
+            MultiValueRemove: ({ innerProps }) => {
+              return (
+                <CloseButton
+                  {...innerProps}
+                  // react-select doesn't handle readonly so we had to do it manually here
+                  // keep to the button disabled in read only to prevent menu from opening
+                  isDisabled={disabled || readOnly}
+                  className={cn('flex items-center', classNames.closeButton)}
+                />
+              );
+            },
+            DropdownIndicator: ({ innerProps }) => (
               // @ts-ignore
-              <Input
-                {...props}
-                {...fieldProps}
-                className={classNames.input}
-                // Delete the placeholder when there's selected value
-                placeholder={!props.getValue().length ? placeholder : undefined}
-              />
-            );
-          },
-          MultiValueRemove: ({ innerProps }) => {
-            return (
-              <CloseButton
-                {...innerProps}
-                // react-select doesn't handle readonly so we had to do it manually here
-                // keep to the button disabled in read only to prevent menu from opening
-                isDisabled={disabled || readOnly}
-                className={cn('flex items-center', classNames.closeButton)}
-              />
-            );
-          },
-          DropdownIndicator: ({ innerProps }) => (
-            // @ts-ignore
-            <button {...innerProps} className={classNames.icon}>
-              <ChevronDown className={'size-4'} />
-            </button>
-          ),
-        }}
-      />
-      <p>help text</p>
-    </div>
+              <button {...innerProps} className={classNames.icon}>
+                <ChevronDown className={'size-4'} />
+              </button>
+            ),
+          }}
+        />
+        <HelpText description={description} errorMessage={errorMessage} />
+      </div>
+    </Provider>
   );
 };
