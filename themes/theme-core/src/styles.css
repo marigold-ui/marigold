@@ -15,8 +15,6 @@
 @source './node_modules/@marigold/system/dist/*.js';
 @source './node_modules/@marigold/components/dist/*.js';
 
-@custom-variant theme-core (&:where([data-theme="core"] *));
-
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -32,6 +30,12 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {
+  [data-theme='core'] {
+    @tailwind utilities;
   }
 }
 
