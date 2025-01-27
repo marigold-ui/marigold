@@ -44,36 +44,14 @@
   --breakpoint-2xl: 1536px;
 
   --font-body: 'Arial, Helvetica, sans-serif';
-
   --font-size-body: 13px;
-  /* keyframes */
-  @keyframes rotate-spinner {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
 
-  @keyframes progress-cycle {
-    0% {
-      transform: rotate(0deg);
-      strokedashoffset: 75;
-    }
-    ,
-    30% {
-      strokedashoffset: 20;
-    }
-    ,
-    100%: {
-      transform: rotate(360deg);
-      strokedashoffset: 75;
-    }
-  }
+  /* animation */
+  --animate-roate-spinner: rotate-spinner 2s linear infinite;
+  --animate-progress-cycle: progress-cycle 1.5s linear infinite;
 
   /* colors */
-
+  --color-bg-highlight: linear-gradient(#3875d7 20%, #2a62bc 90%);
   /* brand */
   --color-brand-500: #f8ac67;
   --color-brand-600: #fa8005;
@@ -296,4 +274,30 @@
   --spacing-component: 24px;
   --spacing-component-sm: 16px;
   --spacing-component-lg: 32px;
+
+  /* keyframes */
+  @keyframes rotate-spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes progress-cycle {
+    0% {
+      transform: rotate(0deg);
+      strokedashoffset: 75;
+    }
+    ,
+    30% {
+      strokedashoffset: 20;
+    }
+    ,
+    100%: {
+      transform: rotate(360deg);
+      strokedashoffset: 75;
+    }
+  }
 }
