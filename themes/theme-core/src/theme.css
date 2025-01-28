@@ -6,7 +6,7 @@
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
 
-  --font-body: 'Arial, Helvetica, sans-serif';
+  --font-body: 'Arial, Helvetica', sans-serif;
   --font-size-body: 13px;
 
   /* animation */
