@@ -12,6 +12,16 @@
 @source './node_modules/@marigold/system/dist/*.js';
 @source './node_modules/@marigold/theme-docs/dist/index.js';
 
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
 /* container stuff from preset https://tailwindcss.com/docs/upgrade-guide#container-configuration /
 screens seems already be created */
 @utility container {
