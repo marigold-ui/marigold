@@ -25,7 +25,7 @@
   /* accent */
   --color-accent-50: #ffffff;
   --color-accent-100: #f7f5f2;
-  --color-accent-100: #e3e3e3;
+  --color-accent-200: #e3e3e3;
   --color-accent-300: #e7e4e0;
   --color-accent-350: #cfcfcf;
   --color-accent-400: #cecac3;
@@ -251,16 +251,16 @@
   @keyframes progress-cycle {
     0% {
       transform: rotate(0deg);
-      strokedashoffset: 75;
+      stroke-dashoffset: 75;
     }
-    ,
     30% {
-      strokedashoffset: 20;
+      stroke-dashoffset: 20;
     }
-    ,
-      100%: {
+    100% {
       transform: rotate(360deg);
-      strokedashoffset: 75;
+      stroke-dashoffset: 75;
     }
   }
 }
+
+@plugin "./../../../packages/theme-preset/src/tw-rac-plugins.js";

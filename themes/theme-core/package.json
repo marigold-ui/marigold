@@ -49,7 +49,8 @@
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*"
+    "@marigold/system": "workspace:*",
+    "@marigold/theme-preset": "workspace:*"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css"
