@@ -13,6 +13,14 @@ const meta = {
 
 export default meta;
 
+const drinks = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' },
+];
+
 export const Basic: StoryObj<any> = {
-  render: () => <Multiselect2 label="Label" placeholder="Enter value" />,
+  render: () => (
+    <Multiselect2 label="Label" placeholder="Enter value" items={drinks} />
+  ),
 };
