@@ -43,6 +43,8 @@
     "@marigold/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "4.0.0",
     "cssnano": "7.0.6",
+    "postcss-cli": "11.0.0",
+    "postcss-prefix-selector": "2.1.0",
     "tailwindcss": "4.0.0",
     "tsup": "8.3.5"
   },
@@ -52,6 +54,6 @@
     "@marigold/theme-preset": "workspace:*"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsup && npx @tailwindcss/cli -i src/styles.css -o dist/styles.css"
+    "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css"
   }
 }
