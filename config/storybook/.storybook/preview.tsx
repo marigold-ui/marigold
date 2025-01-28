@@ -1,6 +1,5 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
-import 'tailwindcss/tailwind.css';
 import {
   FieldGroup,
   MarigoldProvider,
@@ -10,6 +9,9 @@ import b2b from '@marigold/theme-b2b';
 import '@marigold/theme-b2b/styles.css';
 import core from '@marigold/theme-core';
 import '@marigold/theme-core/styles.css';
+import './../styles.css';
+
+// Helpers
 
 // Helpers
 
