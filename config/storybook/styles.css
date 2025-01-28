@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+
+@source './.storybook/preview.tsx';
+@source '../../packages/{components,system}/**/*.stories.{tsx,ts}';
