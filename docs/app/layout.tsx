@@ -4,8 +4,6 @@ import { MarigoldProvider } from '@/ui';
 import { Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
-import '../../themes/theme-b2b/dist/styles.css';
-import '../../themes/theme-core/dist/styles.css';
 import { Analytics } from './_components/Analytics';
 import { PortalContaier } from './_components/PortalContainer';
 import { SiteHeader } from './_components/SiteHeader';

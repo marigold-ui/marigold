@@ -1,11 +1,11 @@
 import { Card } from '@/ui';
 import { BlurFade } from '@/ui/BlurFade';
-import './../../../node_modules/@marigold/theme-core/dist/styles.css';
 
 const Token = ({ name, value }: { name: string; value: string }) => (
   <>
     <code className="block text-xs">--{name}</code>
     <div
+      data-theme="core"
       className="size-5 rounded-full bg-(--token) shadow-md"
       style={{ '--token': value } as any}
     />
