@@ -8,6 +8,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    reactCompiler: true,
+  },
   transpilePackages: [
     '@marigold/components',
     '@marigold/system',
