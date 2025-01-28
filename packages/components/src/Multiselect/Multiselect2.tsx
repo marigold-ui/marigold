@@ -178,8 +178,8 @@ export const Multiselect2 = ({
               );
               return (
                 <Input
-                  {...fieldProps}
                   {...(inputProps as any)}
+                  {...fieldProps}
                   className={classNames.input}
                   disabled={props.disabled}
                   hidden={props.hidden}
