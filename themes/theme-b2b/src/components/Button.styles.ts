@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Button: ThemeComponent<'Button'> = cva(
   [
     'rounded-xs border-none px-8 leading-[48px] h-component outline-hidden',
-    'focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1',
+    'focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-offset-1',
     'disabled:text-text-base-disabled disabled:bg-bg-base-disabled disabled:cursor-not-allowed',
     'rac-pending:text-text-base-disabled rac-pending:bg-bg-base-disabled rac-pending:cursor-not-allowed',
   ],
