@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Pagination: ThemeComponent<'Pagination'> = cva([
   'rounded-xs border-none leading-[48px] outline-hidden',
-  'focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1',
+  'focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-offset-1',
   'disabled:text-text-base-disabled disabled:bg-bg-inverted-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid',
   'text-text-base hover:bg-bg-brand-hover active:bg-bg-brand-active active:text-text-inverted',
   'flex h-8! w-8 items-center justify-center',
