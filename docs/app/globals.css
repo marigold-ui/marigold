@@ -4,7 +4,7 @@
 @import './../node_modules/@marigold/theme-b2b/dist/styles.css';
 
 /* demos */
-@source './../content/**/*.{js,ts,jsx,tsx,mdx}';
+@source './../../content/**/*.{js,ts,jsx,tsx,mdx}';
 
 /* from docs */
 @source './../ui/{**/*}.{js,ts,jsx,tsx,mdx}';
@@ -12,8 +12,9 @@
 
 @source '../../themes/theme-docs/src/**/*.ts';
 
-/* used for anchor links */
-@source './../contentlayer.config.ts';
+/* from docs */
+@source './../../ui/{**/*}.{js,ts,jsx,tsx,mdx}';
+@source './**/*.{js,ts,jsx,tsx,mdx}';
 
 /* marigold components */
 @source '../../packages/{components,system}/**/*.{tsx,ts}';

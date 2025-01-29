@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 const variants = {
   default: 'border-border bg-bg-body',
-  primary: 'border-primary-300 bg-primary-50/25',
+  primary: 'border-(--color-primary-300) bg-(--color-primary-50)',
 };
 
 export interface RectangleProps {
@@ -19,7 +19,7 @@ export const Rectangle = ({
   variant = 'default',
 }: RectangleProps) => (
   <div
-    className={`${variants[variant]} rounded-xs flex border-2 border-dashed`}
+    className={`${variants[variant]} flex rounded-xs border-2 border-dashed`}
     style={{ height: height, width: width }}
   >
     {children}
