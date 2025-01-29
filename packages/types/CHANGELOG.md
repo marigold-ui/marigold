@@ -1,5 +1,11 @@
 # @marigold/types
 
+## 1.2.1
+
+### Patch Changes
+
+- 8b7be8e: fix(types): Update deps and fix peer dependency for `@types/react`.
+
 ## 1.2.0
 
 ### Minor Changes
