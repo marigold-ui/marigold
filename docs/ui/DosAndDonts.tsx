@@ -20,8 +20,8 @@ const Title = ({ children }: PropsWithChildren) => (
   <div
     className={cn(
       '[grid-area:title]',
-      'group-data-[type=do]:bg-bg-success group-data-[type=do]:border-border-success group-data-[type=dont]:bg-bg-error group-data-[type=dont]:border-border-error',
-      'flex items-center gap-2 border-t-4 px-4 pb-2 pt-4 font-bold uppercase'
+      'group-data-[type=do]:border-(--color-border-success) group-data-[type=do]:bg-(--color-bg-success) group-data-[type=dont]:border-(--color-border-error) group-data-[type=dont]:bg-(--color-bg-error)',
+      'flex items-center gap-2 border-t-4 px-4 pt-4 pb-2 font-bold uppercase'
     )}
   >
     {children}
@@ -33,7 +33,7 @@ const Figure = ({ children }: PropsWithChildren) => (
 );
 
 const Description = ({ children }: PropsWithChildren) => (
-  <div className="group-data-[type=do]:bg-bg-success group-data-[type=dont]:bg-bg-error text-pretty px-4 pb-4 text-sm [grid-area:description] *:m-0 *:leading-relaxed">
+  <div className="px-4 pb-4 text-sm text-pretty [grid-area:description] *:m-0 *:leading-relaxed group-data-[type=do]:bg-(--color-bg-success) group-data-[type=dont]:bg-(--color-bg-error)">
     {children}
   </div>
 );
@@ -45,7 +45,7 @@ export const Do = ({ children }: PropsWithChildren) => (
     <Title>
       <svg
         viewBox="0 0 24 24"
-        className="bg-border-success size-4 flex-none rounded-full fill-white p-1"
+        className="size-4 flex-none rounded-full bg-(--color-border-success) fill-white p-1"
       >
         <path d="M8.17368 16.6154L3.19528 11.637L1.5 13.3204L8.17368 19.994L22.5 5.66772L20.8167 3.98437L8.17368 16.6154Z"></path>
       </svg>
@@ -65,7 +65,7 @@ export const Dont = ({ children }: PropsWithChildren) => (
     <Title>
       <svg
         viewBox="0 0 24 24"
-        className="bg-border-error size-4 flex-none rounded-full fill-white p-1"
+        className="size-4 flex-none rounded-full bg-(--color-border-error) fill-white p-1"
       >
         <path d="M19.8281 5.74868L18.2513 4.17188L12 10.4232L5.74868 4.17188L4.17188 5.74868L10.4232 12L4.17188 18.2513L5.74868 19.8281L12 13.5768L18.2513 19.8281L19.8281 18.2513L13.5768 12L19.8281 5.74868Z"></path>
       </svg>
