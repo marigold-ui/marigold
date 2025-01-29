@@ -8,7 +8,8 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:jest/recommended',
     'plugin:jest/style',
-    'plugin:tailwindcss/recommended',
+    // diabled because not updated yet to version tailwind 4
+    // 'plugin:tailwindcss/recommended',
     'prettier',
   ],
   settings: {
@@ -21,8 +22,8 @@ module.exports = {
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'off',
     // Turned off because we use custom-classnames for our design tokens
-    'tailwindcss/no-custom-classname': 'on',
-    'tailwindcss/classnames-order': 'error',
+    // 'tailwindcss/no-custom-classname': 'on',
+    // 'tailwindcss/classnames-order': 'error',
   },
   parserOptions: {
     babelOptions: {
