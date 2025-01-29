@@ -108,17 +108,17 @@
   /* custom colors */
 
   /* brand */
-  --color-brand-primary-50: #fff2e6;
-  --color-brand-primary-100: #fee6cd;
-  --color-brand-primary-200: #fdcc9b;
-  --color-brand-primary-300: #fcb369;
-  --color-brand-primary-400: #fb9937;
-  --color-brand-primary-500: #fa8005;
-  --color-brand-primary-600: #c86604;
-  --color-brand-primary-700: #964d03;
-  --color-brand-primary-800: #643302;
-  --color-brand-primary-900: #321a01;
-  --color-brand-primary-950: #190d00;
+  --color-primary-50: #fff2e6;
+  --color-primary-100: #fee6cd;
+  --color-primary-200: #fdcc9b;
+  --color-primary-300: #fcb369;
+  --color-primary-400: #fb9937;
+  --color-primary-500: #fa8005;
+  --color-primary-600: #c86604;
+  --color-primary-700: #964d03;
+  --color-primary-800: #643302;
+  --color-primary-900: #321a01;
+  --color-primary-950: #190d00;
 
   /* code - material palenight theme */
   --color-code-50: #f6f7f9;
