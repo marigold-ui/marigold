@@ -3,6 +3,8 @@
   "compilerOptions": {
     "jsx": "preserve",
     "baseUrl": ".",
+    "moduleResolution": "node16",
+    "module": "Node16",
     "paths": {
       "@marigold/*": ["./packages/*/src", "./themes/*/src"]
     }
