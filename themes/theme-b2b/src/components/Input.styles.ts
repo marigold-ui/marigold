@@ -31,8 +31,8 @@ export const Input: ThemeComponent<'Input'> = {
     'leading-loose',
     'read-only:focus:border-border-base read-only:focus:outline-hidden',
     // Extra padding for when an icon/action is present
-    'group-data-[icon]/input:pl-8',
-    'group-data-[action]/input:pr-8',
+    'group-data-icon/input:pl-8',
+    'group-data-action/input:pr-8',
     'placeholder:text-text-base-disabled',
   ]),
 };
