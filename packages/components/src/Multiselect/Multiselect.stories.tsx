@@ -11,7 +11,7 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'Set the label of the Combobox',
+      description: 'Set the label of the Multiselect',
       table: {
         type: { summary: 'text' },
         defaultValue: { summary: '' },
@@ -31,7 +31,7 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      description: 'Disable ComboBox',
+      description: 'Disable Multiselect',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },

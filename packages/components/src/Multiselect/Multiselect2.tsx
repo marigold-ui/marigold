@@ -101,7 +101,7 @@ const Input = ({ innerRef, ...props }: InputProps) => {
     {} as Record<string, any>
   );
 
-  return <_Input ref={innerRef} {...inputProps} />;
+  return <_Input disabled={props.isDisabled} ref={innerRef} {...inputProps} />;
 };
 
 const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
@@ -218,16 +218,17 @@ export const Multiselect2 = ({
           aria-invalid={error}
           isClearable={false}
           isSearchable={!readOnly}
-          isDisabled={disabled}
           isMulti
           closeMenuOnSelect={false}
           classNames={getClassNames(classNames)}
+          isDisabled={disabled}
           components={{
             Input,
             MultiValueRemove,
-            DropdownIndicator: ({ innerProps }) => (
+            DropdownIndicator: ({ innerProps, isDisabled }) => (
               <button
                 {...(innerProps as ButtonHTMLAttributes<HTMLButtonElement>)}
+                disabled={isDisabled}
                 className={classNames.icon}
               >
                 <ChevronDown className={'size-4'} />
