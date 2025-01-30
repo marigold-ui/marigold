@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 const variants = {
   default: 'border-border bg-bg-body',
-  primary: 'border-(--color-primary-300) bg-(--color-primary-50)',
+  primary: 'border-primary-300 bg-primary-50/25',
 };
 
 export interface RectangleProps {

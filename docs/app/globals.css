@@ -12,9 +12,6 @@
 
 @source '../../themes/theme-docs/src/**/*.ts';
 
-/* from docs */
-@source './../../ui/{**/*}.{js,ts,jsx,tsx,mdx}';
-
 /* marigold components */
 @source '../../packages/{components,system}/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
@@ -24,6 +21,7 @@
 @source './node_modules/@marigold/theme-docs/dist/*.js';
 @source './node_modules/@marigold/system/dist/*.js';
 @source './node_modules/@marigold/components/dist/*.js';
+
 /* tailwind plugins */
 
 @plugin '@tailwindcss/typography';

@@ -13,7 +13,7 @@
 @source './node_modules/@marigold/system/dist/*.js';
 @source './node_modules/@marigold/components/dist/*.js';
 
-@source './safelist.txt'
+@source './safelist.txt';
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
