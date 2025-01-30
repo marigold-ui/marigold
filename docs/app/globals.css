@@ -7,14 +7,13 @@
 @source './../../content/**/*.{js,ts,jsx,tsx,mdx}';
 
 /* from docs */
-@source './../ui/{**/*}.{js,ts,jsx,tsx,mdx}';
+@source './../ui/**/*.{js,ts,jsx,tsx,mdx}';
 @source './**/*.{js,ts,jsx,tsx,mdx}';
 
 @source '../../themes/theme-docs/src/**/*.ts';
 
 /* from docs */
 @source './../../ui/{**/*}.{js,ts,jsx,tsx,mdx}';
-@source './**/*.{js,ts,jsx,tsx,mdx}';
 
 /* marigold components */
 @source '../../packages/{components,system}/**/*.{tsx,ts}';
