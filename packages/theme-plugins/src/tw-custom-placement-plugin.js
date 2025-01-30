@@ -1,11 +1,11 @@
 const plugin = require('tailwindcss/plugin');
 
-module.exports = plugin(({ matchVariant, e }) => {
+module.exports = plugin(({ matchVariant }) => {
   matchVariant(
     'group',
     (value, { modifier }) =>
       modifier
-        ? `:merge(.group\\/${e(modifier)})[data-${value}] &`
+        ? `:merge(.group\\/${modifier})[data-${value}] &`
         : `:merge(.group)[data-${value}] &`,
     {
       values: {
