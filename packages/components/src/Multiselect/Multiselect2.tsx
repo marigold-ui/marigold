@@ -2,15 +2,22 @@
 
 import { ButtonHTMLAttributes, DetailedHTMLProps, HTMLAttributes } from 'react';
 import {
+  ButtonContext,
   FieldErrorContext,
+  InputContext,
   Provider,
   type ValidationResult,
 } from 'react-aria-components';
 import { Button, Input as _Input } from 'react-aria-components';
-import Select from 'react-select';
-import { InputProps, Props as SelectProps } from 'react-select';
+import Select, {
+  ClassNamesConfig,
+  InputProps,
+  MultiValueRemoveProps,
+  Props as SelectProps,
+} from 'react-select';
 import { useField } from '@react-aria/label';
 import { cn, useClassNames } from '@marigold/system';
+import { ComponentClassNames } from '@marigold/system';
 import { ButtonProps } from '../Button';
 import { FieldBaseProps } from '../FieldBase';
 import { HelpText } from '../HelpText';
@@ -48,6 +55,7 @@ interface MultipleSelectProps
   defaultSelectedItems?: SelectProps['defaultValue'];
   defaultValue?: SelectProps['defaultInputValue'];
   onChange?: SelectProps['onInputChange'];
+  onSelectionChange?: SelectProps['onChange'];
 }
 
 interface CloseButtonProps
@@ -81,10 +89,46 @@ const propsToBeRemoved = [
   'isHidden',
   'cx',
 ];
-const Input = ({ innerRef, className, ...props }: InputProps) => {
+const Input = ({ innerRef, ...props }: InputProps) => {
   // innerRef is needed for focusing the input
-  return <_Input {...props} ref={innerRef} className={className} />;
+  const inputProps = Object.entries(props).reduce(
+    (acc: Record<string, any>, [key, value]) => {
+      if (!propsToBeRemoved.includes(key)) {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
+
+  return <_Input ref={innerRef} {...inputProps} />;
 };
+
+const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
+  return (
+    // <CloseButton {...innerProps as any} />
+    <Button slot="remove" {...(innerProps as any)}>
+      <svg viewBox="0 0 20 20" fill="currentColor" width={20} height={20}>
+        <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path>
+      </svg>
+    </Button>
+  );
+};
+
+const getClassNames = (
+  classNames: ComponentClassNames<'MultiSelect'>
+): ClassNamesConfig => ({
+  control: () => classNames.container,
+  container: () => 'pointer-events-auto',
+  placeholder: () => 'hidden',
+  indicatorsContainer: () => 'h-5',
+  indicatorSeparator: () => 'hidden',
+  menu: () => cn('shadow-none', classNames.listContainer),
+  menuList: () =>
+    cn('overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0', classNames.list),
+  option: ({ isFocused }) => cn(classNames.option, { isFocused: isFocused }),
+  multiValue: () => classNames.tag,
+});
 
 export const Multiselect2 = ({
   disabled,
@@ -99,6 +143,7 @@ export const Multiselect2 = ({
   placeholder,
   description,
   onChange,
+  onSelectionChange,
   ...rest
 }: MultipleSelectProps) => {
   const classNames = useClassNames({
@@ -111,6 +156,8 @@ export const Multiselect2 = ({
     options: items,
     defaultInputValue: defaultValue,
     defaultValue: defaultSelectedItems,
+    onInputChange: onChange,
+    onChange: onSelectionChange,
     ...rest,
   };
 
@@ -132,6 +179,22 @@ export const Multiselect2 = ({
             validationErrors: [],
           },
         ],
+        [
+          InputContext,
+          {
+            ...fieldProps,
+            className: classNames.input,
+          },
+        ],
+        [
+          ButtonContext,
+          {
+            // react-select doesn't handle readonly so we had to do it manually here
+            // keep to the button disabled in read only to prevent menu from opening
+            isDisabled: disabled || readOnly,
+            className: cn('flex items-center', classNames.closeButton),
+          },
+        ],
       ]}
     >
       <div
@@ -151,65 +214,17 @@ export const Multiselect2 = ({
               },
             }),
           }}
+          inputId={fieldProps.id}
           aria-invalid={error}
           isClearable={false}
           isSearchable={!readOnly}
           isDisabled={disabled}
           isMulti
           closeMenuOnSelect={false}
-          classNames={{
-            control: () => classNames.container,
-            container: () => 'pointer-events-auto',
-            placeholder: () => 'hidden',
-            indicatorsContainer: () => 'h-5',
-            indicatorSeparator: () => 'hidden',
-            menu: () => cn('shadow-none', classNames.listContainer),
-            menuList: () =>
-              cn(
-                'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0',
-                classNames.list
-              ),
-            option: ({ isFocused }) =>
-              cn(classNames.option, { isFocused: isFocused }),
-            multiValue: () => classNames.tag,
-          }}
+          classNames={getClassNames(classNames)}
           components={{
-            // React-select
-            Input: props => {
-              const inputProps = Object.entries(props).reduce(
-                (acc: Record<string, any>, [key, value]) => {
-                  if (!propsToBeRemoved.includes(key)) {
-                    acc[key] = value;
-                  }
-                  return acc;
-                },
-                {} as Record<string, any>
-              );
-              return (
-                <Input
-                  {...(inputProps as any)}
-                  {...fieldProps}
-                  className={classNames.input}
-                  disabled={disabled}
-                  hidden={props.hidden}
-                  placeholder={
-                    !props.getValue().length ? placeholder : undefined
-                  }
-                />
-              );
-            },
-            // react-select
-            MultiValueRemove: ({ innerProps }) => {
-              return (
-                <CloseButton
-                  {...innerProps}
-                  // react-select doesn't handle readonly so we had to do it manually here
-                  // keep to the button disabled in read only to prevent menu from opening
-                  isDisabled={disabled || readOnly}
-                  className={cn('flex items-center', classNames.closeButton)}
-                />
-              );
-            },
+            Input,
+            MultiValueRemove,
             DropdownIndicator: ({ innerProps }) => (
               <button
                 {...(innerProps as ButtonHTMLAttributes<HTMLButtonElement>)}

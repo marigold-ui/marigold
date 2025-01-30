@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
+import { Stack } from '../Stack';
 import { Multiselect2 } from './Multiselect2';
 
 const meta = {
@@ -105,4 +107,32 @@ export const Basic: StoryObj<any> = {
       {...args}
     />
   ),
+};
+
+export const Controlled: StoryObj<any> = {
+  render: args => {
+    const [current, setCurrent] = useState<string>('');
+    const [selectedValues, setSelectedValues] = useState<Array<object>>([]);
+
+    return (
+      <Stack space={3}>
+        <Multiselect2
+          label="Label"
+          items={drinks}
+          onChange={value => setCurrent(value)}
+          onSelectionChange={(selectedValues: object[]) =>
+            setSelectedValues(selectedValues)
+          }
+          {...args}
+        />
+        <hr />
+        <pre>
+          current: {current}, selected:{' '}
+          {selectedValues
+            .map(({ value }: { value: string }) => value)
+            .join(', ')}
+        </pre>
+      </Stack>
+    );
+  },
 };
