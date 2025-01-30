@@ -81,7 +81,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
       {navigation.map(section => (
         <div key={section.name} className="flex flex-col gap-2">
           <div className="font-semibold">{section.name}</div>
-          <div className="ml-0.5 flex flex-col border-l border-(--color-secondary-300)">
+          <div className="border-secondary-300 ml-0.5 flex flex-col border-l">
             {section.links.map(({ name, href, badge }) => (
               <NavLink
                 className="flex items-center gap-4"
@@ -98,10 +98,10 @@ export const Navigation = ({ onClick }: NavigationProps) => {
           {section.subsections &&
             section.subsections.map(({ name, links }) => (
               <div key={name} className="flex flex-col gap-2.5 pb-4">
-                <div className="text-sm font-semibold text-(--color-secondary-600)">
+                <div className="text-secondary-600 text-sm font-semibold">
                   {name}
                 </div>
-                <div className="ml-0.5 flex flex-col border-l border-(--color-secondary-300)">
+                <div className="border-secondary-300 ml-0.5 flex flex-col border-l">
                   {links?.map(({ name, href, badge }) => (
                     <div key={href}>
                       <NavLink

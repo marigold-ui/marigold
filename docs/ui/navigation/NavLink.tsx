@@ -7,9 +7,9 @@ const styles = cva([], {
   variants: {
     variant: {
       default: [
-        'text-(--color-secondary-500) -ml-px block border-l border-transparent py-2 pl-4 text-sm',
+        'text-secondary-500 -ml-px block border-l border-transparent py-2 pl-4 text-sm',
       ],
-      main: ['text-(--color-secondary-600)'],
+      main: ['text-secondary-600'],
     },
     current: {
       true: '',
@@ -20,24 +20,22 @@ const styles = cva([], {
     {
       variant: 'default',
       current: true,
-      className:
-        'border-(--color-primary-500) text-(--color-primary-500) font-medium',
+      className: 'border-primary-500 text-primary-500 font-medium',
     },
     {
       variant: 'default',
       current: false,
-      className:
-        'hover:border-(--color-secondary-600) hover:text-(--color-secondary-800)',
+      className: 'hover:border-secondary-600 hover:text-secondary-800',
     },
     {
       variant: 'main',
       current: true,
-      className: 'text-(--color-primary-500) font-medium',
+      className: 'text-primary-500 font-medium',
     },
     {
       variant: 'main',
       current: false,
-      className: 'hover:text-(--color-secondary-900)',
+      className: 'hover:text-secondary-900',
     },
   ],
   defaultVariants: {
