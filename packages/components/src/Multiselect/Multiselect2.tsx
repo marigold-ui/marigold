@@ -127,7 +127,7 @@ export const Multiselect2 = ({
         [
           FieldErrorContext,
           {
-            isInvalid: false,
+            isInvalid: !!error,
             validationDetails: {} as any,
             validationErrors: [],
           },
@@ -137,12 +137,20 @@ export const Multiselect2 = ({
       <div
         className={cn(classNames.field, 'group/field')}
         data-required={props.required}
-        data-error={error}
+        data-invalid={error}
         data-readonly={readOnly}
       >
         {props.label && <Label {...labelProps}>{props.label}</Label>}
         <Select
           {...props}
+          styles={{
+            control: base => ({
+              ...base,
+              '&:hover': {
+                borderColor: 'none',
+              },
+            }),
+          }}
           aria-invalid={error}
           isClearable={false}
           isSearchable={!readOnly}
@@ -151,6 +159,7 @@ export const Multiselect2 = ({
           closeMenuOnSelect={false}
           classNames={{
             control: () => classNames.container,
+            container: () => 'pointer-events-auto',
             placeholder: () => 'hidden',
             indicatorsContainer: () => 'h-5',
             indicatorSeparator: () => 'hidden',
@@ -181,7 +190,7 @@ export const Multiselect2 = ({
                   {...(inputProps as any)}
                   {...fieldProps}
                   className={classNames.input}
-                  disabled={props.disabled}
+                  disabled={disabled}
                   hidden={props.hidden}
                   placeholder={
                     !props.getValue().length ? placeholder : undefined

@@ -12,7 +12,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     // to override react-select height
     'min-h-6',
     '[&>*:first-child]:p-0',
-    'has-[input:disabled]:bg-bg-inverted-disabled has-[input:disabled]:border-border-base-disabled has-[input:disabled]:text-text-base-disabled has-[input:disabled]:cursor-not-allowed',
+    'aria-disabled:bg-bg-inverted-disabled aria-disabled:border-border-base-disabled aria-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
     'flex items-center gap-1',
     'has-[input[data-invalid=true]]:border-border-error',
     'leading-[22px]',
@@ -49,7 +49,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'my-0.5 rounded-sm',
     'border-border-inverted border bg-white',
   ]),
-  list: cva(''),
+  list: cva('pointer-events-auto'),
   option: cva([
     'font-body text-[13px] text-text-base',
     'flex flex-col',
@@ -60,5 +60,3 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'aria-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),
 };
-
-// [&.isFocused:not([aria-disabled='true'])]
