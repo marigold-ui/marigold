@@ -12,6 +12,8 @@
 @source './node_modules/@marigold/system/dist/*.js';
 @source './node_modules/@marigold/theme-docs/dist/index.js';
 
+@source './safelist.txt';
+
 @layer base {
   *,
   ::after,
