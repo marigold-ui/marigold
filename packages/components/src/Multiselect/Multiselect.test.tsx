@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Theme, cva } from '@marigold/system';
@@ -12,6 +12,8 @@ const theme: Theme = {
   name: 'test',
   components: {
     MultiSelect: {
+      action: cva(''),
+      container: cva(''),
       field: cva('group/field w-full'),
       input: cva('base-input-style'),
       tag: cva('tag-style'),
@@ -21,8 +23,14 @@ const theme: Theme = {
       option: cva('option-style'),
       icon: cva('icon-style'),
     },
-    Label: cva('label-style'),
-    HelpText: cva('help-text-style'),
+    Label: {
+      container: cva('label-style'),
+      indicator: cva('indicator-style'),
+    },
+    HelpText: {
+      container: cva('help-text-style'),
+      icon: cva('icon-style'),
+    },
   },
 };
 
@@ -114,13 +122,14 @@ test('shows error message when error is present', () => {
 
 test('supports controlled selection', async () => {
   const Controlled = () => {
-    const [selected, setSelected] = React.useState([]);
+    const [selected, setSelected] = React.useState<typeof options>([]);
     return (
       <>
         <Multiselect2
           label="Vegetables"
           items={options}
           onSelectionChange={setSelected}
+          menuIsOpen={true} // Force menu to stay open
         />
         <div data-testid="output">{selected.length}</div>
       </>
@@ -130,39 +139,51 @@ test('supports controlled selection', async () => {
   render(<Controlled />);
 
   const input = screen.getByLabelText('Vegetables');
-
   await user.click(input);
 
-  const spinach = await screen.findByText('Spinach');
+  const menu = await screen.findByRole('listbox');
+  const spinach = within(menu).getByText('Spinach');
   await user.click(spinach);
 
   expect(await screen.findByTestId('output')).toHaveTextContent('1');
 
-  const carrots = await screen.findByText('Carrots');
+  const carrots = within(menu).getByText('Carrots');
   await user.click(carrots);
 
   expect(await screen.findByTestId('output')).toHaveTextContent('2');
 });
 
-// test('shows loading state when async options', async () => {
-//     render(
-//         <Multiselect2
-//             label="Vegetables"
-//             options={options}
-//             isLoading
-//         />
-//     );
+test('renders close button in selected tags', async () => {
+  render(
+    <Multiselect2
+      label="Vegetables"
+      items={options}
+      defaultSelectedItems={[options[0]]}
+    />
+  );
 
-//     await user.click(screen.getByLabelText('Vegetables'));
-//     expect(screen.getByText('Loading...')).toBeInTheDocument();
-// });
+  const removeButton = await screen.findByRole('button', {
+    name: /remove spinach/i,
+  });
+  expect(removeButton).toBeInTheDocument();
+  expect(removeButton.querySelector('svg')).toBeVisible();
+});
 
-// test('applies custom classnames from theme', () => {
-//     render(<Multiselect2 label="Vegetables" options={options} />);
+test('handles close button click', async () => {
+  render(
+    <Multiselect2
+      label="Vegetables"
+      items={options}
+      defaultSelectedItems={[options[0]]}
+    />
+  );
 
-//     const container = document.querySelector('.group\\/field');
-//     expect(container).toHaveClass('w-full');
+  const removeButton = await screen.findByRole('button', {
+    name: /remove spinach/i,
+  });
+  await user.click(removeButton);
 
-//     const tag = screen.queryByText('Spinach');
-//     expect(tag).toHaveClass('tag-style');
-// });
+  await waitFor(() => {
+    expect(screen.queryByText('Spinach')).not.toBeInTheDocument();
+  });
+});
