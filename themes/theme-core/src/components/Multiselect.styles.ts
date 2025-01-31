@@ -25,8 +25,6 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'leading-[22px]',
     'data-[focused]:outline-none outline-none border-0',
     'disabled:cursor-not-allowed',
-    // 'read-only:border-transparent read-only:bg-transparent',
-    // Extra padding for when an icon/action is present
     'group-data-[icon]/input:pl-5',
     'group-data-[action]/input:pr-8',
     'placeholder:text-text-inverted-disabled',

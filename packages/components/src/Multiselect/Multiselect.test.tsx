@@ -129,6 +129,7 @@ test('supports controlled selection', async () => {
           label="Vegetables"
           items={options}
           onSelectionChange={setSelected}
+          // @ts-ignore
           menuIsOpen={true} // Force menu to stay open
         />
         <div data-testid="output">{selected.length}</div>
