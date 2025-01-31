@@ -5,8 +5,8 @@ module.exports = plugin(({ matchVariant }) => {
     'group',
     (value, { modifier }) =>
       modifier
-        ? `:merge(.group\\/${modifier})[data-${value}] &`
-        : `:merge(.group)[data-${value}] &`,
+        ? `:is(.group\\/${modifier})[data-${value}] &`
+        : `:is(.group)[data-${value}] &`,
     {
       values: {
         focus: 'focus',
