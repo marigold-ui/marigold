@@ -7,7 +7,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'data-unavailable:text-text-base-disabled data-unavailable:cursor-not-allowed',
     'data-hovered:[&:not([data-unavailable])]:bg-bg-inverted-hover',
     'data-selected:bg-bg-selected outline-hidden data-selected:font-semibold data-selected:text-white',
-    'data-focus-visible:outline-outline-focus',
+    'data-focus-visible:outline-outline-focus data-focus-visible:outline data-focus-visible:outline-offset-1',
   ]),
   calendarControllers: cva(),
   calendarHeader: cva(['fontWeight:bolder p-2']),
