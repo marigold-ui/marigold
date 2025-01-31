@@ -1,4 +1,7 @@
+'use client';
+
 import { Card, Inline, Stack, Table, alignment, cn, paddingSpace } from '@/ui';
+import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
 import { useThemeSwitch } from './ThemeSwitch';
 
@@ -54,13 +57,13 @@ export const BorderRadius = () => (
         <code className="before:content-none after:content-none">
           rounded-sm 2px
         </code>
-        <div className="bg-bg-body rounded-xs h-14 w-full border-2 border-dashed px-3 py-2"></div>
+        <div className="bg-bg-body h-14 w-full rounded-xs border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
           rounded 4px
         </code>
-        <div className="bg-bg-body rounded-xs h-14 w-full border-2 border-dashed px-3 py-2"></div>
+        <div className="bg-bg-body h-14 w-full rounded-xs border-2 border-dashed px-3 py-2"></div>
       </Stack>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">
@@ -97,33 +100,49 @@ export const BorderRadius = () => (
 );
 
 export const Breakpoints = () => {
-  const { current, themes } = useThemeSwitch();
+  const { current } = useThemeSwitch();
 
   if (!current) {
     return null;
   }
 
-  const breaks = themes[current].screens || {};
+  const [breakpoints, setBreakpoints] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const breakpointKeys = ['sm', 'md', 'lg', 'xl', '2xl'];
+    const breakpointValues: Record<string, string> = {};
+
+    breakpointKeys.forEach(key => {
+      const value = getComputedStyle(
+        document.getElementById(`breakpoint-${current}`)!
+      ).getPropertyValue(`--breakpoint-${key}`);
+      breakpointValues[key] = value;
+    });
+
+    setBreakpoints(breakpointValues);
+  }, []);
 
   return (
-    <Table aria-label="breakpoints" stretch>
-      <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
-        <Table.Column key={'value'}>Breaks at</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        {Object.entries(breaks).map(([key, value]) => (
-          <Table.Row key={key}>
-            <Table.Cell>
-              <code className="before:content-none after:content-none">
-                {key}
-              </code>
-            </Table.Cell>
-            <Table.Cell>{value}</Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
+    <div data-theme={current} id={`breakpoint-${current}`}>
+      <Table aria-label="breakpoints" stretch>
+        <Table.Header>
+          <Table.Column key={'name'}>Name</Table.Column>
+          <Table.Column key={'value'}>Breaks at</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {Object.entries(breakpoints).map(([key, value]) => (
+            <Table.Row key={key}>
+              <Table.Cell>
+                <code className="before:content-none after:content-none">
+                  {key}
+                </code>
+              </Table.Cell>
+              <Table.Cell>{value}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </div>
   );
 };
 
