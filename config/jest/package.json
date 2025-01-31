@@ -22,24 +22,24 @@
   },
   "dependencies": {
     "@babel/core": "7.26.0",
-    "@swc/core": "1.10.6",
+    "@swc/core": "1.10.7",
     "@swc/jest": "0.2.37",
     "@types/jest": "29.5.14",
     "babel-jest": "29.7.0",
     "jest-watch-typeahead": "2.2.2",
     "merge-deep": "3.0.3",
-    "react-test-renderer": "18.3.1"
+    "react-test-renderer": "19.0.0"
   },
   "peerDependencies": {
     "jest": "29.x",
     "jest-environment-jsdom": "29.x",
-    "react": "18.x",
+    "react": "19.x",
     "typescript": "5.x"
   },
   "devDependencies": {
     "jest": "29.7.0",
     "jest-transform-css": "6.0.2",
-    "react": "18.3.1",
-    "typescript": "5.7.2"
+    "react": "19.0.0",
+    "typescript": "5.7.3"
   }
 }
