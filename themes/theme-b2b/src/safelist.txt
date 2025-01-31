@@ -112,8 +112,11 @@ bg-bg-base: var(--color-white);
 bg-bg-base-hover: var(--color-gray-300);
 bg-bg-base-active: var(--color-gray-200);
 bg-bg-base-disabled: var(--color-brand-200);
+bg-bg-base-disabled/60 /* used in accv3 */
 
 bg-bg-inverted: var(--color-gray-700);
+bg-bg-inverted/40 /* used in accv3 */
+bg-bg-inverted/50 /* used in accv3 */
 
 bg-bg-brand: var(--color-brand-700);
 bg-bg-brand-hover: var(--color-brand-600);

@@ -62,6 +62,7 @@ bg-red-950
 bg-secondary-50
 bg-secondary-100
 bg-secondary-200
+bg-secondary-200/80 /* used in reference-app */
 bg-secondary-300
 bg-secondary-400
 bg-secondary-400/10
@@ -82,6 +83,7 @@ bg-primary-500
 bg-primary-600
 bg-primary-700
 bg-primary-800
+bg-primary-800/5 /* used in reference-app */
 bg-primary-900
 bg-primary-950
 
@@ -192,6 +194,7 @@ text-secondary-700
 text-secondary-800
 text-secondary-900
 text-secondary-950
+text-secondary-950/60 /* used in reference-app */
 
 text-primary-50
 text-primary-100
@@ -204,6 +207,7 @@ text-primary-700
 text-primary-800
 text-primary-900
 text-primary-950
+text-primary-950/60 /* used in reference-app */
 
 text-code-50
 text-code-100
@@ -485,3 +489,7 @@ border-border: var(--color-secondary-300);
 border-border-primary: var(--color-secondary-950);
 border-border-success: var(--color-lime-500);
 border-border-error: var(--color-red-400);
+
+from-neutral-700/50 /* used in reference-app */
+via-neutral-700/10 /* used in reference-app */
+via-neutral-700/30 /* used in reference-app */
