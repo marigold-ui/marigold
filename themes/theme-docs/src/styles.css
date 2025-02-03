@@ -3,9 +3,9 @@
 
 /* from tailwind.config.ts */
 @source './**/*.*.ts';
-@source '../../packages/{components,system}/**/*.{tsx,ts}';
-@source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
-@source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
+@source '../../../packages/{components,system}/**/*.{tsx,ts}';
+@source '!../../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
+@source '!../../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
 
 /* from preset.ts */
 @source './node_modules/@marigold/components/dist/*.js';
