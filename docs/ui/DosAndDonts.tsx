@@ -20,7 +20,7 @@ const Title = ({ children }: PropsWithChildren) => (
   <div
     className={cn(
       '[grid-area:title]',
-      'group-data-[type=do]:border-border-success group-data-[type=do]:bg-bg-success group-data-[type=dont]:border-border-error group-data-[type=dont]:bg-bg-error',
+      'group-data-[type=do]:border-(--color-border-success) group-data-[type=do]:bg-(--color-bg-success) group-data-[type=dont]:border-(--color-border-error) group-data-[type=dont]:bg-(--color-bg-error)',
       'flex items-center gap-2 border-t-4 px-4 pt-4 pb-2 font-bold uppercase'
     )}
   >
