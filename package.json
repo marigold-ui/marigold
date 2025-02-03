@@ -9,7 +9,7 @@
   },
   "packageManager": "pnpm@9.12.3",
   "dependencies": {
-    "@babel/core": "7.26.0",
+    "@babel/core": "7.26.7",
     "@changesets/changelog-git": "0.2.0",
     "@changesets/cli": "2.27.11",
     "@manypkg/get-packages": "2.2.2",
