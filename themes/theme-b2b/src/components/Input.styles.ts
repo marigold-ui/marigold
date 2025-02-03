@@ -5,17 +5,22 @@ export const inputBox =
 export const inputBackground = 'bg-bg-surface';
 export const inputSpacing = 'px-2';
 
-export const inputFocus = (selector: string = 'focus') =>
-  `${selector}:outline-outline-focus`;
+export const inputFocus = {
+  focus: 'focus:outline-outline-focus focus:outline-2',
+};
 
-export const inputDisabled = (selector: string = 'disabled') =>
-  `${selector}:bg-bg-base-disabled ${selector}:text-text-base-disabled ${selector}:hover:border-border-base-disabled ${selector}:border-border-base-disabled ${selector}:cursor-not-allowed`;
+export const inputDisabled = {
+  disabled:
+    'disabled:bg-bg-base-disabled disabled:text-text-base-disabled disabled:hover:border-border-base-disabled disabled:border-border-base-disabled disabled:cursor-not-allowed',
+};
 
-export const inputError = (selector: string = 'error') =>
-  `${selector}:border-border-error`;
+export const inputError = {
+  groupErrorField: 'group-error/field:border-border-error',
+};
 
-export const inputHover = (selector: string = 'hover') =>
-  `${selector}:border-border-base-hover`;
+export const inputHover = {
+  hover: 'hover:border-border-base-hover',
+};
 
 export const Input: ThemeComponent<'Input'> = {
   icon: cva('left-1'),
@@ -23,16 +28,16 @@ export const Input: ThemeComponent<'Input'> = {
   input: cva([
     inputBox,
     inputBackground,
-    inputFocus(),
-    inputDisabled(),
-    inputHover(),
-    inputError('group-error/field'),
+    inputFocus['focus'],
+    inputDisabled['disabled'],
+    inputHover['hover'],
+    inputError['groupErrorField'],
     inputSpacing,
     'leading-loose',
     'read-only:focus:border-border-base read-only:focus:outline-hidden',
     // Extra padding for when an icon/action is present
-    'group-data-icon/input:pl-8',
-    'group-data-action/input:pr-8',
+    'group-[icon]/input:pl-8',
+    'group-[action]/input:pr-8',
     'placeholder:text-text-base-disabled',
   ]),
 };
