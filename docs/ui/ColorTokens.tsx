@@ -1,80 +1,55 @@
 'use client';
 
-import { iterateTokens } from '@/lib/utils';
-import { Headline, Table, createVar } from '@/ui';
-import type { ReactNode } from 'react';
+import { Headline } from '@/ui';
+import {
+  BackgroundTokens,
+  Black,
+  BorderTokens,
+  ColorPaletts,
+  OutlineTokens,
+  TextTokens,
+  White,
+} from './ColorTable';
 import { useThemeSwitch } from './ThemeSwitch';
 
 interface ColorTokenTableProps {
   sections: { [group: string]: [token: string, color: string][] };
 }
 export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
-  const { current, themes } = useThemeSwitch();
+  const { current } = useThemeSwitch();
 
   if (!current) {
     return null;
   }
 
-  const tokens = iterateTokens(themes[current].colors || {});
-
-  tokens.forEach(([token, color]) => {
-    const section = token.substring(0, token.indexOf('-')) || token;
-    // When the section is not yet created
-    if (!sections[section]) {
-      sections[section] = [];
-    }
-    sections[section].push([token, color]);
-  });
-
   return (
-    <>
-      {Object.entries(sections).map(([group, tokenValues]) => (
-        <div key={group}>
-          <Headline level={3}>
-            {group.charAt(0).toUpperCase() + group.slice(1)}
-          </Headline>
-          <Table aria-labelledby="tokens table" variant="colorTable" stretch>
-            <Table.Header>
-              <Table.Column key={'name'}>Name</Table.Column>
-              <Table.Column key={'value'}>Value</Table.Column>
-              <Table.Column key={'example'}>Example</Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {tokenValues.map(([token, color]) => (
-                <Table.Row key={token}>
-                  <Table.Cell>
-                    <code className="before:content-none after:content-none">
-                      {token.replace('-DEFAULT', '')}
-                    </code>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <code className="before:content-none after:content-none">
-                      {color}
-                    </code>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <ColorCanvas color={color} />
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        </div>
-      ))}
-    </>
+    <div data-theme={current}>
+      <Headline level={3}>Brand</Headline>
+      <ColorPaletts name="brand" />
+      <Headline level={3}>Accent</Headline>
+      <ColorPaletts name="accent" />
+      <Headline level={3}>White</Headline>
+      <White />
+      <Headline level={3}>Black</Headline>
+      <Black />
+      <Headline level={3}>Gray</Headline>
+      <ColorPaletts name="gray" />
+      <Headline level={3}>Blue</Headline>
+      <ColorPaletts name="blue" />
+      <Headline level={3}>Yellow</Headline>
+      <ColorPaletts name="yellow" />
+      <Headline level={3}>Green</Headline>
+      <ColorPaletts name="green" />
+      <Headline level={3}>Red</Headline>
+      <ColorPaletts name="red" />
+      <Headline level={3}>Text</Headline>
+      <TextTokens />
+      <Headline level={3}>Background</Headline>
+      <BackgroundTokens />
+      <Headline level={3}>Border</Headline>
+      <BorderTokens />
+      <Headline level={3}>Outline</Headline>
+      <OutlineTokens />
+    </div>
   );
 };
-
-export interface ColorCanvasProps {
-  children?: ReactNode;
-  color: string;
-}
-
-export const ColorCanvas = ({ children, color }: ColorCanvasProps) => (
-  <div
-    className="rounded-xs w-20 bg-[var(--bg)] p-4"
-    style={createVar({ bg: color })}
-  >
-    {children}
-  </div>
-);
