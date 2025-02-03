@@ -6,7 +6,7 @@ export const Slider: ThemeComponent<'Slider'> = {
     '[&>label:first-of-type]:justify-start',
   ]),
   track: cva(['bg-bg-inverted rounded-lg']),
-  selectedTrack: cva(['bg-bg-input/80 rounded-lg']),
+  selectedTrack: cva(['bg-bg-selectedinput/80 rounded-lg']),
   thumb: cva([
     'align-middle',
     'border-border-base rounded-lg border-4 border-solid',
