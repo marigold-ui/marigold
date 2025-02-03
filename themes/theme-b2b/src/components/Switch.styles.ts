@@ -5,7 +5,7 @@ export const Switch: ThemeComponent<'Switch'> = {
   track: cva(
     [
       'bg-bg-inverted/20 border-border-base border',
-      'group-disabled/switch:bg-bg-base-disabled',
+      'group-disabled/switch:group-selected/switch:bg-bg-base-disabled',
       'group-selected/switch:bg-bg-selected-input',
     ],
     {
