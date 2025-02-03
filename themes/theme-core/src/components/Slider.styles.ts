@@ -6,14 +6,14 @@ export const Slider: ThemeComponent<'Slider'> = {
     '[&>label:first-of-type]:justify-start',
   ]),
   track: cva(['bg-bg-inverted rounded-lg']),
-  selectedTrack: cva(['bg-bg-selected-input/80 rounded-lg']),
+  selectedTrack: cva(['bg-bg-input/80 rounded-lg']),
   thumb: cva([
     'align-middle',
     'border-border-base rounded-lg border-4 border-solid',
     'size-4',
     'bg-bg-base',
-    'rac-focus:border-border-selected',
-    'rac-disabled:bg-bg-inverted-disabled rac-disabled:border-border-base-disabled',
+    'focus:border-border-selected',
+    'disabled:bg-bg-inverted-disabled disabled:border-border-base-disabled',
   ]),
   output: cva('text-text-base text-sm'),
 };
