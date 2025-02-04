@@ -1,4 +1,4 @@
-import { cva, get, getColor } from './utils';
+import { cva, get } from './utils';
 
 test('cva (simple)', () => {
   expect(cva(['text-sm'])()).toMatchInlineSnapshot(`"text-sm"`);
