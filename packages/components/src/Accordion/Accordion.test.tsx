@@ -9,7 +9,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Accordion: {
-      button: cva('', {
+      header: cva('', {
         variants: {
           variant: {
             one: 'bg-blue-600',
@@ -20,6 +20,27 @@ const theme: Theme = {
         },
       }),
       item: cva('', {
+        variants: {
+          variant: {
+            one: 'bg-blue-100',
+          },
+        },
+      }),
+      icon: cva('', {
+        variants: {
+          variant: {
+            one: 'bg-blue-100',
+          },
+        },
+      }),
+      content: cva('', {
+        variants: {
+          variant: {
+            one: 'bg-blue-100',
+          },
+        },
+      }),
+      container: cva('', {
         variants: {
           variant: {
             one: 'bg-blue-100',
@@ -43,10 +64,16 @@ let items = [
 test('render Accordion and more than one Item', () => {
   render(
     <Accordion data-testid="accordion">
-      <Accordion.Item title="Information">
-        <Headline>infos</Headline>
+      <Accordion.Item>
+        <Accordion.Header title="Information"></Accordion.Header>
+        <Accordion.Content>
+          <Headline>infos</Headline>
+        </Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item title="Settings">settings</Accordion.Item>
+      <Accordion.Item>
+        <Accordion.Header title="Settings"></Accordion.Header>
+        <Accordion.Content>settings</Accordion.Content>
+      </Accordion.Item>
     </Accordion>
   );
 
@@ -61,8 +88,11 @@ test('render Accordion and more than one Item', () => {
 test('render Accordion and just one Item', () => {
   render(
     <Accordion>
-      <Accordion.Item title="Information">
-        <Headline>infos</Headline>
+      <Accordion.Item>
+        <Accordion.Header title="Information"></Accordion.Header>
+        <Accordion.Content>
+          <Headline>infos</Headline>
+        </Accordion.Content>
       </Accordion.Item>
     </Accordion>
   );
@@ -74,11 +104,17 @@ test('render Accordion and just one Item', () => {
 test('item opens content by click', () => {
   render(
     <Accordion data-testid="accordion">
-      <Accordion.Item title="Information">
-        <Headline>item</Headline>
+      <Accordion.Item>
+        <Accordion.Header title="Information"></Accordion.Header>
+        <Accordion.Content>
+          <Headline>infos</Headline>
+        </Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item title="Settings">
-        <Headline>settings</Headline>
+      <Accordion.Item>
+        <Accordion.Header title="Settings"></Accordion.Header>
+        <Accordion.Content>
+          <Headline>settings</Headline>
+        </Accordion.Content>
       </Accordion.Item>
     </Accordion>
   );
@@ -95,8 +131,9 @@ test('render dynamically accordion items', () => {
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion">
         {items.map(item => (
-          <Accordion.Item key={item.key} title={item.title}>
-            {item.children}
+          <Accordion.Item key={item.key} id={item.key}>
+            <Accordion.Header title={item.title}></Accordion.Header>
+            <Accordion.Content>{item.children}</Accordion.Content>
           </Accordion.Item>
         ))}
       </Accordion>
@@ -117,9 +154,12 @@ test('render dynamically accordion items', () => {
 test('accepts variant and size classnames', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Accordion data-testid="accordion">
-        <Accordion.Item title="Information" variant="one" size="large">
-          <Headline>infos</Headline>
+      <Accordion data-testid="accordion" variant="one" size="large">
+        <Accordion.Item>
+          <Accordion.Header title="Information"></Accordion.Header>
+          <Accordion.Content>
+            <Headline>infos</Headline>
+          </Accordion.Content>
         </Accordion.Item>
       </Accordion>
     </ThemeProvider>
@@ -129,7 +169,7 @@ test('accepts variant and size classnames', () => {
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
   expect(button.className).toMatchInlineSnapshot(
-    `"inline-flex items-center justify-center gap-[0.5ch] bg-blue-600 p-8"`
+    `"inline-flex items-center justify-center gap-[0.5ch] w-full group bg-blue-600 p-8"`
   );
   fireEvent.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
@@ -144,8 +184,11 @@ test('default full width', () => {
   render(
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion">
-        <Accordion.Item title="Information">
-          <Headline>infos</Headline>
+        <Accordion.Item>
+          <Accordion.Header title="Information"></Accordion.Header>
+          <Accordion.Content>
+            <Headline>infos</Headline>
+          </Accordion.Content>
         </Accordion.Item>
       </Accordion>
     </ThemeProvider>
@@ -154,7 +197,7 @@ test('default full width', () => {
   const button = screen.getByText('Information');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"inline-flex items-center justify-center gap-[0.5ch]"`
+    `"inline-flex items-center justify-center gap-[0.5ch] w-full group"`
   );
 });
 
@@ -162,11 +205,17 @@ test('support default expanded keys', () => {
   render(
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion" defaultExpandedKeys={['one']}>
-        <Accordion.Item key={'one'} title="Information">
-          <Headline>infos</Headline>
+        <Accordion.Item key={'one'} id="one">
+          <Accordion.Header title="Information"></Accordion.Header>
+          <Accordion.Content>
+            <Headline>infos</Headline>
+          </Accordion.Content>
         </Accordion.Item>
-        <Accordion.Item key={'two'} title="Settings">
-          <Headline>settings</Headline>
+        <Accordion.Item key={'two'} id="two">
+          <Accordion.Header title="Settings"></Accordion.Header>
+          <Accordion.Content>
+            <Headline>settings</Headline>
+          </Accordion.Content>
         </Accordion.Item>
       </Accordion>
     </ThemeProvider>
@@ -187,14 +236,20 @@ test('support default expanded keys (more than one)', () => {
     <ThemeProvider theme={theme}>
       <Accordion
         data-testid="accordion"
-        selectionMode="multiple"
+        allowsMultipleExpanded
         defaultExpandedKeys={['two', 'one']}
       >
-        <Accordion.Item key={'one'} title="Information">
-          <Headline>infos</Headline>
+        <Accordion.Item key={'one'} id={'one'}>
+          <Accordion.Header title="Information"></Accordion.Header>
+          <Accordion.Content>
+            <Headline>infos</Headline>
+          </Accordion.Content>
         </Accordion.Item>
-        <Accordion.Item key={'two'} title="Settings">
-          <Headline>settings</Headline>
+        <Accordion.Item key={'two'} id={'two'}>
+          <Accordion.Header title="Settings"></Accordion.Header>
+          <Accordion.Content>
+            <Headline>settings</Headline>
+          </Accordion.Content>
         </Accordion.Item>
       </Accordion>
     </ThemeProvider>

@@ -11,6 +11,7 @@ import { Accessible, Parking, SettingDots } from '@marigold/icons';
 export default () => {
   const items = [
     {
+      id: 'one',
       key: 'one',
       textValue: 'Parking passes',
       title: (
@@ -38,6 +39,7 @@ export default () => {
       ),
     },
     {
+      id: 'two',
       key: 'two',
       textValue: 'Handicapped parking spaces',
       title: (
@@ -65,6 +67,7 @@ export default () => {
       ),
     },
     {
+      id: 'tree',
       key: 'tree',
       textValue: 'Settings',
       title: (
@@ -83,14 +86,11 @@ export default () => {
   ];
 
   return (
-    <Accordion selectionMode="multiple" defaultExpandedKeys={['two']}>
+    <Accordion allowsMultipleExpanded defaultExpandedKeys={['two']}>
       {items.map(item => (
-        <Accordion.Item
-          key={item.key}
-          title={item.title}
-          textValue={item.textValue}
-        >
-          {item.children}
+        <Accordion.Item id={item.id} key={item.key}>
+          <Accordion.Header title={item.title} />
+          <Accordion.Content>{item.children}</Accordion.Content>
         </Accordion.Item>
       ))}
     </Accordion>
