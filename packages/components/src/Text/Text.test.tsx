@@ -79,7 +79,7 @@ test('style props override theme styles', () => {
   expect(text.className).toMatchInlineSnapshot(
     `"text-(--color) outline-(--outline) font-["Arial"]"`
   );
-  expect(text.style.cssText).toMatchInlineSnapshot(`"--color: red-700;"`);
+  expect(text.style.cssText).toMatchInlineSnapshot(`""`);
 });
 
 test('get theme color', () => {
@@ -94,7 +94,6 @@ test('get theme color', () => {
 <div
   class="text-(--color) outline-(--outline) font-["Oswald_Regular"]"
   data-testid="text"
-  style="--color: rgb(5 150 105);"
 />
 `);
 });

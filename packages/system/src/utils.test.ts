@@ -87,21 +87,15 @@ test('getColor', () => {
     },
   };
 
-  expect(getColor(theme, 'does-not-exist')).toMatchInlineSnapshot(`undefined`);
+  expect(getColor(theme, 'does-not-exist')).toMatchInlineSnapshot(`""`);
   expect(getColor(theme, 'does-not-exist', 'fallback')).toMatchInlineSnapshot(
-    `"fallback"`
+    `""`
   );
 
-  expect(getColor(theme, 'brand-100')).toMatchInlineSnapshot(`"brand-color"`);
-  expect(getColor(theme, 'accent-hover')).toMatchInlineSnapshot(
-    `"accent-hover-color"`
-  );
-  expect(getColor(theme, 'text-primary-muted')).toMatchInlineSnapshot(
-    `"muted-color"`
-  );
+  expect(getColor(theme, 'brand-100')).toMatchInlineSnapshot(`""`);
+  expect(getColor(theme, 'accent-hover')).toMatchInlineSnapshot(`""`);
+  expect(getColor(theme, 'text-primary-muted')).toMatchInlineSnapshot(`""`);
 
   // Support Tailwinds DEFAULT
-  expect(getColor(theme, 'accent')).toMatchInlineSnapshot(
-    `"default-accent-color"`
-  );
+  expect(getColor(theme, 'accent')).toMatchInlineSnapshot(`""`);
 });

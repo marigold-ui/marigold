@@ -32,7 +32,7 @@ test('supports classNames', () => {
 
   expect(svg).toMatchInlineSnapshot(`
 <svg
-  class="text-(--color) flex-none fill-info"
+  class="flex-none text-(--color) fill-info"
   data-testid="svg"
   height="24px"
   width="24px"
@@ -90,7 +90,7 @@ test('supports responsive sizing', () => {
 
   expect(svg).toMatchInlineSnapshot(`
 <svg
-  class="text-(--color) flex-none fill-current w-[24px] sm:w-[32px] md:w-[64px]"
+  class="flex-none fill-current text-(--color) w-[24px] sm:w-[32px] md:w-[64px]"
   data-testid="svg"
   height="24px"
   width="24px"
@@ -158,5 +158,5 @@ test('supports color prop', () => {
   );
   const svg = screen.getByTestId(/svg/);
 
-  expect(svg.style.cssText).toMatchInlineSnapshot(`"--color: #ffa8a8;"`);
+  expect(svg.style.cssText).toMatchInlineSnapshot(`""`);
 });

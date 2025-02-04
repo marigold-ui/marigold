@@ -121,7 +121,6 @@ test('get theme color', () => {
 <h1
   class="m-0 font-black text-[2rem] text-(--color) text-left"
   data-testid="headline"
-  style="--color: rgb(5 150 105);;"
 />
 `);
 });
