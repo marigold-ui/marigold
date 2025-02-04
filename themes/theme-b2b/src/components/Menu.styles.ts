@@ -7,8 +7,8 @@ export const Menu: ThemeComponent<'Menu'> = {
     ' flex flex-col overflow-y-auto overflow-x-hidden ',
   ]),
   item: cva([
-    'rac-focus:bg-bg-selected rac-selected:bg-bg-selected-input rac-selected:text-text-inverted cursor-pointer px-4 py-1 outline-hidden',
-    'rac-disabled:text-text-base-disabled',
+    'focus:bg-bg-selected selected:bg-bg-selected-input selected:text-text-inverted cursor-pointer px-4 py-1 outline-hidden',
+    'disabled:text-text-base-disabled',
   ]),
   section: cva('text-text-accent border-t px-4 py-1  text-sm'),
 };
