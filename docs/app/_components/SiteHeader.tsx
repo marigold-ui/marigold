@@ -6,7 +6,7 @@ import { SiteNavigation } from './SiteNavigation';
 import { ThemeMenu } from './ThemeMenu';
 
 export const SiteHeader = () => (
-  <header className="border-secondary-200 bg-bg-body h-(--page-header-height) px-(--page-padding) md:px-(--page-padding-md) xl:px-(--page-padding-xl) sticky top-0 z-10 flex w-full items-center gap-2 border-b">
+  <header className="border-secondary-200 bg-bg-body sticky top-0 z-10 flex h-(--page-header-height) w-full items-center gap-2 border-b px-(--page-padding) md:px-(--page-padding-md) xl:px-(--page-padding-xl)">
     <div className="md:hidden">
       <MobileNavigation />
     </div>
