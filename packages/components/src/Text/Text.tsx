@@ -15,7 +15,6 @@ import {
   textSize,
   textStyle,
   useClassNames,
-  useTheme,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 
@@ -62,7 +61,6 @@ const _Text = ({
   as = 'div',
   ...props
 }: TextProps) => {
-  const theme = useTheme();
   const classNames = useClassNames({
     component: 'Text',
     variant,
@@ -76,12 +74,13 @@ const _Text = ({
   const Component = props.slot ? Text : as;
   const elementType = props.slot ? { elementType: as } : {};
 
+  console.log(color);
   return (
     <Component
       {...props}
       {...elementType}
       className={cn(
-        'text-(--color) outline-(--outline)',
+        `text-(--color) outline-(--outline)`,
         classNames,
         fontStyle && textStyle[fontStyle],
         align && textAlign[align],
@@ -90,7 +89,7 @@ const _Text = ({
         fontSize && textSize[fontSize]
       )}
       style={createVar({
-        color: color && getColor(theme, color, color /* fallback */),
+        color: color && getColor(color),
       })}
     >
       {children}

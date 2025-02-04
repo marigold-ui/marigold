@@ -7,7 +7,6 @@ import {
   getColor,
   textAlign,
   useClassNames,
-  useTheme,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 
@@ -41,7 +40,6 @@ const _Headline = ({
   level = '1',
   ...props
 }: HeadlineProps) => {
-  const theme = useTheme();
   const classNames = useClassNames({
     component: 'Headline',
     variant,
@@ -54,7 +52,7 @@ const _Headline = ({
       {...props}
       className={cn(classNames, 'text-(--color)', textAlign[align])}
       style={createVar({
-        color: color && getColor(theme, color, color /* fallback */),
+        color: color && getColor(color),
       })}
     >
       {children}
