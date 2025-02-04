@@ -4,8 +4,6 @@
 /* from tailwind.config.ts */
 @source './**/*.*.ts';
 
-/* from preset.ts */
-
 @source './safelist.txt';
 
 @layer base {
