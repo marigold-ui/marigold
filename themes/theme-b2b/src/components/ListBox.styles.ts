@@ -16,12 +16,12 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     font,
     'group/option flex flex-col',
     'cursor-pointer p-2 outline-hidden',
-    'rac-hover:bg-bg-selected rac-hover:text-text-base',
+    'data-hovered:bg-bg-selected data-hovered:text-text-base',
     // Need to use data attributes here because `focus-visible` only works with <Select>
-    'rac-focus:bg-bg-selected rac-focus:text-text-base',
+    'focus:bg-bg-selected focus:text-text-base',
     'aria-selected:text-text-inverted aria-selected:bg-bg-selected-input',
-    'rac-selected:bg-bg-selected-input rac-selected:text-text-inverted',
-    'rac-disabled:text-text-base-disabled rac-disabled:cursor-not-allowed',
+    'selected:bg-bg-selected-input selected:text-text-inverted',
+    'disabled:text-text-base-disabled disabled:cursor-not-allowed',
   ]),
   section: cva(
     'nth-[n+1]:border-border-base border outline-hidden nth-[n+1]:border-t nth-[n+1]:border-solid'
