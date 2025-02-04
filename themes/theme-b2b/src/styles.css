@@ -8,11 +8,6 @@
 @source '!../../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
 @source '!../../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
 
-/* from preset.ts */
-@source './node_modules/@marigold/theme-b2b/dist/*.js';
-@source './node_modules/@marigold/system/dist/*.js';
-@source './node_modules/@marigold/components/dist/*.js';
-
 @source './safelist.txt';
 
 /*

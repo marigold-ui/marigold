@@ -5,9 +5,6 @@
 @source './**/*.*.ts';
 
 /* from preset.ts */
-@source './node_modules/@marigold/components/dist/*.js';
-@source './node_modules/@marigold/system/dist/*.js';
-@source './node_modules/@marigold/theme-docs/dist/index.js';
 
 @source './safelist.txt';
 
