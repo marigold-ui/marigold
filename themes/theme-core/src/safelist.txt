@@ -83,71 +83,71 @@ bg-blue-900
 bg-blue-950
 
 
-bg-text-base: var(--color-brand-900);
-bg-text-base-hover: var(--color-gray-800);
-bg-text-base-disabled: var(--color-gray-500);
-bg-text-inverted: var(--color-gray-50);
-bg-text-inverted-hover: var(--color-gray-100);
-bg-text-inverted-disabled: var(--color-gray-500);
-bg-text-info: var(--color-blue-950);
-bg-text-info-hover: var(--color-blue-900);
-bg-text-success: var(--color-green-700);
-bg-text-success-hover: var(--color-green-600);
-bg-text-warning: var(--color-yellow-600);
-bg-text-warning-hover: var(--color-yellow-700);
-bg-text-error: var(--color-red-500);
-bg-text-error-hover: var(--color-red-600);
-bg-text-link: var(--color-brand-700);
-bg-text-link-hover: var(--color-brand-800);
-bg-bg-base: var(--color-white);
-bg-bg-base-hover: var(--color-gray-900);
-bg-bg-base-disabled: var(--color-gray-300);
-bg-bg-inverted: var(--color-gray-200);
-bg-bg-inverted-hover: var(--color-gray-100);
-bg-bg-inverted-disabled: var(--color-gray-50);
-bg-bg-brand: var(--color-brand-600);
-bg-bg-brand-hover: var(--color-brand-500);
-bg-bg-accent: var(--color-accent-600);
-bg-bg-info: var(--color-blue-500);
-bg-bg-info-hover: var(--color-blue-600);
-bg-bg-info-active: var(--color-blue-700);
-bg-bg-success: var(--color-green-600);
-bg-bg-success-hover: var(--color-green-700);
-bg-bg-success-active: var(--color-green-800);
-bg-bg-warning: var(--color-yellow-500);
-bg-bg-warning-hover: var(--color-yellow-600);
-bg-bg-warning-active: var(--color-yellow-700);
-bg-bg-error: var(--color-red-500);
-bg-bg-error-hover: var(--color-red-600);
-bg-bg-error-active: var(--color-red-700);
-bg-bg-selected: var(--color-blue-400);
-bg-bg-selected-input: var(--color-blue-400);
-bg-bg-surface: var(--color-gray-100);
-bg-bg-surface-raised: var(--color-gray-50);
-bg-bg-surface-overlay: var(--color-gray-50);
-bg-bg-surface-sunken: var(--color-gray-200);
-bg-mastermark: var(--color-gray-250);
-bg-adminmark: var(--color-black);
-bg-border-base: var(--color-gray-800);
-bg-border-base-hover: var(--color-gray-650);
-bg-border-base-disabled: var(--color-gray-300);
-bg-border-inverted: var(--color-gray-350);
-bg-border-brand: var(--color-brand-600);
-bg-border-brand-hover: var(--color-brand-500);
-bg-border-info: var(--color-blue-950);
-bg-border-info-hover: var(--color-blue-900);
-bg-border-info-active: var(--color-blue-950);
-bg-border-success: var(--color-green-600);
-bg-border-success-hover: var(--color-green-700);
-bg-border-success-active: var(--color-green-800);
-bg-border-warning: var(--color-yellow-600);
-bg-border-warning-hover: var(--color-yellow-700);
-bg-border-warning-active: var(--color-yellow-800);
-bg-border-error: var(--color-red-500);
-bg-border-error-hover: var(--color-red-600);
-bg-border-error-active: var(--color-red-700);
-bg-border-selected: var(--color-blue-400);
-bg-outline-focus: var(--color-blue-500);
+bg-text-base
+bg-text-base-hover
+bg-text-base-disabled
+bg-text-inverted
+bg-text-inverted-hover
+bg-text-inverted-disabled
+bg-text-info
+bg-text-info-hover
+bg-text-success
+bg-text-success-hover
+bg-text-warning
+bg-text-warning-hover
+bg-text-error
+bg-text-error-hover
+bg-text-link
+bg-text-link-hover
+bg-bg-base
+bg-bg-base-hover
+bg-bg-base-disabled
+bg-bg-inverted
+bg-bg-inverted-hover
+bg-bg-inverted-disabled
+bg-bg-brand
+bg-bg-brand-hover
+bg-bg-accent
+bg-bg-info
+bg-bg-info-hover
+bg-bg-info-active
+bg-bg-success
+bg-bg-success-hover
+bg-bg-success-active
+bg-bg-warning
+bg-bg-warning-hover
+bg-bg-warning-active
+bg-bg-error
+bg-bg-error-hover
+bg-bg-error-active
+bg-bg-selected
+bg-bg-selected-input
+bg-bg-surface
+bg-bg-surface-raised
+bg-bg-surface-overlay
+bg-bg-surface-sunken
+bg-mastermark
+bg-adminmark
+bg-border-base
+bg-border-base-hover
+bg-border-base-disabled
+bg-border-inverte
+bg-border-brand
+bg-border-brand-hover
+bg-border-info
+bg-border-info-hover
+bg-border-info-active
+bg-border-success
+bg-border-success-hover
+bg-border-success-active
+bg-border-warning
+bg-border-warning-hover
+bg-border-warning-active
+bg-border-error
+bg-border-error-hover
+bg-border-error-active
+bg-border-selected
+bg-outline-focus
 
 text-brand-500
 text-brand-600
@@ -234,71 +234,71 @@ text-blue-900
 text-blue-950
 
 
-text-text-base: var(--color-brand-900);
-text-text-base-hover: var(--color-gray-800);
-text-text-base-disabled: var(--color-gray-500);
-text-text-inverted: var(--color-gray-50);
-text-text-inverted-hover: var(--color-gray-100);
-text-text-inverted-disabled: var(--color-gray-500);
-text-text-info: var(--color-blue-950);
-text-text-info-hover: var(--color-blue-900);
-text-text-success: var(--color-green-700);
-text-text-success-hover: var(--color-green-600);
-text-text-warning: var(--color-yellow-600);
-text-text-warning-hover: var(--color-yellow-700);
-text-text-error: var(--color-red-500);
-text-text-error-hover: var(--color-red-600);
-text-text-link: var(--color-brand-700);
-text-text-link-hover: var(--color-brand-800);
-text-bg-base: var(--color-white);
-text-bg-base-hover: var(--color-gray-900);
-text-bg-base-disabled: var(--color-gray-300);
-text-bg-inverted: var(--color-gray-200);
-text-bg-inverted-hover: var(--color-gray-100);
-text-bg-inverted-disabled: var(--color-gray-50);
-text-bg-brand: var(--color-brand-600);
-text-bg-brand-hover: var(--color-brand-500);
-text-bg-accent: var(--color-accent-600);
-text-bg-info: var(--color-blue-500);
-text-bg-info-hover: var(--color-blue-600);
-text-bg-info-active: var(--color-blue-700);
-text-bg-success: var(--color-green-600);
-text-bg-success-hover: var(--color-green-700);
-text-bg-success-active: var(--color-green-800);
-text-bg-warning: var(--color-yellow-500);
-text-bg-warning-hover: var(--color-yellow-600);
-text-bg-warning-active: var(--color-yellow-700);
-text-bg-error: var(--color-red-500);
-text-bg-error-hover: var(--color-red-600);
-text-bg-error-active: var(--color-red-700);
-text-bg-selected: var(--color-blue-400);
-text-bg-selected-input: var(--color-blue-400);
-text-bg-surface: var(--color-gray-100);
-text-bg-surface-raised: var(--color-gray-50);
-text-bg-surface-overlay: var(--color-gray-50);
-text-bg-surface-sunken: var(--color-gray-200);
-text-mastermark: var(--color-gray-250);
-text-adminmark: var(--color-black);
-text-border-base: var(--color-gray-800);
-text-border-base-hover: var(--color-gray-650);
-text-border-base-disabled: var(--color-gray-300);
-text-border-inverted: var(--color-gray-350);
-text-border-brand: var(--color-brand-600);
-text-border-brand-hover: var(--color-brand-500);
-text-border-info: var(--color-blue-950);
-text-border-info-hover: var(--color-blue-900);
-text-border-info-active: var(--color-blue-950);
-text-border-success: var(--color-green-600);
-text-border-success-hover: var(--color-green-700);
-text-border-success-active: var(--color-green-800);
-text-border-warning: var(--color-yellow-600);
-text-border-warning-hover: var(--color-yellow-700);
-text-border-warning-active: var(--color-yellow-800);
-text-border-error: var(--color-red-500);
-text-border-error-hover: var(--color-red-600);
-text-border-error-active: var(--color-red-700);
-text-border-selected: var(--color-blue-400);
-text-outline-focus: var(--color-blue-500);
+text-text-base
+text-text-base-hover
+text-text-base-disabled
+text-text-inverted
+text-text-inverted-hover
+text-text-inverted-disabled
+text-text-info
+text-text-info-hover
+text-text-success
+text-text-success-hover
+text-text-warning
+text-text-warning-hover
+text-text-error
+text-text-error-hover
+text-text-link
+text-text-link-hover
+text-bg-base
+text-bg-base-hover
+text-bg-base-disabled
+text-bg-inverted
+text-bg-inverted-hover
+text-bg-inverted-disabled
+text-bg-brand
+text-bg-brand-hover
+text-bg-accent
+text-bg-info
+text-bg-info-hover
+text-bg-info-active
+text-bg-success
+text-bg-success-hover
+text-bg-success-active
+text-bg-warning
+text-bg-warning-hover
+text-bg-warning-active
+text-bg-error
+text-bg-error-hover
+text-bg-error-active
+text-bg-selected
+text-bg-selected-input
+text-bg-surface
+text-bg-surface-raised
+text-bg-surface-overlay
+text-bg-surface-sunken
+text-mastermark
+text-adminmark
+text-border-base
+text-border-base-hover
+text-border-base-disabled
+text-border-inverted
+text-border-brand
+text-border-brand-hover
+text-border-info
+text-border-info-hover
+text-border-info-active
+text-border-success
+text-border-success-hover
+text-border-success-active
+text-border-warning
+text-border-warning-hover
+text-border-warning-active
+text-border-error
+text-border-error-hover
+text-border-error-active
+text-border-selected
+text-outline-focus
 
 border-brand-500
 border-brand-600
@@ -386,71 +386,71 @@ border-blue-900
 border-blue-950
 
 
-border-text-base: var(--color-brand-900);
-border-text-base-hover: var(--color-gray-800);
-border-text-base-disabled: var(--color-gray-500);
-border-text-inverted: var(--color-gray-50);
-border-text-inverted-hover: var(--color-gray-100);
-border-text-inverted-disabled: var(--color-gray-500);
-border-text-info: var(--color-blue-950);
-border-text-info-hover: var(--color-blue-900);
-border-text-success: var(--color-green-700);
-border-text-success-hover: var(--color-green-600);
-border-text-warning: var(--color-yellow-600);
-border-text-warning-hover: var(--color-yellow-700);
-border-text-error: var(--color-red-500);
-border-text-error-hover: var(--color-red-600);
-border-text-link: var(--color-brand-700);
-border-text-link-hover: var(--color-brand-800);
-border-bg-base: var(--color-white);
-border-bg-base-hover: var(--color-gray-900);
-border-bg-base-disabled: var(--color-gray-300);
-border-bg-inverted: var(--color-gray-200);
-border-bg-inverted-hover: var(--color-gray-100);
-border-bg-inverted-disabled: var(--color-gray-50);
-border-bg-brand: var(--color-brand-600);
-border-bg-brand-hover: var(--color-brand-500);
-border-bg-accent: var(--color-accent-600);
-border-bg-info: var(--color-blue-500);
-border-bg-info-hover: var(--color-blue-600);
-border-bg-info-active: var(--color-blue-700);
-border-bg-success: var(--color-green-600);
-border-bg-success-hover: var(--color-green-700);
-border-bg-success-active: var(--color-green-800);
-border-bg-warning: var(--color-yellow-500);
-border-bg-warning-hover: var(--color-yellow-600);
-border-bg-warning-active: var(--color-yellow-700);
-border-bg-error: var(--color-red-500);
-border-bg-error-hover: var(--color-red-600);
-border-bg-error-active: var(--color-red-700);
-border-bg-selected: var(--color-blue-400);
-border-bg-selected-input: var(--color-blue-400);
-border-bg-surface: var(--color-gray-100);
-border-bg-surface-raised: var(--color-gray-50);
-border-bg-surface-overlay: var(--color-gray-50);
-border-bg-surface-sunken: var(--color-gray-200);
-border-mastermark: var(--color-gray-250);
-border-adminmark: var(--color-black);
-border-border-base: var(--color-gray-800);
-border-border-base-hover: var(--color-gray-650);
-border-border-base-disabled: var(--color-gray-300);
-border-border-inverted: var(--color-gray-350);
-border-border-brand: var(--color-brand-600);
-border-border-brand-hover: var(--color-brand-500);
-border-border-info: var(--color-blue-950);
-border-border-info-hover: var(--color-blue-900);
-border-border-info-active: var(--color-blue-950);
-border-border-success: var(--color-green-600);
-border-border-success-hover: var(--color-green-700);
-border-border-success-active: var(--color-green-800);
-border-border-warning: var(--color-yellow-600);
-border-border-warning-hover: var(--color-yellow-700);
-border-border-warning-active: var(--color-yellow-800);
-border-border-error: var(--color-red-500);
-border-border-error-hover: var(--color-red-600);
-border-border-error-active: var(--color-red-700);
-border-border-selected: var(--color-blue-400);
-border-outline-focus: var(--color-blue-500);
+border-text-base
+border-text-base-hover
+border-text-base-disabled
+border-text-inverted
+border-text-inverted-hover
+border-text-inverted-disabled
+border-text-info
+border-text-info-hover
+border-text-success
+border-text-success-hover
+border-text-warning
+border-text-warning-hover
+border-text-error
+border-text-error-hover
+border-text-link
+border-text-link-hover
+border-bg-base
+border-bg-base-hover
+border-bg-base-disabled
+border-bg-inverted
+border-bg-inverted-hover
+border-bg-inverted-disabled
+border-bg-brand
+border-bg-brand-hover
+border-bg-accent
+border-bg-info
+border-bg-info-hover
+border-bg-info-active
+border-bg-success
+border-bg-success-hover
+border-bg-success-active
+border-bg-warning
+border-bg-warning-hover
+border-bg-warning-active
+border-bg-error
+border-bg-error-hover
+border-bg-error-active
+border-bg-selected
+border-bg-selected-input
+border-bg-surface
+border-bg-surface-raised
+border-bg-surface-overlay
+border-bg-surface-sunken
+border-mastermark
+border-adminmark
+border-border-base
+border-border-base-hover
+border-border-base-disabled
+border-border-inverted
+border-border-brand
+border-border-brand-hover
+border-border-info
+border-border-info-hover
+border-border-info-active
+border-border-success
+border-border-success-hover
+border-border-success-active
+border-border-warning
+border-border-warning-hover
+border-border-warning-active
+border-border-error
+border-border-error-hover
+border-border-error-active
+border-border-selected
+border-outline-focus
 
 shadow-brand-500
 shadow-brand-600
@@ -538,68 +538,68 @@ shadow-blue-900
 shadow-blue-950
 
 
-shadow-text-base: var(--color-brand-900);
-shadow-text-base-hover: var(--color-gray-800);
-shadow-text-base-disabled: var(--color-gray-500);
-shadow-text-inverted: var(--color-gray-50);
-shadow-text-inverted-hover: var(--color-gray-100);
-shadow-text-inverted-disabled: var(--color-gray-500);
-shadow-text-info: var(--color-blue-950);
-shadow-text-info-hover: var(--color-blue-900);
-shadow-text-success: var(--color-green-700);
-shadow-text-success-hover: var(--color-green-600);
-shadow-text-warning: var(--color-yellow-600);
-shadow-text-warning-hover: var(--color-yellow-700);
-shadow-text-error: var(--color-red-500);
-shadow-text-error-hover: var(--color-red-600);
-shadow-text-link: var(--color-brand-700);
-shadow-text-link-hover: var(--color-brand-800);
-shadow-bg-base: var(--color-white);
-shadow-bg-base-hover: var(--color-gray-900);
-shadow-bg-base-disabled: var(--color-gray-300);
-shadow-bg-inverted: var(--color-gray-200);
-shadow-bg-inverted-hover: var(--color-gray-100);
-shadow-bg-inverted-disabled: var(--color-gray-50);
-shadow-bg-brand: var(--color-brand-600);
-shadow-bg-brand-hover: var(--color-brand-500);
-shadow-bg-accent: var(--color-accent-600);
-shadow-bg-info: var(--color-blue-500);
-shadow-bg-info-hover: var(--color-blue-600);
-shadow-bg-info-active: var(--color-blue-700);
-shadow-bg-success: var(--color-green-600);
-shadow-bg-success-hover: var(--color-green-700);
-shadow-bg-success-active: var(--color-green-800);
-shadow-bg-warning: var(--color-yellow-500);
-shadow-bg-warning-hover: var(--color-yellow-600);
-shadow-bg-warning-active: var(--color-yellow-700);
-shadow-bg-error: var(--color-red-500);
-shadow-bg-error-hover: var(--color-red-600);
-shadow-bg-error-active: var(--color-red-700);
-shadow-bg-selected: var(--color-blue-400);
-shadow-bg-selected-input: var(--color-blue-400);
-shadow-bg-surface: var(--color-gray-100);
-shadow-bg-surface-raised: var(--color-gray-50);
-shadow-bg-surface-overlay: var(--color-gray-50);
-shadow-bg-surface-sunken: var(--color-gray-200);
-shadow-mastermark: var(--color-gray-250);
-shadow-adminmark: var(--color-black);
-shadow-border-base: var(--color-gray-800);
-shadow-border-base-hover: var(--color-gray-650);
-shadow-border-base-disabled: var(--color-gray-300);
-shadow-border-inverted: var(--color-gray-350);
-shadow-border-brand: var(--color-brand-600);
-shadow-border-brand-hover: var(--color-brand-500);
-shadow-border-info: var(--color-blue-950);
-shadow-border-info-hover: var(--color-blue-900);
-shadow-border-info-active: var(--color-blue-950);
-shadow-border-success: var(--color-green-600);
-shadow-border-success-hover: var(--color-green-700);
-shadow-border-success-active: var(--color-green-800);
-shadow-border-warning: var(--color-yellow-600);
-shadow-border-warning-hover: var(--color-yellow-700);
-shadow-border-warning-active: var(--color-yellow-800);
-shadow-border-error: var(--color-red-500);
-shadow-border-error-hover: var(--color-red-600);
-shadow-border-error-active: var(--color-red-700);
-shadow-border-selected: var(--color-blue-400);
-shadow-outline-focus: var(--color-blue-500);
+shadow-text-base
+shadow-text-base-hover
+shadow-text-base-disabled
+shadow-text-inverted
+shadow-text-inverted-hover
+shadow-text-inverted-disabled
+shadow-text-info
+shadow-text-info-hover
+shadow-text-success
+shadow-text-success-hover
+shadow-text-warning
+shadow-text-warning-hover
+shadow-text-error
+shadow-text-error-hover
+shadow-text-link
+shadow-text-link-hover
+shadow-bg-base
+shadow-bg-base-hover
+shadow-bg-base-disabled
+shadow-bg-inverted
+shadow-bg-inverted-hover
+shadow-bg-inverted-disabled
+shadow-bg-brand
+shadow-bg-brand-hover
+shadow-bg-accent
+shadow-bg-info
+shadow-bg-info-hover
+shadow-bg-info-active
+shadow-bg-success
+shadow-bg-success-hover
+shadow-bg-success-active
+shadow-bg-warning
+shadow-bg-warning-hover
+shadow-bg-warning-active
+shadow-bg-error
+shadow-bg-error-hover
+shadow-bg-error-active
+shadow-bg-selected
+shadow-bg-selected-input
+shadow-bg-surface
+shadow-bg-surface-raised
+shadow-bg-surface-overlay
+shadow-bg-surface-sunken
+shadow-mastermark
+shadow-adminmark
+shadow-border-base
+shadow-border-base-hover
+shadow-border-base-disabled
+shadow-border-inverted
+shadow-border-brand
+shadow-border-brand-hover
+shadow-border-info
+shadow-border-info-hover
+shadow-border-info-active
+shadow-border-success
+shadow-border-success-hover
+shadow-border-success-active
+shadow-border-warning
+shadow-border-warning-hover
+shadow-border-warning-active
+shadow-border-error
+shadow-border-error-hover
+shadow-border-error-active
+shadow-border-selected
+shadow-outline-focus

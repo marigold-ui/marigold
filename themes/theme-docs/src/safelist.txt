@@ -99,29 +99,29 @@ bg-code-800
 bg-code-900
 bg-code-950
 
-bg-text-primary: var(--color-secondary-950);
-bg-text-primary-muted: var(--color-secondary-500);
-bg-text-disabled: var(--color-secondary-300);
-bg-text-info: var(--color-blue-800);
-bg-text-warning: var(--color-amber-800);
-bg-bg-body: var(--color-secondary-50);
-bg-bg-inverted: var(--color-secondary-700);
-bg-bg-hover: var(--color-neutral-100);
-bg-bg-muted: var(--color-secondary-100);
-bg-bg-disabled: var(--color-secondary-100);
-bg-bg-underlay: var(--color-secondary-500);
-bg-bg-surface: var(--color-secondary-50);
-bg-bg-surface-raised: var(--color-secondary-50);
-bg-bg-surface-lowered: var(--color-secondary-100);
-bg-bg-surface-overlay: var(--color-white);
-bg-bg-success: var(--color-lime-50);
-bg-bg-warning: var(--color-amber-50);
-bg-bg-error: var(--color-red-50);
-bg-bg-info: var(--color-blue-50);
-bg-border: var(--color-secondary-300);
-bg-border-primary: var(--color-secondary-950);
-bg-border-success: var(--color-lime-500);
-bg-border-error: var(--color-red-400);
+bg-text-primary
+bg-text-primary-muted
+bg-text-disabled
+bg-text-info
+bg-text-warning
+bg-bg-body
+bg-bg-inverted
+bg-bg-hover 
+bg-bg-muted
+bg-bg-disabled
+bg-bg-underlay
+bg-bg-surface
+bg-bg-surface-raised
+bg-bg-surface-lowered
+bg-bg-surface-overlay
+bg-bg-success
+bg-bg-warning
+bg-bg-error
+bg-bg-info
+bg-border
+bg-border-primary
+bg-border-success
+bg-border-error
 
 text-amber-50
 text-amber-100
@@ -221,30 +221,30 @@ text-code-800
 text-code-900
 text-code-950
 
-text-text-primary: var(--color-secondary-950);
+text-text-primary
 text-text-primary/60
-text-text-primary-muted: var(--color-secondary-500);
-text-text-disabled: var(--color-secondary-300);
-text-text-info: var(--color-blue-800);
-text-text-warning: var(--color-amber-800);
-text-bg-body: var(--color-secondary-50);
-text-bg-inverted: var(--color-secondary-700);
-text-bg-hover: var(--color-neutral-100);
-text-bg-muted: var(--color-secondary-100);
-text-bg-disabled: var(--color-secondary-100);
-text-bg-underlay: var(--color-secondary-500);
-text-bg-surface: var(--color-secondary-50);
-text-bg-surface-raised: var(--color-secondary-50);
-text-bg-surface-lowered: var(--color-secondary-100);
-text-bg-surface-overlay: var(--color-white);
-text-bg-success: var(--color-lime-50);
-text-bg-warning: var(--color-amber-50);
-text-bg-error: var(--color-red-50);
-text-bg-info: var(--color-blue-50);
-text-border: var(--color-secondary-300);
-text-border-primary: var(--color-secondary-950);
-text-border-success: var(--color-lime-500);
-text-border-error: var(--color-red-400);
+text-text-primary-muted
+text-text-disabled
+text-text-info
+text-text-warning
+text-bg-body
+text-bg-inverted
+text-bg-hover
+text-bg-muted
+text-bg-disabled
+text-bg-underlay
+text-bg-surface
+text-bg-surface-raised
+text-bg-surface-lowered
+text-bg-surface-overlay
+text-bg-success
+text-bg-warning
+text-bg-error
+text-bg-info
+text-border
+text-border-primary
+text-border-success
+text-border-error
 
 shadow-white
 
@@ -344,29 +344,29 @@ shadow-code-800
 shadow-code-900
 shadow-code-950
 
-shadow-text-primary: var(--color-secondary-950);
-shadow-text-primary-muted: var(--color-secondary-500);
-shadow-text-disabled: var(--color-secondary-300);
-shadow-text-info: var(--color-blue-800);
-shadow-text-warning: var(--color-amber-800);
-shadow-bg-body: var(--color-secondary-50);
-shadow-bg-inverted: var(--color-secondary-700);
-shadow-bg-hover: var(--color-neutral-100);
-shadow-bg-muted: var(--color-secondary-100);
-shadow-bg-disabled: var(--color-secondary-100);
-shadow-bg-underlay: var(--color-secondary-500);
-shadow-bg-surface: var(--color-secondary-50);
-shadow-bg-surface-raised: var(--color-secondary-50);
-shadow-bg-surface-lowered: var(--color-secondary-100);
-shadow-bg-surface-overlay: var(--color-white);
-shadow-bg-success: var(--color-lime-50);
-shadow-bg-warning: var(--color-amber-50);
-shadow-bg-error: var(--color-red-50);
-shadow-bg-info: var(--color-blue-50);
-shadow-border: var(--color-secondary-300);
-shadow-border-primary: var(--color-secondary-950);
-shadow-border-success: var(--color-lime-500);
-shadow-border-error: var(--color-red-400);
+shadow-text-primary
+shadow-text-primary-muted
+shadow-text-disabled
+shadow-text-info
+shadow-text-warning
+shadow-bg-body
+shadow-bg-inverted
+shadow-bg-hover
+shadow-bg-muted
+shadow-bg-disabled
+shadow-bg-underlay
+shadow-bg-surface
+shadow-bg-surface-raised
+shadow-bg-surface-lowered
+shadow-bg-surface-overlay
+shadow-bg-success
+shadow-bg-warning
+shadow-bg-error
+shadow-bg-info
+shadow-border
+shadow-border-primary
+shadow-border-success
+shadow-border-error
 
 border-white
 
@@ -466,29 +466,29 @@ border-code-800
 border-code-900
 border-code-950
 
-border-text-primary: var(--color-secondary-950);
-border-text-primary-muted: var(--color-secondary-500);
-border-text-disabled: var(--color-secondary-300);
-border-text-info: var(--color-blue-800);
-border-text-warning: var(--color-amber-800);
-border-bg-body: var(--color-secondary-50);
-border-bg-inverted: var(--color-secondary-700);
-border-bg-hover: var(--color-neutral-100);
-border-bg-muted: var(--color-secondary-100);
-border-bg-disabled: var(--color-secondary-100);
-border-bg-underlay: var(--color-secondary-500);
-border-bg-surface: var(--color-secondary-50);
-border-bg-surface-raised: var(--color-secondary-50);
-border-bg-surface-lowered: var(--color-secondary-100);
-border-bg-surface-overlay: var(--color-white);
-border-bg-success: var(--color-lime-50);
-border-bg-warning: var(--color-amber-50);
-border-bg-error: var(--color-red-50);
-border-bg-info: var(--color-blue-50);
-border-border: var(--color-secondary-300);
-border-border-primary: var(--color-secondary-950);
-border-border-success: var(--color-lime-500);
-border-border-error: var(--color-red-400);
+border-text-primary
+border-text-primary-muted
+border-text-disabled
+border-text-info
+border-text-warning
+border-bg-body
+border-bg-inverted
+border-bg-hover
+border-bg-muted
+border-bg-disabled
+border-bg-underlay
+border-bg-surface
+border-bg-surface-raised
+border-bg-surface-lowered
+border-bg-surface-overlay
+border-bg-success
+border-bg-warning
+border-bg-error
+border-bg-info
+border-border
+border-border-primary
+border-border-success
+border-border-error
 
 from-neutral-700/50 /* used in reference-app */
 via-neutral-700/10 /* used in reference-app */
