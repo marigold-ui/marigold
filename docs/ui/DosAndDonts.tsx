@@ -11,6 +11,7 @@ const Container = ({
   <div
     className="group grid grid-cols-[1fr] grid-rows-[minmax(0,min-content)_min-content_auto] [grid-template-areas:'figure''title''description']"
     data-type={variant}
+    data-hover
   >
     {children}
   </div>
@@ -20,7 +21,7 @@ const Title = ({ children }: PropsWithChildren) => (
   <div
     className={cn(
       '[grid-area:title]',
-      'group-data-[type=do]:border-(--color-border-success) group-data-[type=do]:bg-(--color-bg-success) group-data-[type=dont]:border-(--color-border-error) group-data-[type=dont]:bg-(--color-bg-error)',
+      'group-[type=do]:bg-bg-success group-[type=do]:border-border-success group-[type=dont]:border-border-error group-[type=dont]:bg-bg-error',
       'flex items-center gap-2 border-t-4 px-4 pt-4 pb-2 font-bold uppercase'
     )}
   >
@@ -33,7 +34,7 @@ const Figure = ({ children }: PropsWithChildren) => (
 );
 
 const Description = ({ children }: PropsWithChildren) => (
-  <div className="px-4 pb-4 text-sm text-pretty [grid-area:description] *:m-0 *:leading-relaxed group-data-[type=do]:bg-(--color-bg-success) group-data-[type=dont]:bg-(--color-bg-error)">
+  <div className="group-[type=do]:bg-bg-success group-[type=dont]:bg-bg-error px-4 pb-4 text-sm text-pretty [grid-area:description] *:m-0 *:leading-relaxed">
     {children}
   </div>
 );
