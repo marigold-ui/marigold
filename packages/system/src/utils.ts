@@ -79,7 +79,7 @@ export const get = (obj: object, path: string, fallback?: any): any => {
  */
 export const getColor = (token: string): any => {
   const { name } = useTheme();
-  const [theme, setTheme] = useState<string | null>(null);
+  const [color, setColor] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -87,10 +87,10 @@ export const getColor = (token: string): any => {
       if (themeElement) {
         const styles = getComputedStyle(themeElement);
         const result = styles.getPropertyValue(`--color-${token}`).trim();
-        setTheme(result || null);
+        setColor(result || null);
       }
     }
   }, [name, token]);
 
-  return theme;
+  return color;
 };

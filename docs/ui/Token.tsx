@@ -114,7 +114,7 @@ export const Breakpoints = () => {
 
     breakpointKeys.forEach(key => {
       const value = getComputedStyle(
-        document.getElementById(`breakpoint-${current}`)!
+        document.querySelector(`[data-theme="${current}"]`)!
       ).getPropertyValue(`--breakpoint-${key}`);
       breakpointValues[key] = value;
     });
@@ -123,7 +123,7 @@ export const Breakpoints = () => {
   }, []);
 
   return (
-    <div data-theme={current} id={`breakpoint-${current}`}>
+    <div data-theme={current}>
       <Table aria-label="breakpoints" stretch>
         <Table.Header>
           <Table.Column key={'name'}>Name</Table.Column>
