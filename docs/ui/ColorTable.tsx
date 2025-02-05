@@ -19,7 +19,7 @@ interface ColorPalettsProps {
   name: string;
 }
 
-export const ColorPaletts = ({ name }: ColorPalettsProps) => {
+export const ColorPalettes = ({ name }: ColorPalettsProps) => {
   return (
     <Table aria-labelledby={`${name} token table`} variant="colorTable" stretch>
       <Table.Header>

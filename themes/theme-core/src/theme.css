@@ -265,6 +265,6 @@
   }
 }
 
-@plugin "./../../../packages/theme-plugins/src/tw-rac-plugins.js";
-@plugin "./../../../packages/theme-plugins/src/tw-custom-placement-plugin.js";
-@plugin "./../../../packages/theme-plugins/src/tw-custom-aria-variants-plugin.js";
+@plugin "./../../../packages/theme-plugins/src/tw-rac-plugins";
+@plugin "./../../../packages/theme-plugins/src/tw-custom-placement-plugin";
+@plugin "./../../../packages/theme-plugins/src/tw-custom-aria-variants-plugin";

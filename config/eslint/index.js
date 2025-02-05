@@ -21,9 +21,6 @@ module.exports = {
     // Disabled cause it doesn't currently work as of 01/02/2021
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'off',
-    // Turned off because we use custom-classnames for our design tokens
-    // 'tailwindcss/no-custom-classname': 'on',
-    // 'tailwindcss/classnames-order': 'error',
   },
   parserOptions: {
     babelOptions: {

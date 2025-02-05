@@ -5,7 +5,7 @@ import {
   BackgroundTokens,
   Black,
   BorderTokens,
-  ColorPaletts,
+  ColorPalettes,
   OutlineTokens,
   TextTokens,
   White,
@@ -25,23 +25,23 @@ export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
   return (
     <div data-theme={current}>
       <Headline level={3}>Brand</Headline>
-      <ColorPaletts name="brand" />
+      <ColorPalettes name="brand" />
       <Headline level={3}>Accent</Headline>
-      <ColorPaletts name="accent" />
+      <ColorPalettes name="accent" />
       <Headline level={3}>White</Headline>
       <White />
       <Headline level={3}>Black</Headline>
       <Black />
       <Headline level={3}>Gray</Headline>
-      <ColorPaletts name="gray" />
+      <ColorPalettes name="gray" />
       <Headline level={3}>Blue</Headline>
-      <ColorPaletts name="blue" />
+      <ColorPalettes name="blue" />
       <Headline level={3}>Yellow</Headline>
-      <ColorPaletts name="yellow" />
+      <ColorPalettes name="yellow" />
       <Headline level={3}>Green</Headline>
-      <ColorPaletts name="green" />
+      <ColorPalettes name="green" />
       <Headline level={3}>Red</Headline>
-      <ColorPaletts name="red" />
+      <ColorPalettes name="red" />
       <Headline level={3}>Text</Headline>
       <TextTokens />
       <Headline level={3}>Background</Headline>

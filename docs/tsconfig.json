@@ -29,8 +29,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@marigold/theme-core/styles.css": ["../themes/*/dist/styles.css"],
-      "@marigold/theme-b2b/styles.css": ["../themes/*/output.css"],
+      "@marigold/*/styles.css": ["../themes/*/dist/styles.css"],
       "@marigold/*": ["../packages/*/src", "../themes/*/src"],
       "@/registry/*": ["./.registry/*"],
       "contentlayer/generated": ["./.contentlayer/generated"]

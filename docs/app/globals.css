@@ -10,10 +10,10 @@
 @source './../ui/**/*.{js,ts,jsx,tsx,mdx}';
 @source './**/*.{js,ts,jsx,tsx,mdx}';
 
-@source '../../themes/theme-docs/src/**/*.ts';
+@source './../../themes/theme-docs/src/**/*.ts';
 
 /* marigold components */
-@source '../../packages/{components,system}/**/*.{tsx,ts}';
+@source './../../packages/{components,system}/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
 
