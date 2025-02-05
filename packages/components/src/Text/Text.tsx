@@ -74,7 +74,6 @@ const _Text = ({
   const Component = props.slot ? Text : as;
   const elementType = props.slot ? { elementType: as } : {};
 
-  console.log(color);
   return (
     <Component
       {...props}
