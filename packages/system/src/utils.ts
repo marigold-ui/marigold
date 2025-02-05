@@ -5,7 +5,9 @@ import {
   ClassValue,
   StringToBoolean,
 } from 'class-variance-authority/dist/types';
+import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useTheme } from './hooks';
 
 export type { ClassValue };
 export type { VariantProps } from 'class-variance-authority';
@@ -76,8 +78,19 @@ export const get = (obj: object, path: string, fallback?: any): any => {
  * Get a color from the theme based on computed styles
  */
 export const getColor = (token: string): any => {
-  let styles = getComputedStyle(document.documentElement);
-  let result = styles.getPropertyValue('--color-' + token);
+  const { name } = useTheme();
+  const [theme, setTheme] = useState<string | null>(null);
 
-  return result;
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const themeElement = document.querySelector(`[data-theme="${name}"]`);
+      if (themeElement) {
+        const styles = getComputedStyle(themeElement);
+        const result = styles.getPropertyValue(`--color-${token}`).trim();
+        setTheme(result || null);
+      }
+    }
+  }, [name, token]);
+
+  return theme;
 };
