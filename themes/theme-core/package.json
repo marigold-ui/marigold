@@ -52,6 +52,6 @@
     "@marigold/system": "workspace:*"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css"
+    "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css dist/theme.css"
   }
 }

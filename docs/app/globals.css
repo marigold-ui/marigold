@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import './../node_modules/@marigold/theme-docs/src/theme.css';
+@import './../node_modules/@marigold/theme-docs/dist/theme.css';
 
 @import './../node_modules/@marigold/theme-core/dist/styles.css';
 @import './../node_modules/@marigold/theme-b2b/dist/styles.css';
