@@ -15,8 +15,8 @@ const Container = ({ children }: { children: ReactNode }) => (
       position: 'relative',
       width: '100%',
       height: '100%',
-      backgroundColor: 'var(--color-bg-body)',
-      color: 'var(--color-text-primary)',
+      backgroundColor: '#f8fafc',
+      color: '#020617',
     }}
   >
     {children}
