@@ -1,3 +1,318 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer normalization {
+  /** Apply some normalization, so the Core CSS does not break Marigold
+      - data-app for all components which has no data-rac, e.g. tables
+      - data-rac for all modals and popups, e.g. dialogs, select, ...
+  */
+
+  [data-app] *,
+  [data-rac] *,
+  [data-app] ::before,
+  [data-rac] ::before,
+  [data-app] ::after,
+  [data-rac] ::after {
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 0;
+    border-color: theme('borderColor.DEFAULT', currentColor);
+  }
+
+  [data-app],
+  [data-rac] {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    tab-size: 4;
+    font-family: theme(
+      'fontFamily.sans',
+      ui-sans-serif,
+      system-ui,
+      sans-serif,
+      'Apple Color Emoji',
+      'Segoe UI Emoji',
+      'Segoe UI Symbol',
+      'Noto Color Emoji'
+    );
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  [data-app] hr,
+  [data-rac] hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+
+  [data-app] abbr:where([title]),
+  [data-rac] abbr:where([title]) {
+    text-decoration: underline dotted;
+  }
+
+  [data-app] h2,
+  [data-rac] h2,
+  [data-app] h1,
+  [data-rac] h1,
+  [data-app] h3,
+  [data-rac] h3,
+  [data-app] h4,
+  [data-rac] h4,
+  [data-app] h5,
+  [data-rac] h5,
+  [data-app] h6,
+  [data-rac] h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  [data-app] a,
+  [data-rac] a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  [data-app] b,
+  [data-rac] b,
+  [data-app] strong,
+  [data-rac] strong {
+    font-weight: bolder;
+  }
+
+  [data-app] code,
+  [data-rac] code,
+  [data-app] kbd,
+  [data-rac] kbd,
+  [data-app] samp,
+  [data-rac] samp,
+  [data-app] pre,
+  [data-rac] pre {
+    font-family: theme(
+      'fontFamily.mono',
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      'Liberation Mono',
+      'Courier New',
+      monospace
+    );
+    font-size: 1em;
+  }
+
+  [data-app] small,
+  [data-rac] small {
+    font-size: 80%;
+  }
+
+  [data-app] sub,
+  [data-rac] sub,
+  [data-app] sup,
+  [data-rac] sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+
+  [data-app] sub,
+  [data-rac] sub {
+    bottom: -0.25em;
+  }
+
+  [data-rac] sup,
+  [data-app] sup {
+    top: -0.5em;
+  }
+
+  [data-rac] table,
+  [data-app] table {
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
+  }
+
+  [data-app] button,
+  [data-rac] button,
+  [data-app] input,
+  [data-rac] input,
+  [data-app] optgroup,
+  [data-rac] optgroup,
+  [data-app] select,
+  [data-rac] select,
+  [data-app] textarea,
+  [data-rac] textarea {
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+  }
+
+  [data-app] button,
+  [data-rac] button,
+  [data-app] select,
+  [data-rac] select {
+    text-transform: none;
+  }
+
+  [data-app] button,
+  [data-rac] button,
+  [data-app] input:where([type='reset']),
+  [data-rac] input:where([type='reset']),
+  [data-app] input:where([type='submit']),
+  [data-rac] input:where([type='submit']) {
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
+  }
+
+  [data-app] progress,
+  [data-rac] progress {
+    vertical-align: baseline;
+  }
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    height: auto;
+  }
+  [data-app][type='search'],
+  [data-rac][type='search'] {
+    -webkit-appearance: textfield;
+    outline-offset: -2px;
+  }
+  [data-app] ::-webkit-search-decoration,
+  [data-rac] ::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  [data-app]::-webkit-file-upload-button,
+  [data-rac]::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    font: inherit;
+  }
+
+  [data-app] summary,
+  [data-rac] summary {
+    display: list-item;
+  }
+
+  [data-app] blockquote,
+  [data-rac] blockquote,
+  [data-app] dl,
+  [data-rac] dl,
+  [data-app] dd,
+  [data-rac] dd,
+  [data-app] h1,
+  [data-rac] h1,
+  [data-app] h2,
+  [data-rac] h2,
+  [data-app] h3,
+  [data-rac] h3,
+  [data-app] h4,
+  [data-rac] h4,
+  [data-app] h5,
+  [data-rac] h5,
+  [data-app] h6,
+  [data-rac] h6,
+  [data-app] hr,
+  [data-rac] hr,
+  [data-app] figure,
+  [data-rac] figure,
+  [data-app] p,
+  [data-rac] p,
+  [data-app] pre,
+  [data-rac] pre {
+    margin: 0;
+  }
+
+  [data-app] fieldset,
+  [data-rac] fieldset {
+    margin: 0;
+    padding: 0;
+  }
+
+  [data-app] legend,
+  [data-rac] legend {
+    padding: 0;
+  }
+
+  [data-app] ol,
+  [data-rac] ol,
+  [data-app] ul,
+  [data-rac] ul,
+  [data-app] menu,
+  [data-rac] menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  [data-app] dialog,
+  [data-rac] dialog {
+    padding: 0;
+  }
+
+  [data-app] textarea,
+  [data-rac] textarea {
+    resize: vertical;
+  }
+
+  [data-app] input::placeholder,
+  [data-rac] input::placeholder,
+  [data-rac] textarea::placeholder,
+  [data-app] textarea::placeholder {
+    opacity: 1;
+    color: theme('colors.gray.400', #9ca3af);
+  }
+
+  [data-app] button,
+  [data-rac] button,
+  [data-app][role='button'],
+  [data-rac][role='button'] {
+    cursor: pointer;
+  }
+  [data-app]:disabled,
+  [data-rac]:disabled {
+    cursor: default;
+  }
+
+  [data-app] img,
+  [data-rac] img,
+  [data-app] svg,
+  [data-rac] svg,
+  [data-app] video,
+  [data-rac] video,
+  [data-app] canvas,
+  [data-rac] canvas,
+  [data-app] audio,
+  [data-rac] audio,
+  [data-app] iframe,
+  [data-rac] iframe,
+  [data-app] embed,
+  [data-rac] embed,
+  [data-app] object,
+  [data-rac] object {
+    display: block;
+    vertical-align: middle;
+  }
+
+  [data-app] img,
+  [data-rac] img,
+  [data-app] video,
+  [data-rac] video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Make elements with the HTML hidden attribute stay hidden by default */
+  [data-app] [hidden],
+  [data-rac] [hidden] {
+    display: none;
+  }
+}
