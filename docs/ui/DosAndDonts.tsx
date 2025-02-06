@@ -11,7 +11,6 @@ const Container = ({
   <div
     className="group grid grid-cols-[1fr] grid-rows-[minmax(0,min-content)_min-content_auto] [grid-template-areas:'figure''title''description']"
     data-type={variant}
-    data-hover
   >
     {children}
   </div>
