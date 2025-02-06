@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const inputBox =
-  'border-border-base rounded-sm border outline-none outline-offset-[-1px]';
+  'border-border-base rounded-sm border outline-none outline-offset-[-1px] h-component';
 export const inputBackground = 'bg-bg-surface';
 export const inputSpacing = 'px-2';
 

@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Dialog, Modal } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { Underlay } from '../Overlay';
@@ -16,15 +17,18 @@ export interface XLoaderProps extends LoaderProps {
 
 // Full Size
 // ---------------
-const LoaderFullSize = (props: LoaderProps) => (
-  <Underlay defaultOpen keyboardDismissable variant="modal">
-    <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
-      <Dialog className="outline-0" aria-label="Fullscreen Loader">
-        <BaseLoader {...props} />
-      </Dialog>
-    </Modal>
-  </Underlay>
-);
+const LoaderFullSize = (props: LoaderProps) => {
+  const id = useId();
+  return (
+    <Underlay defaultOpen keyboardDismissable variant="modal">
+      <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
+        <Dialog className="outline-0" aria-labelledby={id}>
+          <BaseLoader id={id} {...props} />
+        </Dialog>
+      </Modal>
+    </Underlay>
+  );
+};
 
 // Inline
 // ---------------

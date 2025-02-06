@@ -1,7 +1,7 @@
 {
   "name": "@marigold/types",
   "description": "Marigold System Helper Types",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "keywords": [
     "marigold",
@@ -18,7 +18,7 @@
     "directory": "packages/types"
   },
   "dependencies": {
-    "type-fest": "4.31.0"
+    "type-fest": "4.33.0"
   },
   "peerDependencies": {
     "@types/react": "19.x"
