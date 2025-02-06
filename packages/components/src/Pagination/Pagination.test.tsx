@@ -52,7 +52,7 @@ describe('Pagination tests', () => {
         type="button"
       >
         <svg
-          class="flex-none fill-current text-(--color) h-5 w-5"
+          class="flex-none fill-current h-5 w-5"
           height="24px"
           viewBox="0 0 24 24"
           width="24px"
@@ -91,7 +91,7 @@ describe('Pagination tests', () => {
         type="button"
       >
         <svg
-          class="flex-none fill-current text-(--color) h-5 w-5"
+          class="flex-none fill-current h-5 w-5"
           height="24px"
           viewBox="0 0 24 24"
           width="24px"
@@ -126,7 +126,7 @@ describe('Pagination tests', () => {
         type="button"
       >
         <svg
-          class="flex-none fill-current text-(--color) h-5 w-5"
+          class="flex-none fill-current h-5 w-5"
           height="24px"
           viewBox="0 0 24 24"
           width="24px"
@@ -156,7 +156,7 @@ describe('Pagination tests', () => {
         type="button"
       >
         <svg
-          class="flex-none fill-current text-(--color) h-5 w-5"
+          class="flex-none fill-current h-5 w-5"
           height="24px"
           viewBox="0 0 24 24"
           width="24px"

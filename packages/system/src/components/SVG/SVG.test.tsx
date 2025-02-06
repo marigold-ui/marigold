@@ -9,10 +9,6 @@ const theme = {
     none: 0,
     small: 16,
   },
-  colors: {
-    red: '#ffa8a8',
-    info: 'blue',
-  },
   components: {},
 };
 
@@ -32,7 +28,7 @@ test('supports classNames', () => {
 
   expect(svg).toMatchInlineSnapshot(`
 <svg
-  class="flex-none text-(--color) fill-info"
+  class="flex-none fill-info"
   data-testid="svg"
   height="24px"
   width="24px"
@@ -90,7 +86,7 @@ test('supports responsive sizing', () => {
 
   expect(svg).toMatchInlineSnapshot(`
 <svg
-  class="flex-none fill-current text-(--color) w-[24px] sm:w-[32px] md:w-[64px]"
+  class="flex-none fill-current w-[24px] sm:w-[32px] md:w-[64px]"
   data-testid="svg"
   height="24px"
   width="24px"
@@ -146,17 +142,4 @@ test('forwards ref', () => {
   render(<SVG ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(SVGElement);
-});
-
-test('supports color prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <SVG data-testid="svg" height={16} color="red">
-        <path d="M9.9 20.113V13.8415H14" />
-      </SVG>
-    </ThemeProvider>
-  );
-  const svg = screen.getByTestId(/svg/);
-
-  expect(svg.style.cssText).toMatchInlineSnapshot(`""`);
 });
