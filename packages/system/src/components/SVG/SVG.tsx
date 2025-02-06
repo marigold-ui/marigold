@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { HtmlProps } from '@marigold/types';
-import { cn, createVar, getColor } from '../../utils';
+import { cn } from '../../utils';
 
 export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill' | 'style'> {
   /**
@@ -22,7 +22,7 @@ export const SVG = forwardRef<SVGSVGElement, SVGProps>(
         width={`${props.width || size}px`}
         height={`${props.height || size}px`}
         className={cn(`flex-none fill-current text-(--color)`, className)}
-        style={createVar({ color: color && getColor(color) })}
+        style={{ color: `var(--color-${color})` }}
       >
         {children}
       </svg>

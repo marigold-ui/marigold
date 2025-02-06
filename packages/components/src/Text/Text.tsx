@@ -1,5 +1,5 @@
-import { Text } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Text } from 'react-aria-components';
 import {
   CursorProp,
   FontSizeProp,
@@ -7,16 +7,16 @@ import {
   FontWeightProp,
   TextAlignProp,
   cn,
-  createVar,
   cursorStyle,
   fontWeight,
-  getColor,
   textAlign,
   textSize,
   textStyle,
   useClassNames,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
+
+// Props
 
 // Props
 // ---------------
@@ -87,9 +87,7 @@ const _Text = ({
         weight && fontWeight[weight],
         fontSize && textSize[fontSize]
       )}
-      style={createVar({
-        color: color && getColor(color),
-      })}
+      style={{ color: `var(--color-${color})` }}
     >
       {children}
     </Component>

@@ -1,13 +1,10 @@
-import { cx } from 'class-variance-authority';
-import { cva as _cva } from 'class-variance-authority';
+import { cva as _cva, cx } from 'class-variance-authority';
 import {
   ClassProp,
   ClassValue,
   StringToBoolean,
 } from 'class-variance-authority/dist/types';
-import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { useTheme } from './hooks';
 
 export type { ClassValue };
 export type { VariantProps } from 'class-variance-authority';
@@ -52,9 +49,6 @@ export const createVar = (o: { [key: string]: string | number | undefined }) =>
     Object.entries(o).map(([name, val]) => [`--${name}`, val])
   ) as React.CSSProperties;
 
-export const isObject = (val: any): val is { [key: string]: any } =>
-  val && val.constructor === Object;
-
 /**
  * Safely get a dot-notated path within a nested object, with ability
  * to return a default if the full key path does not exist or
@@ -72,25 +66,4 @@ export const get = (obj: object, path: string, fallback?: any): any => {
   }
 
   return result === undefined ? fallback : result;
-};
-
-/**
- * Get a color from the theme based on computed styles
- */
-export const getColor = (token: string): any => {
-  const { name } = useTheme();
-  const [color, setColor] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      const themeElement = document.querySelector(`[data-theme="${name}"]`);
-      if (themeElement) {
-        const styles = getComputedStyle(themeElement);
-        const result = styles.getPropertyValue(`--color-${token}`).trim();
-        setColor(result || null);
-      }
-    }
-  }, [name, token]);
-
-  return color;
 };
