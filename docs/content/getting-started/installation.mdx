@@ -117,14 +117,19 @@ To set up Tailwind CSS, please refer to the official [installation guide](https:
     @import 'tailwindcss';
 
     /* Import the theme from Marigold */
-    @import '../node_modules/marigold/theme-b2b/theme.css';
+    @import '../node_modules/@marigold/theme-b2b/theme.css';
 
-    /* Dont forget to add the glob for your app here */
+
+    /* You need to add the path to the marigold packages */
+    @source '../node_modules/@marigold/components';
+    /* If Tailwind does not automatically detect classnames, dont forget to add the glob for your app here */
     @source '../path/to/your/app';
 
     ```
 
-Please make sure that you have a `postcss.config.js` file with the following content in your project:
+If you are using `Vite` you also need to add the `tailwindcss` plugin to your `vite.config.ts`, you can find all installation steps in the [tailwind documentation](https://tailwindcss.com/docs/installation/using-vite).
+
+When you have a `Next.js` or other framework based application make sure that you have a `postcss.config.js` file with the following content in your project:
 
 ```js
 module.exports = {
@@ -133,8 +138,6 @@ module.exports = {
   },
 };
 ```
-
-This will set up TailwindCSS as a PostCSS plugin and works with common tools, like `vite` or `next.js`.
 
 <SectionMessage variant="info">
   <SectionMessage.Title>TypeScript Configuration</SectionMessage.Title>
