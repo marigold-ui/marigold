@@ -21,7 +21,7 @@ export const SVG = forwardRef<SVGSVGElement, SVGProps>(
         ref={ref}
         width={`${props.width || size}px`}
         height={`${props.height || size}px`}
-        className={cn(`flex-none fill-current text-(--color)`, className)}
+        className={cn('flex-none fill-current', className)}
         style={{ color: `var(--color-${color})` }}
       >
         {children}

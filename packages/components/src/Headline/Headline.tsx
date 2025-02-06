@@ -43,7 +43,7 @@ const _Headline = ({
     <Heading
       level={Number(level)}
       {...props}
-      className={cn(classNames, 'text-(--color)', textAlign[align])}
+      className={cn(classNames, textAlign[align])}
       style={{ color: `var(--color-${color})` }}
     >
       {children}
