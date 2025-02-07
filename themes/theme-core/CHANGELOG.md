@@ -1,5 +1,16 @@
 # @marigold/theme-core
 
+## 27.0.5
+
+### Patch Changes
+
+- 3d4f4fe: feat[DST-641]: add normalization.css from core tailwind v3
+- Updated dependencies [b89cd49]
+- Updated dependencies [dc53196]
+  - @marigold/components@10.2.0
+  - @marigold/system@10.2.0
+  - @marigold/theme-preset@1.3.28
+
 ## 27.0.4
 
 ### Patch Changes

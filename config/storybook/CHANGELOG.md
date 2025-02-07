@@ -1,5 +1,18 @@
 # @marigold/storybook-config
 
+## 1.1.55
+
+### Patch Changes
+
+- Updated dependencies [b89cd49]
+- Updated dependencies [275693d]
+- Updated dependencies [3d4f4fe]
+- Updated dependencies [dc53196]
+- Updated dependencies [08cfadb]
+  - @marigold/components@10.2.0
+  - @marigold/theme-b2b@28.0.5
+  - @marigold/theme-core@27.0.5
+
 ## 1.1.54
 
 ### Patch Changes

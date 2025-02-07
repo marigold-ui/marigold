@@ -1,5 +1,15 @@
 # @marigold/theme-docs
 
+## 2.2.5
+
+### Patch Changes
+
+- Updated dependencies [b89cd49]
+- Updated dependencies [dc53196]
+  - @marigold/components@10.2.0
+  - @marigold/system@10.2.0
+  - @marigold/theme-preset@1.3.28
+
 ## 2.2.4
 
 ### Patch Changes
