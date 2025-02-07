@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
 import { Label, ProgressBar } from 'react-aria-components';
 import type { ProgressBarProps } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
+import { intlMessages } from '../intl/messages';
 
 // Props
 // ---------------
@@ -31,13 +33,18 @@ export const BaseLoader = ({
   'aria-label': ariaLabel,
   ...props
 }: LoaderProps) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   const className = useClassNames({ component: 'XLoader', variant, size });
 
   return (
     <ProgressBar
       className={className.container}
       isIndeterminate
-      aria-label={ariaLabel || children ? ariaLabel : 'Loading...'}
+      aria-label={
+        ariaLabel || children
+          ? ariaLabel
+          : stringFormatter.format('loadingMessage')
+      }
       {...props}
     >
       <svg
