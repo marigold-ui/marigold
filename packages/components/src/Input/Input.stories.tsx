@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React from 'react';
 import { Delete, Search } from '@marigold/icons';
 import { Button } from '../Button';
 import { Input } from './Input';
@@ -90,26 +90,21 @@ export const WithLeadingIcons: Story = {
 };
 
 export const WithAction: Story = {
-  render: args => {
-    const [value, setValue] = useState('value');
-    return (
-      <Input
-        placeholder="Placeholder..."
-        action={
-          <Button
-            size="small"
-            variant="text"
-            onPress={() => alert('Action executed')}
-          >
-            <Delete />
-          </Button>
-        }
-        {...args}
-        // value={value}
-        defaultValue={'Osama'}
-      />
-    );
-  },
+  render: args => (
+    <Input
+      placeholder="Placeholder..."
+      action={
+        <Button
+          size="small"
+          variant="text"
+          onPress={() => alert('Action executed')}
+        >
+          <Delete />
+        </Button>
+      }
+      {...args}
+    />
+  ),
 };
 
 export const WithIcons: Story = {
