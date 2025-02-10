@@ -1,7 +1,9 @@
 ---
-"@marigold/eslint-config": patch
-"@marigold/storybook-config": patch
-"@marigold/docs": patch
+"@marigold/eslint-config": major
+"@marigold/storybook-config": major
+"@marigold/docs": major
+"@marigold/theme-b2b": major
+"@marigold/theme-core": major
 ---
 
 chore[DST-648] upgrade tailwindcss to v4
