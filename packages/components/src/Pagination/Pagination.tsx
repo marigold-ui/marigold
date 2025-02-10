@@ -54,6 +54,8 @@ const _Pagination = ({
   const isFirstRender = useRef(true);
 
   useEffect(() => {
+    /* avoid setting page 1 on first render, 
+    e.g. necessary when using page prop */
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
