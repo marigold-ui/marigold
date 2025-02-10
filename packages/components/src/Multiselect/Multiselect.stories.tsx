@@ -2,7 +2,7 @@
 import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { Stack } from '../Stack';
-import { Multiselect2 } from './Multiselect';
+import { Multiselect } from './Multiselect';
 
 const meta = {
   title: 'Components/Multiselect',
@@ -100,7 +100,7 @@ const drinks = [
 
 export const Basic: StoryObj<any> = {
   render: args => (
-    <Multiselect2
+    <Multiselect
       label="Label"
       placeholder="Enter value"
       items={drinks}
@@ -116,7 +116,7 @@ export const Controlled: StoryObj<any> = {
 
     return (
       <Stack space={3}>
-        <Multiselect2
+        <Multiselect
           label="Label"
           items={drinks}
           onChange={value => setCurrent(value)}

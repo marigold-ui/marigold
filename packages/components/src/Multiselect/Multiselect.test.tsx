@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
-import { Multiselect2 } from './Multiselect';
+import { Multiselect } from './Multiselect';
 
 const user = userEvent.setup();
 
@@ -43,14 +43,14 @@ const options = [
 ];
 
 test('renders input and label', () => {
-  render(<Multiselect2 label="Vegetables" items={options} />);
+  render(<Multiselect label="Vegetables" items={options} />);
 
   expect(screen.getByLabelText('Vegetables')).toBeInTheDocument();
   expect(screen.getByText('Vegetables')).toBeInTheDocument();
 });
 
 test('supports disabled state', () => {
-  render(<Multiselect2 label="Vegetables" disabled items={options} />);
+  render(<Multiselect label="Vegetables" disabled items={options} />);
 
   const input = screen.getByLabelText('Vegetables');
   expect(input).toBeInTheDocument();
@@ -59,7 +59,7 @@ test('supports disabled state', () => {
 
 test('shows selected options as tags', async () => {
   render(
-    <Multiselect2
+    <Multiselect
       label="Vegetables"
       items={options}
       defaultSelectedItems={[options[0], options[1]]}
@@ -71,7 +71,7 @@ test('shows selected options as tags', async () => {
 });
 
 test('allows selecting multiple options', async () => {
-  render(<Multiselect2 label="Vegetables" items={options} />);
+  render(<Multiselect label="Vegetables" items={options} />);
 
   const input = screen.getByLabelText('Vegetables');
   await user.click(input);
@@ -92,7 +92,7 @@ test('allows selecting multiple options', async () => {
 
 test('supports removing selections', async () => {
   render(
-    <Multiselect2
+    <Multiselect
       label="Vegetables"
       items={options}
       defaultSelectedItems={[options[0]]}
@@ -107,7 +107,7 @@ test('supports removing selections', async () => {
 
 test('shows error message when error is present', () => {
   render(
-    <Multiselect2
+    <Multiselect
       label="Vegetables"
       error
       errorMessage="Invalid selection"
@@ -123,7 +123,7 @@ test('supports controlled selection', async () => {
     const [selected, setSelected] = React.useState<typeof options>([]);
     return (
       <>
-        <Multiselect2
+        <Multiselect
           label="Vegetables"
           items={options}
           onSelectionChange={setSelected}
@@ -154,7 +154,7 @@ test('supports controlled selection', async () => {
 
 test('renders close button in selected tags', async () => {
   render(
-    <Multiselect2
+    <Multiselect
       label="Vegetables"
       items={options}
       defaultSelectedItems={[options[0]]}
@@ -170,7 +170,7 @@ test('renders close button in selected tags', async () => {
 
 test('handles close button click', async () => {
   render(
-    <Multiselect2
+    <Multiselect
       label="Vegetables"
       items={options}
       defaultSelectedItems={[options[0]]}

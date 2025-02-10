@@ -112,7 +112,7 @@ const getClassNames = (
   multiValue: () => classNames.tag,
 });
 
-export const Multiselect2 = ({
+export const Multiselect = ({
   disabled,
   readOnly = false,
   items,
