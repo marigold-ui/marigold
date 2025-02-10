@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-preset",
-  "version": "1.3.27",
+  "version": "1.3.28",
   "description": "Create a tailwind Preset for Marigold",
   "license": "MIT",
   "keywords": [

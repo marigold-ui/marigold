@@ -40,7 +40,7 @@ export const Fullsize: Story = {
   },
   render: args => (
     <>
-      <XLoader {...args}>Loading data...</XLoader>
+      <XLoader {...args} />
     </>
   ),
 };
