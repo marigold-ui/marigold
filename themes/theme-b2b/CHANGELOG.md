@@ -1,5 +1,17 @@
 # @marigold/theme-b2b
 
+## 28.0.5
+
+### Patch Changes
+
+- 275693d: fix(b2b): Fix height of inputs so they are the same height as buttons
+- 08cfadb: fix(DST-679): use correct token for B2B Underlay
+- Updated dependencies [b89cd49]
+- Updated dependencies [dc53196]
+  - @marigold/components@10.2.0
+  - @marigold/system@10.2.0
+  - @marigold/theme-preset@1.3.28
+
 ## 28.0.4
 
 ### Patch Changes
