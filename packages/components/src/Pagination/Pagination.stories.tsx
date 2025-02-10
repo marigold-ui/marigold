@@ -156,7 +156,7 @@ export const WithTable: Story = {
     }));
 
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
+    const endIndex = Math.min(startIndex + pageSize, mockData.length);
     const currentData = mockData.slice(startIndex, endIndex);
 
     return (

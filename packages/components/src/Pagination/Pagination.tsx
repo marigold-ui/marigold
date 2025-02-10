@@ -52,6 +52,10 @@ const _Pagination = ({
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
 
+  useEffect(() => {
+    handlePageChange(1);
+  }, [pageSize]);
+
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
     onChange(newPage);
