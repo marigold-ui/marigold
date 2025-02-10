@@ -17,7 +17,7 @@
     "@marigold/jest-config": "workspace:*",
     "@marigold/prettier-config": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@parcel/watcher": "2.5.0",
+    "@parcel/watcher": "2.5.1",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.2.0",
