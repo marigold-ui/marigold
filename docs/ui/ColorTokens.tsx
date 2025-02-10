@@ -12,10 +12,7 @@ import {
 } from './ColorTable';
 import { useThemeSwitch } from './ThemeSwitch';
 
-interface ColorTokenTableProps {
-  sections: { [group: string]: [token: string, color: string][] };
-}
-export const ColorTokenTable = ({ sections = {} }: ColorTokenTableProps) => {
+export const ColorTokenTable = () => {
   const { current } = useThemeSwitch();
 
   if (!current) {
