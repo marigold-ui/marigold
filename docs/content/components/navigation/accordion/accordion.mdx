@@ -3,7 +3,7 @@ title: Accordion
 caption: Component to show and hide related content from the main page.
 ---
 
-An `<Accordion>` is a componewefwfwfwnt that allows you to organizing content into collapsible sections. It consists of a series of vertically stacked items. Accordions are commonly used in website and application designs to present information in a compact and organized way, allowing users to focus on the specific information they are interested in without being overwhelmed by excessive content.
+An `<Accordion>` is a componewt that allows you to organizing content into collapsible sections. It consists of a series of vertically stacked items. Accordions are commonly used in website and application designs to present information in a compact and organized way, allowing users to focus on the specific information they are interested in without being overwhelmed by excessive content.
 
 The `<Accordion.Item>` can be expanded by default using the `defaultExpandedKeys` property or collapsed.
 You can also switch the `selectionMode` for `<Accordion>` by passing its property. The default behavior is set to single mode.
@@ -24,11 +24,41 @@ You can also switch the `selectionMode` for `<Accordion>` by passing its propert
 
 ## Usage
 
-#### Singleselect Accordion
+An `<Accordion>` is a UI component that allows users to expand and collapse sections of content. It helps in organizing information efficiently, improving navigation, and reducing visual clutter. Common use cases include FAQs, structured data presentation, and collapsible navigation menus.
 
-This component shows how a single selection `<Accordion>` is working. It is possible to have just one item open and the other ones hidden. You can also see that the items are fullwidth, which is true by default. Notice that you can't expand two or more items per default.
+#### When Not to Use Accordions
 
-<ComponentDemo file="./single-select-accordion.demo.tsx" />
+While accordions are a great tool for managing content, they are not always the best solution. In cases where users need frequent access to key information, hiding it behind an interaction can create unnecessary friction. Similarly, for long or complex content, expanding a section may lead to overwhelming amounts of text rather than improving readability. Navigation menus with only a few items may not benefit from collapsible sections, as this adds clicks rather than streamlining access. Finally, for processes requiring users to follow a specific sequence, a step-by-step layout is often more effective than collapsible sections.
+
+#### When to Use Accordions
+
+##### 1. Content Organization & Progressive Disclosure
+
+Accordions help structure content by breaking it into collapsible sections, making navigation easier while preventing cognitive overload. They are particularly useful when dealing with large amounts of information that do not need to be viewed all at once.
+
+<ComponentDemo file="./accordion-content.demo.tsx" />
+
+##### 2. FAQs and Help Sections
+
+Frequently Asked Questions (FAQs) benefit from accordions, as they allow users to quickly scan and expand only the questions relevant to them. This approach improves efficiency and keeps help sections clean and easy to navigate.
+
+<ComponentDemo file="./accordion-faq.demo.tsx" />
+
+##### 3. Forms and Input Groups
+
+For complex forms, accordions can group related fields into sections, reducing visual clutter and making the completion process more intuitive. This is particularly beneficial for multi-step or conditional forms where not all fields need to be shown at once.
+
+<ComponentDemo file="./accordion-form.demo.tsx" />
+
+##### 4. Mobile Navigation
+
+On mobile devices, screen real estate is limited. Accordions help by creating collapsible menus and options, making interfaces more compact while preserving accessibility and ease of use.
+
+##### 5. Dashboards and Data Presentation
+
+Dashboards often contain large datasets and multiple sections of information. Accordions help categorize this content, allowing users to expand only the details relevant to them, enhancing clarity and focus.
+
+<ComponentDemo file="./accordion-dashboard.demo.tsx" />
 
 ### Multiselect Accordion
 
