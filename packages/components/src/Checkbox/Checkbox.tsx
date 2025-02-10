@@ -14,7 +14,7 @@ import { useCheckboxGroupContext } from './Context';
 
 // SVG Icon
 const CheckMark = () => (
-  <svg viewBox="0 0 12 10">
+  <svg width="12px" height="10px" viewBox="0 0 12 10">
     <path
       fill="currentColor"
       stroke="none"
@@ -24,7 +24,7 @@ const CheckMark = () => (
 );
 
 const IndeterminateMark = () => (
-  <svg width="12" height="3" viewBox="0 0 12 3">
+  <svg width="12px" height="3px" viewBox="0 0 12 3">
     <path
       fill="currentColor"
       stroke="none"
