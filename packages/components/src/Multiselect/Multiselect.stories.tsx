@@ -2,7 +2,7 @@
 import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { Stack } from '../Stack';
-import { Multiselect2 } from './Multiselect2';
+import { Multiselect2 } from './Multiselect';
 
 const meta = {
   title: 'Components/Multiselect',

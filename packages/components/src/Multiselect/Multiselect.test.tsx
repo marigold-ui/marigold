@@ -3,11 +3,10 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
-import { Multiselect2 } from './Multiselect2';
+import { Multiselect2 } from './Multiselect';
 
 const user = userEvent.setup();
 
-// Reuse or adapt your existing theme setup
 const theme: Theme = {
   name: 'test',
   components: {
@@ -56,7 +55,6 @@ test('supports disabled state', () => {
   const input = screen.getByLabelText('Vegetables');
   expect(input).toBeInTheDocument();
   expect(input).toBeDisabled();
-  // expect(document.querySelector('button')).toBeDisabled();
 });
 
 test('shows selected options as tags', async () => {
