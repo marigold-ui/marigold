@@ -1,5 +1,47 @@
 # @marigold/docs
 
+## 10.2.0
+
+### Patch Changes
+
+- Updated dependencies [b89cd49]
+- Updated dependencies [275693d]
+- Updated dependencies [3d4f4fe]
+- Updated dependencies [dc53196]
+- Updated dependencies [08cfadb]
+  - @marigold/components@10.2.0
+  - @marigold/theme-b2b@28.0.5
+  - @marigold/theme-core@27.0.5
+  - @marigold/theme-docs@2.2.5
+  - @marigold/system@10.2.0
+  - @marigold/icons@1.2.63
+  - @marigold/theme-preset@1.3.28
+
+## 10.1.3
+
+### Patch Changes
+
+- @marigold/components@10.1.3
+- @marigold/system@10.1.3
+- @marigold/theme-b2b@28.0.4
+- @marigold/theme-core@27.0.4
+- @marigold/theme-docs@2.2.4
+- @marigold/icons@1.2.62
+- @marigold/theme-preset@1.3.27
+
+## 10.1.2
+
+### Patch Changes
+
+- Updated dependencies [3878b6b]
+  - @marigold/theme-b2b@28.0.3
+  - @marigold/theme-core@27.0.3
+  - @marigold/theme-docs@2.2.3
+  - @marigold/system@10.1.2
+  - @marigold/components@10.1.2
+  - @marigold/icons@1.2.61
+  - @marigold/theme-preset@1.3.26
+
 ## 10.1.1
 
 ### Patch Changes

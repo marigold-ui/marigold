@@ -1,5 +1,30 @@
 # @marigold/components
 
+## 10.2.0
+
+### Minor Changes
+
+- b89cd49: feat(DST-646): Improve a11y by translation fallback loading message
+
+### Patch Changes
+
+- dc53196: fix(DST-644): Make `<XLoader>` use underlay styles from theme in docs
+  - @marigold/system@10.2.0
+
+## 10.1.3
+
+### Patch Changes
+
+- Updated dependencies [8b7be8e]
+  - @marigold/types@1.2.1
+  - @marigold/system@10.1.3
+
+## 10.1.2
+
+### Patch Changes
+
+- @marigold/system@10.1.2
+
 ## 10.1.1
 
 ### Patch Changes

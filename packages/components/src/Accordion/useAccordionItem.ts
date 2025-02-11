@@ -47,7 +47,7 @@ export interface AccordionItemAria extends PressEvents, MyButtonProps {
 export function useAccordionItem<T>(
   props: AccordionItemAriaProps<T>,
   state: TreeState<T>,
-  ref: RefObject<HTMLButtonElement>
+  ref: RefObject<HTMLButtonElement | null>
 ): AccordionItemAria {
   let { item } = props;
   let key = item.key;

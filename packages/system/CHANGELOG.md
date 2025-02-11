@@ -1,5 +1,16 @@
 # @marigold/system
 
+## 10.2.0
+
+## 10.1.3
+
+### Patch Changes
+
+- Updated dependencies [8b7be8e]
+  - @marigold/types@1.2.1
+
+## 10.1.2
+
 ## 10.1.1
 
 ### Patch Changes

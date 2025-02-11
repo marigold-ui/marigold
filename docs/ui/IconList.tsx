@@ -1,7 +1,6 @@
 'use-client';
 
-import { Button, Card, Text, Tiles, cn } from '@/ui';
-import { Icons } from '@/ui';
+import { Button, Card, Icons, Text, Tiles, cn } from '@/ui';
 import { useRef, useState } from 'react';
 import { useCopyToClipboard, useDebounce } from 'react-use';
 
@@ -16,7 +15,7 @@ export interface IconListItemProps {
 const IconListItem = ({ icon }: IconListItemProps) => {
   const Component = Icons[icon];
 
-  const svgRef = useRef<SVGElement>();
+  const svgRef = useRef<SVGElement>(undefined);
   const [isCopied, setCopied] = useState(false);
   const [, copyToClipboard] = useCopyToClipboard();
   const [isReady, cancel] = useDebounce(() => setCopied(false), 2000, [

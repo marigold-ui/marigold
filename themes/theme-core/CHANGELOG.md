@@ -1,5 +1,33 @@
 # @marigold/theme-core
 
+## 27.0.5
+
+### Patch Changes
+
+- 3d4f4fe: feat[DST-641]: add normalization.css from core tailwind v3
+- Updated dependencies [b89cd49]
+- Updated dependencies [dc53196]
+  - @marigold/components@10.2.0
+  - @marigold/system@10.2.0
+  - @marigold/theme-preset@1.3.28
+
+## 27.0.4
+
+### Patch Changes
+
+- @marigold/components@10.1.3
+- @marigold/system@10.1.3
+- @marigold/theme-preset@1.3.27
+
+## 27.0.3
+
+### Patch Changes
+
+- 3878b6b: fix([DST-638]): update theme package.jsons to resolve the warning: The condition "types" here will never be used as it comes after both "import" and "require".
+  - @marigold/system@10.1.2
+  - @marigold/components@10.1.2
+  - @marigold/theme-preset@1.3.26
+
 ## 27.0.2
 
 ### Patch Changes

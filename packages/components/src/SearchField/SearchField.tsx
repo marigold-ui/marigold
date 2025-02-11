@@ -24,7 +24,7 @@ export interface SearchFieldProps
   /**
    * Action element to display in the search field.
    */
-  action?: ReactElement;
+  action?: ReactElement<any>;
 
   variant?: string;
   size?: string;
