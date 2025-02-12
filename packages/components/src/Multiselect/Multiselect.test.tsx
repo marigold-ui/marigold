@@ -186,3 +186,15 @@ test('handles close button click', async () => {
     expect(screen.queryByText('Spinach')).not.toBeInTheDocument();
   });
 });
+
+test('Allow styling container & input via theme', () => {
+  render(<Multiselect label="label" items={options} defaultValue="Apple" />);
+
+  const field = screen.getByText('label').parentElement;
+  expect(field?.className).toMatchInlineSnapshot(
+    `"group/field w-full group/field"`
+  );
+
+  const input = screen.getByDisplayValue('Apple');
+  expect(input.className).toMatchInlineSnapshot(`"base-input-style"`);
+});
