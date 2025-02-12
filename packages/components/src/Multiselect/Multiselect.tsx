@@ -30,7 +30,6 @@ type PickedProps =
   | 'onFocus'
   | 'aria-errormessage'
   | 'aria-invalid'
-  | 'aria-errormessage'
   | 'aria-label'
   | 'aria-labelledby'
   | 'aria-live'
@@ -146,7 +145,6 @@ export const Multiselect = ({
   let { labelProps, fieldProps } = useField({
     label: props.label,
     errorMessage,
-    isInvalid: true,
   });
 
   return (
