@@ -77,7 +77,7 @@ const _Dialog = ({
     <Dialog
       {...props}
       className={cn(
-        'relative outline-none [&>*:not(:last-child)]:mb-4',
+        'outline-hidden relative [&>*:not(:last-child)]:mb-4',
         "grid [grid-template-areas:'title'_'content'_'actions']",
         classNames.container
       )}

@@ -11,7 +11,7 @@ test('supports default contentType content', () => {
   const container = screen.getByTestId(/container/);
   expect(container).toMatchInlineSnapshot(`
     <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
+      class="grid grid-cols-[minmax(0,var(--maxWidth))_1fr_1fr] *:col-[1]"
       data-testid="container"
       style="--maxWidth: 45ch;"
     >
@@ -31,7 +31,7 @@ test('supports contentType header', () => {
   const container = screen.getByTestId(/container/);
   expect(container).toMatchInlineSnapshot(`
     <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
+      class="grid grid-cols-[minmax(0,var(--maxWidth))_1fr_1fr] *:col-[1]"
       data-testid="container"
       style="--maxWidth: 25ch;"
     >
@@ -51,7 +51,7 @@ test('supports size small', () => {
   const container = screen.getByTestId(/container/);
   expect(container).toMatchInlineSnapshot(`
     <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
+      class="grid grid-cols-[minmax(0,var(--maxWidth))_1fr_1fr] *:col-[1]"
       data-testid="container"
       style="--maxWidth: 20ch;"
     >
@@ -71,7 +71,7 @@ test('supports size large', () => {
   const container = screen.getByTestId(/container/);
   expect(container).toMatchInlineSnapshot(`
     <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
+      class="grid grid-cols-[minmax(0,var(--maxWidth))_1fr_1fr] *:col-[1]"
       data-testid="container"
       style="--maxWidth: 60ch;"
     >
@@ -89,7 +89,7 @@ test('supports default align container left', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[1]`);
+  expect(container).toHaveClass(`*:col-[1]`);
 });
 
 test('supports align container center', () => {
@@ -99,7 +99,7 @@ test('supports align container center', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[2]`);
+  expect(container).toHaveClass(`*:col-[2]`);
 });
 
 test('supports align container right', () => {
@@ -109,7 +109,7 @@ test('supports align container right', () => {
     </Container>
   );
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[3]`);
+  expect(container).toHaveClass(`*:col-[3]`);
 });
 
 test('supports default align items none', () => {

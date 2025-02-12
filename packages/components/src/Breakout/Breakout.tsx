@@ -36,7 +36,7 @@ export const Breakout = ({
         alignX && alignment?.horizontal?.alignmentX[alignX],
         alignY && alignment?.horizontal?.alignmentY[alignY],
         alignX || alignY ? 'flex' : 'block',
-        'h-[--height]'
+        'h-(--height)'
       )}
       style={createVar({ height })}
     >

@@ -50,7 +50,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Block = ({ children }: { children: ReactNode }) => (
-  <div className="rounded border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">
+  <div className="rounded-xs border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">
     {children}
   </div>
 );

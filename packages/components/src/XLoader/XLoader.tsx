@@ -19,9 +19,10 @@ export interface XLoaderProps extends LoaderProps {
 // ---------------
 const LoaderFullSize = (props: LoaderProps) => {
   const id = useId();
+
   return (
     <Underlay defaultOpen keyboardDismissable variant="modal">
-      <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
+      <Modal className="grid h-(--visual-viewport-height) cursor-progress place-items-center">
         <Dialog className="outline-0" aria-labelledby={id}>
           <BaseLoader id={id} {...props} />
         </Dialog>
