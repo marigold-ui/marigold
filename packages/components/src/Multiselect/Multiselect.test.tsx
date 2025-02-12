@@ -118,7 +118,10 @@ test('shows error message when error is present', () => {
   expect(screen.getByText('Invalid selection')).toBeInTheDocument();
 });
 
-test('supports controlled selection', async () => {
+it.each([
+  [1, 'Spinach'],
+  [2, 'Carrots'],
+])('supports controlled selection', async (expected, item) => {
   const Controlled = () => {
     const [selected, setSelected] = React.useState<typeof options>([]);
     return (
@@ -134,22 +137,17 @@ test('supports controlled selection', async () => {
       </>
     );
   };
-
   render(<Controlled />);
-
   const input = screen.getByLabelText('Vegetables');
   await user.click(input);
-
   const menu = await screen.findByRole('listbox');
-  const spinach = within(menu).getByText('Spinach');
-  await user.click(spinach);
 
-  expect(await screen.findByTestId('output')).toHaveTextContent('1');
+  const menuItem = within(menu).getByText(item);
 
-  const carrots = within(menu).getByText('Carrots');
-  await user.click(carrots);
-
-  expect(await screen.findByTestId('output')).toHaveTextContent('2');
+  await user.click(menuItem);
+  expect(await screen.findByTestId('output')).toHaveTextContent(
+    String(expected)
+  );
 });
 
 test('renders close button in selected tags', async () => {
