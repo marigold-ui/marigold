@@ -4,9 +4,6 @@ import { Text } from './Text';
 
 const theme: Theme = {
   name: 'test',
-  colors: {
-    emerald: 'rgb(5 150 105)',
-  },
   components: {
     Text: cva('font-["Oswald_Regular"]', {
       variants: {
@@ -64,25 +61,13 @@ test('renders a <p>/<span> element', () => {
   expect(span instanceof HTMLSpanElement).toBeTruthy();
 });
 
-test('style props override theme styles', () => {
+test('test variant works', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Text variant="one" color="red-700">
-        text
-      </Text>
+      <Text variant="one">text</Text>
     </ThemeProvider>
   );
   const text = screen.getByText(/text/);
-  expect(text.style.getPropertyValue('--color')).toEqual('red-700');
-});
 
-test('get theme color', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Text data-testid="text" color="emerald" />
-    </ThemeProvider>
-  );
-
-  const text = screen.getByTestId('text');
-  expect(text.style.getPropertyValue('--color')).toEqual(theme.colors!.emerald);
+  expect(text).toHaveClass(`"font-["Arial"]"`);
 });

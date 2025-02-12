@@ -136,7 +136,7 @@ test('accepts variant and size classnames', () => {
 
   const item = screen.getByText('infos');
   expect(item.className).toMatchInlineSnapshot(
-    `"text-[--color] max-w-[--maxHeadlineWidth] text-left"`
+    `"max-w-[--maxHeadlineWidth] text-left"`
   );
 });
 

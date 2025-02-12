@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { cn, createVar, gapSpace } from '@marigold/system';
 import type { GapSpaceProp } from '@marigold/system';
+import { cn, createVar, gapSpace } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 export interface CenterProps extends GapSpaceProp, AriaRegionProps {
@@ -22,9 +22,9 @@ export const Center = ({
     <div
       {...props}
       className={cn(
-        'me-[auto] ms-[auto] box-content flex flex-col items-center justify-center',
+        'ms-[auto] me-[auto] box-content flex flex-col items-center justify-center',
         gapSpace[space],
-        'max-w-[--maxWidth]'
+        'max-w-(--maxWidth)'
       )}
       style={createVar({ maxWidth })}
     >

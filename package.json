@@ -36,7 +36,7 @@
     "prettier": "3.4.2",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "tailwindcss": "3.4.17",
+    "tailwindcss": "4.0.0",
     "turbo": "2.3.3",
     "typescript": "5.7.3",
     "zx": "8.3.0"
@@ -46,7 +46,7 @@
     "watch": "concurrently pnpm:watch:tailwind pnpm:watch:storybook",
     "watch:storybook": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
     "watch:tailwind": "zx scripts/watch-tailwind.mjs",
-    "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" --filter \"@marigold/theme-preset...\" build",
+    "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
     "build:docs": "turbo run --filter @marigold/docs... build",
     "build:storybook": "turbo run --filter @marigold/storybook-config... build",
     "build:themes": "turbo run --filter \"@marigold/theme*...\" build",

@@ -512,10 +512,10 @@ export const textAlign = {
 
 export const aspect = {
   square: 'aspect-[1]',
-  landscape: 'aspect-[4/3]',
-  portrait: 'aspect-[3/4]',
-  widescreen: 'aspect-[16/9]',
-  ultrawide: 'aspect-[18/5]',
+  landscape: 'aspect-4/3',
+  portrait: 'aspect-3/4',
+  widescreen: 'aspect-16/9',
+  ultrawide: 'aspect-18/5',
   golden: 'aspect-[1.6180/1]',
 };
 

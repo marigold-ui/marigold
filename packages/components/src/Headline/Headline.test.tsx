@@ -4,9 +4,6 @@ import { Headline } from './Headline';
 
 const theme: Theme = {
   name: 'test',
-  colors: {
-    emerald: 'rgb(5 150 105);',
-  },
   components: {
     Headline: cva('m-0 font-black', {
       variants: {
@@ -60,10 +57,13 @@ test('uses "level-1" by default', () => {
   );
 
   const headline = screen.getByTestId('headline');
-  expect(headline.tagName).toEqual('H1');
-  expect(headline).toHaveClass(
-    theme.components.Headline!.variants!.size['level-1'] as string
-  );
+
+  expect(headline).toMatchInlineSnapshot(`
+<h1
+  class="m-0 font-black text-[2rem] text-left"
+  data-testid="headline"
+/>
+`);
 });
 
 test('headline accepts a variant', () => {
@@ -93,10 +93,12 @@ test('headline accepts other level', () => {
     </ThemeProvider>
   );
   const headline = screen.getByTestId('headline');
-  expect(headline.tagName).toEqual('H5');
-  expect(headline).toHaveClass(
-    theme.components.Headline!.variants!.size['level-5'] as string
-  );
+  expect(headline).toMatchInlineSnapshot(`
+<h5
+  class="m-0 font-black text-base text-left"
+  data-testid="headline"
+/>
+`);
 });
 
 test('get theme color', () => {
@@ -120,8 +122,10 @@ test('support string as level', () => {
   );
 
   const headline = screen.getByTestId('headline');
-  expect(headline.tagName).toEqual('H2');
-  expect(headline).toHaveClass(
-    theme.components.Headline!.variants!.size['level-2'] as string
-  );
+  expect(headline).toMatchInlineSnapshot(`
+<h2
+  class="m-0 font-black mb-6 text-2xl text-left"
+  data-testid="headline"
+/>
+`);
 });

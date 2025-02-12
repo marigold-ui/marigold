@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+@import './node_modules/@marigold/theme-core/dist/styles.css';
+@import './node_modules/@marigold/theme-b2b/dist/styles.css';
+
+@source './.storybook/preview.tsx';
+@source '../../packages/{components,system}/**/*.stories.{tsx,ts}';

@@ -24,9 +24,9 @@ export const Link: ThemeComponent<'Link'> = cva(['font-medium'], {
     size: {
       inline: '',
       xsmall: 'rounded-full text-xs py-1.5 px-4',
-      small: 'px-3 py-1.5 text-sm rounded',
-      regular: 'px-3 py-2 rounded',
-      large: 'px-8 py-3.5 rounded',
+      small: 'px-3 py-1.5 text-sm rounded-xs',
+      regular: 'px-3 py-2 rounded-xs',
+      large: 'px-8 py-3.5 rounded-xs',
     },
   },
   defaultVariants: {

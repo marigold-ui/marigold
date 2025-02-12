@@ -1,4 +1,4 @@
-import { cva, get, getColor } from './utils';
+import { cva, get } from './utils';
 
 test('cva (simple)', () => {
   expect(cva(['text-sm'])()).toMatchInlineSnapshot(`"text-sm"`);
@@ -67,41 +67,4 @@ test('get', () => {
   },
 }
 `);
-});
-
-test('getColor', () => {
-  const theme = {
-    colors: {
-      brand: {
-        100: 'brand-color',
-      },
-      accent: {
-        DEFAULT: 'default-accent-color',
-        hover: 'accent-hover-color',
-      },
-      text: {
-        primary: {
-          muted: 'muted-color',
-        },
-      },
-    },
-  };
-
-  expect(getColor(theme, 'does-not-exist')).toMatchInlineSnapshot(`undefined`);
-  expect(getColor(theme, 'does-not-exist', 'fallback')).toMatchInlineSnapshot(
-    `"fallback"`
-  );
-
-  expect(getColor(theme, 'brand-100')).toMatchInlineSnapshot(`"brand-color"`);
-  expect(getColor(theme, 'accent-hover')).toMatchInlineSnapshot(
-    `"accent-hover-color"`
-  );
-  expect(getColor(theme, 'text-primary-muted')).toMatchInlineSnapshot(
-    `"muted-color"`
-  );
-
-  // Support Tailwinds DEFAULT
-  expect(getColor(theme, 'accent')).toMatchInlineSnapshot(
-    `"default-accent-color"`
-  );
 });

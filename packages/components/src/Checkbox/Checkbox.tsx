@@ -164,7 +164,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
         ref={ref}
         className={cn(
           'group/checkbox flex items-center gap-[0.5rem]',
-          'cursor-pointer data-[disabled]:cursor-not-allowed',
+          'cursor-pointer data-disabled:cursor-not-allowed',
           classNames.container
         )}
         {...props}

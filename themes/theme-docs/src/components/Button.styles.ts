@@ -1,6 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Button: ThemeComponent<'Button'> = cva('flex gap-2 rounded-sm', {
+export const Button: ThemeComponent<'Button'> = cva('flex gap-2 rounded-xs', {
   variants: {
     variant: {
       ghost: 'text-secondary-700 hover:text-secondary-900 p-0',

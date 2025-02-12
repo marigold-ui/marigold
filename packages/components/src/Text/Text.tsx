@@ -1,5 +1,5 @@
-import { Text } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { Text } from 'react-aria-components';
 import {
   CursorProp,
   FontSizeProp,
@@ -7,15 +7,12 @@ import {
   FontWeightProp,
   TextAlignProp,
   cn,
-  createVar,
   cursorStyle,
   fontWeight,
-  getColor,
   textAlign,
   textSize,
   textStyle,
   useClassNames,
-  useTheme,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 
@@ -62,7 +59,6 @@ const _Text = ({
   as = 'div',
   ...props
 }: TextProps) => {
-  const theme = useTheme();
   const classNames = useClassNames({
     component: 'Text',
     variant,
@@ -81,7 +77,6 @@ const _Text = ({
       {...props}
       {...elementType}
       className={cn(
-        'text-[--color] outline-[--outline]',
         'max-w-[--maxTextWidth]', // possibly set by a <Container>
         classNames,
         fontStyle && textStyle[fontStyle],
@@ -90,9 +85,7 @@ const _Text = ({
         weight && fontWeight[weight],
         fontSize && textSize[fontSize]
       )}
-      style={createVar({
-        color: color && getColor(theme, color, color /* fallback */),
-      })}
+      style={{ color: `var(--color-${color})` }}
     >
       {children}
     </Component>

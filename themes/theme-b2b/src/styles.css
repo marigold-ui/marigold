@@ -1,4 +1,29 @@
-@import url('https://fonts.bunny.net/css?family=inter:400,600,700');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import './theme.css' theme(inline);
+
+/* from tailwind.config.ts */
+@source 'src/root.ts';
+@source 'src/**/*.*.ts';
+@source '../../../packages/{components,system}/**/*.{tsx,ts}';
+@source '!../../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
+@source '!../../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
+
+@source './safelist.txt';
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
