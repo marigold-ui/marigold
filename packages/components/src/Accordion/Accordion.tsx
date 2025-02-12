@@ -6,7 +6,7 @@ import { AccordionHeader } from './AccordionHeading';
 import { AccordionItem } from './AccordionItem';
 import { AccordionPanel } from './AccordionPanel';
 
-type RemovedProps = 'isDisabled' | 'isExpanded';
+type RemovedProps = 'isDisabled';
 export interface AccordionProps
   extends Omit<RAC.DisclosureGroupProps, RemovedProps> {
   disabled?: RAC.DisclosureGroupProps['isDisabled'];
