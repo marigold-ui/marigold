@@ -84,7 +84,7 @@ const _Text = ({
         weight && fontWeight[weight],
         fontSize && textSize[fontSize]
       )}
-      style={{ color: `var(--color-${color})` }}
+      style={{ color: color && `var(--color-${color})` }}
     >
       {children}
     </Component>
