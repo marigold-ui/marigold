@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from '../icons';
 import { Ellipsis } from './Ellipsis';
 import { NavigationButton } from './NavigationButton';
@@ -51,6 +51,17 @@ const _Pagination = ({
 }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    /* avoid setting page 1 on first render, 
+    e.g. necessary when using page prop */
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    handlePageChange(1);
+  }, [pageSize]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
