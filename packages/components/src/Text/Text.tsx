@@ -17,8 +17,6 @@ import {
 import type { AriaLabelingProps } from '@marigold/types';
 
 // Props
-
-// Props
 // ---------------
 export interface TextProps
   extends AriaLabelingProps,
