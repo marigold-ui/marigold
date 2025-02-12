@@ -12,8 +12,8 @@ export const Slider: ThemeComponent<'Slider'> = {
     'border-border-base rounded-lg border-4 border-solid',
     'size-4',
     'bg-bg-base',
-    'rac-focus:border-border-selected',
-    'rac-disabled:bg-bg-inverted-disabled rac-disabled:border-border-base-disabled',
+    'focus:border-border-selected',
+    'disabled:bg-bg-inverted-disabled disabled:border-border-base-disabled',
   ]),
   output: cva('text-text-base text-sm'),
 };

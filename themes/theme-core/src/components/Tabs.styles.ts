@@ -19,16 +19,16 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   tab: cva(
     [
       'min-h-[40px]',
-      'data-[hovered]:text-text-base-hover data-[hovered]:border-b-border-base-hover data-[hovered]:border-b-8 data-[hovered]:border-solid',
+      'data-hovered:text-text-base-hover data-hovered:border-b-border-base-hover data-hovered:border-b-8 data-hovered:border-solid',
       'aria-disabled:text-text-base-disabled aria-disabled:hover:border-none',
-      'aria-selected:border-b-border-brand data-[hovered]:aria-selected:border-b-border-brand aria-selected:border-b-8 aria-selected:border-solid ',
+      'aria-selected:border-b-border-brand data-hovered:aria-selected:border-b-border-brand aria-selected:border-b-8 aria-selected:border-solid ',
     ],
     {
       variants: {
         variant: {
           sunken: [
-            'm-0 cursor-pointer rounded-t-md p-2 px-4 font-bold outline-none',
-            'rac-hover:border-none rac-selected:border-none rac-selected:bg-black/10 hover:bg-black/5',
+            'm-0 cursor-pointer rounded-t-md p-2 px-4 font-bold outline-hidden',
+            'hover:border-none selected:border-none selected:bg-black/10 hover:bg-black/5',
           ],
         },
         size: {

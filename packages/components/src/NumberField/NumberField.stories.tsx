@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { Inline } from '../Inline';
 import { NumberField } from './NumberField';
 
@@ -162,7 +162,7 @@ export const MinMax: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
     return (
       <>
         <NumberField {...args} value={value} onChange={setValue} />

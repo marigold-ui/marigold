@@ -35,7 +35,7 @@ const _Tag = ({ variant, size, children, ...props }: TagProps) => {
     <Tag
       textValue={textValue}
       {...props}
-      className={cn('data-[selection-mode]:cursor-pointer', classNames.tag)}
+      className={cn('data-selection-mode:cursor-pointer', classNames.tag)}
     >
       {({ allowsRemoving }) => (
         <>

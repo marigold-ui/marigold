@@ -5,7 +5,7 @@ import { Stack } from '../Stack';
 import { Split } from './Split';
 
 const Block = ({ children }: { children: ReactNode }) => (
-  <div className="rounded border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">
+  <div className="rounded-xs border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">
     {children}
   </div>
 );
@@ -31,7 +31,7 @@ export const WithInline: Story = {
 
 export const WithStack: Story = {
   render: () => (
-    <div className="h-[400]">
+    <div className="h-400">
       <Stack space={2} stretch>
         <Block>First</Block>
         <Split />

@@ -43,12 +43,12 @@ const IconListItem = ({ icon }: IconListItemProps) => {
 
   return (
     <div className="mt-2">
-      <Button onPress={handleClick} className="size-full h-auto p-0">
+      <Button onPress={handleClick} className="h-auto w-full p-0">
         <Card p={3} variant="hovering">
           <div className="relative grid h-24 place-items-center">
             <div
               className={cn(
-                isCopied ? 'opacity-1' : 'opacity-0',
+                isCopied ? 'opacity-100' : 'opacity-0',
                 'bg-bg-surface absolute flex size-full select-none items-center justify-center whitespace-nowrap font-medium tracking-wider'
               )}
             >

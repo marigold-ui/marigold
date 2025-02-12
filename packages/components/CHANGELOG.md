@@ -1,5 +1,20 @@
 # @marigold/components
 
+## 10.2.1
+
+### Patch Changes
+
+- bb2049f: bugfix[DSTSUP-100]: Bug in pagination component
+
+  - display of results counter fixed
+  - when page size changed the first page will now be selected
+
+- 7f0841d: fix(DSTSUP-102): Set dimensions of checkmark
+
+  Fixes a bug in Safari where the checkmark was not displayed.
+
+  - @marigold/system@10.2.1
+
 ## 10.2.0
 
 ### Minor Changes

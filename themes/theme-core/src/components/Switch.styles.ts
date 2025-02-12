@@ -6,7 +6,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     'h-component',
     'bg-bg-inverted border-border-inverted border border-solid',
     'group-selected/switch:bg-bg-selected-input group-selected/switch:border-border-selected',
-    'group-disabled/switch:bg-bg-base-disabled group-disabled/switch:border-border-base',
+    'group-disabled/switch:group-selected/switch:bg-bg-base-disabled group-disabled/switch:group-selected/switch:border-border-base',
   ]),
   thumb: cva(['size-[22px]', 'bg-bg-base']),
 };

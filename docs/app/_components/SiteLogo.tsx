@@ -3,7 +3,7 @@ import { Logo } from '@/ui/Logo';
 
 export const SiteLogo = () => (
   <Link
-    className="flex items-center gap-1.5 xl:w-[--page-sub-nav-absolute-width]"
+    className="xl:w-(--page-sub-nav-absolute-width) flex items-center gap-1.5"
     href="/"
   >
     <Logo className="size-6" />

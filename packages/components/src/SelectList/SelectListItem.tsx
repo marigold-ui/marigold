@@ -20,7 +20,7 @@ const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
         textValue={textValue}
         {...props}
         className={cn(
-          'items-center group-data-[layout=grid]/list:flex-row',
+          'items-center group-[layout=grid]/list:flex-row',
           classNames?.option
         )}
         ref={ref}

@@ -5,7 +5,7 @@ export const Table: ThemeComponent<'Table'> = {
   header: cva(
     [
       'border-border-base relative border-b ',
-      'group-aria-[multiselectable]/table:[&:first-child]:w-12',
+      'group-aria-[multiselectable]/table:first:w-12',
       'cursor-default p-4',
       'text-text-base',
       'after:border-border-base after:absolute after:bottom-0 after:left-0 after:z-[-1] after:size-full after:border-b after:border-solid after:content-[""]',
@@ -26,7 +26,7 @@ export const Table: ThemeComponent<'Table'> = {
   ),
   row: cva([
     'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',
-    'data-[hover]:bg-bg-base-hover',
+    'data-hover:bg-bg-base-hover',
     'aria-selected:bg-bg-selected',
     'focus-visible:outline-outline-focus',
   ]),

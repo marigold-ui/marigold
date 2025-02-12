@@ -10,7 +10,7 @@ const meta = {
         type: 'radio',
       },
       description: 'Mode of the Loader.',
-      options: ['default', 'fullsize', 'inline'],
+      options: ['default', 'fullscreen', 'section'],
     },
     variant: {
       control: {
@@ -34,9 +34,9 @@ export const Basic: Story = {
   render: args => <XLoader {...args} />,
 };
 
-export const Fullsize: Story = {
+export const Fullscreen: Story = {
   args: {
-    mode: 'fullsize',
+    mode: 'fullscreen',
   },
   render: args => (
     <>
@@ -45,9 +45,9 @@ export const Fullsize: Story = {
   ),
 };
 
-export const Inline: Story = {
+export const Section: Story = {
   args: {
-    mode: 'inline',
+    mode: 'section',
   },
   render: args => (
     <div className="h-96 w-96">

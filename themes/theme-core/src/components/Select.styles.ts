@@ -15,6 +15,6 @@ export const Select: ThemeComponent<'Select'> = {
     inputSpacing,
     inputError,
     inputDisabled,
-    '[&>[data-placeholder=true]]:text-text-inverted-disabled',
+    'data-[placeholder=true]:*:text-text-inverted-disabled',
   ]),
 };

@@ -5,7 +5,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   closeButton: cva(''),
   container: cva(
     [
-      'font-body bg-bg-surface-overlay shadow-surface-overlay rounded-sm pl-8 pr-12 pb-8 pt-4',
+      'font-body bg-bg-surface-overlay shadow-surface-overlay rounded-xs pl-8 pr-12 pb-8 pt-4',
       ELEVALTION_RING,
     ],
     {

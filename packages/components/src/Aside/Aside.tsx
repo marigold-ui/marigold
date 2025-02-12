@@ -27,8 +27,8 @@ export interface AsideProps extends GapSpaceProp, AriaRegionProps {
  * Apply CSS depending on which element should serve as sidebar.
  */
 const classNames = {
-  aside: 'grow basis-[--sideWidth]',
-  content: 'basis-0 grow-[999] [min-inline-size:--wrap]',
+  aside: 'grow basis-(--sideWidth)',
+  content: 'basis-0 grow-999 [min-inline-size:var(--wrap)]',
 };
 
 export const Aside = ({

@@ -7,7 +7,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   tab: cva(
     [
       'min-h-[40px]',
-      'data-[hovered]:text-text-base data-[hovered]:border-b-border-base-hover data-[hovered]:border-b-8 data-[hovered]:border-solid',
+      'data-hovered:text-text-base data-hovered:border-b-border-base-hover data-hovered:border-b-8 data-hovered:border-solid',
       'aria-disabled:text-text-base-disabled ',
       'aria-selected:border-b-border-selected aria-selected:border-b-8 aria-selected:border-solid',
     ],
