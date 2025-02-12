@@ -117,7 +117,7 @@ test('popover is small screen', () => {
   const popover = screen.getByTestId('popover');
 
   expect(popover.className).toMatchInlineSnapshot(
-    `"fixed! bottom-0! left-0! top-auto! max-h-fit! w-full"`
+    `"fixed! top-auto! bottom-0! left-0! max-h-fit! w-full"`
   );
   expect(popover).toBeInTheDocument();
 });

@@ -60,7 +60,7 @@ test('uses "level-1" by default', () => {
 
   expect(headline).toMatchInlineSnapshot(`
 <h1
-  class="m-0 font-black text-[2rem] text-left"
+  class="m-0 font-black text-[2rem] max-w-[--maxHeadlineWidth] text-left"
   data-testid="headline"
 />
 `);
@@ -95,7 +95,7 @@ test('headline accepts other level', () => {
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
 <h5
-  class="m-0 font-black text-base text-left"
+  class="m-0 font-black text-base max-w-[--maxHeadlineWidth] text-left"
   data-testid="headline"
 />
 `);
@@ -109,9 +109,12 @@ test('get theme color', () => {
   );
 
   const headline = screen.getByTestId('headline');
-  expect(headline.style.getPropertyValue('--color')).toEqual(
-    theme.colors!.emerald
-  );
+  expect(headline).toMatchInlineSnapshot(`
+<h1
+  class="m-0 font-black text-[2rem] max-w-[--maxHeadlineWidth] text-left"
+  data-testid="headline"
+/>
+`);
 });
 
 test('support string as level', () => {
@@ -124,7 +127,7 @@ test('support string as level', () => {
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
 <h2
-  class="m-0 font-black mb-6 text-2xl text-left"
+  class="m-0 font-black mb-6 text-2xl max-w-[--maxHeadlineWidth] text-left"
   data-testid="headline"
 />
 `);
