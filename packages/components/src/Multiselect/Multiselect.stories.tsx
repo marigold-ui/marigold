@@ -85,7 +85,6 @@ const meta = {
     error: false,
     disabled: false,
     width: 'full',
-    placeholder: undefined,
     label: 'Label',
   },
 } satisfies Meta;
@@ -102,8 +101,8 @@ export const Basic: StoryObj<any> = {
   render: args => (
     <Multiselect
       label="Label"
-      placeholder="Enter value"
       items={drinks}
+      placeholder="enter value"
       {...args}
     />
   ),
@@ -118,6 +117,7 @@ export const Controlled: StoryObj<any> = {
       <Stack space={3}>
         <Multiselect
           label="Label"
+          placeholder="enter value"
           items={drinks}
           onChange={value => setCurrent(value)}
           onSelectionChange={(selectedValues: object[]) =>

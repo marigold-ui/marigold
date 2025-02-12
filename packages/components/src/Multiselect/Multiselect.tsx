@@ -71,7 +71,7 @@ const propsToBeRemoved = [
   'isHidden',
   'cx',
 ];
-const Input = ({ innerRef, ...props }: InputProps) => {
+const Input = ({ innerRef, placeholder, hasValue, ...props }: InputProps) => {
   // innerRef is needed for focusing the input
   const inputProps = Object.entries(props).reduce(
     (acc: Record<string, any>, [key, value]) => {
@@ -83,7 +83,14 @@ const Input = ({ innerRef, ...props }: InputProps) => {
     {} as Record<string, any>
   );
 
-  return <_Input disabled={props.isDisabled} ref={innerRef} {...inputProps} />;
+  return (
+    <_Input
+      disabled={props.isDisabled}
+      ref={innerRef}
+      placeholder={!hasValue ? placeholder : ''}
+      {...inputProps}
+    />
+  );
 };
 
 const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
@@ -162,6 +169,7 @@ export const Multiselect = ({
           InputContext,
           {
             ...fieldProps,
+            placeholder,
             className: classNames.input,
           },
         ],
