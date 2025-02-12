@@ -14,7 +14,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'group/segment',
     'text-center leading-none outline-0',
     'data-[type="literal"]:p-[0.75px]',
-    'rounded-sm',
+    'rounded-xs',
     'focus:bg-bg-selected focus:text-text-inverted',
     'data-[placeholder=true]:text-text-inverted-disabled',
     'aria-[readonly]:bg-bg-transparent aria-[readonly]:text-text-base-disabled',

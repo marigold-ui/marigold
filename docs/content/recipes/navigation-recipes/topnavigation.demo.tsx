@@ -51,7 +51,7 @@ export default () => {
   ];
 
   return (
-    <div className="h-16 w-full p-4 shadow">
+    <div className="h-16 w-full p-4 shadow-xs">
       <Inline alignY="center" space={4}>
         <Logo />
         {items.map(({ key, children, href, active }) => (

@@ -1,0 +1,39 @@
+name: Generate and Upload SBOM to Dependency-Track
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-and-upload-sbom:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4.0.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install cdxgen
+        run: |
+          pnpm install -g @cyclonedx/cdxgen
+
+      - name: Generate & upload SBOM to Dependency-Track
+        env:
+          DEPENDENCY_TRACK_API_KEY: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
+          DEPENDENCY_TRACK_SERVER: ${{ secrets.DEPENDENCY_TRACK_SERVER }}
+          DEPENDENCY_TRACK_PROJECT_NAME: ${{ secrets.DEPENDENCY_TRACK_PROJECT_NAME }}
+          DEPENDENCY_TRACK_PARENT_PROJECT_ID: ${{ secrets.DEPENDENCY_TRACK_PARENT_PROJECT_ID }}
+          DEPENDENCY_TRACK_PROJECT_VERSION: ${{ secrets.DEPENDENCY_TRACK_PROJECT_VERSION }}
+          DEPENDENCY_TRACK_FILE: ${{ secrets.DEPENDENCY_TRACK_FILE }}
+        run: |
+          cdxgen -r -o $DEPENDENCY_TRACK_FILE \
+            --server-url $DEPENDENCY_TRACK_SERVER \
+            --api-key $DEPENDENCY_TRACK_API_KEY \
+            --project-name $DEPENDENCY_TRACK_PROJECT_NAME \
+            --project-version $DEPENDENCY_TRACK_PROJECT_VERSION \
+            --parent-project-id $DEPENDENCY_TRACK_PARENT_PROJECT_ID

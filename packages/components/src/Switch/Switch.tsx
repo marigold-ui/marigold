@@ -91,7 +91,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
               className={cn(
                 'h-[22px] w-[22px]',
                 'cubic-bezier(.7,0,.3,1)',
-                'absolute left-0 top-px',
+                'absolute top-px left-0',
                 'block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
                 'group-selected/switch:translate-x-[calc(47px_-_100%)]',
                 classNames.thumb

@@ -4,16 +4,11 @@ const pkg = require('./package.json');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  swcMinify: true,
   distDir: '.next',
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: [
-    '@marigold/components',
-    '@marigold/system',
-    '@marigold/theme-preset',
-  ],
+  transpilePackages: ['@marigold/components', '@marigold/system'],
   env: {
     version: pkg.version,
   },

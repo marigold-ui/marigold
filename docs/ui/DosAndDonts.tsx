@@ -20,8 +20,8 @@ const Title = ({ children }: PropsWithChildren) => (
   <div
     className={cn(
       '[grid-area:title]',
-      'group-data-[type=do]:bg-bg-success group-data-[type=do]:border-border-success group-data-[type=dont]:bg-bg-error group-data-[type=dont]:border-border-error',
-      'flex items-center gap-2 border-t-4 px-4 pb-2 pt-4 font-bold uppercase'
+      'group-[type=do]:bg-bg-success group-[type=do]:border-border-success group-[type=dont]:border-border-error group-[type=dont]:bg-bg-error',
+      'flex items-center gap-2 border-t-4 px-4 pt-4 pb-2 font-bold uppercase'
     )}
   >
     {children}
@@ -33,7 +33,7 @@ const Figure = ({ children }: PropsWithChildren) => (
 );
 
 const Description = ({ children }: PropsWithChildren) => (
-  <div className="group-data-[type=do]:bg-bg-success group-data-[type=dont]:bg-bg-error text-pretty px-4 pb-4 text-sm [grid-area:description] *:m-0 *:leading-relaxed">
+  <div className="group-[type=do]:bg-bg-success group-[type=dont]:bg-bg-error px-4 pb-4 text-sm text-pretty [grid-area:description] *:m-0 *:leading-relaxed">
     {children}
   </div>
 );

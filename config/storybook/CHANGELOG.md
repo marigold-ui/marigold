@@ -1,5 +1,60 @@
 # @marigold/storybook-config
 
+## 1.1.56
+
+### Patch Changes
+
+- Updated dependencies [bb2049f]
+- Updated dependencies [7f0841d]
+  - @marigold/components@10.2.1
+  - @marigold/theme-b2b@28.0.6
+  - @marigold/theme-core@27.0.6
+
+## 1.1.55
+
+### Patch Changes
+
+- Updated dependencies [b89cd49]
+- Updated dependencies [275693d]
+- Updated dependencies [3d4f4fe]
+- Updated dependencies [dc53196]
+- Updated dependencies [08cfadb]
+  - @marigold/components@10.2.0
+  - @marigold/theme-b2b@28.0.5
+  - @marigold/theme-core@27.0.5
+
+## 1.1.54
+
+### Patch Changes
+
+- @marigold/components@10.1.3
+- @marigold/theme-b2b@28.0.4
+- @marigold/theme-core@27.0.4
+
+## 1.1.53
+
+### Patch Changes
+
+- Updated dependencies [3878b6b]
+  - @marigold/theme-b2b@28.0.3
+  - @marigold/theme-core@27.0.3
+  - @marigold/components@10.1.2
+
+## 1.1.52
+
+### Patch Changes
+
+- Updated dependencies [17fd7b4]
+- Updated dependencies [93f783a]
+- Updated dependencies [d52e52f]
+- Updated dependencies [d326823]
+- Updated dependencies [85e8cba]
+- Updated dependencies [38d461d]
+- Updated dependencies [425ce62]
+  - @marigold/components@10.1.1
+  - @marigold/theme-b2b@28.0.2
+  - @marigold/theme-core@27.0.2
+
 ## 1.1.51
 
 ### Patch Changes

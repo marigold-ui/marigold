@@ -1,5 +1,91 @@
 # @marigold/components
 
+## 10.2.1
+
+### Patch Changes
+
+- bb2049f: bugfix[DSTSUP-100]: Bug in pagination component
+
+  - display of results counter fixed
+  - when page size changed the first page will now be selected
+
+- 7f0841d: fix(DSTSUP-102): Set dimensions of checkmark
+
+  Fixes a bug in Safari where the checkmark was not displayed.
+
+  - @marigold/system@10.2.1
+
+## 10.2.0
+
+### Minor Changes
+
+- b89cd49: feat(DST-646): Improve a11y by translation fallback loading message
+
+### Patch Changes
+
+- dc53196: fix(DST-644): Make `<XLoader>` use underlay styles from theme in docs
+  - @marigold/system@10.2.0
+
+## 10.1.3
+
+### Patch Changes
+
+- Updated dependencies [8b7be8e]
+  - @marigold/types@1.2.1
+  - @marigold/system@10.1.3
+
+## 10.1.2
+
+### Patch Changes
+
+- @marigold/system@10.1.2
+
+## 10.1.1
+
+### Patch Changes
+
+- 17fd7b4: docs([DST-621]): Revise `<Tiles>` page
+
+  Revised `<Tiles>` page according to our new structure of component pages.
+
+- 93f783a: feat([DSTSUP-98]): introduce controlled dismissable `<SectionMessage>`
+
+  Added possibility to control the dismissable state in `<SectionMessage>`, you can now use `onClose` and `close` to control the closing of a section message.
+
+- d52e52f: docs([DST-624]): Revise `<Calendar>` page and change some properties
+
+  - Revised the page according to our new template.
+  - Rename `isDateUnavailable` to `dateUnavailable`.
+  - Remove the props: `visibleDuration` and `pageBehavior`.
+  - Added outline focus styles for keyboard navigation in both themes.
+
+- d326823: bugfix([DST-627]): replace useState import from storybook
+
+  Some controlled stories in Storybook were incorrect because the useState import from react was used, resulting in an error.
+
+  The stories of the following component were affected:
+
+  - Calendar
+  - DateField
+  - DatePicker
+  - Dialog
+  - HelpText
+  - SearchField
+
+- 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
+
+  - Refactored the `<XLoader>` component to be more accessible
+  - Updated the `<XLoader>` documentation page
+  - Adjusted styling to fit regular underlay styles when using "fullsize" mode
+
+- 38d461d: docs([DST-628]): Revise `<SearchField>` page
+
+  Revised `<SearchField>` documentation page according to the new structure.
+
+- 425ce62: fix(`<Text>`): prevent `elementType` prop from being passed down into the DOM. This is a prop used interally to make `<Text>` polymorphic.
+- Updated dependencies [85e8cba]
+  - @marigold/system@10.1.1
+
 ## 10.1.0
 
 ### Minor Changes

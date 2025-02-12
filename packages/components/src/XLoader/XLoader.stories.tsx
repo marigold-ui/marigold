@@ -40,7 +40,7 @@ export const Fullscreen: Story = {
   },
   render: args => (
     <>
-      <XLoader {...args}>Loading data...</XLoader>
+      <XLoader {...args} />
     </>
   ),
 };

@@ -34,7 +34,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       component: 'Popover',
       variant: placement,
       // Make Popover as wide as trigger element
-      className: 'min-w-[--trigger-width]',
+      className: 'min-w-(--trigger-width)',
     });
 
     const isSmallScreen = useSmallScreen();
@@ -49,7 +49,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
               ref={ref}
               {...props}
               className={cn(
-                '!fixed !bottom-0 !left-0 !top-auto !max-h-fit w-full'
+                'fixed! top-auto! bottom-0! left-0! max-h-fit! w-full'
               )}
               UNSTABLE_portalContainer={portal as Element}
             >

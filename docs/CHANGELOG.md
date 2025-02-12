@@ -1,5 +1,117 @@
 # @marigold/docs
 
+## 10.2.1
+
+### Patch Changes
+
+- Updated dependencies [bb2049f]
+- Updated dependencies [7f0841d]
+  - @marigold/components@10.2.1
+  - @marigold/theme-b2b@28.0.6
+  - @marigold/theme-core@27.0.6
+  - @marigold/theme-docs@2.2.6
+  - @marigold/system@10.2.1
+  - @marigold/icons@1.2.64
+  - @marigold/theme-preset@1.3.29
+
+## 10.2.0
+
+### Patch Changes
+
+- Updated dependencies [b89cd49]
+- Updated dependencies [275693d]
+- Updated dependencies [3d4f4fe]
+- Updated dependencies [dc53196]
+- Updated dependencies [08cfadb]
+  - @marigold/components@10.2.0
+  - @marigold/theme-b2b@28.0.5
+  - @marigold/theme-core@27.0.5
+  - @marigold/theme-docs@2.2.5
+  - @marigold/system@10.2.0
+  - @marigold/icons@1.2.63
+  - @marigold/theme-preset@1.3.28
+
+## 10.1.3
+
+### Patch Changes
+
+- @marigold/components@10.1.3
+- @marigold/system@10.1.3
+- @marigold/theme-b2b@28.0.4
+- @marigold/theme-core@27.0.4
+- @marigold/theme-docs@2.2.4
+- @marigold/icons@1.2.62
+- @marigold/theme-preset@1.3.27
+
+## 10.1.2
+
+### Patch Changes
+
+- Updated dependencies [3878b6b]
+  - @marigold/theme-b2b@28.0.3
+  - @marigold/theme-core@27.0.3
+  - @marigold/theme-docs@2.2.3
+  - @marigold/system@10.1.2
+  - @marigold/components@10.1.2
+  - @marigold/icons@1.2.61
+  - @marigold/theme-preset@1.3.26
+
+## 10.1.1
+
+### Patch Changes
+
+- 00af299: docs: Update `<Aspect>` component page
+
+  Revised the whole page with more awesome information and usage examples
+
+- 17fd7b4: docs([DST-621]): Revise `<Tiles>` page
+
+  Revised `<Tiles>` page according to our new structure of component pages.
+
+- 93f783a: feat([DSTSUP-98]): introduce controlled dismissable `<SectionMessage>`
+
+  Added possibility to control the dismissable state in `<SectionMessage>`, you can now use `onClose` and `close` to control the closing of a section message.
+
+- d52e52f: docs([DST-624]): Revise `<Calendar>` page and change some properties
+
+  - Revised the page according to our new template.
+  - Rename `isDateUnavailable` to `dateUnavailable`.
+  - Remove the props: `visibleDuration` and `pageBehavior`.
+  - Added outline focus styles for keyboard navigation in both themes.
+
+- b285b74: docs([DST-623]): Revise `<Inset>` page
+
+  Revised `<Inset>` documentation page according to the new structure.
+
+- 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
+
+  - Refactored the `<XLoader>` component to be more accessible
+  - Updated the `<XLoader>` documentation page
+  - Adjusted styling to fit regular underlay styles when using "fullsize" mode
+
+- 38d461d: docs([DST-628]): Revise `<SearchField>` page
+
+  Revised `<SearchField>` documentation page according to the new structure.
+
+- 1cf8f0d: docs([DST-622]): Revise `<Grid>` documentation page
+
+  Revised the documentation page for `<Grid>` component according to our new temaple.
+
+- Updated dependencies [17fd7b4]
+- Updated dependencies [93f783a]
+- Updated dependencies [d52e52f]
+- Updated dependencies [d326823]
+- Updated dependencies [85e8cba]
+- Updated dependencies [38d461d]
+- Updated dependencies [425ce62]
+  - @marigold/components@10.1.1
+  - @marigold/theme-b2b@28.0.2
+  - @marigold/theme-core@27.0.2
+  - @marigold/system@10.1.1
+  - @marigold/theme-docs@2.2.2
+  - @marigold/icons@1.2.60
+  - @marigold/theme-preset@1.3.25
+
 ## 10.1.0
 
 ### Minor Changes

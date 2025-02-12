@@ -1,12 +1,12 @@
 import { Card } from '@/ui';
-import { colors } from '@marigold/theme-core/tokens';
 import { BlurFade } from '@/ui/BlurFade';
 
 const Token = ({ name, value }: { name: string; value: string }) => (
   <>
     <code className="block text-xs">--{name}</code>
     <div
-      className="size-5 rounded-full bg-[--token] shadow-md"
+      data-theme="core"
+      className="size-5 rounded-full bg-(--token) shadow-md"
       style={{ '--token': value } as any}
     />
   </>
@@ -36,33 +36,39 @@ export const CollaborationSection = () => {
       </div>
       <div className="col-start-1 row-start-1 w-[300px] origin-bottom rotate-6 transition-transform duration-700">
         <Card px={6} py={4}>
-          <div className="grid grid-cols-[max-content,auto] items-center justify-between gap-5">
-            <Token name="text-base" value={colors.text.base.DEFAULT} />
-            <Token name="text-base-hover" value={colors.text.base.hover} />
+          <div className="grid grid-cols-[max-content_auto] items-center justify-between gap-5">
+            <Token name="text-base" value="var(--color-text-base)" />
+            <Token
+              name="text-base-hover"
+              value="var(--color-text-base-hover)"
+            />
             <Token
               name="text-base-disabled"
-              value={colors.text.base.disabled}
+              value="var(--color-text-base-disabled)"
             />
-            <Token name="text-inverted" value={colors.text.inverted.DEFAULT} />
+            <Token name="text-inverted" value="var(--color-text-inverted)" />
             <Token
               name="text-inverted-hover"
-              value={colors.text.inverted.hover}
+              value="var(--color-text-inverted-hover)"
             />
             <Token
               name="text-inverted-disabled"
-              value={colors.text.inverted.disabled}
+              value="var(--color-text-inverted-disabled)"
             />
-            <Token name="text-info" value={colors.text.info.DEFAULT} />
-            <Token name="text-info-hover" value={colors.text.info.hover} />
-            <Token name="text-success" value={colors.text.success.DEFAULT} />
+            <Token name="text-info" value="var(--color-text-info)" />
+            <Token
+              name="text-info-hover"
+              value="var(--color-text-info-hover)"
+            />
+            <Token name="text-success" value="var(--color-text-success)" />
             <Token
               name="text-success-hover"
-              value={colors.text.success.hover}
+              value="var(--color-text-success-hover)"
             />
-            <Token name="text-warning" value={colors.text.warning.DEFAULT} />
+            <Token name="text-warning" value="var(--color-text-warning)" />
             <Token
               name="text-warning-hover"
-              value={colors.text.warning.hover}
+              value="var(--color-text-warning-hover)"
             />
           </div>
         </Card>

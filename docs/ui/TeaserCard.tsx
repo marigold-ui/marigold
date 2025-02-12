@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export interface TeaserCardProps {
   href: string;
-  icon: ReactElement;
+  icon: ReactElement<any>;
   title: string;
   caption: string;
 }

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import * as React from 'react';
 
 /**
@@ -120,7 +121,7 @@ export interface PolymorphicComponent<
    */
   <As extends keyof JSX.IntrinsicElements = NarrowIntrinsic<T>>(
     props: MergeProps<As, P & { as: As }>
-  ): React.ReactElement | null;
+  ): React.ReactElement<any> | null;
 
   /**
    * USE CASE: `as` porp is a component:
@@ -133,5 +134,5 @@ export interface PolymorphicComponent<
    */
   <As extends React.ElementType>(
     props: MergeProps<As, P & { as: As }>
-  ): React.ReactElement | null;
+  ): React.ReactElement<any> | null;
 }

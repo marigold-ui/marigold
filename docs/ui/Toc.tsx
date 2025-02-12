@@ -21,7 +21,7 @@ export const Toc = ({ data }: TocProps) => {
 
   const [, setIsMounted] = useState(false);
 
-  const ref = useRef<Element>();
+  const ref = useRef<Element>(undefined);
 
   const itemId = elements.map(item => item.id);
   const activeItem = useActiveItem(itemId);

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { I18nProvider } from 'react-aria-components';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { XLoader } from './XLoader';
 
@@ -80,4 +81,32 @@ test('inline uses "inverted" variant', () => {
 
   const loader = screen.getByRole('progressbar');
   expect(loader).toHaveClass('text-text-inverted');
+});
+
+test('translate loading message to English', () => {
+  render(
+    <I18nProvider locale="en-US">
+      <ThemeProvider theme={theme}>
+        <XLoader />
+      </ThemeProvider>
+    </I18nProvider>
+  );
+
+  const loader = screen.getByRole('progressbar');
+  expect(loader.getAttribute('aria-label')).toMatchInlineSnapshot(
+    `"Loading..."`
+  );
+});
+
+test('translate loading message to German', () => {
+  render(
+    <I18nProvider locale="de-DE">
+      <ThemeProvider theme={theme}>
+        <XLoader />
+      </ThemeProvider>
+    </I18nProvider>
+  );
+
+  const loader = screen.getByRole('progressbar');
+  expect(loader.getAttribute('aria-label')).toMatchInlineSnapshot(`"Lade..."`);
 });

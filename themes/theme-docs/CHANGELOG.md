@@ -1,5 +1,57 @@
 # @marigold/theme-docs
 
+## 2.2.6
+
+### Patch Changes
+
+- Updated dependencies [bb2049f]
+- Updated dependencies [7f0841d]
+  - @marigold/components@10.2.1
+  - @marigold/system@10.2.1
+  - @marigold/theme-preset@1.3.29
+
+## 2.2.5
+
+### Patch Changes
+
+- Updated dependencies [b89cd49]
+- Updated dependencies [dc53196]
+  - @marigold/components@10.2.0
+  - @marigold/system@10.2.0
+  - @marigold/theme-preset@1.3.28
+
+## 2.2.4
+
+### Patch Changes
+
+- @marigold/components@10.1.3
+- @marigold/system@10.1.3
+- @marigold/theme-preset@1.3.27
+
+## 2.2.3
+
+### Patch Changes
+
+- 3878b6b: fix([DST-638]): update theme package.jsons to resolve the warning: The condition "types" here will never be used as it comes after both "import" and "require".
+  - @marigold/system@10.1.2
+  - @marigold/components@10.1.2
+  - @marigold/theme-preset@1.3.26
+
+## 2.2.2
+
+### Patch Changes
+
+- Updated dependencies [17fd7b4]
+- Updated dependencies [93f783a]
+- Updated dependencies [d52e52f]
+- Updated dependencies [d326823]
+- Updated dependencies [85e8cba]
+- Updated dependencies [38d461d]
+- Updated dependencies [425ce62]
+  - @marigold/components@10.1.1
+  - @marigold/system@10.1.1
+  - @marigold/theme-preset@1.3.25
+
 ## 2.2.1
 
 ### Patch Changes

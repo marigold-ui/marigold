@@ -1,4 +1,5 @@
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
+import { useButton } from '@react-aria/button';
 import { cn, useClassNames } from '@marigold/system';
 import { SectionMessageContext } from './Context';
 import { SectionMessageContent } from './SectionMessageContent';
@@ -74,6 +75,14 @@ export interface SectionMessageProps {
    * Adds a close button, makes the section message dismissable.
    */
   closeButton?: boolean;
+  /**
+   * Handler that is called when you need to control the dismissable message to close.
+   */
+  onCloseChange?: (close: boolean) => void;
+  /**
+   * If the message should be closed/dismissed (controlled).
+   */
+  close?: boolean;
 }
 
 // Component
@@ -83,8 +92,11 @@ export const SectionMessage = ({
   size,
   children,
   closeButton,
+  close,
+  onCloseChange,
   ...props
 }: SectionMessageProps) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const classNames = useClassNames({
     component: 'SectionMessage',
     variant,
@@ -92,13 +104,19 @@ export const SectionMessage = ({
   });
   const Icon = icons[variant];
 
-  const [isVisible, setIsVisible] = useState(true);
+  const [internalVisible, setInternalVisible] = useState(true);
+  const isCurrentlyVisible = close ?? internalVisible;
+
+  const { buttonProps } = useButton(props, buttonRef);
 
   const handleClose = () => {
-    setIsVisible(false);
+    onCloseChange && close && onCloseChange(close);
+    if (close === undefined) {
+      setInternalVisible(false);
+    }
   };
 
-  if (!isVisible) return null;
+  if (!isCurrentlyVisible) return null;
 
   return (
     <SectionMessageContext.Provider value={{ classNames }}>
@@ -117,6 +135,8 @@ export const SectionMessage = ({
         </div>
         {closeButton && (
           <button
+            {...buttonProps}
+            ref={buttonRef}
             aria-label="close"
             className="h-5 w-5 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
             onClick={handleClose}

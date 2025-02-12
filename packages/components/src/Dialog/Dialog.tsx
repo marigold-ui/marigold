@@ -16,7 +16,7 @@ interface CloseButtonProps {
 const CloseButton = ({ className }: CloseButtonProps) => {
   const ctx = useContext(OverlayTriggerStateContext);
   return (
-    <div className="absolute right-4 top-4 ml-4">
+    <div className="absolute top-4 right-4 ml-4">
       <button
         className={cn(
           'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
@@ -77,7 +77,7 @@ const _Dialog = ({
     <Dialog
       {...props}
       className={cn(
-        'relative outline-none [&>*:not(:last-child)]:mb-4',
+        'relative outline-hidden [&>*:not(:last-child)]:mb-4',
         "grid [grid-template-areas:'title'_'content'_'actions']",
         classNames.container
       )}

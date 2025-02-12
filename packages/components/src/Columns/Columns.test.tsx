@@ -18,7 +18,7 @@ test('supports default space prop', () => {
   data-testid="columns"
 >
   <div
-    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
     style="--collapseAt: 0em; --columnSize: 6;"
   >
     <div>
@@ -26,7 +26,7 @@ test('supports default space prop', () => {
     </div>
   </div>
   <div
-    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
     style="--collapseAt: 0em; --columnSize: 6;"
   >
     <div>
@@ -80,7 +80,7 @@ test('supports columns with two values', () => {
   );
   expect(columnOne).toMatchInlineSnapshot(`
 <div
-  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
   style="--collapseAt: 0em; --columnSize: 2;"
 >
   <div>
@@ -90,7 +90,7 @@ test('supports columns with two values', () => {
 `);
   expect(columnTwo).toMatchInlineSnapshot(`
 <div
-  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
   style="--collapseAt: 0em; --columnSize: 10;"
 >
   <div>
@@ -113,7 +113,7 @@ test('supports columns with three values', () => {
   );
   expect(columnOne).toMatchInlineSnapshot(`
 <div
-  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
   style="--collapseAt: 0em; --columnSize: 2;"
 >
   <div>
@@ -123,7 +123,7 @@ test('supports columns with three values', () => {
 `);
   expect(columnTwo).toMatchInlineSnapshot(`
 <div
-  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
   style="--collapseAt: 0em; --columnSize: 4;"
 >
   <div>
@@ -133,7 +133,7 @@ test('supports columns with three values', () => {
 `);
   expect(columnThree).toMatchInlineSnapshot(`
 <div
-  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
   style="--collapseAt: 0em; --columnSize: 6;"
 >
   <div>
@@ -156,7 +156,7 @@ test('supports different types of children', () => {
   );
   expect(columnOne).toMatchInlineSnapshot(`
 <div
-  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
   style="--collapseAt: 0em; --columnSize: 1;"
 >
   <main>
@@ -166,7 +166,7 @@ test('supports different types of children', () => {
 `);
   expect(columnTwo).toMatchInlineSnapshot(`
 <div
-  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
   style="--collapseAt: 0em; --columnSize: 1;"
 >
   <div>
@@ -176,7 +176,7 @@ test('supports different types of children', () => {
 `);
   expect(columnThree).toMatchInlineSnapshot(`
 <div
-  class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+  class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
   style="--collapseAt: 0em; --columnSize: 2;"
 >
   <aside>
@@ -218,7 +218,7 @@ test('supports stretching to full height', () => {
   data-testid="columns"
 >
   <div
-    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
     style="--collapseAt: 0em; --columnSize: 1;"
   >
     <main>
@@ -226,7 +226,7 @@ test('supports stretching to full height', () => {
     </main>
   </div>
   <div
-    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
     style="--collapseAt: 0em; --columnSize: 1;"
   >
     <div>
@@ -234,7 +234,7 @@ test('supports stretching to full height', () => {
     </div>
   </div>
   <div
-    class="flex-[--columnSize] basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
+    class="flex-(--columnSize) basis-[calc((var(--collapseAt)_-_100%)_*_999)]"
     style="--collapseAt: 0em; --columnSize: 2;"
   >
     <aside>
