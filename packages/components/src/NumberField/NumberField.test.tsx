@@ -69,10 +69,10 @@ test('group and stepper can styled via "NumberField" styles', () => {
 
   const steppers = within(group).getAllByRole('button');
   expect(steppers[0].className).toMatchInlineSnapshot(
-    `"flex items-center justify-center data-disabled:cursor-not-allowed cursor-pointer w-3.5 text-green-600"`
+    `"flex items-center justify-center cursor-pointer data-disabled:cursor-not-allowed w-3.5 text-green-600"`
   );
   expect(steppers[1].className).toMatchInlineSnapshot(
-    `"flex items-center justify-center data-disabled:cursor-not-allowed cursor-pointer w-3.5 text-green-600"`
+    `"flex items-center justify-center cursor-pointer data-disabled:cursor-not-allowed w-3.5 text-green-600"`
   );
 });
 
