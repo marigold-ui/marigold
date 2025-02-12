@@ -86,7 +86,7 @@ test('check if all slot class names are applied correctly', () => {
   const label = screen.getByText('With Label');
 
   expect(label.parentElement?.className).toMatchInlineSnapshot(
-    `"group/checkbox flex items-center gap-[0.5rem] data-disabled:cursor-not-allowed cursor-pointer"`
+    `"group/checkbox flex items-center gap-[0.5rem] cursor-pointer data-disabled:cursor-not-allowed"`
   );
 
   expect(getVisibleCheckbox()?.className).toMatchInlineSnapshot(
@@ -103,7 +103,7 @@ test('correct class name is set on size small', () => {
   const label = screen.getByText('With Label');
 
   expect(label.parentElement?.className).toMatchInlineSnapshot(
-    `"group/checkbox flex items-center gap-[0.5rem] data-disabled:cursor-not-allowed cursor-pointer py-1"`
+    `"group/checkbox flex items-center gap-[0.5rem] cursor-pointer data-disabled:cursor-not-allowed py-1"`
   );
 });
 

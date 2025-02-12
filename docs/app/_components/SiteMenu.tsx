@@ -81,7 +81,7 @@ const CustomInput = ({
       onValueChange={onValueChange}
       autoFocus
       placeholder="Type to search ..."
-      className="placeholder:text-text-primary-muted outline-hidden h-11 w-full bg-transparent"
+      className="placeholder:text-text-primary-muted h-11 w-full bg-transparent outline-hidden"
       onKeyDown={e => {
         if (e.metaKey && e.key === 'd') {
           e.preventDefault();
@@ -156,7 +156,7 @@ export const SiteMenu = () => {
               onHandlePages={handlePages}
             />
           </div>
-          <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-y-auto overflow-x-hidden">
+          <Command.List className="scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full max-h-[300px] overflow-x-hidden overflow-y-auto">
             <Command.Empty className="py-6 text-center text-sm">
               No results found.
             </Command.Empty>

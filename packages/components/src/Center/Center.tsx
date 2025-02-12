@@ -22,7 +22,7 @@ export const Center = ({
     <div
       {...props}
       className={cn(
-        'me-[auto] ms-[auto] box-content flex flex-col items-center justify-center',
+        'ms-[auto] me-[auto] box-content flex flex-col items-center justify-center',
         gapSpace[space],
         'max-w-(--maxWidth)'
       )}
