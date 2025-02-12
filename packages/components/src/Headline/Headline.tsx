@@ -45,7 +45,7 @@ const _Headline = ({
       {...props}
       className={cn(
         classNames,
-        'max-w-[--maxHeadlineWidth]', // possibly set by a <Container>
+        'max-w-(--maxHeadlineWidth)', // possibly set by a <Container>
         textAlign[align]
       )}
       style={{ color: `var(--color-${color})` }}
