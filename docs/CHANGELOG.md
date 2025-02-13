@@ -1,5 +1,42 @@
 # @marigold/docs
 
+## 11.0.0
+
+### Major Changes
+
+- 82c869c: refa: improve `<Container>` and `<Breakout>` component
+
+  **BREAKING CHANGE:** This PR includes breaking changes, because we removed and changed a lot ot the props API of `<Container>` and `<Breakout>`. The `<Container>` now only works with `<Text>` and `<Headline>` component. This allows for a smoother developer experience and prevents suprises.
+
+  Make the `<Container>` and `<Breakout>` component more usable for real world scenarios.
+
+  - `<Container>` supporst `space` style prop
+  - simplify `<Container>` usage by removing unnecessary props
+  - simplify ´<Breakout>` and make it composable with other layout components
+  - make `<Text>` and `<Headline>` adhere to a `<Container>` content length
+
+- 8d92a7a: chore[DST-648] upgrade tailwindcss to v4
+
+  **BREAKING CHANGE**: We upgrade the TailwindCSS version from 3 to 4. This means the setup to for using Marigold changed, now you don't need to use a `tailwind.config.ts` file with all the configurations anymore. We updated our installation documentation page according to the changes.
+  With this new version the build process is speeded up, the CSS output will be smaller and more readable class names provide a better developer experience.
+
+- d96b809: refa(DST-629): Align `<XLoader>` modes with loading pattern naming convention
+
+  **BREAKING CHANGE:** Rename `mode` prop to align with the "Loading state" pattern. Renamed `"fullsize"` to `"fullscreen"` and `"inline"` to `"section"`.
+
+### Patch Changes
+
+- Updated dependencies [82c869c]
+- Updated dependencies [8d92a7a]
+- Updated dependencies [d96b809]
+  - @marigold/components@11.0.0
+  - @marigold/eslint-config@1.0.0
+  - @marigold/theme-b2b@29.0.0
+  - @marigold/theme-core@28.0.0
+  - @marigold/theme-docs@2.2.7
+  - @marigold/system@11.0.0
+  - @marigold/icons@1.2.65
+
 ## 10.2.1
 
 ### Patch Changes
