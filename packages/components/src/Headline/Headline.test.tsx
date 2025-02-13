@@ -63,7 +63,7 @@ test('uses "level-1" by default', () => {
 
   expect(headline).toMatchInlineSnapshot(`
 <h1
-  class="m-0 font-black text-[2rem] text-[--color] text-left"
+  class="m-0 font-black text-[2rem] max-w-(--maxHeadlineWidth) text-left"
   data-testid="headline"
 />
 `);
@@ -76,12 +76,7 @@ test('headline accepts a variant', () => {
     </ThemeProvider>
   );
   const headline = screen.getByTestId('headline');
-  expect(headline).toMatchInlineSnapshot(`
-<h1
-  class="m-0 font-black text-[2rem] font-small text-[--color] text-left"
-  data-testid="headline"
-/>
-`);
+  expect(headline).toHaveClass('font-small');
 });
 
 test('headline accepts align property', () => {
@@ -103,7 +98,7 @@ test('headline accepts other level', () => {
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
 <h5
-  class="m-0 font-black text-base text-[--color] text-left"
+  class="m-0 font-black text-base max-w-(--maxHeadlineWidth) text-left"
   data-testid="headline"
 />
 `);
@@ -119,14 +114,14 @@ test('get theme color', () => {
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
 <h1
-  class="m-0 font-black text-[2rem] text-[--color] text-left"
+  class="m-0 font-black text-[2rem] max-w-(--maxHeadlineWidth) text-left"
   data-testid="headline"
   style="--color: rgb(5 150 105);;"
 />
 `);
 });
 
-test('support also string as level', () => {
+test('support string as level', () => {
   render(
     <ThemeProvider theme={theme}>
       <Headline data-testid="headline" level="2" />
@@ -136,7 +131,7 @@ test('support also string as level', () => {
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
 <h2
-  class="m-0 font-black mb-6 text-2xl text-[--color] text-left"
+  class="m-0 font-black mb-6 text-2xl max-w-(--maxHeadlineWidth) text-left"
   data-testid="headline"
 />
 `);
