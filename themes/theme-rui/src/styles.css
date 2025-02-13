@@ -2,7 +2,6 @@
 @import './theme.css' theme(inline);
 
 /* from tailwind.config.ts */
-@source 'src/root.ts';
 @source 'src/**/*.*.ts';
 @source '../../../packages/{components,system}/**/*.{tsx,ts}';
 @source '!../../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
@@ -15,6 +14,6 @@
     font-optical-sizing: auto;
     font-style: normal;
 
-    @apply font-base text-base-foreground bg-base-background;
+    @apply text-foreground bg-background font-sans;
   }
 }
