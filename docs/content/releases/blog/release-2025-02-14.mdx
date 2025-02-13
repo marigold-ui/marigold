@@ -15,7 +15,7 @@ Happy Friday and Happy Valentine's Day! Whether you're celebrating with chocolat
 
 This release is packed with improvements, thoughtful refinements, and a few features we think you'll _love_. So, grab a heart-shaped cookie (or two), and let's dive into what's new! 🚀
 
-## Breaking Change
+## Breaking Changes
 
 ### TailwindCSS 4
 
@@ -25,9 +25,9 @@ We've updated our [installation guide](/getting-started/installation?theme=core#
 
 ### Accordion
 
-The `<Accordion>` component has been rewritten with improved accessibility while keeping all the features you love. It now supports the hidden="until-found" API, currently available in Chrome, allowing users to search collapsed content with Ctrl + F. This makes finding information inside accordions smoother and more intuitive.
+The `<Accordion>` component has been rewritten with improved accessibility while keeping all the features you love. It now supports the `hidden="until-found"` API, currently available in Chrome, allowing users to search collapsed content with Ctrl + F. This makes finding information inside accordions smoother and more intuitive.
 
-### What you have to do:
+#### What you have to do:
 
 To align the API with other components, `<Accordion>` now has dedicated compound components: `<Accordion.Header>` for the header and `<Accordion.Content>` for the content.
 
@@ -51,16 +51,14 @@ You also no longer need to add `key` props to `<Accordion.Item>`. It now follows
 ```jsx
 <Accordion defaultExpandedKeys={['1']}>
   <Accordion.Item id="1">
-      <Accordion.Header>Personal Settings<Accordion.Header>
+    <Accordion.Header>Personal Settings</Accordion.Header>
     <Accordion.Content>
       Here is some useful text with some settings to choose
     </Accordion.Content>
   </Accordion.Item>
   <Accordion.Item id="2">
-      <Accordion.Header>Billing Adress<Accordion.Header>
-    <Accordion.Content>
-      Some more informations
-    </Accordion.Content>
+    <Accordion.Header>Billing Adress</Accordion.Header>
+    <Accordion.Content>Some more informations</Accordion.Content>
   </Accordion.Item>
 </Accordion>
 ```
