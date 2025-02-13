@@ -1,5 +1,6 @@
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
 import { FieldBase, FieldGroup, Inline, Stack } from '@marigold/components';
 import { Button } from '../Button';
 import { Form } from '../Form/Form';

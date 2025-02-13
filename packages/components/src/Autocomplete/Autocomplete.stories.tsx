@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
-import { Key, useState } from 'react';
+import { Key } from 'react';
 import { Text } from 'react-aria-components';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack';

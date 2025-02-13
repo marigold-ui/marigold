@@ -1,5 +1,5 @@
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
 import { Radio, Stack } from '@marigold/components';
 import { RadioGroup } from './RadioGroup';
 

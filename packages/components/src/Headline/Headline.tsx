@@ -48,7 +48,7 @@ const _Headline = ({
         'max-w-(--maxHeadlineWidth)', // possibly set by a <Container>
         textAlign[align]
       )}
-      style={{ color: `var(--color-${color})` }}
+      style={{ color: color && `var(--color-${color})` }}
     >
       {children}
     </Heading>
