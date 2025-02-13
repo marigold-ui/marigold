@@ -12,9 +12,9 @@ const theme: Theme = {
   components: {
     ListBox: {
       container: cva('border-border-light'),
-      list: cva('outline-hidden'),
-      option: cva('p-3 outline-hidden'),
-      section: cva('border outline-hidden'),
+      list: cva('outline-none'),
+      option: cva('p-3 outline-none'),
+      section: cva('border outline-none'),
       header: cva('[&_header]:text-text-accent'),
     },
     Button: cva('bg-green-300'),
@@ -159,7 +159,7 @@ describe('SelectList', () => {
     expect(row).not.toHaveClass('hover');
   });
 
-  test('should support focus ring-3', async () => {
+  test('should support focus ring', async () => {
     render(
       <ThemeProvider theme={theme}>
         <SelectList aria-label="Test">

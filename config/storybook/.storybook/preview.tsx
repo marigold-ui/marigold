@@ -1,13 +1,17 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
+import 'tailwindcss/tailwind.css';
 import {
   FieldGroup,
   MarigoldProvider,
   OverlayContainerProvider,
 } from '@marigold/components';
 import b2b from '@marigold/theme-b2b';
+import '@marigold/theme-b2b/styles.css';
 import core from '@marigold/theme-core';
-import './../styles.css';
+import '@marigold/theme-core/styles.css';
+
+// Helpers
 
 // Helpers
 // ---------------

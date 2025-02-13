@@ -37,6 +37,7 @@ export * from './List';
 export * from './Menu';
 export * from './SectionMessage';
 export * from './Multiselect';
+export * from './MultiselectRecipe';
 export * from './NumberField';
 export * from './Overlay';
 export * from './Pagination';

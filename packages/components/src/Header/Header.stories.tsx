@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Container } from '../Container';
 import { Header } from './Header';
 
 const meta = {
@@ -23,5 +24,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Header {...args}>Awsome Header</Header>,
+  render: args => (
+    <Container contentType="content" size="medium">
+      <Header {...args}>Awsome Header</Header>
+    </Container>
+  ),
 };

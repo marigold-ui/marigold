@@ -8,7 +8,7 @@ const theme: Theme = {
     Badge: cva('p-2', {
       variants: {
         variant: {
-          one: ['rounded-xs'],
+          one: ['rounded-sm'],
           two: ['rounded-md'],
         },
       },
@@ -45,7 +45,7 @@ test('supports "Badge" variants from theme', () => {
   );
 
   let badge = screen.getByTestId('badge');
-  expect(badge).toHaveClass('rounded-xs');
+  expect(badge).toHaveClass('rounded-sm');
 
   rerender(
     <ThemeProvider theme={theme}>

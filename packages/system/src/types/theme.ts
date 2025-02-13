@@ -80,6 +80,19 @@ export type Theme = {
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>
     >;
+    MultiSelect?: Record<
+      | 'field'
+      | 'container'
+      | 'tag'
+      | 'input'
+      | 'action'
+      | 'closeButton'
+      | 'icon'
+      | 'listContainer'
+      | 'list'
+      | 'option',
+      ComponentStyleFunction<string, string>
+    >;
     Pagination?: ComponentStyleFunction<string, string>;
     Radio?: Record<
       'container' | 'label' | 'radio' | 'group',

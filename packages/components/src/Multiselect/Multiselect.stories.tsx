@@ -1,37 +1,138 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
+import { Stack } from '../Stack';
 import { Multiselect } from './Multiselect';
 
 const meta = {
   title: 'Components/Multiselect',
-  argTypes: {},
+  argTypes: {
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'Set the label of the Multiselect',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: '' },
+      },
+    },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'Set the help text description.',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'This is a help text description' },
+      },
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Disable Multiselect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    error: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Is the input invalid?',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    errorMessage: {
+      control: {
+        type: 'text',
+      },
+      description: 'Set the Error Message',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'Something went wrong' },
+      },
+    },
+    placeholder: {
+      control: {
+        type: 'text',
+      },
+      description: 'Set the placeholder text',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'undefined' },
+      },
+    },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description:
+        'The width of the field. For that we use the Tailwind tokens.',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'full' },
+      },
+    },
+  },
   args: {
     description: 'This is a help text description',
     errorMessage: 'Something went wrong',
+    error: false,
+    disabled: false,
+    width: 'full',
+    label: 'Label',
   },
 } satisfies Meta;
 
 export default meta;
 
-export const Basic: StoryObj<typeof Multiselect> = {
-  render: () => {
+const drinks = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' },
+];
+
+export const Basic: StoryObj<any> = {
+  render: args => (
+    <Multiselect
+      label="Label"
+      items={drinks}
+      placeholder="enter value"
+      {...args}
+    />
+  ),
+};
+
+export const Controlled: StoryObj<any> = {
+  render: args => {
+    const [current, setCurrent] = useState<string>('');
+    const [selectedValues, setSelectedValues] = useState<Array<object>>([]);
+
     return (
-      <>
+      <Stack space={3}>
         <Multiselect
-          label="Animals"
-          // disabledKeys={['snake']}
-          defaultSelectedKeys={['cat', 'dog']}
-        >
-          <Multiselect.Item id="red-panda">Red Panda</Multiselect.Item>
-          <Multiselect.Item id="cat">Cat</Multiselect.Item>
-          <Multiselect.Item id="dog">Dog</Multiselect.Item>
-          <Multiselect.Item id="aardvark">Aardvark</Multiselect.Item>
-          <Multiselect.Item id="kangaroo">Kangaroo</Multiselect.Item>
-          <Multiselect.Item id="snake">Snake</Multiselect.Item>
-          <Multiselect.Item id="vegan">Vegan</Multiselect.Item>
-          <Multiselect.Item id="margrita">Margrita</Multiselect.Item>
-        </Multiselect>
-      </>
+          label="Label"
+          placeholder="enter value"
+          items={drinks}
+          onChange={value => setCurrent(value)}
+          onSelectionChange={(selectedValues: object[]) =>
+            setSelectedValues(selectedValues)
+          }
+          {...args}
+        />
+        <hr />
+        <pre>
+          current: {current}, selected:{' '}
+          {selectedValues
+            .map(({ value }: { value: string }) => value)
+            .join(', ')}
+        </pre>
+      </Stack>
     );
   },
 };
