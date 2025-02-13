@@ -65,13 +65,13 @@ test('render Accordion and more than one Item', () => {
   render(
     <Accordion data-testid="accordion">
       <Accordion.Item>
-        <Accordion.Header title="Information"></Accordion.Header>
+        <Accordion.Header>Information</Accordion.Header>
         <Accordion.Content>
           <Headline>infos</Headline>
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item>
-        <Accordion.Header title="Settings"></Accordion.Header>
+        <Accordion.Header>Settings</Accordion.Header>
         <Accordion.Content>settings</Accordion.Content>
       </Accordion.Item>
     </Accordion>
@@ -89,7 +89,7 @@ test('render Accordion and just one Item', () => {
   render(
     <Accordion>
       <Accordion.Item>
-        <Accordion.Header title="Information"></Accordion.Header>
+        <Accordion.Header>Information</Accordion.Header>
         <Accordion.Content>
           <Headline>infos</Headline>
         </Accordion.Content>
@@ -105,13 +105,13 @@ test('item opens content by click', () => {
   render(
     <Accordion data-testid="accordion">
       <Accordion.Item>
-        <Accordion.Header title="Information"></Accordion.Header>
+        <Accordion.Header>Information</Accordion.Header>
         <Accordion.Content>
           <Headline>infos</Headline>
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item>
-        <Accordion.Header title="Settings"></Accordion.Header>
+        <Accordion.Header>Settings</Accordion.Header>
         <Accordion.Content>
           <Headline>settings</Headline>
         </Accordion.Content>
@@ -132,7 +132,7 @@ test('render dynamically accordion items', () => {
       <Accordion data-testid="accordion">
         {items.map(item => (
           <Accordion.Item key={item.key} id={item.key}>
-            <Accordion.Header title={item.title}></Accordion.Header>
+            <Accordion.Header>{item.title}</Accordion.Header>
             <Accordion.Content>{item.children}</Accordion.Content>
           </Accordion.Item>
         ))}
@@ -156,7 +156,7 @@ test('accepts variant and size classnames', () => {
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion" variant="one" size="large">
         <Accordion.Item>
-          <Accordion.Header title="Information"></Accordion.Header>
+          <Accordion.Header>Information</Accordion.Header>
           <Accordion.Content>
             <Headline>infos</Headline>
           </Accordion.Content>
@@ -185,7 +185,7 @@ test('default full width', () => {
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion">
         <Accordion.Item>
-          <Accordion.Header title="Information"></Accordion.Header>
+          <Accordion.Header>Information</Accordion.Header>
           <Accordion.Content>
             <Headline>infos</Headline>
           </Accordion.Content>
@@ -206,13 +206,13 @@ test('support default expanded keys', () => {
     <ThemeProvider theme={theme}>
       <Accordion data-testid="accordion" defaultExpandedKeys={['one']}>
         <Accordion.Item key={'one'} id="one">
-          <Accordion.Header title="Information"></Accordion.Header>
+          <Accordion.Header>Information</Accordion.Header>
           <Accordion.Content>
             <Headline>infos</Headline>
           </Accordion.Content>
         </Accordion.Item>
         <Accordion.Item key={'two'} id="two">
-          <Accordion.Header title="Settings"></Accordion.Header>
+          <Accordion.Header>Settings</Accordion.Header>
           <Accordion.Content>
             <Headline>settings</Headline>
           </Accordion.Content>
@@ -240,13 +240,13 @@ test('support default expanded keys (more than one)', () => {
         defaultExpandedKeys={['two', 'one']}
       >
         <Accordion.Item key={'one'} id={'one'}>
-          <Accordion.Header title="Information"></Accordion.Header>
+          <Accordion.Header>Information</Accordion.Header>
           <Accordion.Content>
             <Headline>infos</Headline>
           </Accordion.Content>
         </Accordion.Item>
         <Accordion.Item key={'two'} id={'two'}>
-          <Accordion.Header title="Settings"></Accordion.Header>
+          <Accordion.Header>Settings</Accordion.Header>
           <Accordion.Content>
             <Headline>settings</Headline>
           </Accordion.Content>
