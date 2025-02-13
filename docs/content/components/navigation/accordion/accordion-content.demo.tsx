@@ -4,7 +4,7 @@ export default () => {
   return (
     <Accordion>
       <Accordion.Item>
-        <Accordion.Header title="Is here a large amount of text?" />
+        <Accordion.Header>Is here a large amount of text?</Accordion.Header>
         <Accordion.Content>
           This is a large amount of text. When we say "large amount," we mean a
           substantial, considerable, and voluminous quantity of words,
@@ -78,13 +78,13 @@ export default () => {
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item>
-        <Accordion.Header title="What is your return policy?" />
+        <Accordion.Header>What is your return policy?</Accordion.Header>
         <Accordion.Content>
           We offer a 30-day return policy with a full refund.
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item>
-        <Accordion.Header title="How do I track my order?" />
+        <Accordion.Header>How do I track my order?</Accordion.Header>
         <Accordion.Content>
           You can track your order through our tracking portal.
         </Accordion.Content>

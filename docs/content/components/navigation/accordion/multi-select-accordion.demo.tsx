@@ -89,7 +89,7 @@ export default () => {
     <Accordion allowsMultipleExpanded defaultExpandedKeys={['two']}>
       {items.map(item => (
         <Accordion.Item id={item.id} key={item.key}>
-          <Accordion.Header title={item.title} />
+          <Accordion.Header>{item.title} </Accordion.Header>
           <Accordion.Content>{item.children}</Accordion.Content>
         </Accordion.Item>
       ))}

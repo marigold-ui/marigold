@@ -53,18 +53,18 @@ export const Basic: Story = {
   render: args => (
     <Accordion {...args}>
       <Accordion.Item>
-        <Accordion.Header title="Informations"></Accordion.Header>
+        <Accordion.Header>Informations</Accordion.Header>
         <Accordion.Content>
           <Headline level={3}>Some Informations</Headline>
           <TextField label="Name" />
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item>
-        <Accordion.Header title="Personal Settings"></Accordion.Header>
+        <Accordion.Header>Personal Settings</Accordion.Header>
         <Accordion.Content>two</Accordion.Content>
       </Accordion.Item>
       <Accordion.Item>
-        <Accordion.Header title="Billing Adress"></Accordion.Header>
+        <Accordion.Header>Billing Adress</Accordion.Header>
         <Accordion.Content>
           <Headline level={3}>Some Informations</Headline>
           <Button>Don't click me</Button>
@@ -155,7 +155,7 @@ export const ComplexSingleSelect: Story = {
     <Accordion {...args}>
       {items.map(item => (
         <Accordion.Item key={item.key} id={item.key}>
-          <Accordion.Header title={item.title}></Accordion.Header>
+          <Accordion.Header>{item.title}</Accordion.Header>
           <Accordion.Content>{item.children}</Accordion.Content>
         </Accordion.Item>
       ))}
@@ -167,19 +167,19 @@ export const DefaultExpended: Story = {
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">
-        <Accordion.Header title="Settings"></Accordion.Header>
+        <Accordion.Header>Settings</Accordion.Header>
         <Accordion.Content>
           <Headline level={3}>Some setting options</Headline>
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item id="2">
-        <Accordion.Header title="Settings"></Accordion.Header>
+        <Accordion.Header>Settings</Accordion.Header>
         <Accordion.Content>
           <Headline level={3}>Some setting options</Headline>
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item id="3">
-        <Accordion.Header title="Settings"></Accordion.Header>
+        <Accordion.Header>Settings</Accordion.Header>
         <Accordion.Content>
           <Headline level={3}>Some setting options</Headline>
         </Accordion.Content>
@@ -197,7 +197,7 @@ export const MultiSelect: Story = {
     >
       {items.map(item => (
         <Accordion.Item key={item.key} id={item.key}>
-          <Accordion.Header title={item.title}></Accordion.Header>
+          <Accordion.Header>{item.title}</Accordion.Header>
           <Accordion.Content>{item.children}</Accordion.Content>
         </Accordion.Item>
       ))}
@@ -210,18 +210,17 @@ export const CoreExample: Story = {
     <div className="w-1/2">
       <Accordion {...args}>
         <Accordion.Item key={1}>
-          <Accordion.Header
-            title={
-              <Inline space={2} alignX="left" alignY="center">
-                <Parking className="fill-text-info" />
-                <Text weight="bold">Parking tickets:</Text>
-                <Split />
-                <div className="block group-aria-expanded:hidden">
-                  <Badge variant="info">34/100</Badge>
-                </div>
-              </Inline>
-            }
-          />
+          <Accordion.Header>
+            {' '}
+            <Inline space={2} alignX="left" alignY="center">
+              <Parking className="fill-text-info" />
+              <Text weight="bold">Parking tickets:</Text>
+              <Split />
+              <div className="block group-aria-expanded:hidden">
+                <Badge variant="info">34/100</Badge>
+              </div>
+            </Inline>
+          </Accordion.Header>
           <Accordion.Content>
             <Stack space={4}>
               <TextField label="Parking amout" />
@@ -241,7 +240,7 @@ export const ButtonInHeader: Story = {
     <Accordion {...args}>
       <Accordion.Item id="1">
         <Inline>
-          <Accordion.Header title="Buttons"></Accordion.Header>
+          <Accordion.Header>Buttons</Accordion.Header>
           <Button variant="primary">Do not Click</Button>
         </Inline>
         <Accordion.Content>Don't click the Button</Accordion.Content>
@@ -254,7 +253,7 @@ export const Disabled: Story = {
   render: args => (
     <Accordion {...args} disabled>
       <Accordion.Item id="1">
-        <Accordion.Header title="You can't open me"></Accordion.Header>
+        <Accordion.Header>You can't open me</Accordion.Header>
         <Accordion.Content>Don't click the Button</Accordion.Content>
       </Accordion.Item>
     </Accordion>
