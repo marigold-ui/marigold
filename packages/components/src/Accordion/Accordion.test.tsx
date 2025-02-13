@@ -135,7 +135,9 @@ test('accepts variant and size classnames', () => {
   expect(button).toHaveAttribute('aria-expanded', 'true');
 
   const item = screen.getByText('infos');
-  expect(item.className).toMatchInlineSnapshot(`"text-left"`);
+  expect(item.className).toMatchInlineSnapshot(
+    `"max-w-(--maxHeadlineWidth) text-left"`
+  );
 });
 
 test('default full width', () => {

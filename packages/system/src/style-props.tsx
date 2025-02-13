@@ -510,19 +510,6 @@ export const textAlign = {
   right: 'text-right',
 };
 
-// for responsive reasons we needed to use the `minmax(0, 60ch)` value instead of `fit-content(60ch)`
-export const gridColsAlign = {
-  left: 'grid-cols-[minmax(0,var(--maxWidth))_1fr_1fr]',
-  center: 'grid-cols-[1fr_minmax(0,var(--maxWidth))_1fr]',
-  right: ' grid-cols-[1fr_1fr_minmax(0,var(--maxWidth))]',
-};
-
-export const gridColumn = {
-  left: '*:col-[1]',
-  center: '*:col-[2]',
-  right: '*:col-[3]',
-};
-
 export const aspect = {
   square: 'aspect-[1]',
   landscape: 'aspect-4/3',
@@ -620,13 +607,6 @@ export type FontSizeProp = {
    * Set the font size for the text element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#typography).
    */
   fontSize?: keyof typeof textSize;
-};
-
-export type GridColsAlignProp = {
-  /**
-   * Set the alignment of grid columns.
-   */
-  align?: keyof typeof gridColsAlign;
 };
 
 export type GapSpaceProp = {

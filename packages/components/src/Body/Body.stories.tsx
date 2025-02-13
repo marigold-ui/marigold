@@ -26,7 +26,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <Container contentType="content" size="medium">
+    <Container>
       <Body {...args}>
         <strong>Professor Severus Snape</strong> (9 January, 1960[1] - 2 May,
         1998)[2] was an English half-blood[3] wizard serving as Potions Master

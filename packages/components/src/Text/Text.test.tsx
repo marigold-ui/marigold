@@ -33,7 +33,7 @@ test('uses theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text.className).toMatchInlineSnapshot(`"font-["Arial"]"`);
+  expect(text).toHaveClass(`font-["Arial"]`);
 });
 
 test('renders a <div> element by default', () => {
@@ -69,5 +69,5 @@ test('test variant works', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text.className).toMatchInlineSnapshot(`"font-["Arial"]"`);
+  expect(text).toHaveClass(`max-w-(--maxTextWidth) font-["Arial"]`);
 });
