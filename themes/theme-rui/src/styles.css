@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+@import './theme.css' theme(inline);
+
+/* from tailwind.config.ts */
+@source 'src/root.ts';
+@source 'src/**/*.*.ts';
+@source '../../../packages/{components,system}/**/*.{tsx,ts}';
+@source '!../../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
+@source '!../../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
+
+@source './safelist.txt';
