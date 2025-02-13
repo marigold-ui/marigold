@@ -1,5 +1,7 @@
-import { Switch, SwitchProps } from '@marigold/components';
+import { Container, Switch, SwitchProps } from '@marigold/components';
 
 export default (props: SwitchProps) => (
-  <Switch {...props}>Default Switch</Switch>
+  <Container size={'small'}>
+    <Switch {...props}>Default Switch</Switch>
+  </Container>
 );

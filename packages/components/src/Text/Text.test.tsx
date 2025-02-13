@@ -36,7 +36,9 @@ test('uses theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toHaveClass(`font-["Arial"]`);
+  expect(text.className).toMatchInlineSnapshot(
+    `"text-[--color] outline-[--outline] font-["Arial"]"`
+  );
 });
 
 test('renders a <div> element by default', () => {
@@ -74,5 +76,25 @@ test('style props override theme styles', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toHaveClass(`max-w-(--maxTextWidth) font-["Arial"]`);
+  expect(text.className).toMatchInlineSnapshot(
+    `"text-[--color] outline-[--outline] font-["Arial"]"`
+  );
+  expect(text.style.cssText).toMatchInlineSnapshot(`"--color: red-700;"`);
+});
+
+test('get theme color', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Text data-testid="text" color="emerald" />
+    </ThemeProvider>
+  );
+
+  const text = screen.getByTestId('text');
+  expect(text).toMatchInlineSnapshot(`
+<div
+  class="text-[--color] outline-[--outline] font-["Oswald_Regular"]"
+  data-testid="text"
+  style="--color: rgb(5 150 105);"
+/>
+`);
 });
