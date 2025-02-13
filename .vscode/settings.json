@@ -3,9 +3,6 @@
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 80
   },
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "typescript.tsdk": "node_modules/typescript/lib",

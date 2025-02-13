@@ -24,8 +24,6 @@ storybook-static
 pnpm-lock.yaml
 public
 
-safelist.txt
-
 favicon.png
 *.snap
 *.svg

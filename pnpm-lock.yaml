@@ -96,8 +96,8 @@ importers:
         specifier: 5.9.0
         version: 5.9.0(@types/react@19.0.7)(react-dom@19.0.0)(react@19.0.0)
       tailwindcss:
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 3.4.17
+        version: 3.4.17
       turbo:
         specifier: 2.3.3
         version: 2.3.3
@@ -267,9 +267,12 @@ importers:
       '@storybook/test':
         specifier: ^8.1.11
         version: 8.4.6(storybook@8.4.6)
+<<<<<<< HEAD
       '@tailwindcss/vite':
         specifier: 4.0.1
         version: 4.0.1(vite@6.0.9)
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       '@types/react':
         specifier: 19.0.7
         version: 19.0.7
@@ -301,6 +304,18 @@ importers:
       '@storybook/react-vite':
         specifier: ^8.1.11
         version: 8.4.6(@storybook/test@8.4.6)(react-dom@19.0.0)(react@19.0.0)(storybook@8.4.6)(typescript@5.7.3)(vite@6.0.9)
+<<<<<<< HEAD
+=======
+      autoprefixer:
+        specifier: 10.4.20
+        version: 10.4.20(postcss@8.5.1)
+      postcss:
+        specifier: 8.5.1
+        version: 8.5.1
+      postcss-loader:
+        specifier: 8.1.1
+        version: 8.1.1(postcss@8.5.1)(typescript@5.7.3)
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -310,6 +325,12 @@ importers:
       storybook:
         specifier: ^8.1.11
         version: 8.4.6(prettier@3.4.2)
+<<<<<<< HEAD
+=======
+      tailwindcss:
+        specifier: 3.4.17
+        version: 3.4.17
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       typescript:
         specifier: 5.7.3
         version: 5.7.3
@@ -345,24 +366,36 @@ importers:
       '@marigold/theme-docs':
         specifier: workspace:*
         version: link:../themes/theme-docs
+      '@marigold/theme-preset':
+        specifier: workspace:*
+        version: link:../packages/theme-preset
       '@octokit/core':
         specifier: 6.1.3
         version: 6.1.3
       '@react-aria/i18n':
         specifier: 3.12.5
         version: 3.12.5(react-dom@19.0.0)(react@19.0.0)
+<<<<<<< HEAD
       '@tailwindcss/postcss':
         specifier: 4.0.0
         version: 4.0.0
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       '@tailwindcss/typography':
         specifier: 0.5.16
-        version: 0.5.16(tailwindcss@4.0.0)
+        version: 0.5.16(tailwindcss@3.4.17)
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@19.0.0)
       '@vercel/analytics':
         specifier: 1.4.1
         version: 1.4.1(next@15.1.4)(react@19.0.0)
+<<<<<<< HEAD
+=======
+      autoprefixer:
+        specifier: 10.4.20
+        version: 10.4.20(postcss@8.5.1)
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       cmdk:
         specifier: 1.0.4
         version: 1.0.4(@types/react-dom@19.0.3)(@types/react@19.0.7)(react-dom@19.0.0)(react@19.0.0)
@@ -396,6 +429,12 @@ importers:
       next-contentlayer2:
         specifier: 0.5.3
         version: 0.5.3(acorn@8.14.0)(contentlayer2@0.5.3)(esbuild@0.24.2)(next@15.1.4)(react-dom@19.0.0)(react@19.0.0)
+<<<<<<< HEAD
+=======
+      postcss:
+        specifier: 8.5.1
+        version: 8.5.1
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -436,11 +475,11 @@ importers:
         specifier: 3.27.0
         version: 3.27.0
       tailwind-scrollbar:
-        specifier: 4.0.0-beta.0
-        version: 4.0.0-beta.0(tailwindcss@4.0.0)
+        specifier: 3.1.0
+        version: 3.1.0(tailwindcss@3.4.17)
       tailwindcss:
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 3.4.17
+        version: 3.4.17
       zod:
         specifier: 3.24.1
         version: 3.24.1
@@ -465,7 +504,7 @@ importers:
         version: 19.0.3(@types/react@19.0.7)
       tailwindcss-animate:
         specifier: 1.0.7
-        version: 1.0.7(tailwindcss@4.0.0)
+        version: 1.0.7(tailwindcss@3.4.17)
       typescript:
         specifier: 5.7.3
         version: 5.7.3
@@ -617,12 +656,40 @@ importers:
         specifier: 19.0.0
         version: 19.0.0
       tailwindcss:
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 3.4.17
+        version: 3.4.17
       tsup:
         specifier: 8.3.5
         version: 8.3.5(postcss@8.5.1)(typescript@5.7.3)
 
+<<<<<<< HEAD
+=======
+  packages/theme-preset:
+    dependencies:
+      '@marigold/system':
+        specifier: workspace:*
+        version: link:../system
+      deepmerge:
+        specifier: 4.3.1
+        version: 4.3.1
+      tailwindcss-react-aria-components:
+        specifier: 1.2.0
+        version: 1.2.0(tailwindcss@3.4.17)
+    devDependencies:
+      '@marigold/tsconfig':
+        specifier: workspace:*
+        version: link:../../config/tsconfig
+      postcss:
+        specifier: 8.5.1
+        version: 8.5.1
+      tailwindcss:
+        specifier: 3.4.17
+        version: 3.4.17
+      tsup:
+        specifier: 8.3.5
+        version: 8.3.5(postcss@8.5.1)(typescript@5.7.3)
+
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   packages/types:
     dependencies:
       type-fest:
@@ -641,25 +708,34 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
+      '@marigold/theme-preset':
+        specifier: workspace:*
+        version: link:../../packages/theme-preset
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig
-      '@tailwindcss/postcss':
-        specifier: 4.0.0
-        version: 4.0.0
+      autoprefixer:
+        specifier: 10.4.20
+        version: 10.4.20(postcss@8.5.1)
       cssnano:
         specifier: 7.0.6
         version: 7.0.6(postcss@8.5.1)
+<<<<<<< HEAD
       postcss-cli:
         specifier: 11.0.0
         version: 11.0.0(postcss@8.5.1)
       postcss-prefix-selector:
         specifier: 2.1.0
         version: 2.1.0(postcss@8.5.1)
+=======
+      postcss:
+        specifier: 8.5.1
+        version: 8.5.1
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       tailwindcss:
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 3.4.17
+        version: 3.4.17
       tsup:
         specifier: 8.3.5
         version: 8.3.5(postcss@8.5.1)(typescript@5.7.3)
@@ -672,22 +748,31 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
+      '@marigold/theme-preset':
+        specifier: workspace:*
+        version: link:../../packages/theme-preset
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig
-      '@tailwindcss/postcss':
-        specifier: 4.0.0
-        version: 4.0.0
+      autoprefixer:
+        specifier: 10.4.20
+        version: 10.4.20(postcss@8.5.1)
       cssnano:
         specifier: 7.0.6
         version: 7.0.6(postcss@8.5.1)
+<<<<<<< HEAD
       postcss-cli:
         specifier: 11.0.0
         version: 11.0.0(postcss@8.5.1)
+=======
+      postcss:
+        specifier: 8.5.1
+        version: 8.5.1
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       tailwindcss:
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 3.4.17
+        version: 3.4.17
       tsup:
         specifier: 8.3.5
         version: 8.3.5(postcss@8.5.1)(typescript@5.7.3)
@@ -700,25 +785,34 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
+      '@marigold/theme-preset':
+        specifier: workspace:*
+        version: link:../../packages/theme-preset
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig
-      '@tailwindcss/postcss':
-        specifier: 4.0.0
-        version: 4.0.0
+      autoprefixer:
+        specifier: 10.4.20
+        version: 10.4.20(postcss@8.5.1)
       cssnano:
         specifier: 7.0.6
         version: 7.0.6(postcss@8.5.1)
+<<<<<<< HEAD
       postcss-cli:
         specifier: 11.0.0
         version: 11.0.0(postcss@8.5.1)
       postcss-prefix-selector:
         specifier: 2.1.0
         version: 2.1.0(postcss@8.5.1)
+=======
+      postcss:
+        specifier: 8.5.1
+        version: 8.5.1
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
       tailwindcss:
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 3.4.17
+        version: 3.4.17
       tsup:
         specifier: 8.3.5
         version: 8.3.5(postcss@8.5.1)(typescript@5.7.3)
@@ -7061,6 +7155,7 @@ packages:
       '@swc/counter': 0.1.3
     dev: false
 
+<<<<<<< HEAD
   /@tailwindcss/node@4.0.6:
     resolution: {integrity: sha512-jb6E0WeSq7OQbVYcIJ6LxnZTeC4HjMvbzFBMCrQff4R50HBlo/obmYNk6V2GCUXDeqiXtvtrQgcIbT+/boB03Q==}
     dependencies:
@@ -7183,6 +7278,9 @@ packages:
       tailwindcss: 4.0.0
 
   /@tailwindcss/typography@0.5.16(tailwindcss@4.0.0):
+=======
+  /@tailwindcss/typography@0.5.16(tailwindcss@3.4.17):
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
     resolution: {integrity: sha512-0wDLwCVF5V3x3b1SGXPCDcdsbDHMBe+lkFzBRaHeLvNi+nrrnZ1lA18u+OTWO8iSWU2GxUOCvlXtDuqftc1oiA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
@@ -7194,6 +7292,7 @@ packages:
       tailwindcss: 4.0.0
     dev: false
 
+<<<<<<< HEAD
   /@tailwindcss/vite@4.0.1(vite@6.0.9):
     resolution: {integrity: sha512-ZkwMBA7uR+nyrafIZI8ce3PduE0dDVFVmxmInCUPTN17Jgy6RfEPXzqtL5fz658eDDxKa5xZ+gmiTt+5AMD0pw==}
     peerDependencies:
@@ -7206,6 +7305,8 @@ packages:
       vite: 6.0.9(@types/node@20.17.17)
     dev: false
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /@tanstack/query-core@5.64.2:
     resolution: {integrity: sha512-hdO8SZpWXoADNTWXV9We8CwTkXU88OVWRBcsiFrk7xJQnhm6WRlweDzMD+uH+GnuieTBVSML6xFa17C2cNV8+g==}
     dev: false
@@ -9310,11 +9411,14 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: false
 
+<<<<<<< HEAD
   /dependency-graph@0.11.0:
     resolution: {integrity: sha512-JeMq7fEshyepOWDfcfHK06N3MhyPhz++vtqWhMT5O9A3K42rdsEDpfdVqjaqaAhsw6a+ZqeDvQVtD0hFHQWrzg==}
     engines: {node: '>= 0.6.0'}
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
@@ -9473,6 +9577,7 @@ packages:
       tapable: 2.2.1
     dev: false
 
+<<<<<<< HEAD
   /enhanced-resolve@5.18.1:
     resolution: {integrity: sha512-ZSW3ma5GkcQBIpwZTSRAI8N71Uuwgs93IezB7mf7R60tC8ZbJideoDNKjHn2O9KIlx6rkGTTEk1xUCK2E1Y2Yg==}
     engines: {node: '>=10.13.0'}
@@ -9480,6 +9585,8 @@ packages:
       graceful-fs: 4.2.11
       tapable: 2.2.1
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /enquirer@2.4.1:
     resolution: {integrity: sha512-rRqJg/6gd538VHvR3PSrdRBb/1Vy2YfzHqzvbhGIQpDRKIa4FgV/54b5Q1xYSxOOwKvjXweS26E0Q+nAMwp2pQ==}
     engines: {node: '>=8.6'}
@@ -10709,6 +10816,7 @@ packages:
       tslib: 2.8.1
     dev: false
 
+<<<<<<< HEAD
   /fs-extra@11.3.0:
     resolution: {integrity: sha512-Z4XaCL6dUDHfP/jT25jJKMmtxvuwbkrD1vNSMFlo9lNLY2c5FHYSQgHPRZUjAB26TpDEoW9HCOgplrdbaPV/ew==}
     engines: {node: '>=14.14'}
@@ -10718,6 +10826,8 @@ packages:
       universalify: 2.0.1
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /fs-extra@7.0.1:
     resolution: {integrity: sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==}
     engines: {node: '>=6 <7 || >=8'}
@@ -10839,11 +10949,14 @@ packages:
       es-object-atoms: 1.0.0
     dev: false
 
+<<<<<<< HEAD
   /get-stdin@9.0.0:
     resolution: {integrity: sha512-dVKBjfWisLAicarI2Sf+JuBE/DghV4UzNAVe9yhEJuzeREd3JhOTE9cUaJTeSa77fsbQUK3pcOpJfM59+VKZaA==}
     engines: {node: '>=12'}
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /get-stream@6.0.1:
     resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==}
     engines: {node: '>=10'}
@@ -12302,10 +12415,13 @@ packages:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
 
+<<<<<<< HEAD
   /jiti@2.4.2:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
     dev: false
@@ -12472,6 +12588,7 @@ packages:
       graceful-fs: 4.2.11
     dev: false
 
+<<<<<<< HEAD
   /jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
     dependencies:
@@ -12480,6 +12597,8 @@ packages:
       graceful-fs: 4.2.11
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
@@ -12549,6 +12668,7 @@ packages:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
+<<<<<<< HEAD
   /lightningcss-darwin-arm64@1.29.1:
     resolution: {integrity: sha512-HtR5XJ5A0lvCqYAoSv2QdZZyoHNttBpa5EP9aNuzBQeKGfbyH5+UipLWvVzpP4Uml5ej4BYs5I9Lco9u1fECqw==}
     engines: {node: '>= 12.0.0'}
@@ -12646,6 +12766,8 @@ packages:
       lightningcss-win32-arm64-msvc: 1.29.1
       lightningcss-win32-x64-msvc: 1.29.1
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
@@ -14173,6 +14295,7 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
+<<<<<<< HEAD
   /postcss-cli@11.0.0(postcss@8.5.1):
     resolution: {integrity: sha512-xMITAI7M0u1yolVcXJ9XTZiO9aO49mcoKQy6pCDFdMh9kGqhzLVpWxeD/32M/QBmkhcGypZFFOLNLmIW4Pg4RA==}
     engines: {node: '>=18'}
@@ -14198,6 +14321,8 @@ packages:
       - tsx
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /postcss-colormin@7.0.2(postcss@8.5.1):
     resolution: {integrity: sha512-YntRXNngcvEvDbEjTdRWGU606eZvB5prmHG4BF0yLmVpamXbpsRJzevyy6MZVyuecgzI2AWAlvFi8DAeCqwpvA==}
     engines: {node: ^18.12.0 || ^20.9.0 || >=22.0}
@@ -14313,6 +14438,7 @@ packages:
   /postcss-load-config@4.0.2(postcss@8.5.1):
     resolution: {integrity: sha512-bSVhyJGL00wMVoPUzAVAnbEoWyqRxkjv64tUl427SKnPrENtq6hJwUojroMz2VB+Q1edmi4IfrAPpami5VVgMQ==}
     engines: {node: '>= 14'}
+<<<<<<< HEAD
     peerDependencies:
       postcss: '>=8.0.9'
       ts-node: '>=9.0.0'
@@ -14330,16 +14456,15 @@ packages:
   /postcss-load-config@5.1.0(postcss@8.5.1):
     resolution: {integrity: sha512-G5AJ+IX0aD0dygOE0yFZQ/huFFMSNneyfp0e3/bT05a8OfPC5FUoZRPfGijUdGOJNMewJiwzcHJXFafFzeKFVA==}
     engines: {node: '>= 18'}
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
     peerDependencies:
-      jiti: '>=1.21.0'
       postcss: '>=8.0.9'
-      tsx: ^4.8.1
+      ts-node: '>=9.0.0'
     peerDependenciesMeta:
-      jiti:
-        optional: true
       postcss:
         optional: true
-      tsx:
+      ts-node:
         optional: true
     dependencies:
       lilconfig: 3.1.3
@@ -14627,6 +14752,7 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
+<<<<<<< HEAD
   /postcss-prefix-selector@2.1.0(postcss@8.5.1):
     resolution: {integrity: sha512-UJjQ5CJZuvDGbrGzanqZyH1R/dUSxil/IxfQyeUg+POmZGhG4nz4FERhrgy75+JiUESw0ws3+GxXofapOBbdkg==}
     peerDependencies:
@@ -14635,6 +14761,8 @@ packages:
       postcss: 8.5.1
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /postcss-reduce-initial@7.0.2(postcss@8.5.1):
     resolution: {integrity: sha512-pOnu9zqQww7dEKf62Nuju6JgsW2V0KRNBHxeKohU+JkHd/GAH5uvoObqFLqkeB2n20mr6yrlWDvo5UBU5GnkfA==}
     engines: {node: ^18.12.0 || ^20.9.0 || >=22.0}
@@ -14656,6 +14784,7 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
+<<<<<<< HEAD
   /postcss-reporter@7.1.0(postcss@8.5.1):
     resolution: {integrity: sha512-/eoEylGWyy6/DOiMP5lmFRdmDKThqgn7D6hP2dXKJI/0rJSO1ADFNngZfDzxL0YAxFvws+Rtpuji1YIHj4mySA==}
     engines: {node: '>=10'}
@@ -14667,6 +14796,8 @@ packages:
       thenby: 1.3.4
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /postcss-selector-parser@6.0.10:
     resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
     engines: {node: '>=4'}
@@ -14843,11 +14974,14 @@ packages:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
+<<<<<<< HEAD
   /pretty-hrtime@1.0.3:
     resolution: {integrity: sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==}
     engines: {node: '>= 0.8'}
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /process@0.11.10:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
@@ -16449,6 +16583,7 @@ packages:
     resolution: {integrity: sha512-P+Vu1qXfzediirmHOC3xKGAYeZtPcV9g76X+xg2FD4tYgR71ewMA35Y3sCz3zhiN/dwefRpJX0yBcgwi1fXNQA==}
     dev: false
 
+<<<<<<< HEAD
   /tailwind-scrollbar@4.0.0-beta.0(tailwindcss@4.0.0):
     resolution: {integrity: sha512-d6qwt3rYDgsKNaQGLW0P6N1TN/87xYZDjH6/PimtFvij2NgC5i3M6mEuVKR4Ixb2u3SvMBT95t7+xzJGJRzXtA==}
     engines: {node: '>=12.13.0'}
@@ -16456,6 +16591,15 @@ packages:
       tailwindcss: ^4.0.0-beta.8
     dependencies:
       tailwindcss: 4.0.0
+=======
+  /tailwind-scrollbar@3.1.0(tailwindcss@3.4.17):
+    resolution: {integrity: sha512-pmrtDIZeHyu2idTejfV59SbaJyvp1VRjYxAjZBH0jnyrPRo6HL1kD5Glz8VPagasqr6oAx6M05+Tuw429Z8jxg==}
+    engines: {node: '>=12.13.0'}
+    peerDependencies:
+      tailwindcss: 3.x
+    dependencies:
+      tailwindcss: 3.4.17
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
     dev: false
 
   /tailwindcss-animate@1.0.7(tailwindcss@4.0.0):
@@ -16466,6 +16610,17 @@ packages:
       tailwindcss: 4.0.0
     dev: true
 
+<<<<<<< HEAD
+=======
+  /tailwindcss-react-aria-components@1.2.0(tailwindcss@3.4.17):
+    resolution: {integrity: sha512-ynlQIfAdoWAz0Og0dCe/d4QVE+L8Yuo6rtK9apdhehZZMoLC1GdwtnvLZyUyx+wHwnTjRuNtFPdN0DpPsPXJJg==}
+    peerDependencies:
+      tailwindcss: '*'
+    dependencies:
+      tailwindcss: 3.4.17
+    dev: false
+
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /tailwindcss@3.4.17:
     resolution: {integrity: sha512-w33E2aCvSDP0tW9RZuNXadXlkHXqFzSkQew/aIa2i/Sj8fThxwovwlXHSPXTbAHwEIhBFXAedUhP2tueAKP8Og==}
     engines: {node: '>=14.0.0'}
@@ -16495,6 +16650,7 @@ packages:
       sucrase: 3.35.0
     transitivePeerDependencies:
       - ts-node
+<<<<<<< HEAD
     dev: true
 
   /tailwindcss@4.0.0:
@@ -16506,6 +16662,8 @@ packages:
 
   /tailwindcss@4.0.6:
     resolution: {integrity: sha512-mysewHYJKaXgNOW6pp5xon/emCsfAMnO8WMaGKZZ35fomnR/T5gYnRg2/yRTTrtXiEl1tiVkeRt0eMO6HxEZqw==}
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
 
   /tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
@@ -16543,10 +16701,13 @@ packages:
       glob: 7.2.3
       minimatch: 3.1.2
 
+<<<<<<< HEAD
   /thenby@1.3.4:
     resolution: {integrity: sha512-89Gi5raiWA3QZ4b2ePcEwswC3me9JIg+ToSgtE0JWeCynLnLxNr/f9G+xfo9K+Oj4AFdom8YNJjibIARTJmapQ==}
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /thenify-all@1.6.0:
     resolution: {integrity: sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA==}
     engines: {node: '>=0.8'}
@@ -17083,11 +17244,14 @@ packages:
     engines: {node: '>= 4.0.0'}
     dev: false
 
+<<<<<<< HEAD
   /universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
     dev: true
 
+=======
+>>>>>>> parent of 3017449e1 (Merge branch 'main' into multiselect-rework)
   /unplugin@1.16.0:
     resolution: {integrity: sha512-5liCNPuJW8dqh3+DM6uNM2EI3MLLpCKp/KY+9pB5M2S2SR2qvvDHhKgBOaTWEbZTAws3CXfB0rKTIolWKL05VQ==}
     engines: {node: '>=14.0.0'}

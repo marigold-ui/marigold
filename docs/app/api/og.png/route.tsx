@@ -2,6 +2,7 @@ import { baseUrl } from '@/lib/config';
 import type { ReactNode } from 'react';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
+import { colors } from '@marigold/theme-docs/tokens';
 import { Logo } from '@/ui/Logo';
 
 // Helper
@@ -15,8 +16,8 @@ const Container = ({ children }: { children: ReactNode }) => (
       position: 'relative',
       width: '100%',
       height: '100%',
-      backgroundColor: '#f8fafc',
-      color: '#020617',
+      backgroundColor: colors.bg.body,
+      color: colors.text.primary.DEFAULT,
     }}
   >
     {children}
