@@ -76,7 +76,7 @@ test('aligns children on left by default', () => {
   );
 
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[1]`);
+  expect(container).toHaveClass(`*:col-[1]`);
 });
 
 test('allows to align children to the center', () => {
@@ -87,7 +87,7 @@ test('allows to align children to the center', () => {
   );
 
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[2]`);
+  expect(container).toHaveClass(`*:col-[2]`);
 });
 
 test('allows to align children to the right', () => {
@@ -98,7 +98,7 @@ test('allows to align children to the right', () => {
   );
 
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[3]`);
+  expect(container).toHaveClass(`*:col-[3]`);
 });
 
 test('supports default align items none', () => {
