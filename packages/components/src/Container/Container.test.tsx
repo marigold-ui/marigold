@@ -45,8 +45,8 @@ test('limits with of <Text> and <Headline> children (via CSS var)', () => {
   expect(Array.from(container.style)).toContain('--maxHeadlineWidth');
   expect(Array.from(container.style)).toContain('--maxTextWidth');
 
-  expect(headline).toHaveClass('max-w-[--maxHeadlineWidth]');
-  expect(text).toHaveClass('max-w-[--maxTextWidth]');
+  expect(headline).toHaveClass('max-w-(--maxHeadlineWidth)');
+  expect(text).toHaveClass('max-w-(--maxTextWidth)');
 });
 
 test('supports different lengths for content', () => {

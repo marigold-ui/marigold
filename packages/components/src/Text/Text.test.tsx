@@ -69,5 +69,5 @@ test('test variant works', () => {
   );
   const text = screen.getByText(/text/);
 
-  expect(text).toHaveClass(`max-w-[--maxTextWidth] font-["Arial"]`);
+  expect(text).toHaveClass(`max-w-(--maxTextWidth) font-["Arial"]`);
 });
