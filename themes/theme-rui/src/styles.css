@@ -9,3 +9,12 @@
 @source '!../../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
 
 @source './safelist.txt';
+
+@layer base {
+  body {
+    font-optical-sizing: auto;
+    font-style: normal;
+
+    @apply font-base text-base-foreground bg-base-background;
+  }
+}
