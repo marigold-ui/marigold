@@ -28,7 +28,7 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<
-      'button' | 'item',
+      'container' | 'item' | 'header' | 'content' | 'icon',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;

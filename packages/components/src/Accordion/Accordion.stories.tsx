@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
 import { Badge } from '../Badge';
+import { Button } from '../Button/Button';
 import { Columns } from '../Columns';
 import { FieldGroup } from '../FieldBase';
 import { Headline } from '../Headline';
@@ -28,21 +29,20 @@ const meta = {
         },
       },
     },
-    selectionMode: {
+    allowsMultipleExpanded: {
       description: 'if the Accordion can open more than one item',
       control: {
-        type: 'select',
+        type: 'boolean',
       },
-      options: ['single', 'multiple'],
+
       table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'single' },
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
   },
   args: {
     defaultExpandedKeys: ['1'],
-    selectionMode: 'single',
   },
 } satisfies Meta;
 
@@ -52,15 +52,23 @@ type Story = StoryObj<typeof Accordion>;
 export const Basic: Story = {
   render: args => (
     <Accordion {...args}>
-      <Accordion.Item key={1} title="Informations">
-        <Headline level={3}>Some Informations</Headline>
-        <TextField label="Name" />
+      <Accordion.Item>
+        <Accordion.Header>Informations</Accordion.Header>
+        <Accordion.Content>
+          <Headline level={3}>Some Informations</Headline>
+          <TextField label="Name" />
+        </Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item key={2} title="Personal Settings">
-        two
+      <Accordion.Item>
+        <Accordion.Header>Personal Settings</Accordion.Header>
+        <Accordion.Content>two</Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item key={3} title="Billing Adress">
-        <Headline level={3}>Some Informations</Headline>
+      <Accordion.Item>
+        <Accordion.Header>Billing Adress</Accordion.Header>
+        <Accordion.Content>
+          <Headline level={3}>Some Informations</Headline>
+          <Button>Don't click me</Button>
+        </Accordion.Content>
       </Accordion.Item>
     </Accordion>
   ),
@@ -146,47 +154,51 @@ export const ComplexSingleSelect: Story = {
   render: args => (
     <Accordion {...args}>
       {items.map(item => (
-        <Accordion.Item key={item.key} title={item.title}>
-          {item.children}
+        <Accordion.Item key={item.key} id={item.key}>
+          <Accordion.Header>{item.title}</Accordion.Header>
+          <Accordion.Content>{item.children}</Accordion.Content>
         </Accordion.Item>
       ))}
     </Accordion>
   ),
 };
 
-export const AccordionInsideAccordion: Story = {
+export const DefaultExpended: Story = {
   render: args => (
     <Accordion {...args}>
-      <Accordion.Item key={1} title="Settings">
-        <Headline level={3}>Some setting options</Headline>
-        <Accordion>
-          <Accordion.Item key={2} title="Personal Settings">
-            <TextField label="Name" />
-          </Accordion.Item>
-        </Accordion>
+      <Accordion.Item id="1">
+        <Accordion.Header>Settings</Accordion.Header>
+        <Accordion.Content>
+          <Headline level={3}>Some setting options</Headline>
+        </Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item key={3} title="TO DO">
-        <Headline level={3}>More things to do</Headline>
-        <Accordion>
-          <Accordion.Item key={4} title="Edit something">
-            <TextField label="E-Mail" type="email" />
-          </Accordion.Item>
-        </Accordion>
+      <Accordion.Item id="2">
+        <Accordion.Header>Settings</Accordion.Header>
+        <Accordion.Content>
+          <Headline level={3}>Some setting options</Headline>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item id="3">
+        <Accordion.Header>Settings</Accordion.Header>
+        <Accordion.Content>
+          <Headline level={3}>Some setting options</Headline>
+        </Accordion.Content>
       </Accordion.Item>
     </Accordion>
   ),
 };
 
-export const MultiSelect: Story = {
+export const MultipleExpanded: Story = {
   render: args => (
     <Accordion
       {...args}
-      selectionMode="multiple"
+      allowsMultipleExpanded
       defaultExpandedKeys={['two', 'one']}
     >
       {items.map(item => (
-        <Accordion.Item key={item.key} title={item.title}>
-          {item.children}
+        <Accordion.Item key={item.key} id={item.key}>
+          <Accordion.Header>{item.title}</Accordion.Header>
+          <Accordion.Content>{item.children}</Accordion.Content>
         </Accordion.Item>
       ))}
     </Accordion>
@@ -197,9 +209,9 @@ export const CoreExample: Story = {
   render: args => (
     <div className="w-1/2">
       <Accordion {...args}>
-        <Accordion.Item
-          key={1}
-          title={
+        <Accordion.Item key={1}>
+          <Accordion.Header>
+            {' '}
             <Inline space={2} alignX="left" alignY="center">
               <Parking className="fill-text-info" />
               <Text weight="bold">Parking tickets:</Text>
@@ -208,17 +220,42 @@ export const CoreExample: Story = {
                 <Badge variant="info">34/100</Badge>
               </div>
             </Inline>
-          }
-        >
-          <Stack space={4}>
-            <TextField label="Parking amout" />
-            <Inline space={4} alignY="center" alignX="right">
-              <Text weight="bold">Parking tickets:</Text>
-              <Badge variant="info">34 / 100</Badge>
-            </Inline>
-          </Stack>
+          </Accordion.Header>
+          <Accordion.Content>
+            <Stack space={4}>
+              <TextField label="Parking amout" />
+              <Inline space={4} alignY="center" alignX="right">
+                <Text weight="bold">Parking tickets:</Text>
+                <Badge variant="info">34 / 100</Badge>
+              </Inline>
+            </Stack>
+          </Accordion.Content>
         </Accordion.Item>
       </Accordion>
     </div>
+  ),
+};
+export const ButtonInHeader: Story = {
+  render: args => (
+    <Accordion {...args}>
+      <Accordion.Item id="1">
+        <Inline>
+          <Accordion.Header>Buttons</Accordion.Header>
+          <Button variant="primary">Do not Click</Button>
+        </Inline>
+        <Accordion.Content>Don't click the Button</Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  ),
+};
+
+export const Disabled: Story = {
+  render: args => (
+    <Accordion {...args} disabled>
+      <Accordion.Item id="1">
+        <Accordion.Header>You can't open me</Accordion.Header>
+        <Accordion.Content>Don't click the Button</Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
   ),
 };

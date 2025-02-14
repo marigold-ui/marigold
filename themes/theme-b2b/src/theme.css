@@ -1,6 +1,6 @@
-@plugin "./../../../packages/theme-plugins/src/tw-rac-plugins";
-@plugin "./../../../packages/theme-plugins/src/tw-custom-placement-plugin";
-@plugin "./../../../packages/theme-plugins/src/tw-custom-aria-variants-plugin";
+@plugin "@marigold/theme-plugins/src/tw-rac-plugins";
+@plugin "@marigold/theme-plugins/src/tw-custom-placement-plugin";
+@plugin "@marigold/theme-plugins/src/tw-custom-aria-variants-plugin";
 
 @theme {
   /* rebuild preset.ts */
