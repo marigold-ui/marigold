@@ -9,11 +9,7 @@ changed:
   - components/content/xloader
 ---
 
-**Marigold 11 is Here—Just in Time for Valentine's Day!** 💖
-
-Happy Friday and Happy Valentine's Day! Whether you're celebrating with chocolates, flowers, or just a quiet night of coding, we've got something special for you—Marigold 11 is officially here!
-
-This release is packed with improvements, thoughtful refinements, and a few features we think you'll _love_. So, grab a heart-shaped cookie (or two), and let's dive into what's new! 🚀
+**Marigold 11 is Here—Just in Time for Valentine's Day!** 💖 Happy Friday and Happy Valentine's Day! Whether you're celebrating with chocolates, flowers, or just a quiet night of coding, we've got something special for you—Marigold 11 is officially here! This release is packed with improvements, thoughtful refinements, and a few features we think you'll love. So, grab a heart-shaped cookie (or two), and let's dive into what's new! 🚀
 
 ## Breaking Changes
 
@@ -106,6 +102,7 @@ Rename the `mode` prop to from `"fullsize"` to `"fullscreen"` and `"inline"` to 
 - We fixed a bug in the `<Checkbox>` component where the checkmark was not displayed correctly in Safari. It now renders as expected across all browsers.
 - In the B2B theme, the incorrect token was used for the underlay (that thing behind a `<Dialog>`). It has now been updated to use the correct one.
 - We fixed an issue where inputs didn't have the correct height. They now match the expected sizing for better consistency and usability with other components like `<Button>`.
+- The `<Pagination>` component now correctly selects the first page button when changing the page size. The "With Table" example in storybook now shows the correct range of visible results in the results indicator.
 
 ---
 
