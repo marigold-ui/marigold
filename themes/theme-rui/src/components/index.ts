@@ -9,4 +9,5 @@ export { ListBox } from './ListBox.styles';
 export { NumberField } from './NumberField.styles';
 export { Popover } from './Popover.styles';
 export { Select } from './Select.styles';
+export { Table } from './Table.styles';
 export { TextArea } from './TextArea.styles';

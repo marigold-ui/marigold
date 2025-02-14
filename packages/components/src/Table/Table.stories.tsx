@@ -72,40 +72,112 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Data
+// ---------------
+const users = [
+  {
+    name: 'Hans Müller',
+    email: 'hans.mueller@example.de',
+    handle: '@schnitzelmeister',
+    location: 'Berlin, BE',
+    status: 'active',
+    balance: 1250.75,
+  },
+  {
+    name: 'Fritz Schneider',
+    email: 'fritz.schneider@example.de',
+    handle: '@wurstwhiz',
+    location: 'München, BY',
+    status: 'inactive',
+    balance: 980.5,
+  },
+  {
+    name: 'Klaus Becker',
+    email: 'klaus.becker@example.de',
+    handle: '@pretzelpirate',
+    location: 'Hamburg, HH',
+    status: 'suspended',
+    balance: 0.0,
+  },
+  {
+    name: 'Helga Fischer',
+    email: 'helga.fischer@example.de',
+    handle: '@bavarianbanter',
+    location: 'Stuttgart, BW',
+    status: 'active',
+    balance: 2300.1,
+  },
+  {
+    name: 'Ursula Weber',
+    email: 'ursula.weber@example.de',
+    handle: '@bratwurstbabe',
+    location: 'Frankfurt, HE',
+    status: 'active',
+    balance: 150.25,
+  },
+  {
+    name: 'Dieter Koch',
+    email: 'dieter.koch@example.de',
+    handle: '@sauerkrautsmile',
+    location: 'Düsseldorf, NW',
+    status: 'inactive',
+    balance: 450.6,
+  },
+  {
+    name: 'Ingrid Richter',
+    email: 'ingrid.richter@example.de',
+    handle: '@schnitzeljester',
+    location: 'Dortmund, NW',
+    status: 'active',
+    balance: 1025.0,
+  },
+  {
+    name: 'Werner Hoffmann',
+    email: 'werner.hoffmann@example.de',
+    handle: '@krankenclown',
+    location: 'Leipzig, SN',
+    status: 'suspended',
+    balance: 0.0,
+  },
+  {
+    name: 'Gisela Braun',
+    email: 'gisela.braun@example.de',
+    handle: '@ludwiglaughs',
+    location: 'Bremen, HB',
+    status: 'active',
+    balance: 750.85,
+  },
+  {
+    name: 'Matthias Wolf',
+    email: 'matthias.wolf@example.de',
+    handle: '@funktastisch',
+    location: 'Dresden, SN',
+    status: 'inactive',
+    balance: 500.0,
+  },
+];
+// Stories
+// ---------------
 export const Basic: Story = {
   render: args => (
     <Table aria-label="label" {...args}>
       <Table.Header>
         <Table.Column>Name</Table.Column>
-        <Table.Column>Firstname</Table.Column>
-        <Table.Column>House</Table.Column>
-        <Table.Column width="full">Year of birth</Table.Column>
+        <Table.Column>Email</Table.Column>
+        <Table.Column>Location</Table.Column>
+        <Table.Column>Status</Table.Column>
+        <Table.Column>Balance</Table.Column>
       </Table.Header>
       <Table.Body>
-        <Table.Row key={1}>
-          <Table.Cell>Potter</Table.Cell>
-          <Table.Cell>Harry</Table.Cell>
-          <Table.Cell>Gryffindor</Table.Cell>
-          <Table.Cell>1980</Table.Cell>
-        </Table.Row>
-        <Table.Row key={2}>
-          <Table.Cell>Malfoy</Table.Cell>
-          <Table.Cell>Draco</Table.Cell>
-          <Table.Cell>Slytherin</Table.Cell>
-          <Table.Cell>1980</Table.Cell>
-        </Table.Row>
-        <Table.Row key={3}>
-          <Table.Cell>Diggory</Table.Cell>
-          <Table.Cell>Cedric</Table.Cell>
-          <Table.Cell>Hufflepuff</Table.Cell>
-          <Table.Cell>1977</Table.Cell>
-        </Table.Row>
-        <Table.Row key={4}>
-          <Table.Cell>Lovegood</Table.Cell>
-          <Table.Cell>Luna</Table.Cell>
-          <Table.Cell>Ravenclaw</Table.Cell>
-          <Table.Cell>1981</Table.Cell>
-        </Table.Row>
+        {users.map(user => (
+          <Table.Row key={user.email}>
+            <Table.Cell>{user.name}</Table.Cell>
+            <Table.Cell>{user.email}</Table.Cell>
+            <Table.Cell>{user.location}</Table.Cell>
+            <Table.Cell>{user.status}</Table.Cell>
+            <Table.Cell>{user.balance}</Table.Cell>
+          </Table.Row>
+        ))}
       </Table.Body>
     </Table>
   ),
