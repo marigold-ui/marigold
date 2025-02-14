@@ -14,9 +14,11 @@
  think about leaving `-background` for token values, because e.g. border-destructive, or 
  text-destructive like used in inputs
 */
+
 @plugin "@marigold/theme-plugins/src/tw-rac-plugins";
 @plugin "@marigold/theme-plugins/src/tw-custom-placement-plugin";
 @plugin "@marigold/theme-plugins/src/tw-custom-aria-variants-plugin";
+@plugin "tailwindcss-animate";
 
 @theme {
   /* orange (use for accent) */
