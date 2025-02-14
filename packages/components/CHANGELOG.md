@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 11.0.2
+
+### Patch Changes
+
+- 8e58923: fix([DSTSUP-104]): mobile behaviour for `<Popover>`
+
+  `<Underlay>` stayed remaining open on small screens while `<Popover>` was correctly closing, fixed this and added styles for `<Popover>` back.
+
+  - @marigold/system@11.0.2
+
 ## 11.0.1
 
 ### Patch Changes
