@@ -65,7 +65,7 @@
 
   /* Input tokens */
   --color-input-border: var(--color-stone-300);
-  --color-input-ring: var(--color-stone-400);
+  --color-ring: var(--color-stone-400);
   /* component height for input elements */
   --spacing-input: 2.25rem;
 

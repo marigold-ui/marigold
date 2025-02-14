@@ -8,9 +8,9 @@ export const inputInvalid =
   'group-error/field:border-destructive group-error/field:focus:border-destructive group-error/field:focus:ring-destructive/20';
 export const inputFocus = {
   focus:
-    'focus:border-input-ring focus:outline-none focus:ring-[3px] focus:ring-input-ring/20',
+    'focus:border-ring focus:outline-none focus:ring-[3px] focus:ring-ring/20',
   'focus-within':
-    'focus-within:border-input-ring focus-within:outline-none focus-within:ring-[3px] focus-within:ring-input-ring/20',
+    'focus-within:border-ring focus-within:outline-none focus-within:ring-[3px] focus-within:ring-ring/20',
 };
 
 export const inputReadOnly = 'read-only:bg-muted';
