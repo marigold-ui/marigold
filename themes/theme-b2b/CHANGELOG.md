@@ -1,5 +1,15 @@
 # @marigold/theme-b2b
 
+## 29.0.1
+
+### Patch Changes
+
+- c0b8d18: HOTFIX: add missing dependency for marigold 11
+- Updated dependencies [c0b8d18]
+  - @marigold/theme-plugins@1.0.1
+  - @marigold/system@11.0.1
+  - @marigold/components@11.0.1
+
 ## 29.0.0
 
 ### Major Changes
