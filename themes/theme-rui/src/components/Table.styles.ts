@@ -14,6 +14,7 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
+  body: cva('[&_tr:last-child]:border-0'),
   header: cva(
     [
       'h-12 px-3 text-left align-middle font-medium text-muted-foreground',
@@ -26,9 +27,16 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
-  cell: cva('', {
-    variants: {
-      variant: {},
-    },
-  }),
+  cell: cva(
+    [
+      'p-3 align-middle',
+      // does this checkbox think work?
+      '[&:has([role=checkbox])]:pr-0',
+    ],
+    {
+      variants: {
+        variant: {},
+      },
+    }
+  ),
 };
