@@ -62,6 +62,7 @@ const _Menu = ({
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
 
+  console.log(props);
   return (
     <MenuTrigger {...props}>
       <Button variant="menu" disabled={disabled} aria-label={ariaLabel}>
