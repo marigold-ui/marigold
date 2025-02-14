@@ -1,0 +1,55 @@
+/* 
+    TODO: how to do normalization so we doesn't break everything?
+    TODO: omit "background" in the naming convention? (https://ui.shadcn.com/docs/theming#convention)
+    TODO: create component styles files and compile to CSS classes?
+*/
+
+/*
+    - create tokens if we think:
+        - it is necessary for a component
+        - it can be used by other teams (if they build their own component)
+*/
+
+/*
+ think about leaving `-background` for token values, because e.g. border-destructive, or 
+ text-destructive like used in inputs
+*/
+
+@theme {
+  /* orange (use for accent) */
+  --color-orange-50: #fff9ed;
+  --color-orange-100: #fff1d5;
+  --color-orange-200: #fedfaa;
+  --color-orange-300: #fdc774;
+  --color-orange-400: #fba43c;
+  --color-orange-500: #f98e22;
+  --color-orange-600: #ea6d0c;
+  --color-orange-700: #c2520c;
+  --color-orange-800: #9a4112;
+  --color-orange-900: #7c3712;
+  --color-orange-950: #431a07;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-stone-950);
+
+  /* stone (use for brand) */
+  --color-brand: var(--color-stone-950);
+  --color-brand-foreground: var(--color-stone-50);
+
+  --color-destructive: var(--color-red-600);
+  --color-destructive-foreground: var(--color-white);
+
+  --color-muted: var(--color-stone-100);
+  --color-muted-foreground: var(--color-stone-500);
+
+  --color-placeholder: --alpha(var(--color-stone-500) / 70%);
+
+  /* Input tokens */
+  --color-input-border: var(--color-stone-300);
+  --color-input-ring: var(--color-stone-400);
+
+  /* component height */
+  --spacing-component: 2.25rem;
+}

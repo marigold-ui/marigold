@@ -64,7 +64,7 @@ test('render custom label', () => {
 test('fullsize uses "inverted" variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <XLoader mode="fullsize">Loading...</XLoader>
+      <XLoader mode="fullscreen">Loading...</XLoader>
     </ThemeProvider>
   );
 
@@ -75,7 +75,7 @@ test('fullsize uses "inverted" variant', () => {
 test('inline uses "inverted" variant', () => {
   render(
     <ThemeProvider theme={theme}>
-      <XLoader mode="inline">Loading...</XLoader>
+      <XLoader mode="section">Loading...</XLoader>
     </ThemeProvider>
   );
 

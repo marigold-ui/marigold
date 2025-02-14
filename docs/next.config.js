@@ -8,11 +8,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: [
-    '@marigold/components',
-    '@marigold/system',
-    '@marigold/theme-preset',
-  ],
+  transpilePackages: ['@marigold/components', '@marigold/system'],
   env: {
     version: pkg.version,
   },

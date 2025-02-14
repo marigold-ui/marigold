@@ -15,12 +15,12 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     'fill-bg-surface-overlay stroke-border-info',
 
     // right
-    '[&>svg]:placement-r:rotate-90',
+    'data-[placement=right]:[&_svg]:rotate-90',
 
     // left
-    '[&>svg]:placement-l:-rotate-90',
+    'data-[placement=left]:[&_svg]:-rotate-90',
 
     // bottom
-    '[&>svg]:placement-b:rotate-180',
+    'data-[placement=bottom]:[&_svg]:rotate-180',
   ]),
 };

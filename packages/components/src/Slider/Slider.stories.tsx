@@ -1,12 +1,7 @@
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { FormEvent, useState } from 'react';
-import {
-  Container,
-  FieldBase,
-  FieldGroup,
-  Inline,
-  Stack,
-} from '@marigold/components';
+import { FormEvent } from 'react';
+import { FieldBase, FieldGroup, Inline, Stack } from '@marigold/components';
 import { Button } from '../Button';
 import { Form } from '../Form/Form';
 import { Slider } from './Slider';
@@ -164,27 +159,25 @@ export const Forms: Story = {
     };
 
     return (
-      <Container size={'large'}>
-        <Form onSubmit={handleSubmit}>
-          <FieldGroup labelWidth={'100px'}>
-            <Stack space={2}>
-              <FieldBase label="Choose opacity:">
-                <Slider
-                  {...args}
-                  maxValue={100}
-                  thumbLabels={['opacity']}
-                  width={48}
-                />
-              </FieldBase>
-            </Stack>
-          </FieldGroup>
-          <Inline space={4} alignX={'right'}>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Inline>
-        </Form>
-      </Container>
+      <Form onSubmit={handleSubmit}>
+        <FieldGroup labelWidth={'100px'}>
+          <Stack space={2}>
+            <FieldBase label="Choose opacity:">
+              <Slider
+                {...args}
+                maxValue={100}
+                thumbLabels={['opacity']}
+                width={48}
+              />
+            </FieldBase>
+          </Stack>
+        </FieldGroup>
+        <Inline space={4} alignX={'right'}>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Inline>
+      </Form>
     );
   },
 };
@@ -200,28 +193,26 @@ export const MultiThumbsForm: Story = {
     };
 
     return (
-      <Container size={'large'}>
-        <Form onSubmit={handleSubmit}>
-          <FieldGroup labelWidth={'100px'}>
-            <Stack space={2}>
-              <FieldBase label="Age">
-                <Slider
-                  {...args}
-                  defaultValue={[20, 30]}
-                  maxValue={100}
-                  thumbLabels={['start', 'end']}
-                  width={60}
-                />
-              </FieldBase>
-            </Stack>
-          </FieldGroup>
-          <Inline space={4} alignX={'right'}>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Inline>
-        </Form>
-      </Container>
+      <Form onSubmit={handleSubmit}>
+        <FieldGroup labelWidth={'100px'}>
+          <Stack space={2}>
+            <FieldBase label="Age">
+              <Slider
+                {...args}
+                defaultValue={[20, 30]}
+                maxValue={100}
+                thumbLabels={['start', 'end']}
+                width={60}
+              />
+            </FieldBase>
+          </Stack>
+        </FieldGroup>
+        <Inline space={4} alignX={'right'}>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Inline>
+      </Form>
     );
   },
 };

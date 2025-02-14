@@ -1,5 +1,17 @@
 # @marigold/system
 
+## 11.0.0
+
+### Major Changes
+
+- 964e025: refa([DST-665]): Refactoring Accordion
+
+  Added two Accordion components `Accordion.Header` and `Accordion.Content`.
+  `Accordion.Header` replaces the title in `Accordion.Item`.
+  `Accordion.Content` is now the place where the content needs to be.
+
+  Reworked the `Accordion` Documentation Page.
+
 ## 10.2.1
 
 ## 10.2.0

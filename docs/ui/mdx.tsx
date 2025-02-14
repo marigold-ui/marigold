@@ -117,8 +117,8 @@ const typography = {
   pre: ({ className, ...props }: HTMLAttributes<HTMLPreElement>) => (
     <pre
       className={cn(
-        'not-prose *:bg-transparent *:p-0 [&_[data-line]]:leading-[22px]',
-        'max-h-[650px] rounded-lg px-[--pre-padding-x] py-4',
+        'not-prose *:bg-transparent *:p-0 data-line:**:leading-[22px]',
+        'max-h-[650px] rounded-lg px-(--pre-padding-x) py-4',
         'scrollbar-thin scrollbar-thumb-code-500 scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
         className
       )}
@@ -129,7 +129,7 @@ const typography = {
   ),
   code: (props: HTMLAttributes<HTMLElement>) => (
     <code
-      className="my-0 inline-grid rounded bg-black/5 px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
+      className="my-0 inline-grid rounded-xs bg-black/5 px-1 py-0.5 font-mono text-sm before:content-none after:content-none"
       {...props}
     />
   ),

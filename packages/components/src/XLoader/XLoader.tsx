@@ -9,19 +9,20 @@ import { BaseLoader } from './BaseLoader';
 // ---------------
 export interface XLoaderProps extends LoaderProps {
   /**
-   * Show the loader in `fullsize` to overlay and block interaction with the site or `ìnline` to show loading for a certain area.
+   * Show the loader in `fullscreen` to overlay and block interaction with the site or `section` to show loading for a certain area.
    * @default undefined
    */
-  mode?: 'fullsize' | 'inline';
+  mode?: 'fullscreen' | 'section';
 }
 
-// Full Size
+// Full Screen
 // ---------------
-const LoaderFullSize = (props: LoaderProps) => {
+const LoaderFullScreen = (props: LoaderProps) => {
   const id = useId();
+
   return (
     <Underlay defaultOpen keyboardDismissable variant="modal">
-      <Modal className="grid h-[--visual-viewport-height] cursor-progress place-items-center">
+      <Modal className="grid h-(--visual-viewport-height) cursor-progress place-items-center">
         <Dialog className="outline-0" aria-labelledby={id}>
           <BaseLoader id={id} {...props} />
         </Dialog>
@@ -30,9 +31,9 @@ const LoaderFullSize = (props: LoaderProps) => {
   );
 };
 
-// Inline
+// Section
 // ---------------
-const LoaderInline = (props: LoaderProps) => {
+const LoaderSection = (props: LoaderProps) => {
   const className = useClassNames({
     component: 'Underlay',
     variant: 'modal',
@@ -49,10 +50,10 @@ const LoaderInline = (props: LoaderProps) => {
 // Component
 // ---------------
 export const XLoader = ({ mode, variant, ...props }: XLoaderProps) =>
-  mode === 'fullsize' ? (
-    <LoaderFullSize variant={variant ?? 'inverted'} {...props} />
-  ) : mode === 'inline' ? (
-    <LoaderInline variant={variant ?? 'inverted'} {...props} />
+  mode === 'fullscreen' ? (
+    <LoaderFullScreen variant={variant ?? 'inverted'} {...props} />
+  ) : mode === 'section' ? (
+    <LoaderSection variant={variant ?? 'inverted'} {...props} />
   ) : (
     <BaseLoader variant={variant} {...props} />
   );

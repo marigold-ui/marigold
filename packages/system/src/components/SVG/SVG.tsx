@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react';
 import { HtmlProps } from '@marigold/types';
-import { useTheme } from '../../hooks';
-import { cn, createVar, getColor } from '../../utils';
+import { cn } from '../../utils';
 
 export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill' | 'style'> {
   /**
@@ -16,18 +15,14 @@ export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill' | 'style'> {
 
 export const SVG = forwardRef<SVGSVGElement, SVGProps>(
   ({ size = 24, children, className, color, ...props }, ref) => {
-    const theme = useTheme();
-
     return (
       <svg
         {...props}
         ref={ref}
         width={`${props.width || size}px`}
         height={`${props.height || size}px`}
-        className={cn('flex-none fill-current text-[--color]', className)}
-        style={createVar({
-          color: color && getColor(theme, color, color /* fallback */),
-        })}
+        className={cn('flex-none fill-current', className)}
+        style={{ color: color && `var(--color-${color})` }}
       >
         {children}
       </svg>

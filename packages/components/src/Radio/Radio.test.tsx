@@ -36,7 +36,7 @@ const theme: Theme = {
           },
         },
       }),
-      radio: cva('rounded border-solid checked:text-blue-700'),
+      radio: cva('rounded-xs border-solid checked:text-blue-700'),
       label: cva('text-base'),
       group: cva(),
     },
@@ -76,7 +76,7 @@ test('allows styling via theme', () => {
 
   const radio = getVisibleRadios()?.[0];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
   );
 });
 
@@ -104,7 +104,7 @@ test('supports styling via variant and size', () => {
 
   const radio = getVisibleRadios()?.[0];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
   );
 });
 
@@ -133,7 +133,7 @@ test('variant and size styling on radio option', () => {
 
   const radioOne = getVisibleRadios()?.[0];
   expect(radioOne?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
   );
 
   // 2nd option has variant / size
@@ -144,7 +144,7 @@ test('variant and size styling on radio option', () => {
 
   const radio = getVisibleRadios()?.[1];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
   );
 });
 
@@ -207,7 +207,7 @@ test('allows styling "checked" state via theme', () => {
 
   const radio = getVisibleRadios()?.[0];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
   );
 });
 
@@ -234,7 +234,7 @@ test('allows styling "focus" state via theme', async () => {
     input.focus();
   });
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded border-solid checked:text-blue-700"`
+    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
   );
 });
 

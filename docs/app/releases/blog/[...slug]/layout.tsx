@@ -8,12 +8,12 @@ import { DefaultLayout } from '@/ui/layout/DefaultLayout';
 const Layout = ({ children }: PropsWithChildren) => (
   <DefaultLayout>
     {children}
-    <p className="prose mt-5">
+    <div className="prose mt-5">
       <Inline alignY="center" space={2}>
         <span>Yours, DST</span>
         <Logo className="inline-block size-4" />
       </Inline>
-    </p>
+    </div>
   </DefaultLayout>
 );
 

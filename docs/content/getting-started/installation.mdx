@@ -76,7 +76,7 @@ Furthermore, if you are using TypeScript, ensure that you add `@types/react` and
 
 ## Bootstrapping
 
-To set up Marigold in your project, you have two options based on the scale and needs of your app. Regardless of the chosen setup, it is essential to add the `MarigoldProvider` to your application's root. This ensures that components can access the theme and apply their corresponding styles.
+To set up Marigold in your project, you have two options based on the scale and needs of your app. Regardless of the chosen setup, it is essential to add the `<MarigoldProvider>` to your application's root. This ensures that components can access the theme and apply their corresponding styles.
 
 ### Using the provided CSS file
 
@@ -109,65 +109,35 @@ export const App = () => (
 
 However, if you want to maximize the benefits of Marigold, you should install Tailwind CSS alongside Marigold. This combination not only enables customization and extension of the selected theme but also allows you to take full advantage of Tailwind's features while staying true to our design system.
 
-To set up Tailwind CSS, please refer to the official [installation guide](https://tailwindcss.com/docs/installation). Once you have completed the installation, add the chosen theme as a preset to the Tailwind CSS config, as shown below:
+To set up Tailwind CSS, please refer to the official [installation guide](https://tailwindcss.com/docs/installation). Once you have completed the installation, you should create a CSS file with the following informations:
 
     {/* prettier-ignore */}
 
-<Tabs>
-  <Tabs.List>
-    <Tabs.Item id="ts">TypeScript</Tabs.Item>
-    <Tabs.Item id="cjs">JavaScript (CJS)</Tabs.Item>
-  </Tabs.List>
-  <Tabs.TabPanel id="ts" >
+    ```css
+    @import 'tailwindcss';
 
-    ```ts
-    import { Config } from 'tailwindcss/types/config';
+    /* Import the theme from Marigold */
+    @import '../node_modules/@marigold/theme-b2b/theme.css';
 
-    // If you are using another theme, change the name accordingly
-    import { preset } from '@marigold/theme-b2b/preset';
 
-    const config: Config = {
-      content: [
-        // Dont forget to add the glob for your app here
-        ...preset.content,
-      ],
-      presets: [preset],
-    };
+    /* You need to add the path to the marigold packages */
+    @source '../node_modules/@marigold/components';
+    /* If Tailwind does not automatically detect classnames, dont forget to add the glob for your app here */
+    @source '../path/to/your/app';
 
-    export default config;
     ```
 
-  </Tabs.TabPanel>
-  <Tabs.TabPanel id="cjs">
-    ```js
-    // If you are using another theme, change the name accordingly
-    const { preset } = require('@marigold/theme-b2b/preset');
+If you are using `Vite` you also need to add the `tailwindcss` plugin to your `vite.config.ts`, you can find all installation steps in the [tailwind documentation](https://tailwindcss.com/docs/installation/using-vite).
 
-    /** @type {import('tailwindcss').Config} \*/
-    module.exports = {
-      content: [
-        // Dont forget to add the glob for your app here
-        ...preset.content,
-      ],
-      presets: [preset],
-    };
-    ```
-
-  </Tabs.TabPanel>
-</Tabs>
-
-Please make sure that you have a `postcss.config.js` file with the following content in your project:
+When you have a `Next.js` or other framework based application make sure that you have a `postcss.config.js` file with the following content in your project:
 
 ```js
 module.exports = {
   plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
+    tailwindcss(),
   },
 };
 ```
-
-This will set up TailwindCSS as a PostCSS plugin and works with common tools, like `vite` or `next.js`.
 
 <SectionMessage variant="info">
   <SectionMessage.Title>TypeScript Configuration</SectionMessage.Title>
@@ -178,7 +148,7 @@ This will set up TailwindCSS as a PostCSS plugin and works with common tools, li
   </SectionMessage.Content>
 </SectionMessage>
 
-After configuring Tailwind CSS and adding the preset, wrap your app with the MarigoldProvider. Unlike before, you no longer have to import the CSS file of the selected theme separately.
+After configuring Tailwind CSS, wrap your app with the MarigoldProvider. Unlike before, you no longer have to import the CSS file of the selected theme separately you only need to import your own created CSS file in the project.
 
 Tailwind CSS will automatically generate the required CSS for you. However, remember to import the generated CSS file somewhere in your project. Depending on your setup, this is typically done in the root file where you bootstrap React or, in case of Next.js in our root [layout file](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts).
 
