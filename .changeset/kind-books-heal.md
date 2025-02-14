@@ -11,6 +11,6 @@ Make the `<Container>` and `<Breakout>` component more usable for real world sce
 
 - `<Container>` supporst `space` style prop
 - simplify `<Container>` usage by removing unnecessary props
-- simplify ´<Breakout>` and make it composable with other layout components
+- simplify `<Breakout>` and make it composable with other layout components
 - make `<Text>` and `<Headline>` adhere to a `<Container>` content length
 
