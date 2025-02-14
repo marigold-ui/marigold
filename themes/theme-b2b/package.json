@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-b2b",
-  "version": "29.0.0",
+  "version": "29.0.1",
   "description": "Marigold B2B Theme",
   "license": "MIT",
   "keywords": [
@@ -50,7 +50,8 @@
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*"
+    "@marigold/system": "workspace:*",
+    "@marigold/theme-plugins": "workspace:*"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css dist/theme.css"
