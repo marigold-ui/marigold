@@ -3,12 +3,11 @@ import { inputFocus, inputInvalid } from './Input.styles';
 
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva([
-    inputFocus,
+    inputFocus['focus-within'],
     inputInvalid,
     'relative inline-flex w-full -mb-0.5 items-center overflow-hidden whitespace-nowrap rounded-lg h-input grow text-center tabular-nums text-foreground',
     'border border-input-border text-sm shadow-sm shadow-black/5 transition-shadow',
     'data-invalid:data-[focus-within]:border-destructive data-invalid:data-[focus-within]:ring-destructive/20',
-    'data-[focus-within]:border-input-ring data-[focus-within]:outline-none data-[focus-within]:ring-[3px] data-[focus-within]:ring-input-ring/20',
   ]),
   stepper: cva([
     'w-7 h-full',
