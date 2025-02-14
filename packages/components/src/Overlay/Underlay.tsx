@@ -35,7 +35,6 @@ export const Underlay = ({
   };
   const portal = usePortalContainer();
 
-  console.log(props);
   return (
     <ModalOverlay
       className={({ isEntering, isExiting }) =>
