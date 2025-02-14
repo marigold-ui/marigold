@@ -119,8 +119,8 @@ test('shows error message when error is present', () => {
 });
 
 it.each([
-  [1, 'Spinach'],
-  [2, 'Carrots'],
+  ['1', 'Spinach'],
+  ['1', 'Carrots'],
 ])('supports controlled selection', async (expected, item) => {
   const Controlled = () => {
     const [selected, setSelected] = React.useState<typeof options>([]);
@@ -145,9 +145,7 @@ it.each([
   const menuItem = within(menu).getByText(item);
 
   await user.click(menuItem);
-  expect(await screen.findByTestId('output')).toHaveTextContent(
-    String(expected)
-  );
+  expect(await screen.findByTestId('output')).toHaveTextContent(expected);
 });
 
 test('renders close button in selected tags', async () => {
