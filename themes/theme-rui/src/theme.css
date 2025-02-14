@@ -14,6 +14,8 @@
  think about leaving `-background` for token values, because e.g. border-destructive, or 
  text-destructive like used in inputs
 */
+@plugin './../apps/lib/src/theme/tw-rac-plugin.js';
+@plugin './../apps/lib/src/theme/tw-custom-placement-plugin.js';
 
 @theme {
   /* orange (use for accent) */
@@ -38,18 +40,34 @@
   --color-brand: var(--color-stone-950);
   --color-brand-foreground: var(--color-stone-50);
 
+  /* accent colors used for highlighting certain parts of components */
+  --color-accent: var(--color-orange-100);
+
+  /*
+    used for errormessages
+    */
   --color-destructive: var(--color-red-600);
   --color-destructive-foreground: var(--color-white);
 
+  /* 
+    muted colros are desaturated colors of the brand color, 
+    they help create hierarchy for secondary text. 
+    Currently used for: helptext, icons inside inputs, readonly background inside inputs
+    */
   --color-muted: var(--color-stone-100);
   --color-muted-foreground: var(--color-stone-500);
 
+  /* used for placeholder color */
   --color-placeholder: --alpha(var(--color-stone-500) / 70%);
 
   /* Input tokens */
   --color-input-border: var(--color-stone-300);
   --color-input-ring: var(--color-stone-400);
+  /* component height for input elements */
+  --spacing-input: 2.25rem;
 
-  /* component height */
-  --spacing-component: 2.25rem;
+  /* surface colors used for elevation levels */
+  --color-surface-overlay: var(--color-white);
+
+  --color-border: var(--color-stone-200);
 }
