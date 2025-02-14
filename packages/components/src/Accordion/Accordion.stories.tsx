@@ -188,7 +188,7 @@ export const DefaultExpended: Story = {
   ),
 };
 
-export const MultiSelect: Story = {
+export const MultipleExpanded: Story = {
   render: args => (
     <Accordion
       {...args}
