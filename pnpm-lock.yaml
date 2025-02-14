@@ -739,6 +739,9 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
+      '@marigold/theme-plugins':
+        specifier: workspace:*
+        version: link:../../packages/theme-plugins
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*

@@ -14,9 +14,9 @@
  think about leaving `-background` for token values, because e.g. border-destructive, or 
  text-destructive like used in inputs
 */
-@plugin "./../../../packages/theme-plugins/src/tw-rac-plugins.js";
-@plugin "./../../../packages/theme-plugins/src/tw-custom-placement-plugin.js";
-@plugin "./../../../packages/theme-plugins/src/tw-custom-aria-variants-plugin.js";
+@plugin "@marigold/theme-plugins/src/tw-rac-plugins";
+@plugin "@marigold/theme-plugins/src/tw-custom-placement-plugin";
+@plugin "@marigold/theme-plugins/src/tw-custom-aria-variants-plugin";
 
 @theme {
   /* orange (use for accent) */
