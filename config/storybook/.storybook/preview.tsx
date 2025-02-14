@@ -7,13 +7,15 @@ import {
 } from '@marigold/components';
 import b2b from '@marigold/theme-b2b';
 import core from '@marigold/theme-core';
+import rui from '@marigold/theme-rui';
 import './../styles.css';
 
 // Helpers
 // ---------------
 const THEME = {
-  core: core,
-  b2b: b2b,
+  core,
+  b2b,
+  rui,
 };
 
 type ThemeNames = keyof typeof THEME;
@@ -40,6 +42,7 @@ export const decorators: any = [
     themes: {
       core: core.name,
       b2b: b2b.name,
+      rui: rui.name,
       stacked: 'stacked',
     },
     defaultTheme: core.name,
