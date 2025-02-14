@@ -99,7 +99,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<
-      'table' | 'header' | 'row' | 'cell',
+      'table' | 'header' | 'body' | 'row' | 'cell',
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<

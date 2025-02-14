@@ -23,6 +23,7 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
+  body: cva(),
   row: cva(
     [
       'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',

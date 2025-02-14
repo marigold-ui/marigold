@@ -136,7 +136,7 @@ export const Table: Table = ({
             </TableHeaderRow>
           ))}
         </TableHeader>
-        <TableBody emptyState={emptyState}>
+        <TableBody className={classNames.body} emptyState={emptyState}>
           {...collection.rows.map(
             row =>
               row.type === 'item' && (

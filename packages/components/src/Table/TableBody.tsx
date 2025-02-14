@@ -11,6 +11,11 @@ export interface TableBodyProps
   children?: ReactNode;
 
   /**
+   * The CSS classes to apply to the component.
+   */
+  className?: string;
+
+  /**
    * Provides content to display when there are no rows in the table.
    */
   emptyState?: () => ReactNode;
