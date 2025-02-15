@@ -11,3 +11,4 @@ export { Popover } from './Popover.styles';
 export { Select } from './Select.styles';
 export { Table } from './Table.styles';
 export { TextArea } from './TextArea.styles';
+export { Text } from './Text.styles';

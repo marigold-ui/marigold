@@ -5,13 +5,15 @@ import React, { useEffect } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import type { Selection } from '@marigold/components';
 import { TextArea } from '@marigold/components';
+import { NumericFormat } from '@marigold/system';
 import { Button } from '../Button';
 import { Center } from '../Center';
 import { Checkbox } from '../Checkbox';
 import { Scrollable } from '../Scrollable';
 import { Select } from '../Select';
 import { Stack } from '../Stack';
-import { Table } from './Table';
+import { Table } from '../Table';
+import { Text } from '../Text';
 
 const meta = {
   title: 'Components/Table',
@@ -166,16 +168,29 @@ export const Basic: Story = {
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
-        <Table.Column>Balance</Table.Column>
+        <Table.Column align="right">Balance</Table.Column>
       </Table.Header>
       <Table.Body>
         {users.map(user => (
           <Table.Row key={user.email}>
-            <Table.Cell>{user.name}</Table.Cell>
+            <Table.Cell>
+              <Stack space="0.5">
+                <Text weight="medium">{user.name}</Text>
+                <Text size="xs" color="muted-foreground">
+                  {user.handle}
+                </Text>
+              </Stack>
+            </Table.Cell>
             <Table.Cell>{user.email}</Table.Cell>
             <Table.Cell>{user.location}</Table.Cell>
             <Table.Cell>{user.status}</Table.Cell>
-            <Table.Cell>{user.balance}</Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                style="currency"
+                currency="EUR"
+                value={user.balance}
+              />
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

@@ -5,7 +5,7 @@ export const Table: ThemeComponent<'Table'> = {
   headerRow: cva('border-b border-border'),
   header: cva(
     [
-      'h-12 px-3 text-left align-middle font-medium text-muted-foreground last:text-right',
+      'h-12 px-3 align-middle font-medium text-muted-foreground last:text-right',
       // does this checkbox think work?
       '[&:has([role=checkbox])]:w-px [&:has([role=checkbox])]:pr-0',
     ],
