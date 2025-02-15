@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { Theme, cva } from '@marigold/system';
@@ -19,6 +19,8 @@ const theme: Theme = {
     Table: {
       table: cva('border-collapse'),
       header: cva('p-4'),
+      headerRow: cva('border-b'),
+      body: cva('bg-white'),
       row: cva('bg-blue-700'),
       cell: cva('p-10'),
     },
@@ -120,18 +122,26 @@ test('supports theme with parts', () => {
       </Table.Body>
     </Table>
   );
+
   const table = screen.getAllByRole('grid');
-  expect(table[0]).toHaveClass(`border-collapse`);
+  expect(table[0]).toHaveClass('border-collapse');
+
+  const [tableHead, tableBody] = within(table[0]).getAllByRole('rowgroup');
+
+  const tableHeaderRow = within(tableHead).getByRole('row');
+  expect(tableHeaderRow).toHaveClass('border-b');
 
   const tableHeader = screen.getAllByRole('columnheader');
-  expect(tableHeader[0]).toHaveClass(`p-4`);
+  expect(tableHeader[0]).toHaveClass('p-4');
+
+  expect(tableBody).toHaveClass('bg-white');
 
   const tableRows = screen.getAllByRole('row');
   fireEvent.click(tableRows[1]);
-  expect(tableRows[1]).toHaveClass(`bg-blue-700`);
+  expect(tableRows[1]).toHaveClass('bg-blue-700');
 
   const tableCells = screen.getAllByRole('gridcell');
-  expect(tableCells[0]).toHaveClass(`p-10`);
+  expect(tableCells[0]).toHaveClass('p-10');
 });
 
 test('supports selectionMode single', () => {

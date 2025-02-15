@@ -115,7 +115,11 @@ export const Table: Table = ({
       >
         <TableHeader stickyHeader={stickyHeader}>
           {collection.headerRows.map(headerRow => (
-            <TableHeaderRow key={headerRow.key} item={headerRow}>
+            <TableHeaderRow
+              key={headerRow.key}
+              item={headerRow}
+              className={classNames.headerRow}
+            >
               {[...collection.getChildren!(headerRow.key)].map(column =>
                 column.props?.isSelectionCell ? (
                   <TableSelectAllCell
