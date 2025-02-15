@@ -6,4 +6,4 @@
 "@marigold/theme-docs": minor
 ---
 
-feat(DST-689): Allow to style the body element of a `<Table>`
+feat(DST-689): Allow to style body element and header row of a `<Table>`
