@@ -1,3 +1,4 @@
+export { Badge } from './Badge.styles';
 export { Button } from './Button.styles';
 export { Card } from './Card.styles';
 export { DateField } from './DateField.styles';

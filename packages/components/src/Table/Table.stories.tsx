@@ -6,6 +6,7 @@ import { SortDescriptor } from '@react-types/shared';
 import type { Selection } from '@marigold/components';
 import { TextArea } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';
+import { Badge } from '../Badge';
 import { Button } from '../Button';
 import { Center } from '../Center';
 import { Checkbox } from '../Checkbox';
@@ -183,7 +184,9 @@ export const Basic: Story = {
             </Table.Cell>
             <Table.Cell>{user.email}</Table.Cell>
             <Table.Cell>{user.location}</Table.Cell>
-            <Table.Cell>{user.status}</Table.Cell>
+            <Table.Cell>
+              <Badge>{user.status}</Badge>
+            </Table.Cell>
             <Table.Cell>
               <NumericFormat
                 style="currency"
