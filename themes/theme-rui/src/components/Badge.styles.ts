@@ -9,12 +9,12 @@ export const Badge: ThemeComponent<'Badge'> = cva(
   {
     variants: {
       variant: {
+        default: 'border-border',
         primary: 'bg-brand text-brand-foreground border-transparent',
-        secondary: 'border-border',
       },
     },
     defaultVariants: {
-      variant: 'primary',
+      variant: 'default',
     },
   }
 );
