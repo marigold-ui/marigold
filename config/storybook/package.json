@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "license": "MIT",
   "type": "module",
   "exports": "./main.js",
@@ -30,7 +30,7 @@
     "@storybook/source-loader": "^8.1.11",
     "@storybook/test": "^8.1.11",
     "@tailwindcss/vite": "4.0.1",
-    "@types/react": "19.0.7",
+    "@types/react": "19.0.8",
     "@vitejs/plugin-react": "4.3.4",
     "tailwindcss": "4.0.0",
     "vite-tsconfig-paths": "5.1.4"
