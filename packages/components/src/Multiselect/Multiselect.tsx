@@ -25,6 +25,7 @@ import { ChevronDown } from '../icons';
 
 type PickedProps =
   | 'autoFocus'
+  | 'isOptionDisabled'
   | 'noOptionsMessage'
   | 'onBlur'
   | 'onFocus'

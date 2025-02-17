@@ -91,18 +91,27 @@ const meta = {
 
 export default meta;
 
-const drinks = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
+const ticketCategories = [
+  { value: 'general', label: 'General Admission' },
+  { value: 'vip', label: 'VIP Experience' },
+  { value: 'backstage', label: 'Backstage Pass' },
+  { value: 'early', label: 'Early Bird Special' },
+];
+
+const ticketPriorities = [
+  { value: 'low', label: 'Low Priority' },
+  { value: 'medium', label: 'Medium Priority' },
+  { value: 'high', label: 'High Priority' },
+  { value: 'critical', label: 'Critical Issue' },
 ];
 
 export const Basic: StoryObj<any> = {
   render: args => (
     <Multiselect
-      label="Label"
-      items={drinks}
-      placeholder="enter value"
+      label="Ticket Categories"
+      items={ticketCategories}
+      placeholder="Select categories..."
+      isOptionDisabled={(item: { value: string }) => item.value === 'backstage'}
       {...args}
     />
   ),
@@ -116,9 +125,12 @@ export const Controlled: StoryObj<any> = {
     return (
       <Stack space={3}>
         <Multiselect
-          label="Label"
-          placeholder="enter value"
-          items={drinks}
+          label="Ticket Priorities"
+          placeholder="Set priorities..."
+          items={ticketPriorities}
+          isOptionDisabled={(item: { value: string }) =>
+            item.value === 'critical'
+          }
           onChange={value => setCurrent(value)}
           onSelectionChange={(selectedValues: object[]) =>
             setSelectedValues(selectedValues)
@@ -127,7 +139,9 @@ export const Controlled: StoryObj<any> = {
         />
         <hr />
         <pre>
-          current: {current}, selected:{' '}
+          Current Input: {current}
+          <br />
+          Selected Priorities:{' '}
           {selectedValues
             .map(({ value }: { value: string }) => value)
             .join(', ')}
