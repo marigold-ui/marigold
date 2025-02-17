@@ -7,7 +7,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   option: cva([
     inputDisabled,
     'relative rounded-md px-2 py-1.5',
-    'selected:bg-accent selected:text-accent-foreground',
+    'selected:bg-selected',
     'focus:outline-2 focus:outline-ring/70',
   ]),
   section: cva(),

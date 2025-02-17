@@ -44,7 +44,6 @@
   --color-brand-foreground: var(--color-stone-50);
 
   /* accent colors used for highlighting certain parts of components */
-  --color-accent: var(--color-orange-100);
 
   /*
     used for errormessages
@@ -53,10 +52,10 @@
   --color-destructive-foreground: var(--color-white);
 
   /* 
-    muted colros are desaturated colors of the brand color, 
+    muted colors are desaturated colors of the brand color, 
     they help create hierarchy for secondary text. 
     Currently used for: helptext, icons inside inputs, readonly background inside inputs
-    */
+  */
   --color-muted: var(--color-stone-100);
   --color-muted-foreground: var(--color-stone-500);
 
@@ -74,4 +73,10 @@
   --color-surface-overlay: var(--color-white);
 
   --color-border: var(--color-stone-200);
+
+  /* Focus color is used for focusing an element (e.g. segment on Datefield)*/
+  --color-focus: var(--color-stone-100);
+
+  /* Selected color is used when there is an active selection in the component */
+  --color-selected: var(--color-stone-100);
 }

@@ -16,6 +16,5 @@ export const Select: ThemeComponent<'Select'> = {
     'h-input',
     'cursor-pointer',
     '*:data-placeholder:text-placeholder',
-    'aria-expanded:bg-bg-base-active ',
   ]),
 };
