@@ -2,7 +2,7 @@ import { DisclosureGroup } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { AccordionProvider } from './AccordionContext';
-import { AccordionHeader } from './AccordionHeading';
+import { AccordionHeader } from './AccordionHeader';
 import { AccordionItem } from './AccordionItem';
 import { AccordionPanel } from './AccordionPanel';
 

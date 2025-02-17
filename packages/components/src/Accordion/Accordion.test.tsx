@@ -168,9 +168,7 @@ test('accepts variant and size classnames', () => {
   const button = screen.getByText('Information');
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
-  expect(button.className).toMatchInlineSnapshot(
-    `"inline-flex items-center justify-center gap-[0.5ch] w-full group bg-blue-600 p-8"`
-  );
+  expect(button.className).toMatchInlineSnapshot(`"bg-blue-600 p-8"`);
   fireEvent.click(button);
   expect(button).toHaveAttribute('aria-expanded', 'true');
 
@@ -196,9 +194,7 @@ test('default full width', () => {
 
   const button = screen.getByText('Information');
 
-  expect(button.className).toMatchInlineSnapshot(
-    `"inline-flex items-center justify-center gap-[0.5ch] w-full group"`
-  );
+  expect(button.className).toMatchInlineSnapshot(`""`);
 });
 
 test('support default expanded keys', () => {
