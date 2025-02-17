@@ -38,15 +38,13 @@ type PickedProps =
 interface MultipleSelectProps
   extends Pick<
       FieldBaseProps<'label'>,
-      'width' | 'label' | 'description' | 'errorMessage'
+      'width' | 'size' | 'variant' | 'label' | 'description' | 'errorMessage'
     >,
     Pick<SelectProps, PickedProps> {
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
   error?: boolean;
-  variant?: string;
-  size?: string;
   items?: SelectProps['options'];
   errorMessage?: string | ((validation: ValidationResult) => string);
   placeholder?: string;
