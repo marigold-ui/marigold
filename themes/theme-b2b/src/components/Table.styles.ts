@@ -2,6 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
   table: cva('border-collapse whitespace-nowrap bg-white text-sm'),
+  headerRow: cva(),
   header: cva(
     [
       'border-border-base relative border-b ',
@@ -24,6 +25,7 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
+  body: cva(),
   row: cva([
     'group-aria-[multiselectable]/table:[&>*:first-child]:w-12',
     'data-hover:bg-bg-base-hover',
