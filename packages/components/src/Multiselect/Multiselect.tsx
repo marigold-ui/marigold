@@ -107,7 +107,6 @@ const getClassNames = (
   control: () => classNames.container,
   container: () => 'pointer-events-auto',
   placeholder: () => 'hidden',
-  indicatorsContainer: () => 'h-5',
   indicatorSeparator: () => 'hidden',
   menu: () => cn('shadow-none', classNames.listContainer),
   menuList: () =>
