@@ -46,6 +46,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   icon: cva('left-1'),
   listContainer: cva([
     'bg-bg-surface border-border-light mt-0.5 rounded-sm border border-solid',
+    'shadow-surface-overlay',
   ]),
   list: cva('pointer-events-auto'),
   option: cva([
