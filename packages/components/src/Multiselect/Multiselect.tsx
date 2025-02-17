@@ -106,13 +106,15 @@ const getClassNames = (
 ): ClassNamesConfig => ({
   control: () => classNames.container,
   container: () => 'pointer-events-auto',
-  placeholder: () => 'hidden',
   indicatorSeparator: () => 'hidden',
   menu: () => cn('shadow-none', classNames.listContainer),
   menuList: () =>
     cn('overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0', classNames.list),
+  multiValue: () => cn(classNames.tag, 'm-0 '),
+  multiValueLabel: () => 'p-0',
   option: ({ isFocused }) => cn(classNames.option, { isFocused: isFocused }),
-  multiValue: () => classNames.tag,
+  placeholder: () => 'hidden',
+  valueContainer: () => classNames.valueContainer,
 });
 
 export const Multiselect = ({

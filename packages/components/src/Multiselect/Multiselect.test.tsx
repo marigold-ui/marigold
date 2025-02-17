@@ -21,6 +21,7 @@ const theme: Theme = {
       list: cva('list-style'),
       option: cva('option-style'),
       icon: cva('icon-style'),
+      valueContainer: cva('bg-red-300'),
     },
     Label: {
       container: cva('label-style'),

@@ -35,10 +35,9 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
 
   action: cva(''),
   tag: cva([
-    '[&>*:first-child]:h-full [&>*:first-child]:flex [&>*:first-child]:items-center',
-    'px-1.5 py-[2px] h-5',
-    'border-border-base bg-bg-base flex items-center gap-1 rounded border ',
-    'data-[selected]:bg-bg-selected-input data-[selected]:text-text-inverted data-[selected]:border-border-selected',
+    'border-border-base bg-transparent ',
+    'flex items-center gap-1 ',
+    'rounded-md border p-1 m-0 ',
   ]),
   closeButton: cva(
     'size-4 cursor-pointer border-none bg-transparent p-0 leading-normal outline-0'
@@ -58,4 +57,5 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'rac-selected:text-text-inverted aria-selected:bg-highlight',
     'aria-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),
+  valueContainer: cva('gap-2'),
 };

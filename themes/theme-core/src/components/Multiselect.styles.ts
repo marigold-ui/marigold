@@ -57,4 +57,5 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'rac-selected:text-text-inverted aria-selected:bg-highlight',
     'aria-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),
+  valueContainer: cva('gap-1'),
 };
