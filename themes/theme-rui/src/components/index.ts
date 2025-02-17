@@ -10,6 +10,7 @@ export { Label } from './Label.styles';
 export { ListBox } from './ListBox.styles';
 export { NumberField } from './NumberField.styles';
 export { Popover } from './Popover.styles';
+export { Radio } from './Radio.styles';
 export { Select } from './Select.styles';
 export { Table } from './Table.styles';
 export { TextArea } from './TextArea.styles';
