@@ -38,3 +38,4 @@ export * from './Underlay.styles';
 export * from './Popover.styles';
 export * from './XLoader.styles';
 export * from './Pagination.styles';
+export * from './ProgressCycle.styles';
