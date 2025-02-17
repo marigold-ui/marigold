@@ -24,6 +24,7 @@ export * from './ListBox.styles';
 export * from './Menu.styles';
 export * from './NumberField.styles';
 export * from './Popover.styles';
+export * from './ProgressCycle.styles';
 export * from './Radio.styles';
 export * from './SectionMessage.styles';
 export * from './Select.styles';

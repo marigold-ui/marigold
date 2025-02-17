@@ -43,6 +43,10 @@
   --color-brand: var(--color-stone-950);
   --color-brand-foreground: var(--color-stone-50);
 
+  /* stone (use for secondary) */
+  --color-secondary: var(--color-stone-50);
+  --color-secondary-foreground: var(--color-stone-950);
+
   /* accent colors used for highlighting certain parts of components */
 
   /*
@@ -52,12 +56,15 @@
   --color-destructive-foreground: var(--color-white);
 
   /* 
-    muted colors are desaturated colors of the brand color, 
+    muted colors are desaturated colors of the brand color,
     they help create hierarchy for secondary text. 
     Currently used for: helptext, icons inside inputs, readonly background inside inputs
   */
   --color-muted: var(--color-stone-100);
   --color-muted-foreground: var(--color-stone-500);
+
+  --color-disabled: var(--color-stone-400);
+  --color-disabled-foreground: var(--color-stone-50);
 
   /* used for placeholder color */
   --color-placeholder: --alpha(var(--color-stone-500) / 70%);
@@ -70,6 +77,9 @@
   /* component height for input elements */
   --spacing-input: 2.25rem;
 
+  /* component height for button elements */
+  --spacing-button: 2.25rem;
+
   /* surface colors used for elevation levels */
   --color-surface-overlay: var(--color-white);
 
@@ -80,4 +90,31 @@
 
   /* Selected color is used when there is an active selection in the component */
   --color-selected: var(--color-stone-100);
+
+  /* animation and keyframes */
+  --animate-rotate-spinner: rotate-spinner 2s linear infinite;
+  --animate-progress-cycle: progress-cycle 1.5s linear infinite;
+
+  @keyframes rotate-spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes progress-cycle {
+    0% {
+      transform: rotate(0deg);
+      stroke-dashoffset: 75;
+    }
+    30% {
+      stroke-dashoffset: 20;
+    }
+    100% {
+      transform: rotate(360deg);
+      stroke-dashoffset: 75;
+    }
+  }
 }

@@ -81,6 +81,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Pagination?: ComponentStyleFunction<string, string>;
+    ProgressCycle?: ComponentStyleFunction<string, string>;
     Radio?: Record<
       'container' | 'label' | 'radio' | 'group',
       ComponentStyleFunction<string, string>
