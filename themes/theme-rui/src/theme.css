@@ -65,7 +65,8 @@
   --color-ring: var(--color-stone-400);
 
   /* Input tokens */
-  --color-input-border: var(--color-stone-300);
+  /* color input used for inputs as border or e.g. in switch as bg track color */
+  --color-input: var(--color-stone-300);
   /* component height for input elements */
   --spacing-input: 2.25rem;
 

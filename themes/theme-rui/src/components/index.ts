@@ -12,6 +12,7 @@ export { NumberField } from './NumberField.styles';
 export { Popover } from './Popover.styles';
 export { Radio } from './Radio.styles';
 export { Select } from './Select.styles';
+export { Switch } from './Switch.styles';
 export { Table } from './Table.styles';
 export { TextArea } from './TextArea.styles';
 export { Text } from './Text.styles';

@@ -44,6 +44,16 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
+    selected: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'Wether the switch is selected',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'undefined' },
+      },
+    },
   },
   args: {
     children: 'Default Switch',
