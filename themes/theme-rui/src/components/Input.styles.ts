@@ -13,7 +13,7 @@ export const inputFocus = {
     'focus-within:border-ring focus-within:outline-none focus-within:ring-[3px] focus-within:ring-ring/20',
 };
 
-export const inputReadOnly = 'read-only:bg-muted';
+export const inputReadOnly = 'group-read-only/field:bg-muted';
 
 export const Input: ThemeComponent<'Input'> = {
   input: cva([
