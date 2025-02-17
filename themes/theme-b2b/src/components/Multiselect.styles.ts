@@ -15,6 +15,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     inputDisabled('aria-disabled'),
     inputHover(),
     inputSpacing,
+    'min-h-8',
     'aria-disabled:bg-bg-base-disabled aria-disabled:text-text-base-disabled aria-disabled:hover:border-border-base-disabled aria-disabled:border-border-base-disabled aria-disabled:cursor-not-allowed',
     'has-[input[data-invalid=true]]:border-border-error',
     '[&>*:first-child]:p-0',
