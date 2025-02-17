@@ -6,16 +6,21 @@ export const inputContainer =
 export const inputDisabled = 'disabled:cursor-not-allowed disabled:opacity-50';
 export const inputInvalid =
   'group-error/field:border-destructive group-error/field:focus:border-destructive group-error/field:focus:ring-destructive/20';
-export const inputFocus =
-  'focus:border-input-ring focus:outline-none focus:ring-[3px] focus:ring-input-ring/20';
-export const inputReadOnly = 'read-only:bg-muted';
+export const inputFocus = {
+  focus:
+    'focus:border-ring focus:outline-none focus:ring-[3px] focus:ring-ring/20',
+  'focus-within':
+    'focus-within:border-ring focus-within:outline-none focus-within:ring-[3px] focus-within:ring-ring/20',
+};
+
+export const inputReadOnly = 'group-read-only/field:bg-muted';
 
 export const Input: ThemeComponent<'Input'> = {
   input: cva([
     inputContainer,
     inputDisabled,
     inputInvalid,
-    inputFocus,
+    inputFocus['focus'],
     inputReadOnly,
     'h-input',
     'placeholder:text-placeholder',
