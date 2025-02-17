@@ -1,6 +1,7 @@
 export { Badge } from './Badge.styles';
 export { Button } from './Button.styles';
 export { Card } from './Card.styles';
+export { Checkbox } from './Checkbox.styles';
 export { DateField } from './DateField.styles';
 export { Input } from './Input.styles';
 export { Field } from './Field.styles';
