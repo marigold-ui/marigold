@@ -207,6 +207,7 @@ export const Multiselect = ({
           isMulti
           closeMenuOnSelect={false}
           classNames={getClassNames(classNames)}
+          menuIsOpen={readOnly ? false : undefined}
           isDisabled={disabled}
           components={{
             Input,
