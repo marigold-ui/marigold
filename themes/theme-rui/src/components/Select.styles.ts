@@ -7,7 +7,7 @@ import {
 } from './Input.styles';
 
 export const Select: ThemeComponent<'Select'> = {
-  icon: cva(),
+  icon: cva('text-muted-foreground/80'),
   select: cva([
     inputContainer,
     inputInvalid,
