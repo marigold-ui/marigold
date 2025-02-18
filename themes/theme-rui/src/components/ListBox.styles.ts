@@ -6,7 +6,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   list: cva(['space-y-1 bg-background p-1 text-sm outline-0']),
   option: cva([
     inputDisabled,
-    'relative rounded-md px-2 py-1.5 text-sm text-foreground',
+    'relative flex flex-col rounded-md px-2 py-1.5 text-sm text-foreground',
     'selected:bg-selected',
     'focus:outline-2 focus:outline-ring/70',
   ]),
