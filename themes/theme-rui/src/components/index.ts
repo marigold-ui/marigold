@@ -2,6 +2,7 @@ export { Badge } from './Badge.styles';
 export { Button } from './Button.styles';
 export { Card } from './Card.styles';
 export { Checkbox } from './Checkbox.styles';
+export { Calendar } from './Calendar.styles';
 export { ComboBox } from './ComboBox.styles';
 export { DateField } from './DateField.styles';
 export { Input } from './Input.styles';
