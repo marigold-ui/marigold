@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 11.1.0
+
+### Minor Changes
+
+- fd96b48: feat(DST-689): Allow to style body element and header row of a `<Table>`
+
+### Patch Changes
+
+- 300bfba: fix(DST-690): Rotate chevron when `Accordion.Item` is expanded + align header and content
+- Updated dependencies [fd96b48]
+  - @marigold/system@11.1.0
+
 ## 11.0.2
 
 ### Patch Changes

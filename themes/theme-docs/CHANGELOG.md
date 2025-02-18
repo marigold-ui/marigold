@@ -1,5 +1,18 @@
 # @marigold/theme-docs
 
+## 2.3.0
+
+### Minor Changes
+
+- fd96b48: feat(DST-689): Allow to style body element and header row of a `<Table>`
+
+### Patch Changes
+
+- Updated dependencies [fd96b48]
+- Updated dependencies [300bfba]
+  - @marigold/components@11.1.0
+  - @marigold/system@11.1.0
+
 ## 2.2.9
 
 ### Patch Changes

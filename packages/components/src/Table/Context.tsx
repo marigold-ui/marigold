@@ -6,7 +6,9 @@ export interface TableContextProps {
   interactive: boolean;
   classNames?: {
     table?: string;
+    headerRow?: string;
     header?: string;
+    body?: string;
     row?: string;
     cell?: string;
   };

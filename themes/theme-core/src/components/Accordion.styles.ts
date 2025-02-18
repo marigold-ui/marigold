@@ -6,7 +6,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   header: cva([
     'group',
     'inline-flex items-center justify-center gap-[0.5ch]',
-    'bg-bg-surface w-full justify-between border-none px-2 py-1',
+    'bg-bg-surface w-full justify-between border-none py-1',
     'font-bold leading-[1.125]',
   ]),
   content: cva(),
