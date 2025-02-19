@@ -67,3 +67,32 @@ export const get = (obj: object, path: string, fallback?: any): any => {
 
   return result === undefined ? fallback : result;
 };
+
+/**
+ * Checks if a given string is a valid CSS custom property name (without the leading `--`).
+ *
+ * This simplified check ensures:
+ * - The name does not start with a digit.
+ * - It contains only word characters (letters, digits, underscore) or hyphens.
+ * - It must include at least one hyphen to be considered a custom property name.
+ */
+export const isValidCssCustomPropertyName = (val: string) =>
+  /^[A-Za-z0-9_-]+$/.test(val);
+
+/**
+ * Returns a CSS variable reference string based on the input value.
+ *
+ * If the provided value is a valid CSS custom property name (without the leading `--`),
+ * the function returns a string in the format `var(--<val>, <val>)`, which uses the value
+ * both as the custom property name (with a `--` prefix) and as the fallback value.
+ *
+ * If the value is not a valid custom property name, the function simply returns the value.
+ *
+ * If no input is given, the function returns `undefined`.
+ */
+export const ensureCssVar = (val?: string) =>
+  val
+    ? isValidCssCustomPropertyName(val)
+      ? `var(--${val}, ${val})`
+      : val
+    : undefined;

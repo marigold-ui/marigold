@@ -1,4 +1,5 @@
-import { cva, get } from './utils';
+import exp from 'constants';
+import { cva, ensureCssVar, get, isValidCssCustomPropertyName } from './utils';
 
 test('cva (simple)', () => {
   expect(cva(['text-sm'])()).toMatchInlineSnapshot(`"text-sm"`);
@@ -67,4 +68,26 @@ test('get', () => {
   },
 }
 `);
+});
+
+test('is valid css property name', () => {
+  expect(isValidCssCustomPropertyName('valid')).toBeTruthy();
+  expect(isValidCssCustomPropertyName('red-500')).toBeTruthy();
+  expect(isValidCssCustomPropertyName('H3llo')).toBeTruthy();
+
+  expect(isValidCssCustomPropertyName('#333')).toBeFalsy();
+  expect(isValidCssCustomPropertyName('hsl(1 1 100)')).toBeFalsy();
+});
+
+test('get ccs var', () => {
+  expect(ensureCssVar('blue-100')).toMatchInlineSnapshot(
+    `"var(--blue-100, blue-100)"`
+  );
+  expect(ensureCssVar('hotpink')).toMatchInlineSnapshot(
+    `"var(--hotpink, hotpink)"`
+  );
+  expect(ensureCssVar('#111')).toMatchInlineSnapshot(`"#111"`);
+  expect(ensureCssVar('hsl(2 0.5 90)')).toMatchInlineSnapshot(
+    `"hsl(2 0.5 90)"`
+  );
 });
