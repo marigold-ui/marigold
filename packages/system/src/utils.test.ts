@@ -1,4 +1,3 @@
-import exp from 'constants';
 import { cva, ensureCssVar, get, isValidCssCustomPropertyName } from './utils';
 
 test('cva (simple)', () => {
