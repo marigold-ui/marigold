@@ -43,6 +43,9 @@
   --color-brand: var(--color-stone-950);
   --color-brand-foreground: var(--color-stone-50);
 
+  /* accent color used for hovering (e.g. calendar) */
+  --color-accent: var(--color-orange-100);
+
   /* stone (use for secondary) */
   --color-secondary: var(--color-stone-50);
   --color-secondary-foreground: var(--color-stone-950);
