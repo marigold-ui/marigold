@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-core",
-  "version": "28.0.2",
+  "version": "28.2.0",
   "description": "Marigold Core Theme",
   "license": "MIT",
   "keywords": [
@@ -21,7 +21,8 @@
       "require": "./dist/*.js",
       "import": "./dist/*.mjs"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./theme.css": "./dist/theme.css"
   },
   "typesVersions": {
     "*": {

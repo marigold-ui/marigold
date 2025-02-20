@@ -1,5 +1,31 @@
 # @marigold/theme-core
 
+## 28.2.0
+
+### Minor Changes
+
+- 3d7aaad: feat(DST-693): Expose `theme.css` files from packages
+
+### Patch Changes
+
+- Updated dependencies [be665e7]
+  - @marigold/components@11.1.1
+  - @marigold/system@11.1.1
+
+## 28.1.0
+
+### Minor Changes
+
+- fd96b48: feat(DST-689): Allow to style body element and header row of a `<Table>`
+
+### Patch Changes
+
+- 300bfba: fix(DST-690): Rotate chevron when `Accordion.Item` is expanded + align header and content
+- Updated dependencies [fd96b48]
+- Updated dependencies [300bfba]
+  - @marigold/components@11.1.0
+  - @marigold/system@11.1.0
+
 ## 28.0.2
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @marigold/system
 
+## 11.1.1
+
+### Patch Changes
+
+- be665e7: fix(DST-691): Fix regression, allow to use custom color values with `<Text>`, `<Headline>` and `<SVG>`
+
+## 11.1.0
+
+### Minor Changes
+
+- fd96b48: feat(DST-689): Allow to style body element and header row of a `<Table>`
+
 ## 11.0.2
 
 ## 11.0.1
