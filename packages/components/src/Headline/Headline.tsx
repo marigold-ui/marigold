@@ -1,6 +1,12 @@
 import type { ReactNode } from 'react';
 import { Heading } from 'react-aria-components';
-import { TextAlignProp, cn, textAlign, useClassNames } from '@marigold/system';
+import {
+  TextAlignProp,
+  cn,
+  ensureCssVar,
+  textAlign,
+  useClassNames,
+} from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
 
 export interface HeadlineProps extends AriaLabelingProps, TextAlignProp {
@@ -48,7 +54,7 @@ const _Headline = ({
         'max-w-(--maxHeadlineWidth)', // possibly set by a <Container>
         textAlign[align]
       )}
-      style={{ color: color && `var(--color-${color})` }}
+      style={{ color: ensureCssVar(color) }}
     >
       {children}
     </Heading>
