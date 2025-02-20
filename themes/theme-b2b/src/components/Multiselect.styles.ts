@@ -2,7 +2,6 @@ import { ThemeComponent, cva } from '@marigold/system';
 import {
   inputBackground,
   inputBox,
-  inputDisabled,
   inputHover,
   inputSpacing,
 } from './Input.styles';
@@ -12,8 +11,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   container: cva([
     inputBox,
     inputBackground,
-    inputDisabled('aria-disabled'),
-    inputHover(),
+    inputHover.hover,
     inputSpacing,
     'min-h-8',
     'aria-disabled:bg-bg-base-disabled aria-disabled:text-text-base-disabled aria-disabled:hover:border-border-base-disabled aria-disabled:border-border-base-disabled aria-disabled:cursor-not-allowed',
