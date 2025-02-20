@@ -11,7 +11,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
   ]),
   stepper: cva([
     'w-7 h-full',
-    'data-[disabled]:opacity-50',
+    'disabled:opacity-50',
     'border-input border-solid first-of-type:border-r',
     'border-input border-solid last-of-type:border-l ',
   ]),

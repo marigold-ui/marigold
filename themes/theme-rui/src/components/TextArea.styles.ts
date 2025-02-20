@@ -13,5 +13,5 @@ export const TextArea: ThemeComponent<'TextArea'> = cva([
   inputFocus['focus'],
   inputDisabled,
   inputReadOnly,
-  'data-invalid:text-destructive',
+  'invalid:text-destructive',
 ]);
