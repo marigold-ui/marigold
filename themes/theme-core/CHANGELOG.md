@@ -1,5 +1,17 @@
 # @marigold/theme-core
 
+## 28.2.0
+
+### Minor Changes
+
+- 3d7aaad: feat(DST-693): Expose `theme.css` files from packages
+
+### Patch Changes
+
+- Updated dependencies [be665e7]
+  - @marigold/components@11.1.1
+  - @marigold/system@11.1.1
+
 ## 28.1.0
 
 ### Minor Changes

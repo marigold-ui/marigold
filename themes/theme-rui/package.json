@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-rui",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Marigold RUI Theme",
   "license": "MIT",
   "keywords": [
@@ -21,7 +21,8 @@
       "require": "./dist/*.js",
       "import": "./dist/*.mjs"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./theme.css": "./dist/theme.css"
   },
   "typesVersions": {
     "*": {

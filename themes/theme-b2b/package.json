@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-b2b",
-  "version": "29.1.0",
+  "version": "29.2.0",
   "description": "Marigold B2B Theme",
   "license": "MIT",
   "keywords": [
@@ -21,7 +21,8 @@
       "import": "./dist/*.mjs",
       "require": "./dist/*.js"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./theme.css": "./dist/theme.css"
   },
   "typesVersions": {
     "*": {

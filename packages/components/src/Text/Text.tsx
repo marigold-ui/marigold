@@ -8,6 +8,7 @@ import {
   TextAlignProp,
   cn,
   cursorStyle,
+  ensureCssVar,
   fontWeight,
   textAlign,
   textSize,
@@ -85,7 +86,7 @@ const _Text = ({
         weight && fontWeight[weight],
         fontSize && textSize[fontSize]
       )}
-      style={{ color: color && `var(--color-${color})` }}
+      style={{ color: ensureCssVar(color) }}
     >
       {children}
     </Component>
