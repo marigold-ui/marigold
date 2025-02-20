@@ -126,10 +126,7 @@ export type Theme = {
       | 'calendarGrid',
       ComponentStyleFunction<string, string>
     >;
-    DatePicker?: Record<
-      'container' | 'button',
-      ComponentStyleFunction<string, string>
-    >;
+    DatePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: ComponentStyleFunction<string, string>;
     XLoader?: Record<
       'container' | 'loader' | 'label',

@@ -5,6 +5,7 @@ export { Checkbox } from './Checkbox.styles';
 export { Calendar } from './Calendar.styles';
 export { ComboBox } from './ComboBox.styles';
 export { DateField } from './DateField.styles';
+export { DatePicker } from './DatePicker.styles';
 export { Input } from './Input.styles';
 export { Field } from './Field.styles';
 export { HelpText } from './HelpText.styles';
