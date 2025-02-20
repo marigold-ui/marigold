@@ -13,13 +13,13 @@ import { SystemSection } from './_components/landingpage/SystemSection';
 // Components
 // ---------------
 const SectionHeadline = ({ children }: PropsWithChildren) => (
-  <h2 className="text-balance text-5xl font-extrabold tracking-tight md:pb-2 md:text-6xl">
+  <h2 className="text-5xl font-extrabold tracking-tight text-balance md:pb-2 md:text-6xl">
     {children}
   </h2>
 );
 
 const SectionContent = ({ children }: PropsWithChildren) => (
-  <p className="text-pretty text-lg">{children}</p>
+  <p className="text-lg text-pretty">{children}</p>
 );
 
 const SectionLink = ({
@@ -37,10 +37,10 @@ const SectionLink = ({
 const Page = () => {
   const latestPost = getLatestPost();
   return (
-    <main className="grid justify-center px-[--page-padding-md] xl:px-[--page-padding-xl]">
+    <main className="grid justify-center px-(--page-padding-md) xl:px-(--page-padding-xl)">
       {/* Hero */}
-      <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-screen-lg place-items-center text-center">
-        <div className="-mx-[--page-padding-md] md:mx-0">
+      <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-(--breakpoint-lg) place-items-center text-center">
+        <div className="-mx-(--page-padding-md) md:mx-0">
           <Center>
             <Link href={`/${latestPost.slug}`} variant="shiny" size="xsmall">
               <AnimatedShinyText className="transition ease-out">
@@ -48,10 +48,10 @@ const Page = () => {
               </AnimatedShinyText>
             </Link>
           </Center>
-          <h1 className="text-balance pt-0.5 text-6xl font-extrabold lg:text-8xl">
+          <h1 className="pt-0.5 text-6xl font-extrabold text-balance lg:text-8xl">
             Cultivate beautiful user interfaces
           </h1>
-          <p className="text-text-primary/60 text-balance pb-10 pt-4 text-lg font-light leading-relaxed lg:pb-24 lg:pt-10 lg:text-xl">
+          <p className="text-text-primary/60 pt-4 pb-10 text-lg leading-relaxed font-light text-balance lg:pt-10 lg:pb-24 lg:text-xl">
             Marigold is a design system for Reservix, providing components and
             tools that let product teams focus on core challenges while creating
             unified, accessible applications.
@@ -70,7 +70,7 @@ const Page = () => {
       </div>
 
       {/* Features */}
-      <div className="grid max-w-screen-lg gap-[30vh] pt-[5vw] md:gap-[40vh]">
+      <div className="grid max-w-(--breakpoint-lg) gap-[30vh] pt-[5vw] md:gap-[40vh]">
         <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
           <div className="order-last grid gap-4 md:order-first">
             <SectionHeadline>Built to be accessible</SectionHeadline>
@@ -225,7 +225,7 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-center gap-2 pb-5 pt-48 opacity-15">
+      <div className="flex items-center justify-center gap-2 pt-48 pb-5 opacity-15">
         Build by
         <Image
           width={140}

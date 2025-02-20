@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
-import { Key, useState } from 'react';
+import { Key } from 'react';
 import { Text } from 'react-aria-components';
 import { useAsyncList } from '@react-stately/data';
-import { Container } from '../Container';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
 
@@ -120,38 +120,36 @@ export const Controlled: Story = {
     const keyToRender = submitted[0] !== null ? submitted[0].toString() : null;
 
     return (
-      <Container size="large">
-        <Stack space={4}>
-          <Autocomplete
-            {...args}
-            value={current}
-            onChange={setCurrent}
-            onSubmit={(key, val) => setSubmitted([key, val])}
-            disabledKeys={['star-trek']}
+      <Stack space={4}>
+        <Autocomplete
+          {...args}
+          value={current}
+          onChange={setCurrent}
+          onSubmit={(key, val) => setSubmitted([key, val])}
+          disabledKeys={['star-trek']}
+        >
+          <Autocomplete.Option id="harry-potter" textValue="Harry Potter">
+            Harry Potter
+          </Autocomplete.Option>
+          <Autocomplete.Option
+            id="lord-of-the-rings"
+            textValue="Lord of the Rings"
           >
-            <Autocomplete.Option id="harry-potter" textValue="Harry Potter">
-              Harry Potter
-            </Autocomplete.Option>
-            <Autocomplete.Option
-              id="lord-of-the-rings"
-              textValue="Lord of the Rings"
-            >
-              Lord of the Rings
-            </Autocomplete.Option>
-            <Autocomplete.Option id="star-wars" textValue="Star Wars">
-              Star Wars
-            </Autocomplete.Option>
-            <Autocomplete.Option id="star-trek" textValue="Star Trek">
-              Star Trek
-            </Autocomplete.Option>
-            <Autocomplete.Option id="firefly">Firefly</Autocomplete.Option>
-          </Autocomplete>
-          <pre>current: {current}</pre>
-          <pre>
-            submitted: (key: {keyToRender}, value: {submitted[1]})
-          </pre>
-        </Stack>
-      </Container>
+            Lord of the Rings
+          </Autocomplete.Option>
+          <Autocomplete.Option id="star-wars" textValue="Star Wars">
+            Star Wars
+          </Autocomplete.Option>
+          <Autocomplete.Option id="star-trek" textValue="Star Trek">
+            Star Trek
+          </Autocomplete.Option>
+          <Autocomplete.Option id="firefly">Firefly</Autocomplete.Option>
+        </Autocomplete>
+        <pre>current: {current}</pre>
+        <pre>
+          submitted: (key: {keyToRender}, value: {submitted[1]})
+        </pre>
+      </Stack>
     );
   },
 };

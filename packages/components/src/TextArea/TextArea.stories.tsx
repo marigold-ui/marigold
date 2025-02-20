@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { TextArea } from './TextArea';
 
 const meta = {
@@ -117,7 +117,7 @@ export const Basic: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = useState('');
     return (
       <>
         <TextArea {...args} value={value} onChange={setValue} />

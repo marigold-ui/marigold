@@ -28,7 +28,7 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<
-      'button' | 'item',
+      'container' | 'item' | 'header' | 'content' | 'icon',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
@@ -113,7 +113,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<
-      'table' | 'header' | 'row' | 'cell',
+      'table' | 'headerRow' | 'header' | 'body' | 'row' | 'cell',
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<

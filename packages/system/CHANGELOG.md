@@ -1,5 +1,35 @@
 # @marigold/system
 
+## 11.1.1
+
+### Patch Changes
+
+- be665e7: fix(DST-691): Fix regression, allow to use custom color values with `<Text>`, `<Headline>` and `<SVG>`
+
+## 11.1.0
+
+### Minor Changes
+
+- fd96b48: feat(DST-689): Allow to style body element and header row of a `<Table>`
+
+## 11.0.2
+
+## 11.0.1
+
+## 11.0.0
+
+### Major Changes
+
+- 964e025: refa([DST-665]): Refactoring Accordion
+
+  Added two Accordion components `Accordion.Header` and `Accordion.Content`.
+  `Accordion.Header` replaces the title in `Accordion.Item`.
+  `Accordion.Content` is now the place where the content needs to be.
+
+  Reworked the `Accordion` Documentation Page.
+
+## 10.2.1
+
 ## 10.2.0
 
 ## 10.1.3

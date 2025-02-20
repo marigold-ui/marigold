@@ -1,5 +1,68 @@
 # @marigold/theme-docs
 
+## 2.4.0
+
+### Minor Changes
+
+- 3d7aaad: feat(DST-693): Expose `theme.css` files from packages
+
+### Patch Changes
+
+- Updated dependencies [be665e7]
+  - @marigold/components@11.1.1
+  - @marigold/system@11.1.1
+
+## 2.3.0
+
+### Minor Changes
+
+- fd96b48: feat(DST-689): Allow to style body element and header row of a `<Table>`
+
+### Patch Changes
+
+- Updated dependencies [fd96b48]
+- Updated dependencies [300bfba]
+  - @marigold/components@11.1.0
+  - @marigold/system@11.1.0
+
+## 2.2.9
+
+### Patch Changes
+
+- Updated dependencies [8e58923]
+  - @marigold/components@11.0.2
+  - @marigold/system@11.0.2
+
+## 2.2.8
+
+### Patch Changes
+
+- c0b8d18: HOTFIX: add missing dependency for marigold 11
+- Updated dependencies [c0b8d18]
+  - @marigold/theme-plugins@1.0.1
+  - @marigold/system@11.0.1
+  - @marigold/components@11.0.1
+
+## 2.2.7
+
+### Patch Changes
+
+- Updated dependencies [964e025]
+- Updated dependencies [82c869c]
+- Updated dependencies [d96b809]
+  - @marigold/components@11.0.0
+  - @marigold/system@11.0.0
+
+## 2.2.6
+
+### Patch Changes
+
+- Updated dependencies [bb2049f]
+- Updated dependencies [7f0841d]
+  - @marigold/components@10.2.1
+  - @marigold/system@10.2.1
+  - @marigold/theme-preset@1.3.29
+
 ## 2.2.5
 
 ### Patch Changes

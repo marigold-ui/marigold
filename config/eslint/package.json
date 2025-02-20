@@ -1,7 +1,7 @@
 {
   "name": "@marigold/eslint-config",
   "description": "marigold's eslint configuration",
-  "version": "0.4.16",
+  "version": "1.0.0",
   "license": "MIT",
   "keywords": [
     "marigiold",
@@ -19,7 +19,7 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@babel/core": "7.26.7",
+    "@babel/core": "7.26.8",
     "@babel/eslint-parser": "^7.24.8",
     "@babel/plugin-syntax-flow": "^7.24.7",
     "@babel/plugin-transform-react-jsx": "^7.24.7",
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "eslint": "9.17.0",
-    "eslint-plugin-tailwindcss": "3.17.5",
+    "eslint-plugin-tailwindcss": "3.18.0",
     "typescript": "5.7.3"
   }
 }

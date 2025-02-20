@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
@@ -10,11 +10,12 @@ import { Underlay } from './Underlay';
 export interface PopoverProps
   extends Omit<
     RAC.PopoverProps,
-    'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className'
+    'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className' | 'children'
   > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
   container?: Element;
+  children: ReactNode;
 }
 
 // Component
@@ -34,7 +35,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       component: 'Popover',
       variant: placement,
       // Make Popover as wide as trigger element
-      className: 'min-w-[--trigger-width]',
+      className: 'min-w-(--trigger-width)',
     });
 
     const isSmallScreen = useSmallScreen();
@@ -44,16 +45,17 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       <>
         {isSmallScreen ? (
           <>
-            <Underlay open={open} variant="modal" />
             <Popover
               ref={ref}
               {...props}
               className={cn(
-                '!fixed !bottom-0 !left-0 !top-auto !max-h-fit w-full'
+                'fixed! top-auto! bottom-0! left-0! max-h-fit! w-full',
+                classNames
               )}
               UNSTABLE_portalContainer={portal as Element}
             >
               {children}
+              <Underlay open={open} variant="modal" />
             </Popover>
           </>
         ) : (

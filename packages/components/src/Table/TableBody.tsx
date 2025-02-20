@@ -11,18 +11,27 @@ export interface TableBodyProps
   children?: ReactNode;
 
   /**
+   * The CSS classes to apply to the component.
+   */
+  className?: string;
+
+  /**
    * Provides content to display when there are no rows in the table.
    */
   emptyState?: () => ReactNode;
 }
 
-export const TableBody = ({ children, emptyState }: TableBodyProps) => {
+export const TableBody = ({
+  children,
+  className,
+  emptyState,
+}: TableBodyProps) => {
   const { rowGroupProps } = useTableRowGroup();
   const { state, classNames } = useTableContext();
 
   if (state.collection.size === 0 && emptyState) {
     return (
-      <tbody>
+      <tbody className={className}>
         <tr className={classNames?.row} role="row">
           <td
             className={classNames?.cell}
@@ -36,5 +45,9 @@ export const TableBody = ({ children, emptyState }: TableBodyProps) => {
     );
   }
 
-  return <tbody {...rowGroupProps}>{children}</tbody>;
+  return (
+    <tbody {...rowGroupProps} className={className}>
+      {children}
+    </tbody>
+  );
 };

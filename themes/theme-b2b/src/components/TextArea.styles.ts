@@ -12,11 +12,11 @@ import {
 export const TextArea: ThemeComponent<'TextArea'> = cva([
   inputBox,
   inputBackground,
-  inputHover(),
-  inputFocus(),
-  inputDisabled(),
-  inputError('group-error/field'),
+  inputHover['hover'],
+  inputFocus['focus'],
+  inputDisabled['disabled'],
+  inputError['groupErrorField'],
   inputSpacing,
   'text-text-base font-body leading-8',
-  'read-only:focus:border-border-base read-only:focus:outline-none',
+  'read-only:focus:border-border-base read-only:focus:outline-hidden',
 ]);

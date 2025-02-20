@@ -1,26 +1,69 @@
-:root {
-  --page-padding: 0.75rem;
-  --page-padding-md: 2rem;
-  --page-padding-xl: 3rem;
+@import 'tailwindcss';
+@import './../node_modules/@marigold/theme-docs/dist/theme.css';
 
-  --page-header-height: 56px;
+@import './../node_modules/@marigold/theme-core/dist/styles.css';
+@import './../node_modules/@marigold/theme-b2b/dist/styles.css';
 
-  --page-sub-nav-absolute-width: 252px;
-  --page-sub-nav-width: calc(
-    var(--page-sub-nav-absolute-width) + var(--page-padding-md)
-  );
-  --page-sub-nav-width-xl: calc(
-    var(--page-sub-nav-absolute-width) + var(--page-padding-xl)
-  );
-  --page-sub-nav-padding: 2.25rem;
-  --page-sub-nav-padding-xl: 2.5rem;
+/* demos */
+@source './../content/**/*.{js,ts,jsx,tsx,mdx}';
 
-  --page-main-padding: 5rem;
-  --page-main-padding-xl: 5.5rem;
+/* from docs */
+@source './../ui/**/*.{js,ts,jsx,tsx,mdx}';
+@source './**/*.{js,ts,jsx,tsx,mdx}';
 
-  --pre-padding-x: 1rem;
+@source './../../themes/theme-docs/src/**/*.ts';
+
+/* marigold components */
+@source './../../packages/{components,system}/**/*.{tsx,ts}';
+@source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
+@source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
+
+/* tailwind plugins */
+
+@plugin '@tailwindcss/typography';
+@plugin 'tailwindcss-animate';
+/* https://github.com/adoxography/tailwind-scrollbar/issues/104 */
+@plugin 'tailwind-scrollbar';
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer base {
+  :root {
+    --page-padding: 0.75rem;
+    --page-padding-md: 2rem;
+    --page-padding-xl: 3rem;
+
+    --page-header-height: 56px;
+
+    --page-sub-nav-absolute-width: 252px;
+    --page-sub-nav-width: calc(
+      var(--page-sub-nav-absolute-width) + var(--page-padding-md)
+    );
+    --page-sub-nav-width-xl: calc(
+      var(--page-sub-nav-absolute-width) + var(--page-padding-xl)
+    );
+    --page-sub-nav-padding: 2.25rem;
+    --page-sub-nav-padding-xl: 2.5rem;
+
+    --page-main-padding: 5rem;
+    --page-main-padding-xl: 5.5rem;
+
+    --pre-padding-x: 1rem;
+  }
+}

@@ -1,4 +1,4 @@
-import { cva, get, getColor } from './utils';
+import { cva, ensureCssVar, get, isValidCssCustomPropertyName } from './utils';
 
 test('cva (simple)', () => {
   expect(cva(['text-sm'])()).toMatchInlineSnapshot(`"text-sm"`);
@@ -69,39 +69,24 @@ test('get', () => {
 `);
 });
 
-test('getColor', () => {
-  const theme = {
-    colors: {
-      brand: {
-        100: 'brand-color',
-      },
-      accent: {
-        DEFAULT: 'default-accent-color',
-        hover: 'accent-hover-color',
-      },
-      text: {
-        primary: {
-          muted: 'muted-color',
-        },
-      },
-    },
-  };
+test('is valid css property name', () => {
+  expect(isValidCssCustomPropertyName('valid')).toBeTruthy();
+  expect(isValidCssCustomPropertyName('red-500')).toBeTruthy();
+  expect(isValidCssCustomPropertyName('H3llo')).toBeTruthy();
 
-  expect(getColor(theme, 'does-not-exist')).toMatchInlineSnapshot(`undefined`);
-  expect(getColor(theme, 'does-not-exist', 'fallback')).toMatchInlineSnapshot(
-    `"fallback"`
-  );
+  expect(isValidCssCustomPropertyName('#333')).toBeFalsy();
+  expect(isValidCssCustomPropertyName('hsl(1 1 100)')).toBeFalsy();
+});
 
-  expect(getColor(theme, 'brand-100')).toMatchInlineSnapshot(`"brand-color"`);
-  expect(getColor(theme, 'accent-hover')).toMatchInlineSnapshot(
-    `"accent-hover-color"`
+test('get ccs var', () => {
+  expect(ensureCssVar('blue-100')).toMatchInlineSnapshot(
+    `"var(--blue-100, blue-100)"`
   );
-  expect(getColor(theme, 'text-primary-muted')).toMatchInlineSnapshot(
-    `"muted-color"`
+  expect(ensureCssVar('hotpink')).toMatchInlineSnapshot(
+    `"var(--hotpink, hotpink)"`
   );
-
-  // Support Tailwinds DEFAULT
-  expect(getColor(theme, 'accent')).toMatchInlineSnapshot(
-    `"default-accent-color"`
+  expect(ensureCssVar('#111')).toMatchInlineSnapshot(`"#111"`);
+  expect(ensureCssVar('hsl(2 0.5 90)')).toMatchInlineSnapshot(
+    `"hsl(2 0.5 90)"`
   );
 });

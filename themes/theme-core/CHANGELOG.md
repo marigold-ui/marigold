@@ -1,5 +1,84 @@
 # @marigold/theme-core
 
+## 28.2.0
+
+### Minor Changes
+
+- 3d7aaad: feat(DST-693): Expose `theme.css` files from packages
+
+### Patch Changes
+
+- Updated dependencies [be665e7]
+  - @marigold/components@11.1.1
+  - @marigold/system@11.1.1
+
+## 28.1.0
+
+### Minor Changes
+
+- fd96b48: feat(DST-689): Allow to style body element and header row of a `<Table>`
+
+### Patch Changes
+
+- 300bfba: fix(DST-690): Rotate chevron when `Accordion.Item` is expanded + align header and content
+- Updated dependencies [fd96b48]
+- Updated dependencies [300bfba]
+  - @marigold/components@11.1.0
+  - @marigold/system@11.1.0
+
+## 28.0.2
+
+### Patch Changes
+
+- Updated dependencies [8e58923]
+  - @marigold/components@11.0.2
+  - @marigold/system@11.0.2
+
+## 28.0.1
+
+### Patch Changes
+
+- c0b8d18: HOTFIX: add missing dependency for marigold 11
+- Updated dependencies [c0b8d18]
+  - @marigold/theme-plugins@1.0.1
+  - @marigold/system@11.0.1
+  - @marigold/components@11.0.1
+
+## 28.0.0
+
+### Major Changes
+
+- 964e025: refa([DST-665]): Refactoring Accordion
+
+  Added two Accordion components `Accordion.Header` and `Accordion.Content`.
+  `Accordion.Header` replaces the title in `Accordion.Item`.
+  `Accordion.Content` is now the place where the content needs to be.
+
+  Reworked the `Accordion` Documentation Page.
+
+- 8d92a7a: chore[DST-648] upgrade tailwindcss to v4
+
+  **BREAKING CHANGE**: We upgrade the TailwindCSS version from 3 to 4. This means the setup to for using Marigold changed, now you don't need to use a `tailwind.config.ts` file with all the configurations anymore. We updated our installation documentation page according to the changes.
+  With this new version the build process is speeded up, the CSS output will be smaller and more readable class names provide a better developer experience.
+
+### Patch Changes
+
+- Updated dependencies [964e025]
+- Updated dependencies [82c869c]
+- Updated dependencies [d96b809]
+  - @marigold/components@11.0.0
+  - @marigold/system@11.0.0
+
+## 27.0.6
+
+### Patch Changes
+
+- Updated dependencies [bb2049f]
+- Updated dependencies [7f0841d]
+  - @marigold/components@10.2.1
+  - @marigold/system@10.2.1
+  - @marigold/theme-preset@1.3.29
+
 ## 27.0.5
 
 ### Patch Changes

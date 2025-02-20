@@ -1,121 +1,110 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import React from 'react';
+import { Theme, cva } from '@marigold/system';
+import { Headline } from '../Headline';
+import { Text } from '../Text';
+import { setup } from '../test.utils';
 import { Container } from './Container';
 
-test('supports default contentType content', () => {
+const theme: Theme = {
+  name: 'test',
+  colors: {
+    emerald: 'rgb(5 150 105);',
+  },
+  components: {
+    Headline: cva(''),
+    Text: cva(''),
+  },
+};
+const { render } = setup({ theme });
+
+test('defines a content length for text and headlines', () => {
+  render(
+    <>
+      <Container data-testid="container" />
+    </>
+  );
+
+  const container = screen.getByTestId(/container/);
+  expect(container.style.getPropertyValue('--maxTextWidth')).toBeDefined();
+  expect(container.style.getPropertyValue('--maxHeadlineWidth')).toBeDefined();
+});
+
+test('limits with of <Text> and <Headline> children (via CSS var)', () => {
   render(
     <Container data-testid="container">
-      <p>Coding makes fun</p>
+      <Headline>Yay</Headline>
+      <Text>Coding makes fun</Text>
     </Container>
   );
+
   const container = screen.getByTestId(/container/);
-  expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
-      data-testid="container"
-      style="--maxWidth: 45ch;"
-    >
-      <p>
-        Coding makes fun
-      </p>
-    </div>
-  `);
+  const headline = screen.getByText('Yay');
+  const text = screen.getByText('Coding makes fun');
+
+  expect(Array.from(container.style)).toContain('--maxHeadlineWidth');
+  expect(Array.from(container.style)).toContain('--maxTextWidth');
+
+  expect(headline).toHaveClass('max-w-(--maxHeadlineWidth)');
+  expect(text).toHaveClass('max-w-(--maxTextWidth)');
 });
 
-test('supports contentType header', () => {
+test('supports different lengths for content', () => {
   render(
-    <Container contentType="header" data-testid="container">
-      <p>sdf</p>
-    </Container>
+    <>
+      <Container data-testid="container-default" />
+      <Container data-testid="container-long" contentLength="long" />
+    </>
   );
-  const container = screen.getByTestId(/container/);
-  expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
-      data-testid="container"
-      style="--maxWidth: 25ch;"
-    >
-      <p>
-        sdf
-      </p>
-    </div>
-  `);
+
+  const defaultContainer = screen.getByTestId(/container-default/);
+  const longContainer = screen.getByTestId(/container-long/);
+
+  expect(defaultContainer.style.getPropertyValue('--maxTextWidth')).not.toEqual(
+    longContainer.style.getPropertyValue('--maxTextWidth')
+  );
+  expect(
+    defaultContainer.style.getPropertyValue('--maxHeadlineWidth')
+  ).not.toEqual(longContainer.style.getPropertyValue('--maxHeadlineWidth'));
 });
 
-test('supports size small', () => {
-  render(
-    <Container size="small" data-testid="container">
-      <p>sdf</p>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
-      data-testid="container"
-      style="--maxWidth: 20ch;"
-    >
-      <p>
-        sdf
-      </p>
-    </div>
-  `);
-});
-
-test('supports size large', () => {
-  render(
-    <Container size="large" data-testid="container">
-      <p>sdf</p>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).toMatchInlineSnapshot(`
-    <div
-      class="grid grid-cols-[minmax(0,_var(--maxWidth))_1fr_1fr] [&>*]:col-[1]"
-      data-testid="container"
-      style="--maxWidth: 60ch;"
-    >
-      <p>
-        sdf
-      </p>
-    </div>
-  `);
-});
-
-test('supports default align container left', () => {
+test('aligns children on left by default', () => {
   render(
     <Container data-testid="container">
-      <p>sdf</p>
+      <Text>some text</Text>
     </Container>
   );
+
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[1]`);
+  expect(container).toHaveClass(`*:col-[1]`);
 });
 
-test('supports align container center', () => {
+test('allows to align children to the center', () => {
   render(
-    <Container align="center" data-testid="container">
-      <p>sdf</p>
+    <Container data-testid="container" align="center">
+      <Text>some text</Text>
     </Container>
   );
+
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[2]`);
+  expect(container).toHaveClass(`*:col-[2]`);
 });
 
-test('supports align container right', () => {
+test('allows to align children to the right', () => {
   render(
-    <Container align="right" data-testid="container">
-      <p>sdf</p>
+    <Container data-testid="container" align="right">
+      <Text>some text</Text>
     </Container>
   );
+
   const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`[&>*]:col-[3]`);
+  expect(container).toHaveClass(`*:col-[3]`);
 });
 
 test('supports default align items none', () => {
   render(
     <Container data-testid="container">
-      <p>sdf</p>
+      <Text>some text</Text>
     </Container>
   );
   const container = screen.getByTestId(/container/);
@@ -125,7 +114,7 @@ test('supports default align items none', () => {
 test('supports align items center', () => {
   render(
     <Container alignItems="center" data-testid="container">
-      <p>sdf</p>
+      <Text>some text</Text>
     </Container>
   );
   const container = screen.getByTestId(/container/);
@@ -135,9 +124,20 @@ test('supports align items center', () => {
 test('supports align items right', () => {
   render(
     <Container alignItems="right" data-testid="container">
-      <p>sdf</p>
+      <Text>some text</Text>
     </Container>
   );
   const container = screen.getByTestId(/container/);
   expect(container).toHaveClass(`place-items-end`);
+});
+
+test('accepts and uses spacing from theme', () => {
+  render(
+    <Container space={2} data-testid="container">
+      <Text>one</Text>
+      <Text>two</Text>
+    </Container>
+  );
+  const container = screen.getByTestId(/container/);
+  expect(container).toHaveClass(`gap-2`);
 });

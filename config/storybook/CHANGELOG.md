@@ -1,5 +1,77 @@
 # @marigold/storybook-config
 
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [be665e7]
+- Updated dependencies [3d7aaad]
+  - @marigold/components@11.1.1
+  - @marigold/theme-b2b@29.2.0
+  - @marigold/theme-core@28.2.0
+  - @marigold/theme-rui@0.1.0
+
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies [fd96b48]
+- Updated dependencies [300bfba]
+  - @marigold/components@11.1.0
+  - @marigold/theme-b2b@29.1.0
+  - @marigold/theme-core@28.1.0
+  - @marigold/theme-rui@0.0.5
+
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies [8e58923]
+  - @marigold/components@11.0.2
+  - @marigold/theme-b2b@29.0.2
+  - @marigold/theme-core@28.0.2
+  - @marigold/theme-rui@0.0.4
+
+## 2.0.1
+
+### Patch Changes
+
+- Updated dependencies [c0b8d18]
+  - @marigold/theme-b2b@29.0.1
+  - @marigold/theme-core@28.0.1
+  - @marigold/components@11.0.1
+  - @marigold/theme-rui@0.0.3
+
+## 2.0.0
+
+### Major Changes
+
+- 8d92a7a: chore[DST-648] upgrade tailwindcss to v4
+
+  **BREAKING CHANGE**: We upgrade the TailwindCSS version from 3 to 4. This means the setup to for using Marigold changed, now you don't need to use a `tailwind.config.ts` file with all the configurations anymore. We updated our installation documentation page according to the changes.
+  With this new version the build process is speeded up, the CSS output will be smaller and more readable class names provide a better developer experience.
+
+### Patch Changes
+
+- Updated dependencies [964e025]
+- Updated dependencies [82c869c]
+- Updated dependencies [8d92a7a]
+- Updated dependencies [d96b809]
+  - @marigold/components@11.0.0
+  - @marigold/theme-b2b@29.0.0
+  - @marigold/theme-core@28.0.0
+  - @marigold/theme-rui@0.0.2
+
+## 1.1.56
+
+### Patch Changes
+
+- Updated dependencies [bb2049f]
+- Updated dependencies [7f0841d]
+  - @marigold/components@10.2.1
+  - @marigold/theme-b2b@28.0.6
+  - @marigold/theme-core@27.0.6
+
 ## 1.1.55
 
 ### Patch Changes

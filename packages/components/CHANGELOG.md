@@ -1,5 +1,88 @@
 # @marigold/components
 
+## 11.1.1
+
+### Patch Changes
+
+- be665e7: fix(DST-691): Fix regression, allow to use custom color values with `<Text>`, `<Headline>` and `<SVG>`
+- Updated dependencies [be665e7]
+  - @marigold/system@11.1.1
+
+## 11.1.0
+
+### Minor Changes
+
+- fd96b48: feat(DST-689): Allow to style body element and header row of a `<Table>`
+
+### Patch Changes
+
+- 300bfba: fix(DST-690): Rotate chevron when `Accordion.Item` is expanded + align header and content
+- Updated dependencies [fd96b48]
+  - @marigold/system@11.1.0
+
+## 11.0.2
+
+### Patch Changes
+
+- 8e58923: fix([DSTSUP-104]): mobile behaviour for `<Popover>`
+
+  `<Underlay>` stayed remaining open on small screens while `<Popover>` was correctly closing, fixed this and added styles for `<Popover>` back.
+
+  - @marigold/system@11.0.2
+
+## 11.0.1
+
+### Patch Changes
+
+- @marigold/system@11.0.1
+
+## 11.0.0
+
+### Major Changes
+
+- 964e025: refa([DST-665]): Refactoring Accordion
+
+  Added two Accordion components `Accordion.Header` and `Accordion.Content`.
+  `Accordion.Header` replaces the title in `Accordion.Item`.
+  `Accordion.Content` is now the place where the content needs to be.
+
+  Reworked the `Accordion` Documentation Page.
+
+- 82c869c: refa: improve `<Container>` and `<Breakout>` component
+
+  **BREAKING CHANGE:** This PR includes breaking changes, because we removed and changed a lot ot the props API of `<Container>` and `<Breakout>`. The `<Container>` now only works with `<Text>` and `<Headline>` component. This allows for a smoother developer experience and prevents suprises.
+
+  Make the `<Container>` and `<Breakout>` component more usable for real world scenarios.
+
+  - `<Container>` supporst `space` style prop
+  - simplify `<Container>` usage by removing unnecessary props
+  - simplify `<Breakout>` and make it composable with other layout components
+  - make `<Text>` and `<Headline>` adhere to a `<Container>` content length
+
+- d96b809: refa(DST-629): Align `<XLoader>` modes with loading pattern naming convention
+
+  **BREAKING CHANGE:** Rename `mode` prop to align with the "Loading state" pattern. Renamed `"fullsize"` to `"fullscreen"` and `"inline"` to `"section"`.
+
+### Patch Changes
+
+- Updated dependencies [964e025]
+  - @marigold/system@11.0.0
+
+## 10.2.1
+
+### Patch Changes
+
+- bb2049f: bugfix[DSTSUP-100]: Bug in pagination component
+
+  - display of results counter fixed
+  - when page size changed the first page will now be selected
+
+- 7f0841d: fix(DSTSUP-102): Set dimensions of checkmark
+
+  Fixes a bug in Safari where the checkmark was not displayed.
+
+  - @marigold/system@10.2.1
+
 ## 10.2.0
 
 ### Minor Changes

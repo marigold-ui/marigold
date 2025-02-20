@@ -246,7 +246,7 @@ describe('DatePicker', () => {
       onKeyUpSpy.mockClear();
     });
 
-    test('focuses field, move a segment, and open popover and does not blur', async () => {
+    test('focuses field, move a segment, and open popover and does not blur-xs', async () => {
       render(
         <DatePicker
           label="Date"
@@ -287,7 +287,7 @@ describe('DatePicker', () => {
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('should focus field and leave to blur', async () => {
+    test('should focus field and leave to blur-xs', async () => {
       render(
         <DatePicker
           label="Date"
@@ -340,7 +340,7 @@ describe('DatePicker', () => {
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('should open and close popover and only call blur when focus leaves picker', async () => {
+    test('should open and close popover and only call blur-xs when focus leaves picker', async () => {
       render(
         <DatePicker
           label="Date"
