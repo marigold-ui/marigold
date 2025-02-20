@@ -3,4 +3,4 @@
 "@marigold/system": patch
 ---
 
-fix(DST-691): Fix regresion, allow to use custom color values with `<Text>`, `<Headline>` and `<SVG>`
+fix(DST-691): Fix regression, allow to use custom color values with `<Text>`, `<Headline>` and `<SVG>`
