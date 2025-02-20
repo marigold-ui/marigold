@@ -108,7 +108,7 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
       >
         <DateInput
           action={
-            <Button size="small" disabled={disabled} className={classNames}>
+            <Button disabled={disabled} className={classNames}>
               <svg
                 data-testid="action"
                 viewBox="0 0 24 24"
