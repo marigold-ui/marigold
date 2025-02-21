@@ -15,15 +15,15 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   header: cva([
     'h-12 px-3 align-middle font-medium text-muted-foreground last:text-right',
-    // does this checkbox think work?
-    '[&:has([role=checkbox])]:w-px [&:has([role=checkbox])]:pr-0',
+    'focus-visible:outline-2 outline-offset-2 outline-ring/70',
+    '[&:has([type=checkbox])]:pr-0',
   ]),
   body: cva('[&_tr:last-child]:border-0'),
   row: cva(
     [
       'border-b border-border transition-colors',
-      // does this selected think work?
-      'data-[state=selected]:bg-muted hover:bg-transparent',
+      'focus-visible:outline-2 outline-offset-2 outline-ring/70',
+      'aria-[selected=true]:bg-muted hover:bg-transparent',
     ],
     {
       variants: {
@@ -39,7 +39,7 @@ export const Table: ThemeComponent<'Table'> = {
   ),
   cell: cva([
     'p-3 align-middle last:text-right',
-    // does this checkbox think work?
-    '[&:has([role=checkbox])]:pr-0',
+    'focus-visible:outline-2 outline-offset-2 outline-ring/70',
+    '[&:has([type=checkbox])]:pr-0',
   ]),
 };
