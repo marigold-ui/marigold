@@ -7,7 +7,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     'border-2 border-transparent',
     'group-disabled/switch:opacity-50',
     'group-selected/switch:bg-brand bg-input',
-    'outline-offset-2 group-[focused]/switch:outline-2 group-[focused]/switch:outline-ring/70',
+    'outline-offset-2 group-[focus-visible]/switch:outline-2 group-[focus-visible]/switch:outline-ring/70',
   ]),
   thumb: cva([
     'pointer-events-none block size-5 rounded-full',
