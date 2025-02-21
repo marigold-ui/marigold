@@ -80,7 +80,11 @@ export type Theme = {
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>
     >;
-    Pagination?: ComponentStyleFunction<string, string>;
+    Pagination?: Record<
+      'navigationButton' | 'pageButton' | 'icon',
+      ComponentStyleFunction<string, string>
+    >;
+    ProgressCycle?: ComponentStyleFunction<string, string>;
     Radio?: Record<
       'container' | 'label' | 'radio' | 'group',
       ComponentStyleFunction<string, string>
@@ -125,10 +129,7 @@ export type Theme = {
       | 'calendarGrid',
       ComponentStyleFunction<string, string>
     >;
-    DatePicker?: Record<
-      'container' | 'button',
-      ComponentStyleFunction<string, string>
-    >;
+    DatePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: ComponentStyleFunction<string, string>;
     XLoader?: Record<
       'container' | 'loader' | 'label',

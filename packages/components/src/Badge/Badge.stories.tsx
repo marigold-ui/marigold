@@ -11,7 +11,16 @@ const meta = {
       control: {
         type: 'radio',
       },
-      options: ['default', 'inverted', 'success', 'info', 'warning', 'error'],
+      options: [
+        'default',
+        'inverted',
+        'success',
+        'info',
+        'warning',
+        'error',
+        'primary',
+        'secondary',
+      ],
       description: 'The variants of the badge',
     },
     children: {
