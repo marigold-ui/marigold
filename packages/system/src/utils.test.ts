@@ -89,4 +89,12 @@ test('get ccs var', () => {
   expect(ensureCssVar('hsl(2 0.5 90)')).toMatchInlineSnapshot(
     `"hsl(2 0.5 90)"`
   );
+
+  // prefix
+  expect(ensureCssVar('blue-100', 'color')).toMatchInlineSnapshot(
+    `"var(--color-blue-100, blue-100)"`
+  );
+  expect(ensureCssVar('5', 'spacing')).toMatchInlineSnapshot(
+    `"var(--spacing-5, 5)"`
+  );
 });
