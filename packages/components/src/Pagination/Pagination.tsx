@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { cn, useClassNames } from '@marigold/system';
 import { ChevronLeft, ChevronRight } from '../icons';
 import { Ellipsis } from './Ellipsis';
 import { NavigationButton } from './NavigationButton';
@@ -52,6 +53,9 @@ const _Pagination = ({
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
   const isFirstRender = useRef(true);
+  const classNames = useClassNames({
+    component: 'Pagination',
+  });
 
   useEffect(() => {
     /* avoid setting page 1 on first render, 
@@ -115,7 +119,7 @@ const _Pagination = ({
         controlLabel={controlLabels?.[0]}
         position="left"
       >
-        <ChevronLeft className="h-5 w-5" />
+        <ChevronLeft className={cn(classNames.icon)} />
       </NavigationButton>
 
       <div className="flex items-center space-x-2">
@@ -150,7 +154,7 @@ const _Pagination = ({
         controlLabel={controlLabels?.[1]}
         position="right"
       >
-        <ChevronRight className="h-5 w-5" />
+        <ChevronRight className={cn(classNames.icon)} />
       </NavigationButton>
     </nav>
   );
