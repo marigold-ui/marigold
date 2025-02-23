@@ -16,14 +16,14 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'flex items-center gap-1',
     'has-[input[data-invalid=true]]:border-border-error',
     'leading-[22px]',
-    'has-[input[data-focused=true]]:outline-outline-focus -outline-offset-1 has-[input[data-focused=true]]:outline has-[input[data-focused=true]]:outline-2',
+    'has-[input[data-focused=true]]:outline-outline-focus -outline-offset-1 has-[input[data-focused=true]]:outline has-[input[data-focused=true]]:outline-1',
     'overflow-hidden has-[input[aria-readonly=true]]:border-transparent has-[input[aria-readonly=true]]:bg-transparent',
   ]),
 
   input: cva([
     'bg-transparent flex-1 h-full',
     'leading-[22px]',
-    'data-[focused]:outline-none outline-none border-0',
+    'data-[focused]:outline-hidden outline-hidden border-0',
     'disabled:cursor-not-allowed',
     'group-data-[icon]/input:pl-5',
     'group-data-[action]/input:pr-8',
@@ -43,18 +43,18 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'absolute top-0 right-2 size-4 h-full border-none p-0 bg-transparent disabled:bg-transparent hover:bg-transparent overflow-hidden'
   ),
   listContainer: cva([
-    'my-0.5 rounded-sm',
+    'my-0.5 rounded-xs',
     'border-border-inverted border bg-white',
   ]),
-  list: cva('pointer-events-auto'),
+  list: cva('p-0 pointer-events-auto'),
   option: cva([
     'font-body text-[13px] text-text-base',
     'flex flex-col',
-    '[&:not([aria-disabled=true])]:hover:text-text-inverted [&:not([aria-disabled=true])]:hover:bg-highlight',
-    'cursor-pointer px-1.5 py-0.5 outline-none',
-    '[&.isFocused:not([aria-disabled=true])]:text-text-inverted [&.isFocused[aria-disabled=true]]:bg-transparent [&.isFocused:not([aria-disabled=true])]:bg-highlight',
+    '[&:not([aria-disabled=true])]:hover:!text-text-base [&:not([aria-disabled=true])]:hover:!bg-linear-to-t from-highlight-start/80 to-highlight-end/90',
+    'cursor-pointer px-1.5 py-0.5 outline-hidden',
+    '[&.isFocused:not([aria-disabled=true])]:text-text-inverted [&.isFocused[aria-disabled=true]]:bg-transparent [&.isFocused:not([aria-disabled=true])]:bg-linear-to-t',
     'rac-selected:text-text-inverted aria-selected:bg-highlight',
     'aria-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),
-  valueContainer: cva('gap-1'),
+  valueContainer: cva('gap-1 '),
 };

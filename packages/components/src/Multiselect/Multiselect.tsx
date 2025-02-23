@@ -105,7 +105,7 @@ const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
 const getClassNames = (
   classNames: ComponentClassNames<'MultiSelect'>
 ): ClassNamesConfig => ({
-  control: () => classNames.container,
+  control: () => cn('relative', classNames.container),
   container: () => 'pointer-events-auto',
   indicatorSeparator: () => 'hidden',
   menu: () => cn('shadow-none', classNames.listContainer),
@@ -194,12 +194,14 @@ export const Multiselect = ({
         <Select
           {...props}
           styles={{
-            control: base => ({
-              ...base,
-              '&:hover': {
-                borderColor: 'none',
-              },
-            }),
+            control: () => ({ display: 'flex' }),
+            // Return empty object to reset react-select styles
+            menu: () => ({}),
+            menuList: () => ({}),
+            option: ({}) => ({}),
+            valueContainer: base => ({ ...base, padding: 0 }),
+            multiValue: () => ({}),
+            multiValueLabel: () => ({}),
           }}
           inputId={fieldProps.id}
           aria-invalid={error}
