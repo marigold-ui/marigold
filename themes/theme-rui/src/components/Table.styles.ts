@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Table: ThemeComponent<'Table'> = {
   table: cva('text-sm', {
     variants: {
-      variant: { default: '', grid: '', card: 'border-border rounded-lg' },
+      variant: { default: '', grid: '' },
     },
   }),
   headerRow: cva('border-border border-b', {
@@ -26,7 +26,6 @@ export const Table: ThemeComponent<'Table'> = {
       variants: {
         variant: {
           default: '[&:has([type=checkbox])]:pr-0',
-          card: '[&:has([type=checkbox])]:pr-0',
         },
       },
       defaultVariants: {
@@ -62,7 +61,6 @@ export const Table: ThemeComponent<'Table'> = {
       variants: {
         variant: {
           default: '[&:has([type=checkbox])]:pr-0',
-          card: '[&:has([type=checkbox])]:pr-0',
         },
       },
       defaultVariants: {
