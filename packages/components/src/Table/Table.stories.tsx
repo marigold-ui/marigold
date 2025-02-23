@@ -56,7 +56,7 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: ['none', 'grid', 'linedTable'],
+      options: ['default', 'grid', 'linedTable', 'card'],
       description: 'variant for the table',
     },
     size: {

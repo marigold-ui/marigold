@@ -1,7 +1,11 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
-  table: cva('text-sm'),
+  table: cva('text-sm', {
+    variants: {
+      variant: { default: '', grid: '', card: 'border-border rounded-lg' },
+    },
+  }),
   headerRow: cva('border-border border-b', {
     variants: {
       variant: {
@@ -13,11 +17,23 @@ export const Table: ThemeComponent<'Table'> = {
       variant: 'default',
     },
   }),
-  header: cva([
-    'h-12 px-3 align-middle font-medium text-muted-foreground last:text-right',
-    'focus-visible:outline-2 outline-offset-2 outline-ring/70',
-    '[&:has([type=checkbox])]:pr-0',
-  ]),
+  header: cva(
+    [
+      'h-12 px-3 align-middle font-medium text-muted-foreground last:text-right',
+      'focus-visible:outline-2 outline-offset-2 outline-ring/70',
+    ],
+    {
+      variants: {
+        variant: {
+          default: '[&:has([type=checkbox])]:pr-0',
+          card: '[&:has([type=checkbox])]:pr-0',
+        },
+      },
+      defaultVariants: {
+        variant: 'default',
+      },
+    }
+  ),
   body: cva('[&_tr:last-child]:border-0'),
   row: cva(
     [
@@ -37,9 +53,21 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
-  cell: cva([
-    'p-3 align-middle last:text-right',
-    'focus-visible:outline-2 outline-offset-2 outline-ring/70',
-    '[&:has([type=checkbox])]:pr-0',
-  ]),
+  cell: cva(
+    [
+      'p-3 align-middle last:text-right',
+      'focus-visible:outline-2 outline-offset-2 outline-ring/70',
+    ],
+    {
+      variants: {
+        variant: {
+          default: '[&:has([type=checkbox])]:pr-0',
+          card: '[&:has([type=checkbox])]:pr-0',
+        },
+      },
+      defaultVariants: {
+        variant: 'default',
+      },
+    }
+  ),
 };
