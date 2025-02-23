@@ -11,7 +11,6 @@ const theme: Theme = {
   name: 'test',
   components: {
     MultiSelect: {
-      action: cva(''),
       container: cva(''),
       field: cva('group/field w-full'),
       input: cva('base-input-style'),

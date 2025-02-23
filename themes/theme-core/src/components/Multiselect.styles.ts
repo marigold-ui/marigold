@@ -30,7 +30,6 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'placeholder:text-text-inverted-disabled',
   ]),
 
-  action: cva(''),
   tag: cva([
     '[&>*:first-child]:h-full [&>*:first-child]:flex [&>*:first-child]:items-center',
     'px-1.5 py-[2px] h-5',

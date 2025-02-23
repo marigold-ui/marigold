@@ -32,7 +32,6 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'placeholder:text-text-inverted-disabled',
   ]),
 
-  action: cva(''),
   tag: cva([
     'border-border-base bg-transparent ',
     'flex items-center gap-1 ',
