@@ -9,8 +9,8 @@
   },
   "packageManager": "pnpm@9.12.3",
   "dependencies": {
-    "@babel/core": "7.26.8",
-    "@changesets/changelog-git": "0.2.0",
+    "@babel/core": "7.26.9",
+    "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.27.12",
     "@manypkg/get-packages": "2.2.2",
     "@marigold/eslint-config": "workspace:*",
