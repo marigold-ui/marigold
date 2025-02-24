@@ -6,7 +6,7 @@ interface PageButtonProps {
   page: number;
   selected?: boolean;
   isDisabled?: boolean;
-  onPress?: () => void;
+  onClick?: () => void;
   registerRef?: (ref: HTMLButtonElement | null) => void;
 }
 

@@ -3,7 +3,7 @@ import { useButton } from '@react-aria/button';
 import { cn, useClassNames } from '@marigold/system';
 
 interface PaginationButtonProps {
-  onPress: () => void;
+  onClick: () => void;
   'aria-label': string;
   isDisabled?: boolean;
   isSelected?: boolean;
