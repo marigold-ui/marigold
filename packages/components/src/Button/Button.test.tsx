@@ -20,6 +20,7 @@ const theme: Theme = {
         },
       },
     }),
+    ProgressCycle: cva(),
   },
 };
 

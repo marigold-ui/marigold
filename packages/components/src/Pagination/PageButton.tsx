@@ -31,7 +31,7 @@ export const PageButton = (props: PageButtonProps) => {
       {...buttonProps}
       aria-label={`Page ${page}`}
       aria-current={selected ? 'page' : undefined}
-      className={classNames}
+      className={classNames.pageButton}
       data-selected={selected}
       disabled={isDisabled}
       tabIndex={selected === true ? 0 : -1}
