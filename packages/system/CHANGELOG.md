@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 11.1.2
+
+### Patch Changes
+
+- a31881d: fix(DST-696): Make it possible to only pass in the color name without a prefix
+
 ## 11.1.1
 
 ### Patch Changes

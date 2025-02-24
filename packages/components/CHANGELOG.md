@@ -1,5 +1,13 @@
 # @marigold/components
 
+## 11.1.2
+
+### Patch Changes
+
+- a31881d: fix(DST-696): Make it possible to only pass in the color name without a prefix
+- Updated dependencies [a31881d]
+  - @marigold/system@11.1.2
+
 ## 11.1.1
 
 ### Patch Changes
