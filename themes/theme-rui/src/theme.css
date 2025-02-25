@@ -66,8 +66,8 @@
   --color-muted: var(--color-stone-100);
   --color-muted-foreground: var(--color-stone-500);
 
-  --color-disabled: var(--color-stone-400);
-  --color-disabled-foreground: var(--color-stone-50);
+  --color-disabled: var(--color-stone-200);
+  --color-disabled-foreground: var(--color-stone-400);
 
   /* used for placeholder color */
   --color-placeholder: --alpha(var(--color-stone-500) / 70%);

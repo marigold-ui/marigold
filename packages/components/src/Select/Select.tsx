@@ -1,10 +1,5 @@
 import { ForwardRefExoticComponent, RefAttributes, forwardRef } from 'react';
-import {
-  Button,
-  Select,
-  SelectValue,
-  ValidationResult,
-} from 'react-aria-components';
+import { Select, SelectValue, ValidationResult } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';

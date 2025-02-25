@@ -2,7 +2,6 @@ import React from 'react';
 import type RAC from 'react-aria-components';
 import { DatePicker, type DateValue } from 'react-aria-components';
 import { WidthProp, useClassNames } from '@marigold/system';
-import { Button } from '../Button';
 import { Calendar } from '../Calendar';
 import { DateInput } from '../DateField/DateInput';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
