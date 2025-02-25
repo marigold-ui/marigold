@@ -3,7 +3,7 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const inputContainer =
   'flex w-full px-3 py-2 rounded-lg shadow-sm shadow-black/5 border border-input bg-background text-sm text-foreground transition-shadow';
-export const inputDisabled = 'disabled:cursor-not-allowed disabled:opacity-50';
+export const inputDisabled = 'disabled:cursor-not-allowed disabled:bg-disabled';
 export const inputInvalid =
   'group-error/field:border-destructive group-error/field:focus:border-destructive group-error/field:focus:ring-destructive/20';
 export const inputFocus = {
