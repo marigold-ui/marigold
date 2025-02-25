@@ -30,7 +30,7 @@ export const Input: ThemeComponent<'Input'> = {
   ]),
   icon: cva([
     'pointer-events-none left-1',
-    'text-muted-foreground disabled:opacity-50',
+    'text-muted-foreground disabled:text-disabled-foreground',
   ]),
   action: cva(['text-muted-foreground right-1']),
 };

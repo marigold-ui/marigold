@@ -13,7 +13,7 @@ export const Tag: ThemeComponent<'Tag'> = {
     'size-4 flex items-center justify-end whitespace-nowrap',
     'font-medium text-muted-foreground  text-sm hover:text-brand rounded-md',
     'p-0  transition-colors outline-0 cursor-pointer',
-    'disabled:opacity-50 disabled:cursor-not-allowed',
+    'disabled:bg-disabled disabled:text-disabled-foreground disabled:cursor-not-allowed',
   ]),
   listItems: cva('flex flex-wrap items-center gap-1'),
 };

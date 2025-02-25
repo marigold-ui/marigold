@@ -25,6 +25,6 @@ export const DateField: ThemeComponent<'DateField'> = {
     'invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive data-[placeholder]:text-placeholder',
   ]),
   action: cva(
-    'fill-muted-foreground disabled:opacity-50 group-error/field:fill-destructive'
+    'fill-muted-foreground disabled:text-disabled-foreground group-error/field:fill-destructive'
   ),
 };
