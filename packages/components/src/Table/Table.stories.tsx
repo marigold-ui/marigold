@@ -636,7 +636,7 @@ const DataTable = ({ editable, ...rest }: { editable: boolean }) => (
 
 export const WithParentProp: Story = {
   render: args => {
-    const [editable, setEditable] = React.useState(true);
+    const [editable, setEditable] = useState(true);
 
     return (
       <Stack>
@@ -819,7 +819,7 @@ export const InputTable: Story = {
         year: '1981',
       },
     ];
-    const [data, setData] = React.useState(rowData);
+    const [data, setData] = useState(rowData);
 
     function handleChange(id: string, newValue: string, key: string): void {
       const changedData = data.map(item => {

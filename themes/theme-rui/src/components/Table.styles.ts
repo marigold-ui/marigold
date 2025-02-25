@@ -25,6 +25,8 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'h-12 px-3 align-middle font-medium text-muted-foreground last:text-right',
       'focus-visible:outline-2 outline-offset-2 outline-ring/70',
+      // for sticky header
+      'bg-background/90 top-0 z-10 backdrop-blur-xs',
     ],
     {
       variants: {
