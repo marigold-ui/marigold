@@ -71,7 +71,7 @@
 
   /* used for placeholder color */
   --color-placeholder: --alpha(var(--color-stone-500) / 70%);
-  /* used for outline/border as  ring*/
+  /* used for outline/border as ring*/
   --color-ring: var(--color-stone-400);
 
   /* Input tokens */
