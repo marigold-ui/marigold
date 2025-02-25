@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { ChevronDown } from '@marigold/icons';
-import { Theme, cva } from '@marigold/system';
+import { Theme } from '@marigold/system';
 import { setup } from '../test.utils';
 import { IconButton } from './IconButton';
 
