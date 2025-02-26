@@ -1,5 +1,4 @@
 import { type ThemeComponent, cva } from '@marigold/system';
-import { inputDisabled } from './Input.styles';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva(['overflow-hidden rounded-lg border border-input']),
