@@ -6,7 +6,6 @@ export const Table: ThemeComponent<'Table'> = {
       variant: {
         default: '',
         grid: '',
-        card: 'border border-border rounded-lg',
       },
     },
   }),
@@ -32,7 +31,7 @@ export const Table: ThemeComponent<'Table'> = {
       variants: {
         variant: {
           default: '[&:has([type=checkbox])]:pr-0',
-          card: '[&:has([type=checkbox])]:pr-0',
+          grid: '',
         },
       },
       defaultVariants: {
@@ -68,7 +67,7 @@ export const Table: ThemeComponent<'Table'> = {
       variants: {
         variant: {
           default: '[&:has([type=checkbox])]:pr-0',
-          card: '[&:has([type=checkbox])]:pr-0',
+          grid: '',
         },
       },
       defaultVariants: {
