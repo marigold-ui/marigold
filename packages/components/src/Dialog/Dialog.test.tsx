@@ -130,7 +130,7 @@ test('optionally renders a close button', () => {
   expect(dialog).not.toBeVisible();
 });
 
-test('supoorts closing the dialog with escape key', async () => {
+test('supports closing the dialog with escape key', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -191,7 +191,7 @@ test('child function is passed a close function', () => {
   expect(dialog).not.toBeVisible();
 });
 
-test('supports title for accessability reasons', () => {
+test('supports title for accessibility reasons', () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -276,28 +276,6 @@ test('child function is passed an id for the dialog title (a11y)', () => {
     headline.getAttribute('id')
   );
 });
-
-// test('warns if no element to attach the title can be found', () => {
-//   const warn = jest.spyOn(console, 'warn').mockImplementation();
-//   render(
-//     <Dialog.Trigger>
-//       <Button>Open</Button>
-//       <Dialog closeButton>Content</Dialog>
-//     </Dialog.Trigger>
-//   );
-//   const button = screen.getByText('Open');
-//   fireEvent.click(button);
-
-//   const dialog = screen.getByRole('dialog');
-//   expect(dialog).not.toHaveAttribute('aria-labelledby');
-//   expect(dialog.firstChild).not.toHaveAttribute('id');
-
-//   expect(warn).toHaveBeenCalled();
-//   expect(warn.mock.calls[0][0]).toMatchInlineSnapshot(
-//     `"No child in <Dialog> found that can act as title for accessibility. Please add a <Header> or <Dialog.Title> as direct child."`
-//   );
-//   warn.mockRestore();
-// });
 
 test('supports focus and open dialog with keyboard', async () => {
   render(

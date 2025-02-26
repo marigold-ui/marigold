@@ -99,8 +99,8 @@ importers:
         specifier: 5.7.3
         version: 5.7.3
       zx:
-        specifier: 8.3.0
-        version: 8.3.0
+        specifier: 8.3.2
+        version: 8.3.2
     devDependencies:
       '@eslint/eslintrc':
         specifier: 3.2.0
@@ -424,8 +424,8 @@ importers:
         specifier: 6.0.0
         version: 6.0.0
       remark-gfm:
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 4.0.1
+        version: 4.0.1
       shiki:
         specifier: 1.26.1
         version: 1.26.1
@@ -439,14 +439,14 @@ importers:
         specifier: 4.0.6
         version: 4.0.6
       zod:
-        specifier: 3.24.1
-        version: 3.24.1
+        specifier: 3.24.2
+        version: 3.24.2
       zod-form-data:
         specifier: 2.0.5
-        version: 2.0.5(zod@3.24.1)
+        version: 2.0.5(zod@3.24.2)
       zx:
-        specifier: 8.3.0
-        version: 8.3.0
+        specifier: 8.3.2
+        version: 8.3.2
     devDependencies:
       '@internationalized/date':
         specifier: 3.7.0
@@ -558,8 +558,8 @@ importers:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
       tsup:
-        specifier: 8.3.5
-        version: 8.3.5(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        specifier: 8.3.6
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
 
   packages/icons:
     dependencies:
@@ -574,8 +574,8 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       tsup:
-        specifier: 8.3.5
-        version: 8.3.5(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        specifier: 8.3.6
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
 
   packages/system:
     dependencies:
@@ -617,8 +617,8 @@ importers:
         specifier: 4.0.6
         version: 4.0.6
       tsup:
-        specifier: 8.3.5
-        version: 8.3.5(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        specifier: 8.3.6
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
 
   packages/theme-plugins: {}
 
@@ -663,8 +663,8 @@ importers:
         specifier: 4.0.6
         version: 4.0.6
       tsup:
-        specifier: 8.3.5
-        version: 8.3.5(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        specifier: 8.3.6
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
 
   themes/theme-core:
     dependencies:
@@ -694,8 +694,8 @@ importers:
         specifier: 4.0.6
         version: 4.0.6
       tsup:
-        specifier: 8.3.5
-        version: 8.3.5(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        specifier: 8.3.6
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
 
   themes/theme-docs:
     dependencies:
@@ -728,8 +728,8 @@ importers:
         specifier: 4.0.6
         version: 4.0.6
       tsup:
-        specifier: 8.3.5
-        version: 8.3.5(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        specifier: 8.3.6
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
 
   themes/theme-rui:
     dependencies:
@@ -762,8 +762,8 @@ importers:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@4.0.6)
       tsup:
-        specifier: 8.3.5
-        version: 8.3.5(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        specifier: 8.3.6
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
 
 packages:
 
@@ -7746,8 +7746,8 @@ packages:
   remark-frontmatter@5.0.0:
     resolution: {integrity: sha512-XTFYvNASMe5iPN0719nPrdItC9aU0ssC4v14mH1BCi1u0n1gAocqcujWUrByftZTbLhRtiKRyjYTSIOcr69UVQ==}
 
-  remark-gfm@4.0.0:
-    resolution: {integrity: sha512-U92vJgBPkbw4Zfu/IiW2oTZLSL3Zpv+uI7My2eq8JxKgqraFdU8YUGicEJCEgSbeaG+QDFqIcwwfMTOEelPxuA==}
+  remark-gfm@4.0.1:
+    resolution: {integrity: sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==}
 
   remark-mdx-frontmatter@4.0.0:
     resolution: {integrity: sha512-PZzAiDGOEfv1Ua7exQ8S5kKxkD8CDaSb4nM+1Mprs6u8dyvQifakh+kCj6NovfGXW+bTvrhjaR3srzjS2qJHKg==}
@@ -8371,8 +8371,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tsup@8.3.5:
-    resolution: {integrity: sha512-Tunf6r6m6tnZsG9GYWndg0z8dEV7fD733VBFzFJ5Vcm1FtlXB8xBD/rtrBi2a3YKEV7hHtxiZtW5EAVADoe1pA==}
+  tsup@8.3.6:
+    resolution: {integrity: sha512-XkVtlDV/58S9Ye0JxUUTcrQk4S+EqlOHKzg6Roa62rdjL1nGWNUstG0xgI4vanHdfIpjP448J8vlN0oK6XOJ5g==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -8818,14 +8818,14 @@ packages:
     peerDependencies:
       zod: '>= 3.11.0'
 
-  zod@3.24.1:
-    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
+  zod@3.24.2:
+    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
-  zx@8.3.0:
-    resolution: {integrity: sha512-L8mY3yfJwo3a8ZDD6f9jZzAcRWJZYcV8GauZmBxLB/aSTwaMzMIEVpPp2Kyx+7yF0gdvuxKnMxAZRft9UCawiw==}
+  zx@8.3.2:
+    resolution: {integrity: sha512-qjTunv1NClO05jDaUjrNZfpqC9yvNCchge/bzOcQevsh1aM5qE3TG6MY24kuQKlOWx+7vNuhqO2wa9nQCIGvZA==}
     engines: {node: '>= 12.17.0'}
     hasBin: true
 
@@ -10020,7 +10020,7 @@ snapshots:
       ts-pattern: 5.5.0
       unified: 11.0.5
       yaml: 2.6.1
-      zod: 3.24.1
+      zod: 3.24.2
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
       - acorn
@@ -17837,7 +17837,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-gfm@4.0.0:
+  remark-gfm@4.0.1:
     dependencies:
       '@types/mdast': 4.0.4
       mdast-util-gfm: 3.0.0
@@ -18543,7 +18543,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsup@8.3.5(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1):
+  tsup@8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.24.2)
       cac: 6.7.14
@@ -18996,15 +18996,15 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-form-data@2.0.5(zod@3.24.1):
+  zod-form-data@2.0.5(zod@3.24.2):
     dependencies:
-      zod: 3.24.1
+      zod: 3.24.2
 
-  zod@3.24.1: {}
+  zod@3.24.2: {}
 
   zwitch@2.0.4: {}
 
-  zx@8.3.0:
+  zx@8.3.2:
     optionalDependencies:
       '@types/fs-extra': 11.0.4
       '@types/node': 20.17.19

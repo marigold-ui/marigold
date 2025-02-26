@@ -110,7 +110,7 @@ const _Pagination = ({
       {...keyboardProps}
     >
       <NavigationButton
-        onPress={() => handlePageChange(Math.max(1, currentPage - 1))}
+        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
         aria-label="Page previous"
         isDisabled={isFirstPage}
         registerRef={ref =>
@@ -132,7 +132,7 @@ const _Pagination = ({
                 key={pageNumber}
                 page={pageNumber}
                 selected={pageNumber === currentPage}
-                onPress={() => handlePageChange(pageNumber)}
+                onClick={() => handlePageChange(pageNumber)}
                 registerRef={ref =>
                   registerRef(NavigationTypes.Page, pageNumber, ref)
                 }
@@ -145,7 +145,7 @@ const _Pagination = ({
       </div>
 
       <NavigationButton
-        onPress={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
         aria-label="Page next"
         isDisabled={isLastPage}
         registerRef={ref =>
