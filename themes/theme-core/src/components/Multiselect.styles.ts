@@ -1,5 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import { inputBox, inputHeight, inputSpacing } from './Input.styles';
+import { inputBox, inputSpacing } from './Input.styles';
 
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   field: cva(
@@ -8,7 +8,6 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   container: cva([
     inputBox,
     inputSpacing,
-    inputHeight,
     // to override react-select height
     'min-h-6',
     '[&>*:first-child]:p-0',

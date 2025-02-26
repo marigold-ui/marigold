@@ -1,0 +1,69 @@
+---
+title: Multiselect
+caption: A text-field that allows the user to select multiples values from a provided items array.
+badge: new
+---
+
+Multiselect is a type of multiple selection interface that displays options in a list format with the ability to select multiple items.
+
+It allows users to choose multiple options by clicking on the items in the list and provides a comprehensive view of available options and the selected items.
+
+<SectionMessage type="warning">
+  <SectionMessage.Title>Deprecated Multiselect Recipe</SectionMessage.Title>
+  <SectionMessage.Content>
+    The previous multiselect recipe pattern has been replaced by this official
+    MultiSelect component. Existing implementations using the recipe pattern
+    should migrate to this component for better accessibility and keyboard
+    navigation.
+  </SectionMessage.Content>
+</SectionMessage>
+
+## Anatomy
+
+The `<MultiSelect>` component combines a text input with a ListBox, enabling users to select multiple options that are displayed as removable tags within the input field.
+
+<Image
+  src="/multiselect/multiselect-anatomy.jpg"
+  alt="Anatomy of multiselect"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+<ul>
+  <li>
+    <b>Label:</b> Descriptive text guiding the user on what information is
+    required in the input field.
+  </li>
+  <li>
+    <b>Input field:</b> A text box where users can enter or edit data.
+  </li>
+  <li>
+    <b>Dropdown arrow:</b> An icon indicating that more options are available;
+    clicking it reveals a list of selectable items.
+  </li>
+  <li>
+    <b>Overlay:</b> Hold a list of all possible options which can be selected.
+  </li>
+  <li>
+    <b>Tag:</b> Hold selected item.
+  </li>
+</ul>
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />{' '}
+
+## Usage
+
+The `<MultiSelect>` component works best when users need to select multiple items from a large list of options (10+) and see their choices displayed as compact tags directly in the input. It’s helpful when you want to combine filtering (typing to narrow options) with visible selection feedback, saving space compared to checkboxes while allowing users to dynamically add or remove tags during the selection process.
+
+### Controlled
+
+The `onSelectionChange` and `onChange` props can be used to control the `Multiselect`.
+
+<ComponentDemo file="./multiselect-controlled.demo.tsx" />
+
+<PropsTable component={title} />

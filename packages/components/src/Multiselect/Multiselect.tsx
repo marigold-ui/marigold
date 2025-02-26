@@ -1,6 +1,6 @@
 'use client';
 
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, useId } from 'react';
 import {
   ButtonContext,
   FieldErrorContext,
@@ -105,10 +105,14 @@ const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
 const getClassNames = (
   classNames: ComponentClassNames<'MultiSelect'>
 ): ClassNamesConfig => ({
-  control: () => cn('relative', classNames.container),
+  control: () =>
+    cn(
+      'relative flex items-center box-border flex-wrap justify-between relative',
+      classNames.container
+    ),
   container: () => 'pointer-events-auto',
   indicatorSeparator: () => 'hidden',
-  menu: () => cn('shadow-none', classNames.listContainer),
+  menu: () => cn('b', classNames.listContainer),
   menuList: () =>
     cn('overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0', classNames.list),
   multiValue: () => cn(classNames.tag, 'm-0 '),
@@ -195,8 +199,14 @@ export const Multiselect = ({
           {...props}
           styles={{
             control: () => ({ display: 'flex' }),
+            menu: () => ({
+              boxSizing: 'border-box',
+              position: 'absolute',
+              top: '100%',
+              width: '100%',
+              zIndex: 1,
+            }),
             // Return empty object to reset react-select styles
-            menu: () => ({}),
             menuList: () => ({}),
             option: ({}) => ({}),
             valueContainer: base => ({ ...base, padding: 0 }),
@@ -206,6 +216,8 @@ export const Multiselect = ({
           inputId={fieldProps.id}
           aria-invalid={error}
           isClearable={false}
+          // Used to solve hydration react-select problem in next 15
+          instanceId={useId()}
           isSearchable={!readOnly}
           isMulti
           closeMenuOnSelect={false}

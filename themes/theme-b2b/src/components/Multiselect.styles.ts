@@ -9,10 +9,10 @@ import {
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   field: cva('grid gap-y-0.5'),
   container: cva([
-    inputBox,
     inputBackground,
     inputHover.hover,
     inputSpacing,
+    'border-border-base rounded-xs border outline-hidden outline-offset-[-1px]',
     'min-h-8',
     'aria-disabled:bg-bg-base-disabled aria-disabled:text-text-base-disabled aria-disabled:hover:border-border-base-disabled aria-disabled:border-border-base-disabled aria-disabled:cursor-not-allowed',
     'has-[input[data-invalid=true]]:border-border-error',
