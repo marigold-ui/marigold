@@ -1,10 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
-import {
-  inputBackground,
-  inputBox,
-  inputHover,
-  inputSpacing,
-} from './Input.styles';
+import { inputBackground, inputHover, inputSpacing } from './Input.styles';
 
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   field: cva('grid gap-y-0.5'),
