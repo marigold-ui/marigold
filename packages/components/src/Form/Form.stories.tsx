@@ -77,7 +77,7 @@ export const Selected: Story = {
                 <Radio value="full-time">Full-Time</Radio>
                 <Radio value="part-time">Part-Time</Radio>
               </Radio.Group>
-              <Switch selected>Remote Work</Switch>
+              <Switch defaultSelected>Remote Work</Switch>
               <Slider
                 label="Preferred Weekly Work Hours"
                 minValue={20}
@@ -90,7 +90,7 @@ export const Selected: Story = {
               <Select
                 label="Department"
                 width={isCore ? 60 : 40}
-                selectedKey={'engineering'}
+                defaultSelectedKey={'engineering'}
               >
                 <Select.Option id="engineering">Engineering</Select.Option>
                 <Select.Option id="design">Design</Select.Option>
@@ -99,7 +99,7 @@ export const Selected: Story = {
               <ComboBox
                 label="Job Role"
                 width={isCore ? 60 : 40}
-                selectedKey={'software-engineer'}
+                defaultSelectedKey={'software-engineer'}
               >
                 <ComboBox.Option id="software-engineer">
                   Software Engineer
@@ -118,7 +118,7 @@ export const Selected: Story = {
               <Autocomplete
                 label="Office Location"
                 width={isCore ? 60 : 40}
-                selectedKey={'san-francisco'}
+                defaultSelectedKey={'san-francisco'}
               >
                 <Autocomplete.Option id="berlin">Berlin</Autocomplete.Option>
                 <Autocomplete.Option id="new-york">
@@ -133,7 +133,12 @@ export const Selected: Story = {
               <SelectList
                 aria-label="Work Days"
                 selectionMode="multiple"
-                selectedKeys={['monday', 'tuesday', 'wednesday', 'friday']}
+                defaultSelectedKeys={[
+                  'monday',
+                  'tuesday',
+                  'wednesday',
+                  'friday',
+                ]}
               >
                 <SelectList.Item id="monday">Monday</SelectList.Item>
                 <SelectList.Item id="tuesday">Tuesday</SelectList.Item>
