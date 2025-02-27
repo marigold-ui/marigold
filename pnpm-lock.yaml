@@ -484,9 +484,6 @@ importers:
       '@marigold/types':
         specifier: workspace:*
         version: link:../types
-      '@react-aria/accordion':
-        specifier: 3.0.0-alpha.37
-        version: 3.0.0-alpha.37(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@react-aria/button':
         specifier: 3.11.1
         version: 3.11.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -567,7 +564,7 @@ importers:
         specifier: workspace:*
         version: link:../system
       react:
-        specifier: 19.x
+        specifier: '>=17.0.0'
         version: 19.0.0
     devDependencies:
       '@marigold/tsconfig':
@@ -592,7 +589,7 @@ importers:
         specifier: 4.3.1
         version: 4.3.1
       react-dom:
-        specifier: 19.x
+        specifier: '>=17.0.0'
         version: 19.0.0(react@19.0.0)
       react-fast-compare:
         specifier: 3.2.2
@@ -2660,12 +2657,6 @@ packages:
       '@types/react':
         optional: true
 
-  '@react-aria/accordion@3.0.0-alpha.37':
-    resolution: {integrity: sha512-vtNB2B6hSzRec1KnIdTFcJTX/we5Yy09zzxSqq42YIsz91tcqA24+22tBTj/15W4hrmlK9z3CV1ITe2KhoeY6Q==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
   '@react-aria/autocomplete@3.0.0-alpha.37':
     resolution: {integrity: sha512-a7awFG3hshJ/kX7Qti/cJAKOG0XU5F/XW6fQffKGfEge7PmiWIvaLTrT5her79/v8v/bRBykIkpEgDCFE7WGzg==}
     peerDependencies:
@@ -3091,11 +3082,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  '@react-types/accordion@3.0.0-alpha.26':
-    resolution: {integrity: sha512-OXf/kXcD2vFlEnkcZy/GG+a/1xO9BN7Uh3/5/Ceuj9z2E/WwD55YwU3GFM5zzkZ4+DMkdowHnZX37XnmbyD3Mg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
   '@react-types/autocomplete@3.0.0-alpha.28':
     resolution: {integrity: sha512-meHxBVS5H2L7lVOX99jiAfhcvtG0s7EE7iF7X20/yqEnkwWSpyeMKcDKFpvx/bLGUSmRTVFCBLgvPpwUyhcFkg==}
@@ -11095,18 +11081,6 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.0.8
 
-  '@react-aria/accordion@3.0.0-alpha.37(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
-    dependencies:
-      '@react-aria/button': 3.11.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@react-aria/selection': 3.22.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@react-aria/utils': 3.27.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@react-stately/tree': 3.8.7(react@19.0.0)
-      '@react-types/accordion': 3.0.0-alpha.26(react@19.0.0)
-      '@react-types/shared': 3.27.0(react@19.0.0)
-      '@swc/helpers': 0.5.15
-      react: 19.0.0
-      react-dom: 19.0.0(react@19.0.0)
-
   '@react-aria/autocomplete@3.0.0-alpha.37(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@react-aria/combobox': 3.11.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -11971,11 +11945,6 @@ snapshots:
       '@swc/helpers': 0.5.15
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
-
-  '@react-types/accordion@3.0.0-alpha.26(react@19.0.0)':
-    dependencies:
-      '@react-types/shared': 3.27.0(react@19.0.0)
-      react: 19.0.0
 
   '@react-types/autocomplete@3.0.0-alpha.28(react@19.0.0)':
     dependencies:
