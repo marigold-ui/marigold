@@ -32,8 +32,8 @@
     "tailwind-merge": "2.6.0"
   },
   "peerDependencies": {
-    "react": "19.x",
-    "react-dom": "19.x"
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.26.9",

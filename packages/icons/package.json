@@ -25,7 +25,7 @@
     "@marigold/system": "workspace:*"
   },
   "peerDependencies": {
-    "react": "19.x"
+    "react": ">=17.0.0"
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
