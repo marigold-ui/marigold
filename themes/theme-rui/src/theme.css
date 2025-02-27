@@ -44,7 +44,7 @@
   --color-brand-foreground: var(--color-stone-50);
 
   /* used for hovering (e.g. calendar, button) */
-  --color-hover: var(--color-stone-100);
+  --color-hover: var(--color-stone-300);
 
   /* stone (use for secondary) */
   --color-secondary: var(--color-stone-50);
