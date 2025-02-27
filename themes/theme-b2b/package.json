@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-b2b",
-  "version": "29.2.0",
+  "version": "29.2.1",
   "description": "Marigold B2B Theme",
   "license": "MIT",
   "keywords": [
@@ -47,7 +47,7 @@
     "postcss-cli": "11.0.0",
     "postcss-prefix-selector": "2.1.0",
     "tailwindcss": "4.0.6",
-    "tsup": "8.3.5"
+    "tsup": "8.3.6"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",

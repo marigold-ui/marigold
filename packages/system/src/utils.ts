@@ -80,19 +80,15 @@ export const isValidCssCustomPropertyName = (val: string) =>
   /^[A-Za-z0-9_-]+$/.test(val);
 
 /**
- * Returns a CSS variable reference string based on the input value.
+ * Ensures that the given value is formatted as a CSS variable reference.
  *
- * If the provided value is a valid CSS custom property name (without the leading `--`),
- * the function returns a string in the format `var(--<val>, <val>)`, which uses the value
- * both as the custom property name (with a `--` prefix) and as the fallback value.
+ * If the provided value (`val`) is a valid CSS custom property name (without the leading `--`),
+ * the function returns a string in the form of `var(--<prefix-if-provided><val>, <val>)`. When a
+ * `prefix` is provided, it is prepended to the custom property name with a hyphen.
  *
- * If the value is not a valid custom property name, the function simply returns the value.
- *
- * If no input is given, the function returns `undefined`.
+ * If the value is not a valid custom property name, the function returns the original value.
  */
-export const ensureCssVar = (val?: string) =>
-  val
-    ? isValidCssCustomPropertyName(val)
-      ? `var(--${val}, ${val})`
-      : val
-    : undefined;
+export const ensureCssVar = (val: string, prefix?: string) =>
+  isValidCssCustomPropertyName(val)
+    ? `var(--${prefix ? `${prefix}-` : ''}${val}, ${val})`
+    : val;

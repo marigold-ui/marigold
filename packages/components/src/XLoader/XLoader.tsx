@@ -1,5 +1,5 @@
-import { useId } from 'react';
 import { Dialog, Modal } from 'react-aria-components';
+import { useId } from '@react-aria/utils';
 import { useClassNames } from '@marigold/system';
 import { Underlay } from '../Overlay';
 import type { LoaderProps } from './BaseLoader';

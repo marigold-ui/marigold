@@ -1,5 +1,15 @@
 # @marigold/types
 
+## 1.3.0
+
+### Minor Changes
+
+- c387b43: feat: allow React >=17.0.0
+
+### Patch Changes
+
+- c387b43: feat: allow React >=17.0.0
+
 ## 1.2.1
 
 ### Patch Changes
