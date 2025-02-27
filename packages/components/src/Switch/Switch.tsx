@@ -81,22 +81,8 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       >
         <Label elementType="span">{children}</Label>
         <div className="relative">
-          <div
-            className={cn(
-              'h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed',
-              classNames.track
-            )}
-          >
-            <div
-              className={cn(
-                'h-[22px] w-[22px]',
-                'cubic-bezier(.7,0,.3,1)',
-                'absolute top-px left-0',
-                'block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
-                'group-selected/switch:translate-x-[calc(47px_-_100%)]',
-                classNames.thumb
-              )}
-            />
+          <div className={classNames.track}>
+            <div className={classNames.thumb} />
           </div>
         </div>
       </Switch>

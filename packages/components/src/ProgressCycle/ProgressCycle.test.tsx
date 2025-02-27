@@ -1,11 +1,13 @@
 import { screen } from '@testing-library/react';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { ProgressCycle } from './ProgressCycle';
 
 const theme: Theme = {
   name: 'Progress Cycle testing',
-  components: {},
+  components: {
+    ProgressCycle: cva('stroke-gray-800'),
+  },
 };
 
 const { render } = setup({ theme });

@@ -10,8 +10,8 @@ import {
 export const TextArea: ThemeComponent<'TextArea'> = cva([
   inputContainer,
   inputInvalid,
-  inputFocus,
+  inputFocus['focus'],
   inputDisabled,
   inputReadOnly,
-  'data-invalid:text-destructive',
+  'invalid:text-destructive',
 ]);
