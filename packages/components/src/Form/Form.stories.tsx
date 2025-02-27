@@ -11,7 +11,10 @@ import { FieldGroup } from '../FieldBase';
 import { Radio } from '../Radio';
 import { Scrollable } from '../Scrollable';
 import { Select } from '../Select';
+import { SelectList } from '../SelectList';
+import { Slider } from '../Slider';
 import { Stack } from '../Stack';
+import { Switch } from '../Switch';
 import { TextField } from '../TextField';
 import { Form, FormProps } from './Form';
 
@@ -58,11 +61,34 @@ export const Selected: Story = {
         <Form {...args}>
           <Columns space={5} columns={[1, 1, 1]}>
             <Stack space={5}>
-              <Checkbox checked>Subscribe to Employee Newsletter</Checkbox>
-              <Radio.Group defaultValue="2" label="Radio Group">
-                <Radio value="1">Option 1</Radio>
-                <Radio value="2">Option 2</Radio>
+              <Checkbox.Group
+                defaultValue={['company-news', 'job-alerts', 'event-updates']}
+                label="Email Subscriptions"
+              >
+                <Checkbox value="company-news">
+                  Company News & Announcements
+                </Checkbox>
+                <Checkbox value="job-alerts">
+                  Job Alerts & Internal Openings
+                </Checkbox>
+                <Checkbox value="event-updates">
+                  Event Invitations & Updates
+                </Checkbox>
+              </Checkbox.Group>
+              <Radio.Group defaultValue="full-time" label="Employment Type">
+                <Radio value="full-time">Full-Time</Radio>
+                <Radio value="part-time">Part-Time</Radio>
               </Radio.Group>
+              <Switch selected>Remote Work</Switch>
+              <Slider
+                label="Preferred Weekly Work Hours"
+                minValue={20}
+                maxValue={50}
+                step={5}
+                defaultValue={40}
+              />
+            </Stack>
+            <Stack space={5}>
               <Select
                 label="Department"
                 width={isCore ? 60 : 40}
@@ -72,31 +98,57 @@ export const Selected: Story = {
                 <Select.Option id="design">Design</Select.Option>
                 <Select.Option id="product">Product</Select.Option>
               </Select>
-            </Stack>
-            <Stack space={5}>
               <ComboBox
-                label="Department"
+                label="Job Role"
                 width={isCore ? 60 : 40}
-                selectedKey={'engineering'}
+                selectedKey={'software-engineer'}
               >
-                <ComboBox.Option id="engineering">Engineering</ComboBox.Option>
-                <ComboBox.Option id="design">Design</ComboBox.Option>
-                <ComboBox.Option id="product">Product</ComboBox.Option>
+                <ComboBox.Option id="software-engineer">
+                  Software Engineer
+                </ComboBox.Option>
+                <ComboBox.Option id="product-manager">
+                  Product Manager
+                </ComboBox.Option>
+                <ComboBox.Option id="ux-designer">UX Designer</ComboBox.Option>
+                <ComboBox.Option id="hr-specialist">
+                  HR Specialist
+                </ComboBox.Option>
+                <ComboBox.Option id="marketing-coordinator">
+                  Marketing Coordinator
+                </ComboBox.Option>
               </ComboBox>
               <Autocomplete
-                label="Department"
+                label="Office Location"
                 width={isCore ? 60 : 40}
-                selectedKey={'engineering'}
+                selectedKey={'san-francisco'}
               >
-                <Autocomplete.Option id="engineering">
-                  Engineering
+                <Autocomplete.Option id="berlin">Berlin</Autocomplete.Option>
+                <Autocomplete.Option id="new-york">
+                  New York
                 </Autocomplete.Option>
-                <Autocomplete.Option id="design">Design</Autocomplete.Option>
-                <Autocomplete.Option id="product">Product</Autocomplete.Option>
+                <Autocomplete.Option id="san-francisco">
+                  San Francisco
+                </Autocomplete.Option>
+                <Autocomplete.Option id="london">London</Autocomplete.Option>
               </Autocomplete>
+
+              <SelectList
+                aria-label="Work Days"
+                selectionMode="multiple"
+                selectedKeys={['monday', 'tuesday', 'wednesday', 'friday']}
+              >
+                <SelectList.Item id="monday">Monday</SelectList.Item>
+                <SelectList.Item id="tuesday">Tuesday</SelectList.Item>
+                <SelectList.Item id="wednesday">Wednesday</SelectList.Item>
+                <SelectList.Item id="thursday">Thursday</SelectList.Item>
+                <SelectList.Item id="friday">Friday</SelectList.Item>
+              </SelectList>
             </Stack>
             <Stack space={5}>
-              <Calendar defaultValue={new CalendarDate(2025, 8, 16)} />
+              <Calendar
+                aria-label="Start Date"
+                defaultValue={new CalendarDate(2025, 8, 16)}
+              />
             </Stack>
           </Columns>
         </Form>
