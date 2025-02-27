@@ -16,10 +16,10 @@ export const Button: ThemeComponent<'Button'> = cva(
         primary:
           'bg-brand text-brand-foreground shadow-sm shadow-black/5 hover:bg-brand/90',
         secondary:
-          'border border-border bg-background shadow-sm shadow-black/5 hover:bg-accent hover:text-foreground',
+          'border border-border bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        ghost: 'hover:bg-accent hover:text-foreground',
+        ghost: 'hover:bg-hover hover:text-foreground',
       },
     },
     defaultVariants: {
