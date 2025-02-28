@@ -57,7 +57,7 @@ export const Selected: Story = {
     return (
       <FieldGroup labelWidth={isCore ? '100px' : undefined}>
         <Form {...args}>
-          <Columns space={5} columns={[1, 1, 1]}>
+          <Columns space={10} columns={[1, 1, 1]}>
             <Stack space={5}>
               <Checkbox.Group
                 defaultValue={['company-news', 'job-alerts', 'event-updates']}
