@@ -26,10 +26,10 @@ const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
         ref={ref}
       >
         {({ selectionMode }) => (
-          <>
+          <div className="flex gap-2">
             {selectionMode === 'multiple' && <Checkbox slot="selection" />}
             {children}
-          </>
+          </div>
         )}
       </SelectListItem>
     );
