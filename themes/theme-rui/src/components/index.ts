@@ -1,3 +1,4 @@
+export { Accordion } from './Accordion.styles';
 export { Badge } from './Badge.styles';
 export { Button } from './Button.styles';
 export { Card } from './Card.styles';
@@ -8,6 +9,7 @@ export { DateField } from './DateField.styles';
 export { DatePicker } from './DatePicker.styles';
 export { Input } from './Input.styles';
 export { Field } from './Field.styles';
+export { Headline } from './Headline.styles';
 export { HelpText } from './HelpText.styles';
 export { Label } from './Label.styles';
 export { ListBox } from './ListBox.styles';

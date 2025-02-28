@@ -40,9 +40,16 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
+    variant: {
+      control: {
+        type: 'radio',
+      },
+      options: ['default', 'card'],
+    },
   },
   args: {
     defaultExpandedKeys: ['1'],
+    variant: 'default',
   },
 } satisfies Meta;
 
