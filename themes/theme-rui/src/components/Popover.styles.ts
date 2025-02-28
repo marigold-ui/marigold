@@ -1,7 +1,9 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Popover: ThemeComponent<'Popover'> = cva([
+  'group/popover',
   'z-50 overflow-y-auto overflow-x-hidden rounded-lg outline-0',
+  'border border-border',
 
   /** animate stuff missing */
 
