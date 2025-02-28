@@ -11,7 +11,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   ]),
   container: cva(''),
   label: cva(
-    'text-sm font-medium leading-4 text-foreground group-disabled/checkbox:opacity-70'
+    'text-sm font-normal leading-4 text-foreground group-disabled/checkbox:opacity-70'
   ),
-  group: cva(''),
+  group: cva(),
 };
