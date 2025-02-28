@@ -8,6 +8,7 @@ export const Tag: ThemeComponent<'Tag'> = {
     'h-7 px-2 cursor-default',
     'bg-background',
     'data-selected:text-white data-selected:bg-brand',
+    'data-[disabled]:cursor-not-allowed data-[disabled]:text-disabled-foreground data-[disabled]:bg-disabled',
   ]),
   closeButton: cva([
     'size-4 flex items-center justify-end whitespace-nowrap',
