@@ -1,5 +1,19 @@
 # @marigold/icons
 
+## 1.3.0
+
+### Minor Changes
+
+- c387b43: feat: allow React >=17.0.0
+
+### Patch Changes
+
+- c387b43: feat: allow React >=17.0.0
+- Updated dependencies [c387b43]
+- Updated dependencies [a31881d]
+- Updated dependencies [c387b43]
+  - @marigold/system@11.2.0
+
 ## 1.2.69
 
 ### Patch Changes

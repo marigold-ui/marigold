@@ -1,5 +1,19 @@
 # @marigold/system
 
+## 11.2.0
+
+### Minor Changes
+
+- c387b43: feat: allow React >=17.0.0
+
+### Patch Changes
+
+- c387b43: feat: allow React >=17.0.0
+- a31881d: fix(DST-696): Make it possible to only pass in the color name without a prefix
+- Updated dependencies [c387b43]
+- Updated dependencies [c387b43]
+  - @marigold/types@1.3.0
+
 ## 11.1.1
 
 ### Patch Changes
