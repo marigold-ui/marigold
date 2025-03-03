@@ -1,5 +1,6 @@
 export { Accordion } from './Accordion.styles';
 export { Badge } from './Badge.styles';
+export { Body } from './Body.styles';
 export { Button } from './Button.styles';
 export { Card } from './Card.styles';
 export { Checkbox } from './Checkbox.styles';
@@ -10,6 +11,7 @@ export { DatePicker } from './DatePicker.styles';
 export { Dialog } from './Dialog.styles';
 export { Input } from './Input.styles';
 export { Field } from './Field.styles';
+export { Footer } from './Footer.styles';
 export { Header } from './Header.styles';
 export { Headline } from './Headline.styles';
 export { HelpText } from './HelpText.styles';
