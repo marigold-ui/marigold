@@ -19,6 +19,7 @@ export { HelpText } from './HelpText.styles';
 export { Image } from './Image.styles';
 export { Label } from './Label.styles';
 export { Link } from './Link.styles';
+export { List } from './List.styles';
 export { ListBox } from './ListBox.styles';
 export { Menu } from './Menu.styles';
 export { NumberField } from './NumberField.styles';
