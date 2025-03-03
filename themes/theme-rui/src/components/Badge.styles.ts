@@ -1,5 +1,7 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
+const circle = 'before:size-1.5 before:rounded-full';
+
 export const Badge: ThemeComponent<'Badge'> = cva(
   [
     'inline-flex items-center justify-center rounded-full border px-1.5 text-xs font-medium leading-normal transition-colors',
@@ -11,6 +13,13 @@ export const Badge: ThemeComponent<'Badge'> = cva(
       variant: {
         default: 'border-border bg-white',
         primary: 'bg-brand text-brand-foreground border-transparent',
+        success: ['bg-white border-success before:bg-success gap-1.5', circle],
+        warning: ['bg-white border-warning before:bg-warning gap-1.5', circle],
+        info: ['bg-white border-info before:bg-info gap-1.5', circle],
+        error: [
+          'bg-white border-destructive before:bg-destructive gap-1.5',
+          circle,
+        ],
       },
     },
     defaultVariants: {

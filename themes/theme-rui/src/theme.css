@@ -52,11 +52,18 @@
 
   /* accent colors used for highlighting certain parts of components */
 
-  /*
-    used for errormessages
-    */
+  /* used for errormessage, badge */
   --color-destructive: var(--color-red-600);
   --color-destructive-foreground: var(--color-white);
+
+  /* success token, used in badge */
+  --color-success: var(--color-green-500);
+
+  /* warning token, used in badge */
+  --color-warning: var(--color-yellow-500);
+
+  /* info token, used in badge */
+  --color-info: var(--color-blue-500);
 
   /* 
     muted colors are desaturated colors of the brand color,
