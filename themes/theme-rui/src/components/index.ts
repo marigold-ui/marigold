@@ -9,6 +9,7 @@ export { ComboBox } from './ComboBox.styles';
 export { DateField } from './DateField.styles';
 export { DatePicker } from './DatePicker.styles';
 export { Dialog } from './Dialog.styles';
+export { Divider } from './Divider.styles';
 export { Input } from './Input.styles';
 export { Field } from './Field.styles';
 export { Footer } from './Footer.styles';
