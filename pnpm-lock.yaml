@@ -55,7 +55,7 @@ importers:
         version: 6.26.1
       autoprefixer:
         specifier: 10.4.20
-        version: 10.4.20(postcss@8.5.2)
+        version: 10.4.20(postcss@8.5.3)
       concurrently:
         specifier: 9.1.2
         version: 9.1.2
@@ -76,10 +76,10 @@ importers:
         version: 15.1.7(@babel/core@7.26.9)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       postcss-import:
         specifier: 16.1.0
-        version: 16.1.0(postcss@8.5.2)
+        version: 16.1.0(postcss@8.5.3)
       postcss-loader:
         specifier: 8.1.1
-        version: 8.1.1(postcss@8.5.2)(typescript@5.7.3)
+        version: 8.1.1(postcss@8.5.3)(typescript@5.7.3)
       prettier:
         specifier: 3.4.2
         version: 3.4.2
@@ -90,8 +90,8 @@ importers:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
       tailwindcss:
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       turbo:
         specifier: 2.3.3
         version: 2.3.3
@@ -168,7 +168,7 @@ importers:
         version: 9.17.0(jiti@2.4.2)
       eslint-plugin-tailwindcss:
         specifier: 3.18.0
-        version: 3.18.0(tailwindcss@4.0.6)
+        version: 3.18.0(tailwindcss@4.0.9)
       typescript:
         specifier: 5.7.3
         version: 5.7.3
@@ -208,7 +208,7 @@ importers:
         version: 29.7.0(@types/node@20.17.19)(babel-plugin-macros@3.1.0)
       jest-transform-css:
         specifier: 6.0.2
-        version: 6.0.2(postcss@8.5.2)
+        version: 6.0.2(postcss@8.5.3)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -265,8 +265,8 @@ importers:
         specifier: ^8.1.11
         version: 8.4.6(storybook@8.4.6(prettier@3.4.2))
       '@tailwindcss/vite':
-        specifier: 4.0.6
-        version: 4.0.6(vite@6.0.9(@types/node@20.17.19)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.1))
+        specifier: 4.0.9
+        version: 4.0.9(vite@6.0.9(@types/node@20.17.19)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.1))
       '@types/react':
         specifier: 19.0.10
         version: 19.0.10
@@ -274,8 +274,8 @@ importers:
         specifier: 4.3.4
         version: 4.3.4(vite@6.0.9(@types/node@20.17.19)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.1))
       tailwindcss:
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       vite-tsconfig-paths:
         specifier: 5.1.4
         version: 5.1.4(typescript@5.7.3)(vite@6.0.9(@types/node@20.17.19)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.1))
@@ -349,11 +349,11 @@ importers:
         specifier: 3.12.5
         version: 3.12.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@tailwindcss/postcss':
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       '@tailwindcss/typography':
         specifier: 0.5.16
-        version: 0.5.16(tailwindcss@4.0.6)
+        version: 0.5.16(tailwindcss@4.0.9)
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@19.0.0)
@@ -433,11 +433,11 @@ importers:
         specifier: 3.27.0
         version: 3.27.0
       tailwind-scrollbar:
-        specifier: 4.0.0
-        version: 4.0.0(react@19.0.0)(tailwindcss@4.0.6)
+        specifier: 4.0.1
+        version: 4.0.1(react@19.0.0)(tailwindcss@4.0.9)
       tailwindcss:
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       zod:
         specifier: 3.24.2
         version: 3.24.2
@@ -462,7 +462,7 @@ importers:
         version: 19.0.4(@types/react@19.0.10)
       tailwindcss-animate:
         specifier: 1.0.7
-        version: 1.0.7(tailwindcss@4.0.6)
+        version: 1.0.7(tailwindcss@4.0.9)
       typescript:
         specifier: 5.7.3
         version: 5.7.3
@@ -556,7 +556,7 @@ importers:
         version: 19.0.0(react@19.0.0)
       tsup:
         specifier: 8.3.6
-        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.6.1)
 
   packages/icons:
     dependencies:
@@ -572,7 +572,7 @@ importers:
         version: link:../../config/tsconfig
       tsup:
         specifier: 8.3.6
-        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.6.1)
 
   packages/system:
     dependencies:
@@ -608,17 +608,17 @@ importers:
         specifier: 19.0.10
         version: 19.0.10
       postcss:
-        specifier: 8.5.2
-        version: 8.5.2
+        specifier: 8.5.3
+        version: 8.5.3
       react:
         specifier: 19.0.0
         version: 19.0.0
       tailwindcss:
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       tsup:
         specifier: 8.3.6
-        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.6.1)
 
   packages/theme-plugins: {}
 
@@ -648,23 +648,23 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       '@tailwindcss/postcss':
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       cssnano:
         specifier: 7.0.6
-        version: 7.0.6(postcss@8.5.2)
+        version: 7.0.6(postcss@8.5.3)
       postcss-cli:
         specifier: 11.0.0
-        version: 11.0.0(jiti@2.4.2)(postcss@8.5.2)
+        version: 11.0.0(jiti@2.4.2)(postcss@8.5.3)
       postcss-prefix-selector:
         specifier: 2.1.0
-        version: 2.1.0(postcss@8.5.2)
+        version: 2.1.0(postcss@8.5.3)
       tailwindcss:
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       tsup:
         specifier: 8.3.6
-        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.6.1)
 
   themes/theme-core:
     dependencies:
@@ -682,20 +682,20 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       '@tailwindcss/postcss':
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       cssnano:
         specifier: 7.0.6
-        version: 7.0.6(postcss@8.5.2)
+        version: 7.0.6(postcss@8.5.3)
       postcss-cli:
         specifier: 11.0.0
-        version: 11.0.0(jiti@2.4.2)(postcss@8.5.2)
+        version: 11.0.0(jiti@2.4.2)(postcss@8.5.3)
       tailwindcss:
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       tsup:
         specifier: 8.3.6
-        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.6.1)
 
   themes/theme-docs:
     dependencies:
@@ -713,23 +713,23 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       '@tailwindcss/postcss':
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       cssnano:
         specifier: 7.0.6
-        version: 7.0.6(postcss@8.5.2)
+        version: 7.0.6(postcss@8.5.3)
       postcss-cli:
         specifier: 11.0.0
-        version: 11.0.0(jiti@2.4.2)(postcss@8.5.2)
+        version: 11.0.0(jiti@2.4.2)(postcss@8.5.3)
       postcss-prefix-selector:
         specifier: 2.1.0
-        version: 2.1.0(postcss@8.5.2)
+        version: 2.1.0(postcss@8.5.3)
       tailwindcss:
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       tsup:
         specifier: 8.3.6
-        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.6.1)
 
   themes/theme-rui:
     dependencies:
@@ -744,20 +744,20 @@ importers:
         specifier: workspace:*
         version: link:../../config/tsconfig
       '@tailwindcss/postcss':
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       cssnano:
         specifier: 7.0.6
-        version: 7.0.6(postcss@8.5.2)
+        version: 7.0.6(postcss@8.5.3)
       postcss-cli:
         specifier: 11.0.0
-        version: 11.0.0(jiti@2.4.2)(postcss@8.5.2)
+        version: 11.0.0(jiti@2.4.2)(postcss@8.5.3)
       tailwindcss:
-        specifier: 4.0.6
-        version: 4.0.6
+        specifier: 4.0.9
+        version: 4.0.9
       tsup:
         specifier: 8.3.6
-        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1)
+        version: 8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.6.1)
 
 packages:
 
@@ -3617,89 +3617,89 @@ packages:
   '@swc/types@0.1.17':
     resolution: {integrity: sha512-V5gRru+aD8YVyCOMAjMpWR1Ui577DD5KSJsHP8RAxopAH22jFz6GZd/qxqjO6MJHQhcsjvjOFXyDhyLQUnMveQ==}
 
-  '@tailwindcss/node@4.0.6':
-    resolution: {integrity: sha512-jb6E0WeSq7OQbVYcIJ6LxnZTeC4HjMvbzFBMCrQff4R50HBlo/obmYNk6V2GCUXDeqiXtvtrQgcIbT+/boB03Q==}
+  '@tailwindcss/node@4.0.9':
+    resolution: {integrity: sha512-tOJvdI7XfJbARYhxX+0RArAhmuDcczTC46DGCEziqxzzbIaPnfYaIyRT31n4u8lROrsO7Q6u/K9bmQHL2uL1bQ==}
 
-  '@tailwindcss/oxide-android-arm64@4.0.6':
-    resolution: {integrity: sha512-xDbym6bDPW3D2XqQqX3PjqW3CKGe1KXH7Fdkc60sX5ZLVUbzPkFeunQaoP+BuYlLc2cC1FoClrIRYnRzof9Sow==}
+  '@tailwindcss/oxide-android-arm64@4.0.9':
+    resolution: {integrity: sha512-YBgy6+2flE/8dbtrdotVInhMVIxnHJPbAwa7U1gX4l2ThUIaPUp18LjB9wEH8wAGMBZUb//SzLtdXXNBHPUl6Q==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [android]
 
-  '@tailwindcss/oxide-darwin-arm64@4.0.6':
-    resolution: {integrity: sha512-1f71/ju/tvyGl5c2bDkchZHy8p8EK/tDHCxlpYJ1hGNvsYihZNurxVpZ0DefpN7cNc9RTT8DjrRoV8xXZKKRjg==}
+  '@tailwindcss/oxide-darwin-arm64@4.0.9':
+    resolution: {integrity: sha512-pWdl4J2dIHXALgy2jVkwKBmtEb73kqIfMpYmcgESr7oPQ+lbcQ4+tlPeVXaSAmang+vglAfFpXQCOvs/aGSqlw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@tailwindcss/oxide-darwin-x64@4.0.6':
-    resolution: {integrity: sha512-s/hg/ZPgxFIrGMb0kqyeaqZt505P891buUkSezmrDY6lxv2ixIELAlOcUVTkVh245SeaeEiUVUPiUN37cwoL2g==}
+  '@tailwindcss/oxide-darwin-x64@4.0.9':
+    resolution: {integrity: sha512-4Dq3lKp0/C7vrRSkNPtBGVebEyWt9QPPlQctxJ0H3MDyiQYvzVYf8jKow7h5QkWNe8hbatEqljMj/Y0M+ERYJg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@tailwindcss/oxide-freebsd-x64@4.0.6':
-    resolution: {integrity: sha512-Z3Wo8FWZnmio8+xlcbb7JUo/hqRMSmhQw8IGIRoRJ7GmLR0C+25Wq+bEX/135xe/yEle2lFkhu9JBHd4wZYiig==}
+  '@tailwindcss/oxide-freebsd-x64@4.0.9':
+    resolution: {integrity: sha512-k7U1RwRODta8x0uealtVt3RoWAWqA+D5FAOsvVGpYoI6ObgmnzqWW6pnVwz70tL8UZ/QXjeMyiICXyjzB6OGtQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [freebsd]
 
-  '@tailwindcss/oxide-linux-arm-gnueabihf@4.0.6':
-    resolution: {integrity: sha512-SNSwkkim1myAgmnbHs4EjXsPL7rQbVGtjcok5EaIzkHkCAVK9QBQsWeP2Jm2/JJhq4wdx8tZB9Y7psMzHYWCkA==}
+  '@tailwindcss/oxide-linux-arm-gnueabihf@4.0.9':
+    resolution: {integrity: sha512-NDDjVweHz2zo4j+oS8y3KwKL5wGCZoXGA9ruJM982uVJLdsF8/1AeKvUwKRlMBpxHt1EdWJSAh8a0Mfhl28GlQ==}
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [linux]
 
-  '@tailwindcss/oxide-linux-arm64-gnu@4.0.6':
-    resolution: {integrity: sha512-tJ+mevtSDMQhKlwCCuhsFEFg058kBiSy4TkoeBG921EfrHKmexOaCyFKYhVXy4JtkaeeOcjJnCLasEeqml4i+Q==}
+  '@tailwindcss/oxide-linux-arm64-gnu@4.0.9':
+    resolution: {integrity: sha512-jk90UZ0jzJl3Dy1BhuFfRZ2KP9wVKMXPjmCtY4U6fF2LvrjP5gWFJj5VHzfzHonJexjrGe1lMzgtjriuZkxagg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@tailwindcss/oxide-linux-arm64-musl@4.0.6':
-    resolution: {integrity: sha512-IoArz1vfuTR4rALXMUXI/GWWfx2EaO4gFNtBNkDNOYhlTD4NVEwE45nbBoojYiTulajI4c2XH8UmVEVJTOJKxA==}
+  '@tailwindcss/oxide-linux-arm64-musl@4.0.9':
+    resolution: {integrity: sha512-3eMjyTC6HBxh9nRgOHzrc96PYh1/jWOwHZ3Kk0JN0Kl25BJ80Lj9HEvvwVDNTgPg154LdICwuFLuhfgH9DULmg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@tailwindcss/oxide-linux-x64-gnu@4.0.6':
-    resolution: {integrity: sha512-QtsUfLkEAeWAC3Owx9Kg+7JdzE+k9drPhwTAXbXugYB9RZUnEWWx5x3q/au6TvUYcL+n0RBqDEO2gucZRvRFgQ==}
+  '@tailwindcss/oxide-linux-x64-gnu@4.0.9':
+    resolution: {integrity: sha512-v0D8WqI/c3WpWH1kq/HP0J899ATLdGZmENa2/emmNjubT0sWtEke9W9+wXeEoACuGAhF9i3PO5MeyditpDCiWQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@tailwindcss/oxide-linux-x64-musl@4.0.6':
-    resolution: {integrity: sha512-QthvJqIji2KlGNwLcK/PPYo7w1Wsi/8NK0wAtRGbv4eOPdZHkQ9KUk+oCoP20oPO7i2a6X1aBAFQEL7i08nNMA==}
+  '@tailwindcss/oxide-linux-x64-musl@4.0.9':
+    resolution: {integrity: sha512-Kvp0TCkfeXyeehqLJr7otsc4hd/BUPfcIGrQiwsTVCfaMfjQZCG7DjI+9/QqPZha8YapLA9UoIcUILRYO7NE1Q==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@tailwindcss/oxide-win32-arm64-msvc@4.0.6':
-    resolution: {integrity: sha512-+oka+dYX8jy9iP00DJ9Y100XsqvbqR5s0yfMZJuPR1H/lDVtDfsZiSix1UFBQ3X1HWxoEEl6iXNJHWd56TocVw==}
+  '@tailwindcss/oxide-win32-arm64-msvc@4.0.9':
+    resolution: {integrity: sha512-m3+60T/7YvWekajNq/eexjhV8z10rswcz4BC9bioJ7YaN+7K8W2AmLmG0B79H14m6UHE571qB0XsPus4n0QVgQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@tailwindcss/oxide-win32-x64-msvc@4.0.6':
-    resolution: {integrity: sha512-+o+juAkik4p8Ue/0LiflQXPmVatl6Av3LEZXpBTfg4qkMIbZdhCGWFzHdt2NjoMiLOJCFDddoV6GYaimvK1Olw==}
+  '@tailwindcss/oxide-win32-x64-msvc@4.0.9':
+    resolution: {integrity: sha512-dpc05mSlqkwVNOUjGu/ZXd5U1XNch1kHFJ4/cHkZFvaW1RzbHmRt24gvM8/HC6IirMxNarzVw4IXVtvrOoZtxA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
 
-  '@tailwindcss/oxide@4.0.6':
-    resolution: {integrity: sha512-lVyKV2y58UE9CeKVcYykULe9QaE1dtKdxDEdrTPIdbzRgBk6bdxHNAoDqvcqXbIGXubn3VOl1O/CFF77v/EqSA==}
+  '@tailwindcss/oxide@4.0.9':
+    resolution: {integrity: sha512-eLizHmXFqHswJONwfqi/WZjtmWZpIalpvMlNhTM99/bkHtUs6IqgI1XQ0/W5eO2HiRQcIlXUogI2ycvKhVLNcA==}
     engines: {node: '>= 10'}
 
-  '@tailwindcss/postcss@4.0.6':
-    resolution: {integrity: sha512-noTaGPHjGCXTCc487TWnfAEN0VMjqDAecssWDOsfxV2hFrcZR0AHthX7IdY/0xHTg/EtpmIPdssddlZ5/B7JnQ==}
+  '@tailwindcss/postcss@4.0.9':
+    resolution: {integrity: sha512-BT/E+pdMqulavEAVM5NCpxmGEwHiLDPpkmg/c/X25ZBW+izTe+aZ+v1gf/HXTrihRoCxrUp5U4YyHsBTzspQKQ==}
 
   '@tailwindcss/typography@0.5.16':
     resolution: {integrity: sha512-0wDLwCVF5V3x3b1SGXPCDcdsbDHMBe+lkFzBRaHeLvNi+nrrnZ1lA18u+OTWO8iSWU2GxUOCvlXtDuqftc1oiA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1'
 
-  '@tailwindcss/vite@4.0.6':
-    resolution: {integrity: sha512-O25vZ/URWbZ2JHdk2o8wH7jOKqEGCsYmX3GwGmYS5DjE4X3mpf93a72Rn7VRnefldNauBzr5z2hfZptmBNtTUQ==}
+  '@tailwindcss/vite@4.0.9':
+    resolution: {integrity: sha512-BIKJO+hwdIsN7V6I7SziMZIVHWWMsV/uCQKYEbeiGRDRld+TkqyRRl9+dQ0MCXbhcVr+D9T/qX2E84kT7V281g==}
     peerDependencies:
       vite: ^5.2.0 || ^6
 
@@ -7342,6 +7342,10 @@ packages:
     resolution: {integrity: sha512-MjOadfU3Ys9KYoX0AdkBlFEF1Vx37uCCeN4ZHnmwm9FfpbsGWMZeBLMmmpY+6Ocqod7mkdZ0DT31OlbsFrLlkA==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postcss@8.5.3:
+    resolution: {integrity: sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==}
+    engines: {node: ^10 || ^12 || >=14}
+
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -8155,8 +8159,8 @@ packages:
   tailwind-merge@2.6.0:
     resolution: {integrity: sha512-P+Vu1qXfzediirmHOC3xKGAYeZtPcV9g76X+xg2FD4tYgR71ewMA35Y3sCz3zhiN/dwefRpJX0yBcgwi1fXNQA==}
 
-  tailwind-scrollbar@4.0.0:
-    resolution: {integrity: sha512-elqx9m09VHY8gkrMiyimFO09JlS3AyLFXT0eaLaWPi7ImwHlbZj1ce/AxSis2LtR+ewBGEyUV7URNEMcjP1Z2w==}
+  tailwind-scrollbar@4.0.1:
+    resolution: {integrity: sha512-j2ZfUI7p8xmSQdlqaCxEb4Mha8ErvWjDVyu2Ke4IstWprQ/6TmIz1GSLE62vsTlXwnMLYhuvbFbIFzaJGOGtMg==}
     engines: {node: '>=12.13.0'}
     peerDependencies:
       tailwindcss: 4.x
@@ -8166,8 +8170,8 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  tailwindcss@4.0.6:
-    resolution: {integrity: sha512-mysewHYJKaXgNOW6pp5xon/emCsfAMnO8WMaGKZZ35fomnR/T5gYnRg2/yRTTrtXiEl1tiVkeRt0eMO6HxEZqw==}
+  tailwindcss@4.0.9:
+    resolution: {integrity: sha512-12laZu+fv1ONDRoNR9ipTOpUD7RN9essRVkX36sjxuRUInpN7hIiHN4lBd/SIFjbISvnXzp8h/hXzmU8SQQYhw==}
 
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
@@ -12512,82 +12516,82 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@tailwindcss/node@4.0.6':
+  '@tailwindcss/node@4.0.9':
     dependencies:
       enhanced-resolve: 5.18.1
       jiti: 2.4.2
-      tailwindcss: 4.0.6
+      tailwindcss: 4.0.9
 
-  '@tailwindcss/oxide-android-arm64@4.0.6':
+  '@tailwindcss/oxide-android-arm64@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-darwin-arm64@4.0.6':
+  '@tailwindcss/oxide-darwin-arm64@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-darwin-x64@4.0.6':
+  '@tailwindcss/oxide-darwin-x64@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-freebsd-x64@4.0.6':
+  '@tailwindcss/oxide-freebsd-x64@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-linux-arm-gnueabihf@4.0.6':
+  '@tailwindcss/oxide-linux-arm-gnueabihf@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-linux-arm64-gnu@4.0.6':
+  '@tailwindcss/oxide-linux-arm64-gnu@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-linux-arm64-musl@4.0.6':
+  '@tailwindcss/oxide-linux-arm64-musl@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-linux-x64-gnu@4.0.6':
+  '@tailwindcss/oxide-linux-x64-gnu@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-linux-x64-musl@4.0.6':
+  '@tailwindcss/oxide-linux-x64-musl@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-win32-arm64-msvc@4.0.6':
+  '@tailwindcss/oxide-win32-arm64-msvc@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide-win32-x64-msvc@4.0.6':
+  '@tailwindcss/oxide-win32-x64-msvc@4.0.9':
     optional: true
 
-  '@tailwindcss/oxide@4.0.6':
+  '@tailwindcss/oxide@4.0.9':
     optionalDependencies:
-      '@tailwindcss/oxide-android-arm64': 4.0.6
-      '@tailwindcss/oxide-darwin-arm64': 4.0.6
-      '@tailwindcss/oxide-darwin-x64': 4.0.6
-      '@tailwindcss/oxide-freebsd-x64': 4.0.6
-      '@tailwindcss/oxide-linux-arm-gnueabihf': 4.0.6
-      '@tailwindcss/oxide-linux-arm64-gnu': 4.0.6
-      '@tailwindcss/oxide-linux-arm64-musl': 4.0.6
-      '@tailwindcss/oxide-linux-x64-gnu': 4.0.6
-      '@tailwindcss/oxide-linux-x64-musl': 4.0.6
-      '@tailwindcss/oxide-win32-arm64-msvc': 4.0.6
-      '@tailwindcss/oxide-win32-x64-msvc': 4.0.6
+      '@tailwindcss/oxide-android-arm64': 4.0.9
+      '@tailwindcss/oxide-darwin-arm64': 4.0.9
+      '@tailwindcss/oxide-darwin-x64': 4.0.9
+      '@tailwindcss/oxide-freebsd-x64': 4.0.9
+      '@tailwindcss/oxide-linux-arm-gnueabihf': 4.0.9
+      '@tailwindcss/oxide-linux-arm64-gnu': 4.0.9
+      '@tailwindcss/oxide-linux-arm64-musl': 4.0.9
+      '@tailwindcss/oxide-linux-x64-gnu': 4.0.9
+      '@tailwindcss/oxide-linux-x64-musl': 4.0.9
+      '@tailwindcss/oxide-win32-arm64-msvc': 4.0.9
+      '@tailwindcss/oxide-win32-x64-msvc': 4.0.9
 
-  '@tailwindcss/postcss@4.0.6':
+  '@tailwindcss/postcss@4.0.9':
     dependencies:
       '@alloc/quick-lru': 5.2.0
-      '@tailwindcss/node': 4.0.6
-      '@tailwindcss/oxide': 4.0.6
+      '@tailwindcss/node': 4.0.9
+      '@tailwindcss/oxide': 4.0.9
       lightningcss: 1.29.1
-      postcss: 8.5.2
-      tailwindcss: 4.0.6
+      postcss: 8.5.3
+      tailwindcss: 4.0.9
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@4.0.6)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@4.0.9)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.0.6
+      tailwindcss: 4.0.9
 
-  '@tailwindcss/vite@4.0.6(vite@6.0.9(@types/node@20.17.19)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.1))':
+  '@tailwindcss/vite@4.0.9(vite@6.0.9(@types/node@20.17.19)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.1))':
     dependencies:
-      '@tailwindcss/node': 4.0.6
-      '@tailwindcss/oxide': 4.0.6
+      '@tailwindcss/node': 4.0.9
+      '@tailwindcss/oxide': 4.0.9
       lightningcss: 1.29.1
-      tailwindcss: 4.0.6
+      tailwindcss: 4.0.9
       vite: 6.0.9(@types/node@20.17.19)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.1)
 
   '@tanstack/query-core@5.64.2': {}
@@ -13194,14 +13198,14 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  autoprefixer@10.4.20(postcss@8.5.2):
+  autoprefixer@10.4.20(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
       caniuse-lite: 1.0.30001686
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
   available-typed-arrays@1.0.7:
@@ -13708,9 +13712,9 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  css-declaration-sorter@7.2.0(postcss@8.5.2):
+  css-declaration-sorter@7.2.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
   css-in-js-utils@3.1.0:
     dependencies:
@@ -13745,49 +13749,49 @@ snapshots:
 
   cssesc@3.0.0: {}
 
-  cssnano-preset-default@7.0.6(postcss@8.5.2):
+  cssnano-preset-default@7.0.6(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
-      css-declaration-sorter: 7.2.0(postcss@8.5.2)
-      cssnano-utils: 5.0.0(postcss@8.5.2)
-      postcss: 8.5.2
-      postcss-calc: 10.0.2(postcss@8.5.2)
-      postcss-colormin: 7.0.2(postcss@8.5.2)
-      postcss-convert-values: 7.0.4(postcss@8.5.2)
-      postcss-discard-comments: 7.0.3(postcss@8.5.2)
-      postcss-discard-duplicates: 7.0.1(postcss@8.5.2)
-      postcss-discard-empty: 7.0.0(postcss@8.5.2)
-      postcss-discard-overridden: 7.0.0(postcss@8.5.2)
-      postcss-merge-longhand: 7.0.4(postcss@8.5.2)
-      postcss-merge-rules: 7.0.4(postcss@8.5.2)
-      postcss-minify-font-values: 7.0.0(postcss@8.5.2)
-      postcss-minify-gradients: 7.0.0(postcss@8.5.2)
-      postcss-minify-params: 7.0.2(postcss@8.5.2)
-      postcss-minify-selectors: 7.0.4(postcss@8.5.2)
-      postcss-normalize-charset: 7.0.0(postcss@8.5.2)
-      postcss-normalize-display-values: 7.0.0(postcss@8.5.2)
-      postcss-normalize-positions: 7.0.0(postcss@8.5.2)
-      postcss-normalize-repeat-style: 7.0.0(postcss@8.5.2)
-      postcss-normalize-string: 7.0.0(postcss@8.5.2)
-      postcss-normalize-timing-functions: 7.0.0(postcss@8.5.2)
-      postcss-normalize-unicode: 7.0.2(postcss@8.5.2)
-      postcss-normalize-url: 7.0.0(postcss@8.5.2)
-      postcss-normalize-whitespace: 7.0.0(postcss@8.5.2)
-      postcss-ordered-values: 7.0.1(postcss@8.5.2)
-      postcss-reduce-initial: 7.0.2(postcss@8.5.2)
-      postcss-reduce-transforms: 7.0.0(postcss@8.5.2)
-      postcss-svgo: 7.0.1(postcss@8.5.2)
-      postcss-unique-selectors: 7.0.3(postcss@8.5.2)
+      css-declaration-sorter: 7.2.0(postcss@8.5.3)
+      cssnano-utils: 5.0.0(postcss@8.5.3)
+      postcss: 8.5.3
+      postcss-calc: 10.0.2(postcss@8.5.3)
+      postcss-colormin: 7.0.2(postcss@8.5.3)
+      postcss-convert-values: 7.0.4(postcss@8.5.3)
+      postcss-discard-comments: 7.0.3(postcss@8.5.3)
+      postcss-discard-duplicates: 7.0.1(postcss@8.5.3)
+      postcss-discard-empty: 7.0.0(postcss@8.5.3)
+      postcss-discard-overridden: 7.0.0(postcss@8.5.3)
+      postcss-merge-longhand: 7.0.4(postcss@8.5.3)
+      postcss-merge-rules: 7.0.4(postcss@8.5.3)
+      postcss-minify-font-values: 7.0.0(postcss@8.5.3)
+      postcss-minify-gradients: 7.0.0(postcss@8.5.3)
+      postcss-minify-params: 7.0.2(postcss@8.5.3)
+      postcss-minify-selectors: 7.0.4(postcss@8.5.3)
+      postcss-normalize-charset: 7.0.0(postcss@8.5.3)
+      postcss-normalize-display-values: 7.0.0(postcss@8.5.3)
+      postcss-normalize-positions: 7.0.0(postcss@8.5.3)
+      postcss-normalize-repeat-style: 7.0.0(postcss@8.5.3)
+      postcss-normalize-string: 7.0.0(postcss@8.5.3)
+      postcss-normalize-timing-functions: 7.0.0(postcss@8.5.3)
+      postcss-normalize-unicode: 7.0.2(postcss@8.5.3)
+      postcss-normalize-url: 7.0.0(postcss@8.5.3)
+      postcss-normalize-whitespace: 7.0.0(postcss@8.5.3)
+      postcss-ordered-values: 7.0.1(postcss@8.5.3)
+      postcss-reduce-initial: 7.0.2(postcss@8.5.3)
+      postcss-reduce-transforms: 7.0.0(postcss@8.5.3)
+      postcss-svgo: 7.0.1(postcss@8.5.3)
+      postcss-unique-selectors: 7.0.3(postcss@8.5.3)
 
-  cssnano-utils@5.0.0(postcss@8.5.2):
+  cssnano-utils@5.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  cssnano@7.0.6(postcss@8.5.2):
+  cssnano@7.0.6(postcss@8.5.3):
     dependencies:
-      cssnano-preset-default: 7.0.6(postcss@8.5.2)
+      cssnano-preset-default: 7.0.6(postcss@8.5.3)
       lilconfig: 3.1.3
-      postcss: 8.5.2
+      postcss: 8.5.3
 
   csso@5.0.5:
     dependencies:
@@ -14432,11 +14436,11 @@ snapshots:
       string.prototype.matchall: 4.0.12
       string.prototype.repeat: 1.0.0
 
-  eslint-plugin-tailwindcss@3.18.0(tailwindcss@4.0.6):
+  eslint-plugin-tailwindcss@3.18.0(tailwindcss@4.0.9):
     dependencies:
       fast-glob: 3.3.2
       postcss: 8.5.2
-      tailwindcss: 4.0.6
+      tailwindcss: 4.0.9
 
   eslint-plugin-testing-library@5.11.1(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.3):
     dependencies:
@@ -15091,9 +15095,9 @@ snapshots:
 
   icss-replace-symbols@1.1.0: {}
 
-  icss-utils@5.1.0(postcss@8.5.2):
+  icss-utils@5.1.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
   ieee754@1.2.1: {}
 
@@ -15663,13 +15667,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  jest-transform-css@6.0.2(postcss@8.5.2):
+  jest-transform-css@6.0.2(postcss@8.5.3):
     dependencies:
       common-tags: 1.8.2
       cross-spawn: 7.0.6
-      postcss: 8.5.2
-      postcss-load-config: 4.0.1(postcss@8.5.2)
-      postcss-modules: 4.3.1(postcss@8.5.2)
+      postcss: 8.5.3
+      postcss-load-config: 4.0.1(postcss@8.5.3)
+      postcss-modules: 4.3.1(postcss@8.5.3)
       style-inject: 0.3.0
     transitivePeerDependencies:
       - ts-node
@@ -16946,13 +16950,13 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-calc@10.0.2(postcss@8.5.2):
+  postcss-calc@10.0.2(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-selector-parser: 6.1.2
       postcss-value-parser: 4.2.0
 
-  postcss-cli@11.0.0(jiti@2.4.2)(postcss@8.5.2):
+  postcss-cli@11.0.0(jiti@2.4.2)(postcss@8.5.3):
     dependencies:
       chokidar: 3.6.0
       dependency-graph: 0.11.0
@@ -16960,9 +16964,9 @@ snapshots:
       get-stdin: 9.0.0
       globby: 14.0.2
       picocolors: 1.1.1
-      postcss: 8.5.2
-      postcss-load-config: 5.1.0(jiti@2.4.2)(postcss@8.5.2)
-      postcss-reporter: 7.1.0(postcss@8.5.2)
+      postcss: 8.5.3
+      postcss-load-config: 5.1.0(jiti@2.4.2)(postcss@8.5.3)
+      postcss-reporter: 7.1.0(postcss@8.5.3)
       pretty-hrtime: 1.0.3
       read-cache: 1.0.0
       slash: 5.1.0
@@ -16971,218 +16975,218 @@ snapshots:
       - jiti
       - tsx
 
-  postcss-colormin@7.0.2(postcss@8.5.2):
+  postcss-colormin@7.0.2(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
       caniuse-api: 3.0.0
       colord: 2.9.3
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-convert-values@7.0.4(postcss@8.5.2):
+  postcss-convert-values@7.0.4(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-discard-comments@7.0.3(postcss@8.5.2):
+  postcss-discard-comments@7.0.3(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-selector-parser: 6.1.2
 
-  postcss-discard-duplicates@7.0.1(postcss@8.5.2):
+  postcss-discard-duplicates@7.0.1(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-discard-empty@7.0.0(postcss@8.5.2):
+  postcss-discard-empty@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-discard-overridden@7.0.0(postcss@8.5.2):
+  postcss-discard-overridden@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-import@16.1.0(postcss@8.5.2):
+  postcss-import@16.1.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
 
-  postcss-load-config@4.0.1(postcss@8.5.2):
+  postcss-load-config@4.0.1(postcss@8.5.3):
     dependencies:
       lilconfig: 2.1.0
       yaml: 2.6.1
     optionalDependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-load-config@5.1.0(jiti@2.4.2)(postcss@8.5.2):
+  postcss-load-config@5.1.0(jiti@2.4.2)(postcss@8.5.3):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.6.1
     optionalDependencies:
       jiti: 2.4.2
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-load-config@6.0.1(jiti@2.4.2)(postcss@8.5.2)(yaml@2.6.1):
+  postcss-load-config@6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.6.1):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 2.4.2
-      postcss: 8.5.2
+      postcss: 8.5.3
       yaml: 2.6.1
 
-  postcss-loader@8.1.1(postcss@8.5.2)(typescript@5.7.3):
+  postcss-loader@8.1.1(postcss@8.5.3)(typescript@5.7.3):
     dependencies:
       cosmiconfig: 9.0.0(typescript@5.7.3)
       jiti: 1.21.6
-      postcss: 8.5.2
+      postcss: 8.5.3
       semver: 7.6.3
     transitivePeerDependencies:
       - typescript
 
-  postcss-merge-longhand@7.0.4(postcss@8.5.2):
+  postcss-merge-longhand@7.0.4(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
-      stylehacks: 7.0.4(postcss@8.5.2)
+      stylehacks: 7.0.4(postcss@8.5.3)
 
-  postcss-merge-rules@7.0.4(postcss@8.5.2):
+  postcss-merge-rules@7.0.4(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
       caniuse-api: 3.0.0
-      cssnano-utils: 5.0.0(postcss@8.5.2)
-      postcss: 8.5.2
+      cssnano-utils: 5.0.0(postcss@8.5.3)
+      postcss: 8.5.3
       postcss-selector-parser: 6.1.2
 
-  postcss-minify-font-values@7.0.0(postcss@8.5.2):
+  postcss-minify-font-values@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-minify-gradients@7.0.0(postcss@8.5.2):
+  postcss-minify-gradients@7.0.0(postcss@8.5.3):
     dependencies:
       colord: 2.9.3
-      cssnano-utils: 5.0.0(postcss@8.5.2)
-      postcss: 8.5.2
+      cssnano-utils: 5.0.0(postcss@8.5.3)
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-minify-params@7.0.2(postcss@8.5.2):
+  postcss-minify-params@7.0.2(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
-      cssnano-utils: 5.0.0(postcss@8.5.2)
-      postcss: 8.5.2
+      cssnano-utils: 5.0.0(postcss@8.5.3)
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-minify-selectors@7.0.4(postcss@8.5.2):
+  postcss-minify-selectors@7.0.4(postcss@8.5.3):
     dependencies:
       cssesc: 3.0.0
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-selector-parser: 6.1.2
 
-  postcss-modules-extract-imports@3.1.0(postcss@8.5.2):
+  postcss-modules-extract-imports@3.1.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-modules-local-by-default@4.1.0(postcss@8.5.2):
+  postcss-modules-local-by-default@4.1.0(postcss@8.5.3):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.2)
-      postcss: 8.5.2
+      icss-utils: 5.1.0(postcss@8.5.3)
+      postcss: 8.5.3
       postcss-selector-parser: 7.0.0
       postcss-value-parser: 4.2.0
 
-  postcss-modules-scope@3.2.1(postcss@8.5.2):
+  postcss-modules-scope@3.2.1(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-selector-parser: 7.0.0
 
-  postcss-modules-values@4.0.0(postcss@8.5.2):
+  postcss-modules-values@4.0.0(postcss@8.5.3):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.2)
-      postcss: 8.5.2
+      icss-utils: 5.1.0(postcss@8.5.3)
+      postcss: 8.5.3
 
-  postcss-modules@4.3.1(postcss@8.5.2):
+  postcss-modules@4.3.1(postcss@8.5.3):
     dependencies:
       generic-names: 4.0.0
       icss-replace-symbols: 1.1.0
       lodash.camelcase: 4.3.0
-      postcss: 8.5.2
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.2)
-      postcss-modules-local-by-default: 4.1.0(postcss@8.5.2)
-      postcss-modules-scope: 3.2.1(postcss@8.5.2)
-      postcss-modules-values: 4.0.0(postcss@8.5.2)
+      postcss: 8.5.3
+      postcss-modules-extract-imports: 3.1.0(postcss@8.5.3)
+      postcss-modules-local-by-default: 4.1.0(postcss@8.5.3)
+      postcss-modules-scope: 3.2.1(postcss@8.5.3)
+      postcss-modules-values: 4.0.0(postcss@8.5.3)
       string-hash: 1.1.3
 
-  postcss-normalize-charset@7.0.0(postcss@8.5.2):
+  postcss-normalize-charset@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-normalize-display-values@7.0.0(postcss@8.5.2):
+  postcss-normalize-display-values@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-positions@7.0.0(postcss@8.5.2):
+  postcss-normalize-positions@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-repeat-style@7.0.0(postcss@8.5.2):
+  postcss-normalize-repeat-style@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-string@7.0.0(postcss@8.5.2):
+  postcss-normalize-string@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-timing-functions@7.0.0(postcss@8.5.2):
+  postcss-normalize-timing-functions@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-unicode@7.0.2(postcss@8.5.2):
+  postcss-normalize-unicode@7.0.2(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-url@7.0.0(postcss@8.5.2):
+  postcss-normalize-url@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-whitespace@7.0.0(postcss@8.5.2):
+  postcss-normalize-whitespace@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-ordered-values@7.0.1(postcss@8.5.2):
+  postcss-ordered-values@7.0.1(postcss@8.5.3):
     dependencies:
-      cssnano-utils: 5.0.0(postcss@8.5.2)
-      postcss: 8.5.2
+      cssnano-utils: 5.0.0(postcss@8.5.3)
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-prefix-selector@2.1.0(postcss@8.5.2):
+  postcss-prefix-selector@2.1.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-reduce-initial@7.0.2(postcss@8.5.2):
+  postcss-reduce-initial@7.0.2(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
       caniuse-api: 3.0.0
-      postcss: 8.5.2
+      postcss: 8.5.3
 
-  postcss-reduce-transforms@7.0.0(postcss@8.5.2):
+  postcss-reduce-transforms@7.0.0(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
 
-  postcss-reporter@7.1.0(postcss@8.5.2):
+  postcss-reporter@7.1.0(postcss@8.5.3):
     dependencies:
       picocolors: 1.1.1
-      postcss: 8.5.2
+      postcss: 8.5.3
       thenby: 1.3.4
 
   postcss-selector-parser@6.0.10:
@@ -17200,15 +17204,15 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-svgo@7.0.1(postcss@8.5.2):
+  postcss-svgo@7.0.1(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-value-parser: 4.2.0
       svgo: 3.3.2
 
-  postcss-unique-selectors@7.0.3(postcss@8.5.2):
+  postcss-unique-selectors@7.0.3(postcss@8.5.3):
     dependencies:
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-selector-parser: 6.1.2
 
   postcss-value-parser@4.2.0: {}
@@ -17220,6 +17224,12 @@ snapshots:
       source-map-js: 1.2.1
 
   postcss@8.5.2:
+    dependencies:
+      nanoid: 3.3.8
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+
+  postcss@8.5.3:
     dependencies:
       nanoid: 3.3.8
       picocolors: 1.1.1
@@ -18241,10 +18251,10 @@ snapshots:
       '@babel/core': 7.26.9
       babel-plugin-macros: 3.1.0
 
-  stylehacks@7.0.4(postcss@8.5.2):
+  stylehacks@7.0.4(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.2
-      postcss: 8.5.2
+      postcss: 8.5.3
       postcss-selector-parser: 6.1.2
 
   stylis@4.3.4: {}
@@ -18288,18 +18298,18 @@ snapshots:
 
   tailwind-merge@2.6.0: {}
 
-  tailwind-scrollbar@4.0.0(react@19.0.0)(tailwindcss@4.0.6):
+  tailwind-scrollbar@4.0.1(react@19.0.0)(tailwindcss@4.0.9):
     dependencies:
       prism-react-renderer: 2.4.1(react@19.0.0)
-      tailwindcss: 4.0.6
+      tailwindcss: 4.0.9
     transitivePeerDependencies:
       - react
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.0.6):
+  tailwindcss-animate@1.0.7(tailwindcss@4.0.9):
     dependencies:
-      tailwindcss: 4.0.6
+      tailwindcss: 4.0.9
 
-  tailwindcss@4.0.6: {}
+  tailwindcss@4.0.9: {}
 
   tapable@2.2.1: {}
 
@@ -18431,7 +18441,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsup@8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.2)(typescript@5.7.3)(yaml@2.6.1):
+  tsup@8.3.6(@swc/core@1.10.7(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.6.1):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.24.2)
       cac: 6.7.14
@@ -18441,7 +18451,7 @@ snapshots:
       esbuild: 0.24.2
       joycon: 3.1.1
       picocolors: 1.1.1
-      postcss-load-config: 6.0.1(jiti@2.4.2)(postcss@8.5.2)(yaml@2.6.1)
+      postcss-load-config: 6.0.1(jiti@2.4.2)(postcss@8.5.3)(yaml@2.6.1)
       resolve-from: 5.0.0
       rollup: 4.28.0
       source-map: 0.8.0-beta.0
@@ -18451,7 +18461,7 @@ snapshots:
       tree-kill: 1.2.2
     optionalDependencies:
       '@swc/core': 1.10.7(@swc/helpers@0.5.15)
-      postcss: 8.5.2
+      postcss: 8.5.3
       typescript: 5.7.3
     transitivePeerDependencies:
       - jiti
