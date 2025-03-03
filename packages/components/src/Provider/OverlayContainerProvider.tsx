@@ -1,21 +1,24 @@
 import { createContext, useContext } from 'react';
 import { useIsSSR } from '@react-aria/ssr';
 
-// needs an id for the portal container, it will be overgiven as string,
-// if there is no the body is used
-const OverlayContainerContext = createContext<string | undefined>(undefined);
+/**
+ * Context to provide the container element for overlay components.
+ * This is used by overlay components to append themselves to the correct container.
+ * If no container is provided, it falls back to `document.body`.
+ */
+const OverlayContainerContext = createContext<string | HTMLElement | undefined>(
+  undefined
+);
 
 export const OverlayContainerProvider = OverlayContainerContext.Provider;
 
 export const usePortalContainer = () => {
   const portalContainer = useContext(OverlayContainerContext);
-  const isSSR = useIsSSR();
 
-  const portal = isSSR
-    ? null
-    : portalContainer
-      ? document.getElementById(portalContainer)
-      : document.body;
+  if (useIsSSR()) return null;
 
-  return portal;
+  if (typeof portalContainer === 'string')
+    return document.getElementById(portalContainer);
+
+  return portalContainer || document.body;
 };
