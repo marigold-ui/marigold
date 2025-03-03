@@ -33,3 +33,4 @@ export { TextArea } from './TextArea.styles';
 export { Text } from './Text.styles';
 export { Tooltip } from './Tooltip.styles';
 export { Underlay } from './Underlay.styles';
+export { XLoader } from './XLoader.styles';
