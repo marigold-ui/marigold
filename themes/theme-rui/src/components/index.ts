@@ -28,6 +28,7 @@ export { Select } from './Select.styles';
 export { Slider } from './Slider.styles';
 export { Switch } from './Switch.styles';
 export { Table } from './Table.styles';
+export { Tabs } from './Tabs.styles';
 export { Tag } from './Tag.styles';
 export { TextArea } from './TextArea.styles';
 export { Text } from './Text.styles';
