@@ -15,6 +15,7 @@ export * from './Footer.styles';
 export * from './Header.styles';
 export * from './Headline.styles';
 export * from './HelpText.styles';
+export * from './IconButton.styles';
 export * from './Image.styles';
 export * from './Input.styles';
 export * from './Label.styles';

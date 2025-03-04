@@ -69,6 +69,7 @@ const theme: Theme = {
         },
       },
     }),
+    IconButton: cva(),
   },
 };
 

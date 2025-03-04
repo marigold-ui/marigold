@@ -61,6 +61,7 @@ const theme: Theme = {
       container: cva(),
       icon: cva(),
     },
+    IconButton: cva(''),
   },
 };
 

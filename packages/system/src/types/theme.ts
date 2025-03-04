@@ -53,6 +53,7 @@ export type Theme = {
       'container' | 'icon',
       ComponentStyleFunction<string, string>
     >;
+    IconButton?: ComponentStyleFunction<string, string>;
     Image?: ComponentStyleFunction<string, string>;
     Checkbox?: Record<
       'container' | 'label' | 'checkbox' | 'group',

@@ -1,12 +1,20 @@
 import { screen } from '@testing-library/react';
 import { ChevronDown } from '@marigold/icons';
-import { Theme } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { IconButton } from './IconButton';
 
 const theme: Theme = {
   name: 'test',
-  components: {},
+  components: {
+    IconButton: cva('cursor-pointer outline-0', {
+      variants: {
+        variant: {
+          navigation: 'hover:bg-hover hover:text-hover-foreground',
+        },
+      },
+    }),
+  },
 };
 
 const { render } = setup({ theme });
@@ -30,5 +38,17 @@ test('supports classname style', () => {
   const button = screen.getByRole('button');
   expect(button).toHaveClass(
     'shrink-0 cursor-pointer outline-0 text-muted-foreground'
+  );
+});
+
+test('supports variants', () => {
+  render(
+    <IconButton className="text-muted-foreground" variant="navigation">
+      <ChevronDown />
+    </IconButton>
+  );
+  const button = screen.getByRole('button');
+  expect(button).toHaveClass(
+    'shrink-0 cursor-pointer outline-0 text-muted-foreground hover:bg-hover hover:text-hover-foreground'
   );
 });

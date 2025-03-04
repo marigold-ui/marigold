@@ -5,7 +5,6 @@ import { ChevronLeft, ChevronRight } from '../icons';
 
 function MonthControls() {
   const classNames = useClassNames({ component: 'Calendar' });
-  const buttonClassNames = useClassNames({ component: 'Button' });
 
   return (
     <div
@@ -15,19 +14,15 @@ function MonthControls() {
       )}
     >
       <IconButton
-        className={cn(
-          'inline-flex items-center justify-center gap-[0.5ch]',
-          buttonClassNames
-        )}
+        className={cn('inline-flex items-center justify-center gap-[0.5ch]')}
+        variant="navigation"
         slot="previous"
       >
         <ChevronLeft />
       </IconButton>
       <IconButton
-        className={cn(
-          'inline-flex items-center justify-center gap-[0.5ch]',
-          buttonClassNames
-        )}
+        className={cn('inline-flex items-center justify-center gap-[0.5ch]')}
+        variant="navigation"
         slot="next"
       >
         <ChevronRight />
