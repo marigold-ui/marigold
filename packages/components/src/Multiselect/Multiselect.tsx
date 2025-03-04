@@ -207,9 +207,10 @@ export const Multiselect = ({
               zIndex: 1,
             }),
             // Return empty object to reset react-select styles
+            valueContainer: base => ({ ...base, padding: 0 }),
+            container: base => ({ ...base, pointerEvents: 'auto' }),
             menuList: () => ({}),
             option: ({}) => ({}),
-            valueContainer: base => ({ ...base, padding: 0 }),
             multiValue: () => ({}),
             multiValueLabel: () => ({}),
           }}
