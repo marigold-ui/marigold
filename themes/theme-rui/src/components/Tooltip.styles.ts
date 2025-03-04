@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tooltip: ThemeComponent<'Tooltip'> = {
   container: cva([
-    'bg-secondary text-secondary-foreground relative z-50 max-w-70 rounded-md border px-3 py-1.5 text-sm ',
+    'text-secondary-foreground relative z-50 max-w-70 rounded-md border border-border px-3 py-1.5 text-sm ',
     'placement-t:mb-2',
     'placement-b:mt-2',
     'placement-r:ml-2',
@@ -10,7 +10,7 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
   ]),
 
   arrow: cva([
-    'fill-secondary  stroke-secondary-foreground',
+    'fill-white  stroke-border',
 
     // right
     'data-[placement=right]:[&_svg]:rotate-90',
