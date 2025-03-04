@@ -1,5 +1,6 @@
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '../Button';
 import { Tooltip } from './Tooltip';
 
@@ -82,7 +83,7 @@ type Story = StoryObj<typeof meta>;
 export const Trigger: Story = {
   render: args => {
     return (
-      <div className="me-auto ms-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
+      <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
         <Tooltip.Trigger {...args}>
           <Button variant="primary">Hover me!</Button>
           <Tooltip>Look at this tooltip!</Tooltip>
@@ -104,7 +105,7 @@ export const ControlledTooltipTrigger: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setOpen] = useState(false);
     return (
-      <div className="me-auto ms-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">
+      <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">
         <Tooltip.Trigger open={open} onOpenChange={setOpen} {...args}>
           <Button variant="primary">Hover Me!</Button>
           <Tooltip>
