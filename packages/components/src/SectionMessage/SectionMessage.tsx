@@ -127,7 +127,7 @@ export const SectionMessage = ({
       >
         <div
           className={cn(
-            'h-5 w-5 self-center [grid-area:icon]',
+            'h-4 w-4 align-baseline leading-none [grid-area:icon]',
             classNames.icon
           )}
         >
@@ -138,7 +138,7 @@ export const SectionMessage = ({
             {...buttonProps}
             ref={buttonRef}
             aria-label="close"
-            className="h-5 w-5 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
+            className="h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0 [grid-area:close]"
             onClick={handleClose}
           >
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
