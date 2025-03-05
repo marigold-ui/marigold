@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Card } from '../Card';
 import { Headline } from '../Headline';
 import { List } from '../List';

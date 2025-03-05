@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { Table } from './Table';
 
