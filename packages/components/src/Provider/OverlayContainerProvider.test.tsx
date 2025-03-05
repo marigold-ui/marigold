@@ -1,47 +1,12 @@
 /**
  * @jest-environment jsdom
  */
-import { cleanup, fireEvent, renderHook, screen } from '@testing-library/react';
-import { Theme, cva } from '@marigold/system';
-import { Select } from '../Select';
-import { MarigoldProvider } from './MarigoldProvider';
+import { cleanup, render, renderHook } from '@testing-library/react';
+import { ReactNode } from 'react';
 import {
   OverlayContainerProvider,
   usePortalContainer,
 } from './OverlayContainerProvider';
-
-// Setup
-// ---------------
-const theme: Theme = {
-  name: 'test',
-  colors: {
-    black: '#000',
-  },
-  components: {
-    Popover: cva(),
-    Underlay: cva(),
-    Select: {
-      icon: cva(),
-      select: cva(),
-    },
-    Label: {
-      container: cva(),
-      indicator: cva(),
-    },
-    HelpText: {
-      container: cva(),
-      icon: cva(),
-    },
-    ListBox: {
-      container: cva(),
-      list: cva(),
-      option: cva(),
-      section: cva(),
-      header: cva(),
-    },
-    Field: cva(),
-  },
-};
 
 const mockMatchMedia = (matches: string[]) =>
   jest.fn().mockImplementation(query => ({
@@ -56,29 +21,103 @@ window.matchMedia = mockMatchMedia([
 
 afterEach(cleanup);
 
-test('renders portal container', async () => {
-  const wrapper = () => (
-    <>
-      <OverlayContainerProvider value="testid">
-        <MarigoldProvider theme={theme}>
-          <Select label="Label" data-testid="select" defaultOpen>
-            <Select.Section header="section">
-              <Select.Option id="one">one</Select.Option>
-              <Select.Option id="two">two</Select.Option>
-            </Select.Section>
-          </Select>
-        </MarigoldProvider>
+jest.mock('@react-aria/ssr', () => ({
+  useIsSSR: jest.fn(),
+}));
+
+describe('OverlayContainerProvider', () => {
+  test('it should return null if SSR', () => {
+    const Wrapper = ({ children }: { children: ReactNode }) => (
+      <>
+        <div id="testid"></div>
+        <OverlayContainerProvider value="testid">
+          {children}
+        </OverlayContainerProvider>
+      </>
+    );
+    render(
+      <Wrapper>
+        <div />
+      </Wrapper>
+    );
+    const { useIsSSR } = require('@react-aria/ssr');
+    useIsSSR.mockReturnValue(true);
+
+    const { result } = renderHook(() => usePortalContainer(), {
+      wrapper: Wrapper,
+    });
+
+    expect(result.current).toBe(null);
+  });
+
+  test('render portal container by id', () => {
+    const Wrapper = ({ children }: { children: ReactNode }) => (
+      <>
+        <div id="testid"></div>
+        <OverlayContainerProvider value="testid">
+          {children}
+        </OverlayContainerProvider>
+      </>
+    );
+    render(
+      <Wrapper>
+        <div />
+      </Wrapper>
+    );
+    const { useIsSSR } = require('@react-aria/ssr');
+    useIsSSR.mockReturnValue(false);
+
+    const { result } = renderHook(() => usePortalContainer(), {
+      wrapper: Wrapper,
+    });
+
+    expect(result.current).toBe(document.getElementById('testid'));
+  });
+
+  test('it should fallback to document.body if no container is provided', () => {
+    const Wrapper = ({ children }: { children: ReactNode }) => (
+      <OverlayContainerProvider value={undefined}>
+        {children}
       </OverlayContainerProvider>
-      <div id="testid"></div>
-    </>
-  );
+    );
+    render(
+      <Wrapper>
+        <div />
+      </Wrapper>
+    );
+    const { useIsSSR } = require('@react-aria/ssr');
+    useIsSSR.mockReturnValue(false);
 
-  const { result } = renderHook(() => usePortalContainer(), { wrapper });
-  const button = screen.getByRole('button');
-  fireEvent.click(button);
-  const item = screen.getByText('two');
+    const { result } = renderHook(() => usePortalContainer(), {
+      wrapper: Wrapper,
+    });
 
-  expect(item).toBeInTheDocument();
+    expect(result.current).toBe(document.body);
+  });
 
-  expect(result.current).toBeNull();
+  test('render portal container by passing an html element', () => {
+    const Wrapper = ({ children }: { children: ReactNode }) => (
+      <>
+        <div id="testid"></div>
+        <OverlayContainerProvider
+          value={document.getElementById('testid') as HTMLElement}
+        >
+          {children}
+        </OverlayContainerProvider>
+      </>
+    );
+    render(
+      <Wrapper>
+        <div />
+      </Wrapper>
+    );
+    const { useIsSSR } = require('@react-aria/ssr');
+    useIsSSR.mockReturnValue(false);
+
+    const { result } = renderHook(() => usePortalContainer(), {
+      wrapper: Wrapper,
+    });
+
+    expect(result.current).toBe(document.getElementById('testid'));
+  });
 });
