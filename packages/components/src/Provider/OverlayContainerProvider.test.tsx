@@ -40,6 +40,7 @@ const theme: Theme = {
       header: cva(),
     },
     Field: cva(),
+    IconButton: cva(),
   },
 };
 

@@ -69,6 +69,7 @@ const theme: Theme = {
       section: cva(),
       header: cva(),
     },
+    IconButton: cva(''),
   },
 };
 

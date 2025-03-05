@@ -38,6 +38,7 @@ const theme: Theme = {
     Field: cva(),
     Button: cva(),
     Underlay: cva(),
+    IconButton: cva(),
   },
 };
 

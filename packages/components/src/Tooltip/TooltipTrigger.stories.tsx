@@ -73,7 +73,6 @@ const meta = {
     closeDelay: 500,
     trigger: 'focus',
     defaultOpen: false,
-    open: false,
   },
 } satisfies Meta<typeof Tooltip.Trigger>;
 
@@ -102,7 +101,6 @@ export const Trigger: Story = {
 
 export const ControlledTooltipTrigger: Story = {
   render: args => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setOpen] = useState(false);
     return (
       <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] flex-col gap-2 pt-32">
