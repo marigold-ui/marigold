@@ -60,6 +60,13 @@ The `<MultiSelect>` component combines a text input with a ListBox, enabling use
 
 The `<MultiSelect>` component works best when users need to select multiple items from a large list of options (10+) and see their choices displayed as compact tags directly in the input. It’s helpful when you want to combine filtering (typing to narrow options) with visible selection feedback, saving space compared to checkboxes while allowing users to dynamically add or remove tags during the selection process.
 
+<Dont>
+  <Dont.Description>
+    Avoid using MultiSelect when users need to pick a single option, the list is
+    small, space isn’t an issue or search isn't necessary.
+  </Dont.Description>
+</Dont>
+
 ### Controlled
 
 The `onSelectionChange` and `onChange` props can be used to control the `Multiselect`.
