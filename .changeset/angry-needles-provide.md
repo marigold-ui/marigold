@@ -6,4 +6,4 @@
 
 feat([DST-668]):Introduce RUI theme to Marigold
 
-First stable version of Marigold new theme. Added styles for all existing components.
+First stable version of Marigold new theme. Added new accessible styles for all existing components.
