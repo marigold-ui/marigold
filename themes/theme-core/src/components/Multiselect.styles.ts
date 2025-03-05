@@ -15,7 +15,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'flex items-center gap-1',
     'has-[input[data-invalid=true]]:border-border-error',
     'leading-[22px]',
-    'has-[input[data-focused=true]]:outline-outline-focus -outline-offset-1 has-[input[data-focused=true]]:outline has-[input[data-focused=true]]:outline-1',
+    'has-[input[data-focused=true]]:outline-outline-focus -outline-offset-1 has-[input[data-focused=true]]:outline',
     'overflow-hidden has-[input[aria-readonly=true]]:border-transparent has-[input[aria-readonly=true]]:bg-transparent',
   ]),
 
@@ -48,7 +48,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   option: cva([
     'font-body text-[13px] text-text-base',
     'flex flex-col',
-    '[&:not([aria-disabled=true])]:hover:!text-text-base [&:not([aria-disabled=true])]:hover:!bg-linear-to-t from-highlight-start/80 to-highlight-end/90',
+    '[&:not([aria-disabled=true])]:hover:!text-text-inverted [&:not([aria-disabled=true])]:hover:!bg-linear-to-t from-highlight-start/80 to-highlight-end/90',
     'cursor-pointer px-1.5 py-0.5 outline-hidden',
     '[&.isFocused:not([aria-disabled=true])]:text-text-inverted [&.isFocused[aria-disabled=true]]:bg-transparent [&.isFocused:not([aria-disabled=true])]:bg-linear-to-t',
     'rac-selected:text-text-inverted aria-selected:bg-highlight',
