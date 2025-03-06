@@ -13,7 +13,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'has-[input[data-invalid=true]]:border-border-error',
     '[&>*:first-child]:p-0',
     // Using !important to override react-select styles
-    'has-[input[data-focused=true]]:!outline-outline-focus has-[input[data-focused=true]]:border-none has-[input[data-focused=true]]:shadow-none -outline-offset-1 has-[input[data-focused=true]]:!outline has-[input[data-focused=true]]:!outline-2',
+    'has-[input[data-focused=true]]:!outline-outline-focus has-[input[data-focused=true]]:border-none has-[input[data-focused=true]]:shadow-none -outline-offset-1 has-[input[data-focused=true]]:!outline',
     'has-[input[aria-readonly=true]]:focus:!border-border-base read-only:focus:!outline-hidden',
   ]),
 
@@ -28,6 +28,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   ]),
 
   tag: cva([
+    'h-7',
     'border-border-base bg-transparent ',
     'flex items-center gap-1 ',
     'rounded-md border p-1 m-0 ',
@@ -50,5 +51,5 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'rac-selected:text-text-inverted aria-selected:bg-highlight',
     'aria-disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
   ]),
-  valueContainer: cva(' gap-2'),
+  valueContainer: cva(' gap-2 h-8'),
 };
