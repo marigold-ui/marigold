@@ -13,7 +13,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'has-[input[data-invalid=true]]:border-border-error',
     '[&>*:first-child]:p-0',
     // Using !important to override react-select styles
-    'has-[input[data-focused=true]]:!outline-outline-focus has-[input[data-focused=true]]:border-none has-[input[data-focused=true]]:shadow-none -outline-offset-1 has-[input[data-focused=true]]:!outline',
+    'has-[input[data-focused=true]]:!outline-outline-focus has-[input[data-focused=true]]:shadow-none -outline-offset-1 has-[input[data-focused=true]]:!outline-2',
     'has-[input[aria-readonly=true]]:focus:!border-border-base read-only:focus:!outline-hidden',
   ]),
 

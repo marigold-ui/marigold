@@ -8,7 +8,7 @@ badge: new
 
 It allows users to choose multiple options by clicking on the items in the list and provides a comprehensive view of available options and the selected items.
 
-<SectionMessage type="warning">
+<SectionMessage>
   <SectionMessage.Title>Deprecated Multiselect Recipe</SectionMessage.Title>
   <SectionMessage.Content>
     The previous multiselect recipe pattern has been replaced by this official
@@ -57,6 +57,17 @@ The `<MultiSelect>` component combines a text input with a ListBox, enabling use
 <AppearanceTable component={title} />{' '}
 
 ## Usage
+
+<SectionMessage variant="warning">
+  <SectionMessage.Title>Keyboard Navigation Issues</SectionMessage.Title>
+  <SectionMessage.Content>
+    The Multiselect component has some notable accessibility issues with
+    keyboard navigation. As shown in the video, the focus indicator gets hidden
+    by the disabled state, which stops the expected behavior of skipping
+    disabled options. This can cause users to get briefly confused due to the
+    lack of clear visual feedback.
+  </SectionMessage.Content>
+</SectionMessage>
 
 The `<MultiSelect>` component works best when users need to select multiple items from a large list of options (10+) and see their choices displayed as compact tags directly in the input. It’s helpful when you want to combine filtering (typing to narrow options) with visible selection feedback, saving space compared to checkboxes while allowing users to dynamically add or remove tags during the selection process.
 
