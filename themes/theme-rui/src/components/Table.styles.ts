@@ -44,7 +44,7 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'border-b border-border transition-colors',
       'focus-visible:outline-2 outline-offset-2 outline-ring/70',
-      'aria-[selected=true]:bg-muted hover:bg-transparent',
+      'aria-[selected=true]:bg-muted hover:bg-transparent data-disabled:cursor-not-allowed',
     ],
     {
       variants: {
