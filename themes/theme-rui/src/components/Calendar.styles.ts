@@ -21,5 +21,5 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendarHeader: cva([
     'size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground/80',
   ]),
-  calendarGrid: cva(),
+  calendarGrid: cva('[&_td]:p-2'),
 };
