@@ -40,9 +40,16 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
+    variant: {
+      control: {
+        type: 'radio',
+      },
+      options: ['default', 'card'],
+    },
   },
   args: {
     defaultExpandedKeys: ['1'],
+    variant: 'default',
   },
 } satisfies Meta;
 
@@ -61,7 +68,9 @@ export const Basic: Story = {
       </Accordion.Item>
       <Accordion.Item>
         <Accordion.Header>Personal Settings</Accordion.Header>
-        <Accordion.Content>two</Accordion.Content>
+        <Accordion.Content>
+          Some longer Text to see if it looks good
+        </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item>
         <Accordion.Header>Billing Adress</Accordion.Header>

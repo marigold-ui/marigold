@@ -77,7 +77,7 @@ export const _Calendar = ({
   return (
     <Calendar
       className={cn(
-        'flex min-h-[350px] w-[360px] flex-col rounded-xs p-4',
+        'flex min-h-[350px] w-fit flex-col rounded-xs p-4',
         classNames.calendar
       )}
       {...props}
@@ -87,7 +87,7 @@ export const _Calendar = ({
       ) : (
         <>
           <div className="mb-4 flex items-center justify-between">
-            <div className="flex w-full gap-4">
+            <div className="flex w-fit gap-4">
               <CalendarListBox
                 type="month"
                 isDisabled={props.isDisabled}

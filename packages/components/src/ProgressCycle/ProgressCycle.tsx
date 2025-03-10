@@ -1,6 +1,6 @@
 import type RAC from 'react-aria-components';
 import { ProgressBar } from 'react-aria-components';
-import { SVG } from '@marigold/system';
+import { SVG, cn, useClassNames } from '@marigold/system';
 
 export interface ProgressCycleProps extends RAC.ProgressBarProps {
   /**
@@ -22,6 +22,8 @@ export const ProgressCycle = ({
   }
 
   const radius = `calc(50% - ${strokeWidth / 2}px)`;
+
+  const classNames = useClassNames({ component: 'ProgressCycle' });
 
   return (
     <ProgressBar {...props} aria-label="loading" isIndeterminate>
@@ -47,7 +49,10 @@ export const ProgressCycle = ({
           strokeDasharray="100 200"
           strokeDashoffset="0"
           strokeLinecap="round"
-          className="animate-progress-cycle origin-center -rotate-90 stroke-gray-800"
+          className={cn(
+            'animate-progress-cycle origin-center -rotate-90',
+            classNames
+          )}
         />
       </SVG>
     </ProgressBar>

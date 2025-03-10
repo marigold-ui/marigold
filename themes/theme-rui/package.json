@@ -46,11 +46,13 @@
     "cssnano": "7.0.6",
     "postcss-cli": "11.0.0",
     "tailwindcss": "4.0.9",
+    "tailwindcss-animate": "1.0.7",
     "tsup": "8.3.6"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*"
+    "@marigold/system": "workspace:*",
+    "@marigold/theme-plugins": "workspace:*"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css dist/theme.css"
