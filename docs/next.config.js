@@ -20,6 +20,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/introduction/getting-started',
+        destination: '/getting-started/overview',
+        permanent: true,
+      },
+      {
         source: '/foundations',
         destination: '/foundations/overview',
         permanent: true,
@@ -32,6 +37,11 @@ const nextConfig = {
       {
         source: '/patterns',
         destination: '/patterns/overview',
+        permanent: true,
+      },
+      {
+        source: '/recipes/multiselect-recipes',
+        destination: '/components/form/multiselect',
         permanent: true,
       },
       {
