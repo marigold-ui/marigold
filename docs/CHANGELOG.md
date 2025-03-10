@@ -1,5 +1,18 @@
 # @marigold/docs
 
+## 11.2.1
+
+### Patch Changes
+
+- 4f16155: chore([DST-711]): add more channels to Get in touch page
+- Updated dependencies [619b4b2]
+  - @marigold/components@11.2.1
+  - @marigold/theme-b2b@29.2.2
+  - @marigold/theme-core@28.2.2
+  - @marigold/theme-docs@2.4.2
+  - @marigold/system@11.2.1
+  - @marigold/icons@1.3.1
+
 ## 11.2.0
 
 ### Patch Changes
