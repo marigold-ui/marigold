@@ -11,7 +11,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   ]),
   container: cva(),
   label: cva(
-    'text-sm leading-4 font-normal text-foreground group-disabled/checkbox:text-disabled-foreground'
+    'text-sm leading-4 group-[group="checkbox"]/checkboxgroup:font-normal font-medium text-foreground group-disabled/checkbox:text-disabled-foreground'
   ),
   group: cva(),
 };
