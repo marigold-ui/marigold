@@ -27,10 +27,10 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   icon: cva('', {
     variants: {
       variant: {
-        success: 'text-success',
-        warning: 'text-warning',
-        info: 'text-info',
-        error: 'text-destructive',
+        success: 'text-success-muted-accent',
+        warning: 'text-warning-muted-accent',
+        info: 'text-info-muted-accent',
+        error: 'text-destructive-muted-accent',
       },
     },
     defaultVariants: {
