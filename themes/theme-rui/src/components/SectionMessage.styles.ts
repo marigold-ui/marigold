@@ -3,10 +3,8 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva(
     [
-      'grid-cols-[min-content_auto_min-content] gap-4 [grid-template-areas:"icon_title_close""icon_content_content"]',
-      //'bg-bg-surface border-y-2 border-l-[16px] border-r-2 border-solid text-sm',
-      //'items-center px-4 pb-4 pt-2',
-      'bg-background z-50 max-w-[400px] rounded-md border p-4',
+      'grid-cols-[min-content_auto_min-content] gap-x-4 gap-y-2 [grid-template-areas:"icon_title_close""icon_content_content"]',
+      'bg-background z-50 max-w-[601px] rounded-sm border p-4',
     ],
     {
       variants: {
@@ -25,8 +23,8 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       },
     }
   ),
-  title: cva('text-sm font-medium leading-none'),
-  content: cva('text-muted-foreground text-sm', {
+  title: cva('text-base leading-5 font-bold'),
+  content: cva('text-muted-foreground text-sm leading-5 font-normal', {
     variants: {
       variant: {
         success: 'text-success-muted-foreground',
@@ -39,7 +37,7 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       variant: 'info',
     },
   }),
-  icon: cva('', {
+  icon: cva('h-4 w-4 align-baseline leading-none pt-0.5', {
     variants: {
       variant: {
         success: 'text-success-muted-accent',
@@ -52,4 +50,7 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       variant: 'info',
     },
   }),
+  close: cva(
+    'h-[9.98px] w-[9.98px] cursor-pointer border-none p-0 leading-normal outline-0'
+  ),
 };
