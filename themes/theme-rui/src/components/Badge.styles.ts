@@ -13,11 +13,20 @@ export const Badge: ThemeComponent<'Badge'> = cva(
       variant: {
         default: 'border-border bg-white',
         primary: 'bg-brand text-brand-foreground border-transparent',
-        success: ['bg-white border-success before:bg-success gap-1.5', circle],
-        warning: ['bg-white border-warning before:bg-warning gap-1.5', circle],
-        info: ['bg-white border-info before:bg-info gap-1.5', circle],
+        success: [
+          'bg-success-muted text-success-muted-foreground border-success-muted-accent before:bg-success-muted-accent gap-1.5',
+          circle,
+        ],
+        warning: [
+          'bg-warning-muted text-warning-muted-foreground border-warning-muted-accent before:bg-warning-muted-accent gap-1.5',
+          circle,
+        ],
+        info: [
+          'bg-info-muted text-info-muted-foreground border-info-muted-accent before:bg-info-muted-accent gap-1.5',
+          circle,
+        ],
         error: [
-          'bg-white border-destructive before:bg-destructive gap-1.5',
+          'bg-destructive-muted text-destructive-muted-foreground border-destructive-muted-accent before:bg-destructive-muted-accent gap-1.5',
           circle,
         ],
       },
