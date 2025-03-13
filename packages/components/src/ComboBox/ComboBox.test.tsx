@@ -197,7 +197,7 @@ test('uses field structure', () => {
   const label = screen.queryByText('Label');
   expect(label).toBeInTheDocument();
 
-  const description = screen.queryByText('Some helpful text');
+  const description = screen.queryAllByText('Some helpful text')[0];
   expect(description).toBeInTheDocument();
 
   const error = screen.queryByText('Whoopsie');
@@ -302,7 +302,8 @@ test('supporst showing a help text', () => {
     </ComboBox>
   );
 
-  expect(screen.getByText('This is a description')).toBeInTheDocument();
+  const description = screen.getAllByText('This is a description')[0];
+  expect(description).toBeInTheDocument();
 });
 
 test('supporst showing an error', () => {

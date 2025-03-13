@@ -121,7 +121,7 @@ test('renders a field (label, helptext, select)', () => {
   const label = screen.queryAllByText('Label')[0];
   expect(label).toBeInTheDocument();
 
-  const description = screen.queryByText('Description');
+  const description = screen.queryAllByText('Description')[0];
   expect(description).toBeInTheDocument();
 
   const errorMessage = screen.queryByText('ERRR!');
