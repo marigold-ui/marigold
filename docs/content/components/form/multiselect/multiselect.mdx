@@ -61,11 +61,12 @@ The `<MultiSelect>` component combines a text input with a ListBox, enabling use
 <SectionMessage variant="warning">
   <SectionMessage.Title>Keyboard Navigation Issues</SectionMessage.Title>
   <SectionMessage.Content>
-    The Multiselect component has some notable accessibility issues with
-    keyboard navigation. As shown in the video, the focus indicator gets hidden
-    by the disabled state, which stops the expected behavior of skipping
-    disabled options. This can cause users to get briefly confused due to the
-    lack of clear visual feedback.
+    The Multiselect component exhibits notable accessibility challenges with
+    keyboard navigation. When interacting with disabled options, the focus
+    indicator becomes obscured, preventing the expected behavior of skipping
+    disabled items. This lack of clear visual feedback during navigation can
+    temporarily confuse users. Note: This accessibility limitation stems from
+    the react-select library's implementation
   </SectionMessage.Content>
 </SectionMessage>
 
