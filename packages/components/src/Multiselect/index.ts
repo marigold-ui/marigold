@@ -1,4 +1,1 @@
-/**
- * @private
- */
 export * from './Multiselect';
