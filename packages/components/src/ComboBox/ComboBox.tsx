@@ -7,8 +7,8 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { Button } from '../Button';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
+import { IconButton } from '../IconButton';
 import { Input } from '../Input';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
@@ -138,9 +138,9 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
       <FieldBase as={ComboBox} ref={ref} {...props}>
         <Input
           action={
-            <Button className={classNames}>
+            <IconButton className={classNames}>
               <ChevronDown className="size-4" />
-            </Button>
+            </IconButton>
           }
         />
         <Popover>

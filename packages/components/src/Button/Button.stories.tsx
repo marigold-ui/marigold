@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Container, Stack } from '@marigold/components';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
 
@@ -56,6 +57,7 @@ const meta = {
       options: [
         'primary',
         'secondary',
+        'destructive',
         'ghost',
         'link',
         'text',
@@ -89,7 +91,27 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Button {...args} />,
+  parameters: {
+    controls: { exclude: ['variant', 'children', 'loading'] },
+  },
+  render: args => (
+    <Container>
+      <Stack space={4}>
+        <Button {...args} variant="primary">
+          Primary
+        </Button>
+        <Button {...args} variant="secondary">
+          Secondary
+        </Button>
+        <Button {...args} variant="destructive">
+          Destructive
+        </Button>
+        <Button {...args} variant="ghost">
+          Ghost
+        </Button>
+      </Stack>
+    </Container>
+  ),
 };
 
 export const WithIcon: Story = {

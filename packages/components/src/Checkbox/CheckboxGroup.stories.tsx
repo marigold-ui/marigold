@@ -79,6 +79,17 @@ const meta = {
         defaultValue: { summary: 'This is a help text description' },
       },
     },
+    orientation: {
+      control: {
+        type: 'radio',
+      },
+      options: ['vertical', 'horizontal'],
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'vertical' },
+      },
+      description: 'Sets the direction of the checkbox group',
+    },
   },
   args: {
     description: 'This is a help text description',

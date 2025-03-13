@@ -94,9 +94,10 @@ const _CheckboxGroup = ({
       <div
         role="presentation"
         data-orientation={orientation}
+        data-group="checkbox"
         className={cn(
           classNames.group,
-          'flex items-start',
+          'group/checkboxgroup flex items-start',
           orientation === 'vertical'
             ? 'flex-col gap-[0.5ch]'
             : 'flex-row gap-[1.5ch]'

@@ -11,7 +11,16 @@ const meta = {
       control: {
         type: 'radio',
       },
-      options: ['default', 'inverted', 'success', 'info', 'warning', 'error'],
+      options: [
+        'default',
+        'inverted',
+        'success',
+        'info',
+        'warning',
+        'error',
+        'primary',
+        'secondary',
+      ],
       description: 'The variants of the badge',
     },
     children: {
@@ -21,7 +30,7 @@ const meta = {
       description: 'Contents of the badge',
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'new' },
+        defaultValue: { summary: 'Status' },
       },
     },
     size: {
@@ -31,7 +40,7 @@ const meta = {
     },
   },
   args: {
-    children: 'new',
+    children: 'Status',
     variant: 'info',
   },
 } satisfies Meta<typeof Badge>;
