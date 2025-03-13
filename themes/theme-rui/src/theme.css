@@ -65,15 +65,27 @@
   --color-destructive-muted: var(--color-red-100);
   --color-destructive-muted-foreground: var(--color-red-950);
 
+  /* used for success elements, like icons */
+  --color-success: var(--color-green-500);
+  --color-success-foreground: var(--color-white);
+
   /* muted variant of success token, used in badge */
   --color-success-muted-accent: var(--color-green-600);
   --color-success-muted: var(--color-green-100);
   --color-success-muted-foreground: var(--color-green-950);
 
+  /* used for warning elements, like icons */
+  --color-warning: var(--color-yellow-400);
+  --color-warning-foreground: var(--color-white);
+
   /* muted variant of warning token, used in badge */
   --color-warning-muted-accent: var(--color-yellow-600);
   --color-warning-muted: var(--color-yellow-100);
   --color-warning-muted-foreground: var(--color-yellow-950);
+
+  /* used for info elements, like icons */
+  --color-info: var(--color-blue-500);
+  --color-info-foreground: var(--color-white);
 
   /* muted variant of info token, used in badge */
   --color-info-muted-accent: var(--color-blue-600);
