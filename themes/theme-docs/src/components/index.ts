@@ -5,6 +5,7 @@ export * from './Header.styles';
 export * from './Headline.styles';
 export * from './Field.styles';
 export * from './HelpText.styles';
+export * from './IconButton.styles';
 export * from './Input.styles';
 export * from './Label.styles';
 export * from './Link.styles';

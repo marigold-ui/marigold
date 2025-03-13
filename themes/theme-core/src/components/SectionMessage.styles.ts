@@ -44,4 +44,5 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       variant: 'info',
     },
   }),
+  close: cva(''),
 };

@@ -26,10 +26,7 @@ const getTextValue = (el: HTMLElement): any => {
 const theme: Theme = {
   name: 'date picker test',
   components: {
-    DatePicker: {
-      button: cva(''),
-      container: cva(''),
-    },
+    DatePicker: cva(''),
     DateField: {
       action: cva(''),
       field: cva(''),
@@ -64,6 +61,7 @@ const theme: Theme = {
       container: cva(),
       icon: cva(),
     },
+    IconButton: cva(''),
   },
 };
 
