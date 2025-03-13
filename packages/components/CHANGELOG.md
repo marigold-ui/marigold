@@ -1,5 +1,16 @@
 # @marigold/components
 
+## 11.2.1
+
+### Patch Changes
+
+- 40db199: feat(rui): Add more styles to components
+- 619b4b2: fix([DST-702]): add space for multiple selection mode in `<SelectList>`
+
+  There were no space between `<Checkbox>` and `children` when using `<SelectList>` in multiple selection mode.
+
+  - @marigold/system@11.2.1
+
 ## 11.2.0
 
 ### Minor Changes
