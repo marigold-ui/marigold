@@ -1,7 +1,7 @@
 ---
 "@marigold/docs": patch
 "@marigold/components": patch
-"@marigold/theme-rui": major
+"@marigold/theme-rui": minor
 ---
 
 feat([DST-668]):Introduce RUI theme to Marigold
