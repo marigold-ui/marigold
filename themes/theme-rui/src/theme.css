@@ -21,6 +21,9 @@
 @plugin "tailwindcss-animate";
 
 @theme {
+  --font-base: 'Inter', system-ui, sans-serif;
+  --font-base-variable: 'Inter var', system-ui, sans-serif;
+
   /* orange (use for accent) */
   --color-orange-50: #fff9ed;
   --color-orange-100: #fff1d5;
