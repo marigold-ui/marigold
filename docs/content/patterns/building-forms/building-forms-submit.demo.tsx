@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useActionState, useState } from 'react';
+import { formData } from 'zod-form-data';
 import { Button, Form, Stack, TextField } from '@marigold/components';
 
 export default () => {
-  const [result, setResult] = useState<object>();
+  /*const [result, setResult] = useState<object>();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     // Prevent page refresh.
@@ -13,11 +14,18 @@ export default () => {
 
     // Submit or do whatever you want
     setResult(data);
-  };
+  };*/
+  const [result, formAction] = useActionState<object | null, FormData>(
+    (_previousState, formData) => {
+      const promoCode = formData.get('promocode');
+      return { promocode: promoCode };
+    },
+    null
+  );
 
   return (
     <Stack space={4}>
-      <Form onSubmit={onSubmit}>
+      <Form action={formAction}>
         <Stack space={1} alignX="left">
           <TextField label="Promo Code" name="promocode" width={44} />
           <Button variant="primary" size="small" type="submit">
