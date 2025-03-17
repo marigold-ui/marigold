@@ -4,6 +4,7 @@ export const Switch: ThemeComponent<'Switch'> = {
   container: cva('justify-between'),
   track: cva(
     [
+      'h-6 w-12 basis-12 rounded-3xl group-disabled/switch:cursor-not-allowed',
       'bg-bg-inverted/20 border-border-base border',
       'group-disabled/switch:group-selected/switch:bg-bg-base-disabled',
       'group-selected/switch:bg-bg-selected-input',
@@ -18,6 +19,11 @@ export const Switch: ThemeComponent<'Switch'> = {
   ),
   thumb: cva(
     [
+      'h-[22px] w-[22px]',
+      'cubic-bezier(.7,0,.3,1)',
+      'absolute top-px left-0',
+      'block translate-x-[1px] rounded-full transition-all duration-100 ease-in-out will-change-transform',
+      'group-selected/switch:translate-x-[calc(47px_-_100%)]',
       'bg-bg-base',
       'group-disabled/switch:bg-bg-base-disabled',
       'border-border-base border border-solid',

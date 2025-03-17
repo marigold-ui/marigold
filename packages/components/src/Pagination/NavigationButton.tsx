@@ -42,7 +42,7 @@ export const NavigationButton = (props: PaginationButtonProps) => {
       {...buttonProps}
       {...rest}
       disabled={isDisabled}
-      className={cn(classNames, controlLabel && 'w-24 px-2')}
+      className={cn(classNames.navigationButton, controlLabel && 'w-24 px-2')}
       data-selected={isSelected}
     >
       {position === 'left' && children}

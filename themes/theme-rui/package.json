@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-rui",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Marigold RUI Theme",
   "license": "MIT",
   "keywords": [
@@ -42,15 +42,17 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "4.0.9",
+    "@tailwindcss/postcss": "4.0.12",
     "cssnano": "7.0.6",
     "postcss-cli": "11.0.0",
-    "tailwindcss": "4.0.9",
+    "tailwindcss": "4.0.12",
+    "tailwindcss-animate": "1.0.7",
     "tsup": "8.3.6"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
-    "@marigold/system": "workspace:*"
+    "@marigold/system": "workspace:*",
+    "@marigold/theme-plugins": "workspace:*"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css dist/theme.css"

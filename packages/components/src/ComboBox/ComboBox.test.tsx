@@ -69,6 +69,7 @@ const theme: Theme = {
         },
       },
     }),
+    IconButton: cva(),
   },
 };
 
@@ -137,7 +138,7 @@ test('supports classnames', () => {
   const label = screen.getByText('Label');
   const button = screen.getByRole('button');
   expect(button.className).toMatchInlineSnapshot(
-    `"inline-flex items-center justify-center gap-[0.5ch] absolute right-0 p-0"`
+    `"shrink-0 cursor-pointer outline-0 absolute right-0 p-0"`
   );
   expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
   expect(label.className).toMatchInlineSnapshot(

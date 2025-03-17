@@ -1,5 +1,18 @@
 # @marigold/theme-rui
 
+## 0.2.0
+
+### Minor Changes
+
+- 40db199: feat(rui): Add more styles to components
+
+### Patch Changes
+
+- Updated dependencies [40db199]
+- Updated dependencies [619b4b2]
+  - @marigold/components@11.2.1
+  - @marigold/system@11.2.1
+
 ## 0.1.1
 
 ### Patch Changes
