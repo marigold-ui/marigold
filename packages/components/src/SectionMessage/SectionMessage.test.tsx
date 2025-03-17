@@ -43,6 +43,7 @@ const theme: Theme = {
           size: { small: 'p-1' },
         },
       }),
+      close: cva(''),
     },
   },
 };
