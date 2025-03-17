@@ -22,7 +22,7 @@
 
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
-  --font-sans-variable: 'Inter var', system-ui, sans-serif;
+  --font-sans-variable: InterVariable, system-ui, sans-serif;
 
   /* orange (use for accent) */
   --color-orange-50: #fff9ed;
