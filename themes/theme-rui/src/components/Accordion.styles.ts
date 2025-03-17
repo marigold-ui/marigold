@@ -16,7 +16,10 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     variants: {
       variant: {
         default: '',
-        card: 'has-focus-visible:border-border has-focus-visible:ring-ring/50 rounded-md border px-4 py-1 outline-none last:border-b has-focus-visible:ring-[3px]',
+        card: [
+          'rounded-md border px-4 py-1 outline-none last:border-b',
+          'has-focus-visible:border-border has-focus-visible:ring-ring/50 has-focus-visible:ring-[3px]',
+        ],
       },
     },
     defaultVariants: {
@@ -25,13 +28,14 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   }),
   header: cva(
     [
-      'focus-visible:border-border focus-visible:ring-ring/50 flex flex-1 w-full items-center justify-between gap-4 rounded-md py-2 text-left text-sm font-semibold',
+      'flex flex-1 w-full items-center justify-between gap-4 rounded-md py-2 text-left text-sm font-semibold',
       ' transition-all outline-none hover:no-underline focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:text-disabled-foreground leading-6',
     ],
     {
       variants: {
         variant: {
-          default: '',
+          default:
+            'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
           card: 'hover:no-underline focus-visible:ring-0',
         },
       },

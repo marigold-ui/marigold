@@ -15,8 +15,6 @@
  text-destructive like used in inputs
 */
 
-@plugin "@marigold/theme-plugins/src/tw-custom-placement-plugin";
-@plugin "@marigold/theme-plugins/src/tw-custom-aria-variants-plugin";
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
 
@@ -109,11 +107,14 @@
   /* Input tokens */
   /* color input used for inputs as border or e.g. in switch as bg track color */
   --color-input: var(--color-stone-300);
+
+  /* TODO: Rename them to "component"? */
   /* component height for input elements */
   --spacing-input: 2.25rem;
-
   /* component height for button elements */
   --spacing-button: 2.25rem;
+  --spacing-button-small: 2rem;
+  --spacing-button-large: 2.5rem;
 
   /* surface colors used for elevation levels */
   --color-surface-overlay: var(--color-white);
