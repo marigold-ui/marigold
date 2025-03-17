@@ -14,7 +14,7 @@ export const Button: ThemeComponent<'Button'> = cva(
     variants: {
       variant: {
         default:
-          'border border-border bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground',
+          'border border-input bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground',
         primary:
           'bg-brand text-brand-foreground shadow-sm shadow-black/5 hover:bg-brand/90',
         destructive:
