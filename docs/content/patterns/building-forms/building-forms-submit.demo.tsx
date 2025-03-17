@@ -2,22 +2,10 @@ import { useActionState } from 'react';
 import { Button, Form, Stack, TextField } from '@marigold/components';
 
 export default () => {
-  /*const [result, setResult] = useState<object>();
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    // Prevent page refresh.
-    e.preventDefault();
-
-    // Transform form data to regular object
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-
-    // Submit or do whatever you want
-    setResult(data);
-  };*/
-  const [result, formAction] = useActionState<object | null, FormData>(
+  const [state, formAction] = useActionState<object | null, FormData>(
     (_previousState, formData) => {
-      const promoCode = formData.get('promocode');
-      return { promocode: promoCode };
+      // Access form data by form field name
+      return { promocode: formData.get('promocode') };
     },
     null
   );
@@ -32,9 +20,9 @@ export default () => {
           </Button>
         </Stack>
       </Form>
-      {result && (
+      {state && (
         <pre>
-          <code>{JSON.stringify(result, null, 2)}</code>
+          <code>{JSON.stringify(state, null, 2)}</code>
         </pre>
       )}
     </Stack>

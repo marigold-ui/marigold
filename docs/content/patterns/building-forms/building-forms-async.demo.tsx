@@ -8,15 +8,16 @@ import {
   TextField,
 } from '@marigold/components';
 
+//TODO: improve example - submitting again seems not to work
 export default () => {
-  const [state, submitAction, isPending] = useActionState<
-    { result?: string | undefined; error?: string },
+  const [{ error, result }, submitAction, isPending] = useActionState<
+    { result?: string | undefined; error?: string | null },
     FormData
   >(async (_previousState, formData) => {
     // Two seconds loading time to simulate pending
     const error = await waitTwoSec();
-    if (error) {
-      return { error: error };
+    if (error === null) {
+      return { error: 'Fehler' };
     }
     return { result: '0 users found' };
   }, {});
@@ -32,32 +33,32 @@ export default () => {
                 type="text"
                 name="firstname"
                 label="Firstname:"
-                errorMessage={state.error}
-                error={state.error != null}
+                errorMessage={error}
+                error={error != null}
                 placeholder="Firstname"
               />
               <TextField
                 type="text"
                 name="name"
                 label="Name:"
-                errorMessage={state.error}
-                error={state.error != null}
+                errorMessage={error}
+                error={error != null}
                 placeholder="Name"
               />
             </Columns>
             <TextField
               type="text"
               name="adress"
-              errorMessage={state.error}
-              error={state.error != null}
+              errorMessage={error}
+              error={error != null}
               placeholder="Adress"
               label="Adress:"
             />
             <TextField
               type="text"
               name="postcode"
-              errorMessage={state.error}
-              error={state.error != null}
+              errorMessage={error}
+              error={error != null}
               placeholder="Postcode"
               label="Postcode:"
             />
@@ -66,8 +67,8 @@ export default () => {
             <TextField
               type="tel"
               name="phone number"
-              errorMessage={state.error}
-              error={state.error != null}
+              errorMessage={error}
+              error={error != null}
               placeholder="Phone Number"
               label="Phone number:"
             />
@@ -77,12 +78,13 @@ export default () => {
               Search
             </Button>
           </Stack>
-          <p>{state.result && 'Results: ' + state.result}</p>
+          <p>{result && `Results: ${result}`}</p>
         </Stack>
       </Form>
     </>
   );
 };
+
 const waitTwoSec = async (): Promise<string | null> => {
   return new Promise(resolve => {
     setTimeout(() => {
