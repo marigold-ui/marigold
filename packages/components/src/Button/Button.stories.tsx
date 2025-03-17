@@ -80,7 +80,7 @@ const meta = {
     },
   },
   args: {
-    variant: 'primary',
+    variant: undefined,
     children: 'Submit',
     size: 'default',
     loading: false,
@@ -100,9 +100,7 @@ export const Basic: Story = {
         <Button {...args} variant="primary">
           Primary
         </Button>
-        <Button {...args} variant="secondary">
-          Secondary
-        </Button>
+        <Button {...args}>Secondary</Button>
         <Button {...args} variant="destructive">
           Destructive
         </Button>
