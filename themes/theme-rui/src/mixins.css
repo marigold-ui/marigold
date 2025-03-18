@@ -1,0 +1,34 @@
+/*
+  File: tailwind-components.css
+
+  Description
+  -----------
+
+  This file defines custom Tailwind CSS component classes by bundling commonly used utility classes
+  with the @apply directive. The goal is to reduce duplication, enhance maintainability, and ensure
+  a consistent styling pattern across various components.
+
+  Usage
+  -----
+
+  Import this file into your main stylesheet or reference it in your Tailwind CSS configuration.
+
+  Best Practices
+  --------------
+
+  - Encapsulate frequently used utility combinations into custom classes for better reusability.
+  - Update the definitions here to maintain consistency in our design system across all components.
+  - Keep custom classes focused on specific styling concerns to preserve clarity.
+*/
+
+.mixin-ring-focus-visible {
+  @apply focus-visible:border-ring focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
+}
+
+.mixin-ring-focus-within {
+  @apply focus-within:border-ring focus-within:ring-ring/50 outline-none focus-within:ring-[3px];
+}
+
+.mixin-disabled {
+  @apply disabled:bg-disabled disabled:text-disabled-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-none;
+}
