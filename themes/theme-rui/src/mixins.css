@@ -22,6 +22,14 @@
   @apply focus-visible:border-ring focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
 }
 
+.mixin-ring-has-focus-visible {
+  @apply has-focus-visible:border-border has-focus-visible:ring-ring/50 has-focus-visible:ring-[3px];
+}
+
+.mixin-ring-focus-visible-borderless {
+  @apply focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
+}
+
 .mixin-ring-focus-within {
   @apply focus-within:border-ring focus-within:ring-ring/50 outline-none focus-within:ring-[3px];
 }
