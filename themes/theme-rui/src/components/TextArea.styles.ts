@@ -2,7 +2,6 @@ import { type ThemeComponent, cva } from '@marigold/system';
 import {
   inputContainer,
   inputDisabled,
-  inputFocus,
   inputInvalid,
   inputReadOnly,
 } from './Input.styles';
@@ -10,7 +9,7 @@ import {
 export const TextArea: ThemeComponent<'TextArea'> = cva([
   inputContainer,
   inputInvalid,
-  inputFocus['focus'],
+  'mixin-ring-focus-visible',
   inputDisabled,
   inputReadOnly,
   'invalid:text-destructive',
