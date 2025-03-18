@@ -96,7 +96,9 @@ export const MultiSelectTags: Story = {
           <Tag id="laundry">Laundry</Tag>
           <Tag id="fitness">Fitness center</Tag>
           <Tag id="parking">Parking</Tag>
-          <Tag id="pool">Swimming pool</Tag>
+          <Tag id="pool" disabled>
+            Swimming pool
+          </Tag>
           <Tag id="breakfast">Breakfast</Tag>
         </Tag.Group>
         <p>Current selection (controlled): {[...selected].join(', ')}</p>
