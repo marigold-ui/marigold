@@ -26,6 +26,10 @@
   @apply has-focus-visible:border-border has-focus-visible:ring-ring/50 has-focus-visible:ring-[3px];
 }
 
+.mixin-ring-focus-visible-checkbox {
+  @apply group-focus-visible/checkbox:ring-ring/50 group-focus-visible/checkbox:ring-[3px];
+}
+
 .mixin-ring-focus-visible-borderless {
   @apply focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
 }
