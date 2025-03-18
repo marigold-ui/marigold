@@ -1,6 +1,6 @@
 import React from 'react';
 import type RAC from 'react-aria-components';
-import { DatePicker, type DateValue } from 'react-aria-components';
+import { DatePicker, type DateValue, Dialog } from 'react-aria-components';
 import { WidthProp, useClassNames } from '@marigold/system';
 import { Calendar } from '../Calendar';
 import { DateInput } from '../DateField/DateInput';
@@ -122,7 +122,9 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
           }
         />
         <Popover>
-          <Calendar disabled={disabled} />
+          <Dialog>
+            <Calendar disabled={disabled} />
+          </Dialog>
         </Popover>
       </FieldBase>
     );

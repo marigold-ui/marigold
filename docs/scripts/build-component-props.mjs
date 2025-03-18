@@ -142,6 +142,8 @@ const replacePropName = property => {
 const transformTypeValue = async val => {
   //List of types prettier can't handle see https://prettier.io/playground
   const ignorePrettier = [
+    'readonly any[]',
+    'string | number | readonly string[]',
     'any[]',
     'string | number | readonly string[]',
     'string[]',
