@@ -6,9 +6,9 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   ]),
   list: cva(['space-y-1 bg-background p-1 text-sm outline-0']),
   option: cva([
-    'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-    'relative flex flex-col rounded-md px-2 py-1.5 text-sm text-foreground',
+    'relative flex flex-col rounded-md px-2 py-1.5 text-sm text-foreground cursor-pointer',
     'selected:bg-selected',
+    'disabled:cursor-not-allowed disabled:text-disabled-foreground',
     'mixin-ring-focus-visible',
   ]),
   section: cva(''),
