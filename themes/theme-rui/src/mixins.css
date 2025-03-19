@@ -37,6 +37,9 @@
   .mixin-ring-focus-visible-radio {
     @apply group-focus-visible/radio:ring-ring/50 group-focus-visible/radio:ring-[3px];
   }
+  .mixin-ring-focus-visible-switch {
+    @apply group-focus-visible/switch:ring-ring/50 group-focus-visible/switch:ring-[3px];
+  }
 
   .mixin-ring-focus-visible-borderless {
     @apply focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
