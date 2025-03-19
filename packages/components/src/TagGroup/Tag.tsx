@@ -18,18 +18,26 @@ export const CloseButton = ({ className }: CloseButtonProps) => {
   );
 };
 
+type RemovedProps = 'className' | 'style' | 'isDisabled';
+
 // Props
 // ---------------
-export interface TagProps extends RAC.TagProps {
+export interface TagProps extends Omit<RAC.TagProps, RemovedProps> {
   variant?: string;
   size?: string;
   children?: ReactNode;
+  disabled?: boolean;
 }
 
-const _Tag = ({ variant, size, children, ...props }: TagProps) => {
+const _Tag = ({ variant, size, children, disabled, ...rest }: TagProps) => {
   let textValue = typeof children === 'string' ? children : undefined;
 
   const classNames = useClassNames({ component: 'Tag', variant, size });
+
+  const props = {
+    isDisabled: disabled,
+    ...rest,
+  };
 
   return (
     <Tag

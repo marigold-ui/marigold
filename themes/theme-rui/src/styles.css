@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './theme.css' theme(inline);
+@import './global.css' theme(inline);
 
 /* from tailwind.config.ts */
 @source 'src/**/*.*.ts';
@@ -8,12 +9,3 @@
 @source '!../../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
 
 @source './safelist.txt';
-
-@layer base {
-  body {
-    font-optical-sizing: auto;
-    font-style: normal;
-
-    @apply text-foreground bg-background font-sans;
-  }
-}
