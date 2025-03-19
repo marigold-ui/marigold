@@ -9,8 +9,6 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
     'relative flex flex-col rounded-md px-2 py-1.5 text-sm text-foreground',
     'selected:bg-selected',
-    // TODO: can not use "ouline-none" because it overrides the focus visible things -.-
-    // TODO: try it after RAC is updated!
     'mixin-ring-focus-visible',
   ]),
   section: cva(''),
