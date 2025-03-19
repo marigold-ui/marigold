@@ -8,7 +8,7 @@ export const inputDisabled =
 export const inputInvalid =
   'group-error/field:border-destructive group-error/field:focus:border-destructive group-error/field:focus:ring-destructive/20';
 
-export const inputReadOnly = 'group-[readonly]/field:bg-muted';
+export const inputReadOnly = 'group-read-only/field:bg-muted';
 
 export const Input: ThemeComponent<'Input'> = {
   input: cva([
