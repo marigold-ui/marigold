@@ -18,7 +18,8 @@ export const Accordion: ThemeComponent<'Accordion'> = {
         default: '',
         card: [
           'rounded-md border px-4 py-1 outline-none last:border-b',
-          'has-focus-visible:border-border has-focus-visible:ring-ring/50 has-focus-visible:ring-[3px]',
+          // TODO: focus is still shown even if an item within the item is focused
+          'mixin-ring-has-focus-visible',
         ],
       },
     },
@@ -34,8 +35,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     {
       variants: {
         variant: {
-          default:
-            'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+          default: 'mixin-ring-focus-visible',
           card: 'hover:no-underline focus-visible:ring-0',
         },
       },

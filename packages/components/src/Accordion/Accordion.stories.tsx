@@ -250,7 +250,12 @@ export const ButtonInHeader: Story = {
       <Accordion.Item id="1">
         <Inline>
           <Accordion.Header>Buttons</Accordion.Header>
-          <Button variant="primary">Do not Click</Button>
+          <Button
+            variant="primary"
+            onPress={() => alert('Do NOT click! Come on!')}
+          >
+            Do not Click
+          </Button>
         </Inline>
         <Accordion.Content>Don't click the Button</Accordion.Content>
       </Accordion.Item>

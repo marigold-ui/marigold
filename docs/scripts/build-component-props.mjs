@@ -142,6 +142,8 @@ const replacePropName = property => {
 const transformTypeValue = async val => {
   //List of types prettier can't handle see https://prettier.io/playground
   const ignorePrettier = [
+    'readonly any[]',
+    'string | number | readonly string[]',
     'any[]',
     'string | number | readonly string[]',
     'string[]',
@@ -155,7 +157,7 @@ const transformTypeValue = async val => {
     'number | number[]',
     'CellElement | CellElement[] | CellRenderer',
     '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
-    '"Accordion" | "Badge" | "Body" | "Button" | "Card" | "DateField" | "Dialog" | "Divider" | "Field" | "Footer" | "Header" | "Headline" | "Popover" | "HelpText" | "IconButton" | "Image" | ... 25 more ... | "XLoader"',
+    '"Accordion" | "Badge" | "Body" | "Button" | "Card" | "DateField" | "Dialog" | "Divider" | "Field" | "Footer" | "Header" | "Headline" | "Popover" | "HelpText" | "IconButton" | "Image" | ... 26 more ... | "XLoader"',
     'string | { [slot in keyof ThemeComponent<C>]?: string; }',
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',

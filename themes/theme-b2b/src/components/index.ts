@@ -23,6 +23,7 @@ export * from './Link.styles';
 export * from './List.styles';
 export * from './ListBox.styles';
 export * from './Menu.styles';
+export * from './Multiselect.styles';
 export * from './NumberField.styles';
 export * from './Popover.styles';
 export * from './ProgressCycle.styles';

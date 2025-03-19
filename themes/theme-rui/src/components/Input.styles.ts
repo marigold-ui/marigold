@@ -7,10 +7,6 @@ export const inputDisabled =
   'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled';
 export const inputInvalid =
   'group-error/field:border-destructive group-error/field:focus:border-destructive group-error/field:focus:ring-destructive/20';
-export const inputFocus = {
-  focus: 'mixin-ring-focus-visible',
-  'focus-within': 'mixin-ring-focus-within',
-};
 
 export const inputReadOnly = 'group-[readonly]/field:bg-muted';
 
@@ -19,7 +15,7 @@ export const Input: ThemeComponent<'Input'> = {
     inputContainer,
     inputDisabled,
     inputInvalid,
-    inputFocus['focus'],
+    'mixin-ring-focus-visible',
     inputReadOnly,
     'h-input',
     'placeholder:text-placeholder',

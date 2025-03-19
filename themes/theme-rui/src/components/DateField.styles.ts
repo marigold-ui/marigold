@@ -2,7 +2,6 @@ import { type ThemeComponent, cva } from '@marigold/system';
 import {
   inputContainer,
   inputDisabled,
-  inputFocus,
   inputInvalid,
   inputReadOnly,
 } from './Input.styles';
@@ -12,7 +11,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'h-input',
     inputContainer,
     inputDisabled,
-    inputFocus['focus-within'],
+    'mixin-ring-focus-within',
     inputInvalid,
     inputReadOnly,
     'invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20',

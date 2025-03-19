@@ -1,9 +1,9 @@
 import { type ThemeComponent, cva } from '@marigold/system';
-import { inputFocus, inputInvalid } from './Input.styles';
+import { inputInvalid } from './Input.styles';
 
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva([
-    inputFocus['focus-within'],
+    'mixin-ring-focus-within',
     inputInvalid,
     'relative inline-flex w-full -mb-0.5 items-center overflow-hidden whitespace-nowrap rounded-lg h-input grow text-center tabular-nums text-foreground',
     'border border-input text-sm shadow-sm shadow-black/5 transition-shadow',
