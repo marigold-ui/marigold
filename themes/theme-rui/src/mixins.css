@@ -18,7 +18,7 @@
   - Keep custom classes focused on specific styling concerns to preserve clarity.
 */
 
-@layer components {
+@layer utilities {
   /*==============*/
   /*     Focus    */
   /*==============*/
@@ -49,6 +49,6 @@
   /*   Disabled   */
   /*==============*/
   .mixin-disabled {
-    @apply disabled:bg-disabled disabled:text-disabled-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-none;
+    @apply disabled:bg-disabled disabled:text-disabled-foreground disabled:cursor-not-allowed disabled:border-none disabled:shadow-none;
   }
 }
