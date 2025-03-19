@@ -649,6 +649,9 @@ importers:
       '@marigold/theme-plugins':
         specifier: workspace:*
         version: link:../../packages/theme-plugins
+      tailwindcss-react-aria-components:
+        specifier: 2.0.0
+        version: 2.0.0(tailwindcss@4.0.12)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
