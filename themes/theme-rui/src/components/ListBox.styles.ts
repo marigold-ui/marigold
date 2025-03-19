@@ -11,7 +11,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'selected:bg-selected',
     // TODO: can not use "ouline-none" because it overrides the focus visible things -.-
     // TODO: try it after RAC is updated!
-    'data-[focused]:outline-none data-[focus-visible]:outline-2 data-[focus-visible]:outline-ring/70',
+    'mixin-ring-focus-visible',
   ]),
   section: cva(''),
   header: cva(
