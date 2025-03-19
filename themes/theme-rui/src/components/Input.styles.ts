@@ -6,7 +6,7 @@ export const inputContainer =
 export const inputDisabled =
   'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled';
 export const inputInvalid =
-  'group-error/field:border-destructive group-error/field:focus:border-destructive group-error/field:focus:ring-destructive/20';
+  'group-invalid/field:border-destructive group-invalid/field:focus:border-destructive group-invalid/field:focus:ring-destructive/20';
 
 export const inputReadOnly = 'group-[readonly]/field:bg-muted';
 
