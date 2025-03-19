@@ -4,7 +4,7 @@ export const Radio: ThemeComponent<'Radio'> = {
   container: cva('group-disabled/radio:cursor-not-allowed'),
   label: cva([
     'text-sm font-normal cursor-pointer',
-    'group-disabled/radio:text-disabled-foreground has-disabled:cursor-not-allowed',
+    'group-disabled/radio:text-disabled-foreground group-disabled/radio:cursor-not-allowed',
   ]),
   radio: cva([
     'aspect-square size-4 rounded-full',
