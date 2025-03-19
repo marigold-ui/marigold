@@ -1,10 +1,11 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Radio: ThemeComponent<'Radio'> = {
-  container: cva(),
-  label: cva(
-    'group-disabled/radio:text-disabled-foreground text-sm font-normal'
-  ),
+  container: cva('group-disabled/radio:cursor-not-allowed'),
+  label: cva([
+    'group-disabled/radio:text-disabled-foreground',
+    'text-sm font-normal',
+  ]),
   radio: cva([
     'aspect-square size-4 rounded-full',
     'border border-input shadow-sm shadow-black/5',
