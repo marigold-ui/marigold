@@ -11,7 +11,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'h-input',
     inputContainer,
     inputDisabled,
-    'mixin-ring-focus-within',
+    'mixin-ring-has-focus-visible',
     inputInvalid,
     inputReadOnly,
     'invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20',

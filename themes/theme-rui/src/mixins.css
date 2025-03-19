@@ -19,6 +19,9 @@
 */
 
 @layer components {
+  /*==============*/
+  /*     Focus    */
+  /*==============*/
   .mixin-ring-focus-visible {
     @apply focus-visible:border-ring focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
   }
@@ -35,10 +38,9 @@
     @apply focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
   }
 
-  .mixin-ring-focus-within {
-    @apply focus-within:border-ring focus-within:ring-ring/50 outline-none focus-within:ring-[3px];
-  }
-
+  /*==============*/
+  /*   Disabled   */
+  /*==============*/
   .mixin-disabled {
     @apply disabled:bg-disabled disabled:text-disabled-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-none;
   }
