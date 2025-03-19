@@ -2,7 +2,6 @@ import { type ThemeComponent, cva } from '@marigold/system';
 import {
   inputContainer,
   inputDisabled,
-  inputFocus,
   inputInvalid,
   inputReadOnly,
 } from './Input.styles';
@@ -12,7 +11,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'h-input',
     inputContainer,
     inputDisabled,
-    inputFocus['focus-within'],
+    'mixin-ring-focus-within',
     inputInvalid,
     inputReadOnly,
     'invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20',
@@ -25,6 +24,6 @@ export const DateField: ThemeComponent<'DateField'> = {
     'invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive data-[placeholder]:text-placeholder',
   ]),
   action: cva(
-    'fill-muted-foreground disabled:text-disabled-foreground group-error/field:fill-destructive'
+    'fill-muted-foreground disabled:text-disabled-foreground group-invalid/field:fill-destructive'
   ),
 };

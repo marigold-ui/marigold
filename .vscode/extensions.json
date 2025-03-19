@@ -5,6 +5,7 @@
     "GitHub.vscode-pull-request-github",
     "ms-vsliveshare.vsliveshare",
     "yzhang.markdown-all-in-one",
-    "unifiedjs.vscode-mdx"
+    "unifiedjs.vscode-mdx",
+    "bradlc.vscode-tailwindcss"
   ]
 }

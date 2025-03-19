@@ -1,123 +1,246 @@
-/**
- * - list of removable tags
- * - combobox to search for an item
- *
- * - selecting an item from the combobox -> adds it to the tags, clears combobox input
- * - combobox only shows unselected items
- */
+'use client';
 
-/**
- * !!!!!!!!
- * this file is excluded from coverage test (see config/jest/index.js) because this component will be changed in future
- * !!!!!!!!
- * */
-import { Children, ReactNode, useState } from 'react';
-import type RAC from 'react-aria-components';
-import { Key } from 'react-aria-components';
-import { useListData } from '@react-stately/data';
-import { ComboBox } from '../ComboBox';
-import { Tag } from '../TagGroup';
+import { ButtonHTMLAttributes, useId } from 'react';
+import {
+  ButtonContext,
+  FieldErrorContext,
+  InputContext,
+  Provider,
+  type ValidationResult,
+} from 'react-aria-components';
+import { Button, Input as _Input } from 'react-aria-components';
+import Select, {
+  ClassNamesConfig,
+  InputProps,
+  MultiValueRemoveProps,
+  Props as SelectProps,
+} from 'react-select';
+import { useField } from '@react-aria/label';
+import { cn, useClassNames } from '@marigold/system';
+import { ComponentClassNames } from '@marigold/system';
+import { FieldBaseProps } from '../FieldBase';
+import { HelpText } from '../HelpText';
+import { Label } from '../Label';
+import { ChevronDown } from '../icons';
 
-// Item
-// ---------------
-export interface MultiSelectItemProps {
-  id: Key;
-  children: ReactNode;
+type PickedProps =
+  | 'autoFocus'
+  | 'isOptionDisabled'
+  | 'noOptionsMessage'
+  | 'onBlur'
+  | 'onFocus'
+  | 'aria-errormessage'
+  | 'aria-invalid'
+  | 'aria-label'
+  | 'aria-labelledby'
+  | 'aria-live'
+  | 'ariaLiveMessages';
+
+interface MultipleSelectProps
+  extends Pick<
+      FieldBaseProps<'label'>,
+      'width' | 'size' | 'variant' | 'label' | 'description' | 'errorMessage'
+    >,
+    Pick<SelectProps, PickedProps> {
+  disabled?: boolean;
+  required?: boolean;
+  readOnly?: boolean;
+  error?: boolean;
+  items?: SelectProps['options'];
+  errorMessage?: string | ((validation: ValidationResult) => string);
+  placeholder?: string;
+  defaultSelectedItems?: SelectProps['defaultValue'];
+  defaultValue?: SelectProps['defaultInputValue'];
+  onChange?: SelectProps['onInputChange'];
+  onSelectionChange?: SelectProps['onChange'];
 }
 
-const Item = (_: MultiSelectItemProps) => null;
-
-// Props
-// ---------------
-export interface MultiSelectProps extends RAC.ComboBoxProps<object> {
-  label?: string;
-  children?: ReactNode;
-  defaultSelectedKeys?: 'all' | Iterable<Key>;
-}
-
-// Component
-// ---------------
-export const Multiselect = ({
-  label,
-  children,
-  ...props
-}: MultiSelectProps) => {
-  // Fake react-aria collection items
-  const items = Children.map(children, ({ props }: any) => props);
-
-  const list = useListData<MultiSelectItemProps>({
-    initialItems: items,
-    initialSelectedKeys: props.defaultSelectedKeys,
-    getKey: item => item.id,
-  });
-
-  const selected = list.items.filter(item =>
-    list.selectedKeys === 'all' ? true : list.selectedKeys.has(item.id)
+const propsToBeRemoved = [
+  'clearValue',
+  'getStyles',
+  'getClassNames',
+  'getValue',
+  'hasValue',
+  'isMulti',
+  'isRtl',
+  'selectOption',
+  'selectProps',
+  'setValue',
+  'isDisabled',
+  'isHidden',
+  'cx',
+];
+const Input = ({ innerRef, placeholder, hasValue, ...props }: InputProps) => {
+  // innerRef is needed for focusing the input
+  const inputProps = Object.entries(props).reduce(
+    (acc: Record<string, any>, [key, value]) => {
+      if (!propsToBeRemoved.includes(key)) {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {} as Record<string, any>
   );
-  const unselected = list.items.filter(item => !selected.includes(item));
-
-  // Remove tag
-  const setUnselected = (keys: Set<Key>) => {
-    const next: Set<Key> =
-      list.selectedKeys === 'all' ? new Set(items) : new Set(list.selectedKeys);
-
-    if (list.selectedKeys !== 'all') {
-      keys.forEach(key => {
-        next.delete(key);
-      });
-    }
-
-    list.setSelectedKeys(next);
-  };
-
-  // Combobox Stuff
-  const [value, setValue] = useState('');
-  const selectItem = (key: Key) => {
-    // add to selected items
-    if (list.selectedKeys !== 'all') {
-      const next = list.selectedKeys.add(key);
-      list.setSelectedKeys(next);
-    }
-
-    // Clear combobox
-    const input = document.activeElement as HTMLInputElement;
-    setTimeout(() => {
-      setValue('');
-    }, 0);
-    input.focus();
-  };
 
   return (
-    <div className="flex flex-wrap gap-1">
-      <Tag.Group
-        items={selected}
-        allowsRemoving
-        onRemove={setUnselected}
-        renderEmptyState={() => null}
-      >
-        {(item: MultiSelectItemProps) => (
-          <Tag key={item.id} id={item.id}>
-            {item.children}
-          </Tag>
-        )}
-      </Tag.Group>
-      <ComboBox
-        value={value}
-        onChange={setValue}
-        onSelectionChange={selectItem}
-        menuTrigger="focus"
-        disabled={unselected.length === 0}
-        placeholder={unselected.length === 0 ? 'All items selected' : ''}
-        {...props}
-      >
-        {unselected.map((item: MultiSelectItemProps) => (
-          <ComboBox.Option key={item.id} id={item.id}>
-            {item.children}
-          </ComboBox.Option>
-        ))}
-      </ComboBox>
-    </div>
+    <_Input
+      disabled={props.isDisabled}
+      ref={innerRef}
+      placeholder={!hasValue ? placeholder : ''}
+      {...inputProps}
+    />
   );
 };
 
-Multiselect.Item = Item;
+const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
+  return (
+    <Button slot="remove" {...(innerProps as any)}>
+      <svg viewBox="0 0 20 20" fill="currentColor" width={20} height={20}>
+        <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path>
+      </svg>
+    </Button>
+  );
+};
+
+const getClassNames = (
+  classNames: ComponentClassNames<'MultiSelect'>
+): ClassNamesConfig => ({
+  control: () =>
+    cn(
+      'relative flex items-center box-border flex-wrap justify-between relative',
+      classNames.container
+    ),
+  container: () => 'pointer-events-auto',
+  indicatorSeparator: () => 'hidden',
+  menu: () => cn('b', classNames.listContainer),
+  menuList: () =>
+    cn('overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh] p-0', classNames.list),
+  multiValue: () => cn(classNames.tag, 'm-0 '),
+  multiValueLabel: () => 'p-0',
+  option: ({ isFocused }) => cn(classNames.option, { isFocused: isFocused }),
+  placeholder: () => 'hidden',
+  valueContainer: () => classNames.valueContainer,
+});
+
+export const Multiselect = ({
+  disabled,
+  readOnly = false,
+  items,
+  defaultSelectedItems,
+  defaultValue,
+  error,
+  errorMessage,
+  size,
+  variant,
+  placeholder,
+  description,
+  onChange,
+  onSelectionChange,
+  ...rest
+}: MultipleSelectProps) => {
+  const classNames = useClassNames({
+    component: 'MultiSelect',
+    size,
+    variant,
+  });
+
+  const props = {
+    options: items,
+    defaultInputValue: defaultValue,
+    defaultValue: defaultSelectedItems,
+    onInputChange: onChange,
+    onChange: onSelectionChange,
+    ...rest,
+  };
+
+  let { labelProps, fieldProps } = useField({
+    label: props.label,
+    errorMessage,
+  });
+
+  return (
+    <Provider
+      values={[
+        [
+          FieldErrorContext,
+          {
+            isInvalid: !!error,
+            validationDetails: {} as any,
+            validationErrors: [],
+          },
+        ],
+        [
+          InputContext,
+          {
+            ...fieldProps,
+            placeholder,
+            className: classNames.input,
+          },
+        ],
+        [
+          ButtonContext,
+          {
+            // react-select doesn't handle readonly so we had to do it manually here
+            // keep to the button disabled in read only to prevent menu from opening
+            isDisabled: disabled || readOnly,
+            className: cn('flex items-center', classNames.closeButton),
+          },
+        ],
+      ]}
+    >
+      <div
+        className={cn(classNames.field, 'group/field')}
+        data-required={props.required}
+        data-invalid={error}
+        data-readonly={readOnly}
+      >
+        {props.label && <Label {...labelProps}>{props.label}</Label>}
+        <Select
+          {...props}
+          styles={{
+            control: () => ({ display: 'flex' }),
+            menu: () => ({
+              boxSizing: 'border-box',
+              position: 'absolute',
+              top: '100%',
+              width: '100%',
+              zIndex: 1,
+            }),
+            // Return empty object to reset react-select styles
+            valueContainer: base => ({ ...base, padding: 0 }),
+            container: base => ({ ...base, pointerEvents: 'auto' }),
+            menuList: () => ({}),
+            option: ({}) => ({}),
+            multiValue: () => ({}),
+            multiValueLabel: () => ({}),
+          }}
+          inputId={fieldProps.id}
+          aria-invalid={error}
+          isClearable={false}
+          // Used to solve hydration react-select problem in next 15
+          instanceId={useId()}
+          isSearchable={!readOnly}
+          isMulti
+          closeMenuOnSelect={false}
+          classNames={getClassNames(classNames)}
+          menuIsOpen={readOnly ? false : undefined}
+          isDisabled={disabled}
+          components={{
+            Input,
+            MultiValueRemove,
+            DropdownIndicator: ({ innerProps, isDisabled }) => (
+              <button
+                {...(innerProps as ButtonHTMLAttributes<HTMLButtonElement>)}
+                disabled={isDisabled}
+                className={classNames.icon}
+              >
+                <ChevronDown className={'size-4'} />
+              </button>
+            ),
+          }}
+        />
+        <HelpText description={description} errorMessage={errorMessage} />
+      </div>
+    </Provider>
+  );
+};
