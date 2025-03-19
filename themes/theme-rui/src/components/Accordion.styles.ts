@@ -29,14 +29,16 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   }),
   header: cva(
     [
-      'flex flex-1 w-full items-center justify-between gap-4 rounded-md py-2 text-left text-sm font-semibold',
-      ' transition-all outline-none hover:no-underline focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:text-disabled-foreground leading-6',
+      'flex flex-1 w-full items-center justify-between gap-4 rounded-md py-2',
+      'text-left text-sm font-semibold leading-6 transition-all',
+      'hover:no-underline',
+      'disabled:cursor-not-allowed disabled:text-disabled-foreground',
     ],
     {
       variants: {
         variant: {
           default: 'mixin-ring-focus-visible',
-          card: 'hover:no-underline focus-visible:ring-0',
+          card: 'outline-none',
         },
       },
       defaultVariants: {
