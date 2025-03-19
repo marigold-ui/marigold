@@ -17,27 +17,28 @@
   - Update the definitions here to maintain consistency in our design system across all components.
   - Keep custom classes focused on specific styling concerns to preserve clarity.
 */
+@layer utilities {
+  .mixin-ring-focus-visible {
+    @apply focus-visible:border-ring focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
+  }
 
-.mixin-ring-focus-visible {
-  @apply focus-visible:border-ring focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
-}
+  .mixin-ring-has-focus-visible {
+    @apply has-focus-visible:border-border has-focus-visible:ring-ring/50 has-focus-visible:ring-[3px];
+  }
 
-.mixin-ring-has-focus-visible {
-  @apply has-focus-visible:border-border has-focus-visible:ring-ring/50 has-focus-visible:ring-[3px];
-}
+  .mixin-ring-focus-visible-checkbox {
+    @apply group-focus-visible/checkbox:ring-ring/50 group-focus-visible/checkbox:ring-[3px];
+  }
 
-.mixin-ring-focus-visible-checkbox {
-  @apply group-focus-visible/checkbox:ring-ring/50 group-focus-visible/checkbox:ring-[3px];
-}
+  .mixin-ring-focus-visible-borderless {
+    @apply focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
+  }
 
-.mixin-ring-focus-visible-borderless {
-  @apply focus-visible:ring-ring/50 outline-none focus-visible:ring-[3px];
-}
+  .mixin-ring-focus-within {
+    @apply focus-within:border-ring focus-within:ring-ring/50 outline-none focus-within:ring-[3px];
+  }
 
-.mixin-ring-focus-within {
-  @apply focus-within:border-ring focus-within:ring-ring/50 outline-none focus-within:ring-[3px];
-}
-
-.mixin-disabled {
-  @apply disabled:bg-disabled disabled:text-disabled-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-none;
+  .mixin-disabled {
+    @apply disabled:bg-disabled disabled:text-disabled-foreground disabled:cursor-not-allowed disabled:border-none disabled:shadow-none;
+  }
 }

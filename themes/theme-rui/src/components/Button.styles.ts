@@ -7,6 +7,7 @@ export const Button: ThemeComponent<'Button'> = cva(
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     'mixin-ring-focus-visible mixin-disabled',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
+    'cursor-pointer',
   ],
   {
     variants: {
