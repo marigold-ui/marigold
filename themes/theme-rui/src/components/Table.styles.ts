@@ -1,17 +1,20 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
-  table: cva('text-sm', {
-    variants: {
-      variant: {
-        default: '',
-        grid: '',
+  table: cva(
+    'text-sm [&_td]:border-border [&_th]:border-border border-separate border-spacing-0 [&_th]:border-b [&_tr]:border-none [&_tr:not(:last-child)_td]:border-b',
+    {
+      variants: {
+        variant: {
+          default: '',
+          grid: '',
+        },
       },
-    },
-  }),
+    }
+  ),
   thead: cva(
     // for sticky header
-    'bg-background top-0 z-10 backdrop-blur-xs ',
+    'bg-background/90 top-0 z-10 backdrop-blur-xs ',
     {
       variants: {
         variant: {
