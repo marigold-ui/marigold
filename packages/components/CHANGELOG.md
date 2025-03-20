@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 11.2.2
+
+### Patch Changes
+
+- 9412037: RUI theme release 0.3.0
+- 91c72e8: feat[DST-606]: Implement `<MultiSelect>` component
+
+  Introcude `<MultiSelect>` as component!
+
+- Updated dependencies [91c72e8]
+  - @marigold/system@11.2.2
+
 ## 11.2.1
 
 ### Patch Changes

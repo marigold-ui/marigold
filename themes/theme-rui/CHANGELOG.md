@@ -1,5 +1,27 @@
 # @marigold/theme-rui
 
+## 0.3.1
+
+### Patch Changes
+
+- f775048: Fix mixins
+
+## 0.3.0
+
+### Minor Changes
+
+- 9412037: RUI theme release 0.3.0
+
+### Patch Changes
+
+- 933b49a: fix(rui): Correctly apply padding when `<Input>` has an icon/action
+- ec860e7: fix(rui): Correctly apply error styles in fields
+- 3b734cc: fix(rui): Correctly display readonly state
+- Updated dependencies [9412037]
+- Updated dependencies [91c72e8]
+  - @marigold/components@11.2.2
+  - @marigold/system@11.2.2
+
 ## 0.2.0
 
 ### Minor Changes

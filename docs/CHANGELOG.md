@@ -1,5 +1,22 @@
 # @marigold/docs
 
+## 11.2.2
+
+### Patch Changes
+
+- 91c72e8: feat[DST-606]: Implement `<MultiSelect>` component
+
+  Introcude `<MultiSelect>` as component!
+
+- Updated dependencies [9412037]
+- Updated dependencies [91c72e8]
+  - @marigold/components@11.2.2
+  - @marigold/system@11.2.2
+  - @marigold/theme-b2b@29.2.3
+  - @marigold/theme-core@28.2.3
+  - @marigold/theme-docs@2.4.3
+  - @marigold/icons@1.3.2
+
 ## 11.2.1
 
 ### Patch Changes
