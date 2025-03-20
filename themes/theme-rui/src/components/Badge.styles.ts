@@ -4,7 +4,7 @@ const circle = 'before:size-1.5 before:rounded-full';
 
 export const Badge: ThemeComponent<'Badge'> = cva(
   [
-    'inline-flex items-center justify-center rounded-full border px-1.5 text-xs font-medium leading-normal transition-colors',
+    'inline-flex items-center justify-center rounded-full border pl-1.5 pr-2 text-xs font-medium leading-normal transition-colors',
     'mixin-ring-focus-visible',
   ],
   {
