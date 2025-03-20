@@ -9,7 +9,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
     'group-selected/checkbox:border-brand group-selected/checkbox:bg-brand group-selected/checkbox:text-brand-foreground',
     'group-[indeterminate]/checkbox:border-brand group-[indeterminate]/checkbox:bg-brand group-[indeterminate]/checkbox:text-brand-foreground',
   ]),
-  container: cva(),
+  container: cva('cursor-pointer read-only:cursor-default'),
   label: cva(
     'text-sm leading-4 group-[group="checkbox"]/checkboxgroup:font-normal font-medium text-foreground group-disabled/checkbox:text-disabled-foreground'
   ),
