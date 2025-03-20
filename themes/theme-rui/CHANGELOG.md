@@ -1,5 +1,11 @@
 # @marigold/theme-rui
 
+## 0.3.1
+
+### Patch Changes
+
+- f775048: Fix mixins
+
 ## 0.3.0
 
 ### Minor Changes
