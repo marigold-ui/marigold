@@ -22,7 +22,9 @@
       "import": "./dist/*.mjs"
     },
     "./styles.css": "./dist/styles.css",
-    "./theme.css": "./dist/theme.css"
+    "./theme.css": "./dist/theme.css",
+    "./mixins.css": "./dist/mixins.css",
+    "./global.css": "./dist/global.css"
   },
   "typesVersions": {
     "*": {
