@@ -4,10 +4,10 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
   container: cva(
     [
       'text-brand-foreground bg-brand relative z-50 max-w-70 rounded-md border border-brand px-3 py-1.5 text-sm ',
-      'placement-t:mb-2',
-      'placement-b:mt-2',
-      'placement-r:ml-2',
-      'placement-l:mr-2',
+      'placement-top:mb-2',
+      'placement-bottom:mt-2',
+      'placement-right:ml-2',
+      'placement-left:mr-2',
     ],
     {
       variants: {

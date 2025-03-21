@@ -3,7 +3,7 @@ import { inputInvalid } from './Input.styles';
 
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva([
-    'mixin-ring-focus-within',
+    'mixin-ring-has-focus-visible',
     inputInvalid,
     'relative inline-flex w-full -mb-0.5 items-center overflow-hidden whitespace-nowrap rounded-lg h-input grow text-center tabular-nums text-foreground',
     'border border-input text-sm shadow-sm shadow-black/5 transition-shadow',
@@ -12,8 +12,8 @@ export const NumberField: ThemeComponent<'NumberField'> = {
   stepper: cva([
     'w-7 h-full',
     'disabled:text-disabled-foreground disabled:bg-disabled',
-    'border-input border-solid first-of-type:border-r',
-    'border-input border-solid last-of-type:border-l ',
+    // Make sure focus ring is only around the component and not the stepper buttons
+    'border-input! first-of-type:border-r! last-of-type:border-l!',
   ]),
   input: cva(
     'border-none shadow-none rounded-none outline-offset-0 text-center focus-visible:ring-0'

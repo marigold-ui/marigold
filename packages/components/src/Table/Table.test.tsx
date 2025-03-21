@@ -18,6 +18,7 @@ const theme: Theme = {
     },
     Table: {
       table: cva('border-collapse'),
+      thead: cva(),
       header: cva('p-4'),
       headerRow: cva('border-b'),
       body: cva('bg-white'),

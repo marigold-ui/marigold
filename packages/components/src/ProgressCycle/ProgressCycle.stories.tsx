@@ -26,7 +26,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
-    <div className="flex size-7 items-center justify-center bg-gray-500 p-4">
+    <div className="flex size-96 items-center justify-center bg-gray-500 p-4">
       <ProgressCycle {...args} />
     </div>
   ),
