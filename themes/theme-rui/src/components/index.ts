@@ -23,6 +23,7 @@ export { Link } from './Link.styles';
 export { List } from './List.styles';
 export { ListBox } from './ListBox.styles';
 export { Menu } from './Menu.styles';
+export { MultiSelect } from './Multiselect.styles';
 export { NumberField } from './NumberField.styles';
 export { Popover } from './Popover.styles';
 export { Radio } from './Radio.styles';
