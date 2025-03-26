@@ -56,6 +56,6 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     '[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
     '-my-1.5 -me-2', // align button with title
     'mixin-ring-focus-visible',
-    '[&_svg]:opacity-60 hover:[&_svg]:opacity-100',
+    '[&_svg]:opacity-60 [&_svg]:transition-opacity hover:[&_svg]:opacity-100',
   ]),
 };
