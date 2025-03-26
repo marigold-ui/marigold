@@ -8,6 +8,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   option: cva([
     'relative flex flex-col rounded-md px-2 py-1.5 text-sm text-foreground cursor-pointer',
     'selected:bg-selected',
+    'hover:bg-hover hover:text-hover-foreground',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
     'mixin-ring-focus-visible',
   ]),
