@@ -46,7 +46,7 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
 
   let renderProps = useRenderProps({
     ...props,
-    defaultClassName: 'react-aria-ModalOverlay',
+    defaultClassName: 'react-aria-NonModalOverlay',
     values: {
       isEntering: isEntering,
       isExiting,
@@ -71,7 +71,6 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
     <div
       {...mergeProps(filterDOMProps(props as any), nonModalProps)}
       {...renderProps}
-      role="dialog"
       tabIndex={-1}
       aria-label={props['aria-label']}
       aria-labelledby={props['aria-labelledby']}
