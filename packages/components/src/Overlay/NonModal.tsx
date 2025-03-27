@@ -1,0 +1,155 @@
+import { useContext, useEffect } from 'react';
+import {
+  OverlayTriggerStateContext,
+  Provider,
+  SlotProps,
+} from 'react-aria-components';
+import {
+  OverlayTriggerProps,
+  OverlayTriggerState,
+  useOverlayTriggerState,
+} from 'react-stately';
+import { focusSafely } from '@react-aria/interactions';
+import { DismissButton, Overlay } from '@react-aria/overlays';
+import { useIsSSR } from '@react-aria/ssr';
+import {
+  filterDOMProps,
+  mergeProps,
+  useEnterAnimation,
+  useExitAnimation,
+  useObjectRef,
+  useViewportSize,
+} from '@react-aria/utils';
+import type { AriaLabelingProps, RefObject } from '@react-types/shared';
+import { usePortalContainer } from '../Provider';
+import { useNonModal } from './useNonModal';
+import type { AriaNonModalProps } from './useNonModal';
+
+// Helpers
+// ---------------
+interface NonModalInnerProps
+  extends AriaNonModalProps,
+    AriaLabelingProps,
+    SlotProps {
+  state: OverlayTriggerState;
+  isEntering?: boolean;
+  isExiting: boolean;
+  children?: React.ReactNode;
+}
+
+const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
+  const { nonModalProps } = useNonModal(props, state);
+  const ref = props.nonModalRef as RefObject<HTMLDivElement | null>;
+  const portalContainer = usePortalContainer();
+  const isEntering = useEnterAnimation(ref) || props.isEntering || false;
+
+  // Focus the non-modal itself on mount, unless a child element is already focused.
+  useEffect(() => {
+    if (ref.current && !ref.current.contains(document.activeElement)) {
+      focusSafely(ref.current);
+    }
+  }, [ref]);
+
+  let viewport = useViewportSize();
+  let style = {
+    ...nonModalProps.style,
+    '--visual-viewport-height': viewport.height + 'px',
+  };
+
+  const overlay = (
+    <div
+      {...mergeProps(filterDOMProps(props as any), nonModalProps)}
+      role="dialog"
+      tabIndex={-1}
+      aria-label={props['aria-label']}
+      aria-labelledby={props['aria-labelledby']}
+      ref={ref}
+      slot={props.slot || undefined}
+      style={style}
+      data-entering={isEntering || undefined}
+      data-exiting={isExiting || undefined}
+    >
+      {props.children}
+      <DismissButton onDismiss={state.close} />
+    </div>
+  );
+
+  return (
+    <Overlay isExiting={isExiting} portalContainer={portalContainer}>
+      <Provider values={[[OverlayTriggerStateContext, state]]}>
+        {overlay}
+      </Provider>
+    </Overlay>
+  );
+};
+
+// Props
+// ---------------
+export interface NonModalProps
+  extends Omit<OverlayTriggerProps, 'isOpen'>,
+    AriaLabelingProps,
+    SlotProps {
+  /**
+   * Whether the overlay is open by default (controlled).
+   * @default undefined
+   */
+  open?: boolean;
+
+  /**
+   * Whether the popover is currently performing an entry animation.
+   * @default undefined
+   */
+  isEntering?: boolean;
+
+  /**
+   * Whether the popover is currently performing an exit animation.
+   * @default undefined
+   */
+  isExiting?: boolean;
+
+  /**
+   * Ref to the overlay element.
+   * @default undefined
+   */
+  ref?: RefObject<HTMLElement | null>;
+
+  /**
+   * The children of the overlay.
+   */
+  children?: React.ReactNode;
+}
+
+// Component
+// ---------------
+export const NonModal = ({ open, ref, ...rest }: NonModalProps) => {
+  const props = {
+    isOpen: open,
+    ...rest,
+  };
+
+  const nonModalRef = useObjectRef(ref);
+  const contextState = useContext(OverlayTriggerStateContext);
+  const localState = useOverlayTriggerState(props);
+  const state =
+    props.isOpen != null || props.defaultOpen != null || !contextState
+      ? localState
+      : contextState;
+
+  const isExiting =
+    useExitAnimation(ref!, state.isOpen) || props.isExiting || false;
+
+  const isSSR = useIsSSR();
+
+  if ((state && !state.isOpen && !isExiting) || isSSR) {
+    return null;
+  }
+
+  return (
+    <NonModalInner
+      {...props}
+      nonModalRef={nonModalRef}
+      state={state}
+      isExiting={isExiting}
+    />
+  );
+};
