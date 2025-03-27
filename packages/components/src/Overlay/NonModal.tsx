@@ -22,6 +22,7 @@ import {
 } from '@react-aria/utils';
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
 import { usePortalContainer } from '../Provider';
+import { useRenderProps } from '../utils/useRenderProps';
 import { useNonModal } from './useNonModal';
 import type { AriaNonModalProps } from './useNonModal';
 
@@ -43,6 +44,16 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
   const portalContainer = usePortalContainer();
   const isEntering = useEnterAnimation(ref) || props.isEntering || false;
 
+  let renderProps = useRenderProps({
+    ...props,
+    defaultClassName: 'react-aria-ModalOverlay',
+    values: {
+      isEntering: isEntering,
+      isExiting,
+      state,
+    },
+  });
+
   // Focus the non-modal itself on mount, unless a child element is already focused.
   useEffect(() => {
     if (ref.current && !ref.current.contains(document.activeElement)) {
@@ -52,13 +63,14 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
 
   let viewport = useViewportSize();
   let style = {
-    ...nonModalProps.style,
+    ...renderProps.style,
     '--visual-viewport-height': viewport.height + 'px',
   };
 
   const overlay = (
     <div
       {...mergeProps(filterDOMProps(props as any), nonModalProps)}
+      {...renderProps}
       role="dialog"
       tabIndex={-1}
       aria-label={props['aria-label']}
@@ -69,7 +81,7 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
       data-entering={isEntering || undefined}
       data-exiting={isExiting || undefined}
     >
-      {props.children}
+      {renderProps.children}
       <DismissButton onDismiss={state.close} />
     </div>
   );
