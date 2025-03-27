@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { forwardRef, useContext, useEffect } from 'react';
 import {
   OverlayTriggerStateContext,
   Provider,
@@ -150,35 +150,37 @@ export interface NonModalProps
 
 // Component
 // ---------------
-export const NonModal = ({ open, ref, ...rest }: NonModalProps) => {
-  const props = {
-    isOpen: open,
-    ...rest,
-  };
+export const NonModal = forwardRef<HTMLElement, NonModalProps>(
+  ({ open, ...rest }, ref) => {
+    const props = {
+      isOpen: open,
+      ...rest,
+    };
 
-  const nonModalRef = useObjectRef(ref);
-  const contextState = useContext(OverlayTriggerStateContext);
-  const localState = useOverlayTriggerState(props);
-  const state =
-    props.isOpen != null || props.defaultOpen != null || !contextState
-      ? localState
-      : contextState;
+    ref = useObjectRef(ref);
+    const contextState = useContext(OverlayTriggerStateContext);
+    const localState = useOverlayTriggerState(props);
+    const state =
+      props.isOpen != null || props.defaultOpen != null || !contextState
+        ? localState
+        : contextState;
 
-  const isExiting =
-    useExitAnimation(ref!, state.isOpen) || props.isExiting || false;
+    const isExiting =
+      useExitAnimation(ref, state.isOpen) || props.isExiting || false;
 
-  const isSSR = useIsSSR();
+    const isSSR = useIsSSR();
 
-  if ((state && !state.isOpen && !isExiting) || isSSR) {
-    return null;
+    if ((state && !state.isOpen && !isExiting) || isSSR) {
+      return null;
+    }
+
+    return (
+      <NonModalInner
+        {...props}
+        nonModalRef={ref}
+        state={state}
+        isExiting={isExiting}
+      />
+    );
   }
-
-  return (
-    <NonModalInner
-      {...props}
-      nonModalRef={nonModalRef}
-      state={state}
-      isExiting={isExiting}
-    />
-  );
-};
+);
