@@ -30,11 +30,7 @@ export const Drawer = ({
   ...props
 }: DrawerProps) => {
   return (
-    <DrawerModal
-      open={open}
-      dismissable={dismissable}
-      keyboardDismissable={keyboardDismissable}
-    >
+    <DrawerModal open={open} keyboardDismissable={keyboardDismissable}>
       <Dialog className="h-full bg-red-500" {...props}>
         {children}
       </Dialog>

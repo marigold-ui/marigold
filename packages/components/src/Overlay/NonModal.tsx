@@ -90,10 +90,28 @@ export interface NonModalProps
     AriaLabelingProps,
     SlotProps {
   /**
+   * CSS classes for the overlay.
+   * @default undefined
+   */
+  className?: string;
+
+  /**
+   * Styles for the overlay.
+   * @default undefined
+   */
+  style?: string;
+
+  /**
    * Whether the overlay is open by default (controlled).
    * @default undefined
    */
   open?: boolean;
+
+  /**
+   * Whether pressing the escape key closes the modal.
+   * @default true
+   */
+  keyboardDismissable?: boolean;
 
   /**
    * Whether the popover is currently performing an entry animation.
