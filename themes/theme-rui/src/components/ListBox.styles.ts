@@ -2,16 +2,15 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
-    'overflow-hidden rounded-lg border border-input group-[trigger]/popover:border-0',
+    'overflow-hidden rounded-md border border-input group-[trigger]/popover:border-0',
   ]),
   list: cva(['space-y-1 bg-background p-1 text-sm outline-0']),
   option: cva([
-    'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-    'relative flex flex-col rounded-md px-2 py-1.5 text-sm text-foreground',
+    'relative flex flex-col rounded-md px-2 py-1.5 text-sm text-foreground cursor-pointer',
     'selected:bg-selected',
-    // TODO: can not use "ouline-none" because it overrides the focus visible things -.-
-    // TODO: try it after RAC is updated!
-    'data-[focused]:outline-none data-[focus-visible]:outline-2 data-[focus-visible]:outline-ring/70',
+    'hover:bg-hover hover:text-hover-foreground',
+    'disabled:cursor-not-allowed disabled:text-disabled-foreground',
+    'mixin-ring-focus-visible',
   ]),
   section: cva(''),
   header: cva(

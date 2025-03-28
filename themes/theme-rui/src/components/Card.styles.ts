@@ -2,7 +2,7 @@ import { cva } from '@marigold/system';
 import type { ThemeComponent } from '@marigold/system';
 
 export const Card: ThemeComponent<'Card'> = cva([
-  'border border-input rounded-lg',
+  'border border-input rounded-md',
   'bg-surface-overlay',
   'p-4',
   'shadow-sm shadow-black/5',

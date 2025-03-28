@@ -3,8 +3,8 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva(
     [
-      'grid-cols-[min-content_auto_min-content] gap-x-4 gap-y-2 [grid-template-areas:"icon_title_close""icon_content_content"]',
-      'bg-background z-50 max-w-[601px] rounded-sm border p-4',
+      'grid-cols-[min-content_auto_min-content] gap-x-3 gap-y-1 [grid-template-areas:"icon_title_close""icon_content_content"]',
+      'bg-background rounded-md border px-3 py-4',
     ],
     {
       variants: {
@@ -23,7 +23,7 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       },
     }
   ),
-  title: cva('text-base leading-5 font-bold'),
+  title: cva('text-sm font-medium'),
   content: cva('text-muted-foreground text-sm leading-5 font-normal', {
     variants: {
       variant: {
@@ -50,7 +50,12 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       variant: 'info',
     },
   }),
-  close: cva(
-    'h-[9.98px] w-[9.98px] cursor-pointer border-none p-0 leading-normal outline-0'
-  ),
+  close: cva([
+    'flex items-center justify-center',
+    'rounded-md transition-color size-8 shrink-0 p-0 text-foreground cursor-pointer',
+    '[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+    '-my-1.5 -me-2', // align button with title
+    'mixin-ring-focus-visible',
+    '[&_svg]:opacity-60 [&_svg]:transition-opacity hover:[&_svg]:opacity-100',
+  ]),
 };

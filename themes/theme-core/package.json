@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-core",
-  "version": "28.2.3",
+  "version": "28.2.4",
   "description": "Marigold Core Theme",
   "license": "MIT",
   "keywords": [
@@ -51,7 +51,8 @@
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/system": "workspace:*",
-    "@marigold/theme-plugins": "workspace:*"
+    "@marigold/theme-plugins": "workspace:*",
+    "tailwindcss-react-aria-components": "2.0.0"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css dist/theme.css"

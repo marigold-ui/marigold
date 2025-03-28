@@ -3,6 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Table: ThemeComponent<'Table'> = {
   table: cva('border-collapse whitespace-nowrap bg-white text-sm'),
   headerRow: cva(),
+  thead: cva(),
   header: cva(
     [
       'border-border-base relative border-b ',
