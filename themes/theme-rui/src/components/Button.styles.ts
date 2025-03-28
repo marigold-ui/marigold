@@ -12,10 +12,10 @@ export const Button: ThemeComponent<'Button'> = cva(
   {
     variants: {
       variant: {
-        default:
-          'border border-input bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground',
         primary:
           'bg-brand text-brand-foreground shadow-sm shadow-black/5 hover:bg-brand/90',
+        secondary:
+          'border border-input bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-hover hover:text-foreground',
@@ -31,7 +31,7 @@ export const Button: ThemeComponent<'Button'> = cva(
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: 'secondary',
       size: 'default',
     },
   }

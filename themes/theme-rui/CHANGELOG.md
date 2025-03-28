@@ -1,5 +1,14 @@
 # @marigold/theme-rui
 
+## 0.3.2
+
+### Patch Changes
+
+- 3d1f8c6: feat(rui): Next version of RUI theme with small updates and styling fixes.
+- Updated dependencies [3d1f8c6]
+  - @marigold/components@11.2.3
+  - @marigold/system@11.2.3
+
 ## 0.3.1
 
 ### Patch Changes

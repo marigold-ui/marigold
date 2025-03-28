@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 11.2.3
+
+### Patch Changes
+
+- Updated dependencies [3d1f8c6]
+  - @marigold/components@11.2.3
+  - @marigold/system@11.2.3
+  - @marigold/theme-b2b@29.2.4
+  - @marigold/theme-core@28.2.4
+  - @marigold/theme-docs@2.4.4
+  - @marigold/icons@1.3.3
+
 ## 11.2.2
 
 ### Patch Changes

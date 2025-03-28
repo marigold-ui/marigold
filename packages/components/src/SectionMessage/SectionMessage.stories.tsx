@@ -23,6 +23,9 @@ const meta = {
       description: 'makes the message dismissable.',
     },
   },
+  args: {
+    closeButton: false,
+  },
 } satisfies Meta<typeof SectionMessage>;
 
 export default meta;

@@ -2,6 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Dialog: ThemeComponent<'Dialog'> = {
   closeButton: cva([
+    'absolute top-4 right-4 ml-4',
     'size-6',
     'bg-bg-brand text-text-inverted',
     'border-border-brand rounded-xs border',

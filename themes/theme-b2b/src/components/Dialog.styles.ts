@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 import { ELEVALTION_RING } from '../mixins';
 
 export const Dialog: ThemeComponent<'Dialog'> = {
-  closeButton: cva(''),
+  closeButton: cva('absolute top-4 right-4 ml-4'),
   container: cva(
     [
       'font-body bg-bg-surface-overlay shadow-surface-overlay rounded-xs pl-8 pr-12 pb-8 pt-4',

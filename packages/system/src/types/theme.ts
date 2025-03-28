@@ -121,7 +121,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<
-      'table' | 'headerRow' | 'header' | 'body' | 'row' | 'cell',
+      'table' | 'headerRow' | 'header' | 'thead' | 'body' | 'row' | 'cell',
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
