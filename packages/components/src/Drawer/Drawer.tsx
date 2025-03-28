@@ -1,20 +1,22 @@
 import type { DialogProps } from 'react-aria-components';
 import { Dialog } from 'react-aria-components';
+import { cn, useClassNames } from '@marigold/system';
+import { DrawerContext } from './Context';
 import { DrawerModal } from './DrawerModal';
 import { DrawerTrigger } from './DrawerTrigger';
 
+// Props
+// ---------------
 export interface DrawerProps
   extends Omit<DialogProps, 'className' | 'style' | 'isOpen'> {
+  variant?: string;
+  size?: string;
+
   /**
    * Whether the overlay is open by default (controlled).
    * @default undefined
    */
   open?: boolean;
-  /**
-   * Whether to close the modal when the user interacts outside it.
-   * @default false
-   */
-  dismissable?: boolean;
   /**
    * Whether pressing the escape key closes the modal.
    * @default true
@@ -22,19 +24,26 @@ export interface DrawerProps
   keyboardDismissable?: boolean;
 }
 
+// Component
+// ---------------
 export const Drawer = ({
   children,
+  variant,
+  size,
   open,
-  dismissable,
   keyboardDismissable,
   ...props
 }: DrawerProps) => {
+  const classNames = useClassNames({ component: 'Drawer', variant, size });
+
   return (
-    <DrawerModal open={open} keyboardDismissable={keyboardDismissable}>
-      <Dialog className="h-full bg-red-500" {...props}>
-        {children}
-      </Dialog>
-    </DrawerModal>
+    <DrawerContext.Provider value={{ classNames }}>
+      <DrawerModal open={open} keyboardDismissable={keyboardDismissable}>
+        <Dialog {...props} className={cn('h-full')}>
+          {children}
+        </Dialog>
+      </DrawerModal>
+    </DrawerContext.Provider>
   );
 };
 
