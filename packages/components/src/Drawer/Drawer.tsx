@@ -60,7 +60,10 @@ export const Drawer = ({
           {...props}
           // Override RAC here so we can set an appropriate role
           {...(landmarkProps as any)}
-          className={cn('h-(--visual-viewport-height)', classNames.container)}
+          className={cn(
+            'h-(--visual-viewport-height) outline-none',
+            classNames.container
+          )}
         >
           {children}
         </Dialog>
