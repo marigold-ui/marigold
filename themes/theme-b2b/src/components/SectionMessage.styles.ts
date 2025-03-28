@@ -36,5 +36,5 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       variant: 'info',
     },
   }),
-  close: cva(''),
+  close: cva('h-5 w-5 text-center'),
 };

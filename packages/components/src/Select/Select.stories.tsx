@@ -2,6 +2,7 @@
 import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { Inset } from '../Inset';
+import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { Select } from './Select';
 
@@ -88,7 +89,7 @@ export const Basic: StoryObj<typeof Select> = {
   render: args => {
     const [selected, setSelected] = useState<string | number>('');
     return (
-      <>
+      <Stack space={6}>
         <Select
           {...args}
           onChange={setSelected}
@@ -105,7 +106,7 @@ export const Basic: StoryObj<typeof Select> = {
         </Select>
         <hr />
         <pre>selected: {selected}</pre>
-      </>
+      </Stack>
     );
   },
 };
