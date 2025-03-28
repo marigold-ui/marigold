@@ -39,7 +39,10 @@ export const Drawer = ({
   return (
     <DrawerContext.Provider value={{ classNames }}>
       <DrawerModal open={open} keyboardDismissable={keyboardDismissable}>
-        <Dialog {...props} className={cn('h-full')}>
+        <Dialog
+          {...props}
+          className={cn('h-(--visual-viewport-height)', classNames.container)}
+        >
           {children}
         </Dialog>
       </DrawerModal>

@@ -5,8 +5,8 @@ export const DrawerContext = createContext<{
   classNames: { [Part in ThemeComponentParts<'Drawer'>]: string };
 }>({
   classNames: {
-    container: 'bg-background',
     closeButton: '',
+    container: '',
     header: '',
     content: '',
     actions: '',

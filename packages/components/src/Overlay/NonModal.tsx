@@ -9,6 +9,7 @@ import {
   OverlayTriggerState,
   useOverlayTriggerState,
 } from 'react-stately';
+import { FocusScope } from '@react-aria/focus';
 import { focusSafely } from '@react-aria/interactions';
 import { DismissButton, Overlay } from '@react-aria/overlays';
 import { useIsSSR } from '@react-aria/ssr';
@@ -44,7 +45,7 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
   const portalContainer = usePortalContainer();
   const isEntering = useEnterAnimation(ref) || props.isEntering || false;
 
-  let renderProps = useRenderProps({
+  const renderProps = useRenderProps({
     ...props,
     defaultClassName: 'react-aria-NonModalOverlay',
     values: {
@@ -54,6 +55,7 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
     },
   });
 
+  // TODO: Do we need this when using <FocusScope>?
   // Focus the non-modal itself on mount, unless a child element is already focused.
   useEffect(() => {
     if (ref.current && !ref.current.contains(document.activeElement)) {
@@ -61,8 +63,8 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
     }
   }, [ref]);
 
-  let viewport = useViewportSize();
-  let style = {
+  const viewport = useViewportSize();
+  const style = {
     ...renderProps.style,
     '--visual-viewport-height': viewport.height + 'px',
   };
@@ -87,9 +89,11 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
 
   return (
     <Overlay isExiting={isExiting} portalContainer={portalContainer}>
-      <Provider values={[[OverlayTriggerStateContext, state]]}>
-        {overlay}
-      </Provider>
+      <FocusScope restoreFocus>
+        <Provider values={[[OverlayTriggerStateContext, state]]}>
+          {overlay}
+        </Provider>
+      </FocusScope>
     </Overlay>
   );
 };
