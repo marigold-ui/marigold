@@ -90,9 +90,13 @@ export const Drawer = ({
   let ref = useRef<HTMLElement | null>(null);
   let { landmarkProps } = useLandmark({ ...props, role }, ref);
   const classNames = useClassNames({ component: 'Drawer', variant, size });
-  console.log(closeButton);
+
   return (
-    <DrawerModal open={open} keyboardDismissable={keyboardDismissable}>
+    <DrawerModal
+      className={classNames.overlay}
+      open={open}
+      keyboardDismissable={keyboardDismissable}
+    >
       <DrawerContext.Provider value={{ variant, size }}>
         <Dialog
           {...props}
