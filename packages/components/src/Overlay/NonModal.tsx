@@ -57,11 +57,11 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
 
   // TODO: Do we need this when using <FocusScope>?
   // Focus the non-modal itself on mount, unless a child element is already focused.
-  useEffect(() => {
-    if (ref.current && !ref.current.contains(document.activeElement)) {
-      focusSafely(ref.current);
-    }
-  }, [ref]);
+  // useEffect(() => {
+  //   if (ref.current && !ref.current.contains(document.activeElement)) {
+  //     focusSafely(ref.current);
+  //   }
+  // }, [ref]);
 
   const viewport = useViewportSize();
   const style = {

@@ -505,6 +505,9 @@ importers:
       '@react-aria/interactions':
         specifier: ^3.24.0
         version: 3.24.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@react-aria/landmark':
+        specifier: 3.0.1
+        version: 3.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@react-aria/overlays':
         specifier: 3.26.0
         version: 3.26.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)

@@ -20,7 +20,7 @@ export const Basic: Story = {
       <Stack space={8} alignX="left">
         <Drawer.Trigger {...args}>
           <Button>Open Drawer</Button>
-          <Drawer>
+          <Drawer aria-label="This is the aria label!">
             <TextField label="In the drawer" />
           </Drawer>
         </Drawer.Trigger>
