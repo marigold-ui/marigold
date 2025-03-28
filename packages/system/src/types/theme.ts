@@ -45,7 +45,7 @@ export type Theme = {
     >;
     Divider?: ComponentStyleFunction<string, string>;
     Drawer?: Record<
-      'closeButton' | 'container' | 'header' | 'content' | 'actions',
+      'closeButton' | 'container' | 'header' | 'title' | 'content' | 'actions',
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
