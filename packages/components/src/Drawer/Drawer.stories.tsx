@@ -22,6 +22,7 @@ export const Basic: Story = {
           <Button>Open Drawer</Button>
           <Drawer aria-label="This is the aria label!">
             <TextField label="In the drawer" />
+            <Button slot="close">Close</Button>
           </Drawer>
         </Drawer.Trigger>
         <TextField

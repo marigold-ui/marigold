@@ -25,7 +25,7 @@ export interface NonModalAria {
 // Hook
 // ---------------
 export const useNonModal = (
-  { nonModalRef, keyboardDismissable }: AriaNonModalProps,
+  { nonModalRef, keyboardDismissable = true }: AriaNonModalProps,
   state: OverlayTriggerState
 ): NonModalAria => {
   let { overlayProps } = useOverlay(
@@ -34,7 +34,7 @@ export const useNonModal = (
       onClose: state.close,
       shouldCloseOnBlur: false,
       isDismissable: false,
-      isKeyboardDismissDisabled: !keyboardDismissable,
+      isKeyboardDismissDisabled: keyboardDismissable ? false : true,
     },
     nonModalRef
   );
