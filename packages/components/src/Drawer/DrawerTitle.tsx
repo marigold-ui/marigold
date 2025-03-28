@@ -1,5 +1,6 @@
 import { Header, Heading } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { useDrawerContext } from './Context';
 
 export interface DrawerTitleProps {
   variant?: string;
@@ -22,7 +23,13 @@ export const DrawerTitle = ({
   size,
   children,
 }: DrawerTitleProps) => {
-  const classNames = useClassNames({ component: 'Drawer', variant, size });
+  const ctx = useDrawerContext();
+  const classNames = useClassNames({
+    component: 'Drawer',
+    variant: variant ?? ctx.variant,
+    size: size ?? ctx.size,
+  });
+
   return (
     <Header className={cn('[grid-area:title]', classNames.header)}>
       <Heading slot="title" level={Number(level)} className={classNames.title}>

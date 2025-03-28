@@ -5,7 +5,9 @@ import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames } from '@marigold/system';
 import { DrawerContext } from './Context';
+import { DrawerContent } from './DrawerContent';
 import { DrawerModal } from './DrawerModal';
+import { DrawerTitle } from './DrawerTitle';
 import { DrawerTrigger } from './DrawerTrigger';
 
 // CLose Button
@@ -90,7 +92,7 @@ export const Drawer = ({
 
   return (
     <DrawerModal open={open} keyboardDismissable={keyboardDismissable}>
-      <DrawerContext.Provider value={{ classNames }}>
+      <DrawerContext.Provider value={{ variant, size }}>
         <Dialog
           {...props}
           // Override RAC here so we can set an appropriate role
@@ -110,3 +112,5 @@ export const Drawer = ({
 };
 
 Drawer.Trigger = DrawerTrigger;
+Drawer.Title = DrawerTitle;
+Drawer.Content = DrawerContent;

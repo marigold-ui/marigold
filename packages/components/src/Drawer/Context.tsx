@@ -1,15 +1,10 @@
 import { createContext, useContext } from 'react';
-import { ThemeComponentParts } from '@marigold/system';
 
 export const DrawerContext = createContext<{
-  classNames: { [Part in ThemeComponentParts<'Drawer'>]: string };
+  variant?: string;
+  size?: string;
 }>({
-  classNames: {
-    closeButton: '',
-    container: '',
-    header: '',
-    content: '',
-    actions: '',
-  },
+  variant: undefined,
+  size: undefined,
 });
 export const useDrawerContext = () => useContext(DrawerContext);
