@@ -5,6 +5,7 @@ import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames } from '@marigold/system';
 import { DrawerContext } from './Context';
+import { DrawerActions } from './DialogActions';
 import { DrawerContent } from './DrawerContent';
 import { DrawerModal } from './DrawerModal';
 import { DrawerTitle } from './DrawerTitle';
@@ -89,7 +90,7 @@ export const Drawer = ({
   let ref = useRef<HTMLElement | null>(null);
   let { landmarkProps } = useLandmark({ ...props, role }, ref);
   const classNames = useClassNames({ component: 'Drawer', variant, size });
-
+  console.log(closeButton);
   return (
     <DrawerModal open={open} keyboardDismissable={keyboardDismissable}>
       <DrawerContext.Provider value={{ variant, size }}>
@@ -114,3 +115,4 @@ export const Drawer = ({
 Drawer.Trigger = DrawerTrigger;
 Drawer.Title = DrawerTitle;
 Drawer.Content = DrawerContent;
+Drawer.Actions = DrawerActions;
