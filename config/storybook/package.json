@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "license": "MIT",
   "type": "module",
   "exports": "./main.js",
@@ -46,7 +46,7 @@
     "react-dom": "19.0.0",
     "storybook": "^8.6.3",
     "typescript": "5.7.3",
-    "vite": "6.0.9"
+    "vite": "6.0.12"
   },
   "peerDependencies": {
     "@storybook/react": "^8.6.3",

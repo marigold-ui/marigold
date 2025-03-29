@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva(
-    'rounded-lg border group-[[data-trigger]]/popover:border-0 border-border p-2'
+    'rounded-md border group-[[data-trigger]]/popover:border-0 border-border p-2'
   ),
   calendarCell: cva([
     'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg',

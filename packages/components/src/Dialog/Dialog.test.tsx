@@ -315,7 +315,7 @@ test('dialog has base classnames', () => {
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
 
-  const closeButton = dialog.firstChild?.lastChild;
+  const closeButton = dialog.firstChild;
 
   expect(closeButton).toHaveClass(
     'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1'
@@ -341,7 +341,7 @@ test('dialog has variant classnames', () => {
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
 
-  const closeButton = dialog.firstChild?.lastChild;
+  const closeButton = dialog.firstChild;
 
   expect(closeButton).toHaveClass(
     'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
