@@ -1,4 +1,4 @@
-import { forwardRef, useContext, useEffect } from 'react';
+import { forwardRef, useContext } from 'react';
 import {
   OverlayTriggerStateContext,
   Provider,
@@ -10,7 +10,6 @@ import {
   useOverlayTriggerState,
 } from 'react-stately';
 import { FocusScope } from '@react-aria/focus';
-import { focusSafely } from '@react-aria/interactions';
 import { DismissButton, Overlay } from '@react-aria/overlays';
 import { useIsSSR } from '@react-aria/ssr';
 import {
@@ -54,14 +53,6 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
       state,
     },
   });
-
-  // TODO: Do we need this when using <FocusScope>?
-  // Focus the non-modal itself on mount, unless a child element is already focused.
-  // useEffect(() => {
-  //   if (ref.current && !ref.current.contains(document.activeElement)) {
-  //     focusSafely(ref.current);
-  //   }
-  // }, [ref]);
 
   const viewport = useViewportSize();
   const style = {

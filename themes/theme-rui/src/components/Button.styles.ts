@@ -15,7 +15,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         primary:
           'bg-brand text-brand-foreground shadow-sm shadow-black/5 hover:bg-brand/90',
         secondary:
-          'border border-input bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground',
+          'border border-input bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground pressed:bg-hover',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-hover hover:text-foreground',
