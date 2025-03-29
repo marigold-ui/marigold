@@ -1,5 +1,6 @@
-import { cn } from '@marigold/system';
-import { NonModal, NonModalProps } from '../Overlay/NonModal';
+import { cn, useSmallScreen } from '@marigold/system';
+import { Modal, NonModal } from '../Overlay';
+import type { NonModalProps } from '../Overlay/NonModal';
 
 // Props
 // ---------------
@@ -12,10 +13,13 @@ export const DrawerModal = ({
   className,
   ...props
 }: DrawerModalProps) => {
-  return (
+  const isSmallScreen = useSmallScreen();
+
+  return isSmallScreen ? (
+    <Modal>{children}</Modal>
+  ) : (
     <NonModal
       {...props}
-      data-entering
       className={cn('fixed top-0 right-0 bottom-0', className)}
     >
       {children}
