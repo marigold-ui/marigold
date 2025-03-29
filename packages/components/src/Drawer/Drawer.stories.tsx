@@ -73,9 +73,9 @@ export const Basic: Story = {
 export const WithForms = {
   render: args => (
     <Drawer.Trigger>
-      <Button>Open Drawer</Button>
+      <Button>Configure Filter</Button>
       <Drawer {...args}>
-        <Drawer.Title>Drawer Title</Drawer.Title>
+        <Drawer.Title>Filter</Drawer.Title>
         <Drawer.Content>
           <Stack space={8}>
             <Slider
