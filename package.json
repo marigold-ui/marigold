@@ -34,7 +34,7 @@
     "next": "15.2.3",
     "postcss-import": "16.1.0",
     "postcss-loader": "8.1.1",
-    "prettier": "3.4.2",
+    "prettier": "3.5.3",
     "react-select": "5.9.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
