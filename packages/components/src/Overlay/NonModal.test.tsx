@@ -35,3 +35,7 @@ test('works with a dialog', async () => {
 
   expect(dialog).not.toBeInTheDocument();
 });
+
+// does not close when clicked outside
+// can interact with elements on the main page
+// sets role by default
