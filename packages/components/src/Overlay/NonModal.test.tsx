@@ -7,9 +7,12 @@ import type { NonModalProps } from './NonModal';
 
 const Component = (props: NonModalProps) => (
   <DialogTrigger>
-    <Button />
+    <Button>Toggle</Button>
     <NonModal {...props}>
-      <Dialog>Non-modal</Dialog>
+      <Dialog>
+        <p>Non-modal</p>
+        <Button slot="close">Close</Button>
+      </Dialog>
     </NonModal>
   </DialogTrigger>
 );
@@ -23,7 +26,7 @@ beforeEach(() => {
 test('works with a dialog', async () => {
   const { getByRole, queryByRole } = render(<Component />);
 
-  const button = getByRole('button');
+  const button = getByRole('button', { name: 'Toggle' });
   expect(queryByRole('dialog')).not.toBeInTheDocument();
 
   await user.click(button);
@@ -31,7 +34,8 @@ test('works with a dialog', async () => {
   const dialog = getByRole('dialog');
   expect(dialog).toBeInTheDocument();
 
-  await user.click(document.body);
+  const close = getByRole('button', { name: 'Close' });
+  await user.click(close);
 
   expect(dialog).not.toBeInTheDocument();
 });
