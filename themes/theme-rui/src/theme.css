@@ -185,10 +185,12 @@
   }
 
   /* animation slide in */
-  --animate-slide-in-duration: 0.3s;
-  --animate-slide-in-right: slide-in-right var(--animate-slide-in-duration)
+  --slide-in-duration: 0.3s;
+  --slide-out-duration: 0.15s;
+
+  --animate-slide-in-right: slide-in-right var(--slide-in-duration)
     var(--ease-out-expo);
-  --animate-slide-out-right: slide-in-right 3s reverse;
+  --animate-slide-out-right: slide-in-right var(--slide-out-duration) reverse;
 
   @keyframes slide-in-right {
     from {
