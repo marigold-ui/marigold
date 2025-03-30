@@ -4,13 +4,24 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Drawer: ThemeComponent<'Drawer'> = {
   overlay: cva([
-    'entering:animate-slide-in-right entering:ease-out-expo',
-    'exiting:animate-slide-out-right',
+    'group/overlay',
+    'entering:animate-slide-in-right exiting:animate-slide-out-right',
   ]),
   container: cva(
     [
       'relative grid-rows-[auto_1fr_auto]',
       'bg-surface-overlay border-input border-l shadow-lg',
+      /**
+       * The fade animation only start when entering is finished,
+       * to prevent flickering we hide the elements during the
+       * slide in animation.
+       */
+      '**:group-entering/overlay:opacity-0 **:animate-fade-in **:[animation-duration:0.2s]',
+      '**:[animation-delay:var(--animate-slide-in-duration)]',
+      /**
+       * Fade out content of the slider, looks smoother and less clutter.
+       */
+      '**:group-exiting/overlay:animate-fade-out **:group-exiting/overlay:[animation-duration:0.1s]',
     ],
     {
       variants: {

@@ -152,9 +152,43 @@
   --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
   --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
 
+  --fade-in-duration: 0.25s;
+  --fade-out-duration: 0.15s;
+
+  --animate-fade-in: fade-in var(--fade-in-duration) var(--ease-out-cubic);
+  --animate-fade-out: fade-in var(--fade-out-duration) reverse;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
+  --animate-fade-in-up: fade-in-up var(--fade-in-duration) var(--ease-out-cubic);
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
   /* animation slide in */
-  --animate-slide-in-right: slide-in-right 0.3s;
-  --animate-slide-out-right: slide-in-right 0.15s reverse;
+  --animate-slide-in-duration: 0.3s;
+  --animate-slide-in-right: slide-in-right var(--animate-slide-in-duration)
+    var(--ease-out-expo);
+  --animate-slide-out-right: slide-in-right 3s reverse;
 
   @keyframes slide-in-right {
     from {
