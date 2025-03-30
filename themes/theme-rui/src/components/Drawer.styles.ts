@@ -17,10 +17,12 @@ export const Drawer: ThemeComponent<'Drawer'> = {
        * slide in animation.
        */
       '**:group-entering/overlay:opacity-0',
-      '**:group-exiting/overlay:animate-fade-in **:[animation-duration:0.2s]',
-      '**:[animation-delay:var(--animate-slide-in-duration)]',
+      '**:not-group-exiting/overlay:animate-fade-in **:[animation-duration:0.2s]',
+      '**:[animation-delay:var(--slide-in-duration)]',
       /**
        * Fade out content of the slider, looks smoother and less clutter.
+       * Keep the "not-grou-exiting" of the fade in animation, because
+       * elements can only have one animation.
        */
       '**:group-exiting/overlay:animate-fade-out',
     ],
