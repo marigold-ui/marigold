@@ -1,64 +1,60 @@
 import { useActionState } from 'react';
-import {
-  Button,
-  Columns,
-  Form,
-  Headline,
-  Stack,
-  TextField,
-} from '@marigold/components';
+import { Button, Form, Headline, Stack, TextField } from '@marigold/components';
 
-//TODO: improve example - submitting again seems not to work
 export default () => {
-  const [{ error, result }, submitAction, isPending] = useActionState<
-    { result?: string | undefined; error?: string | null },
-    FormData
-  >(async (_previousState, formData) => {
-    // Two seconds loading time to simulate pending
-    const error = await waitTwoSec();
-    if (error === null) {
-      return { error: 'Fehler' };
-    }
-    return { result: '0 users found' };
-  }, {});
+  const [{ errors, result }, submitAction, isPending] = useActionState(
+    async (_previousState, formData) => {
+      let errors = {};
+      let firstName = formData.get('firstname');
+
+      if (firstName === '') {
+        errors = { ...errors, firstname: 'Please enter a username.' };
+      }
+
+      return { errors: errors };
+    },
+    {}
+  );
 
   return (
     <>
       <Headline level={2}>User Search</Headline>
-      <Form action={submitAction}>
+      <Form
+        action={submitAction}
+        validationBehavior="aria"
+        validationErrors={errors}
+      >
         <Stack space={4}>
           <Stack space={4}>
-            <Columns columns={[2, 2]} space={4}>
-              <TextField
-                type="text"
-                name="firstname"
-                label="Firstname:"
-                errorMessage={error}
-                error={error != null}
-                placeholder="Firstname"
-              />
-              <TextField
-                type="text"
-                name="name"
-                label="Name:"
-                errorMessage={error}
-                error={error != null}
-                placeholder="Name"
-              />
-            </Columns>
+            <TextField
+              type="text"
+              name="firstname"
+              label="Firstname:"
+              placeholder="Firstname"
+              error={errors && errors.firstname}
+              errorMessage={errors?.firstname}
+            />
+            <TextField
+              type="text"
+              name="name"
+              label="Name:"
+              error={errors && errors.name}
+              errorMessage={errors?.name}
+              placeholder="Name"
+            />
             <TextField
               type="text"
               name="adress"
-              errorMessage={error}
-              error={error != null}
+              error={errors && errors.name}
+              errorMessage={errors?.adress}
               placeholder="Adress"
               label="Adress:"
             />
             <TextField
               type="text"
               name="postcode"
-              errorMessage={error}
-              error={error != null}
+              error={errors && errors.name}
+              errorMessage={errors?.postcode}
               placeholder="Postcode"
               label="Postcode:"
             />
@@ -66,11 +62,11 @@ export default () => {
           <Stack space={4}>
             <TextField
               type="tel"
-              name="phone number"
-              errorMessage={error}
-              error={error != null}
-              placeholder="Phone Number"
-              label="Phone number:"
+              name="phone"
+              error={errors && errors.name}
+              errorMessage={errors?.phone}
+              placeholder="Phone"
+              label="Phone:"
             />
           </Stack>
           <Stack alignX="right">
