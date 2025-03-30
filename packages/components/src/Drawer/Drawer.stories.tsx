@@ -70,7 +70,7 @@ export const Basic: Story = {
   ),
 };
 
-export const WithForms = {
+export const WithForms: Story = {
   render: args => (
     <Drawer.Trigger>
       <Button>Configure Filter</Button>
