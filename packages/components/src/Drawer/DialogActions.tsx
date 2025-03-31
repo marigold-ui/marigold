@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 import { useDrawerContext } from './Context';
 
@@ -24,7 +24,10 @@ export const DrawerActions = ({ variant, size, children }: DrawerActions) => {
   });
 
   return (
-    <div className={cn('[grid-area:actions]', classNames.actions)}>
+    <div
+      className={cn('[grid-area:actions]', classNames.actions)}
+      style={{ '--i': 2 } as CSSProperties}
+    >
       {children}
     </div>
   );

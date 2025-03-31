@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { Header, Heading } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { useDrawerContext } from './Context';
@@ -31,7 +32,10 @@ export const DrawerTitle = ({
   });
 
   return (
-    <Header className={cn('[grid-area:title]', classNames.header)}>
+    <Header
+      className={cn('[grid-area:title]', classNames.header)}
+      style={{ '--i': 0 } as CSSProperties}
+    >
       <Heading slot="title" level={Number(level)} className={classNames.title}>
         {children}
       </Heading>

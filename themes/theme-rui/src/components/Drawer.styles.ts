@@ -16,9 +16,14 @@ export const Drawer: ThemeComponent<'Drawer'> = {
        * to prevent flickering we hide the elements during the
        * slide in animation.
        */
-      '**:group-entering/overlay:opacity-0',
-      '**:animate-fade-in **:[animation-duration:0.2s]',
-      '**:[animation-delay:var(--slide-in-duration)]',
+      // '**:group-entering/overlay:opacity-0',
+      // '**:animate-fade-in **:[animation-duration:0.2s]',
+      // '**:[animation-delay:var(--slide-in-duration)]',
+
+      '**:opacity-0 **:[animation-fill-mode:forwards]',
+      '**:animate-fade-in-up',
+      '**:[animation-delay:calc(var(--slide-in-duration)+(var(--i)*150ms))]',
+
       /**
        * Fade out content of the slider, looks smoother and less clutter.
        * Keep the "not-grou-exiting" of the fade in animation, because
