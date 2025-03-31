@@ -20,9 +20,17 @@ export const Drawer: ThemeComponent<'Drawer'> = {
       // '*:animate-fade-in *:[animation-duration:0.2s]',
       // '*:[animation-delay:var(--slide-in-duration)]',
 
+      /**
+       * The drawer's child elements will have a secondary fade-in-up animation,
+       * which starts only after the drawer has fully slid in.
+       *
+       * To achieve this, we initially hide the children and allow them to remain
+       * in their final animation state (using `animation-fill-mode`).
+       * A slight delay is applied to each child to create a staggered fade-in-up effect.
+       */
+
       '*:opacity-0 *:[animation-fill-mode:forwards]',
-      '*:animate-fade-in-up',
-      '*:[animation-delay:calc(var(--slide-in-duration)+(var(--i)*150ms))]',
+      '*:animate-fade-in-up *:[animation-delay:calc(var(--slide-in-duration)+(var(--i)*150ms))]',
 
       /**
        * Fade out content of the slider, looks smoother and less clutter.
