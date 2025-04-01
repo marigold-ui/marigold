@@ -5,6 +5,7 @@ export const Table: ThemeComponent<'Table'> = {
     'w-full overflow-hidden rounded-lg bg-white/40 text-sm',
     'border-secondary-200 border-separate border-spacing-0 border',
   ]),
+  thead: cva(),
   headerRow: cva(),
   header: cva('px-3 pb-2 pt-3 text-start'),
   body: cva(),

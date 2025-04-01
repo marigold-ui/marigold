@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Dialog: ThemeComponent<'Dialog'> = {
-  closeButton: cva('', {
+  closeButton: cva('absolute top-4 right-4 ml-4', {
     variants: {
       variant: {
         fullscreen: ['size-6', 'right-4 top-4'],
