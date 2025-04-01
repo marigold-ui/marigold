@@ -1,12 +1,14 @@
 import { CalendarDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Autocomplete } from '../Autocomplete';
+import { Button } from '../Button';
 import { Calendar } from '../Calendar';
 import { Checkbox } from '../Checkbox';
 import { Columns } from '../Columns';
 import { ComboBox } from '../ComboBox';
 import { DateField } from '../DateField';
 import { FieldGroup } from '../FieldBase';
+import { Inline } from '../Inline';
 import { Radio } from '../Radio';
 import { Select } from '../Select';
 import { SelectList } from '../SelectList';
@@ -48,6 +50,15 @@ export const Basic: Story = {
       </FieldGroup>
     );
   },
+};
+
+export const Horizontal: Story = {
+  render: args => (
+    <Inline space={4} alignY="bottom">
+      <TextField label="Name" width={72} />
+      <Button variant="primary">Save</Button>
+    </Inline>
+  ),
 };
 
 export const Selected: Story = {

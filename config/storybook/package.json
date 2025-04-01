@@ -29,10 +29,10 @@
     "@storybook/addon-interactions": "^8.6.3",
     "@storybook/source-loader": "^8.6.3",
     "@storybook/test": "^8.6.3",
-    "@tailwindcss/vite": "4.0.12",
+    "@tailwindcss/vite": "4.0.17",
     "@types/react": "19.0.10",
     "@vitejs/plugin-react": "4.3.4",
-    "tailwindcss": "4.0.12",
+    "tailwindcss": "4.0.17",
     "vite-tsconfig-paths": "5.1.4"
   },
   "devDependencies": {
@@ -46,7 +46,7 @@
     "react-dom": "19.0.0",
     "storybook": "^8.6.3",
     "typescript": "5.7.3",
-    "vite": "6.0.12"
+    "vite": "6.2.4"
   },
   "peerDependencies": {
     "@storybook/react": "^8.6.3",
