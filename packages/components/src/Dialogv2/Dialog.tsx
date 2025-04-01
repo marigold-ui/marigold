@@ -1,5 +1,10 @@
 import { useDOMRef } from '@react-spectrum/utils';
-import { forwardRef, useContext } from 'react';
+import {
+  ForwardRefExoticComponent,
+  RefAttributes,
+  forwardRef,
+  useContext,
+} from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { DOMRef } from '@react-types/shared';
@@ -23,6 +28,22 @@ export interface DialogProps
    * @default false
    */
   isNonModal?: boolean;
+}
+
+interface DialogComponent
+  extends ForwardRefExoticComponent<
+    DialogProps & RefAttributes<HTMLInputElement>
+  > {
+  /**
+   * Options for the Combobox.
+   */
+  Trigger: typeof DialogTrigger;
+
+  Title: typeof DialogTitle;
+
+  Content: typeof DialogContent;
+
+  Actions: typeof DialogActions;
 }
 
 interface CloseButtonProps {
@@ -88,7 +109,7 @@ const _Dialog = forwardRef((props: DialogProps, ref: DOMRef) => {
       </Dialog>
     </Modal>
   );
-});
+}) as DialogComponent;
 
 _Dialog.Trigger = DialogTrigger;
 _Dialog.Title = DialogTitle;
