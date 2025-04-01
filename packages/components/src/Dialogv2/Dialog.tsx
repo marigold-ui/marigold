@@ -1,6 +1,7 @@
 import { useDOMRef } from '@react-spectrum/utils';
 import {
   ForwardRefExoticComponent,
+  ReactNode,
   RefAttributes,
   forwardRef,
   useContext,
@@ -105,7 +106,7 @@ const _Dialog = forwardRef((props: DialogProps, ref: DOMRef) => {
         {props.closeButton && (
           <CloseButton className={classNames.closeButton} />
         )}
-        {props.children}
+        {props.children as ReactNode}
       </Dialog>
     </Modal>
   );
