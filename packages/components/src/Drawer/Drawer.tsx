@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { useContext, useRef } from 'react';
 import type { DialogProps } from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
@@ -27,6 +28,7 @@ const CloseButton = ({ className }: CloseButtonProps) => {
       )}
       onClick={ctx?.close}
       slot="dismiss-button"
+      style={{ '--i': 0 } as CSSProperties}
     >
       <svg viewBox="0 0 20 20" fill="currentColor">
         <path
