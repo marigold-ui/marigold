@@ -58,7 +58,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   ]),
   header: cva('border-border border-b px-6 py-4'),
   title: cva('font-semibold text-base'),
-  content: cva('px-6 py-4 overflow-y-auto'),
+  content: cva('px-6 py-4 overflow-y-auto outline-none'),
   actions: cva(
     'flex flex-row gap-3 justify-end border-border border-t px-6 py-4'
   ),

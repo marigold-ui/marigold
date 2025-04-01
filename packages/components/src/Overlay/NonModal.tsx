@@ -98,7 +98,11 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
   );
 
   return (
-    <Overlay isExiting={isExiting} portalContainer={portalContainer}>
+    <Overlay
+      isExiting={isExiting}
+      portalContainer={portalContainer}
+      disableFocusManagement
+    >
       <FocusScope restoreFocus>
         <Provider values={[[OverlayTriggerStateContext, state]]}>
           {overlay}
