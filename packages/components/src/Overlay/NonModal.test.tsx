@@ -32,7 +32,6 @@ const Component = (props: NonModalProps) => (
 
 test('renders nothing if isOpen is not set', function () {
   render(<Component />);
-
   expect(screen.queryByRole('dialog')).toBeNull();
 });
 

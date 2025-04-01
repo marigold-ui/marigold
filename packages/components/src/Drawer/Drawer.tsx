@@ -6,7 +6,7 @@ import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames } from '@marigold/system';
 import { DrawerContext } from './Context';
-import { DrawerActions } from './DialogActions';
+import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
 import { DrawerModal } from './DrawerModal';
 import { DrawerTitle } from './DrawerTitle';
