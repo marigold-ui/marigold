@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { UserEvent } from '@testing-library/user-event';
 import { Button, Dialog, DialogTrigger } from 'react-aria-components';
+import { OverlayContainerProvider } from '../Provider';
 import { NonModal } from './NonModal';
 import type { NonModalProps } from './NonModal';
 
@@ -25,8 +26,15 @@ const Component = (props: NonModalProps) => (
         </Dialog>
       </NonModal>
     </DialogTrigger>
+    <input type="text" data-testid="input" />
   </>
 );
+
+test('renders nothing if isOpen is not set', function () {
+  render(<Component />);
+
+  expect(screen.queryByRole('dialog')).toBeNull();
+});
 
 test('works with a dialog', async () => {
   render(<Component />);
@@ -114,6 +122,14 @@ test('able to interact with elements when non-modal is open', async () => {
   await user.click(outie);
 
   expect(onPressOutie).toHaveBeenCalled();
+
+  const input = screen.getByTestId('input');
+  await user.type(input, 'hello');
+
+  expect(input).toHaveValue('hello');
+
+  // Still open!
+  expect(dialog).toBeInTheDocument();
 });
 
 test('supports render props', async () => {
@@ -181,4 +197,30 @@ test('supports isEntering and isExiting props', async () => {
 
   rerender(<Component />);
   expect(popover).not.toBeInTheDocument();
+});
+
+test('supports custom portal container', async () => {
+  render(
+    <>
+      <OverlayContainerProvider value="custom-container">
+        <DialogTrigger>
+          <Button>Toggle</Button>
+          <NonModal>
+            <Dialog>
+              <p>Non-modal</p>
+              <Button slot="close">Close</Button>
+            </Dialog>
+          </NonModal>
+        </DialogTrigger>
+      </OverlayContainerProvider>
+      <div id="custom-container" data-testid="custom-container" />
+    </>
+  );
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  expect(
+    screen.getByRole('dialog').closest('[data-testid="custom-container"]')
+  ).toBe(screen.getByTestId('custom-container'));
 });
