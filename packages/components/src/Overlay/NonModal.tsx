@@ -114,7 +114,7 @@ export interface NonModalProps
   extends Omit<OverlayTriggerProps, 'isOpen'>,
     AriaLabelingProps,
     SlotProps,
-    Pick<NonModalInnerProps, 'style' | 'children'> {
+    Pick<NonModalInnerProps, 'style' | 'className' | 'children'> {
   /**
    * Whether the overlay is open by default (controlled).
    * @default undefined
