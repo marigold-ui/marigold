@@ -1,13 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import {
-  cleanup,
-  fireEvent,
-  renderHook,
-  screen,
-  within,
-} from '@testing-library/react';
+import { cleanup, renderHook, screen, within } from '@testing-library/react';
 import { Theme, cva } from '@marigold/system';
 import { Select } from '../Select';
 import { MarigoldProvider } from './MarigoldProvider';

@@ -23,19 +23,38 @@ import {
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
 import { usePortalContainer } from '../Provider';
 import { useRenderProps } from '../utils/useRenderProps';
+import type { RenderProps } from '../utils/useRenderProps';
 import { useNonModal } from './useNonModal';
 import type { AriaNonModalProps } from './useNonModal';
 
 // Helpers
 // ---------------
+export interface NonModalRenderProps {
+  /**
+   * Whether the popover is currently entering. Use this to apply animations.
+   * @selector [data-entering]
+   */
+  isEntering: boolean;
+  /**
+   * Whether the popover is currently exiting. Use this to apply animations.
+   * @selector [data-exiting]
+   */
+  isExiting: boolean;
+
+  /**
+   * State of the non-modal.
+   */
+  state: OverlayTriggerState;
+}
+
 interface NonModalInnerProps
   extends AriaNonModalProps,
     AriaLabelingProps,
-    SlotProps {
+    SlotProps,
+    RenderProps<NonModalRenderProps> {
   state: OverlayTriggerState;
   isEntering?: boolean;
   isExiting: boolean;
-  children?: React.ReactNode;
 }
 
 const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
@@ -94,19 +113,8 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
 export interface NonModalProps
   extends Omit<OverlayTriggerProps, 'isOpen'>,
     AriaLabelingProps,
-    SlotProps {
-  /**
-   * CSS classes for the overlay.
-   * @default undefined
-   */
-  className?: string;
-
-  /**
-   * Styles for the overlay.
-   * @default undefined
-   */
-  style?: string;
-
+    SlotProps,
+    Pick<NonModalInnerProps, 'style' | 'children'> {
   /**
    * Whether the overlay is open by default (controlled).
    * @default undefined
@@ -136,11 +144,6 @@ export interface NonModalProps
    * @default undefined
    */
   ref?: RefObject<HTMLElement | null>;
-
-  /**
-   * The children of the overlay.
-   */
-  children?: React.ReactNode;
 }
 
 // Component
