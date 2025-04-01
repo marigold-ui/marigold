@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
 import { Select } from '../Select';
@@ -108,4 +109,27 @@ export const WithForms: Story = {
       </Drawer>
     </Drawer.Trigger>
   ),
+};
+
+export const Controlled: Story = {
+  render: args => {
+    const [open, setOpen] = useState(false);
+    const onOpenChange = (open: boolean) => {
+      console.log('open', open);
+      setOpen(open);
+    };
+    return (
+      <Drawer.Trigger open={open} onOpenChange={onOpenChange}>
+        <Button>Open Drawer</Button>
+        <Drawer {...args}>
+          <Drawer.Title>Drawer Title</Drawer.Title>
+          <Drawer.Content>Drawer Content</Drawer.Content>
+          <Drawer.Actions>
+            <Button slot="close">Close</Button>
+            <Button variant="primary">Apply</Button>
+          </Drawer.Actions>
+        </Drawer>
+      </Drawer.Trigger>
+    );
+  },
 };
