@@ -93,7 +93,7 @@
   /* 
     muted colors are desaturated colors of the brand color,
     they help create hierarchy for secondary text. 
-    Currently used for: helptext, icons inside inputs, readonly background inside inputs
+    Currently used for: helptext, icons inside inputs, readonly background inside inputs, variant for text 
   */
   --color-muted: var(--color-stone-100);
   --color-muted-foreground: var(--color-stone-500);
