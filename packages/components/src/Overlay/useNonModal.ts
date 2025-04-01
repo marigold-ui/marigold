@@ -39,11 +39,6 @@ export const useNonModal = (
     nonModalRef
   );
 
-  /**
-   * usePopover has a `keepVisible` within an `useLayoutEffect` but it is not exported from `react-aria`
-   * need to test if this is necessary for accessibility
-   */
-
   return {
     nonModalProps: overlayProps,
   };
