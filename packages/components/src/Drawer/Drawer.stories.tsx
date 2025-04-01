@@ -58,7 +58,7 @@ export const Basic: Story = {
           </Drawer.Content>
           <Drawer.Actions>
             <Button slot="close">Close</Button>
-            <Button variant="primary">Apply</Button>
+            <Button variant="primary">Save</Button>
           </Drawer.Actions>
         </Drawer>
       </Drawer.Trigger>
@@ -104,7 +104,7 @@ export const WithForms: Story = {
         </Drawer.Content>
         <Drawer.Actions>
           <Button slot="close">Close</Button>
-          <Button variant="primary">Save</Button>
+          <Button variant="primary">Apply</Button>
         </Drawer.Actions>
       </Drawer>
     </Drawer.Trigger>
