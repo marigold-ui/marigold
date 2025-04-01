@@ -117,7 +117,7 @@ test('able to interact with elements when non-modal is open', async () => {
 });
 
 test('supports render props', async () => {
-  let { getByRole } = render(
+  render(
     <DialogTrigger>
       <Button />
       <NonModal>
@@ -128,10 +128,10 @@ test('supports render props', async () => {
     </DialogTrigger>
   );
 
-  const button = getByRole('button');
+  const button = screen.getByRole('button');
   await user.click(button);
 
-  const dialog = getByRole('dialog');
+  const dialog = screen.getByRole('dialog');
   expect(dialog).toHaveTextContent('Dialog is open');
 });
 
@@ -142,9 +142,8 @@ test('isOpen and defaultOpen override state from context', async () => {
     <>
       <DialogTrigger>
         <Button />
-        <NonModal open onOpenChange={onOpenChange}>
+        <NonModal defaultOpen onOpenChange={onOpenChange}>
           <Dialog>A non-modal Dialog</Dialog>
-          <Button slot="close">Close</Button>
         </NonModal>
       </DialogTrigger>
     </>
@@ -153,9 +152,33 @@ test('isOpen and defaultOpen override state from context', async () => {
   const dialog = screen.getByRole('dialog');
   expect(dialog).toHaveTextContent('A non-modal Dialog');
 
-  const close = screen.getByRole('button', { name: 'Close' });
-  await user.click(close);
+  await user.keyboard('{Escape}');
+  expect(dialog).not.toBeInTheDocument();
 
   expect(onOpenChange).toHaveBeenCalledTimes(1);
   expect(onOpenChange).toHaveBeenCalledWith(false);
+});
+
+test('supports isEntering and isExiting props', async () => {
+  const { rerender } = render(<Component isEntering />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const popover = screen
+    .getByRole('dialog')
+    .closest('.react-aria-NonModalOverlay');
+  expect(popover).toHaveAttribute('data-entering');
+
+  rerender(<Component />);
+  expect(popover).not.toHaveAttribute('data-entering');
+
+  rerender(<Component isExiting />);
+  await user.click(button);
+
+  expect(popover).toBeInTheDocument();
+  expect(popover).toHaveAttribute('data-exiting');
+
+  rerender(<Component />);
+  expect(popover).not.toBeInTheDocument();
 });
