@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { UserEvent } from '@testing-library/user-event';
-import { Button, Dialog, DialogTrigger } from 'react-aria-components';
+import {
+  Button,
+  Dialog,
+  DialogTrigger,
+  Pressable,
+} from 'react-aria-components';
 import { OverlayContainerProvider } from '../Provider';
 import { NonModal } from './NonModal';
 import type { NonModalProps } from './NonModal';
@@ -222,4 +227,23 @@ test('supports custom portal container', async () => {
   expect(
     screen.getByRole('dialog').closest('[data-testid="custom-container"]')
   ).toBe(screen.getByTestId('custom-container'));
+});
+
+test('supports custom <Pressable> trigger', async () => {
+  render(
+    <DialogTrigger>
+      <Pressable>
+        <span role="button">Trigger</span>
+      </Pressable>
+      <NonModal>
+        <Dialog>Popover</Dialog>
+      </NonModal>
+    </DialogTrigger>
+  );
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toBeInTheDocument();
 });
