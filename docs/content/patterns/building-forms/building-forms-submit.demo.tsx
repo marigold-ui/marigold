@@ -1,13 +1,21 @@
 import { useActionState } from 'react';
 import { Button, Form, Stack, TextField } from '@marigold/components';
 
+type FormState = {
+  promoCode: FormDataEntryValue | null;
+};
+
+const INITIAL_STATE: FormState = {
+  promoCode: null,
+};
+
 export default () => {
-  const [state, formAction] = useActionState<object | null, FormData>(
-    (_previousState, formData) => {
+  const [state, formAction] = useActionState<FormState, FormData>(
+    (_previousState: FormState, formData: FormData) => {
       // Access form data by form field name
-      return { promocode: formData.get('promocode') };
+      return { promoCode: formData.get('promocode') };
     },
-    null
+    INITIAL_STATE
   );
 
   return (

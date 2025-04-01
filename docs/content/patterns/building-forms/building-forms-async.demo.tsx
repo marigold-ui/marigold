@@ -2,64 +2,42 @@ import { useActionState } from 'react';
 import { Button, Form, Headline, Stack, TextField } from '@marigold/components';
 
 type FormState = {
-  name: string;
-  email: string;
-  errors: {
-    name?: string;
-    email?: string;
-  };
+  error?: string;
   success?: string;
 };
 
-const validateField = (name: string, value: string) => {
-  if (!value.trim()) {
-    return `${name} is required`;
-  }
-  if (name === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-    return 'Invalid email format';
-  }
-  return undefined;
+const INITIAL_STATE: FormState = {
+  error: '',
+  success: '',
 };
 
 export default () => {
-  const [{ errors, success, ...rest }, submitAction, isPending] =
-    useActionState<FormState, FormData>(
-      async (_previousState, formData) => {
-        const name = formData.get('name') as string;
-        const email = formData.get('email') as string;
+  const [{ error, success }, submitAction, isPending] = useActionState<
+    FormState,
+    FormData
+  >(async (_previousState, formData) => {
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
 
-        const errors = {
-          name: validateField('name', name),
-          email: validateField('email', email),
-        };
+    if (Math.random() > 0.5) {
+      return {
+        ...INITIAL_STATE,
+        error: 'An error occurred. Please try again.',
+      };
+    }
+    // Simulate async action (e.g., API call)
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-        if (errors.name || errors.email) {
-          return { name, email, errors, success: '' };
-        }
+    return {
+      ...INITIAL_STATE,
+      success: `You searched successfully for ${name} and ${email}`,
+    };
+  }, INITIAL_STATE);
 
-        // Simulate async action (e.g., API call)
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        return {
-          name,
-          email,
-          errors: {},
-          success: `You searched successfully for ${name} and ${email}`,
-        };
-      },
-      {
-        name: '',
-        email: '',
-        errors: {},
-        success: '',
-      }
-    );
-
-  console.log(rest);
   return (
     <>
       <Headline level={2}>User Search</Headline>
-      <Form action={submitAction} validationBehavior="aria">
+      <Form action={submitAction}>
         <Stack space={4}>
           <Stack space={4}>
             <TextField
@@ -67,18 +45,19 @@ export default () => {
               name="name"
               label="Name:"
               placeholder="Name"
-              defaultValue={rest.name}
-              error={errors.name !== undefined}
-              errorMessage={errors?.name}
+              required
+              errorMessage={({ validationDetails }) =>
+                validationDetails.valueMissing
+                  ? 'Please enter a valid email address!'
+                  : ''
+              }
             />
             <TextField
-              type="text"
+              type="email"
               name="email"
               label="Email:"
               placeholder="Email"
-              defaultValue={rest.email}
-              error={errors.email !== undefined}
-              errorMessage={errors?.email}
+              required
             />
           </Stack>
           <Stack alignX="right">
@@ -87,6 +66,7 @@ export default () => {
             </Button>
           </Stack>
           {success && <p>{success}</p>}
+          {error && <p className="text-red-600">{error}</p>}
         </Stack>
       </Form>
     </>
