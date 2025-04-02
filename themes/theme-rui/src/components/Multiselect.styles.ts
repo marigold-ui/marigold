@@ -1,7 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-// import { inputBackground, inputHover, inputSpacing } from './Input.styles';
-
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   field: cva('grid gap-y-0.5'),
   container: cva([
@@ -11,7 +9,6 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'aria-disabled:bg-disabled aria-disabled:text-disabled-foreground aria-disabled:hover:border-input aria-disabled:border-input aria-disabled:cursor-not-allowed',
     'has-[input[data-invalid=true]]:border-destructive has-[input[data-invalid=true][data-focused=true]]:!border-destructive has-[input[data-invalid=true][data-focused=true]]:!ring-destructive/20',
     '[&>*:first-child]:p-0',
-    // Using !important to override react-select styles
     'has-[input[data-focused=true]]:!border-ring has-[input[data-focused=true]]:!ring-ring/50 has-[input[data-focused=true]]:ring-[3px] has-[input[data-focused=true]]:!outline-none',
     'has-[input[aria-readonly=true]]:bg-muted',
   ]),
