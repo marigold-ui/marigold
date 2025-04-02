@@ -34,10 +34,10 @@ export const Drawer: ThemeComponent<'Drawer'> = {
 
       /**
        * Fade out content of the slider, looks smoother and less clutter.
-       * Keep the "not-grou-exiting" of the fade in animation, because
+       * Keep the "not-group-exiting" of the fade in animation, because
        * elements can only have one animation.
        */
-      '*:group-exiting/overlay:animate-fade-out',
+      '*:group-exiting/overlay:animate-fade-out! *:group-exiting/overlay:[animation-delay:0s]!',
     ],
     {
       variants: {
