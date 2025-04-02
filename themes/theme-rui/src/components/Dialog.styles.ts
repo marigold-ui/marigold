@@ -1,19 +1,23 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Dialog: ThemeComponent<'Dialog'> = {
-  closeButton: cva(''),
+  closeButton: cva([
+    'absolute top-3 right-3',
+    'flex size-7 items-center justify-center rounded transition-[color,box-shadow]',
+    'mixin-ring-focus-visible',
+    '[&_svg]:size-4 [&_svg]:opacity-60 [&_svg]:transition-opacity hover:[&_svg]:opacity-100',
+  ]),
   container: cva(
     [
-      'bg-background fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100%-2rem)] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto rounded-xl',
-      ' border p-6 shadow-lg duration-200 sm:max-w-100 border-border',
+      'flex flex-col gap-0 p-0',
+      'bg-background rounded-xl border p-6 shadow-lg overflow-y-auto',
+      'w-full max-w-[calc(100%-2rem)]',
+      'sm:max-h-[min(640px,80vh)] max-h-[calc(100%-2rem)]',
     ],
     {
       variants: {
         size: {
-          default: '',
-          small: 'w-[min(100%,640px)]',
-          medium: 'w-[min(100%,768px)]',
-          large: 'w-[min(100%,1024px)]',
+          default: 'sm:max-w-100',
         },
       },
       defaultVariants: {
@@ -25,3 +29,8 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   content: cva('text-muted-foreground text-sm'),
   actions: cva('flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'),
 };
+
+/**
+sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:hidden
+
+ */

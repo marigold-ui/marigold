@@ -1,6 +1,6 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
-const circle = 'before:size-1.5 before:rounded-full';
+const circle = 'before:size-1.5 before:rounded-full pr-2';
 
 export const Badge: ThemeComponent<'Badge'> = cva(
   [

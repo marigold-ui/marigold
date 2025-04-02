@@ -97,10 +97,14 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       ...rest,
     };
 
-    const showStepper = !hideStepper;
+    const showStepper = !hideStepper && !readOnly;
 
     return (
-      <FieldBase as={NumberField} {...props}>
+      <FieldBase
+        as={NumberField}
+        {...props}
+        data-readonly={readOnly ? 'true' : undefined}
+      >
         <Group className={cn('flex items-stretch', classNames.group)}>
           {showStepper && (
             <StepButton
