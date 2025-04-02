@@ -98,6 +98,19 @@ test('can be closed with esc key', async () => {
   expect(dialog).not.toBeInTheDocument();
 });
 
+test('disable closing via esc key', async () => {
+  render(<Component keyboardDismissable={false} />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toBeInTheDocument();
+
+  await user.keyboard('{Escape}');
+  expect(dialog).toBeInTheDocument();
+});
+
 test('can be closed using the dialog close button', async () => {
   render(<Component />);
 

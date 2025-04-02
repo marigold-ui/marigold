@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { cva } from '@marigold/system';
 import type { Theme } from '@marigold/system';
@@ -43,15 +43,12 @@ const theme: Theme = {
       content: cva(''),
       actions: cva(''),
     },
-    Headline: cva(''),
-    Header: cva(''),
-    Underlay: cva('bg-black opacity-5'),
   },
 };
 
 const Component = (props: DrawerProps) => (
   <Drawer.Trigger>
-    <Button>Open Drawer</Button>
+    <Button>Toggle</Button>
     <Drawer {...props}>
       <Drawer.Title>Drawer Title</Drawer.Title>
       <Drawer.Content>Drawer Content</Drawer.Content>
@@ -66,7 +63,93 @@ const Component = (props: DrawerProps) => (
 const user = userEvent.setup();
 const { render } = setup({ theme });
 
-test('renders nothing if isOpen is not set', function () {
+test('renders nothing if isOpen is not set', () => {
   render(<Component />);
   expect(screen.queryByRole('dialog')).toBeNull();
+});
+
+test('opens/closes via trigger', async () => {
+  render(<Component />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  expect(screen.queryByText('Drawer Content')).not.toBeInTheDocument();
+
+  await user.click(button);
+
+  const drawer = screen.getByText('Drawer Content');
+  expect(drawer).toBeInTheDocument();
+
+  await user.click(button);
+
+  expect(drawer).not.toBeInTheDocument();
+});
+
+test('can be closed with esc key', async () => {
+  render(<Component />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const drawer = screen.getByText('Drawer Content');
+  expect(drawer).toBeInTheDocument();
+
+  await user.keyboard('{Escape}');
+  expect(drawer).not.toBeInTheDocument();
+});
+
+test('disable closing via esc key', async () => {
+  render(<Component keyboardDismissable={false} />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const drawer = screen.getByText('Drawer Content');
+  expect(drawer).toBeInTheDocument();
+
+  await user.keyboard('{Escape}');
+  expect(drawer).toBeInTheDocument();
+});
+
+test('can be closed via button with [slot="close"]', async () => {
+  render(<Component />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const drawer = screen.getByText('Drawer Content');
+  expect(drawer).toBeInTheDocument();
+
+  const close = screen.getByRole('button', { name: 'Close' });
+  await user.click(close);
+
+  expect(drawer).not.toBeInTheDocument();
+});
+
+test('has "complementary" role by default', async () => {
+  render(<Component />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  expect(screen.queryByRole('complementary')).toBeInTheDocument();
+});
+
+test('allows to set other landmark roles', async () => {
+  render(<Component role="navigation" />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  expect(screen.queryByRole('navigation')).toBeInTheDocument();
+});
+
+test('able to show a close button', async () => {
+  render(<Component closeButton />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const dialog = screen.getByRole('complementary');
+  const close = within(dialog).getAllByRole('button');
+  console.log(close.length);
 });
