@@ -28,6 +28,7 @@ const CloseButton = ({ className }: CloseButtonProps) => {
       )}
       onClick={ctx?.close}
       slot="dismiss-button"
+      aria-label="dismiss drawer"
       style={{ '--i': 0 } as CSSProperties}
     >
       <svg viewBox="0 0 20 20" fill="currentColor">

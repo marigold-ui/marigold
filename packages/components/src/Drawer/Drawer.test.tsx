@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { cva } from '@marigold/system';
 import type { Theme } from '@marigold/system';
@@ -149,7 +149,20 @@ test('able to show a close button', async () => {
   const button = screen.getByRole('button', { name: 'Toggle' });
   await user.click(button);
 
-  const dialog = screen.getByRole('complementary');
-  const close = within(dialog).getAllByRole('button');
-  console.log(close.length);
+  expect(screen.queryByLabelText('dismiss drawer')).toBeInTheDocument();
+});
+
+test('able to close via close button', async () => {
+  render(<Component closeButton />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const drawer = screen.getByText('Drawer Content');
+  expect(drawer).toBeInTheDocument();
+
+  const close = screen.getByLabelText('dismiss drawer');
+  await user.click(close);
+
+  expect(drawer).not.toBeInTheDocument();
 });
