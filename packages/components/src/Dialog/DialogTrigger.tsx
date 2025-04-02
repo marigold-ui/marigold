@@ -9,7 +9,7 @@ import { Dialog } from './Dialog';
 export interface DialogTriggerProps
   extends Omit<RAC.DialogTriggerProps, 'isOpen'> {
   /**
-   * Whether the overlay is open by default (controlled).
+   * Whether the dialog is open by default (controlled).
    * @default false
    */
   open?: boolean;
