@@ -4,7 +4,7 @@ import type { DialogProps } from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
-import { cn, useClassNames } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { DrawerContext } from './Context';
 import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
@@ -90,9 +90,16 @@ export const Drawer = ({
   role = 'complementary',
   ...props
 }: DrawerProps) => {
-  let ref = useRef<HTMLElement | null>(null);
-  let { landmarkProps } = useLandmark({ ...props, role }, ref);
+  const ref = useRef<HTMLElement | null>(null);
   const classNames = useClassNames({ component: 'Drawer', variant, size });
+
+  /**
+   * On smaller screens the we render a modal dialog instead of a non-modal drawer
+   * and need to adjust the role and props accordingly.
+   */
+  const isSmallScreen = useSmallScreen();
+  const landmarkAria = useLandmark({ ...props, role }, ref);
+  const landmarkProps = isSmallScreen ? {} : landmarkAria.landmarkProps;
 
   return (
     <DrawerModal

@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { prettyDOM, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { cva } from '@marigold/system';
 import type { Theme } from '@marigold/system';
@@ -7,20 +7,21 @@ import { setup } from '../test.utils';
 import { Drawer } from './Drawer';
 import type { DrawerProps } from './Drawer';
 
-const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => {
+let isSmallScreen = false;
+const mockMatchMedia = () =>
+  jest.fn().mockImplementation(() => {
     return {
-      matches: matches.includes(query),
+      matches: isSmallScreen,
     };
   });
-window.matchMedia = mockMatchMedia(['(max-width: 1024px)']);
+window.matchMedia = mockMatchMedia();
 
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva(''),
+    Button: cva(),
     Drawer: {
-      overlay: cva(''),
+      overlay: cva(),
       container: cva('p-5', {
         variants: {
           variant: {
@@ -38,11 +39,12 @@ const theme: Theme = {
           },
         },
       }),
-      header: cva(''),
-      title: cva(''),
-      content: cva(''),
-      actions: cva(''),
+      header: cva(),
+      title: cva(),
+      content: cva(),
+      actions: cva(),
     },
+    Underlay: cva(),
   },
 };
 
@@ -65,7 +67,7 @@ const { render } = setup({ theme });
 
 test('renders nothing if isOpen is not set', () => {
   render(<Component />);
-  expect(screen.queryByRole('dialog')).toBeNull();
+  expect(screen.queryByText('Drawer Content')).toBeNull();
 });
 
 test('opens/closes via trigger', async () => {
@@ -167,4 +169,16 @@ test('able to close via close button', async () => {
   expect(drawer).not.toBeInTheDocument();
 });
 
-test('uses modal on small screens', () => {});
+test('uses modal on small screens', async () => {
+  isSmallScreen = true;
+  render(<Component closeButton />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const drawer = screen.getByText('Drawer Content');
+  expect(drawer).toBeInTheDocument();
+
+  expect(screen.queryByRole('dialog')).toBeInTheDocument();
+  expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+});
