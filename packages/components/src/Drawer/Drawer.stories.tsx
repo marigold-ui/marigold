@@ -80,7 +80,6 @@ export const WithForms: Story = {
         <Drawer.Content>
           <Stack space={8}>
             <Slider
-              {...args}
               formatOptions={{ style: 'currency', currency: 'EUR' }}
               minValue={10}
               maxValue={140}
