@@ -2,6 +2,9 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Text: ThemeComponent<'Text'> = cva('', {
   variants: {
+    variant: {
+      muted: 'text-muted-foreground',
+    },
     size: {
       // Adding a default here, which beasically acts as an inherit
       default: '',
