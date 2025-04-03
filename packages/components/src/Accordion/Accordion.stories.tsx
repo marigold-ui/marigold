@@ -248,7 +248,7 @@ export const ButtonInHeader: Story = {
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">
-        <Inline>
+        <Columns columns={[1, 'fit']} space={4}>
           <Accordion.Header>Buttons</Accordion.Header>
           <Button
             variant="primary"
@@ -256,7 +256,7 @@ export const ButtonInHeader: Story = {
           >
             Do not Click
           </Button>
-        </Inline>
+        </Columns>
         <Accordion.Content>Don't click the Button</Accordion.Content>
       </Accordion.Item>
     </Accordion>
