@@ -4,10 +4,12 @@ import { Button } from '../Button';
 export const useFilters = () => ({});
 
 export interface FilterProps {
-  children?: ReactNode;
+  children?: (props: any) => ReactNode;
 }
 
-export const Filter = ({ children }: FilterProps) => <div>{children}</div>;
+export const Filter = ({ children }: FilterProps) => (
+  <div>{children?.({})}</div>
+);
 
 // Provides the context to update filter
 Filter.Provider = ({ children }: PropsWithChildren) => <div>{children}</div>;
