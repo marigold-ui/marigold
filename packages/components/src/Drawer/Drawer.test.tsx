@@ -166,3 +166,5 @@ test('able to close via close button', async () => {
 
   expect(drawer).not.toBeInTheDocument();
 });
+
+test('uses modal on small screens', () => {});
