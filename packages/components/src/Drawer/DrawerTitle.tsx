@@ -6,11 +6,6 @@ import { useDrawerContext } from './Context';
 export interface DrawerTitleProps {
   variant?: string;
   size?: string;
-  /**
-   * Sets heading level, h1 through h6.
-   * @default "2"
-   */
-  level?: '1' | '2' | '3' | '4' | '5' | '6';
 
   /**
    * Children of the component.
@@ -18,12 +13,7 @@ export interface DrawerTitleProps {
   children?: React.ReactNode;
 }
 
-export const DrawerTitle = ({
-  level = '2',
-  variant,
-  size,
-  children,
-}: DrawerTitleProps) => {
+export const DrawerTitle = ({ variant, size, children }: DrawerTitleProps) => {
   const ctx = useDrawerContext();
   const classNames = useClassNames({
     component: 'Drawer',
@@ -36,7 +26,7 @@ export const DrawerTitle = ({
       className={cn('[grid-area:title]', classNames.header)}
       style={{ '--i': 0 } as CSSProperties}
     >
-      <Heading slot="title" level={Number(level)} className={classNames.title}>
+      <Heading slot="title" level={2} className={classNames.title}>
         {children}
       </Heading>
     </Header>
