@@ -102,7 +102,7 @@
   --color-disabled-foreground: var(--color-stone-400);
 
   /* used for placeholder color */
-  --color-placeholder: --alpha(var(--color-stone-500) / 70%);
+  --color-placeholder: rgba(var(--color-stone-500), 0.7);
   /* used for outline/border as ring*/
   --color-ring: var(--color-stone-400);
 
