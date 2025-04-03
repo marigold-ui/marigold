@@ -1,4 +1,4 @@
-import { prettyDOM, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { cva } from '@marigold/system';
 import type { Theme } from '@marigold/system';
