@@ -46,9 +46,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       },
     }
   ),
-  content: cva(
-    'overflow-hidden text-sm text-muted-foreground in-data-[expanded]:pb-2'
-  ),
+  content: cva('overflow-hidden in-data-[expanded]:pb-2'),
   icon: cva(
     'pointer-events-none shrink-0 opacity-60 transition-transform duration-200'
   ),
