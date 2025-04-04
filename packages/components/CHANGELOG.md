@@ -1,5 +1,13 @@
 # @marigold/components
 
+## 11.2.4
+
+### Patch Changes
+
+- 08ba5c7: chore([DSTSUP-109]): change visibility of icon to hidden when sorting…
+- 8b404d2: fix([DST-750]): Do not set styles for content in `<Accordion>`
+  - @marigold/system@11.2.4
+
 ## 11.2.3
 
 ### Patch Changes
