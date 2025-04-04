@@ -44,6 +44,16 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Divider?: ComponentStyleFunction<string, string>;
+    Drawer?: Record<
+      | 'overlay'
+      | 'closeButton'
+      | 'container'
+      | 'header'
+      | 'title'
+      | 'content'
+      | 'actions',
+      ComponentStyleFunction<string, string>
+    >;
     Field?: ComponentStyleFunction<string, string>;
     Footer?: ComponentStyleFunction<string, string>;
     Header?: ComponentStyleFunction<string, string>;
@@ -156,3 +166,5 @@ export type ComponentNames = keyof Theme['components'];
 export type ThemeComponent<C extends ComponentNames> = NonNullable<
   Theme['components'][C]
 >;
+export type ThemeComponentParts<C extends ComponentNames> =
+  keyof ThemeComponent<C>;

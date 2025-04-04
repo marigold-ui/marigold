@@ -6,11 +6,10 @@ import { Dialog } from './Dialog';
 
 // Props
 // ---------------
-
 export interface DialogTriggerProps
   extends Omit<RAC.DialogTriggerProps, 'isOpen'> {
   /**
-   * Wheather compnent is rendered.
+   * Whether the dialog is open by default (controlled).
    * @default false
    */
   open?: boolean;
@@ -34,7 +33,6 @@ export interface DialogTriggerProps
 
 // Component
 // ---------------
-
 const _DialogTrigger = ({
   open,
   dismissable,

@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { cleanup, fireEvent, renderHook, screen } from '@testing-library/react';
+import { cleanup, renderHook, screen, within } from '@testing-library/react';
 import { Theme, cva } from '@marigold/system';
 import { Select } from '../Select';
 import { MarigoldProvider } from './MarigoldProvider';
@@ -62,7 +62,7 @@ test('renders portal container', async () => {
     <>
       <OverlayContainerProvider value="testid">
         <MarigoldProvider theme={theme}>
-          <Select label="Label" data-testid="select" defaultOpen>
+          <Select label="Label" defaultOpen>
             <Select.Section header="section">
               <Select.Option id="one">one</Select.Option>
               <Select.Option id="two">two</Select.Option>
@@ -75,9 +75,8 @@ test('renders portal container', async () => {
   );
 
   const { result } = renderHook(() => usePortalContainer(), { wrapper });
-  const button = screen.getByRole('button');
-  fireEvent.click(button);
-  const item = screen.getByText('two');
+  const listbox = screen.getByRole('listbox');
+  const item = within(listbox).getByText('two');
 
   expect(item).toBeInTheDocument();
 
