@@ -1,5 +1,17 @@
 # @marigold/theme-rui
 
+## 0.3.3
+
+### Patch Changes
+
+- 599ef6b: fix([DST-752]): use `rgba` instead of `alpha` value in our theme.css
+- a7a9e2c: fix: Use stone value without rgba to keep oklch color
+- 8b404d2: fix([DST-750]): Do not set styles for content in `<Accordion>`
+- Updated dependencies [08ba5c7]
+- Updated dependencies [8b404d2]
+  - @marigold/components@11.2.4
+  - @marigold/system@11.2.4
+
 ## 0.3.2
 
 ### Patch Changes
