@@ -58,7 +58,13 @@ export const Basic: Story = {
           </Drawer.Content>
           <Drawer.Actions>
             <Button slot="close">Close</Button>
-            <Button variant="primary">Save</Button>
+            <Button
+              slot="close"
+              variant="primary"
+              onPress={() => alert('Drawer will be closed')}
+            >
+              Save
+            </Button>
           </Drawer.Actions>
         </Drawer>
       </Drawer.Trigger>
@@ -103,7 +109,13 @@ export const WithForms: Story = {
         </Drawer.Content>
         <Drawer.Actions>
           <Button slot="close">Close</Button>
-          <Button variant="primary">Apply</Button>
+          <Button
+            slot="close"
+            variant="primary"
+            onPress={() => alert('Apply filters and close dialog')}
+          >
+            Apply
+          </Button>
         </Drawer.Actions>
       </Drawer>
     </Drawer.Trigger>
@@ -118,17 +130,20 @@ export const Controlled: Story = {
       setOpen(open);
     };
     return (
-      <Drawer.Trigger open={open} onOpenChange={onOpenChange}>
-        <Button>Open Drawer</Button>
-        <Drawer {...args}>
-          <Drawer.Title>Drawer Title</Drawer.Title>
-          <Drawer.Content>Drawer Content</Drawer.Content>
-          <Drawer.Actions>
-            <Button slot="close">Close</Button>
-            <Button variant="primary">Apply</Button>
-          </Drawer.Actions>
-        </Drawer>
-      </Drawer.Trigger>
+      <Stack space={8} alignX="left">
+        <Drawer.Trigger open={open} onOpenChange={onOpenChange}>
+          <Button>Open Drawer</Button>
+          <Drawer {...args}>
+            <Drawer.Title>Drawer Title</Drawer.Title>
+            <Drawer.Content>Drawer Content</Drawer.Content>
+            <Drawer.Actions>
+              <Button slot="close">Close</Button>
+              <Button variant="primary">Apply</Button>
+            </Drawer.Actions>
+          </Drawer>
+        </Drawer.Trigger>
+        <pre>Drawer is {open ? 'open' : 'closed'}</pre>
+      </Stack>
     );
   },
 };
