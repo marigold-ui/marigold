@@ -103,6 +103,7 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         as={NumberField}
         {...props}
         data-readonly={readOnly ? 'true' : undefined}
+        data-stepper={showStepper ? 'true' : undefined}
       >
         <Group className={cn('flex items-stretch', classNames.group)}>
           {showStepper && (
