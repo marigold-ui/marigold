@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 11.3.0
+
+### Minor Changes
+
+- 611c2e8: feat(733): Introduce a `<Drawer>` component
+
 ## 11.2.3
 
 ### Patch Changes

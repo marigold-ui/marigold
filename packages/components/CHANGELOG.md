@@ -1,5 +1,20 @@
 # @marigold/components
 
+## 11.3.0
+
+### Minor Changes
+
+- 611c2e8: feat(733): Introduce a `<Drawer>` component
+- 7554cf9: refa([DST-755]): Cleanup `NumberField` styles for RUI + left align text when stepper is hidden
+
+### Patch Changes
+
+- 888e852: [DST-769]: use useId from `react-aria` utils to support React 17+
+- 08ba5c7: chore([DSTSUP-109]): change visibility of icon to hidden when sorting…
+- 8b404d2: fix([DST-750]): Do not set styles for content in `<Accordion>`
+- Updated dependencies [611c2e8]
+  - @marigold/system@11.3.0
+
 ## 11.2.3
 
 ### Patch Changes
