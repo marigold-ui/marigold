@@ -10,7 +10,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   container: cva(
     [
       'flex flex-col gap-0 p-0',
-      'bg-background rounded-xl border p-6 shadow-lg overflow-y-auto',
+      'bg-surface-overlay rounded-xl border p-6 shadow-lg overflow-y-auto',
       'w-full max-w-[calc(100%-2rem)]',
       'sm:max-h-[min(640px,80vh)] max-h-[calc(100%-2rem)]',
     ],

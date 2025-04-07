@@ -1,5 +1,25 @@
 # @marigold/theme-rui
 
+## 0.4.0
+
+### Minor Changes
+
+- 611c2e8: feat(733): Introduce a `<Drawer>` component
+- 7554cf9: refa([DST-755]): Cleanup `NumberField` styles for RUI + left align text when stepper is hidden
+
+### Patch Changes
+
+- 599ef6b: fix([DST-752]): use `rgba` instead of `alpha` value in our theme.css
+- a7a9e2c: fix: Use stone value without rgba to keep oklch color
+- 8b404d2: fix([DST-750]): Do not set styles for content in `<Accordion>`
+- Updated dependencies [888e852]
+- Updated dependencies [08ba5c7]
+- Updated dependencies [611c2e8]
+- Updated dependencies [8b404d2]
+- Updated dependencies [7554cf9]
+  - @marigold/components@11.3.0
+  - @marigold/system@11.3.0
+
 ## 0.3.2
 
 ### Patch Changes

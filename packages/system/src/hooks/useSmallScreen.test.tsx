@@ -2,7 +2,7 @@ import { cleanup, renderHook } from '@testing-library/react';
 import { useSmallScreen } from './useSmallScreen';
 
 /**
- * We need to mock `matchMedia` because JSON does not
+ * We need to mock `matchMedia` because JDOM does not
  * implements it.
  */
 const mockMatchMedia = (matches: string[]) =>
