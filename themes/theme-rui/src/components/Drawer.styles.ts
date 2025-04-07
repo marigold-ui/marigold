@@ -1,7 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-// TODO: origin has a default border color ... see https://github.com/origin-space/originui/blob/8d5fe3fce5187fe70b9c68920fdcbdacc67de62e/app/globals.css#L172C1-L180C2
-
 export const Drawer: ThemeComponent<'Drawer'> = {
   overlay: cva([
     'group/overlay',
