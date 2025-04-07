@@ -1,9 +1,8 @@
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Group, NumberField } from 'react-aria-components';
+import { Group, Input, NumberField } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { Input } from '../Input/Input';
 import { StepButton } from './StepButton';
 
 // Props
@@ -104,6 +103,7 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         as={NumberField}
         {...props}
         data-readonly={readOnly ? 'true' : undefined}
+        data-stepper={showStepper ? 'true' : undefined}
       >
         <Group className={cn('flex items-stretch', classNames.group)}>
           {showStepper && (
@@ -113,14 +113,10 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
               slot="decrement"
             />
           )}
-          <div className="flex-1">
-            <Input
-              ref={ref}
-              variant={variant}
-              size={size}
-              className={classNames.input}
-            />
-          </div>
+          <Input
+            ref={ref}
+            className={cn('h-full flex-1 outline-none', classNames.input)}
+          />
           {showStepper && (
             <StepButton
               className={classNames.stepper}
