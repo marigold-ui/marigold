@@ -12,9 +12,9 @@ export const usePortalContainer = () => {
   const isSSR = useIsSSR();
 
   const portal = isSSR
-    ? null
+    ? undefined
     : portalContainer
-      ? document.getElementById(portalContainer)
+      ? document.getElementById(portalContainer) || undefined
       : document.body;
 
   return portal;
