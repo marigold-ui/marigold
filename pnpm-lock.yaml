@@ -348,6 +348,9 @@ importers:
       '@marigold/theme-docs':
         specifier: workspace:*
         version: link:../themes/theme-docs
+      '@marigold/theme-rui':
+        specifier: workspace:*
+        version: link:../themes/theme-rui
       '@octokit/core':
         specifier: 6.1.4
         version: 6.1.4
