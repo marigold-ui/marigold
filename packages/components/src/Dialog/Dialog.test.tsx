@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button';
+import { Headline } from '../Headline';
 import { setup } from '../test.utils';
 import { Dialog } from './Dialog';
 
@@ -197,7 +198,9 @@ test('supports title for accessibility reasons', () => {
       <Button>Open</Button>
 
       <Dialog closeButton>
-        <Dialog.Title>Headline</Dialog.Title>
+        <Dialog.Title>
+          <Headline slot="title">Headline</Headline>
+        </Dialog.Title>
         Content
       </Dialog>
     </Dialog.Trigger>
@@ -261,7 +264,9 @@ test('child function is passed an id for the dialog title (a11y)', () => {
     <Dialog.Trigger>
       <Button>Open</Button>
       <Dialog>
-        <Dialog.Title>Custom Headline</Dialog.Title>
+        <Dialog.Title>
+          <Headline slot="title">Custom Headline</Headline>
+        </Dialog.Title>
       </Dialog>
     </Dialog.Trigger>
   );
