@@ -146,6 +146,10 @@ export const themeswitch = [
         name: 'Switch to B2B Theme',
         theme: 'b2b',
       },
+      {
+        name: 'Switch to RUI Theme',
+        theme: 'rui',
+      },
     ],
   },
 ];
