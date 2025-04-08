@@ -88,7 +88,9 @@ export const Form: Story = {
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
-          <Dialog.Title>Please log into account </Dialog.Title>
+          <Dialog.Title>
+            <Headline level={'2'}>Please log into account</Headline>
+          </Dialog.Title>
           <Dialog.Content>
             <TextField label="Username" />
             <TextField label="Password" type="password" />
@@ -116,7 +118,7 @@ export const CustomTitleProps: Story = {
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
       <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
-        <Dialog.Title>This is a headline!</Dialog.Title>
+        <Headline level={'2'}>This is a headline!</Headline>
         <Dialog.Content>
           <Text>This is some not so very long text.</Text>
         </Dialog.Content>
@@ -130,7 +132,9 @@ export const ScrollableContent: Story = {
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
       <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
-        <Dialog.Title>This is a headline!</Dialog.Title>
+        <Dialog.Title>
+          <Headline level={'2'}>This is a headline!</Headline>
+        </Dialog.Title>
         <Dialog.Content>
           <Stack space={2}>
             <Text>This is some not so very long text.</Text>
@@ -163,7 +167,9 @@ export const StickyFooter: Story = {
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
       <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
-        <Dialog.Title>This is a headline!</Dialog.Title>
+        <Dialog.Title>
+          <Headline level={'2'}>This is a headline!</Headline>
+        </Dialog.Title>
         <div className="flex max-h-[400px] flex-col">
           <Text>This is some additional text that is always visible!</Text>
           <div className="max-w-[400px] flex-1 overflow-y-auto">
