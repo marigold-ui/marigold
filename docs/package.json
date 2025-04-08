@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@internationalized/date": "3.7.0",
-    "@types/node": "20.17.19",
+    "@types/node": "20.17.30",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
     "tailwindcss-animate": "1.0.7",
