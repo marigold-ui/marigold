@@ -20,6 +20,7 @@
     "@marigold/theme-b2b": "workspace:*",
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-docs": "workspace:*",
+    "@marigold/theme-rui": "workspace:*",
     "@octokit/core": "6.1.4",
     "@react-aria/i18n": "3.12.7",
     "@tailwindcss/postcss": "4.0.17",
