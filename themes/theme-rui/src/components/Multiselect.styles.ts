@@ -46,5 +46,5 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'aria-disabled:text-disabled-foreground aria-disabled:cursor-not-allowed',
     '[&.isFocused:not([aria-disabled=true])]:!bg-hover',
   ]),
-  valueContainer: cva('gap-2 py-2 h-input'),
+  valueContainer: cva('gap-2 py-2 min-h-input'),
 };
