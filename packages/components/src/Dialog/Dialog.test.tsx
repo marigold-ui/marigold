@@ -34,6 +34,7 @@ const theme: Theme = {
       header: cva(''),
       content: cva(''),
       actions: cva(''),
+      title: cva(''),
     },
     Headline: cva(''),
     Header: cva(''),
