@@ -23,7 +23,7 @@ export const _Modal = forwardRef(
       >
         <Modal
           {...props}
-          className="relative flex w-full justify-center"
+          className="relative flex w-fit justify-center"
           ref={ref}
         />
       </ModalOverlay>
