@@ -56,7 +56,7 @@ export const TableColumnHeader = ({
             <SortDown className="inline-block" />
           )
         ) : (
-          <span className="invisible">
+          <span className="hidden">
             <SortDown className="inline-block" />
           </span>
         ))}

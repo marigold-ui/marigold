@@ -4,10 +4,10 @@ import {
   Center,
   FieldBase,
   FieldGroup,
+  Form,
   Slider,
   Stack,
 } from '@marigold/components';
-import { Form } from '@marigold/components/src/Form/Form';
 
 export default () => {
   const handleSubmit = (e: FormEvent) => {
