@@ -23,11 +23,6 @@ export interface DialogProps
    * Show the close button.
    */
   closeButton?: boolean;
-  /**
-   * If `true`, the dialog will be non-modal, meaning it will not block interaction with the background content.
-   * @default false
-   */
-  isNonModal?: boolean;
 }
 
 interface DialogComponent
@@ -53,7 +48,6 @@ interface CloseButtonProps {
 const CloseButton = ({ className }: CloseButtonProps) => {
   const ctx = useContext(OverlayTriggerStateContext);
   return (
-    // <div className="absolute top-4 right-4 ml-4">
     <button
       className={cn(
         'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
@@ -70,14 +64,9 @@ const CloseButton = ({ className }: CloseButtonProps) => {
         />
       </svg>
     </button>
-    // </div>
   );
 };
 
-/**
- * Dialogs are windows containing contextual information, tasks, or workflows that appear over the user interface.
- * Depending on the kind of Dialog, further interactions may be blocked until the Dialog is acknowledged.
- */
 const _Dialog = forwardRef(
   (props: DialogProps, ref: Ref<HTMLElement> | undefined) => {
     const classNames = useClassNames({
