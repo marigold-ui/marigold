@@ -38,7 +38,10 @@ const themes = {
 // ---------------
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className="scrollbar scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full"
+    >
       <body className={`${fontSans.className} min-h-screen`}>
         <Suspense>
           <MarigoldThemeSwitch
