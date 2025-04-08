@@ -2,4 +2,4 @@
 "@marigold/docs": minor
 ---
 
-docs([DST-722]): Add RUI to the docs
+docs([DST-722]): Allow to switch to RUI theme.
