@@ -1,12 +1,5 @@
-import { useDOMRef } from '@react-spectrum/utils';
-import { MutableRefObject, forwardRef, useCallback } from 'react';
-import {
-  Modal,
-  ModalOverlay,
-  ModalOverlayProps,
-  useLocale,
-} from 'react-aria-components';
-import { DOMRef } from '@react-types/shared';
+import { Ref, forwardRef } from 'react';
+import { Modal, ModalOverlay, ModalOverlayProps } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 interface ModalProps extends ModalOverlayProps {
@@ -14,24 +7,8 @@ interface ModalProps extends ModalOverlayProps {
 }
 
 export const _Modal = forwardRef(
-  (props: ModalProps, ref: DOMRef<HTMLDivElement>) => {
-    let domRef = useDOMRef(ref);
-    let { locale, direction } = useLocale();
-
-    // TODO: should we pass through lang and dir props in RAC?
-    let modalRef = useCallback(
-      (el: HTMLDivElement) => {
-        (domRef as MutableRefObject<HTMLDivElement>).current = el;
-        if (el) {
-          el.lang = locale;
-          el.dir = direction;
-        }
-      },
-      [locale, direction, domRef]
-    );
-
+  (props: ModalProps, ref: Ref<HTMLDivElement> | undefined) => {
     const classNames = useClassNames({ component: 'Underlay' });
-
     return (
       <ModalOverlay
         {...props}
@@ -47,7 +24,7 @@ export const _Modal = forwardRef(
         <Modal
           {...props}
           className="relative flex w-full justify-center"
-          ref={modalRef}
+          ref={ref}
         />
       </ModalOverlay>
     );

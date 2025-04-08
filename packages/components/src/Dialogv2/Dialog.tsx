@@ -1,14 +1,13 @@
-import { useDOMRef } from '@react-spectrum/utils';
 import {
   ForwardRefExoticComponent,
   ReactNode,
+  Ref,
   RefAttributes,
   forwardRef,
   useContext,
 } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
-import { DOMRef } from '@react-types/shared';
 import { cn, useClassNames } from '@marigold/system';
 import { DialogActions } from '../Dialog/DialogActions';
 import { DialogContent } from '../Dialog/DialogContent';
@@ -79,38 +78,39 @@ const CloseButton = ({ className }: CloseButtonProps) => {
  * Dialogs are windows containing contextual information, tasks, or workflows that appear over the user interface.
  * Depending on the kind of Dialog, further interactions may be blocked until the Dialog is acknowledged.
  */
-const _Dialog = forwardRef((props: DialogProps, ref: DOMRef) => {
-  let domRef = useDOMRef(ref);
-  const classNames = useClassNames({
-    component: 'Dialog',
-    variant: props.variant,
-    size: props.size,
-  });
-  const { isDismissable, isKeyboardDismissDisabled, isOpen } =
-    useContext(DialogContext);
-  return (
-    <Modal
-      isDismissable={isDismissable}
-      isKeyboardDismissDisabled={isKeyboardDismissDisabled}
-      isOpen={isOpen}
-    >
-      <Dialog
-        {...props}
-        ref={domRef}
-        className={cn(
-          'relative outline-hidden [&>*:not(:last-child)]:mb-4',
-          "grid [grid-template-areas:'title'_'content'_'actions']",
-          classNames.container
-        )}
+const _Dialog = forwardRef(
+  (props: DialogProps, ref: Ref<HTMLElement> | undefined) => {
+    const classNames = useClassNames({
+      component: 'Dialog',
+      variant: props.variant,
+      size: props.size,
+    });
+    const { isDismissable, isKeyboardDismissDisabled, isOpen } =
+      useContext(DialogContext);
+    return (
+      <Modal
+        isDismissable={isDismissable}
+        isKeyboardDismissDisabled={isKeyboardDismissDisabled}
+        isOpen={isOpen}
       >
-        {props.closeButton && (
-          <CloseButton className={classNames.closeButton} />
-        )}
-        {props.children as ReactNode}
-      </Dialog>
-    </Modal>
-  );
-}) as DialogComponent;
+        <Dialog
+          {...props}
+          ref={ref}
+          className={cn(
+            'relative outline-hidden [&>*:not(:last-child)]:mb-4',
+            "grid [grid-template-areas:'title'_'content'_'actions']",
+            classNames.container
+          )}
+        >
+          {props.closeButton && (
+            <CloseButton className={classNames.closeButton} />
+          )}
+          {props.children as ReactNode}
+        </Dialog>
+      </Modal>
+    );
+  }
+) as DialogComponent;
 
 _Dialog.Trigger = DialogTrigger;
 _Dialog.Title = DialogTitle;

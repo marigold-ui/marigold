@@ -37,7 +37,6 @@
     "@react-aria/table": "3.17.1",
     "@react-aria/utils": "3.28.1",
     "@react-aria/visually-hidden": "3.8.21",
-    "@react-spectrum/utils": "3.12.3",
     "@react-stately/collections": "3.12.2",
     "@react-stately/data": "3.12.2",
     "@react-stately/table": "3.14.0",
