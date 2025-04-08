@@ -3,6 +3,7 @@ import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
+import { Headline } from '../Headline';
 import { Menu } from '../Menu';
 import { Modal, ModalProps } from '../Overlay/Modal';
 import { Stack } from '../Stack';
@@ -65,7 +66,9 @@ export const Basic: Story = {
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
-          <Dialog.Title>This is a headline!</Dialog.Title>
+          <Dialog.Title>
+            <Headline level={'2'}>This is a headline!</Headline>
+          </Dialog.Title>
           <Dialog.Content>This is some not so very long text.</Dialog.Content>
           <Dialog.Actions>
             <Button slot="close" variant="secondary">

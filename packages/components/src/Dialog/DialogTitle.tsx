@@ -1,6 +1,6 @@
 import { cn, useClassNames } from '@marigold/system';
 import { Header } from '../Header';
-import { Headline, HeadlineProps } from '../Headline';
+import { HeadlineProps } from '../Headline';
 
 export interface DialogTitleProps extends Omit<HeadlineProps, 'slot'> {
   variant?: string;
@@ -16,9 +16,7 @@ export const DialogTitle = ({
   const classNames = useClassNames({ component: 'Dialog', variant, size });
   return (
     <Header className={cn('[grid-area:title]', classNames.header)}>
-      <Headline slot="title" level={level}>
-        {children}
-      </Headline>
+      {children}
     </Header>
   );
 };
