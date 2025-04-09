@@ -38,6 +38,7 @@
     "mdast-util-toc": "7.1.0",
     "next": "15.2.4",
     "next-contentlayer2": "0.5.4",
+    "nuqs": "2.4.1",
     "react": "19.1.0",
     "react-docgen-typescript": "2.2.2",
     "react-dom": "19.1.0",
