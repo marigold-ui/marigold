@@ -1,13 +1,12 @@
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { PropsWithChildren } from 'react';
+import { Wrapper } from './wrapper';
 
 // Layout
 // ---------------
 const Layout = ({ children }: PropsWithChildren) => (
   <NuqsAdapter>
-    <div className="p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
-      {children}
-    </div>
+    <Wrapper>{children}</Wrapper>
   </NuqsAdapter>
 );
 
