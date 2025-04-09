@@ -26,7 +26,10 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   title: cva('', {
     variants: {
       variant: {},
-      size: {},
+      size: {
+        'level-1': 'text-5xl font-black',
+        'level-2': 'text-3xl font-black',
+      },
     },
   }),
   content: cva(''),

@@ -8,10 +8,14 @@ export interface DialogTitleProps {
 }
 
 export const DialogTitle = ({ variant, size, children }: DialogTitleProps) => {
-  const classNames = useClassNames({ component: 'Dialog', variant, size });
+  const classNames = useClassNames({
+    component: 'Dialog',
+    variant,
+    size,
+  });
   return (
     <Header className={cn('[grid-area:title]', classNames.header)}>
-      <Heading slot="title" level={3}>
+      <Heading slot="title" className={classNames.title}>
         {children}
       </Heading>
     </Header>

@@ -26,6 +26,12 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     }
   ),
   header: cva('flex flex-col gap-1 text-center sm:text-left'),
+  title: cva('text-lg font-semibold', {
+    variants: {
+      variant: {},
+      size: {},
+    },
+  }),
   content: cva('text-muted-foreground text-sm'),
   actions: cva('flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'),
 };
