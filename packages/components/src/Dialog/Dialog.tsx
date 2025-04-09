@@ -1,6 +1,5 @@
 import {
   ForwardRefExoticComponent,
-  ReactNode,
   Ref,
   RefAttributes,
   forwardRef,
@@ -76,6 +75,16 @@ const _Dialog = forwardRef(
     });
     const { isDismissable, isKeyboardDismissDisabled, isOpen } =
       useContext(DialogContext);
+
+    const state = useContext(OverlayTriggerStateContext);
+
+    const children =
+      typeof props.children === 'function'
+        ? props.children({
+            close: state?.close ?? (() => {}),
+          })
+        : props.children;
+
     return (
       <Modal
         isDismissable={isDismissable}
@@ -94,7 +103,7 @@ const _Dialog = forwardRef(
           {props.closeButton && (
             <CloseButton className={classNames.closeButton} />
           )}
-          {props.children as ReactNode}
+          {children}
         </Dialog>
       </Modal>
     );
