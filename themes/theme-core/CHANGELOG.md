@@ -1,5 +1,14 @@
 # @marigold/theme-core
 
+## 28.3.1
+
+### Patch Changes
+
+- 000169f: fix([DSTSUP-118]): Fix icon position in input fields for b2b and core theme
+- f946eed: fix([DSTSUP-117]): Fix overlapping `<NumberField>`
+  - @marigold/system@11.4.0
+  - @marigold/components@11.4.0
+
 ## 28.3.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @marigold/theme-b2b
 
+## 29.3.1
+
+### Patch Changes
+
+- 000169f: fix([DSTSUP-118]): Fix icon position in input fields for b2b and core theme
+  - @marigold/system@11.4.0
+  - @marigold/components@11.4.0
+
 ## 29.3.0
 
 ### Minor Changes
