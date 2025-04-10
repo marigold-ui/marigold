@@ -53,6 +53,8 @@ import { LatestPost } from './blog/LatestPost';
 import { PostList } from './blog/PostList';
 
 // Typography
+
+// Typography
 // ---------------
 const typography = {
   p: (props: HTMLAttributes<HTMLParagraphElement>) => (
@@ -207,13 +209,14 @@ export interface MarkdownProps {
 }
 
 export const Markdown = ({ className, contents }: MarkdownProps) => (
-  <Md
-    className={className}
-    remarkPlugins={[remarkGfm]}
-    components={components}
-    disallowedElements={['p']}
-    unwrapDisallowed
-  >
-    {contents}
-  </Md>
+  <div className={className}>
+    <Md
+      remarkPlugins={[remarkGfm]}
+      components={components}
+      disallowedElements={['p']}
+      unwrapDisallowed
+    >
+      {contents}
+    </Md>
+  </div>
 );
