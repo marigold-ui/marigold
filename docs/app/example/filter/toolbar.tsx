@@ -7,9 +7,10 @@ export const Toolbar = () => {
   const [] = useFilters();
 
   return (
-    <Inline space={4}>
+    <Inline space={1}>
       <SearchField description="Search by venue name" width={64} />
-      <Button>Suchen</Button>
+      <Button variant="primary">Search</Button>
+      <Button>Filter</Button>
     </Inline>
   );
 };

@@ -35,6 +35,7 @@
     "eslint-config-next": "15.2.4",
     "framer-motion": "11.18.2",
     "github-slugger": "2.0.0",
+    "lucide-react": "0.487.0",
     "mdast-util-toc": "7.1.0",
     "next": "15.2.4",
     "next-contentlayer2": "0.5.4",

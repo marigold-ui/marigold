@@ -12,7 +12,7 @@ export const Wrapper = ({ children }: PropsWithChildren) => {
     <div data-theme={current}>
       <OverlayContainerProvider value="portalContainer">
         <MarigoldProvider theme={theme}>
-          <div className="p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
+          <div className="h-[calc(100dvh-var(--page-header-height))] p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
             {children}
           </div>
         </MarigoldProvider>
