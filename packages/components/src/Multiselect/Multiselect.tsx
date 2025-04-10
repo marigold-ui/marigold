@@ -51,6 +51,7 @@ interface MultipleSelectProps
   errorMessage?: string | ((validation: ValidationResult) => string);
   placeholder?: string;
   defaultSelectedItems?: SelectProps['defaultValue'];
+  selectedItems?: SelectProps['value'];
   defaultValue?: SelectProps['defaultInputValue'];
   onChange?: SelectProps['onInputChange'];
   onSelectionChange?: SelectProps['onChange'];
@@ -108,7 +109,7 @@ const getClassNames = (
 ): ClassNamesConfig => ({
   control: () =>
     cn(
-      'relative flex items-center box-border flex-wrap justify-between relative',
+      'relative flex items-center box-border flex-wrap justify-between ',
       classNames.container
     ),
   container: () => 'pointer-events-auto',
@@ -127,6 +128,7 @@ export const Multiselect = ({
   disabled,
   readOnly = false,
   items,
+  selectedItems,
   defaultSelectedItems,
   defaultValue,
   error,
@@ -149,6 +151,7 @@ export const Multiselect = ({
     options: items,
     defaultInputValue: defaultValue,
     defaultValue: defaultSelectedItems,
+    value: selectedItems,
     onInputChange: onChange,
     onChange: onSelectionChange,
     ...rest,
