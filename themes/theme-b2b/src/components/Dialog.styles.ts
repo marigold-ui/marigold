@@ -23,15 +23,12 @@ export const Dialog: ThemeComponent<'Dialog'> = {
     }
   ),
   header: cva('flex items-center'),
-  title: cva('', {
+  title: cva('font-black text-3xl mb-1', {
     variants: {
       variant: {},
-      size: {
-        'level-1': 'text-5xl font-black',
-        'level-2': 'text-3xl font-black',
-      },
+      size: {},
     },
   }),
   content: cva(''),
-  actions: cva('flex gap-2 justify-end'),
+  actions: cva('flex gap-2 justify-end mt-4'),
 };
