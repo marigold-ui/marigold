@@ -1,5 +1,14 @@
 # @marigold/theme-core
 
+## 28.3.2
+
+### Patch Changes
+
+- 953cf3d: Making the dialog titles independant
+- Updated dependencies [953cf3d]
+  - @marigold/components@11.4.1
+  - @marigold/system@11.4.1
+
 ## 28.3.1
 
 ### Patch Changes
