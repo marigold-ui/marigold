@@ -37,7 +37,7 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
       variant: 'info',
     },
   }),
-  icon: cva('h-6 w-6 align-baseline leading-none pt-0.5', {
+  icon: cva('h-6 w-6 align-baseline leading-none', {
     variants: {
       variant: {
         success: 'text-success-muted-accent',
