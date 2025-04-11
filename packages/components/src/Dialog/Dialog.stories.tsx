@@ -113,7 +113,7 @@ export const CustomTitleProps: Story = {
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
       <Dialog size={size} closeButton aria-labelledby="my-cool-headline">
-        This is a headline!
+        <Dialog.Title>This is a headline!</Dialog.Title>
         <Dialog.Content>
           <Text>This is some not so very long text.</Text>
         </Dialog.Content>
