@@ -1,4 +1,4 @@
-import { venues } from '@/lib/data/venues';
+import { venueTypes, venues } from '@/lib/data/venues';
 import { Card, Headline, Inline, Inset, Text } from '@marigold/components';
 
 export default () => {
@@ -8,7 +8,7 @@ export default () => {
         <Headline level={3}>{venues[0].name}</Headline>
         <Inline>
           <Text fontStyle="italic">
-            {venues[0].city} | {venues[0].type}
+            {venues[0].city} | {venueTypes[venues[0].type]}
           </Text>
         </Inline>
         <Text>{venues[0].description}</Text>
