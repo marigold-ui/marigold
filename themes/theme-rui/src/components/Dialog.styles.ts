@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Dialog: ThemeComponent<'Dialog'> = {
   closeButton: cva([
-    'absolute top-3 right-3',
+    'absolute top-6 right-3',
     'flex size-7 items-center justify-center rounded transition-[color,box-shadow]',
     'mixin-ring-focus-visible',
     '[&_svg]:size-4 [&_svg]:opacity-60 [&_svg]:transition-opacity hover:[&_svg]:opacity-100',
