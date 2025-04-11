@@ -40,7 +40,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<
-      'closeButton' | 'container' | 'header' | 'content' | 'actions',
+      'closeButton' | 'container' | 'header' | 'content' | 'actions' | 'title',
       ComponentStyleFunction<string, string>
     >;
     Divider?: ComponentStyleFunction<string, string>;
