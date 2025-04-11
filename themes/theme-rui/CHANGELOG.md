@@ -1,5 +1,14 @@
 # @marigold/theme-rui
 
+## 0.5.1
+
+### Patch Changes
+
+- 953cf3d: Making the dialog titles independant
+- Updated dependencies [953cf3d]
+  - @marigold/components@11.4.1
+  - @marigold/system@11.4.1
+
 ## 0.5.0
 
 ### Minor Changes
