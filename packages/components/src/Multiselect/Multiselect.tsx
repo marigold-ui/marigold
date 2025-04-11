@@ -24,37 +24,110 @@ import { HelpText } from '../HelpText';
 import { Label } from '../Label';
 import { ChevronDown } from '../icons';
 
-type PickedProps =
-  | 'autoFocus'
-  | 'isOptionDisabled'
-  | 'noOptionsMessage'
-  | 'onBlur'
-  | 'onFocus'
-  | 'aria-errormessage'
-  | 'aria-invalid'
-  | 'aria-label'
-  | 'aria-labelledby'
-  | 'aria-live'
-  | 'ariaLiveMessages';
-
 interface MultipleSelectProps
   extends Pick<
-      FieldBaseProps<'label'>,
-      'width' | 'size' | 'variant' | 'label' | 'description' | 'errorMessage'
-    >,
-    Pick<SelectProps, PickedProps> {
+    FieldBaseProps<'label'>,
+    'width' | 'size' | 'variant' | 'label' | 'description' | 'errorMessage'
+  > {
+  /**
+   * If the select should be disabled.
+   *
+   * @default false
+   */
   disabled?: boolean;
+  /**
+   * If the select should be required.
+   *
+   * @default false
+   */
   required?: boolean;
+  /**
+   * If the select should be read only.
+   *
+   * @default false
+   */
   readOnly?: boolean;
+  /**
+   * If the select should throw an error.
+   *
+   * @default false
+   */
   error?: boolean;
+  /**
+   * The items of the select.
+   */
   items?: SelectProps['options'];
+  /**
+   * Set a error message for the select.
+   */
   errorMessage?: string | ((validation: ValidationResult) => string);
+  /**
+   * The placdeholder of the select when it is empty.
+   */
   placeholder?: string;
+  /**
+   * Items that should be selected by default (uncontrolled).
+   */
   defaultSelectedItems?: SelectProps['defaultValue'];
+  /**
+   * Selected items (controlled):
+   */
   selectedItems?: SelectProps['value'];
+  /**
+   * Input text that should be set by default.
+   */
   defaultValue?: SelectProps['defaultInputValue'];
+  /**
+   * Handler that is called when the input changes.
+   */
   onChange?: SelectProps['onInputChange'];
+  /**
+   * Handler that is called when the selection changes.
+   */
   onSelectionChange?: SelectProps['onChange'];
+
+  /** Focus the control when it is mounted */
+  autoFocus?: SelectProps['autoFocus'];
+  /**
+   * Override the built-in logic to detect whether an option is disabled
+   * */
+  isOptionDisabled?: SelectProps['isOptionDisabled'];
+  /**
+   * Text to display when there are no options
+   * */
+  noOptionsMessage?: SelectProps['noOptionsMessage'];
+  /**
+   * Handle blur events on the control
+   */
+  onBlur?: SelectProps['onBlur'];
+  /**
+   * Handle focus events on the control
+   */
+  onFocus?: SelectProps['onFocus'];
+  /**
+   * HTML ID of an element containing an error message related to the input*
+   */
+  'aria-errormessage'?: SelectProps['aria-errormessage'];
+  /**
+   * Indicate if the value entered in the field is invalid *
+   */
+  'aria-invalid'?: SelectProps['aria-invalid'];
+  /**
+   * Aria label (for assistive tech)
+   */
+  'aria-label'?: SelectProps['aria-label'];
+  /**
+   * HTML ID of an element that should be used as the label (for assistive tech)
+   */
+  'aria-labelledby'?: SelectProps['aria-labelledby'];
+  /**
+   * Used to set the priority with which screen reader should treat updates to live regions. The possible settings are: off, polite (default) or assertive
+   */
+  'aria-live'?: SelectProps['aria-live'];
+  /**
+   * Customise the messages used by the aria-live component
+   */
+  ariaLiveMessages?: SelectProps['ariaLiveMessages'];
 }
 
 const propsToBeRemoved = [
@@ -109,7 +182,7 @@ const getClassNames = (
 ): ClassNamesConfig => ({
   control: () =>
     cn(
-      'relative flex items-center box-border flex-wrap justify-between ',
+      'relative flex items-center box-border flex-wrap justify-between',
       classNames.container
     ),
   container: () => 'pointer-events-auto',
