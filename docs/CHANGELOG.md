@@ -1,5 +1,24 @@
 # @marigold/docs
 
+## 11.4.0
+
+### Minor Changes
+
+- d1df64c: docs([DST-722]): Allow to switch to RUI theme.
+
+### Patch Changes
+
+- Updated dependencies [000169f]
+- Updated dependencies [0e1e515]
+- Updated dependencies [f946eed]
+  - @marigold/theme-b2b@29.3.1
+  - @marigold/theme-core@28.3.1
+  - @marigold/theme-rui@0.5.0
+  - @marigold/system@11.4.0
+  - @marigold/components@11.4.0
+  - @marigold/icons@1.3.5
+  - @marigold/theme-docs@2.4.6
+
 ## 11.3.0
 
 ### Minor Changes
