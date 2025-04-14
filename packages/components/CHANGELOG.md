@@ -1,5 +1,13 @@
 # @marigold/components
 
+## 11.4.1
+
+### Patch Changes
+
+- 953cf3d: Making the dialog titles independant
+- Updated dependencies [953cf3d]
+  - @marigold/system@11.4.1
+
 ## 11.4.0
 
 ### Patch Changes
