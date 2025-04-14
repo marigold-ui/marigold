@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, fn, userEvent, within } from '@storybook/test';
 import { Container, Stack } from '@marigold/components';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
@@ -84,6 +85,7 @@ const meta = {
     children: 'Submit',
     size: 'default',
     loading: false,
+    onPress: fn(),
   },
 } satisfies Meta<typeof Button>;
 
@@ -110,6 +112,16 @@ export const Basic: Story = {
       </Stack>
     </Container>
   ),
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByText('Primary'));
+    await userEvent.click(canvas.getByText('Secondary'));
+    await userEvent.click(canvas.getByText('Destructive'));
+    await userEvent.click(canvas.getByText('Ghost'));
+
+    await expect(args.onPress).toHaveBeenCalledTimes(4);
+  },
 };
 
 export const WithIcon: Story = {
