@@ -1,24 +1,23 @@
+import { Header, Heading } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { Header } from '../Header';
-import { Headline, HeadlineProps } from '../Headline';
 
-export interface DialogTitleProps extends Omit<HeadlineProps, 'slot'> {
+export interface DialogTitleProps {
+  children?: React.ReactNode;
   variant?: string;
   size?: string;
 }
 
-export const DialogTitle = ({
-  level = '2',
-  variant,
-  size,
-  children,
-}: DialogTitleProps) => {
-  const classNames = useClassNames({ component: 'Dialog', variant, size });
+export const DialogTitle = ({ variant, size, children }: DialogTitleProps) => {
+  const classNames = useClassNames({
+    component: 'Dialog',
+    variant,
+    size,
+  });
   return (
     <Header className={cn('[grid-area:title]', classNames.header)}>
-      <Headline slot="title" level={level}>
+      <Heading slot="title" className={classNames.title}>
         {children}
-      </Headline>
+      </Heading>
     </Header>
   );
 };
