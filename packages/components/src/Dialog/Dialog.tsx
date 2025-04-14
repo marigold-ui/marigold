@@ -8,11 +8,11 @@ import {
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { Modal } from '../Overlay';
 import { DialogActions } from './DialogActions';
 import { DialogContent } from './DialogContent';
 import { DialogTitle } from './DialogTitle';
 import { DialogContext, DialogTrigger } from './DialogTrigger';
-import { Modal } from './Modal';
 
 export interface DialogProps
   extends Omit<RAC.DialogProps, 'className' | 'style'> {
@@ -87,9 +87,9 @@ const _Dialog = forwardRef(
 
     return (
       <Modal
-        isDismissable={isDismissable}
-        isKeyboardDismissDisabled={isKeyboardDismissDisabled}
-        isOpen={isOpen}
+        dismissable={isDismissable}
+        keyboardDismissable={isKeyboardDismissDisabled}
+        open={isOpen}
       >
         <Dialog
           {...props}
