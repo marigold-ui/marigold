@@ -1,5 +1,16 @@
 # @marigold/theme-rui
 
+## 0.5.0
+
+### Minor Changes
+
+- 0e1e515: feat: adding multiselect rui styles
+
+### Patch Changes
+
+- @marigold/system@11.4.0
+- @marigold/components@11.4.0
+
 ## 0.4.0
 
 ### Minor Changes

@@ -59,6 +59,7 @@ const theme: Theme = {
       closeButton: cva(),
       container: cva(),
       header: cva(),
+      title: cva(),
       content: cva(),
       actions: cva(),
     },
