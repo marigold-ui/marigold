@@ -14,7 +14,7 @@ export default () => (
     </Button>
     <Dialog>
       <FieldGroup labelWidth="50px">
-        <Dialog.Title level={2}>Edit user info</Dialog.Title>
+        <Dialog.Title>Edit user info</Dialog.Title>
         <Dialog.Content>
           <Stack space={3}>
             <TextField label="Name" autoFocus />

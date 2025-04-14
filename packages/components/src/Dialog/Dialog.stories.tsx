@@ -85,7 +85,7 @@ export const Form: Story = {
       <Dialog.Trigger {...args}>
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
-          <Dialog.Title>Please log into account </Dialog.Title>
+          <Dialog.Title>Please log into account</Dialog.Title>
           <Dialog.Content>
             <TextField label="Username" />
             <TextField label="Password" type="password" />
