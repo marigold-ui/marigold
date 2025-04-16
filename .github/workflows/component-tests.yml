@@ -4,6 +4,7 @@ on: deployment_status
 
 jobs:
   test:
+    name: Component Tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
     if: github.event.deployment_status.state == 'success'
