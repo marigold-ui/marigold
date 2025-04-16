@@ -1,10 +1,10 @@
 ---
 "@marigold/components": patch
 "@marigold/system": patch
-"@marigold/theme-b2b": patch
-"@marigold/theme-core": patch
-"@marigold/theme-docs": patch
-"@marigold/theme-rui": patch
+"@marigold/theme-b2b": major
+"@marigold/theme-core": major
+"@marigold/theme-docs": major
+"@marigold/theme-rui": major
 ---
 
 refa([DST-720]): Rename `option` to `item` in styles for `<ListBox>`
