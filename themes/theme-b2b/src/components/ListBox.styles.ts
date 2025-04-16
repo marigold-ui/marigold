@@ -12,7 +12,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'outline-hidden',
     'sm:max-h-[45vh] md:max-h-[75vh] lg:max-h-[75vh]',
   ]),
-  option: cva([
+  item: cva([
     font,
     'group/option flex flex-col',
     'cursor-pointer p-2 outline-hidden',

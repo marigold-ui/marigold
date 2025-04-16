@@ -6,7 +6,7 @@ const font = 'font-body text-[13px] text-text-base';
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva('border-border-inverted rounded-xs border bg-white'),
   list: cva(''),
-  option: cva([
+  item: cva([
     font,
     'group/option flex flex-col',
     'data-hovered:text-text-inverted  data-hovered:bg-linear-to-t from-highlight-start/80 to-highlight-end/90',
