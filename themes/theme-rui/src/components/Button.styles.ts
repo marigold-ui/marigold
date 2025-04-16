@@ -5,8 +5,7 @@ export const Button: ThemeComponent<'Button'> = cva(
   [
     'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow]',
     '[&_svg]:shrink-0',
-    'focus-visible:utility-focus-ring',
-    'mixin-disabled',
+    'focus-visible:utility-focus-ring disabled:utility-disabled',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
     'cursor-pointer',
   ],
