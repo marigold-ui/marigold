@@ -82,6 +82,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   render: args => <Input {...args} data-testid="input" />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

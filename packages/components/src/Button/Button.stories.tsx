@@ -85,7 +85,6 @@ const meta = {
     children: 'Submit',
     size: 'default',
     loading: false,
-    onPress: fn(),
   },
 } satisfies Meta<typeof Button>;
 
@@ -93,8 +92,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   parameters: {
     controls: { exclude: ['variant', 'children', 'loading'] },
+  },
+  args: {
+    onPress: fn(),
   },
   render: args => (
     <Container>
