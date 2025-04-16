@@ -1,0 +1,15 @@
+@utility focus-* {
+  /* oklab with with srgb fallback */
+  --tw-ring-color: color-mix(in srgb, --value(--color- *) 50%, transparent);
+  @supports (color: color-mix(in lab, red, red)) {
+    --tw-ring-color: color-mix(in oklab, --value(--color- *) 50%, transparent);
+  }
+
+  border-color: --value(--color- *);
+  outline-style: none;
+
+  --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
