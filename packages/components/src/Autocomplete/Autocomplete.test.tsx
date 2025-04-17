@@ -1,6 +1,7 @@
 import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Autocomplete } from './Autocomplete';
@@ -72,7 +73,7 @@ const { render } = setup({ theme });
  */
 
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => ({
+  vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
 
@@ -386,7 +387,7 @@ test('supports clear input value', async () => {
 });
 
 test('supports submit handler', async () => {
-  const spy = jest.fn();
+  const spy = vi.fn();
 
   render(
     <Autocomplete label="Label" onSubmit={spy}>

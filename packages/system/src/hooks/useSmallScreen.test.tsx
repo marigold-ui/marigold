@@ -1,4 +1,5 @@
 import { cleanup, renderHook } from '@testing-library/react';
+import { vi } from 'vitest';
 import { useSmallScreen } from './useSmallScreen';
 
 /**
@@ -6,7 +7,7 @@ import { useSmallScreen } from './useSmallScreen';
  * implements it.
  */
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => {
+  vi.fn().mockImplementation(query => {
     return {
       matches: matches.includes(query),
     };

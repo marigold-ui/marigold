@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
+import { MockInstance, vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Link } from './Link';
@@ -19,10 +20,10 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-let warnMock: jest.SpyInstance;
+let warnMock: MockInstance;
 
 beforeEach(() => {
-  warnMock = jest.spyOn(console, 'warn').mockImplementation();
+  warnMock = vi.spyOn(console, 'warn').mockImplementation(() => null);
 });
 
 afterEach(() => {

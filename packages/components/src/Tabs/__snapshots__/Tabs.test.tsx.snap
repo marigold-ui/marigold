@@ -1,3 +1,5 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`allow styling TabPanel & container via theme > flex gap-2 1`] = `"flex gap-2 mb-[10px]"`;
 
 exports[`allow styling TabPanel & container via theme: flex gap-2 1`] = `"flex gap-2 mb-[10px]"`;

@@ -2,13 +2,14 @@
  * @jest-environment jsdom
  */
 import { cleanup, renderHook, screen, within } from '@testing-library/react';
-import { Theme, cva } from '@marigold/system';
-import { Select } from '../Select';
-import { MarigoldProvider } from './MarigoldProvider';
+import { vi } from 'vitest';
 import {
   OverlayContainerProvider,
   usePortalContainer,
-} from './OverlayContainerProvider';
+} from '@marigold/components';
+import { Theme, cva } from '@marigold/system';
+import { Select } from '../Select';
+import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup
 // ---------------
@@ -45,7 +46,7 @@ const theme: Theme = {
 };
 
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => ({
+  vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
 

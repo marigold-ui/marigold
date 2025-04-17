@@ -8,6 +8,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { vi } from 'vitest';
 import { Theme, cva, useSmallScreen } from '@marigold/system';
 import { Text } from '../Text';
 import { setup } from '../test.utils';
@@ -80,7 +81,7 @@ const { render } = setup({ theme });
  * implements it.
  */
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => ({
+  vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
 afterEach(cleanup);
@@ -323,7 +324,7 @@ test('allows select to be required', () => {
 });
 
 test('controlled', () => {
-  const spy = jest.fn();
+  const spy = vi.fn();
   render(
     <Select label="Label" data-testid="select" onChange={spy}>
       <Select.Option id="one">one</Select.Option>
@@ -453,7 +454,7 @@ test('renders as tray', () => {
   const ref = React.createRef<HTMLButtonElement>();
 
   let resize: Function;
-  window.addEventListener = jest.fn().mockImplementation((event, cb) => {
+  window.addEventListener = vi.fn().mockImplementation((event, cb) => {
     if (event === 'resize') resize = cb;
   });
 

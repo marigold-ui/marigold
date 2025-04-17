@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`uses styles based on given level from theme sizes (1) 1`] = `"m-0 font-black text-[2rem]"`;
 

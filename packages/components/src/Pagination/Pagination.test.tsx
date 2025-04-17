@@ -1,6 +1,7 @@
 import { act, fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { MockInstance, vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Pagination } from './Pagination';
@@ -34,10 +35,10 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-let warnMock: jest.SpyInstance;
+let warnMock: MockInstance;
 
 beforeEach(() => {
-  warnMock = jest.spyOn(console, 'warn').mockImplementation();
+  warnMock = vi.spyOn(console, 'warn').mockImplementation(() => null);
 });
 
 afterEach(() => {
@@ -317,7 +318,7 @@ describe('Pagination tests', () => {
   });
 
   test('onChange is called', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(
       <Pagination
         totalItems={20}

@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { NumberField } from './NumberField';
@@ -189,7 +190,7 @@ test('can be controlled', async () => {
 
 test('allows to specify min and max value', async () => {
   const user = userEvent.setup();
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   render(
     <NumberField
       label="A Label"

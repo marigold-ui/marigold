@@ -1,6 +1,7 @@
 import { act, cleanup, renderHook } from '@testing-library/react';
 import React, { ReactNode } from 'react';
-import { useResponsiveValue } from './useResponsiveValue';
+import { vi } from 'vitest';
+import { useResponsiveValue } from '@marigold/system';
 import { ThemeProvider } from './useTheme';
 
 /**
@@ -8,7 +9,7 @@ import { ThemeProvider } from './useTheme';
  * implements it.
  */
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => ({
+  vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
 
@@ -83,7 +84,7 @@ test('responds to resize event', () => {
   ]);
 
   let resize: Function;
-  window.addEventListener = jest.fn().mockImplementation((event, cb) => {
+  window.addEventListener = vi.fn().mockImplementation((event, cb) => {
     if (event === 'resize') resize = cb;
   });
 
