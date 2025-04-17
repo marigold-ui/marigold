@@ -55,7 +55,7 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
     'rounded-md transition-color size-8 shrink-0 p-0 text-foreground cursor-pointer',
     '[&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0',
     '-my-1.5 -me-2', // align button with title
-    'mixin-ring-focus-visible',
+    'focus-visible:utility-focus-ring',
     '[&_svg]:opacity-60 [&_svg]:transition-opacity hover:[&_svg]:opacity-100',
   ]),
 };

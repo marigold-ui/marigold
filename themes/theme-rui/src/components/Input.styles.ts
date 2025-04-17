@@ -15,7 +15,7 @@ export const Input: ThemeComponent<'Input'> = {
     inputContainer,
     inputDisabled,
     inputInvalid,
-    'mixin-ring-focus-visible',
+    'focus-visible:utility-focus-ring',
     inputReadOnly,
     'h-input',
     'placeholder:text-placeholder',

@@ -10,7 +10,7 @@ export const Slider: ThemeComponent<'Slider'> = {
   ]),
   thumb: cva([
     'block h-5 w-5 rounded-full border-2 border-primary bg-background transition-colors',
-    'mixin-ring-focus-visible-borderless',
+    'focus-visible:utility-focus-ring-borderless',
     'data-[disabled]:cursor-not-allowed',
   ]),
   output: cva('text-text-base text-sm'),

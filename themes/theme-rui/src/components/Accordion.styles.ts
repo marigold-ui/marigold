@@ -37,7 +37,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     {
       variants: {
         variant: {
-          default: 'mixin-ring-focus-visible',
+          default: 'focus-visible:utility-focus-ring',
           card: 'outline-none',
         },
       },
