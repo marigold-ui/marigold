@@ -42,7 +42,7 @@ export default defineConfig({
         functions: 90,
         lines: 90,
       },
-      reporter: ['text', 'json', 'html'], // Optional: Add coverage reports
+      reporter: ['text', 'json', 'html', 'json-summary'], // Optional: Add coverage reports
     },
     globals: true,
     environment: 'jsdom', // Use jsdom for browser-like tests

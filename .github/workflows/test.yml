@@ -10,8 +10,14 @@ jobs:
   test:
     name: Test & Coverage
     runs-on: ubuntu-latest
+    permissions:
+      # Required to checkout the code
+      contents: read
+      # Required to put a comment into the pull-request
+      pull-requests: write
     env:
       CI: true
+      PR_NUMBER: ${{ github.event.number }}
     steps:
       # Setup
       - uses: actions/checkout@v4
@@ -27,3 +33,11 @@ jobs:
       # Action
       - name: Run Test Coverage
         run: pnpm test:ci --coverage --no-cache
+
+      - name: 'Report Coverage'
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: 'Marigold Code Coverage'
+          pr-number: 'auto'
+          json-summary-path: './coverage/coverage-summary.json'
+          json-final-path: './coverage/coverage-final.json'
