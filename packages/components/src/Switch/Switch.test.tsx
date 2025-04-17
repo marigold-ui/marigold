@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Switch } from './Switch';
@@ -167,7 +168,7 @@ test('supports default selected', () => {
 });
 
 test('supports controlled component usage', () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   render(<Switch onChange={onChange}>Label</Switch>);
 
   const { input } = getSwitchParts();
