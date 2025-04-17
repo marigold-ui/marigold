@@ -23,4 +23,4 @@ jobs:
       - name: Run Storybook tests
         run: pnpm test:storybook
         env:
-          TARGET_URL: '${{ github.event.deployment_status.target_url }}'
+          TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
