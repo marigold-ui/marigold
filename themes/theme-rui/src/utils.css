@@ -7,8 +7,6 @@
  * components, and other consistent UI patterns.
  */
 
-/* TODO: instead of "utility" -> ui/form/control/element/...? */
-
 /*
  * Applies a consistent visual style for keyboard focus states across components.
  * This utility sets a colored focus ring and border based on the given theme color,
@@ -16,7 +14,7 @@
  *
  * Use this as a default for all components (that don't have their own border).
  */
-@utility utility-focus-* {
+@utility util-focus-* {
   border-color: --value(--color- *);
   outline-style: none;
 
@@ -34,7 +32,7 @@
  *
  * Use this when the component has its own border and you need to keep it.
  */
-@utility utility-focus-borderless-* {
+@utility util-focus-borderless-* {
   outline-style: none;
 
   --tw-ring-color: --alpha(--value(--color- *) / 50%);
@@ -47,7 +45,7 @@
 /*
  * Defines a consistent visual and behavioral style for disabled UI elements.
  */
-@utility utility-disabled {
+@utility util-disabled {
   background-color: var(--color-disabled);
   color: var(--color-disabled-foreground);
 

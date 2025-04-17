@@ -9,7 +9,7 @@ export const Switch: ThemeComponent<'Switch'> = {
     'border-2 border-transparent',
     'group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground',
     'group-selected/switch:bg-brand bg-input',
-    'group-focus-visible/switch:utility-focus-borderless-ring',
+    'group-focus-visible/switch:util-focus-borderless-ring',
   ]),
   thumb: cva([
     'pointer-events-none block size-5 rounded-full',

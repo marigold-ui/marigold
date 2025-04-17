@@ -19,7 +19,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
         card: [
           'rounded-md border px-4 py-1 outline-none last:border-b',
           // TODO: focus is still shown even if an item within the item is focused
-          'has-focus-visible:utility-focus-ring',
+          'has-focus-visible:util-focus-ring',
         ],
       },
     },
@@ -37,7 +37,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     {
       variants: {
         variant: {
-          default: 'focus-visible:utility-focus-ring',
+          default: 'focus-visible:util-focus-ring',
           card: 'outline-none',
         },
       },

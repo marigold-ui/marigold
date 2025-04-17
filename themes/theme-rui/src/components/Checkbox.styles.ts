@@ -4,7 +4,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   checkbox: cva([
     'grid size-4 shrink-0 place-content-center rounded',
     'border border-input shadow-sm shadow-black/5',
-    'group-focus-visible/checkbox:utility-focus-ring',
+    'group-focus-visible/checkbox:util-focus-ring',
     'group-disabled/checkbox:bg-disabled! group-disabled/checkbox:border-disabled! group-disabled/checkbox:text-disabled-foreground group-disabled/checkbox:cursor-not-allowed',
     'group-selected/checkbox:border-brand group-selected/checkbox:bg-brand group-selected/checkbox:text-brand-foreground',
     'group-[indeterminate]/checkbox:border-brand group-[indeterminate]/checkbox:bg-brand group-[indeterminate]/checkbox:text-brand-foreground',
