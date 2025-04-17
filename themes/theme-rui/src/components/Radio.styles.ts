@@ -9,7 +9,7 @@ export const Radio: ThemeComponent<'Radio'> = {
   radio: cva([
     'aspect-square size-4 rounded-full',
     'border border-input shadow-sm shadow-black/5',
-    'focus-visible:utility-focus-ring-radio',
+    'group-focus-visible/radio:utility-focus-ring',
     'group-disabled/radio:border-disabled',
     'group-selected/radio:border-brand group-selected/radio:bg-brand group-selected/radio:text-brand-foreground',
   ]),
