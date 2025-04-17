@@ -10,6 +10,7 @@
   "exclude": [
     "coverage/*",
     "jest.config.js",
+    "vitest.config.ts",
     "**/node_modules/*",
     "**/dist/**/*",
     "**/scripts/template/*"

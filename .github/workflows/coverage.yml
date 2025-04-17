@@ -1,8 +1,10 @@
 name: Coverage
+
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_run:
+    workflows: ['Test']
+    types:
+      - completed
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,8 +25,4 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Generate and check coverage
-        uses: ArtiomTr/jest-coverage-report-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          package-manager: pnpm
-          test-script: pnpm test:ci
+        uses: davelosert/vitest-coverage-report-action@v2
