@@ -26,4 +26,4 @@ jobs:
 
       # Action
       - name: Run Test Coverage
-        run: pnpm test:ci --ci --no-cache
+        run: pnpm test:ci --no-cache
