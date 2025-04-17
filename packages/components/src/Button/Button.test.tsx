@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 import { Facebook } from '@marigold/icons';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
