@@ -2,6 +2,7 @@ import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import {
+  Button,
   FieldGroup,
   Inline,
   Select,
@@ -47,12 +48,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination
-      {...rest}
-      totalItems={totalItems!}
-      pageSize={pageSize!}
-      defaultPage={5}
-    />
+    <>
+      <Pagination
+        {...rest}
+        totalItems={totalItems!}
+        pageSize={pageSize!}
+        defaultPage={5}
+      />
+      <Button>Hallo</Button>
+    </>
   ),
 };
 

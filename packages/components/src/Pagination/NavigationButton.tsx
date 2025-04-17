@@ -11,6 +11,7 @@ interface PaginationButtonProps {
   registerRef?: (ref: HTMLButtonElement | null) => void;
   controlLabel?: string;
   position?: 'left' | 'right';
+  onKeyDown?: (event: React.KeyboardEvent) => void;
 }
 
 export const NavigationButton = (props: PaginationButtonProps) => {
@@ -28,13 +29,6 @@ export const NavigationButton = (props: PaginationButtonProps) => {
     position,
     ...rest
   } = props;
-
-  useEffect(() => {
-    if (registerRef) {
-      registerRef(ref.current);
-      return () => registerRef(null);
-    }
-  }, [registerRef]);
 
   return (
     <button

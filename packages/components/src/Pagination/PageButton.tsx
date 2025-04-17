@@ -8,6 +8,7 @@ interface PageButtonProps {
   isDisabled?: boolean;
   onClick?: () => void;
   registerRef?: (ref: HTMLButtonElement | null) => void;
+  onKeyDown?: (event: React.KeyboardEvent) => void;
 }
 
 export const PageButton = (props: PageButtonProps) => {
