@@ -436,13 +436,15 @@ test('DatePicker supports width prop', () => {
   expect(picker.className).toMatchInlineSnapshot(`"group/field w-10 gap-x-0"`);
 });
 
-test.skip('DatePicker supports data unavailable property', async () => {
+test('DatePicker supports data unavailable property', async () => {
   render(
     <I18nProvider locale="de-DE">
       <DatePicker
         data-testid="picker"
         aria-label="date picker"
-        dateUnavailable={date => date.toDate('Europe/Berlin').getDate() !== 1}
+        dateUnavailable={() => {
+          return true;
+        }}
       />
     </I18nProvider>
   );
