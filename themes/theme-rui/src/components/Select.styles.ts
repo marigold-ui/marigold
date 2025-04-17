@@ -7,7 +7,7 @@ export const Select: ThemeComponent<'Select'> = {
     inputContainer,
     inputInvalid,
     inputDisabled,
-    'mixin-ring-focus-visible',
+    'focus-visible:util-focus-ring',
     'h-input',
     'cursor-pointer',
     '*:data-placeholder:text-placeholder',

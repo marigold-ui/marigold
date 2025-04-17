@@ -4,7 +4,7 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   closeButton: cva([
     'absolute top-6 right-3',
     'flex size-7 items-center justify-center rounded transition-[color,box-shadow]',
-    'mixin-ring-focus-visible',
+    'focus-visible:util-focus-ring',
     '[&_svg]:size-4 [&_svg]:opacity-60 [&_svg]:transition-opacity hover:[&_svg]:opacity-100',
   ]),
   container: cva(

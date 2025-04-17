@@ -9,11 +9,11 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   tab: cva([
     'relative inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
     '[&_svg]:shrink-0',
-    'mixin-ring-focus-visible',
+    'focus-visible:util-focus-ring',
     'hover:bg-hover hover:text-foreground',
     'disabled:pointer-events-none disabled:opacity-50',
     'data-selected:text-foreground data-selected:hover:bg-hover',
     'data-[selected=true]:after:bg-foreground after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5',
   ]),
-  tabpanel: cva(['py-4 rounded-sm', 'mixin-ring-focus-visible']),
+  tabpanel: cva(['py-4 rounded-sm', 'focus-visible:util-focus-ring']),
 };
