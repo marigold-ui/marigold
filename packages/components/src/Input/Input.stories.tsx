@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
 import { Delete, Search } from '@marigold/icons';
 import { Button } from '../Button';
@@ -73,6 +74,7 @@ const meta = {
   },
   args: {
     type: 'text',
+    placeholder: 'Placeholder...',
   },
 } satisfies Meta<typeof Input>;
 
@@ -80,19 +82,26 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Input placeholder="Placeholder..." {...args} />,
+  tags: ['component-test'],
+  render: args => <Input {...args} data-testid="input" />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.type(canvas.getByTestId('input'), 'Hello World');
+    await expect(canvas.getByTestId('input')).toHaveValue('Hello World');
+
+    await userEvent.clear(canvas.getByTestId('input'));
+    await expect(canvas.getByTestId('input')).toHaveValue('');
+  },
 };
 
 export const WithLeadingIcons: Story = {
-  render: args => (
-    <Input placeholder="Placeholder..." icon={<Search />} {...args} />
-  ),
+  render: args => <Input icon={<Search />} {...args} />,
 };
 
 export const WithAction: Story = {
   render: args => (
     <Input
-      placeholder="Placeholder..."
       action={
         <Button
           size="small"
@@ -110,7 +119,6 @@ export const WithAction: Story = {
 export const WithIcons: Story = {
   render: args => (
     <Input
-      placeholder="Placeholder..."
       icon={<Search />}
       action={
         <Button size="small" variant="text">
@@ -123,9 +131,9 @@ export const WithIcons: Story = {
 };
 
 export const FileInput: Story = {
-  render: args => <Input placeholder="Placeholder..." {...args} type="file" />,
+  render: args => <Input {...args} type="file" />,
 };
 
 export const ColorPicker: Story = {
-  render: args => <Input placeholder="Placeholder..." {...args} type="color" />,
+  render: args => <Input {...args} type="color" />,
 };
