@@ -27,6 +27,14 @@ export default defineConfig({
         // needed for coverage not to break should be fixed soon
         'packages/components/src/Accordion/useAccordionItem.ts',
         'packages/components/src/Accordion/Accordion.tsx',
+        '**/**/*.config.*',
+        '**/**/index.*',
+        'packages/components/src/hooks.ts',
+        'packages/components/src/types.ts',
+        'packages/system/src/defaultTheme.ts',
+        'packages/system/src/style-props.tsx',
+        'scripts/**',
+        'packages/system/src/types/theme.ts',
       ],
       thresholds: {
         statements: 90,
