@@ -1,4 +1,3 @@
-// vitest.config.ts
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
@@ -46,6 +45,6 @@ export default defineConfig({
     },
     globals: true,
     environment: 'jsdom', // Use jsdom for browser-like tests
-    setupFiles: ['./config/jest/jest.setup.js'], // Path to your setup file
+    setupFiles: ['./vitest.setup.ts'], // Path to your setup file
   },
 });
