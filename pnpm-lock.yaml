@@ -105,8 +105,8 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
       zx:
-        specifier: 8.5.0
-        version: 8.5.0
+        specifier: 8.5.3
+        version: 8.5.3
     devDependencies:
       '@eslint/eslintrc':
         specifier: 3.3.1
@@ -454,8 +454,8 @@ importers:
         specifier: 2.0.7
         version: 2.0.7(zod@3.24.3)
       zx:
-        specifier: 8.5.0
-        version: 8.5.0
+        specifier: 8.5.3
+        version: 8.5.3
     devDependencies:
       '@internationalized/date':
         specifier: 3.7.0
@@ -8920,8 +8920,8 @@ packages:
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
-  zx@8.5.0:
-    resolution: {integrity: sha512-XS5/oKOQxKNfG2sVO6TQQjZF5RqWGE5QGSUOCZZVTnvYr3RDBTdbX3IFmV9CrnycCAQWcY0hAD3DDUa4RJE4+w==}
+  zx@8.5.3:
+    resolution: {integrity: sha512-TsGLAt8Ngr4wDXLZmN9BT+6FWVLFbqdQ0qpXkV3tIfH7F+MgN/WUeSY7W4nNqAntjWunmnRaznpyxtJRPhCbUQ==}
     engines: {node: '>= 12.17.0'}
     hasBin: true
 
@@ -19117,4 +19117,4 @@ snapshots:
 
   zwitch@2.0.4: {}
 
-  zx@8.5.0: {}
+  zx@8.5.3: {}
