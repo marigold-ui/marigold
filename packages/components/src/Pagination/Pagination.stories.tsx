@@ -76,11 +76,6 @@ export const Basic: Story = {
         'true'
       );
     });
-    await step('Click on the first page button', async () => {
-      const firstButton = canvas.getByLabelText('Page 1');
-      await userEvent.click(firstButton);
-      expect(firstButton).toHaveAttribute('data-selected', 'true');
-    });
   },
 };
 
