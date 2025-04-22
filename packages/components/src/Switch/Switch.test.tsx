@@ -63,7 +63,9 @@ test('supports base styling', () => {
   render(<Switch>Label</Switch>);
   const { label, container, track, thumb } = getSwitchParts();
 
-  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"inline-flex w-[var(--labelWidth)]"`
+  );
   expect(container.className).toMatchInlineSnapshot(
     `"w-full group/switch flex items-center gap-[1ch]"`
   );
@@ -101,7 +103,9 @@ test('takes full width by default', () => {
 test('allows to set width via prop', () => {
   render(<Switch width={10}>Label</Switch>);
   const { label } = getSwitchParts();
-  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"inline-flex w-[var(--labelWidth)]"`
+  );
 });
 
 test('supports disabled prop', () => {
