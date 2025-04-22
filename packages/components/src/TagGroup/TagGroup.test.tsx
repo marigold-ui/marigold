@@ -10,6 +10,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Button: cva(),
+    CloseButton: cva('size-4'),
     Field: cva(),
     HelpText: { container: cva(), icon: cva() },
     Label: { container: cva(), indicator: cva() },

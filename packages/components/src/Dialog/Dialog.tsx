@@ -53,7 +53,12 @@ const _Dialog = ({
         classNames.container
       )}
     >
-      {closeButton && <CloseButton className={classNames.closeButton} />}
+      {closeButton && (
+        <CloseButton
+          className={classNames.closeButton}
+          onPress={state?.close}
+        />
+      )}
       {children}
     </Dialog>
   );
