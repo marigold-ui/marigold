@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useButton } from '@react-aria/button';
 import { cn, useClassNames } from '@marigold/system';
 

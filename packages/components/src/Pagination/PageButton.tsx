@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useButton } from '@react-aria/button';
 import { useClassNames } from '@marigold/system';
 
@@ -17,14 +17,7 @@ export const PageButton = (props: PageButtonProps) => {
     component: 'Pagination',
   });
   let { buttonProps } = useButton(props, ref);
-  let { page, selected, registerRef, isDisabled } = props;
-
-  useEffect(() => {
-    if (registerRef) {
-      registerRef(ref.current);
-      return () => registerRef(null);
-    }
-  }, [registerRef]);
+  let { page, selected, isDisabled } = props;
 
   return (
     <button
