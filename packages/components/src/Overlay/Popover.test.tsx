@@ -1,6 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import { cleanup, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button';
 import { Text } from '../Text';
@@ -39,7 +40,7 @@ const { render } = setup({ theme });
  */
 
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => ({
+  vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
 
