@@ -45,7 +45,7 @@ interface InnerPaginationProps {
   pageRange: (number | 'ellipsis')[];
   setCurrentPage: (page: number) => void;
   controlLabels?: [string, string];
-  onChange: (page: number) => void;
+  onChange?: (page: number) => void;
   pageSize?: number;
 }
 
@@ -75,7 +75,9 @@ const InnerPagination = ({
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    onChange(newPage);
+    if (onChange) {
+      onChange(newPage);
+    }
   };
 
   const classNames = useClassNames({ component: 'Pagination' });
@@ -147,8 +149,7 @@ const _Pagination = ({
   page,
   totalItems,
   pageSize,
-  onChange = () => {},
-  controlLabels,
+  ...props
 }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -161,13 +162,11 @@ const _Pagination = ({
     >
       <FocusScope contain restoreFocus>
         <InnerPagination
-          pageSize={pageSize}
-          setCurrentPage={setCurrentPage}
           currentPage={currentPage}
           totalPages={totalPages}
           pageRange={pageRange}
-          controlLabels={controlLabels}
-          onChange={onChange}
+          setCurrentPage={setCurrentPage}
+          {...props}
         />
       </FocusScope>
     </nav>
