@@ -160,7 +160,7 @@ const _Pagination = ({
       className="flex items-center justify-center space-x-2"
       aria-label={`Page ${currentPage} of ${totalPages}`}
     >
-      <FocusScope contain restoreFocus>
+      <FocusScope restoreFocus>
         <InnerPagination
           currentPage={currentPage}
           totalPages={totalPages}
