@@ -1,5 +1,4 @@
 /* eslint-disable testing-library/no-node-access */
-
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
@@ -467,5 +466,6 @@ test('DatePicker supports data unavailable property', async () => {
   expect(popover).toBeVisible();
   const date = screen.getAllByRole('gridcell');
 
-  expect(date[1].firstChild).toHaveAttribute('data-unavailable', 'true');
+  // select a date in the month that is not the first
+  expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
