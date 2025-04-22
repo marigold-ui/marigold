@@ -1,66 +1,45 @@
-import { Children } from 'react';
-import type RAC from 'react-aria-components';
+import { ReactNode, createContext } from 'react';
 import { DialogTrigger } from 'react-aria-components';
-import { Modal } from '../Overlay/Modal';
-import { Dialog } from './Dialog';
+import type RAC from 'react-aria-components';
+import { PressResponder } from '@react-aria/interactions';
 
-// Props
-// ---------------
-export interface DialogTriggerProps
-  extends Omit<RAC.DialogTriggerProps, 'isOpen'> {
-  /**
-   * Whether the dialog is open by default (controlled).
-   * @default false
-   */
+type RemovedProps =
+  | 'children'
+  | 'isOpen'
+  | 'isDismissable'
+  | 'isKeyboardDismissDisabled';
+export interface ModalProps extends RAC.ModalOverlayProps {
   open?: boolean;
-
-  /**
-   * Whether to close the overlay when the user interacts outside it.
-   * @default false
-   */
   dismissable?: boolean;
-
-  /**
-   * Whether pressing the escape key to close the overlay should be disabled.
-   */
   keyboardDismissable?: boolean;
-
-  /**
-   * If `true`, the dialog will be non-modal, meaning it will not block interaction with the background content.
-   */
-  isNonModal?: boolean;
+  size?: string;
 }
 
-// Component
-// ---------------
+export interface DialogTriggerProps
+  extends Omit<RAC.DialogTriggerProps, 'isOpen'>,
+    Omit<ModalProps, RemovedProps> {}
+
+export const DialogContext = createContext<ModalProps>({});
+
 const _DialogTrigger = ({
   open,
   dismissable,
   keyboardDismissable,
-  isNonModal,
+  size,
   ...rest
-}: DialogTriggerProps) => {
-  const props: RAC.DialogTriggerProps = {
+}: DialogTriggerProps): ReactNode => {
+  const props = {
     isOpen: open,
+    isDismissable: dismissable,
+    isKeyboardDismissDisabled: !keyboardDismissable,
     ...rest,
   };
-  const children = Children.toArray(props.children);
-  const [dialogTrigger, dialog] = children;
-  const hasDialogTrigger = (dialogTrigger as any).type !== Dialog;
-  const currentDialog =
-    children.length < 2 ? !hasDialogTrigger && dialogTrigger : dialog;
-  if (isNonModal)
-    return <DialogTrigger {...props}>{props.children}</DialogTrigger>;
   return (
-    <DialogTrigger {...props}>
-      {hasDialogTrigger && dialogTrigger}
-      <Modal
-        dismissable={dismissable}
-        keyboardDismissable={keyboardDismissable}
-      >
-        {currentDialog}
-      </Modal>
-    </DialogTrigger>
+    <DialogContext.Provider value={props}>
+      <DialogTrigger {...props}>
+        <PressResponder isPressed={false}>{props.children}</PressResponder>
+      </DialogTrigger>
+    </DialogContext.Provider>
   );
 };
 
