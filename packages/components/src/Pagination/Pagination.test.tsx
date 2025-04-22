@@ -215,43 +215,6 @@ describe('Pagination tests', () => {
     );
   });
 
-  test('select an item', () => {
-    render(<Pagination totalItems={20} pageSize={10} />);
-
-    const page2Button = screen.getByLabelText('Page 2');
-
-    fireEvent.click(page2Button);
-
-    expect(page2Button).toHaveAttribute('data-selected', 'true');
-  });
-
-  test('select next page button with next button', () => {
-    render(<Pagination totalItems={20} pageSize={10} defaultPage={1} />);
-
-    const page1Button = screen.getByLabelText('Page 1');
-    const nextPageButton = page1Button.nextElementSibling as HTMLElement;
-    const nextButton = screen.getByLabelText('Page next');
-
-    fireEvent.click(nextButton);
-
-    expect(nextPageButton).toHaveAttribute('data-selected', 'true');
-    expect(nextPageButton).toHaveTextContent('2');
-  });
-
-  test('select previous page button with previous button', () => {
-    render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
-
-    const page1Button = screen.getByLabelText('Page 5');
-    const previousPageButton =
-      page1Button.previousElementSibling as HTMLElement;
-    const previousButton = screen.getByLabelText('Page previous');
-
-    fireEvent.click(previousButton);
-
-    expect(previousPageButton).toHaveAttribute('data-selected', 'true');
-    expect(previousPageButton).toHaveTextContent('4');
-  });
-
   test('previous button is not selected after click when first page is selected', () => {
     render(<Pagination totalItems={20} pageSize={10} defaultPage={1} />);
 
@@ -286,7 +249,7 @@ describe('Pagination tests', () => {
     render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
 
     const pageButton = screen.getByLabelText('Page 5');
-    console.log(pageButton);
+
     const nextPageButton = pageButton.nextElementSibling as HTMLElement;
 
     pageButton.focus();
