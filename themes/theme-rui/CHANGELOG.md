@@ -1,22 +1,5 @@
 # @marigold/theme-rui
 
-## 1.0.0
-
-### Major Changes
-
-- 81b2216: refa([DST-720]): Rename `option` to `item` in styles for `<ListBox>`
-
-  **Breaking Change**: This change will break your styles if you use custom styles for the `<ListBox>` Component. `option` is now called `item`.
-
-### Patch Changes
-
-- 953cf3d: Making the dialog titles independant
-- 334abb9: chore([DSTSUP-111]): Icon size in `<SectionMessage>`
-- Updated dependencies [81b2216]
-- Updated dependencies [953cf3d]
-  - @marigold/components@11.4.1
-  - @marigold/system@11.4.1
-
 ## 0.5.0
 
 ### Minor Changes
