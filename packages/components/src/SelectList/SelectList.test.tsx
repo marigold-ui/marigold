@@ -14,7 +14,7 @@ const theme: Theme = {
     ListBox: {
       container: cva('border-border-light'),
       list: cva('outline-hidden'),
-      option: cva('p-3 outline-hidden'),
+      item: cva('p-3 outline-hidden'),
       section: cva('border outline-hidden'),
       header: cva('[&_header]:text-text-accent'),
     },

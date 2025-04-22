@@ -31,6 +31,7 @@
     "eslint": "9.24.0",
     "husky": "9.1.7",
     "next": "15.2.4",
+    "playwright": "1.51.1",
     "postcss-import": "16.1.0",
     "postcss-loader": "8.1.1",
     "prettier": "3.5.3",
@@ -41,13 +42,14 @@
     "tailwindcss": "4.1.3",
     "turbo": "2.5.0",
     "typescript": "5.8.3",
-    "zx": "8.5.0"
+    "zx": "8.5.3"
   },
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",
     "watch": "concurrently pnpm:watch:tailwind pnpm:watch:storybook",
     "watch:storybook": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
     "watch:tailwind": "zx scripts/watch-tailwind.mjs",
+    "test:storybook": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config test",
     "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
     "build:docs": "turbo run --filter @marigold/docs... build",
     "build:storybook": "turbo run --filter @marigold/storybook-config... build",

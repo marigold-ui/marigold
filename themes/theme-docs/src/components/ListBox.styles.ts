@@ -9,7 +9,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'p-1',
     'sm:max-h-[45vh] md:max-h-[75vh] lg:max-h-[75vh]',
   ]),
-  option: cva(
+  item: cva(
     [
       'text-text-primary',
       'cursor-pointer rounded-xs outline-hidden',
