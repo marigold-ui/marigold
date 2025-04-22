@@ -1,5 +1,15 @@
 # @marigold/system
 
+## 11.4.1
+
+### Patch Changes
+
+- 81b2216: refa([DST-720]): Rename `option` to `item` in styles for `<ListBox>`
+
+  **Breaking Change**: This change will break your styles if you use custom styles for the `<ListBox>` Component. `option` is now called `item`.
+
+- 953cf3d: Making the dialog titles independant
+
 ## 11.4.0
 
 ## 11.3.0

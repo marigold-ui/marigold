@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
@@ -162,7 +163,7 @@ test('passes down "error" to checkboxes', () => {
 });
 
 test('controlled', async () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   render(
     <Checkbox.Group label="Group of Checkboxes" onChange={onChange}>
       <Checkbox value="one" data-testid="one">

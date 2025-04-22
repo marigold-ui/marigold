@@ -5,12 +5,12 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'overflow-hidden rounded-md border border-input group-[trigger]/popover:border-0',
   ]),
   list: cva(['space-y-1 bg-background p-1 text-sm outline-0']),
-  option: cva([
+  item: cva([
     'relative flex flex-col rounded-md px-2 py-1.5 text-sm text-foreground cursor-pointer',
     'selected:bg-selected',
     'hover:bg-hover hover:text-hover-foreground',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-    'mixin-ring-focus-visible',
+    'focus-visible:util-focus-ring',
   ]),
   section: cva(''),
   header: cva(
