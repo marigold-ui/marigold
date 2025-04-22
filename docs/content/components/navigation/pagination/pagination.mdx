@@ -48,6 +48,8 @@ Use pagination when the amount of dataset results would be too overwhelming for 
 
 Pagination is not a replacement for search, filter or sort functionality, but rather a complementary feature.
 
+<ComponentDemo file="./pagination-full.demo.tsx" />
+
 <GuidelineTiles>
   <Do>
     <Do.Figure>
@@ -105,7 +107,12 @@ You can expand the `<Pagination>` component with a results indicator.
   className="mx-auto block"
 />
 
-An optional results indicator can be added to show: 1) the range of visible results, and 2) the amount of total results. Product teams can copy this optional element from [Storybook](https://marigold-latest.vercel.app/?path=/story/components-pagination--full-screen-size) and link it to their relevant dataset. The indicator itself is not interactive.
+An optional results indicator can be added to show:
+
+1. the range of visible results, and
+2. the amount of total results.
+
+The indicator itself is not interactive.
 
 The default text string is "**Showing \{range of visible results\} of \{total results\}**". Only change the default text if necessary for localization.
 
@@ -136,7 +143,7 @@ You can expand the `<Pagination>` component with a quantity selector.
   className="mx-auto block"
 />
 
-An optional quantity selector can be added to allow the user to control the amount of visible results per page. Product teams can copy this optional element from [Storybook](https://marigold-latest.vercel.app/?path=/story/components-pagination--full-screen-size), link it to their relevant dataset, and decide the options available in the `<Select>` dropdown.
+An optional quantity selector can be added to allow the user to control the amount of visible results per page. Product teams can decide the options available in the `<Select>` dropdown.
 
 The default text string for the label is “**Results per page**”. Only change the default text if necessary for localization.
 
@@ -156,7 +163,7 @@ The default text string for the label is “**Results per page**”. Only change
   </Dont.Description>
 </Dont>
 
-## Summary: What decisions can product teams make?
+### Summary: What decisions can product teams make?
 
 - The default amount of visible results per page
 - Whether to include the optional results indicator
