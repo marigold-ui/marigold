@@ -48,15 +48,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => (
-    <>
-      <Pagination
-        {...rest}
-        totalItems={totalItems!}
-        pageSize={pageSize!}
-        defaultPage={5}
-      />
-      <Button>Hallo</Button>
-    </>
+    <Pagination
+      {...rest}
+      totalItems={totalItems!}
+      pageSize={pageSize!}
+      defaultPage={5}
+    />
   ),
 };
 
