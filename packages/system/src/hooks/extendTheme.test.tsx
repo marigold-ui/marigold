@@ -121,7 +121,6 @@ test('Throw an error when the variant is dupplicated', () => {
       theme
     );
   } catch (err) {
-    /* eslint-disable jest/no-conditional-expect */
     expect((err as Error).message).toEqual('tertiary already exists!');
   }
 });

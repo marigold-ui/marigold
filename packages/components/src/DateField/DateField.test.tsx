@@ -2,6 +2,7 @@
 import { parseAbsoluteToLocal } from '@internationalized/date';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { DateField } from './DateField';
@@ -49,11 +50,11 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-let onBlurSpy = jest.fn();
-let onFocusChangeSpy = jest.fn();
-let onFocusSpy = jest.fn();
-let onKeyDownSpy = jest.fn();
-let onKeyUpSpy = jest.fn();
+let onBlurSpy = vi.fn();
+let onFocusChangeSpy = vi.fn();
+let onFocusSpy = vi.fn();
+let onKeyDownSpy = vi.fn();
+let onKeyUpSpy = vi.fn();
 
 afterEach(() => {
   onBlurSpy.mockClear();

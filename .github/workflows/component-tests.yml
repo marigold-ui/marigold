@@ -7,7 +7,7 @@ jobs:
     name: Component Tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    if: github.event.deployment_status.state == 'success'
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.environment_url, 'storybook')
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4.0.0 # Uses version from package.json#packageManager

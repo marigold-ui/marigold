@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { Columns } from '@marigold/components';
 
 // eslint-disable-next-line testing-library/no-node-access
@@ -188,7 +189,7 @@ test('supports different types of children', () => {
 
 test('throws error if columns length and children length are different', () => {
   // avoid that the error will be thrown in console during test run
-  const spy = jest.spyOn(console, 'error');
+  const spy = vi.spyOn(console, 'error');
   spy.mockImplementation(() => {});
 
   expect(() =>
