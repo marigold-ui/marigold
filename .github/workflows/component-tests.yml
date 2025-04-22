@@ -21,6 +21,6 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Storybook tests
-        run: echo ${{ github.event.deployment_status.environment_url }} && echo ${{ github.event}} && pnpm test:storybook
+        run: echo ${{ github.event.deployment_status.environment_url }} && echo ${{ toJson(github) }} && pnpm test:storybook
         env:
           TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
