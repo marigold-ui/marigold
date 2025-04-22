@@ -25,5 +25,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   render: ({ children, ...args }) => <Label {...args}>{children}</Label>,
 };
