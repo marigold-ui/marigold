@@ -42,7 +42,7 @@ const theme: Theme = {
     ListBox: {
       container: cva(),
       list: cva(),
-      option: cva(),
+      item: cva(),
       section: cva(),
       header: cva(),
     },
