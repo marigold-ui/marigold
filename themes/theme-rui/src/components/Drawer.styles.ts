@@ -48,12 +48,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
       },
     }
   ),
-  closeButton: cva([
-    'absolute top-3.5 right-3 z-50',
-    'flex size-7 items-center justify-center rounded transition-[color,box-shadow]',
-    'mixin-ring-focus-visible',
-    '[&_svg]:size-4 [&_svg]:opacity-60 [&_svg]:transition-opacity hover:[&_svg]:opacity-100',
-  ]),
+  closeButton: cva(['absolute top-3.5 right-3 z-50', 'size-7']),
   header: cva('border-border border-b px-6 py-4'),
   title: cva('font-semibold text-base'),
   content: cva('px-6 py-4 overflow-y-auto outline-none'),

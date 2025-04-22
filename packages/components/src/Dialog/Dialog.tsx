@@ -2,38 +2,11 @@ import { useContext } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { CloseButton } from '../CloseButton';
 import { DialogActions } from './DialogActions';
 import { DialogContent } from './DialogContent';
 import { DialogTitle } from './DialogTitle';
 import { DialogTrigger } from './DialogTrigger';
-
-// Close Button
-// ---------------
-interface CloseButtonProps {
-  className?: string;
-}
-
-const CloseButton = ({ className }: CloseButtonProps) => {
-  const ctx = useContext(OverlayTriggerStateContext);
-  return (
-    <button
-      className={cn(
-        'h-4 w-4 cursor-pointer border-none p-0 leading-normal outline-0',
-        className
-      )}
-      onClick={ctx?.close}
-      slot="dismiss-button"
-    >
-      <svg viewBox="0 0 20 20" fill="currentColor">
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-        />
-      </svg>
-    </button>
-  );
-};
 
 // Props
 // ---------------
