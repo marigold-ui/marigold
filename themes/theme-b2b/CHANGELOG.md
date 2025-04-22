@@ -1,5 +1,21 @@
 # @marigold/theme-b2b
 
+## 30.0.0
+
+### Major Changes
+
+- 81b2216: refa([DST-720]): Rename `option` to `item` in styles for `<ListBox>`
+
+  **Breaking Change**: This change will break your styles if you use custom styles for the `<ListBox>` Component. `option` is now called `item`.
+
+### Patch Changes
+
+- 953cf3d: Making the dialog titles independant
+- Updated dependencies [81b2216]
+- Updated dependencies [953cf3d]
+  - @marigold/components@11.4.1
+  - @marigold/system@11.4.1
+
 ## 29.3.1
 
 ### Patch Changes

@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 import { Facebook } from '@marigold/icons';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
@@ -79,7 +80,7 @@ test('add icon in button works as expected', () => {
 });
 
 test('supports onPress', () => {
-  const onPress = jest.fn();
+  const onPress = vi.fn();
   render(
     <Button onPress={onPress} data-testid="button">
       Some Button

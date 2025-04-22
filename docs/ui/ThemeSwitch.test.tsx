@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import React, { ReactNode } from 'react';
+import { vi } from 'vitest';
 import { b2bTheme, coreTheme } from '../theme';
 import { MarigoldThemeSwitch, useThemeSwitch } from './ThemeSwitch';
 
@@ -8,20 +9,20 @@ const themes = {
   coreTheme,
 };
 
-const useRouter = require('next/navigation').useRouter;
-
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
-}));
-
-beforeEach(() => {
-  useRouter.mockReturnValue({ replace: jest.fn() });
+vi.mock('next/navigation', () => {
+  const actual = vi.importActual('next/navigation');
+  return {
+    ...actual,
+    useRouter: vi.fn(() => ({
+      replace: vi.fn(),
+    })),
+    useSearchParams: vi.fn(),
+  };
 });
 
 afterEach(() => {
-  jest.clearAllMocks();
-  jest.resetAllMocks();
+  vi.clearAllMocks();
+  vi.resetAllMocks();
 });
 
 const wrapper = ({ children }: { children?: ReactNode }) => (
@@ -37,7 +38,7 @@ test('returns the theme', () => {
 });
 
 test('switches the theme', async () => {
-  // useRouter.mockReturnValue({ replace: jest.fn() });
+  // useRouter.mockReturnValue({ replace: vi.fn() });
 
   const { result } = renderHook(() => useThemeSwitch(), { wrapper });
 

@@ -1,5 +1,6 @@
 import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { Tag } from '.';
 import { Button } from '../Button';
@@ -72,8 +73,8 @@ test.each`
   name                         | props
   ${'on `Delete` keypress'}    | ${{ keyPress: '{Delete}' }}
   ${'on `Backspace` keypress'} | ${{ keyPress: '{Backspace}' }}
-`('Remove tag $name', async ({ name, props }) => {
-  let onRemoveSpy = jest.fn();
+`('Remove tag $name', async ({ props }) => {
+  let onRemoveSpy = vi.fn();
   const user = userEvent.setup();
   render(
     <Tag.Group aria-label="tag group" allowsRemoving onRemove={onRemoveSpy}>
