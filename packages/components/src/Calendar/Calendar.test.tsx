@@ -2,6 +2,7 @@
 import { CalendarDate } from '@internationalized/date';
 import { fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Calendar } from './Calendar';
@@ -46,13 +47,13 @@ const { render } = setup({ theme });
 
 describe('Calendar', () => {
   beforeAll(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
     Object.defineProperty(window, 'matchMedia', {
-      value: jest.fn(() => {
+      value: vi.fn(() => {
         return {
           matches: true,
-          addListener: jest.fn(),
-          removeListener: jest.fn(),
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
         };
       }),
     });
@@ -121,7 +122,7 @@ describe('Calendar', () => {
     );
   });
   test('selects a date on keyDown Enter/Space (uncontrolled)', async () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(
       <Calendar
         defaultValue={new CalendarDate(2019, 6, 5)}
@@ -151,7 +152,7 @@ describe('Calendar', () => {
   });
 
   test('selects a date on keyDown Enter/Space (controlled)', () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(
       <Calendar
         value={new CalendarDate(2019, 6, 5)}
@@ -179,7 +180,7 @@ describe('Calendar', () => {
   });
 
   test("Doesn't select a date on keydown Enter/Space if readOnly", () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(
       <Calendar
         defaultValue={new CalendarDate(2019, 6, 5)}
@@ -213,7 +214,7 @@ describe('Calendar', () => {
   });
 
   test('selects a date on click (uncontrolled)', async () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(
       <Calendar
         defaultValue={new CalendarDate(2019, 6, 5)}
@@ -230,7 +231,7 @@ describe('Calendar', () => {
   });
 
   test('selects a date on click (controlled)', async () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(
       <Calendar value={new CalendarDate(2019, 6, 5)} onChange={onChange} />
     );
@@ -245,7 +246,7 @@ describe('Calendar', () => {
   });
 
   test('does not select a date on click if disabled', async () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(
       <Calendar
         value={new CalendarDate(2019, 6, 5)}
@@ -264,7 +265,7 @@ describe('Calendar', () => {
   });
 
   test('does not select a date on click if isReadOnly', async () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     render(
       <Calendar
         value={new CalendarDate(2019, 6, 5)}

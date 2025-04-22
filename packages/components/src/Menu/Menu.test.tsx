@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React, { SVGProps } from 'react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button';
 import { setup } from '../test.utils';
@@ -66,7 +67,7 @@ const { render } = setup({ theme });
  */
 
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => ({
+  vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
 
@@ -190,7 +191,7 @@ test('closes menu when clicked outside', async () => {
 });
 
 test('return action item', async () => {
-  const spy = jest.fn();
+  const spy = vi.fn();
   render(
     <Menu label="Choose" onAction={spy}>
       <Menu.Item id="burger">Burger</Menu.Item>
@@ -288,7 +289,7 @@ test('supports open property', () => {
 });
 
 test('supports onOpenChange property', () => {
-  const onOpenChange = jest.fn();
+  const onOpenChange = vi.fn();
   render(
     <Menu data-testid="menu" label="Choose" onOpenChange={() => onOpenChange()}>
       <Menu.Item key="burger">Burger</Menu.Item>

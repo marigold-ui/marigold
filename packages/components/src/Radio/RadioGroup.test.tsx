@@ -1,4 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Radio } from './Radio';
@@ -189,7 +190,7 @@ test('supports default value (uncontrolled)', () => {
 });
 
 test('controlled', () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
 
   render(
     <ThemeProvider theme={theme}>

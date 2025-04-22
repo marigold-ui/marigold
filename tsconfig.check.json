@@ -17,5 +17,10 @@
       ]
     }
   },
-  "exclude": ["coverage/*", "jest.config.js", "**/dist/*", "**/node_modules/*"]
+  "exclude": [
+    "coverage/*",
+    "vitest.config.js",
+    "**/dist/*",
+    "**/node_modules/*"
+  ]
 }
