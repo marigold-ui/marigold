@@ -1,5 +1,6 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
 import {
   FieldGroup,
@@ -46,14 +47,41 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination
-      {...rest}
-      totalItems={totalItems!}
-      pageSize={pageSize!}
-      defaultPage={5}
-    />
+    <Pagination {...rest} totalItems={totalItems!} pageSize={pageSize!} />
   ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Select an item from pagination', async () => {
+      const pageButton = canvas.getByLabelText('Page 2');
+      await userEvent.click(pageButton);
+      expect(pageButton).toHaveAttribute('data-selected', 'true');
+    });
+
+    await step('Click on the next button', async () => {
+      const nextButton = canvas.getByLabelText('Page next');
+      await userEvent.click(nextButton);
+      expect(canvas.getByLabelText('Page 3')).toHaveAttribute(
+        'data-selected',
+        'true'
+      );
+    });
+    await step('Click on the previous button', async () => {
+      const prevButton = canvas.getByLabelText('Page previous');
+      await userEvent.click(prevButton);
+      expect(canvas.getByLabelText('Page 2')).toHaveAttribute(
+        'data-selected',
+        'true'
+      );
+    });
+    await step('Click on the first page button', async () => {
+      const firstButton = canvas.getByLabelText('Page 1');
+      await userEvent.click(firstButton);
+      expect(firstButton).toHaveAttribute('data-selected', 'true');
+    });
+  },
 };
 
 export const Controlled: Story = {
