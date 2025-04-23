@@ -352,3 +352,14 @@ test('uses context variant when not provided', () => {
     }
   `);
 });
+
+test('uses fallback context when no context provider exists', () => {
+  const { result } = renderHook(() => useClassNames({ component: 'Button' }), {
+    wrapper,
+  });
+
+  // Should only use base styles with no size/variant from context
+  expect(result.current).toBe('align-center flex');
+});
+
+``;
