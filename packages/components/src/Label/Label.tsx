@@ -16,7 +16,7 @@ const _Label = ({ size, variant, children, ...props }: LabelProps) => {
   return (
     <Label
       {...props}
-      className={cn(classNames.container, 'flex w-[var(--labelWidth)]')}
+      className={cn(classNames.container, 'inline-flex w-[var(--labelWidth)]')}
       style={createVar({ labelWidth })}
     >
       {children}
