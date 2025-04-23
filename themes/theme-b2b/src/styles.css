@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import './theme.css' theme(inline);
+@import './theme.css';
 
 /* from tailwind.config.ts */
 @source 'src/root.ts';

@@ -6,6 +6,6 @@ export const Label: ThemeComponent<'Label'> = {
     'group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground',
   ]),
   indicator: cva(
-    'group-required/field:text-destructive group-required/field:align-super group-required/field:block group-required/field:size-2.5'
+    'group-required/field:block text-destructive align-super size-2.5'
   ),
 };
