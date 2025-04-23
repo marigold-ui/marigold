@@ -1,6 +1,6 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fireEvent, userEvent, waitFor, within } from '@storybook/test';
+import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
 import {
   FieldGroup,
