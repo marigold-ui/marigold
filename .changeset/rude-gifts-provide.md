@@ -2,4 +2,4 @@
 "@marigold/theme-rui": patch
 ---
 
-refa([DST-739]): Simplify label required classes
+refa([DST-681]): Simplify label required classes
