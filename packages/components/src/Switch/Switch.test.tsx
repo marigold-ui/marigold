@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Switch } from './Switch';
@@ -63,7 +64,9 @@ test('supports base styling', () => {
   render(<Switch>Label</Switch>);
   const { label, container, track, thumb } = getSwitchParts();
 
-  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"inline-flex w-[var(--labelWidth)]"`
+  );
   expect(container.className).toMatchInlineSnapshot(
     `"w-full group/switch flex items-center gap-[1ch]"`
   );
@@ -101,7 +104,9 @@ test('takes full width by default', () => {
 test('allows to set width via prop', () => {
   render(<Switch width={10}>Label</Switch>);
   const { label } = getSwitchParts();
-  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"inline-flex w-[var(--labelWidth)]"`
+  );
 });
 
 test('supports disabled prop', () => {
@@ -167,7 +172,7 @@ test('supports default selected', () => {
 });
 
 test('supports controlled component usage', () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   render(<Switch onChange={onChange}>Label</Switch>);
 
   const { input } = getSwitchParts();

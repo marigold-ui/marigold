@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { ComboBox } from './ComboBox';
@@ -80,7 +81,7 @@ const theme: Theme = {
  */
 
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => ({
+  vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
 
@@ -143,7 +144,7 @@ test('supports classnames', () => {
   );
   expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
   expect(label.className).toMatchInlineSnapshot(
-    `"text-teal-300 flex w-[var(--labelWidth)]"`
+    `"text-teal-300 inline-flex w-[var(--labelWidth)]"`
   );
 });
 

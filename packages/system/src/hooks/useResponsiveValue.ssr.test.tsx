@@ -2,10 +2,11 @@
  * @jest-environment jsdom
  */
 import { renderHook } from '@testing-library/react';
-import { useResponsiveValue } from './useResponsiveValue';
+import { vi } from 'vitest';
+import { useResponsiveValue } from '@marigold/system';
 
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => {
+  vi.fn().mockImplementation(query => {
     return {
       matches: matches.includes(query),
     };

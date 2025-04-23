@@ -1,6 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
@@ -122,7 +123,7 @@ test('supports indeterminate state', () => {
 });
 
 test('controlled', () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   render(<Checkbox onChange={onChange}>With Label</Checkbox>);
   const input = screen.getByLabelText<HTMLInputElement>('With Label');
 

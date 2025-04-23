@@ -1,21 +1,23 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import type { UserEvent } from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import {
   Button,
   Dialog,
   DialogTrigger,
   Pressable,
 } from 'react-aria-components';
+import { vi } from 'vitest';
 import { OverlayContainerProvider } from '../Provider';
-import { NonModal } from './NonModal';
 import type { NonModalProps } from './NonModal';
+import { NonModal } from './NonModal';
 
 let user: UserEvent;
 let onPressOutie: jest.Mock;
 
 beforeEach(() => {
-  onPressOutie = jest.fn();
+  // @ts-ignore
+  onPressOutie = vi.fn();
   user = userEvent.setup();
 });
 
@@ -169,7 +171,7 @@ test('supports render props', async () => {
 });
 
 test('isOpen and defaultOpen override state from context', async () => {
-  const onOpenChange = jest.fn();
+  const onOpenChange = vi.fn();
 
   render(
     <>
