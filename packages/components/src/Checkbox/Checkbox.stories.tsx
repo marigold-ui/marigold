@@ -86,6 +86,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = await canvas.findByRole('checkbox');
