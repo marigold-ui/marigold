@@ -2,4 +2,5 @@
 '@marigold/system': patch
 ---
 
-Extend useClassNames to Automatically Pick Up Styles from Context
+Extend useClassNames to automatically pick up styles from context.
+
