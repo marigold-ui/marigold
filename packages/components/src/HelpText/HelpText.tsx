@@ -77,7 +77,7 @@ export const HelpText = ({
               </div>
             ))
           ) : (
-            <div className="flex items-center justify-start gap-1">
+            <div className="flex items-start justify-start gap-1">
               <Icon className={classNames.icon} />
               {messages}
             </div>
