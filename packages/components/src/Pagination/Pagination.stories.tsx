@@ -1,5 +1,6 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
 import {
   FieldGroup,
@@ -35,10 +36,17 @@ const meta = {
         defaultValue: { summary: 'e.g. ["Previous", "Next"]' },
       },
     },
+    defaultPage: {
+      control: {
+        type: 'number',
+      },
+      description: 'The initial page. (uncontrolled)',
+    },
   },
   args: {
     totalItems: 100,
     pageSize: 10,
+    defaultPage: undefined,
   },
 } satisfies Meta<typeof Pagination>;
 
@@ -46,14 +54,73 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination
-      {...rest}
-      totalItems={totalItems!}
-      pageSize={pageSize!}
-      defaultPage={5}
-    />
+    <Pagination {...rest} totalItems={totalItems!} pageSize={pageSize!} />
   ),
+  play: async ({ canvasElement, step, args }) => {
+    const canvas = within(canvasElement);
+
+    await step('Select an item from pagination', async () => {
+      const pageButton = canvas.getByLabelText('Page 2');
+
+      await userEvent.click(pageButton);
+
+      await expect(pageButton).toHaveAttribute('data-selected', 'true');
+    });
+
+    await step('Click on the next button', async () => {
+      const nextButton = canvas.getByLabelText('Page next');
+
+      await userEvent.click(nextButton);
+
+      await expect(canvas.getByLabelText('Page 3')).toHaveAttribute(
+        'data-selected',
+        'true'
+      );
+    });
+
+    await step('Click on the previous button', async () => {
+      const prevButton = canvas.getByLabelText('Page previous');
+
+      await userEvent.click(prevButton);
+
+      await expect(canvas.getByLabelText('Page 2')).toHaveAttribute(
+        'data-selected',
+        'true'
+      );
+    });
+
+    await step('use arrow right navigation', async () => {
+      const pageButton = canvas.getByLabelText('Page 2');
+      const nextPageButton = pageButton.nextElementSibling as HTMLElement;
+
+      await userEvent.tab();
+      await userEvent.keyboard('{ArrowRight}');
+
+      await expect(nextPageButton).toHaveFocus();
+      await expect(nextPageButton).toHaveTextContent('3');
+    });
+
+    await step('use arrow left navigation', async () => {
+      const pageButton = canvas.getByLabelText('Page 3');
+      const nextPageButton = pageButton.previousElementSibling as HTMLElement;
+
+      await userEvent.keyboard('{ArrowLeft}');
+
+      await expect(nextPageButton).toHaveFocus();
+      await expect(nextPageButton).toHaveTextContent('2');
+    });
+
+    await step('blur to unfocus pagination', async () => {
+      const pageButton = canvas.getByLabelText('Page 2');
+
+      pageButton.blur();
+
+      expect(pageButton).not.toHaveFocus();
+      expect(pageButton).toHaveAttribute('data-selected', 'true');
+    });
+  },
 };
 
 export const Controlled: Story = {

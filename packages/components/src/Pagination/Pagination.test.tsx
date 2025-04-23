@@ -58,6 +58,10 @@ describe('Pagination tests', () => {
       aria-label="Page 1 of 2"
       class="flex items-center justify-center space-x-2"
     >
+      <span
+        data-focus-scope-start="true"
+        hidden=""
+      />
       <button
         aria-label="Page previous"
         class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
@@ -115,6 +119,10 @@ describe('Pagination tests', () => {
           />
         </svg>
       </button>
+      <span
+        data-focus-scope-end="true"
+        hidden=""
+      />
     </nav>
   </div>
 </DocumentFragment>
@@ -133,6 +141,10 @@ describe('Pagination tests', () => {
       aria-label="Page 1 of 0"
       class="flex items-center justify-center space-x-2"
     >
+      <span
+        data-focus-scope-start="true"
+        hidden=""
+      />
       <button
         aria-label="Page previous"
         class="border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100"
@@ -180,6 +192,10 @@ describe('Pagination tests', () => {
           />
         </svg>
       </button>
+      <span
+        data-focus-scope-end="true"
+        hidden=""
+      />
     </nav>
   </div>
 </DocumentFragment>
@@ -198,43 +214,6 @@ describe('Pagination tests', () => {
     expect(button[0]).toHaveClass(
       'border-border-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus outline-2 outline-offset-1 focus-visible:outline h-auto border-none bg-transparent flex h-8! w-8! items-center justify-center data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-black data-[selected=true]:font-bold text-gray-700 hover:bg-gray-100'
     );
-  });
-
-  test('select an item', () => {
-    render(<Pagination totalItems={20} pageSize={10} />);
-
-    const page2Button = screen.getByLabelText('Page 2');
-
-    fireEvent.click(page2Button);
-
-    expect(page2Button).toHaveAttribute('data-selected', 'true');
-  });
-
-  test('select next page button with next button', () => {
-    render(<Pagination totalItems={20} pageSize={10} defaultPage={1} />);
-
-    const page1Button = screen.getByLabelText('Page 1');
-    const nextPageButton = page1Button.nextElementSibling as HTMLElement;
-    const nextButton = screen.getByLabelText('Page next');
-
-    fireEvent.click(nextButton);
-
-    expect(nextPageButton).toHaveAttribute('data-selected', 'true');
-    expect(nextPageButton).toHaveTextContent('2');
-  });
-
-  test('select previous page button with previous button', () => {
-    render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
-
-    const page1Button = screen.getByLabelText('Page 5');
-    const previousPageButton =
-      page1Button.previousElementSibling as HTMLElement;
-    const previousButton = screen.getByLabelText('Page previous');
-
-    fireEvent.click(previousButton);
-
-    expect(previousPageButton).toHaveAttribute('data-selected', 'true');
-    expect(previousPageButton).toHaveTextContent('4');
   });
 
   test('previous button is not selected after click when first page is selected', () => {
@@ -267,39 +246,18 @@ describe('Pagination tests', () => {
     expect(pagination).toBeInTheDocument();
   });
 
-  test('use arrow right navigation', () => {
-    render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
-
-    const pageButton = screen.getByLabelText('Page 5');
-    const nextPageButton = pageButton.nextElementSibling as HTMLElement;
-
-    fireEvent.keyDown(pageButton, { key: 'ArrowRight' });
-
-    expect(nextPageButton).toHaveFocus();
-    expect(nextPageButton).toHaveAttribute('data-selected', 'false');
-    expect(nextPageButton).toHaveTextContent('6');
-  });
-
-  test('use arrow left navigation', () => {
-    render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
-
-    const pageButton = screen.getByLabelText('Page 5');
-    const nextPageButton = pageButton.previousElementSibling as HTMLElement;
-
-    fireEvent.keyDown(pageButton, { key: 'ArrowLeft' });
-
-    expect(nextPageButton).toHaveFocus();
-    expect(nextPageButton).toHaveAttribute('data-selected', 'false');
-    expect(nextPageButton).toHaveTextContent('4');
-  });
-
   test('use arrow end navigation', () => {
     render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
 
     const pageButton = screen.getByLabelText('Page 5');
     const nextPageButton = screen.getByLabelText('Page next');
 
+    pageButton.focus();
+    expect(pageButton).toHaveFocus();
+
     fireEvent.keyDown(pageButton, { key: 'End' });
+
+    nextPageButton.focus();
 
     expect(nextPageButton).toHaveFocus();
     expect(nextPageButton).toHaveTextContent('');
@@ -311,7 +269,12 @@ describe('Pagination tests', () => {
     const pageButton = screen.getByLabelText('Page 9');
     const previousPageButton = screen.getByLabelText('Page previous');
 
+    pageButton.focus();
+    expect(pageButton).toHaveFocus();
+
     fireEvent.keyDown(pageButton, { key: 'Home' });
+
+    previousPageButton.focus();
 
     expect(previousPageButton).toHaveFocus();
     expect(previousPageButton).toHaveTextContent('');

@@ -456,5 +456,5 @@ test('DatePicker supports data unavailable property', async () => {
   expect(popover).toBeVisible();
   const date = screen.getAllByRole('gridcell');
 
-  expect(date[1].firstChild).toHaveAttribute('data-unavailable', 'true');
+  expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
