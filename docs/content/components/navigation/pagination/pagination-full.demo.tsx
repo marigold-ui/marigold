@@ -23,7 +23,7 @@ export default (paginationProps: PaginationProps, tableProps: TableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const mockData: User[] = Array.from({ length: 55 }, (_, i) => ({
+  const mockData: User[] = Array.from({ length: 35 }, (_, i) => ({
     id: i + 1,
     name: `User ${i + 1}`,
     email: `user${i + 1}@example.com`,
@@ -36,57 +36,55 @@ export default (paginationProps: PaginationProps, tableProps: TableProps) => {
   const currentData = mockData.slice(startIndex, endIndex);
 
   return (
-    <div>
-      <Stack alignX="left" space={4}>
-        <Table aria-label="label" stretch {...tableProps}>
-          <Table.Header>
-            <Table.Column>ID</Table.Column>
-            <Table.Column>Name</Table.Column>
-            <Table.Column>Email</Table.Column>
-            <Table.Column>Role</Table.Column>
-            <Table.Column>Status</Table.Column>
-          </Table.Header>
-          <Table.Body items={currentData}>
-            {item => (
-              <Table.Row key={item.id}>
-                <Table.Cell>{item.id}</Table.Cell>
-                <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.email}</Table.Cell>
-                <Table.Cell>{item.role}</Table.Cell>
-                <Table.Cell>{item.status}</Table.Cell>
-              </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
-        <div className="w-full">
-          <Inline alignY="center" space={3}>
-            <Text fontSize="sm">
-              Showing {startIndex + 1} - {endIndex} of {mockData.length}
-            </Text>
-            <Split />
-            <Pagination
-              {...paginationProps}
-              totalItems={mockData.length}
-              pageSize={pageSize}
-              page={currentPage}
-              onChange={setCurrentPage}
-            />
-            <Split />
-            <Inline alignY="center" space={4}>
-              <Text fontSize="sm">Results per page</Text>
-              <Select
-                width={'fit'}
-                selectedKey={pageSize.toString()}
-                onChange={val => setPageSize(parseInt(val.toString()))}
-              >
-                <Select.Option id="10">10</Select.Option>
-                <Select.Option id="20">20</Select.Option>
-                <Select.Option id={'30'}>30</Select.Option>
-              </Select>
-            </Inline>
+    <Stack alignX="left" space={2}>
+      <Table aria-label="label" stretch {...tableProps}>
+        <Table.Header>
+          <Table.Column>ID</Table.Column>
+          <Table.Column>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Role</Table.Column>
+          <Table.Column>Status</Table.Column>
+        </Table.Header>
+        <Table.Body items={currentData}>
+          {item => (
+            <Table.Row key={item.id}>
+              <Table.Cell>{item.id}</Table.Cell>
+              <Table.Cell>{item.name}</Table.Cell>
+              <Table.Cell>{item.email}</Table.Cell>
+              <Table.Cell>{item.role}</Table.Cell>
+              <Table.Cell>{item.status}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+      <div className="w-full">
+        <Inline alignY="center">
+          <Text fontSize="sm">
+            Showing {startIndex + 1} - {endIndex} of {mockData.length}
+          </Text>
+          <Split />
+          <Pagination
+            {...paginationProps}
+            totalItems={mockData.length}
+            pageSize={pageSize}
+            page={currentPage}
+            onChange={setCurrentPage}
+          />
+          <Split />
+          <Inline alignY="center" space={4}>
+            <Text fontSize="sm">Results per page</Text>
+            <Select
+              width={'fit'}
+              selectedKey={pageSize.toString()}
+              onChange={val => setPageSize(parseInt(val.toString()))}
+            >
+              <Select.Option id="10">10</Select.Option>
+              <Select.Option id="20">20</Select.Option>
+              <Select.Option id="30">30</Select.Option>
+            </Select>
           </Inline>
-        </div>
-      </Stack>
-    </div>
+        </Inline>
+      </div>
+    </Stack>
   );
 };
