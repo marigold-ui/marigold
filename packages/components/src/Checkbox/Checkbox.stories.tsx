@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
 import { FieldGroup } from '../FieldBase/FieldGroup';
 import { Checkbox } from './Checkbox';
@@ -75,6 +76,9 @@ const meta = {
     disabled: false,
     label: 'This is a Checkbox',
     size: 'default',
+    defaultChecked: false,
+    error: false,
+    required: false,
   },
 } satisfies Meta<typeof Checkbox>;
 
@@ -82,7 +86,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Checkbox size="small" {...args} defaultChecked />,
+  args: {
+    defaultChecked: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const checkbox = await canvas.findByRole('checkbox');
+
+    await userEvent.click(checkbox);
+
+    expect(checkbox).toBeChecked();
+  },
 };
 
 export const WithFieldGroup: Story = {
