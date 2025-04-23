@@ -9,7 +9,7 @@ import {
 export const TextArea: ThemeComponent<'TextArea'> = cva([
   inputContainer,
   inputInvalid,
-  'focus-visible:util-focus-ring',
+  'focus-visible:util-focus-ring outline-none',
   inputDisabled,
   inputReadOnly,
   'invalid:text-destructive',
