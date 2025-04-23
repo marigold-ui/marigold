@@ -456,6 +456,5 @@ test('DatePicker supports data unavailable property', async () => {
   expect(popover).toBeVisible();
   const date = screen.getAllByRole('gridcell');
 
-  // select a date in the month that is not the first
   expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
