@@ -143,7 +143,7 @@ test('passes down variant and size', () => {
 
   const label = screen.getByText('Label');
   expect(label.className).toMatchInlineSnapshot(
-    `"text-lime-300 p-1 flex w-[var(--labelWidth)]"`
+    `"text-lime-300 p-1 inline-flex w-[var(--labelWidth)]"`
   );
 
   const description = screen.getByText('Description');
