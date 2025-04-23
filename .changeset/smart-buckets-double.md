@@ -2,4 +2,4 @@
 "@marigold/components": patch
 ---
 
-refa([DST-754]): Add `<FocusScope>` to `<Pagination>`
+refa([DST-754]): Add `<FocusScope>` to `<Pagination>` to improve focus state.
