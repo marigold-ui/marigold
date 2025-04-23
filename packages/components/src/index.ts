@@ -14,7 +14,6 @@ export * from './Button';
 export * from './Card';
 export * from './Center';
 export * from './Checkbox';
-export * from './CloseButton';
 export * from './Columns';
 export * from './Container';
 export * from './Dialog';
