@@ -39,14 +39,11 @@ export interface PaginationProps {
   controlLabels?: [string, string];
 }
 
-interface InnerPaginationProps {
+interface InnerPaginationProps extends Omit<PaginationProps, 'totalItems'> {
   currentPage: number;
   totalPages: number;
   pageRange: (number | 'ellipsis')[];
   setCurrentPage: (page: number) => void;
-  controlLabels?: [string, string];
-  onChange?: (page: number) => void;
-  pageSize?: number;
 }
 
 const InnerPagination = ({
@@ -162,6 +159,7 @@ const _Pagination = ({
     >
       <FocusScope restoreFocus>
         <InnerPagination
+          pageSize={pageSize}
           currentPage={currentPage}
           totalPages={totalPages}
           pageRange={pageRange}
