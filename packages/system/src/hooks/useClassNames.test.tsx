@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, createContext } from 'react';
 import { Theme } from '../types';
 import { cn, cva } from '../utils';
 import { UseClassNamesProps, useClassNames } from './useClassNames';
@@ -310,4 +310,45 @@ test('component error if there are not slots', () => {
   expect(result.current.error).toMatchInlineSnapshot(
     `[Error: "className" must be a string, when using a component without slots]`
   );
+});
+
+test('uses context size when size not provided', () => {
+  const ComponentContext = createContext<{ size: string }>({ size: 'large' });
+
+  const { result } = renderHook(
+    () => useClassNames({ component: 'Button', context: ComponentContext }),
+    {
+      wrapper: ({ children }) => (
+        <ComponentContext.Provider value={{ size: 'large' }}>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </ComponentContext.Provider>
+      ),
+    }
+  );
+
+  expect(result.current).toMatchInlineSnapshot(`"align-center flex w-50 h-50"`);
+});
+
+test('uses context variant when not provided', () => {
+  const ComponentContext = createContext<{ variant: string }>({
+    variant: 'primary',
+  });
+
+  const { result } = renderHook(
+    () => useClassNames({ component: 'HelpText', context: ComponentContext }),
+    {
+      wrapper: ({ children }) => (
+        <ComponentContext.Provider value={{ variant: 'primary' }}>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </ComponentContext.Provider>
+      ),
+    }
+  );
+
+  expect(result.current).toMatchInlineSnapshot(`
+    {
+      "container": "inline text-primary-500",
+      "icon": "block text-secondary-800",
+    }
+  `);
 });
