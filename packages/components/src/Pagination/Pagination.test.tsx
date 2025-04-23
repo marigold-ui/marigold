@@ -245,41 +245,6 @@ describe('Pagination tests', () => {
     expect(pagination).toBeInTheDocument();
   });
 
-  test('use arrow right navigation', () => {
-    render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
-
-    const pageButton = screen.getByLabelText('Page 5');
-
-    const nextPageButton = pageButton.nextElementSibling as HTMLElement;
-
-    pageButton.focus();
-    expect(pageButton).toHaveFocus();
-
-    fireEvent.keyDown(pageButton, { key: 'ArrowRight' });
-
-    nextPageButton.focus();
-    expect(nextPageButton).toHaveFocus();
-    expect(nextPageButton).toHaveAttribute('data-selected', 'false');
-    expect(nextPageButton).toHaveTextContent('6');
-  });
-
-  test('use arrow left navigation', () => {
-    render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
-
-    const pageButton = screen.getByLabelText('Page 5');
-    const nextPageButton = pageButton.previousElementSibling as HTMLElement;
-
-    pageButton.focus();
-    expect(pageButton).toHaveFocus();
-
-    fireEvent.keyDown(pageButton, { key: 'ArrowLeft' });
-
-    nextPageButton.focus();
-    expect(nextPageButton).toHaveFocus();
-    expect(nextPageButton).toHaveAttribute('data-selected', 'false');
-    expect(nextPageButton).toHaveTextContent('4');
-  });
-
   test('use arrow end navigation', () => {
     render(<Pagination totalItems={100} pageSize={10} defaultPage={5} />);
 

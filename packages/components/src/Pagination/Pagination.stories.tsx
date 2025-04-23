@@ -36,10 +36,17 @@ const meta = {
         defaultValue: { summary: 'e.g. ["Previous", "Next"]' },
       },
     },
+    defaultPage: {
+      control: {
+        type: 'number',
+      },
+      description: 'The initial page. (uncontrolled)',
+    },
   },
   args: {
     totalItems: 100,
     pageSize: 10,
+    defaultPage: undefined,
   },
 } satisfies Meta<typeof Pagination>;
 
@@ -51,7 +58,7 @@ export const Basic: Story = {
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => (
     <Pagination {...rest} totalItems={totalItems!} pageSize={pageSize!} />
   ),
-  play: async ({ canvasElement, step }) => {
+  play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
 
     await step('Select an item from pagination', async () => {
@@ -75,6 +82,33 @@ export const Basic: Story = {
         'data-selected',
         'true'
       );
+    });
+
+    await step('use arrow right navigation', async () => {
+      userEvent.tab();
+      userEvent.tab();
+
+      const pageButton = canvas.getByLabelText('Page 2');
+      pageButton.focus();
+      expect(pageButton).toHaveFocus();
+      const nextPageButton = pageButton.nextElementSibling as HTMLElement;
+
+      userEvent.keyboard(`ArrowRight`);
+
+      nextPageButton.focus();
+      expect(nextPageButton).toHaveFocus();
+      expect(nextPageButton).toHaveTextContent('3');
+    });
+    await step('use arrow left navigation', () => {
+      const pageButton = canvas.getByLabelText('Page 3');
+      pageButton.focus();
+      expect(pageButton).toHaveFocus();
+
+      const nextPageButton = pageButton.previousElementSibling as HTMLElement;
+      userEvent.keyboard(`ArrowLeft`);
+      nextPageButton.focus();
+      expect(nextPageButton).toHaveFocus();
+      expect(nextPageButton).toHaveTextContent('2');
     });
   },
 };
