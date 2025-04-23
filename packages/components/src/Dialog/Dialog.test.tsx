@@ -128,8 +128,8 @@ test('optionally renders a close button', () => {
   const closeButton = dialog.firstChild?.lastChild!;
   expect(closeButton).toBeInTheDocument();
 
-  // fireEvent.click(closeButton);
-  // expect(dialog).not.toBeVisible();
+  fireEvent.click(closeButton);
+  expect(dialog).not.toBeVisible();
 });
 
 test('supports closing the dialog with escape key', async () => {
