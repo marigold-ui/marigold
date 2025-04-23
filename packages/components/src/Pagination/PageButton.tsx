@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { KeyboardEvent, useRef } from 'react';
 import { useButton } from '@react-aria/button';
 import { useClassNames } from '@marigold/system';
 
@@ -8,7 +8,7 @@ interface PageButtonProps {
   isDisabled?: boolean;
   onClick?: () => void;
   registerRef?: (ref: HTMLButtonElement | null) => void;
-  onKeyDown?: (event: React.KeyboardEvent) => void;
+  onKeyDown?: (event: KeyboardEvent) => void;
 }
 
 export const PageButton = (props: PageButtonProps) => {

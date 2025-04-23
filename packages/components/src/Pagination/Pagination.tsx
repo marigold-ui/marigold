@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useClassNames } from '@marigold/system';
 import { ChevronLeft, ChevronRight } from '../icons';
@@ -84,7 +84,7 @@ const InnerPagination = ({
 
   // handeling arrow keys and enter key
   const handleKeyDown =
-    (onEnter: () => void) => (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    (onEnter: () => void) => (e: KeyboardEvent<HTMLButtonElement>) => {
       if (e.key === 'ArrowRight') {
         e.preventDefault();
         focusManager?.focusNext({ wrap: true });

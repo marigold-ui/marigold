@@ -1,4 +1,4 @@
-import React from 'react';
+import { KeyboardEvent, ReactNode, useRef } from 'react';
 import { useButton } from '@react-aria/button';
 import { cn, useClassNames } from '@marigold/system';
 
@@ -7,15 +7,15 @@ interface PaginationButtonProps {
   'aria-label': string;
   isDisabled?: boolean;
   isSelected?: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
   registerRef?: (ref: HTMLButtonElement | null) => void;
   controlLabel?: string;
   position?: 'left' | 'right';
-  onKeyDown?: (event: React.KeyboardEvent) => void;
+  onKeyDown?: (event: KeyboardEvent) => void;
 }
 
 export const NavigationButton = (props: PaginationButtonProps) => {
-  const ref = React.useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLButtonElement>(null);
   const classNames = useClassNames({
     component: 'Pagination',
   });
