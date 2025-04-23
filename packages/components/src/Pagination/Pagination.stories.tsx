@@ -1,6 +1,6 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, fireEvent, userEvent, waitFor, within } from '@storybook/test';
 import React from 'react';
 import {
   FieldGroup,
@@ -63,52 +63,62 @@ export const Basic: Story = {
 
     await step('Select an item from pagination', async () => {
       const pageButton = canvas.getByLabelText('Page 2');
+
       await userEvent.click(pageButton);
-      expect(pageButton).toHaveAttribute('data-selected', 'true');
+
+      await expect(pageButton).toHaveAttribute('data-selected', 'true');
     });
 
     await step('Click on the next button', async () => {
       const nextButton = canvas.getByLabelText('Page next');
+
       await userEvent.click(nextButton);
-      expect(canvas.getByLabelText('Page 3')).toHaveAttribute(
+
+      await expect(canvas.getByLabelText('Page 3')).toHaveAttribute(
         'data-selected',
         'true'
       );
     });
+
     await step('Click on the previous button', async () => {
       const prevButton = canvas.getByLabelText('Page previous');
+
       await userEvent.click(prevButton);
-      expect(canvas.getByLabelText('Page 2')).toHaveAttribute(
+
+      await expect(canvas.getByLabelText('Page 2')).toHaveAttribute(
         'data-selected',
         'true'
       );
     });
 
     await step('use arrow right navigation', async () => {
-      userEvent.tab();
-      userEvent.tab();
-
       const pageButton = canvas.getByLabelText('Page 2');
-      pageButton.focus();
-      expect(pageButton).toHaveFocus();
       const nextPageButton = pageButton.nextElementSibling as HTMLElement;
 
-      userEvent.keyboard(`ArrowRight`);
+      await userEvent.tab();
+      await userEvent.keyboard('{ArrowRight}');
 
-      nextPageButton.focus();
-      expect(nextPageButton).toHaveFocus();
-      expect(nextPageButton).toHaveTextContent('3');
+      await expect(nextPageButton).toHaveFocus();
+      await expect(nextPageButton).toHaveTextContent('3');
     });
-    await step('use arrow left navigation', () => {
-      const pageButton = canvas.getByLabelText('Page 3');
-      pageButton.focus();
-      expect(pageButton).toHaveFocus();
 
+    await step('use arrow left navigation', async () => {
+      const pageButton = canvas.getByLabelText('Page 3');
       const nextPageButton = pageButton.previousElementSibling as HTMLElement;
-      userEvent.keyboard(`ArrowLeft`);
-      nextPageButton.focus();
-      expect(nextPageButton).toHaveFocus();
-      expect(nextPageButton).toHaveTextContent('2');
+
+      await userEvent.keyboard('{ArrowLeft}');
+
+      await expect(nextPageButton).toHaveFocus();
+      await expect(nextPageButton).toHaveTextContent('2');
+    });
+
+    await step('blur to unfocus pagination', async () => {
+      const pageButton = canvas.getByLabelText('Page 2');
+
+      pageButton.blur();
+
+      expect(pageButton).not.toHaveFocus();
+      expect(pageButton).toHaveAttribute('data-selected', 'true');
     });
   },
 };
