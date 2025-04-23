@@ -7,7 +7,7 @@ const meta = {
   title: 'Components/Checkbox',
   component: Checkbox,
   argTypes: {
-    children: {
+    label: {
       control: {
         type: 'text',
       },
@@ -15,6 +15,15 @@ const meta = {
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'This is a Checkbox' },
+      },
+    },
+    children: {
+      control: {
+        type: 'text',
+      },
+      description: 'deprecated use `label` instead',
+      table: {
+        type: { summary: 'string' },
       },
     },
     disabled: {
@@ -64,7 +73,7 @@ const meta = {
     readOnly: false,
     indeterminate: false,
     disabled: false,
-    children: 'This is a Checkbox',
+    label: 'This is a Checkbox',
     size: 'default',
   },
 } satisfies Meta<typeof Checkbox>;
