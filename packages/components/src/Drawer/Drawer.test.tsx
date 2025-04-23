@@ -21,6 +21,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Button: cva(),
+    CloseButton: cva('size-5'),
     Drawer: {
       overlay: cva(),
       container: cva('p-5', {

@@ -8,7 +8,5 @@ export const Tag: ThemeComponent<'Tag'> = {
     'data-[disabled]:cursor-not-allowed data-[disabled]:text-text-base-disabled data-[disabled]:bg-bg-inverted-disabled data-[disabled]:border-border-base-disabled',
   ]),
   listItems: cva('flex flex-wrap items-center gap-1'),
-  closeButton: cva(
-    'size-4 cursor-pointer border-none bg-transparent p-0 leading-normal outline-0'
-  ),
+  closeButton: cva('size-4'),
 };
