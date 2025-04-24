@@ -105,12 +105,12 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
   variant?: string;
   size?: string;
   /**
-   * Children of the component.
+   * Children of the checkbox.
    * @deprecated Will be removed in the next major version. Use `label` prop instead.
    */
   children?: ReactNode;
   /**
-   * The label of the component.
+   * Set the label of the checkbox.
    *
    */
   label?: ReactNode;

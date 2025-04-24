@@ -21,12 +21,12 @@ export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   variant?: string;
   size?: string;
   /**
-   * The children of the component.
+   * The children of the switch.
    * @deprecated Will be removed in the next major version. Use `label` prop instead.
    */
   children?: ReactNode;
   /**
-   * The label of the component.
+   * Set the label of the switch.
    */
   label?: ReactNode;
 
