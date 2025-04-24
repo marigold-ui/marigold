@@ -22,7 +22,7 @@ export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
   return (
     <ListBoxItem {...props} className={classNames.item}>
       <>
-        <CheckMark className={classNames.icon} />
+        <CheckMark className="invisible" />
         {props.children}
       </>
     </ListBoxItem>
