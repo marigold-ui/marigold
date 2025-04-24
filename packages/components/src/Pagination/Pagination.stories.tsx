@@ -15,6 +15,7 @@ import { Pagination, PaginationProps } from './Pagination';
 
 const meta = {
   title: 'Components/Pagination',
+  component: Pagination,
   argTypes: {
     totalItems: {
       control: {
@@ -55,9 +56,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination {...rest} totalItems={totalItems!} pageSize={pageSize!} />
-  ),
   play: async ({ canvasElement, step, args }) => {
     const canvas = within(canvasElement);
 
@@ -117,8 +115,8 @@ export const Basic: Story = {
 
       pageButton.blur();
 
-      expect(pageButton).not.toHaveFocus();
-      expect(pageButton).toHaveAttribute('data-selected', 'true');
+      await expect(pageButton).not.toHaveFocus();
+      await expect(pageButton).toHaveAttribute('data-selected', 'true');
     });
   },
 };
@@ -147,25 +145,27 @@ export const OnePage: Story = {
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: args => <Pagination {...args} totalItems={10} pageSize={10} />,
+  args: {
+    totalItems: 10,
+    pageSize: 10,
+  },
 };
 
 export const OneHundredPages: Story = {
-  render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination
-      {...rest}
-      totalItems={1000}
-      pageSize={pageSize!}
-      defaultPage={93}
-    />
-  ),
+  args: {
+    totalItems: 1000,
+    defaultPage: 93,
+  },
 };
 
 export const NoData: Story = {
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: args => <Pagination {...args} totalItems={0} pageSize={10} />,
+  args: {
+    totalItems: 0,
+    pageSize: 10,
+  },
 };
 
 export const FullScreenSize: Story = {
@@ -285,13 +285,9 @@ export const WithButtonLabels: Story = {
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination
-      {...rest}
-      totalItems={100}
-      pageSize={pageSize!}
-      page={5}
-      controlLabels={['Previous', 'Next']}
-    />
-  ),
+  args: {
+    totalItems: 100,
+    defaultPage: 5,
+    controlLabels: ['Previous', 'Next'],
+  },
 };
