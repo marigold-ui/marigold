@@ -1,6 +1,6 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, fn, userEvent, within } from '@storybook/test';
 import React from 'react';
 import {
   FieldGroup,
@@ -56,7 +56,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement, step, args }) => {
+  play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
     await step('Select an item from pagination', async () => {
@@ -289,5 +289,49 @@ export const WithButtonLabels: Story = {
     totalItems: 100,
     defaultPage: 5,
     controlLabels: ['Previous', 'Next'],
+  },
+};
+
+export const DisabledPreviousButton: Story = {
+  tags: ['component-test'],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const previousButton = canvas.getByLabelText('Page previous');
+
+    await userEvent.click(previousButton);
+
+    await expect(previousButton).not.toHaveAttribute('data-selected', 'true');
+    await expect(previousButton).toHaveAttribute('disabled');
+  },
+};
+
+export const DisabledNextButton: Story = {
+  tags: ['component-test'],
+  args: {
+    defaultPage: 9,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const nextButton = canvas.getByLabelText('Page next');
+
+    await userEvent.click(nextButton);
+
+    await expect(nextButton).not.toHaveAttribute('data-selected', 'true');
+    await expect(nextButton).toHaveAttribute('disabled');
+  },
+};
+
+export const UseOnChange: Story = {
+  tags: ['component-test'],
+  args: {
+    onChange: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const page2Button = canvas.getByLabelText('Page 2');
+
+    await userEvent.click(page2Button);
+
+    await expect(args.onChange).toHaveBeenCalledWith(2);
   },
 };
