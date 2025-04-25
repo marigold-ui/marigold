@@ -49,7 +49,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             initial={siteConfig.defaultTheme}
           >
             <MarigoldProvider theme={theme} className="min-h-screen">
-              <SiteHeader />
               {children}
             </MarigoldProvider>
             <PortalContaier />
