@@ -1,5 +1,21 @@
 # @marigold/docs
 
+## 11.4.1
+
+### Patch Changes
+
+- 953cf3d: Making the dialog titles independant
+- Updated dependencies [81b2216]
+- Updated dependencies [953cf3d]
+- Updated dependencies [334abb9]
+  - @marigold/components@11.4.1
+  - @marigold/system@11.4.1
+  - @marigold/theme-b2b@30.0.0
+  - @marigold/theme-core@29.0.0
+  - @marigold/theme-docs@3.0.0
+  - @marigold/theme-rui@1.0.0
+  - @marigold/icons@1.3.6
+
 ## 11.4.0
 
 ### Minor Changes

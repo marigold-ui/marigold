@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-rui",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "Marigold RUI Theme",
   "license": "MIT",
   "keywords": [
@@ -58,6 +58,6 @@
     "tailwindcss-react-aria-components": "2.0.0"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css src/global.css src/mixins.css dist/"
+    "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css src/global.css src/utils.css dist/"
   }
 }

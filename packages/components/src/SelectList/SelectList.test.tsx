@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
-import userEvent, { UserEvent } from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { DropIndicator, useDragAndDrop } from 'react-aria-components';
+import { vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
@@ -13,7 +14,7 @@ const theme: Theme = {
     ListBox: {
       container: cva('border-border-light'),
       list: cva('outline-hidden'),
-      option: cva('p-3 outline-hidden'),
+      item: cva('p-3 outline-hidden'),
       section: cva('border outline-hidden'),
       header: cva('[&_header]:text-text-accent'),
     },
@@ -28,30 +29,6 @@ const theme: Theme = {
 };
 
 describe('SelectList', () => {
-  beforeAll(() => {
-    jest.useRealTimers();
-    Object.defineProperty(window, 'matchMedia', {
-      value: jest.fn(() => {
-        return {
-          matches: true,
-          addListener: jest.fn(),
-          removeListener: jest.fn(),
-        };
-      }),
-    });
-  });
-  let user: UserEvent;
-  beforeAll(() => {
-    user = userEvent.setup({ delay: null });
-    jest.useFakeTimers();
-  });
-
-  afterEach(() => {
-    act(() => {
-      jest.runAllTimers();
-    });
-  });
-
   test('render with defautl classes', () => {
     render(
       <ThemeProvider theme={theme}>
@@ -146,14 +123,15 @@ describe('SelectList', () => {
 
     expect(row).not.toHaveAttribute('data-hovered');
     expect(row).not.toHaveClass('hover');
-    await user.hover(row);
+
+    await userEvent.hover(row);
 
     setTimeout(() => {
       expect(row).toHaveAttribute('data-hovered', 'true');
       expect(row).toHaveClass('hover');
-    }, 0);
+    }, 1000);
 
-    await user.unhover(row);
+    await userEvent.unhover(row);
 
     expect(row).not.toHaveAttribute('data-hovered');
     expect(row).not.toHaveClass('hover');
@@ -175,12 +153,12 @@ describe('SelectList', () => {
     expect(row).not.toHaveAttribute('data-focus-visible');
     expect(row).not.toHaveClass('focus');
 
-    await user.tab();
+    await userEvent.tab();
     /* eslint-disable testing-library/no-node-access */
     expect(document.activeElement).toBe(row);
     expect(row).toHaveAttribute('data-focus-visible', 'true');
 
-    await user.tab();
+    await userEvent.tab();
     expect(row).not.toHaveAttribute('data-focus-visible');
   });
 
@@ -213,7 +191,7 @@ describe('SelectList', () => {
       );
     };
 
-    const onReorder = jest.fn();
+    const onReorder = vi.fn();
 
     render(
       <DraggableSelectList
@@ -223,11 +201,12 @@ describe('SelectList', () => {
         )}
       />
     );
-    // const button = screen.getByTestId('dragButton');
+
+    act(() => vi.useFakeTimers());
     const button = screen.getAllByRole('button')[0];
     fireEvent.keyDown(button, { key: 'Enter' });
     fireEvent.keyUp(button, { key: 'Enter' });
-    act(() => jest.runAllTimers());
+    act(() => vi.runAllTimers());
 
     const rows = screen.getAllByRole('row');
 

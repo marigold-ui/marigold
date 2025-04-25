@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { KeyboardEvent, useRef } from 'react';
 import { useButton } from '@react-aria/button';
 import { useClassNames } from '@marigold/system';
 
@@ -8,6 +8,7 @@ interface PageButtonProps {
   isDisabled?: boolean;
   onClick?: () => void;
   registerRef?: (ref: HTMLButtonElement | null) => void;
+  onKeyDown?: (event: KeyboardEvent) => void;
 }
 
 export const PageButton = (props: PageButtonProps) => {
@@ -16,14 +17,7 @@ export const PageButton = (props: PageButtonProps) => {
     component: 'Pagination',
   });
   let { buttonProps } = useButton(props, ref);
-  let { page, selected, registerRef, isDisabled } = props;
-
-  useEffect(() => {
-    if (registerRef) {
-      registerRef(ref.current);
-      return () => registerRef(null);
-    }
-  }, [registerRef]);
+  let { page, selected, isDisabled } = props;
 
   return (
     <button

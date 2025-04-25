@@ -1,9 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
-
 /* eslint-disable testing-library/no-container */
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
+import { MockInstance, vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button';
 import { setup } from '../test.utils';
@@ -13,6 +13,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Button: cva(''),
+    CloseButton: cva('size-7'),
     Dialog: {
       container: cva('p-5', {
         variants: {
@@ -45,10 +46,10 @@ const theme: Theme = {
 const user = userEvent.setup();
 const { render } = setup({ theme });
 
-let errorMock: jest.SpyInstance;
+let errorMock: MockInstance;
 
 beforeEach(() => {
-  errorMock = jest.spyOn(console, 'error').mockImplementation();
+  errorMock = vi.spyOn(console, 'error').mockImplementation(() => null);
 });
 
 afterEach(() => {
@@ -78,7 +79,7 @@ test('renders children correctly', () => {
 });
 
 test('supports children as function', () => {
-  const spy = jest.fn().mockReturnValue(<div>I am a spy!</div>);
+  const spy = vi.fn().mockReturnValue(<div>I am a spy!</div>);
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -318,9 +319,7 @@ test('dialog has base classnames', () => {
 
   const closeButton = dialog.firstChild;
 
-  expect(closeButton).toHaveClass(
-    'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1'
-  );
+  expect(closeButton).toHaveClass('size-7 p-1');
 
   expect(dialog).toHaveClass(`p-5`);
 });
@@ -344,9 +343,7 @@ test('dialog has variant classnames', () => {
 
   const closeButton = dialog.firstChild;
 
-  expect(closeButton).toHaveClass(
-    'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
-  );
+  expect(closeButton).toHaveClass('size-7 p-1 bg-black');
   expect(dialog.className).toMatch('bg-green-400');
 });
 
@@ -460,7 +457,7 @@ test('dialog can be controlled without a trigger', async () => {
 });
 
 test('close state has a listener', async () => {
-  const spy = jest.fn();
+  const spy = vi.fn();
 
   const Component = () => {
     const [open, setOpen] = useState(false);

@@ -1,15 +1,16 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { cva } from '@marigold/system';
+import { vi } from 'vitest';
 import type { Theme } from '@marigold/system';
+import { cva } from '@marigold/system';
 import { Button } from '../Button';
 import { setup } from '../test.utils';
-import { Drawer } from './Drawer';
 import type { DrawerProps } from './Drawer';
+import { Drawer } from './Drawer';
 
 let isSmallScreen = false;
 const mockMatchMedia = () =>
-  jest.fn().mockImplementation(() => {
+  vi.fn().mockImplementation(() => {
     return {
       matches: isSmallScreen,
     };
@@ -20,6 +21,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Button: cva(),
+    CloseButton: cva('size-5'),
     Drawer: {
       overlay: cva(),
       container: cva('p-5', {
