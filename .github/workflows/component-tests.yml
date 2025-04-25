@@ -29,10 +29,16 @@ jobs:
         run: pnpm test:storybook
         env:
           TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
+      - name: Upload Accessibility Report
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: ./config/storybook/artifacts/accessibilityReport.html
       - name: Accessibility Report Preview
         if: success() && steps.findPr.outputs.number
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ steps.findPr.outputs.number }}
           message: |
-            Accessibility tests executed. Check out the report [here](https://html-preview.github.io/?https://github.com/${{ github.repository }}/blob/${{ github.sha }}/config/storybook/artifacts/accessibilityReport.html).
+            Accessibility tests executed. Download the report [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
