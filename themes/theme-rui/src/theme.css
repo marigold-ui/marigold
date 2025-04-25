@@ -118,9 +118,6 @@
   --spacing-button-small: 2rem;
   --spacing-button-large: 2.5rem;
 
-  /* surface colors used for elevation levels */
-  --color-surface-overlay: var(--color-white);
-
   --color-border: var(--color-stone-200);
 
   /* Focus color is used for focusing an element (e.g. segment on Datefield)*/
