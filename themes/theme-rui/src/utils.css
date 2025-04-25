@@ -60,6 +60,7 @@
     var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
 }
 
+/* TODO: separate these and also set border if applicable (raised, overlay) */
 @utility util-surface-* {
   background: --value(--surface- *);
 
