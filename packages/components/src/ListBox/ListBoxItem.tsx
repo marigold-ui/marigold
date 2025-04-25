@@ -18,13 +18,21 @@ const CheckMark = ({ className }: SVGProps) => (
 
 export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
   const { classNames } = useListBoxContext();
-
   return (
-    <ListBoxItem {...props} className={classNames.item}>
-      <>
-        <CheckMark className="invisible" />
-        {props.children}
-      </>
+    <ListBoxItem
+      {...props}
+      className={classNames.item}
+      // textValue needed because ListBoxItem in this case has multiple children
+      textValue={props.textValue ?? (String(props.children) as string)}
+    >
+      {({ isSelected }) => {
+        return (
+          <>
+            {isSelected && <CheckMark />}
+            {props.children}
+          </>
+        );
+      }}
     </ListBoxItem>
   );
 };
