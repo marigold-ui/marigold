@@ -30,15 +30,20 @@ jobs:
         env:
           TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
       - name: Upload Accessibility Report
-        if: success()
+        id: artifact-upload-step
         uses: actions/upload-artifact@v4
         with:
           name: accessibility-report
           path: ./config/storybook/artifacts/accessibilityReport.html
+          overwrite: 'true'
       - name: Accessibility Report Preview
         if: success() && steps.findPr.outputs.number
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ steps.findPr.outputs.number }}
           message: |
-            Accessibility tests executed. Download the report [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+            Accessibility tests executed. Download the report [here](${{ steps.artifact-upload-step.outputs.artifact-url }}).
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: accessibility-report
