@@ -4,14 +4,20 @@ import { MarigoldProvider, OverlayContainerProvider } from '@/ui';
 import type { PropsWithChildren } from 'react';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
-export const Wrapper = ({ children }: PropsWithChildren) => {
-  const { current, themes } = useThemeSwitch();
-  const theme = themes[current];
+export interface WrapperProps {
+  theme?: string;
+}
 
+export const Wrapper = ({
+  theme,
+  children,
+}: PropsWithChildren<WrapperProps>) => {
+  const { current, themes } = useThemeSwitch();
+  const selectedTheme = themes[theme ?? current];
   return (
     <div data-theme={current}>
       <OverlayContainerProvider value="portalContainer">
-        <MarigoldProvider theme={theme}>
+        <MarigoldProvider theme={selectedTheme}>
           <div className="h-[calc(100dvh-var(--page-header-height))] p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
             {children}
           </div>
