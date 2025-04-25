@@ -18,6 +18,11 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Get PR number
+        uses: jwalton/gh-find-current-pr@master
+        id: findPr
+        with:
+          state: open
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Storybook tests
@@ -25,7 +30,9 @@ jobs:
         env:
           TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
       - name: Accessibility Report Preview
-        uses: pavi2410/html-preview-action@v4
+        if: success() && steps.findPr.outputs.number
+        uses: thollander/actions-comment-pull-request@v3
         with:
-          html_file: '/home/runner/work/marigold/marigold/config/storybook/artifacts/accessibilityReport.html'
-          job_summary: true
+          pr-number: ${{ steps.findPr.outputs.number }}
+          message: |
+            Accessibility tests executed. Check out the report [here](https://html-preview.github.io/?https://github.com/${{ github.repository }}/blob/${{ github.sha }}/config/storybook/artifacts/accessibilityReport.html).
