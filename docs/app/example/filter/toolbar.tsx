@@ -1,6 +1,7 @@
 'use client';
 
-import { Button, Inline, SearchField } from '@marigold/components';
+import { Button, Drawer, Inline, SearchField } from '@marigold/components';
+import { Filter } from '@marigold/icons';
 import { useFilters } from './useFilters';
 
 export const Toolbar = () => {
@@ -10,7 +11,11 @@ export const Toolbar = () => {
     <Inline space={1}>
       <SearchField description="Search by venue name" width={64} />
       <Button variant="primary">Search</Button>
-      <Button>Filter</Button>
+      <Drawer.Trigger>
+        <Button>
+          <Filter /> Filter
+        </Button>
+      </Drawer.Trigger>
     </Inline>
   );
 };
