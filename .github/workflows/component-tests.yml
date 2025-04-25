@@ -36,14 +36,15 @@ jobs:
           name: accessibility-report
           path: ./config/storybook/artifacts/accessibilityReport.html
           overwrite: 'true'
+      - name: Download Artifact
+        id: artifact-download-step
+        uses: actions/download-artifact@v4
+        with:
+          name: accessibility-report
       - name: Accessibility Report Preview
         if: success() && steps.findPr.outputs.number
         uses: thollander/actions-comment-pull-request@v3
         with:
           pr-number: ${{ steps.findPr.outputs.number }}
           message: |
-            Accessibility tests executed. Download the report [here](${{ steps.artifact-upload-step.outputs.artifact-url }}).
-      - name: Download Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: accessibility-report
+            Accessibility tests executed. Download the report [here](${{ steps.artifact-download-step.outputs.download-path }}).
