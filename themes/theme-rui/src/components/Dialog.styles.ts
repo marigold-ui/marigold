@@ -4,9 +4,9 @@ export const Dialog: ThemeComponent<'Dialog'> = {
   closeButton: cva(['absolute top-6 right-3', 'size-7 ']),
   container: cva(
     [
-      'flex flex-col gap-0 rounded-xl border p-6 overflow-y-auto',
+      'flex flex-col gap-0 rounded-xl p-6 overflow-y-auto',
       'w-full max-w-[calc(100%-2rem)] sm:max-h-[min(640px,80vh)] max-h-[calc(100%-2rem)]',
-      'util-surface-overlay shadow-red-500',
+      'util-surface-overlay',
     ],
     {
       variants: {
