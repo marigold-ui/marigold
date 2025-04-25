@@ -1,16 +1,28 @@
 'use client';
 
+import { useState } from 'react';
 import { Button, Drawer, Inline, SearchField } from '@marigold/components';
 import { Filter } from '@marigold/icons';
-import { useFilters } from './useFilters';
+import { useFilters, useSearch } from './hooks';
 
 export const Toolbar = () => {
+  const [search, setSearch] = useSearch();
+  const [value, setValue] = useState(search || '');
   const [] = useFilters();
 
   return (
     <Inline space={2}>
-      <SearchField description="Search by venue name" width={64} />
-      <Button variant="primary">Search</Button>
+      <SearchField
+        description="Search by venue name"
+        width={64}
+        autoComplete="off"
+        value={value}
+        onChange={setValue}
+        onSubmit={setSearch}
+      />
+      <Button variant="primary" onPress={() => setSearch(value)}>
+        Search
+      </Button>
       <Drawer.Trigger>
         <Button>
           <Filter /> Filter

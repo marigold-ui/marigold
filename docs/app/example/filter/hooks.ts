@@ -10,3 +10,5 @@ const schema = z.object({
 
 export const useFilters = () =>
   useQueryState('filter', parseAsJson(schema.parse));
+
+export const useSearch = () => useQueryState('q');
