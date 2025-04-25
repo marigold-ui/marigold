@@ -5,10 +5,12 @@ import type { PropsWithChildren } from 'react';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 export interface WrapperProps {
+  className?: string;
   theme?: string;
 }
 
 export const Wrapper = ({
+  className,
   theme,
   children,
 }: PropsWithChildren<WrapperProps>) => {
@@ -17,7 +19,7 @@ export const Wrapper = ({
   return (
     <div data-theme={current}>
       <OverlayContainerProvider value="portalContainer">
-        <MarigoldProvider theme={selectedTheme}>
+        <MarigoldProvider className={className} theme={selectedTheme}>
           <div className="h-[calc(100dvh-var(--page-header-height))] p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
             {children}
           </div>
