@@ -24,3 +24,8 @@ jobs:
         run: pnpm test:storybook
         env:
           TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
+      - name: Accessibility Report Preview
+        uses: pavi2410/html-preview-action@v4
+        with:
+          html_file: '/home/runner/work/marigold/marigold/config/storybook/artifacts/accessibilityReport.html'
+          job_summary: true
