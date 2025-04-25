@@ -129,8 +129,23 @@
   /* Selected color is used when there is an active selection in the component */
   --color-selected: var(--color-stone-100);
 
-  /* easing functions (https://gist.github.com/bendc/ac03faac0bf2aee25b49e5fd260a727d)*/
+  /* ==================== */
+  /*        SURFACE       */
+  /* ==================== */
+  --surface-sunken: var(--color-muted);
+  --surface-sunken-shadow: 0 0 #0000;
+  --surface-body: var(--color-background);
+  --surface-body-shadow: 0 0 #0000;
+  --surface-raised: var(--color-background);
+  --surface-raised-shadow: var(--shadow-xs);
+  --surface-overlay: var(--color-background);
+  --surface-overlay-shadow: var(--shadow-lg);
 
+  /* ==================== */
+  /*       ANIMATION      */
+  /* ==================== */
+
+  /* easing functions (https://gist.github.com/bendc/ac03faac0bf2aee25b49e5fd260a727d)*/
   --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
   --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
