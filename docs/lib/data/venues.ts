@@ -8,7 +8,7 @@ export const venueTypes = [
 export const venues = [
   {
     id: '1',
-    name: 'The Giggle Grounds',
+    name: 'Giggle Grounds',
     type: 0,
     image: '/venues/the-giggle-grounds.webp',
     description:
@@ -17,10 +17,11 @@ export const venues = [
     city: 'Laughville',
     capacity: 500,
     price: { from: 1000, to: 5000 },
+    rating: 4.7,
   },
   {
     id: '2',
-    name: 'The Wobbling Stage',
+    name: 'Wobbling Stage',
     type: 1,
     image: '/venues/the-wobbling-stage.webp',
     description:
@@ -29,10 +30,11 @@ export const venues = [
     city: 'Shakytown',
     capacity: 300,
     price: { from: 750, to: 3500 },
+    rating: 3.6,
   },
   {
     id: '3',
-    name: 'The Chuckle Barn',
+    name: 'Chuckle Barn',
     type: 2,
     image: '/venues/the-chuckle-barn.webp',
     description:
@@ -41,10 +43,11 @@ export const venues = [
     city: 'Hee-Haw City',
     capacity: 150,
     price: { from: 500, to: 2500 },
+    rating: 2.3,
   },
   {
     id: '4',
-    name: 'The Quirky Quay',
+    name: 'Quirky Quay',
     type: 0,
     image: '/venues/the-quirky-quay.webp',
     description:
@@ -53,10 +56,11 @@ export const venues = [
     city: 'Port Funsies',
     capacity: 600,
     price: { from: 2000, to: 7000 },
+    rating: 4.2,
   },
   {
     id: '5',
-    name: 'The Hysterical Hive',
+    name: 'Hysterical Hive',
     type: 1,
     image: '/venues/the-hysterical-hive.webp',
     description:
@@ -65,10 +69,11 @@ export const venues = [
     city: 'Laughville',
     capacity: 250,
     price: { from: 1000, to: 4000 },
+    rating: 3.1,
   },
   {
     id: '6',
-    name: 'The Belly Laugh Ballroom',
+    name: 'Belly Laugh Ballroom',
     type: 3,
     image: '/venues/the-belly-laugh-ballroom.webp',
     description:
@@ -77,10 +82,11 @@ export const venues = [
     city: 'Shakytown',
     capacity: 800,
     price: { from: 3000, to: 10000 },
+    rating: 5.0,
   },
   {
     id: '7',
-    name: 'The Snicker Sanctuary',
+    name: 'Snicker Sanctuary',
     type: 3,
     image: '/venues/the-snicker-sanctuary.webp',
     description:
@@ -89,6 +95,7 @@ export const venues = [
     city: 'Hee-Haw City',
     capacity: 400,
     price: { from: 1500, to: 5000 },
+    rating: 4.4,
   },
   {
     id: '8',
@@ -101,10 +108,11 @@ export const venues = [
     city: 'Port Funsies',
     capacity: 350,
     price: { from: 1200, to: 4500 },
+    rating: 3.8,
   },
   {
     id: '9',
-    name: 'The Punning Pavilion',
+    name: 'Punning Pavilion',
     type: 0,
     image: '/venues/the-punning-pavilion.webp',
     description:
@@ -113,10 +121,11 @@ export const venues = [
     city: 'Laughville',
     capacity: 450,
     price: { from: 1800, to: 5500 },
+    rating: 2.9,
   },
   {
     id: '10',
-    name: 'The Guffaw Gardens',
+    name: 'Guffaw Gardens',
     type: 0,
     image: '/venues/the-guffaw-gardens.webp',
     description:
@@ -125,6 +134,7 @@ export const venues = [
     city: 'Shakytown',
     capacity: 1000,
     price: { from: 4000, to: 12000 },
+    rating: 4.5,
   },
 ] as const;
 
