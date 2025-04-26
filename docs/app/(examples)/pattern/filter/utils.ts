@@ -1,24 +1,16 @@
 import { parseAsJson, useQueryState } from 'nuqs';
 import { z } from 'zod';
 
-// Schema how the filter form is submitted
-const formFilterSchema = z.object({
-  type: z.string(),
-  capacity: z.string(),
-  minPrice: z.string(),
-  maxPrice: z.string(),
-  rating: z.string(),
-});
+const urlSchema = z
+  .object({
+    type: z.number(),
+    capacity: z.number(),
+    price: z.tuple([z.number(), z.number()]),
+    rating: z.number(),
+  })
+  .partial();
 
-// Schema how the filter is stored in the URL and can be used by nuqs
-export const filterSchema = formFilterSchema.transform(data => ({
-  type: data.type !== '' ? Number(data.type) : undefined,
-  capacity: data.capacity ? Number(data.capacity) : undefined,
-  price: [Number(data.minPrice), Number(data.maxPrice)] as [number, number],
-  rating: data.rating ? Number(data.rating) : undefined,
-}));
-
-export type VenueFilter = z.infer<typeof filterSchema>;
+export type VenueFilter = z.infer<typeof urlSchema>;
 
 export const defaultFilter: VenueFilter = {
   type: undefined,
@@ -27,8 +19,29 @@ export const defaultFilter: VenueFilter = {
   rating: undefined,
 };
 
+const formSchema = z.object({
+  type: z.string(),
+  capacity: z.string(),
+  minPrice: z.string(),
+  maxPrice: z.string(),
+  rating: z.string(),
+});
+
+// Parse to schema from form
+export const toUrlSchema = formSchema.transform(data => ({
+  type: data.type !== '' ? Number(data.type) : undefined,
+  capacity: data.capacity ? Number(data.capacity) : undefined,
+  price: [Number(data.minPrice), Number(data.maxPrice)] as [number, number],
+  rating: data.rating ? Number(data.rating) : undefined,
+})).safeParse;
+
 export const useFilter = () =>
-  useQueryState('filter', parseAsJson(filterSchema.parse));
+  useQueryState(
+    'filter',
+    parseAsJson(urlSchema.parse)
+      .withDefault(defaultFilter)
+      .withOptions({ clearOnDefault: true })
+  );
 
 export const useSearch = () =>
   useQueryState('q', { defaultValue: '', clearOnDefault: true });

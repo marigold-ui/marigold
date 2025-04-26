@@ -14,7 +14,7 @@ import {
   Stack,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
-import { filterSchema, useFilter, useSearch } from './utils';
+import { toUrlSchema, useFilter, useSearch } from './utils';
 import type { VenueFilter } from './utils';
 
 export const Toolbar = () => {
@@ -26,7 +26,7 @@ export const Toolbar = () => {
   const [form, updateFilter] = useActionState(
     (_: VenueFilter, formData: FormData) => {
       const entries = Object.fromEntries(formData.entries());
-      const { success, error, data } = filterSchema.safeParse(entries);
+      const { success, error, data } = toUrlSchema(entries);
 
       if (success) {
         setFilter(data);
@@ -39,8 +39,6 @@ export const Toolbar = () => {
     filter
   );
 
-  console.log(filter);
-
   return (
     <Inline space={2}>
       <SearchField
@@ -51,6 +49,7 @@ export const Toolbar = () => {
         value={value}
         onChange={setValue}
         onSubmit={setSearch}
+        onClear={() => setSearch('')}
       />
       <Button variant="primary" onPress={() => setSearch(value)}>
         Search
