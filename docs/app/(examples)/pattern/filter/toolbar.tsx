@@ -1,8 +1,7 @@
 'use client';
 
 import { venueTypes } from '@/lib/data/venues';
-import type { FormEvent } from 'react';
-import { useState } from 'react';
+import { useActionState, useState } from 'react';
 import {
   Button,
   Drawer,
@@ -15,20 +14,36 @@ import {
   Stack,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
-import { useFilters, useSearch } from './hooks';
+import { filterSchema, useFilter, useSearch } from './hooks';
+import type { VenueFilter } from './hooks';
 
 export const Toolbar = () => {
   const [search, setSearch] = useSearch();
+  const [filter, setFilter] = useFilter();
+
   const [value, setValue] = useState(search || '');
-  const [filter] = useFilters();
+  const [form, updateFilter] = useActionState(
+    (_: VenueFilter, formData: FormData) => {
+      const entries = Object.fromEntries(formData.entries());
+      const { success, error, data } = filterSchema.safeParse(entries);
 
-  console.log(filter);
+      if (success) {
+        console.log(data);
+        return data;
+      }
 
-  const updateFilter = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-    console.log('formData', data);
-  };
+      console.error('Invalid form data', error);
+      return _;
+    },
+    filter
+  );
+
+  // console.log(filter);
+
+  // const updateFilter = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  // };
 
   return (
     <Inline space={2}>
@@ -48,11 +63,15 @@ export const Toolbar = () => {
           <Filter /> Filter
         </Button>
         <Drawer>
-          <Form onSubmit={updateFilter} contents>
+          <Form action={updateFilter} contents>
             <Drawer.Title>Filter</Drawer.Title>
             <Drawer.Content>
               <Stack space={12}>
-                <Radio.Group label="Venue Type" name="type">
+                <Radio.Group
+                  label="Venue Type"
+                  name="type"
+                  defaultValue={form?.type ? `${form.type}` : ''}
+                >
                   <Radio value="">All</Radio>
                   {venueTypes.map((type, idx) => (
                     <Radio key={type} value={`${idx}`}>
@@ -63,15 +82,26 @@ export const Toolbar = () => {
                 <NumberField
                   label="Max. Capacity"
                   name="capacity"
+                  defaultValue={form?.capacity ?? 1000}
                   minValue={0}
+                  step={10}
                 />
                 <Slider
                   label="Price"
-                  thumbLabels={['min', 'max']}
+                  thumbLabels={['minPrice', 'maxPrice']}
+                  defaultValue={[
+                    form?.price?.[0] ?? 0,
+                    form?.price?.[1] ?? 25000,
+                  ]}
                   step={100}
+                  maxValue={25000}
                   formatOptions={{ style: 'currency', currency: 'EUR' }}
                 />
-                <Radio.Group label="Min. Rating" name="rating">
+                <Radio.Group
+                  label="Min. Rating"
+                  name="rating"
+                  defaultValue={`${form?.rating ?? 0}`}
+                >
                   <Radio value="0">0</Radio>
                   <Radio value="1">1</Radio>
                   <Radio value="2">2</Radio>
