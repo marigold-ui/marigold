@@ -1,10 +1,9 @@
-'use client';
-
 /**
  * TODO: added display contents to form, there is a demo (https://react-spectrum.adobe.com/react-spectrum/Form.html#accessibility) that has "maxWidth" as a prop maybe a good idea?
  * TODO: slider needs a "name" attribute, separate arial-label from name of thumb
  */
-import { Headline, Stack } from '@marigold/components';
+import { Headline, Stack } from '@/ui';
+import { AppliedFilter } from './applied-filter';
 import { Toolbar } from './toolbar';
 import { Venues } from './venues';
 
@@ -13,7 +12,7 @@ const FilterPage = () => {
     <Stack space={8}>
       <Headline>Venues</Headline>
       <Toolbar />
-      <div>applied filter</div>
+      <AppliedFilter />
       <Venues />
     </Stack>
   );

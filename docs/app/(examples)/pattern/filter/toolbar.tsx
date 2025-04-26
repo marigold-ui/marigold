@@ -14,12 +14,16 @@ import {
   Stack,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
-import { filterSchema, useFilter, useSearch } from './hooks';
-import type { VenueFilter } from './hooks';
+import { filterSchema, useFilter, useSearch } from './utils';
+import type { VenueFilter } from './utils';
 
 export const Toolbar = () => {
   const [search, setSearch] = useSearch();
   const [filter, setFilter] = useFilter();
+
+  // TODO: is initial state working to fill the drawer?
+
+  // current: do we set default filter here somehow?
 
   const [value, setValue] = useState(search || '');
   const [form, updateFilter] = useActionState(
@@ -28,7 +32,7 @@ export const Toolbar = () => {
       const { success, error, data } = filterSchema.safeParse(entries);
 
       if (success) {
-        console.log(data);
+        setFilter(data);
         return data;
       }
 
@@ -37,13 +41,6 @@ export const Toolbar = () => {
     },
     filter
   );
-
-  // console.log(filter);
-
-  // const updateFilter = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  // };
 
   return (
     <Inline space={2}>
@@ -102,7 +99,7 @@ export const Toolbar = () => {
                   name="rating"
                   defaultValue={`${form?.rating ?? 0}`}
                 >
-                  <Radio value="0">0</Radio>
+                  <Radio value="">none</Radio>
                   <Radio value="1">1</Radio>
                   <Radio value="2">2</Radio>
                   <Radio value="3">3</Radio>
@@ -113,7 +110,7 @@ export const Toolbar = () => {
             </Drawer.Content>
             <Drawer.Actions>
               <Button slot="close">Close</Button>
-              <Button slot="close" variant="primary" type="submit">
+              <Button variant="primary" type="submit">
                 Apply
               </Button>
             </Drawer.Actions>

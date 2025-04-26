@@ -1,3 +1,5 @@
+'use client';
+
 import { venueTypes, venues } from '@/lib/data/venues';
 import { Stack, Table, Text } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';

@@ -1,4 +1,3 @@
-import { venueTypes } from '@/lib/data/venues';
 import { parseAsJson, useQueryState } from 'nuqs';
 import { z } from 'zod';
 
@@ -20,6 +19,13 @@ export const filterSchema = formFilterSchema.transform(data => ({
 }));
 
 export type VenueFilter = z.infer<typeof filterSchema>;
+
+export const defaultFilter: VenueFilter = {
+  type: undefined,
+  capacity: 1000,
+  price: [0, 25000],
+  rating: undefined,
+};
 
 export const useFilter = () =>
   useQueryState('filter', parseAsJson(filterSchema.parse));
