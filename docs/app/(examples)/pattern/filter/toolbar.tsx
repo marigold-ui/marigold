@@ -19,13 +19,10 @@ import type { VenueFilter } from './utils';
 
 export const Toolbar = () => {
   const [search, setSearch] = useSearch();
-  const [filter, setFilter] = useFilter();
+  const [value, setValue] = useState(search || '');
 
   // TODO: is initial state working to fill the drawer?
-
-  // current: do we set default filter here somehow?
-
-  const [value, setValue] = useState(search || '');
+  const [filter, setFilter] = useFilter();
   const [form, updateFilter] = useActionState(
     (_: VenueFilter, formData: FormData) => {
       const entries = Object.fromEntries(formData.entries());
@@ -42,9 +39,12 @@ export const Toolbar = () => {
     filter
   );
 
+  console.log(filter);
+
   return (
     <Inline space={2}>
       <SearchField
+        aria-label="Search"
         description="Search by venue name"
         width={64}
         autoComplete="off"
@@ -97,7 +97,7 @@ export const Toolbar = () => {
                 <Radio.Group
                   label="Min. Rating"
                   name="rating"
-                  defaultValue={`${form?.rating ?? 0}`}
+                  defaultValue={`${form?.rating ?? ''}`}
                 >
                   <Radio value="">none</Radio>
                   <Radio value="1">1</Radio>

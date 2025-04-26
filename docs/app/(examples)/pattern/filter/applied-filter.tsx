@@ -16,9 +16,9 @@ export const AppliedFilter = () => {
       allowsRemoving
       // onRemove={onRemove}
     >
-      {Object.entries(filter).map(([name, value]) => (
-        <Tag key={name}>{value}</Tag>
-      ))}
+      {Object.entries(filter).map(([name, value]) => {
+        return <Tag key={name}>{value}</Tag>;
+      })}
     </Tag.Group>
   );
 };

@@ -30,4 +30,5 @@ export const defaultFilter: VenueFilter = {
 export const useFilter = () =>
   useQueryState('filter', parseAsJson(filterSchema.parse));
 
-export const useSearch = () => useQueryState('q');
+export const useSearch = () =>
+  useQueryState('q', { defaultValue: '', clearOnDefault: true });
