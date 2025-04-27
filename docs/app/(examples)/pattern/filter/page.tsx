@@ -6,6 +6,7 @@
  * TODO: support range in <NumberFormat>, maybe also have functions AND components? (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/formatRange#using_formatrange)
  * TODO: Numeric format only in system? not in components?
  * TODO: a "clear all" button for taggroup component
+ * TODO: indicate when there is a first style of filters?
  */
 import { Headline, Stack } from '@/ui';
 import { AppliedFilter } from './applied-filter';
