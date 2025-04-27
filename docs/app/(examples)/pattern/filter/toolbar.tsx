@@ -16,7 +16,6 @@ import {
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
 import { toFormSchema, toUrlSchema, useFilter, useSearch } from './utils';
-import type { VenueFilter } from './utils';
 
 const Search = () => {
   const [search, setSearch] = useSearch();
