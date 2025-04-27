@@ -1,7 +1,8 @@
 'use client';
 
 import { venueTypes } from '@/lib/data/venues';
-import { useActionState, useState } from 'react';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Drawer,
@@ -14,33 +15,15 @@ import {
   Stack,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
-import { toUrlSchema, useFilter, useSearch } from './utils';
+import { toFormSchema, toUrlSchema, useFilter, useSearch } from './utils';
 import type { VenueFilter } from './utils';
 
-export const Toolbar = () => {
+const Search = () => {
   const [search, setSearch] = useSearch();
   const [value, setValue] = useState(search || '');
 
-  // TODO: is initial state working to fill the drawer?
-  const [filter, setFilter] = useFilter();
-  const [form, updateFilter] = useActionState(
-    (_: VenueFilter, formData: FormData) => {
-      const entries = Object.fromEntries(formData.entries());
-      const { success, error, data } = toUrlSchema(entries);
-
-      if (success) {
-        setFilter(data);
-        return data;
-      }
-
-      console.error('Invalid form data', error);
-      return _;
-    },
-    filter
-  );
-
   return (
-    <Inline space={2}>
+    <>
       <SearchField
         aria-label="Search"
         description="Search by venue name"
@@ -54,19 +37,51 @@ export const Toolbar = () => {
       <Button variant="primary" onPress={() => setSearch(value)}>
         Search
       </Button>
+    </>
+  );
+};
+
+export const Toolbar = () => {
+  const [filter, setFilter] = useFilter();
+  const [state, setState] = useState(toFormSchema(filter));
+
+  const onChange =
+    <T extends keyof typeof state>(name: T) =>
+    (value: (typeof state)[T]) =>
+      setState(prev => ({
+        ...prev,
+        [name]: value,
+      }));
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const entries = Object.fromEntries(new FormData(e.currentTarget).entries());
+    const { success, error, data } = toUrlSchema(entries);
+    if (!success) {
+      console.error('Invalid form data', error);
+      return;
+    }
+
+    setFilter(data);
+  };
+
+  return (
+    <Inline space={2}>
+      <Search />
       <Drawer.Trigger>
         <Button>
           <Filter /> Filter
         </Button>
-        <Drawer>
-          <Form action={updateFilter} contents>
+        <Drawer closeButton>
+          <Form onSubmit={onSubmit} contents>
             <Drawer.Title>Filter</Drawer.Title>
             <Drawer.Content>
               <Stack space={12}>
                 <Radio.Group
                   label="Venue Type"
                   name="type"
-                  defaultValue={form?.type ? `${form.type}` : ''}
+                  value={state.type}
+                  onChange={onChange('type')}
                 >
                   <Radio value="">All</Radio>
                   {venueTypes.map((type, idx) => (
@@ -78,17 +93,16 @@ export const Toolbar = () => {
                 <NumberField
                   label="Max. Capacity"
                   name="capacity"
-                  defaultValue={form?.capacity ?? 1000}
+                  value={state.capacity}
+                  onChange={onChange('capacity')}
                   minValue={0}
                   step={10}
                 />
                 <Slider
                   label="Price"
                   thumbLabels={['minPrice', 'maxPrice']}
-                  defaultValue={[
-                    form?.price?.[0] ?? 0,
-                    form?.price?.[1] ?? 25000,
-                  ]}
+                  value={state.price}
+                  onChange={onChange('price')}
                   step={100}
                   maxValue={25000}
                   formatOptions={{ style: 'currency', currency: 'EUR' }}
@@ -96,7 +110,8 @@ export const Toolbar = () => {
                 <Radio.Group
                   label="Min. Rating"
                   name="rating"
-                  defaultValue={`${form?.rating ?? ''}`}
+                  value={state.rating}
+                  onChange={onChange('rating')}
                 >
                   <Radio value="">none</Radio>
                   <Radio value="1">1</Radio>
