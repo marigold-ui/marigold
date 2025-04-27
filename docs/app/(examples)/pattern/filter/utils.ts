@@ -43,15 +43,6 @@ export const toFormSchema = urlSchema.transform(data => ({
   rating: String(data.rating ?? ''),
 })).parse;
 
-// Copilot
-// export const toFormSchema = urlSchema.transform(data => ({
-//   type: data.type !== undefined ? String(data.type) : '',
-//   capacity: data.capacity ? String(data.capacity) : '',
-//   minPrice: data.price && data.price[0] !== undefined ? String(data.price[0]) : '',
-//   maxPrice: data.price && data.price[1] !== undefined ? String(data.price[1]) : '',
-//   rating: data.rating ? String(data.rating) : '',
-// })).safeParse;
-
 // Form -> URL
 export const toUrlSchema = formSchema.transform(data => ({
   type: data.type ? Number(data.type) : undefined,
@@ -62,14 +53,6 @@ export const toUrlSchema = formSchema.transform(data => ({
   ],
   rating: data.rating ? Number(data.rating) : undefined,
 })).safeParse;
-
-// Prev
-// export const toUrlSchema = formSchema.transform(data => ({
-//   type: data.type !== '' ? Number(data.type) : undefined,
-//   capacity: data.capacity ? Number(data.capacity) : undefined,
-//   price: [Number(data.minPrice), Number(data.maxPrice)] as [number, number],
-//   rating: data.rating ? Number(data.rating) : undefined,
-// })).safeParse;
 
 // Hooks
 // ---------------
