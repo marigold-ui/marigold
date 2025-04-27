@@ -10,7 +10,7 @@
 import { Headline, Stack } from '@/ui';
 import { AppliedFilter } from './applied-filter';
 import { Toolbar } from './toolbar';
-import { Venues } from './venues';
+import { VenuesView } from './venues-view';
 
 const FilterPage = () => {
   return (
@@ -18,7 +18,7 @@ const FilterPage = () => {
       <Headline>Venues</Headline>
       <Toolbar />
       <AppliedFilter />
-      <Venues />
+      <VenuesView />
     </Stack>
   );
 };
