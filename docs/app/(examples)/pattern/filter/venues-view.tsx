@@ -10,12 +10,19 @@ export const VenuesView = () => {
   const [filter] = useFilter();
 
   const result = venues.filter(venue => {
-    if (!search.toLowerCase().includes(venue.name.toLowerCase())) return false;
+    // Search
+    if (search && !venue.name.toLowerCase().includes(search.toLowerCase()))
+      return false;
+
+    // Filter
     if (filter.type && filter.type !== venue.type) return false;
     if (filter.capacity && filter.capacity <= venue.capacity) return false;
-    if (filter.price?.[0] && filter.price[0] >= venue.price.from) return false;
-    if (filter.price?.[1] && filter.price[1] <= venue.price.to) return false;
-    if (filter.rating && filter.rating <= venue.rating) return false;
+    if (
+      filter.price &&
+      (filter.price[0] > venue.price.from || filter.price[1] < venue.price.to)
+    )
+      return false;
+    if (filter.rating && filter.rating >= venue.rating) return false;
     return true;
   });
 
