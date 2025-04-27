@@ -100,9 +100,8 @@ export const Toolbar = () => {
                 />
                 <Slider
                   label="Price"
-                  thumbLabels={['minPrice', 'maxPrice']}
                   value={state.price}
-                  onChange={onChange('price')}
+                  onChange={(value: number) => onChange('price')(value)}
                   step={100}
                   maxValue={25000}
                   formatOptions={{ style: 'currency', currency: 'EUR' }}

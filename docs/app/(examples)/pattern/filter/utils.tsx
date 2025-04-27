@@ -1,4 +1,4 @@
-import { venueTypes } from '@/lib/data/venues';
+import { venueTypes, venues } from '@/lib/data/venues';
 import { parseAsJson, useQueryState } from 'nuqs';
 import { z } from 'zod';
 import { NumericFormat } from '@marigold/system';
@@ -8,7 +8,7 @@ import { NumericFormat } from '@marigold/system';
 const urlSchema = z.object({
   type: z.number().optional(),
   capacity: z.number().optional(),
-  price: z.tuple([z.number(), z.number()]).optional(),
+  price: z.number().optional(),
   rating: z.number().optional(),
 });
 
@@ -16,8 +16,8 @@ export type VenueFilter = z.infer<typeof urlSchema>;
 
 export const defaultFilter = {
   type: undefined,
-  capacity: 1000,
-  price: [0, 25000],
+  capacity: Math.max(...venues.map(venue => venue.capacity)),
+  price: Math.max(...venues.map(venue => venue.price.to)),
   rating: undefined,
 } satisfies VenueFilter;
 
@@ -26,8 +26,7 @@ export const defaultFilter = {
 const formSchema = z.object({
   type: z.string(),
   capacity: z.string(),
-  minPrice: z.string(),
-  maxPrice: z.string(),
+  price: z.string(),
   rating: z.string(),
 });
 
@@ -38,10 +37,7 @@ const formSchema = z.object({
 export const toFormSchema = urlSchema.transform(data => ({
   type: String(data.type ?? ''),
   capacity: data.capacity,
-  price: [
-    data.price?.[0] ?? defaultFilter.price[0],
-    data.price?.[1] ?? defaultFilter.price[1],
-  ],
+  price: data.price,
   rating: String(data.rating ?? ''),
 })).parse;
 
@@ -49,10 +45,7 @@ export const toFormSchema = urlSchema.transform(data => ({
 export const toUrlSchema = formSchema.transform(data => ({
   type: data.type ? Number(data.type) : undefined,
   capacity: data.capacity ? Number(data.capacity) : undefined,
-  price: [Number(data.minPrice ?? 0), Number(data.maxPrice ?? 0)] as [
-    number,
-    number,
-  ],
+  price: data.price ? Number(data.price) : undefined,
   rating: data.rating ? Number(data.rating) : undefined,
 })).safeParse;
 
@@ -64,12 +57,12 @@ export const toDisplayValue = {
       Capacity: <NumericFormat value={value} />
     </>
   ),
-  price: (value: [number, number]) => (
+  price: (value: number) => (
     <>
-      Price: <NumericFormat value={value[0]} /> -{' '}
+      Price:{' '}
       <NumericFormat
         style="currency"
-        value={value[1]}
+        value={value}
         currency="EUR"
         maximumFractionDigits={0}
       />

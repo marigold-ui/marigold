@@ -10,6 +10,14 @@ export const VenuesView = () => {
   const [filter] = useFilter();
 
   const result = venues.filter(venue => {
+    // if (venue.name === 'Guffaw Gardens') {
+    console.log(
+      venue.name,
+      venue.rating,
+      filter.rating && filter.rating >= venue.rating
+    );
+    // }
+
     // Search
     if (search && !venue.name.toLowerCase().includes(search.toLowerCase()))
       return false;
@@ -17,11 +25,7 @@ export const VenuesView = () => {
     // Filter
     if (filter.type && filter.type !== venue.type) return false;
     if (filter.capacity && filter.capacity <= venue.capacity) return false;
-    if (
-      filter.price &&
-      (filter.price[0] > venue.price.from || filter.price[1] < venue.price.to)
-    )
-      return false;
+    if (filter.price && filter.price <= venue.price.to) return false;
     if (filter.rating && filter.rating >= venue.rating) return false;
     return true;
   });
