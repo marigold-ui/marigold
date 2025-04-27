@@ -67,14 +67,16 @@ export const Toolbar = () => {
       return;
     }
 
-    // Filter before setting stuff? (inside hook)
     setFilter(data);
   };
+
+  // Reset form state to URL state when closed without appyling
+  const onClose = () => setState(toFormSchema(filter));
 
   return (
     <Inline space={2}>
       <Search />
-      <Drawer.Trigger>
+      <Drawer.Trigger onOpenChange={open => open && onClose()}>
         <Button>
           <Filter /> Filter
         </Button>
