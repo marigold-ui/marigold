@@ -26,7 +26,9 @@ export type ComponentClassNames<C extends ComponentNames> =
         [slot in keyof ThemeComponent<C>]: string;
       };
 
-const FallbackContext = createContext({}) as Context<ComponentContextProps>;
+const FallbackContext = createContext(
+  null
+) as Context<ComponentContextProps | null>;
 
 export const useClassNames = <C extends ComponentNames>({
   component,
