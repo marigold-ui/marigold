@@ -37,10 +37,7 @@ const Search = () => {
         value={value}
         onChange={setValue}
         onSubmit={setSearch}
-        onClear={() => {
-          setSearch('');
-          setValue('');
-        }}
+        onClear={() => setSearch('')}
       />
       <Button variant="primary" onPress={() => setSearch(value)}>
         Search
