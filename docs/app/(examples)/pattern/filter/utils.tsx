@@ -36,8 +36,8 @@ const formSchema = z.object({
 // URL -> Form
 export const toFormSchema = urlSchema.transform(data => ({
   type: String(data.type ?? ''),
-  capacity: data.capacity,
-  price: data.price,
+  capacity: data.capacity ?? defaultFilter.capacity,
+  price: data.price ?? defaultFilter.price,
   rating: String(data.rating ?? ''),
 })).parse;
 

@@ -15,7 +15,13 @@ import {
   Stack,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
-import { toFormSchema, toUrlSchema, useFilter, useSearch } from './utils';
+import {
+  defaultFilter,
+  toFormSchema,
+  toUrlSchema,
+  useFilter,
+  useSearch,
+} from './utils';
 
 const Search = () => {
   const [search, setSearch] = useSearch();
@@ -100,10 +106,11 @@ export const Toolbar = () => {
                 />
                 <Slider
                   label="Price"
+                  thumbLabels={['price']}
                   value={state.price}
                   onChange={(value: number) => onChange('price')(value)}
                   step={100}
-                  maxValue={25000}
+                  maxValue={defaultFilter.price}
                   formatOptions={{ style: 'currency', currency: 'EUR' }}
                 />
                 <Radio.Group
