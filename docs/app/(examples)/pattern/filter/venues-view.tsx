@@ -3,8 +3,22 @@
 import { venueTypes, venues } from '@/lib/data/venues';
 import { Stack, Table, Text } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';
+import { useFilter, useSearch } from './utils';
 
 export const VenuesView = () => {
+  const [search] = useSearch();
+  const [filter] = useFilter();
+
+  const result = venues.filter(venue => {
+    if (!search.toLowerCase().includes(venue.name.toLowerCase())) return false;
+    if (filter.type && filter.type !== venue.type) return false;
+    if (filter.capacity && filter.capacity <= venue.capacity) return false;
+    if (filter.price?.[0] && filter.price[0] >= venue.price.from) return false;
+    if (filter.price?.[1] && filter.price[1] <= venue.price.to) return false;
+    if (filter.rating && filter.rating <= venue.rating) return false;
+    return true;
+  });
+
   return (
     <Table>
       <Table.Header>
@@ -16,7 +30,7 @@ export const VenuesView = () => {
         <Table.Column align="right">Rating</Table.Column>
       </Table.Header>
       <Table.Body>
-        {venues.map(venue => (
+        {result.map(venue => (
           <Table.Row key={venue.id}>
             <Table.Cell>
               <Text weight="medium">{venue.name}</Text>
