@@ -61,6 +61,7 @@ export const Toolbar = () => {
       return;
     }
 
+    // Filter before setting stuff? (inside hook)
     setFilter(data);
   };
 
@@ -90,7 +91,7 @@ export const Toolbar = () => {
                   ))}
                 </Radio.Group>
                 <NumberField
-                  label="Max. Capacity"
+                  label="Min. Capacity"
                   name="capacity"
                   value={state.capacity}
                   onChange={onChange('capacity')}
