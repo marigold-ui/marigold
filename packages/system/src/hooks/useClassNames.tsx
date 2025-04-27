@@ -39,8 +39,8 @@ export const useClassNames = <C extends ComponentNames>({
 
   const ctx = useContext(ComponentContext ?? FallbackContext);
 
-  const currentSize = size ?? ctx.size;
-  const currentVariant = variant ?? ctx.variant;
+  const currentSize = size ?? ctx?.size;
+  const currentVariant = variant ?? ctx?.variant;
 
   // Get component styles
   const styles = theme.components[component];
