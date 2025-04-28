@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import { Switch } from './Switch';
 
 const meta = {
@@ -15,7 +16,16 @@ const meta = {
       control: {
         type: 'text',
       },
-      description: 'Switch label',
+      description: 'deprecated use `label` instead',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    label: {
+      control: {
+        type: 'text',
+      },
+      description: 'Label of the component',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'Default Switch' },
@@ -58,6 +68,7 @@ const meta = {
   args: {
     children: 'Default Switch',
     disabled: false,
+    defaultSelected: false,
   },
 } satisfies Meta<typeof Switch>;
 
@@ -65,5 +76,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Switch {...args} />,
+  tags: ['component-test'],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('switch');
+
+    await userEvent.click(button);
+
+    expect(button).toBeChecked();
+  },
 };

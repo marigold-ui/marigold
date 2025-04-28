@@ -43,6 +43,9 @@ export interface SliderProps<T>
    */
   children?: ReactNode;
 
+  /**
+   * Set the label of the slider.
+   */
   label?: string;
 }
 

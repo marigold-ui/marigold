@@ -126,20 +126,6 @@ test('renders hidden <input> element', () => {
   expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('toggle switch per click', () => {
-  render(<Switch>Label</Switch>);
-
-  const { input, track } = getSwitchParts();
-
-  fireEvent.click(input);
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-  expect(input.checked).toBeTruthy();
-
-  fireEvent.click(input);
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-  expect(input.checked).toBeFalsy();
-});
-
 test('focus element and toggle switch per keyboard space', async () => {
   render(<Switch>Label</Switch>);
 
