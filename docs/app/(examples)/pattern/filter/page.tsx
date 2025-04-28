@@ -7,6 +7,7 @@
  * TODO: Numeric format only in system not in components package?
  * TODO: a "clear all" button for taggroup component
  * TODO: indicate when there is a unapplied filters (drawer)?
+ * TODO: TagGroup can not be used in a form, because it has no name attribute
  */
 import { Headline, Stack } from '@/ui';
 import { AppliedFilter } from './applied-filter';
