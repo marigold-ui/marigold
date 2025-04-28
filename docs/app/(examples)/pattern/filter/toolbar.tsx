@@ -23,9 +23,11 @@ import {
   useSearch,
 } from './utils';
 
+// Helper
+// ---------------
 const Search = () => {
   const [search, setSearch] = useSearch();
-  const [value, setValue] = useState(search || '');
+  const [value, setValue] = useState(search);
 
   return (
     <>
@@ -46,17 +48,61 @@ const Search = () => {
   );
 };
 
+interface FilterFormProps {
+  state: {
+    type: string;
+    capacity: number;
+    price: number;
+    rating: string;
+  };
+}
+
+const FilterForm = ({ state }: FilterFormProps) => {
+  return (
+    <Stack space={12}>
+      <Radio.Group label="Venue Type" name="type" defaultValue={state.type}>
+        <Radio value="">All</Radio>
+        {venueTypes.map((type, idx) => (
+          <Radio key={type} value={`${idx}`}>
+            {type}
+          </Radio>
+        ))}
+      </Radio.Group>
+      <NumberField
+        label="Min. Capacity"
+        name="capacity"
+        defaultValue={state.capacity}
+        minValue={0}
+        step={10}
+      />
+      <Slider
+        label="Price"
+        thumbLabels={['price']}
+        defaultValue={state.price}
+        step={100}
+        maxValue={defaultFilter.price}
+        formatOptions={{ style: 'currency', currency: 'EUR' }}
+      />
+      <Radio.Group
+        label="Min. Rating"
+        name="rating"
+        defaultValue={state.rating}
+      >
+        <Radio value="">none</Radio>
+        <Radio value="1">1</Radio>
+        <Radio value="2">2</Radio>
+        <Radio value="3">3</Radio>
+        <Radio value="4">4</Radio>
+        <Radio value="5">5</Radio>
+      </Radio.Group>
+    </Stack>
+  );
+};
+
+// Component
+// ---------------
 export const Toolbar = () => {
   const [filter, setFilter] = useFilter();
-  const [state, setState] = useState(toFormSchema(filter));
-
-  const onChange =
-    <T extends keyof typeof state>(name: T) =>
-    (value: (typeof state)[T]) =>
-      setState(prev => ({
-        ...prev,
-        [name]: value,
-      }));
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,13 +116,10 @@ export const Toolbar = () => {
     setFilter(data);
   };
 
-  // Reset form state to URL state when closed without appyling
-  const onClose = () => setState(toFormSchema(filter));
-
   return (
     <Inline space={2}>
       <Search />
-      <Drawer.Trigger onOpenChange={open => open && onClose()}>
+      <Drawer.Trigger>
         <Button>
           <Filter /> Filter
         </Button>
@@ -84,51 +127,10 @@ export const Toolbar = () => {
           <Form onSubmit={onSubmit} contents>
             <Drawer.Title>Filter</Drawer.Title>
             <Drawer.Content>
-              <Stack space={12}>
-                <Radio.Group
-                  label="Venue Type"
-                  name="type"
-                  value={state.type}
-                  onChange={onChange('type')}
-                >
-                  <Radio value="">All</Radio>
-                  {venueTypes.map((type, idx) => (
-                    <Radio key={type} value={`${idx}`}>
-                      {type}
-                    </Radio>
-                  ))}
-                </Radio.Group>
-                <NumberField
-                  label="Min. Capacity"
-                  name="capacity"
-                  value={state.capacity}
-                  onChange={onChange('capacity')}
-                  minValue={0}
-                  step={10}
-                />
-                <Slider
-                  label="Price"
-                  thumbLabels={['price']}
-                  value={state.price}
-                  onChange={(value: number) => onChange('price')(value)}
-                  step={100}
-                  maxValue={defaultFilter.price}
-                  formatOptions={{ style: 'currency', currency: 'EUR' }}
-                />
-                <Radio.Group
-                  label="Min. Rating"
-                  name="rating"
-                  value={state.rating}
-                  onChange={onChange('rating')}
-                >
-                  <Radio value="">none</Radio>
-                  <Radio value="1">1</Radio>
-                  <Radio value="2">2</Radio>
-                  <Radio value="3">3</Radio>
-                  <Radio value="4">4</Radio>
-                  <Radio value="5">5</Radio>
-                </Radio.Group>
-              </Stack>
+              <FilterForm
+                key={JSON.stringify(filter)}
+                state={toFormSchema(filter)}
+              />
             </Drawer.Content>
             <Drawer.Actions>
               <Button slot="close">Close</Button>

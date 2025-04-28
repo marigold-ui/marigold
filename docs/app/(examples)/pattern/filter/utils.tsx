@@ -23,6 +23,7 @@ export const defaultFilter = {
 
 // Form
 // ---------------
+// TODO: is this correct? are there no numbers???
 const formSchema = z.object({
   type: z.string(),
   capacity: z.string(),
@@ -80,10 +81,7 @@ export const toDisplayValue = {
 export const useFilter = () =>
   useQueryState(
     'filter',
-    parseAsJson(urlSchema.parse)
-      .withDefault(defaultFilter)
-      .withOptions({ clearOnDefault: true })
+    parseAsJson(urlSchema.parse).withDefault(defaultFilter)
   );
 
-export const useSearch = () =>
-  useQueryState('q', { defaultValue: '', clearOnDefault: true });
+export const useSearch = () => useQueryState('q', { defaultValue: '' });
