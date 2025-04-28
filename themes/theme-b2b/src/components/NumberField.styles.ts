@@ -24,6 +24,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
   ]),
   input: cva([
     'rounded-none border-none outline-offset-0',
+    'min-w-0 w-full',
     inputFocus['focus'],
     inputDisabled['disabled'],
     inputHover['hover'],

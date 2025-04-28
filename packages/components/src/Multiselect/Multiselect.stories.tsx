@@ -120,7 +120,7 @@ export const Basic: StoryObj<any> = {
 export const Controlled: StoryObj<any> = {
   render: args => {
     const [current, setCurrent] = useState<string>('');
-    const [selectedValues, setSelectedValues] = useState<Array<object>>([]);
+    const [selectedItems, setSelectedItems] = useState<Array<object>>([]);
 
     return (
       <Stack space={3}>
@@ -133,16 +133,17 @@ export const Controlled: StoryObj<any> = {
           }
           onChange={value => setCurrent(value)}
           onSelectionChange={(selectedValues: object[]) =>
-            setSelectedValues(selectedValues)
+            setSelectedItems(selectedValues)
           }
           {...args}
+          selectedItems={selectedItems}
         />
         <hr />
         <pre>
           Current Input: {current}
           <br />
           Selected Priorities:{' '}
-          {selectedValues
+          {selectedItems
             .map(({ value }: { value: string }) => value)
             .join(', ')}
         </pre>

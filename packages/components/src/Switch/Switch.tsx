@@ -20,7 +20,15 @@ type RemovedProps =
 export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   variant?: string;
   size?: string;
+  /**
+   * The children of the switch.
+   * @deprecated Will be removed in the next major version. Use `label` prop instead.
+   */
   children?: ReactNode;
+  /**
+   * Set the label of the switch.
+   */
+  label?: ReactNode;
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -53,7 +61,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       variant,
       size,
       width = 'full',
-      children,
+      label,
       selected,
       disabled,
       readOnly,
@@ -79,7 +87,11 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
           classNames.container
         )}
       >
-        <Label elementType="span">{children}</Label>
+        {(props.children || label) && (
+          <Label elementType="span">
+            {(props.children as ReactNode) || label}
+          </Label>
+        )}
         <div className="relative">
           <div className={classNames.track}>
             <div className={classNames.thumb} />

@@ -1,5 +1,30 @@
 # @marigold/theme-core
 
+## 29.0.0
+
+### Major Changes
+
+- 81b2216: refa([DST-720]): Rename `option` to `item` in styles for `<ListBox>`
+
+  **Breaking Change**: This change will break your styles if you use custom styles for the `<ListBox>` Component. `option` is now called `item`.
+
+### Patch Changes
+
+- 953cf3d: Making the dialog titles independant
+- Updated dependencies [81b2216]
+- Updated dependencies [953cf3d]
+  - @marigold/components@11.4.1
+  - @marigold/system@11.4.1
+
+## 28.3.1
+
+### Patch Changes
+
+- 000169f: fix([DSTSUP-118]): Fix icon position in input fields for b2b and core theme
+- f946eed: fix([DSTSUP-117]): Fix overlapping `<NumberField>`
+  - @marigold/system@11.4.0
+  - @marigold/components@11.4.0
+
 ## 28.3.0
 
 ### Minor Changes

@@ -1,5 +1,5 @@
 import { Switch, SwitchProps } from '@marigold/components';
 
 export default (props: SwitchProps) => (
-  <Switch {...props}>Default Switch</Switch>
+  <Switch {...props} label="Default Switch" />
 );

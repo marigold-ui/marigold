@@ -35,12 +35,13 @@ export type Theme = {
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
+    CloseButton?: ComponentStyleFunction<string, string>;
     DateField?: Record<
       'segment' | 'field' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<
-      'closeButton' | 'container' | 'header' | 'content' | 'actions',
+      'closeButton' | 'container' | 'header' | 'content' | 'actions' | 'title',
       ComponentStyleFunction<string, string>
     >;
     Divider?: ComponentStyleFunction<string, string>;
@@ -84,7 +85,7 @@ export type Theme = {
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
-      'container' | 'list' | 'option' | 'section' | 'header',
+      'container' | 'list' | 'item' | 'section' | 'header',
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
