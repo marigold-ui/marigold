@@ -23,16 +23,12 @@ export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
       {...props}
       className={classNames.item}
       // textValue needed because ListBoxItem in this case has multiple children
-      textValue={props.textValue ?? (String(props.children) as string)}
+      textValue={props.textValue ?? String(props.children)}
     >
-      {({ isSelected }) => {
-        return (
-          <>
-            {isSelected && <CheckMark />}
-            {props.children}
-          </>
-        );
-      }}
+      <>
+        <CheckMark className="hidden" />
+        {props.children}
+      </>
     </ListBoxItem>
   );
 };

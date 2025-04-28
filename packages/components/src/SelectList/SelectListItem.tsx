@@ -30,7 +30,7 @@ const SelectionIndicator = ({ selectionMode }: SelectionIndicatorProps) => {
       return <Checkbox slot="selection" />;
     }
     case 'single': {
-      return <CheckMark className="invisible" />;
+      return <CheckMark className="invisible hidden" />;
     }
   }
 };
