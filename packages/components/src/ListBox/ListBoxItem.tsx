@@ -8,7 +8,7 @@ export interface ListBoxItemProps
 export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
   const { classNames } = useListBoxContext();
 
-  return <ListBoxItem {...props} className={classNames.option} />;
+  return <ListBoxItem {...props} className={classNames.item} />;
 };
 
 export { _ListBoxItem as ListBoxItem };

@@ -30,7 +30,9 @@ test('uses base styles from theme', () => {
   );
   const label = screen.getByText(/label/);
 
-  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"inline-flex w-[var(--labelWidth)]"`
+  );
 });
 
 test('supports htmlFor prop', () => {
@@ -63,5 +65,7 @@ test('accepts labelwidth as css variable and set the style', () => {
     </ThemeProvider>
   );
   const label = screen.getByText(/label/);
-  expect(label.className).toMatchInlineSnapshot(`"flex w-[var(--labelWidth)]"`);
+  expect(label.className).toMatchInlineSnapshot(
+    `"inline-flex w-[var(--labelWidth)]"`
+  );
 });

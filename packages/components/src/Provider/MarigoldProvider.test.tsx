@@ -1,16 +1,16 @@
 /* eslint-disable testing-library/no-node-access */
-
 /* eslint-disable testing-library/no-container */
 import { cleanup, render, screen } from '@testing-library/react';
+import { MockInstance, vi } from 'vitest';
 import { cva, useTheme } from '@marigold/system';
 import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup
 // ---------------
-let errorMock: jest.SpyInstance;
+let errorMock: MockInstance;
 
 beforeEach(() => {
-  errorMock = jest.spyOn(console, 'error').mockImplementation();
+  errorMock = vi.spyOn(console, 'error').mockImplementation(() => null);
 });
 
 afterEach(() => {
@@ -18,7 +18,7 @@ afterEach(() => {
 });
 
 const mockMatchMedia = (matches: string[]) =>
-  jest.fn().mockImplementation(query => ({
+  vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
 

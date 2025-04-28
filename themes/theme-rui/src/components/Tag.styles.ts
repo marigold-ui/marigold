@@ -9,7 +9,7 @@ export const Tag: ThemeComponent<'Tag'> = {
     'bg-background',
     'data-selected:text-white data-selected:bg-brand',
     'data-[disabled]:cursor-not-allowed data-[disabled]:text-disabled-foreground data-[disabled]:bg-disabled',
-    'mixin-ring-focus-visible',
+    'focus-visible:util-focus-ring',
   ]),
   closeButton: cva([
     'size-4 flex items-center justify-end whitespace-nowrap',

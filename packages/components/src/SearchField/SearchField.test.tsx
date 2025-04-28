@@ -1,4 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { SearchField } from './SearchField';
@@ -42,7 +43,7 @@ const theme: Theme = {
     ListBox: {
       container: cva(),
       list: cva(),
-      option: cva(),
+      item: cva(),
       section: cva(),
       header: cva(),
     },
@@ -52,10 +53,10 @@ const theme: Theme = {
 const { render } = setup({ theme });
 
 describe('Search', () => {
-  let onChange = jest.fn();
-  let onFocus = jest.fn();
-  let onSubmit = jest.fn();
-  let onClear = jest.fn();
+  let onChange = vi.fn();
+  let onFocus = vi.fn();
+  let onSubmit = vi.fn();
+  let onClear = vi.fn();
 
   afterEach(() => {
     onChange.mockClear();
