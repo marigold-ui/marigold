@@ -1,44 +1,54 @@
-module.exports = {
-  env: {
-    node: true,
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:jest/recommended',
-    'plugin:jest/style',
-    // diabled because not updated yet to version tailwind 4
-    // 'plugin:tailwindcss/recommended',
-    'prettier',
-  ],
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
-  rules: {
-    // Disabled cause it doesn't currently work as of 01/02/2021
-    'no-redeclare': 'off',
-    '@typescript-eslint/no-redeclare': 'off',
-  },
-  parserOptions: {
-    babelOptions: {
-      parserOpts: {
-        // Allow imports like `import pkg from './package.json' assert { type: 'json' };`
-        plugins: ['importAssertions'],
+import js from '@eslint/js';
+import prettier from 'eslint-config-prettier';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import vitestPlugin from 'eslint-plugin-vitest';
+import globals from 'globals';
+
+export default [
+  // Base recommended config
+  js.configs.recommended,
+  reactPlugin.configs.flat.recommended,
+  reactHooksPlugin.configs['recommended-latest'],
+  vitestPlugin.configs.recommended,
+  prettier,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+        ...globals.vitest,
+      },
+      parserOptions: {
+        babelOptions: {
+          parserOpts: {
+            plugins: ['importAssertions'],
+          },
+        },
       },
     },
   },
-  overrides: [
-    {
-      files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
-      rules: {
-        'no-undef': 'off',
-        'no-unused-vars': 'off',
-        'no-empty': 'off',
-        'no-redeclare': 'off',
+  {
+    settings: {
+      react: {
+        version: 'detect',
       },
     },
-  ],
-};
+  },
+  {
+    rules: {
+      // Disabled cause it doesn't currently work as of 01/02/2021
+      'no-redeclare': 'off',
+      '@typescript-eslint/no-redeclare': 'off',
+    },
+  },
+  {
+    files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
+    rules: {
+      'no-empty': 'off',
+      'no-redeclare': 'off',
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+    },
+  },
+];
