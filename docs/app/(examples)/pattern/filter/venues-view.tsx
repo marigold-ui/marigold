@@ -1,7 +1,8 @@
 'use client';
 
 import { venueTypes, venues } from '@/lib/data/venues';
-import { Stack, Table, Text } from '@marigold/components';
+import { Inline, Stack, Table, Text } from '@marigold/components';
+import { Star } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { useFilter, useSearch } from './utils';
 
@@ -56,7 +57,10 @@ export const VenuesView = () => {
               />
             </Table.Cell>
             <Table.Cell>
-              <NumericFormat value={venue.rating} minimumFractionDigits={1} />
+              <Inline space="0.5" alignY="center">
+                <NumericFormat value={venue.rating} minimumFractionDigits={1} />{' '}
+                <Star size={14} />
+              </Inline>
             </Table.Cell>
           </Table.Row>
         ))}

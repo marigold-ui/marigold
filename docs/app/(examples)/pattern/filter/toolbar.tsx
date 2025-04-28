@@ -76,12 +76,16 @@ const FilterForm = ({ state }: FilterFormProps) => {
         step={10}
       />
       <Slider
-        label="Price"
+        label="Max. Price"
         thumbLabels={['price']}
         defaultValue={state.price}
         step={100}
         maxValue={defaultFilter.price}
-        formatOptions={{ style: 'currency', currency: 'EUR' }}
+        formatOptions={{
+          style: 'currency',
+          currency: 'EUR',
+          minimumFractionDigits: 0,
+        }}
       />
       <Radio.Group
         label="Min. Rating"
