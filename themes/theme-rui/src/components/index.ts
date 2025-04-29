@@ -5,6 +5,7 @@ export { Button } from './Button.styles';
 export { Card } from './Card.styles';
 export { Checkbox } from './Checkbox.styles';
 export { Calendar } from './Calendar.styles';
+export { CloseButton } from './CloseButton.styles';
 export { ComboBox } from './ComboBox.styles';
 export { DateField } from './DateField.styles';
 export { DatePicker } from './DatePicker.styles';

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
 import { FieldGroup } from '../FieldBase/FieldGroup';
 import { Checkbox } from './Checkbox';
@@ -7,7 +8,7 @@ const meta = {
   title: 'Components/Checkbox',
   component: Checkbox,
   argTypes: {
-    children: {
+    label: {
       control: {
         type: 'text',
       },
@@ -15,6 +16,15 @@ const meta = {
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'This is a Checkbox' },
+      },
+    },
+    children: {
+      control: {
+        type: 'text',
+      },
+      description: 'deprecated use `label` instead',
+      table: {
+        type: { summary: 'string' },
       },
     },
     disabled: {
@@ -64,8 +74,11 @@ const meta = {
     readOnly: false,
     indeterminate: false,
     disabled: false,
-    children: 'This is a Checkbox',
+    label: 'This is a Checkbox',
     size: 'default',
+    defaultChecked: false,
+    error: false,
+    required: false,
   },
 } satisfies Meta<typeof Checkbox>;
 
@@ -73,7 +86,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Checkbox size="small" {...args} defaultChecked />,
+  tags: ['component-test'],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const checkbox = await canvas.findByRole('checkbox');
+
+    await userEvent.click(checkbox);
+
+    expect(checkbox).toBeChecked();
+  },
 };
 
 export const WithFieldGroup: Story = {

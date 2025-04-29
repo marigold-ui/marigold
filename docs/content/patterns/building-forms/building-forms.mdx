@@ -103,6 +103,12 @@ With React Hook Form, you can easily manage form state without the need for cont
 
 For some examples have a look at [Building Forms](/patterns/building-forms#handling-complex-forms-and-form-state) section.
 
+### Async Forms and useActionState hook
+
+In React 19, you can handle async form submissions using Actions. With the `useActionState` hook, there's no need to manually manage an `isPending` state, React takes care of it automatically. Additionally, you can return a state directly from the action, eliminating the need for `useState`. This makes handling form state more streamlined and efficient.
+
+<ComponentDemo file="./building-forms-async.demo.tsx" />
+
 ## Related
 
 <TeaserList

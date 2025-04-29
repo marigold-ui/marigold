@@ -8,6 +8,7 @@ import { SectionMessage } from './SectionMessage';
 const theme: Theme = {
   name: 'test',
   components: {
+    CloseButton: cva('size-4'),
     SectionMessage: {
       container: cva('text-blue-500', {
         variants: {

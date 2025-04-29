@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "11.4.1",
+  "version": "11.5.0",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@marigold/types": "workspace:*",
-    "@react-aria/i18n": "3.12.7",
+    "@react-aria/i18n": "3.12.8",
     "class-variance-authority": "0.7.1",
     "deepmerge": "4.3.1",
     "react-fast-compare": "3.2.2",

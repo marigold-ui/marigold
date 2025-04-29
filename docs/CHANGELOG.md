@@ -1,5 +1,38 @@
 # @marigold/docs
 
+## 11.5.0
+
+### Patch Changes
+
+- 8dab2e6: chore: update `react-aria` (April 2025 release)
+- 337f9ee: doc[DST-727]: add copyable examples to the pagination documentation.
+- c42767f: refa([DST-762]): support `label` prop for `<CheckBox>` and `<Switch>`.
+
+  **Breaking Change**: Deprecate `children` property, use `label` instead. With the next major version `children` will be removed.
+
+- 2a87f43: feat[DST-759]: Implement `<CloseButton>` component to be re-used into other components internally (e.g Dialog, Tag, Drawer and SectionMessage).
+- Updated dependencies [8dab2e6]
+- Updated dependencies [70399e4]
+- Updated dependencies [25c37c6]
+- Updated dependencies [c9b95bc]
+- Updated dependencies [337f9ee]
+- Updated dependencies [798e410]
+- Updated dependencies [d24cee3]
+- Updated dependencies [87e7f4d]
+- Updated dependencies [1e5ce6e]
+- Updated dependencies [16b9e54]
+- Updated dependencies [4686a0d]
+- Updated dependencies [c42767f]
+- Updated dependencies [9965825]
+- Updated dependencies [2a87f43]
+  - @marigold/components@11.5.0
+  - @marigold/system@11.5.0
+  - @marigold/theme-rui@1.0.1
+  - @marigold/theme-b2b@30.0.1
+  - @marigold/theme-core@29.0.1
+  - @marigold/theme-docs@3.0.1
+  - @marigold/icons@1.3.7
+
 ## 11.4.1
 
 ### Patch Changes

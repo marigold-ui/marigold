@@ -32,28 +32,26 @@ export const Basic: Story = {
 
     return (
       <FieldGroup labelWidth={isCore ? '100px' : undefined}>
-        <div className="grid h-full place-items-center">
-          <Form {...args}>
-            <Stack space={5}>
-              <TextField label="Name" width={isCore ? 72 : 72} />
-              <TextField label="Email" type="email" width={isCore ? 72 : 72} />
-              <DateField label="Date of Birth" width={isCore ? 56 : 44} />
-              <Select label="Department" width={isCore ? 60 : 40}>
-                <Select.Option id="engineering">Engineering</Select.Option>
-                <Select.Option id="design">Design</Select.Option>
-                <Select.Option id="product">Product</Select.Option>
-              </Select>
-              <Checkbox>Subscribe to Employee Newsletter</Checkbox>
-            </Stack>
-          </Form>
-        </div>
+        <Form {...args}>
+          <Stack space={5}>
+            <TextField label="Name" />
+            <TextField label="Email" type="email" />
+            <DateField label="Date of Birth" />
+            <Select label="Department">
+              <Select.Option id="engineering">Engineering</Select.Option>
+              <Select.Option id="design">Design</Select.Option>
+              <Select.Option id="product">Product</Select.Option>
+            </Select>
+            <Checkbox>Subscribe to Employee Newsletter</Checkbox>
+          </Stack>
+        </Form>
       </FieldGroup>
     );
   },
 };
 
 export const Horizontal: Story = {
-  render: args => (
+  render: () => (
     <Inline space={4} alignY="bottom">
       <TextField label="Name" width={72} />
       <Button variant="primary">Save</Button>

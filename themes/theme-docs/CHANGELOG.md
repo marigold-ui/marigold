@@ -1,5 +1,21 @@
 # @marigold/theme-docs
 
+## 3.0.1
+
+### Patch Changes
+
+- 9965825: infra([DST-771]): Add safelist to theme-docs
+- Updated dependencies [8dab2e6]
+- Updated dependencies [70399e4]
+- Updated dependencies [c9b95bc]
+- Updated dependencies [337f9ee]
+- Updated dependencies [d24cee3]
+- Updated dependencies [4686a0d]
+- Updated dependencies [c42767f]
+- Updated dependencies [2a87f43]
+  - @marigold/components@11.5.0
+  - @marigold/system@11.5.0
+
 ## 3.0.0
 
 ### Major Changes
