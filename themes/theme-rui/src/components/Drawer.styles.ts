@@ -8,7 +8,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   container: cva(
     [
       'relative grid-rows-[auto_1fr_auto]',
-      'bg-surface-overlay border-input border-l shadow-lg',
+      'util-surface-overlay border-y-0! border-r-0!',
     ],
     {
       variants: {
