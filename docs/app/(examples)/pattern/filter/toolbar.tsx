@@ -127,7 +127,7 @@ export const Toolbar = () => {
         <Button>
           <Filter /> Filter
         </Button>
-        <Form onSubmit={onSubmit} contents>
+        <Form onSubmit={onSubmit} unstyled>
           <Drawer closeButton>
             <Drawer.Title>Filter</Drawer.Title>
             <Drawer.Content>
