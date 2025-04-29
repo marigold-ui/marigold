@@ -1,40 +1,54 @@
 import js from '@eslint/js';
+import typescript from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import testingLibraryPlugin from 'eslint-plugin-testing-library';
 import vitestPlugin from 'eslint-plugin-vitest';
 import globals from 'globals';
 
 export default [
-  // Base recommended config
   js.configs.recommended,
-  reactPlugin.configs.flat.recommended,
+  // React support
+  {
+    files: ['**/*.{jsx,js,tsx,ts}'],
+    plugins: { react: reactPlugin },
+    settings: {
+      react: { version: 'detect' },
+    },
+    rules: {
+      ...reactPlugin.configs.flat.recommended.rules,
+      'react/react-in-jsx-scope': 'off', // Not required for React 17+
+    },
+  },
+
   reactHooksPlugin.configs['recommended-latest'],
   vitestPlugin.configs.recommended,
-  prettier,
+  testingLibraryPlugin.configs['flat/dom'],
+  testingLibraryPlugin.configs['flat/react'],
+  // TypeScript support
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.browser,
-        ...globals.vitest,
-      },
+      parser: tsParser,
       parserOptions: {
-        babelOptions: {
-          parserOpts: {
-            plugins: ['importAssertions'],
-          },
-        },
+        ecmaVersion: 2024,
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname,
       },
     },
-  },
-  {
-    settings: {
-      react: {
-        version: 'detect',
-      },
+    plugins: { '@typescript-eslint': typescript },
+    rules: {
+      ...typescript.configs.recommended.rules,
+      'no-case-declarations': 'off', // TypeScript has better type checking, not needed
+      '@typescript-eslint/no-explicit-any': 'off', // Allow explicit any
+      '@typescript-eslint/no-unused-vars': 'warn', // Replace JS no-unused-vars rule
     },
   },
+  prettier,
   {
     rules: {
       // Disabled cause it doesn't currently work as of 01/02/2021
@@ -43,12 +57,30 @@ export default [
     },
   },
   {
-    files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
-    rules: {
-      'no-empty': 'off',
-      'no-redeclare': 'off',
-      'no-undef': 'off',
-      'no-unused-vars': 'off',
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+        ...globals.vitest,
+      },
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
+  },
+  // Ignored patterns and files
+  {
+    ignores: [
+      'node_modules/*',
+      '**/dist/*',
+      '*.min.js',
+      '*.css',
+      '*.md',
+      'vitest.config.ts',
+    ],
   },
 ];
