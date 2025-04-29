@@ -34,7 +34,7 @@ export interface PaginationProps {
    */
   onChange?: (page: number) => void;
   /**
-   * Labels for the pagination controls.
+   * Labels for the pagination controls (Previous and Next button).
    */
   controlLabels?: [string, string];
 }

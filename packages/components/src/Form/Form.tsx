@@ -1,17 +1,23 @@
 import { Form } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-import { cn } from '@marigold/system';
+import { cn, maxWidth as twMaxWidth } from '@marigold/system';
+import type { MaxWidthProp } from '@marigold/system';
 
-export interface FormProps extends Omit<RAC.FormProps, 'className' | 'style'> {
+export interface FormProps
+  extends Omit<RAC.FormProps, 'className' | 'style'>,
+    MaxWidthProp {
   /**
    * Removes the form's visual container so that it does not impact the layout,
    * letting child elements render naturally.
    */
-  contents?: boolean;
+  unstyled?: boolean;
 }
 
-const _Form = ({ contents = false, ...props }: FormProps) => (
-  <Form className={cn(contents && 'contents')} {...props} />
+const _Form = ({ unstyled, maxWidth = 'full', ...props }: FormProps) => (
+  <Form
+    {...props}
+    className={cn(twMaxWidth[maxWidth], unstyled && 'contents')}
+  />
 );
 
 export { _Form as Form };

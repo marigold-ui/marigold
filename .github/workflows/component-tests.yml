@@ -18,9 +18,28 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Get PR number
+        uses: jwalton/gh-find-current-pr@master
+        id: findPr
+        with:
+          state: open
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Storybook tests
         run: pnpm test:storybook
         env:
           TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
+      - name: Upload Accessibility Report
+        id: artifact-upload-step
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: ./config/storybook/artifacts/accessibilityReport.html
+          overwrite: 'true'
+      - name: Accessibility Report Preview
+        if: success() && steps.findPr.outputs.number
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          pr-number: ${{ steps.findPr.outputs.number }}
+          message: |
+            Accessibility tests executed. Download the report [here](${{ steps.artifact-upload-step.outputs.artifact-url }}).

@@ -105,9 +105,15 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
   variant?: string;
   size?: string;
   /**
-   * Children of the component.
+   * Children of the checkbox.
+   * @deprecated Will be removed in the next major version. Use `label` prop instead.
    */
   children?: ReactNode;
+  /**
+   * Set the label of the checkbox.
+   *
+   */
+  label?: ReactNode;
 }
 
 export interface CheckboxComponent
@@ -132,9 +138,9 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       checked,
       defaultChecked,
       indeterminate,
-      children,
       variant,
       size,
+      label,
       ...rest
     },
     ref
@@ -176,9 +182,11 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
               indeterminate={isIndeterminate}
               className={classNames.checkbox}
             />
-            {children ? (
-              <div className={classNames.label}>{children}</div>
-            ) : null}
+            {(props.children || label) && (
+              <div className={classNames.label}>
+                {(props.children as React.ReactNode) || label}
+              </div>
+            )}
           </>
         )}
       </Checkbox>
