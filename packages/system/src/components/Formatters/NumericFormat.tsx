@@ -18,10 +18,12 @@ interface NumericFormatProps extends Intl.NumberFormatOptions {
     | [number, number]
     | [bigint, bigint]
     | [StringNumericLiteral, StringNumericLiteral];
+
   /**
    * The numberingSystem accessor property of Intl.Locale instances returns the numeral system for this locale.
    */
   numberingSystem?: string;
+
   /**
    * Specifies that the digits should take the full width.
    * @default true

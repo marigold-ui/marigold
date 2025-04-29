@@ -6,33 +6,21 @@ badge: updated
 
 With `<NumericFormat>` helper, you can easily ensure that numeric values are displayed consistently and accurately, taking into account factors such as decimal separators, currency symbols, and grouping separators specific to each language.
 
-`<NumericFormat>` component are built on top of the [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) APIs which provide a comprehensive support for formatting numbers on locale-specific conventions.
-
-However, there are a few components that should not be used together with this component.
-
-- [NumberField](/components/form/number-field)
-- [DateField](/components/form/datefield)
-- [SearchField](/components/form/search-field)
+The `<NumericFormat>` component is built on top of the [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) API, which provides comprehensive support for formatting numbers according to locale-specific conventions.
 
 ## Usage
 
-### Formatted Currency Value
+Use `<NumericFormat>` when you want to display numeric values like currencies, percentages, or large numbers in a way that automatically adapts to the user's locale and language preferences. It is particularly useful for presenting read-only values in UI components such as tables, cards, and labels.
 
-In this example the value passed is formatted based on the currency chosen 'USD' .
+There is no need to use `<NumericFormat>` with input components like [NumberField](/components/form/number-field), as they already include their own built-in number formatting and parsing behavior.
 
-<ComponentDemo file="./currency-format.demo.tsx" />
+### Customization Options
 
-### Formatted Percentage Value
+You can customize how numbers are displayed by passing any [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) options directly as props to `<NumericFormat>`. This includes settings like how many decimal places to show, whether to format values as currency or percentages, and how to abbreviate large numbers.
 
-In this example the decimal value is formatted into two fraction digits percentage value .
+You can mix and match these options to match your needs. For a full list of available options, see the [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).
 
-<ComponentDemo file="./percent-format.demo.tsx" />
-
-### Formatted Numeric Value
-
-Formats the number with a max of 2 significant digits, only the most significant digits are displayed.
-
-<ComponentDemo file="./numeric-format.demo.tsx" />
+<ComponentDemo file="./common-format.demo.tsx" />
 
 ### Formatted Range Value
 
@@ -43,3 +31,5 @@ Formats two numbers as a range.
 ## Props
 
 <PropsTable component={title} />
+
+- tabular enums example for then comparing values (e.g. table is important)
