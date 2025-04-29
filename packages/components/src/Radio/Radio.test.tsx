@@ -162,7 +162,6 @@ test('takes full width by default', () => {
     </ThemeProvider>
   );
 
-  // eslint-disable-next-line testing-library/no-node-access
   const containerOne = screen.getByTestId('radio-1');
   expect(containerOne).toHaveClass(`w-full`);
 });
@@ -181,7 +180,6 @@ test('set width via prop', () => {
     </ThemeProvider>
   );
 
-  // eslint-disable-next-line testing-library/no-node-access
   const containerOne = screen.getByTestId('radio-1');
   expect(containerOne).toHaveClass(`200px`);
 });

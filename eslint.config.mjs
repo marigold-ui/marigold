@@ -18,6 +18,13 @@ export default defineConfig([
       'react-hooks/rules-of-hooks': 'off',
     },
   },
+  {
+    languageOptions: {
+      globals: {
+        React: 'writable',
+      },
+    },
+  },
   // end disabled rules after migration to flat config
   {
     files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
@@ -33,12 +40,14 @@ export default defineConfig([
       '**/.next',
       '**/out',
       '**/storybook-static',
-      '**/docs/.contentlayer/**/**/*.mjs',
+      '**/docs/.contentlayer/**/**/*.{mjs,d.ts}',
+      '**/docs/.registry/**',
       '**/docs/content/.eslintrc.js',
       '**/coverage',
       'packages/types/src/**',
       '**/.cache',
       'public/**',
+      '**/config/storybook/.storybook/main.ts',
     ],
   },
 ]);

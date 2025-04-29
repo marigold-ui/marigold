@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-node-access */
 import { parseAbsoluteToLocal } from '@internationalized/date';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

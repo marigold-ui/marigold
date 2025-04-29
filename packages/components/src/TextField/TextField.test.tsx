@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-node-access */
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
@@ -211,7 +210,7 @@ test('correctly sets up aria attributes (with error)', () => {
   expect(input).toHaveAttribute(
     'aria-describedby',
     // eslint-disable-next-line testing-library/no-node-access
-    expect.stringContaining(error?.parentElement?.getAttribute('id')!)
+    expect.stringContaining(error?.parentElement?.getAttribute('id') || '')
   );
 
   expect(input).toHaveAttribute('aria-invalid', 'true');

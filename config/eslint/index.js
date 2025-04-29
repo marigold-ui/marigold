@@ -20,13 +20,22 @@ export default [
     rules: {
       ...reactPlugin.configs.flat.recommended.rules,
       'react/react-in-jsx-scope': 'off', // Not required for React 17+
+      'react/no-unescaped-entities': ['warn'],
     },
   },
 
   reactHooksPlugin.configs['recommended-latest'],
   vitestPlugin.configs.recommended,
-  testingLibraryPlugin.configs['flat/dom'],
-  testingLibraryPlugin.configs['flat/react'],
+  // Testing Library support
+  {
+    files: ['**/*.{test,tests,spec}.{js,jsx,ts,tsx}'],
+    plugins: { 'testing-library': testingLibraryPlugin },
+    rules: {
+      ...testingLibraryPlugin.configs['flat/dom'].rules,
+      ...testingLibraryPlugin.configs['flat/react'].rules,
+    },
+  },
+
   // TypeScript support
   {
     files: ['**/*.ts', '**/*.tsx'],
@@ -62,13 +71,6 @@ export default [
         ...globals.node,
         ...globals.browser,
         ...globals.vitest,
-      },
-      parser: tsParser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        ecmaFeatures: { jsx: true },
-        tsconfigRootDir: import.meta.dirname,
       },
     },
   },

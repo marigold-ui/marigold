@@ -130,7 +130,7 @@ it.each([
           label="Vegetables"
           items={options}
           onSelectionChange={setSelected}
-          // @ts-ignore
+          // @ts-expect-error should be fixed
           menuIsOpen={true} // Force menu to stay open
         />
         <div data-testid="output">{selected.length}</div>
@@ -161,6 +161,7 @@ test('renders close button in selected tags', async () => {
     name: /remove spinach/i,
   });
   expect(removeButton).toBeInTheDocument();
+  // eslint-disable-next-line testing-library/no-node-access
   expect(removeButton.querySelector('svg')).toBeVisible();
 });
 
@@ -179,6 +180,7 @@ test('handles close button click', async () => {
   await user.click(removeButton);
 
   await waitFor(() => {
+    // eslint-disable-next-line testing-library/no-node-access
     expect(screen.queryByText('Spinach')).not.toBeInTheDocument();
   });
 });
@@ -186,6 +188,7 @@ test('handles close button click', async () => {
 test('Allow styling container & input via theme', () => {
   render(<Multiselect label="label" items={options} defaultValue="Apple" />);
 
+  // eslint-disable-next-line testing-library/no-node-access
   const field = screen.getByText('label').parentElement;
   expect(field?.className).toMatchInlineSnapshot(
     `"group/field w-full group/field"`

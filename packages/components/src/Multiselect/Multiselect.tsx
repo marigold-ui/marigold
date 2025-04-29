@@ -287,6 +287,7 @@ export const Multiselect = ({
             valueContainer: base => ({ ...base, padding: 0 }),
             container: base => ({ ...base, pointerEvents: 'auto' }),
             menuList: () => ({}),
+            // eslint-disable-next-line no-empty-pattern
             option: ({}) => ({}),
             multiValue: () => ({}),
             multiValueLabel: () => ({}),
@@ -305,6 +306,7 @@ export const Multiselect = ({
           components={{
             Input,
             MultiValueRemove,
+            // eslint-disable-next-line react/prop-types
             DropdownIndicator: ({ innerProps, isDisabled }) => (
               <button
                 {...(innerProps as ButtonHTMLAttributes<HTMLButtonElement>)}

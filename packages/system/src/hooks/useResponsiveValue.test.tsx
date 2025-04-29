@@ -1,4 +1,4 @@
-import { act, cleanup, renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import React, { ReactNode } from 'react';
 import { vi } from 'vitest';
 import { useResponsiveValue } from '@marigold/system';
@@ -12,8 +12,6 @@ const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
-
-afterEach(cleanup);
 
 test('return first value if no breakpoint matches', () => {
   window.matchMedia = mockMatchMedia([]);

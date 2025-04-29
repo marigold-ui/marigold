@@ -29,24 +29,6 @@ const theme: Theme = {
 };
 
 describe('SelectList', () => {
-  test('render with defautl classes', () => {
-    render(
-      <ThemeProvider theme={theme}>
-        <SelectList aria-label="Test">
-          <SelectList.Item id="cat" textValue="Cat">
-            Cat
-          </SelectList.Item>
-          <SelectList.Item id="dog" textValue="Dog">
-            Dog
-          </SelectList.Item>
-          <SelectList.Item id="kangaroo" textValue="Kangaroo">
-            Kangaroo
-          </SelectList.Item>
-        </SelectList>
-      </ThemeProvider>
-    );
-  });
-
   test('support DOM props', () => {
     render(
       <ThemeProvider theme={theme}>

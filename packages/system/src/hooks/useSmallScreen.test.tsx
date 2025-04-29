@@ -1,4 +1,4 @@
-import { cleanup, renderHook } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 import { useSmallScreen } from './useSmallScreen';
 
@@ -12,8 +12,6 @@ const mockMatchMedia = (matches: string[]) =>
       matches: matches.includes(query),
     };
   });
-
-afterEach(cleanup);
 
 test('check of the value is truthy', () => {
   window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
