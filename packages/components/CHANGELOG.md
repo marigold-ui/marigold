@@ -1,5 +1,28 @@
 # @marigold/components
 
+## 11.5.0
+
+### Minor Changes
+
+- c9b95bc: feat([DST-799]): Add `unstyled` and `maxWidth` to `<Form>`
+
+### Patch Changes
+
+- 8dab2e6: chore: update `react-aria` (April 2025 release)
+- 70399e4: style([DST-724]): Adjust required icon for form elements in RUI style
+- 337f9ee: doc[DST-727]: add copyable examples to the pagination documentation.
+- d24cee3: fix([DST-232]): Align icon in `<HelpText>` to the start of text begin.
+- 4686a0d: refa([DST-754]): Add `<FocusScope>` to `<Pagination>` to improve focus state.
+- c42767f: refa([DST-762]): support `label` prop for `<CheckBox>` and `<Switch>`.
+
+  **Breaking Change**: Deprecate `children` property, use `label` instead. With the next major version `children` will be removed.
+
+- 2a87f43: feat[DST-759]: Implement `<CloseButton>` component to be re-used into other components internally (e.g Dialog, Tag, Drawer and SectionMessage).
+- Updated dependencies [8dab2e6]
+- Updated dependencies [c9b95bc]
+- Updated dependencies [2a87f43]
+  - @marigold/system@11.5.0
+
 ## 11.4.1
 
 ### Patch Changes
