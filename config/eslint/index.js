@@ -45,7 +45,7 @@ export default [
         ecmaVersion: 2024,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
-        project: ['./tsconfig.json'],
+        project: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
