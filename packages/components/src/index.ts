@@ -18,6 +18,7 @@ export * from './Columns';
 export * from './Container';
 export * from './Dialog';
 export * from './Divider';
+export * from './Drawer';
 export * from './FieldBase';
 export * from './Footer';
 export * from './Form';

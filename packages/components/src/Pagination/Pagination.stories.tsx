@@ -1,6 +1,6 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, fn, userEvent, within } from '@storybook/test';
 import React from 'react';
 import {
   FieldGroup,
@@ -15,6 +15,7 @@ import { Pagination, PaginationProps } from './Pagination';
 
 const meta = {
   title: 'Components/Pagination',
+  component: Pagination,
   argTypes: {
     totalItems: {
       control: {
@@ -55,10 +56,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination {...rest} totalItems={totalItems!} pageSize={pageSize!} />
-  ),
-  play: async ({ canvasElement, step, args }) => {
+  play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
     await step('Select an item from pagination', async () => {
@@ -117,8 +115,8 @@ export const Basic: Story = {
 
       pageButton.blur();
 
-      expect(pageButton).not.toHaveFocus();
-      expect(pageButton).toHaveAttribute('data-selected', 'true');
+      await expect(pageButton).not.toHaveFocus();
+      await expect(pageButton).toHaveAttribute('data-selected', 'true');
     });
   },
 };
@@ -147,25 +145,27 @@ export const OnePage: Story = {
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: args => <Pagination {...args} totalItems={10} pageSize={10} />,
+  args: {
+    totalItems: 10,
+    pageSize: 10,
+  },
 };
 
 export const OneHundredPages: Story = {
-  render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination
-      {...rest}
-      totalItems={1000}
-      pageSize={pageSize!}
-      defaultPage={93}
-    />
-  ),
+  args: {
+    totalItems: 1000,
+    defaultPage: 93,
+  },
 };
 
 export const NoData: Story = {
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: args => <Pagination {...args} totalItems={0} pageSize={10} />,
+  args: {
+    totalItems: 0,
+    pageSize: 10,
+  },
 };
 
 export const FullScreenSize: Story = {
@@ -285,13 +285,53 @@ export const WithButtonLabels: Story = {
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
-  render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
-    <Pagination
-      {...rest}
-      totalItems={100}
-      pageSize={pageSize!}
-      page={5}
-      controlLabels={['Previous', 'Next']}
-    />
-  ),
+  args: {
+    totalItems: 100,
+    defaultPage: 5,
+    controlLabels: ['Previous', 'Next'],
+  },
+};
+
+export const DisabledPreviousButton: Story = {
+  tags: ['component-test'],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const previousButton = canvas.getByLabelText('Page previous');
+
+    await userEvent.click(previousButton);
+
+    await expect(previousButton).not.toHaveAttribute('data-selected', 'true');
+    await expect(previousButton).toHaveAttribute('disabled');
+  },
+};
+
+export const DisabledNextButton: Story = {
+  tags: ['component-test'],
+  args: {
+    defaultPage: 9,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const nextButton = canvas.getByLabelText('Page next');
+
+    await userEvent.click(nextButton);
+
+    await expect(nextButton).not.toHaveAttribute('data-selected', 'true');
+    await expect(nextButton).toHaveAttribute('disabled');
+  },
+};
+
+export const UseOnChange: Story = {
+  tags: ['component-test'],
+  args: {
+    onChange: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const page2Button = canvas.getByLabelText('Page 2');
+
+    await userEvent.click(page2Button);
+
+    await expect(args.onChange).toHaveBeenCalledWith(2);
+  },
 };

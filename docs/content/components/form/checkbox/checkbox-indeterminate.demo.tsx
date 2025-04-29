@@ -37,9 +37,7 @@ export default () => {
           onChange={(keys: Genres[]) => setSelected(keys)}
         >
           {Object.entries(genres).map(([value, label]) => (
-            <Checkbox key={value} value={value}>
-              {label}
-            </Checkbox>
+            <Checkbox key={value} value={value} label={label} />
           ))}
         </Checkbox.Group>
       </Inset>
