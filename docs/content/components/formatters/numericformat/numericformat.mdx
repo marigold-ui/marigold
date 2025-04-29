@@ -1,6 +1,7 @@
 ---
 title: NumericFormat
 caption: Helper component for formatting numeric based on the current language and locale-specific conventions.
+badge: updated
 ---
 
 With `<NumericFormat>` helper, you can easily ensure that numeric values are displayed consistently and accurately, taking into account factors such as decimal separators, currency symbols, and grouping separators specific to each language.
@@ -13,21 +14,7 @@ However, there are a few components that should not be used together with this c
 - [DateField](/components/form/datefield)
 - [SearchField](/components/form/search-field)
 
-## Import
-
-```tsx
-import { NumericFormat } from '@marigold/system';
-```
-
-## Appearance
-
-<AppearanceTable component={title} />
-
-## Props
-
-<PropsTable component={title} />
-
-## Examples
+## Usage
 
 ### Formatted Currency Value
 
@@ -46,3 +33,13 @@ In this example the decimal value is formatted into two fraction digits percenta
 Formats the number with a max of 2 significant digits, only the most significant digits are displayed.
 
 <ComponentDemo file="./numeric-format.demo.tsx" />
+
+### Formatted Range Value
+
+Formats two numbers as a range.
+
+<ComponentDemo file="./range-format.demo.tsx" />
+
+## Props
+
+<PropsTable component={title} />
