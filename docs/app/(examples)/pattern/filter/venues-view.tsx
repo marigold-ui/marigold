@@ -24,7 +24,7 @@ export const VenuesView = () => {
   });
 
   return (
-    <Table>
+    <Table aria-label="Venue List">
       <Table.Header>
         <Table.Column>Name</Table.Column>
         <Table.Column>Type</Table.Column>
