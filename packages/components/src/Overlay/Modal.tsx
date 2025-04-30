@@ -35,11 +35,7 @@ const _Modal = forwardRef<
       open={open}
       variant="modal"
     >
-      <Modal
-        ref={ref}
-        className="relative flex w-full justify-center"
-        {...props}
-      >
+      <Modal ref={ref} {...props}>
         {props.children}
       </Modal>
     </Underlay>

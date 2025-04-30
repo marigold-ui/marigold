@@ -70,6 +70,78 @@ export const width = {
   '11/12': 'w-11/12',
 };
 
+export const maxWidth = {
+  auto: 'max-w-auto',
+  full: 'max-w-full',
+  fit: 'max-w-fit',
+  min: 'max-w-min',
+  max: 'max-w-max',
+  screen: 'max-w-screen',
+  svh: 'max-w-svh',
+  lvh: 'max-w-lvh',
+  dvh: 'max-w-dvh',
+  px: 'max-w-px',
+  0: 'max-w-0',
+  '0.5': 'max-w-0.5',
+  1: 'max-w-1',
+  '1.5': 'max-w-1.5',
+  2: 'max-w-2',
+  '2.5': 'max-w-2.5',
+  3: 'max-w-3',
+  '3.5': 'max-w-3.5',
+  4: 'max-w-4',
+  5: 'max-w-5',
+  6: 'max-w-6',
+  7: 'max-w-7',
+  8: 'max-w-8',
+  9: 'max-w-9',
+  10: 'max-w-10',
+  11: 'max-w-11',
+  12: 'max-w-12',
+  14: 'max-w-14',
+  16: 'max-w-16',
+  20: 'max-w-20',
+  24: 'max-w-24',
+  28: 'max-w-28',
+  32: 'max-w-32',
+  36: 'max-w-36',
+  40: 'max-w-40',
+  44: 'max-w-44',
+  48: 'max-w-48',
+  52: 'max-w-52',
+  56: 'max-w-56',
+  60: 'max-w-60',
+  64: 'max-w-64',
+  72: 'max-w-72',
+  80: 'max-w-80',
+  96: 'max-w-96',
+  '1/2': 'max-w-1/2',
+  '1/3': 'max-w-1/3',
+  '2/3': 'max-w-2/3',
+  '1/4': 'max-w-1/4',
+  '2/4': 'max-w-2/4',
+  '3/4': 'max-w-3/4',
+  '1/5': 'max-w-1/5',
+  '2/5': 'max-w-2/5',
+  '3/5': 'max-w-3/5',
+  '1/6': 'max-w-1/6',
+  '2/6': 'max-w-2/6',
+  '3/6': 'max-w-3/6',
+  '4/6': 'max-w-4/6',
+  '5/6': 'max-w-5/6',
+  '1/12': 'max-w-1/12',
+  '2/12': 'max-w-2/12',
+  '3/12': 'max-w-3/12',
+  '4/12': 'max-w-4/12',
+  '5/12': 'max-w-5/12',
+  '6/12': 'max-w-6/12',
+  '7/12': 'max-w-7/12',
+  '8/12': 'max-w-8/12',
+  '9/12': 'max-w-9/12',
+  '10/12': 'max-w-10/12',
+  '11/12': 'max-w-11/12',
+};
+
 export const height = {
   auto: 'h-auto',
   full: 'h-full',
@@ -695,9 +767,16 @@ export type TextAlignProp = {
 
 export type WidthProp = {
   /**
-   * Sets the width of the field. You can see allowed tokens [here](https://tailwindcss.com/docs/width).
+   * Sets the width of the element. You can see allowed tokens [here](https://tailwindcss.com/docs/width).
    */
   width?: keyof typeof width;
+};
+
+export type MaxWidthProp = {
+  /**
+   * Sets the max-width of the element. You can see allowed tokens [here](https://tailwindcss.com/docs/max-width).
+   */
+  maxWidth?: keyof typeof maxWidth;
 };
 
 export type HeightProp = {
