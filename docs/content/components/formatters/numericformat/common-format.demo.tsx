@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { I18nProvider } from '@react-aria/i18n';
-import { Columns, Radio, Stack } from '@marigold/components';
-import { NumericFormat } from '@marigold/system';
+import { Columns, NumericFormat, Radio, Stack } from '@marigold/components';
 
 interface Locale {
   [key: string]: string;

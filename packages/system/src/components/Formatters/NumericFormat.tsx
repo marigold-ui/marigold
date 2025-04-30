@@ -1,13 +1,17 @@
 import React from 'react';
 import { useNumberFormatter } from '@react-aria/i18n';
 
+export type NumerFormatterOptions = NonNullable<
+  Parameters<typeof useNumberFormatter>[0]
+>;
+
 type StringNumericLiteral =
   | `${number}`
   | 'Infinity'
   | '-Infinity'
   | '+Infinity';
 
-interface NumericFormatProps extends Intl.NumberFormatOptions {
+interface NumericFormatProps extends NumerFormatterOptions {
   /**
    * Value to be formatted.
    */
