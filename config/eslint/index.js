@@ -7,6 +7,11 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import testingLibraryPlugin from 'eslint-plugin-testing-library';
 import vitestPlugin from 'eslint-plugin-vitest';
 import globals from 'globals';
+import path from 'path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default [
   js.configs.recommended,
@@ -45,8 +50,8 @@ export default [
         ecmaVersion: 2024,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
-        project: true,
-        tsconfigRootDir: import.meta.dirname,
+        project: ['./../../tsconfig.json'],
+        tsconfigRootDir: __dirname,
       },
     },
     plugins: { '@typescript-eslint': typescript },
