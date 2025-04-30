@@ -18,18 +18,18 @@ export default [
   // React support
   {
     files: ['**/*.{jsx,js,tsx,ts}'],
-    plugins: { react: reactPlugin },
+    plugins: { react: reactPlugin, 'react-hooks': reactHooksPlugin },
     settings: {
       react: { version: 'detect' },
     },
     rules: {
       ...reactPlugin.configs.flat.recommended.rules,
+      ...reactHooksPlugin.configs['recommended-latest'].rules,
       'react/react-in-jsx-scope': 'off', // Not required for React 17+
       'react/no-unescaped-entities': ['warn'],
+      'react-hooks/rules-of-hooks': ['warn'],
     },
   },
-
-  reactHooksPlugin.configs['recommended-latest'],
   vitestPlugin.configs.recommended,
   // Testing Library support
   {

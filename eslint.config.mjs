@@ -3,19 +3,10 @@ import marigoldBaseConfig from '@marigold/eslint-config';
 
 export default defineConfig([
   marigoldBaseConfig,
-  // start disabled rules after migration to flat config
+  // start overriding specific config/rules for marigold
   {
     rules: {
-      'react/display-name': 'off',
-      '@typescript-eslint/no-empty-object-type': 'off',
-      '@typescript-eslint/no-unsafe-function-type': 'off',
-      'react-hooks/rules-of-hooks': 'off',
-    },
-  },
-  {
-    files: ['**/*.stories.tsx'],
-    rules: {
-      'react-hooks/rules-of-hooks': 'off',
+      'react/display-name': 'off', // appears where we use forwardRef
     },
   },
   {
@@ -25,7 +16,7 @@ export default defineConfig([
       },
     },
   },
-  // end disabled rules after migration to flat config
+  // end overriding specific config/rules for marigold
   {
     files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
     rules: {
