@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
-import { CalendarListBox } from './CalendarListBox';
 import MonthControls from './MonthControls';
-import MonthListBox from './MonthListBox';
-import YearListBox from './YearListBox';
+import { MonthList } from './MonthListBox';
+import { YearList } from './YearListBox';
 
 // Props
 // ---------------
@@ -45,7 +44,6 @@ export interface CalendarProps
   dateUnavailable?: RAC.CalendarProps<DateValue>['isDateUnavailable'];
 }
 
-type ViewMapKeys = 'month' | 'year';
 // Component
 // ---------------
 export const _Calendar = ({
@@ -64,16 +62,6 @@ export const _Calendar = ({
   };
 
   const classNames = useClassNames({ component: 'Calendar' });
-
-  const [selectedDropdown, setSelectedDropdown] = useState<
-    ViewMapKeys | undefined
-  >();
-
-  const ViewMap = {
-    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
-    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
-  } satisfies { [key in ViewMapKeys]: React.JSX.Element };
-
   return (
     <Calendar
       className={cn(
@@ -82,28 +70,14 @@ export const _Calendar = ({
       )}
       {...props}
     >
-      {selectedDropdown ? (
-        ViewMap[selectedDropdown]
-      ) : (
-        <>
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex w-fit gap-4">
-              <CalendarListBox
-                type="month"
-                isDisabled={props.isDisabled}
-                setSelectedDropdown={setSelectedDropdown}
-              />
-              <CalendarListBox
-                type="year"
-                isDisabled={props.isDisabled}
-                setSelectedDropdown={setSelectedDropdown}
-              />
-            </div>
-            <MonthControls />
-          </div>
-          <CalendarGrid />
-        </>
-      )}
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex w-fit gap-4">
+          <MonthList />
+          <YearList />
+        </div>
+        <MonthControls />
+      </div>
+      <CalendarGrid />
     </Calendar>
   );
 };
