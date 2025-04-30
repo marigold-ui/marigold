@@ -35,7 +35,7 @@ export const TableBody = ({
         <tr className={classNames?.row} role="row">
           <td
             className={classNames?.cell}
-            colSpan={state.collection.size}
+            colSpan={state.collection.columnCount}
             role="rowheader"
           >
             {emptyState()}
