@@ -1,5 +1,27 @@
 # @marigold/theme-rui
 
+## 1.0.1
+
+### Patch Changes
+
+- 70399e4: style([DST-724]): Adjust required icon for form elements in RUI style
+- 25c37c6: refa([DST-800]): Simplify animation in `<Drawer>`
+- 798e410: fix([DST-794]): Set correct outline on focus for input and textarea
+- 87e7f4d: feat:([DSTSUP-110]): Add surface tokens to the theme and creates Tailwind utils to apply the (`utils-surface-{sunken,body,raised,overlay}`)
+- 1e5ce6e: refa([DST-681]): Simplify label required classes
+- 16b9e54: fix([DSTSUP-123]): Adjust z-index of table styles for sticky header
+- 2a87f43: feat[DST-759]: Implement `<CloseButton>` component to be re-used into other components internally (e.g Dialog, Tag, Drawer and SectionMessage).
+- Updated dependencies [8dab2e6]
+- Updated dependencies [70399e4]
+- Updated dependencies [c9b95bc]
+- Updated dependencies [337f9ee]
+- Updated dependencies [d24cee3]
+- Updated dependencies [4686a0d]
+- Updated dependencies [c42767f]
+- Updated dependencies [2a87f43]
+  - @marigold/components@11.5.0
+  - @marigold/system@11.5.0
+
 ## 1.0.0
 
 ### Major Changes

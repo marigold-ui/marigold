@@ -14,7 +14,7 @@ export const Table: ThemeComponent<'Table'> = {
   ),
   thead: cva(
     // for sticky header
-    'bg-background/90 top-0 z-10 backdrop-blur-xs ',
+    'bg-background/90 top-0 z-1 backdrop-blur-xs ',
     {
       variants: {
         variant: {

@@ -8,34 +8,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   container: cva(
     [
       'relative grid-rows-[auto_1fr_auto]',
-      'bg-surface-overlay border-input border-l shadow-lg',
-      /**
-       * The fade animation only start when entering is finished,
-       * to prevent flickering we hide the elements during the
-       * slide in animation.
-       */
-      // '*:group-entering/overlay:opacity-0',
-      // '*:animate-fade-in *:[animation-duration:0.2s]',
-      // '*:[animation-delay:var(--slide-in-duration)]',
-
-      /**
-       * The drawer's child elements will have a secondary fade-in-up animation,
-       * which starts only after the drawer has fully slid in.
-       *
-       * To achieve this, we initially hide the children and allow them to remain
-       * in their final animation state (using `animation-fill-mode`).
-       * A slight delay is applied to each child to create a staggered fade-in-up effect.
-       */
-
-      '*:opacity-0 *:[animation-fill-mode:forwards]',
-      '*:animate-fade-in-up *:[animation-delay:calc(var(--slide-in-duration)+(var(--i)*150ms))]',
-
-      /**
-       * Fade out content of the slider, looks smoother and less clutter.
-       * Keep the "not-group-exiting" of the fade in animation, because
-       * elements can only have one animation.
-       */
-      '*:group-exiting/overlay:animate-fade-out! *:group-exiting/overlay:[animation-delay:0s]!',
+      'util-surface-overlay border-y-0! border-r-0!',
     ],
     {
       variants: {
