@@ -17,7 +17,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 export interface ThemeSwitchContextType {
   current: string;
   themes: { [name: string]: Theme };
-  updateTheme: Function;
+  updateTheme: (theme: string) => void;
 }
 
 export const Context = createContext<ThemeSwitchContextType | null>(null);

@@ -451,7 +451,7 @@ test('forwards ref', () => {
 test('renders as tray', () => {
   const ref = React.createRef<HTMLButtonElement>();
 
-  let resize: Function;
+  let resize: () => void;
   window.addEventListener = vi.fn().mockImplementation((event, cb) => {
     if (event === 'resize') resize = cb;
   });

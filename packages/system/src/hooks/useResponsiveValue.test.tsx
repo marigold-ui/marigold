@@ -81,7 +81,7 @@ test('responds to resize event', () => {
     'screen and (min-width: 1024px)',
   ]);
 
-  let resize: Function;
+  let resize: () => void;
   window.addEventListener = vi.fn().mockImplementation((event, cb) => {
     if (event === 'resize') resize = cb;
   });

@@ -180,7 +180,6 @@ test('handles close button click', async () => {
   await user.click(removeButton);
 
   await waitFor(() => {
-    // eslint-disable-next-line testing-library/no-node-access
     expect(screen.queryByText('Spinach')).not.toBeInTheDocument();
   });
 });
