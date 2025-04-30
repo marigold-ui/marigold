@@ -127,7 +127,7 @@ export const SiteMenu = () => {
   };
 
   return (
-    <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
+    <Dialog.Trigger open={open} onOpenChange={setOpen}>
       <Button variant="sunken" size="small" onPress={onPress}>
         Search...
         <Hotkey letter="K" />
@@ -144,6 +144,7 @@ export const SiteMenu = () => {
           onKeyDown={e => {
             if (e.key === 'Escape' || (e.key === 'Backspace' && !query)) {
               e.preventDefault();
+              setOpen(false);
               setPages([]);
             }
           }}
