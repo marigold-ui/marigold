@@ -2,7 +2,6 @@
 
 import { venueTypes } from '@/lib/data/venues';
 import type { FormEvent } from 'react';
-import { useState } from 'react';
 import {
   Button,
   Drawer,
@@ -27,24 +26,29 @@ import {
 // ---------------
 const Search = () => {
   const [search, setSearch] = useSearch();
-  const [value, setValue] = useState(search);
+
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    setSearch(data.get('q') as string);
+  };
 
   return (
-    <>
+    <Form onSubmit={submit} unstyled>
       <SearchField
         aria-label="Search"
         description="Search by venue name"
+        name="q"
         width={64}
         autoComplete="off"
-        value={value}
-        onChange={setValue}
+        defaultValue={search}
         onSubmit={setSearch}
         onClear={() => setSearch('')}
       />
-      <Button variant="primary" onPress={() => setSearch(value)}>
+      <Button variant="primary" type="submit">
         Search
       </Button>
-    </>
+    </Form>
   );
 };
 
