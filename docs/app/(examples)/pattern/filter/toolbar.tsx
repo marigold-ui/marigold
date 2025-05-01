@@ -61,51 +61,45 @@ interface FilterFormProps {
   };
 }
 
-const FilterForm = ({ state }: FilterFormProps) => {
-  return (
-    <Stack space={12}>
-      <Radio.Group label="Venue Type" name="type" defaultValue={state.type}>
-        <Radio value="">All</Radio>
-        {venueTypes.map((type, idx) => (
-          <Radio key={type} value={`${idx}`}>
-            {type}
-          </Radio>
-        ))}
-      </Radio.Group>
-      <NumberField
-        label="Min. Capacity"
-        name="capacity"
-        defaultValue={state.capacity}
-        minValue={0}
-        step={10}
-      />
-      <Slider
-        label="Max. Price"
-        thumbLabels={['price']}
-        defaultValue={state.price}
-        step={100}
-        maxValue={defaultFilter.price}
-        formatOptions={{
-          style: 'currency',
-          currency: 'EUR',
-          minimumFractionDigits: 0,
-        }}
-      />
-      <Radio.Group
-        label="Min. Rating"
-        name="rating"
-        defaultValue={state.rating}
-      >
-        <Radio value="">none</Radio>
-        <Radio value="1">1</Radio>
-        <Radio value="2">2</Radio>
-        <Radio value="3">3</Radio>
-        <Radio value="4">4</Radio>
-        <Radio value="5">5</Radio>
-      </Radio.Group>
-    </Stack>
-  );
-};
+const FilterForm = ({ state }: FilterFormProps) => (
+  <Stack space={12}>
+    <Radio.Group label="Venue Type" name="type" defaultValue={state.type}>
+      <Radio value="">All</Radio>
+      {venueTypes.map((type, idx) => (
+        <Radio key={type} value={`${idx}`}>
+          {type}
+        </Radio>
+      ))}
+    </Radio.Group>
+    <NumberField
+      label="Min. Capacity"
+      name="capacity"
+      defaultValue={state.capacity}
+      minValue={0}
+      step={10}
+    />
+    <Slider
+      label="Max. Price"
+      thumbLabels={['price']}
+      defaultValue={state.price}
+      step={100}
+      maxValue={defaultFilter.price}
+      formatOptions={{
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0,
+      }}
+    />
+    <Radio.Group label="Min. Rating" name="rating" defaultValue={state.rating}>
+      <Radio value="">none</Radio>
+      <Radio value="1">1</Radio>
+      <Radio value="2">2</Radio>
+      <Radio value="3">3</Radio>
+      <Radio value="4">4</Radio>
+      <Radio value="5">5</Radio>
+    </Radio.Group>
+  </Stack>
+);
 
 // Component
 // ---------------
