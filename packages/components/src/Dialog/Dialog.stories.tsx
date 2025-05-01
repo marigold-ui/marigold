@@ -62,7 +62,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: ({ size, ...args }) => {
     return (
-      <Dialog.Trigger {...args}>
+      <Dialog.Trigger {...args} onOpenChange={v => console.log(v)}>
         <Button variant="primary">Open</Button>
         <Dialog size={size} closeButton>
           <Dialog.Title>This is a headline!</Dialog.Title>
