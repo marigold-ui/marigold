@@ -1,15 +1,33 @@
 import React from 'react';
 import { useNumberFormatter } from '@react-aria/i18n';
 
-interface NumericFormatProps extends Intl.NumberFormatOptions {
+export type NumerFormatterOptions = NonNullable<
+  Parameters<typeof useNumberFormatter>[0]
+>;
+
+type StringNumericLiteral =
+  | `${number}`
+  | 'Infinity'
+  | '-Infinity'
+  | '+Infinity';
+
+interface NumericFormatProps extends NumerFormatterOptions {
   /**
    * Value to be formatted.
    */
-  value: number | bigint;
+  value:
+    | number
+    | bigint
+    | StringNumericLiteral
+    | [number, number]
+    | [bigint, bigint]
+    | [StringNumericLiteral, StringNumericLiteral];
+
   /**
    * The numberingSystem accessor property of Intl.Locale instances returns the numeral system for this locale.
    */
   numberingSystem?: string;
+
   /**
    * Specifies that the digits should take the full width.
    * @default true
@@ -22,12 +40,14 @@ export const NumericFormat = ({
   tabular = true,
   ...props
 }: NumericFormatProps) => {
-  const numberFormatter = useNumberFormatter({
+  const formatter = useNumberFormatter({
     ...props,
   });
   return (
     <span className={tabular ? 'tabular-nums' : undefined}>
-      {numberFormatter.format(value)}
+      {Array.isArray(value)
+        ? formatter.formatRange(value[0], value[1])
+        : formatter.format(value)}
     </span>
   );
 };
