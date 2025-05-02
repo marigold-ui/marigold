@@ -3,6 +3,7 @@ import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Key } from 'react';
 import { Tag } from '.';
+import { Form } from '../Form';
 
 const meta = {
   title: 'Components/Tag',
@@ -103,6 +104,24 @@ export const MultiSelectTags: Story = {
         </Tag.Group>
         <p>Current selection (controlled): {[...selected].join(', ')}</p>
       </>
+    );
+  },
+};
+
+export const UsageInForm: Story = {
+  render: args => {
+    return (
+      <Form>
+        <Tag.Group name="amenities" {...args}>
+          <Tag id="laundry">Laundry</Tag>
+          <Tag id="fitness">Fitness center</Tag>
+          <Tag id="parking">Parking</Tag>
+          <Tag id="pool" disabled>
+            Swimming pool
+          </Tag>
+          <Tag id="breakfast">Breakfast</Tag>
+        </Tag.Group>
+      </Form>
     );
   },
 };

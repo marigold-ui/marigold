@@ -2,6 +2,7 @@ import type RAC from 'react-aria-components';
 import { TagGroup, TagList, TagListProps } from 'react-aria-components';
 import { WidthProp, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
+import { TagGroupHiddenInput } from './TagGroupHiddenInput';
 
 // Props
 // ---------------
@@ -23,6 +24,11 @@ export interface TagGroupProps
    * @default false
    */
   allowsRemoving?: boolean;
+
+  /**
+   * The name of the field, used when submitting form data.
+   */
+  name?: string;
 }
 
 // Component
@@ -34,6 +40,7 @@ const _TagGroup = ({
   renderEmptyState,
   variant,
   size,
+  name,
   ...rest
 }: TagGroupProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
@@ -47,6 +54,7 @@ const _TagGroup = ({
       >
         {children}
       </TagList>
+      {name ? <TagGroupHiddenInput name={name} /> : null}
     </FieldBase>
   );
 };
