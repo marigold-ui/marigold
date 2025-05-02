@@ -14,16 +14,12 @@ export interface TagGroupProps
     Pick<FieldBaseProps<'label'>, 'label' | 'description'> {
   variant?: string;
   size?: string;
+
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default full
    */
   width?: WidthProp['width'];
-  /**
-   * Displays a remove button on each tag.
-   * @default false
-   */
-  allowsRemoving?: boolean;
 
   /**
    * The name of the field, used when submitting form data.

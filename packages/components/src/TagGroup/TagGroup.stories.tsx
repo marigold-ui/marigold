@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, fn } from '@storybook/test';
+import userEvent from '@testing-library/user-event';
 import { FormEvent, Key } from 'react';
 import { Tag } from '.';
 import { Button } from '../Button';
@@ -10,31 +12,35 @@ import { Stack } from '../Stack';
 const meta = {
   title: 'Components/Tag',
   component: Tag.Group,
+  args: {
+    label: 'Categories',
+  },
 } satisfies Meta<typeof Tag.Group>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
+  args: {
+    onSelectionChange: fn(),
+  },
   render: args => (
-    <Tag.Group {...args} aria-label="Static TagGroup items example">
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
+    <Tag.Group {...args} selectionMode="single" label="Categories">
+      <Tag id="news">News</Tag>
+      <Tag id="travel">Travel</Tag>
+      <Tag id="gaming">Gaming</Tag>
+      <Tag id="shopping">Shopping</Tag>
     </Tag.Group>
   ),
-};
+  play: async ({ args, canvas }) => {
+    await userEvent.click(canvas.getByText('News'));
+    await userEvent.click(canvas.getByText('Gaming'));
 
-export const WithLabel: Story = {
-  render: args => (
-    <Tag.Group {...args} label="Categories">
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
-    </Tag.Group>
-  ),
+    expect(args.onSelectionChange).toHaveBeenCalledWith(
+      expect.objectContaining(new Set(['news', 'gaming']))
+    );
+  },
 };
 
 export const RemovableTags: Story = {
@@ -54,41 +60,9 @@ export const RemovableTags: Story = {
     };
 
     return (
-      <Tag.Group
-        {...args}
-        items={items}
-        aria-label="TagGroup removing example"
-        allowsRemoving
-        onRemove={onRemove}
-      >
+      <Tag.Group {...args} items={items} onRemove={onRemove}>
         {(item: { id: number; name: string }) => <Tag>{item.name}</Tag>}
       </Tag.Group>
-    );
-  },
-};
-
-export const MultiSelectTags: Story = {
-  render: args => {
-    const [selected, setSelected] = useState(new Set(['parking']));
-    return (
-      <>
-        <Tag.Group
-          {...args}
-          label="Amenities"
-          selectionMode="multiple"
-          selectedKeys={selected}
-          onSelectionChange={setSelected as any}
-        >
-          <Tag id="laundry">Laundry</Tag>
-          <Tag id="fitness">Fitness center</Tag>
-          <Tag id="parking">Parking</Tag>
-          <Tag id="pool" disabled>
-            Swimming pool
-          </Tag>
-          <Tag id="breakfast">Breakfast</Tag>
-        </Tag.Group>
-        <p>Current selection (controlled): {[...selected].join(', ')}</p>
-      </>
     );
   },
 };
@@ -109,10 +83,10 @@ export const UsageInForm: Story = {
         <Stack space={8}>
           <Stack space={2} alignX="left">
             <Tag.Group
+              {...args}
               label="Amenities"
               name="amenities"
               selectionMode="multiple"
-              {...args}
             >
               <Tag id="laundry">Laundry</Tag>
               <Tag id="fitness">Fitness center</Tag>
