@@ -13,11 +13,14 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // Context
+
+// Context
 // ---------------
 export interface ThemeSwitchContextType {
   current: string;
   themes: { [name: string]: Theme };
-  updateTheme: (theme: string) => void;
+  //eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  updateTheme: Function;
 }
 
 export const Context = createContext<ThemeSwitchContextType | null>(null);
