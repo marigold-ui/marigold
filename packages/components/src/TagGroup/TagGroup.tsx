@@ -10,7 +10,7 @@ type RemovedProps = 'className' | 'style' | 'children' | 'isRequired';
 
 export interface TagGroupProps
   extends Omit<RAC.TagGroupProps, RemovedProps>,
-    Pick<TagListProps<object>, 'items' | 'children' | 'renderEmptyState'>,
+    Pick<TagListProps<object>, 'items' | 'children'>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description'> {
   variant?: string;
   size?: string;
@@ -29,6 +29,11 @@ export interface TagGroupProps
    * The name of the field, used when submitting form data.
    */
   name?: string;
+
+  /**
+   * Provides content to display when there are no items in the tag list.
+   */
+  emptyState?: TagListProps<object>['renderEmptyState'];
 }
 
 // Component
@@ -37,7 +42,7 @@ const _TagGroup = ({
   width,
   items,
   children,
-  renderEmptyState,
+  emptyState,
   variant,
   size,
   name,
@@ -50,7 +55,7 @@ const _TagGroup = ({
       <TagList
         items={items}
         className={classNames.listItems}
-        renderEmptyState={renderEmptyState}
+        renderEmptyState={emptyState}
       >
         {children}
       </TagList>

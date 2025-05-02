@@ -1,30 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Key } from 'react';
+import { FormEvent, Key } from 'react';
 import { Tag } from '.';
+import { Button } from '../Button';
 import { Form } from '../Form';
+import { Stack } from '../Stack';
 
 const meta = {
   title: 'Components/Tag',
-  argTypes: {
-    label: {
-      control: {
-        type: 'text',
-      },
-      description: 'Label',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Label' },
-      },
-    },
-    width: {
-      control: {
-        type: 'text',
-      },
-      description: 'The width of the field',
-    },
-  },
+  component: Tag.Group,
 } satisfies Meta<typeof Tag.Group>;
 
 export default meta;
@@ -110,17 +95,40 @@ export const MultiSelectTags: Story = {
 
 export const UsageInForm: Story = {
   render: args => {
+    const [state, setState] = useState('');
+
+    const submit = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      const entries = Array.from(formData.entries());
+      setState(JSON.stringify(entries));
+    };
+
     return (
-      <Form>
-        <Tag.Group name="amenities" {...args}>
-          <Tag id="laundry">Laundry</Tag>
-          <Tag id="fitness">Fitness center</Tag>
-          <Tag id="parking">Parking</Tag>
-          <Tag id="pool" disabled>
-            Swimming pool
-          </Tag>
-          <Tag id="breakfast">Breakfast</Tag>
-        </Tag.Group>
+      <Form onSubmit={submit}>
+        <Stack space={8}>
+          <Stack space={2} alignX="left">
+            <Tag.Group
+              label="Amenities"
+              name="amenities"
+              selectionMode="multiple"
+              {...args}
+            >
+              <Tag id="laundry">Laundry</Tag>
+              <Tag id="fitness">Fitness center</Tag>
+              <Tag id="parking">Parking</Tag>
+              <Tag id="pool" disabled>
+                Swimming pool
+              </Tag>
+              <Tag id="breakfast">Breakfast</Tag>
+            </Tag.Group>
+            <Button type="submit">Submit</Button>
+          </Stack>
+
+          <pre>
+            <code>Submitted: {state}</code>
+          </pre>
+        </Stack>
       </Form>
     );
   },
