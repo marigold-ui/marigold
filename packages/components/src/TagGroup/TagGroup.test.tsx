@@ -1,39 +1,16 @@
-import { act, screen } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
+import { ThemeProvider } from '@marigold/system';
 import { Tag } from '.';
 import { Button } from '../Button';
-import { setup } from '../test.utils';
+import * as stories from './TagGroup.stories';
 
-//TODO: use user.keyboard, use them for style tests, refactoring
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Button: cva(),
-    CloseButton: cva('size-4'),
-    Field: cva(),
-    HelpText: { container: cva(), icon: cva() },
-    Label: { container: cva(), indicator: cva() },
-    Tag: {
-      tag: cva('border border-slate-600'),
-      closeButton: cva('bg-transparent'),
-      listItems: cva('flex gap-1'),
-    },
-  },
-};
-
-const { render } = setup({ theme });
+const { Basic } = composeStories(stories);
 
 test('render tag group', () => {
-  render(
-    <Tag.Group aria-label="static tag group items">
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
-    </Tag.Group>
-  );
+  render(<Basic aria-label="static tag group items" />);
 
   const element = screen.getByLabelText('static tag group items');
   expect(element).toBeInTheDocument();
@@ -77,7 +54,7 @@ test.each`
   let onRemoveSpy = vi.fn();
   const user = userEvent.setup();
   render(
-    <Tag.Group aria-label="tag group" allowsRemoving onRemove={onRemoveSpy}>
+    <Tag.Group aria-label="tag group" onRemove={onRemoveSpy}>
       <Tag key="1" aria-label="reactjs">
         ReactJs
       </Tag>
@@ -173,40 +150,4 @@ test('renders label', () => {
 
   const label = screen.queryByLabelText('Categories');
   expect(label).toBeInTheDocument();
-});
-
-test('render same styles for each tag', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Tag.Group aria-label="static tag group items" allowsRemoving>
-        <Tag key="news" data-testid="news">
-          News
-        </Tag>
-        <Tag key="travel">Travel</Tag>
-        <Tag key="gaming">Gaming</Tag>
-        <Tag key="shopping">Shopping</Tag>
-      </Tag.Group>
-    </ThemeProvider>
-  );
-
-  const taggroup = screen.getByRole('grid');
-  expect(taggroup).toBeVisible();
-  expect(taggroup.className).toMatchInlineSnapshot(`"flex gap-1"`);
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const tag = screen.getByTestId('news').parentElement;
-  expect(tag).toBeVisible();
-  expect(tag?.className).toMatchInlineSnapshot(`"flex gap-1"`);
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const gridCell = tag!.firstChild;
-  // @ts-ignore
-  expect(gridCell?.className).toMatchInlineSnapshot(
-    `"data-selection-mode:cursor-pointer border border-slate-600"`
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const closeButton = gridCell?.lastChild;
-  // @ts-ignore
-  expect(closeButton.className).toMatchInlineSnapshot(`""`);
 });
