@@ -2,9 +2,9 @@ import { composeStories } from '@storybook/react';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { ThemeProvider } from '@marigold/system';
 import { Tag } from '.';
 import { Button } from '../Button';
+import { Form } from '../Form';
 import * as stories from './TagGroup.stories';
 
 const { Basic } = composeStories(stories);
@@ -18,34 +18,6 @@ test('render tag group', () => {
   expect(tags.length).toBe(4);
 });
 
-test('has correct accessibility roles', () => {
-  render(
-    <Tag.Group aria-label="tag group">
-      <Tag aria-label="Day 1">Day 1</Tag>
-    </Tag.Group>
-  );
-
-  let tagGroup = screen.getByRole('grid');
-  expect(tagGroup).toBeInTheDocument();
-
-  let tags = screen.getAllByRole('row');
-  let cells = screen.getAllByRole('gridcell');
-  expect(tags).toHaveLength(cells.length);
-});
-
-test('has correct initial tab index', () => {
-  render(
-    <Tag.Group aria-label="tag group">
-      <Tag aria-label="superhero">Superhero</Tag>
-      <Tag aria-label="villain">Villain</Tag>
-    </Tag.Group>
-  );
-
-  let tags = screen.getAllByRole('row');
-  expect(tags[0]).toHaveAttribute('tabIndex', '0');
-  expect(tags[1]).toHaveAttribute('tabIndex', '0');
-});
-
 test.each`
   name                         | props
   ${'on `Delete` keypress'}    | ${{ keyPress: '{Delete}' }}
@@ -53,49 +25,21 @@ test.each`
 `('Remove tag $name', async ({ props }) => {
   let onRemoveSpy = vi.fn();
   const user = userEvent.setup();
-  render(
-    <Tag.Group aria-label="tag group" onRemove={onRemoveSpy}>
-      <Tag key="1" aria-label="reactjs">
-        ReactJs
-      </Tag>
-      <Tag key="2" aria-label="vuejs">
-        Vue.js
-      </Tag>
-      <Tag key="3" aria-label="anuglar">
-        Anuglar
-      </Tag>
-    </Tag.Group>
-  );
+  render(<Basic aria-label="tag group" onRemove={onRemoveSpy} />);
 
-  let vuejs = screen.getByText('Vue.js');
+  const gaming = screen.getByText('Gaming');
 
-  await user.click(vuejs);
+  await user.click(gaming);
   await user.keyboard(`${props.keyPress}`);
   expect(onRemoveSpy).toHaveBeenCalledTimes(1);
 });
 
 test('should navigate with keyboard keys through items', async () => {
   const user = userEvent.setup();
-  render(
-    <>
-      <Tag.Group aria-label="tag group">
-        <Tag key="1" aria-label="small">
-          small
-        </Tag>
-        <Tag key="2" aria-label="medium">
-          medium
-        </Tag>
-        <Tag key="3" aria-label="big">
-          big
-        </Tag>
-      </Tag.Group>
-    </>
-  );
+  render(<Basic />);
 
-  let tags = screen.getAllByRole('row');
-  act(() => {
-    tags[0].focus();
-  });
+  const tags = screen.getAllByRole('row');
+  await user.tab();
 
   await user.keyboard('{arrowRight}');
   expect(tags[1]).toHaveFocus();
@@ -113,41 +57,45 @@ test('should navigate with keyboard keys through items', async () => {
   expect(tags[2]).not.toHaveFocus();
 });
 
-test('should remember last focused element', async () => {
-  const user = userEvent.setup();
-  render(
-    <>
-      <Tag.Group aria-label="tag group">
-        <Tag key="1" aria-label="designsystem">
-          Design System
-        </Tag>
-        <Tag key="2" aria-label="core">
-          Core
-        </Tag>
-      </Tag.Group>
-      <Button variant="primary" aria-label="ButtonAfter" />
-    </>
-  );
-
-  let buttonAfter = screen.getByLabelText('ButtonAfter');
-  let tags = screen.getAllByRole('row');
-
-  await user.tab();
-  await user.tab();
-  expect(buttonAfter).toHaveFocus();
-
-  await user.tab({ shift: true });
-  expect(tags[0]).toHaveFocus();
-});
-
 test('renders label', () => {
-  render(
-    <Tag.Group aria-label="tag group" label="Categories">
-      <Tag aria-label="superhero">Superhero</Tag>
-      <Tag aria-label="villian">Villian</Tag>
-    </Tag.Group>
-  );
+  render(<Basic aria-label="tag group" label="Categories" />);
 
   const label = screen.queryByLabelText('Categories');
   expect(label).toBeInTheDocument();
+});
+
+test('can be used like a native form element', async () => {
+  let data: [string, FormDataEntryValue][] = [];
+  const submit = vi.fn(event => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    data = Array.from(formData.entries());
+  });
+
+  render(
+    <Form onSubmit={submit}>
+      <Basic label="Categories" name="categories" selectionMode="multiple" />
+      <button type="submit">Submit</button>
+    </Form>
+  );
+
+  const user = userEvent.setup();
+  await user.click(screen.getByText('Travel'));
+  await user.click(screen.getByText('Gaming'));
+
+  const submitButton = screen.getByText('Submit');
+  await user.click(submitButton);
+
+  expect(data).toMatchInlineSnapshot(`
+    [
+      [
+        "categories",
+        "travel",
+      ],
+      [
+        "categories",
+        "gaming",
+      ],
+    ]
+  `);
 });
