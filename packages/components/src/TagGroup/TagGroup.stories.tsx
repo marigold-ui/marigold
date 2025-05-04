@@ -3,11 +3,9 @@ import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, within } from '@storybook/test';
 import userEvent from '@testing-library/user-event';
-import { FormEvent } from 'react';
 import { Key } from '@react-types/shared';
 import { Tag } from '.';
 import { Button } from '../Button';
-import { Form } from '../Form';
 import { Stack } from '../Stack';
 
 const meta = {
