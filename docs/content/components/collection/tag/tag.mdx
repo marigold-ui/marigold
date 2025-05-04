@@ -36,11 +36,48 @@ Tag labels should be concise, typically under 20 characters, to keep them easily
 
 Use sentence case and avoid unnecessary words or filler to maintain a consistent and clear labeling style. Each tag should be descriptive and specific to avoid ambiguity and help users quickly understand the meaning or purpose of the tag in context.
 
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/tag/tag-content-do.jpg"
+        alt="Use labels that are short, specific, and consistently formatted."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use labels that are short, specific, and consistently formatted.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/tag/tag-content-dont.jpg"
+        alt="Dont use less than three options"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid inconsistent casing, vague or lengthy labels, and hard-to-scan text.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
 ### Interactive vs static
 
 Do not use tags to display the status of an object or to highlight new content, use the [badge component](/components/content/badge) instead.
 
 Tags are interactive elements intended for selection, filtering, or removal, whereas badges are static indicators meant to convey status or highlight new or updated items. Use badges when the information should be visible but not acted upon, and tags when the user needs to interact with or manage the content.
+
+### Removable tags
+
+Removable tags are ideal when users need to manage selected filters, categories, or input tokens. Use them when the tag represents user-generated or user-controlled content that may need to be revised or undone.
+
+<ComponentDemo file="./tag-removable.demo.tsx" />
 
 ## Props
 
@@ -53,18 +90,6 @@ Tags are interactive elements intended for selection, filtering, or removal, whe
 ### Tag.Group
 
 <PropsTable component="TagGroup" />
-
-### Tags with a label
-
-In this example we have the `<Tag>` component that has been given the `label`.
-
-<ComponentDemo file="./label-tag.demo.tsx" />
-
-### Removable tags
-
-In this example, the `<Tag>` component receives tags from a dynamic collection and can remove these tags.
-
-<ComponentDemo file="./remove-tag.demo.tsx" />
 
 ## Alternative components
 
