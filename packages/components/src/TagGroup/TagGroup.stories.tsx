@@ -77,51 +77,9 @@ export const RemovableTags: Story = {
     await userEvent.click(within(news).getByRole('button'));
     await userEvent.click(within(shopping).getByRole('button'));
 
-    expect(news).not.toBeInTheDocument();
-    expect(shopping).not.toBeInTheDocument();
+    await expect(news).not.toBeInTheDocument();
+    await expect(shopping).not.toBeInTheDocument();
 
-    // Reset
     await userEvent.click(canvas.getByText('Reset'));
-  },
-};
-
-export const UsageInForm: Story = {
-  render: args => {
-    const [state, setState] = useState('');
-
-    const submit = (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const formData = new FormData(e.currentTarget);
-      const entries = Array.from(formData.entries());
-      setState(JSON.stringify(entries));
-    };
-
-    return (
-      <Form onSubmit={submit}>
-        <Stack space={8}>
-          <Stack space={2} alignX="left">
-            <Tag.Group
-              {...args}
-              label="Amenities"
-              name="amenities"
-              selectionMode="multiple"
-            >
-              <Tag id="laundry">Laundry</Tag>
-              <Tag id="fitness">Fitness center</Tag>
-              <Tag id="parking">Parking</Tag>
-              <Tag id="pool" disabled>
-                Swimming pool
-              </Tag>
-              <Tag id="breakfast">Breakfast</Tag>
-            </Tag.Group>
-            <Button type="submit">Submit</Button>
-          </Stack>
-
-          <pre>
-            <code>Submitted: {state}</code>
-          </pre>
-        </Stack>
-      </Form>
-    );
   },
 };
