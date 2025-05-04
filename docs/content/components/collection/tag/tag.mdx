@@ -1,13 +1,14 @@
 ---
 title: Tag
-caption: Component for categorize content
+caption: Used to manage related options.
+badge: updated
 ---
 
-A `<Tag>` is a small, interactive element that displays a piece of information, typically formatted as a label or badge, it can indicate to different types, statuses, or categories.
+Tags help users explore, filter, or manage related options in a compact and accessible format. They are arranged in a container where they can be interacted with as a group. Tag groups are commonly used in search interfaces, content management systems, or anywhere users need to explore, refine, or manage categories and topics.
 
 ## Anatomy
 
-Tags are comprised of container, tag label and dismissable tags include an additional close icon.
+A tag group consists of a group label, a field label, individual tags with tag labels, and optional remove buttons for each tag.
 
 <Image
   src="/tag/tag-anatomy.jpg"
@@ -23,19 +24,23 @@ Tags are comprised of container, tag label and dismissable tags include an addit
 
 <AppearanceTable component={title} />
 
-- **Tag container:** This is the primary element that holds content and icons.
-
-- **Tag label:** Short descriptive text describing the tag.
-
-- **Remove icon:** Optional icon to remove the tag.
-
 ## Usage
 
-Tags are components that are often used to label different items, create categorization, filter data, select or deselect options.
+Tags are best used to help users explore, filter, or manage related options in a clear and compact format. They work well in interfaces where users need to select from a list of categories, refine content through filters, or manage applied labels such as interests, skills, or topics.
 
-### Optimal number of tags
+Because tags are small, lightweight, and easily scannable, they support quick decision-making and reduce visual noise. Use them when grouping semantically similar items, especially in forms, search experiences, or when summarizing user-defined inputs like selected filters or preferences.
 
-When using tags, it’s important to limit the number to avoid overwhelming the user. A general guideline is to use up to 10-15 tags in a single group. This ensures clarity and prevents the intperface from becoming cluttered, making it easier for users to scan and understand the categorized information.
+### Content and labeling
+
+Tag labels should be concise, typically under 20 characters, to keep them easily scannable and prevent visual clutter. Keep the total number of tags manageable, generally no more than 8 to 10 at once, to avoid overwhelming users.
+
+Use sentence case and avoid unnecessary words or filler to maintain a consistent and clear labeling style. Each tag should be descriptive and specific to avoid ambiguity and help users quickly understand the meaning or purpose of the tag in context.
+
+### Interactive vs static
+
+Do not use tags to display the status of an object or to highlight new content, use the [badge component](/components/content/badge) instead.
+
+Tags are interactive elements intended for selection, filtering, or removal, whereas badges are static indicators meant to convey status or highlight new or updated items. Use badges when the information should be visible but not acted upon, and tags when the user needs to interact with or manage the content.
 
 ## Props
 
@@ -66,8 +71,8 @@ In this example, the `<Tag>` component receives tags from a dynamic collection a
 <ul>
   <li>
     [Badge](/components/content/badge): Small indicator often used to show a
-    status, count, or notification on another UI element. It's typically less
-    interactive than a Tag and used for highlighting numbers or statuses.
+    status, count, or notification on another UI element. It is not interactive
+    like a Tag and used for highlighting statuses.
   </li>
 </ul>
 
