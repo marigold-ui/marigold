@@ -30,6 +30,12 @@ Tags are best used to help users explore, filter, or manage related options in a
 
 Because tags are small, lightweight, and easily scannable, they support quick decision-making and reduce visual noise. Use them when grouping semantically similar items, especially in forms, search experiences, or when summarizing user-defined inputs like selected filters or preferences.
 
+### Selection modes
+
+Tag groups support single or multiple selection to match different interaction needs. Use single selection when users need to make a clear and exclusive choice, such as selecting a format or category. Use multiple selection when users are refining results, customizing preferences, or filtering a list based on several criteria.
+
+<ComponentDemo file="./tag-selection.demo.tsx" />
+
 ### Content and labeling
 
 Tag labels should be concise, typically under 20 characters, to keep them easily scannable and prevent visual clutter. Keep the total number of tags manageable, generally no more than 8 to 10 at once, to avoid overwhelming users.
@@ -98,6 +104,22 @@ Removable tags are ideal when users need to manage selected filters, categories,
     [Badge](/components/content/badge): Small indicator often used to show a
     status, count, or notification on another UI element. It is not interactive
     like a Tag and used for highlighting statuses.
+  </li>
+  <li>
+    [Checkbox](/components/form/checkbox): Used when users need to select one or
+    more options from a list in a form-like setting. Better suited than tags for
+    structured input fields where persistent visibility of all choices is
+    important.
+  </li>
+  <li>
+    [Radio](/components/form/radio): Ideal for mutually exclusive choices,
+    especially in forms or settings. Prefer over tags when the focus is on
+    making a single clear decision with labeled options.
+  </li>
+  <li>
+    [Select](/components/form/select): Suitable for selecting one or more
+    options from a longer or dynamic list. Use instead of tags when space is
+    limited or when the list of options is too long to display at once.
   </li>
 </ul>
 
