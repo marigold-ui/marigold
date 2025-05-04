@@ -1,9 +1,7 @@
 import { composeStories } from '@storybook/react';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Tag } from '.';
-import { Button } from '../Button';
 import { Form } from '../Form';
 import * as stories from './TagGroup.stories';
 
