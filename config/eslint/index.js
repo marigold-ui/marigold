@@ -1,44 +1,96 @@
-module.exports = {
-  env: {
-    node: true,
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:jest/recommended',
-    'plugin:jest/style',
-    // diabled because not updated yet to version tailwind 4
-    // 'plugin:tailwindcss/recommended',
-    'prettier',
-  ],
-  settings: {
-    react: {
-      version: 'detect',
+import js from '@eslint/js';
+import typescript from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import prettier from 'eslint-config-prettier';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import testingLibraryPlugin from 'eslint-plugin-testing-library';
+import vitestPlugin from 'eslint-plugin-vitest';
+import globals from 'globals';
+import path from 'path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default [
+  js.configs.recommended,
+  // React support
+  {
+    files: ['**/*.{jsx,js,tsx,ts}'],
+    plugins: { react: reactPlugin, 'react-hooks': reactHooksPlugin },
+    settings: {
+      react: { version: 'detect' },
+    },
+    rules: {
+      ...reactPlugin.configs.flat.recommended.rules,
+      ...reactHooksPlugin.configs['recommended-latest'].rules,
+      'react/react-in-jsx-scope': 'off', // Not required for React 17+
+      'react/no-unescaped-entities': ['warn'],
+      'react-hooks/rules-of-hooks': ['warn'],
     },
   },
-  rules: {
-    // Disabled cause it doesn't currently work as of 01/02/2021
-    'no-redeclare': 'off',
-    '@typescript-eslint/no-redeclare': 'off',
+  vitestPlugin.configs.recommended,
+  // Testing Library support
+  {
+    files: ['**/*.{test,tests,spec}.{js,jsx,ts,tsx}'],
+    plugins: { 'testing-library': testingLibraryPlugin },
+    rules: {
+      ...testingLibraryPlugin.configs['flat/dom'].rules,
+      ...testingLibraryPlugin.configs['flat/react'].rules,
+    },
   },
-  parserOptions: {
-    babelOptions: {
-      parserOpts: {
-        // Allow imports like `import pkg from './package.json' assert { type: 'json' };`
-        plugins: ['importAssertions'],
+
+  // TypeScript support
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2024,
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        project: [
+          './../../tsconfig.json',
+          './../storybook/.storybook/tsconfig.json',
+        ],
+        tsconfigRootDir: __dirname,
+      },
+    },
+    plugins: { '@typescript-eslint': typescript },
+    rules: {
+      ...typescript.configs.recommended.rules,
+      'no-case-declarations': 'off', // TypeScript has better type checking, not needed
+      '@typescript-eslint/no-explicit-any': 'off', // Allow explicit any
+      '@typescript-eslint/no-unused-vars': 'warn', // Replace JS no-unused-vars rule
+    },
+  },
+  prettier,
+  {
+    rules: {
+      // Disabled cause it doesn't currently work as of 01/02/2021
+      'no-redeclare': 'off',
+      '@typescript-eslint/no-redeclare': 'off',
+    },
+  },
+  {
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+        ...globals.vitest,
       },
     },
   },
-  overrides: [
-    {
-      files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
-      rules: {
-        'no-undef': 'off',
-        'no-unused-vars': 'off',
-        'no-empty': 'off',
-        'no-redeclare': 'off',
-      },
-    },
-  ],
-};
+  // Ignored patterns and files
+  {
+    ignores: [
+      'node_modules/*',
+      '**/dist/*',
+      '*.min.js',
+      '*.css',
+      '*.md',
+      'vitest.config.ts',
+    ],
+  },
+];

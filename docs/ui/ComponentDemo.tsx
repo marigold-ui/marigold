@@ -43,6 +43,7 @@ export const ComponentDemo = ({
     throw Error(`No demo with name "${name}" found in the registry.`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   const Demo: ComponentType<{}> = registry[name].demo;
   const { current, themes } = useThemeSwitch();
 

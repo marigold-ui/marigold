@@ -5,7 +5,6 @@ export const Deal = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG {...props} viewBox="0 0 24 24" ref={ref}>
     <mask
       id="mask0"
-      mask-type="alpha"
       maskUnits="userSpaceOnUse"
       x="3"
       y="3"

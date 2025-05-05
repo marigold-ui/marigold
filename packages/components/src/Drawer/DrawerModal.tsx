@@ -4,7 +4,7 @@ import type { NonModalProps } from '../Overlay/NonModal';
 
 // Props
 // ---------------
-export interface DrawerModalProps extends NonModalProps {}
+export type DrawerModalProps = NonModalProps;
 
 // Component
 // ---------------

@@ -98,8 +98,11 @@ test('passes down "disabled" to checkboxes', () => {
     </Checkbox.Group>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toBeDisabled();
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('two')!.querySelector('input')).toBeDisabled();
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('three')!.querySelector('input')).toBeDisabled();
 });
 
@@ -118,14 +121,17 @@ test('passes down "read-only" to checkboxes', () => {
     </Checkbox.Group>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('two')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('three')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
@@ -148,14 +154,17 @@ test('passes down "error" to checkboxes', () => {
   );
 
   // Bug in `react-aria-components` props are spread on input AND label...
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('two')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('three')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'

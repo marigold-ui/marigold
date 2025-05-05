@@ -38,7 +38,6 @@ function CustomTab(props: any) {
 
 export const Basic: Story = {
   render: args => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [url, setUrl] = useState<string>('/FoR');
     return (
       <>

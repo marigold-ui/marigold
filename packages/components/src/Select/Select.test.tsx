@@ -1,6 +1,5 @@
 import {
   act,
-  cleanup,
   fireEvent,
   renderHook,
   screen,
@@ -84,7 +83,6 @@ const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
   }));
-afterEach(cleanup);
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -258,7 +256,7 @@ test('selected option is displayed in button', () => {
   expect(button).toHaveTextContent(/one/);
 });
 
-test('dismiss when clicking escape', () => {
+test('dismiss when clicking escape', async () => {
   render(
     <Select label="Label" data-testid="select">
       <Select.Option id="one">one</Select.Option>
@@ -272,7 +270,7 @@ test('dismiss when clicking escape', () => {
 
   const options = screen.getByRole('listbox');
   expect(options).toBeVisible();
-  userEvent.type(button, '{esc}');
+  await userEvent.type(button, '{esc}');
 });
 
 test('allows to disable select', () => {
@@ -453,7 +451,7 @@ test('forwards ref', () => {
 test('renders as tray', () => {
   const ref = React.createRef<HTMLButtonElement>();
 
-  let resize: Function;
+  let resize: () => void;
   window.addEventListener = vi.fn().mockImplementation((event, cb) => {
     if (event === 'resize') resize = cb;
   });

@@ -120,7 +120,6 @@ export const DefaultSelected: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [value, setValue] = useState('2');
     return (
       <Stack space={4}>

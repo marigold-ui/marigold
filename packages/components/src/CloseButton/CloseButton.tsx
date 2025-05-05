@@ -3,17 +3,10 @@ import { Button } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { ButtonProps } from '../Button';
 
-interface CloseButtonProps
-  extends Pick<
-    ButtonProps,
-    | 'onPress'
-    | 'size'
-    | 'variant'
-    | 'slot'
-    | 'aria-label'
-    | 'className'
-    | 'style'
-  > {}
+type CloseButtonProps = Pick<
+  ButtonProps,
+  'onPress' | 'size' | 'variant' | 'slot' | 'aria-label' | 'className' | 'style'
+>;
 
 export const CloseButton = forwardRef(
   (
