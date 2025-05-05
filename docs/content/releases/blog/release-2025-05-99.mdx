@@ -63,21 +63,17 @@ The `<Dialog.Title>` component is now independent of `<Headline>`, which allows 
 
 #### Drawer (beta)
 
-A new drawer components has been added. There is no documentation yet because it isstill in beta. The component will be used in the upcoming filter pattern.
+A new drawer components has been added. There is no documentation yet because it isstill in beta. You can take a look at the drawer components in Storybook (https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-drawer--basic&globals=theme%3Arui).
 
-You can take a look at the drawer components in Storybook (https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-drawer--basic&globals=theme%3Arui).
-
-The drawer component ist only available in the RUI theme. If you would like to use the drawer components, let us know and we can help you.
+The drawer component ist only available in the RUI theme and will be used in the upcoming filter pattern. If you would like to use the drawer components, let us know and we can help you.
 
 #### Form
 
-An `unstyled` prop was added to the `<Form>` component to prevent layouts from breaking.
-A `maxWidth` prop was added to make it easier to limit the width of all child controls.
+To give you more control over layout behavior, the `<Form>` component now includes an `unstyled` prop, which prevents it from affecting surrounding layout. Additionally, a `maxWidth` prop was added to simplify limiting the width of all child controls.
 
 #### Pagination
 
-Keyboard navigation has been improved for the pagination component.
-The documentation was improved by replacing images with code and interactive examples.
+Keyboard navigation in the pagination component has been enhanced for a smoother user experience. Additionally, the documentation now features interactive examples instead of static images, making it easier to understand and experiment with the component.
 
 #### Multiselect
 
@@ -89,8 +85,7 @@ The value is no longer centered if no steppers are shown in the RUI theme.
 
 #### NumericFormat
 
-The component now allows formatting ranges; see the documentation for more information.
-See link: /components/formatters/numericformat#formatting-ranges
+The component now allows formatting ranges. See [the documentation](/components/formatters/numericformat#formatting-ranges) for more information and how to use this new feature.
 
 #### Switch
 
@@ -102,8 +97,7 @@ The empty style now spans over all table columns.
 
 #### Tag
 
-The `<Tag>` component can now be used in forms and behaves like a list of checkboxes.
-The `<Tag>` component now supports the disabled state.
+The `<Tag>` component now supports use within forms, behaving like a list of checkboxes. It also respects the `disabled` state for improved accessibility and control.
 
 #### Text
 
