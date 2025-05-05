@@ -6,13 +6,13 @@ changed:
   - components/form/multiselect
 ---
 
-// TODO: add short introduction
+We're excited to announce the release of Marigold v12.0.0, which includes breaking changes, new components, style utilities, and numerous enhancements and fixes. Read on to see what's new and what you need to update.
 
 ## Breaking Change
 
 ### Unify label API
 
-- the `<Checkbox>` and `<Switch>` components used the `children` prop for their labels, to make it clearer what and unify the API with other form controls, they also now have a `label` prop. The `children` are no longer supported
+We've standardized how labels are defined across form components. Previously, `<Checkbox>` and `<Switch>` used children to define labels. To align with other form controls and provide clearer structure, they now use a label prop. The children prop is no longer supported.
 
 **Before v12:**
 
@@ -30,91 +30,84 @@ changed:
 
 ### ListBox
 
-- the listbox is used by multiple components (`<Select>`, `<ComboBox>`, ...). basically everytime you pick something from a list of options
-- the components is currently only used internally
-- breaking change does not change the component APIs, but how the were styled
-- before components that used the `<ListBox>` styled the items via `option`, it is now called `item`. this was done to unify
+The `<ListBox>` is used by multiple components such as `<Select>` and `<ComboBox>`, essentially whenever a list of options is presented for selection.
+
+While the component is currently only used internally, this update includes a breaking change that affects its styling API. Previously, items were styled using the part name `option`, but this has now been unified to `item` to maintain consistency.
 
 ## Improvements
 
 ### RUI Theme
 
-- continue to improve the theme, still in beta, but we are now have a few applications that already use the theme in production, stable enought to already use
-- RUI is now available in the docs via the theme switcher on the top right
-- RUI is also available in storybook
-- can find more detailed and component-specific information in the components section
-- what is a good reason to leave the "beta"?
-
-- checkout latest [Storybook](https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-accordion--basic&globals=theme%3Arui).
+We continue to improve the RUI theme, which is still in beta, but we now have a few applications that already use the theme in production, making it stable enough to use. The RUI theme is now available in the documentation via the theme switcher on the top right and in [Storybook](https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-accordion--basic&globals=theme%3Arui).
 
 ### RUI style utils
 
-- we started creating TailwindCSS utils within RUI to make it easier for everybody to apply the styles to custom components
+We have started creating TailwindCSS utilities for RUI to make it easier for everyone to apply the styles to custom components.
 
-- `util-focus-ring` to apply focus styles, this should be usually be used with the `focus-visible:` modfifier. also don't forget to add `outline-none` to make sure no default outlines are shown
-- `utils-focus-borderless-ring` when component have their own border that you don't want to touch
-- `util-disabled` Defines a consistent visual and behavioral style for disabled UI elements.
-- `util-surface-{sunken, body, raised, overlay}`: These utility classes define visual surfaces with distinct background colors and elevation levels. Elevation is conveyed through shadows and borders, helping establish depth, hierarchy, and separation between interface layers. Use them to apply consistent surface styling across components.
+- The `util-focus-ring` utility applies focus styles and should usually be used with the `focus-visible:` modifier. Be sure to add `outline-none` to ensure that no default outlines are shown.
+- The `utils-focus-borderless-ring` utility should be used when components have their own border that you do not want to affect.
+- The `util-disabled` utility defines a consistent visual and behavioral style for disabled UI elements.
+- The `util-surface-{sunken, body, raised, overlay}` utility classes define visual surfaces with distinct background colors and elevation levels. Elevation is conveyed through shadows and borders, helping establish depth, hierarchy, and separation between interface layers. You can use these classes to apply consistent surface styling across components.
 
-- not yet documented but you can view them here: https://github.com/marigold-ui/marigold/blob/main/themes/theme-rui/src/utils.css
+These utilities are not yet documented, but you can view them here: https://github.com/marigold-ui/marigold/blob/main/themes/theme-rui/src/utils.css
 
 ### Components
 
-### Checkbox
+#### Checkbox
 
-- added dedicated `label` prop to set the label instead of using `children`
+A dedicated `label` prop was added to the `<Checkbox>` component to set the label instead of using `children`.
 
 #### Dialog
 
-- make `<Dialog.Title>` independent of `<Headline>` this allows for easier styling and more understanable styles
+The `<Dialog.Title>` component is now independent of `<Headline>`, which allows for easier and more understandable styling.
 
 #### Drawer (beta)
 
-- new components! no docs yet, still in beta
-- will be used in the upcoming filter pattern
-- can take a look at in storybook (https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-drawer--basic&globals=theme%3Arui)
-- only available in RUI theme
-- let us now if you want to use it and we can help you
+New drawer components have been added, although there is no documentation yet, and they are still in beta.
+These components will be used in the upcoming filter pattern.
+You can take a look at the drawer components in Storybook (https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-drawer--basic&globals=theme%3Arui).
+The drawer components are only available in the RUI theme.
+If you would like to use the drawer components, let us know and we can help you.
 
 #### Form
 
-- added `unstyled` prop to prevent layouts to break because of `<Form>` component
-- added `maxWidth` prop to make it easier to limit the width of all child controls
+An `unstyled` prop was added to the `<Form>` component to prevent layouts from breaking.
+A `maxWidth` prop was added to make it easier to limit the width of all child controls.
 
 #### Pagination
 
-- improve keyboard navigation
-- improve docs by replacing images with code and interactive examples
+Keyboard navigation has been improved for the pagination component.
+The documentation was improved by replacing images with code and interactive examples.
 
 #### Multiselect
 
-- add style for RUI theme
+Styles for the RUI theme were added to the multiselect component.
 
 #### NumberField
 
-- do not center value, if no steppers are shown (RUI theme)
+The value is no longer centered if no steppers are shown in the RUI theme.
 
 #### NumericFormat
 
-- allow format ranges, see docs for more information
-- link: /components/formatters/numericformat#formatting-ranges
+The component now allows formatting ranges; see the documentation for more information.
+See link: /components/formatters/numericformat#formatting-ranges
 
 #### Switch
 
-- added dedicated `label` prop to set the label instead of using `children`
+A dedicated `label` prop was added to the `<Switch>` component to set the label instead of using `children`.
 
 #### Table
 
-- empty style spans over the whole table columns
+The empty style now spans over all table columns.
 
 #### Tag
 
-- `<Tag>` can now be used in forms, behaves like a list of checkboxes
-- `<Tag>` now supports disabled
+The `<Tag>` component can now be used in forms and behaves like a list of checkboxes.
+The `<Tag>` component now supports the disabled state.
 
 #### Text
 
-- added `muted` variant (RUI theme)
+A `muted` variant was added to the text component in the RUI theme.
 
 ## Bug fixes
 
