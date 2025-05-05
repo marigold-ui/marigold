@@ -29,6 +29,16 @@ When related options are present, organizing them into sections enhances clarity
 
 This can be achieved by wrapping the options in the `<ComboBox.Section>` component. A header is required for each section, which is set using the `header` prop. It's important to note that headers are not part of the accessibility tree. As a result, they will not be considered when filtering the option list.
 
+<SectionMessage variant="info">
+  <SectionMessage.Title>When `textValue` is required</SectionMessage.Title>
+  <SectionMessage.Content>
+    Use the `textValue` prop when children contain non-text elements (e.g.,
+    icons, badges, or other decorative components) - this ensures search
+    functions revieve plain text equivalents, as non-text elements can create
+    mismatches between visual and semantic content.
+  </SectionMessage.Content>
+</SectionMessage>
+
 <ComponentDemo file="./combobox-section.demo.tsx" />
 
 ### Working with asynchronous Data
