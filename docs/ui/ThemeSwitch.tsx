@@ -13,8 +13,6 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // Context
-
-// Context
 // ---------------
 export interface ThemeSwitchContextType {
   current: string;

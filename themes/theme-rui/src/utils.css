@@ -16,7 +16,6 @@
  */
 @utility util-focus-* {
   border-color: --value(--color- *);
-  outline-style: none;
 
   --tw-ring-color: --alpha(--value(--color- *) / 50%);
   --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
@@ -33,8 +32,6 @@
  * Use this when the component has its own border and you need to keep it.
  */
 @utility util-focus-borderless-* {
-  outline-style: none;
-
   --tw-ring-color: --alpha(--value(--color- *) / 50%);
   --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
   box-shadow:

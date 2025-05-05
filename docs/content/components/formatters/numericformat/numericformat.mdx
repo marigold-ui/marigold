@@ -1,48 +1,58 @@
 ---
 title: NumericFormat
 caption: Helper component for formatting numeric based on the current language and locale-specific conventions.
+badge: updated
 ---
 
 With `<NumericFormat>` helper, you can easily ensure that numeric values are displayed consistently and accurately, taking into account factors such as decimal separators, currency symbols, and grouping separators specific to each language.
 
-`<NumericFormat>` component are built on top of the [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) APIs which provide a comprehensive support for formatting numbers on locale-specific conventions.
+The `<NumericFormat>` component is built on top of the [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) API, which provides comprehensive support for formatting numbers according to locale-specific conventions.
 
-However, there are a few components that should not be used together with this component.
+## Usage
 
-- [NumberField](/components/form/number-field)
-- [DateField](/components/form/datefield)
-- [SearchField](/components/form/search-field)
+Use `<NumericFormat>` when you want to display numeric values like currencies, percentages, or large numbers in a way that automatically adapts to the user's locale and language preferences. It is particularly useful for presenting read-only values in UI components such as tables, cards, and labels.
 
-## Import
+There is no need to use `<NumericFormat>` with input components like [NumberField](/components/form/number-field), as they already include their own built-in number formatting and parsing behavior.
+
+### Customization options
+
+You can customize how numbers are displayed by passing any [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) options directly as props to `<NumericFormat>`. This includes settings like how many decimal places to show, whether to format values as currency or percentages, and how to abbreviate large numbers.
+
+You can mix and match these options to match your needs. For a full list of available options, see the [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).
+
+<ComponentDemo file="./common-format.demo.tsx" />
+
+### Formatting ranges
+
+The `<NumericFormat>` component can also format a pair of values as a localized range. By passing an array of two numbers to the `value` prop, you can automatically display them with the correct range separator, grouping, and digit formatting for the current locale.
+
+<ComponentDemo file="./range-format.demo.tsx" />
+
+For accessibility, screen readers will treat the formatted range as one continuous string (for example, “1,000 – 5,000”). This works well in most cases, but if your interface needs to convey the start and end values as distinct pieces of information, you can render them as two separate `<NumericFormat>` components and supply explicit ARIA labels. This ensures that assistive technologies announce each value in context.
 
 ```tsx
-import { NumericFormat } from '@marigold/system';
+<Stack role="group" aria-labelledby="price-range-label">
+  <span id="price-range-label" className="visually-hidden">
+    Price range
+  </span>
+  <NumericFormat value={1000} aria-label="Minimum price" />
+  <span aria-hidden="true"> – </span>
+  <NumericFormat value={5000} aria-label="Maximum price" />
+</Stack>
 ```
 
-## Appearance
+### Tabular display
 
-<AppearanceTable component={title} />
+Use the `tabular` prop to align numbers in columns or tables. When enabled (the default), each digit has the same width, keeping rows straight. This is ideal for data tables, financial reports, or any layout where vertical alignment helps. To disable it, set `tabular={false}`.
+
+<ComponentDemo file="./tabular-format.demo.tsx" />
+
+### Numbering system
+
+Different locales use different numeral systems (for instance, Arabic or Devanagari digits). By specifying the `numberingSystem` prop, you can force the component to render numbers using any supported Unicode digit set, regardless of the current locale. This is useful when you want to match the visual style of a brand, support specific audience preferences, or demonstrate alternative numeral forms.
+
+<ComponentDemo file="./numbering-system-format.demo.tsx" />
 
 ## Props
 
 <PropsTable component={title} />
-
-## Examples
-
-### Formatted Currency Value
-
-In this example the value passed is formatted based on the currency chosen 'USD' .
-
-<ComponentDemo file="./currency-format.demo.tsx" />
-
-### Formatted Percentage Value
-
-In this example the decimal value is formatted into two fraction digits percentage value .
-
-<ComponentDemo file="./percent-format.demo.tsx" />
-
-### Formatted Numeric Value
-
-Formats the number with a max of 2 significant digits, only the most significant digits are displayed.
-
-<ComponentDemo file="./numeric-format.demo.tsx" />

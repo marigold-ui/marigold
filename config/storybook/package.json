@@ -51,7 +51,7 @@
     "react-dom": "19.1.0",
     "storybook": "^8.6.12",
     "typescript": "5.8.3",
-    "vite": "6.2.6"
+    "vite": "6.2.7"
   },
   "peerDependencies": {
     "@storybook/react": "^8.6.3",

@@ -4,7 +4,7 @@ import { inputInvalid, inputReadOnly } from './Input.styles';
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva([
     'rounded-lg h-input',
-    'has-focus-visible:util-focus-ring',
+    'has-focus-visible:util-focus-ring outline-none',
     inputInvalid,
     inputReadOnly,
     'border border-input text-sm shadow-sm shadow-black/5 transition-shadow',
