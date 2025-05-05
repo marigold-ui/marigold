@@ -1,9 +1,20 @@
 ---
-title: Marigold v12.0.0
+title: Marigold v11.6.0
 date: 2025-05-30
 type: Blog
 changed:
+  - components/collection/table
+  - components/content/text
+  - components/form/checkbox
+  - components/form/form
   - components/form/multiselect
+  - components/form/numberfield
+  - components/form/switch
+  - components/form/tag
+  - components/formatters/numericformat
+  - components/navigation/pagination
+  - components/overlay/dialog
+  - components/overlay/drawer
 ---
 
 We're excited to announce the release of Marigold v12.0.0, which includes breaking changes, new components, style utilities, and numerous enhancements and fixes. Read on to see what's new and what you need to update.
@@ -12,7 +23,7 @@ We're excited to announce the release of Marigold v12.0.0, which includes breaki
 
 ### Unify label API
 
-We've standardized how labels are defined across form components. Previously, `<Checkbox>` and `<Switch>` used children to define labels. To align with other form controls and provide clearer structure, they now use a label prop. The children prop is no longer supported.
+We've standardized how labels are defined across form components. Previously, `<Checkbox>` and `<Switch>` used children to define labels. To align with other form controls and provide clearer structure, they now use a label prop. The `children` prop is now marked as deprecated and will be removed in a future version.
 
 **Before v12:**
 
@@ -55,7 +66,7 @@ These utilities are not yet documented, but you can view them here: https://gith
 
 #### Checkbox
 
-A dedicated `label` prop was added to the `<Checkbox>` component to set the label instead of using `children`.
+A dedicated `label` prop was added to the `<Checkbox>` component to set the label instead of using `children`. The `children` prop is now marked as deprecated and will be removed in a future version.
 
 #### Dialog
 
@@ -89,7 +100,7 @@ The component now allows formatting ranges. See [the documentation](/components/
 
 #### Switch
 
-A dedicated `label` prop was added to the `<Switch>` component to set the label instead of using `children`.
+A dedicated `label` prop was added to the `<Switch>` component to set the label instead of using `children`. The `children` prop is now marked as deprecated and will be removed in a future version.
 
 #### Table
 
