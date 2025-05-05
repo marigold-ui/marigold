@@ -8,7 +8,7 @@
   "engines": {
     "node": "20.x"
   },
-  "packageManager": "pnpm@10.8.0",
+  "packageManager": "pnpm@10.10.0",
   "dependencies": {
     "@babel/core": "7.26.10",
     "@changesets/changelog-git": "0.2.1",
@@ -34,7 +34,7 @@
     "concurrently": "9.1.2",
     "eslint": "9.24.0",
     "husky": "9.1.7",
-    "next": "15.2.4",
+    "next": "15.3.1",
     "next-router-mock": "0.9.13",
     "playwright": "1.51.1",
     "postcss-import": "16.1.0",
