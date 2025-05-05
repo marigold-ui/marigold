@@ -49,7 +49,7 @@ export const HelpText = ({
   const ctx = useContext(FieldErrorContext);
 
   // Prevent rendering anything if no error/description should be shown.
-  if (!description && ctx && !ctx.isInvalid) {
+  if (!description && !ctx?.isInvalid) {
     return null;
   }
 
