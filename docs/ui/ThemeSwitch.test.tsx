@@ -38,14 +38,12 @@ test('returns the theme', () => {
 });
 
 test('switches the theme', async () => {
-  // useRouter.mockReturnValue({ replace: vi.fn() });
-
   const { result } = renderHook(() => useThemeSwitch(), { wrapper });
 
   act(() => {
     result.current.updateTheme(coreTheme);
   });
 
-  // @ts-ignore
+  // @ts-expect-error TS2339
   expect(result.current.current?.name).toMatchInlineSnapshot(`"core"`);
 });

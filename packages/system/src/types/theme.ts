@@ -7,6 +7,7 @@ export interface NestedStringObject {
 export interface ComponentStyleFunction<
   Variants extends string = never,
   Sizes extends string = never,
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   Additional extends { [name: string]: any } = {},
 > {
   (

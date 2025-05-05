@@ -36,7 +36,7 @@ const theme: Theme = {
 // There is no real accesible way to get to the element that acts as checkbox
 const getVisibleCheckbox = () => {
   const label = screen.getByText('With Label');
-  // eslint-disable-next-line testing-library/no-node-access
+
   return label.parentElement?.querySelector('[aria-hidden="true"]');
 };
 

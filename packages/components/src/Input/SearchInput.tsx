@@ -64,7 +64,6 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             onPress={() => onClear?.()}
             aria-label={stringFormatter.format('Clear search')}
             excludeFromTabOrder={true}
-            // @ts-ignore
             preventFocusOnPress={true}
           >
             <svg

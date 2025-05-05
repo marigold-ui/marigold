@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date';
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';

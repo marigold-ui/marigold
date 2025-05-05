@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { cleanup, renderHook, screen, within } from '@testing-library/react';
+import { renderHook, screen, within } from '@testing-library/react';
 import { vi } from 'vitest';
 import {
   OverlayContainerProvider,
@@ -55,8 +55,6 @@ window.matchMedia = mockMatchMedia([
   'screen and (min-width: 52em)',
   'screen and (min-width: 64em)',
 ]);
-
-afterEach(cleanup);
 
 test('renders portal container', async () => {
   const wrapper = () => (

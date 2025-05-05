@@ -6,7 +6,7 @@ import { useTabContext } from './Context';
 // props
 // ----------------------
 export interface TabListProps
-  extends Omit<RAC.TabListProps<Object>, 'className' | 'style'>,
+  extends Omit<RAC.TabListProps<object>, 'className' | 'style'>,
     GapSpaceProp {}
 
 // component
