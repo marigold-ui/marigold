@@ -361,5 +361,3 @@ test('uses fallback context when no context provider exists', () => {
   // Should only use base styles with no size/variant from context
   expect(result.current).toBe('align-center flex');
 });
-
-``;
