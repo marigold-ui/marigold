@@ -1,0 +1,130 @@
+---
+title: Marigold v12.0.0
+date: 2025-05-30
+type: Blog
+changed:
+  - components/form/multiselect
+---
+
+// TODO: add short introduction
+
+## Breaking Change
+
+### Unify label API
+
+- the `<Checkbox>` and `<Switch>` components used the `children` prop for their labels, to make it clearer what and unify the API with other form controls, they also now have a `label` prop. The `children` are no longer supported
+
+**Before v12:**
+
+```tsx
+<Checkbox>Do you agree?</Checkbox>
+<Switch>Dark mode</Switch>
+```
+
+**With v12:**
+
+```tsx
+<Checkbox label="Do you agree?" />
+<Switch label="Dark mode" />
+```
+
+### ListBox
+
+- the listbox is used by multiple components (`<Select>`, `<ComboBox>`, ...). basically everytime you pick something from a list of options
+- the components is currently only used internally
+- breaking change does not change the component APIs, but how the were styled
+- before components that used the `<ListBox>` styled the items via `option`, it is now called `item`. this was done to unify
+
+## Improvements
+
+### RUI Theme
+
+- continue to improve the theme, still in beta, but we are now have a few applications that already use the theme in production, stable enought to already use
+- RUI is now available in the docs via the theme switcher on the top right
+- RUI is also available in storybook
+- can find more detailed and component-specific information in the components section
+- what is a good reason to leave the "beta"?
+
+- checkout latest [Storybook](https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-accordion--basic&globals=theme%3Arui).
+
+### RUI style utils
+
+- we started creating TailwindCSS utils within RUI to make it easier for everybody to apply the styles to custom components
+
+- `util-focus-ring` to apply focus styles, this should be usually be used with the `focus-visible:` modfifier. also don't forget to add `outline-none` to make sure no default outlines are shown
+- `utils-focus-borderless-ring` when component have their own border that you don't want to touch
+- `util-disabled` Defines a consistent visual and behavioral style for disabled UI elements.
+- `util-surface-{sunken, body, raised, overlay}`: These utility classes define visual surfaces with distinct background colors and elevation levels. Elevation is conveyed through shadows and borders, helping establish depth, hierarchy, and separation between interface layers. Use them to apply consistent surface styling across components.
+
+- not yet documented but you can view them here: https://github.com/marigold-ui/marigold/blob/main/themes/theme-rui/src/utils.css
+
+### Components
+
+### Checkbox
+
+- added dedicated `label` prop to set the label instead of using `children`
+
+### Dialog
+
+- make `<Dialog.Title>` independent of `<Headline>` this allows for easier styling and more understanable styles
+
+### Drawer (beta)
+
+- new components! no docs yet, still in beta
+- will be used in the upcoming filter pattern
+- can take a look at in storybook (https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-drawer--basic&globals=theme%3Arui)
+- only available in RUI theme
+- let us now if you want to use it and we can help you
+
+### Form
+
+- added `unstyled` prop to prevent layouts to break because of `<Form>` component
+- added `maxWidth` prop to make it easier to limit the width of all child controls
+
+### Pagination
+
+- improve keyboard navigation
+- improve docs by replacing images with code and interactive examples
+
+### Multiselect
+
+- add style for RUI theme
+
+### NumberField
+
+- do not center value, if no steppers are shown (RUI theme)
+
+### Switch
+
+- added dedicated `label` prop to set the label instead of using `children`
+
+#### Tag
+
+- `<Tag>` can now be used in forms, behaves like a list of checkboxes
+- `<Tag>` now supports disabled
+
+### Text
+
+- added `muted` variant (RUI theme)
+
+## Bug fixes
+
+- Make sure default outline is not used ([#4585](https://github.com/marigold-ui/marigold/pull/4585))
+- rename package in changeset ([#4581](https://github.com/marigold-ui/marigold/pull/4581))
+- Span empty state over the whole table width. ([#4577](https://github.com/marigold-ui/marigold/pull/4577))
+- Keyboard dismissable in command menu ([#4572](https://github.com/marigold-ui/marigold/pull/4572))
+- remove unneeded classnames from `<Modal>` ([#4573](https://github.com/marigold-ui/marigold/pull/4573))
+- Adjust z-index of table styles for sticky header ([#4571](https://github.com/marigold-ui/marigold/pull/4571))
+- Expose `<Drawer>` component ([#4565](https://github.com/marigold-ui/marigold/pull/4565))
+- Align icon in `<HelpText>` to the start ([#4557](https://github.com/marigold-ui/marigold/pull/4557))
+- Set correct outline on focus for input and textarea ([#4553](https://github.com/marigold-ui/marigold/pull/4553))
+- Make Multiselect props optional explicitly ([#4531](https://github.com/marigold-ui/marigold/pull/4531))
+- Fix overlapping `<NumberField>` ([#4530](https://github.com/marigold-ui/marigold/pull/4530))
+- Fix icon position in input fields ([#4529](https://github.com/marigold-ui/marigold/pull/4529))
+- Do not set styles for content in `<Accordion>` ([#4505](https://github.com/marigold-ui/marigold/pull/4505))
+- Use stone value without rgba to keep oklch color ([#4508](https://github.com/marigold-ui/marigold/pull/4508))
+- use `rgba` instead of `alpha` value in our theme.css ([#4506](https://github.com/marigold-ui/marigold/pull/4506))
+
+---
+
+Thanks for reading, and we hope you enjoy the new features in Marigold 11.2.2! Be sure to check out the updated documentation for more details, and as always, we're here if you need help.
