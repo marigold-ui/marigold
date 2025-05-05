@@ -75,6 +75,9 @@ export const RemovableTags: Story = {
     await userEvent.click(within(news).getByRole('button'));
     await userEvent.click(within(shopping).getByRole('button'));
 
+    // Sleep for flaky test
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     await expect(news).not.toBeInTheDocument();
     await expect(shopping).not.toBeInTheDocument();
 
