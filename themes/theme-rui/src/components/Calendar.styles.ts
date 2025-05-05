@@ -10,13 +10,13 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'outline-offset-2 duration-150 [transition-property:color,background-color,border-radius,box-shadow]',
     'disabled:pointer-events-none data-[unavailable]:pointer-events-none data-focus-visible:z-10 data-[hovered]:bg-hover selected:bg-brand data-[hovered]:text-foreground selected:text-brand-foreground data-[unavailable]:line-through',
     'disabled:opacity-30 data-[unavailable]:opacity-30',
-    'focus-visible:util-focus-borderless-ring',
+    'focus-visible:util-focus-borderless-ring outline-none',
   ]),
   calendarControllers: cva([
     'size-9 rounded-lg',
     'text-muted-foreground/80',
     'transition-colors',
-    'focus-visible:util-focus-ring',
+    'focus-visible:util-focus-ring outline-none',
   ]),
   calendarHeader: cva([
     'size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground/80',
