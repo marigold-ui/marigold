@@ -61,5 +61,3 @@ const _TagGroup = ({
 };
 
 export { _TagGroup as TagGroup };
-
-// TODO: Why is the helptext showing?
