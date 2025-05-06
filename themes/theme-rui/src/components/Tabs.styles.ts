@@ -4,7 +4,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   container: cva('flex flex-col gap-2'),
   tabsList: cva([
     'text-muted-foreground',
-    'flex items-center p-0.5 h-auto gap-2 border-b px-0 py-1',
+    'flex items-center p-0.5 h-auto gap-2 border-b border-border px-0 py-1',
   ]),
   tab: cva([
     'relative inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
