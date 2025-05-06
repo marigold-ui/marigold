@@ -55,7 +55,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
               UNSTABLE_portalContainer={portal as Element}
             >
               {children}
-              <Underlay open={open} variant="modal" />
+              <Underlay open={open} />
             </Popover>
           </>
         ) : (

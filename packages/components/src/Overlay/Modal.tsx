@@ -33,7 +33,6 @@ const _Modal = forwardRef<
       dismissable={dismissable}
       keyboardDismissable={keyboardDismissable}
       open={open}
-      variant="modal"
     >
       <Modal {...props} ref={ref}>
         {props.children}
