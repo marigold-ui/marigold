@@ -87,7 +87,7 @@ const _Dialog = forwardRef(
           {...props}
           ref={ref}
           className={cn(
-            'relative outline-hidden [&>*:not(:last-child)]:mb-4',
+            'relative mx-auto outline-hidden [&>*:not(:last-child)]:mb-4',
             "grid [grid-template-areas:'title'_'content'_'actions']",
             classNames.container
           )}
