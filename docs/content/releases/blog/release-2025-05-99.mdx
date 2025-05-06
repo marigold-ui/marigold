@@ -25,14 +25,14 @@ We're excited to announce the release of Marigold v12.0.0, which includes breaki
 
 We've standardized how labels are defined across form components. Previously, `<Checkbox>` and `<Switch>` used children to define labels. To align with other form controls and provide clearer structure, they now use a label prop. The `children` prop is now marked as deprecated and will be removed in a future version.
 
-**Before v12:**
+**Before v11.6.0:**
 
 ```tsx
 <Checkbox>Do you agree?</Checkbox>
 <Switch>Dark mode</Switch>
 ```
 
-**With v12:**
+**With v11.6.0:**
 
 ```tsx
 <Checkbox label="Do you agree?" />
@@ -74,7 +74,7 @@ The `<Dialog.Title>` component is now independent of `<Headline>`, which allows 
 
 #### Drawer (beta)
 
-A new drawer components has been added. There is no documentation yet because it isstill in beta. You can take a look at the drawer components in Storybook (https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-drawer--basic&globals=theme%3Arui).
+A new drawer components has been added. There is no documentation yet because it is still in beta. You can take a look at the drawer components in [Storybook](https://marigold-latest.vercel.app/?path=%2Fstory%2Fcomponents-drawer--basic&globals=theme%3Arui).
 
 The drawer component ist only available in the RUI theme and will be used in the upcoming filter pattern. If you would like to use the drawer components, let us know and we can help you.
 
@@ -134,4 +134,4 @@ A `muted` variant was added to the text component in the RUI theme.
 
 ---
 
-Thanks for reading, and we hope you enjoy the new features in Marigold 11.2.2! Be sure to check out the updated documentation for more details, and as always, we're here if you need help.
+Thanks for reading, and we hope you enjoy the new features in Marigold 11.6.0! Be sure to check out the updated documentation for more details, and as always, we're here if you need help.
