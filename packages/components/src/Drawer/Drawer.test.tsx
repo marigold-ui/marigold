@@ -47,6 +47,7 @@ const theme: Theme = {
       actions: cva(),
     },
     Underlay: cva(),
+    Modal: cva(),
   },
 };
 
