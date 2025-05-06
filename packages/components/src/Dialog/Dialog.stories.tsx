@@ -59,23 +59,26 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: ({ size, ...args }) => {
-    return (
-      <Dialog.Trigger {...args} onOpenChange={v => console.log(v)}>
-        <Button variant="primary">Open</Button>
-        <Dialog size={size} closeButton>
-          <Dialog.Title>This is a headline!</Dialog.Title>
-          <Dialog.Content>This is some not so very long text.</Dialog.Content>
-          <Dialog.Actions>
-            <Button slot="close" variant="secondary">
-              Cancel
-            </Button>
-            <Button variant="primary">Ok</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Dialog.Trigger>
-    );
-  },
+  render: ({ size, ...args }) => (
+    <Dialog.Trigger {...args}>
+      <Button variant="primary">Open</Button>
+      <Dialog size={size} closeButton>
+        <Dialog.Title>Enable notifications</Dialog.Title>
+        <Dialog.Content>
+          Would you like to receive notifications for upcoming events and
+          updates?
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button variant="secondary" slot="close">
+            Cancel
+          </Button>
+          <Button variant="primary" slot="close">
+            Enable
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
 };
 
 export const Form: Story = {
