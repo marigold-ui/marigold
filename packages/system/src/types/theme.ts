@@ -93,6 +93,7 @@ export type Theme = {
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>
     >;
+    Modal?: ComponentStyleFunction<string, string>;
     MultiSelect?: Record<
       | 'container'
       | 'closeButton'
