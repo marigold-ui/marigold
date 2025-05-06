@@ -1,9 +1,8 @@
 import { useState } from '@storybook/preview-api';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react';
 import { Button } from '../Button';
 import { Checkbox, CheckboxGroup } from '../Checkbox';
 import { Menu } from '../Menu';
-import { Modal, ModalProps } from '../Overlay/Modal';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
@@ -11,31 +10,15 @@ import { Dialog } from './Dialog';
 
 const meta = {
   title: 'Components/Dialog',
-  component: Modal,
+  component: Dialog.Trigger,
   argTypes: {
     dismissable: {
       control: { type: 'boolean' },
       description: 'Set dismissable',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'true' },
-      },
     },
     keyboardDismissable: {
       control: { type: 'boolean' },
       description: 'Set keyboardDismissable',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'true' },
-      },
-    },
-    open: {
-      control: { type: 'boolean' },
-      description: 'Set open state',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     size: {
       control: {
@@ -43,20 +26,27 @@ const meta = {
       },
       description: 'Size of the dialog',
       options: ['default', 'small', 'medium', 'large'],
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'default' },
+      mapping: {
+        default: undefined,
+        small: 'small',
+        medium: 'medium',
+        large: 'large',
       },
     },
   },
   args: {
     dismissable: true,
     keyboardDismissable: true,
+    size: 'default',
   },
-} satisfies Meta<ModalProps>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<{
+  size?: string;
+  dismissable?: boolean;
+  keyboardDismissable?: boolean;
+}>;
 
 export const Basic: Story = {
   render: ({ size, ...args }) => (
