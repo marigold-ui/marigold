@@ -20,7 +20,7 @@ export const metadata = {
   description: "Documentation of Reservix' Design System",
   icons: {
     icon:
-      // @ts-expect-error
+      // @ts-expect-error TS2538
       FAV_ICONS[process.env.NEXT_PUBLIC_VERCEL_ENV] || '/logo.svg',
   },
 };

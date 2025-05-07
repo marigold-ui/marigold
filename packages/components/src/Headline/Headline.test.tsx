@@ -43,7 +43,7 @@ test.each(['1', '2', '3', '4', '5', '6'])(
       </ThemeProvider>
     );
 
-    // @ts-expect-error
+    // @ts-expect-error TS18048
     const token = theme.components.Headline({ size: `level-${lvl}` });
     expect(token).toMatchSnapshot();
   }

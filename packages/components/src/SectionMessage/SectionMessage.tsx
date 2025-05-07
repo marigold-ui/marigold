@@ -111,6 +111,7 @@ export const SectionMessage = ({
   const { buttonProps } = useButton(props, buttonRef);
 
   const handleClose = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onCloseChange && close && onCloseChange(close);
     if (close === undefined) {
       setInternalVisible(false);

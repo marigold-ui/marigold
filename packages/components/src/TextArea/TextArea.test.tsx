@@ -202,7 +202,7 @@ test('correctly sets up aria attributes (with error)', () => {
   expect(textArea).toHaveAttribute(
     'aria-describedby',
     // eslint-disable-next-line testing-library/no-node-access
-    expect.stringContaining(error?.parentElement?.getAttribute('id')!)
+    expect.stringContaining(error!.parentElement!.getAttribute('id')!)
   );
 
   expect(textArea).toHaveAttribute('aria-invalid', 'true');

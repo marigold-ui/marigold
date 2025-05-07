@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { Header, Heading } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { useDrawerContext } from './Context';
+import { DrawerContext } from './Context';
 
 export interface DrawerTitleProps {
   variant?: string;
@@ -14,11 +14,11 @@ export interface DrawerTitleProps {
 }
 
 export const DrawerTitle = ({ variant, size, children }: DrawerTitleProps) => {
-  const ctx = useDrawerContext();
   const classNames = useClassNames({
     component: 'Drawer',
-    variant: variant ?? ctx.variant,
-    size: size ?? ctx.size,
+    size,
+    variant,
+    context: DrawerContext,
   });
 
   return (

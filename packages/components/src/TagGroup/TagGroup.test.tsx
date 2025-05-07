@@ -200,13 +200,13 @@ test('render same styles for each tag', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const gridCell = tag!.firstChild;
-  // @ts-ignore
+  // @ts-expect-error TS2339
   expect(gridCell?.className).toMatchInlineSnapshot(
     `"data-selection-mode:cursor-pointer border border-slate-600"`
   );
 
   // eslint-disable-next-line testing-library/no-node-access
   const closeButton = gridCell?.lastChild;
-  // @ts-ignore
+  // @ts-expect-error TS2339
   expect(closeButton.className).toMatchInlineSnapshot(`""`);
 });

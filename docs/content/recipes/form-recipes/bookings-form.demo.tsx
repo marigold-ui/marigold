@@ -13,7 +13,6 @@ import {
 } from '@marigold/components';
 import coreTheme from '@marigold/theme-core';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default () => (
   <ThemeProvider theme={coreTheme}>
     <Form>

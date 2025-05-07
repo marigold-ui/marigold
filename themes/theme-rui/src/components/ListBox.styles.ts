@@ -10,7 +10,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'selected:bg-selected',
     'hover:bg-hover hover:text-hover-foreground',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-    'focus-visible:util-focus-ring',
+    'focus-visible:util-focus-ring outline-none',
   ]),
   section: cva(''),
   header: cva(

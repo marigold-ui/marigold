@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Theme } from '../types';
 import { cva } from '../utils';
 
@@ -9,12 +8,15 @@ export type StylesProps = {
 export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
   const mergedStyles = { ...theme.components };
   Object.keys(newStyles).forEach(component => {
+    // @ts-expect-error any
     const componentStyles = newStyles[component];
 
+    // @ts-expect-error any
     const mergedComponentStyles = mergedStyles[component];
 
     if (!mergedComponentStyles) return mergedStyles;
 
+    // @ts-expect-error any
     if (typeof newStyles[component] !== 'function') {
       const mergeSlotStyles = Object.keys(componentStyles).reduce(
         (acc, slot) => {
@@ -22,6 +24,7 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
           const mergedSlot = mergedComponentStyles[slot];
 
           const variants = ['size', 'variant'].reduce((acc, variantItem) => {
+            // @ts-expect-error any
             acc[variantItem] = {
               ...newSlot?.variants?.[variantItem],
               ...mergedSlot?.variants?.[variantItem],
@@ -34,11 +37,14 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
         { ...mergedComponentStyles }
       );
 
+      // @ts-expect-error any
       mergedStyles[component] = mergeSlotStyles;
     } else {
       const variants = ['size', 'variant'].reduce((acc, variantItem) => {
+        // @ts-expect-error any
         const newStylesVariants = newStyles[component].variants?.[variantItem];
         const mergedStylesVariants =
+          // @ts-expect-error any
           mergedStyles[component].variants?.[variantItem];
 
         if (newStylesVariants && mergedStylesVariants) {
@@ -50,13 +56,17 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
           }
         }
 
+        // @ts-expect-error any
         acc[variantItem] = {
+          // @ts-expect-error any
           ...newStyles[component].variants?.[variantItem],
+          // @ts-expect-error any
           ...mergedStyles[component].variants?.[variantItem],
         };
         return acc;
       }, {});
 
+      // @ts-expect-error any any
       mergedStyles[component] = cva(
         [mergedComponentStyles(), componentStyles()],
         { variants }

@@ -1,6 +1,4 @@
-/* eslint-disable testing-library/no-node-access */
-/* eslint-disable testing-library/no-container */
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MockInstance, vi } from 'vitest';
 import { cva, useTheme } from '@marigold/system';
 import { MarigoldProvider } from './MarigoldProvider';
@@ -27,8 +25,6 @@ window.matchMedia = mockMatchMedia([
   'screen and (min-width: 52em)',
   'screen and (min-width: 64em)',
 ]);
-
-afterEach(cleanup);
 
 test('support cascading themes', () => {
   const outerTheme = {

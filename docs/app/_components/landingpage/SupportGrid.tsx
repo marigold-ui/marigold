@@ -4,7 +4,11 @@ import { useResponsiveValue } from '@/ui';
 import { Card, Headline, Inline, Link } from '@marigold/components';
 import { BlurFade } from '@/ui/BlurFade';
 
-const HelpIcon = ({ className = 'size-7' }) => (
+interface IconProps {
+  className?: string;
+}
+
+const HelpIcon = ({ className = 'size-7' }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -22,7 +26,7 @@ const HelpIcon = ({ className = 'size-7' }) => (
   </svg>
 );
 
-const ContributeIcon = ({ className = 'size-7' }) => (
+const ContributeIcon = ({ className = 'size-7' }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -40,7 +44,7 @@ const ContributeIcon = ({ className = 'size-7' }) => (
   </svg>
 );
 
-const BugIcon = ({ className = 'size-7' }) => (
+const BugIcon = ({ className = 'size-7' }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}

@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { cleanup, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import React from 'react';
 import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
@@ -49,8 +49,6 @@ window.matchMedia = mockMatchMedia([
   'screen and (min-width: 52em)',
   'screen and (min-width: 64em)',
 ]);
-
-afterEach(cleanup);
 
 test('renders open popover', () => {
   const ref = React.createRef<HTMLDivElement>();

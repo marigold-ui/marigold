@@ -3,6 +3,7 @@
   "description": "marigold's eslint configuration",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
   "keywords": [
     "marigiold",
     "lint",
@@ -25,16 +26,18 @@
     "@babel/plugin-transform-react-jsx": "^7.24.7",
     "@typescript-eslint/eslint-plugin": "8.29.1",
     "@typescript-eslint/parser": "8.29.1",
+    "@eslint/js": "9.24.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "2.31.0",
-    "eslint-plugin-jest": "28.11.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-prettier": "5.2.6",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-testing-library": "7.1.1",
+    "eslint-plugin-vitest": "0.5.4",
+    "globals": "16.0.0",
     "prettier": "3.5.3"
   },
   "peerDependencies": {

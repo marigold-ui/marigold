@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components';
 import { vi } from 'vitest';
@@ -86,8 +86,6 @@ describe('DatePicker', () => {
     }));
 
   window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-
-  afterEach(cleanup);
 
   describe('basics', () => {
     test('renders date picker with specified date', () => {
