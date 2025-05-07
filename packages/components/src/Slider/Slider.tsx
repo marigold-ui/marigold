@@ -1,4 +1,4 @@
-import React, { ReactNode, Ref, forwardRef } from 'react';
+import { Ref, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Slider,
