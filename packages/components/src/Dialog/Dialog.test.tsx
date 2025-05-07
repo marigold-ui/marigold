@@ -39,6 +39,7 @@ const theme: Theme = {
     Headline: cva(''),
     Header: cva(''),
     Underlay: cva('bg-black opacity-5'),
+    Modal: cva(''),
   },
 };
 

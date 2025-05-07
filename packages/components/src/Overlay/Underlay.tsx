@@ -39,7 +39,7 @@ export const Underlay = ({
     <ModalOverlay
       className={({ isEntering, isExiting }) =>
         cn(
-          'fixed inset-0 z-40 flex min-h-full items-center justify-center overflow-y-auto backdrop-blur-xs',
+          'fixed inset-0 z-40 grid place-items-center overflow-y-auto',
           isEntering ? 'animate-in fade-in duration-300 ease-out' : '',
           isExiting ? 'animate-out fade-out duration-200 ease-in' : '',
           classNames
