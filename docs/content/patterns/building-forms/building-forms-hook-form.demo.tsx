@@ -142,9 +142,10 @@ export default () => {
               name="terms"
               control={control}
               render={({ field }) => (
-                <Checkbox defaultChecked={field.value}>
-                  Agree to the terms
-                </Checkbox>
+                <Checkbox
+                  label="Agree to the terms"
+                  defaultChecked={field.value}
+                />
               )}
             />
           </Stack>
