@@ -1,9 +1,7 @@
 import { useState } from '@storybook/preview-api';
 import type { StoryObj } from '@storybook/react';
 import { Button } from '../Button';
-import { Checkbox, CheckboxGroup } from '../Checkbox';
 import { Menu } from '../Menu';
-import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
 import { Dialog } from './Dialog';
