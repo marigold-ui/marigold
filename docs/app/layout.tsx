@@ -6,7 +6,6 @@ import { fontSans } from '@/theme/fonts';
 import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 import { Analytics } from './_components/Analytics';
 import { PortalContaier } from './_components/PortalContainer';
-import { SiteHeader } from './_components/SiteHeader';
 import './globals.css';
 
 // Metadata
@@ -49,7 +48,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             initial={siteConfig.defaultTheme}
           >
             <MarigoldProvider theme={theme} className="min-h-screen">
-              <SiteHeader />
               {children}
             </MarigoldProvider>
             <PortalContaier />
