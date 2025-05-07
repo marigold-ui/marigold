@@ -12,15 +12,6 @@ const meta = {
       },
       description: 'Switch variant style',
     },
-    children: {
-      control: {
-        type: 'text',
-      },
-      description: 'deprecated use `label` instead',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
     label: {
       control: {
         type: 'text',
@@ -66,7 +57,7 @@ const meta = {
     },
   },
   args: {
-    children: 'Default Switch',
+    label: 'Default Switch',
     disabled: false,
     defaultSelected: false,
   },

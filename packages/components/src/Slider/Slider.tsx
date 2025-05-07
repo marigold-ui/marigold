@@ -16,8 +16,11 @@ import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { Label } from '../Label';
 
 export interface SliderProps<T>
-  extends Omit<RAC.SliderProps<T>, 'isDisabled' | 'orientation'>,
+  extends Omit<RAC.SliderProps<T>, 'children' | 'isDisabled' | 'orientation'>,
     Pick<FieldBaseProps<'label'>, 'description'> {
+  variant?: string;
+  size?: string;
+
   /**
    * Labels for the thumbs in the slider. Also used for the name when submitting the form.
    */
@@ -29,19 +32,11 @@ export interface SliderProps<T>
    */
   width?: WidthProp['width'];
 
-  variant?: string;
-  size?: string;
-
   /**
    * If `true`, the input is disabled.
    * @default false
    */
   disabled?: boolean;
-
-  /**
-   * @deprecated Will be removed in the next major version. Use `label` prop instead.
-   */
-  children?: ReactNode;
 
   /**
    * Set the label of the slider.
@@ -67,10 +62,10 @@ const _Slider = forwardRef(
       variant,
       size,
     });
-    const props: RAC.SliderProps = {
+    const props = {
       isDisabled: disabled,
       ...rest,
-    };
+    } satisfies RAC.SliderProps<T>;
     return (
       <FieldBase
         as={Slider}
@@ -82,10 +77,7 @@ const _Slider = forwardRef(
         ref={ref}
         {...props}
       >
-        <Label>
-          {(props.children && (props.children as React.ReactNode)) ||
-            (label && (label as React.ReactNode))}
-        </Label>
+        {label && <Label>{label}</Label>}
         <SliderOutput className={cn('flex justify-end', classNames.output)}>
           {({ state }) =>
             state.values.map((_, i) => state.getThumbValueLabel(i)).join(' – ')
