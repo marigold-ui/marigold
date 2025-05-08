@@ -43,9 +43,9 @@ const user = userEvent.setup();
 test('renders label and group of checkboxes', () => {
   render(
     <Checkbox.Group label="Group of Checkboxes">
-      <Checkbox value="one">one</Checkbox>
-      <Checkbox value="two">two</Checkbox>
-      <Checkbox value="three">three</Checkbox>
+      <Checkbox value="one" label="one" />
+      <Checkbox value="two" label="two" />
+      <Checkbox value="three" label="three" />
     </Checkbox.Group>
   );
 
@@ -58,9 +58,9 @@ test('renders label and group of checkboxes', () => {
 test('label is optional (can use aria-label instead)', () => {
   render(
     <Checkbox.Group aria-label="Aria Label">
-      <Checkbox value="one">one</Checkbox>
-      <Checkbox value="two">two</Checkbox>
-      <Checkbox value="three">three</Checkbox>
+      <Checkbox value="one" label="one" />
+      <Checkbox value="two" label="two" />
+      <Checkbox value="three" label="three" />
     </Checkbox.Group>
   );
 
@@ -73,9 +73,9 @@ test('label is optional (can use aria-label instead)', () => {
 test('applies group styles from theme', () => {
   render(
     <Checkbox.Group aria-label="With Label">
-      <Checkbox value="one">one</Checkbox>
-      <Checkbox value="two">two</Checkbox>
-      <Checkbox value="three">three</Checkbox>
+      <Checkbox value="one" label="one" />
+      <Checkbox value="two" label="two" />
+      <Checkbox value="three" label="three" />
     </Checkbox.Group>
   );
 
@@ -86,46 +86,40 @@ test('applies group styles from theme', () => {
 test('passes down "disabled" to checkboxes', () => {
   render(
     <Checkbox.Group label="Group of Checkboxes" disabled>
-      <Checkbox value="one" data-testid="one">
-        one
-      </Checkbox>
-      <Checkbox value="two" data-testid="two">
-        two
-      </Checkbox>
-      <Checkbox value="three" data-testid="three">
-        three
-      </Checkbox>
+      <Checkbox value="one" data-testid="one" label="one" />
+      <Checkbox value="two" data-testid="two" label="two" />
+      <Checkbox value="three" data-testid="three" label="three" />
     </Checkbox.Group>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toBeDisabled();
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('two')!.querySelector('input')).toBeDisabled();
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('three')!.querySelector('input')).toBeDisabled();
 });
 
 test('passes down "read-only" to checkboxes', () => {
   render(
     <Checkbox.Group label="Group of Checkboxes" readOnly>
-      <Checkbox value="one" data-testid="one">
-        one
-      </Checkbox>
-      <Checkbox value="two" data-testid="two">
-        two
-      </Checkbox>
-      <Checkbox value="three" data-testid="three">
-        three
-      </Checkbox>
+      <Checkbox value="one" data-testid="one" label="one" />
+      <Checkbox value="two" data-testid="two" label="two" />
+      <Checkbox value="three" data-testid="three" label="three" />
     </Checkbox.Group>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('two')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('three')!.querySelector('input')).toHaveAttribute(
     'aria-readonly',
     'true'
@@ -135,27 +129,24 @@ test('passes down "read-only" to checkboxes', () => {
 test('passes down "error" to checkboxes', () => {
   render(
     <Checkbox.Group label="Group of Checkboxes" error>
-      <Checkbox value="one" data-testid="one">
-        one
-      </Checkbox>
-      <Checkbox value="two" data-testid="two">
-        two
-      </Checkbox>
-      <Checkbox value="three" data-testid="three">
-        three
-      </Checkbox>
+      <Checkbox value="one" data-testid="one" label="one" />
+      <Checkbox value="two" data-testid="two" label="two" />
+      <Checkbox value="three" data-testid="three" label="three" />
     </Checkbox.Group>
   );
 
   // Bug in `react-aria-components` props are spread on input AND label...
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('two')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('three')!.querySelector('input')).toHaveAttribute(
     'aria-invalid',
     'true'
@@ -166,15 +157,9 @@ test('controlled', async () => {
   const onChange = vi.fn();
   render(
     <Checkbox.Group label="Group of Checkboxes" onChange={onChange}>
-      <Checkbox value="one" data-testid="one">
-        one
-      </Checkbox>
-      <Checkbox value="two" data-testid="two">
-        two
-      </Checkbox>
-      <Checkbox value="three" data-testid="three">
-        three
-      </Checkbox>
+      <Checkbox value="one" data-testid="one" label="one" />
+      <Checkbox value="two" data-testid="two" label="two" />
+      <Checkbox value="three" data-testid="three" label="three" />
     </Checkbox.Group>
   );
 
@@ -194,15 +179,9 @@ test('controlled', async () => {
 test('accepts description', () => {
   render(
     <Checkbox.Group label="Group of Checkboxes" description="My description">
-      <Checkbox value="one" data-testid="one">
-        one
-      </Checkbox>
-      <Checkbox value="two" data-testid="two">
-        two
-      </Checkbox>
-      <Checkbox value="three" data-testid="three">
-        three
-      </Checkbox>
+      <Checkbox value="one" data-testid="one" label="one" />
+      <Checkbox value="two" data-testid="two" label="two" />
+      <Checkbox value="three" data-testid="three" label="three" />
     </Checkbox.Group>
   );
 
@@ -212,15 +191,9 @@ test('accepts description', () => {
 test('accepts error message', () => {
   render(
     <Checkbox.Group label="Group of Checkboxes" error errorMessage="My Error">
-      <Checkbox value="one" data-testid="one">
-        one
-      </Checkbox>
-      <Checkbox value="two" data-testid="two">
-        two
-      </Checkbox>
-      <Checkbox value="three" data-testid="three">
-        three
-      </Checkbox>
+      <Checkbox value="one" data-testid="one" label="one" />
+      <Checkbox value="two" data-testid="two" label="two" />
+      <Checkbox value="three" data-testid="three" label="three" />
     </Checkbox.Group>
   );
 
@@ -231,9 +204,9 @@ test('works with a <FieldGroup>', () => {
   render(
     <FieldGroup labelWidth="100px">
       <Checkbox.Group label="Group of Checkboxes">
-        <Checkbox value="one">one</Checkbox>
-        <Checkbox value="two">two</Checkbox>
-        <Checkbox value="three">three</Checkbox>
+        <Checkbox value="one" label="one" />
+        <Checkbox value="two" label="two" />
+        <Checkbox value="three" label="three" />
       </Checkbox.Group>
     </FieldGroup>
   );
@@ -247,9 +220,9 @@ test('works with a <FieldGroup>', () => {
 test('horiziontal orientation style', () => {
   render(
     <Checkbox.Group label="Group of Checkboxes" orientation="horizontal">
-      <Checkbox value="one">one</Checkbox>
-      <Checkbox value="two">two</Checkbox>
-      <Checkbox value="three">three</Checkbox>
+      <Checkbox value="one" label="one" />
+      <Checkbox value="two" label="two" />
+      <Checkbox value="three" label="three" />
     </Checkbox.Group>
   );
   const presentation = screen
@@ -264,9 +237,7 @@ test('horiziontal orientation style', () => {
 test('pass down variant and size to <Checkbox>', () => {
   render(
     <Checkbox.Group label="Group of Checkboxes" size="small">
-      <Checkbox value="one" data-testid="one">
-        one
-      </Checkbox>
+      <Checkbox value="one" data-testid="one" label="one" />
     </Checkbox.Group>
   );
 

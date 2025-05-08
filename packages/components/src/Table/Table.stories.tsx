@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect } from 'react';
@@ -640,9 +639,11 @@ export const WithParentProp: Story = {
 
     return (
       <Stack>
-        <Checkbox checked={editable} onChange={setEditable}>
-          Allow editing
-        </Checkbox>
+        <Checkbox
+          label="Allow editing"
+          checked={editable}
+          onChange={setEditable}
+        />
         <DataTable editable={editable} {...args} />
       </Stack>
     );

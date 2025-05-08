@@ -7,7 +7,7 @@ export default () => (
       <Button variant="secondary" slot="close">
         Cancel
       </Button>
-      <Button variant="primary">Delete</Button>
+      <Button variant="destructive">Delete</Button>
     </Dialog.Actions>
   </Dialog>
 );

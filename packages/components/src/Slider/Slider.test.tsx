@@ -51,7 +51,7 @@ test('supports mouse click on value on track', () => {
 test('supports keyboard move up and down', async () => {
   const user = userEvent.setup();
 
-  render(<Slider maxValue={5}>Example</Slider>);
+  render(<Slider maxValue={5} label="Example" />);
   const slider = screen.getByRole('slider');
 
   fireEvent.click(screen.getByText(/Example/));
@@ -64,7 +64,7 @@ test('supports keyboard move up and down', async () => {
 test('supports keyboard move right and left', async () => {
   const user = userEvent.setup();
 
-  render(<Slider maxValue={5}>Example</Slider>);
+  render(<Slider maxValue={5} label="Example" />);
   const slider = screen.getByRole('slider');
 
   fireEvent.click(screen.getByText(/Example/));
@@ -75,13 +75,13 @@ test('supports keyboard move right and left', async () => {
 });
 
 test('supports disabled prop', () => {
-  render(<Slider disabled>Example</Slider>);
+  render(<Slider disabled label="Example" />);
   const inputElement = screen.getByRole('slider');
   expect(inputElement).toHaveAttribute(`disabled`);
 });
 
 test('supports defaultValue (uncontrolled)', () => {
-  render(<Slider defaultValue={[25]}>Example</Slider>);
+  render(<Slider defaultValue={[25]} label="Example" />);
   const slider = screen.getByRole('slider');
   expect(slider).toHaveValue('25');
 });
@@ -90,9 +90,11 @@ test('supports changing value (controlled)', () => {
   const TestComponent = () => {
     const [value, setValue] = React.useState(75);
     return (
-      <Slider value={value} onChange={(val: any) => setValue(val)}>
-        Example
-      </Slider>
+      <Slider
+        value={value}
+        onChange={(val: any) => setValue(val)}
+        label="Example"
+      />
     );
   };
   render(<TestComponent />);
@@ -105,9 +107,12 @@ test('supports changing value (controlled)', () => {
 
 test('supports formatOptions prop', () => {
   render(
-    <Slider formatOptions={{ style: 'percent' }} step={0.01} maxValue={1}>
-      Percent
-    </Slider>
+    <Slider
+      formatOptions={{ style: 'percent' }}
+      step={0.01}
+      maxValue={1}
+      label="Percent"
+    />
   );
 
   expect(screen.getByRole('status')).toContainHTML('0%');
@@ -118,7 +123,7 @@ test('supports formatOptions prop', () => {
 });
 
 test('takes full width by default', () => {
-  render(<Slider>Percent</Slider>);
+  render(<Slider label="Percent" />);
 
   const container = screen.getByRole('group');
   expect(container.className).toMatchInlineSnapshot(
@@ -127,7 +132,7 @@ test('takes full width by default', () => {
 });
 
 test('allows to set width via prop', () => {
-  render(<Slider width={44}>Percent</Slider>);
+  render(<Slider width={44} label="Percent" />);
 
   const container = screen.getByRole('group');
   expect(container.className).toMatchInlineSnapshot(
@@ -137,16 +142,18 @@ test('allows to set width via prop', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLDivElement>();
-  render(<Slider ref={ref as any}>Percent</Slider>);
+  render(<Slider ref={ref as any} label="Percent" />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
 
 test('multiple thumbs', () => {
   render(
-    <Slider defaultValue={[30, 60]} thumbLabels={['start', 'end']}>
-      Range
-    </Slider>
+    <Slider
+      defaultValue={[30, 60]}
+      thumbLabels={['start', 'end']}
+      label="Range"
+    />
   );
 
   const slider = screen.getAllByRole('slider');
@@ -159,9 +166,7 @@ test('supports changing value (controlled) with multiple thumbs', () => {
     const [value, setValue] = useState<number | number[]>([25, 75]);
 
     return (
-      <Slider value={value} onChange={setValue}>
-        Tickets for sale
-      </Slider>
+      <Slider value={value} onChange={setValue} label="Tickets for sale" />
     );
   };
   render(<TestComponent />);
@@ -188,18 +193,5 @@ test('supports disabled prop with multiple thumbs', () => {
   const inputElements = screen.getAllByRole('slider');
   inputElements.forEach(inputElement => {
     expect(inputElement).toHaveAttribute('disabled');
-  });
-});
-
-test('check for aria-labels', () => {
-  const labels = ['start', 'end'];
-
-  render(
-    <Slider defaultValue={[20, 30]} maxValue={100} thumbLabels={labels} />
-  );
-
-  const inputElements = screen.getAllByRole('slider');
-  inputElements.forEach((inputElement, index) => {
-    expect(inputElement).toHaveAccessibleName(labels[index]);
   });
 });

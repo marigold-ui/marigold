@@ -35,7 +35,7 @@ export default () => {
                 <Button variant="secondary" slot="close">
                   Cancel
                 </Button>
-                <Button variant="primary" onPress={close}>
+                <Button variant="destructive" onPress={close}>
                   Delete
                 </Button>
               </Dialog.Actions>

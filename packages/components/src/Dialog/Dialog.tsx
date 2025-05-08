@@ -59,11 +59,14 @@ export interface DialogProps
 }
 
 const _Dialog = forwardRef(
-  (props: DialogProps, ref: Ref<HTMLElement> | undefined) => {
+  (
+    { variant, size, ...props }: DialogProps,
+    ref: Ref<HTMLElement> | undefined
+  ) => {
     const classNames = useClassNames({
       component: 'Dialog',
-      variant: props.variant,
-      size: props.size,
+      variant,
+      size,
     });
     const { isDismissable, isKeyboardDismissDisabled, isOpen } =
       useContext(DialogContext);
@@ -82,12 +85,13 @@ const _Dialog = forwardRef(
         dismissable={isDismissable}
         keyboardDismissable={isKeyboardDismissDisabled}
         open={isOpen}
+        size={size}
       >
         <Dialog
           {...props}
           ref={ref}
           className={cn(
-            'relative outline-hidden [&>*:not(:last-child)]:mb-4',
+            'relative mx-auto outline-hidden [&>*:not(:last-child)]:mb-4',
             "grid [grid-template-areas:'title'_'content'_'actions']",
             classNames.container
           )}

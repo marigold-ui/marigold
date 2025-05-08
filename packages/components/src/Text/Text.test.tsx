@@ -61,7 +61,7 @@ test('renders a <p>/<span> element', () => {
   expect(span instanceof HTMLSpanElement).toBeTruthy();
 });
 
-test('test variant works', () => {
+test('variant works', () => {
   render(
     <ThemeProvider theme={theme}>
       <Text variant="one">text</Text>

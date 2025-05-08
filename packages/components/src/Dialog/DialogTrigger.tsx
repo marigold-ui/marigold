@@ -25,7 +25,6 @@ const _DialogTrigger = ({
   open,
   dismissable,
   keyboardDismissable,
-  size,
   ...rest
 }: DialogTriggerProps): ReactNode => {
   const props = {

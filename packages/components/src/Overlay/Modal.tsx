@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Modal } from 'react-aria-components';
+import { useClassNames } from '@marigold/system';
 import { Underlay } from './Underlay';
 
 // Props
@@ -20,26 +21,22 @@ const _Modal = forwardRef<
     ModalProps,
     'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
   >
->(({ open, dismissable, keyboardDismissable, ...rest }, ref) => {
+>(({ size, open, dismissable, keyboardDismissable, ...rest }, ref) => {
   const props: RAC.ModalOverlayProps = {
     isOpen: open,
     isDismissable: dismissable,
     isKeyboardDismissDisabled: keyboardDismissable,
     ...rest,
   };
+  const className = useClassNames({ component: 'Modal', size });
 
   return (
     <Underlay
       dismissable={dismissable}
       keyboardDismissable={keyboardDismissable}
       open={open}
-      variant="modal"
     >
-      <Modal
-        ref={ref}
-        className="relative flex w-full justify-center"
-        {...props}
-      >
+      <Modal {...props} className={className} ref={ref}>
         {props.children}
       </Modal>
     </Underlay>

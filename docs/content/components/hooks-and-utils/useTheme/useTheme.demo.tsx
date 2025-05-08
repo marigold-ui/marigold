@@ -11,7 +11,7 @@ export default () => {
           <List key={key}>
             <strong>{key}</strong>
             {Object.keys(value).map(item => (
-              <List.Item>
+              <List.Item key={crypto.randomUUID()}>
                 {item}
                 <br />
               </List.Item>

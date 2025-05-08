@@ -21,6 +21,7 @@ export default () => {
     indeterminate: selected.length > 0 && selected.length < size,
     checked: selected.length === size,
     onChange: () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       selected.length === size
         ? setSelected([])
         : setSelected(Object.keys(genres) as Genres[]);

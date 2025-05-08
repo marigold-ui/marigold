@@ -1,5 +1,4 @@
 /* eslint-disable testing-library/no-node-access */
-/* eslint-disable testing-library/no-container */
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
@@ -40,6 +39,7 @@ const theme: Theme = {
     Headline: cva(''),
     Header: cva(''),
     Underlay: cva('bg-black opacity-5'),
+    Modal: cva(''),
   },
 };
 
@@ -125,7 +125,7 @@ test('optionally renders a close button', () => {
   const dialog = screen.getByText('Content');
   expect(dialog).toBeVisible();
 
-  const closeButton = dialog.firstChild?.lastChild!;
+  const closeButton = dialog.firstChild?.lastChild as HTMLButtonElement;
   expect(closeButton).toBeInTheDocument();
 
   fireEvent.click(closeButton);

@@ -102,25 +102,26 @@ export const BorderRadius = () => (
 export const Breakpoints = () => {
   const { current } = useThemeSwitch();
 
-  if (!current) {
-    return null;
-  }
-
   const [breakpoints, setBreakpoints] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    const breakpointKeys = ['sm', 'md', 'lg', 'xl', '2xl'];
-    const breakpointValues: Record<string, string> = {};
+    if (!current) {
+      const breakpointKeys = ['sm', 'md', 'lg', 'xl', '2xl'];
+      const breakpointValues: Record<string, string> = {};
 
-    breakpointKeys.forEach(key => {
-      const value = getComputedStyle(
-        document.querySelector(`[data-theme="${current}"]`)!
-      ).getPropertyValue(`--breakpoint-${key}`);
-      breakpointValues[key] = value;
-    });
+      breakpointKeys.forEach(key => {
+        breakpointValues[key] = getComputedStyle(
+          document.querySelector(`[data-theme="${current}"]`)!
+        ).getPropertyValue(`--breakpoint-${key}`);
+      });
 
-    setBreakpoints(breakpointValues);
-  }, []);
+      setBreakpoints(breakpointValues);
+    }
+  }, [current]);
+
+  if (!current) {
+    return null;
+  }
 
   return (
     <div data-theme={current}>

@@ -57,7 +57,10 @@ export const decorators: any = [
         return (
           <>
             {Object.keys(THEME).map(key => (
-              <OverlayContainerProvider value={`portalContainer-${key}`}>
+              <OverlayContainerProvider
+                value={`portalContainer-${key}`}
+                key={key}
+              >
                 <Frame key={key} id={key} title={`Theme "${key}"`}>
                   <MarigoldProvider
                     theme={THEME[key as ThemeNames]}

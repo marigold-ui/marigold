@@ -1,10 +1,11 @@
 import { Tag } from '@marigold/components';
 
 export default () => (
-  <Tag.Group>
-    <Tag key="news">News</Tag>
-    <Tag key="travel">Travel</Tag>
-    <Tag key="gaming">Gaming</Tag>
-    <Tag key="shopping">Shopping</Tag>
+  <Tag.Group label="Audience type" selectionMode="multiple">
+    <Tag id="families">Families</Tag>
+    <Tag id="couples">Couples</Tag>
+    <Tag id="students">Students</Tag>
+    <Tag id="seniors">Seniors</Tag>
+    <Tag id="tourists">Tourists</Tag>
   </Tag.Group>
 );

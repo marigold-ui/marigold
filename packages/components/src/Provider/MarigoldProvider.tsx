@@ -2,8 +2,7 @@ import { Theme, ThemeProvider, ThemeProviderProps } from '@marigold/system';
 
 // Props
 // ---------------
-export interface MarigoldProviderProps<T extends Theme>
-  extends ThemeProviderProps<T> {}
+export type MarigoldProviderProps<T extends Theme> = ThemeProviderProps<T>;
 
 // Provider
 // ---------------

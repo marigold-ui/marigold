@@ -63,6 +63,7 @@ test('shows tooltip on focus', () => {
   const button = screen.getByText('Button!');
   fireEvent.focus(button);
 
+  // TODO: split into two tests
   // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => {
     expect(screen.queryByTestId('tooltip')).toBeVisible();

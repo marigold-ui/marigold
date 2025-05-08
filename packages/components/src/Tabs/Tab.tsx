@@ -5,7 +5,7 @@ import { useTabContext } from './Context';
 
 // props
 // ----------------------
-export interface TabProps extends Omit<RAC.TabProps, 'className' | 'style'> {}
+export type TabProps = Omit<RAC.TabProps, 'className' | 'style'>;
 
 // component
 // ----------------------
