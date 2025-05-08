@@ -10,6 +10,7 @@ import {
 import { Label } from '../Label';
 
 type RemovedProps =
+  | 'children'
   | 'className'
   | 'isDisabled'
   | 'isReadOnly'
@@ -20,11 +21,7 @@ type RemovedProps =
 export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   variant?: string;
   size?: string;
-  /**
-   * The children of the switch.
-   * @deprecated Will be removed in the next major version. Use `label` prop instead.
-   */
-  children?: ReactNode;
+
   /**
    * Set the label of the switch.
    */
@@ -70,12 +67,12 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
     ref
   ) => {
     const classNames = useClassNames({ component: 'Switch', size, variant });
-    const props: RAC.SwitchProps = {
+    const props = {
       isDisabled: disabled,
       isReadOnly: readOnly,
       isSelected: selected,
       ...rest,
-    };
+    } satisfies RAC.SwitchProps;
     return (
       <Switch
         {...props}
@@ -87,11 +84,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
           classNames.container
         )}
       >
-        {(props.children || label) && (
-          <Label elementType="span">
-            {(props.children as ReactNode) || label}
-          </Label>
-        )}
+        {label && <Label elementType="span">{label}</Label>}
         <div className="relative">
           <div className={classNames.track}>
             <div className={classNames.thumb} />

@@ -38,8 +38,8 @@ export default () => {
                 </Select.Option>
               </Select>
               <CheckboxGroup label>
-                <Checkbox value="1">nur Eigene anzeigen</Checkbox>
-                <Checkbox value="2">bilateral anzeigen</Checkbox>
+                <Checkbox value="1" label="nur Eigene anzeigen" />
+                <Checkbox value="2" label="bilateral anzeigen" />
               </CheckboxGroup>
             </FieldGroup>
           </Stack>
