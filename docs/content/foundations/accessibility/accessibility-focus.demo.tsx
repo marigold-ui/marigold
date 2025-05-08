@@ -20,11 +20,13 @@ export default () => (
             </Headline>
             <Stack space={4}>
               <Checkbox.Group aria-labelledby="dialog-headline">
-                <Checkbox value="newsletter" defaultChecked>
-                  Email Newsletter
-                </Checkbox>
-                <Checkbox value="reminder">Event Reminders</Checkbox>
-                <Checkbox value="promo">Promo Notifications</Checkbox>
+                <Checkbox
+                  value="newsletter"
+                  defaultChecked
+                  label="Email Newsletter"
+                />
+                <Checkbox value="reminder" label="Event Reminders" />
+                <Checkbox value="promo" label="Promo Notifications" />
               </Checkbox.Group>
               <Inline space={4}>
                 <Button variant="primary" onPress={close}>

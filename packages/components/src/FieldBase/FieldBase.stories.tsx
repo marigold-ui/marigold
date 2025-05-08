@@ -114,8 +114,8 @@ export const WithFieldGroup: Story = {
         <Radio value="2">Two</Radio>
       </RadioGroup>
       <CheckboxGroup label="Checkboxes">
-        <Checkbox value="1">One</Checkbox>
-        <Checkbox value="2">Two</Checkbox>
+        <Checkbox label="One" value="1" />
+        <Checkbox label="Two" value="2" />
       </CheckboxGroup>
     </FieldGroup>
   ),

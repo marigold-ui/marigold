@@ -64,7 +64,7 @@ export default () => {
             <Select.Option key={'switzerland'}>Switzerland</Select.Option>
           </Select>
           {selected !== '' && selected !== 'none' && (
-            <Checkbox>Agree to the terms</Checkbox>
+            <Checkbox label="Agree to the terms" />
           )}
         </Stack>
       </Stack>

@@ -18,15 +18,6 @@ const meta = {
         defaultValue: { summary: 'This is a Checkbox' },
       },
     },
-    children: {
-      control: {
-        type: 'text',
-      },
-      description: 'deprecated use `label` instead',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
     disabled: {
       control: {
         type: 'boolean',

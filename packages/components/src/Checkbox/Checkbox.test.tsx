@@ -45,7 +45,7 @@ const { render } = setup({ theme });
 // Tests
 // ---------------
 test('renders label and (hidden) checkbox', () => {
-  render(<Checkbox>With Label</Checkbox>);
+  render(<Checkbox label="With Label" />);
 
   const label = screen.getByText('With Label');
   expect(label).toBeInTheDocument();
@@ -68,11 +68,7 @@ test('allows to render without label', () => {
 });
 
 test('supports read only state', () => {
-  render(
-    <Checkbox readOnly defaultChecked>
-      Read Only
-    </Checkbox>
-  );
+  render(<Checkbox label="Read Only" readOnly defaultChecked />);
 
   const checkbox = screen.getByLabelText<HTMLInputElement>('Read Only');
   const component = screen.getByText('Read Only');
@@ -82,7 +78,7 @@ test('supports read only state', () => {
 });
 
 test('check if all slot class names are applied correctly', () => {
-  render(<Checkbox>With Label</Checkbox>);
+  render(<Checkbox label="With Label" />);
 
   const label = screen.getByText('With Label');
 
@@ -99,7 +95,7 @@ test('check if all slot class names are applied correctly', () => {
 });
 
 test('correct class name is set on size small', () => {
-  render(<Checkbox size="small">With Label</Checkbox>);
+  render(<Checkbox label="With Label" size="small" />);
 
   const label = screen.getByText('With Label');
 
@@ -109,14 +105,14 @@ test('correct class name is set on size small', () => {
 });
 
 test('support default checked', () => {
-  render(<Checkbox defaultChecked>With Label</Checkbox>);
+  render(<Checkbox label="With Label" defaultChecked />);
 
   const input = screen.getByLabelText<HTMLInputElement>('With Label');
   expect(input.checked).toBeTruthy();
 });
 
 test('supports indeterminate state', () => {
-  render(<Checkbox indeterminate>With Label</Checkbox>);
+  render(<Checkbox label="With Label" indeterminate />);
 
   const input = screen.getByLabelText<HTMLInputElement>('With Label');
   expect(input.indeterminate).toBeTruthy();
@@ -124,7 +120,7 @@ test('supports indeterminate state', () => {
 
 test('controlled', () => {
   const onChange = vi.fn();
-  render(<Checkbox onChange={onChange}>With Label</Checkbox>);
+  render(<Checkbox label="With Label" onChange={onChange} />);
   const input = screen.getByLabelText<HTMLInputElement>('With Label');
 
   fireEvent.click(input);
@@ -136,7 +132,7 @@ test('controlled', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLLabelElement>();
-  render(<Checkbox ref={ref}>Check it</Checkbox>);
+  render(<Checkbox label="Check it" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });
@@ -144,7 +140,7 @@ test('forwards ref', () => {
 test('works with a <FieldGroup>', () => {
   render(
     <FieldGroup labelWidth="100px">
-      <Checkbox>Check it</Checkbox>
+      <Checkbox label="Check it" />
     </FieldGroup>
   );
 

@@ -24,7 +24,7 @@ export const AppliedFilter = () => {
   }
 
   return (
-    <Tag.Group label="Applied Filters" allowsRemoving onRemove={removeFilter}>
+    <Tag.Group label="Applied Filters" onRemove={removeFilter}>
       {appliedFilters.map(([name, value]) => (
         <Tag id={name} key={name}>
           {toDisplayValue[name as FilterKeys](value as any)}

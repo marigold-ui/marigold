@@ -46,7 +46,7 @@ export default () => (
           <Select.Option key={'austria'}>Austria</Select.Option>
           <Select.Option key={'switzerland'}>Switzerland</Select.Option>
         </Select>
-        <Checkbox>Agree to the terms</Checkbox>
+        <Checkbox label="Agree to the terms" />
       </Stack>
     </Stack>
     <Stack alignX="right">

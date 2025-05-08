@@ -67,7 +67,7 @@ export default () => {
               Switzerland
             </Select.Option>
           </Select>
-          <Checkbox disabled>Agree to the terms</Checkbox>
+          <Checkbox label="Agree to the terms" disabled />
         </Stack>
       </Stack>
       <Stack alignX="right">
