@@ -1,26 +1,44 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import js from '@eslint/js';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'eslint/config';
+import marigoldBaseConfig from '@marigold/eslint-config';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname, //
-  recommendedConfig: js.configs.recommended, // Use the recommended ESLint configuration
-  allConfig: js.configs.all, // Use all ESLint configurations
-});
-
-export default [
+export default defineConfig([
+  marigoldBaseConfig,
+  // start overriding specific config/rules for marigold
+  {
+    rules: {
+      'react/display-name': 'off', // appears where we use forwardRef
+    },
+  },
+  {
+    languageOptions: {
+      globals: {
+        React: 'writable',
+      },
+    },
+  },
+  // end overriding specific config/rules for marigold
+  {
+    files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
+    rules: {
+      'no-empty': 'off',
+      'no-redeclare': 'off',
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+    },
+  },
   {
     ignores: [
-      '**/dist',
       '**/.next',
       '**/out',
       '**/storybook-static',
-      '**/docs/.contentlayer/**/**/*.mjs',
-    ], // Specify directories to ignore
+      '**/docs/.contentlayer/**/**/*.{mjs,d.ts}',
+      '**/docs/.registry/**',
+      '**/docs/content/.eslintrc.js',
+      '**/coverage',
+      'packages/types/src/**',
+      '**/.cache',
+      'public/**',
+      '**/config/storybook/.storybook/main.ts',
+    ],
   },
-  ...compat.extends('@marigold/eslint-config'), // Extend the configuration from '@marigold/eslint-config'
-];
+]);

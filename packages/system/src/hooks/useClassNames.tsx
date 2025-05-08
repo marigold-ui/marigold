@@ -1,6 +1,13 @@
+import { Context, createContext, useContext } from 'react';
 import { ComponentNames, ThemeComponent } from '../types';
 import { cn } from '../utils';
 import { useTheme } from './useTheme';
+
+interface ComponentContextProps {
+  size?: string;
+  variant?: string;
+  [key: string]: any;
+}
 
 export interface UseClassNamesProps<C extends ComponentNames> {
   component: C;
@@ -9,6 +16,7 @@ export interface UseClassNamesProps<C extends ComponentNames> {
   className?: ThemeComponent<C> extends (...args: any) => any
     ? string
     : { [slot in keyof ThemeComponent<C>]?: string };
+  context?: Context<ComponentContextProps>;
 }
 
 export type ComponentClassNames<C extends ComponentNames> =
@@ -18,13 +26,23 @@ export type ComponentClassNames<C extends ComponentNames> =
         [slot in keyof ThemeComponent<C>]: string;
       };
 
+const FallbackContext = createContext(
+  null
+) as Context<ComponentContextProps | null>;
+
 export const useClassNames = <C extends ComponentNames>({
   component,
   className,
   variant,
   size,
+  context: ComponentContext,
 }: UseClassNamesProps<C>): ComponentClassNames<C> => {
   const theme = useTheme();
+
+  const ctx = useContext(ComponentContext ?? FallbackContext);
+
+  const currentSize = size ?? ctx?.size;
+  const currentVariant = variant ?? ctx?.variant;
 
   // Get component styles
   const styles = theme.components[component];
@@ -44,7 +62,13 @@ export const useClassNames = <C extends ComponentNames>({
     }
 
     // @ts-expect-error (TS can not infer when to return string or an object)
-    return cn(styles({ variant, size, className }));
+    return cn(
+      styles({
+        variant: currentVariant,
+        size: currentSize,
+        className,
+      })
+    );
   }
 
   if (className !== undefined && typeof className !== 'object') {
@@ -60,8 +84,8 @@ export const useClassNames = <C extends ComponentNames>({
         slot,
         cn(
           style({
-            variant,
-            size,
+            variant: currentVariant,
+            size: currentSize,
             className: className && (className as any)[slot],
           })
         ),

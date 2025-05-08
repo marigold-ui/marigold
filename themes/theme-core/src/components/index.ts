@@ -24,6 +24,7 @@ export * from './Link.styles';
 export * from './List.styles';
 export * from './ListBox.styles';
 export * from './Menu.styles';
+export * from './Modal.styles';
 export * from './Multiselect.styles';
 export * from './SectionMessage.styles';
 export * from './NumberField.styles';

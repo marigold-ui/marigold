@@ -1,13 +1,14 @@
 ---
 title: Tag
-caption: Component for categorize content
+caption: Used to manage related options.
+badge: updated
 ---
 
-A `<Tag>` is a small, interactive element that displays a piece of information, typically formatted as a label or badge, it can indicate to different types, statuses, or categories.
+Tags help users explore, filter, or manage related options in a compact and accessible format. They are arranged in a container where they can be interacted with as a group. Tag groups are commonly used in search interfaces, content management systems, or anywhere users need to explore, refine, or manage categories and topics.
 
 ## Anatomy
 
-Tags are comprised of container, tag label and dismissable tags include an additional close icon.
+A tag group consists of a group label, a field label, individual tags with tag labels, and optional remove buttons for each tag.
 
 <Image
   src="/tag/tag-anatomy.jpg"
@@ -23,19 +24,66 @@ Tags are comprised of container, tag label and dismissable tags include an addit
 
 <AppearanceTable component={title} />
 
-- **Tag container:** This is the primary element that holds content and icons.
-
-- **Tag label:** Short descriptive text describing the tag.
-
-- **Remove icon:** Optional icon to remove the tag.
-
 ## Usage
 
-Tags are components that are often used to label different items, create categorization, filter data, select or deselect options.
+Tags are best used to help users explore, filter, or manage related options in a clear and compact format. They work well in interfaces where users need to select from a list of categories, refine content through filters, or manage applied labels such as interests, skills, or topics.
 
-### Optimal number of tags
+Because tags are small, lightweight, and easily scannable, they support quick decision-making and reduce visual noise. Use them when grouping semantically similar items, especially in forms, search experiences, or when summarizing user-defined inputs like selected filters or preferences.
 
-When using tags, it’s important to limit the number to avoid overwhelming the user. A general guideline is to use up to 10-15 tags in a single group. This ensures clarity and prevents the intperface from becoming cluttered, making it easier for users to scan and understand the categorized information.
+### Selection modes
+
+Tag groups support single or multiple selection to match different interaction needs. Use single selection when users need to make a clear and exclusive choice, such as selecting a format or category. Use multiple selection when users are refining results, customizing preferences, or filtering a list based on several criteria.
+
+<ComponentDemo file="./tag-selection.demo.tsx" />
+
+### Content and labeling
+
+Tag labels should be concise, typically under 20 characters, to keep them easily scannable and prevent visual clutter. Keep the total number of tags manageable, generally no more than 8 to 10 at once, to avoid overwhelming users.
+
+Use sentence case and avoid unnecessary words or filler to maintain a consistent and clear labeling style. Each tag should be descriptive and specific to avoid ambiguity and help users quickly understand the meaning or purpose of the tag in context.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/tag/tag-content-do.jpg"
+        alt="Use labels that are short, specific, and consistently formatted."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use labels that are short, specific, and consistently formatted.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/tag/tag-content-dont.jpg"
+        alt="Dont use less than three options"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid inconsistent casing, vague or lengthy labels, and hard-to-scan text.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Interactive vs static
+
+Tags should not be used to display the status of an object or to highlight newly added content, as these are static indicators that do not require user interaction. Use the [badge component](/components/content/badge) instead.
+
+Tags are interactive elements intended for selection, filtering, or removal, whereas badges are static indicators meant to convey status or highlight new or updated items. Use badges when the information should be visible but not acted upon, and tags when the user needs to interact with or manage the content.
+
+### Removable tags
+
+Removable tags are ideal when users need to manage selected filters, categories, or input tokens. Use them when the tag represents user-generated or user-controlled content that may need to be revised or undone.
+
+<ComponentDemo file="./tag-removable.demo.tsx" />
 
 ## Props
 
@@ -49,25 +97,29 @@ When using tags, it’s important to limit the number to avoid overwhelming the 
 
 <PropsTable component="TagGroup" />
 
-### Tags with a label
-
-In this example we have the `<Tag>` component that has been given the `label`.
-
-<ComponentDemo file="./label-tag.demo.tsx" />
-
-### Removable tags
-
-In this example, the `<Tag>` component receives tags from a dynamic collection and can remove these tags.
-
-<ComponentDemo file="./remove-tag.demo.tsx" />
-
 ## Alternative components
 
 <ul>
   <li>
     [Badge](/components/content/badge): Small indicator often used to show a
-    status, count, or notification on another UI element. It's typically less
-    interactive than a Tag and used for highlighting numbers or statuses.
+    status, count, or notification on another UI element. It is not interactive
+    like a Tag and used for highlighting statuses.
+  </li>
+  <li>
+    [Checkbox](/components/form/checkbox): Used when users need to select one or
+    more options from a list in a form-like setting. Better suited than tags for
+    structured input fields where persistent visibility of all choices is
+    important.
+  </li>
+  <li>
+    [Radio](/components/form/radio): Ideal for mutually exclusive choices,
+    especially in forms or settings. Prefer over tags when the focus is on
+    making a single clear decision with labeled options.
+  </li>
+  <li>
+    [Select](/components/form/select): Suitable for selecting one or more
+    options from a longer or dynamic list. Use instead of tags when space is
+    limited or when the list of options is too long to display at once.
   </li>
 </ul>
 

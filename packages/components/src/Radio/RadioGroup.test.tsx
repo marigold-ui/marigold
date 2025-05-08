@@ -208,7 +208,7 @@ test('controlled', () => {
     </ThemeProvider>
   );
 
-  fireEvent.click(getVisibleRadios()?.[0]!);
+  fireEvent.click(getVisibleRadios()?.[0] as HTMLElement);
 
   const checkedRadio = getVisibleRadios()?.[0];
   expect(checkedRadio?.className).toMatchInlineSnapshot(

@@ -46,6 +46,7 @@ test('renders loader with differnet size', () => {
   );
 
   const loader = screen.getByRole('progressbar');
+  // eslint-disable-next-line testing-library/no-node-access
   const icon = loader.querySelector('svg');
   expect(icon).toHaveClass('size-36');
 });

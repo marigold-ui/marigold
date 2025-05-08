@@ -187,12 +187,13 @@ export const TableLike: Story = {
       <Columns columns={[1, 1, 1]} space={2}>
         <Stack>
           {data.map(({ name }) => (
-            <TextField defaultValue={name} />
+            <TextField key={crypto.randomUUID()} defaultValue={name} />
           ))}
         </Stack>
         <Stack>
           {data.map(({ price }) => (
             <NumberField
+              key={crypto.randomUUID()}
               defaultValue={price}
               hideStepper
               width={20}
@@ -203,6 +204,7 @@ export const TableLike: Story = {
         <Stack>
           {data.map(({ fee }) => (
             <NumberField
+              key={crypto.randomUUID()}
               defaultValue={fee}
               hideStepper
               width={20}

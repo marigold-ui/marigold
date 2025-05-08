@@ -7,6 +7,7 @@ export interface NestedStringObject {
 export interface ComponentStyleFunction<
   Variants extends string = never,
   Sizes extends string = never,
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   Additional extends { [name: string]: any } = {},
 > {
   (
@@ -92,6 +93,7 @@ export type Theme = {
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>
     >;
+    Modal?: ComponentStyleFunction<string, string>;
     MultiSelect?: Record<
       | 'container'
       | 'closeButton'

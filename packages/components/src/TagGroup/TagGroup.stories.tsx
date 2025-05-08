@@ -1,28 +1,17 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Key } from 'react';
+import { expect, fn, within } from '@storybook/test';
+import userEvent from '@testing-library/user-event';
+import { Key } from '@react-types/shared';
 import { Tag } from '.';
+import { Button } from '../Button';
+import { Stack } from '../Stack';
 
 const meta = {
   title: 'Components/Tag',
-  argTypes: {
-    label: {
-      control: {
-        type: 'text',
-      },
-      description: 'Label',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Label' },
-      },
-    },
-    width: {
-      control: {
-        type: 'text',
-      },
-      description: 'The width of the field',
-    },
+  component: Tag.Group,
+  args: {
+    label: 'Categories',
   },
 } satisfies Meta<typeof Tag.Group>;
 
@@ -30,79 +19,67 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
+  args: {
+    onSelectionChange: fn(),
+  },
   render: args => (
-    <Tag.Group {...args} aria-label="Static TagGroup items example">
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
+    <Tag.Group {...args} selectionMode="multiple" label="Categories">
+      <Tag id="news">News</Tag>
+      <Tag id="travel">Travel</Tag>
+      <Tag id="gaming">Gaming</Tag>
+      <Tag id="shopping">Shopping</Tag>
     </Tag.Group>
   ),
-};
+  play: async ({ args, canvas }) => {
+    await userEvent.click(canvas.getByText('News'));
+    await userEvent.click(canvas.getByText('Gaming'));
 
-export const WithLabel: Story = {
-  render: args => (
-    <Tag.Group {...args} label="Categories">
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
-    </Tag.Group>
-  ),
+    expect(args.onSelectionChange).toHaveBeenCalledWith(
+      expect.objectContaining(new Set(['news', 'gaming']))
+    );
+  },
 };
 
 export const RemovableTags: Story = {
+  tags: ['component-test'],
   render: args => {
-    let defaultItems = [
+    const defaultItems = [
       { id: 1, name: 'News' },
       { id: 2, name: 'Travel' },
       { id: 3, name: 'Gaming' },
       { id: 4, name: 'Shopping' },
     ];
 
-    let [items, setItems] =
+    const [items, setItems] =
       useState<{ id: number; name: string }[]>(defaultItems);
 
-    let onRemove = (keys: Set<Key>) => {
+    const onRemove = (keys: Set<Key>) => {
       setItems(prevItems => prevItems.filter(item => !keys.has(item.id)));
     };
 
     return (
-      <Tag.Group
-        {...args}
-        items={items}
-        aria-label="TagGroup removing example"
-        allowsRemoving
-        onRemove={onRemove}
-      >
-        {(item: { id: number; name: string }) => <Tag>{item.name}</Tag>}
-      </Tag.Group>
+      <Stack space={6} alignX="left">
+        <Tag.Group {...args} items={items} onRemove={onRemove}>
+          {(item: { id: number; name: string }) => <Tag>{item.name}</Tag>}
+        </Tag.Group>
+        <Button onPress={() => setItems(defaultItems)}>Reset</Button>
+      </Stack>
     );
   },
-};
+  play: async ({ canvas }) => {
+    const news = canvas.getByText('News');
+    const shopping = canvas.getByText('Shopping');
 
-export const MultiSelectTags: Story = {
-  render: args => {
-    const [selected, setSelected] = useState(new Set(['parking']));
-    return (
-      <>
-        <Tag.Group
-          {...args}
-          label="Amenities"
-          selectionMode="multiple"
-          selectedKeys={selected}
-          onSelectionChange={setSelected as any}
-        >
-          <Tag id="laundry">Laundry</Tag>
-          <Tag id="fitness">Fitness center</Tag>
-          <Tag id="parking">Parking</Tag>
-          <Tag id="pool" disabled>
-            Swimming pool
-          </Tag>
-          <Tag id="breakfast">Breakfast</Tag>
-        </Tag.Group>
-        <p>Current selection (controlled): {[...selected].join(', ')}</p>
-      </>
-    );
+    await userEvent.click(within(news).getByRole('button'));
+    await userEvent.click(within(shopping).getByRole('button'));
+
+    // Sleep for flaky test
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    await expect(news).not.toBeInTheDocument();
+    await expect(shopping).not.toBeInTheDocument();
+
+    await userEvent.click(canvas.getByText('Reset'));
   },
 };
