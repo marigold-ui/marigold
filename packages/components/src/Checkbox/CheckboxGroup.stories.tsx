@@ -116,14 +116,12 @@ export const Basic: Story = {
           errorMessage="Oh no"
           {...args}
         >
-          <Checkbox value="ham">Ham</Checkbox>
-          <Checkbox value="salami" disabled>
-            Salami
-          </Checkbox>
-          <Checkbox value="cheese">Cheese</Checkbox>
-          <Checkbox value="tomato">Tomate</Checkbox>
-          <Checkbox value="cucumber">Cucumber</Checkbox>
-          <Checkbox value="onions">Onions</Checkbox>
+          <Checkbox value="ham" label="Ham" />
+          <Checkbox value="salami" disabled label="Salami" />
+          <Checkbox value="cheese" label="Cheese" />
+          <Checkbox value="tomato" label="Tomate" />
+          <Checkbox value="cucumber" label="Cucumber" />
+          <Checkbox value="onions" label="Onions" />
         </CheckboxGroup>
         <hr />
         <pre>Selected values: {selected.join(', ')}</pre>
@@ -143,14 +141,12 @@ export const Error: Story = {
           errorMessage="This is an error"
           {...args}
         >
-          <Checkbox value="ham">Ham</Checkbox>
-          <Checkbox value="salami" disabled>
-            Salami
-          </Checkbox>
-          <Checkbox value="cheese">Cheese</Checkbox>
-          <Checkbox value="tomato">Tomate</Checkbox>
-          <Checkbox value="cucumber">Cucumber</Checkbox>
-          <Checkbox value="onions">Onions</Checkbox>
+          <Checkbox value="ham" label="Ham" />
+          <Checkbox value="salami" disabled label="Salami" />
+          <Checkbox value="cheese" label="Cheese" />
+          <Checkbox value="tomato" label="Tomate" />
+          <Checkbox value="cucumber" label="Cucumber" />
+          <Checkbox value="onions" label="Onions" />
         </CheckboxGroup>
         <hr />
         <pre>Selected values: {selected.join(', ')}</pre>
