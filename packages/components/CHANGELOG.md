@@ -1,5 +1,33 @@
 # @marigold/components
 
+## 12.0.0
+
+### Major Changes
+
+- 2ed500d: feat([DST-804]): Allow `Tag` to be used in forms and overhaul its docs
+
+  BREACKING CHANGE: Remove the `allowsRemoving` prop. This didn't had an effect for a while and to make it more clear removing is enabled, if there is a function set on the `onRemove` prop.
+
+- c30993e: refa([DST-816]): Remove children prop, only label is now available
+
+  BREAKING CHANGE: The `children` prop is no longer supported in the `<Checkbox>`, `<Slider>` and `<Switch>` component to display a label. Use the dedicated `label? prop instead.
+
+### Minor Changes
+
+- 438b959: feat([DSTSUP-112]): Add sizes to RUI's `<Dialog>`
+- fe4b9de: feat([DST-801]): Allow to format ranges with `<NumericFormat>`
+
+### Patch Changes
+
+- d7cfabd: fix([DST-808]): Don't render empty helptext when no description or error is present.
+- 20ecd9c: fix([DST-803]): Span empty state over the whole table width.
+- 4e510fb: [DST-763]: Migrate to eslint flat config.
+- 9d57c1f: fix([DST-802]): remove unneeded classnames from `<Modal>`
+- Updated dependencies [438b959]
+- Updated dependencies [fe4b9de]
+- Updated dependencies [4e0971e]
+  - @marigold/system@12.0.0
+
 ## 11.5.0
 
 ### Minor Changes
