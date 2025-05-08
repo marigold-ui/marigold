@@ -1,5 +1,16 @@
 # @marigold/system
 
+## 12.0.0
+
+### Minor Changes
+
+- 438b959: feat([DSTSUP-112]): Add sizes to RUI's `<Dialog>`
+- fe4b9de: feat([DST-801]): Allow to format ranges with `<NumericFormat>`
+
+### Patch Changes
+
+- 4e0971e: Extend useClassNames to automatically pick up styles from context.
+
 ## 11.5.0
 
 ### Minor Changes

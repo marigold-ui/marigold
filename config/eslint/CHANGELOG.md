@@ -1,5 +1,11 @@
 # @marigold/eslint-config
 
+## 1.0.1
+
+### Patch Changes
+
+- 4e510fb: [DST-763]: Migrate to eslint flat config.
+
 ## 1.0.0
 
 ### Major Changes

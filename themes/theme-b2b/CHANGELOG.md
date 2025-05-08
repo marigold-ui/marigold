@@ -1,5 +1,22 @@
 # @marigold/theme-b2b
 
+## 30.0.2
+
+### Patch Changes
+
+- 438b959: feat([DSTSUP-112]): Add sizes to RUI's `<Dialog>`
+- Updated dependencies [d7cfabd]
+- Updated dependencies [438b959]
+- Updated dependencies [20ecd9c]
+- Updated dependencies [fe4b9de]
+- Updated dependencies [4e510fb]
+- Updated dependencies [9d57c1f]
+- Updated dependencies [2ed500d]
+- Updated dependencies [4e0971e]
+- Updated dependencies [c30993e]
+  - @marigold/components@12.0.0
+  - @marigold/system@12.0.0
+
 ## 30.0.1
 
 ### Patch Changes

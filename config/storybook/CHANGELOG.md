@@ -1,5 +1,26 @@
 # @marigold/storybook-config
 
+## 2.0.14
+
+### Patch Changes
+
+- 4e510fb: [DST-763]: Migrate to eslint flat config.
+- Updated dependencies [d7cfabd]
+- Updated dependencies [beaa990]
+- Updated dependencies [438b959]
+- Updated dependencies [20ecd9c]
+- Updated dependencies [fe4b9de]
+- Updated dependencies [4e510fb]
+- Updated dependencies [9d57c1f]
+- Updated dependencies [2ed500d]
+- Updated dependencies [15b844d]
+- Updated dependencies [c30993e]
+- Updated dependencies [d71d9ab]
+  - @marigold/components@12.0.0
+  - @marigold/theme-rui@1.1.0
+  - @marigold/theme-b2b@30.0.2
+  - @marigold/theme-core@29.0.2
+
 ## 2.0.13
 
 ### Patch Changes
