@@ -31,7 +31,7 @@
     "contentlayer2": "0.5.8",
     "dayjs": "1.11.13",
     "dotenv": "16.5.0",
-    "eslint": "9.24.0",
+    "eslint": "9.26.0",
     "eslint-config-next": "15.3.1",
     "framer-motion": "11.18.2",
     "github-slugger": "2.0.0",
