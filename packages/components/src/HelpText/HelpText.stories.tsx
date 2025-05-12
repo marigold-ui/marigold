@@ -68,7 +68,6 @@ export const WithinAField: Story = {
 
 export const MultipleMessages: Story = {
   render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [password, setPassword] = useState('');
     const errors = [];
 

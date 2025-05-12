@@ -10,6 +10,7 @@ import {
 import { Label } from '../Label';
 
 type RemovedProps =
+  | 'children'
   | 'className'
   | 'isDisabled'
   | 'isReadOnly'
@@ -20,7 +21,11 @@ type RemovedProps =
 export interface SwitchProps extends Omit<RAC.SwitchProps, RemovedProps> {
   variant?: string;
   size?: string;
-  children?: ReactNode;
+
+  /**
+   * Set the label of the switch.
+   */
+  label?: ReactNode;
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -53,7 +58,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
       variant,
       size,
       width = 'full',
-      children,
+      label,
       selected,
       disabled,
       readOnly,
@@ -62,12 +67,12 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
     ref
   ) => {
     const classNames = useClassNames({ component: 'Switch', size, variant });
-    const props: RAC.SwitchProps = {
+    const props = {
       isDisabled: disabled,
       isReadOnly: readOnly,
       isSelected: selected,
       ...rest,
-    };
+    } satisfies RAC.SwitchProps;
     return (
       <Switch
         {...props}
@@ -79,7 +84,7 @@ const _Switch = forwardRef<HTMLLabelElement, SwitchProps>(
           classNames.container
         )}
       >
-        <Label elementType="span">{children}</Label>
+        {label && <Label elementType="span">{label}</Label>}
         <div className="relative">
           <div className={classNames.track}>
             <div className={classNames.thumb} />

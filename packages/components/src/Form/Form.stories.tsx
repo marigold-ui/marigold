@@ -32,28 +32,26 @@ export const Basic: Story = {
 
     return (
       <FieldGroup labelWidth={isCore ? '100px' : undefined}>
-        <div className="grid h-full place-items-center">
-          <Form {...args}>
-            <Stack space={5}>
-              <TextField label="Name" width={isCore ? 72 : 72} />
-              <TextField label="Email" type="email" width={isCore ? 72 : 72} />
-              <DateField label="Date of Birth" width={isCore ? 56 : 44} />
-              <Select label="Department" width={isCore ? 60 : 40}>
-                <Select.Option id="engineering">Engineering</Select.Option>
-                <Select.Option id="design">Design</Select.Option>
-                <Select.Option id="product">Product</Select.Option>
-              </Select>
-              <Checkbox>Subscribe to Employee Newsletter</Checkbox>
-            </Stack>
-          </Form>
-        </div>
+        <Form {...args}>
+          <Stack space={5}>
+            <TextField label="Name" />
+            <TextField label="Email" type="email" />
+            <DateField label="Date of Birth" />
+            <Select label="Department">
+              <Select.Option id="engineering">Engineering</Select.Option>
+              <Select.Option id="design">Design</Select.Option>
+              <Select.Option id="product">Product</Select.Option>
+            </Select>
+            <Checkbox label="Subscribe to Employee Newsletter" />
+          </Stack>
+        </Form>
       </FieldGroup>
     );
   },
 };
 
 export const Horizontal: Story = {
-  render: args => (
+  render: () => (
     <Inline space={4} alignY="bottom">
       <TextField label="Name" width={72} />
       <Button variant="primary">Save</Button>
@@ -74,21 +72,24 @@ export const Selected: Story = {
                 defaultValue={['company-news', 'job-alerts', 'event-updates']}
                 label="Email Subscriptions"
               >
-                <Checkbox value="company-news">
-                  Company News & Announcements
-                </Checkbox>
-                <Checkbox value="job-alerts">
-                  Job Alerts & Internal Openings
-                </Checkbox>
-                <Checkbox value="event-updates">
-                  Event Invitations & Updates
-                </Checkbox>
+                <Checkbox
+                  value="company-news"
+                  label="Company News & Announcements"
+                />
+                <Checkbox
+                  value="job-alerts"
+                  label="Job Alerts & Internal Openings"
+                />
+                <Checkbox
+                  value="event-updates"
+                  label="Event Invitations & Updates"
+                />
               </Checkbox.Group>
               <Radio.Group defaultValue="full-time" label="Employment Type">
                 <Radio value="full-time">Full-Time</Radio>
                 <Radio value="part-time">Part-Time</Radio>
               </Radio.Group>
-              <Switch defaultSelected>Remote Work</Switch>
+              <Switch defaultSelected label="Remote Work" />
               <Slider
                 label="Preferred Weekly Work Hours"
                 minValue={20}

@@ -1,4 +1,4 @@
-import { venues } from '@/lib/data/venues';
+import { venueTypes, venues } from '@/lib/data/venues';
 import { useState } from 'react';
 import {
   Aside,
@@ -54,7 +54,7 @@ export default () => {
               <Text weight="extrabold" fontSize="2xl">
                 {current.name}
               </Text>
-              <Text fontStyle="italic">{current.type}</Text>
+              <Text fontStyle="italic">{venueTypes[current.type]}</Text>
             </Stack>
             <Stack>
               <Text weight="bold">Description</Text>

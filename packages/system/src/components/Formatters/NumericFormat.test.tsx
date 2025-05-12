@@ -47,3 +47,24 @@ test('renders value in percentage', () => {
   const percentage = screen.getByText('20%');
   expect(percentage).toBeInTheDocument();
 });
+
+test('supports formatting a range', () => {
+  render(
+    <I18nProvider locale="en-US">
+      <NumericFormat value={[10, 30]} minimumFractionDigits={1} />
+      <NumericFormat value={[20, 35]} style="currency" currency="USD" />
+      <NumericFormat value={[55, 80]} style="unit" unit="mile-per-hour" />
+      <NumericFormat value={[0.2, 0.3]} style="percent" />
+    </I18nProvider>
+  );
+
+  const range = screen.getByText('10.0–30.0');
+  const currency = screen.getByText('$20.00 – $35.00');
+  const unit = screen.getByText('55–80 mph');
+  const percent = screen.getByText('20% – 30%');
+
+  expect(range).toBeInTheDocument();
+  expect(currency).toBeInTheDocument();
+  expect(unit).toBeInTheDocument();
+  expect(percent).toBeInTheDocument();
+});

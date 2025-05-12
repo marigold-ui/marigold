@@ -21,6 +21,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Button: cva(),
+    CloseButton: cva('size-5'),
     Drawer: {
       overlay: cva(),
       container: cva('p-5', {
@@ -46,6 +47,7 @@ const theme: Theme = {
       actions: cva(),
     },
     Underlay: cva(),
+    Modal: cva(),
   },
 };
 
@@ -134,7 +136,7 @@ test('has "complementary" role by default', async () => {
   const button = screen.getByRole('button', { name: 'Toggle' });
   await user.click(button);
 
-  expect(screen.queryByRole('complementary')).toBeInTheDocument();
+  expect(screen.getByRole('complementary')).toBeInTheDocument();
 });
 
 test('allows to set other landmark roles', async () => {
@@ -143,7 +145,7 @@ test('allows to set other landmark roles', async () => {
   const button = screen.getByRole('button', { name: 'Toggle' });
   await user.click(button);
 
-  expect(screen.queryByRole('navigation')).toBeInTheDocument();
+  expect(screen.getByRole('navigation')).toBeInTheDocument();
 });
 
 test('able to show a close button', async () => {
@@ -152,7 +154,7 @@ test('able to show a close button', async () => {
   const button = screen.getByRole('button', { name: 'Toggle' });
   await user.click(button);
 
-  expect(screen.queryByLabelText('dismiss drawer')).toBeInTheDocument();
+  expect(screen.getByLabelText('dismiss drawer')).toBeInTheDocument();
 });
 
 test('able to close via close button', async () => {
@@ -180,6 +182,6 @@ test('uses modal on small screens', async () => {
   const drawer = screen.getByText('Drawer Content');
   expect(drawer).toBeInTheDocument();
 
-  expect(screen.queryByRole('dialog')).toBeInTheDocument();
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
   expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
 });

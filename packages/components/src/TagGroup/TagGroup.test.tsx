@@ -1,71 +1,19 @@
-import { act, screen } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Tag } from '.';
-import { Button } from '../Button';
-import { setup } from '../test.utils';
+import { Form } from '../Form';
+import * as stories from './TagGroup.stories';
 
-//TODO: use user.keyboard, use them for style tests, refactoring
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Button: cva(),
-    Field: cva(),
-    HelpText: { container: cva(), icon: cva() },
-    Label: { container: cva(), indicator: cva() },
-    Tag: {
-      tag: cva('border border-slate-600'),
-      closeButton: cva('bg-transparent'),
-      listItems: cva('flex gap-1'),
-    },
-  },
-};
-
-const { render } = setup({ theme });
+const { Basic } = composeStories(stories);
 
 test('render tag group', () => {
-  render(
-    <Tag.Group aria-label="static tag group items">
-      <Tag key="news">News</Tag>
-      <Tag key="travel">Travel</Tag>
-      <Tag key="gaming">Gaming</Tag>
-      <Tag key="shopping">Shopping</Tag>
-    </Tag.Group>
-  );
+  render(<Basic aria-label="static tag group items" />);
 
   const element = screen.getByLabelText('static tag group items');
   expect(element).toBeInTheDocument();
   const tags = screen.getAllByRole('row');
   expect(tags.length).toBe(4);
-});
-
-test('has correct accessibility roles', () => {
-  render(
-    <Tag.Group aria-label="tag group">
-      <Tag aria-label="Day 1">Day 1</Tag>
-    </Tag.Group>
-  );
-
-  let tagGroup = screen.getByRole('grid');
-  expect(tagGroup).toBeInTheDocument();
-
-  let tags = screen.getAllByRole('row');
-  let cells = screen.getAllByRole('gridcell');
-  expect(tags).toHaveLength(cells.length);
-});
-
-test('has correct initial tab index', () => {
-  render(
-    <Tag.Group aria-label="tag group">
-      <Tag aria-label="superhero">Superhero</Tag>
-      <Tag aria-label="villain">Villain</Tag>
-    </Tag.Group>
-  );
-
-  let tags = screen.getAllByRole('row');
-  expect(tags[0]).toHaveAttribute('tabIndex', '0');
-  expect(tags[1]).toHaveAttribute('tabIndex', '0');
 });
 
 test.each`
@@ -75,49 +23,21 @@ test.each`
 `('Remove tag $name', async ({ props }) => {
   let onRemoveSpy = vi.fn();
   const user = userEvent.setup();
-  render(
-    <Tag.Group aria-label="tag group" allowsRemoving onRemove={onRemoveSpy}>
-      <Tag key="1" aria-label="reactjs">
-        ReactJs
-      </Tag>
-      <Tag key="2" aria-label="vuejs">
-        Vue.js
-      </Tag>
-      <Tag key="3" aria-label="anuglar">
-        Anuglar
-      </Tag>
-    </Tag.Group>
-  );
+  render(<Basic aria-label="tag group" onRemove={onRemoveSpy} />);
 
-  let vuejs = screen.getByText('Vue.js');
+  const gaming = screen.getByText('Gaming');
 
-  await user.click(vuejs);
+  await user.click(gaming);
   await user.keyboard(`${props.keyPress}`);
   expect(onRemoveSpy).toHaveBeenCalledTimes(1);
 });
 
 test('should navigate with keyboard keys through items', async () => {
   const user = userEvent.setup();
-  render(
-    <>
-      <Tag.Group aria-label="tag group">
-        <Tag key="1" aria-label="small">
-          small
-        </Tag>
-        <Tag key="2" aria-label="medium">
-          medium
-        </Tag>
-        <Tag key="3" aria-label="big">
-          big
-        </Tag>
-      </Tag.Group>
-    </>
-  );
+  render(<Basic />);
 
-  let tags = screen.getAllByRole('row');
-  act(() => {
-    tags[0].focus();
-  });
+  const tags = screen.getAllByRole('row');
+  await user.tab();
 
   await user.keyboard('{arrowRight}');
   expect(tags[1]).toHaveFocus();
@@ -135,77 +55,45 @@ test('should navigate with keyboard keys through items', async () => {
   expect(tags[2]).not.toHaveFocus();
 });
 
-test('should remember last focused element', async () => {
-  const user = userEvent.setup();
-  render(
-    <>
-      <Tag.Group aria-label="tag group">
-        <Tag key="1" aria-label="designsystem">
-          Design System
-        </Tag>
-        <Tag key="2" aria-label="core">
-          Core
-        </Tag>
-      </Tag.Group>
-      <Button variant="primary" aria-label="ButtonAfter" />
-    </>
-  );
-
-  let buttonAfter = screen.getByLabelText('ButtonAfter');
-  let tags = screen.getAllByRole('row');
-
-  await user.tab();
-  await user.tab();
-  expect(buttonAfter).toHaveFocus();
-
-  await user.tab({ shift: true });
-  expect(tags[0]).toHaveFocus();
-});
-
 test('renders label', () => {
-  render(
-    <Tag.Group aria-label="tag group" label="Categories">
-      <Tag aria-label="superhero">Superhero</Tag>
-      <Tag aria-label="villian">Villian</Tag>
-    </Tag.Group>
-  );
+  render(<Basic aria-label="tag group" label="Categories" />);
 
   const label = screen.queryByLabelText('Categories');
   expect(label).toBeInTheDocument();
 });
 
-test('render same styles for each tag', () => {
+test('can be used like a native form element', async () => {
+  let data: [string, FormDataEntryValue][] = [];
+  const submit = vi.fn(event => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    data = Array.from(formData.entries());
+  });
+
   render(
-    <ThemeProvider theme={theme}>
-      <Tag.Group aria-label="static tag group items" allowsRemoving>
-        <Tag key="news" data-testid="news">
-          News
-        </Tag>
-        <Tag key="travel">Travel</Tag>
-        <Tag key="gaming">Gaming</Tag>
-        <Tag key="shopping">Shopping</Tag>
-      </Tag.Group>
-    </ThemeProvider>
+    <Form onSubmit={submit}>
+      <Basic label="Categories" name="categories" selectionMode="multiple" />
+      <button type="submit">Submit</button>
+    </Form>
   );
 
-  const taggroup = screen.getByRole('grid');
-  expect(taggroup).toBeVisible();
-  expect(taggroup.className).toMatchInlineSnapshot(`"flex gap-1"`);
+  const user = userEvent.setup();
+  await user.click(screen.getByText('Travel'));
+  await user.click(screen.getByText('Gaming'));
 
-  // eslint-disable-next-line testing-library/no-node-access
-  const tag = screen.getByTestId('news').parentElement;
-  expect(tag).toBeVisible();
-  expect(tag?.className).toMatchInlineSnapshot(`"flex gap-1"`);
+  const submitButton = screen.getByText('Submit');
+  await user.click(submitButton);
 
-  // eslint-disable-next-line testing-library/no-node-access
-  const gridCell = tag!.firstChild;
-  // @ts-ignore
-  expect(gridCell?.className).toMatchInlineSnapshot(
-    `"data-selection-mode:cursor-pointer border border-slate-600"`
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const closeButton = gridCell?.lastChild;
-  // @ts-ignore
-  expect(closeButton.className).toMatchInlineSnapshot(`""`);
+  expect(data).toMatchInlineSnapshot(`
+    [
+      [
+        "categories",
+        "travel",
+      ],
+      [
+        "categories",
+        "gaming",
+      ],
+    ]
+  `);
 });

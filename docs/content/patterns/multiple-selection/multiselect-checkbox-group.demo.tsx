@@ -10,14 +10,12 @@ export default () => {
         onChange={setSelected}
         description="Just click on the options"
       >
-        <Checkbox value="ham">🐖 Ham</Checkbox>
-        <Checkbox value="beef" disabled>
-          🐄 Beef (out of stock)
-        </Checkbox>
-        <Checkbox value="tuna">🐟 Tuna</Checkbox>
-        <Checkbox value="tomatos">🍅 Tomatos</Checkbox>
-        <Checkbox value="onions">🧅 Onions</Checkbox>
-        <Checkbox value="pineapple">🍍 Pineapple</Checkbox>
+        <Checkbox value="ham" label="🐖 Ham" />
+        <Checkbox value="beef" disabled label="🐄 Beef (out of stock)" />
+        <Checkbox value="tuna" label="🐟 Tuna" />
+        <Checkbox value="tomatos" label="🍅 Tomatos" />
+        <Checkbox value="onions" label="🧅 Onions" />
+        <Checkbox value="pineapple" label="🍍 Pineapple" />
       </CheckboxGroup>
       <hr />
       <pre>Selected values: {selected.join(', ')}</pre>

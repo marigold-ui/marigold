@@ -12,7 +12,6 @@ import {
 } from '@marigold/components';
 import coreTheme from '@marigold/theme-core';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   return (
     <ThemeProvider theme={coreTheme} className="w-[500px]">
@@ -39,8 +38,8 @@ export default () => {
                 </Select.Option>
               </Select>
               <CheckboxGroup label>
-                <Checkbox value="1">nur Eigene anzeigen</Checkbox>
-                <Checkbox value="2">bilateral anzeigen</Checkbox>
+                <Checkbox value="1" label="nur Eigene anzeigen" />
+                <Checkbox value="2" label="bilateral anzeigen" />
               </CheckboxGroup>
             </FieldGroup>
           </Stack>

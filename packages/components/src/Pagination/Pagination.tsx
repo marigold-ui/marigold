@@ -1,13 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { cn, useClassNames } from '@marigold/system';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { FocusScope, useFocusManager } from '@react-aria/focus';
+import { useClassNames } from '@marigold/system';
 import { ChevronLeft, ChevronRight } from '../icons';
 import { Ellipsis } from './Ellipsis';
 import { NavigationButton } from './NavigationButton';
 import { PageButton } from './PageButton';
-import {
-  NavigationTypes,
-  useKeyboardNavigation,
-} from './useKeyboardNavigation';
 import { usePageRange } from './usePageRange';
 
 /*
@@ -37,26 +34,32 @@ export interface PaginationProps {
    */
   onChange?: (page: number) => void;
   /**
-   * Labels for the pagination controls.
+   * Labels for the pagination controls (Previous and Next button).
    */
   controlLabels?: [string, string];
 }
 
-const _Pagination = ({
-  defaultPage = 1,
-  page,
-  totalItems,
-  pageSize,
-  onChange = () => {},
-  controlLabels,
-}: PaginationProps) => {
-  const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
-  const totalPages = Math.ceil(totalItems / pageSize);
-  const isFirstRender = useRef(true);
-  const classNames = useClassNames({
-    component: 'Pagination',
-  });
+interface InnerPaginationProps extends Omit<PaginationProps, 'totalItems'> {
+  currentPage: number;
+  totalPages: number;
+  pageRange: (number | 'ellipsis')[];
+  setCurrentPage: (page: number) => void;
+}
 
+const InnerPagination = ({
+  currentPage,
+  pageSize,
+  totalPages,
+  pageRange,
+  setCurrentPage,
+  onChange,
+  controlLabels,
+}: InnerPaginationProps) => {
+  const focusManager = useFocusManager();
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages || totalPages === 0;
+  const isFirstRender = useRef(true);
   useEffect(() => {
     /* avoid setting page 1 on first render, 
     e.g. necessary when using page prop */
@@ -69,57 +72,39 @@ const _Pagination = ({
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    onChange(newPage);
+    if (onChange) {
+      onChange(newPage);
+    }
   };
 
-  const { registerRef, keyboardProps, setNavigationItems, setFocusedItem } =
-    useKeyboardNavigation({
-      page: currentPage,
-      totalPages,
-      onChange: handlePageChange,
-    });
+  const classNames = useClassNames({ component: 'Pagination' });
 
-  const pageRange = usePageRange({ currentPage, totalPages });
-
-  useEffect(() => {
-    const items = [
-      { type: NavigationTypes.Prev, value: currentPage - 1 },
-      ...pageRange.map(value => ({
-        type:
-          typeof value === 'number'
-            ? NavigationTypes.Page
-            : NavigationTypes.Ellipsis,
-        value,
-      })),
-      { type: NavigationTypes.Next, value: currentPage + 1 },
-    ];
-    setNavigationItems(items);
-  }, [pageRange, currentPage, setNavigationItems]);
-
-  useEffect(() => {
-    setFocusedItem({ type: NavigationTypes.Page, value: currentPage });
-  }, [currentPage, setFocusedItem]);
-
-  const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === totalPages || totalPages === 0;
+  // handeling arrow keys and enter key
+  const handleKeyDown =
+    (onEnter: () => void) => (e: KeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        focusManager?.focusNext({ wrap: true });
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        focusManager?.focusPrevious({ wrap: true });
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onEnter();
+      }
+    };
 
   return (
-    <nav
-      className="flex items-center justify-center space-x-2"
-      aria-label={`Page ${currentPage} of ${totalPages}`}
-      {...keyboardProps}
-    >
+    <>
       <NavigationButton
         onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
         aria-label="Page previous"
         isDisabled={isFirstPage}
-        registerRef={ref =>
-          registerRef(NavigationTypes.Prev, currentPage - 1, ref)
-        }
         controlLabel={controlLabels?.[0]}
         position="left"
+        onKeyDown={handleKeyDown(() => handlePageChange(currentPage - 1))}
       >
-        <ChevronLeft className={cn(classNames.icon)} />
+        <ChevronLeft className={classNames.icon} />
       </NavigationButton>
 
       <div className="flex items-center space-x-2">
@@ -133,9 +118,7 @@ const _Pagination = ({
                 page={pageNumber}
                 selected={pageNumber === currentPage}
                 onClick={() => handlePageChange(pageNumber)}
-                registerRef={ref =>
-                  registerRef(NavigationTypes.Page, pageNumber, ref)
-                }
+                onKeyDown={handleKeyDown(() => handlePageChange(pageNumber))}
               />
             )
           )
@@ -148,14 +131,42 @@ const _Pagination = ({
         onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
         aria-label="Page next"
         isDisabled={isLastPage}
-        registerRef={ref =>
-          registerRef(NavigationTypes.Next, currentPage + 1, ref)
-        }
         controlLabel={controlLabels?.[1]}
         position="right"
+        onKeyDown={handleKeyDown(() => handlePageChange(currentPage + 1))}
       >
-        <ChevronRight className={cn(classNames.icon)} />
+        <ChevronRight className={classNames.icon} />
       </NavigationButton>
+    </>
+  );
+};
+
+const _Pagination = ({
+  defaultPage = 1,
+  page,
+  totalItems,
+  pageSize,
+  ...props
+}: PaginationProps) => {
+  const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const pageRange = usePageRange({ currentPage, totalPages });
+
+  return (
+    <nav
+      className="flex items-center justify-center space-x-2"
+      aria-label={`Page ${currentPage} of ${totalPages}`}
+    >
+      <FocusScope restoreFocus>
+        <InnerPagination
+          pageSize={pageSize}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pageRange={pageRange}
+          setCurrentPage={setCurrentPage}
+          {...props}
+        />
+      </FocusScope>
     </nav>
   );
 };

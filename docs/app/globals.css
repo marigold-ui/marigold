@@ -20,10 +20,8 @@
 @source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
 
 /* tailwind plugins */
-
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
-/* https://github.com/adoxography/tailwind-scrollbar/issues/104 */
 @plugin 'tailwind-scrollbar';
 
 /*

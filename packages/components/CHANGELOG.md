@@ -1,5 +1,56 @@
 # @marigold/components
 
+## 12.0.0
+
+### Major Changes
+
+- 2ed500d: feat([DST-804]): Allow `Tag` to be used in forms and overhaul its docs
+
+  BREACKING CHANGE: Remove the `allowsRemoving` prop. This didn't had an effect for a while and to make it more clear removing is enabled, if there is a function set on the `onRemove` prop.
+
+- c30993e: refa([DST-816]): Remove children prop, only label is now available
+
+  BREAKING CHANGE: The `children` prop is no longer supported in the `<Checkbox>`, `<Slider>` and `<Switch>` component to display a label. Use the dedicated `label? prop instead.
+
+### Minor Changes
+
+- 438b959: feat([DSTSUP-112]): Add sizes to RUI's `<Dialog>`
+- fe4b9de: feat([DST-801]): Allow to format ranges with `<NumericFormat>`
+
+### Patch Changes
+
+- d7cfabd: fix([DST-808]): Don't render empty helptext when no description or error is present.
+- 20ecd9c: fix([DST-803]): Span empty state over the whole table width.
+- 4e510fb: [DST-763]: Migrate to eslint flat config.
+- 9d57c1f: fix([DST-802]): remove unneeded classnames from `<Modal>`
+- Updated dependencies [438b959]
+- Updated dependencies [fe4b9de]
+- Updated dependencies [4e0971e]
+  - @marigold/system@12.0.0
+
+## 11.5.0
+
+### Minor Changes
+
+- c9b95bc: feat([DST-799]): Add `unstyled` and `maxWidth` to `<Form>`
+
+### Patch Changes
+
+- 8dab2e6: chore: update `react-aria` (April 2025 release)
+- 70399e4: style([DST-724]): Adjust required icon for form elements in RUI style
+- 337f9ee: doc[DST-727]: add copyable examples to the pagination documentation.
+- d24cee3: fix([DST-232]): Align icon in `<HelpText>` to the start of text begin.
+- 4686a0d: refa([DST-754]): Add `<FocusScope>` to `<Pagination>` to improve focus state.
+- c42767f: refa([DST-762]): support `label` prop for `<CheckBox>` and `<Switch>`.
+
+  **Breaking Change**: Deprecate `children` property, use `label` instead. With the next major version `children` will be removed.
+
+- 2a87f43: feat[DST-759]: Implement `<CloseButton>` component to be re-used into other components internally (e.g Dialog, Tag, Drawer and SectionMessage).
+- Updated dependencies [8dab2e6]
+- Updated dependencies [c9b95bc]
+- Updated dependencies [2a87f43]
+  - @marigold/system@11.5.0
+
 ## 11.4.1
 
 ### Patch Changes

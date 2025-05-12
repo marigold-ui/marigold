@@ -13,10 +13,9 @@ import type { NonModalProps } from './NonModal';
 import { NonModal } from './NonModal';
 
 let user: UserEvent;
-let onPressOutie: jest.Mock;
+let onPressOutie = vi.fn();
 
 beforeEach(() => {
-  // @ts-ignore
   onPressOutie = vi.fn();
   user = userEvent.setup();
 });
@@ -202,6 +201,7 @@ test('supports isEntering and isExiting props', async () => {
 
   const popover = screen
     .getByRole('dialog')
+    // eslint-disable-next-line testing-library/no-node-access
     .closest('.react-aria-NonModalOverlay');
   expect(popover).toHaveAttribute('data-entering');
 
@@ -240,6 +240,7 @@ test('supports custom portal container', async () => {
   await user.click(button);
 
   expect(
+    // eslint-disable-next-line testing-library/no-node-access
     screen.getByRole('dialog').closest('[data-testid="custom-container"]')
   ).toBe(screen.getByTestId('custom-container'));
 });

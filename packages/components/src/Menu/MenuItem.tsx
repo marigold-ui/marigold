@@ -5,7 +5,7 @@ import { useClassNames } from '@marigold/system';
 // Props
 // ---------------
 type RemovedProps = 'style' | 'className';
-export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {}
+export type MenuItemProps = Omit<RAC.MenuItemProps, RemovedProps>;
 
 // Component
 // ---------------

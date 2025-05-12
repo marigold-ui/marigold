@@ -76,7 +76,7 @@ const rows: { [key: string]: any }[] = [
     locked: true,
   },
 ];
-// eslint-disable-next-line import/no-anonymous-default-export
+
 export default () => {
   const [, setSelectedKeys] = React.useState(new Set());
   const [state, setState] = React.useState(true);

@@ -1,10 +1,12 @@
-import { ListBoxItem } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { ListBoxItem } from 'react-aria-components';
 import { SVGProps } from '@marigold/system';
 import { useListBoxContext } from './Context';
 
-export interface ListBoxItemProps
-  extends Omit<RAC.ListBoxItemProps, 'style' | 'className'> {}
+export type ListBoxItemProps = Omit<
+  RAC.ListBoxItemProps,
+  'style' | 'className'
+>;
 
 const CheckMark = ({ className }: SVGProps) => (
   <svg width="12px" height="10px" viewBox="0 0 12 10" className={className}>

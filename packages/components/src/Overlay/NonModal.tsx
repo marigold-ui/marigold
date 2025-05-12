@@ -22,10 +22,10 @@ import {
 } from '@react-aria/utils';
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
 import { usePortalContainer } from '../Provider';
-import { useRenderProps } from '../utils/useRenderProps';
 import type { RenderProps } from '../utils/useRenderProps';
-import { useNonModal } from './useNonModal';
+import { useRenderProps } from '../utils/useRenderProps';
 import type { AriaNonModalProps } from './useNonModal';
+import { useNonModal } from './useNonModal';
 
 // Helpers
 // ---------------

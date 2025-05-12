@@ -86,14 +86,13 @@ export const WithForms: Story = {
         <Drawer.Content>
           <Stack space={8}>
             <Slider
+              label="Price"
               formatOptions={{ style: 'currency', currency: 'EUR' }}
               minValue={10}
               maxValue={140}
               defaultValue={[30, 60]}
               thumbLabels={['min', 'max']}
-            >
-              Price
-            </Slider>
+            />
             <Select label="Category">
               <Select.Option id="all">All</Select.Option>
               <Select.Option id="classic">Classic</Select.Option>
@@ -102,8 +101,8 @@ export const WithForms: Story = {
               <Select.Option id="jazz">Jazz</Select.Option>
             </Select>
             <Checkbox.Group label="Amenities">
-              <Checkbox value="fast-lane">Fast Lane</Checkbox>
-              <Checkbox value="parking">VIP Parking</Checkbox>
+              <Checkbox label="Fast Lane" value="fast-lane" />
+              <Checkbox label="VIP Parking" value="parking" />
             </Checkbox.Group>
           </Stack>
         </Drawer.Content>
