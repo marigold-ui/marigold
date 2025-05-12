@@ -4,7 +4,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
     'overflow-hidden rounded-md border border-input group-[trigger]/popover:border-0',
   ]),
-  list: cva(['space-y-1 bg-background p-1 text-sm outline-0']),
+  list: cva(['bg-background p-1 text-sm outline-0']),
   item: cva([
     'relative flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-foreground cursor-pointer',
     '[&_svg]:invisible [&_svg]:block',
