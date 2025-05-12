@@ -14,6 +14,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'focus:text-text-inverted focus:bg-linear-to-t',
     'selected:text-text-inverted selected:bg-linear-to-t',
     'disabled:text-text-base-disabled aria-disabled:cursor-not-allowed',
+    'cursor-default data-selection-mode:cursor-pointer',
   ]),
   section: cva('nth-[n+2]:pt-2 [&_div]:px-5'),
   header: cva([font, '[&_header]:px-1.5 [&_header]:font-bold']),
