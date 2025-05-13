@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "@marigold/*": ["./packages/*/src", "./themes/*/src"]
-    }
+    },
+    "types": ["vitest/globals"]
   },
   "exclude": [
     "coverage/*",
