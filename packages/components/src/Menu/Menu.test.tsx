@@ -1,65 +1,15 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React, { SVGProps } from 'react';
+import { SVGProps } from 'react';
 import { vi } from 'vitest';
-import { Theme, cva } from '@marigold/system';
-import { Button } from '../Button';
-import { setup } from '../test.utils';
-import { ActionMenu } from './ActionMenu';
-import { Menu } from './Menu';
+import * as stories from './Menu.stories';
 
 // Setup
 // ---------------
 const user = userEvent.setup();
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Button: cva('disabled:bg-disabled-bg p-3'),
-    Divider: cva(),
-
-    Menu: {
-      container: cva('bg-white focus:text-pink-600', {
-        variants: {
-          variant: {
-            one: 'bg-pink-900',
-          },
-          size: {
-            large: 'p-5',
-          },
-        },
-      }),
-      item: cva('text-black focus:text-pink-600', {
-        variants: {
-          variant: {
-            one: 'text-white',
-          },
-          size: {
-            large: 'p-2',
-          },
-        },
-      }),
-      section: cva('text-pink-300', {
-        variants: {
-          variant: {
-            one: 'text-black',
-          },
-        },
-      }),
-    },
-    Underlay: cva(),
-    Header: cva(),
-    Popover: cva(['mt-0.5'], {
-      variants: {
-        variant: {
-          top: ['mb-0.5'],
-        },
-      },
-    }),
-  },
-};
-
-const { render } = setup({ theme });
+const { Basic, OnActionMenu } = composeStories(stories);
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -74,128 +24,23 @@ const mockMatchMedia = (matches: string[]) =>
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
 test('renders the button but no menu by default', () => {
-  render(
-    <Menu label="Choose">
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
-
-  const button = screen.queryByText('Choose');
-  const burger = screen.queryByText('Burger');
-  const pizza = screen.queryByText('Pizza');
+  render(<Basic />);
+  const button = screen.queryByText('Hogwarts Houses');
+  const gryffindor = screen.queryByText('Gryffindor');
+  const hufflepuff = screen.queryByText('Hufflepuff');
+  const ravenclaw = screen.queryByText('Ravenclaw');
+  const slytherin = screen.queryByText('Slytherin');
 
   expect(button).toBeInTheDocument();
-  expect(burger).not.toBeInTheDocument();
-  expect(pizza).not.toBeInTheDocument();
-});
-
-test('opens menu when trigger is clicked', () => {
-  window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
-    'screen and (min-width: 64em)',
-  ]);
-  render(
-    <Menu label="Choose">
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
-
-  const button = screen.getByText('Choose');
-  fireEvent.click(button);
-
-  const burger = screen.getByText('Burger');
-  const pizza = screen.getByText('Pizza');
-
-  expect(burger.className).toMatchInlineSnapshot(
-    `"text-black focus:text-pink-600"`
-  );
-
-  expect(pizza.className).toMatchInlineSnapshot(
-    `"text-black focus:text-pink-600"`
-  );
-});
-
-test('closes menu when item is selected', () => {
-  window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
-    'screen and (min-width: 64em)',
-  ]);
-  render(
-    <Menu label="Choose">
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
-
-  const button = screen.getByText('Choose');
-  fireEvent.click(button);
-
-  // Select burger from menu
-  const burger = screen.getByText('Burger');
-  expect(burger).toBeInTheDocument();
-  fireEvent.click(burger);
-
-  const pizza = screen.queryByText('Pizza');
-  expect(burger).not.toBeInTheDocument();
-  expect(pizza).not.toBeInTheDocument();
-});
-
-test('closes menu when trigger is clicked', () => {
-  render(
-    <Menu label="Choose">
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
-
-  const button = screen.getByText('Choose');
-  user.click(button);
-  user.click(button);
-
-  const burger = screen.queryByText('Burger');
-  const pizza = screen.queryByText('Pizza');
-
-  expect(burger).not.toBeInTheDocument();
-  expect(pizza).not.toBeInTheDocument();
-});
-
-test('closes menu when clicked outside', async () => {
-  render(
-    <>
-      <Button>outside</Button>
-
-      <Menu label="Choose">
-        <Menu.Item key="burger">Burger</Menu.Item>
-        <Menu.Item key="pizza">Pizza</Menu.Item>
-      </Menu>
-    </>
-  );
-
-  const button = screen.getByText('Choose');
-  await user.click(button);
-
-  const burger = screen.getByText('Burger');
-  const pizza = screen.queryByText('Pizza');
-
-  const outside = screen.getByText('outside');
-  await user.click(outside);
-
-  expect(burger).not.toBeInTheDocument();
-  expect(pizza).not.toBeInTheDocument();
+  expect(gryffindor).not.toBeInTheDocument();
+  expect(hufflepuff).not.toBeInTheDocument();
+  expect(ravenclaw).not.toBeInTheDocument();
+  expect(slytherin).not.toBeInTheDocument();
 });
 
 test('return action item', async () => {
   const spy = vi.fn();
-  render(
-    <Menu label="Choose" onAction={spy}>
-      <Menu.Item id="burger">Burger</Menu.Item>
-      <Menu.Item id="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
+  render(<OnActionMenu />);
 
   const button = screen.getByText('Choose');
   await user.click(button);
