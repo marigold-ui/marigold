@@ -19,7 +19,6 @@ export const useSmallScreen = (): boolean => {
     if (typeof window == 'undefined') return;
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleResize]);
 
   return matches;

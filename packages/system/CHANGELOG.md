@@ -1,5 +1,27 @@
 # @marigold/system
 
+## 12.0.0
+
+### Minor Changes
+
+- 438b959: feat([DSTSUP-112]): Add sizes to RUI's `<Dialog>`
+- fe4b9de: feat([DST-801]): Allow to format ranges with `<NumericFormat>`
+
+### Patch Changes
+
+- 4e0971e: Extend useClassNames to automatically pick up styles from context.
+
+## 11.5.0
+
+### Minor Changes
+
+- c9b95bc: feat([DST-799]): Add `unstyled` and `maxWidth` to `<Form>`
+
+### Patch Changes
+
+- 8dab2e6: chore: update `react-aria` (April 2025 release)
+- 2a87f43: feat[DST-759]: Implement `<CloseButton>` component to be re-used into other components internally (e.g Dialog, Tag, Drawer and SectionMessage).
+
 ## 11.4.1
 
 ### Patch Changes

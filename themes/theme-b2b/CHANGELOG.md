@@ -1,5 +1,39 @@
 # @marigold/theme-b2b
 
+## 30.0.2
+
+### Patch Changes
+
+- 438b959: feat([DSTSUP-112]): Add sizes to RUI's `<Dialog>`
+- Updated dependencies [d7cfabd]
+- Updated dependencies [438b959]
+- Updated dependencies [20ecd9c]
+- Updated dependencies [fe4b9de]
+- Updated dependencies [4e510fb]
+- Updated dependencies [9d57c1f]
+- Updated dependencies [2ed500d]
+- Updated dependencies [4e0971e]
+- Updated dependencies [c30993e]
+  - @marigold/components@12.0.0
+  - @marigold/system@12.0.0
+
+## 30.0.1
+
+### Patch Changes
+
+- 9965825: infra([DST-771]): Add safelist to theme-docs
+- 2a87f43: feat[DST-759]: Implement `<CloseButton>` component to be re-used into other components internally (e.g Dialog, Tag, Drawer and SectionMessage).
+- Updated dependencies [8dab2e6]
+- Updated dependencies [70399e4]
+- Updated dependencies [c9b95bc]
+- Updated dependencies [337f9ee]
+- Updated dependencies [d24cee3]
+- Updated dependencies [4686a0d]
+- Updated dependencies [c42767f]
+- Updated dependencies [2a87f43]
+  - @marigold/components@11.5.0
+  - @marigold/system@11.5.0
+
 ## 30.0.0
 
 ### Major Changes

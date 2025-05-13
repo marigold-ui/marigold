@@ -21,6 +21,7 @@ export default () => {
     indeterminate: selected.length > 0 && selected.length < size,
     checked: selected.length === size,
     onChange: () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       selected.length === size
         ? setSelected([])
         : setSelected(Object.keys(genres) as Genres[]);
@@ -37,9 +38,7 @@ export default () => {
           onChange={(keys: Genres[]) => setSelected(keys)}
         >
           {Object.entries(genres).map(([value, label]) => (
-            <Checkbox key={value} value={value}>
-              {label}
-            </Checkbox>
+            <Checkbox key={value} value={value} label={label} />
           ))}
         </Checkbox.Group>
       </Inset>

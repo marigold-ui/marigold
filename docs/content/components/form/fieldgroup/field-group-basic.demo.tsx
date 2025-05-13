@@ -36,8 +36,8 @@ export default () => (
         <Radio value="spanish">Spanish</Radio>
       </RadioGroup>
       <CheckboxGroup label="Hobbies">
-        <Checkbox value="reading">Reading</Checkbox>
-        <Checkbox value="painting">Painting</Checkbox>
+        <Checkbox value="reading" label="Reading" />
+        <Checkbox value="painting" label="Painting" />
       </CheckboxGroup>
     </FieldGroup>
   </MarigoldProvider>

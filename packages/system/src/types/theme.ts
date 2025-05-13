@@ -7,6 +7,7 @@ export interface NestedStringObject {
 export interface ComponentStyleFunction<
   Variants extends string = never,
   Sizes extends string = never,
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   Additional extends { [name: string]: any } = {},
 > {
   (
@@ -35,6 +36,7 @@ export type Theme = {
     Body?: ComponentStyleFunction<string, string>;
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
+    CloseButton?: ComponentStyleFunction<string, string>;
     DateField?: Record<
       'segment' | 'field' | 'action',
       ComponentStyleFunction<string, string>
@@ -91,6 +93,7 @@ export type Theme = {
       'container' | 'section' | 'item',
       ComponentStyleFunction<string, string>
     >;
+    Modal?: ComponentStyleFunction<string, string>;
     MultiSelect?: Record<
       | 'container'
       | 'closeButton'

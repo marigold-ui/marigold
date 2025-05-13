@@ -1,5 +1,4 @@
 /* eslint-disable testing-library/no-node-access */
-/* eslint-disable testing-library/no-container */
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
@@ -13,6 +12,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Button: cva(''),
+    CloseButton: cva('size-7'),
     Dialog: {
       container: cva('p-5', {
         variants: {
@@ -39,6 +39,7 @@ const theme: Theme = {
     Headline: cva(''),
     Header: cva(''),
     Underlay: cva('bg-black opacity-5'),
+    Modal: cva(''),
   },
 };
 
@@ -124,7 +125,7 @@ test('optionally renders a close button', () => {
   const dialog = screen.getByText('Content');
   expect(dialog).toBeVisible();
 
-  const closeButton = dialog.firstChild?.lastChild!;
+  const closeButton = dialog.firstChild?.lastChild as HTMLButtonElement;
   expect(closeButton).toBeInTheDocument();
 
   fireEvent.click(closeButton);
@@ -318,9 +319,7 @@ test('dialog has base classnames', () => {
 
   const closeButton = dialog.firstChild;
 
-  expect(closeButton).toHaveClass(
-    'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1'
-  );
+  expect(closeButton).toHaveClass('size-7 p-1');
 
   expect(dialog).toHaveClass(`p-5`);
 });
@@ -344,9 +343,7 @@ test('dialog has variant classnames', () => {
 
   const closeButton = dialog.firstChild;
 
-  expect(closeButton).toHaveClass(
-    'h-4 w-4 cursor-pointer border-none leading-normal outline-0 p-1 bg-black'
-  );
+  expect(closeButton).toHaveClass('size-7 p-1 bg-black');
   expect(dialog.className).toMatch('bg-green-400');
 });
 

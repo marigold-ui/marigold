@@ -7,7 +7,7 @@ export default () => {
 
   return (
     <Stack space={2}>
-      <Switch onChange={() => setStretch(!stretch)}>Toggle stretch</Switch>
+      <Switch label="Toggle stretch" onChange={() => setStretch(!stretch)} />
       <div className="h-80">
         <Columns columns={[1, 1, 1]} space={2} stretch={stretch}>
           <Rectangle height="150px" width="100%" />

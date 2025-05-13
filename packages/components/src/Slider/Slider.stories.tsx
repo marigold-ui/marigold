@@ -17,13 +17,6 @@ const meta = {
         type: { summary: 'string' },
       },
     },
-    children: {
-      control: 'text',
-      description: 'The label of the slider',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
     disabled: {
       control: {
         type: 'boolean',
@@ -73,6 +66,7 @@ const meta = {
     },
   },
   args: {
+    label: 'Label',
     disabled: false,
     description: 'This is a help text description',
     thumbLabels: ['start'],
@@ -87,9 +81,11 @@ export const Basic: Story = { render: args => <Slider {...args} /> };
 export const ValueFormatting: Story = {
   render: args => (
     <Stack space={4}>
-      <Slider {...args} formatOptions={{ style: 'currency', currency: 'EUR' }}>
-        Price
-      </Slider>
+      <Slider
+        {...args}
+        formatOptions={{ style: 'currency', currency: 'EUR' }}
+        label="Price"
+      />
       <Slider
         {...args}
         formatOptions={{ style: 'percent' }}

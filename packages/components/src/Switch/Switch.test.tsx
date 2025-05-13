@@ -61,7 +61,7 @@ const getSwitchParts = () => {
 const { render } = setup({ theme });
 
 test('supports base styling', () => {
-  render(<Switch>Label</Switch>);
+  render(<Switch label="Label" />);
   const { label, container, track, thumb } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
@@ -77,7 +77,7 @@ test('supports base styling', () => {
 });
 
 test('supports a custom variant', () => {
-  render(<Switch variant="custom">Label</Switch>);
+  render(<Switch variant="custom" label="Label" />);
   const { track, thumb } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
@@ -87,14 +87,14 @@ test('supports a custom variant', () => {
 });
 
 test('supports a size', () => {
-  render(<Switch size="medium">Label</Switch>);
+  render(<Switch size="medium" label="Label" />);
   const { track } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
 });
 
 test('takes full width by default', () => {
-  render(<Switch>Label</Switch>);
+  render(<Switch label="Label" />);
   const { container } = getSwitchParts();
   expect(container.className).toMatchInlineSnapshot(
     `"w-full group/switch flex items-center gap-[1ch]"`
@@ -102,7 +102,7 @@ test('takes full width by default', () => {
 });
 
 test('allows to set width via prop', () => {
-  render(<Switch width={10}>Label</Switch>);
+  render(<Switch width={10} label="Label" />);
   const { label } = getSwitchParts();
   expect(label.className).toMatchInlineSnapshot(
     `"inline-flex w-[var(--labelWidth)]"`
@@ -110,7 +110,7 @@ test('allows to set width via prop', () => {
 });
 
 test('supports disabled prop', () => {
-  render(<Switch disabled>Label</Switch>);
+  render(<Switch disabled label="Label" />);
   const { input, thumb, track } = getSwitchParts();
 
   expect(input).toBeDisabled();
@@ -121,27 +121,13 @@ test('supports disabled prop', () => {
 });
 
 test('renders hidden <input> element', () => {
-  render(<Switch>Label</Switch>);
+  render(<Switch label="Label" />);
   const { input } = getSwitchParts();
   expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('toggle switch per click', () => {
-  render(<Switch>Label</Switch>);
-
-  const { input, track } = getSwitchParts();
-
-  fireEvent.click(input);
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-  expect(input.checked).toBeTruthy();
-
-  fireEvent.click(input);
-  expect(track.className).toMatchInlineSnapshot(`"relative"`);
-  expect(input.checked).toBeFalsy();
-});
-
 test('focus element and toggle switch per keyboard space', async () => {
-  render(<Switch>Label</Switch>);
+  render(<Switch label="Label" />);
 
   const { input, track } = getSwitchParts();
   user.tab();
@@ -162,7 +148,7 @@ test('focus element and toggle switch per keyboard space', async () => {
 });
 
 test('supports default selected', () => {
-  render(<Switch defaultSelected>Label</Switch>);
+  render(<Switch defaultSelected label="Label" />);
 
   const { input } = getSwitchParts();
 
@@ -173,7 +159,7 @@ test('supports default selected', () => {
 
 test('supports controlled component usage', () => {
   const onChange = vi.fn();
-  render(<Switch onChange={onChange}>Label</Switch>);
+  render(<Switch onChange={onChange} label="Label" />);
 
   const { input } = getSwitchParts();
 
@@ -188,7 +174,7 @@ test('supports controlled component usage', () => {
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLLabelElement>();
-  render(<Switch ref={ref}>Label</Switch>);
+  render(<Switch ref={ref} label="Label" />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });

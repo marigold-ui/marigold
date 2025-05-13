@@ -1,5 +1,75 @@
 # @marigold/docs
 
+## 12.0.0
+
+### Major Changes
+
+- 2ed500d: feat([DST-804]): Allow `Tag` to be used in forms and overhaul its docs
+
+  BREACKING CHANGE: Remove the `allowsRemoving` prop. This didn't had an effect for a while and to make it more clear removing is enabled, if there is a function set on the `onRemove` prop.
+
+### Minor Changes
+
+- 438b959: feat([DSTSUP-112]): Add sizes to RUI's `<Dialog>`
+- fe4b9de: feat([DST-801]): Allow to format ranges with `<NumericFormat>`
+
+### Patch Changes
+
+- 4e510fb: [DST-763]: Migrate to eslint flat config.
+- Updated dependencies [d7cfabd]
+- Updated dependencies [beaa990]
+- Updated dependencies [438b959]
+- Updated dependencies [20ecd9c]
+- Updated dependencies [fe4b9de]
+- Updated dependencies [4e510fb]
+- Updated dependencies [9d57c1f]
+- Updated dependencies [2ed500d]
+- Updated dependencies [15b844d]
+- Updated dependencies [4e0971e]
+- Updated dependencies [c30993e]
+- Updated dependencies [d71d9ab]
+  - @marigold/components@12.0.0
+  - @marigold/theme-rui@1.1.0
+  - @marigold/system@12.0.0
+  - @marigold/theme-b2b@30.0.2
+  - @marigold/theme-core@29.0.2
+  - @marigold/theme-docs@3.0.2
+  - @marigold/eslint-config@1.0.1
+  - @marigold/icons@1.3.8
+
+## 11.5.0
+
+### Patch Changes
+
+- 8dab2e6: chore: update `react-aria` (April 2025 release)
+- 337f9ee: doc[DST-727]: add copyable examples to the pagination documentation.
+- c42767f: refa([DST-762]): support `label` prop for `<CheckBox>` and `<Switch>`.
+
+  **Breaking Change**: Deprecate `children` property, use `label` instead. With the next major version `children` will be removed.
+
+- 2a87f43: feat[DST-759]: Implement `<CloseButton>` component to be re-used into other components internally (e.g Dialog, Tag, Drawer and SectionMessage).
+- Updated dependencies [8dab2e6]
+- Updated dependencies [70399e4]
+- Updated dependencies [25c37c6]
+- Updated dependencies [c9b95bc]
+- Updated dependencies [337f9ee]
+- Updated dependencies [798e410]
+- Updated dependencies [d24cee3]
+- Updated dependencies [87e7f4d]
+- Updated dependencies [1e5ce6e]
+- Updated dependencies [16b9e54]
+- Updated dependencies [4686a0d]
+- Updated dependencies [c42767f]
+- Updated dependencies [9965825]
+- Updated dependencies [2a87f43]
+  - @marigold/components@11.5.0
+  - @marigold/system@11.5.0
+  - @marigold/theme-rui@1.0.1
+  - @marigold/theme-b2b@30.0.1
+  - @marigold/theme-core@29.0.1
+  - @marigold/theme-docs@3.0.1
+  - @marigold/icons@1.3.7
+
 ## 11.4.1
 
 ### Patch Changes

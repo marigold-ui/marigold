@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import { DateSegment } from 'react-aria-components';
 import { cn } from '@marigold/system';
 
-export interface DateSegmentProps extends RAC.DateSegmentProps {}
+export type DateSegmentProps = RAC.DateSegmentProps;
 
 const _DateSegment = ({ segment, ...props }: DateSegmentProps) => {
   return (

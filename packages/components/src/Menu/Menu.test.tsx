@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React, { SVGProps } from 'react';
 import { vi } from 'vitest';
@@ -72,8 +72,6 @@ const mockMatchMedia = (matches: string[]) =>
   }));
 
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-
-afterEach(cleanup);
 
 test('renders the button but no menu by default', () => {
   render(

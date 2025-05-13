@@ -1,5 +1,53 @@
 # @marigold/theme-rui
 
+## 1.1.0
+
+### Minor Changes
+
+- 438b959: feat([DSTSUP-112]): Add sizes to RUI's `<Dialog>`
+- 2ed500d: feat([DST-804]): Allow `Tag` to be used in forms and overhaul its docs
+
+  BREACKING CHANGE: Remove the `allowsRemoving` prop. This didn't had an effect for a while and to make it more clear removing is enabled, if there is a function set on the `onRemove` prop.
+
+### Patch Changes
+
+- beaa990: styles([DSTSUP-128]): Fix `disabled` styles for `Radio` and `Checkbox`
+- 15b844d: fix([DST-811]): Add color to tabs separator
+- d71d9ab: styles([DST-823]): adjust RUI `<NumberField>` background styles
+- Updated dependencies [d7cfabd]
+- Updated dependencies [438b959]
+- Updated dependencies [20ecd9c]
+- Updated dependencies [fe4b9de]
+- Updated dependencies [4e510fb]
+- Updated dependencies [9d57c1f]
+- Updated dependencies [2ed500d]
+- Updated dependencies [4e0971e]
+- Updated dependencies [c30993e]
+  - @marigold/components@12.0.0
+  - @marigold/system@12.0.0
+
+## 1.0.1
+
+### Patch Changes
+
+- 70399e4: style([DST-724]): Adjust required icon for form elements in RUI style
+- 25c37c6: refa([DST-800]): Simplify animation in `<Drawer>`
+- 798e410: fix([DST-794]): Set correct outline on focus for input and textarea
+- 87e7f4d: feat:([DSTSUP-110]): Add surface tokens to the theme and creates Tailwind utils to apply the (`utils-surface-{sunken,body,raised,overlay}`)
+- 1e5ce6e: refa([DST-681]): Simplify label required classes
+- 16b9e54: fix([DSTSUP-123]): Adjust z-index of table styles for sticky header
+- 2a87f43: feat[DST-759]: Implement `<CloseButton>` component to be re-used into other components internally (e.g Dialog, Tag, Drawer and SectionMessage).
+- Updated dependencies [8dab2e6]
+- Updated dependencies [70399e4]
+- Updated dependencies [c9b95bc]
+- Updated dependencies [337f9ee]
+- Updated dependencies [d24cee3]
+- Updated dependencies [4686a0d]
+- Updated dependencies [c42767f]
+- Updated dependencies [2a87f43]
+  - @marigold/components@11.5.0
+  - @marigold/system@11.5.0
+
 ## 1.0.0
 
 ### Major Changes

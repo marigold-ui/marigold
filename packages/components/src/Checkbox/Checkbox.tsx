@@ -58,6 +58,7 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
 };
 
 export type RemovedProps =
+  | 'children'
   | 'className'
   | 'style'
   | 'isDisabled'
@@ -69,6 +70,9 @@ export type RemovedProps =
   | 'defaultSelected';
 
 export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
+  variant?: string;
+  size?: string;
+
   /**
    * Whether the element should be checked (controlled).
    */
@@ -102,12 +106,11 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
    * @default false
    */
   error?: boolean;
-  variant?: string;
-  size?: string;
   /**
-   * Children of the component.
+   * Set the label of the checkbox.
+   *
    */
-  children?: ReactNode;
+  label?: ReactNode;
 }
 
 export interface CheckboxComponent
@@ -132,9 +135,9 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       checked,
       defaultChecked,
       indeterminate,
-      children,
       variant,
       size,
+      label,
       ...rest
     },
     ref
@@ -176,9 +179,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
               indeterminate={isIndeterminate}
               className={classNames.checkbox}
             />
-            {children ? (
-              <div className={classNames.label}>{children}</div>
-            ) : null}
+            {label && <div className={classNames.label}>{label}</div>}
           </>
         )}
       </Checkbox>

@@ -17,6 +17,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 export interface ThemeSwitchContextType {
   current: string;
   themes: { [name: string]: Theme };
+  //eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   updateTheme: Function;
 }
 
