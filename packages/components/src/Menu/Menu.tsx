@@ -1,8 +1,7 @@
 import { Key, ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Menu, MenuTrigger } from 'react-aria-components';
+import { Button, Menu, MenuTrigger } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { Button } from '../Button';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
 import { MenuItem } from './MenuItem';
@@ -64,7 +63,11 @@ const _Menu = ({
 
   return (
     <MenuTrigger {...props}>
-      <Button variant="menu" disabled={disabled} aria-label={ariaLabel}>
+      <Button
+        className={classNames.button}
+        aria-label={ariaLabel}
+        isDisabled={disabled}
+      >
         {label}
       </Button>
       <Popover open={open} placement={placement}>
