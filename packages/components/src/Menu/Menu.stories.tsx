@@ -1,7 +1,6 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
-import { vi } from 'vitest';
+import { expect, spyOn, userEvent, within } from '@storybook/test';
 import { Key } from '@react-types/shared';
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
@@ -86,7 +85,10 @@ const meta = {
   args: {
     selectionMode: 'none',
     placement: 'bottom',
-    label: 'none',
+    variant: undefined,
+    size: undefined,
+    onOpenChange: undefined,
+    open: undefined,
   },
 } satisfies Meta<typeof Menu>;
 
@@ -97,7 +99,7 @@ export const Basic: Story = {
   tags: ['component-test'],
   render: args => {
     return (
-      <Menu {...args} label="Hogwarts Houses">
+      <Menu label="Hogwarts Houses" {...args}>
         <Menu.Item id="gryffindor">Gryffindor</Menu.Item>
         <Menu.Item id="hufflepuff">Hufflepuff</Menu.Item>
         <Menu.Item id="ravenclaw">Ravenclaw</Menu.Item>
@@ -171,20 +173,19 @@ export const OnActionMenu: Story = {
       </Menu>
     );
   },
-  args: {
-    onAction: fn(),
-  },
-  play: async ({ args }) => {
+  play: async () => {
     const canvas = within(document.body);
+    const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
     const button = canvas.getByText('Choose');
+
     await userEvent.click(button);
+    await userEvent.click(canvas.getByText('🍔 Burger'));
 
-    const burger = canvas.getByText('🍔 Burger');
-    await userEvent.click(burger);
+    expect(alertMock).toHaveBeenCalledWith('burger');
+    expect(alertMock).not.toHaveBeenCalledWith('pizza');
 
-    expect(args.onAction).toHaveBeenCalledWith('burger');
-    expect(args.onAction).not.toHaveBeenCalledWith('pizza');
+    alertMock.mockRestore();
   },
 };
 

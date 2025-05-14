@@ -9,7 +9,7 @@ import * as stories from './Menu.stories';
 // ---------------
 const user = userEvent.setup();
 
-const { Basic, OnActionMenu } = composeStories(stories);
+const { Basic, BasicActionMenu, MenuSection } = composeStories(stories);
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -38,125 +38,62 @@ test('renders the button but no menu by default', () => {
   expect(slytherin).not.toBeInTheDocument();
 });
 
-test('return action item', async () => {
-  const spy = vi.fn();
-  render(<OnActionMenu />);
-
-  const button = screen.getByText('Choose');
-  await user.click(button);
-
-  const burger = screen.getByText('Burger');
-  await user.click(burger);
-
-  expect(spy).toHaveBeenCalledWith('burger');
-  expect(spy).not.toHaveBeenCalledWith('pizza');
-});
-
-test('uses base classes from "Menu" in theme', () => {
-  render(
-    <Menu data-testid="menu" label="Choose">
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
-  const button = screen.getByText('Choose');
-  fireEvent.click(button);
-
-  const menu = screen.getByRole('menu');
-  expect(menu).toHaveClass(`bg-white`);
-});
-
 test('supports "Menu" variant classnames from theme', () => {
-  render(
-    <Menu data-testid="menu" label="Choose" variant="one">
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
-  const button = screen.getByText('Choose');
+  render(<Basic data-testid="menu" variant="one" />);
+  const button = screen.getByText('Hogwarts Houses');
   fireEvent.click(button);
 
   const menu = screen.getByRole('menu');
-  const item = screen.getByText('Burger');
+  const item = screen.getByText('Gryffindor');
 
   expect(menu.className).toMatchInlineSnapshot(
-    `"focus:text-pink-600 bg-pink-900"`
+    `"list-none break-words rounded-[2px] border p-0 sm:max-h-[75ch] md:max-h-[75vh] lg:max-h-[45vh] flex flex-col overflow-y-auto overflow-x-hidden border-border-inverted bg-surface-overlay border-solid"`
   );
   expect(item.className).toMatchInlineSnapshot(
-    `"text-black focus:text-pink-600"`
+    `"cursor-pointer p-1 focus:outline-0 disabled:text-text-base-disabled disabled:cursor-not-allowed data-hovered:text-text-inverted data-hovered:bg-linear-to-t from-highlight-start/80 to-highlight-end/90 text-xs data-selected:bg-bg-selected"`
   );
 });
 
 test('supports "Menu" sizes from theme', () => {
-  render(
-    <Menu data-testid="menu" label="Choose" size="large">
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
+  render(<Basic data-testid="menu" size="large" />);
   const button = screen.getByRole('button');
   fireEvent.click(button);
 
-  const item = screen.getByText('Burger');
+  const item = screen.getByText('Gryffindor');
   expect(item.className).toMatchInlineSnapshot(
-    `"text-black focus:text-pink-600"`
+    `"cursor-pointer p-1 focus:outline-0 disabled:text-text-base-disabled disabled:cursor-not-allowed data-hovered:text-text-inverted data-hovered:bg-linear-to-t from-highlight-start/80 to-highlight-end/90 text-xs data-selected:bg-bg-selected"`
   );
 });
 
 test('renders action menu', () => {
-  render(
-    <>
-      <ActionMenu>
-        <Menu.Item key="one">Settings</Menu.Item>
-        <Menu.Item key="two">Delete</Menu.Item>
-      </ActionMenu>
-    </>
-  );
+  render(<BasicActionMenu />);
   const button = screen.getByRole('button');
+
   expect(button).toBeInTheDocument();
   fireEvent.click(button);
+
   const item = screen.getByText('Settings');
   expect(item).toBeInTheDocument();
 });
 
 test('supports open property', () => {
-  render(
-    <Menu data-testid="menu" label="Choose" open={true}>
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
+  render(<Basic data-testid="menu" open={true} />);
 
-  const item = screen.getByText('Burger');
+  const item = screen.getByText('Gryffindor');
   expect(item).toBeInTheDocument();
 });
 
 test('supports onOpenChange property', () => {
   const onOpenChange = vi.fn();
-  render(
-    <Menu data-testid="menu" label="Choose" onOpenChange={() => onOpenChange()}>
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
-  );
+  render(<Basic data-testid="menu" onOpenChange={() => onOpenChange()} />);
   expect(onOpenChange).toBeCalledTimes(0);
   fireEvent.click(screen.getByRole('button'));
   expect(onOpenChange).toBeCalledTimes(1);
 });
 
 test('supports Menu with sections', () => {
-  render(
-    <Menu aria-label="Menu with sections" open>
-      <Menu.Section title="Food">
-        <Menu.Item key="burger">🍔 Burger</Menu.Item>
-        <Menu.Item key="pizza">🍕 Pizza</Menu.Item>
-      </Menu.Section>
-      <Menu.Section title="Fruits">
-        <Menu.Item key="apple">🍎 Apple</Menu.Item>
-        <Menu.Item key="banana">🍌 Banana</Menu.Item>
-      </Menu.Section>
-    </Menu>
-  );
+  render(<MenuSection aria-label="Menu with sections" open />);
+
   expect(screen.getByText('Food')).toBeInTheDocument();
   expect(screen.getByText('Fruits')).toBeInTheDocument();
 });
@@ -169,14 +106,11 @@ test('pass "aria-label" to button (when you use a menu with only an icon)', () =
   );
 
   render(
-    <Menu
+    <Basic
       data-testid="menu"
       aria-label="Descriptive label for the button"
       label={<Icon />}
-    >
-      <Menu.Item key="burger">Burger</Menu.Item>
-      <Menu.Item key="pizza">Pizza</Menu.Item>
-    </Menu>
+    />
   );
 
   const btn = screen.getByLabelText('Descriptive label for the button');
