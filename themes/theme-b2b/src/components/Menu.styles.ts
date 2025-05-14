@@ -11,4 +11,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     'disabled:text-text-base-disabled',
   ]),
   section: cva('text-text-accent border-t px-4 py-1  text-sm'),
+  button: cva(
+    'text-text-base bg-bg-surface hover:text-text-inverted hover:bg-bg-brand-hover'
+  ),
 };

@@ -30,4 +30,7 @@ export const Menu: ThemeComponent<'Menu'> = {
       },
     },
   }),
+  button: cva(
+    'text-secondary-700 hover:bg-secondary-400/20 h-8 rounded-lg px-1'
+  ),
 };
