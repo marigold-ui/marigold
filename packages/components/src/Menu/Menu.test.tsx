@@ -1,13 +1,11 @@
 import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
 import * as stories from './Menu.stories';
 
 // Setup
 // ---------------
-const user = userEvent.setup();
 
 const { Basic, BasicActionMenu, MenuSection } = composeStories(stories);
 
