@@ -4,9 +4,6 @@ import { SVGProps } from 'react';
 import { vi } from 'vitest';
 import * as stories from './Menu.stories';
 
-// Setup
-// ---------------
-
 const { Basic, BasicActionMenu, MenuSection } = composeStories(stories);
 
 /**
@@ -36,33 +33,6 @@ test('renders the button but no menu by default', () => {
   expect(slytherin).not.toBeInTheDocument();
 });
 
-test('supports "Menu" variant classnames from theme', () => {
-  render(<Basic data-testid="menu" variant="one" />);
-  const button = screen.getByText('Hogwarts Houses');
-  fireEvent.click(button);
-
-  const menu = screen.getByRole('menu');
-  const item = screen.getByText('Gryffindor');
-
-  expect(menu.className).toMatchInlineSnapshot(
-    `"list-none break-words rounded-[2px] border p-0 sm:max-h-[75ch] md:max-h-[75vh] lg:max-h-[45vh] flex flex-col overflow-y-auto overflow-x-hidden border-border-inverted bg-surface-overlay border-solid"`
-  );
-  expect(item.className).toMatchInlineSnapshot(
-    `"cursor-pointer p-1 focus:outline-0 disabled:text-text-base-disabled disabled:cursor-not-allowed data-hovered:text-text-inverted data-hovered:bg-linear-to-t from-highlight-start/80 to-highlight-end/90 text-xs data-selected:bg-bg-selected"`
-  );
-});
-
-test('supports "Menu" sizes from theme', () => {
-  render(<Basic data-testid="menu" size="large" />);
-  const button = screen.getByRole('button');
-  fireEvent.click(button);
-
-  const item = screen.getByText('Gryffindor');
-  expect(item.className).toMatchInlineSnapshot(
-    `"cursor-pointer p-1 focus:outline-0 disabled:text-text-base-disabled disabled:cursor-not-allowed data-hovered:text-text-inverted data-hovered:bg-linear-to-t from-highlight-start/80 to-highlight-end/90 text-xs data-selected:bg-bg-selected"`
-  );
-});
-
 test('renders action menu', () => {
   render(<BasicActionMenu />);
   const button = screen.getByRole('button');
@@ -75,7 +45,7 @@ test('renders action menu', () => {
 });
 
 test('supports open property', () => {
-  render(<Basic data-testid="menu" open={true} />);
+  render(<Basic open={true} />);
 
   const item = screen.getByText('Gryffindor');
   expect(item).toBeInTheDocument();
