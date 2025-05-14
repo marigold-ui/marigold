@@ -7,4 +7,4 @@
 "@marigold/theme-rui": patch
 ---
 
-chore([DST-853]): Refa styles for <Menu> button
+chore([DST-853]): Refa styles for `<Menu>` button
