@@ -153,7 +153,8 @@ export type Theme = {
       | 'calendarCell'
       | 'calendarControllers'
       | 'calendarHeader'
-      | 'calendarGrid',
+      | 'calendarGrid'
+      | 'dateSelectorOption',
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;

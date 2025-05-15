@@ -70,8 +70,18 @@ export const _Calendar = ({
   >();
 
   const ViewMap = {
-    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
-    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
+    month: (
+      <MonthListBox
+        className={classNames.dateSelectorOption}
+        setSelectedDropdown={setSelectedDropdown}
+      />
+    ),
+    year: (
+      <YearListBox
+        className={classNames.dateSelectorOption}
+        setSelectedDropdown={setSelectedDropdown}
+      />
+    ),
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   return (
