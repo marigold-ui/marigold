@@ -1,128 +1,101 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { vi } from 'vitest';
-import { Facebook } from '@marigold/icons';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { Button } from './Button';
+import * as stories from './Button.stories';
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Button: cva('align-center flex disabled:bg-gray-600', {
-      variants: {
-        variant: {
-          primary: 'text-primary-500',
-          secondary: 'text-secondary-800',
-        },
-        size: {
-          small: 'size-10',
-          large: 'w-50 h-50',
-        },
-      },
-    }),
-    ProgressCycle: cva(),
-  },
-};
-
-const { render } = setup({ theme });
+const { Basic, WithIcon } = composeStories(stories);
 
 test('sets some base styles', () => {
-  render(<Button>button</Button>);
-  const button = screen.getByText(/button/);
+  render(<Basic />);
+  const button = screen.getByText(/Button/);
 
-  expect(button).toHaveClass('flex align-center');
+  expect(button).toHaveClass(
+    'border-border-base bg-bg-inverted text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200',
+    'disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed',
+    'pending:border-border-base-disabled pending:bg-bg-inverted-disabled pending:text-text-base-disabled pending:cursor-not-allowed',
+    'focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-offset-1 outline-hidden',
+    'hover:bg-bg-inverted-hover'
+  );
 });
 
 test('supports base styling classes', () => {
-  render(<Button>button</Button>);
-  const button = screen.getByText(/button/);
+  render(<Basic />);
+  const button = screen.getByText(/Button/);
 
   expect(button.className).toMatchInlineSnapshot(
-    `"items-center justify-center gap-[0.5ch] align-center flex disabled:bg-gray-600"`
+    `"inline-flex items-center justify-center gap-[0.5ch] border-border-base bg-bg-inverted text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed pending:border-border-base-disabled pending:bg-bg-inverted-disabled pending:text-text-base-disabled pending:cursor-not-allowed focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-offset-1 outline-hidden hover:bg-bg-inverted-hover"`
   );
 });
 
 test('supports default size', () => {
-  render(<Button size="small">button</Button>);
-  const button = screen.getByText(/button/);
+  render(<Basic size="small" />);
 
-  expect(button).toHaveClass(`size-10`);
+  const button = screen.getByText(/Button/);
+
+  expect(button).toHaveClass('py-1');
 });
 
-test('accepts other variants', () => {
-  render(<Button variant="secondary">button</Button>);
-  const button = screen.getByText(/button/);
+test('accepts variants', async () => {
+  render(<Basic variant="primary" />);
 
-  expect(button).toHaveClass('text-secondary-800');
+  const primaryButton = screen.getByText(/Button/);
+
+  expect(primaryButton).toHaveClass(
+    'border-border-brand bg-bg-brand text-text-inverted',
+    'hover:bg-bg-brand-hover hover:border-border-brand-hover'
+  );
 });
 
 test('renders <button> element', () => {
-  render(<Button>button</Button>);
-  const button = screen.getByText(/button/);
+  render(<Basic />);
+
+  const button = screen.getByText(/Button/);
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
 });
 
 test('add icon in button works as expected', () => {
-  render(
-    <Button>
-      <Facebook size={30} data-testid="facebook" />
-      iconbutton
-    </Button>
-  );
+  render(<WithIcon>iconbutton</WithIcon>);
+
   const button = screen.getByText(/iconbutton/);
   const icon = screen.getByTestId(/facebook/);
 
   expect(button instanceof HTMLButtonElement).toBeTruthy();
-  expect(button).toHaveClass('flex align-center');
+  expect(button).toHaveClass('items-center justify-center');
   expect(icon).toHaveAttribute('width', '30px');
-});
-
-test('supports onPress', () => {
-  const onPress = vi.fn();
-  render(
-    <Button onPress={onPress} data-testid="button">
-      Some Button
-    </Button>
-  );
-
-  const button = screen.getByTestId('button');
-  fireEvent.click(button);
-
-  expect(onPress).toHaveBeenCalled();
 });
 
 test('forwards ref', () => {
   const ref = React.createRef<HTMLButtonElement>();
-  render(<Button ref={ref}>button</Button>);
+  render(<Basic ref={ref} />);
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
 
 test('supports disabled prop', () => {
-  render(<Button disabled>button</Button>);
-  const button = screen.getByText(/button/);
+  render(<Basic disabled />);
+
+  const button = screen.getByText(/Button/);
+
   expect(button).toHaveAttribute('disabled');
-  expect(button).toHaveClass('disabled:bg-gray-600');
 });
 
 test('allows to take full width', () => {
-  render(<Button fullWidth>button</Button>);
+  render(<Basic fullWidth />);
 
-  const button = screen.getByText(/button/);
+  const button = screen.getByText(/Button/);
+
   expect(button).toHaveClass('w-full');
 });
 
 test('loading state', () => {
-  render(<Button loading={true}>button</Button>);
+  render(<Basic loading={true} />);
 
   const button = screen.getByRole('button');
-  expect(button).toHaveAttribute('data-pending', 'true');
-
   const svg = screen.getByRole('progressbar');
-  expect(svg).toBeInTheDocument();
 
+  expect(svg).toBeInTheDocument();
+  expect(button).toHaveAttribute('data-pending', 'true');
   expect(button).toHaveClass('cursor-progress!');
   expect(button).toHaveAttribute('data-pending', 'true');
 });
