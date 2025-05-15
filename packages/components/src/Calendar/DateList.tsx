@@ -25,7 +25,7 @@ export const DateListBox = <T,>({
   const classNames = useClassNames({ component: 'Select' });
 
   return (
-    <Select onSelectionChange={key => onSelect(Number(key))}>
+    <Select selectedKey={'20'} onSelectionChange={key => onSelect(Number(key))}>
       <Button
         className={cn(
           'flex w-full items-center justify-between gap-1 overflow-hidden',
