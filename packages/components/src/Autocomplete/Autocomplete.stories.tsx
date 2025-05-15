@@ -8,7 +8,7 @@ import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
 
-const meta = {
+const meta: Meta<typeof Autocomplete> = {
   title: 'Components/Autocomplete',
   component: Autocomplete,
   argTypes: {
