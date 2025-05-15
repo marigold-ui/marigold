@@ -1,3 +1,4 @@
+// @ts-ignore
 import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
@@ -8,8 +9,7 @@ import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
 
-// @ts-ignore
-const meta = {
+const meta: any = {
   title: 'Components/Autocomplete',
   component: Autocomplete,
   argTypes: {
