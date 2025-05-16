@@ -1,5 +1,6 @@
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, spyOn, userEvent, within } from '@storybook/test';
 import { Key } from '@react-types/shared';
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
@@ -7,6 +8,7 @@ import { Menu } from './Menu';
 
 const meta = {
   title: 'Components/Menu',
+  component: Menu,
   argTypes: {
     open: {
       control: {
@@ -82,38 +84,102 @@ const meta = {
     },
   },
   args: {
-    selectionMode: 'none',
     placement: 'bottom',
-    label: 'none',
   },
 } satisfies Meta<typeof Menu>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const StandardMenu: Story = {
-  render: args => {
-    return (
-      <Menu {...args} label="Hogwarts Houses">
-        <Menu.Item id="gryffindor">🦁 Gryffindor</Menu.Item>
-        <Menu.Item id="hufflepuff">🦡 Hufflepuff</Menu.Item>
-        <Menu.Item id="ravenclaw">🐦‍⬛ Ravenclaw</Menu.Item>
-        <Menu.Item id="slytherin">🐍 Slytherin</Menu.Item>
-      </Menu>
-    );
+export const Basic: Story = {
+  tags: ['component-test'],
+  render: args => (
+    <Menu {...args} label="Hogwarts Houses">
+      <Menu.Item id="gryffindor">Gryffindor</Menu.Item>
+      <Menu.Item id="hufflepuff">Hufflepuff</Menu.Item>
+      <Menu.Item id="ravenclaw">Ravenclaw</Menu.Item>
+      <Menu.Item id="slytherin">Slytherin</Menu.Item>
+    </Menu>
+  ),
+  play: async ({ step }) => {
+    const canvas = within(document.body);
+
+    await step('Open the menu', async () => {
+      const button = canvas.getByText('Hogwarts Houses');
+
+      await userEvent.click(button);
+
+      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
+        'aria-expanded',
+        'true'
+      );
+      expect(canvas.getByText('Gryffindor')).toBeVisible();
+      expect(canvas.getByText('Hufflepuff')).toBeVisible();
+      expect(canvas.getByText('Ravenclaw')).toBeVisible();
+      expect(canvas.getByText('Slytherin')).toBeVisible();
+    });
+
+    await step('Select an item from the menu and close menu', async () => {
+      const gryffindor = canvas.getByText('Gryffindor');
+
+      await userEvent.click(gryffindor);
+
+      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
+        'aria-expanded',
+        'false'
+      );
+      expect(gryffindor).not.toBeVisible();
+    });
+
+    await step('Open the menu again', async () => {
+      const button = canvas.getByText('Hogwarts Houses');
+
+      await userEvent.click(button);
+
+      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
+        'aria-expanded',
+        'true'
+      );
+    });
+
+    await step('Click outside the menu', async () => {
+      const outside = canvas.getByTestId('underlay');
+
+      await userEvent.click(outside);
+
+      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
+        'aria-expanded',
+        'false'
+      );
+    });
   },
 };
 
 export const OnActionMenu: Story = {
+  tags: ['component-test'],
   render: args => {
     return (
-      <Menu {...args} label="Choose" onAction={key => alert(key)}>
+      <Menu onAction={key => alert(key)} {...args} label="Choose">
         <Menu.Item id="burger">🍔 Burger</Menu.Item>
         <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
         <Menu.Item id="salad">🥗 Salad</Menu.Item>
         <Menu.Item id="fries">🍟 Fries</Menu.Item>
       </Menu>
     );
+  },
+  play: async () => {
+    const canvas = within(document.body);
+    const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
+
+    const button = canvas.getByText('Choose');
+
+    await userEvent.click(button);
+    await userEvent.click(canvas.getByText('🍔 Burger'));
+
+    expect(alertMock).toHaveBeenCalledWith('burger');
+    expect(alertMock).not.toHaveBeenCalledWith('pizza');
+
+    alertMock.mockRestore();
   },
 };
 

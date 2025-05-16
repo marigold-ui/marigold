@@ -90,7 +90,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Menu?: Record<
-      'container' | 'section' | 'item',
+      'container' | 'section' | 'item' | 'button',
       ComponentStyleFunction<string, string>
     >;
     Modal?: ComponentStyleFunction<string, string>;
