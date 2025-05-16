@@ -34,7 +34,8 @@
       "@/registry/*": ["./.registry/*"],
       "contentlayer/generated": ["./.contentlayer/generated"]
     },
-    "strict": false
+    "strict": false,
+    "types": ["vitest/globals"]
   },
   "include": [
     "**/*.ts",
