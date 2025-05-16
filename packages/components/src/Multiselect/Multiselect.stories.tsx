@@ -4,7 +4,7 @@ import { expect, userEvent, within } from '@storybook/test';
 import { Stack } from '../Stack';
 import { Multiselect } from './Multiselect';
 
-const meta: Meta = {
+const meta: Meta<typeof Multiselect> = {
   title: 'Components/Multiselect',
   component: Multiselect,
   argTypes: {
@@ -87,9 +87,10 @@ const meta: Meta = {
     disabled: false,
     width: 'full',
   },
-} satisfies Meta;
+};
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
 const ticketCategories = [
   { value: 'general', label: 'General Admission' },
@@ -105,7 +106,7 @@ const ticketPriorities = [
   { value: 'critical', label: 'Critical Issue' },
 ];
 
-export const Basic: StoryObj<any> = {
+export const Basic: Story = {
   tags: ['component-test'],
   render: args => (
     <Multiselect
@@ -166,7 +167,7 @@ export const Basic: StoryObj<any> = {
   },
 };
 
-export const Controlled: StoryObj<any> = {
+export const Controlled: Story = {
   render: args => {
     const [current, setCurrent] = useState<string>('');
     const [selectedItems, setSelectedItems] = useState<Array<object>>([]);
