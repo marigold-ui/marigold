@@ -4,6 +4,7 @@ import { Calendar, DateValue } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarListBox } from './CalendarListBox';
+import { CalendarContext } from './Context';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
 import YearListBox from './YearListBox';
@@ -63,7 +64,7 @@ export const _Calendar = ({
     ...rest,
   };
 
-  const classNames = useClassNames({ component: 'Calendar' });
+  const classNames = useClassNames({ component: 'Calendar', size, variant });
 
   const [selectedDropdown, setSelectedDropdown] = useState<
     ViewMapKeys | undefined
@@ -75,17 +76,29 @@ export const _Calendar = ({
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   return (
-    <Calendar
-      className={cn(
-        'flex min-h-[350px] w-fit flex-col rounded-xs p-4',
-        classNames.calendar
-      )}
-      {...props}
-    >
-      {selectedDropdown ? (
-        ViewMap[selectedDropdown]
-      ) : (
-        <>
+    <CalendarContext.Provider value={{ classNames }}>
+      <Calendar
+        className={cn(
+          'relative flex min-h-[350px] w-fit flex-col rounded-xs p-4',
+          classNames.calendar
+        )}
+        {...props}
+      >
+        <div
+          className={cn(
+            'pointer-events-none absolute top-0 left-0 size-full opacity-0',
+            selectedDropdown && 'pointer-events-auto opacity-100'
+          )}
+        >
+          {ViewMap[selectedDropdown as ViewMapKeys]}
+        </div>
+
+        <div
+          className={cn(
+            'flex flex-col',
+            selectedDropdown && 'pointer-events-none opacity-0'
+          )}
+        >
           <div className="mb-4 flex items-center justify-between">
             <div className="flex w-fit gap-4">
               <CalendarListBox
@@ -102,9 +115,9 @@ export const _Calendar = ({
             <MonthControls />
           </div>
           <CalendarGrid />
-        </>
-      )}
-    </Calendar>
+        </div>
+      </Calendar>
+    </CalendarContext.Provider>
   );
 };
 

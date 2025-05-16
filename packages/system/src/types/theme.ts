@@ -149,11 +149,13 @@ export type Theme = {
     >;
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
+      | 'dateSelectorOption'
       | 'calendar'
       | 'calendarCell'
       | 'calendarControllers'
       | 'calendarHeader'
-      | 'calendarGrid',
+      | 'calendarGrid'
+      | 'select',
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
