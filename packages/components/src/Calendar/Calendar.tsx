@@ -4,6 +4,7 @@ import { Calendar, DateValue } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarListBox } from './CalendarListBox';
+import { CalendarContext } from './Context';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
 import YearListBox from './YearListBox';
@@ -70,63 +71,53 @@ export const _Calendar = ({
   >();
 
   const ViewMap = {
-    month: (
-      <MonthListBox
-        className={classNames.dateSelectorOption}
-        setSelectedDropdown={setSelectedDropdown}
-      />
-    ),
-    year: (
-      <YearListBox
-        className={classNames.dateSelectorOption}
-        setSelectedDropdown={setSelectedDropdown}
-      />
-    ),
+    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
+    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   return (
-    <Calendar
-      className={cn(
-        'relative flex min-h-[350px] w-fit flex-col rounded-xs p-4',
-        classNames.calendar
-      )}
-      {...props}
-    >
-      {/* Dropdown Container - always in DOM */}
-      <div
+    <CalendarContext.Provider value={{ classNames }}>
+      <Calendar
         className={cn(
-          'pointer-events-none absolute top-0 left-0 size-full opacity-0',
-          selectedDropdown && 'pointer-events-auto opacity-100'
+          'relative flex min-h-[350px] w-fit flex-col rounded-xs p-4',
+          classNames.calendar
         )}
+        {...props}
       >
-        {ViewMap[selectedDropdown as ViewMapKeys]}
-      </div>
-
-      {/* Main Content - always in DOM */}
-      <div
-        className={cn(
-          'flex flex-col',
-          selectedDropdown && 'pointer-events-none opacity-0'
-        )}
-      >
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex w-fit gap-4">
-            <CalendarListBox
-              type="month"
-              isDisabled={props.isDisabled}
-              setSelectedDropdown={setSelectedDropdown}
-            />
-            <CalendarListBox
-              type="year"
-              isDisabled={props.isDisabled}
-              setSelectedDropdown={setSelectedDropdown}
-            />
-          </div>
-          <MonthControls />
+        <div
+          className={cn(
+            'pointer-events-none absolute top-0 left-0 size-full opacity-0',
+            selectedDropdown && 'pointer-events-auto opacity-100'
+          )}
+        >
+          {ViewMap[selectedDropdown as ViewMapKeys]}
         </div>
-        <CalendarGrid />
-      </div>
-    </Calendar>
+
+        <div
+          className={cn(
+            'flex flex-col',
+            selectedDropdown && 'pointer-events-none opacity-0'
+          )}
+        >
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex w-fit gap-4">
+              <CalendarListBox
+                type="month"
+                isDisabled={props.isDisabled}
+                setSelectedDropdown={setSelectedDropdown}
+              />
+              <CalendarListBox
+                type="year"
+                isDisabled={props.isDisabled}
+                setSelectedDropdown={setSelectedDropdown}
+              />
+            </div>
+            <MonthControls />
+          </div>
+          <CalendarGrid />
+        </div>
+      </Calendar>
+    </CalendarContext.Provider>
   );
 };
 

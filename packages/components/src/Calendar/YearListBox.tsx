@@ -10,14 +10,15 @@ import {
 import { Button, CalendarStateContext } from 'react-aria-components';
 import { useDateFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
+import { useCalendarContext } from './Context';
 
 interface YearDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
-  className?: string;
 }
 
-const YearListBox = ({ setSelectedDropdown, className }: YearDropdownProps) => {
+const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
   const state = useContext(CalendarStateContext)!;
+  const { classNames } = useCalendarContext();
   const years: { value: CalendarDate; formatted: string }[] = [];
   let formatter = useDateFormatter({
     year: 'numeric',
@@ -66,7 +67,7 @@ const YearListBox = ({ setSelectedDropdown, className }: YearDropdownProps) => {
               <Button
                 slot="previous"
                 className={cn(
-                  className,
+                  classNames.dateSelectorOption,
                   'inline-flex items-center justify-center gap-[0.5ch]'
                 )}
                 onPress={() => {
