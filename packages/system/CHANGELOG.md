@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 12.0.1
+
+### Patch Changes
+
+- 0e8211b: chore([DST-853]): Refa styles for `<Menu>` button
+
 ## 12.0.0
 
 ### Minor Changes
