@@ -13,7 +13,7 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: ['single', 'multiple'],
+      options: ['none', 'single', 'multiple'],
       table: {
         type: { summary: 'select' },
         defaultValue: { summary: 'single' },
@@ -21,6 +21,9 @@ const meta = {
       description: 'Set selection mode of the select list',
       defaultValue: false,
     },
+  },
+  args: {
+    selectionMode: 'single',
   },
 } satisfies Meta<typeof SelectList>;
 
@@ -30,10 +33,10 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <SelectList
+      {...args}
       aria-labelledby="SelectList"
       defaultSelectedKeys={['one']}
       disabledKeys={['four']}
-      {...args}
     >
       <SelectList.Item id="one">one</SelectList.Item>
       <SelectList.Item id="two">Two</SelectList.Item>
