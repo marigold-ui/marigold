@@ -284,7 +284,7 @@ export const Multiselect = ({
               zIndex: 1,
             }),
             // Return empty object to reset react-select styles
-            valueContainer: base => ({ ...base, padding: 0 }),
+            valueContainer: base => ({ ...base }),
             container: base => ({ ...base, pointerEvents: 'auto' }),
             menuList: () => ({}),
             // eslint-disable-next-line no-empty-pattern
