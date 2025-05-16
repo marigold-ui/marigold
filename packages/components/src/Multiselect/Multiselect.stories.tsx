@@ -1,10 +1,12 @@
 import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import { Stack } from '../Stack';
 import { Multiselect } from './Multiselect';
 
-const meta = {
+const meta: Meta = {
   title: 'Components/Multiselect',
+  component: Multiselect,
   argTypes: {
     label: {
       control: {
@@ -84,7 +86,6 @@ const meta = {
     error: false,
     disabled: false,
     width: 'full',
-    label: 'Label',
   },
 } satisfies Meta;
 
@@ -105,6 +106,7 @@ const ticketPriorities = [
 ];
 
 export const Basic: StoryObj<any> = {
+  tags: ['component-test'],
   render: args => (
     <Multiselect
       label="Ticket Categories"
@@ -114,6 +116,54 @@ export const Basic: StoryObj<any> = {
       {...args}
     />
   ),
+  play: async ({ step }) => {
+    const canvas = within(document.body);
+
+    await step('Open Multiselect', async () => {
+      const input = canvas.getByLabelText('Ticket Categories');
+
+      await userEvent.click(input);
+
+      expect(await canvas.findByText('General Admission')).toBeVisible();
+    });
+
+    await step('Select an item from Multiselect', async () => {
+      const generalOption = await canvas.findByText('General Admission');
+
+      await userEvent.click(generalOption);
+
+      expect(await canvas.findByText('General Admission')).toBeVisible();
+    });
+
+    await step('Select another item from Multiselect', async () => {
+      const VIPOption = await canvas.findByText('VIP Experience');
+
+      await userEvent.click(VIPOption);
+
+      expect(await canvas.findByText('VIP Experience')).toBeInTheDocument();
+    });
+
+    await step('Support removing selections', async () => {
+      const generalOption = await canvas.findByText('General Admission');
+      const removeButton = canvas.queryAllByRole('button', {
+        name: /remove/i,
+      });
+
+      await userEvent.click(removeButton[0]);
+
+      expect(generalOption).not.toBeVisible();
+    });
+
+    await step('close Multiselect', async () => {
+      const input = canvas.getByLabelText('Ticket Categories');
+
+      await userEvent.keyboard('{Escape}');
+      input.blur();
+
+      expect(input).not.toHaveFocus();
+      expect(input).toHaveAttribute('aria-expanded', 'false');
+    });
+  },
 };
 
 export const Controlled: StoryObj<any> = {
