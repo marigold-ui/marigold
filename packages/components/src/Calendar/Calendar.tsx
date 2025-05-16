@@ -63,7 +63,7 @@ export const _Calendar = ({
     ...rest,
   };
 
-  const classNames = useClassNames({ component: 'Calendar' });
+  const classNames = useClassNames({ component: 'Calendar', size, variant });
 
   const [selectedDropdown, setSelectedDropdown] = useState<
     ViewMapKeys | undefined
@@ -87,33 +87,45 @@ export const _Calendar = ({
   return (
     <Calendar
       className={cn(
-        'flex min-h-[350px] w-fit flex-col rounded-xs p-4',
+        'relative flex min-h-[350px] w-fit flex-col rounded-xs p-4',
         classNames.calendar
       )}
       {...props}
     >
-      {selectedDropdown ? (
-        ViewMap[selectedDropdown]
-      ) : (
-        <>
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex w-fit gap-4">
-              <CalendarListBox
-                type="month"
-                isDisabled={props.isDisabled}
-                setSelectedDropdown={setSelectedDropdown}
-              />
-              <CalendarListBox
-                type="year"
-                isDisabled={props.isDisabled}
-                setSelectedDropdown={setSelectedDropdown}
-              />
-            </div>
-            <MonthControls />
+      {/* Dropdown Container - always in DOM */}
+      <div
+        className={cn(
+          'pointer-events-none absolute top-0 left-0 size-full opacity-0',
+          selectedDropdown && 'pointer-events-auto opacity-100'
+        )}
+      >
+        {ViewMap[selectedDropdown as ViewMapKeys]}
+      </div>
+
+      {/* Main Content - always in DOM */}
+      <div
+        className={cn(
+          'flex flex-col',
+          selectedDropdown && 'pointer-events-none opacity-0'
+        )}
+      >
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex w-fit gap-4">
+            <CalendarListBox
+              type="month"
+              isDisabled={props.isDisabled}
+              setSelectedDropdown={setSelectedDropdown}
+            />
+            <CalendarListBox
+              type="year"
+              isDisabled={props.isDisabled}
+              setSelectedDropdown={setSelectedDropdown}
+            />
           </div>
-          <CalendarGrid />
-        </>
-      )}
+          <MonthControls />
+        </div>
+        <CalendarGrid />
+      </div>
     </Calendar>
   );
 };
