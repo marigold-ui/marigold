@@ -18,4 +18,9 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'hover:bg-bg-inverted-hover',
     'aria-[current=true]:border-border-brand aria-[current=true]:bg-bg-brand aria-[current=true]:text-text-inverted aria-[current=true]:hover:bg-bg-brand-hover aria-[current=true]:hover:border-border-brand-hover',
   ]),
+  select: cva([
+    'h-component px-1',
+    'border rounded-xs border-border-inverted bg-white',
+    'disabled:bg-bg-inverted-disabled disabled:border-border-base-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed',
+  ]),
 };

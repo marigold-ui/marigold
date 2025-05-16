@@ -30,4 +30,12 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'hover:bg-hover',
     'aria-[current=true]:bg-brand aria-[current=true]:text-brand-foreground aria-[current=true]:shadow-sm aria-[current=true]:shadow-black/5 aria-[current=true]:hover:bg-brand/90',
   ]),
+  select: cva([
+    '[&svg]:text-muted-foreground/80',
+    'flex w-full px-3 py-2 rounded-lg shadow-sm shadow-black/5 border border-input bg-background text-sm text-foreground transition-shadow',
+    'focus-visible:util-focus-ring outline-none',
+    'h-input',
+    'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',
+    'cursor-pointer',
+  ]),
 };

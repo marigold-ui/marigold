@@ -21,4 +21,12 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'aria-[current=true]:text-text-inverted aria-[current=true]:bg-bg-brand',
     'aria-[current=true]:hover:bg-bg-brand-hover',
   ]),
+  select: cva([
+    'bg-bg-surface',
+    'px-2',
+    'border-border-base rounded-xs border outline-hidden outline-offset-[-1px] h-component',
+    'focus:outline-outline-focus focus:outline-2',
+    'hover:border-border-base-hover',
+    'disabled:bg-bg-base-disabled disabled:text-text-base-disabled disabled:hover:border-border-base-disabled disabled:border-border-base-disabled disabled:cursor-not-allowed',
+  ]),
 };
