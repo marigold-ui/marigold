@@ -34,7 +34,7 @@ const theme: Theme = {
       calendarHeader: cva(['fontWeight:bolder p-2']),
       calendarGrid: cva('[&_td]:p-2'),
       select: cva('flex gap-1'),
-      dateSelectorOption: cva('bg-red-300'),
+      calendarListboxButton: cva('bg-red-300'),
     },
     Select: cva() as any,
     ListBox: cva() as any,

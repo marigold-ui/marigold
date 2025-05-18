@@ -39,7 +39,7 @@ const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
               key={index + 1}
               aria-current={isSelected}
               className={cn(
-                classNames.dateSelectorOption,
+                classNames.calendarListboxButton,
                 'inline-flex items-center justify-center gap-[0.5ch]'
               )}
             >
