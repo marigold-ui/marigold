@@ -67,7 +67,7 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
               <Button
                 slot="previous"
                 className={cn(
-                  classNames.dateSelectorOption,
+                  classNames.calendarListboxButton,
                   'inline-flex items-center justify-center gap-[0.5ch]'
                 )}
                 onPress={() => {

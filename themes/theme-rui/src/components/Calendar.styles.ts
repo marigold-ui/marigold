@@ -22,7 +22,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground/80',
   ]),
   calendarGrid: cva('[&_td]:p-2'),
-  dateSelectorOption: cva([
+  calendarListboxButton: cva([
     'rounded-md text-sm font-medium transition-[color,box-shadow]',
     'px-4 py-2',
     'focus-visible:util-focus-ring outline-none',

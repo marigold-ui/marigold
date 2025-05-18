@@ -12,7 +12,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendarControllers: cva(),
   calendarHeader: cva(['fontWeight:bolder p-2']),
   calendarGrid: cva('[&_td]:p-2'),
-  dateSelectorOption: cva([
+  calendarListboxButton: cva([
     'text-text-base ease-ease-out h-component cursor-pointer rounded-xs px-4 py-0 text-sm leading-[22px] transition-all duration-200',
     'focus-visible:outline-outline-focus focus-visible:outline focus-visible:outline-offset-1 outline-hidden',
     'hover:bg-bg-inverted-hover',
