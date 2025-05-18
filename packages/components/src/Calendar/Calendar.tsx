@@ -86,7 +86,7 @@ export const _Calendar = ({
       >
         <div
           className={cn(
-            'pointer-events-none absolute top-0 left-0 size-full opacity-0',
+            'pointer-events-none absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-0',
             selectedDropdown && 'pointer-events-auto opacity-100'
           )}
         >
