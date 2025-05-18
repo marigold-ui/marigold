@@ -101,16 +101,14 @@ export const _Calendar = ({
         >
           <div className="mb-4 flex items-center justify-between">
             <div className="flex w-fit gap-4">
-              <CalendarListBox
-                type="month"
-                isDisabled={props.isDisabled}
-                setSelectedDropdown={setSelectedDropdown}
-              />
-              <CalendarListBox
-                type="year"
-                isDisabled={props.isDisabled}
-                setSelectedDropdown={setSelectedDropdown}
-              />
+              {['month', 'year'].map(dateType => (
+                <CalendarListBox
+                  key={dateType}
+                  type={dateType}
+                  isDisabled={props.isDisabled}
+                  setSelectedDropdown={setSelectedDropdown}
+                />
+              ))}
             </div>
             <MonthControls />
           </div>
