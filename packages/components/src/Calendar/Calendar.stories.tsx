@@ -1,6 +1,8 @@
 import { CalendarDate } from '@internationalized/date';
 import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, fn, userEvent, within } from '@storybook/test';
+import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { Calendar } from './Calendar';
 
@@ -46,20 +48,88 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <Calendar {...args} />,
+  render: args => <Calendar {...args} data-testid="selectedDate" />,
 };
 
 export const Controlled: Story = {
+  tags: ['component-test'],
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
     return (
       <>
-        <Calendar value={value} onChange={setValue} {...args} />
-        <pre style={{ marginTop: '1rem' }}>
+        <Calendar {...args} value={value} onChange={setValue} autoFocus />
+        <pre style={{ marginTop: '1rem' }} data-testid="selectedDate">
           <strong>DateField Value:</strong>
           {'Day:' + value.day + ' Month:' + value.month + ' Year:' + value.year}
         </pre>
       </>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.keyboard('{arrowleft}');
+    await userEvent.keyboard('{enter}');
+    const result = await canvas.findByTestId('selectedDate');
+
+    await waitFor(() => {
+      expect(result).toHaveTextContent('Day:4 Month:6 Year:2019');
+    });
+  },
+};
+
+export const Uncontrolled: Story = {
+  ...Basic,
+  tags: ['component-test'],
+  args: {
+    defaultValue: new CalendarDate(2019, 6, 5),
+    onChange: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByTestId('year'));
+    await userEvent.click(canvas.getByText('2018'));
+    await userEvent.click(canvas.getByTestId('month'));
+    await userEvent.click(canvas.getByText('Feb'));
+    await userEvent.click(canvas.getByText('10'));
+
+    await expect(canvas.getByTestId('year')).toHaveTextContent('2018');
+    await expect(canvas.getByTestId('month')).toHaveTextContent('Feb');
+    await expect(args.onChange).toHaveBeenCalledOnce();
+  },
+};
+
+export const Disabled: Story = {
+  ...Basic,
+  tags: ['component-test'],
+  args: {
+    disabled: true,
+    onChange: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByText('17'));
+    await userEvent.click(canvas.getByText('20'));
+
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+export const ReadOnly: Story = {
+  ...Basic,
+  tags: ['component-test'],
+  args: {
+    readOnly: true,
+    onChange: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByText('15'));
+    await userEvent.click(canvas.getByText('19'));
+
+    await expect(args.onChange).not.toHaveBeenCalled();
   },
 };
