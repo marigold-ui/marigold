@@ -15,7 +15,8 @@
       "class-variance-authority/dist/types": [
         "./packages/system/node_modules/class-variance-authority/dist/types"
       ]
-    }
+    },
+    "types": ["vitest/globals"]
   },
   "exclude": [
     "coverage/*",
