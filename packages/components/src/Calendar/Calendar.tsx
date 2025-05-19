@@ -49,7 +49,7 @@ export interface CalendarProps
 type ViewMapKeys = 'month' | 'year';
 // Component
 // ---------------
-export const _Calendar = ({
+const _Calendar = ({
   disabled,
   readOnly,
   size,
