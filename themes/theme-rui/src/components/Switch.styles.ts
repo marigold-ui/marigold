@@ -5,8 +5,8 @@ export const Switch: ThemeComponent<'Switch'> = {
     'disabled:cursor-not-allowed disabled:text-disabled-foreground'
   ),
   track: cva([
-    'inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full',
-    'border-2 border-transparent',
+    'flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors',
+    'border-2 border-transparent', // this increases the hit area so it is 24px
     'group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground',
     'group-selected/switch:bg-brand bg-input',
     'group-focus-visible/switch:util-focus-borderless-ring outline-none',
@@ -14,7 +14,7 @@ export const Switch: ThemeComponent<'Switch'> = {
   thumb: cva([
     'pointer-events-none block size-5 rounded-full',
     'bg-background shadow-sm shadow-black/5',
-    'ring-0 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-    'group-selected/switch:translate-x-4 translate-x-0 rtl:group-selected/switch:-translate-x-4',
+    'ring-0 transition-transform duration-150 ease-out-quint',
+    'group-selected/switch:translate-x-4 translate-x-0',
   ]),
 };
