@@ -40,6 +40,7 @@ describe('Pagination tests', () => {
               <button
                 aria-label="Page previous"
                 class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
@@ -61,6 +62,7 @@ describe('Pagination tests', () => {
                   aria-current="page"
                   aria-label="Page 1"
                   class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                  data-react-aria-pressable="true"
                   data-selected="true"
                   tabindex="0"
                   type="button"
@@ -70,6 +72,7 @@ describe('Pagination tests', () => {
                 <button
                   aria-label="Page 2"
                   class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                  data-react-aria-pressable="true"
                   data-selected="false"
                   tabindex="-1"
                   type="button"
@@ -80,6 +83,7 @@ describe('Pagination tests', () => {
               <button
                 aria-label="Page next"
                 class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                data-react-aria-pressable="true"
                 tabindex="0"
                 type="button"
               >
@@ -127,6 +131,7 @@ describe('Pagination tests', () => {
               <button
                 aria-label="Page previous"
                 class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
@@ -147,6 +152,7 @@ describe('Pagination tests', () => {
                 <button
                   aria-label="Page 1"
                   class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                  data-react-aria-pressable="true"
                   disabled=""
                   tabindex="-1"
                   type="button"
@@ -157,6 +163,7 @@ describe('Pagination tests', () => {
               <button
                 aria-label="Page next"
                 class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
