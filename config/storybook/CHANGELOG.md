@@ -1,5 +1,17 @@
 # @marigold/storybook-config
 
+## 2.0.16
+
+### Patch Changes
+
+- 0bca5d8: Update React aria components
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/theme-core@29.0.4
+  - @marigold/theme-b2b@30.0.4
+  - @marigold/theme-rui@1.1.2
+
 ## 2.0.15
 
 ### Patch Changes

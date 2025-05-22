@@ -1,5 +1,15 @@
 # @marigold/theme-rui
 
+## 1.1.2
+
+### Patch Changes
+
+- ca26659: refa([DST-715]): Refactor `<Calendar>` component, Fix resizing when open calendar listboxes
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/system@12.0.2
+
 ## 1.1.1
 
 ### Patch Changes

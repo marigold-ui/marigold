@@ -1,5 +1,16 @@
 # @marigold/components
 
+## 12.0.2
+
+### Patch Changes
+
+- 0bca5d8: Update React aria components
+- ca26659: refa([DST-715]): Refactor `<Calendar>` component, Fix resizing when open calendar listboxes
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/system@12.0.2
+  - @marigold/types@1.3.1
+
 ## 12.0.1
 
 ### Patch Changes
