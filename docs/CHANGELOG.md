@@ -1,5 +1,24 @@
 # @marigold/docs
 
+## 12.0.1
+
+### Patch Changes
+
+- 2c01257: [DST-851]: removed @marigold/jest-config package
+- 534ad77: refa([DST-738]): Adding checkmark icon as selection indicator in RUI theme for SelectList and Listbox components.
+- Updated dependencies [0e8211b]
+- Updated dependencies [af401e5]
+- Updated dependencies [2a96627]
+- Updated dependencies [f2cbc72]
+- Updated dependencies [534ad77]
+  - @marigold/components@12.0.1
+  - @marigold/system@12.0.1
+  - @marigold/theme-b2b@30.0.3
+  - @marigold/theme-core@29.0.3
+  - @marigold/theme-docs@3.0.3
+  - @marigold/theme-rui@1.1.1
+  - @marigold/icons@1.3.9
+
 ## 12.0.0
 
 ### Major Changes
