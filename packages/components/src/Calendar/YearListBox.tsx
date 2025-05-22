@@ -62,7 +62,7 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
           <li className="flex justify-center" key={index}>
             <div
               ref={isSelected ? activeButtonRef : (null as any)}
-              style={{ height: '100%', width: '100%' }}
+              className="flex size-full justify-center"
             >
               <Button
                 slot="previous"
