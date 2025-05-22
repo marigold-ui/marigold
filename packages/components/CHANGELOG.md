@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 12.0.1
+
+### Patch Changes
+
+- 0e8211b: chore([DST-853]): Refa styles for `<Menu>` button
+- af401e5: fix([DSTSUP-135]): Use correct padding on `<MultiSelect>` component
+- 534ad77: refa([DST-738]): Adding checkmark icon as selection indicator in RUI theme for SelectList and Listbox components.
+- Updated dependencies [0e8211b]
+  - @marigold/system@12.0.1
+
 ## 12.0.0
 
 ### Major Changes
