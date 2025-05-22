@@ -1,7 +1,8 @@
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { CalendarStateContext } from 'react-aria-components';
-import { cn, useClassNames } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { ChevronDown } from '../icons';
+import { useCalendarContext } from './Context';
 import { useFormattedMonths } from './useFormattedMonths';
 
 interface CalendarButtonListBoxProps {
@@ -20,13 +21,13 @@ export function CalendarListBox({
 
   const buttonStyles =
     'flex items-center justify-between gap-1 overflow-hidden';
-  const { select: selectClassNames } = useClassNames({ component: 'Select' });
+  const { classNames } = useCalendarContext();
 
   return (
     <button
       disabled={isDisabled}
       onClick={() => setSelectedDropdown(type)}
-      className={cn(buttonStyles, selectClassNames)}
+      className={cn(buttonStyles, classNames.select)}
       data-testid={type}
     >
       {type === 'month'

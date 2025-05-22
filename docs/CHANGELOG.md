@@ -1,5 +1,20 @@
 # @marigold/docs
 
+## 12.0.2
+
+### Patch Changes
+
+- 0bca5d8: Update React aria components
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/system@12.0.2
+  - @marigold/theme-core@29.0.4
+  - @marigold/theme-b2b@30.0.4
+  - @marigold/theme-rui@1.1.2
+  - @marigold/theme-docs@3.0.4
+  - @marigold/icons@1.3.10
+
 ## 12.0.1
 
 ### Patch Changes
