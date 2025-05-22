@@ -3,4 +3,4 @@
 "@marigold/theme-rui": patch
 ---
 
-fix([DSTSUP-135]): Use correct padding on <MultiSelect> component
+fix([DSTSUP-135]): Use correct padding on `<MultiSelect>` component
