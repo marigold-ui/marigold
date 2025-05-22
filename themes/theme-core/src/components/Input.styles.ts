@@ -26,4 +26,5 @@ export const Input: ThemeComponent<'Input'> = {
   ]),
   icon: cva('left-1 size-4'),
   action: cva([inputHeight, '']),
+  segment: cva(''),
 };
