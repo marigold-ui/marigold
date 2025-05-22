@@ -29,9 +29,6 @@ export const Button: ThemeComponent<'Button'> = cva(
         text: [
           'text-text-base hover:bg-bg-brand-hover hover:text-text-inverted active:bg-bg-brand-active active:text-text-inverted',
         ],
-        menu: [
-          'text-text-base bg-bg-surface hover:text-text-inverted hover:bg-bg-brand-hover',
-        ],
         icon: [
           'h-auto border-none bg-transparent px-0 leading-none',
           'disabled:bg-transparent',
