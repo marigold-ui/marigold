@@ -8,12 +8,12 @@ export const Badge: ThemeComponent<'Badge'> = cva(
   {
     variants: {
       variant: {
-        default: 'bg-muted text-foreground',
+        default: 'bg-muted text-foreground border border-border',
         primary: 'bg-brand text-brand-foreground ',
-        success: ['bg-success-muted text-success-muted-foreground'],
-        warning: ['bg-warning-muted text-warning-muted-foreground'],
-        info: ['bg-info-muted text-info-muted-foreground'],
-        error: ['bg-destructive-muted text-destructive-muted-foreground'],
+        success: 'bg-success-muted text-success-muted-foreground',
+        warning: 'bg-warning-muted text-warning-muted-foreground',
+        info: 'bg-info-muted text-info-muted-foreground',
+        error: 'bg-destructive-muted text-destructive-muted-foreground',
       },
     },
     defaultVariants: {
