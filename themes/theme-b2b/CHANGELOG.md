@@ -1,5 +1,12 @@
 # @marigold/theme-b2b
 
+## 30.0.5
+
+### Patch Changes
+
+- @marigold/system@12.0.3
+- @marigold/components@12.0.3
+
 ## 30.0.4
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @marigold/theme-docs
 
+## 3.0.5
+
+### Patch Changes
+
+- @marigold/system@12.0.3
+- @marigold/components@12.0.3
+
 ## 3.0.4
 
 ### Patch Changes
