@@ -76,7 +76,7 @@ export const Basic: Story = {
         <Accordion.Header>Billing Adress</Accordion.Header>
         <Accordion.Content>
           <Headline level={3}>Some Informations</Headline>
-          <Button>Don't click me</Button>
+          <Button>Don&apos;t click me</Button>
         </Accordion.Content>
       </Accordion.Item>
     </Accordion>
@@ -246,20 +246,34 @@ export const CoreExample: Story = {
 };
 export const ButtonInHeader: Story = {
   render: args => (
-    <Accordion {...args}>
-      <Accordion.Item id="1">
-        <Columns columns={[1, 'fit']} space={4}>
-          <Accordion.Header>Buttons</Accordion.Header>
-          <Button
-            variant="primary"
-            onPress={() => alert('Do NOT click! Come on!')}
-          >
-            Do not Click
-          </Button>
-        </Columns>
-        <Accordion.Content>Don't click the Button</Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
+    <Stack space={8}>
+      <Accordion {...args}>
+        <Accordion.Item id="1">
+          <Columns columns={[1, 'fit']} space={4}>
+            <Accordion.Header>
+              Accordion with button on the right
+            </Accordion.Header>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Do not Click
+            </Button>
+          </Columns>
+          <Accordion.Content>Don&apos;t click the Button</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+      <Accordion {...args}>
+        <Accordion.Item id="1">
+          <Inline alignY="center" space={4}>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Do not Click
+            </Button>
+            <Accordion.Header>
+              Accordion with button on the left
+            </Accordion.Header>
+          </Inline>
+          <Accordion.Content>Don&apos;t click the Button</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    </Stack>
   ),
 };
 
@@ -267,8 +281,8 @@ export const Disabled: Story = {
   render: args => (
     <Accordion {...args} disabled>
       <Accordion.Item id="1">
-        <Accordion.Header>You can't open me</Accordion.Header>
-        <Accordion.Content>Don't click the Button</Accordion.Content>
+        <Accordion.Header>You can&apos;t open me</Accordion.Header>
+        <Accordion.Content>Don&apos;t click the Button</Accordion.Content>
       </Accordion.Item>
     </Accordion>
   ),
