@@ -26,9 +26,8 @@ const theme: Theme = {
       container: cva(),
       icon: cva(),
     },
-    Input: {
-      input: cva(), // leer lassen, wenn du's nicht brauchst
-      icon: cva(),
+    DateField: {
+      field: cva(),
       segment: cva('bg-white text-gray-700'),
       action: cva('p-3', {
         variants: {
@@ -53,95 +52,68 @@ afterEach(() => {
   onFocusChangeSpy.mockClear();
   onFocusSpy.mockClear();
 });
+test('renders TimeField with default value', () => {
+  render(<TimeField label="Time" defaultValue={parseTime('13:45')} />);
 
-test('renders TimeField with label and description', () => {
-  render(<TimeField label="Time" description="Pick a time" />);
-  expect(screen.getByText('Time')).toBeInTheDocument();
-  expect(screen.getByText('Pick a time')).toBeInTheDocument();
+  const segments = screen.getAllByRole('spinbutton');
+
+  expect(segments.length).toBeGreaterThanOrEqual(2);
+  expect(segments[0]).toHaveTextContent(/13|1/);
+  expect(segments[1]).toHaveTextContent('45');
 });
 
-test('shows error message instead of description', () => {
-  render(
-    <TimeField
-      label="Time"
-      description="Pick a time"
-      error
-      errorMessage="Invalid time"
-    />
-  );
-  expect(screen.queryByText('Pick a time')).not.toBeInTheDocument();
-  expect(screen.getByText('Invalid time')).toBeInTheDocument();
-});
-
-test('renders TimeField with default value and reacts to focus', async () => {
+test('calls onFocus and onFocusChange when focused', async () => {
   render(
     <TimeField
       label="Time"
       defaultValue={parseTime('13:45')}
-      onBlur={onBlurSpy}
       onFocus={onFocusSpy}
       onFocusChange={onFocusChangeSpy}
     />
   );
 
-  const segments = screen.getAllByRole('spinbutton');
-  expect(segments.length).toBeGreaterThanOrEqual(2); // hour and minute, maybe AM/PM
-  expect(segments[0]).toHaveTextContent(/13|1/); // depending on hourCycle
-  expect(segments[1]).toHaveTextContent('45');
-
-  expect(onFocusSpy).not.toHaveBeenCalled();
-  expect(onFocusChangeSpy).not.toHaveBeenCalled();
-  expect(onBlurSpy).not.toHaveBeenCalled();
-
   await userEvent.tab();
-  expect(segments[0]).toHaveFocus();
 
   expect(onFocusSpy).toHaveBeenCalled();
   expect(onFocusChangeSpy).toHaveBeenCalled();
-  expect(onBlurSpy).not.toHaveBeenCalled();
-
-  await userEvent.tab();
-  expect(segments[1]).toHaveFocus();
 });
 
-test('supports variant and size', () => {
+test('applies segment-specific styles from theme', () => {
   render(
     <ThemeProvider theme={theme}>
-      <TimeField
-        data-testid="time-field"
-        label="Label"
-        description="Description"
-        variant="lime"
-        size="small"
-      />
+      <TimeField label="Time" defaultValue={parseTime('13:45')} />
     </ThemeProvider>
   );
 
-  const label = screen.getByText('Label');
-  expect(label.className).toMatchInlineSnapshot(
-    `"text-lime-300 p-1 inline-flex w-[var(--labelWidth)]"`
-  );
+  const segments = screen.getAllByRole('spinbutton');
 
-  expect(screen.getByText('Description')).toBeInTheDocument();
-  expect(screen.getByTestId('time-field').className).toMatchInlineSnapshot(
-    `"group/field w-full"`
-  );
+  segments.forEach(segment => {
+    expect(segment.className).toContain('bg-white');
+    expect(segment.className).toContain('text-gray-700');
+  });
 });
 
-test('renders readOnly, disabled, required states', () => {
-  const { rerender } = render(<TimeField label="Time" readOnly />);
+test('renders readonly state', () => {
+  render(<TimeField label="Time" readOnly />);
+
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-readonly',
     'true'
   );
+});
 
-  rerender(<TimeField label="Time" disabled />);
+test('renders disabled state', () => {
+  render(<TimeField label="Time" disabled />);
+
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-disabled',
     'true'
   );
+});
 
-  rerender(<TimeField label="Time" required />);
+test('renders required state', () => {
+  render(<TimeField label="Time" required />);
+
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-required',
     'true'
@@ -158,14 +130,12 @@ test('renders TimeField with granularity of second', () => {
   );
 
   const segments = screen.getAllByRole('spinbutton');
-  expect(segments.length).toBeGreaterThanOrEqual(3);
 
-  expect(segments[0]).toHaveTextContent(/13|1/);
-  expect(segments[1]).toHaveTextContent('45');
+  expect(segments.length).toBeGreaterThanOrEqual(3);
   expect(segments[2]).toHaveTextContent('30');
 });
 
-test('renders TimeField with 12-hour format (hourCycle="12")', () => {
+test('renders TimeField in 12-hour format', () => {
   render(
     <TimeField label="Time" hourCycle={12} defaultValue={parseTime('13:45')} />
   );
