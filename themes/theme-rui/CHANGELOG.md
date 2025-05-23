@@ -1,5 +1,13 @@
 # @marigold/theme-rui
 
+## 1.1.3
+
+### Patch Changes
+
+- be782c3: feat([DST-864]): Add `full` to `size` options to `Card` so that it spans the availble width
+  - @marigold/system@12.0.3
+  - @marigold/components@12.0.3
+
 ## 1.1.2
 
 ### Patch Changes
