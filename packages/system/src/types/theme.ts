@@ -76,7 +76,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Input?: Record<
-      'input' | 'icon' | 'action' | 'segment',
+      'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Label?: Record<

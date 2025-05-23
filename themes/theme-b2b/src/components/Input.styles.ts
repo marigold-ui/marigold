@@ -25,7 +25,6 @@ export const inputHover = {
 export const Input: ThemeComponent<'Input'> = {
   icon: cva('left-1'),
   action: cva(''),
-  segment: cva(''),
   input: cva([
     inputBox,
     inputBackground,

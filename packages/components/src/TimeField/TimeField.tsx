@@ -90,7 +90,7 @@ const _TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(
     }: TimeFieldProps,
     ref
   ) => {
-    const classNames = useClassNames({ component: 'Input', variant, size });
+    const classNames = useClassNames({ component: 'DateField', variant, size });
 
     const props: RAC.TimeFieldProps<TimeValue> = {
       isDisabled: disabled,
@@ -109,7 +109,7 @@ const _TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(
         {...props}
         ref={ref}
       >
-        <DateInput className={classNames.input}>
+        <DateInput className={classNames.field}>
           {segment => (
             <DateSegment className={classNames.segment} segment={segment} />
           )}

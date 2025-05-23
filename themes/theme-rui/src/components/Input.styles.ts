@@ -23,17 +23,10 @@ export const Input: ThemeComponent<'Input'> = {
     'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
     'group-[[data-icon]]/input:pl-8',
     'group-[[data-action]]/input:pr-7',
-    'data-[focus-within]:util-focus-ring outline-0',
   ]),
   icon: cva([
     'pointer-events-none left-1',
     'text-muted-foreground disabled:text-disabled-foreground',
   ]),
   action: cva(['text-muted-foreground right-1']),
-  segment: cva([
-    'group/segment',
-    'outline-0',
-    'whitespace-pre',
-    'data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded',
-  ]),
 };
