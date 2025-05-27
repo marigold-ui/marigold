@@ -118,7 +118,6 @@ export const Basic: Story = {
 
 export const FocusEvents: Story = {
   args: {
-    label: 'Time',
     defaultValue: parseTime('13:45'),
   },
   tags: ['component-test'],
