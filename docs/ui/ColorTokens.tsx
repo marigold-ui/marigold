@@ -2,12 +2,11 @@
 
 import { Headline } from '@/ui';
 import {
-  BackgroundTokens,
+  BaseSemanticTokens,
   Black,
-  BorderTokens,
   ColorPalettes,
-  OutlineTokens,
-  TextTokens,
+  FeedbackSemanticTokens,
+  StateSemanticTokens,
   White,
 } from './ColorTable';
 import { useThemeSwitch } from './ThemeSwitch';
@@ -37,14 +36,12 @@ export const ColorTokenTable = () => {
       <ColorPalettes name="green" />
       <Headline level={3}>Red</Headline>
       <ColorPalettes name="red" />
-      <Headline level={3}>Text</Headline>
-      <TextTokens />
-      <Headline level={3}>Background</Headline>
-      <BackgroundTokens />
-      <Headline level={3}>Border</Headline>
-      <BorderTokens />
-      <Headline level={3}>Outline</Headline>
-      <OutlineTokens />
+      <Headline level={3}>Base Semantic Tokens</Headline>
+      <BaseSemanticTokens />
+      <Headline level={3}>Feedback Semantic Tokens</Headline>
+      <FeedbackSemanticTokens />
+      <Headline level={3}>State Semantic Tokens</Headline>
+      <StateSemanticTokens />
     </div>
   );
 };
