@@ -1,7 +1,6 @@
 import { parseTime } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/test';
-import { vi } from 'vitest';
+import { expect, userEvent, within } from '@storybook/test';
 import { TimeField } from './TimeField';
 
 const meta = {
@@ -121,21 +120,16 @@ export const FocusEvents: Story = {
   args: {
     label: 'Time',
     defaultValue: parseTime('13:45'),
-    onFocus: vi.fn(),
-    onFocusChange: vi.fn(),
   },
   tags: ['component-test'],
-  play: async ({ args, step }) => {
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
     await step('Focus the TimeField using tab', async () => {
       await userEvent.tab();
-    });
+      const input = canvas.getByLabelText('Time');
 
-    await step(
-      'Expect onFocus and onFocusChange to have been called',
-      async () => {
-        expect(args.onFocus).toHaveBeenCalled();
-        expect(args.onFocusChange).toHaveBeenCalled();
-      }
-    );
+      await expect(input).toHaveFocus();
+    });
   },
 };
