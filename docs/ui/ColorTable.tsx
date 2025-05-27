@@ -70,8 +70,8 @@ export const TextTokens = () => (
   <ColorTable
     property="text"
     modifiers={[
-      'base',
-      'base-hover',
+      'hover',
+      'foreground-hover',
       'base-disabled',
       'inverted',
       'inverted-hover',
@@ -102,8 +102,8 @@ export const BackgroundTokens = () => (
   <ColorTable
     property="bg"
     modifiers={[
-      'base',
-      'base-hover',
+      'hover',
+      'hover-foreground',
       'base-active',
       'base-disabled',
       'inverted',

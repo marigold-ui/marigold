@@ -1,7 +1,15 @@
 'use client';
 
 import { Headline } from '@/ui';
-import { Black, ColorPalettes, White } from './ColorTable';
+import {
+  BackgroundTokens,
+  Black,
+  BorderTokens,
+  ColorPalettes,
+  OutlineTokens,
+  TextTokens,
+  White,
+} from './ColorTable';
 import { useThemeSwitch } from './ThemeSwitch';
 
 export const ColorTokenTable = () => {
@@ -29,6 +37,14 @@ export const ColorTokenTable = () => {
       <ColorPalettes name="green" />
       <Headline level={3}>Red</Headline>
       <ColorPalettes name="red" />
+      <Headline level={3}>Text</Headline>
+      <TextTokens />
+      <Headline level={3}>Background</Headline>
+      <BackgroundTokens />
+      <Headline level={3}>Border</Headline>
+      <BorderTokens />
+      <Headline level={3}>Outline</Headline>
+      <OutlineTokens />
     </div>
   );
 };
