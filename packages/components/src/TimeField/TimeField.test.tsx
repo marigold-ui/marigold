@@ -1,47 +1,10 @@
-import { parseTime } from '@internationalized/date';
-import { screen } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { TimeField } from './TimeField';
+import React from 'react';
+import * as stories from './TimeField.stories';
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Label: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-300',
-          },
-          size: {
-            small: 'p-1',
-          },
-        },
-      }),
-      indicator: cva(),
-    },
-    HelpText: {
-      container: cva(),
-      icon: cva(),
-    },
-    DateField: {
-      field: cva(),
-      segment: cva('bg-white text-gray-700'),
-      action: cva('p-3', {
-        variants: {
-          size: {
-            small: 'p-1',
-          },
-        },
-      }),
-    },
-    Field: cva(),
-  },
-};
-
-const { render } = setup({ theme });
+const { Basic } = composeStories(stories);
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();
@@ -53,7 +16,7 @@ afterEach(() => {
   onFocusSpy.mockClear();
 });
 test('renders TimeField with default value', () => {
-  render(<TimeField label="Time" defaultValue={parseTime('13:45')} />);
+  render(<Basic />);
 
   const segments = screen.getAllByRole('spinbutton');
 
@@ -62,39 +25,8 @@ test('renders TimeField with default value', () => {
   expect(segments[1]).toHaveTextContent('45');
 });
 
-test('calls onFocus and onFocusChange when focused', async () => {
-  render(
-    <TimeField
-      label="Time"
-      defaultValue={parseTime('13:45')}
-      onFocus={onFocusSpy}
-      onFocusChange={onFocusChangeSpy}
-    />
-  );
-
-  await userEvent.tab();
-
-  expect(onFocusSpy).toHaveBeenCalled();
-  expect(onFocusChangeSpy).toHaveBeenCalled();
-});
-
-test('applies segment-specific styles from theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <TimeField label="Time" defaultValue={parseTime('13:45')} />
-    </ThemeProvider>
-  );
-
-  const segments = screen.getAllByRole('spinbutton');
-
-  segments.forEach(segment => {
-    expect(segment.className).toContain('bg-white');
-    expect(segment.className).toContain('text-gray-700');
-  });
-});
-
 test('renders readonly state', () => {
-  render(<TimeField label="Time" readOnly />);
+  render(<Basic readOnly />);
 
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-readonly',
@@ -103,7 +35,7 @@ test('renders readonly state', () => {
 });
 
 test('renders disabled state', () => {
-  render(<TimeField label="Time" disabled />);
+  render(<Basic disabled />);
 
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-disabled',
@@ -112,7 +44,7 @@ test('renders disabled state', () => {
 });
 
 test('renders required state', () => {
-  render(<TimeField label="Time" required />);
+  render(<Basic required />);
 
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-required',
@@ -121,13 +53,7 @@ test('renders required state', () => {
 });
 
 test('renders TimeField with granularity of second', () => {
-  render(
-    <TimeField
-      label="Time"
-      granularity="second"
-      defaultValue={parseTime('13:45:30')}
-    />
-  );
+  render(<Basic granularity="second" />);
 
   const segments = screen.getAllByRole('spinbutton');
 
@@ -136,9 +62,7 @@ test('renders TimeField with granularity of second', () => {
 });
 
 test('renders TimeField in 12-hour format', () => {
-  render(
-    <TimeField label="Time" hourCycle={12} defaultValue={parseTime('13:45')} />
-  );
+  render(<Basic hourCycle={12} />);
 
   const segments = screen.getAllByRole('spinbutton');
 

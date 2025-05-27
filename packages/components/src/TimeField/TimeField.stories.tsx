@@ -1,4 +1,7 @@
+import { parseTime } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
+import { userEvent, within } from '@storybook/test';
+import { vi } from 'vitest';
 import { TimeField } from './TimeField';
 
 const meta = {
@@ -111,9 +114,28 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  args: {
-    hourCycle: 24,
-  },
+  render: args => <TimeField defaultValue={parseTime('13:45:30')} {...args} />,
+};
 
-  render: args => <TimeField {...args} />,
+export const FocusEvents: Story = {
+  args: {
+    label: 'Time',
+    defaultValue: parseTime('13:45'),
+    onFocus: vi.fn(),
+    onFocusChange: vi.fn(),
+  },
+  tags: ['component-test'],
+  play: async ({ args, step }) => {
+    await step('Focus the TimeField using tab', async () => {
+      await userEvent.tab();
+    });
+
+    await step(
+      'Expect onFocus and onFocusChange to have been called',
+      async () => {
+        expect(args.onFocus).toHaveBeenCalled();
+        expect(args.onFocusChange).toHaveBeenCalled();
+      }
+    );
+  },
 };
