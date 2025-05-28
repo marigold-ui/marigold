@@ -108,3 +108,22 @@ test('converts numbers to fractions in a grid', () => {
     'grid-template-rows': '1fr 2fr 1fr',
   });
 });
+
+test('allows to set alignment', () => {
+  render(
+    <Grid
+      data-testid="layout"
+      areas={['header']}
+      columns={['auto']}
+      rows={['auto']}
+      alignX="center"
+      alignY="center"
+    >
+      <Grid.Area name="header" />
+    </Grid>
+  );
+
+  const layout = screen.getByTestId('layout');
+  expect(layout).toHaveClass(`items-center`);
+  expect(layout).toHaveClass(`justify-center`);
+});
