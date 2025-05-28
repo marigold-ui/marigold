@@ -1,6 +1,8 @@
 import { parseTime } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
+import { useState } from 'react';
+import { TimeValue } from 'react-aria-components';
 import { TimeField } from './TimeField';
 
 const meta = {
@@ -130,5 +132,30 @@ export const FocusEvents: Story = {
 
       await expect(input).toHaveFocus();
     });
+  },
+};
+
+export const ControlledTimeField: Story = {
+  render: args => {
+    const ControlledComponent = () => {
+      const [value, setValue] = useState<TimeValue>(parseTime('13:45'));
+
+      return (
+        <>
+          <TimeField
+            label="Time Field"
+            value={value}
+            onChange={newValue => setValue(newValue!)}
+            {...args}
+          />
+          <pre>
+            <strong>TimeField Value: </strong>
+            {value?.hour} Hours {value?.minute} Minutes
+          </pre>
+        </>
+      );
+    };
+
+    return <ControlledComponent />;
   },
 };

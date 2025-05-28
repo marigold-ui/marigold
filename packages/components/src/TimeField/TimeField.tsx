@@ -16,7 +16,6 @@ type RemovedProps =
   | 'isRequired'
   | 'isInvalid'
   | 'isReadOnly'
-  | 'value'
   | 'slot';
 
 export interface TimeFieldProps
