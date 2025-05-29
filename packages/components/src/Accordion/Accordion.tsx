@@ -1,10 +1,10 @@
 import { DisclosureGroup } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
+import { AccordionContent } from './AccordionContent';
 import { AccordionProvider } from './AccordionContext';
 import { AccordionHeader } from './AccordionHeader';
 import { AccordionItem } from './AccordionItem';
-import { AccordionPanel } from './AccordionPanel';
 
 type RemovedProps = 'isDisabled';
 export interface AccordionProps
@@ -37,5 +37,5 @@ export const Accordion = ({
   );
 };
 Accordion.Header = AccordionHeader;
-Accordion.Content = AccordionPanel;
+Accordion.Content = AccordionContent;
 Accordion.Item = AccordionItem;

@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Accordion: ThemeComponent<'Accordion'> = {
-  container: cva('flex-col', {
+  container: cva('flex-col duration-1000', {
     variants: {
       variant: {
         default: '',
@@ -46,8 +46,6 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       },
     }
   ),
-  content: cva('overflow-hidden in-data-[expanded]:pb-2'),
-  icon: cva(
-    'pointer-events-none shrink-0 opacity-60 transition-transform duration-200'
-  ),
+  content: cva('*:pb-2'),
+  icon: cva('pointer-events-none shrink-0 opacity-60 transition-transform'),
 };
