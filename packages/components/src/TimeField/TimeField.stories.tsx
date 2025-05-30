@@ -125,12 +125,11 @@ export const FocusEvents: Story = {
   tags: ['component-test'],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const hour = await canvas.getByLabelText('13');
 
     await step('Focus the TimeField using tab', async () => {
       await userEvent.tab();
-      const input = canvas.getByLabelText('Time');
-
-      await expect(input).toHaveFocus();
+      await expect(hour).toHaveFocus();
     });
   },
 };
