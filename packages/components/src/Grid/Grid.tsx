@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { GapSpaceProp, HeightProp } from '@marigold/system';
-import { cn, gapSpace, height as twHeight } from '@marigold/system';
+import { alignment, cn, gapSpace, height as twHeight } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 import { GridArea } from './GridArea';
 
@@ -40,6 +40,15 @@ export interface GridProps extends GapSpaceProp, HeightProp, AriaRegionProps {
    * Children of the layout.
    */
   children?: ReactNode;
+  /**
+   * Horizontal alignment for the children.
+   */
+  alignX?: keyof typeof alignment.horizontal.alignmentX;
+
+  /**
+   * Vertical alignment for the children.
+   */
+  alignY?: keyof typeof alignment.horizontal.alignmentY;
 }
 
 // Component
@@ -49,13 +58,21 @@ export const Grid = ({
   areas,
   columns,
   rows,
+  alignX,
+  alignY,
   height = 'auto',
   space = 0,
   ...props
 }: GridProps) => {
   return (
     <div
-      className={cn('grid', gapSpace[space], twHeight[height])}
+      className={cn(
+        'grid',
+        alignX && alignment?.horizontal?.alignmentX[alignX],
+        alignY && alignment?.horizontal?.alignmentY[alignY],
+        gapSpace[space],
+        twHeight[height]
+      )}
       style={{
         gridTemplateAreas: parseGridAreas(areas),
         gridTemplateColumns: parseTemplateValue(columns),
