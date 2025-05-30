@@ -1,6 +1,6 @@
 'use client';
 
-import { coreTheme } from '@/theme';
+import { ruiTheme } from '@/theme';
 import {
   Badge,
   Button,
@@ -28,7 +28,7 @@ const Block = ({
   <Grid.Area name={name}>
     <BlurFade
       key={name}
-      className="bg-bg-surface grid h-full place-items-center rounded-lg border border-black/5 px-2 py-2 shadow-xs"
+      className="grid h-full place-items-center rounded-lg border border-black/5 px-2 py-2 shadow-xs"
       delay={0.2 + order * 0.05}
       inView
     >
@@ -56,13 +56,13 @@ export const AccessibiltySection = () => {
         'tag tag tag tag',
       ];
   return (
-    <div data-theme="core" className="flex flex-col">
+    <div data-theme="rui" className="flex flex-col">
       <OverlayContainerProvider value="portalContainer">
-        <MarigoldProvider theme={coreTheme} className="bg-transparent">
+        <MarigoldProvider theme={ruiTheme} className="bg-transparent">
           <Grid
             areas={areas}
             columns={[3, 2, 2, 1]}
-            rows={['70px', '40px', '10px', '50px', '70px']}
+            rows={['100px', '40px', '10px', '100px', '100px']}
             space={2}
           >
             <Block name="select" order={1}>
