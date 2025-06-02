@@ -1,5 +1,20 @@
 # @marigold/components
 
+## 12.0.3
+
+### Patch Changes
+
+- 7451134: feat([DST-863]): Improve `Accordion.Header` when using additional content in the header.
+- 12b00ed: feat[DST-856]: Add TimeField Component
+
+  We added a new TimeField component to support time-based user input.
+  It allows users to select and edit time values, with configurable granularity (hours, minutes, seconds) and optional 12/24-hour format.
+  The component supports accessibility features like keyboard navigation.
+
+- 73edbb0: feat([DST-866]): Support `alignX` and `alignY` properties for `<Grid>` component.
+- Updated dependencies [12b00ed]
+  - @marigold/system@12.0.3
+
 ## 12.0.2
 
 ### Patch Changes
