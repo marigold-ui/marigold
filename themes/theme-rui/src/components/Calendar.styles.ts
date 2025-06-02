@@ -22,4 +22,20 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground/80',
   ]),
   calendarGrid: cva('[&_td]:p-2'),
+  calendarListboxButton: cva([
+    'rounded-md text-sm font-medium transition-[color,box-shadow]',
+    'px-4 py-2',
+    'focus-visible:util-focus-ring outline-none',
+    'cursor-pointer',
+    'hover:bg-hover',
+    'aria-[current=true]:bg-brand aria-[current=true]:text-brand-foreground aria-[current=true]:shadow-sm aria-[current=true]:shadow-black/5 aria-[current=true]:hover:bg-brand/90',
+  ]),
+  select: cva([
+    '[&svg]:text-muted-foreground/80',
+    'flex w-full px-3 py-2 rounded-lg shadow-sm shadow-black/5 border border-input bg-background text-sm text-foreground transition-shadow',
+    'focus-visible:util-focus-ring outline-none',
+    'h-input',
+    'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',
+    'cursor-pointer',
+  ]),
 };

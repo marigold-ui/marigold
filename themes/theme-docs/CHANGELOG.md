@@ -1,5 +1,35 @@
 # @marigold/theme-docs
 
+## 3.0.5
+
+### Patch Changes
+
+- Updated dependencies [7451134]
+- Updated dependencies [12b00ed]
+- Updated dependencies [73edbb0]
+  - @marigold/components@12.0.3
+  - @marigold/system@12.0.3
+
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/system@12.0.2
+
+## 3.0.3
+
+### Patch Changes
+
+- 0e8211b: chore([DST-853]): Refa styles for `<Menu>` button
+- Updated dependencies [0e8211b]
+- Updated dependencies [af401e5]
+- Updated dependencies [534ad77]
+  - @marigold/components@12.0.1
+  - @marigold/system@12.0.1
+
 ## 3.0.2
 
 ### Patch Changes

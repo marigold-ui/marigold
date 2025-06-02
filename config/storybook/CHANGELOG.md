@@ -1,5 +1,44 @@
 # @marigold/storybook-config
 
+## 2.0.17
+
+### Patch Changes
+
+- Updated dependencies [7451134]
+- Updated dependencies [12b00ed]
+- Updated dependencies [73edbb0]
+- Updated dependencies [be782c3]
+  - @marigold/components@12.0.3
+  - @marigold/theme-b2b@30.0.5
+  - @marigold/theme-core@29.0.5
+  - @marigold/theme-rui@1.1.3
+
+## 2.0.16
+
+### Patch Changes
+
+- 0bca5d8: Update React aria components
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/theme-core@29.0.4
+  - @marigold/theme-b2b@30.0.4
+  - @marigold/theme-rui@1.1.2
+
+## 2.0.15
+
+### Patch Changes
+
+- Updated dependencies [0e8211b]
+- Updated dependencies [af401e5]
+- Updated dependencies [2a96627]
+- Updated dependencies [f2cbc72]
+- Updated dependencies [534ad77]
+  - @marigold/components@12.0.1
+  - @marigold/theme-b2b@30.0.3
+  - @marigold/theme-core@29.0.3
+  - @marigold/theme-rui@1.1.1
+
 ## 2.0.14
 
 ### Patch Changes

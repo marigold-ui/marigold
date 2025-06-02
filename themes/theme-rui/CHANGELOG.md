@@ -1,5 +1,47 @@
 # @marigold/theme-rui
 
+## 1.1.3
+
+### Patch Changes
+
+- 12b00ed: feat[DST-856]: Add TimeField Component
+
+  We added a new TimeField component to support time-based user input.
+  It allows users to select and edit time values, with configurable granularity (hours, minutes, seconds) and optional 12/24-hour format.
+  The component supports accessibility features like keyboard navigation.
+
+- be782c3: feat([DST-864]): Add `full` to `size` options to `Card` so that it spans the availble width
+- Updated dependencies [7451134]
+- Updated dependencies [12b00ed]
+- Updated dependencies [73edbb0]
+  - @marigold/components@12.0.3
+  - @marigold/system@12.0.3
+
+## 1.1.2
+
+### Patch Changes
+
+- ca26659: refa([DST-715]): Refactor `<Calendar>` component, Fix resizing when open calendar listboxes
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/system@12.0.2
+
+## 1.1.1
+
+### Patch Changes
+
+- 0e8211b: chore([DST-853]): Refa styles for `<Menu>` button
+- af401e5: fix([DSTSUP-135]): Use correct padding on `<MultiSelect>` component
+- 2a96627: ([DST-862]): Update RUI link styles and remove empty variants
+- f2cbc72: refa([DST-858]): remove border and circle from badges
+- 534ad77: refa([DST-738]): Adding checkmark icon as selection indicator in RUI theme for SelectList and Listbox components.
+- Updated dependencies [0e8211b]
+- Updated dependencies [af401e5]
+- Updated dependencies [534ad77]
+  - @marigold/components@12.0.1
+  - @marigold/system@12.0.1
+
 ## 1.1.0
 
 ### Minor Changes

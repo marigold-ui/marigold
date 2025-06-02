@@ -81,7 +81,7 @@ export interface SelectProps<T extends object>
   /**
    * Handler that is called when the selection changes.
    */
-  onChange?: RAC.SelectProps<object>['onSelectionChange'];
+  onChange?: ((key: RAC.Key) => void) | undefined;
 }
 
 export interface SelectComponent
