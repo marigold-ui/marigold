@@ -1,5 +1,27 @@
 # @marigold/docs
 
+## 12.0.3
+
+### Patch Changes
+
+- 12b00ed: feat[DST-856]: Add TimeField Component
+
+  We added a new TimeField component to support time-based user input.
+  It allows users to select and edit time values, with configurable granularity (hours, minutes, seconds) and optional 12/24-hour format.
+  The component supports accessibility features like keyboard navigation.
+
+- Updated dependencies [7451134]
+- Updated dependencies [12b00ed]
+- Updated dependencies [73edbb0]
+- Updated dependencies [be782c3]
+  - @marigold/components@12.0.3
+  - @marigold/system@12.0.3
+  - @marigold/theme-b2b@30.0.5
+  - @marigold/theme-core@29.0.5
+  - @marigold/theme-rui@1.1.3
+  - @marigold/theme-docs@3.0.5
+  - @marigold/icons@1.3.11
+
 ## 12.0.2
 
 ### Patch Changes
