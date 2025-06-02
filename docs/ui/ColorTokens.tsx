@@ -3,11 +3,9 @@
 import { Headline } from '@/ui';
 import {
   BaseSemanticTokens,
-  Black,
   ColorPalettes,
   FeedbackSemanticTokens,
   StateSemanticTokens,
-  White,
 } from './ColorTable';
 import { useThemeSwitch } from './ThemeSwitch';
 
@@ -24,10 +22,6 @@ export const ColorTokenTable = () => {
       <ColorPalettes name="stone" />
       <Headline level={3}>Orange</Headline>
       <ColorPalettes name="orange" />
-      <Headline level={3}>White</Headline>
-      <White />
-      <Headline level={3}>Black</Headline>
-      <Black />
       <Headline level={3}>Blue</Headline>
       <ColorPalettes name="blue" />
       <Headline level={3}>Yellow</Headline>
