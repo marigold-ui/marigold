@@ -5,7 +5,7 @@
 @source inline("{bg}-{stone}-{50,{100..900..100},950}");
 @source inline("bg-[var(--color-orange-{50,100,200,300,400,500,600,700,800,900,950})]");
 
-@source inline("bg-[var(--color-{info,success,warning,destructive,muted,disabled,background,foreground,brand,secondary,hover})]");
+@source inline("bg-[var(--color-{info,info-muted,success,success-muted,warning,warning-muted,destructive-muted,destructive,muted,disabled,background,foreground,brand,secondary,hover})]");
 
 @source inline("text-[var(--color-{info,success,warning,destructive,muted,disabled,background,foreground,brand,secondary,hover}-foreground)]");
 
