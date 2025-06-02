@@ -96,10 +96,6 @@ export const TextTokens = () => (
   />
 );
 
-export const White = () => <ColorTable property="white" />;
-
-export const Black = () => <ColorTable property="black" />;
-
 // Base semantic tokens
 export const BaseSemanticTokens = () => (
   <ColorTable
