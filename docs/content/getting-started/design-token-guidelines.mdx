@@ -6,37 +6,35 @@ order: 4
 
 On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
 
-<SectionMessage variant="info">
-  <SectionMessage.Title>View the tokens</SectionMessage.Title>
-  <SectionMessage.Content>
-  For those interested in understanding our token structure, the most effective way is to explore the JSON structure directly. Note that tokens directly derived from Tailwind CSS are omitted for brevity.
+## Benefits of Design Tokens
 
-[View tokens as JSON](https://jsonhero.io/j/1IFlkqLbLbSM)
+- **Consistency:** Ensure uniform styling across all components and applications
+- **Maintainability:** Centralized values make updates and changes easier to manage
+- **Scalability:** Support multiple themes and design variations
+- **Developer Experience:** Clear naming conventions make tokens intuitive to use
 
-  </SectionMessage.Content>
-</SectionMessage>
+## Token Structure
 
-## Naming Convention
+Our RUI theme uses a semantic naming convention that directly reflects the purpose and context of each token. Instead of descriptive names, we use functional names that describe what the token does, not what it looks like.
 
-Knowing how to read token names helps you find the right token quickly in both designs and code.
+### Naming Convention
 
-<Image
-  src="/token-naming.png"
-  alt="Example of token naming, annotated with the parts"
-  width={300}
-  height={150}
-  className="mx-auto block"
-/>
+Tokens follow this pattern: `{property}-{semantic-name}`
 
-The name of a design token describes how it should be used, with each part indicating a specific aspect of its usage. Our tokens consist of the following parts:
+Where:
 
-1. **Property:** The property of an UI element the token should be applied to, like a background, text or border.
-2. **Intent:** Identifies different use cases for a token. For example, to indicate user feedback or visual hierachy.
-3. **Modifier:** Additional details about the token's purpose. In most cases, this is an interaction state, but it can also indicate where, contextually, the token should be applied (e.g. "raised" in the surface tokens). The `DEFAULT` modifier can be omitted.
+- **Property:** The CSS property being styled (bg, text, border)
+- **Semantic Name:** The functional purpose or intent (background, destructive, success, etc.)
+
+Examples:
+
+- `bg-brand` for brand background color
+- `text-destructive` for destructive/error text color
+- `border-input` for input border color
 
 ## Color Tokens
 
-Color tokens leverage the primitive tokens that form the color palettes of our design system. They provide a systematic approach to managing and applying colors consistently across various elements, while ensuring a cohesive and harmonious visual identity.
+A carefully curated set of semantic colors ensures our product maintains a consistent and recognizable palette. Our color tokens are organized by their semantic meaning and intended use case.
 
 <SectionMessage variant="info">
   <SectionMessage.Title>Icon Color</SectionMessage.Title>
@@ -45,6 +43,63 @@ Color tokens leverage the primitive tokens that form the color palettes of our d
     the `currentColor` CSS rule applied.
   </SectionMessage.Content>
 </SectionMessage>
+
+### Background and Foreground System
+
+Our color system follows a semantic approach where colors are defined by their purpose rather than their appearance.
+
+#### Background and Foreground Pairing
+
+Every background color token has a corresponding foreground token to ensure proper contrast ratios and accessibility. This pairing system guarantees that text remains readable when placed on colored backgrounds.
+
+**How it works:**
+
+- `bg-brand` pairs with `text-brand-foreground`
+- `bg-destructive` pairs with `text-destructive-foreground`
+- `bg-success-muted` pairs with `text-success-muted-foreground`
+
+This approach eliminates guesswork and ensures consistent, accessible color combinations across your entire application.
+
+### Base Colors
+
+Base colors form the foundation of our design system and are used for primary interface elements.
+
+**Available tokens:**
+
+- `background` / `foreground` - Primary background and text colors
+- `brand` / `brand-foreground` - Primary brand colors and their contrasting text
+- `secondary` / `secondary-foreground` - Secondary colors for less prominent elements
+- `hover` / `hover-foreground` - Colors for interactive hover states
+- `muted` / `muted-foreground` - Subdued colors for secondary information
+- `disabled` / `disabled-foreground` - Colors for disabled states
+
+### Feedback Colors
+
+Feedback colors communicate different states and provide user feedback through color semantics.
+
+**Available tokens:**
+
+- `destructive` / `destructive-foreground` - For errors, warnings, and destructive actions
+- `success` / `success-foreground` - For successful actions and positive feedback
+- `warning` / `warning-foreground` - For warnings and caution states
+- `info` / `info-foreground` - For informational content and neutral feedback
+
+Each feedback color also includes muted variants for subtle backgrounds:
+
+- `destructive-muted` / `destructive-muted-foreground` / `destructive-muted-accent`
+- `success-muted` / `success-muted-foreground` / `success-muted-accent`
+- `warning-muted` / `warning-muted-foreground` / `warning-muted-accent`
+- `info-muted` / `info-muted-foreground` / `info-muted-accent`
+
+### Component-Specific Colors
+
+These tokens are designed for specific component needs and interface elements.
+
+**Available tokens:**
+
+- `input` - Border color for form inputs
+- `ring` - Focus ring color for accessibility
+- `placeholder` - Placeholder text color in form fields
 
 ### Text
 
