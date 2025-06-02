@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { alignment } from '@marigold/system';
 import { Grid } from './Grid';
 
 test('default space is "0"', () => {
@@ -109,21 +110,46 @@ test('converts numbers to fractions in a grid', () => {
   });
 });
 
-test('allows to set alignment', () => {
-  render(
-    <Grid
-      data-testid="layout"
-      areas={['header']}
-      columns={['auto']}
-      rows={['auto']}
-      alignX="center"
-      alignY="center"
-    >
-      <Grid.Area name="header" />
-    </Grid>
-  );
+const alignments = [
+  {
+    alignX: 'center',
+    alignY: 'center',
+    expectedX: 'justify-center',
+    expectedY: 'items-center',
+  },
+  {
+    alignX: 'left',
+    alignY: 'top',
+    expectedX: 'justify-start',
+    expectedY: 'items-start',
+  },
+  {
+    alignX: 'right',
+    alignY: 'bottom',
+    expectedX: 'justify-end',
+    expectedY: 'items-end',
+  },
+];
 
-  const layout = screen.getByTestId('layout');
-  expect(layout).toHaveClass(`items-center`);
-  expect(layout).toHaveClass(`justify-center`);
-});
+test.each(alignments)(
+  'allows to set alignment"',
+  ({ alignX, alignY, expectedX, expectedY }) => {
+    render(
+      <Grid
+        data-testid="layout"
+        areas={['header']}
+        columns={['auto']}
+        rows={['auto']}
+        alignX={alignX as keyof typeof alignment.horizontal.alignmentX}
+        alignY={alignY as keyof typeof alignment.horizontal.alignmentY}
+      >
+        <Grid.Area name="header" />
+      </Grid>
+    );
+
+    const layout = screen.getByTestId('layout');
+
+    expect(layout).toHaveClass(expectedY);
+    expect(layout).toHaveClass(expectedX);
+  }
+);
