@@ -17,7 +17,7 @@ export const ColorTokenTable = () => {
   }
 
   return (
-    <div data-theme={current}>
+    <div className="bg-transparent" data-theme={current}>
       <Headline level={3}>Stone</Headline>
       <ColorPalettes name="stone" />
       <Headline level={3}>Orange</Headline>
