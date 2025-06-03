@@ -20,7 +20,7 @@ It is recommended to place `<MarigoldProvider>` in its own file, alongside other
 ```tsx
 import { PropsWithChildren } from 'react';
 import { MarigoldProvider } from '@marigold/components';
-import theme from '@marigold/theme-core';
+import theme from '@marigold/theme-rui';
 
 export const App = ({ children }: PropsWithChildren) => (
   <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
