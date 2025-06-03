@@ -19,18 +19,21 @@ Our RUI theme uses a semantic naming convention that directly reflects the purpo
 
 ### Naming Convention
 
-Tokens follow this pattern: `{property}-{semantic-name}`
+Tokens use semantic names that describe their purpose:
 
-Where:
+- **brand** - Primary brand color
+- **destructive** - Error and destructive action colors
+- **success** - Success state colors
+- **warning** - Warning state colors
+- **info** - Informational colors
+- **muted** - Subdued colors for secondary content
+- **disabled** - Disabled state colors
 
-- **Property:** The CSS property being styled (bg, text, border)
-- **Semantic Name:** The functional purpose or intent (background, destructive, success, etc.)
+The property prefix (bg-, text-, border-) is added when using tokens in Tailwind classes:
 
-Examples:
-
-- `bg-brand` for brand background color
-- `text-destructive` for destructive/error text color
-- `border-input` for input border color
+- `bg-brand` uses the brand color as background
+- `text-destructive` uses the destructive color for text
+- `border-input` uses the input color for borders
 
 ## Color Tokens
 
