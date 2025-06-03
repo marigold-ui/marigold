@@ -118,12 +118,24 @@ export const FeedbackSemanticTokens = () => (
     modifiers={[
       'destructive',
       'destructive-foreground',
+      'destructive-muted',
+      'destructive-muted-foreground',
+      'destructive-muted-accent',
       'success',
       'success-foreground',
+      'success-muted',
+      'success-muted-foreground',
+      'success-muted-accent',
       'warning',
       'warning-foreground',
+      'warning-muted',
+      'warning-muted-foreground',
+      'warning-muted-accent',
       'info',
       'info-foreground',
+      'info-muted',
+      'info-muted-foreground',
+      'info-muted-accent',
     ]}
   />
 );
