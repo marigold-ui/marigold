@@ -37,6 +37,10 @@ export type Theme = {
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
+    ContextualHelp?: Record<
+      'trigger' | 'popover' | 'dialog',
+      ComponentStyleFunction<string, string>
+    >;
     DateField?: Record<
       'segment' | 'field' | 'action',
       ComponentStyleFunction<string, string>
