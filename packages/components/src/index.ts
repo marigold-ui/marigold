@@ -16,6 +16,7 @@ export * from './Center';
 export * from './Checkbox';
 export * from './Columns';
 export * from './Container';
+export * from './ContextualHelp';
 export * from './Dialog';
 export * from './Divider';
 export * from './Drawer';
