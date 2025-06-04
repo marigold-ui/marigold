@@ -26,17 +26,23 @@ Starting by the lowest elevation level, the types will be explained in the follo
 
 ### Sunken
 
-The deepest surface level we support is sunken. Sunken surfaces should only be used to the default surface level. Avoid applying sunken elevations to raised or overlay elevations.
+The deepest surface level we support is sunken. Sunken surfaces should only be used on the default surface level. Avoid applying sunken elevations to raised or overlay elevations.
 
-The token you need is `bg-surface-sunken` and this should only be used together with `shadow-surface-sunken` which has a value of `none` because on sunken surfaces shoulnd't be a shadow.
+Use the following tokens:
+
+- `surface-sunken` for the background
+- `surface-sunken-shadow` for the shadow (value: `none`)
 
 <ComponentDemo file="./surface-sunken.demo.tsx" />
 
-### DEFAULT
+### Default (Body)
 
 The default surface acts as the ground-surface level. It has no visual lift and should be the starting point of each page. This can be for example the `<body>`.
 
-The used token is `bg-surface` together with `shadow-surface` which will also be `none`.
+Use the following tokens:
+
+- `surface-body` for the background
+- `surface-body-shadow` for the shadow (value: `none`)
 
 <ComponentDemo file="./surface-default.demo.tsx" />
 
@@ -44,7 +50,11 @@ The used token is `bg-surface` together with `shadow-surface` which will also be
 
 Raised is one level higher than the default surface. It will be used for example on `<Card>`s. The intent of raised surface elevation is to make certain elements stand out more in the design, showing that they're more important or prominent.
 
-The token used is `bg-surface-raised` and should be used together with `shadow-surface-raised`. The shadow creates a higher hierarchy from the ground level.
+Use the following tokens:
+
+- `surface-raised` for the background
+- `surface-raised-shadow` for the shadow
+- `surface-raised-border` for the border
 
 <ComponentDemo file="./surface-raised.demo.tsx" />
 
@@ -52,7 +62,11 @@ The token used is `bg-surface-raised` and should be used together with `shadow-s
 
 Overlay is the highest elevation used for elements that appear above others, like modals, dialogs, menus or popovers in general. Overlays can stack on top of other overlays.
 
-The used token is `bg-surface-overlay` and should be used together with `shadow-surface-overlay` wihch creates a shadow to display a higher hierarchy.
+Use the following tokens:
+
+- `surface-overlay` for the background
+- `surface-overlay-shadow` for the shadow
+- `surface-overlay-border` for the border
 
 <ComponentDemo file="./surface-overlay.demo.tsx" />
 
