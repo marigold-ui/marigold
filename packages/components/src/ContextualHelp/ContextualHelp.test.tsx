@@ -19,7 +19,7 @@ afterEach(() => {
 test('does not render popover by default', () => {
   render(<Basic />);
 
-  expect(screen.queryByText(/Dieses Feature/)).toBeNull();
+  expect(screen.queryByText(/This Component explains/)).toBeNull();
 });
 
 test('shows popover on click', async () => {
@@ -29,19 +29,21 @@ test('shows popover on click', async () => {
 
   await userEvent.click(button);
 
-  expect(screen.getByText(/Dieses Feature/)).toBeInTheDocument();
+  expect(screen.getByText(/This Component explains/)).toBeInTheDocument();
 });
 
 test('closes popover on outside click', async () => {
   render(<Basic defaultOpen={true} />);
 
   await userEvent.click(document.body);
-  expect(screen.queryByText(/Dieses Feature/)).not.toBeInTheDocument();
+
+  expect(screen.queryByText(/This Component explains/)).not.toBeInTheDocument();
 });
 
 test('closes popover on Escape key', async () => {
   render(<Basic defaultOpen={true} />);
 
   await userEvent.keyboard('{Escape}');
-  expect(screen.queryByText(/Dieses Feature/)).not.toBeInTheDocument();
+
+  expect(screen.queryByText(/This Component explains/)).not.toBeInTheDocument();
 });
