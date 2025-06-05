@@ -9,7 +9,7 @@ export default () => (
       You can access detailed documentation or contact our support.
     </Text>
     <div className="flex gap-2">
-      <Button variant="destructive">Docs</Button>
+      <Button variant="text">Docs</Button>
       <Button variant="secondary">Support</Button>
     </div>
   </ContextualHelp>
