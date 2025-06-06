@@ -74,10 +74,7 @@ export const Table: ThemeComponent<'Table'> = {
     }
   ),
   cell: cva(
-    [
-      'p-3 align-middle',
-      'focus-visible:outline-2 outline-offset-2 outline-ring/70',
-    ],
+    ['p-3', 'focus-visible:outline-2 outline-offset-2 outline-ring/70'],
     {
       variants: {
         variant: {

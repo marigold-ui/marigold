@@ -57,6 +57,15 @@ export interface TableProps
    * Content to display when there are no rows in the table.
    */
   emptyState?: () => ReactNode;
+
+  /**
+   * Control the vertical alignment of table content.
+   * @default middle
+   */
+  alignY?: Exclude<
+    JSX.IntrinsicElements['td']['valign'],
+    'baseline' | 'sub' | 'super' | 'bottom'
+  >;
 }
 
 // Table Component
@@ -69,6 +78,7 @@ export const Table: Table = ({
   disableKeyboardNavigation = false,
   stickyHeader,
   emptyState,
+  alignY = 'middle',
   ...props
 }: TableProps) => {
   const interactive = selectionMode !== 'none';
@@ -148,10 +158,15 @@ export const Table: Table = ({
                   {[...collection.getChildren!(row.key)].map((cell, index) => {
                     const currentColumn = collection.columns[index];
                     return cell.props?.isSelectionCell ? (
-                      <TableCheckboxCell key={cell.key} cell={cell} />
+                      <TableCheckboxCell
+                        key={cell.key}
+                        cell={cell}
+                        alignY={alignY}
+                      />
                     ) : (
                       <TableCell
                         align={currentColumn.props?.align}
+                        alignY={alignY}
                         key={cell.key}
                         cell={cell}
                       />
