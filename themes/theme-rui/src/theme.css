@@ -20,7 +20,7 @@
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
 
-@theme {
+@theme static {
   --font-sans: Inter, system-ui, sans-serif;
   --font-sans-variable: InterVariable, Inter, system-ui, sans-serif;
 

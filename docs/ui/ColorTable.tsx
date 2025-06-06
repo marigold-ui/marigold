@@ -16,7 +16,7 @@ export const ColorCanvas = ({ children, color }: ColorCanvasProps) => (
 );
 
 interface ColorPalettesProps {
-  property: string;
+  property?: string;
   modifiers?: string[];
 }
 
@@ -35,11 +35,13 @@ const ColorTable = ({ property, modifiers = [''] }: ColorPalettesProps) => (
         <Table.Row key={modifier}>
           <Table.Cell>
             <code className="before:content-none after:content-none">
-              {property}-{modifier}
+              {property ? `${property}-${modifier}` : modifier}
             </code>
           </Table.Cell>
           <Table.Cell>
-            <ColorCanvas color={`var(--color-${property}-${modifier})`} />
+            <ColorCanvas
+              color={`var(--color-${property ? `${property}-` : ''}${modifier})`}
+            />
           </Table.Cell>
         </Table.Row>
       ))}
@@ -70,8 +72,8 @@ export const TextTokens = () => (
   <ColorTable
     property="text"
     modifiers={[
-      'base',
-      'base-hover',
+      'hover',
+      'foreground-hover',
       'base-disabled',
       'inverted',
       'inverted-hover',
@@ -94,16 +96,71 @@ export const TextTokens = () => (
   />
 );
 
-export const White = () => <ColorTable property="white" />;
+// Base semantic tokens
+export const BaseSemanticTokens = () => (
+  <ColorTable
+    modifiers={[
+      'background',
+      'foreground',
+      'brand',
+      'brand-foreground',
+      'secondary',
+      'secondary-foreground',
+      'hover',
+      'hover-foreground',
+    ]}
+  />
+);
 
-export const Black = () => <ColorTable property="black" />;
+// Feedback semantic tokens
+export const FeedbackSemanticTokens = () => (
+  <ColorTable
+    modifiers={[
+      'destructive',
+      'destructive-foreground',
+      'destructive-muted',
+      'destructive-muted-foreground',
+      'destructive-muted-accent',
+      'success',
+      'success-foreground',
+      'success-muted',
+      'success-muted-foreground',
+      'success-muted-accent',
+      'warning',
+      'warning-foreground',
+      'warning-muted',
+      'warning-muted-foreground',
+      'warning-muted-accent',
+      'info',
+      'info-foreground',
+      'info-muted',
+      'info-muted-foreground',
+      'info-muted-accent',
+    ]}
+  />
+);
+
+// State semantic tokens
+export const StateSemanticTokens = () => (
+  <ColorTable
+    modifiers={[
+      'muted',
+      'muted-foreground',
+      'disabled',
+      'disabled-foreground',
+      'placeholder',
+      'ring',
+      'input',
+    ]}
+  />
+);
 
 export const BackgroundTokens = () => (
   <ColorTable
     property="bg"
     modifiers={[
-      'base',
-      'base-hover',
+      'hover',
+      'hover-foreground',
       'base-active',
       'base-disabled',
       'inverted',

@@ -2,8 +2,8 @@ import { Headline, Link } from '@marigold/components';
 
 export default () => {
   return (
-    <div className="bg-bg-surface shadow-surface m-auto w-96">
-      <div className="bg-bg-surface-overlay shadow-surface-overlay rounded-lg p-4">
+    <div className="util-surface-body m-auto w-96">
+      <div className="util-surface-overlay rounded-lg p-4">
         <Headline level={3}>I should be a Popover!</Headline>
         <p>
           Overlay is the highest elevation available. It is reserved for a UI

@@ -12,6 +12,21 @@ const Token = ({ name, value }: { name: string; value: string }) => (
   </>
 );
 
+const tokens = [
+  'muted',
+  'hover',
+  'disabled',
+  'brand',
+  'destructive',
+  'destructive-muted',
+  'success',
+  'success-muted',
+  'warning',
+  'warning-muted',
+  'info',
+  'info-muted',
+];
+
 export const CollaborationSection = () => {
   /**
    * Note: can not use Tailwind's "group" feature here for the hover effect,
@@ -34,42 +49,19 @@ export const CollaborationSection = () => {
           <div className="h-[500px] w-[300px] origin-bottom bg-[url(/storybook-sidebar.png)] bg-[length:350px_auto]" />
         </Card>
       </div>
-      <div className="col-start-1 row-start-1 w-[300px] origin-bottom rotate-6 transition-transform duration-700">
+      <div
+        data-theme="rui"
+        className="col-start-1 row-start-1 w-[300px] origin-bottom rotate-6 transition-transform duration-700"
+      >
         <Card px={6} py={4}>
           <div className="grid grid-cols-[max-content_auto] items-center justify-between gap-5">
-            <Token name="text-base" value="var(--color-text-base)" />
-            <Token
-              name="text-base-hover"
-              value="var(--color-text-base-hover)"
-            />
-            <Token
-              name="text-base-disabled"
-              value="var(--color-text-base-disabled)"
-            />
-            <Token name="text-inverted" value="var(--color-text-inverted)" />
-            <Token
-              name="text-inverted-hover"
-              value="var(--color-text-inverted-hover)"
-            />
-            <Token
-              name="text-inverted-disabled"
-              value="var(--color-text-inverted-disabled)"
-            />
-            <Token name="text-info" value="var(--color-text-info)" />
-            <Token
-              name="text-info-hover"
-              value="var(--color-text-info-hover)"
-            />
-            <Token name="text-success" value="var(--color-text-success)" />
-            <Token
-              name="text-success-hover"
-              value="var(--color-text-success-hover)"
-            />
-            <Token name="text-warning" value="var(--color-text-warning)" />
-            <Token
-              name="text-warning-hover"
-              value="var(--color-text-warning-hover)"
-            />
+            {tokens.map(token => (
+              <Token
+                key={token}
+                name={`bg-${token}`}
+                value={`var(--color-${token})`}
+              />
+            ))}
           </div>
         </Card>
       </div>
