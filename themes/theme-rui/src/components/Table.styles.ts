@@ -29,6 +29,7 @@ export const Table: ThemeComponent<'Table'> = {
       variant: {
         default: '',
         grid: '[&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
+        muted: 'bg-muted',
       },
     },
     defaultVariants: {
@@ -45,6 +46,7 @@ export const Table: ThemeComponent<'Table'> = {
         variant: {
           default: '[&:has([type=checkbox])]:pr-0',
           grid: '',
+          muted: 'border-t',
         },
       },
       defaultVariants: {
