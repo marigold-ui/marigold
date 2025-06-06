@@ -59,7 +59,7 @@ export interface TableProps
   emptyState?: () => ReactNode;
 
   /**
-   * Control the vertical alignment of Column.
+   * Control the vertical alignment of table content.
    * @default middle
    */
   alignY?: Exclude<
