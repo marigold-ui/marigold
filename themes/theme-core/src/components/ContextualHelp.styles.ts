@@ -8,4 +8,6 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
     'bg-white border border-gray-200 rounded shadow-md p-4 z-50 max-w-xs'
   ),
   dialog: cva('text-sm leading-normal'),
+  title: cva(),
+  content: cva(),
 };
