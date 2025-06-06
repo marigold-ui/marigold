@@ -44,30 +44,13 @@ const meta = {
         type: 'radio',
       },
       description: 'Size of the button',
-      options: ['default', 'small'],
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'default' },
-      },
+      options: ['default', 'small', 'large', 'icon'],
     },
     variant: {
       control: {
         type: 'radio',
       },
-      options: [
-        'primary',
-        'secondary',
-        'destructive',
-        'ghost',
-        'link',
-        'text',
-        'icon',
-        'menu',
-      ],
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'primary' },
-      },
+      options: ['primary', 'secondary', 'destructive', 'ghost', 'icon', 'text'],
       description: 'Variant of the button',
     },
     children: {

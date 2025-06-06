@@ -10,6 +10,20 @@ const meta = {
   title: 'Components/Menu',
   component: Menu,
   argTypes: {
+    size: {
+      control: {
+        type: 'radio',
+      },
+      description: 'Size of the button',
+      options: ['default', 'small', 'large', 'icon'],
+    },
+    variant: {
+      control: {
+        type: 'radio',
+      },
+      options: ['secondary', 'ghost'],
+      description: 'Variant of the button',
+    },
     open: {
       control: {
         type: 'boolean',
@@ -85,6 +99,8 @@ const meta = {
   },
   args: {
     placement: 'bottom',
+    variant: undefined,
+    size: 'default',
   },
 } satisfies Meta<typeof Menu>;
 
@@ -311,9 +327,7 @@ export const OpenMenuRemotely: Story = {
 
     return (
       <>
-        <Button variant="primary" onPress={() => setOpen(!open)}>
-          Open the menu remotly!
-        </Button>
+        <Button onPress={() => setOpen(!open)}>Open the menu remotly!</Button>
         <hr />
         <Menu
           onOpenChange={handleAction}
