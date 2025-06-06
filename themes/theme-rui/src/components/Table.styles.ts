@@ -37,7 +37,7 @@ export const Table: ThemeComponent<'Table'> = {
   }),
   header: cva(
     [
-      'h-12 px-3 align-middle font-medium text-muted-foreground last:text-right',
+      'h-12 px-3 align-middle font-medium text-muted-foreground',
       'focus-visible:outline-2 outline-offset-2 outline-ring/70',
     ],
     {
@@ -73,7 +73,7 @@ export const Table: ThemeComponent<'Table'> = {
   ),
   cell: cva(
     [
-      'p-3 align-middle last:text-right',
+      'p-3 align-middle',
       'focus-visible:outline-2 outline-offset-2 outline-ring/70',
     ],
     {
