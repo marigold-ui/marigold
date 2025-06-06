@@ -840,7 +840,7 @@ export const InputTable: Story = {
           {...args}
         >
           <Table.Header columns={columns}>
-            {column => <Table.Column>{column.name}</Table.Column>}
+            {column => <Table.Column alignY="top">{column.name}</Table.Column>}
           </Table.Header>
           <Table.Body items={data}>
             {item => (

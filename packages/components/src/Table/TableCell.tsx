@@ -8,10 +8,18 @@ import { useTableContext } from './Context';
 
 export interface TableCellProps {
   align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
+  alignY?: Exclude<
+    JSX.IntrinsicElements['td']['valign'],
+    'baseline' | 'sub' | 'super' | 'bottom'
+  >;
   cell: GridNode<object>;
 }
 
-export const TableCell = ({ cell, align = 'left' }: TableCellProps) => {
+export const TableCell = ({
+  cell,
+  align = 'left',
+  alignY = 'top',
+}: TableCellProps) => {
   const ref = useRef(null);
   const { interactive, state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
@@ -37,13 +45,18 @@ export const TableCell = ({ cell, align = 'left' }: TableCellProps) => {
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
 
+  console.log(alignY, 'alignY');
   return (
     <td
       ref={ref}
-      className={cn(classNames?.cell)}
+      className={cn(
+        alignY == 'top' ? 'align-top' : 'align-middle',
+        classNames?.cell
+      )}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
       align={align}
+      valign={alignY}
     >
       {cell.rendered}
     </td>
