@@ -23,10 +23,6 @@ export interface TableSelectAllCell
   extends WidthProp,
     Pick<JSX.IntrinsicElements['td'], 'align'> {
   column: GridNode<object>;
-  alignY?: Exclude<
-    JSX.IntrinsicElements['td']['valign'],
-    'baseline' | 'sub' | 'super' | 'bottom'
-  >;
 }
 
 // Component

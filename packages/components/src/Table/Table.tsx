@@ -78,7 +78,7 @@ export const Table: Table = ({
   disableKeyboardNavigation = false,
   stickyHeader,
   emptyState,
-  alignY,
+  alignY = 'middle',
   ...props
 }: TableProps) => {
   const interactive = selectionMode !== 'none';
@@ -158,7 +158,11 @@ export const Table: Table = ({
                   {[...collection.getChildren!(row.key)].map((cell, index) => {
                     const currentColumn = collection.columns[index];
                     return cell.props?.isSelectionCell ? (
-                      <TableCheckboxCell key={cell.key} cell={cell} />
+                      <TableCheckboxCell
+                        key={cell.key}
+                        cell={cell}
+                        alignY={alignY}
+                      />
                     ) : (
                       <TableCell
                         align={currentColumn.props?.align}
