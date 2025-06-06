@@ -102,9 +102,6 @@ export interface ContextualHelpProps {
 
   /** Handler that is called when the open state changes. */
   onOpenChange?: (isOpen: boolean) => void;
-
-  /** Custom className applied to the trigger and popover. */
-  className?: string;
 }
 
 export const _ContextualHelp = forwardRef<

@@ -38,7 +38,7 @@ export type Theme = {
     Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
     ContextualHelp?: Record<
-      'trigger' | 'popover' | 'dialog',
+      'trigger' | 'popover' | 'dialog' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
