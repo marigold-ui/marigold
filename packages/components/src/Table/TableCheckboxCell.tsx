@@ -16,7 +16,10 @@ export interface TableCheckboxCellProps {
   >;
 }
 
-export const TableCheckboxCell = ({ cell, alignY }: TableCheckboxCellProps) => {
+export const TableCheckboxCell = ({
+  cell,
+  alignY = 'middle',
+}: TableCheckboxCellProps) => {
   const ref = useRef(null);
   const { state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
@@ -35,7 +38,6 @@ export const TableCheckboxCell = ({ cell, alignY }: TableCheckboxCellProps) => {
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
 
-  console.log(alignY, 'alignY');
   return (
     <td
       ref={ref}

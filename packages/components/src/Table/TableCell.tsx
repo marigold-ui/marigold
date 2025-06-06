@@ -18,7 +18,7 @@ export interface TableCellProps {
 export const TableCell = ({
   cell,
   align = 'left',
-  alignY = 'top',
+  alignY = 'middle',
 }: TableCellProps) => {
   const ref = useRef(null);
   const { interactive, state, classNames } = useTableContext();
@@ -45,14 +45,10 @@ export const TableCell = ({
   const { focusProps, isFocusVisible } = useFocusRing();
   const stateProps = useStateProps({ disabled, focusVisible: isFocusVisible });
 
-  console.log(alignY, 'alignY');
   return (
     <td
       ref={ref}
-      className={cn(
-        alignY == 'top' ? 'align-top' : 'align-middle',
-        classNames?.cell
-      )}
+      className={classNames?.cell}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
       align={align}
