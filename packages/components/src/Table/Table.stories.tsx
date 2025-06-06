@@ -51,6 +51,13 @@ const meta = {
       },
       description: 'stick the header to the top of the table',
     },
+    alignY: {
+      control: {
+        type: 'select',
+      },
+      options: ['top', 'middle'],
+      description: 'alignment of the table content in the Y axis',
+    },
     variant: {
       control: {
         type: 'select',
@@ -837,10 +844,11 @@ export const InputTable: Story = {
         <Table
           aria-label="Example dynamic collection table"
           disableKeyboardNavigation
+          alignY="top"
           {...args}
         >
           <Table.Header columns={columns}>
-            {column => <Table.Column alignY="top">{column.name}</Table.Column>}
+            {column => <Table.Column>{column.name}</Table.Column>}
           </Table.Header>
           <Table.Body items={data}>
             {item => (

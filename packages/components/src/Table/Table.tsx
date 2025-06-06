@@ -57,6 +57,15 @@ export interface TableProps
    * Content to display when there are no rows in the table.
    */
   emptyState?: () => ReactNode;
+
+  /**
+   * Control the vertical alignment of Column.
+   * @default middle
+   */
+  alignY?: Exclude<
+    JSX.IntrinsicElements['td']['valign'],
+    'baseline' | 'sub' | 'super' | 'bottom'
+  >;
 }
 
 // Table Component
@@ -69,6 +78,7 @@ export const Table: Table = ({
   disableKeyboardNavigation = false,
   stickyHeader,
   emptyState,
+  alignY,
   ...props
 }: TableProps) => {
   const interactive = selectionMode !== 'none';
@@ -134,7 +144,6 @@ export const Table: Table = ({
                     key={column.key}
                     column={column}
                     align={column.props?.align}
-                    alignY={column.props?.alignY}
                   />
                 )
               )}
@@ -153,7 +162,7 @@ export const Table: Table = ({
                     ) : (
                       <TableCell
                         align={currentColumn.props?.align}
-                        alignY={currentColumn.props?.alignY}
+                        alignY={alignY}
                         key={cell.key}
                         cell={cell}
                       />
@@ -189,14 +198,6 @@ export interface ColumnProps
    * @default left
    */
   align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
-  /**
-   * Control the vertical alignment of Column.
-   * @default middle
-   */
-  alignY?: Exclude<
-    JSX.IntrinsicElements['td']['valign'],
-    'baseline' | 'sub' | 'super' | 'bottom'
-  >;
 }
 /**
  * Necessary since TypeScript can not infer the
