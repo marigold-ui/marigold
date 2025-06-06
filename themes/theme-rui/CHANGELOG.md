@@ -1,5 +1,15 @@
 # @marigold/theme-rui
 
+## 1.1.4
+
+### Patch Changes
+
+- 3e19b71: feat([DST-883]): New variant for RUI table. You can now use a new variant for RUI theme.
+- befd17d: chore([DST-882]): Remove default right alignment in RUI table
+- Updated dependencies [3e19b71]
+  - @marigold/components@12.0.4
+  - @marigold/system@12.0.4
+
 ## 1.1.3
 
 ### Patch Changes

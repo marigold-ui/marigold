@@ -1,5 +1,12 @@
 # @marigold/components
 
+## 12.0.4
+
+### Patch Changes
+
+- 3e19b71: feat([DST-883]): New variant for RUI table. You can now use a new variant for RUI theme.
+  - @marigold/system@12.0.4
+
 ## 12.0.3
 
 ### Patch Changes
