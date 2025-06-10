@@ -5,8 +5,12 @@ export const Link: ThemeComponent<'Link'> = cva(
   {
     variants: {
       variant: {
+        default: '',
         secondary: 'font-medium text-foreground underline hover:no-underline',
       },
+    },
+    defaultVariants: {
+      variant: 'default',
     },
   }
 );
