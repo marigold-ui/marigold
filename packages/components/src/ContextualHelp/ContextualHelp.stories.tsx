@@ -39,6 +39,16 @@ const meta = {
       ],
       defaultValue: 'bottom start',
     },
+    size: {
+      control: 'select',
+      options: ['small', 'medium', 'large'],
+      defaultValue: 'medium',
+    },
+    width: {
+      control: 'select',
+      options: ['small', 'medium', 'large'],
+      defaultValue: 'medium',
+    },
     offset: {
       control: 'number',
       defaultValue: 8,
@@ -60,7 +70,7 @@ export default meta;
 
 export const Basic = (props: React.ComponentProps<typeof ContextualHelp>) => (
   <div className="flex h-96 items-center justify-center">
-    <ContextualHelp {...props}>
+    <ContextualHelp {...props} size={props.size}>
       <ContextualHelp.Title>Whats this?</ContextualHelp.Title>
       <ContextualHelp.Content>
         This feature explains important functions to you directly in the context

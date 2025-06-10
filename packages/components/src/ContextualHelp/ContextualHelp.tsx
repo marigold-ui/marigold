@@ -93,6 +93,9 @@ type Placement =
  * Props for the ContextualHelp component.
  */
 export interface ContextualHelpProps {
+  /** Size of the button and popover. */
+  size?: 'small' | 'medium' | 'large';
+
   /** Content rendered inside the popover. */
   children: ReactNode;
 
@@ -101,6 +104,9 @@ export interface ContextualHelpProps {
 
   /** Placement of the popover relative to the button. */
   placement?: Placement;
+
+  /** Optional width size for the popover */
+  width?: 'small' | 'medium' | 'large';
 
   /** Offset (in px) between button and popover. */
   offset?: number;
@@ -123,6 +129,8 @@ export const _ContextualHelp = forwardRef<
     {
       children,
       variant = 'help',
+      size,
+      width,
       placement = 'bottom start',
       offset = 8,
       defaultOpen,
@@ -135,6 +143,7 @@ export const _ContextualHelp = forwardRef<
     const classNames = useClassNames({
       component: 'ContextualHelp',
       variant,
+      size,
     });
 
     return (
@@ -155,6 +164,9 @@ export const _ContextualHelp = forwardRef<
           placement={placement}
           offset={offset}
           className={classNames.popover}
+          {...{
+            [`data-${width ?? 'medium'}`]: true,
+          }}
         >
           <Dialog className={(classNames.dialog, 'prose')}>{children}</Dialog>
         </Popover>
