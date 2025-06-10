@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { Link } from './Link';
 
@@ -44,11 +45,21 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => (
+    <Link target="_blank" {...args}>
+      Visit Marigold Docs
+    </Link>
+  ),
+};
+
+export const Inline: Story = {
+  render: args => (
     <Text>
-      Zu den{' '}
-      <Link target="_blank" {...args}>
-        Marigold Docs
+      To set up Tailwind CSS, please refer to the{' '}
+      <Link target="_blank" variant="secondary" {...args}>
+        official installation guide
       </Link>
+      . Once you have completed the installation, you should create a CSS file
+      with the following informations
     </Text>
   ),
 };
