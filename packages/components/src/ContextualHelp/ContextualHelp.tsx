@@ -1,11 +1,18 @@
-import { ReactNode, forwardRef } from 'react';
 import {
+  ForwardRefExoticComponent,
+  ReactNode,
+  RefAttributes,
+  forwardRef,
+} from 'react';
+import {
+  Button,
   Dialog,
   Popover,
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { Button } from '../Button';
+import { ContextualHelpContent } from './ContextualHelpContent';
+import { ContextualHelpTitle } from './ContextualHelpTitle';
 
 const icons = {
   help: () => (
@@ -46,6 +53,19 @@ const icons = {
   ),
 };
 
+interface ContextualHelpComponent
+  extends ForwardRefExoticComponent<
+    ContextualHelpProps & RefAttributes<HTMLInputElement>
+  > {
+  /**
+   * Options for the Combobox.
+   */
+
+  Title: typeof ContextualHelpTitle;
+
+  Content: typeof ContextualHelpContent;
+}
+
 type RemovedProps = 'isOpen';
 interface DialogTriggerProps
   extends Omit<React.ComponentProps<typeof RACDialogTrigger>, RemovedProps> {
@@ -57,12 +77,6 @@ const DialogTrigger = forwardRef<HTMLDivElement, DialogTriggerProps>(
 );
 // Props
 // ---------------
-
-/**
- * Size of the trigger button.
- * @default XS
- */
-type Size = 'XS' | 'S';
 
 /**
  * Placement of the popover.
@@ -84,9 +98,6 @@ export interface ContextualHelpProps {
 
   /** Visual variant of the icon (e.g. info or help). */
   variant?: keyof typeof icons;
-
-  /** Size of the trigger button. */
-  size?: Size;
 
   /** Placement of the popover relative to the button. */
   placement?: Placement;
@@ -112,7 +123,6 @@ export const _ContextualHelp = forwardRef<
     {
       children,
       variant = 'help',
-      size = 'XS',
       placement = 'bottom start',
       offset = 8,
       defaultOpen,
@@ -124,7 +134,6 @@ export const _ContextualHelp = forwardRef<
     const icon = icons[variant]?.();
     const classNames = useClassNames({
       component: 'ContextualHelp',
-      size,
       variant,
     });
 
@@ -136,7 +145,6 @@ export const _ContextualHelp = forwardRef<
       >
         <Button
           ref={ref}
-          size={size}
           className={classNames.trigger}
           aria-label={variant === 'info' ? 'Information' : 'Hilfe'}
         >
@@ -153,6 +161,9 @@ export const _ContextualHelp = forwardRef<
       </DialogTrigger>
     );
   }
-);
+) as ContextualHelpComponent;
+
+_ContextualHelp.Title = ContextualHelpTitle;
+_ContextualHelp.Content = ContextualHelpContent;
 
 export { _ContextualHelp as ContextualHelp };

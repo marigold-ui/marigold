@@ -2,8 +2,6 @@ import type { Meta } from '@storybook/react';
 import React from 'react';
 import { Link } from '../Link';
 import { ContextualHelp } from './ContextualHelp';
-import { ContextualHelpContent } from './ContextualHelpContent';
-import { ContextualHelpTitle } from './ContextualHelpTitle';
 
 const meta = {
   title: 'Components/ContextualHelp',
@@ -15,7 +13,30 @@ const meta = {
     },
     placement: {
       control: 'select',
-      options: ['top', 'bottom', 'left', 'right', 'bottom start'],
+      options: [
+        'bottom',
+        'bottom left',
+        'bottom right',
+        'bottom start',
+        'bottom end',
+        'top',
+        'top left',
+        'top right',
+        'top start',
+        'top end',
+        'left',
+        'left top',
+        'left bottom',
+        'start',
+        'start top',
+        'start bottom',
+        'right',
+        'right top',
+        'right bottom',
+        'end',
+        'end top',
+        'end bottom',
+      ],
       defaultValue: 'bottom start',
     },
     offset: {
@@ -40,15 +61,15 @@ export default meta;
 export const Basic = (props: React.ComponentProps<typeof ContextualHelp>) => (
   <div className="flex h-96 items-center justify-center">
     <ContextualHelp {...props}>
-      <ContextualHelpTitle>Whats this?</ContextualHelpTitle>
-      <ContextualHelpContent>
+      <ContextualHelp.Title>Whats this?</ContextualHelp.Title>
+      <ContextualHelp.Content>
         This feature explains important functions to you directly in the context
         of the page.
         <br />
         <Link href="https://www.marigold-ui.io/components/overview?theme=rui">
           To the documentation
         </Link>
-      </ContextualHelpContent>
+      </ContextualHelp.Content>
     </ContextualHelp>
   </div>
 );
