@@ -1,5 +1,20 @@
 # @marigold/components
 
+## 12.0.4
+
+### Patch Changes
+
+- 3e19b71: feat([DST-883]): New variant for RUI table. You can now use a new variant for RUI theme.
+- ed72011: feat(DSTSUP-150): add `ghost` version to `<Menu>` + normalize svg sizes in buttons and menus
+- 6c230c7: feat[DST-731]: Add ContextualHelp Component with Docs
+  We added a new ContextualHelp component to provide inline help and guidance within the UI.
+  It displays contextual information in a popover triggered by an icon button, with configurable placement, size, and icon variant (help or info).
+  The component is accessible, supports both controlled and uncontrolled open states, and is designed for flexible content layout.
+- 17d28b5: feat([DST-885]): update default `<Link>` styles and add link variant
+- 5127d58: feat([DST-884]): add vertical alignment property (alignY) to table
+- Updated dependencies [6c230c7]
+  - @marigold/system@12.0.4
+
 ## 12.0.3
 
 ### Patch Changes
