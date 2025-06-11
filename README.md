@@ -110,6 +110,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="20%"><a href="https://osama-abdellatef.vercel.app/"><img src="https://avatars.githubusercontent.com/u/62595605?v=4?s=120" width="120px;" alt="Osama Abdul Latif "/><br /><sub><b>Osama Abdul Latif </b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=OsamaAbdellateef" title="Code">💻</a> <a href="#design-OsamaAbdellateef" title="Design">🎨</a> <a href="#maintenance-OsamaAbdellateef" title="Maintenance">🚧</a> <a href="https://github.com/marigold-ui/marigold/commits?author=OsamaAbdellateef" title="Tests">⚠️</a> <a href="https://github.com/marigold-ui/marigold/commits?author=OsamaAbdellateef" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/aromko"><img src="https://avatars.githubusercontent.com/u/77496890?v=4?s=120" width="120px;" alt="Marcel Köhler"/><br /><sub><b>Marcel Köhler</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=aromko" title="Documentation">📖</a> <a href="https://github.com/marigold-ui/marigold/commits?author=aromko" title="Code">💻</a> <a href="#design-aromko" title="Design">🎨</a> <a href="#example-aromko" title="Examples">💡</a> <a href="https://github.com/marigold-ui/marigold/commits?author=aromko" title="Tests">⚠️</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="20%"><a href="https://github.com/pauleitenbichler"><img src="https://avatars.githubusercontent.com/u/94551682?v=4?s=120" width="120px;" alt="pauleitenbichler"/><br /><sub><b>pauleitenbichler</b></sub></a><br /><a href="https://github.com/marigold-ui/marigold/commits?author=pauleitenbichler" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 

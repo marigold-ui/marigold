@@ -51,11 +51,18 @@ const meta = {
       },
       description: 'stick the header to the top of the table',
     },
+    alignY: {
+      control: {
+        type: 'select',
+      },
+      options: ['top', 'middle'],
+      description: 'alignment of the table content in the Y axis',
+    },
     variant: {
       control: {
         type: 'select',
       },
-      options: ['default', 'grid', 'linedTable', 'card'],
+      options: ['default', 'grid', 'linedTable', 'muted'],
       description: 'variant for the table',
     },
     size: {
@@ -837,6 +844,7 @@ export const InputTable: Story = {
         <Table
           aria-label="Example dynamic collection table"
           disableKeyboardNavigation
+          alignY="top"
           {...args}
         >
           <Table.Header columns={columns}>
