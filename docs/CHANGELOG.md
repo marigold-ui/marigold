@@ -1,5 +1,28 @@
 # @marigold/docs
 
+## 12.0.4
+
+### Patch Changes
+
+- 6c230c7: feat[DST-731]: Add ContextualHelp Component with Docs
+  We added a new ContextualHelp component to provide inline help and guidance within the UI.
+  It displays contextual information in a popover triggered by an icon button, with configurable placement, size, and icon variant (help or info).
+  The component is accessible, supports both controlled and uncontrolled open states, and is designed for flexible content layout.
+- 17d28b5: feat([DST-885]): update default `<Link>` styles and add link variant
+- Updated dependencies [3e19b71]
+- Updated dependencies [ed72011]
+- Updated dependencies [6c230c7]
+- Updated dependencies [befd17d]
+- Updated dependencies [17d28b5]
+- Updated dependencies [5127d58]
+  - @marigold/components@12.0.4
+  - @marigold/theme-rui@1.1.4
+  - @marigold/system@12.0.4
+  - @marigold/theme-core@29.0.6
+  - @marigold/theme-b2b@30.0.6
+  - @marigold/theme-docs@3.0.6
+  - @marigold/icons@1.3.12
+
 ## 12.0.3
 
 ### Patch Changes
