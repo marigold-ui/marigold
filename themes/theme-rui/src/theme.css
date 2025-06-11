@@ -106,6 +106,9 @@
   /* used for outline/border as ring*/
   --color-ring: var(--color-stone-400);
 
+  /* used for link */
+  --color-link: var(--color-blue-600);
+
   /* Input tokens */
   /* color input used for inputs as border or e.g. in switch as bg track color */
   --color-input: var(--color-stone-300);
