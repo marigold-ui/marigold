@@ -1,4 +1,5 @@
 import RAC, { ModalOverlay } from 'react-aria-components';
+import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { cn, useClassNames } from '@marigold/system';
 import { usePortalContainer } from '../Provider';
 
@@ -36,20 +37,21 @@ export const Underlay = ({
   const portal = usePortalContainer();
 
   return (
-    <ModalOverlay
-      className={({ isEntering, isExiting }) =>
-        cn(
-          'fixed inset-0 z-40 grid place-items-center overflow-y-auto',
-          isEntering ? 'animate-in fade-in duration-300 ease-out' : '',
-          isExiting ? 'animate-out fade-out duration-200 ease-in' : '',
-          classNames
-        )
-      }
-      {...props}
-      data-testid="underlay-id"
-      UNSTABLE_portalContainer={portal as Element}
-    >
-      {props.children}
-    </ModalOverlay>
+    <UNSAFE_PortalProvider getContainer={() => portal as HTMLElement | null}>
+      <ModalOverlay
+        className={({ isEntering, isExiting }) =>
+          cn(
+            'fixed inset-0 z-40 grid place-items-center overflow-y-auto',
+            isEntering ? 'animate-in fade-in duration-300 ease-out' : '',
+            isExiting ? 'animate-out fade-out duration-200 ease-in' : '',
+            classNames
+          )
+        }
+        {...props}
+        data-testid="underlay-id"
+      >
+        {props.children}
+      </ModalOverlay>
+    </UNSAFE_PortalProvider>
   );
 };
