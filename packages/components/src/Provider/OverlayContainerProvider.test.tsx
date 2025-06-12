@@ -62,7 +62,7 @@ test('renders portal container', async () => {
 
   const wrapper = () => (
     <>
-      <OverlayContainerProvider value={containerRef.current}>
+      <OverlayContainerProvider value={containerRef.current as any}>
         <MarigoldProvider theme={theme}>
           <Select label="Label" defaultOpen>
             <Select.Section header="section">
