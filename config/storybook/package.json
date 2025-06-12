@@ -30,7 +30,7 @@
     "@storybook/source-loader": "^8.6.12",
     "@storybook/test": "^8.6.12",
     "@tailwindcss/vite": "4.1.5",
-    "@types/react": "19.1.5",
+    "@types/react": "19.1.6",
     "@vitejs/plugin-react": "4.5.0",
     "axe-playwright": "2.1.0",
     "tailwindcss": "4.1.5",
