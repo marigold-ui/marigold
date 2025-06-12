@@ -29,10 +29,11 @@ Starting by the lowest elevation level, the types will be explained in the follo
 
 The deepest surface level we support is sunken. Sunken surfaces should only be used on the default surface level. Avoid applying sunken elevations to raised or overlay elevations.
 
-Use the following tokens:
+Use the utility class:
 
-- `surface-sunken` for the background
-- `surface-sunken-shadow` for the shadow (value: `none`)
+- `util-surface-sunken`
+
+This utility combines `surface-sunken` and `surface-sunken-shadow` tokens.
 
 <ComponentDemo file="./surface-sunken.demo.tsx" />
 
@@ -40,10 +41,11 @@ Use the following tokens:
 
 The default surface acts as the ground-surface level. It has no visual lift and should be the starting point of each page. This can be for example the `<body>`.
 
-Use the following tokens:
+Use the utility class:
 
-- `surface-body` for the background
-- `surface-body-shadow` for the shadow (value: `none`)
+- `util-surface-body`
+
+This utility combines `surface-body` and `surface-body-shadow` tokens.
 
 <ComponentDemo file="./surface-default.demo.tsx" />
 
@@ -51,11 +53,11 @@ Use the following tokens:
 
 Raised is one level higher than the default surface. It will be used for example on `<Card>`s. The intent of raised surface elevation is to make certain elements stand out more in the design, showing that they're more important or prominent.
 
-Use the following tokens:
+Use the utility class:
 
-- `surface-raised` for the background
-- `surface-raised-shadow` for the shadow
-- `surface-raised-border` for the border
+- `util-surface-raised`
+
+This utility combines `surface-raised`, `surface-raised-shadow`, and `surface-raised-border` tokens.
 
 <ComponentDemo file="./surface-raised.demo.tsx" />
 
@@ -63,11 +65,11 @@ Use the following tokens:
 
 Overlay is the highest elevation used for elements that appear above others, like modals, dialogs, menus or popovers in general. Overlays can stack on top of other overlays.
 
-Use the following tokens:
+Use the utility class:
 
-- `surface-overlay` for the background
-- `surface-overlay-shadow` for the shadow
-- `surface-overlay-border` for the border
+- `util-surface-overlay`
+
+This utility combines `surface-overlay`, `surface-overlay-shadow`, and `surface-overlay-border` tokens.
 
 <ComponentDemo file="./surface-overlay.demo.tsx" />
 
