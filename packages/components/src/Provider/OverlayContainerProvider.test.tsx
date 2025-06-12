@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 import { renderHook, screen, within } from '@testing-library/react';
+import React from 'react';
 import { vi } from 'vitest';
 import {
   OverlayContainerProvider,
@@ -57,9 +58,11 @@ window.matchMedia = mockMatchMedia([
 ]);
 
 test('renders portal container', async () => {
+  const containerRef = React.createRef<HTMLDivElement>();
+
   const wrapper = () => (
     <>
-      <OverlayContainerProvider value="testid">
+      <OverlayContainerProvider value={containerRef.current}>
         <MarigoldProvider theme={theme}>
           <Select label="Label" defaultOpen>
             <Select.Section header="section">
