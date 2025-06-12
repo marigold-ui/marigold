@@ -1,5 +1,13 @@
 # @marigold/components
 
+## 12.0.5
+
+### Patch Changes
+
+- a6bcd89: chore(deps): update react-aria
+- Updated dependencies [a6bcd89]
+  - @marigold/system@12.0.5
+
 ## 12.0.4
 
 ### Patch Changes

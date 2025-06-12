@@ -1,5 +1,19 @@
 # @marigold/docs
 
+## 12.0.5
+
+### Patch Changes
+
+- a6bcd89: chore(deps): update react-aria
+- Updated dependencies [a6bcd89]
+  - @marigold/components@12.0.5
+  - @marigold/system@12.0.5
+  - @marigold/theme-b2b@30.0.7
+  - @marigold/theme-core@29.0.7
+  - @marigold/theme-docs@3.0.7
+  - @marigold/theme-rui@1.1.5
+  - @marigold/icons@1.3.13
+
 ## 12.0.4
 
 ### Patch Changes
