@@ -1,5 +1,23 @@
 # @marigold/docs
 
+## 12.1.0
+
+### Minor Changes
+
+- 0d7f9db: docs([DST-815]):Updated token display to use RUI theme structure. Replaced deprecated Core and B2B token references with RUI semantic tokens that align with the current design system.
+
+### Patch Changes
+
+- Updated dependencies [0d7f9db]
+- Updated dependencies [16f6dbb]
+  - @marigold/theme-docs@3.1.0
+  - @marigold/theme-rui@1.2.0
+  - @marigold/components@12.1.0
+  - @marigold/theme-b2b@30.0.8
+  - @marigold/theme-core@29.0.8
+  - @marigold/system@12.1.0
+  - @marigold/icons@1.3.14
+
 ## 12.0.5
 
 ### Patch Changes
