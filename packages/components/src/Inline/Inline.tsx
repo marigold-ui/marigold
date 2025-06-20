@@ -7,6 +7,10 @@ import type { AriaRegionProps } from '@marigold/types';
 // ---------------
 export interface InlineProps extends GapSpaceProp, AriaRegionProps {
   /**
+   * Automatically adjusts vertical alignment when input fields display helper text or error messages
+   */
+  dynamicAlign?: boolean;
+  /**
    * The children of the component.
    */
   children?: ReactNode;
@@ -27,6 +31,7 @@ export const Inline = ({
   alignX,
   alignY,
   children,
+  dynamicAlign,
   ...props
 }: InlineProps) => (
   <div
@@ -35,7 +40,9 @@ export const Inline = ({
       'flex flex-wrap',
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
-      alignY && alignment?.horizontal?.alignmentY[alignY]
+      dynamicAlign
+        ? 'items-end [&:has([slot=description])]:items-center [&:has([slot=errorMessage])]:items-center'
+        : alignY && alignment?.horizontal?.alignmentY[alignY]
     )}
   >
     {children}

@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+import { Button } from '../Button';
+import { Stack } from '../Stack';
+import { Switch } from '../Switch';
+import { TextField } from '../TextField';
 import { Inline } from './Inline';
 
 const meta = {
@@ -38,6 +42,16 @@ const meta = {
       options: ['top', 'center', 'bottom'],
       description: 'Set the Vertical Alignment',
     },
+    dynamicAlign: {
+      control: {
+        type: 'boolean',
+      },
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'true' },
+      },
+      description: 'Set auto-adjustment if there is input with description',
+    },
   },
   args: {
     alignX: 'left',
@@ -69,4 +83,33 @@ export const Basic: Story = {
       <Block>Löffelstiel!</Block>
     </Inline>
   ),
+};
+
+export const InputButtonAlignment: Story = {
+  render: args => {
+    const [description, setDescription] = useState('');
+
+    const toggleDescription = () => {
+      if (description) {
+        setDescription('');
+      } else {
+        setDescription('button is vertically algined with input');
+      }
+    };
+
+    return (
+      <Stack space={6}>
+        <Switch label="toggle description" onChange={toggleDescription} />
+        <Inline space={4} dynamicAlign>
+          <TextField
+            width={'auto'}
+            {...args}
+            label="My label is great."
+            description={description}
+          />
+          <Button onClick={toggleDescription}>Submit</Button>
+        </Inline>
+      </Stack>
+    );
+  },
 };
