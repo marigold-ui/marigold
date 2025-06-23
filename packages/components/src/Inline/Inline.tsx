@@ -37,7 +37,7 @@ export const Inline = ({
   <div
     {...props}
     className={cn(
-      // 'flex flex-wrap',
+      'flex flex-wrap',
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
       dynamicAlign

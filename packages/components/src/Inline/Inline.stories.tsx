@@ -101,12 +101,13 @@ export const InputButtonAlignment: Story = {
       <Stack space={6}>
         <Switch label="toggle description" onChange={toggleDescription} />
         <Inline space={4} dynamicAlign>
-          <TextField
-            width={'auto'}
-            {...args}
-            label="My label is great."
-            description={description}
-          />
+          <div className="flex-1">
+            <TextField
+              {...args}
+              label="My label is great."
+              description={description}
+            />
+          </div>
           <Button onClick={toggleDescription}>Submit</Button>
         </Inline>
       </Stack>
