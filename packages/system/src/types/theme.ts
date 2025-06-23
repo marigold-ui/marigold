@@ -147,6 +147,10 @@ export type Theme = {
       'container' | 'arrow',
       ComponentStyleFunction<string, string>
     >;
+    Toast?: Record<
+      'toast' | 'title' | 'description' | 'closeButton',
+      ComponentStyleFunction<string, string>
+    >;
     Tabs?: Record<
       'container' | 'tabsList' | 'tabpanel' | 'tab',
       ComponentStyleFunction<string, string>
