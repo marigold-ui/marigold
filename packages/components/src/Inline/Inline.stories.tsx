@@ -42,16 +42,6 @@ const meta = {
       options: ['top', 'center', 'bottom'],
       description: 'Set the Vertical Alignment',
     },
-    dynamicAlign: {
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'text' },
-        defaultValue: { summary: 'true' },
-      },
-      description: 'Set auto-adjustment if there is input with description',
-    },
   },
   args: {
     alignX: 'left',
@@ -70,6 +60,7 @@ const Block = ({ children }: { children: ReactNode }) => (
 );
 
 export const Basic: Story = {
+  tags: ['component-test'],
   render: args => (
     <Inline {...args}>
       <Block>Lirum</Block>
@@ -86,6 +77,7 @@ export const Basic: Story = {
 };
 
 export const InputButtonAlignment: Story = {
+  tags: ['component-test'],
   render: args => {
     const [description, setDescription] = useState('');
 
@@ -100,7 +92,7 @@ export const InputButtonAlignment: Story = {
     return (
       <Stack space={6}>
         <Switch label="toggle description" onChange={toggleDescription} />
-        <Inline space={4} dynamicAlign>
+        <Inline space={4} alignY="center" data-testid="inline">
           <div className="flex-1">
             <TextField
               {...args}
