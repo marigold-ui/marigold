@@ -11,19 +11,22 @@ import { ToastContent } from './ToastContent';
 interface MyToastContent {
   title: string;
   description?: string;
+  variant?: 'info' | 'success' | 'error' | 'warning';
 }
 export const queue = new ToastQueue<MyToastContent>();
 
 const _Toast = () => {
   const classNames = useClassNames({ component: 'Toast' });
   console.log(queue);
+
   return (
     <ToastRegion queue={queue}>
       {({ toast }) => (
         <Toast toast={toast} className={classNames.toast}>
           <ToastContent
-            Title={toast.content.title}
-            Description={toast.content.description}
+            title={toast.content.title}
+            description={toast.content.description}
+            variant={toast.content.variant}
           />
           <Button slot="close" className={classNames.closeButton}>
             <Close size={16} />
