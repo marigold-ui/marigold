@@ -43,11 +43,6 @@ const meta = {
       description: 'Set the Vertical Alignment',
     },
   },
-  args: {
-    alignX: 'left',
-    alignY: undefined,
-    space: undefined,
-  },
 } satisfies Meta<typeof Inline>;
 
 export default meta;
@@ -61,6 +56,9 @@ const Block = ({ children }: { children: ReactNode }) => (
 
 export const Basic: Story = {
   tags: ['component-test'],
+  args: {
+    alignX: 'left',
+  },
   render: args => (
     <Inline {...args}>
       <Block>Lirum</Block>
@@ -78,6 +76,10 @@ export const Basic: Story = {
 
 export const InputButtonAlignment: Story = {
   tags: ['component-test'],
+  args: {
+    alignY: 'center',
+    space: 6,
+  },
   render: args => {
     const [description, setDescription] = useState('');
 
@@ -92,7 +94,7 @@ export const InputButtonAlignment: Story = {
     return (
       <Stack space={6}>
         <Switch label="toggle description" onChange={toggleDescription} />
-        <Inline space={4} alignY="center" data-testid="inline">
+        <Inline data-testid="inline">
           <div className="flex-1">
             <TextField
               {...args}
