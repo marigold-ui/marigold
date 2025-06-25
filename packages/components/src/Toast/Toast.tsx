@@ -4,6 +4,7 @@ import {
   UNSTABLE_ToastRegion as ToastRegion,
 } from 'react-aria-components';
 import { Button } from 'react-aria-components';
+import { Close } from '@marigold/icons';
 import { useClassNames } from '@marigold/system';
 import { ToastContent } from './ToastContent';
 
@@ -25,7 +26,7 @@ const _Toast = () => {
             Description={toast.content.description}
           />
           <Button slot="close" className={classNames.closeButton}>
-            x
+            <Close size={16} />
           </Button>
         </Toast>
       )}

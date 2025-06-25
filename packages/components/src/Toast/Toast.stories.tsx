@@ -33,7 +33,7 @@ export const Default: Story = {
         <Button
           onPress={() =>
             queue.add({
-              title: 'Toast complete!',
+              title: 'Toast complete, your request will be ignored!',
               description: 'Great success.',
             })
           }
