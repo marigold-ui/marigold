@@ -35,9 +35,8 @@ export const Inline = ({
       'flex flex-wrap',
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
-      alignY &&
-        alignment?.horizontal?.alignmentY[alignY] &&
-        alignY === 'center' &&
+      alignY && alignment?.horizontal?.alignmentY[alignY],
+      alignY === 'center' &&
         'items-end [&:has([slot=description])]:items-center [&:has([slot=errorMessage])]:items-center'
     )}
   >
