@@ -1,5 +1,5 @@
 import { siteConfig } from '@/lib/config';
-import { b2bTheme, coreTheme, ruiTheme, theme } from '@/theme';
+import { ruiTheme, theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
 import { Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
@@ -29,8 +29,6 @@ export const metadata = {
 // ---------------
 const themes = {
   rui: ruiTheme,
-  b2b: b2bTheme,
-  core: coreTheme,
 };
 
 // Layout
