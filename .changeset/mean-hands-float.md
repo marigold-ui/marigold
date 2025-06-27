@@ -1,5 +1,5 @@
 ---
-'@marigold/components': patch
+'@marigold/components': minor
 '@marigold/theme-rui': patch
 ---
 
