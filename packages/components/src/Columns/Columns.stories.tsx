@@ -3,7 +3,6 @@ import { ReactNode } from 'react';
 import {
   Columns,
   Divider,
-  FieldGroup,
   Headline,
   NumberField,
   Stack,
@@ -147,14 +146,12 @@ export const WithTwoComponentsAndFixedItem: Story = {
     <div className="bg-bg-surface-sunken flex flex-col gap-2 p-1">
       <span>fit is on the switch element</span>
       <Divider />
-      <FieldGroup labelWidth="100px">
-        <Columns columns={[1, 'fit']} space={2} stretch>
-          <TextField label="Von" />
-          <div className="flex items-center">
-            <Switch />
-          </div>
-        </Columns>
-      </FieldGroup>
+      <Columns columns={[1, 'fit']} space={2} stretch>
+        <TextField label="Von" />
+        <div className="flex items-center">
+          <Switch />
+        </div>
+      </Columns>
     </div>
   ),
 };

@@ -4,7 +4,6 @@ import { Accessible, Parking, SettingDots } from '@marigold/icons';
 import { Badge } from '../Badge';
 import { Button } from '../Button/Button';
 import { Columns } from '../Columns';
-import { FieldGroup } from '../FieldBase';
 import { Headline } from '../Headline';
 import { Inline } from '../Inline';
 import { NumberField } from '../NumberField';
@@ -93,23 +92,21 @@ let items = [
       </Inline>
     ),
     children: (
-      <FieldGroup labelWidth="100px">
-        <Columns columns={[2, 2]} space={3}>
-          <TextField
-            label="Parking Slots"
-            description="Available parking passes"
-          />
-          <NumberField
-            label="Costs"
-            description="Amount in euros"
-            defaultValue={5}
-            formatOptions={{
-              style: 'currency',
-              currency: 'EUR',
-            }}
-          />
-        </Columns>
-      </FieldGroup>
+      <Columns columns={[2, 2]} space={3}>
+        <TextField
+          label="Parking Slots"
+          description="Available parking passes"
+        />
+        <NumberField
+          label="Costs"
+          description="Amount in euros"
+          defaultValue={5}
+          formatOptions={{
+            style: 'currency',
+            currency: 'EUR',
+          }}
+        />
+      </Columns>
     ),
   },
   {
@@ -121,12 +118,10 @@ let items = [
       </Inline>
     ),
     children: (
-      <FieldGroup labelWidth="100px">
-        <TextField
-          label="Parking Stations"
-          description="Available parking stations"
-        />
-      </FieldGroup>
+      <TextField
+        label="Parking Stations"
+        description="Available parking stations"
+      />
     ),
   },
   {
@@ -138,23 +133,21 @@ let items = [
       </Inline>
     ),
     children: (
-      <FieldGroup labelWidth="100px">
-        <Columns columns={[2, 2]} space={3}>
-          <TextField
-            label="Parking Slots"
-            description="Available parking passes"
-          />
-          <NumberField
-            label="Costs"
-            description="Amount in euros"
-            defaultValue={5}
-            formatOptions={{
-              style: 'currency',
-              currency: 'EUR',
-            }}
-          />
-        </Columns>
-      </FieldGroup>
+      <Columns columns={[2, 2]} space={3}>
+        <TextField
+          label="Parking Slots"
+          description="Available parking passes"
+        />
+        <NumberField
+          label="Costs"
+          description="Amount in euros"
+          defaultValue={5}
+          formatOptions={{
+            style: 'currency',
+            currency: 'EUR',
+          }}
+        />
+      </Columns>
     ),
   },
 ];
