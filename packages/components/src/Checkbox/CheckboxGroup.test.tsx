@@ -2,7 +2,6 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
-import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
 import { Checkbox } from './Checkbox';
 
@@ -198,23 +197,6 @@ test('accepts error message', () => {
   );
 
   expect(screen.getByText('My Error')).toBeInTheDocument();
-});
-
-test('works with a <FieldGroup>', () => {
-  render(
-    <FieldGroup labelWidth="100px">
-      <Checkbox.Group label="Group of Checkboxes">
-        <Checkbox value="one" label="one" />
-        <Checkbox value="two" label="two" />
-        <Checkbox value="three" label="three" />
-      </Checkbox.Group>
-    </FieldGroup>
-  );
-
-  expect(screen.getByText('Group of Checkboxes')).toBeInTheDocument();
-  expect(screen.getByText('one')).toBeInTheDocument();
-  expect(screen.getByText('two')).toBeInTheDocument();
-  expect(screen.getByText('three')).toBeInTheDocument();
 });
 
 test('horiziontal orientation style', () => {

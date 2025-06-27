@@ -1,12 +1,5 @@
 import { FormEvent, useState } from 'react';
-import {
-  Button,
-  FieldGroup,
-  Form,
-  Headline,
-  Stack,
-  TextField,
-} from '@marigold/components';
+import { Button, Form, Headline, Stack, TextField } from '@marigold/components';
 
 export default () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,28 +32,26 @@ export default () => {
 
   return (
     <Form onSubmit={handleOnSubmit}>
-      <FieldGroup labelWidth="100px">
-        <Headline level={2}>Book search</Headline>
-        <TextField
-          label="Book name:"
-          description="Please enter a book name"
-          placeholder="Book name"
-          name="bookInput"
-        />
-        <Stack space={2}>
-          <Stack alignX="right">
-            <Button
-              variant="primary"
-              size="small"
-              type="submit"
-              loading={isLoading}
-            >
-              Submit
-            </Button>
-          </Stack>
-          {searchTerm && `You searched for <b>${searchTerm}</b>.`}
+      <Headline level={2}>Book search</Headline>
+      <TextField
+        label="Book name:"
+        description="Please enter a book name"
+        placeholder="Book name"
+        name="bookInput"
+      />
+      <Stack space={2}>
+        <Stack alignX="right">
+          <Button
+            variant="primary"
+            size="small"
+            type="submit"
+            loading={isLoading}
+          >
+            Submit
+          </Button>
         </Stack>
-      </FieldGroup>
+        {searchTerm && `You searched for <b>${searchTerm}</b>.`}
+      </Stack>
     </Form>
   );
 };

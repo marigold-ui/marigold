@@ -1,7 +1,6 @@
 import { FormEvent, useState } from 'react';
 import {
   Button,
-  FieldGroup,
   Form,
   Headline,
   Stack,
@@ -36,28 +35,26 @@ export default () => {
   return (
     <div>
       <Form onSubmit={handleOnSubmit}>
-        <FieldGroup labelWidth="100px">
-          <Headline level={2}>Book search</Headline>
-          <TextField
-            label="Book name:"
-            description="Please enter a book name"
-            placeholder="Book name"
-            name="bookInput"
-          />
-          <Stack space={2}>
-            <Stack alignX="right">
-              <Button
-                variant="primary"
-                size="small"
-                type="submit"
-                className="w-20"
-              >
-                Submit
-              </Button>
-            </Stack>
-            {searchTerm && `You searched for ${searchTerm}.`}
+        <Headline level={2}>Book search</Headline>
+        <TextField
+          label="Book name:"
+          description="Please enter a book name"
+          placeholder="Book name"
+          name="bookInput"
+        />
+        <Stack space={2}>
+          <Stack alignX="right">
+            <Button
+              variant="primary"
+              size="small"
+              type="submit"
+              className="w-20"
+            >
+              Submit
+            </Button>
           </Stack>
-        </FieldGroup>
+          {searchTerm && `You searched for ${searchTerm}.`}
+        </Stack>
       </Form>
       {isLoading && <XLoader mode="fullscreen" />}
     </div>

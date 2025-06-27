@@ -3,7 +3,6 @@ import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
-import { FieldGroup } from '../FieldBase';
 import { setup } from '../test.utils';
 import { Checkbox } from './Checkbox';
 
@@ -135,15 +134,4 @@ test('forwards ref', () => {
   render(<Checkbox label="Check it" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
-});
-
-test('works with a <FieldGroup>', () => {
-  render(
-    <FieldGroup labelWidth="100px">
-      <Checkbox label="Check it" />
-    </FieldGroup>
-  );
-
-  const checkbox = screen.getByLabelText('Check it');
-  expect(checkbox).toBeInTheDocument();
 });

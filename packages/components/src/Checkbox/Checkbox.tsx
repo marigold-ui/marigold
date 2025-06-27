@@ -7,8 +7,6 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Checkbox } from 'react-aria-components';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
-import { useFieldGroupContext } from '../FieldBase';
-import { CheckboxField } from './CheckBoxField';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 
@@ -153,7 +151,6 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       ...rest,
     } as const;
 
-    const { labelWidth } = useFieldGroupContext();
     const group = useCheckboxGroupContext();
 
     const classNames = useClassNames({
@@ -162,7 +159,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       size: size || group?.size,
     });
 
-    const component = (
+    return (
       <Checkbox
         ref={ref}
         className={cn(
@@ -183,13 +180,6 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
           </>
         )}
       </Checkbox>
-    );
-
-    // Checkbox is not within a group and should indented based on the labelWidth
-    return !group && !!labelWidth ? (
-      <CheckboxField labelWidth={labelWidth}>{component}</CheckboxField>
-    ) : (
-      component
     );
   }
 ) as CheckboxComponent;

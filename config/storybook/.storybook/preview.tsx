@@ -1,20 +1,15 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
 import {
-  FieldGroup,
   MarigoldProvider,
   OverlayContainerProvider,
 } from '@marigold/components';
-import b2b from '@marigold/theme-b2b';
-import core from '@marigold/theme-core';
 import rui from '@marigold/theme-rui';
 import './../styles.css';
 
 // Helpers
 // ---------------
 const THEME = {
-  core,
-  b2b,
   rui,
 };
 
@@ -40,12 +35,10 @@ export const parameters: Preview['parameters'] = {
 export const decorators: any = [
   withThemeByDataAttribute({
     themes: {
-      core: core.name,
-      b2b: b2b.name,
       rui: rui.name,
       stacked: 'stacked',
     },
-    defaultTheme: core.name,
+    defaultTheme: rui.name,
     attributeName: 'data-theme',
   }),
 
@@ -67,11 +60,7 @@ export const decorators: any = [
                     className="bg-bg-surface"
                   >
                     <div className="h-screen p-4" data-theme={key}>
-                      {!parameters.disableLabelWidth ? (
-                        <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
-                      ) : (
-                        Story()
-                      )}
+                      {Story()}
                     </div>
                   </MarigoldProvider>
                 </Frame>
@@ -86,13 +75,7 @@ export const decorators: any = [
             theme={THEME[theme as ThemeNames]}
             className="bg-bg-surface"
           >
-            <div className="h-screen p-6">
-              {!parameters.disableLabelWidth ? (
-                <FieldGroup labelWidth="200px">{Story()}</FieldGroup>
-              ) : (
-                Story()
-              )}
-            </div>
+            <div className="h-screen p-6">{Story()}</div>
           </MarigoldProvider>
         );
       }

@@ -1,4 +1,4 @@
-import { FieldGroup, Inline, Select } from '@/ui';
+import { Inline, Select } from '@/ui';
 
 const Indicator = ({ color }: { color: string }) => (
   <span
@@ -30,16 +30,14 @@ const options = [
 ];
 
 export const StatusSelect = () => (
-  <FieldGroup labelWidth="40px">
-    <Select label="Status" defaultSelectedKey="on-sale" width={44}>
-      {options.map(o => (
-        <Select.Option key={o.id} id={o.id}>
-          <Inline space={2} alignY="center">
-            <Indicator color={o.color} />
-            <span>{o.label}</span>
-          </Inline>
-        </Select.Option>
-      ))}
-    </Select>
-  </FieldGroup>
+  <Select label="Status" defaultSelectedKey="on-sale" width={44}>
+    {options.map(o => (
+      <Select.Option key={o.id} id={o.id}>
+        <Inline space={2} alignY="center">
+          <Indicator color={o.color} />
+          <span>{o.label}</span>
+        </Inline>
+      </Select.Option>
+    ))}
+  </Select>
 );

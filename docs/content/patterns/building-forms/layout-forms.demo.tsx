@@ -2,7 +2,6 @@ import {
   Button,
   Checkbox,
   Columns,
-  FieldGroup,
   Headline,
   Select,
   Stack,
@@ -10,7 +9,7 @@ import {
 } from '@marigold/components';
 
 export default () => (
-  <FieldGroup labelWidth="100px">
+  <>
     <Headline level={2}>Account Registration</Headline>
     <Stack space={4}>
       <Columns columns={[2, 2]} space={4}>
@@ -54,5 +53,5 @@ export default () => (
         Submit
       </Button>
     </Stack>
-  </FieldGroup>
+  </>
 );
