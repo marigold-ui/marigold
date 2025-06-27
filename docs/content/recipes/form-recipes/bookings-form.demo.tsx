@@ -11,10 +11,10 @@ import {
   TextField,
   ThemeProvider,
 } from '@marigold/components';
-import coreTheme from '@marigold/theme-core';
+import ruiTheme from '@marigold/theme-rui';
 
 export default () => (
-  <ThemeProvider theme={coreTheme}>
+  <ThemeProvider theme={ruiTheme}>
     <Form>
       <Stack space={5}>
         <FieldGroup labelWidth="250px">
