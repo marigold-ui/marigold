@@ -1,14 +1,8 @@
 import { getAppearance } from '@/lib/utils';
 import { registry } from '@/registry/demos';
 import type { Theme } from '@/ui';
-import {
-  Card,
-  FieldGroup,
-  MarigoldProvider,
-  OverlayContainerProvider,
-  Select,
-} from '@/ui';
-import type { ComponentType, ReactNode } from 'react';
+import { Card, MarigoldProvider, OverlayContainerProvider, Select } from '@/ui';
+import type { ComponentType } from 'react';
 import { useState } from 'react';
 import { Info } from '@marigold/icons';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
@@ -45,10 +39,7 @@ export interface AppearanceDemoProps {
 
 // Component
 // ---------------
-export const AppearanceDemo = ({
-  component,
-  disableLabelWidth,
-}: AppearanceDemoProps) => {
+export const AppearanceDemo = ({ component }: AppearanceDemoProps) => {
   const name = `${component.toLowerCase()}-appearance` as keyof typeof registry;
 
   if (!registry[name]) {
@@ -73,13 +64,6 @@ export const AppearanceDemo = ({
       : 'none',
   });
 
-  const Wrapper = ({ children }: { children: ReactNode }) =>
-    current === 'core' && !disableLabelWidth ? (
-      <FieldGroup labelWidth="100px">{children}</FieldGroup>
-    ) : (
-      children
-    );
-
   let disabledAppearance = '';
   if (appearance.variant.length === 0 && appearance.size.length === 0) {
     disabledAppearance = '"variant" and "size"';
@@ -102,7 +86,7 @@ export const AppearanceDemo = ({
       </p>
 
       <Card variant="content" p={0}>
-        <div className="absolute left-4 top-3 flex flex-wrap gap-2">
+        <div className="absolute top-3 left-4 flex flex-wrap gap-2">
           <Select
             label="Variant"
             variant="floating"
@@ -154,10 +138,8 @@ export const AppearanceDemo = ({
         <div data-theme={current}>
           <OverlayContainerProvider value="portalContainer">
             <MarigoldProvider theme={theme}>
-              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-10 pt-24">
-                <Wrapper>
-                  <Demo {...selected} />
-                </Wrapper>
+              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pt-24 pb-10">
+                <Demo {...selected} />
               </div>
             </MarigoldProvider>
           </OverlayContainerProvider>

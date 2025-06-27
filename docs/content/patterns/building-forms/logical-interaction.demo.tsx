@@ -3,7 +3,6 @@ import {
   Button,
   Checkbox,
   Columns,
-  FieldGroup,
   Headline,
   Select,
   Stack,
@@ -14,7 +13,7 @@ export default () => {
   const [value] = useState('');
   const [selected, setSelected] = useState<string | number>('');
   return (
-    <FieldGroup labelWidth="100px">
+    <>
       <Headline level={2}>Account Registration</Headline>
       <Stack space={4}>
         <Columns columns={[2, 2]} space={4}>
@@ -73,6 +72,6 @@ export default () => {
           Submit
         </Button>
       </Stack>
-    </FieldGroup>
+    </>
   );
 };

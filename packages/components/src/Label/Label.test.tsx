@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { FieldGroup } from '../FieldBase';
 import { Label } from './Label';
 
 const theme: Theme = {
@@ -54,18 +53,4 @@ test('renders <label> element by default', () => {
   );
   const label = screen.getByText(/label/);
   expect(label instanceof HTMLLabelElement).toBeTruthy();
-});
-
-test('accepts labelwidth as css variable and set the style', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <FieldGroup labelWidth="100px">
-        <Label>label</Label>
-      </FieldGroup>
-    </ThemeProvider>
-  );
-  const label = screen.getByText(/label/);
-  expect(label.className).toMatchInlineSnapshot(
-    `"inline-flex w-[var(--labelWidth)]"`
-  );
 });
