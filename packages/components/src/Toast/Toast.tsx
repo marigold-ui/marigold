@@ -1,11 +1,8 @@
 import {
-  UNSTABLE_Toast as Toast,
   UNSTABLE_ToastQueue as ToastQueue,
   UNSTABLE_ToastRegion as ToastRegion,
 } from 'react-aria-components';
-import { Button } from 'react-aria-components';
-import { Close } from '@marigold/icons';
-import { useClassNames } from '@marigold/system';
+import { flushSync } from 'react-dom';
 import { ToastContent } from './ToastContent';
 
 interface MyToastContent {
@@ -13,25 +10,40 @@ interface MyToastContent {
   description?: string;
   variant?: 'info' | 'success' | 'error' | 'warning';
 }
-export const queue = new ToastQueue<MyToastContent>();
+export const queue = new ToastQueue<MyToastContent>({
+  // Wrap state updates in a CSS view transition.
+  wrapUpdate(fn) {
+    if ('startViewTransition' in document) {
+      document.startViewTransition(() => {
+        flushSync(fn);
+      });
+    } else {
+      fn();
+    }
+  },
+});
+type ToastPosition = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
 
-const _Toast = () => {
-  const classNames = useClassNames({ component: 'Toast' });
+const positionMap: Record<ToastPosition, string> = {
+  'bottom-left': 'fixed bottom-4 left-4 flex flex-col-reverse',
+  'bottom-right': 'fixed bottom-4 right-4 flex flex-col-reverse',
+  'top-left': 'fixed top-4 left-4 flex flex-col',
+  'top-right': 'fixed top-4 right-4 flex flex-col',
+};
+
+interface ToastProps {
+  position?: ToastPosition;
+}
+const _Toast = ({ position = 'bottom-right' }: ToastProps) => {
   console.log(queue);
 
   return (
-    <ToastRegion queue={queue}>
+    <ToastRegion
+      queue={queue}
+      className={`${positionMap[position]} z-50 gap-2`}
+    >
       {({ toast }) => (
-        <Toast toast={toast} className={classNames.toast}>
-          <ToastContent
-            title={toast.content.title}
-            description={toast.content.description}
-            variant={toast.content.variant}
-          />
-          <Button slot="close" className={classNames.closeButton}>
-            <Close size={16} />
-          </Button>
-        </Toast>
+        <ToastContent toast={toast} variant={toast.content.variant} />
       )}
     </ToastRegion>
   );

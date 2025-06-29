@@ -1,6 +1,7 @@
 import React from 'react';
 import { UNSTABLE_ToastContent as ToastContents } from 'react-aria-components';
-import { Text } from 'react-aria-components';
+import { Button, Text, UNSTABLE_Toast as Toast } from 'react-aria-components';
+import { Close } from '@marigold/icons';
 import { useClassNames } from '@marigold/system';
 import { Stack } from '../Stack';
 
@@ -60,32 +61,39 @@ const icons = {
 };
 
 interface ToastContentProps {
-  title: string;
-  description?: string;
+  toast: any;
   variant?: keyof typeof icons;
 }
-export const ToastContent = ({
-  title,
-  description,
-  variant,
-}: ToastContentProps) => {
-  const classNames = useClassNames({ component: 'Toast', variant });
+export const ToastContent = ({ toast, variant }: ToastContentProps) => {
+  const classNames = useClassNames({
+    component: 'Toast',
+    variant: toast.content.variant,
+  });
   const Icon = variant ? icons[variant] : null;
   return (
-    <ToastContents className={classNames.content}>
-      {Icon && (
-        <div className={classNames.icon} slot="icon">
-          <Icon />
-        </div>
-      )}
+    <Toast
+      toast={toast}
+      className={classNames.toast}
+      style={{ viewTransitionName: toast.key }}
+    >
+      <ToastContents className={classNames.content}>
+        {Icon && (
+          <div className={classNames.icon} slot="icon">
+            <Icon />
+          </div>
+        )}
 
-      <Text slot="title" className={classNames.title}>
-        {title}
-      </Text>
-      <Stack space={2} />
-      <Text slot="description" className={classNames.description}>
-        {description}
-      </Text>
-    </ToastContents>
+        <Text slot="title" className={classNames.title}>
+          {toast.content.title}
+        </Text>
+        <Stack space={2} />
+        <Text slot="description" className={classNames.description}>
+          {toast.content.description}
+        </Text>
+      </ToastContents>
+      <Button slot="close" className={classNames.closeButton}>
+        <Close size={16} />
+      </Button>
+    </Toast>
   );
 };
