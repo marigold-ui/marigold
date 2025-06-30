@@ -7,6 +7,7 @@ export { Checkbox } from './Checkbox.styles';
 export { Calendar } from './Calendar.styles';
 export { CloseButton } from './CloseButton.styles';
 export { ComboBox } from './ComboBox.styles';
+export { ContextualHelp } from './ContextualHelp.styles';
 export { DateField } from './DateField.styles';
 export { DatePicker } from './DatePicker.styles';
 export { Dialog } from './Dialog.styles';

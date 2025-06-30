@@ -6,6 +6,7 @@ export const Badge: ThemeComponent<'Badge'> = cva(
     variants: {
       variant: {
         dark: 'bg-bg-inverted text-white',
+        warning: 'bg-bg-warning',
       },
       size: {
         default: 'text-xs',

@@ -40,10 +40,12 @@ const theme: Theme = {
     Underlay: cva(''),
     Calendar: {
       calendar: cva(''),
+      calendarListboxButton: cva(''),
       calendarCell: cva(''),
       calendarControllers: cva(''),
       calendarHeader: cva(''),
       calendarGrid: cva(''),
+      select: cva(''),
     },
     Select: {
       icon: cva(''),

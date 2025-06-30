@@ -20,7 +20,7 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@babel/core": "7.27.1",
+    "@babel/core": "7.27.7",
     "@babel/eslint-parser": "^7.27.0",
     "@babel/plugin-syntax-flow": "^7.24.7",
     "@babel/plugin-transform-react-jsx": "^7.24.7",
@@ -36,13 +36,13 @@
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-testing-library": "7.1.1",
-    "eslint-plugin-vitest": "0.5.4",
-    "globals": "16.0.0",
+    "@vitest/eslint-plugin": "1.2.7",
+    "globals": "16.2.0",
     "prettier": "3.5.3"
   },
   "peerDependencies": {
     "eslint": "9.x.x",
-    "typescript": "5.3.x || 5.5.x || 5.6.x || 5.7.x"
+    "typescript": "5.3.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x"
   },
   "devDependencies": {
     "eslint": "9.26.0",

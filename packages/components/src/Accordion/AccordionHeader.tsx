@@ -17,7 +17,7 @@ export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
   const { isExpanded } = useContext(DisclosureStateContext)!;
 
   return (
-    <Heading>
+    <Heading className="flex-1">
       <Button slot="trigger" className={classNames.header}>
         {children}
         <ChevronDown

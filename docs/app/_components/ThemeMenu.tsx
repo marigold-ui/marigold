@@ -1,5 +1,6 @@
 'use client';
 
+import { Badge } from '@/ui';
 import { track } from '@vercel/analytics/react';
 import { Menu } from '@marigold/components';
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
@@ -21,7 +22,12 @@ export const ThemeMenu = () => {
     >
       {Object.keys(themes).map(name => (
         <Menu.Item key={name} id={name}>
-          {name.toUpperCase()}
+          <div className="flex items-center justify-between gap-2">
+            {name.toUpperCase()}
+            {['b2b', 'core'].includes(name) && (
+              <Badge variant="warning">Legacy</Badge>
+            )}
+          </div>
         </Menu.Item>
       ))}
     </Menu>

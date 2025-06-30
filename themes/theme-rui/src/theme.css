@@ -20,7 +20,7 @@
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
 
-@theme {
+@theme static {
   --font-sans: Inter, system-ui, sans-serif;
   --font-sans-variable: InterVariable, Inter, system-ui, sans-serif;
 
@@ -105,6 +105,9 @@
   --color-placeholder: var(--color-stone-500);
   /* used for outline/border as ring*/
   --color-ring: var(--color-stone-400);
+
+  /* used for link */
+  --color-link: var(--color-blue-600);
 
   /* Input tokens */
   /* color input used for inputs as border or e.g. in switch as bg track color */

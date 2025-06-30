@@ -3,15 +3,23 @@ import { useFocusRing } from '@react-aria/focus';
 import { useTableCell } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
-import { cn, useStateProps } from '@marigold/system';
+import { useStateProps } from '@marigold/system';
 import { useTableContext } from './Context';
 
 export interface TableCellProps {
   align?: Exclude<JSX.IntrinsicElements['td']['align'], 'char'>;
+  alignY?: Exclude<
+    JSX.IntrinsicElements['td']['valign'],
+    'baseline' | 'sub' | 'super' | 'bottom'
+  >;
   cell: GridNode<object>;
 }
 
-export const TableCell = ({ cell, align = 'left' }: TableCellProps) => {
+export const TableCell = ({
+  cell,
+  align = 'left',
+  alignY = 'middle',
+}: TableCellProps) => {
   const ref = useRef(null);
   const { interactive, state, classNames } = useTableContext();
   const disabled = state.disabledKeys.has(cell.parentKey!);
@@ -40,10 +48,11 @@ export const TableCell = ({ cell, align = 'left' }: TableCellProps) => {
   return (
     <td
       ref={ref}
-      className={cn(classNames?.cell)}
+      className={classNames?.cell}
       {...mergeProps(cellProps, focusProps)}
       {...stateProps}
       align={align}
+      valign={alignY}
     >
       {cell.rendered}
     </td>

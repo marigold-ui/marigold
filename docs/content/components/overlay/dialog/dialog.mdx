@@ -49,7 +49,17 @@ To correctly label a dialog, always include a title (`<Dialog.Title>`) or an `ar
 
 For short, straightforward messages, you can combine the title and the message to make things clearer and avoid repeating information in both the title and content. If you do this, there should be no additional text in the content of the dialog.
 
-<ComponentDemo file="./dialog-title-only.demo.tsx" />
+```tsx
+<Dialog aria-label="delete event">
+  <Dialog.Title>Are you sure you want to delete this event?</Dialog.Title>
+  <Dialog.Actions>
+    <Button variant="secondary" slot="close">
+      Cancel
+    </Button>
+    <Button variant="destructive">Delete</Button>
+  </Dialog.Actions>
+</Dialog>
+```
 
 ### Content
 

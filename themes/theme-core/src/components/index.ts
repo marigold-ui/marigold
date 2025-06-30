@@ -7,6 +7,7 @@ export * from './Card.styles';
 export * from './Checkbox.styles';
 export * from './CloseButton.styles';
 export * from './ComboBox.styles';
+export * from './ContextualHelp.styles';
 export * from './DateField.styles';
 export * from './DatePicker.styles';
 export * from './Dialog.styles';

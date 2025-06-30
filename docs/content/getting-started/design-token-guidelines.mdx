@@ -1,42 +1,44 @@
 ---
 title: Tokens Guidelines
 caption: Learn about the structure and application of our design tokens
+badge: updated
 order: 4
 ---
 
 On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
 
-<SectionMessage variant="info">
-  <SectionMessage.Title>View the tokens</SectionMessage.Title>
-  <SectionMessage.Content>
-  For those interested in understanding our token structure, the most effective way is to explore the JSON structure directly. Note that tokens directly derived from Tailwind CSS are omitted for brevity.
+## Benefits of Design Tokens
 
-[View tokens as JSON](https://jsonhero.io/j/1IFlkqLbLbSM)
+- **Consistency:** Ensure uniform styling across all components and applications
+- **Maintainability:** Centralized values make updates and changes easier to manage
+- **Scalability:** Support multiple themes and design variations
+- **Developer Experience:** Clear naming conventions make tokens intuitive to use
 
-  </SectionMessage.Content>
-</SectionMessage>
+## Token Structure
 
-## Naming Convention
+Our RUI theme uses a semantic naming convention that directly reflects the purpose and context of each token. Instead of descriptive names, we use functional names that describe what the token does, not what it looks like.
 
-Knowing how to read token names helps you find the right token quickly in both designs and code.
+### Naming Convention
 
-<Image
-  src="/token-naming.png"
-  alt="Example of token naming, annotated with the parts"
-  width={300}
-  height={150}
-  className="mx-auto block"
-/>
+Tokens use semantic names that describe their purpose:
 
-The name of a design token describes how it should be used, with each part indicating a specific aspect of its usage. Our tokens consist of the following parts:
+- **brand** - Primary brand color
+- **destructive** - Error and destructive action colors
+- **success** - Success state colors
+- **warning** - Warning state colors
+- **info** - Informational colors
+- **muted** - Subdued colors for secondary content
+- **disabled** - Disabled state colors
 
-1. **Property:** The property of an UI element the token should be applied to, like a background, text or border.
-2. **Intent:** Identifies different use cases for a token. For example, to indicate user feedback or visual hierachy.
-3. **Modifier:** Additional details about the token's purpose. In most cases, this is an interaction state, but it can also indicate where, contextually, the token should be applied (e.g. "raised" in the surface tokens). The `DEFAULT` modifier can be omitted.
+The property prefix (bg-, text-, border-) is added when using tokens in Tailwind classes:
+
+- `bg-brand` uses the brand token as background
+- `text-destructive` uses the destructive color for text
+- `border-input` uses the input color for borders
 
 ## Color Tokens
 
-Color tokens leverage the primitive tokens that form the color palettes of our design system. They provide a systematic approach to managing and applying colors consistently across various elements, while ensuring a cohesive and harmonious visual identity.
+A carefully curated set of semantic colors ensures our product maintains a consistent and recognizable palette. Our color tokens are organized by their semantic meaning and intended use case.
 
 <SectionMessage variant="info">
   <SectionMessage.Title>Icon Color</SectionMessage.Title>
@@ -46,86 +48,62 @@ Color tokens leverage the primitive tokens that form the color palettes of our d
   </SectionMessage.Content>
 </SectionMessage>
 
-### Text
+### Background and Foreground System
 
-**Property Name:** `text`
+Our color system follows a semantic approach where colors are defined by their purpose rather than their appearance.
 
-Text tokens are used to apply specific colors to text, equivalent to the `color` CSS rule or the [text utilities](https://tailwindcss.com/docs/text-color) in TailwindCSS.
+#### Background and Foreground Pairing
 
-#### Intents
+Every background color token has a corresponding foreground token to ensure proper contrast ratios and accessibility. This pairing system guarantees that text remains readable when placed on colored backgrounds.
 
-Below, you'll find all the available intents for the text tokens:
+**How it works:**
 
-- **base:** Default values for a specific category of tokens, serving as the foundational colors
-- **inverted:** Alternative default values used when the base color lacks sufficient contrast ratio, ensuring accessibility
-- **brand:** Represents the primary brand color of the company, establishing a consistent visual identity
-- **accent:** Signifies the accent brand color, adding emphasis and vibrancy to the overall design
-- **info:** Represents a feedback color conveying auxiliary information, providing additional context
-- **success:** Serves as a feedback color to indicate successful actions or positive outcomes
-- **warning:** Functions as a feedback color, drawing attention to situations where user intervention is required
-- **error:** Functions as a feedback color in situations of errors or destructive actions, signaling potential issues
+- `bg-brand` pairs with `text-brand-foreground`
+- `bg-destructive` pairs with `text-destructive-foreground`
+- `bg-success-muted` pairs with `text-success-muted-foreground`
 
-#### Modifiers
+This approach eliminates guesswork and ensures consistent, accessible color combinations across your entire application.
 
-The following modifier can be applied to all the aforementioned intents:
+### Base Colors
 
-- **DEFAULT:** Default color for text
-- **hover:** Color when text is hovered with a mouse
-- **disabled:** Color when text is used in a disabled control or field (only available when using the "base" or "inverted" intent)
+Base colors form the foundation of our design system and are used for primary interface elements.
 
-### Background
+**Available tokens:**
 
-**Property Name:** `bg`
+- `background` / `foreground` - Primary background and text colors
+- `brand` / `brand-foreground` - Primary brand colors and their contrasting text
+- `secondary` / `secondary-foreground` - Secondary colors for less prominent elements
+- `hover` / `hover-foreground` - Colors for interactive hover states
+- `muted` / `muted-foreground` - Subdued colors for secondary information
+- `disabled` / `disabled-foreground` - Colors for disabled states
 
-Background tokens are used to apply specific colors to the background of an element. They are equivalent to the `background-color` CSS rule or the [bg utilities](https://tailwindcss.com/docs/background-color) in TailwindCSS.
+### Feedback Colors
 
-#### Intents
+Feedback colors communicate different states and provide user feedback through color semantics.
 
-Background tokens incorporate the same intents as text tokens (base, inverted, brand, accent, info, success, warning, error) and have the following additional intents:
+**Available tokens:**
 
-- **selected:** Indicates that a specific item from a list or option is chosen
-- **surface:** Functions as the background for a particular surface level
-- **masterMark:** Used in our Core System to show specific permissions only RX employees can use.
-- **adminMark:** Used in our Core System for permissons only developer can see.
+- `destructive` / `destructive-foreground` - For errors, warnings, and destructive actions
+- `success` / `success-foreground` - For successful actions and positive feedback
+- `warning` / `warning-foreground` - For warnings and caution states
+- `info` / `info-foreground` - For informational content and neutral feedback
 
-#### Modifiers
+Each feedback color also includes muted variants for subtle backgrounds:
 
-The following modifier can be applied to all a background token:
+- `destructive-muted` / `destructive-muted-foreground` / `destructive-muted-accent`
+- `success-muted` / `success-muted-foreground` / `success-muted-accent`
+- `warning-muted` / `warning-muted-foreground` / `warning-muted-accent`
+- `info-muted` / `info-muted-foreground` / `info-muted-accent`
 
-- **DEFAULT:** Default background color
-- **hover:** Applied when an element is hovered with a mouse (not available when using the "selected" intent)
-- **active:** Applied when an element is active, such as when a button is pressed (not available when using the "selected" intent)
-- **disabled:** Utilized for indicating that an element is disabled (only available when using the "base" or "inverted" intent)
-- **input:** Used for inputs that require a more prominent visual appearance, such as radio buttons, checkboxes, and switches (only available when using the "selected" intent)
+### Component-Specific Colors
 
-The "surface" intent is used to create visual hierachy. Because of this it has distinct modifiers compared to the other background intents. Only the following modifiers can be used with it:
+These tokens are designed for specific component needs and interface elements.
 
-- **DEFAULT:** Applied to elements that represent the basline for all other surface layers, like the `<body>` element
-- **raised:** Used for elevated surfaces, such as cards
-- **overlay:** Applied to surfaces with significant height, like popovers
-- **sunken:** Applied to surface that creates a backdrop
+**Available tokens:**
 
-### Border
-
-**Property Name:** `border`
-
-Border tokens are used to apply specific colors to the border of an element. They are equivalent to the `border-color` CSS rule or the [border utilities](https://tailwindcss.com/docs/border-color) in TailwindCSS.
-
-#### Intents
-
-Border tokens incorporate the same intents as text tokens (base, inverted, brand, accent, info, success, warning, error) and have the following additional intents:
-
-- **selected:** Indicates that a specific item from a list or option is chosen
-
-#### Modifiers
-
-The following modifier can be applied to all a border token:
-
-- **DEFAULT:** Default border color
-- **hover:** Applied when an element is hovered with a mouse
-- **active:** Applied when an element is active, such as when a button is pressed
-- **disabled:** Utilized for indicating that an element is disabled (only available when using the "base" or "inverted" intent)
-- **input:** Used for inputs that require a more prominent visual appearance, such as radio buttons, checkboxes, and switches (only available when using the "selected" intent)
+- `input` - Border color for form inputs
+- `ring` - Focus ring color for accessibility
+- `placeholder` - Placeholder text color in form fields
 
 ### Outline
 
@@ -161,7 +139,7 @@ Shadow tokens have the following intents:
 
 The "surface" intent is used to create visual hierachy. The following modifiers can be used with it:
 
-- **DEFAULT:** Applied to elements that represent the basline for all other surface layers, like the `<body>` element
+- **body:** Used for the main content area
 - **raised:** Used for elevated surfaces, such as cards
 - **overlay:** Applied to surfaces with significant height, like popovers
 - **sunken:** Applied to surface that creates a backdrop
@@ -193,13 +171,13 @@ Height tokens follow a 4-pixel grid convention, implying that their values are a
 
 Intents for height tokens encompass attributes that foster consistency across various elements. There are the following intents:
 
-- **component**: Assists in sizing elements and ensuring consistency across the design system, promoting a unified and harmonious visual presentation. This is particularly relevant for creating effective and aesthetically pleasing forms.
+- **button**: Used for button components with `h-button`
+- **input**: Used for input components with `h-input`
 
 #### Modifiers
 
 The following modifiers can be used:
 
-- **DEFAULT:** Serves as the base height for form components.
 - **sm:** Applied to display a small components.
 - **lg:** Applied to display a large components.
 

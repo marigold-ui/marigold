@@ -1,6 +1,7 @@
 ---
 title: MarigoldProvider
 caption: Container for apps using Marigold.
+badge: updated
 ---
 
 The `<MarigoldProvider>` component serves as the wrapper for any application that integrates with Marigold. It is responsible for managing and distributing critical application-level settings, including providing theming to all child components.
@@ -20,7 +21,7 @@ It is recommended to place `<MarigoldProvider>` in its own file, alongside other
 ```tsx
 import { PropsWithChildren } from 'react';
 import { MarigoldProvider } from '@marigold/components';
-import theme from '@marigold/theme-core';
+import theme from '@marigold/theme-rui';
 
 export const App = ({ children }: PropsWithChildren) => (
   <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
@@ -41,14 +42,14 @@ Note that in these scenarios, it often makes sense to adjust the root styles usi
 
 ```tsx
 import { Card, MarigoldProvider, Stack } from '@marigold/components';
-import core from '@marigold/theme-core';
-import b2b from '@marigold/theme-core';
+import b2b from '@marigold/theme-b2b';
+import rui from '@marigold/theme-rui';
 
 export default () => (
-  <MarigoldProvider theme={core}>
+  <MarigoldProvider theme={rui}>
     <Card p={4}>
       <Stack space={4}>
-        This area is still using the <strong>core theme</strong>.
+        This area is still using the <strong>rui theme</strong>.
         <MarigoldProvider theme={b2b} className="bg-transparent">
           This area is still using the <strong>b2b theme</strong>.
         </MarigoldProvider>
