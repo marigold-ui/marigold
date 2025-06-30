@@ -1,24 +1,17 @@
+import { ruiTheme } from '@/theme';
 import {
   Headline,
   MarigoldProvider,
   Table,
   Text,
-  Theme,
   fontWeight,
   textAlign,
   textSize,
   textStyle,
 } from '@/ui';
-import { useThemeSwitch } from './ThemeSwitch';
 
 export const Headlines = () => {
-  const { current, themes } = useThemeSwitch();
-
-  if (!current) {
-    return null;
-  }
-
-  const headline = themes[current].components.Headline?.variants || undefined;
+  const headline = ruiTheme.components.Headline?.variants;
 
   if (!headline) {
     return null;
@@ -37,7 +30,7 @@ export const Headlines = () => {
             <Table.Cell>{level}</Table.Cell>
             <Table.Cell>
               <div>
-                <MarigoldProvider theme={(current && themes[current]) as Theme}>
+                <MarigoldProvider theme={ruiTheme}>
                   <div className="align-center flex bg-white">
                     <Headline size={level}>
                       Discover the Beauty of Marigold

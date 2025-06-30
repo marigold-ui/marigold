@@ -1,8 +1,8 @@
 import { registry } from '@/registry/demos';
+import { ruiTheme } from '@/theme';
 import { Card, MarigoldProvider, OverlayContainerProvider, Tabs } from '@/ui';
 import { track } from '@vercel/analytics/react';
 import type { ComponentType, ReactNode } from 'react';
-import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props
 // ---------------
@@ -32,8 +32,6 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
 
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   const Demo: ComponentType<{}> = registry[name].demo;
-  const { current, themes } = useThemeSwitch();
-
   const onSelectionChange = (key: string) => {
     track('Demo Tab', { tab: key });
   };
@@ -52,11 +50,11 @@ export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
         <Tabs.TabPanel id="preview">
           <Card variant="content" p={0}>
             <div
-              data-theme={current}
+              data-theme="rui"
               className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
             >
               <OverlayContainerProvider value="portalContainer">
-                <MarigoldProvider theme={themes[current]}>
+                <MarigoldProvider theme={ruiTheme}>
                   <div className="not-prose size-full overflow-x-auto p-4">
                     <Demo />
                   </div>
