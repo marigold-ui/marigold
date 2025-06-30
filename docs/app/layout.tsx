@@ -28,9 +28,9 @@ export const metadata = {
 // Themes
 // ---------------
 const themes = {
+  rui: ruiTheme,
   b2b: b2bTheme,
   core: coreTheme,
-  rui: ruiTheme,
 };
 
 // Layout

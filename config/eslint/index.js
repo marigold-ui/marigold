@@ -1,11 +1,11 @@
 import js from '@eslint/js';
 import typescript from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import vitestPlugin from '@vitest/eslint-plugin';
 import prettier from 'eslint-config-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import testingLibraryPlugin from 'eslint-plugin-testing-library';
-import vitestPlugin from 'eslint-plugin-vitest';
 import globals from 'globals';
 import path from 'path';
 import { fileURLToPath } from 'node:url';

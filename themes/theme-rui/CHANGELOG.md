@@ -1,5 +1,76 @@
 # @marigold/theme-rui
 
+## 1.1.5
+
+### Patch Changes
+
+- Updated dependencies [a6bcd89]
+  - @marigold/components@12.0.5
+  - @marigold/system@12.0.5
+
+## 1.1.4
+
+### Patch Changes
+
+- 3e19b71: feat([DST-883]): New variant for RUI table. You can now use a new variant for RUI theme.
+- ed72011: feat(DSTSUP-150): add `ghost` version to `<Menu>` + normalize svg sizes in buttons and menus
+- 6c230c7: feat[DST-731]: Add ContextualHelp Component with Docs
+  We added a new ContextualHelp component to provide inline help and guidance within the UI.
+  It displays contextual information in a popover triggered by an icon button, with configurable placement, size, and icon variant (help or info).
+  The component is accessible, supports both controlled and uncontrolled open states, and is designed for flexible content layout.
+- befd17d: chore([DST-882]): Remove default right alignment in RUI table
+- 17d28b5: feat([DST-885]): update default `<Link>` styles and add link variant
+- 5127d58: feat([DST-884]): add vertical alignment property (alignY) to table
+- Updated dependencies [3e19b71]
+- Updated dependencies [ed72011]
+- Updated dependencies [6c230c7]
+- Updated dependencies [17d28b5]
+- Updated dependencies [5127d58]
+  - @marigold/components@12.0.4
+  - @marigold/system@12.0.4
+
+## 1.1.3
+
+### Patch Changes
+
+- 12b00ed: feat[DST-856]: Add TimeField Component
+
+  We added a new TimeField component to support time-based user input.
+  It allows users to select and edit time values, with configurable granularity (hours, minutes, seconds) and optional 12/24-hour format.
+  The component supports accessibility features like keyboard navigation.
+
+- be782c3: feat([DST-864]): Add `full` to `size` options to `Card` so that it spans the availble width
+- Updated dependencies [7451134]
+- Updated dependencies [12b00ed]
+- Updated dependencies [73edbb0]
+  - @marigold/components@12.0.3
+  - @marigold/system@12.0.3
+
+## 1.1.2
+
+### Patch Changes
+
+- ca26659: refa([DST-715]): Refactor `<Calendar>` component, Fix resizing when open calendar listboxes
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/system@12.0.2
+
+## 1.1.1
+
+### Patch Changes
+
+- 0e8211b: chore([DST-853]): Refa styles for `<Menu>` button
+- af401e5: fix([DSTSUP-135]): Use correct padding on `<MultiSelect>` component
+- 2a96627: ([DST-862]): Update RUI link styles and remove empty variants
+- f2cbc72: refa([DST-858]): remove border and circle from badges
+- 534ad77: refa([DST-738]): Adding checkmark icon as selection indicator in RUI theme for SelectList and Listbox components.
+- Updated dependencies [0e8211b]
+- Updated dependencies [af401e5]
+- Updated dependencies [534ad77]
+  - @marigold/components@12.0.1
+  - @marigold/system@12.0.1
+
 ## 1.1.0
 
 ### Minor Changes

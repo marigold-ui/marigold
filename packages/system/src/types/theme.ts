@@ -37,6 +37,10 @@ export type Theme = {
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
+    ContextualHelp?: Record<
+      'trigger' | 'popover' | 'dialog' | 'title' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     DateField?: Record<
       'segment' | 'field' | 'action',
       ComponentStyleFunction<string, string>
@@ -150,10 +154,12 @@ export type Theme = {
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
       | 'calendar'
+      | 'calendarListboxButton'
       | 'calendarCell'
       | 'calendarControllers'
       | 'calendarHeader'
-      | 'calendarGrid',
+      | 'calendarGrid'
+      | 'select',
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;

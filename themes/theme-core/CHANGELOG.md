@@ -1,5 +1,66 @@
 # @marigold/theme-core
 
+## 29.0.7
+
+### Patch Changes
+
+- Updated dependencies [a6bcd89]
+  - @marigold/components@12.0.5
+  - @marigold/system@12.0.5
+
+## 29.0.6
+
+### Patch Changes
+
+- 6c230c7: feat[DST-731]: Add ContextualHelp Component with Docs
+  We added a new ContextualHelp component to provide inline help and guidance within the UI.
+  It displays contextual information in a popover triggered by an icon button, with configurable placement, size, and icon variant (help or info).
+  The component is accessible, supports both controlled and uncontrolled open states, and is designed for flexible content layout.
+- Updated dependencies [3e19b71]
+- Updated dependencies [ed72011]
+- Updated dependencies [6c230c7]
+- Updated dependencies [17d28b5]
+- Updated dependencies [5127d58]
+  - @marigold/components@12.0.4
+  - @marigold/system@12.0.4
+
+## 29.0.5
+
+### Patch Changes
+
+- 12b00ed: feat[DST-856]: Add TimeField Component
+
+  We added a new TimeField component to support time-based user input.
+  It allows users to select and edit time values, with configurable granularity (hours, minutes, seconds) and optional 12/24-hour format.
+  The component supports accessibility features like keyboard navigation.
+
+- Updated dependencies [7451134]
+- Updated dependencies [12b00ed]
+- Updated dependencies [73edbb0]
+  - @marigold/components@12.0.3
+  - @marigold/system@12.0.3
+
+## 29.0.4
+
+### Patch Changes
+
+- ca26659: refa([DST-715]): Refactor `<Calendar>` component, Fix resizing when open calendar listboxes
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/system@12.0.2
+
+## 29.0.3
+
+### Patch Changes
+
+- 0e8211b: chore([DST-853]): Refa styles for `<Menu>` button
+- Updated dependencies [0e8211b]
+- Updated dependencies [af401e5]
+- Updated dependencies [534ad77]
+  - @marigold/components@12.0.1
+  - @marigold/system@12.0.1
+
 ## 29.0.2
 
 ### Patch Changes

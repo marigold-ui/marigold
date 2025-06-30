@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { OverlayArrow, Tooltip } from 'react-aria-components';
+import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { cn, useClassNames } from '@marigold/system';
 import { usePortalContainer } from '../Provider';
 import { TooltipTrigger } from './TooltipTrigger';
@@ -29,18 +30,18 @@ const _Tooltip = ({ children, variant, size, open, ...rest }: TooltipProps) => {
   const portal = usePortalContainer();
 
   return (
-    <Tooltip
-      {...props}
-      className={cn('group/tooltip', classNames.container)}
-      UNSTABLE_portalContainer={portal as Element}
+    <UNSAFE_PortalProvider
+      getContainer={() => (portal instanceof HTMLElement ? portal : null)}
     >
-      <OverlayArrow className={classNames.arrow}>
-        <svg width={8} height={8} viewBox="0 0 8 8">
-          <path d="M0 0 L4 4 L8 0" />
-        </svg>
-      </OverlayArrow>
-      {children}
-    </Tooltip>
+      <Tooltip {...props} className={cn('group/tooltip', classNames.container)}>
+        <OverlayArrow className={classNames.arrow}>
+          <svg width={8} height={8} viewBox="0 0 8 8">
+            <path d="M0 0 L4 4 L8 0" />
+          </svg>
+        </OverlayArrow>
+        {children}
+      </Tooltip>
+    </UNSAFE_PortalProvider>
   );
 };
 

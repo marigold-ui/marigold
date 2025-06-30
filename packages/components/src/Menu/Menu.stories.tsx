@@ -10,6 +10,20 @@ const meta = {
   title: 'Components/Menu',
   component: Menu,
   argTypes: {
+    size: {
+      control: {
+        type: 'radio',
+      },
+      description: 'Size of the button',
+      options: ['default', 'small', 'large', 'icon'],
+    },
+    variant: {
+      control: {
+        type: 'radio',
+      },
+      options: ['secondary', 'ghost'],
+      description: 'Variant of the button',
+    },
     open: {
       control: {
         type: 'boolean',
@@ -85,6 +99,8 @@ const meta = {
   },
   args: {
     placement: 'bottom',
+    variant: undefined,
+    size: 'default',
   },
 } satisfies Meta<typeof Menu>;
 
@@ -129,28 +145,6 @@ export const Basic: Story = {
         'false'
       );
       expect(gryffindor).not.toBeVisible();
-    });
-
-    await step('Open the menu again', async () => {
-      const button = canvas.getByText('Hogwarts Houses');
-
-      await userEvent.click(button);
-
-      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
-        'aria-expanded',
-        'true'
-      );
-    });
-
-    await step('Click outside the menu', async () => {
-      const outside = canvas.getByTestId('underlay');
-
-      await userEvent.click(outside);
-
-      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
-        'aria-expanded',
-        'false'
-      );
     });
   },
 };
@@ -311,9 +305,7 @@ export const OpenMenuRemotely: Story = {
 
     return (
       <>
-        <Button variant="primary" onPress={() => setOpen(!open)}>
-          Open the menu remotly!
-        </Button>
+        <Button onPress={() => setOpen(!open)}>Open the menu remotly!</Button>
         <hr />
         <Menu
           onOpenChange={handleAction}

@@ -1,5 +1,98 @@
 # @marigold/docs
 
+## 12.0.5
+
+### Patch Changes
+
+- a6bcd89: chore(deps): update react-aria
+- Updated dependencies [a6bcd89]
+  - @marigold/components@12.0.5
+  - @marigold/system@12.0.5
+  - @marigold/theme-b2b@30.0.7
+  - @marigold/theme-core@29.0.7
+  - @marigold/theme-docs@3.0.7
+  - @marigold/theme-rui@1.1.5
+  - @marigold/icons@1.3.13
+
+## 12.0.4
+
+### Patch Changes
+
+- 6c230c7: feat[DST-731]: Add ContextualHelp Component with Docs
+  We added a new ContextualHelp component to provide inline help and guidance within the UI.
+  It displays contextual information in a popover triggered by an icon button, with configurable placement, size, and icon variant (help or info).
+  The component is accessible, supports both controlled and uncontrolled open states, and is designed for flexible content layout.
+- 17d28b5: feat([DST-885]): update default `<Link>` styles and add link variant
+- Updated dependencies [3e19b71]
+- Updated dependencies [ed72011]
+- Updated dependencies [6c230c7]
+- Updated dependencies [befd17d]
+- Updated dependencies [17d28b5]
+- Updated dependencies [5127d58]
+  - @marigold/components@12.0.4
+  - @marigold/theme-rui@1.1.4
+  - @marigold/system@12.0.4
+  - @marigold/theme-core@29.0.6
+  - @marigold/theme-b2b@30.0.6
+  - @marigold/theme-docs@3.0.6
+  - @marigold/icons@1.3.12
+
+## 12.0.3
+
+### Patch Changes
+
+- 12b00ed: feat[DST-856]: Add TimeField Component
+
+  We added a new TimeField component to support time-based user input.
+  It allows users to select and edit time values, with configurable granularity (hours, minutes, seconds) and optional 12/24-hour format.
+  The component supports accessibility features like keyboard navigation.
+
+- Updated dependencies [7451134]
+- Updated dependencies [12b00ed]
+- Updated dependencies [73edbb0]
+- Updated dependencies [be782c3]
+  - @marigold/components@12.0.3
+  - @marigold/system@12.0.3
+  - @marigold/theme-b2b@30.0.5
+  - @marigold/theme-core@29.0.5
+  - @marigold/theme-rui@1.1.3
+  - @marigold/theme-docs@3.0.5
+  - @marigold/icons@1.3.11
+
+## 12.0.2
+
+### Patch Changes
+
+- 0bca5d8: Update React aria components
+- Updated dependencies [0bca5d8]
+- Updated dependencies [ca26659]
+  - @marigold/components@12.0.2
+  - @marigold/system@12.0.2
+  - @marigold/theme-core@29.0.4
+  - @marigold/theme-b2b@30.0.4
+  - @marigold/theme-rui@1.1.2
+  - @marigold/theme-docs@3.0.4
+  - @marigold/icons@1.3.10
+
+## 12.0.1
+
+### Patch Changes
+
+- 2c01257: [DST-851]: removed @marigold/jest-config package
+- 534ad77: refa([DST-738]): Adding checkmark icon as selection indicator in RUI theme for SelectList and Listbox components.
+- Updated dependencies [0e8211b]
+- Updated dependencies [af401e5]
+- Updated dependencies [2a96627]
+- Updated dependencies [f2cbc72]
+- Updated dependencies [534ad77]
+  - @marigold/components@12.0.1
+  - @marigold/system@12.0.1
+  - @marigold/theme-b2b@30.0.3
+  - @marigold/theme-core@29.0.3
+  - @marigold/theme-docs@3.0.3
+  - @marigold/theme-rui@1.1.1
+  - @marigold/icons@1.3.9
+
 ## 12.0.0
 
 ### Major Changes

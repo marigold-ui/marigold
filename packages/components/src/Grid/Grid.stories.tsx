@@ -1,13 +1,36 @@
-import type { Meta } from '@storybook/react';
-import { cn } from '@marigold/system';
+import type { Meta, StoryObj } from '@storybook/react';
+import { alignment, cn } from '@marigold/system';
+import { Button } from '../Button';
+import { Text } from '../Text';
 import { Grid } from './Grid';
 
 const meta = {
   title: 'Components/Grid',
   component: Grid,
+  argTypes: {
+    alignX: {
+      control: { type: 'select' },
+      options: Object.keys(alignment.horizontal.alignmentX),
+      description: 'Horizontal alignment for the children.',
+    },
+    alignY: {
+      control: { type: 'select' },
+      options: Object.keys(alignment.horizontal.alignmentY),
+      description: 'Vertical alignment for the children.',
+    },
+    space: {
+      control: { type: 'text' },
+      description: 'Responsive Style Value for spacing between grid items.',
+    },
+    height: {
+      control: { type: 'text' },
+      description: 'Height of the grid container.',
+    },
+  },
 } satisfies Meta<typeof Grid>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const HolyGrail = {
   render: () => (
@@ -108,4 +131,30 @@ export const Bento = {
       </Grid>
     );
   },
+};
+
+export const Content: Story = {
+  args: {
+    areas: ['label value', 'action description'],
+    columns: ['150px', 'auto'],
+    rows: ['auto', 'auto'],
+    space: 2,
+    alignY: 'center',
+  },
+  render: args => (
+    <Grid {...args}>
+      <Grid.Area name="label">
+        <Text weight="bold">Username:</Text>
+      </Grid.Area>
+      <Grid.Area name="value">
+        <Text>Max Mustermann</Text>
+      </Grid.Area>
+      <Grid.Area name="action">
+        <Button>Edit</Button>
+      </Grid.Area>
+      <Grid.Area name="description">
+        <Text>Click to update your username</Text>
+      </Grid.Area>
+    </Grid>
+  ),
 };

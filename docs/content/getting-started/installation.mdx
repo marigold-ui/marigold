@@ -1,6 +1,7 @@
 ---
 title: Installation
 caption: How to setup and get started with Marigold.
+badge: updated
 order: 2
 ---
 
@@ -51,20 +52,6 @@ Execute the following command in your project's directory:
   </Tabs.TabPanel>
 </Tabs>
 
-## Theming
-
-As mentioned earlier, Marigold components come without any styles by default. To customize their appearance, you can choose from the existing themes listed below:
-
-- **b2b:** Ideal for developing new standalone software applications.
-- **core:** Suitable for developing or refactoring components within the Reservix System.
-
-Selecting a theme will enable you to seamlessly apply a consistent look and feel to all components, ensuring they harmonize with the rest of your app. Each theme comes as its own package:
-
-- `@marigold/theme-b2b` will give you the appearance for standalone software.
-- `@marigold/theme-core` will match the look and feel of the Reservix System.
-
-Once you have decided on a theme, proceed to install it using your preferred package manager, similar to the way you installed the `@marigold/components` package earlier.
-
 ## Tooling
 
 Marigold effortlessly integrates with popular bundlers such as [webpack](https://webpack.js.org/), [rollup](https://rollupjs.org/), [esbuild](https://esbuild.github.io/), and [vite](https://vitejs.dev/), as well as frameworks like [Next.js](https://nextjs.org/), without requiring any additional configurations.
@@ -87,8 +74,8 @@ The easiest way to start is by using the provided CSS file that comes with each 
 /**
  * 1. Import the CSS file and theme
  */
-import theme from '@marigold/theme-b2b';
-import '@marigold/theme-b2b/styles.css';
+import theme from '@marigold/theme-rui';
+import '@marigold/theme-rui/styles.css';
 
 /**
  * 2. Import the MarigoldProvider
@@ -117,7 +104,7 @@ To set up Tailwind CSS, please refer to the official [installation guide](https:
     @import 'tailwindcss';
 
     /* Import the theme from Marigold */
-    @import '../node_modules/@marigold/theme-b2b/theme.css';
+    @import '../node_modules/@marigold/theme-rui/theme.css';
 
 
     /* You need to add the path to the marigold packages */
@@ -156,12 +143,11 @@ Tailwind CSS will automatically generate the required CSS for you. However, reme
 /**
  * 1. Import the CSS file and theme
  */
-
 /**
  * 2. Import the MarigoldProvider
  */
 import { MarigoldProvider } from '@marigold/components';
-import theme from '@marigold/theme-b2b';
+import theme from '@marigold/theme-rui';
 
 /**
  * 3. Wrap your app into the MarigoldProvider
@@ -174,12 +160,12 @@ export const App = () => (
 
 ### Adding Fonts
 
-Certain themes, such as the B2B theme, are designed to utilize custom web fonts. To incorporate these fonts, you have two options:
+The RUI theme is designed to utilize custom web fonts. To incorporate these fonts, you have two options:
 
 1. Use [Font Source](https://fontsource.org/) to add them.
 2. If you are using Next.js, take advantage of `next/font`, which not only takes care of loading the font but also optimizes the used fonts. You can find more information on loading custom web fonts in Next.js [here](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts).
 
-To load the Inter font with Font Source when using with the B2B theme, you can follow the steps below:
+To load the Inter font with Font Source when using with the RUI theme, you can follow the steps below:
 
 First, add the font as a dependency to your project:
 
