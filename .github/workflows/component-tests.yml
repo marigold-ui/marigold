@@ -1,6 +1,7 @@
 name: Component Tests
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types:
       - 'vercel.deployment.success'
