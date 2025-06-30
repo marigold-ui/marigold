@@ -1,9 +1,7 @@
-import { siteConfig } from '@/lib/config';
-import { ruiTheme, theme } from '@/theme';
+import { theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
 import { Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
-import { MarigoldThemeSwitch } from '@/ui/ThemeSwitch';
 import { Analytics } from './_components/Analytics';
 import { PortalContaier } from './_components/PortalContainer';
 import './globals.css';
@@ -25,12 +23,6 @@ export const metadata = {
   },
 };
 
-// Themes
-// ---------------
-const themes = {
-  rui: ruiTheme,
-};
-
 // Layout
 // ---------------
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -41,15 +33,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     >
       <body className={`${fontSans.className} min-h-screen`}>
         <Suspense>
-          <MarigoldThemeSwitch
-            themes={themes}
-            initial={siteConfig.defaultTheme}
-          >
-            <MarigoldProvider theme={theme} className="min-h-screen">
-              {children}
-            </MarigoldProvider>
-            <PortalContaier />
-          </MarigoldThemeSwitch>
+          <MarigoldProvider theme={theme} className="min-h-screen">
+            {children}
+          </MarigoldProvider>
+          <PortalContaier />
         </Suspense>
         <Analytics />
       </body>

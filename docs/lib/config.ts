@@ -134,26 +134,6 @@ export const links = [
   },
 ];
 
-export const themeswitch = [
-  {
-    name: 'Theme Switch',
-    items: [
-      {
-        name: 'Switch to Core Theme',
-        theme: 'core',
-      },
-      {
-        name: 'Switch to B2B Theme',
-        theme: 'b2b',
-      },
-      {
-        name: 'Switch to RUI Theme',
-        theme: 'rui',
-      },
-    ],
-  },
-];
-
 export const internal = [
   {
     items: [

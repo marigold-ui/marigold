@@ -9,7 +9,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Search } from '@marigold/icons';
 import { useHasMounted } from '@/ui/useHasMounted';
 import {
-  ChangeThemeItem,
   ExternalLinkItem,
   IconItem,
   InternalPage,
@@ -173,8 +172,6 @@ export const SiteMenu = () => {
                 subPage={subPage}
               />
             ))}
-            {/* update themes command */}
-            <ChangeThemeItem setOpen={setOpen} classNames={classNames} />
             {/* external links command */}
             <ExternalLinkItem classNames={classNames} />
             {/* tokens copy command */}

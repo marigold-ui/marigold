@@ -1,11 +1,11 @@
 import { getAppearance } from '@/lib/utils';
 import { registry } from '@/registry/demos';
+import { ruiTheme } from '@/theme';
 import type { Theme } from '@/ui';
 import { Card, MarigoldProvider, OverlayContainerProvider, Select } from '@/ui';
 import type { ComponentType } from 'react';
 import { useState } from 'react';
 import { Info } from '@marigold/icons';
-import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Helpers
 // ---------------
@@ -47,9 +47,7 @@ export const AppearanceDemo = ({ component }: AppearanceDemoProps) => {
   }
 
   const Demo: ComponentType<any> = registry[name].demo;
-  const { current, themes } = useThemeSwitch();
-  const theme = themes[current];
-  const appearance = getAppearance(component, theme);
+  const appearance = getAppearance(component, ruiTheme);
 
   const [selected, setSelected] = useState({
     variant: appearance.variant.length
@@ -135,9 +133,9 @@ export const AppearanceDemo = ({ component }: AppearanceDemoProps) => {
             </div>
           ) : null}
         </div>
-        <div data-theme={current}>
+        <div data-theme="rui">
           <OverlayContainerProvider value="portalContainer">
-            <MarigoldProvider theme={theme}>
+            <MarigoldProvider theme={ruiTheme}>
               <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pt-24 pb-10">
                 <Demo {...selected} />
               </div>
