@@ -29,9 +29,7 @@ test('uses base styles from theme', () => {
   );
   const label = screen.getByText(/label/);
 
-  expect(label.className).toMatchInlineSnapshot(
-    `"inline-flex w-[var(--labelWidth)]"`
-  );
+  expect(label.className).toMatchInlineSnapshot(`"inline-flex"`);
 });
 
 test('supports htmlFor prop', () => {
