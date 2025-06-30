@@ -36,7 +36,7 @@ export interface CardProps
   size?: string;
 
   /**
-   * Padding of the component. You can see allowed tokens [here](../../foundations/design-tokens#spacing).
+   * Padding of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
    */
   p?: PaddingSpaceProp['space'];
 
@@ -46,7 +46,7 @@ export interface CardProps
   px?: PaddingSpacePropX['spaceX'];
 
   /**
-   * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/design-tokens#spacing).
+   * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
    */
   py?: PaddingSpacePropY['spaceY'];
 }

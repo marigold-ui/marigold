@@ -24,7 +24,7 @@ describe('Pagination tests', () => {
     expect(asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <div
-          class="font-body text-text-base text-[13px] leading-normal bg-bg-surface"
+          class="bg-bg-surface"
         >
           <div
             class="h-screen p-6"
@@ -39,13 +39,13 @@ describe('Pagination tests', () => {
               />
               <button
                 aria-label="Page previous"
-                class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground h-9 py-2 gap-1 px-2.5 cursor-pointer"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-5 w-5"
+                  class="flex-none fill-current h-4 w-4"
                   height="24px"
                   viewBox="0 0 24 24"
                   width="24px"
@@ -61,7 +61,7 @@ describe('Pagination tests', () => {
                 <button
                   aria-current="page"
                   aria-label="Page 1"
-                  class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors bg-background size-9 focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs hover:bg-hover hover:text-hover-foreground cursor-pointer"
                   data-react-aria-pressable="true"
                   data-selected="true"
                   tabindex="0"
@@ -71,7 +71,7 @@ describe('Pagination tests', () => {
                 </button>
                 <button
                   aria-label="Page 2"
-                  class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors bg-background size-9 focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs hover:bg-hover hover:text-hover-foreground cursor-pointer"
                   data-react-aria-pressable="true"
                   data-selected="false"
                   tabindex="-1"
@@ -82,13 +82,13 @@ describe('Pagination tests', () => {
               </div>
               <button
                 aria-label="Page next"
-                class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground h-9 py-2 gap-1 px-2.5 cursor-pointer"
                 data-react-aria-pressable="true"
                 tabindex="0"
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-5 w-5"
+                  class="flex-none fill-current h-4 w-4"
                   height="24px"
                   viewBox="0 0 24 24"
                   width="24px"
@@ -115,7 +115,7 @@ describe('Pagination tests', () => {
     expect(asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <div
-          class="font-body text-text-base text-[13px] leading-normal bg-bg-surface"
+          class="bg-bg-surface"
         >
           <div
             class="h-screen p-6"
@@ -130,13 +130,13 @@ describe('Pagination tests', () => {
               />
               <button
                 aria-label="Page previous"
-                class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground h-9 py-2 gap-1 px-2.5 cursor-pointer"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-5 w-5"
+                  class="flex-none fill-current h-4 w-4"
                   height="24px"
                   viewBox="0 0 24 24"
                   width="24px"
@@ -151,7 +151,7 @@ describe('Pagination tests', () => {
               >
                 <button
                   aria-label="Page 1"
-                  class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors bg-background size-9 focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs hover:bg-hover hover:text-hover-foreground cursor-pointer"
                   data-react-aria-pressable="true"
                   disabled=""
                   tabindex="-1"
@@ -162,13 +162,13 @@ describe('Pagination tests', () => {
               </div>
               <button
                 aria-label="Page next"
-                class="border-border-base text-text-base ease-ease-out h-component cursor-pointer rounded-xs border px-4 py-0 text-sm leading-[22px] transition-all duration-200 disabled:border-border-base-disabled disabled:bg-bg-inverted-disabled disabled:text-text-base-disabled disabled:cursor-not-allowed disabled:border disabled:border-solid outline-outline-focus focus:outline-2 focus:outline-offset-1 h-auto border-none bg-transparent flex h-8! w-8 items-center justify-center wrap data-[selected=true]:border-0 data-[selected=true]:border-b-2 data-[selected=true]:border-solid data-[selected=true]:border-b-border-selected data-[selected=true]:bg-none data-[selected=true]:text-text-base data-[selected=true]:font-bold hover:bg-gray-100"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground h-9 py-2 gap-1 px-2.5 cursor-pointer"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-5 w-5"
+                  class="flex-none fill-current h-4 w-4"
                   height="24px"
                   viewBox="0 0 24 24"
                   width="24px"

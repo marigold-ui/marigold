@@ -143,9 +143,7 @@ test('supports classnames', () => {
     `"shrink-0 cursor-pointer outline-0 absolute right-0 p-0"`
   );
   expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
-  expect(label.className).toMatchInlineSnapshot(
-    `"text-teal-300 inline-flex w-[var(--labelWidth)]"`
-  );
+  expect(label.className).toMatchInlineSnapshot(`"text-teal-300 inline-flex"`);
 });
 
 test('supports disabled', () => {
