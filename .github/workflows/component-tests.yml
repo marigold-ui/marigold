@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.client_payload.commit }}
       - uses: pnpm/action-setup@v4.0.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v4
