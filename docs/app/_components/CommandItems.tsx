@@ -13,7 +13,7 @@ import {
 } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Inline, Split } from '@marigold/components';
 import { ExternalLink } from '@marigold/icons';
 import { NestedStringObject } from '@marigold/system';
@@ -59,10 +59,9 @@ const useGoto = (
   setPages?: Dispatch<SetStateAction<[]>>
 ) => {
   const router = useRouter();
-  const params = useSearchParams();
 
   const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
-    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
+    const url = `/${slug}${hash}`;
 
     router.push(url);
     setOpen(false);
