@@ -9,7 +9,6 @@ jobs:
   test:
     name: Component Tests
     timeout-minutes: 60
-
     if: github.event_name == 'repository_dispatch' && contains(github.event.client_payload.url, 'storybook')
     runs-on: ubuntu-latest
     steps:
