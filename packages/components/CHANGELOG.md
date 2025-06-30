@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 12.1.0
+
+### Patch Changes
+
+- 16f6dbb: fix[DST-812]: Migrate from UNSTABLE_portalContainer to UNSAFE_PortalProvider
+
+  Changed UNSTABLE_portalContainer to UNSAFE_PortalProvider as UNSTABLE_portalContainer is deprecated.
+
+  - @marigold/system@12.1.0
+
 ## 12.0.5
 
 ### Patch Changes
