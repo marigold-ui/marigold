@@ -1,9 +1,6 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
-import {
-  MarigoldProvider,
-  OverlayContainerProvider,
-} from '@marigold/components';
+import { MarigoldProvider } from '@marigold/components';
 import rui from '@marigold/theme-rui';
 import './../styles.css';
 
@@ -49,64 +46,15 @@ export const decorators: any = [
     attributeName: 'data-theme',
   }),
 
-  (Story: any, { globals, parameters }: any) => {
-    const theme = globals.theme || parameters.theme || 'core';
-
-    switch (theme) {
-      case 'stacked': {
-        return (
-          <>
-            {Object.keys(THEME).map(key => (
-              <OverlayContainerProvider
-                value={`portalContainer-${key}`}
-                key={key}
-              >
-                <Frame key={key} id={key} title={`Theme "${key}"`}>
-                  <MarigoldProvider
-                    theme={THEME[key as ThemeNames]}
-                    className="bg-bg-surface"
-                  >
-                    <div className="h-screen p-4" data-theme={key}>
-                      {Story()}
-                    </div>
-                  </MarigoldProvider>
-                </Frame>
-              </OverlayContainerProvider>
-            ))}
-          </>
-        );
-      }
-      case 'core': {
-        return (
-          <MarigoldProvider
-            theme={THEME[theme as ThemeNames]}
-            className="bg-bg-surface"
-          >
-            <div className="h-screen p-6">{Story()}</div>
-          </MarigoldProvider>
-        );
-      }
-      default: {
-        return (
-          <MarigoldProvider
-            theme={THEME[theme as ThemeNames]}
-            className="bg-bg-surface"
-          >
-            <div className="h-screen p-6">{Story()}</div>
-          </MarigoldProvider>
-        );
-      }
-    }
+  (Story: any) => {
+    const theme = 'rui';
+    return (
+      <MarigoldProvider
+        theme={THEME[theme as ThemeNames]}
+        className="bg-bg-surface"
+      >
+        <div className="h-screen p-6">{Story()}</div>
+      </MarigoldProvider>
+    );
   },
 ];
-
-const Frame = ({ children, title }: any) => (
-  <div className="p-4">
-    <div className="mb-0.5 inline-block rounded-lg border border-solid border-orange-200 bg-orange-200 p-0.5 font-sans text-xs text-orange-900">
-      {title}
-    </div>
-    <div className="rounded-lg border border-solid border-[#dee2e6] shadow-sm">
-      {children}
-    </div>
-  </div>
-);
