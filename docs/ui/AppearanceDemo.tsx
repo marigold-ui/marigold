@@ -34,7 +34,6 @@ const getSelectWidth = (options: string[]) => {
 // ---------------
 export interface AppearanceDemoProps {
   component: keyof Theme['components'];
-  disableLabelWidth?: boolean;
 }
 
 // Component

@@ -14,7 +14,6 @@ Marigold has a set of form components that you can use to build your form.
 - [ComboBox](/components/form/combobox)
 - [DateField](/components/form/datefield)
 - [DatePicker](/components/form/datepicker)
-- [FieldGroup](/components/form/fieldgroup)
 - [Multiselect](/components/form/multiselect)
 - [NumberField](/components/form/number-field)
 - [Radio](/components/form/radio)
@@ -143,7 +142,7 @@ Marigold's form components utilize the same API as native HTML forms. Yet, the b
 
 Here is an email subscription form. If you submit it without entering an email address or if the entered email address is invalid, an error will be displayed:
 
-<ComponentDemo file="./validation-base.demo.tsx" />{' '}
+<ComponentDemo file="./validation-base.demo.tsx" />
 
 #### Custom Message
 
@@ -151,7 +150,7 @@ While browser-provided error messages are helpful, they might not be very descri
 
 The example below customizes the default error messages for an unfilled required field. It's important to note that you only need to override the messages you want to; any unmodified aspects will fallback to the browser-provided messages.
 
-<ComponentDemo file="./validation-custom-message.demo.tsx" />{' '}
+<ComponentDemo file="./validation-custom-message.demo.tsx" />
 
 #### Custom Validation
 
@@ -159,7 +158,7 @@ When the native validation options are insufficient or not ideal, it's also poss
 
 The below example demonstrates a more sophisticated method for validating email addresses. The validation will always display the custom error messages. There is no separate message if the field is left empty.
 
-<ComponentDemo file="./validation-custom-validation.demo.tsx" />{' '}
+<ComponentDemo file="./validation-custom-validation.demo.tsx" />
 
 #### Real-time Validation
 
@@ -169,7 +168,7 @@ In specific situations though, choosing real-time validation proves beneficial, 
 
 Here's an example where real-time validation is employed to check password requirements, immediately informing the user when a criteria is met.
 
-<ComponentDemo file="./validation-realtime.demo.tsx" />{' '}
+<ComponentDemo file="./validation-realtime.demo.tsx" />
 
 #### Handling Server Errors
 
@@ -179,7 +178,7 @@ Marigold supports displaying server validation errors via the `validationErrors`
 
 The subscription example now involves sending and receiving the provided email to and from the server. While most email subscriptions will be successful, attempting to use `support@reservix.de` serves as a negative example, triggering an error response from the server.
 
-<ComponentDemo file="./validation-server-error.demo.tsx" />{' '}
+<ComponentDemo file="./validation-server-error.demo.tsx" />
 
 ## Related
 
