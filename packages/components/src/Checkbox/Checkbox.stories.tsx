@@ -56,7 +56,6 @@ const meta = {
         defaultValue: { summary: 'default' },
       },
       description: 'Padding y (top and bottom)',
-      if: { global: 'theme', neq: 'b2b' },
     },
   },
   args: {
