@@ -15,6 +15,10 @@ In this example you can see, the space prop ensures that each child is separated
 
 <ComponentDemo file="./stack-spacing.demo.tsx" />
 
+### Stack as list
+
+The `<Stack>` component can also be used to render a list of items. This is useful for screen readers and accessibility. To use the stack as a list, you need to set the `asList` property to `true`. This will render each child as a list item.
+
 ### Different alignment
 
 Of course you can align the elements inside of the stack vertically and horizontally. This is useful if you need to place certain items at a certain position. For vertical alignment you need to set the `alignY` property and the `stretch` property to true. The `stretch` property stretches the stack to fill the space of the parent element.
