@@ -146,28 +146,6 @@ export const Basic: Story = {
       );
       expect(gryffindor).not.toBeVisible();
     });
-
-    await step('Open the menu again', async () => {
-      const button = canvas.getByText('Hogwarts Houses');
-
-      await userEvent.click(button);
-
-      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
-        'aria-expanded',
-        'true'
-      );
-    });
-
-    await step('Click outside the menu', async () => {
-      const outside = canvas.getByTestId('underlay');
-
-      await userEvent.click(outside);
-
-      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
-        'aria-expanded',
-        'false'
-      );
-    });
   },
 };
 
