@@ -171,5 +171,7 @@ test('takes full width by default', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement!;
-  expect(container.className).toMatchInlineSnapshot(`"group/field w-full"`);
+  expect(container.className).toMatchInlineSnapshot(
+    `"group/field flex flex-col w-full"`
+  );
 });

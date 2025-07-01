@@ -77,6 +77,6 @@ test('adjusts vertical alignment when input fields display helper text or error 
 
   const inline = screen.getByTestId('inline');
   expect(inline.className).toMatchInlineSnapshot(
-    `"flex flex-wrap gap-4 items-end [&:has([slot=description])]:items-center [&:has([slot=errorMessage])]:items-center"`
+    `"flex flex-wrap gap-6 items-end [&:has([slot=description])]:items-center [&:has([slot=errorMessage])]:items-center"`
   );
 });

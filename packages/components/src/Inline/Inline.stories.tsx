@@ -58,7 +58,6 @@ export const Basic: Story = {
   tags: ['component-test'],
   args: {
     alignX: 'left',
-    space: 5,
   },
   render: args => (
     <Inline {...args}>
