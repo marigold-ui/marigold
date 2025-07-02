@@ -29,9 +29,39 @@ The `<List>` component consists of the following parts:
 
 ## Usage
 
-The `List` component is used to display a group of related items in a consistent and accessible way. It supports both unordered (bulleted) and ordered (numbered) formats and can be customized with icons or nesting. List components are ideal for organizing content such as tasks, steps, features, or grouped data while maintaining design consistency and readability across the application.
+The `List` component is used to display a group of related items in a consistent and accessible way. It supports both unordered (bulleted) and ordered (numbered) formats and can be customized through nesting. List components are ideal for organizing content such as tasks, steps, features, or grouped data while maintaining design consistency and readability across the application.
 
-Lists should be used for content and not for layout purposes. If you need accessible lists for layout, consider using the `<Stack>` component with `asList` property instead.
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/list/list-amount-do.jpg"
+        alt="Use two or more items in a list"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use two or more items in a list to provide meaningful content.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/list/list-amount-dont.jpg"
+        alt="Dont use less than two items in a list"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid using a list with only one item, as it does not provide meaningful
+      grouping or context.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ### Unordered list
 
@@ -62,3 +92,11 @@ Nested lists allow you to represent hierarchical relationships or group related 
 ### List.Item
 
 <PropsTable component="ListItem" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Stack](../layout/stack): Lists should be used for content and not for layout purposes. If you need accessible lists for layout, consider using the `<Stack>` component with `asList` property instead.
+  </li>
+</ul>

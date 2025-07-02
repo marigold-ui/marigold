@@ -1,4 +1,4 @@
-import { List, ListProps, Text } from '@marigold/components';
+import { List, ListProps } from '@marigold/components';
 
 export default (props: ListProps) => (
   <div className="grid place-items-center">
