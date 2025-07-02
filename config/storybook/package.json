@@ -46,7 +46,7 @@
     "@storybook/react-vite": "^8.6.12",
     "@storybook/test": "^8.6.12",
     "@storybook/test-runner": "0.23.0",
-    "@types/node": "22.14.0",
+    "@types/node": "22.15.34",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "storybook": "^8.6.12",
