@@ -1,22 +1,14 @@
 ---
 title: RouterProvider
 caption: Provider for easier handling routing.
+badge: updated
 ---
 
-The [`<RouterProvider>`](https://react-spectrum.adobe.com/react-aria/routing.html) is a component from `react-aria-components` which we expose to give you something on the hand to handle your routes in your application.
-It can be used to handle your routes if you use Next.js or the React Router.
+The [`<RouterProvider>`](https://react-spectrum.adobe.com/react-aria/routing.html) is a component from `react-aria-components` which we expose to give you something on the hand to handle your routes in your application
 
-## Import
+## Usage
 
-```tsx
-import { RouterProvider } from '@marigold/components';
-```
-
-## Props
-
-<PropsTable component={title} />
-
-## Examples
+The `<RouterProvider>` is a context provider that integrates React Aria's navigation system with your router (like React Router, Next.js, or custom routing). It enables accessibility-aware navigation by informing components (like `<Link>` and `useRouter`) about the current location and navigation methods.
 
 ### React Router
 
@@ -29,3 +21,9 @@ If you want to read more about it visit react arias documentation about it [here
 Similar to React Router you can pass in the `navigate` prop the routes you get from the `useRouter` hook.
 
 Also for more information please visit react arias documentation about it [here](https://react-spectrum.adobe.com/react-aria/routing.html#nextjs).
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
