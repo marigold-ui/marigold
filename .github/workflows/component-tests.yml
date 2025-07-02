@@ -1,20 +1,15 @@
 name: Component Tests
 
-on:
-  repository_dispatch:
-    types:
-      - 'vercel.deployment.success'
+on: deployment_status
 
 jobs:
   test:
     name: Component Tests
     timeout-minutes: 60
-    if: github.event_name == 'repository_dispatch' && contains(github.event.client_payload.url, 'storybook')
     runs-on: ubuntu-latest
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.environment_url, 'storybook')
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.client_payload.commit }}
       - uses: pnpm/action-setup@v4.0.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v4
@@ -33,7 +28,7 @@ jobs:
       - name: Run Storybook tests
         run: pnpm test:storybook
         env:
-          TARGET_URL: ${{ github.event.client_payload.url }}
+          TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
       - name: Upload Accessibility Report
         id: artifact-upload-step
         uses: actions/upload-artifact@v4
