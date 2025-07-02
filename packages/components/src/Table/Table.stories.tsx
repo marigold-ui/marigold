@@ -1,6 +1,6 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect } from 'react';
+import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
 import type { Selection } from '@marigold/components';
 import { TextArea } from '@marigold/components';

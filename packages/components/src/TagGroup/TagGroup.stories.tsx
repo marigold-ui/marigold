@@ -1,7 +1,7 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, within } from '@storybook/test';
 import userEvent from '@testing-library/user-event';
+import { useState } from 'storybook/preview-api';
+import { expect, fn, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Tag } from '.';
 import { Button } from '../Button';

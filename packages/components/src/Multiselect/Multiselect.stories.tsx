@@ -1,6 +1,6 @@
-import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { useState } from 'storybook/preview-api';
+import { expect, userEvent, within } from 'storybook/test';
 import { Stack } from '../Stack';
 import { Multiselect } from './Multiselect';
 

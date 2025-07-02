@@ -25,15 +25,22 @@ type ThemeNames = keyof typeof THEME;
 
 export const parameters: Preview['parameters'] = {
   layout: 'fullscreen',
+
   a11y: {
-    element: '#storybook-root',
+    context: '#storybook-root',
   },
+
   options: {
     storySort: {
       method: 'alphabetical',
     },
   },
+
   controls: { expanded: true },
+
+  docs: {
+    codePanel: true,
+  },
 };
 
 // fix type any
