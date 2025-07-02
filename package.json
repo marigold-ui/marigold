@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "packageManager": "pnpm@10.10.0",
   "dependencies": {
@@ -25,7 +25,7 @@
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
-    "@types/node": "22.14.0",
+    "@types/node": "22.15.34",
     "@vitejs/plugin-react": "4.6.0",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
