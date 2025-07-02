@@ -1,6 +1,5 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import { List } from './List';
 import * as stories from './List.stories';
 
 const { Basic } = composeStories(stories);
