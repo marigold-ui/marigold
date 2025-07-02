@@ -24,7 +24,7 @@
     "@marigold/theme-core": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@mdx-js/react": "3.1.0",
-    "@storybook/addon-a11y": "^8.6.12",
+    "@storybook/addon-a11y": "^9.0.0",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-interactions": "^8.6.12",
     "@storybook/source-loader": "^8.6.12",
@@ -39,22 +39,22 @@
   "devDependencies": {
     "@storybook/addon-interactions": "^8.6.12",
     "@storybook/addon-storysource": "^8.6.12",
-    "@storybook/addon-themes": "^8.6.12",
-    "@storybook/cli": "^8.6.12",
+    "@storybook/addon-themes": "^9.0.0",
+    "@storybook/cli": "^9.0.0",
     "@storybook/core-events": "^8.6.12",
     "@storybook/preview-api": "^8.6.12",
-    "@storybook/react-vite": "^8.6.12",
+    "@storybook/react-vite": "^9.0.0",
     "@storybook/test": "^8.6.12",
     "@storybook/test-runner": "0.23.0",
     "@types/node": "22.15.34",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "storybook": "^8.6.12",
+    "storybook": "^9.0.0",
     "typescript": "5.8.3",
-    "vite": "6.3.5"
+    "vite": "7.0.0"
   },
   "peerDependencies": {
-    "@storybook/react": "^8.6.3",
+    "@storybook/react": "^8.6.3 || ^9.0.0",
     "react": "19.x",
     "react-dom": "19.x",
     "typescript": "5.3.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x"
