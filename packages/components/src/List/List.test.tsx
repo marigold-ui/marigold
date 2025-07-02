@@ -29,11 +29,13 @@ test('renders all children', async () => {
   render(<Basic />);
 
   const items = await screen.findAllByRole('listitem');
+
   expect(items).toHaveLength(3);
 });
 
 test('use base styling from "List" in theme', () => {
   render(<Basic />);
+
   const list = screen.getByRole('list');
 
   expect(list).toHaveClass('list-disc');
