@@ -57,7 +57,7 @@ test('Allow styling container & input via theme', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const field = screen.getByText('Ticket Categories').parentElement;
   expect(field?.className).toMatchInlineSnapshot(
-    `"grid grid-cols-[min-content_1fr] grid-rows-[min-content_min-content] gap-x-2 gap-y-0.5 group/field"`
+    `"grid grid-cols-[min-content_1fr] grid-rows-[min-content_min-content] gap-x-2 gap-y-0.5 group/field w-full"`
   );
 
   const input = screen.getByDisplayValue('General Admission');
