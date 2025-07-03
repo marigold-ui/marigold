@@ -110,11 +110,11 @@ export const Basic: Story = {
   tags: ['component-test'],
   render: args => (
     <Multiselect
+      {...args}
       label="Ticket Categories"
       items={ticketCategories}
       placeholder="Select categories..."
       isOptionDisabled={(item: { value: string }) => item.value === 'backstage'}
-      {...args}
     />
   ),
   play: async ({ step }) => {
@@ -175,6 +175,7 @@ export const Controlled: Story = {
     return (
       <Stack space={3}>
         <Multiselect
+          {...args}
           label="Ticket Priorities"
           placeholder="Set priorities..."
           items={ticketPriorities}
@@ -185,7 +186,6 @@ export const Controlled: Story = {
           onSelectionChange={(selectedValues: object[]) =>
             setSelectedItems(selectedValues)
           }
-          {...args}
           selectedItems={selectedItems}
         />
         <hr />

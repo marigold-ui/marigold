@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
-  field: cva('w-full space-y-2'),
+  field: cva('space-y-2'),
   container: cva([
     'bg-background shadow-sm shadow-black/5 border',
     'px-3 text-sm text-foreground transition-shadow',
