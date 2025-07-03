@@ -6,9 +6,6 @@ import { Table } from './Table';
 
 const meta = {
   title: 'Components/Table',
-  parameters: {
-    disableLabelWidth: true,
-  },
   argTypes: {
     align: {
       control: {

@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import React from 'react';
 import {
-  FieldGroup,
   Inline,
   Select,
   Split,
@@ -181,18 +180,16 @@ export const FullScreenSize: Story = {
           pageSize={pageSize!}
         />
         <Split />
-        <FieldGroup labelWidth="100px">
-          <Select
-            width={40}
-            aria-label="Page size"
-            defaultSelectedKey="10"
-            label="Results per page"
-          >
-            <Select.Option id="10">10</Select.Option>
-            <Select.Option id="20">20</Select.Option>
-            <Select.Option id="30">30</Select.Option>
-          </Select>
-        </FieldGroup>
+        <Select
+          width={40}
+          aria-label="Page size"
+          defaultSelectedKey="10"
+          label="Results per page"
+        >
+          <Select.Option id="10">10</Select.Option>
+          <Select.Option id="20">20</Select.Option>
+          <Select.Option id="30">30</Select.Option>
+        </Select>
       </Inline>
     </div>
   ),

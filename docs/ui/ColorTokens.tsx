@@ -7,17 +7,10 @@ import {
   FeedbackSemanticTokens,
   StateSemanticTokens,
 } from './ColorTable';
-import { useThemeSwitch } from './ThemeSwitch';
 
 export const ColorTokenTable = () => {
-  const { current } = useThemeSwitch();
-
-  if (!current) {
-    return null;
-  }
-
   return (
-    <div className="bg-transparent" data-theme={current}>
+    <div className="bg-transparent" data-theme={'rui'}>
       <Headline level={3}>Stone</Headline>
       <ColorPalettes name="stone" />
       <Headline level={3}>Orange</Headline>

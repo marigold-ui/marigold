@@ -1,14 +1,8 @@
 import { registry } from '@/registry/demos';
-import {
-  Card,
-  FieldGroup,
-  MarigoldProvider,
-  OverlayContainerProvider,
-  Tabs,
-} from '@/ui';
+import { ruiTheme } from '@/theme';
+import { Card, MarigoldProvider, OverlayContainerProvider, Tabs } from '@/ui';
 import { track } from '@vercel/analytics/react';
 import type { ComponentType, ReactNode } from 'react';
-import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Props
 // ---------------
@@ -27,33 +21,17 @@ export interface ComponentDemoProps {
   name: keyof typeof registry;
   source: string;
   children?: ReactNode;
-  disableLabelWidth?: boolean;
-  labelWidth?: string;
 }
 
 // Component
 // ---------------
-export const ComponentDemo = ({
-  name,
-  children,
-  disableLabelWidth,
-  labelWidth = '100px',
-}: ComponentDemoProps) => {
+export const ComponentDemo = ({ name, children }: ComponentDemoProps) => {
   if (!registry[name]) {
     throw Error(`No demo with name "${name}" found in the registry.`);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   const Demo: ComponentType<{}> = registry[name].demo;
-  const { current, themes } = useThemeSwitch();
-
-  const Wrapper = ({ children }: { children: ReactNode }) =>
-    current === 'core' && !disableLabelWidth ? (
-      <FieldGroup labelWidth={labelWidth}>{children}</FieldGroup>
-    ) : (
-      children
-    );
-
   const onSelectionChange = (key: string) => {
     track('Demo Tab', { tab: key });
   };
@@ -72,15 +50,13 @@ export const ComponentDemo = ({
         <Tabs.TabPanel id="preview">
           <Card variant="content" p={0}>
             <div
-              data-theme={current}
+              data-theme="rui"
               className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
             >
               <OverlayContainerProvider value="portalContainer">
-                <MarigoldProvider theme={themes[current]}>
+                <MarigoldProvider theme={ruiTheme}>
                   <div className="not-prose size-full overflow-x-auto p-4">
-                    <Wrapper>
-                      <Demo />
-                    </Wrapper>
+                    <Demo />
                   </div>
                 </MarigoldProvider>
               </OverlayContainerProvider>

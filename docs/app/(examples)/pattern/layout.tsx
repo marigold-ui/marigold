@@ -6,9 +6,7 @@ import { Wrapper } from './wrapper';
 // ---------------
 const Layout = ({ children }: PropsWithChildren) => (
   <NuqsAdapter>
-    <Wrapper className="min-h-dvh" theme="rui">
-      {children}
-    </Wrapper>
+    <Wrapper className="min-h-dvh">{children}</Wrapper>
   </NuqsAdapter>
 );
 
