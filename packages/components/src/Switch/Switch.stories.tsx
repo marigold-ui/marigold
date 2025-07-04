@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import { Switch } from './Switch';
 
 const meta = {
@@ -68,12 +68,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('switch');
 
     await userEvent.click(button);
 
-    expect(button).toBeChecked();
+    await expect(button).toBeChecked();
   },
 };

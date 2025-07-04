@@ -2,7 +2,7 @@ import { parseTime } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { TimeValue } from 'react-aria-components';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import { TimeField } from './TimeField';
 
 const meta = {
@@ -123,7 +123,7 @@ export const FocusEvents: Story = {
     defaultValue: parseTime('13:45'),
   },
   tags: ['component-test'],
-  play: async ({ canvasElement, step }) => {
+  play: async ({ canvasElement, step, userEvent }) => {
     const canvas = within(canvasElement);
     const hour = await canvas.getByLabelText('13');
 
@@ -142,10 +142,10 @@ export const ControlledTimeField: Story = {
       return (
         <>
           <TimeField
+            {...args}
             label="Time Field"
             value={value}
             onChange={newValue => setValue(newValue!)}
-            {...args}
           />
           <pre>
             <strong>TimeField Value: </strong>

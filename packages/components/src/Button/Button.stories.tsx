@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, within } from 'storybook/test';
 import { Container, Stack } from '@marigold/components';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
@@ -97,7 +97,7 @@ export const Basic: Story = {
       </Stack>
     </Container>
   ),
-  play: async ({ args, canvasElement }) => {
+  play: async ({ args, canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByText('Primary'));

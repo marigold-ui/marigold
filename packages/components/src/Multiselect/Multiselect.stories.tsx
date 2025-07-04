@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import { Stack } from '../Stack';
 import { Multiselect } from './Multiselect';
 
@@ -117,7 +117,7 @@ export const Basic: Story = {
       isOptionDisabled={(item: { value: string }) => item.value === 'backstage'}
     />
   ),
-  play: async ({ step }) => {
+  play: async ({ step, userEvent }) => {
     const canvas = within(document.body);
 
     await step('Open Multiselect', async () => {
@@ -125,7 +125,7 @@ export const Basic: Story = {
 
       await userEvent.click(input);
 
-      expect(await canvas.findByText('General Admission')).toBeVisible();
+      await expect(await canvas.findByText('General Admission')).toBeVisible();
     });
 
     await step('Select an item from Multiselect', async () => {
@@ -133,7 +133,7 @@ export const Basic: Story = {
 
       await userEvent.click(generalOption);
 
-      expect(await canvas.findByText('General Admission')).toBeVisible();
+      await expect(await canvas.findByText('General Admission')).toBeVisible();
     });
 
     await step('Select another item from Multiselect', async () => {
@@ -141,7 +141,9 @@ export const Basic: Story = {
 
       await userEvent.click(VIPOption);
 
-      expect(await canvas.findByText('VIP Experience')).toBeInTheDocument();
+      await expect(
+        await canvas.findByText('VIP Experience')
+      ).toBeInTheDocument();
     });
 
     await step('Support removing selections', async () => {
@@ -152,7 +154,7 @@ export const Basic: Story = {
 
       await userEvent.click(removeButton[0]);
 
-      expect(generalOption).not.toBeVisible();
+      await expect(generalOption).not.toBeVisible();
     });
 
     await step('close Multiselect', async () => {
@@ -161,8 +163,8 @@ export const Basic: Story = {
       await userEvent.keyboard('{Escape}');
       input.blur();
 
-      expect(input).not.toHaveFocus();
-      expect(input).toHaveAttribute('aria-expanded', 'false');
+      await expect(input).not.toHaveFocus();
+      await expect(input).toHaveAttribute('aria-expanded', 'false');
     });
   },
 };
