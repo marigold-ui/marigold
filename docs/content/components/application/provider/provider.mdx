@@ -34,6 +34,31 @@ The `<MarigoldProvider>` supports overriding root styles by passing custom class
 
 <ComponentDemo file="./provider-root-styles.demo.tsx" />
 
+### Nesting Providers
+
+The `<MarigoldProvider>` supports nesting themes, allowing you to apply a different theme within a nested provider. This enables sections of your app to have distinct themes, providing flexibility in styling different parts of the application.
+
+Note that in these scenarios, it often makes sense to adjust the root styles using the aforementioned `className` prop.
+
+```tsx
+import { Card, MarigoldProvider, Stack } from '@marigold/components';
+import ruiTheme from '@marigold/theme-rui';
+import customTheme from './custom-theme';
+
+export default () => (
+  <MarigoldProvider theme={rui}>
+    <Card p={4}>
+      <Stack space={4}>
+        This area is still using the <strong>rui theme</strong>.
+        <MarigoldProvider theme={ruiTheme} className="bg-transparent">
+          This area is still using the <strong>rui theme</strong>.
+        </MarigoldProvider>
+      </Stack>
+    </Card>
+  </MarigoldProvider>
+);
+```
+
 ## Props
 
 <StorybookHintMessage component={title} />
