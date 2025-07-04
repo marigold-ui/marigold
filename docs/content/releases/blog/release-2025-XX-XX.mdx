@@ -4,7 +4,19 @@ date: 2025-XX-XX
 type: Blog
 changed:
   - components/collection/table
+  - components/form/timefield
+  - components/content/contextualhelp
+  - components/navigation/menu
+  - components/content/listbox
+  - components/content/selectlist
+  - components/content/badge
+  - components/content/card
+  - components/layout/grid
+  - components/content/accordion
+  - components/content/link
 ---
+
+The latest Marigold release brings a range of enhancements across components, documentation, and infrastructure—focused on improved accessibility, flexibility, and design consistency.
 
 ## Breaking Change
 
@@ -12,9 +24,34 @@ changed:
 
 ### Components
 
+- **TimeField**: We now support the `<TimeField>` component. It provides a flexible and accessible way to select time values.
+
+- **ContextualHelp**: The `<ContextualHelp>` component has been introduced to provide users with additional information and guidance within the UI. It can be used to display tooltips or help text in a consistent manner.
+
 We have made several improvements to our components:
 
-- **ListBox**, **SelectList** and **Menu** components have been updated to align with the latest RUI design standards.
+Design Alignment:
+
+- **ListBox** and **SelectList** components have been updated to align with the latest RUI design standards.
+- **Menu** component has been updated to support the latest design standards and now includes a new `ghost` variant for a more subtle appearance.
 - **Link** component has been enhanced new styles and variants. You can now use the variant for a secondary link style.
 - **Badge** styles has been updated to match the latest design standards.
 - **Card** component now supports full width through the width property.
+- **Accordion** has been improved to allow more flexibility in the header.
+
+New Features:
+
+- **Grid** component now also supports alignment of items in the grid.
+- **Table** component has been updated, it now supports not anymore the right alignment of the last column per default. And you can use a new variant called `muted` to style the table in a more subtle way. Also you can align the content of the table items to the top position.
+
+### Documentation
+
+The documentation site needs to be updated to align with the latest visual direction and design system standards defined by the RUI theme. This involves replacing the existing "core" theme styling and structure with RUI’s modern visual language, ensuring consistency across the design and development ecosystem and streamlining the adoption of new patterns and tokens.
+
+### Infrastructure
+
+- **React Aria Components**: We have updated the React Aria components to the latest version, ensuring compatibility with the latest features and improvements in the React Aria library.
+
+---
+
+Thanks for reading, and we hope you enjoy the new features in the new Marigold version! Be sure to check out the updated documentation for more details, and as always, we're here if you need help.
