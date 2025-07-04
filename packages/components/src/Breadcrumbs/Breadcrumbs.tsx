@@ -1,37 +1,55 @@
-import { ReactNode, forwardRef, isValidElement } from 'react';
-import type RAC from 'react-aria-components';
+import { forwardRef } from 'react';
+import type { BreadcrumbsProps as RACBreadcrumbsProps } from 'react-aria-components';
 import { Breadcrumbs as RACBreadcrumbs } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
-
-type RemovedProps = 'isDisabled' | 'className' | 'style';
+import { BreadcrumbItem } from './BreadcrumbsItem';
 
 export interface BreadcrumbsProps
-  extends Omit<RAC.BreadcrumbsProps, RemovedProps> {
+  extends Omit<
+    RACBreadcrumbsProps<object>,
+    'className' | 'style' | 'children'
+  > {
   variant?: string;
   size?: string;
 
   /**
-   * Disables the breadcrumb navigation
+   * Disables the breadcrumbs.
+   * @default false
    */
-  disabled?: RAC.BreadcrumbsProps['isDisabled'];
+  disabled?: RACBreadcrumbsProps<object>['isDisabled'];
 
   /**
-   * Breadcrumb items
-   */
-  children: ReactNode;
-
-  /**
-   * Max number of visible items
+   * Maximum number of visible items before the breadcrumbs collapse.
    * @default 3
    */
   maxVisibleItems?: number;
+
+  /**
+   * Type of separator between breadcrumb items.
+   * @default 'chevron'
+   * Options: 'chevron' | 'slash'
+   */
+  separatorType?: 'chevron' | 'slash';
+
+  /**
+   * The breadcrumb items to be displayed.
+   */
+  children?: React.ReactNode[];
 }
 
 const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
   (
-    { children, variant, size, disabled, maxVisibleItems = 3, ...props },
+    {
+      children,
+      variant,
+      size,
+      disabled,
+      maxVisibleItems = 3,
+      separatorType = 'chevron',
+      ...props
+    },
     ref
   ) => {
     const classNames = useClassNames({
@@ -40,15 +58,21 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       size,
     });
 
-    const items = Array.isArray(children) ? children : [children];
+    const items = children || [];
     const total = items.length;
 
-    // Collapse if too many
     const shouldCollapse = total > maxVisibleItems;
-    const first = items[0];
-    const last = items[total - 1];
+
+    const hiddenItems = shouldCollapse ? items.slice(1, -1) : [];
+
     const collapsed = shouldCollapse
-      ? [first, <BreadcrumbEllipsis key="ellipsis" />, last]
+      ? [
+          items[0],
+          <BreadcrumbItem key="ellipsis">
+            <BreadcrumbEllipsis hiddenItems={hiddenItems} />
+          </BreadcrumbItem>,
+          items[total - 1],
+        ]
       : items;
 
     return (
@@ -57,18 +81,34 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
           {...props}
           ref={ref}
           isDisabled={disabled}
-          className={cn('flex items-center gap-2', classNames.container)}
+          className={cn(classNames.container)}
         >
-          {collapsed.map((item, index) => (
-            <li key={index}>
-              {item}
-              {index < collapsed.length - 1 && (
-                <span className={classNames.separator} aria-hidden="true">
-                  <ChevronRight />
-                </span>
-              )}
-            </li>
-          ))}
+          {collapsed.map((item, index) => {
+            const isLast = index === collapsed.length - 1;
+            if (!item || typeof item === 'boolean') return null;
+            const itemChildren =
+              typeof item === 'string' || typeof item === 'number'
+                ? item
+                : 'props' in (item as any) && (item as any).props?.children;
+
+            return (
+              <BreadcrumbItem key={index}>
+                {itemChildren}
+
+                {!isLast && separatorType === 'chevron' && (
+                  <span aria-hidden="true" className={classNames.separator}>
+                    <ChevronRight />
+                  </span>
+                )}
+
+                {!isLast && separatorType === 'slash' && (
+                  <span aria-hidden="true" className={classNames.separator}>
+                    /
+                  </span>
+                )}
+              </BreadcrumbItem>
+            );
+          })}
         </RACBreadcrumbs>
       </nav>
     );
