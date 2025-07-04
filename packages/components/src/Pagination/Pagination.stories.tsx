@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { useState } from 'storybook/preview-api';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, within } from 'storybook/test';
 import {
   FieldGroup,
   Inline,
@@ -56,7 +56,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement, step }) => {
+  play: async ({ canvasElement, step, userEvent }) => {
     const canvas = within(canvasElement);
 
     await step('Select an item from pagination', async () => {
@@ -294,7 +294,7 @@ export const WithButtonLabels: Story = {
 
 export const DisabledPreviousButton: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const previousButton = canvas.getByLabelText('Page previous');
 
@@ -310,7 +310,7 @@ export const DisabledNextButton: Story = {
   args: {
     defaultPage: 9,
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const nextButton = canvas.getByLabelText('Page next');
 
@@ -326,7 +326,7 @@ export const UseOnChange: Story = {
   args: {
     onChange: fn(),
   },
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement, args, userEvent }) => {
     const canvas = within(canvasElement);
     const page2Button = canvas.getByLabelText('Page 2');
 

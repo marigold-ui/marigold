@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import { FieldGroup } from '../FieldBase/FieldGroup';
 import { Checkbox } from './Checkbox';
 
@@ -78,7 +78,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const checkbox = await canvas.findByRole('checkbox');
 

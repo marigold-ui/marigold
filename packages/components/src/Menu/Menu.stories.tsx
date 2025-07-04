@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, spyOn, userEvent, within } from 'storybook/test';
+import { expect, spyOn, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
@@ -117,7 +117,7 @@ export const Basic: Story = {
       <Menu.Item id="slytherin">Slytherin</Menu.Item>
     </Menu>
   ),
-  play: async ({ step }) => {
+  play: async ({ step, userEvent }) => {
     const canvas = within(document.body);
 
     await step('Open the menu', async () => {
@@ -161,7 +161,7 @@ export const OnActionMenu: Story = {
       </Menu>
     );
   },
-  play: async () => {
+  play: async ({ userEvent }) => {
     const canvas = within(document.body);
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
