@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Debug
         run: |
-          ls -al
+          pwd
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
