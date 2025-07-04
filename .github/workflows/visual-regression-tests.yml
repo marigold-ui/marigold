@@ -31,4 +31,4 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true
           storybookConfigDir: 'config/storybook/.storybook'
-          buildScriptName: 'build'
+          buildScriptName: 'build:storybook'
