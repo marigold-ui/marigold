@@ -8,10 +8,6 @@ jobs:
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Debug
-        run: |
-          cd ./config/storybook/.storybook
-          pwd
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -34,5 +30,5 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true
-          storybookConfigDir: './config/storybook/.storybook'
+          storybookConfigDir: 'config/storybook/.storybook'
           buildScriptName: 'build'
