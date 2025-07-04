@@ -25,10 +25,12 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Build Storybook
+        run: pnpm build:storybook
       - name: Run visual regression tests on chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true
           storybookConfigDir: 'config/storybook/.storybook'
-          buildScriptName: 'build:storybook'
+          storybookBuildDir: 'storybook-static'
