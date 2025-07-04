@@ -8,6 +8,9 @@ jobs:
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Debug
+        run: |
+          ls -al
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
