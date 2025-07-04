@@ -34,3 +34,4 @@ jobs:
           onlyChanged: true
           storybookConfigDir: 'config/storybook/.storybook'
           storybookBuildDir: 'storybook-static'
+          storybookBaseDir: 'config/storybook/.storybook'
