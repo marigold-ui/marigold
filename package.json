@@ -78,5 +78,8 @@
     "slack": "zx scripts/slack-release-notification.mjs --quiet",
     "prepare": "husky install",
     "postinstall": "pnpm build"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^4.0.1"
   }
 }
