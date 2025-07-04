@@ -10,6 +10,7 @@ jobs:
     steps:
       - name: Debug
         run: |
+          cd ./config/storybook/.storybook
           pwd
       - uses: actions/checkout@v4
         with:
@@ -34,3 +35,4 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true
           storybookConfigDir: './config/storybook/.storybook'
+          buildScriptName: 'build'
