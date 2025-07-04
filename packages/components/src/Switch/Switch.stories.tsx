@@ -74,6 +74,6 @@ export const Basic: Story = {
 
     await userEvent.click(button);
 
-    expect(button).toBeChecked();
+    await expect(button).toBeChecked();
   },
 };
