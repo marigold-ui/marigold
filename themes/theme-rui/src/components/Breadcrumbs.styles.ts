@@ -24,7 +24,7 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
     }
   ),
 
-  item: cva('inline-flex items-center gap-1'),
+  item: cva('inline-flex items-center gap-1 whitespace-nowrap'),
 
   link: cva('hover:underline text-link transition-colors'),
 
@@ -32,7 +32,17 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
 
   separator: cva('text-muted'),
 
-  ellipsis: cva(
-    'text-muted size-5 flex items-center justify-center cursor-default'
+  ellipsis: cva('relative inline-block'),
+
+  ellipsisButton: cva(
+    'inline-flex items-center px-2 py-1 text-link hover:underline cursor-pointer'
   ),
+
+  ellipsisList: cva(
+    'absolute z-10 mt-2 min-w-max rounded border bg-white p-1 text-sm shadow'
+  ),
+
+  ellipsisItem: cva('px-3 py-1 hover:bg-gray-100'),
+
+  ellipsisLink: cva('text-link hover:underline'),
 };

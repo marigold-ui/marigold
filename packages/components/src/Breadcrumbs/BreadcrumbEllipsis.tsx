@@ -1,20 +1,58 @@
-import { IconMore } from '@marigold/icons';
-import { cn } from '@marigold/system';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useClassNames } from '@marigold/system';
+
+interface BreadcrumbEllipsisProps extends React.ComponentProps<'span'> {
+  hiddenItems?: React.ReactNode[];
+}
 
 export const BreadcrumbEllipsis = ({
-  className,
+  hiddenItems = [],
   ...props
-}: React.ComponentProps<'span'>) => {
+}: BreadcrumbEllipsisProps) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  const onClickOutside = useCallback((e: MouseEvent) => {
+    if (ref.current && !ref.current.contains(e.target as Node)) {
+      setOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
+  }, [onClickOutside]);
+
+  const classNames = useClassNames({
+    component: 'Breadcrumbs',
+  });
+
   return (
-    <span
-      data-slot="breadcrumb-ellipsis"
-      role="presentation"
-      aria-hidden="true"
-      className={cn(className)}
-      {...props}
-    >
-      <IconMore size="small" />
-      <span className="sr-only">More</span>
+    <span ref={ref} className={classNames.ellipsis} {...props}>
+      <button
+        type="button"
+        className={classNames.ellipsisButton}
+        onClick={() => setOpen(!open)}
+      >
+        ...
+      </button>
+      {open && (
+        <ul className={classNames.ellipsisList}>
+          {hiddenItems.map((item, index) => {
+            if (!item || typeof item === 'boolean') return null;
+            const itemChildren =
+              typeof item === 'string' || typeof item === 'number'
+                ? item
+                : 'props' in (item as any) && (item as any).props?.children;
+
+            return (
+              <li key={index} className={classNames.ellipsisItem}>
+                {itemChildren}
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </span>
   );
 };
