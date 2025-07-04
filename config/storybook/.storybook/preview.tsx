@@ -11,6 +11,8 @@ import rui from '@marigold/theme-rui';
 import './../styles.css';
 
 // Helpers
+
+// Helpers
 // ---------------
 const THEME = {
   core,
@@ -52,12 +54,12 @@ export const decorators: any = [
       rui: rui.name,
       stacked: 'stacked',
     },
-    defaultTheme: core.name,
+    defaultTheme: rui.name,
     attributeName: 'data-theme',
   }),
 
   (Story: any, { globals, parameters }: any) => {
-    const theme = globals.theme || parameters.theme || 'core';
+    const theme = globals.theme || parameters.theme || 'rui';
 
     switch (theme) {
       case 'stacked': {
