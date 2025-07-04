@@ -41,15 +41,15 @@ const meta = {
         'Value representing the space between the two elements, for that we use tailwind tokens.',
     },
   },
+  args: {
+    space: 4,
+  },
 } satisfies Meta<typeof Container>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Base: Story = {
-  args: {
-    space: 4,
-  },
   render: args => (
     <Container {...args}>
       <Text>

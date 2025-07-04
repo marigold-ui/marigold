@@ -1,5 +1,5 @@
-import { useState } from '@storybook/preview-api';
 import type { StoryObj } from '@storybook/react';
+import { useState } from 'storybook/preview-api';
 import { Button } from '../Button';
 import { Menu } from '../Menu';
 import { Text } from '../Text';

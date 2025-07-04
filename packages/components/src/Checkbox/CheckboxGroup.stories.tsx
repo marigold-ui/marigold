@@ -1,6 +1,6 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { useState } from 'storybook/preview-api';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 
