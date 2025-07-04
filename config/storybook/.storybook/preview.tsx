@@ -40,7 +40,6 @@ export const decorators: any = [
   withThemeByDataAttribute({
     themes: {
       rui: rui.name,
-      stacked: 'stacked',
     },
     defaultTheme: rui.name,
     attributeName: 'data-theme',
