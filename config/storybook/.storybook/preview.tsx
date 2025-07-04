@@ -5,6 +5,8 @@ import rui from '@marigold/theme-rui';
 import './../styles.css';
 
 // Helpers
+
+// Helpers
 // ---------------
 const THEME = {
   rui,
