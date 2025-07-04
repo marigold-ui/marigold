@@ -65,6 +65,7 @@ const _FieldBase = <T extends ElementType>(
       ref={ref}
       className={cn(
         'group/field',
+        'flex flex-col',
         twWidth[width],
         classNames,
         className,
