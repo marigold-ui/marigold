@@ -9,6 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # 👇 Tells the checkout which commit hash to reference set-safe-directory: 'true'. s. https://www.chromatic.com/docs/github-actions/#support-for-environment-variables
+          ref: ${{ github.event.pull_request.head.ref }}
+        env:
+          CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.ref }}
+          CHROMATIC_SLUG: ${{ github.repository }}
       - uses: pnpm/action-setup@v4.0.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
         uses: actions/setup-node@v4
@@ -22,3 +30,4 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true
+          storybookConfigDir: 'config/storybook/.storybook'
