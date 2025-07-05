@@ -2,7 +2,8 @@ import type RAC from 'react-aria-components';
 import { Separator } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
-export interface DividerProps extends RAC.SeparatorProps {
+type RemovedProps = 'className' | 'style';
+export interface DividerProps extends Omit<RAC.SeparatorProps, RemovedProps> {
   variant?: string;
 }
 
