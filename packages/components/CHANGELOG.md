@@ -1,5 +1,25 @@
 # @marigold/components
 
+## 13.0.0
+
+### Major Changes
+
+- 9a5791c: docs([DST-914]): Update Divider docs to match new structure of component pages
+
+  **Breaking Change**: Removed `className` property on this component.
+
+### Minor Changes
+
+- 854e00b: refa([DST-871]): Enhance Inline component to dynamically align buttons with input fields when descriptions are present.
+
+### Patch Changes
+
+- 16f6dbb: fix[DST-812]: Migrate from UNSTABLE_portalContainer to UNSAFE_PortalProvider
+
+  Changed UNSTABLE_portalContainer to UNSAFE_PortalProvider as UNSTABLE_portalContainer is deprecated.
+
+  - @marigold/system@13.0.0
+
 ## 12.0.5
 
 ### Patch Changes

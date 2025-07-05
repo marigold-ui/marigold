@@ -1,5 +1,32 @@
 # @marigold/docs
 
+## 13.0.0
+
+### Minor Changes
+
+- 0d7f9db: docs([DST-815]):Updated token display to use RUI theme structure. Replaced deprecated Core and B2B token references with RUI semantic tokens that align with the current design system.
+
+### Patch Changes
+
+- 1db0d9c: docs([DST-911]): revise `<RouterProvider>` page to new structure
+- 9a5791c: docs([DST-914]): Update Divider docs to match new structure of component pages
+
+  **Breaking Change**: Removed `className` property on this component.
+
+- f235ce6: docs: Adding explaination for async loading in `Autocomplete` component docs page
+- Updated dependencies [0d7f9db]
+- Updated dependencies [9a5791c]
+- Updated dependencies [e31a116]
+- Updated dependencies [854e00b]
+- Updated dependencies [16f6dbb]
+  - @marigold/theme-docs@3.1.0
+  - @marigold/theme-rui@1.2.0
+  - @marigold/components@13.0.0
+  - @marigold/theme-b2b@30.0.8
+  - @marigold/theme-core@29.0.8
+  - @marigold/system@13.0.0
+  - @marigold/icons@1.3.14
+
 ## 12.0.5
 
 ### Patch Changes

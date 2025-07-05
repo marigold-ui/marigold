@@ -1,5 +1,25 @@
 # @marigold/theme-rui
 
+## 1.2.0
+
+### Minor Changes
+
+- 0d7f9db: docs([DST-815]):Updated token display to use RUI theme structure. Replaced deprecated Core and B2B token references with RUI semantic tokens that align with the current design system.
+
+### Patch Changes
+
+- 9a5791c: docs([DST-914]): Update Divider docs to match new structure of component pages
+
+  **Breaking Change**: Removed `className` property on this component.
+
+- e31a116: [DSTSUP-161]: The `<Multiselect>` matches now our default `<input>` styles in RUI.
+- 854e00b: refa([DST-871]): Enhance Inline component to dynamically align buttons with input fields when descriptions are present.
+- Updated dependencies [9a5791c]
+- Updated dependencies [854e00b]
+- Updated dependencies [16f6dbb]
+  - @marigold/components@13.0.0
+  - @marigold/system@13.0.0
+
 ## 1.1.5
 
 ### Patch Changes
