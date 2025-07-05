@@ -49,7 +49,7 @@ const Block = ({ children }: { children: ReactNode }) => (
 
 export const Basic: Story = {
   render: args => (
-    <Stack {...args} space={4}>
+    <Stack space={4} {...args}>
       <Headline level={2}>Heading</Headline>
       <Text>
         Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.

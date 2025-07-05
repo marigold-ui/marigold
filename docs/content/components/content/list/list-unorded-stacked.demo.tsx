@@ -1,28 +1,34 @@
-import { List } from '@marigold/components';
+import { Headline, List } from '@marigold/components';
 
 export default () => (
   <div className="p-4">
+    <Headline level="3">Upcoming Concerts</Headline>
     <List>
       <List.Item>
-        Crispy Chicken Burger
+        The Screaming Pixels – "Neon Nights Tour"
         <List>
-          <List.Item>Hähnchen Filet im Crunchy Cornflakes Mantel</List.Item>
+          <List.Item>📍 Hamburg – Neon Dome – July 22, 2025</List.Item>
+          <List.Item>📍 Berlin – Electric Arena – July 25, 2025</List.Item>
+          <List.Item>📍 Stuttgart – Soundhall – July 28, 2025</List.Item>
         </List>
       </List.Item>
+
       <List.Item>
-        Cream Cheese Chicken Burger
+        Orchestra Obscura – "Moonlight Symphonies"
         <List>
-          <List.Item>Hähnchen Filet im Crunchy Cornflakes Mantel</List.Item>
-          <List.Item>Rucola</List.Item>
-          <List.Item>Frischkäse</List.Item>
+          <List.Item>📍 Leipzig – Royal Hall – August 18, 2025</List.Item>
+          <List.Item>📍 Dresden – Opera House – August 20, 2025</List.Item>
         </List>
       </List.Item>
+
       <List.Item>
-        Farmer
+        Velvet Static – "Jazz Revival Sessions"
         <List>
-          <List.Item>Rindfleisch</List.Item>
-          <List.Item>Bacon</List.Item>
-          <List.Item>Spiegelei</List.Item>
+          <List.Item>📍 Munich – Blue Note Club – September 9, 2025</List.Item>
+          <List.Item>
+            📍 Cologne – Smooth Vibes Bar – September 11, 2025
+          </List.Item>
+          <List.Item>📍 Frankfurt – Lounge 88 – September 13, 2025</List.Item>
         </List>
       </List.Item>
     </List>

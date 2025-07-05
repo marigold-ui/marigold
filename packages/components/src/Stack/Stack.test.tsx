@@ -153,3 +153,18 @@ test('renders as div per default', () => {
   const stack = screen.getByTestId('stack');
   expect(stack instanceof HTMLDivElement).toBeTruthy();
 });
+
+test('supports rendering as list element', () => {
+  render(
+    <Stack data-testid="stack" asList>
+      <p>first</p>
+      <p>second</p>
+    </Stack>
+  );
+
+  const stack = screen.getByTestId('stack');
+  const listItems = screen.getAllByRole('listitem');
+
+  expect(stack instanceof HTMLUListElement).toBeTruthy();
+  expect(listItems[0] instanceof HTMLLIElement).toBeTruthy();
+});

@@ -1,6 +1,7 @@
 ---
 title: Stack
 caption: Display children vertically with giving space between.
+badge: updated
 ---
 
 The `<Stack>` component is a responsive layout component based on [CSS Flexbox](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox). The stack is basically a flexbox column that acts as a container that aligns its children vertically in new lines. The component should be used wherever you need to arrange elements stacked on top of each other.
@@ -14,6 +15,10 @@ The use of `<Stack>` is recommended if you have two or more elements that must b
 In this example you can see, the space prop ensures that each child is separated by the same space which maintains visual consistency.
 
 <ComponentDemo file="./stack-spacing.demo.tsx" />
+
+### Stack as list
+
+The `<Stack>` component can also be used to render a list of items. This is useful for screen readers and accessibility. To use the stack as a list, you need to set the `asList` property to `true`. This will render each child as a list item.
 
 ### Different alignment
 
