@@ -1,43 +1,46 @@
 ---
 title: Divider
 caption: Component to seperate content.
+badge: updated
 ---
 
 A `<Divider>` is a visual separator between two groups of content,
 e.g. groups of menu items or sections of a page.
 
-It has two specific variants given, `bold` and `section`. You can view some examples further down the page.
+## Anatomy
 
-## Import
+The `<Divider>` component contains a single element that can be used to create a horizontal or vertical line to separate content.
 
-```tsx
-import { Divider } from '@marigold/components';
-```
+<Image
+  src="/divider/divider-anatomy.jpg"
+  alt="Anatomy of divider"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
 
 ## Appearance
 
+<AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
 
-## Props
+## Usage
 
-<PropsTable component={title} />
-
-## Examples
-
-### Divider between Text
-
-This shows the default behavior of the `<Divider>`.
+You should use `<Divider>` to visually separate related content, such as sections in a settings page, items in a list, or actions in a toolbar. They help improve clarity and organization without adding semantic meaning. However, dividers should be used sparingly—only when spacing alone doesn’t provide enough separation. Avoid them if they create visual clutter or when semantic elements like headings or sections are more appropriate.
 
 <ComponentDemo file="./divider-text.demo.tsx" />
 
-### Section Divider variant
+### Accessibility
 
-The Example shows the `variant="section"` of the `<Divider>` component. It can be used when you want to seperate some sections like e.g. `<Menu.Items>`. It has a lighter color than the default.
+The `<Divider>` uses the ARIA role separator to indicate that it visually separates and distinguishes sections of content or groups of menu items.
 
-<ComponentDemo file="./divider-section.demo.tsx" />
+## Props
 
-### Bold Divider variant
+<StorybookHintMessage component={title} />
 
-The other variant which you can use is the `bold` one. This is a stronger line than the other variant and should be used if you want a striking seperator.
+<PropsTable component={title} />
 
-<ComponentDemo file="./divider-bold.demo.tsx" />
+## Alternative Components
+
+- **Stack**: If you need to create space between elements, consider using the `<Stack>` component instead of a divider. It provides spacing without the visual line.
