@@ -1,45 +1,25 @@
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import type { BreadcrumbsProps as RACBreadcrumbsProps } from 'react-aria-components';
 import { Breadcrumbs as RACBreadcrumbs } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons';
+import { Breadcrumb, BreadcrumbProps } from './Breadcrumb';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
-import { BreadcrumbItem } from './BreadcrumbsItem';
 
-export interface BreadcrumbsProps
+export interface BreadcrumbsListProps
   extends Omit<
     RACBreadcrumbsProps<object>,
     'className' | 'style' | 'children'
   > {
   variant?: string;
   size?: string;
-
-  /**
-   * Disables the breadcrumbs.
-   * @default false
-   */
   disabled?: RACBreadcrumbsProps<object>['isDisabled'];
-
-  /**
-   * Maximum number of visible items before the breadcrumbs collapse.
-   * @default 3
-   */
   maxVisibleItems?: number;
-
-  /**
-   * Type of separator between breadcrumb items.
-   * @default 'chevron'
-   * Options: 'chevron' | 'slash'
-   */
   separatorType?: 'chevron' | 'slash';
-
-  /**
-   * The breadcrumb items to be displayed.
-   */
-  children?: React.ReactNode[];
+  children: React.ReactNode | React.ReactNode[];
 }
 
-const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
+const _BreadcrumbsList = forwardRef<HTMLOListElement, BreadcrumbsListProps>(
   (
     {
       children,
@@ -58,7 +38,8 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       size,
     });
 
-    const items = children || [];
+    const items = React.Children.toArray(children);
+
     const total = items.length;
 
     const shouldCollapse = total > maxVisibleItems;
@@ -68,9 +49,9 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
     const collapsed = shouldCollapse
       ? [
           items[0],
-          <BreadcrumbItem key="ellipsis">
+          <Breadcrumb key="ellipsis">
             <BreadcrumbEllipsis hiddenItems={hiddenItems} />
-          </BreadcrumbItem>,
+          </Breadcrumb>,
           items[total - 1],
         ]
       : items;
@@ -86,27 +67,34 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
           {collapsed.map((item, index) => {
             const isLast = index === collapsed.length - 1;
             if (!item || typeof item === 'boolean') return null;
+
+            const breadcrumb = item as React.ReactElement<BreadcrumbProps>;
+
+            const href = breadcrumb.props?.href ?? undefined;
+
             const itemChildren =
               typeof item === 'string' || typeof item === 'number'
                 ? item
-                : 'props' in (item as any) && (item as any).props?.children;
+                : React.isValidElement(item)
+                  ? breadcrumb.props?.children
+                  : null;
 
             return (
-              <BreadcrumbItem key={index}>
-                {itemChildren}
+              <Breadcrumb key={index}>
+                <a href={href} className={classNames.link}>
+                  {itemChildren}
+                </a>
 
                 {!isLast && separatorType === 'chevron' && (
-                  <span aria-hidden="true" className={classNames.separator}>
-                    <ChevronRight />
-                  </span>
+                  <ChevronRight aria-hidden="true" size={14} />
                 )}
 
                 {!isLast && separatorType === 'slash' && (
-                  <span aria-hidden="true" className={classNames.separator}>
+                  <span className="px-1" aria-hidden="true">
                     /
                   </span>
                 )}
-              </BreadcrumbItem>
+              </Breadcrumb>
             );
           })}
         </RACBreadcrumbs>
@@ -115,4 +103,8 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
   }
 );
 
-export { _Breadcrumbs as Breadcrumbs };
+const Breadcrumbs = Object.assign(_BreadcrumbsList, {
+  List: _BreadcrumbsList,
+});
+
+export { Breadcrumbs };

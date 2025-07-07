@@ -1,2 +1,2 @@
-export * from './Breadcrumbs';
-export * from './BreadcrumbsItem';
+export * from './BreadcrumbsList';
+export * from './Breadcrumb';

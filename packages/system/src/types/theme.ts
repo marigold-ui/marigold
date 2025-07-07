@@ -39,12 +39,10 @@ export type Theme = {
       | 'item'
       | 'link'
       | 'current'
-      | 'separator'
       | 'ellipsis'
       | 'ellipsisButton'
       | 'ellipsisList'
-      | 'ellipsisItem'
-      | 'ellipsisLink',
+      | 'ellipsisItem',
       ComponentStyleFunction<string, string>
     >;
 
