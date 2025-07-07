@@ -17,7 +17,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         secondary:
           'border border-input bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground expanded:bg-hover',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+          'bg-purple-500 text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-hover hover:text-foreground',
         // only used for calendar in MonthListBox and YearListBox to have a hover over other options
         // TODO: Remove this in future and rethink the MonthListBox and YearListBox or use another variant
