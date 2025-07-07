@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { Children, ReactNode } from 'react';
 import type { GapSpaceProp } from '@marigold/system';
 import { alignment, cn, gapSpace } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
@@ -26,6 +26,12 @@ export interface StackProps extends GapSpaceProp, AriaRegionProps {
    * Vertical alignment for the children.
    */
   alignY?: keyof typeof alignment.vertical.alignmentY;
+  /**
+   * Prop to make the stack rendered as a list element.
+   * Useful for screen readers and accessibility.
+   * @default false
+   */
+  asList?: boolean;
 }
 
 // Component
@@ -36,10 +42,16 @@ export const Stack = ({
   stretch = false,
   alignX,
   alignY,
+  asList = false,
   ...props
 }: StackProps) => {
+  const Component = asList ? 'ul' : 'div';
+  const stackChildren = asList
+    ? Children.map(children, child => (child != null ? <li>{child}</li> : null))
+    : children;
+
   return (
-    <div
+    <Component
       className={cn(
         'flex flex-col',
         gapSpace[space],
@@ -49,7 +61,7 @@ export const Stack = ({
       )}
       {...props}
     >
-      {children}
-    </div>
+      {stackChildren}
+    </Component>
   );
 };
