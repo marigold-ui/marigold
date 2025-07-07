@@ -13,9 +13,28 @@ export interface BreadcrumbsListProps
   > {
   variant?: string;
   size?: string;
+
+  /**
+   * Disables the breadcrumbs.
+   * @default false
+   */
   disabled?: RACBreadcrumbsProps<object>['isDisabled'];
+
+  /**
+   * Maximum number of visible items before the breadcrumbs collapse.
+   * @default 3
+   */
   maxVisibleItems?: number;
+
+  /**
+   * Type of separator between breadcrumb items.
+   * @default 'chevron'
+   */
   separatorType?: 'chevron' | 'slash';
+
+  /**
+   * The breadcrumb items to be displayed.
+   */
   children: React.ReactNode | React.ReactNode[];
 }
 
@@ -81,9 +100,13 @@ const _BreadcrumbsList = forwardRef<HTMLOListElement, BreadcrumbsListProps>(
 
             return (
               <Breadcrumb key={index}>
-                <a href={href} className={classNames.link}>
-                  {itemChildren}
-                </a>
+                {href ? (
+                  <a href={href} className={classNames.link}>
+                    {itemChildren}
+                  </a>
+                ) : (
+                  itemChildren
+                )}
 
                 {!isLast && separatorType === 'chevron' && (
                   <ChevronRight aria-hidden="true" size={14} />
