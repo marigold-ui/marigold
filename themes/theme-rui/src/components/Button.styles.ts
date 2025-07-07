@@ -24,7 +24,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         text: 'hover:bg-hover',
       },
       size: {
-        default: 'h-button px-4 py-2 [&_svg]:size-4',
+        default: 'h-button px-20 py-2 [&_svg]:size-4',
         small: 'h-button-small px-3 text-xs [&_svg]:size-3.5',
         large: 'h-button-large px-8 [&_svg]:size-5',
         icon: 'size-button [&_svg]:size-4',
