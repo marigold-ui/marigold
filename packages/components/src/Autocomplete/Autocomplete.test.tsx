@@ -254,7 +254,7 @@ test('supports disabling suggestions', async () => {
   const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'a');
 
-  const spinach = await screen.findByText('Spinach');
+  const spinach = screen.getByRole('option', { name: 'Spinach' });
   expect(spinach).toHaveAttribute('aria-disabled', 'true');
 });
 

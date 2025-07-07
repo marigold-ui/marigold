@@ -301,9 +301,9 @@ test('allows to disable options', () => {
   fireEvent.click(button);
 
   const options = screen.getByRole('listbox');
-  const two = within(options).getByText('two');
+  const twoo = within(options).getByRole('option', { name: 'two' });
 
-  expect(two).toHaveAttribute('aria-disabled', 'true');
+  expect(twoo).toHaveAttribute('aria-disabled', 'true');
 });
 
 test('allows select to be required', () => {
@@ -357,7 +357,7 @@ test('supports default value via "defaultSelectedKey"', () => {
   fireEvent.click(button);
 
   const options = screen.getByRole('listbox');
-  const three = within(options).getByText('three');
+  const three = within(options).getByRole('option', { name: 'three' });
 
   expect(three).toHaveAttribute('aria-selected', 'true');
 });
