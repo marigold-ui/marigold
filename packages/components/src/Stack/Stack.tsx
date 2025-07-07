@@ -46,7 +46,7 @@ export const Stack = ({
   ...props
 }: StackProps) => {
   const Component = asList ? 'ul' : 'div';
-  const StackChildren = asList
+  const stackChildren = asList
     ? Children.map(children, child => (child != null ? <li>{child}</li> : null))
     : children;
 
@@ -61,7 +61,7 @@ export const Stack = ({
       )}
       {...props}
     >
-      {StackChildren}
+      {stackChildren}
     </Component>
   );
 };
