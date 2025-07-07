@@ -42,16 +42,16 @@ Note that in these scenarios, it often makes sense to adjust the root styles usi
 
 ```tsx
 import { Card, MarigoldProvider, Stack } from '@marigold/components';
-import b2b from '@marigold/theme-b2b';
-import rui from '@marigold/theme-rui';
+import ruiTheme from '@marigold/theme-rui';
+import customTheme from './custom-theme';
 
 export default () => (
   <MarigoldProvider theme={rui}>
     <Card p={4}>
       <Stack space={4}>
         This area is still using the <strong>rui theme</strong>.
-        <MarigoldProvider theme={b2b} className="bg-transparent">
-          This area is still using the <strong>b2b theme</strong>.
+        <MarigoldProvider theme={ruiTheme} className="bg-transparent">
+          This area is still using the <strong>rui theme</strong>.
         </MarigoldProvider>
       </Stack>
     </Card>

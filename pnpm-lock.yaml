@@ -217,12 +217,6 @@ importers:
       '@marigold/components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@marigold/theme-b2b':
-        specifier: workspace:*
-        version: link:../../themes/theme-b2b
-      '@marigold/theme-core':
-        specifier: workspace:*
-        version: link:../../themes/theme-core
       '@marigold/theme-rui':
         specifier: workspace:*
         version: link:../../themes/theme-rui
@@ -313,12 +307,6 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../packages/system
-      '@marigold/theme-b2b':
-        specifier: workspace:*
-        version: link:../themes/theme-b2b
-      '@marigold/theme-core':
-        specifier: workspace:*
-        version: link:../themes/theme-core
       '@marigold/theme-docs':
         specifier: workspace:*
         version: link:../themes/theme-docs
@@ -626,77 +614,6 @@ importers:
       '@types/react':
         specifier: 19.1.8
         version: 19.1.8
-
-  themes/theme-b2b:
-    dependencies:
-      '@marigold/components':
-        specifier: workspace:*
-        version: link:../../packages/components
-      '@marigold/system':
-        specifier: workspace:*
-        version: link:../../packages/system
-      '@marigold/theme-plugins':
-        specifier: workspace:*
-        version: link:../../packages/theme-plugins
-      tailwindcss-react-aria-components:
-        specifier: 2.0.0
-        version: 2.0.0(tailwindcss@4.1.8)
-    devDependencies:
-      '@marigold/tsconfig':
-        specifier: workspace:*
-        version: link:../../config/tsconfig
-      '@tailwindcss/postcss':
-        specifier: 4.1.8
-        version: 4.1.8
-      cssnano:
-        specifier: 7.0.7
-        version: 7.0.7(postcss@8.5.4)
-      postcss-cli:
-        specifier: 11.0.1
-        version: 11.0.1(jiti@2.4.2)(postcss@8.5.4)
-      postcss-prefix-selector:
-        specifier: 2.1.1
-        version: 2.1.1(postcss@8.5.4)
-      tailwindcss:
-        specifier: 4.1.8
-        version: 4.1.8
-      tsup:
-        specifier: 8.4.0
-        version: 8.4.0(@swc/core@1.11.24(@swc/helpers@0.5.17))(jiti@2.4.2)(postcss@8.5.4)(typescript@5.8.3)(yaml@2.7.1)
-
-  themes/theme-core:
-    dependencies:
-      '@marigold/components':
-        specifier: workspace:*
-        version: link:../../packages/components
-      '@marigold/system':
-        specifier: workspace:*
-        version: link:../../packages/system
-      '@marigold/theme-plugins':
-        specifier: workspace:*
-        version: link:../../packages/theme-plugins
-      tailwindcss-react-aria-components:
-        specifier: 2.0.0
-        version: 2.0.0(tailwindcss@4.1.8)
-    devDependencies:
-      '@marigold/tsconfig':
-        specifier: workspace:*
-        version: link:../../config/tsconfig
-      '@tailwindcss/postcss':
-        specifier: 4.1.8
-        version: 4.1.8
-      cssnano:
-        specifier: 7.0.7
-        version: 7.0.7(postcss@8.5.4)
-      postcss-cli:
-        specifier: 11.0.1
-        version: 11.0.1(jiti@2.4.2)(postcss@8.5.4)
-      tailwindcss:
-        specifier: 4.1.8
-        version: 4.1.8
-      tsup:
-        specifier: 8.4.0
-        version: 8.4.0(@swc/core@1.11.24(@swc/helpers@0.5.17))(jiti@2.4.2)(postcss@8.5.4)(typescript@5.8.3)(yaml@2.7.1)
 
   themes/theme-docs:
     dependencies:
