@@ -128,6 +128,7 @@ const _BreadcrumbsList = forwardRef<HTMLOListElement, BreadcrumbsListProps>(
 
 const Breadcrumbs = Object.assign(_BreadcrumbsList, {
   List: _BreadcrumbsList,
+  Item: Breadcrumb,
 });
 
 export { Breadcrumbs };
