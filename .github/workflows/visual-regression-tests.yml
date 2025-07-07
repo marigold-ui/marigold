@@ -14,6 +14,7 @@ jobs:
           # 👇 Tells the checkout which commit hash to reference set-safe-directory: 'true'. s. https://www.chromatic.com/docs/github-actions/#support-for-environment-variables
           ref: ${{ github.event.pull_request.head.ref }}
         env:
+          CI: true
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.ref }}
           CHROMATIC_SLUG: ${{ github.repository }}
