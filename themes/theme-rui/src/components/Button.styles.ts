@@ -17,14 +17,14 @@ export const Button: ThemeComponent<'Button'> = cva(
         secondary:
           'border border-input bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground expanded:bg-hover',
         destructive:
-          'bg-purple-500 text-destructive-foreground hover:bg-destructive/90',
+          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-hover hover:text-foreground',
         // only used for calendar in MonthListBox and YearListBox to have a hover over other options
         // TODO: Remove this in future and rethink the MonthListBox and YearListBox or use another variant
         text: 'hover:bg-hover',
       },
       size: {
-        default: 'h-button px-20 py-2 [&_svg]:size-4',
+        default: 'h-button px-4 py-2 [&_svg]:size-4',
         small: 'h-button-small px-3 text-xs [&_svg]:size-3.5',
         large: 'h-button-large px-8 [&_svg]:size-5',
         icon: 'size-button [&_svg]:size-4',
