@@ -1,5 +1,4 @@
 import {
-  FieldBase,
   Header,
   Headline,
   NumberField,
@@ -13,14 +12,26 @@ export default () => (
       <Headline level={3}>Confirm Guests</Headline>
       <Text>Who’s going on your trip?</Text>
     </Header>
-    <FieldBase label="Adults">
-      <NumberField defaultValue={3} minValue={0} maxValue={20} width="1/6" />
-    </FieldBase>
-    <FieldBase label="Children">
-      <NumberField defaultValue={0} minValue={0} maxValue={20} width="1/6" />
-    </FieldBase>
-    <FieldBase label="Infants">
-      <NumberField defaultValue={0} minValue={0} maxValue={20} width="1/6" />
-    </FieldBase>
+    <NumberField
+      defaultValue={3}
+      minValue={0}
+      maxValue={20}
+      width="1/6"
+      label="Adults"
+    />
+    <NumberField
+      defaultValue={0}
+      minValue={0}
+      maxValue={20}
+      width="1/6"
+      label="Children"
+    />
+    <NumberField
+      defaultValue={0}
+      minValue={0}
+      maxValue={20}
+      width="1/6"
+      label="Infants"
+    />
   </Stack>
 );

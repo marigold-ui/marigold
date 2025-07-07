@@ -1,6 +1,6 @@
 import { theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
-import { Suspense } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
 import { Analytics } from './_components/Analytics';
 import { PortalContaier } from './_components/PortalContainer';
@@ -25,7 +25,7 @@ export const metadata = {
 
 // Layout
 // ---------------
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <html
       lang="en"
@@ -33,7 +33,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     >
       <body className={`${fontSans.className} min-h-screen`}>
         <Suspense>
-          <MarigoldProvider theme={theme} className="min-h-screen">
+          <MarigoldProvider theme={theme} className="bg-bg-body min-h-screen">
             {children}
           </MarigoldProvider>
           <PortalContaier />
