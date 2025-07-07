@@ -36,3 +36,4 @@ jobs:
           storybookConfigDir: 'config/storybook/.storybook'
           storybookBuildDir: 'storybook-static'
           storybookBaseDir: 'config/storybook'
+          exitOnceUploaded: true
