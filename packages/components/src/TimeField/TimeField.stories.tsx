@@ -1,8 +1,8 @@
 import { parseTime } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, within } from '@storybook/test';
 import { useState } from 'react';
 import { TimeValue } from 'react-aria-components';
-import { expect, within } from 'storybook/test';
 import { TimeField } from './TimeField';
 
 const meta = {

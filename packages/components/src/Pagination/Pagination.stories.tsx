@@ -1,7 +1,7 @@
+import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, fn, within } from '@storybook/test';
 import React from 'react';
-import { useState } from 'storybook/preview-api';
-import { expect, fn, within } from 'storybook/test';
 import {
   Inline,
   Select,
