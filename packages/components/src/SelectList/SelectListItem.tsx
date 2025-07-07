@@ -48,10 +48,10 @@ const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
         ref={ref}
       >
         {({ selectionMode }) => (
-          <>
+          <div className="selection-indicator contents">
             <SelectionIndicator selectionMode={selectionMode} />
             {children}
-          </>
+          </div>
         )}
       </SelectListItem>
     );
