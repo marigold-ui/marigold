@@ -1,6 +1,6 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, spyOn, within } from '@storybook/test';
+import { useState } from 'storybook/preview-api';
+import { expect, spyOn, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
