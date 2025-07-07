@@ -110,10 +110,7 @@ Also with the support of single or multiple row actions, they make it convenient
 
 Secondary data in a cell is needed when additional context or details are necessary to fully understand the primary data. The primary data of a table cell should always be displayed clearly. It provides better readability and can improve the user experience. Too much secondary data can overwelm users and make the table complexer and harder to read.
 
-<ComponentDemo
-  file="./table-secondary-content.demo.tsx"
-  disableLabelWidth="true"
-/>
+<ComponentDemo file="./table-secondary-content.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -152,13 +149,13 @@ Secondary data in a cell is needed when additional context or details are necess
 
 If you have large data tables, setting the header to sticky can provide context when scrolling. To do this, set the `stickyHeader` property on the `<Table>` and wrap it in the [Scrollable](../layout/scrollable) component with a specified height, as shown in the example below.
 
-<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-fixed-header.demo.tsx" />
 
 ### Highlight data
 
 This is an example of how you can use the [`<Badge>`](../content/badge) within the `<Table>`. Badges can be used in a table to highlight or categorize certain data, making it easier for users to quickly identify key information. This is a common use case if you need to add status indicators, categorizations, labels or tags within the table.
 
-<ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-badge.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -183,7 +180,7 @@ The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, 
 
 To make async sorting more convenient, you can use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
 
-<ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-async.demo.tsx" />
 
 ### Handling numeric values
 
@@ -191,7 +188,7 @@ With our formatting helper components for dates and numeric values you can easil
 
 Also you see how to use the `align` property on the columns. With that you can set the content of a column to left, center or right.
 
-<ComponentDemo file="./table-numeric.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-numeric.demo.tsx" />
 
 <Do>
   <Do.Description>
@@ -208,7 +205,7 @@ Action cells are useful when you need to perform actions. For example, if you ne
 
 In this example an [`<ActionMenu>`](../overlay/menu) is used to make interaction possible. The table should only be used with one action cell at the end of the columns.
 
-<ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-action.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -232,7 +229,7 @@ Nested columns can be useful in tables when you need to organize complex or hier
 
 Note the usage of `isRowHeader` in the example below. It controls which columns are included in the [accessibility name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name) for each row. By default, only the first column is included, meaning the aria label will be on the first column only.
 
-<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-nested.demo.tsx" />
 
 <GuidelineTiles>
   <Do>

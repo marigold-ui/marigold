@@ -5,7 +5,7 @@ const Token = ({ name, value }: { name: string; value: string }) => (
   <>
     <code className="block text-xs">--{name}</code>
     <div
-      data-theme="core"
+      data-theme="rui"
       className="size-5 rounded-full bg-(--token) shadow-md"
       style={{ '--token': value } as any}
     />

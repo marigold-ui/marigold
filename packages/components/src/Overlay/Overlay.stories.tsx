@@ -39,11 +39,6 @@ export const OverlayTray: StoryObj<typeof Popover> = {
     return <TestTray open />;
   },
 };
-
-OverlayTray.parameters = {
-  theme: 'b2b',
-};
-
 export const OverlayModal: StoryObj<typeof Modal> = {
   render: () => (
     <Modal open>
