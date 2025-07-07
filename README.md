@@ -43,13 +43,13 @@ If you want to use a marigold theme you have to install them seperatly like:
 
 ```sh
 # with pnpm
-pnpm add @marigold/theme-b2b
+pnpm add @marigold/theme-rui
 
 # with npm
-npm install @marigold/theme-b2b --save
+npm install @marigold/theme-rui --save
 
 # with yarn
-yarn add @marigold/theme-b2b
+yarn add @marigold/theme-rui
 ```
 
 ## Usage 💡
@@ -60,9 +60,9 @@ Use the styles for your component from a global `theme` object. To provide the t
 // basic usage
 import React from 'react'
 import { MarigoldProvider, Text } from '@marigold/components'
-import b2bTheme from '@marigold/theme-b2b'
+import ruiTheme from '@marigold/theme-rui'
 
-<MarigoldProvider theme={b2bTheme}>
+<MarigoldProvider theme={ruiTheme}>
   <Text>Lorem ipsum</Text>
 </MarigoldProvider>
 ```

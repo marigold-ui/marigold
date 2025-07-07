@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { expect, within } from 'storybook/test';
-import { FieldGroup } from '../FieldBase/FieldGroup';
 import { Checkbox } from './Checkbox';
 
 const meta = {
@@ -58,7 +56,6 @@ const meta = {
         defaultValue: { summary: 'default' },
       },
       description: 'Padding y (top and bottom)',
-      if: { global: 'theme', neq: 'b2b' },
     },
   },
   args: {
@@ -86,12 +83,4 @@ export const Basic: Story = {
 
     expect(checkbox).toBeChecked();
   },
-};
-
-export const WithFieldGroup: Story = {
-  render: args => (
-    <FieldGroup labelWidth="100px">
-      <Checkbox {...args} />
-    </FieldGroup>
-  ),
 };

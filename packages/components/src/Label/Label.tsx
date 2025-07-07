@@ -1,7 +1,6 @@
 import type RAC from 'react-aria-components';
 import { Label } from 'react-aria-components';
-import { SVG, cn, createVar, useClassNames } from '@marigold/system';
-import { useFieldGroupContext } from '../FieldBase/FieldGroup';
+import { SVG, cn, useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className';
 export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
@@ -11,14 +10,9 @@ export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
 
 const _Label = ({ size, variant, children, ...props }: LabelProps) => {
   const classNames = useClassNames({ component: 'Label', size, variant });
-  const { labelWidth } = useFieldGroupContext();
 
   return (
-    <Label
-      {...props}
-      className={cn(classNames.container, 'inline-flex w-[var(--labelWidth)]')}
-      style={createVar({ labelWidth })}
-    >
+    <Label {...props} className={cn(classNames.container, 'inline-flex')}>
       {children}
       <SVG
         viewBox="0 0 24 24"
