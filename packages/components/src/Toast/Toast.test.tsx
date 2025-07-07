@@ -1,11 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { Toast, queue } from './Toast';
 
 describe('Toast', () => {
   afterEach(() => {
-    // Clean up the queue after each test
-    queue.clear && queue.clear();
+    queue.clear();
   });
 
   it('renders nothing if no toast is queued', () => {
@@ -16,36 +15,49 @@ describe('Toast', () => {
   it('shows a toast when added to the queue', async () => {
     render(<Toast />);
     queue.add({ title: 'Test', description: 'Beschreibung', variant: 'info' });
-    expect(screen.findByText('Test')).resolves.toBeInTheDocument();
-    expect(screen.findByText('Beschreibung')).resolves.toBeInTheDocument();
+    expect(await screen.findByText('Test')).toBeInTheDocument();
+    expect(await screen.findByText('Beschreibung')).toBeInTheDocument();
   });
 
-  it('renders different variants', async () => {
+  it('renders all variants without crashing', async () => {
     render(<Toast />);
-    queue.add({ title: 'Success', description: '', variant: 'success' });
-    expect(await screen.findByText('Success')).toBeInTheDocument();
-    // Add more checks for variant-specific icons or classes if needed
+    const variants = ['info', 'success', 'error', 'warning'] as const;
+    for (const variant of variants) {
+      queue.add({ title: variant, description: '', variant });
+      expect(await screen.findByText(variant)).toBeInTheDocument();
+      queue.clear();
+    }
   });
 
   it('closes the toast when close button is clicked', async () => {
     render(<Toast />);
     queue.add({ title: 'Closable', description: '', variant: 'info' });
-    const closeButton = await screen.findByRole('button');
+    const closeButton = await screen.findByRole('button', { name: /close/i });
     fireEvent.click(closeButton);
-    expect(screen.queryByText('Closable')).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.queryByText('Closable')).not.toBeInTheDocument()
+    );
   });
 
-  it('handles missing title or description gracefully', () => {
+  it('handles missing title or description gracefully', async () => {
     render(<Toast />);
     queue.add({ title: '', description: '', variant: 'info' });
-    // Should not throw and should render an empty toast or nothing
-    expect(screen.queryByRole('alert')).toBeInTheDocument();
+    // Should render an empty toast (no error thrown)
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
   });
 
-  it('handles invalid variant gracefully', () => {
+  it('handles invalid variant gracefully', async () => {
     render(<Toast />);
     // @ts-expect-error: testing invalid variant
     queue.add({ title: 'Invalid', description: '', variant: 'not-a-variant' });
-    expect(screen.findByText('Invalid')).resolves.toBeInTheDocument();
+    expect(await screen.findByText('Invalid')).toBeInTheDocument();
+  });
+
+  it('stacks multiple toasts', async () => {
+    render(<Toast />);
+    queue.add({ title: 'Toast 1', description: '', variant: 'info' });
+    queue.add({ title: 'Toast 2', description: '', variant: 'success' });
+    expect(await screen.findByText('Toast 1')).toBeInTheDocument();
+    expect(await screen.findByText('Toast 2')).toBeInTheDocument();
   });
 });

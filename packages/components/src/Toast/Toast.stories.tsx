@@ -3,27 +3,47 @@ import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
 import { Button } from '../Button';
 import { Toast, queue } from './Toast';
-import { addToastToQueue } from './ToastQueue';
+import { ToastContent } from './ToastContent';
+import { addToast } from './ToastQueue';
 
-const meta: Meta<typeof Toast> = {
+const meta: Meta = {
   title: 'Components/Toast',
-  component: Toast,
+
   args: {
-    position: 'top-right', // Default position
+    position: 'bottom-right', // Default position
     title: 'Dies ist eine Toast-Nachricht!',
     description: 'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
     variant: null,
     timeout: 0, // 0 means no timeout
   },
+  beforeEach: () => {
+    // Clear the toast queue before each story
+    queue.clear();
+  },
+
   argTypes: {
-    variant: {
-      control: { varaint: 'select' },
-      options: ['info', 'success', 'error', 'warning', null], // 'null' for default
+    position: {
+      control: { type: 'radio' },
+      options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+      description: 'Position of the toast on the screen',
+      defaultValue: 'bottom-right',
     },
-    title: { control: 'text' },
-    description: { control: 'text' },
+    variant: {
+      control: { type: 'select' },
+      options: ['info', 'success', 'error', 'warning', null], // 'null' for default
+      description: 'Variant of the toast, affects its appearance',
+      defaultValue: null,
+    },
+    title: { control: 'text', description: 'Title of the toast' },
+    description: {
+      control: 'text',
+      description: 'Optional description for the toast',
+    },
     timeout: {
       control: { type: 'number' },
+      description:
+        'Time in milliseconds after which the toast will automatically close. Use 0 for no timeout.',
+      defaultValue: 0,
     },
   },
 };
@@ -36,17 +56,15 @@ export const Default: Story = {
   render: args => {
     return (
       <>
-        <Toast position="top-right" />
+        <Toast position={args.position} />
+
         <Button
           onPress={() =>
-            addToastToQueue(
-              args.title,
-              args.description,
-              args.variant,
-              args.timeout
-            )
+            addToast(args.title, args.description, args.variant, args.timeout)
           }
-        ></Button>
+        >
+          Show Toast
+        </Button>
       </>
     );
   },
@@ -61,15 +79,10 @@ export const ToastShowsOnButtonClick: Story = {
   render: args => {
     return (
       <>
-        <Toast />
+        <Toast position={args.position} />
         <Button
           onPress={() =>
-            addToastToQueue(
-              args.title,
-              args.description,
-              args.variant,
-              args.timeout
-            )
+            addToast(args.title, args.description, args.variant, args.timeout)
           }
         >
           Show Toast
@@ -77,9 +90,9 @@ export const ToastShowsOnButtonClick: Story = {
       </>
     );
   },
-  play: async ({ canvasElement, step }) => {
+  play: async ({ step }) => {
     const canvas = within(window.document.body);
-    const button = await canvas.getByRole('button', { name: /show toast/i });
+    const button = canvas.getByRole('button', { name: /show toast/i });
 
     await step('Click the Show Toast button', async () => {
       // Act
@@ -94,10 +107,12 @@ export const ToastShowsOnButtonClick: Story = {
       ).toBeInTheDocument();
     });
     await step('Close the toast', async () => {
-      const closeButton = await canvas.getByRole('button', {
+      const closeButton = canvas.getByRole('button', {
         name: /Schließen/i,
       });
       await userEvent.click(closeButton);
+      // Wait briefly to allow the toast to disappear
+      await new Promise(resolve => setTimeout(resolve, 300));
       await expect(canvas.queryByText('Test Toast')).not.toBeInTheDocument();
     });
   },
@@ -112,13 +127,11 @@ export const ProgrammaticDismissal: Story = {
           onPress={() => {
             if (!toastKey) {
               setToastKey(
-                queue.add(
-                  {
-                    title: args.title,
-                    description: args.description,
-                    variant: args.variant,
-                  },
-                  { timeout: args.timeout }
+                addToast(
+                  args.title,
+                  args.description,
+                  args.variant,
+                  args.timeout
                 )
               );
             } else {
@@ -130,6 +143,31 @@ export const ProgrammaticDismissal: Story = {
           {toastKey ? 'Hide' : 'Show'} Toast
         </Button>
       </>
+    );
+  },
+};
+export const ToastContentTest: Story = {
+  args: {
+    title: 'Toast für a11y checks',
+    description: 'Dieser Toast dient nur zu Testzwecken.',
+    variant: 'info',
+    timeout: 0,
+  },
+
+  render: args => {
+    return (
+      <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
+        <ToastContent
+          toast={{
+            content: {
+              title: args.title,
+              description: args.description,
+              variant: args.variant,
+            },
+          }}
+          variant={args.variant}
+        />
+      </div>
     );
   },
 };

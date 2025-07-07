@@ -31,12 +31,10 @@ const positionMap: Record<ToastPosition, string> = {
   'top-right': 'fixed top-4 right-4 flex flex-col',
 };
 
-interface ToastProps {
+export interface ToastProps {
   position?: ToastPosition;
 }
 const _Toast = ({ position = 'bottom-right' }: ToastProps) => {
-  console.log(queue);
-
   return (
     <ToastRegion
       queue={queue}

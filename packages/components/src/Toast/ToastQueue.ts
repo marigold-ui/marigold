@@ -1,6 +1,6 @@
 import { queue } from './Toast';
 
-export function addToastToQueue(
+export function addToast(
   title: string,
   description?: string,
   variant?: 'info' | 'success' | 'error' | 'warning',
@@ -16,9 +16,9 @@ export function addToastToQueue(
   );
 }
 
-export function clearToastQueue() {
-  return queue.clear && queue.clear();
+export function clearToasts() {
+  queue.clear();
 }
-export function removeToastFromQueue(key: string) {
+export function removeToast(key: string) {
   return queue.close(key);
 }

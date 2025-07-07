@@ -1,6 +1,7 @@
 import React from 'react';
 import { UNSTABLE_ToastContent as ToastContents } from 'react-aria-components';
 import { Button, Text, UNSTABLE_Toast as Toast } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 import { Close } from '@marigold/icons';
 import { useClassNames } from '@marigold/system';
 import { Stack } from '../Stack';
@@ -60,8 +61,14 @@ const icons = {
   ),
 };
 
+interface MyToastContent {
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  variant?: keyof typeof icons;
+}
+
 interface ToastContentProps {
-  toast: any;
+  toast: RAC.QueuedToast<MyToastContent>;
   variant?: keyof typeof icons;
 }
 export const ToastContent = ({ toast, variant }: ToastContentProps) => {
