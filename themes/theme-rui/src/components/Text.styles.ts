@@ -3,6 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const Text: ThemeComponent<'Text'> = cva('', {
   variants: {
     variant: {
+      default: '',
       muted: 'text-muted-foreground',
     },
     size: {
@@ -24,6 +25,7 @@ export const Text: ThemeComponent<'Text'> = cva('', {
     },
   },
   defaultVariants: {
+    variant: 'default',
     size: 'default',
   },
 });

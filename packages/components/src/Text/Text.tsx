@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import type RAC from 'react-aria-components';
 import { Text } from 'react-aria-components';
 import {
@@ -18,10 +19,16 @@ import {
 import type { AriaLabelingProps } from '@marigold/types';
 
 // Props
-// ---------------
+// --------------
+type RemovedProps =
+  | 'elementType'
+  | keyof JSX.IntrinsicElements['div']
+  | keyof JSX.IntrinsicElements['span']
+  | keyof JSX.IntrinsicElements['p'];
+
 export interface TextProps
   extends AriaLabelingProps,
-    Omit<RAC.TextProps, 'elementType'>,
+    Omit<RAC.TextProps, RemovedProps>,
     TextAlignProp,
     FontSizeProp,
     FontWeightProp,
@@ -41,6 +48,10 @@ export interface TextProps
    * @default "div"
    */
   as?: 'div' | 'p' | 'span';
+  /**
+   *  A slot name for the component. Slots allow the component to receive props from a parent component.
+   */
+  slot?: string;
   variant?: string;
   size?: string;
 }
