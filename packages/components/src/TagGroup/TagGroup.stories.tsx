@@ -1,7 +1,6 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, within } from '@storybook/test';
-import userEvent from '@testing-library/user-event';
+import { useState } from 'storybook/preview-api';
+import { expect, fn, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Tag } from '.';
 import { Button } from '../Button';
@@ -31,7 +30,7 @@ export const Basic: Story = {
       <Tag id="shopping">Shopping</Tag>
     </Tag.Group>
   ),
-  play: async ({ args, canvas }) => {
+  play: async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByText('News'));
     await userEvent.click(canvas.getByText('Gaming'));
 
@@ -67,7 +66,7 @@ export const RemovableTags: Story = {
       </Stack>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, userEvent }) => {
     const news = canvas.getByText('News');
     const shopping = canvas.getByText('Shopping');
 

@@ -149,7 +149,9 @@ test('passes down variant and size', () => {
   expect(description).toBeInTheDocument();
 
   const datefield = screen.getByTestId('date-field');
-  expect(datefield.className).toMatchInlineSnapshot(`"group/field w-full"`);
+  expect(datefield.className).toMatchInlineSnapshot(
+    `"group/field flex flex-col w-full"`
+  );
 });
 
 test('renders without icons', () => {

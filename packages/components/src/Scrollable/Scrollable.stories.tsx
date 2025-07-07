@@ -1,6 +1,6 @@
-import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { useEffect } from 'react';
+import { useState } from 'storybook/preview-api';
 import { Card } from '../Card';
 import { Headline } from '../Headline';
 import { List } from '../List';

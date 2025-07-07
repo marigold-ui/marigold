@@ -1,27 +1,22 @@
 /* eslint-disable testing-library/no-node-access */
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { Inline } from './Inline';
+import * as stories from './Inline.stories';
+
+// Setup
+const { Basic, InputButtonAlignment } = composeStories(stories);
 
 test('default space is "none"', () => {
-  render(
-    <Inline>
-      <p>first</p>
-      <p>second</p>
-    </Inline>
-  );
-  const first = screen.getByText(/first/).parentElement;
+  render(<Basic />);
+  const first = screen.getByText(/Lirum/).parentElement;
   expect(first).toHaveClass(`gap-0`);
 });
 
 test('accepts and uses spacing from theme', () => {
-  render(
-    <Inline space={2}>
-      <p>first</p>
-      <p>second</p>
-    </Inline>
-  );
-  const first = screen.getByText(/first/).parentElement;
+  render(<Basic space={2} />);
+  const first = screen.getByText(/Lirum/).parentElement;
   expect(first).toHaveClass(`gap-2`);
 });
 
@@ -75,4 +70,13 @@ test('renders div per default', () => {
 
   const inline = screen.getByTestId('inline');
   expect(inline instanceof HTMLDivElement).toBeTruthy();
+});
+
+test('adjusts vertical alignment when input fields display helper text or error message', () => {
+  render(<InputButtonAlignment />);
+
+  const inline = screen.getByTestId('inline');
+  expect(inline.className).toMatchInlineSnapshot(
+    `"flex flex-wrap gap-6 items-end [&:has([slot=description])]:items-center [&:has([slot=errorMessage])]:items-center"`
+  );
 });
