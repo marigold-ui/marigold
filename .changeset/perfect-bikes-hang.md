@@ -1,6 +1,6 @@
 ---
 "@marigold/docs": patch
-"@marigold/components": patch
+"@marigold/components": minor 
 ---
 
 feat([DSTSUP-158]): List accessibility for `<Stack>` component
