@@ -1,5 +1,59 @@
 # @marigold/docs
 
+## 13.0.0
+
+### Major Changes
+
+- d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
+
+  - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
+  - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
+  - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
+  - If you are using either of these themes , please update your project to our lates release.
+
+### Minor Changes
+
+- 0d7f9db: docs([DST-815]):Updated token display to use RUI theme structure. Replaced deprecated Core and B2B token references with RUI semantic tokens that align with the current design system.
+
+### Patch Changes
+
+- 1db0d9c: docs([DST-911]): revise `<RouterProvider>` page to new structure
+- 146a8a2: docs: July release blog
+- 9a5791c: docs([DST-914]): Update Divider docs to match new structure of component pages
+
+  **Breaking Change**: Removed `className` property on this component.
+
+- d224a2f: [DST-721]: Deprecate B2B and Core Theme.
+
+  R.I.P core and b2b theme. The core and b2b theme will be no longer maintained but we keep their latest version.
+
+  Also in Marigold-Docs and Storybook it will be no longer possible to switch between the old themes.
+
+- f235ce6: docs: Adding explaination for async loading in `Autocomplete` component docs page
+- 430c266: feat([DSTSUP-158]): List accessibility for `<Stack>` component
+
+  The `<Stack>` component supports a new property `asList` making it possible to provide accessibility when using a `<Stack>` which behaves as a list element. The `<List>` has an updated documentation.
+
+- c33ad07: docs([DST-921]): Revise text component page to new component page structure.
+
+  **Breaking Change**: Some propertys has been removed, including `className` and HtMLElement props.
+
+- 98bea2e: docs([DST-917]): Revise Headline documentation
+- Updated dependencies [0d7f9db]
+- Updated dependencies [9a5791c]
+- Updated dependencies [e31a116]
+- Updated dependencies [854e00b]
+- Updated dependencies [430c266]
+- Updated dependencies [c33ad07]
+- Updated dependencies [98bea2e]
+- Updated dependencies [16f6dbb]
+- Updated dependencies [d224a2f]
+  - @marigold/theme-docs@3.1.0
+  - @marigold/theme-rui@1.2.0
+  - @marigold/components@13.0.0
+  - @marigold/system@13.0.0
+  - @marigold/icons@1.3.14
+
 ## 12.0.5
 
 ### Patch Changes
