@@ -41,6 +41,15 @@ You can also provide interactive actions for each item, such as buttons or links
   file="./selectlist-multiple-selection.demo.tsx"
 />
 
+### Disabled behavior
+
+The `<SelectList>` lets you disable certain items, which is helpful if you don’t want users to select them. You can use the `disabledBehavior` prop to control what happens with those disabled items. In the example below, we use `disabledBehavior="selection"`. This means the disabled items can’t be selected and won’t show a selection indicator — but you can still use their actions (like buttons or links inside them).
+
+<ComponentDemo
+  disableLabelWidth
+  file="./selectlist-disabledbehavior.demo.tsx"
+/>
+
 ## Props
 
 <StorybookHintMessage component={title} />
