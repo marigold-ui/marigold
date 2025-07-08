@@ -96,7 +96,11 @@ export const ToastContent = ({ toast }: ToastContentProps) => {
           {toast.content.description}
         </Text>
       </ToastContents>
-      <Button slot="close" className={classNames.closeButton}>
+      <Button
+        slot="close"
+        className={classNames.closeButton}
+        aria-label="Close toast"
+      >
         <Close size={16} />
       </Button>
     </Toast>

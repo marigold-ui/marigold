@@ -95,12 +95,14 @@ export const Basic: Story = {
     });
     await step('Close the toast', async () => {
       const closeButton = canvas.getByRole('button', {
-        name: 'Schließen',
+        name: 'Close toast',
       });
       await userEvent.click(closeButton);
       // Wait briefly to allow the toast to disappear
       await new Promise(resolve => setTimeout(resolve, 300));
-      await expect(canvas.queryByText('Test Toast')).not.toBeInTheDocument();
+      await expect(
+        canvas.queryByText('Dies ist eine Toast-Nachricht!')
+      ).not.toBeInTheDocument();
     });
   },
 };

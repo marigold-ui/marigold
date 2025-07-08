@@ -19,7 +19,7 @@ export const Toast: ThemeComponent<'Toast'> = {
   ]),
   closeButton: cva([
     '[grid-area:close] row-end-1',
-    'ml-2', // Abstand zum Titel
+    'ml-2',
     'flex items-center justify-center',
     'size-5 rounded transition-[color,box-shadow] outline-none',
     'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] text-muted-foreground hover:text-hover-foreground',

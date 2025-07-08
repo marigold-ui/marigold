@@ -18,7 +18,7 @@ describe('Toast', () => {
     render(<Basic />);
     const button = screen.getByRole('button', { name: 'Show Toast' });
     await userEvent.click(button);
-    const toast = screen.getByText('Show Toast');
+    const toast = screen.getByText('Dies ist eine Toast-Nachricht!');
     expect(toast).toBeInTheDocument();
   });
 });
