@@ -53,7 +53,7 @@
   },
   "scripts": {
     "start": "storybook dev -p 6006 -c .storybook/",
-    "build": "storybook build --disable-telemetry -c ./.storybook -o ../../storybook-static",
+    "build": "storybook build --disable-telemetry -c ./.storybook -o ../../storybook-static --stats-json",
     "test": "npx playwright install --with-deps && pnpm test-storybook --includeTags='component-test'"
   }
 }

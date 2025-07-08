@@ -291,6 +291,9 @@ export const WithButtonLabels: Story = {
 
 export const DisabledPreviousButton: Story = {
   tags: ['component-test'],
+  args: {
+    defaultPage: 2,
+  },
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const previousButton = canvas.getByLabelText('Page previous');
