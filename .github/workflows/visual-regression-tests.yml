@@ -1,10 +1,10 @@
 name: Visual-Regression-Tests
 on:
   push:
-    branches:
-      - changeset-release/main
-      - '!renovate/**' # shouldn't trigger when changes coming from renovate branches
-#  pull_request - could be used with turbosnap to keep snapshots low
+#     branches:
+#       - changeset-release/main
+#       - '!renovate/**' # shouldn't trigger when changes coming from renovate branches
+# #  pull_request - could be used with turbosnap to keep snapshots low
 
 jobs:
   chromatic:
