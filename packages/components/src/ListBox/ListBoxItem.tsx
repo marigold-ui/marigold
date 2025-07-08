@@ -5,7 +5,7 @@ import { useListBoxContext } from './Context';
 
 export type ListBoxItemProps = Omit<
   RAC.ListBoxItemProps,
-  'style' | 'className'
+  'style' | 'className' | 'children'
 > & {
   /**
    * The children of the component
