@@ -13,6 +13,7 @@ export default defineConfig({
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
     ],
     testTimeout: 30000,
+    // @ts-ignore
     coverage: {
       exclude: [
         '**/config/**',
