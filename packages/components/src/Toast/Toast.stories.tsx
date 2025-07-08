@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import { Button } from '../Button';
 import { Toast, queue } from './Toast';
 import { ToastContent } from './ToastContent';

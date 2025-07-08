@@ -2,7 +2,7 @@ import { Button, addToast } from '@marigold/components';
 
 export default () => (
   <>
-    <Button onPress={() => addToast('Simple Toast', undefined, 'success')}>
+    <Button onPress={() => addToast('Updated', undefined, 'info', 5000)}>
       Show Toast
     </Button>
   </>

@@ -1,2 +1,2 @@
 export * from './Toast';
-export { addToast } from './ToastQueue';
+export { addToast, clearToasts, removeToast } from './ToastQueue';
