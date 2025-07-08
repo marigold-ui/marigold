@@ -1,5 +1,36 @@
 # @marigold/storybook-config
 
+## 3.0.0
+
+### Major Changes
+
+- d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
+
+  - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
+  - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
+  - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
+  - If you are using either of these themes , please update your project to our lates release.
+
+### Patch Changes
+
+- d224a2f: [DST-721]: Deprecate B2B and Core Theme.
+
+  R.I.P core and b2b theme. The core and b2b theme will be no longer maintained but we keep their latest version.
+
+  Also in Marigold-Docs and Storybook it will be no longer possible to switch between the old themes.
+
+- Updated dependencies [0d7f9db]
+- Updated dependencies [9a5791c]
+- Updated dependencies [e31a116]
+- Updated dependencies [854e00b]
+- Updated dependencies [430c266]
+- Updated dependencies [c33ad07]
+- Updated dependencies [98bea2e]
+- Updated dependencies [16f6dbb]
+- Updated dependencies [d224a2f]
+  - @marigold/theme-rui@1.2.0
+  - @marigold/components@13.0.0
+
 ## 2.0.19
 
 ### Patch Changes
