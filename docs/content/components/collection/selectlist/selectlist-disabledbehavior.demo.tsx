@@ -21,12 +21,21 @@ export default () => {
       items={tickets}
       selectedKeys={selectedTickets}
       onChange={setSelectedTickets}
+      disabledBehavior="selection"
     >
       {(item: { id: string; name: string; price: number }) => (
-        <SelectList.Item id={item.id}>
+        <SelectList.Item id={item.id} disabled={item.id === 'child'}>
           <div>
-            <Text weight="bold">{item.name}</Text>
-            <Text fontSize="sm" color="foreground-muted">
+            <Text
+              weight="bold"
+              color={`${item.id === 'child' ? 'disabled' : 'foreground'}`}
+            >
+              {item.name}
+            </Text>
+            <Text
+              fontSize="sm"
+              color={`${item.id === 'child' ? 'disabled' : 'foreground-muted'}`}
+            >
               €{item.price}
             </Text>
           </div>
