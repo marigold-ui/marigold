@@ -49,9 +49,9 @@ const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
     const { classNames } = useSelectListContext();
     return (
       <SelectListItem
-        {...props}
         isDisabled={disabled}
         textValue={textValue}
+        {...props}
         className={cn('group-[layout=grid]/list:flex-row', classNames?.item)}
         ref={ref}
       >
