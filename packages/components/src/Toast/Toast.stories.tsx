@@ -77,7 +77,7 @@ export const Basic: Story = {
   },
   play: async ({ step }) => {
     const canvas = within(window.document.body);
-    const button = canvas.getByRole('button', { name: 'show toast' });
+    const button = canvas.getByRole('button', { name: /show toast/i });
 
     await step('Click the Show Toast button', async () => {
       await userEvent.click(button);
