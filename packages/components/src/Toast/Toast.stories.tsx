@@ -59,29 +59,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  render: args => {
-    return (
-      <>
-        <Toast position={args.position} />
-
-        <Button
-          onPress={() =>
-            addToast(args.title, args.description, args.variant, args.timeout)
-          }
-        >
-          Show Toast
-        </Button>
-      </>
-    );
-  },
-};
-export const ToastShowsOnButtonClick: Story = {
-  args: {
-    title: 'Test Toast',
-    description: 'Test Beschreibung',
-    variant: 'success',
-  },
+export const Basic: Story = {
   tags: ['component-test'],
   render: args => {
     return (
@@ -99,23 +77,25 @@ export const ToastShowsOnButtonClick: Story = {
   },
   play: async ({ step }) => {
     const canvas = within(window.document.body);
-    const button = canvas.getByRole('button', { name: /show toast/i });
+    const button = canvas.getByRole('button', { name: 'show toast' });
 
     await step('Click the Show Toast button', async () => {
-      // Act
       await userEvent.click(button);
     });
 
     await step('Toast with title and description appears', async () => {
-      // Assert
-      await expect(await canvas.findByText('Test Toast')).toBeInTheDocument();
       await expect(
-        await canvas.findByText('Test Beschreibung')
+        await canvas.findByText('Dies ist eine Toast-Nachricht!')
+      ).toBeInTheDocument();
+      await expect(
+        await canvas.findByText(
+          'Hier ist eine kurze Beschreibung der Toast-Nachricht.'
+        )
       ).toBeInTheDocument();
     });
     await step('Close the toast', async () => {
       const closeButton = canvas.getByRole('button', {
-        name: /Schließen/i,
+        name: 'Schließen',
       });
       await userEvent.click(closeButton);
       // Wait briefly to allow the toast to disappear
