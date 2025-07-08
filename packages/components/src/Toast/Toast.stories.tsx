@@ -24,7 +24,14 @@ const meta: Meta = {
   argTypes: {
     position: {
       control: { type: 'radio' },
-      options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+      options: [
+        'top-left',
+        'top-right',
+        'bottom-left',
+        'bottom-right',
+        'top',
+        'bottom',
+      ],
       description: 'Position of the toast on the screen',
       defaultValue: 'bottom-right',
     },
@@ -164,8 +171,8 @@ export const ToastContentTest: Story = {
               description: args.description,
               variant: args.variant,
             },
+            key: 'toast-key', // Unique key for the toast
           }}
-          variant={args.variant}
         />
       </div>
     );

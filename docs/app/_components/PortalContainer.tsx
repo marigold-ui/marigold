@@ -2,7 +2,7 @@
 
 import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
-export const PortalContaier = () => {
+export const PortalContainer = () => {
   const { current, themes } = useThemeSwitch();
   const theme = themes[current];
 

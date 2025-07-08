@@ -1,18 +1,18 @@
-/*import { Toast, ToastProps } from '@marigold/components';
-import { ToastContent } from '../../../../../packages/components/src/Toast/ToastContent';
+import { MyToastContent, Toast } from '@marigold/components';
 
-export default (props: ToastProps) => (
-  <>
-    <Toast position="top-right" {...props}></Toast>
-    <ToastContent
+export default (props: MyToastContent) => (
+  <div className="z-1">
+    <Toast position="bottom-right" {...props}></Toast>
+
+    <Toast.Content
       toast={{
         content: {
-          title: props.title || 'Default Toast Title',
-          description: props.description || 'Default Toast Description',
-          variant: props.variant || 'info',
+          title: 'Toast Title 2',
+          description: 'Toast Description',
+          variant: props.variant, // or "success", "error", "warning", "info"
         },
+        key: 'toast-key', // Unique key for the toast
       }}
-      variant={args.variant}
     />
-  </>
-);*/
+  </div>
+);

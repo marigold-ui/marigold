@@ -1,7 +1,5 @@
-import React from 'react';
 import { UNSTABLE_ToastContent as ToastContents } from 'react-aria-components';
 import { Button, Text, UNSTABLE_Toast as Toast } from 'react-aria-components';
-import type RAC from 'react-aria-components';
 import { Close } from '@marigold/icons';
 import { useClassNames } from '@marigold/system';
 import { Stack } from '../Stack';
@@ -60,23 +58,23 @@ const icons = {
     </svg>
   ),
 };
-
-interface MyToastContent {
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  variant?: keyof typeof icons;
+type ToastProp = {
+  content: {
+    title: string;
+    description?: string;
+    variant?: 'success' | 'info' | 'warning' | 'error';
+  };
+  key: string;
+};
+export interface ToastContentProps {
+  toast: ToastProp;
 }
-
-interface ToastContentProps {
-  toast: RAC.QueuedToast<MyToastContent>;
-  variant?: keyof typeof icons;
-}
-export const ToastContent = ({ toast, variant }: ToastContentProps) => {
+export const ToastContent = ({ toast }: ToastContentProps) => {
   const classNames = useClassNames({
     component: 'Toast',
     variant: toast.content.variant,
   });
-  const Icon = variant ? icons[variant] : null;
+  const Icon = toast.content.variant ? icons[toast.content.variant] : null;
   return (
     <Toast
       toast={toast}
