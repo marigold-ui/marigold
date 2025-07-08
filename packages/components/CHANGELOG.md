@@ -1,5 +1,41 @@
 # @marigold/components
 
+## 13.0.0
+
+### Major Changes
+
+- 9a5791c: docs([DST-914]): Update Divider docs to match new structure of component pages
+
+  **Breaking Change**: Removed `className` property on this component.
+
+- c33ad07: docs([DST-921]): Revise text component page to new component page structure.
+
+  **Breaking Change**: Some propertys has been removed, including `className` and HtMLElement props.
+
+- d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
+
+  - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
+  - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
+  - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
+  - If you are using either of these themes , please update your project to our lates release.
+
+### Minor Changes
+
+- 854e00b: refa([DST-871]): Enhance Inline component to dynamically align buttons with input fields when descriptions are present.
+- 430c266: feat([DSTSUP-158]): List accessibility for `<Stack>` component
+
+  The `<Stack>` component supports a new property `asList` making it possible to provide accessibility when using a `<Stack>` which behaves as a list element. The `<List>` has an updated documentation.
+
+### Patch Changes
+
+- 98bea2e: docs([DST-917]): Revise Headline documentation
+- 16f6dbb: fix[DST-812]: Migrate from UNSTABLE_portalContainer to UNSAFE_PortalProvider
+
+  Changed UNSTABLE_portalContainer to UNSAFE_PortalProvider as UNSTABLE_portalContainer is deprecated.
+
+- Updated dependencies [d224a2f]
+  - @marigold/system@13.0.0
+
 ## 12.0.5
 
 ### Patch Changes
