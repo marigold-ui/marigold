@@ -24,6 +24,12 @@ The latest Marigold release brings a range of enhancements across components, do
 
 ## Breaking Change
 
+**Deprecation of B2B and Core Themes**: As part of our ongoing efforts to streamline our themes and focus on the RUI theme, we have made the following changes:
+
+- **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
+- The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
+- All documentation and Storybook references to the B2B and Core themes, as well as `<FieldGroup>`, have been removed.
+
 **Text**: We removed certain properties from the `<Text>` component, including `className` and standard HTML attributes. This change is made to ensure a more consistent and predictable API for the component. If you were using these properties, please update your code accordingly.
 
 ## Improvements
