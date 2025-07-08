@@ -4,6 +4,7 @@ on:
     branches:
       - changeset-release/main
       - '!renovate/**' # shouldn't trigger when changes coming from renovate branches
+    types: [opened, edited, synchronize]
 #  pull_request - could be used with turbosnap to keep snapshots low
 
 jobs:
