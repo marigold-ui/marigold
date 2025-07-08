@@ -15,11 +15,16 @@ changed:
   - components/content/accordion
   - components/content/link
   - components/form/multiselect
+  - components/layout/inline
+  - components/content/text
+  - components/layout/stack
 ---
 
 The latest Marigold release brings a range of enhancements across components, documentation, and infrastructure—focused on improved accessibility, flexibility, and design consistency.
 
 ## Breaking Change
+
+**Text**: We removed certain properties from the `<Text>` component, including `className` and standard HTML attributes. This change is made to ensure a more consistent and predictable API for the component. If you were using these properties, please update your code accordingly.
 
 ## Improvements
 
@@ -39,12 +44,13 @@ Design Alignment:
 - **Badge** styles has been updated to match the latest design standards.
 - **Card** component now supports full width through the width property.
 - **Accordion** has been improved to allow more flexibility in the header.
-- **Inline** has been improved to dynamically align buttons with input fields when description or error message are present.
 
 New Features:
 
+- **Inline** has been improved to dynamically align buttons with input fields when description or error message are present.
 - **Grid** component now also supports alignment of items in the grid.
 - **Table** component has been updated, it now supports not anymore the right alignment of the last column per default. And you can use a new variant called `muted` to style the table in a more subtle way. Also you can align the content of the table items to the top position.
+- **Stack** component has been improved to support the `asList` property, allowing rendering list element as stack for improved accessibility.
 
 ### Documentation
 
