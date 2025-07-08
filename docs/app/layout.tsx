@@ -36,7 +36,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
           <MarigoldProvider theme={theme} className="bg-bg-body min-h-screen">
             {children}
           </MarigoldProvider>
-          <PortalContaier />
+          <PortalContainer />
         </Suspense>
         <Analytics />
       </body>
