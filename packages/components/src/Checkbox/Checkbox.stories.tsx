@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
-import React from 'react';
-import { FieldGroup } from '../FieldBase/FieldGroup';
+import { expect, within } from 'storybook/test';
 import { Checkbox } from './Checkbox';
 
 const meta = {
@@ -58,7 +56,6 @@ const meta = {
         defaultValue: { summary: 'default' },
       },
       description: 'Padding y (top and bottom)',
-      if: { global: 'theme', neq: 'b2b' },
     },
   },
   args: {
@@ -78,7 +75,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const checkbox = await canvas.findByRole('checkbox');
 
@@ -86,12 +83,4 @@ export const Basic: Story = {
 
     expect(checkbox).toBeChecked();
   },
-};
-
-export const WithFieldGroup: Story = {
-  render: args => (
-    <FieldGroup labelWidth="100px">
-      <Checkbox {...args} />
-    </FieldGroup>
-  ),
 };

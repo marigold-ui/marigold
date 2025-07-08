@@ -3,7 +3,6 @@ import {
   Button,
   Checkbox,
   Columns,
-  FieldGroup,
   Headline,
   Select,
   Stack,
@@ -40,7 +39,7 @@ export default () => {
   };
 
   return (
-    <FieldGroup labelWidth="100px">
+    <>
       <Headline level={2}>Account Registration</Headline>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack space={4}>
@@ -161,6 +160,6 @@ export default () => {
           </Button>
         </Stack>
       </form>
-    </FieldGroup>
+    </>
   );
 };

@@ -1,14 +1,9 @@
 'use client';
 
-import { useThemeSwitch } from '@/ui/ThemeSwitch';
-
-export const PortalContainer = () => {
-  const { current, themes } = useThemeSwitch();
-  const theme = themes[current];
-
+export const PortalContaier = () => {
   return (
-    <div data-theme={current}>
-      <div id="portalContainer" className={`not-prose ${theme.root?.()}`} />
+    <div data-theme="rui">
+      <div id="portalContainer" className="not-prose" />
     </div>
   );
 };
