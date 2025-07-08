@@ -1,6 +1,6 @@
 name: Visual-Regression-Tests
 on:
-  push:
+  pull_request:
     branches:
       - changeset-release/main
       - '!renovate/**' # shouldn't trigger when changes coming from renovate branches
