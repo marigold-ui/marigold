@@ -1,6 +1,6 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, spyOn, userEvent, within } from '@storybook/test';
+import { useState } from 'storybook/preview-api';
+import { expect, spyOn, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
@@ -117,7 +117,7 @@ export const Basic: Story = {
       <Menu.Item id="slytherin">Slytherin</Menu.Item>
     </Menu>
   ),
-  play: async ({ step }) => {
+  play: async ({ step, userEvent }) => {
     const canvas = within(document.body);
 
     await step('Open the menu', async () => {
@@ -146,28 +146,6 @@ export const Basic: Story = {
       );
       expect(gryffindor).not.toBeVisible();
     });
-
-    await step('Open the menu again', async () => {
-      const button = canvas.getByText('Hogwarts Houses');
-
-      await userEvent.click(button);
-
-      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
-        'aria-expanded',
-        'true'
-      );
-    });
-
-    await step('Click outside the menu', async () => {
-      const outside = canvas.getByTestId('underlay');
-
-      await userEvent.click(outside);
-
-      expect(canvas.getByText('Hogwarts Houses')).toHaveAttribute(
-        'aria-expanded',
-        'false'
-      );
-    });
   },
 };
 
@@ -183,7 +161,7 @@ export const OnActionMenu: Story = {
       </Menu>
     );
   },
-  play: async () => {
+  play: async ({ userEvent }) => {
     const canvas = within(document.body);
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 

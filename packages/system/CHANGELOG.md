@@ -1,5 +1,16 @@
 # @marigold/system
 
+## 13.0.0
+
+### Major Changes
+
+- d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
+
+  - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
+  - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
+  - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
+  - If you are using either of these themes , please update your project to our lates release.
+
 ## 12.0.5
 
 ### Patch Changes

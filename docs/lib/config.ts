@@ -8,7 +8,7 @@ export const baseUrl =
 // ---------------
 export const siteConfig = {
   version: process.env.version,
-  defaultTheme: 'core',
+  defaultTheme: 'rui',
   navigation: [
     {
       name: 'Getting Started',
@@ -129,26 +129,6 @@ export const links = [
         name: 'Code Repository',
         href: 'https://github.com/marigold-ui/marigold',
         keywords: ['code', 'github'],
-      },
-    ],
-  },
-];
-
-export const themeswitch = [
-  {
-    name: 'Theme Switch',
-    items: [
-      {
-        name: 'Switch to Core Theme',
-        theme: 'core',
-      },
-      {
-        name: 'Switch to B2B Theme',
-        theme: 'b2b',
-      },
-      {
-        name: 'Switch to RUI Theme',
-        theme: 'rui',
       },
     ],
   },

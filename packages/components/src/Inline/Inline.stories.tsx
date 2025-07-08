@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+import { Button } from '../Button';
+import { Stack } from '../Stack';
+import { Switch } from '../Switch';
+import { TextField } from '../TextField';
 import { Inline } from './Inline';
 
 const meta = {
@@ -39,11 +43,6 @@ const meta = {
       description: 'Set the Vertical Alignment',
     },
   },
-  args: {
-    alignX: 'left',
-    alignY: undefined,
-    space: undefined,
-  },
 } satisfies Meta<typeof Inline>;
 
 export default meta;
@@ -56,6 +55,10 @@ const Block = ({ children }: { children: ReactNode }) => (
 );
 
 export const Basic: Story = {
+  tags: ['component-test'],
+  args: {
+    alignX: 'left',
+  },
   render: args => (
     <Inline {...args}>
       <Block>Lirum</Block>
@@ -69,4 +72,35 @@ export const Basic: Story = {
       <Block>Löffelstiel!</Block>
     </Inline>
   ),
+};
+
+export const InputButtonAlignment: Story = {
+  tags: ['component-test'],
+  args: {
+    alignY: 'center',
+    space: 6,
+  },
+  render: args => {
+    const [description, setDescription] = useState('');
+
+    const toggleDescription = () => {
+      if (description) {
+        setDescription('');
+      } else {
+        setDescription('button is vertically algined with input');
+      }
+    };
+
+    return (
+      <Stack space={6}>
+        <Switch label="toggle description" onChange={toggleDescription} />
+        <Inline data-testid="inline" {...args}>
+          <div className="flex-1">
+            <TextField label="My label is great." description={description} />
+          </div>
+          <Button onClick={toggleDescription}>Submit</Button>
+        </Inline>
+      </Stack>
+    );
+  },
 };

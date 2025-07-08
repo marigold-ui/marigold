@@ -1,3 +1,3 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Body: ThemeComponent<'Body'> = cva('');
+export const Body: ThemeComponent<'Body'> = cva('bg-bg-body');

@@ -2,35 +2,19 @@
 
 import { Headline } from '@/ui';
 import {
-  BackgroundTokens,
-  Black,
-  BorderTokens,
+  BaseSemanticTokens,
   ColorPalettes,
-  OutlineTokens,
-  TextTokens,
-  White,
+  FeedbackSemanticTokens,
+  StateSemanticTokens,
 } from './ColorTable';
-import { useThemeSwitch } from './ThemeSwitch';
 
 export const ColorTokenTable = () => {
-  const { current } = useThemeSwitch();
-
-  if (!current) {
-    return null;
-  }
-
   return (
-    <div data-theme={current}>
-      <Headline level={3}>Brand</Headline>
-      <ColorPalettes name="brand" />
-      <Headline level={3}>Accent</Headline>
-      <ColorPalettes name="accent" />
-      <Headline level={3}>White</Headline>
-      <White />
-      <Headline level={3}>Black</Headline>
-      <Black />
-      <Headline level={3}>Gray</Headline>
-      <ColorPalettes name="gray" />
+    <div className="bg-transparent" data-theme={'rui'}>
+      <Headline level={3}>Stone</Headline>
+      <ColorPalettes name="stone" />
+      <Headline level={3}>Orange</Headline>
+      <ColorPalettes name="orange" />
       <Headline level={3}>Blue</Headline>
       <ColorPalettes name="blue" />
       <Headline level={3}>Yellow</Headline>
@@ -39,14 +23,12 @@ export const ColorTokenTable = () => {
       <ColorPalettes name="green" />
       <Headline level={3}>Red</Headline>
       <ColorPalettes name="red" />
-      <Headline level={3}>Text</Headline>
-      <TextTokens />
-      <Headline level={3}>Background</Headline>
-      <BackgroundTokens />
-      <Headline level={3}>Border</Headline>
-      <BorderTokens />
-      <Headline level={3}>Outline</Headline>
-      <OutlineTokens />
+      <Headline level={3}>Base Semantic Tokens</Headline>
+      <BaseSemanticTokens />
+      <Headline level={3}>Feedback Semantic Tokens</Headline>
+      <FeedbackSemanticTokens />
+      <Headline level={3}>State Semantic Tokens</Headline>
+      <StateSemanticTokens />
     </div>
   );
 };

@@ -1,10 +1,9 @@
 'use client';
 
-import { coreTheme } from '@/theme';
+import { ruiTheme } from '@/theme';
 import {
   Badge,
   Button,
-  FieldGroup,
   Grid,
   MarigoldProvider,
   NumberField,
@@ -28,7 +27,7 @@ const Block = ({
   <Grid.Area name={name}>
     <BlurFade
       key={name}
-      className="bg-bg-surface grid h-full place-items-center rounded-lg border border-black/5 px-2 py-2 shadow-xs"
+      className="grid h-full place-items-center rounded-lg border border-black/5 px-2 py-2 shadow-xs"
       delay={0.2 + order * 0.05}
       inView
     >
@@ -56,13 +55,13 @@ export const AccessibiltySection = () => {
         'tag tag tag tag',
       ];
   return (
-    <div data-theme="core" className="flex flex-col">
+    <div data-theme="rui" className="flex flex-col">
       <OverlayContainerProvider value="portalContainer">
-        <MarigoldProvider theme={coreTheme} className="bg-transparent">
+        <MarigoldProvider theme={ruiTheme} className="bg-transparent">
           <Grid
             areas={areas}
             columns={[3, 2, 2, 1]}
-            rows={['70px', '40px', '10px', '50px', '70px']}
+            rows={['100px', '40px', '10px', '100px', '100px']}
             space={2}
           >
             <Block name="select" order={1}>
@@ -75,38 +74,32 @@ export const AccessibiltySection = () => {
             ) : null}
             {isLargeScreeen ? (
               <Block name="radio" order={3}>
-                <FieldGroup labelWidth="75px">
-                  <Radio.Group label="Event type" defaultValue="concerts">
-                    <Radio value="concerts">Concerts</Radio>
-                    <Radio value="festival">Festival</Radio>
-                    <Radio value="sports">Sport</Radio>
-                    <Radio value="exhibition">Exhibition</Radio>
-                  </Radio.Group>
-                </FieldGroup>
+                <Radio.Group label="Event type" defaultValue="concerts">
+                  <Radio value="concerts">Concerts</Radio>
+                  <Radio value="festival">Festival</Radio>
+                  <Radio value="sports">Sport</Radio>
+                  <Radio value="exhibition">Exhibition</Radio>
+                </Radio.Group>
               </Block>
             ) : null}
             {isLargeScreeen ? (
               <Block name="switch" order={4}>
-                <FieldGroup labelWidth="0px">
-                  <Switch aria-label="WiFi" defaultSelected width="fit" />
-                </FieldGroup>
+                <Switch aria-label="WiFi" defaultSelected width="fit" />
               </Block>
             ) : null}
             <Block name="button" order={5}>
               <Button variant="primary">Buy ticket</Button>
             </Block>
             <Block name="number-field" order={7}>
-              <FieldGroup labelWidth="40px">
-                <NumberField
-                  label="Price"
-                  width={36}
-                  defaultValue={10}
-                  formatOptions={{
-                    style: 'currency',
-                    currency: 'EUR',
-                  }}
-                />
-              </FieldGroup>
+              <NumberField
+                label="Price"
+                width={36}
+                defaultValue={10}
+                formatOptions={{
+                  style: 'currency',
+                  currency: 'EUR',
+                }}
+              />
             </Block>
             <Block name="badge" order={6}>
               <Stack space={2} alignX="center">
@@ -116,14 +109,12 @@ export const AccessibiltySection = () => {
               </Stack>
             </Block>
             <Block name="tag" order={8}>
-              <FieldGroup labelWidth="40px">
-                <Tag.Group label="Perks" selectionMode="multiple">
-                  <Tag id="parking-pass">Parking Pass</Tag>
-                  <Tag id="vip">VIP Access</Tag>
-                  <Tag id="glamping">Glamping Package</Tag>
-                  <Tag id="shuttle-service">Shuttle Service</Tag>
-                </Tag.Group>
-              </FieldGroup>
+              <Tag.Group label="Perks" selectionMode="multiple">
+                <Tag id="parking-pass">Parking Pass</Tag>
+                <Tag id="vip">VIP Access</Tag>
+                <Tag id="glamping">Glamping Package</Tag>
+                <Tag id="shuttle-service">Shuttle Service</Tag>
+              </Tag.Group>
             </Block>
           </Grid>
         </MarigoldProvider>

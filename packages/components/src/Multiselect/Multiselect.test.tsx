@@ -57,11 +57,11 @@ test('Allow styling container & input via theme', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const field = screen.getByText('Ticket Categories').parentElement;
   expect(field?.className).toMatchInlineSnapshot(
-    `"grid grid-cols-[min-content_1fr] grid-rows-[min-content_min-content] gap-x-2 gap-y-0.5 group/field"`
+    `"space-y-2 group/field w-full"`
   );
 
   const input = screen.getByDisplayValue('General Admission');
   expect(input.className).toMatchInlineSnapshot(
-    `"bg-transparent flex-1 h-full leading-[22px] data-[focused]:outline-hidden outline-hidden border-0 disabled:cursor-not-allowed group-data-[icon]/input:pl-5 group-data-[action]/input:pr-8 placeholder:text-text-inverted-disabled"`
+    `"bg-transparent flex-1 h-full leading-loose data-[focused]:outline-hidden outline-hidden border-0 disabled:cursor-not-allowed group-data-[icon]/input:pl-5 group-data-[action]/input:pr-8 placeholder:text-placeholder"`
   );
 });
