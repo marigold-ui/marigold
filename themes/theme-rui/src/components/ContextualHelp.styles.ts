@@ -3,18 +3,25 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
   trigger: cva(
     [
-      'inline-flex items-center p-0.5 transition-colors justify-center hover:text-hover-foreground cursor-pointer hover:bg-gray-200 rounded-md focus:bg-gray-200',
+      'inline-flex items-center justify-center rounded-full transition-[color,box-shadow] hover:bg-hover hover:text-foreground',
+      '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+      'focus-visible:util-focus-ring outline-none',
+      'cursor-pointer',
     ],
     {
       variants: {
+        variant: {
+          help: '',
+          info: '',
+        },
         size: {
-          small: 'w-4 h-4',
-          medium: 'w-5 h-5',
-          large: 'w-8 h-8',
+          default: 'size-button [&_svg]:size-4',
+          small: 'size-button-small [&_svg]:size-3.5',
+          large: 'size-button-large [&_svg]:size-5',
         },
       },
       defaultVariants: {
-        size: 'medium',
+        size: 'default',
       },
     }
   ),
