@@ -30,46 +30,48 @@ Use `<ContextualHelp>` when users might need deeper guidance or context, especia
 
 ContextualHelp is ideal when brief tooltips are insufficient and users might benefit from more elaborate information. Avoid overusing it—too many help popovers can clutter the UI. Use tooltips for short, simple hints (e.g., labeling an icon), and reserve ContextualHelp for situations where users need deeper guidance or clarification. Aim to use it selectively on parts of your app where extra support truly adds value.
 
-<Do>
-  <Do.Figure>
-    <Image
-      width={700}
-      height={700}
-      unoptimized
-      alt="Use contextual help for fields that users frequently misunderstand."
-      src="/contextualhelp/contextualhelp-do.jpg"
-    />
-  </Do.Figure>
-  <Do.Description>
-    Use contextual help for fields that users frequently misunderstand.
-  </Do.Description>
-</Do>
-<Dont>
-  <Do.Figure>
-    <Image
-      width={700}
-      height={700}
-      unoptimized
-      alt="Don't use contextual help for obvious or self-explanatory features."
-      src="/contextualhelp/contextualhelp-dont.jpg"
-    />
-  </Do.Figure>
-  <Dont.Description>
-    Don't use contextual help for obvious or self-explanatory features.
-  </Dont.Description>
-</Dont>
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        alt="Use contextual help for fields that users frequently misunderstand."
+        src="/contextualhelp/contextualhelp-do.jpg"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use contextual help for fields that users frequently misunderstand.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        alt="Don't use contextual help for obvious or self-explanatory features."
+        src="/contextualhelp/contextualhelp-dont.jpg"
+      />
+    </Do.Figure>
+    <Dont.Description>
+      Don't use contextual help for obvious or self-explanatory features.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ### Custom placement
 
 The position of the popover can be customized using the placement prop. Available options include `top`, `bottom`, `left`, `right`, and aligned variants like `bottom start`.
 
-<ComponentDemo file="./contextualhelp-placement.demo.tsx" />
+<ComponentDemo file="./contextual-help-placement.demo.tsx" />
 
 ### Interactive content
 
 Unlike tooltips, ContextualHelp supports complex and interactive content inside the popover—such as links, buttons, or structured text.
 
-<ComponentDemo file="./contextualhelp-interactive.demo.tsx" />
+<ComponentDemo file="./contextual-help-interactive.demo.tsx" />
 
 ## Props
 
