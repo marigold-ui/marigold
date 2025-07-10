@@ -1,6 +1,6 @@
 name: Visual-Regression-Tests
 on:
-  deployment_status:
+  push:
     branches:
       - changeset-release/main
       - '!renovate/**' # shouldn't trigger when changes coming from renovate branches
@@ -9,9 +9,7 @@ on:
 jobs:
   chromatic:
     name: Visual Regression Tests
-    timeout-minutes: 60
     runs-on: ubuntu-latest
-    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.environment_url, 'storybook')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,3 +41,5 @@ jobs:
           storybookBuildDir: 'storybook-static'
           storybookBaseDir: 'config/storybook'
           debug: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
