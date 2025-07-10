@@ -137,6 +137,33 @@ export const ProgrammaticDismissal: Story = {
       </>
     );
   },
+  play: async ({ step }) => {
+    const canvas = within(window.document.body);
+    const button = canvas.getByRole('button', { name: /show toast/i });
+
+    await step('Click the Show Toast button', async () => {
+      await userEvent.click(button);
+    });
+
+    await step('Toast with title and description appears', async () => {
+      await expect(
+        await canvas.findByText('Dies ist eine Toast-Nachricht!')
+      ).toBeInTheDocument();
+      await expect(
+        await canvas.findByText(
+          'Hier ist eine kurze Beschreibung der Toast-Nachricht.'
+        )
+      ).toBeInTheDocument();
+    });
+    await step('Close the toast', async () => {
+      await userEvent.click(button);
+      // Wait briefly to allow the toast to disappear
+      await new Promise(resolve => setTimeout(resolve, 300));
+      await expect(
+        canvas.queryByText('Dies ist eine Toast-Nachricht!')
+      ).not.toBeInTheDocument();
+    });
+  },
 };
 export const ToastContentTest: Story = {
   args: {
