@@ -1,5 +1,12 @@
 # @marigold/theme-rui
 
+## 1.2.1
+
+### Patch Changes
+
+- @marigold/system@13.0.1
+- @marigold/components@13.0.1
+
 ## 1.2.0
 
 ### Minor Changes

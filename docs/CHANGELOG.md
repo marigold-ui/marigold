@@ -1,5 +1,17 @@
 # @marigold/docs
 
+## 13.0.1
+
+### Patch Changes
+
+- bb9a8a4: docs([DST-918]): Revise Icon page to match component pages
+- 164976c: docs([DST-920]): Revise SVG component page
+  - @marigold/system@13.0.1
+  - @marigold/components@13.0.1
+  - @marigold/icons@1.3.15
+  - @marigold/theme-docs@3.1.1
+  - @marigold/theme-rui@1.2.1
+
 ## 13.0.0
 
 ### Major Changes
