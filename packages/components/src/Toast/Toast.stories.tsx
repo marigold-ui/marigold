@@ -33,13 +33,14 @@ const meta: Meta = {
         'bottom',
       ],
       description: 'Position of the toast on the screen',
-      defaultValue: 'bottom-right',
+      table: {
+        defaultValue: { summary: 'bottom-right' },
+      },
     },
     variant: {
       control: { type: 'select' },
       options: ['info', 'success', 'error', 'warning', null], // 'null' for default
       description: 'Variant of the toast, affects its appearance',
-      defaultValue: null,
     },
     title: { control: 'text', description: 'Title of the toast' },
     description: {
@@ -50,7 +51,9 @@ const meta: Meta = {
       control: { type: 'number' },
       description:
         'Time in milliseconds after which the toast will automatically close. Use 0 for no timeout.',
-      defaultValue: 0,
+      table: {
+        defaultValue: { summary: '0' },
+      },
     },
   },
 };

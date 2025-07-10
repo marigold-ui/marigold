@@ -83,7 +83,7 @@ export const ToastContent = ({ toast }: ToastContentProps) => {
     >
       <ToastContents className={classNames.content}>
         {Icon && (
-          <div className={classNames.icon} slot="icon">
+          <div className={classNames.icon} slot="icon" data-testid="toast-icon">
             <Icon />
           </div>
         )}
