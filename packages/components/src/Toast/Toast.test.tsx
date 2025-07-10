@@ -5,7 +5,7 @@ import { act } from 'react';
 import * as stories from './Toast.stories';
 import { clearToasts } from './ToastQueue';
 
-const { Basic, ProgrammaticDismissal } = composeStories(stories);
+const { Basic } = composeStories(stories);
 
 afterEach(() => {
   clearToasts();
@@ -39,7 +39,7 @@ describe('Toast', () => {
   );
 
   test('clearToasts function works', async () => {
-    render(<ProgrammaticDismissal />);
+    render(<Basic />);
     const button = screen.getByRole('button', { name: 'Show Toast' });
     await userEvent.click(button);
     const toast = screen.getByText('Dies ist eine Toast-Nachricht!');
