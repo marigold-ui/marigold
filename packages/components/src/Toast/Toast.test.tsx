@@ -2,7 +2,6 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react';
-import { MockInstance, vi } from 'vitest';
 import * as stories from './Toast.stories';
 import { clearToasts } from './ToastQueue';
 
