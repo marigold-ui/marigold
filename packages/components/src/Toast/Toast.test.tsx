@@ -7,12 +7,8 @@ import * as stories from './Toast.stories';
 import { clearToasts } from './ToastQueue';
 
 const { Basic, ProgrammaticDismissal } = composeStories(stories);
-let warnMock: MockInstance;
-beforeEach(() => {
-  warnMock = vi.spyOn(console, 'warn').mockImplementation(() => null);
-});
+
 afterEach(() => {
-  warnMock.mockRestore();
   clearToasts();
 });
 

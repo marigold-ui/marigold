@@ -2,17 +2,18 @@ import {
   UNSTABLE_ToastQueue as ToastQueue,
   UNSTABLE_ToastRegion as ToastRegion,
 } from 'react-aria-components';
+import type RAC from 'react-aria-components';
 import { flushSync } from 'react-dom';
 import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { usePortalContainer } from '../Provider';
 import { ToastContent } from './ToastContent';
 
-export interface MyToastContent {
+export interface ToastContents {
   title: string;
   description?: string;
   variant?: 'info' | 'success' | 'error' | 'warning';
 }
-export const queue = new ToastQueue<MyToastContent>({
+export const queue = new ToastQueue<ToastContents>({
   // Wrap state updates in a CSS view transition.
   wrapUpdate(fn) {
     if ('startViewTransition' in document) {
@@ -24,6 +25,9 @@ export const queue = new ToastQueue<MyToastContent>({
     }
   },
 });
+
+type RemovedProps = 'children' | 'className' | 'style' | 'queue';
+
 type ToastPosition =
   | 'bottom-left'
   | 'bottom-right'
@@ -42,7 +46,8 @@ const positionMap: Record<ToastPosition, string> = {
     'fixed bottom-4 left-1/2 right-auto -translate-x-1/2 flex flex-col-reverse items-center w-auto align-middle',
 };
 
-export interface ToastProps {
+export interface ToastProps
+  extends Omit<RAC.ToastRegionProps<object>, RemovedProps> {
   position?: ToastPosition;
 }
 const _Toast = ({ position = 'bottom-right' }: ToastProps) => {

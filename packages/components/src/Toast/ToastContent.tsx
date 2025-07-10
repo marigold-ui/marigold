@@ -1,7 +1,7 @@
 import { UNSTABLE_ToastContent as ToastContents } from 'react-aria-components';
-import { Button, Text, UNSTABLE_Toast as Toast } from 'react-aria-components';
-import { Close } from '@marigold/icons';
+import { Text, UNSTABLE_Toast as Toast } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
+import { CloseButton } from '../CloseButton';
 import { Stack } from '../Stack';
 
 const icons = {
@@ -96,13 +96,11 @@ export const ToastContent = ({ toast }: ToastContentProps) => {
           {toast.content.description}
         </Text>
       </ToastContents>
-      <Button
-        slot="close"
+      <CloseButton
         className={classNames.closeButton}
         aria-label="Close toast"
-      >
-        <Close size={16} />
-      </Button>
+        slot="close"
+      ></CloseButton>
     </Toast>
   );
 };

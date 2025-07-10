@@ -1,18 +1,46 @@
-import { MyToastContent, Toast } from '@marigold/components';
+import { Toast, ToastContents } from '@marigold/components';
 
-export default (props: MyToastContent) => (
-  <div className="z-1">
-    <Toast position="bottom-right" {...props}></Toast>
+const variantContent: Record<string, { title: string; description: string }> = {
+  success: {
+    title: 'Booking Confirmed!',
+    description:
+      'Your ticket has been successfully booked. Check your email for details.',
+  },
+  error: {
+    title: 'Booking Failed',
+    description:
+      'There was a problem processing your booking. Please try again.',
+  },
+  warning: {
+    title: 'Limited Availability',
+    description: 'Hurry! Only a few tickets are left for your selected event.',
+  },
+  info: {
+    title: 'Booking Information',
+    description: 'You can book up to 5 tickets per transaction.',
+  },
+  default: {
+    title: 'Notification',
+    description: 'Here is a general notification about your booking.',
+  },
+};
 
-    <Toast.Content
-      toast={{
-        content: {
-          title: props.variant + ' toast title',
-          description: props.variant + ' toast description',
-          variant: props.variant, // or "success", "error", "warning", "info"
-        },
-        key: 'toast-key', // Unique key for the toast
-      }}
-    />
-  </div>
-);
+export default (props: ToastContents) => {
+  const content = variantContent[props.variant ?? 'info'];
+
+  return (
+    <div className="z-1">
+      <Toast position="bottom-right" {...props} />
+      <Toast.Content
+        toast={{
+          content: {
+            title: content.title,
+            description: content.description,
+            variant: props.variant,
+          },
+          key: 'toast-key',
+        }}
+      />
+    </div>
+  );
+};
