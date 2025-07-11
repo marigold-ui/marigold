@@ -4,7 +4,7 @@ import { Text } from '../Text';
 import { VisuallyHidden } from './VisuallyHidden';
 
 const meta = {
-  title: 'Components/Hidden',
+  title: 'Components/VisuallyHidden',
   component: VisuallyHidden,
 } satisfies Meta<typeof VisuallyHidden>;
 
