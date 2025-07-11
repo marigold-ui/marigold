@@ -1,6 +1,5 @@
 #!/usr/bin/env zx
 // Registry of demos ideas is based on https://github.com/shadcn/ui !
-
 /* global fs */
 import path, { basename } from 'path';
 import { glob } from 'zx';
