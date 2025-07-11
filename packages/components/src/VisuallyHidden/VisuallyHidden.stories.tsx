@@ -4,15 +4,21 @@ import { Text } from '../Text';
 import { VisuallyHidden } from './VisuallyHidden';
 
 const meta = {
-  title: 'Components/Hidden',
+  title: 'Components/VisuallyHidden',
   component: VisuallyHidden,
+  argTypes: {
+    children: {
+      control: { type: 'text' },
+      description: 'Children of the Visually Hidden.',
+    },
+  },
 } satisfies Meta<typeof VisuallyHidden>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: ({ children, ...args }) => (
+  render: ({ ...args }) => (
     <>
       <Text>The Text below is visually hidden</Text>
       <VisuallyHidden {...args}>Invisible!</VisuallyHidden>
