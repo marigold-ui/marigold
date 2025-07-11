@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Breadcrumb } from './Breadcrumb';
-import { Breadcrumbs } from './BreadcrumbsList';
+import { Breadcrumbs } from './Breadcrumbs';
 
 const theme: Theme = {
   name: 'test',
@@ -23,7 +23,6 @@ const theme: Theme = {
       item: cva('inline-flex items-center gap-1 whitespace-nowrap'),
       link: cva('hover:underline text-foreground'),
       current: cva('font-medium'),
-      ellipsis: cva('relative inline-block'),
       ellipsisButton: cva('inline-flex items-center px-2 py-1 cursor-pointer'),
       ellipsisList: cva(
         'absolute z-10 mt-2 min-w-max rounded border bg-white p-1 text-sm shadow'

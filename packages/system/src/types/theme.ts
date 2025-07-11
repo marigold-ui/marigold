@@ -39,7 +39,6 @@ export type Theme = {
       | 'item'
       | 'link'
       | 'current'
-      | 'ellipsis'
       | 'ellipsisButton'
       | 'ellipsisList'
       | 'ellipsisItem',

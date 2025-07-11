@@ -1,12 +1,11 @@
-import React from 'react';
 import { Breadcrumbs } from '@marigold/components';
 
-export const BreadcrumbsAppearanceDemo = () => {
+export default () => {
   return (
-    <Breadcrumbs.List>
+    <Breadcrumbs>
       <Breadcrumbs.Item>Home</Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb 1</Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb 2</Breadcrumbs.Item>
-    </Breadcrumbs.List>
+    </Breadcrumbs>
   );
 };

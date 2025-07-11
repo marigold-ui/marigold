@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Breadcrumbs } from './BreadcrumbsList';
+import { Breadcrumbs } from './Breadcrumbs';
 
 const meta = {
   title: 'Components/Breadcrumbs',
@@ -43,11 +43,11 @@ export const Basic: Story = {
   },
   tags: ['component-test'],
   render: args => (
-    <Breadcrumbs.List {...args}>
+    <Breadcrumbs {...args}>
       <Breadcrumbs.Item>Home</Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb1</Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb2</Breadcrumbs.Item>
-    </Breadcrumbs.List>
+    </Breadcrumbs>
   ),
 };
 
@@ -57,13 +57,13 @@ export const BasicWithLinks: Story = {
   },
   tags: ['component-test'],
   render: args => (
-    <Breadcrumbs.List {...args}>
+    <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
       <Breadcrumbs.Item href="https://marigold-ui.io">
         Breadcrumb1
       </Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb2</Breadcrumbs.Item>
-    </Breadcrumbs.List>
+    </Breadcrumbs>
   ),
 };
 
@@ -73,12 +73,12 @@ export const CollapsedText: Story = {
   },
   tags: ['component-test'],
   render: args => (
-    <Breadcrumbs.List {...args}>
+    <Breadcrumbs {...args}>
       <Breadcrumbs.Item>Home</Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb1</Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb2</Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb3</Breadcrumbs.Item>
-    </Breadcrumbs.List>
+    </Breadcrumbs>
   ),
 };
 
@@ -88,7 +88,7 @@ export const CollapsedWithLinks: Story = {
   },
   tags: ['component-test'],
   render: args => (
-    <Breadcrumbs.List {...args}>
+    <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
       <Breadcrumbs.Item href="https://marigold-ui.io">
         Breadcrumb1
@@ -97,7 +97,7 @@ export const CollapsedWithLinks: Story = {
         Breadcrumb2
       </Breadcrumbs.Item>
       <Breadcrumbs.Item>Breadcrumb3</Breadcrumbs.Item>
-    </Breadcrumbs.List>
+    </Breadcrumbs>
   ),
 };
 
@@ -107,12 +107,12 @@ export const ManyItemsBreadcrumbs: Story = {
   },
   tags: ['component-test'],
   render: args => (
-    <Breadcrumbs.List {...args}>
+    <Breadcrumbs {...args}>
       {[...Array(20).keys()].map(i => (
         <Breadcrumbs.Item key={i} href={`https://marigold-ui.io/`}>
           Breadcrumb {i + 1}
         </Breadcrumbs.Item>
       ))}
-    </Breadcrumbs.List>
+    </Breadcrumbs>
   ),
 };
