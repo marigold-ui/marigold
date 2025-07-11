@@ -10,7 +10,7 @@ const { Basic } = composeStories(stories);
 afterEach(() => {
   clearToasts();
 });
-
+beforeEach(async () => {});
 describe('Toast', () => {
   test('renders without crashing', async () => {
     render(<Basic />);

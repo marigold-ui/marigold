@@ -8,12 +8,13 @@ import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { usePortalContainer } from '../Provider';
 import { ToastContent } from './ToastContent';
 
-export interface ToastContents {
+export interface ToastContent {
   title: string;
   description?: string;
   variant?: 'info' | 'success' | 'error' | 'warning';
 }
-export const queue = new ToastQueue<ToastContents>({
+
+export const queue = new ToastQueue<ToastContent>({
   // Wrap state updates in a CSS view transition.
   wrapUpdate(fn) {
     if ('startViewTransition' in document) {
@@ -50,6 +51,7 @@ export interface ToastProps
   extends Omit<RAC.ToastRegionProps<object>, RemovedProps> {
   position?: ToastPosition;
 }
+
 const _Toast = ({ position = 'bottom-right' }: ToastProps) => {
   const portal = usePortalContainer();
   return (
@@ -65,4 +67,3 @@ const _Toast = ({ position = 'bottom-right' }: ToastProps) => {
 };
 
 export { _Toast as Toast };
-_Toast.Content = ToastContent;

@@ -8,19 +8,6 @@ import { addToast } from './ToastQueue';
 
 const meta: Meta = {
   title: 'Components/Toast',
-
-  args: {
-    position: 'bottom-right', // Default position
-    title: 'Dies ist eine Toast-Nachricht!',
-    description: 'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
-    variant: null,
-    timeout: 0, // 0 means no timeout
-  },
-  beforeEach: () => {
-    // Clear the toast queue before each story
-    queue.clear();
-  },
-
   argTypes: {
     position: {
       control: { type: 'radio' },
@@ -39,7 +26,7 @@ const meta: Meta = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['info', 'success', 'error', 'warning', null], // 'null' for default
+      options: ['info', 'success', 'error', 'warning', 'default'],
       description: 'Variant of the toast, affects its appearance',
     },
     title: { control: 'text', description: 'Title of the toast' },
@@ -56,6 +43,17 @@ const meta: Meta = {
       },
     },
   },
+  args: {
+    position: 'bottom-right',
+    title: 'Dies ist eine Toast-Nachricht!',
+    description: 'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
+    variant: 'default',
+    timeout: 0,
+  },
+  beforeEach: () => {
+    // Clear the toast queue before each story
+    queue.clear();
+  },
 };
 
 export default meta;
@@ -64,15 +62,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  render: args => {
+  render: ({ position, title, description, variant, timeout }) => {
     return (
       <>
-        <Toast position={args.position} />
-        <Button
-          onPress={() =>
-            addToast(args.title, args.description, args.variant, args.timeout)
-          }
-        >
+        <Toast position={position} />
+        <Button onPress={() => addToast(title, description, variant, timeout)}>
           Show Toast
         </Button>
       </>
@@ -109,23 +103,17 @@ export const Basic: Story = {
     });
   },
 };
-export const ProgrammaticDismissal: Story = {
-  render: args => {
+
+export const ToggleToast: Story = {
+  render: ({ position, title, description, variant, timeout }) => {
     const [toastKey, setToastKey] = React.useState<string | null>(null);
     return (
       <>
-        <Toast />
+        <Toast position={position} />
         <Button
           onPress={() => {
             if (!toastKey) {
-              setToastKey(
-                addToast(
-                  args.title,
-                  args.description,
-                  args.variant,
-                  args.timeout
-                )
-              );
+              setToastKey(addToast(title, description, variant, timeout));
             } else {
               queue.close(toastKey);
               setToastKey(null);
@@ -137,6 +125,7 @@ export const ProgrammaticDismissal: Story = {
       </>
     );
   },
+
   play: async ({ step }) => {
     const canvas = within(window.document.body);
     const button = canvas.getByRole('button', { name: /show toast/i });
@@ -165,6 +154,7 @@ export const ProgrammaticDismissal: Story = {
     });
   },
 };
+
 export const ToastContentTest: Story = {
   args: {
     title: 'Toast für a11y checks',
@@ -172,16 +162,15 @@ export const ToastContentTest: Story = {
     variant: 'info',
     timeout: 0,
   },
-
-  render: args => {
+  render: ({ title, description, variant }) => {
     return (
       <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
         <ToastContent
           toast={{
             content: {
-              title: args.title,
-              description: args.description,
-              variant: args.variant,
+              title: title,
+              description: description,
+              variant: variant,
             },
             key: 'toast-key', // Unique key for the toast
           }}

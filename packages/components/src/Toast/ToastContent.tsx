@@ -1,4 +1,4 @@
-import { UNSTABLE_ToastContent as ToastContents } from 'react-aria-components';
+import { UNSTABLE_ToastContent as RACToastContent } from 'react-aria-components';
 import { Text, UNSTABLE_Toast as Toast } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton';
@@ -58,6 +58,7 @@ const icons = {
     </svg>
   ),
 };
+
 type ToastProp = {
   content: {
     title: string;
@@ -66,9 +67,11 @@ type ToastProp = {
   };
   key: string;
 };
-export interface ToastContentProps {
+
+interface ToastContentProps {
   toast: ToastProp;
 }
+
 export const ToastContent = ({ toast }: ToastContentProps) => {
   const classNames = useClassNames({
     component: 'Toast',
@@ -81,7 +84,7 @@ export const ToastContent = ({ toast }: ToastContentProps) => {
       className={classNames.toast}
       style={{ viewTransitionName: toast.key }}
     >
-      <ToastContents className={classNames.content}>
+      <RACToastContent className={classNames.content}>
         {Icon && (
           <div className={classNames.icon} slot="icon" data-testid="toast-icon">
             <Icon />
@@ -95,7 +98,7 @@ export const ToastContent = ({ toast }: ToastContentProps) => {
         <Text slot="description" className={classNames.description}>
           {toast.content.description}
         </Text>
-      </ToastContents>
+      </RACToastContent>
       <CloseButton
         className={classNames.closeButton}
         aria-label="Close toast"

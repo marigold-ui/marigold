@@ -9,7 +9,13 @@ export default () => {
       <Button
         onPress={() => {
           if (!toastKey) {
-            setToastKey(addToast('Error', 'Something went wrong!', 'error'));
+            setToastKey(
+              addToast(
+                'Error',
+                'Click the Hide Toast button to dismiss me!',
+                'error'
+              )
+            );
           } else {
             removeToast(toastKey);
             setToastKey(null);

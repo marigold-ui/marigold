@@ -22,6 +22,7 @@ export function addToast(
 export function clearToasts() {
   queue.clear();
 }
+
 export function removeToast(key: string) {
   return queue.close(key);
 }
