@@ -1,25 +1,21 @@
+---
 title: Breadcrumbs
 caption: A component for displaying hierarchical navigation with separators.
-
 ---
 
 The `<Breadcrumbs>` component allows users to easily understand their current location within a website or app. It shows a sequence of clickable items, each representing a step or level in the hierarchy, making it easier to navigate back to previous pages or sections.
 
 ## Anatomy
 
-<Image
+{/_ <Image
   src="/breadcrumbs/breadcrumbs-anatomy.jpg"
-  alt="Anatomy of breadcrumbs"
+  alt="Anatomy of breadcrumbs"  
   width={800}
   height={550}
   className="mx-auto block"
-/>
+/> _/}
 
 ## Appearance
-
-<AppearanceDemo component={title} />
-
-<AppearanceTable component={title} />
 
 ## Usage
 
@@ -39,29 +35,15 @@ When the breadcrumb list exceeds the maximum number of visible items, it can col
 
 <ComponentDemo file="./breadcrumbs-collapsing.demo.tsx" />
 
-### Disabled State
-
-Breadcrumb items can be disabled, which prevents interaction with the corresponding item. This is useful for situations where some items in the breadcrumb path should not be clickable (e.g., when the current page is reached).
-
-<ComponentDemo file="./breadcrumbs-disabled.demo.tsx" />
-
 ## Props
 
 ### Breadcrumbs
 
-<PropsTable component="Breadcrumbs" />
-
-### Breadcrumbs.List
-
-<PropsTable component="BreadcrumbsList" />
+<PropsTable component={title} />
 
 ### Breadcrumbs.Item
 
 <PropsTable component="BreadcrumbsItem" />
-
-### SeparatorType
-
-<PropsTable component="SeparatorType" />
 
 ## Accessibility Considerations
 
@@ -70,7 +52,3 @@ Breadcrumb items can be disabled, which prevents interaction with the correspond
 ### Keyboard Navigation
 
 Users can navigate through the breadcrumbs using the "Tab" key. The first breadcrumb item gets focus when the user presses "Tab," and they can continue navigating through each breadcrumb with further "Tab" presses. The separators are not focusable.
-
-## Props for Breadcrumbs
-
-<PropsTable component="Breadcrumbs" />

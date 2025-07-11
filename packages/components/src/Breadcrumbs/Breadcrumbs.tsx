@@ -1,4 +1,8 @@
-import React, { forwardRef } from 'react';
+import React, {
+  ForwardRefExoticComponent,
+  RefAttributes,
+  forwardRef,
+} from 'react';
 import type { BreadcrumbsProps as RACBreadcrumbsProps } from 'react-aria-components';
 import { Breadcrumbs as RACBreadcrumbs } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
@@ -6,7 +10,7 @@ import { ChevronRight } from '../icons';
 import { Breadcrumb, BreadcrumbProps } from './Breadcrumb';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
 
-export interface BreadcrumbsListProps
+export interface BreadcrumbsProps
   extends Omit<
     RACBreadcrumbsProps<object>,
     'className' | 'style' | 'children'
@@ -38,7 +42,14 @@ export interface BreadcrumbsListProps
   children: React.ReactNode | React.ReactNode[];
 }
 
-const _BreadcrumbsList = forwardRef<HTMLOListElement, BreadcrumbsListProps>(
+export interface BreadcrumbsComponent
+  extends ForwardRefExoticComponent<
+    BreadcrumbsProps & RefAttributes<HTMLOListElement>
+  > {
+  Item: typeof Breadcrumb;
+}
+
+const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
   (
     {
       children,
@@ -124,11 +135,8 @@ const _BreadcrumbsList = forwardRef<HTMLOListElement, BreadcrumbsListProps>(
       </nav>
     );
   }
-);
+) as BreadcrumbsComponent;
 
-const Breadcrumbs = Object.assign(_BreadcrumbsList, {
-  List: _BreadcrumbsList,
-  Item: Breadcrumb,
-});
+_Breadcrumbs.Item = Breadcrumb;
 
-export { Breadcrumbs };
+export { _Breadcrumbs as Breadcrumbs };

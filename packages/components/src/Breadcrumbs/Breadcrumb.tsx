@@ -33,12 +33,8 @@ const _Breadcrumb = forwardRef<HTMLLIElement, BreadcrumbProps>(
       <RACBreadcrumb
         {...props}
         ref={ref}
-        className={({ isCurrent, isDisabled }) =>
-          cn(
-            classNames.item,
-            isCurrent && classNames.current,
-            isDisabled && 'text-disabled cursor-not-allowed'
-          )
+        className={({ isCurrent }) =>
+          cn(classNames.item, isCurrent && classNames.current)
         }
       >
         {children}

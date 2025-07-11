@@ -1,9 +1,9 @@
 import React from 'react';
 import { Breadcrumbs } from '@marigold/components';
 
-export const BreadcrumbsWithLinksDemo = () => {
+export default () => {
   return (
-    <Breadcrumbs.List>
+    <Breadcrumbs>
       <Breadcrumbs.Item href="https://www.marigold-ui.io/components/navigation/breadcrumbs?theme=rui">
         Home
       </Breadcrumbs.Item>
@@ -13,6 +13,6 @@ export const BreadcrumbsWithLinksDemo = () => {
       <Breadcrumbs.Item href="https://www.marigold-ui.io/components/navigation/breadcrumbs?theme=rui">
         Breadcrumb 2
       </Breadcrumbs.Item>
-    </Breadcrumbs.List>
+    </Breadcrumbs>
   );
 };

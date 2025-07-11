@@ -23,14 +23,12 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
 
   link: cva('hover:underline text-foreground'),
 
-  current: cva('font-medium'),
-
-  ellipsis: cva('relative inline-block'),
+  current: cva('text-foreground font-medium'),
 
   ellipsisButton: cva('inline-flex items-center px-2 py-1 cursor-pointer'),
 
   ellipsisList: cva(
-    'absolute z-10 mt-2 min-w-max rounded border bg-white p-1 text-sm shadow'
+    'absolute min-w-max rounded border bg-white p-1 text-sm shadow'
   ),
 
   ellipsisItem: cva('px-3 py-1 hover:bg-gray-100'),
