@@ -7,7 +7,21 @@ The `<Breadcrumbs>` component allows users to easily understand their current lo
 
 ## Anatomy
 
+The `<Breadcrumbs>` component consists of breadcrumb items and separators, such as slashes or chevrons, arranged in a horizontal trail to represent a navigation path.
+
+<Image
+  src="/breadcrumbs/breadcrumbs-anatomy.jpg"
+  alt="Anatomy of breadcrumbs"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
 ## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
 
 ## Usage
 
@@ -36,11 +50,3 @@ When the breadcrumb list exceeds the maximum number of visible items, it can col
 ### Breadcrumbs.Item
 
 <PropsTable component="BreadcrumbsItem" />
-
-## Accessibility Considerations
-
-`<Breadcrumbs>` is designed to be accessible by default. Each breadcrumb item is navigable by keyboard and screen reader users. The separator is visually present but does not interfere with the navigation structure for assistive technologies.
-
-### Keyboard Navigation
-
-Users can navigate through the breadcrumbs using the "Tab" key. The first breadcrumb item gets focus when the user presses "Tab," and they can continue navigating through each breadcrumb with further "Tab" presses. The separators are not focusable.

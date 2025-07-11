@@ -7,14 +7,13 @@ import type { BreadcrumbsProps as RACBreadcrumbsProps } from 'react-aria-compone
 import { Breadcrumbs as RACBreadcrumbs } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons';
-import { Breadcrumb, BreadcrumbProps } from './Breadcrumb';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
+import { BreadcrumbsItem, BreadcrumbsItemProps } from './BreadcrumbsItem';
+
+type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
 export interface BreadcrumbsProps
-  extends Omit<
-    RACBreadcrumbsProps<object>,
-    'className' | 'style' | 'children'
-  > {
+  extends Omit<RACBreadcrumbsProps<object>, RemovedProps> {
   variant?: string;
   size?: string;
 
@@ -46,7 +45,7 @@ export interface BreadcrumbsComponent
   extends ForwardRefExoticComponent<
     BreadcrumbsProps & RefAttributes<HTMLOListElement>
   > {
-  Item: typeof Breadcrumb;
+  Item: typeof BreadcrumbsItem;
 }
 
 const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
@@ -79,9 +78,9 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
     const collapsed = shouldCollapse
       ? [
           items[0],
-          <Breadcrumb key="ellipsis">
+          <BreadcrumbsItem key="ellipsis">
             <BreadcrumbEllipsis hiddenItems={hiddenItems} />
-          </Breadcrumb>,
+          </BreadcrumbsItem>,
           items[total - 1],
         ]
       : items;
@@ -98,7 +97,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
             const isLast = index === collapsed.length - 1;
             if (!item || typeof item === 'boolean') return null;
 
-            const breadcrumb = item as React.ReactElement<BreadcrumbProps>;
+            const breadcrumb = item as React.ReactElement<BreadcrumbsItemProps>;
 
             const href = breadcrumb.props?.href ?? undefined;
 
@@ -110,7 +109,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
                   : null;
 
             return (
-              <Breadcrumb key={index}>
+              <BreadcrumbsItem key={index}>
                 {href ? (
                   <a href={href} className={classNames.link}>
                     {itemChildren}
@@ -128,7 +127,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
                     /
                   </span>
                 )}
-              </Breadcrumb>
+              </BreadcrumbsItem>
             );
           })}
         </RACBreadcrumbs>
@@ -137,6 +136,6 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
   }
 ) as BreadcrumbsComponent;
 
-_Breadcrumbs.Item = Breadcrumb;
+_Breadcrumbs.Item = BreadcrumbsItem;
 
 export { _Breadcrumbs as Breadcrumbs };
