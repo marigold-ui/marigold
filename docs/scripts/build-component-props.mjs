@@ -31,6 +31,7 @@ const parser = docgen.withCustomConfig('./tsconfig.json', {
     'RadioComponent',
     'SelectComponent',
     'SelectListComponent',
+    'BreadcrumbsComponent',
   ],
 });
 
@@ -163,6 +164,7 @@ const transformTypeValue = async val => {
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
     'keyof NumberFormatOptionsSignDisplayRegistry',
     'T[]',
+    'ReactNode | ReactNode[]',
   ];
   let text = val.type.name;
 

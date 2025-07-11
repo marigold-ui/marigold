@@ -7,7 +7,7 @@ import {
   Popover,
 } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { BreadcrumbProps } from './Breadcrumb';
+import { BreadcrumbsItemProps } from './BreadcrumbsItem';
 
 interface BreadcrumbEllipsisProps extends React.ComponentProps<'span'> {
   hiddenItems?: React.ReactNode[];
@@ -31,7 +31,7 @@ export const BreadcrumbEllipsis = ({
           {hiddenItems.map((item, index) => {
             if (!item || typeof item === 'boolean') return null;
 
-            const breadcrumb = item as React.ReactElement<BreadcrumbProps>;
+            const breadcrumb = item as React.ReactElement<BreadcrumbsItemProps>;
 
             const href = breadcrumb.props?.href ?? undefined;
 
@@ -43,14 +43,18 @@ export const BreadcrumbEllipsis = ({
                   : null;
 
             return (
-              <MenuItem key={index} className={classNames.ellipsisItem}>
-                {href ? (
-                  <a href={href} className={classNames.link}>
-                    {itemChildren}
-                  </a>
-                ) : (
-                  itemChildren
-                )}
+              <MenuItem
+                key={index}
+                className={classNames.ellipsisItem}
+                onAction={() => {
+                  if (href) {
+                    window.location.href = href;
+                  }
+                }}
+              >
+                <a href={href} className={classNames.link}>
+                  {itemChildren}
+                </a>{' '}
               </MenuItem>
             );
           })}

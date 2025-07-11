@@ -8,10 +8,10 @@ export default () => {
         Home
       </Breadcrumbs.Item>
       <Breadcrumbs.Item href="https://www.marigold-ui.io/components/navigation/breadcrumbs?theme=rui">
-        Breadcrumb 1
+        Events
       </Breadcrumbs.Item>
       <Breadcrumbs.Item href="https://www.marigold-ui.io/components/navigation/breadcrumbs?theme=rui">
-        Breadcrumb 2
+        Music
       </Breadcrumbs.Item>
     </Breadcrumbs>
   );

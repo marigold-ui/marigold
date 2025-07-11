@@ -5,7 +5,7 @@ import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'style';
 
-export interface BreadcrumbProps
+export interface BreadcrumbsItemProps
   extends Omit<RAC.BreadcrumbProps, RemovedProps> {
   variant?: string;
   size?: string;
@@ -21,7 +21,7 @@ export interface BreadcrumbProps
   href?: string;
 }
 
-const _Breadcrumb = forwardRef<HTMLLIElement, BreadcrumbProps>(
+const _BreadcrumbsItem = forwardRef<HTMLLIElement, BreadcrumbsItemProps>(
   ({ variant, size, children, href, ...props }, ref) => {
     const classNames = useClassNames({
       component: 'Breadcrumbs',
@@ -43,4 +43,4 @@ const _Breadcrumb = forwardRef<HTMLLIElement, BreadcrumbProps>(
   }
 );
 
-export { _Breadcrumb as Breadcrumb };
+export { _BreadcrumbsItem as BreadcrumbsItem };

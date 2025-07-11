@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
-import { Breadcrumb } from './Breadcrumb';
 import { Breadcrumbs } from './Breadcrumbs';
+import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 const theme: Theme = {
   name: 'test',
@@ -38,9 +38,9 @@ test('renders breadcrumb items correctly', () => {
   render(
     <ThemeProvider theme={theme}>
       <Breadcrumbs>
-        <Breadcrumb>Home</Breadcrumb>
-        <Breadcrumb>Breadcrumb1</Breadcrumb>
-        <Breadcrumb>Breadcrumb2</Breadcrumb>
+        <BreadcrumbsItem>Home</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb1</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb2</BreadcrumbsItem>
       </Breadcrumbs>
     </ThemeProvider>
   );
@@ -54,9 +54,9 @@ test('renders breadcrumb with slash separators', () => {
   render(
     <ThemeProvider theme={theme}>
       <Breadcrumbs separatorType="slash">
-        <Breadcrumb>Home</Breadcrumb>
-        <Breadcrumb>Breadcrumb1</Breadcrumb>
-        <Breadcrumb>Breadcrumb2</Breadcrumb>
+        <BreadcrumbsItem>Home</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb1</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb2</BreadcrumbsItem>
       </Breadcrumbs>
     </ThemeProvider>
   );
@@ -69,11 +69,11 @@ test('collapses breadcrumbs when maxVisibleItems is set', () => {
   render(
     <ThemeProvider theme={theme}>
       <Breadcrumbs maxVisibleItems={3}>
-        <Breadcrumb>Home</Breadcrumb>
-        <Breadcrumb>Breadcrumb1</Breadcrumb>
-        <Breadcrumb>Breadcrumb2</Breadcrumb>
-        <Breadcrumb>Breadcrumb3</Breadcrumb>
-        <Breadcrumb>Breadcrumb4</Breadcrumb>
+        <BreadcrumbsItem>Home</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb1</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb2</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb3</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb4</BreadcrumbsItem>
       </Breadcrumbs>
     </ThemeProvider>
   );
@@ -89,8 +89,8 @@ test('handles dynamic children correctly with links', () => {
   render(
     <ThemeProvider theme={theme}>
       <Breadcrumbs>
-        <Breadcrumb href="https://example.com">Home</Breadcrumb>
-        <Breadcrumb>Breadcrumb1</Breadcrumb>
+        <BreadcrumbsItem href="https://example.com">Home</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb1</BreadcrumbsItem>
       </Breadcrumbs>
     </ThemeProvider>
   );
@@ -104,7 +104,7 @@ test('accepts a variant and size', () => {
   render(
     <ThemeProvider theme={theme}>
       <Breadcrumbs size="large" variant="default">
-        <Breadcrumb>Home</Breadcrumb>
+        <BreadcrumbsItem>Home</BreadcrumbsItem>
       </Breadcrumbs>
     </ThemeProvider>
   );
