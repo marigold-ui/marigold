@@ -42,7 +42,7 @@
     "storybook": "^9.0.15",
     "typescript": "5.8.3",
     "vite": "6.3.5",
-    "eslint-plugin-storybook": "9.0.15",
+    "eslint-plugin-storybook": "9.0.16",
     "@storybook/addon-docs": "^9.0.15"
   },
   "peerDependencies": {
