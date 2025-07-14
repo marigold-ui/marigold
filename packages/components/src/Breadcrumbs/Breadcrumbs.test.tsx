@@ -123,7 +123,7 @@ test('renders chevron separators', () => {
       </Breadcrumbs>
     </ThemeProvider>
   );
-  const chevrons = document.querySelectorAll('svg[aria-hidden="true"]');
+  const chevrons = screen.getAllByTestId('breadcrumb-chevronright');
   expect(chevrons.length).toBe(2);
 });
 

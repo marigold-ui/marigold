@@ -117,7 +117,11 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
                 )}
 
                 {!isLast && separatorType === 'chevron' && (
-                  <ChevronRight aria-hidden="true" size={14} />
+                  <ChevronRight
+                    data-testid="breadcrumb-chevronright"
+                    aria-hidden="true"
+                    size={14}
+                  />
                 )}
 
                 {!isLast && separatorType === 'slash' && (
