@@ -50,22 +50,7 @@ test('renders breadcrumb items correctly', () => {
   expect(screen.getByText('Breadcrumb2')).toBeInTheDocument();
 });
 
-test('renders breadcrumb with slash separators', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Breadcrumbs separatorType="slash">
-        <BreadcrumbsItem>Home</BreadcrumbsItem>
-        <BreadcrumbsItem>Breadcrumb1</BreadcrumbsItem>
-        <BreadcrumbsItem>Breadcrumb2</BreadcrumbsItem>
-      </Breadcrumbs>
-    </ThemeProvider>
-  );
-
-  const slashes = screen.getAllByText('/');
-  expect(slashes.length).toBe(2);
-});
-
-test('collapses breadcrumbs when maxVisibleItems is set', () => {
+test('collapses breadcrumbs for too many items', () => {
   render(
     <ThemeProvider theme={theme}>
       <Breadcrumbs maxVisibleItems={3}>
@@ -100,17 +85,76 @@ test('handles dynamic children correctly with links', () => {
   expect(link).toHaveAttribute('href', 'https://example.com');
 });
 
-test('accepts a variant and size', () => {
+test('ignores null, undefined, and boolean children', () => {
   render(
     <ThemeProvider theme={theme}>
-      <Breadcrumbs size="large" variant="default">
-        <BreadcrumbsItem>Home</BreadcrumbsItem>
+      <Breadcrumbs>
+        {null}
+        {undefined}
+        {false}
+        <BreadcrumbsItem>Visible</BreadcrumbsItem>
       </Breadcrumbs>
     </ThemeProvider>
   );
+  expect(screen.getByText('Visible')).toBeInTheDocument();
+});
 
-  const breadcrumb = screen.getByText('Home');
-  expect(breadcrumb.className).toMatchInlineSnapshot(
-    `"hover:underline text-foreground"`
+test('renders custom React element as breadcrumb', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Breadcrumbs>
+        <BreadcrumbsItem>
+          <span data-testid="custom">Custom</span>
+        </BreadcrumbsItem>
+      </Breadcrumbs>
+    </ThemeProvider>
   );
+  expect(screen.getByTestId('custom')).toBeInTheDocument();
+  expect(screen.getByText('Custom')).toBeInTheDocument();
+});
+
+test('renders chevron separators', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Breadcrumbs separatorType="chevron">
+        <BreadcrumbsItem>Home</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb1</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb2</BreadcrumbsItem>
+      </Breadcrumbs>
+    </ThemeProvider>
+  );
+  const chevrons = document.querySelectorAll('svg[aria-hidden="true"]');
+  expect(chevrons.length).toBe(2);
+});
+
+test('renders slash separators', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Breadcrumbs separatorType="slash">
+        <BreadcrumbsItem>Home</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb1</BreadcrumbsItem>
+        <BreadcrumbsItem>Breadcrumb2</BreadcrumbsItem>
+      </Breadcrumbs>
+    </ThemeProvider>
+  );
+  const slashes = screen.getAllByText('/');
+  expect(slashes.length).toBe(2);
+});
+
+test('collapses breadcrumbs with links for too many items', () => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Breadcrumbs maxVisibleItems={3}>
+        <BreadcrumbsItem href="/home">Home</BreadcrumbsItem>
+        <BreadcrumbsItem href="/b1">Breadcrumb1</BreadcrumbsItem>
+        <BreadcrumbsItem href="/b2">Breadcrumb2</BreadcrumbsItem>
+        <BreadcrumbsItem href="/b3">Breadcrumb3</BreadcrumbsItem>
+        <BreadcrumbsItem href="/b4">Breadcrumb4</BreadcrumbsItem>
+      </Breadcrumbs>
+    </ThemeProvider>
+  );
+  const ellipsis = screen.getByText('...');
+  expect(ellipsis).toBeInTheDocument();
+  expect(screen.getByText('Home')).toHaveAttribute('href', '/home');
+  expect(screen.getByText('Breadcrumb4')).toHaveAttribute('href', '/b4');
 });

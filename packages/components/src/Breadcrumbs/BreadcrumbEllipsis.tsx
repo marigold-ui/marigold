@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Button,
+  Link,
   Menu,
   MenuItem,
   MenuTrigger,
@@ -11,10 +12,12 @@ import { BreadcrumbsItemProps } from './BreadcrumbsItem';
 
 interface BreadcrumbEllipsisProps extends React.ComponentProps<'span'> {
   hiddenItems?: React.ReactNode[];
+  disabled?: boolean;
 }
 
 export const BreadcrumbEllipsis = ({
   hiddenItems = [],
+  disabled = false,
   ...props
 }: BreadcrumbEllipsisProps) => {
   const classNames = useClassNames({
@@ -35,26 +38,31 @@ export const BreadcrumbEllipsis = ({
 
             const href = breadcrumb.props?.href ?? undefined;
 
-            const itemChildren =
-              typeof item === 'string' || typeof item === 'number'
-                ? item
-                : React.isValidElement(item)
-                  ? breadcrumb.props?.children
-                  : null;
+            const itemChildren = React.isValidElement(item)
+              ? breadcrumb.props.children
+              : item;
 
             return (
               <MenuItem
                 key={index}
                 className={classNames.ellipsisItem}
                 onAction={() => {
-                  if (href) {
+                  if (href && !disabled) {
                     window.location.href = href;
                   }
                 }}
               >
-                <a href={href} className={classNames.link}>
-                  {itemChildren}
-                </a>{' '}
+                {href ? (
+                  <Link
+                    href={href}
+                    className={classNames.link}
+                    isDisabled={disabled}
+                  >
+                    {itemChildren}
+                  </Link>
+                ) : (
+                  itemChildren
+                )}
               </MenuItem>
             );
           })}

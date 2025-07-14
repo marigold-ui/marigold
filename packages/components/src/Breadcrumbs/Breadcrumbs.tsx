@@ -5,6 +5,7 @@ import React, {
 } from 'react';
 import type { BreadcrumbsProps as RACBreadcrumbsProps } from 'react-aria-components';
 import { Breadcrumbs as RACBreadcrumbs } from 'react-aria-components';
+import { Link } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
@@ -79,7 +80,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       ? [
           items[0],
           <BreadcrumbsItem key="ellipsis">
-            <BreadcrumbEllipsis hiddenItems={hiddenItems} />
+            <BreadcrumbEllipsis hiddenItems={hiddenItems} disabled={disabled} />
           </BreadcrumbsItem>,
           items[total - 1],
         ]
@@ -101,19 +102,16 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
 
             const href = breadcrumb.props?.href ?? undefined;
 
-            const itemChildren =
-              typeof item === 'string' || typeof item === 'number'
-                ? item
-                : React.isValidElement(item)
-                  ? breadcrumb.props?.children
-                  : null;
+            const itemChildren = React.isValidElement(item)
+              ? breadcrumb.props.children
+              : item;
 
             return (
               <BreadcrumbsItem key={index}>
                 {href ? (
-                  <a href={href} className={classNames.link}>
+                  <Link href={href} className={classNames.link}>
                     {itemChildren}
-                  </a>
+                  </Link>
                 ) : (
                   itemChildren
                 )}
