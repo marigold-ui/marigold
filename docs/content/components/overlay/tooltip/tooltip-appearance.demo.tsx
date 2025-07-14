@@ -5,7 +5,7 @@ import { Edit } from '@marigold/icons';
 export default (props: TooltipProps) => (
   <Tooltip.Trigger>
     <Button>
-      <Edit />
+      <Edit aria-hidden="true" />
     </Button>
     <Tooltip {...props}>Edit (⌘E)</Tooltip>
   </Tooltip.Trigger>

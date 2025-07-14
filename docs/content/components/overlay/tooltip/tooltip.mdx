@@ -59,6 +59,10 @@ To enable this behavior, set the `trigger` prop on `<Tooltip.Trigger>` to `"focu
 
 <ComponentDemo file="./tooltip-focus.demo.tsx" />
 
+### Accessibility
+
+You do not need to set aria-describedby manually because the `<Tooltip>` component sets it for you. However, if the button contains only an image or icon such as an SVG, make sure to provide an `aria-label` on the button for screen readers, and consider setting `aria-hidden="true"` on the image to avoid redundant announcements.
+
 ## Props
 
 <StorybookHintMessage component={title} />
