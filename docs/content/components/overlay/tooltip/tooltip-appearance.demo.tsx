@@ -1,11 +1,12 @@
+import type { TooltipProps } from '@marigold/components';
 import { Button, Tooltip } from '@marigold/components';
-import { Info } from '@marigold/icons';
+import { Edit } from '@marigold/icons';
 
-export default () => (
+export default (props: TooltipProps) => (
   <Tooltip.Trigger>
     <Button>
-      <Info color="text-info" />
+      <Edit />
     </Button>
-    <Tooltip>Tooltip</Tooltip>
+    <Tooltip {...props}>Edit (⌘E)</Tooltip>
   </Tooltip.Trigger>
 );
