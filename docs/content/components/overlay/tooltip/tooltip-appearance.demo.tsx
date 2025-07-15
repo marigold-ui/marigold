@@ -1,14 +1,11 @@
-'use client';
-
-import type { TooltipProps } from '@marigold/components';
 import { Button, Tooltip } from '@marigold/components';
-import { Edit } from '@marigold/icons';
+import { Info } from '@marigold/icons';
 
-export default (props: TooltipProps) => (
+export default () => (
   <Tooltip.Trigger>
     <Button>
-      <Edit aria-hidden="true" />
+      <Info color="text-info" />
     </Button>
-    <Tooltip {...props}>Edit (⌘E)</Tooltip>
+    <Tooltip>Tooltip</Tooltip>
   </Tooltip.Trigger>
 );
