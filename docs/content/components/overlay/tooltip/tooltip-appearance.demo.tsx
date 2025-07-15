@@ -1,3 +1,5 @@
+'use client';
+
 import type { TooltipProps } from '@marigold/components';
 import { Button, Tooltip } from '@marigold/components';
 import { Edit } from '@marigold/icons';
