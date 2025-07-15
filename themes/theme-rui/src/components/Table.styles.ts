@@ -59,19 +59,20 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'border-b border-border transition-colors',
       'focus-visible:outline-2 outline-offset-2 outline-ring/70',
-      'data-disabled:cursor-not-allowed data-disabled:hover:bg-none!',
+      'data-disabled:cursor-not-allowed',
     ],
     {
       variants: {
         variant: {
-          default: 'aria-[selected=true]:bg-muted hover:bg-transparent',
-          grid: 'aria-[selected=true]:bg-muted hover:bg-transparent [&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
+          default:
+            'aria-[selected=true]:bg-muted aria-[selected]:hover:bg-hover',
+          grid: 'aria-[selected=true]:bg-muted aria-[selected]:hover:bg-hover [&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
           master: [
-            'bg-access-master aria-[selected=true]:hover:access-master-hover',
+            'bg-access-master aria-[selected]:hover:access-master-hover',
             '[&_td:first-child]:border-l-access-master-foreground [&_td:first-child]:border-l-4',
           ],
           admin: [
-            'bg-access-admin aria-[selected=true]:hover:access-admin-hover',
+            'bg-access-admin aria-[selected]:hover:access-admin-hover',
             '[&_td:first-child]:border-l-access-admin-foreground [&_td:first-child]:border-l-4',
           ],
         },
