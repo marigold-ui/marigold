@@ -66,6 +66,14 @@ export const Table: ThemeComponent<'Table'> = {
         variant: {
           default: '',
           grid: '[&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
+          master: [
+            'bg-access-master hover:access-master-hover',
+            '[&_td:first-child]:border-l-access-master-foreground [&_td:first-child]:border-l-4',
+          ],
+          admin: [
+            'bg-access-admin hover:access-admin-hover',
+            '[&_td:first-child]:border-l-access-admin-foreground [&_td:first-child]:border-l-4',
+          ],
         },
       },
       defaultVariants: {
