@@ -90,6 +90,13 @@
   --color-info-muted: var(--color-blue-100);
   --color-info-muted-foreground: var(--color-blue-950);
 
+  /* visible hints for access control (master- and admin-mark) */
+  --color-access-master: var(--color-purple-50);
+  --color-access-master-foreground: var(--color-purple-800);
+
+  --color-access-admin: var(--color-indigo-50);
+  --color-access-admin-foreground: var(--color-indigo-800);
+
   /* 
     muted colors are desaturated colors of the brand color,
     they help create hierarchy for secondary text. 
