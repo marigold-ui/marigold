@@ -9,8 +9,8 @@ export interface FullsizeViewProps {
 
 export const FullsizeView = ({ code, codeString }: FullsizeViewProps) => (
   <Dialog.Trigger dismissable>
-    <div className="[&>button]:hidden [&>button]:border-none [&>button]:p-0 [&>button]:outline-0 [&>button]:md:block">
-      <Button>
+    <div className="[&>button]:hidden [&>button]:md:block">
+      <Button variant="icon">
         <svg width="20px" height="20px" viewBox="0 0 24 24">
           <path
             className="fill-white"
