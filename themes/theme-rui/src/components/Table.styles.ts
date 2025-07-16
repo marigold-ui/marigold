@@ -68,11 +68,15 @@ export const Table: ThemeComponent<'Table'> = {
           grid: 'aria-[selected=true]:bg-muted [&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
           admin: [
             'bg-access-admin',
-            '[&_td:first-child]:border-l-access-admin-foreground [&_td:first-child]:border-l-4',
+            '[&_td:first-child]:relative [&_td:first-child]:pl-4',
+            '[&_td:first-child:before]:content-[""] [&_td:first-child:before]:absolute [&_td:first-child:before]:top-0 [&_td:first-child:before]:bottom-0 [&_td:first-child:before]:left-0 [&_td:first-child:before]:w-1',
+            '[&_td:first-child:before]:bg-access-admin-foreground',
           ],
           master: [
             'bg-access-master',
-            '[&_td:first-child]:border-l-access-master-foreground [&_td:first-child]:border-l-4',
+            '[&_td:first-child]:relative [&_td:first-child]:pl-4',
+            '[&_td:first-child:before]:content-[""] [&_td:first-child:before]:absolute [&_td:first-child:before]:top-0 [&_td:first-child:before]:bottom-0 [&_td:first-child:before]:left-0 [&_td:first-child:before]:w-1',
+            '[&_td:first-child:before]:bg-access-master-foreground',
           ],
         },
       },
@@ -81,18 +85,15 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
-  cell: cva(
-    ['p-3', 'focus-visible:outline-2 outline-offset-2 outline-ring/70'],
-    {
-      variants: {
-        variant: {
-          default: '[&:has([type=checkbox])]:pr-0',
-          grid: '',
-        },
+  cell: cva('p-3 focus-visible:outline-2 outline-offset-2 outline-ring/70', {
+    variants: {
+      variant: {
+        default: '[&:has([type=checkbox])]:pr-0',
+        grid: '',
       },
-      defaultVariants: {
-        variant: 'default',
-      },
-    }
-  ),
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }),
 };
