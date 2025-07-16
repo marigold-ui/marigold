@@ -64,16 +64,15 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
-          default:
-            'aria-[selected=true]:bg-muted aria-[selected]:hover:bg-hover',
-          grid: 'aria-[selected=true]:bg-muted aria-[selected]:hover:bg-hover [&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
-          master: [
-            'bg-access-master aria-[selected]:hover:bg-access-master-hover',
-            '[&_td:first-child]:border-l-access-master-foreground [&_td:first-child]:border-l-4',
-          ],
+          default: 'aria-[selected=true]:bg-muted',
+          grid: 'aria-[selected=true]:bg-muted [&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
           admin: [
-            'bg-access-admin aria-[selected]:hover:bg-access-admin-hover',
+            'bg-access-admin',
             '[&_td:first-child]:border-l-access-admin-foreground [&_td:first-child]:border-l-4',
+          ],
+          master: [
+            'bg-access-master',
+            '[&_td:first-child]:border-l-access-master-foreground [&_td:first-child]:border-l-4',
           ],
         },
       },
