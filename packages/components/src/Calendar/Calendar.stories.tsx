@@ -39,6 +39,16 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'Width of the Calendar',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'fit' },
+      },
+    },
   },
 } satisfies Meta<typeof Calendar>;
 
