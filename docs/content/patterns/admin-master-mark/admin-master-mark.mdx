@@ -5,3 +5,36 @@ badge: new
 ---
 
 The admin- and master mark is a visual pattern used to signal that a setting or function is not available to organizers, but reserved for internal use by developers or Reservix employees. It provides a clear boundary between organizer-facing features and internal tools, helping designers and developers avoid accidental exposure of internal controls in user interfaces.
+
+## Anatomy
+
+- a badge, Placement relative to related element or section of a page
+- text is either "Admin" or "Master"
+- differentiated by color
+
+(Appearance demo without controls?)
+
+## Usage
+
+- Internal tools visible in shared interfaces
+- Developer-only configuration options
+- Features in production UIs that are hidden or irrelevant for organizers
+- Features that are not yet in production (e.g. because they are only partially implemented or in a testing phase)
+
+- Not a replacement for proper role-based access control
+- Not needed in strictly internal tools where no organizer view exists
+
+### Anatomy & Placement
+
+- place next to a the control or section that it belong
+- can be a form field or a naviagation element like a tab
+
+(demo with controls)
+(demo with tabs)
+
+### Within a Table
+
+- expection is when rows in a table are only visible internally
+- no badge, but background and indicator
+
+(insert demo)
