@@ -8,21 +8,25 @@ The admin- and master mark is a visual pattern used to signal that a setting or 
 
 ## Anatomy
 
-- a badge, Placement relative to related element or section of a page
-- text is either "Admin" or "Master"
-- differentiated by color
+The admin- and master mark uses color and labeling to indicate internal access. It appears either as a badge placed near the related element or section of a page, or through direct coloring of the element itself. The badge contains the text “Admin” or “Master”, depending on the role. To ensure quick visual differentiation, “Admin” is represented in purple and “Master” in orange. This consistent use of color helps communicate access levels clearly and supports scannability in shared interfaces.
 
-(Appearance demo without controls?)
+<ComponentDemo file="./admin-master-mark-anatomy.demo.tsx" />
 
 ## Usage
 
-- Internal tools visible in shared interfaces
-- Developer-only configuration options
-- Features in production UIs that are hidden or irrelevant for organizers
-- Features that are not yet in production (e.g. because they are only partially implemented or in a testing phase)
+The admin- and master mark is used to indicate that certain features in the user interface are not intended and visible for end users. In shared views where both internal users and end users operate, this pattern helps prevent confusion and highlights which elements are meant for internal use only.
 
-- Not a replacement for proper role-based access control
-- Not needed in strictly internal tools where no organizer view exists
+- The **"Admin"** mark is applied to elements intended for developers. This includes technical tools such as environment toggles, debug options, or features still under development.
+- The **"Master"** mark is used for features that are available to Reservix employees, such as internal workflows, support-only settings, or tools used by account management teams.
+
+Apply the admin- and master mark in situations where internal-only functionality appears in shared views. Typical scenarios include:
+
+- Internal tools or controls embedded in interfaces visible to external users.
+- Developer-specific configuration options that are not part of the public feature set.
+- Features that are technically in production but intentionally hidden from or not relevant to external users.
+- Functionality that is still under development, partially implemented, or currently in a testing or staging phase.
+
+This pattern is not a substitute for proper role-based access control. It should not be used to control visibility or enforce permissions. It also does not need to be applied in fully internal tools where organizers do not have access at all since in those cases, there is no risk of confusion and no need for additional visual marking.
 
 ### Anatomy & Placement
 
