@@ -30,7 +30,9 @@ export const Basic: Story = {
       <Tag id="shopping">Shopping</Tag>
     </Tag.Group>
   ),
-  play: async ({ args, canvas, userEvent }) => {
+  play: async ({ args, canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+
     await userEvent.click(canvas.getByText('News'));
     await userEvent.click(canvas.getByText('Gaming'));
 
@@ -66,7 +68,9 @@ export const RemovableTags: Story = {
       </Stack>
     );
   },
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+
     const news = canvas.getByText('News');
     const shopping = canvas.getByText('Shopping');
 
