@@ -10,7 +10,9 @@ const { Basic } = composeStories(stories);
 afterEach(() => {
   clearToasts();
 });
+
 beforeEach(async () => {});
+
 describe('Toast', () => {
   test('renders without crashing', async () => {
     render(<Basic />);
@@ -21,7 +23,7 @@ describe('Toast', () => {
   });
 
   it.each(['info', 'success', 'error', 'warning'])(
-    'renders all variants',
+    'renders %s variant',
     async variant => {
       render(
         <Basic

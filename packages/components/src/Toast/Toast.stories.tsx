@@ -72,7 +72,7 @@ export const Basic: Story = {
       </>
     );
   },
-  play: async ({ step }) => {
+  play: async ({ step, userEvent }) => {
     const canvas = within(window.document.body);
     const button = canvas.getByRole('button', { name: /show toast/i });
 
@@ -172,7 +172,7 @@ export const ToastContentTest: Story = {
               description: description,
               variant: variant,
             },
-            key: 'toast-key', // Unique key for the toast
+            key: 'toast-key',
           }}
         />
       </div>

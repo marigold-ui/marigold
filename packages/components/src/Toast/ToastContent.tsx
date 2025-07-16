@@ -90,7 +90,6 @@ export const ToastContent = ({ toast }: ToastContentProps) => {
             <Icon />
           </div>
         )}
-
         <Text slot="title" className={classNames.title}>
           {toast.content.title}
         </Text>
