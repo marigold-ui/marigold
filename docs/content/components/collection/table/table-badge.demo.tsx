@@ -63,11 +63,7 @@ export default () => {
               </I18nProvider>
             </Table.Cell>
             <Table.Cell>
-              {item.status !== '' ? (
-                <Badge variant="inverted">{item.status}</Badge>
-              ) : (
-                '-'
-              )}
+              {item.status !== '' ? <Badge>{item.status}</Badge> : '-'}
             </Table.Cell>
           </Table.Row>
         )}
