@@ -5,7 +5,6 @@ import { Checkbox } from '../Checkbox';
 import { Radio } from '../Radio';
 import { Stack } from '../Stack';
 import { Table } from '../Table';
-import { Text } from '../Text';
 import { TextField } from '../TextField';
 
 const meta = {
