@@ -91,8 +91,8 @@
   --color-info-muted-foreground: var(--color-blue-950);
 
   /* visible hints for access control (master- and admin-mark) */
-  --color-access-admin: var(--color-indigo-100);
-  --color-access-admin-foreground: var(--color-indigo-800);
+  --color-access-admin: var(--color-orange-100);
+  --color-access-admin-foreground: var(--color-orange-500);
 
   --color-access-master: var(--color-purple-100);
   --color-access-master-foreground: var(--color-purple-800);

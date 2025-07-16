@@ -106,6 +106,7 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
   error?: boolean;
   /**
    * Set the label of the checkbox.
+   * @default none
    *
    */
   label?: ReactNode;

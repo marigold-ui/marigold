@@ -16,9 +16,9 @@ export const Badge: ThemeComponent<'Badge'> = cva(
         error: 'bg-destructive-muted text-destructive-muted-foreground',
 
         admin:
-          'text-access-admin-foreground border border-access-admin-foreground bg-access-admin',
+          'text-access-admin-foreground border border-access-admin-foreground',
         master:
-          'text-access-master-foreground border border-access-master-foreground bg-access-master',
+          'text-access-master-foreground border border-access-master-foreground',
       },
     },
     defaultVariants: {
