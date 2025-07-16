@@ -4,7 +4,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import { Button } from '../Button';
 import { Toast, queue } from './Toast';
 import { ToastContent } from './ToastContent';
-import { addToast } from './ToastQueue';
+import { addToast, removeToast } from './ToastQueue';
 
 const meta: Meta = {
   title: 'Components/Toast',
@@ -115,7 +115,7 @@ export const ToggleToast: Story = {
             if (!toastKey) {
               setToastKey(addToast(title, description, variant, timeout));
             } else {
-              queue.close(toastKey);
+              removeToast(toastKey);
               setToastKey(null);
             }
           }}
@@ -157,7 +157,7 @@ export const ToggleToast: Story = {
 
 export const ToastContentTest: Story = {
   args: {
-    title: 'Toast für a11y checks',
+    title: 'Toast für accessibility checks',
     description: 'Dieser Toast dient nur zu Testzwecken.',
     variant: 'info',
     timeout: 0,

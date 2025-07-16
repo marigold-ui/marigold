@@ -1,9 +1,8 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react';
 import * as stories from './Toast.stories';
-import { clearToasts } from './ToastQueue';
+import { addToast, clearToasts } from './ToastQueue';
 
 const { Basic } = composeStories(stories);
 
@@ -16,26 +15,24 @@ beforeEach(async () => {});
 describe('Toast', () => {
   test('renders without crashing', async () => {
     render(<Basic />);
-    const button = screen.getByRole('button', { name: 'Show Toast' });
-    await userEvent.click(button);
+    await addToast('Dies ist eine Toast-Nachricht!');
     const toast = screen.getByText('Dies ist eine Toast-Nachricht!');
+
     expect(toast).toBeInTheDocument();
   });
 
   it.each(['info', 'success', 'error', 'warning'])(
     'renders %s variant',
     async variant => {
-      render(
-        <Basic
-          variant={variant}
-          title={`${variant} Toast`}
-          description={`This is a ${variant} toast.`}
-        />
+      render(<Basic />);
+      await addToast(
+        `${variant} Toast`,
+        `This is a ${variant} toast.`,
+        `${variant}` as 'info' | 'success' | 'error' | 'warning'
       );
-      const button = screen.getByRole('button', { name: 'Show Toast' });
-      await userEvent.click(button);
 
       const icon = screen.getByTestId('toast-icon');
+
       expect(icon).toBeInTheDocument();
     }
   );
@@ -43,11 +40,10 @@ describe('Toast', () => {
   test('clearToasts function works', async () => {
     render(<Basic />);
     const button = screen.getByRole('button', { name: 'Show Toast' });
+
     await userEvent.click(button);
     const toast = screen.getByText('Dies ist eine Toast-Nachricht!');
-    act(() => {
-      clearToasts();
-    });
+    await clearToasts();
 
     expect(toast).not.toBeInTheDocument();
   });

@@ -68,7 +68,7 @@ type ToastProp = {
   key: string;
 };
 
-interface ToastContentProps {
+export interface ToastContentProps {
   toast: ToastProp;
 }
 
