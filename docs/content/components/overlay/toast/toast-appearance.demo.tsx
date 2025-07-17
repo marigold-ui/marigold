@@ -34,7 +34,6 @@ export default (props: ToastContentProps) => {
 
   return (
     <div className="z-1">
-      <ToastProvider position="bottom-right" {...props} />
       <Toast
         toast={{
           content: {
