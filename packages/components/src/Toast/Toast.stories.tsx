@@ -67,7 +67,9 @@ export const Basic: Story = {
     return (
       <>
         <ToastProvider position={position} />
-        <Button onPress={() => addToast(title, description, variant, timeout)}>
+        <Button
+          onPress={() => addToast({ title, description, variant, timeout })}
+        >
           Show Toast
         </Button>
       </>
@@ -115,7 +117,7 @@ export const ToggleToast: Story = {
         <Button
           onPress={() => {
             if (!toastKey) {
-              setToastKey(addToast(title, description, variant, timeout));
+              setToastKey(addToast({ title, description, variant, timeout }));
             } else {
               removeToast(toastKey);
               setToastKey(null);

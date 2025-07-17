@@ -1,12 +1,15 @@
 import { queue } from './ToastProvider';
 
 export function useToast() {
-  const addToast = (
-    title: string,
-    description?: string,
-    variant?: 'info' | 'success' | 'error' | 'warning',
-    timeout?: number
-  ) => {
+  type ToastOptions = {
+    title: string;
+    description?: string;
+    variant?: 'info' | 'success' | 'error' | 'warning';
+    timeout?: number;
+  };
+
+  const addToast = (options: ToastOptions) => {
+    let { title, description, variant, timeout } = options;
     if (timeout && timeout < 5000) {
       timeout = 5000; // Ensure a minimum timeout of 5000ms
     }

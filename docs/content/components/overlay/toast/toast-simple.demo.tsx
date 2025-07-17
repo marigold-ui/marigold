@@ -6,7 +6,9 @@ export default () => {
   return (
     <>
       <ToastProvider position="bottom-right" />
-      <Button onPress={() => addToast('Simple Toast', undefined, 'success')}>
+      <Button
+        onPress={() => addToast({ title: 'Simple Toast', variant: 'success' })}
+      >
         Show Toast
       </Button>
     </>

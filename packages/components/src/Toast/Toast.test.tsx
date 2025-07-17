@@ -17,7 +17,7 @@ describe('Toast', () => {
   const { addToast, clearToasts } = useToast();
   test('renders without crashing', async () => {
     render(<Basic />);
-    await addToast('Dies ist eine Toast-Nachricht!');
+    await addToast({ title: 'Dies ist eine Toast-Nachricht!' });
     const toast = screen.getByText('Dies ist eine Toast-Nachricht!');
 
     expect(toast).toBeInTheDocument();
@@ -27,11 +27,11 @@ describe('Toast', () => {
     'renders %s variant',
     async variant => {
       render(<Basic />);
-      await addToast(
-        `${variant} Toast`,
-        `This is a ${variant} toast.`,
-        `${variant}` as 'info' | 'success' | 'error' | 'warning'
-      );
+      await addToast({
+        title: `${variant} Toast`,
+        description: `This is a ${variant} toast.`,
+        variant: `${variant}` as 'info' | 'success' | 'error' | 'warning',
+      });
 
       const icon = screen.getByTestId('toast-icon');
 

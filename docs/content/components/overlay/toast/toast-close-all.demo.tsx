@@ -6,7 +6,13 @@ export default () => {
   return (
     <div className="flex flex-row gap-2">
       <Button
-        onPress={() => addToast('Updated Settings', undefined, 'success')}
+        onPress={() =>
+          addToast({
+            title: 'Updated Settings',
+            description: undefined,
+            variant: 'success',
+          })
+        }
       >
         Show Toast
       </Button>

@@ -11,11 +11,11 @@ export default () => {
         onPress={() => {
           if (!toastKey) {
             setToastKey(
-              addToast(
-                'Error',
-                'Click the Hide Toast button to dismiss me!',
-                'error'
-              )
+              addToast({
+                title: 'Error',
+                description: 'Click the Hide Toast button to dismiss me!',
+                variant: 'error',
+              })
             );
           } else {
             removeToast(toastKey);
