@@ -6,7 +6,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   ]),
   list: cva(['bg-background p-1 text-sm outline-0']),
   item: cva([
-    'relative flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-foreground cursor-pointer',
+    'relative flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-foreground',
     '[&_.selection-indicator>svg]:invisible [&_.selection-indicator>svg]:block',
     'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
     'hover:bg-hover hover:text-hover-foreground',
