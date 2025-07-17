@@ -22,7 +22,7 @@ export interface RadioGroupProps
    * Set the label of the radio group.
    * @default none
    */
-  label?: string;
+  label?: ReactNode;
 
   /**
    * Set the radio group help text.
