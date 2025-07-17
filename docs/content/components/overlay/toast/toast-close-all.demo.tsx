@@ -5,6 +5,6 @@ export default () => (
     <Button onPress={() => addToast('Updated Settings', undefined, 'success')}>
       Show Toast
     </Button>
-    <Button onPress={() => clearToasts()}>Clear Toasts</Button>
+    <Button onPress={clearToasts}>Clear Toasts</Button>
   </div>
 );

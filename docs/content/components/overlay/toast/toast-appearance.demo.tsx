@@ -1,5 +1,8 @@
-import { Toast, ToastContent as ToastContentProps } from '@marigold/components';
-import { ToastContent } from '../../../../../packages/components/src/Toast/ToastContent';
+import {
+  Toast,
+  ToastContent as ToastContentProps,
+  ToastProvider,
+} from '@marigold/components';
 
 const variantContent: Record<string, { title: string; description: string }> = {
   success: {
@@ -31,8 +34,8 @@ export default (props: ToastContentProps) => {
 
   return (
     <div className="z-1">
-      <Toast position="bottom-right" {...props} />
-      <ToastContent
+      <ToastProvider position="bottom-right" {...props} />
+      <Toast
         toast={{
           content: {
             title: content.title,

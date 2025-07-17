@@ -2,8 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Button } from '../Button';
-import { Toast, queue } from './Toast';
-import { ToastContent } from './ToastContent';
+import { Toast } from './Toast';
+import { ToastProvider, queue } from './ToastProvider';
 import { addToast, removeToast } from './ToastQueue';
 
 const meta: Meta = {
@@ -65,7 +65,7 @@ export const Basic: Story = {
   render: ({ position, title, description, variant, timeout }) => {
     return (
       <>
-        <Toast position={position} />
+        <ToastProvider position={position} />
         <Button onPress={() => addToast(title, description, variant, timeout)}>
           Show Toast
         </Button>
@@ -109,7 +109,7 @@ export const ToggleToast: Story = {
     const [toastKey, setToastKey] = React.useState<string | null>(null);
     return (
       <>
-        <Toast position={position} />
+        <ToastProvider position={position} />
         <Button
           onPress={() => {
             if (!toastKey) {
@@ -165,7 +165,7 @@ export const ToastContentTest: Story = {
   render: ({ title, description, variant }) => {
     return (
       <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
-        <ToastContent
+        <Toast
           toast={{
             content: {
               title: title,

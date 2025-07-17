@@ -1,4 +1,4 @@
-import { queue } from './Toast';
+import { queue } from './ToastProvider';
 
 export function addToast(
   title: string,
