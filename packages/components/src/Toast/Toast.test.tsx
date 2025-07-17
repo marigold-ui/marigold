@@ -2,17 +2,19 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as stories from './Toast.stories';
-import { addToast, clearToasts } from './ToastQueue';
+import { useToast } from './ToastQueue';
 
 const { Basic } = composeStories(stories);
 
 afterEach(() => {
+  const { clearToasts } = useToast();
   clearToasts();
 });
 
 beforeEach(async () => {});
 
 describe('Toast', () => {
+  const { addToast, clearToasts } = useToast();
   test('renders without crashing', async () => {
     render(<Basic />);
     await addToast('Dies ist eine Toast-Nachricht!');

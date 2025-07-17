@@ -4,7 +4,7 @@ import { expect, userEvent, within } from 'storybook/test';
 import { Button } from '../Button';
 import { Toast } from './Toast';
 import { ToastProvider, queue } from './ToastProvider';
-import { addToast, removeToast } from './ToastQueue';
+import { useToast } from './ToastQueue';
 
 const meta: Meta = {
   title: 'Components/Toast',
@@ -63,6 +63,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   tags: ['component-test'],
   render: ({ position, title, description, variant, timeout }) => {
+    const { addToast } = useToast();
     return (
       <>
         <ToastProvider position={position} />
@@ -107,6 +108,7 @@ export const Basic: Story = {
 export const ToggleToast: Story = {
   render: ({ position, title, description, variant, timeout }) => {
     const [toastKey, setToastKey] = React.useState<string | null>(null);
+    const { addToast, removeToast } = useToast();
     return (
       <>
         <ToastProvider position={position} />

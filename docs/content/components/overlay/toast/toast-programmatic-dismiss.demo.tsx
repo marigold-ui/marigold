@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Button, addToast, removeToast } from '@marigold/components';
+import { Button, useToast } from '@marigold/components';
 
 export default () => {
   const [toastKey, setToastKey] = useState<string | null>(null);
+  const { addToast, removeToast } = useToast();
 
   return (
     <>
