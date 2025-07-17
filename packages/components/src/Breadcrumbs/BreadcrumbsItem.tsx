@@ -22,8 +22,8 @@ export interface BreadcrumbsItemProps
 }
 
 const _BreadcrumbsItem = forwardRef<HTMLLIElement, BreadcrumbsItemProps>(
-  ({ variant, size, children, href, ...props }, ref) => {
-    const classNames = useClassNames({
+  ({ variant, size, children, href, ...rest }, ref) => {
+    const { item, current } = useClassNames({
       component: 'Breadcrumbs',
       variant,
       size,
@@ -31,11 +31,9 @@ const _BreadcrumbsItem = forwardRef<HTMLLIElement, BreadcrumbsItemProps>(
 
     return (
       <RACBreadcrumb
-        {...props}
+        {...rest}
         ref={ref}
-        className={({ isCurrent }) =>
-          cn(classNames.item, isCurrent && classNames.current)
-        }
+        className={({ isCurrent }) => cn(item, isCurrent && current)}
       >
         {children}
       </RACBreadcrumb>

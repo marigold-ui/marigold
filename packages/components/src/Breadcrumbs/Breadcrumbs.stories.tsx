@@ -38,10 +38,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  parameters: {
-    theme: 'rui',
-  },
-  tags: ['component-test'],
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item>Home</Breadcrumbs.Item>
@@ -52,26 +48,20 @@ export const Basic: Story = {
 };
 
 export const BasicWithLinks: Story = {
-  parameters: {
-    theme: 'rui',
-  },
-  tags: ['component-test'],
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
       <Breadcrumbs.Item href="https://marigold-ui.io">
         Breadcrumb1
       </Breadcrumbs.Item>
-      <Breadcrumbs.Item>Breadcrumb2</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="https://marigold-ui.io">
+        Breadcrumb2
+      </Breadcrumbs.Item>
     </Breadcrumbs>
   ),
 };
 
 export const CollapsedText: Story = {
-  parameters: {
-    theme: 'rui',
-  },
-  tags: ['component-test'],
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item>Home</Breadcrumbs.Item>
@@ -83,10 +73,6 @@ export const CollapsedText: Story = {
 };
 
 export const CollapsedWithLinks: Story = {
-  parameters: {
-    theme: 'rui',
-  },
-  tags: ['component-test'],
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
@@ -96,16 +82,14 @@ export const CollapsedWithLinks: Story = {
       <Breadcrumbs.Item href="https://marigold-ui.io">
         Breadcrumb2
       </Breadcrumbs.Item>
-      <Breadcrumbs.Item>Breadcrumb3</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="https://marigold-ui.io">
+        Breadcrumb3
+      </Breadcrumbs.Item>
     </Breadcrumbs>
   ),
 };
 
 export const ManyItemsBreadcrumbs: Story = {
-  parameters: {
-    theme: 'rui',
-  },
-  tags: ['component-test'],
   render: args => (
     <Breadcrumbs {...args}>
       {[...Array(20).keys()].map(i => (

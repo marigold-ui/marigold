@@ -18,19 +18,18 @@ interface BreadcrumbEllipsisProps extends React.ComponentProps<'span'> {
 export const BreadcrumbEllipsis = ({
   hiddenItems = [],
   disabled = false,
-  ...props
 }: BreadcrumbEllipsisProps) => {
-  const classNames = useClassNames({
+  const { ellipsisButton, ellipsisList, ellipsisItem, link } = useClassNames({
     component: 'Breadcrumbs',
   });
 
   return (
     <MenuTrigger>
-      <Button type="button" className={classNames.ellipsisButton}>
+      <Button type="button" className={ellipsisButton}>
         ...
       </Button>
       <Popover>
-        <Menu className={classNames.ellipsisList}>
+        <Menu className={ellipsisList}>
           {hiddenItems.map((item, index) => {
             if (!item || typeof item === 'boolean') return null;
 
@@ -45,7 +44,7 @@ export const BreadcrumbEllipsis = ({
             return (
               <MenuItem
                 key={index}
-                className={classNames.ellipsisItem}
+                className={ellipsisItem}
                 onAction={() => {
                   if (href && !disabled) {
                     window.location.href = href;
@@ -53,11 +52,7 @@ export const BreadcrumbEllipsis = ({
                 }}
               >
                 {href ? (
-                  <Link
-                    href={href}
-                    className={classNames.link}
-                    isDisabled={disabled}
-                  >
+                  <Link href={href} className={link} isDisabled={disabled}>
                     {itemChildren}
                   </Link>
                 ) : (

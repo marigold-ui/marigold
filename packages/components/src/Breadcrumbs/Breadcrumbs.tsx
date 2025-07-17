@@ -3,9 +3,11 @@ import React, {
   RefAttributes,
   forwardRef,
 } from 'react';
-import type { BreadcrumbsProps as RACBreadcrumbsProps } from 'react-aria-components';
-import { Breadcrumbs as RACBreadcrumbs } from 'react-aria-components';
-import { Link } from 'react-aria-components';
+import {
+  Link,
+  Breadcrumbs as RACBreadcrumbs,
+  BreadcrumbsProps as RACBreadcrumbsProps,
+} from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ChevronRight } from '../icons';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
@@ -58,11 +60,11 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       disabled,
       maxVisibleItems = 3,
       separatorType = 'chevron',
-      ...props
+      ...rest
     },
     ref
   ) => {
-    const classNames = useClassNames({
+    const { container, link } = useClassNames({
       component: 'Breadcrumbs',
       variant,
       size,
@@ -76,7 +78,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
 
     const hiddenItems = shouldCollapse ? items.slice(1, -1) : [];
 
-    const collapsed = shouldCollapse
+    const displayedItems = shouldCollapse
       ? [
           items[0],
           <BreadcrumbsItem key="ellipsis">
@@ -89,27 +91,25 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
     return (
       <nav aria-label="Breadcrumbs">
         <RACBreadcrumbs
-          {...props}
+          {...rest}
           ref={ref}
           isDisabled={disabled}
-          className={cn(classNames.container)}
+          className={cn(container)}
         >
-          {collapsed.map((item, index) => {
-            const isLast = index === collapsed.length - 1;
-            if (!item || typeof item === 'boolean') return null;
+          {displayedItems.map((item, index) => {
+            const isLast = index === displayedItems.length - 1;
 
-            const breadcrumb = item as React.ReactElement<BreadcrumbsItemProps>;
+            if (!React.isValidElement(item) || item.type !== BreadcrumbsItem)
+              return null;
 
-            const href = breadcrumb.props?.href ?? undefined;
-
-            const itemChildren = React.isValidElement(item)
-              ? breadcrumb.props.children
-              : item;
+            const { href, children: itemChildren } = (
+              item as React.ReactElement<BreadcrumbsItemProps>
+            ).props;
 
             return (
               <BreadcrumbsItem key={index}>
-                {href ? (
-                  <Link href={href} className={classNames.link}>
+                {!isLast && href ? (
+                  <Link href={href} className={link}>
                     {itemChildren}
                   </Link>
                 ) : (
