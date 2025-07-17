@@ -1,8 +1,4 @@
-import {
-  Toast,
-  ToastContent as ToastContentProps,
-  ToastProvider,
-} from '@marigold/components';
+import { Toast, ToastContent as ToastContentProps } from '@marigold/components';
 
 const variantContent: Record<string, { title: string; description: string }> = {
   success: {
