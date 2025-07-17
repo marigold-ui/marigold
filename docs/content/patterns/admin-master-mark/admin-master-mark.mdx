@@ -8,7 +8,9 @@ The admin- and master mark is a visual pattern used to signal that a setting or 
 
 ## Anatomy
 
-The admin- and master mark uses color and labeling to indicate internal access. It appears either as a badge placed near the related element or section of a page, or through direct coloring of the element itself. The badge contains the text “Admin” or “Master”, depending on the role. To ensure quick visual differentiation, “Admin” is represented in purple and “Master” in orange. This consistent use of color helps communicate access levels clearly and supports scannability in shared interfaces.
+The admin- and master mark uses color and labeling to indicate internal access. It appears either as a badge placed near the related element or section of a page, or through direct coloring of the element itself.
+
+The badge contains the text "Admin" or "Master", depending on the role. To ensure quick visual differentiation, "Admin" is represented in purple and "Master" in orange. This consistent use of color helps communicate access levels clearly and supports scannability in shared interfaces.
 
 <ComponentDemo file="./admin-master-mark-anatomy.demo.tsx" mode="preview" />
 
@@ -28,13 +30,19 @@ Apply the admin- and master mark in situations where internal-only functionality
 
 This pattern is not a substitute for proper role-based access control. It should not be used to control visibility or enforce permissions. It also does not need to be applied in fully internal tools where organizers do not have access at all since in those cases, there is no risk of confusion and no need for additional visual marking.
 
-### Anatomy & Placement
+### Placement
 
-- place next to a the control or section that it belong
-- can be a form field or a naviagation element like a tab
+The admin- and master mark should be placed directly next to the element or section it applies to. This ensures the access distinction is immediately visible and clearly tied to the relevant control.
 
-(demo with controls)
-(demo with tabs)
+For form fields or input groups, position the mark alongside the label. This ensures that users understand the access level before interacting with the field. Placing it beside the label ensures a clean layout and avoids any confusion about its relation to the field content.
+
+<ComponentDemo file="./admin-master-mark-field.demo.tsx" />
+
+In navigation elements such as tabs or grouped settings, place the mark next to the tab label or section heading. This makes it clear that the entire area is intended for internal use.
+
+<ComponentDemo file="./admin-master-mark-tabs.demo.tsx" />
+
+Avoid placing the mark at a distance from the related element. Doing so reduces clarity and can lead to incorrect assumptions about access. The mark is a functional visual indicator and should be treated with the same attention as labels or status cues.
 
 ### Within a Table
 
