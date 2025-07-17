@@ -4,5 +4,6 @@ export default () => (
   <Inline space={4} alignX="center">
     <Badge variant="admin">Admin</Badge>
     <Badge variant="master">Master</Badge>
+    {/* add boxes with the colors here */}
   </Inline>
 );
