@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Stack } from '../Stack';
 import { Accessible } from '../icons';
 import { Badge } from './Badge';
 
@@ -13,13 +14,13 @@ const meta = {
       },
       options: [
         'default',
-        'inverted',
-        'success',
-        'info',
-        'warning',
-        'error',
         'primary',
-        'secondary',
+        'success',
+        'warning',
+        'info',
+        'error',
+        'master',
+        'admin',
       ],
       description: 'The variants of the badge',
     },
@@ -49,6 +50,21 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = { render: args => <Badge {...args} /> };
+
+export const All: Story = {
+  render: args => (
+    <Stack space={2} alignX="left">
+      <Badge {...args} variant="default" />
+      <Badge {...args} variant="primary" />
+      <Badge {...args} variant="success" />
+      <Badge {...args} variant="warning" />
+      <Badge {...args} variant="info" />
+      <Badge {...args} variant="error" />
+      <Badge {...args} variant="master" />
+      <Badge {...args} variant="admin" />
+    </Stack>
+  ),
+};
 
 export const Icon: Story = {
   parameters: {
