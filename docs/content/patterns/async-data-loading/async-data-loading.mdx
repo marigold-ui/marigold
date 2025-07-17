@@ -31,7 +31,7 @@ When implementing async data loading, manage these essential states:
 
 In the next examples we will discover how to handle the previous states
 
-## Basic Async Loading Example
+## Basic Async Loading
 
 ### Simple Data Loading on Mount
 
@@ -56,11 +56,11 @@ When implementing search functionality, a common mistake is making an API reques
   className="mx-auto block"
 />
 
-### The Solution: Debounced Search
+To solve this problem, we can implement debouncing. Debouncing is a technique that delays the execution of a function until after a specified period of inactivity. In our case, we wait for the user to stop typing before making the API request.
 
 <ComponentDemo file="./debounced-search.demo.tsx" />
 
-Debouncing solves the excessive requests problem by:
+This approach solves the excessive requests problem by:
 
 - **Waiting for pauses**: Only sends requests after the user stops typing for a specified delay (typically 300-500ms)
 - **Canceling previous requests**: Uses AbortController to cancel outdated requests
