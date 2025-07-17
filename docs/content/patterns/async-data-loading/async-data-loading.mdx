@@ -1,0 +1,76 @@
+---
+title: Async Data Loading
+caption: Learn how to implement async data loading patterns in interactive components.
+badge: new
+---
+
+Async data loading patterns provide clear guidelines for implementing components that fetch data from remote sources. These patterns ensure consistent user experience across `<ComboBox>`, `<Autocomplete>`, and other interactive components that work with dynamic data.
+
+## Key Principles
+
+Async data loading should be:
+
+- **Predictable.** Components should follow consistent patterns for fetching, loading, and error states.
+- **Responsive.** User input should be properly debounced to minimize unnecessary network requests.
+- **Accessible.** Loading and empty states should be announced to screen readers.
+
+These patterns apply to components that:
+
+- Accept a list of options that may not be available at initial render
+- Respond to user input (e.g., search terms or filtering)
+- Require integration with APIs or remote sources (e.g., typeahead, suggestion services)
+
+## State Management
+
+When implementing async data loading, manage these essential states:
+
+- **Loading State**: Display an indicator while data is being fetched to provide visual feedback.
+- **Error State**: Handle and display fetch errors gracefully with actionable error messages.
+- **Empty State**: Provide meaningful messaging when no options match the user's query.
+- **Value State**: Manage selection consistently with fetched data, ensuring selected values persist during refetches.
+
+In the next examples we will discover how to handle the previous states
+
+## Basic Async Loading Example
+
+### Simple Data Loading on Mount
+
+This pattern loads data when the component mounts using `useEffect`. It demonstrates the fundamental loading, error, and data states that every async component should handle.
+
+<ComponentDemo file="./basic-async-loading.demo.tsx" />
+
+### The Problem: Too Many API Requests
+
+When implementing search functionality, a common mistake is making an API request for every character the user types. This creates several problems:
+
+- **Performance Issues**: Excessive network requests can slow down the application
+- **Server Load**: Bombarding your API with requests can overwhelm your backend
+- **Poor User Experience**: Rapid state changes can make the interface feel jittery
+- **Wasted Resources**: Many intermediate requests become irrelevant as the user continues typing
+
+<Image
+  src="/excessive-requests.gif"
+  alt="Network requests being sent for each keystroke while typing"
+  width={800}
+  height={400}
+  className="mx-auto block"
+/>
+
+### The Solution: Debounced Search
+
+<ComponentDemo file="./debounced-search.demo.tsx" />
+
+Debouncing solves the excessive requests problem by:
+
+- **Waiting for pauses**: Only sends requests after the user stops typing for a specified delay (typically 300-500ms)
+- **Canceling previous requests**: Uses AbortController to cancel outdated requests
+- **Reducing server load**: Dramatically fewer API calls mean better performance
+- **Improving UX**: Smoother interactions without constant loading states
+
+<Image
+  src="/debounced-requests.gif"
+  alt="Network requests being sent in a debounced way"
+  width={800}
+  height={400}
+  className="mx-auto block"
+/>

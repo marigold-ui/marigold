@@ -7,6 +7,7 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
+import { Center } from '../Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { IconButton } from '../IconButton';
 import { Input } from '../Input';
@@ -85,6 +86,11 @@ export interface ComboBoxProps
    * Set the placeholder for the select.
    */
   placeholder?: string;
+
+  /**
+   * Provides content to display when there are no items in the list.
+   */
+  renderEmptyState?: ReactNode;
 }
 
 interface ComboBoxComponent
@@ -128,6 +134,7 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
       isInvalid: error,
       defaultInputValue: defaultValue,
       inputValue: value,
+
       onInputChange: onChange,
       ...rest,
     };
@@ -135,7 +142,7 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
     const classNames = useClassNames({ component: 'ComboBox', variant, size });
 
     return (
-      <FieldBase as={ComboBox} ref={ref} {...props}>
+      <FieldBase as={ComboBox} ref={ref} {...props} allowsEmptyCollection>
         <Input
           action={
             <IconButton className={classNames}>
@@ -144,7 +151,9 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
           }
         />
         <Popover>
-          <ListBox>{children}</ListBox>
+          <ListBox renderEmptyState={() => <Center>no result found</Center>}>
+            {children}
+          </ListBox>
         </Popover>
       </FieldBase>
     );
