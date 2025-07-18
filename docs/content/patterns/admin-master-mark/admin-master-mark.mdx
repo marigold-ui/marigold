@@ -23,10 +23,10 @@ The admin- and master mark is used to indicate that certain features in the user
 
 Apply the admin- and master mark in situations where internal-only functionality appears in shared views. Typical scenarios include:
 
-- Internal tools or controls embedded in interfaces visible to external users.
+- Controls embedded in interfaces visible to external users.
 - Developer-specific configuration options that are not part of the public feature set.
 - Features that are technically in production but intentionally hidden from or not relevant to external users.
-- Functionality that is still under development, partially implemented, or currently in a testing or staging phase.
+- Functionality that is still under development, can only be partially enabled, or currently in a testing or staging phase.
 
 This pattern is not a substitute for proper role-based access control. It should not be used to control visibility or enforce permissions. It also does not need to be applied in fully internal tools where organizers do not have access at all since in those cases, there is no risk of confusion and no need for additional visual marking.
 
