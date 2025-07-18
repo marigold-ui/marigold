@@ -66,7 +66,7 @@ export type ToastContentProp = {
 };
 
 export interface ToastProps {
-  toast: { content: ToastContentProp } & { key: string };
+  toast: { content: ToastContentProp; key: string };
 }
 
 export const Toast = ({ toast }: ToastProps) => {
