@@ -1,4 +1,9 @@
-import { ForwardRefExoticComponent, RefAttributes, forwardRef } from 'react';
+import {
+  ForwardRefExoticComponent,
+  ReactNode,
+  RefAttributes,
+  forwardRef,
+} from 'react';
 import { Select, SelectValue, ValidationResult } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -25,7 +30,7 @@ export interface SelectProps<T extends object>
   /**
    * Set a label for the select.
    */
-  label?: string;
+  label?: ReactNode;
   /**
    * Set a description for the select.
    */
