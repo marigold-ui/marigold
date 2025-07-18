@@ -44,7 +44,14 @@ Avoid placing the mark at a distance from the related element. Doing so reduces 
 
 ### Within a Table
 
-- expection is when rows in a table are only visible internally
-- no badge, but background and indicator
+In tables, the admin- and master mark is not applied as a badge. Instead, internal-only rows are visually distinguished through background color and a subtle inline indicator.
 
-(insert demo)
+This exception is intentional. Since badges can clutter dense tabular layouts, a more lightweight visual cue is used to signal internal visibility. A soft background tint helps set these rows apart without disrupting the structure of the table. An inline label or icon may be used when additional clarity is needed.
+
+Use this approach when:
+
+- A table contains a mix of internal and external data
+- Some rows are only relevant to internal users (e.g. test entries, system-generated records, flagged data)
+- You want to preserve alignment and readability without adding badges to every row
+
+<ComponentDemo file="./admin-master-mark-table.demo.tsx" />

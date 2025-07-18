@@ -60,7 +60,7 @@ export default () => (
       </Stack>
     </Tabs.TabPanel>
     <Tabs.TabPanel id="events">
-      <Table>
+      <Table aria-label="Event List" stretch>
         <Table.Header>
           <Table.Column>Name</Table.Column>
           <Table.Column>Date</Table.Column>
