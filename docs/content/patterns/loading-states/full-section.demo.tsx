@@ -44,12 +44,7 @@ export default () => {
         />
         <Stack space={2}>
           <Stack alignX="right">
-            <Button
-              variant="primary"
-              size="small"
-              type="submit"
-              className="w-20"
-            >
+            <Button variant="primary" size="small" type="submit">
               Submit
             </Button>
           </Stack>
