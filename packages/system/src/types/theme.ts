@@ -148,7 +148,18 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Toast?: Record<
-      'toast' | 'title' | 'description' | 'closeButton' | 'icon' | 'content',
+      | 'toast'
+      | 'title'
+      | 'description'
+      | 'closeButton'
+      | 'icon'
+      | 'content'
+      | 'bottom-left'
+      | 'bottom-right'
+      | 'top-left'
+      | 'top-right'
+      | 'top'
+      | 'bottom',
       ComponentStyleFunction<string, string>
     >;
     Tabs?: Record<

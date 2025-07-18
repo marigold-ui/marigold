@@ -5,6 +5,7 @@ import {
 import type RAC from 'react-aria-components';
 import { flushSync } from 'react-dom';
 import { UNSAFE_PortalProvider } from '@react-aria/overlays';
+import { useClassNames } from '@marigold/system';
 import { usePortalContainer } from '../Provider';
 import { Toast } from './Toast';
 import { ToastContentProps } from './Toast';
@@ -37,23 +38,16 @@ type ToastPosition =
   | 'top'
   | 'bottom';
 
-const positionMap: Record<ToastPosition, string> = {
-  'bottom-left': 'fixed bottom-4 left-4 flex flex-col-reverse',
-  'bottom-right': 'fixed bottom-4 right-4 flex flex-col-reverse',
-  'top-left': 'fixed top-4 left-4 flex flex-col',
-  'top-right': 'fixed top-4 right-4 flex flex-col',
-  top: 'fixed top-4 left-1/2 right-auto -translate-x-1/2 flex flex-col items-center w-auto align-middle',
-  bottom:
-    'fixed bottom-4 left-1/2 right-auto -translate-x-1/2 flex flex-col-reverse items-center w-auto align-middle',
-};
-//TODO: test
 const ToastProvider = ({ position = 'bottom-right' }: ToastProviderProps) => {
   const portal = usePortalContainer();
+  const classNames = useClassNames({
+    component: 'Toast',
+  });
   return (
     <UNSAFE_PortalProvider getContainer={() => portal as HTMLElement | null}>
       <ToastRegion
         queue={queue}
-        className={`${positionMap[position]} z-50 gap-2`}
+        className={`${classNames[position]} z-50 gap-2`}
       >
         {({ toast }) => <Toast toast={toast} />}
       </ToastRegion>

@@ -46,4 +46,14 @@ export const Toast: ThemeComponent<'Toast'> = {
     }
   ),
   content: cva(['contents']),
+  'bottom-left': cva(['fixed bottom-4 left-4 flex flex-col-reverse']),
+  'bottom-right': cva(['fixed bottom-4 right-4 flex flex-col-reverse']),
+  'top-left': cva(['fixed top-4 left-4 flex flex-col']),
+  'top-right': cva(['fixed top-4 right-4 flex flex-col']),
+  top: cva([
+    'fixed top-4 left-1/2 right-auto -translate-x-1/2 flex flex-col items-center w-auto align-middle',
+  ]),
+  bottom: cva([
+    'fixed bottom-4 left-1/2 right-auto -translate-x-1/2 flex flex-col-reverse items-center w-auto align-middle',
+  ]),
 };
