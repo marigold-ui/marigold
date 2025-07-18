@@ -1,5 +1,20 @@
 # @marigold/theme-rui
 
+## 1.3.0
+
+### Minor Changes
+
+- 29e6133: feat([DST-937]): Add master and admin mark variants
+
+### Patch Changes
+
+- a7ec9d3: fix[DSTSUP-169]: Fix width property on Calendar component
+- Updated dependencies [a7ec9d3]
+- Updated dependencies [6d61be9]
+- Updated dependencies [29e6133]
+  - @marigold/components@14.0.0
+  - @marigold/system@14.0.0
+
 ## 1.2.0
 
 ### Minor Changes
