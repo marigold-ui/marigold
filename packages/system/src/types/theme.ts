@@ -34,6 +34,17 @@ export type Theme = {
     >;
     Badge?: ComponentStyleFunction<string, string>;
     Body?: ComponentStyleFunction<string, string>;
+    Breadcrumbs?: Record<
+      | 'container'
+      | 'item'
+      | 'link'
+      | 'current'
+      | 'ellipsisButton'
+      | 'ellipsisList'
+      | 'ellipsisItem',
+      ComponentStyleFunction<string, string>
+    >;
+
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
