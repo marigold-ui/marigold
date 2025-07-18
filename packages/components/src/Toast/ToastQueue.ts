@@ -7,11 +7,11 @@ export function useToast() {
     variant?: 'info' | 'success' | 'error' | 'warning';
     timeout?: number;
   };
-
+  const MINIMUM_TIMEOUT_MS = 5000;
   const addToast = (options: ToastOptions) => {
     let { title, description, variant, timeout } = options;
-    if (timeout && timeout < 5000) {
-      timeout = 5000; // Ensure a minimum timeout of 5000ms
+    if (timeout && timeout < MINIMUM_TIMEOUT_MS) {
+      timeout = MINIMUM_TIMEOUT_MS; // Ensure a minimum timeout of 5000ms
     }
     return queue.add(
       {

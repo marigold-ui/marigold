@@ -59,14 +59,14 @@ const icons = {
   ),
 };
 
-export type ToastContentProp = {
+export type ToastContentProps = {
   title: string;
   description?: string;
   variant?: 'success' | 'info' | 'warning' | 'error';
 };
 
 export interface ToastProps {
-  toast: { content: ToastContentProp; key: string };
+  toast: { content: ToastContentProps; key: string };
 }
 
 export const Toast = ({ toast }: ToastProps) => {

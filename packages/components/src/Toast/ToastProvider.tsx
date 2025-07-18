@@ -7,11 +7,9 @@ import { flushSync } from 'react-dom';
 import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { usePortalContainer } from '../Provider';
 import { Toast } from './Toast';
-import { ToastContentProp } from './Toast';
+import { ToastContentProps } from './Toast';
 
-export type ToastContent = ToastContentProp;
-
-export const queue = new ToastQueue<ToastContent>({
+export const queue = new ToastQueue<ToastContentProps>({
   // Wrap state updates in a CSS view transition.
   wrapUpdate(fn) {
     if ('startViewTransition' in document) {
@@ -48,7 +46,7 @@ const positionMap: Record<ToastPosition, string> = {
   bottom:
     'fixed bottom-4 left-1/2 right-auto -translate-x-1/2 flex flex-col-reverse items-center w-auto align-middle',
 };
-
+//TODO: test
 const ToastProvider = ({ position = 'bottom-right' }: ToastProviderProps) => {
   const portal = usePortalContainer();
   return (

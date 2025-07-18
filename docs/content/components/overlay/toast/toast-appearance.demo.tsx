@@ -1,4 +1,5 @@
-import { Toast, ToastContent as ToastContentProps } from '@marigold/components';
+import { Toast } from '@marigold/components';
+import { ToastContentProps } from '@marigold/components/src/Toast/Toast';
 
 const variantContent: Record<string, { title: string; description: string }> = {
   success: {
@@ -24,18 +25,19 @@ const variantContent: Record<string, { title: string; description: string }> = {
     description: 'Here is a general notification about your booking.',
   },
 };
-
-export default (props: ToastContentProps) => {
-  const content = variantContent[props.variant ?? 'info'];
+// This is only a demo to show the appearance of the Toast component
+// This is not how you would typically use the Toast component in your application
+export default ({ variant }: ToastContentProps) => {
+  const { title, description } = variantContent[variant ?? 'info'];
 
   return (
     <div className="z-1">
       <Toast
         toast={{
           content: {
-            title: content.title,
-            description: content.description,
-            variant: props.variant,
+            title,
+            description,
+            variant,
           },
           key: 'toast-key',
         }}
