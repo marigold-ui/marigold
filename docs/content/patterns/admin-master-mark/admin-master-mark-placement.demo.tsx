@@ -104,26 +104,20 @@ export default () => (
     <Tabs.TabPanel id="sales">
       <List>
         <List.Item>
-          <strong>Initial Contact:</strong> Reached out at Event Business Forum
-          2023. Very interested in bundling services.
+          Reached out at Event Business Forum 2023. Very interested in bundling
+          services.
         </List.Item>
         <List.Item>
-          <strong>Negotiation Notes:</strong> Prefers flexible contract terms
-          due to seasonal event scheduling. Requested a trial phase before full
-          onboarding.
+          Prefers flexible contract terms due to seasonal event scheduling.
+          Requested a trial phase before full onboarding.
         </List.Item>
         <List.Item>
-          <strong>Account Strategy:</strong> Potential for upselling premium
-          analytics tools later this year. Wait until after Q3 for follow-up.
+          Potential for upselling premium analytics tools later this year. Wait
+          until after Q3 for follow-up.
         </List.Item>
         <List.Item>
-          <strong>Internal Note:</strong> Main contact (Anna S.) is responsive
-          and detail-oriented. Appreciates clear timelines and prefers email
-          over calls.
-        </List.Item>
-        <List.Item>
-          <strong>Last Update:</strong> Sent revised offer on June 10. Waiting
-          for internal approval on their side before next steps.
+          Sent revised offer on June 10. Waiting for internal approval on their
+          side before next steps.
         </List.Item>
       </List>
     </Tabs.TabPanel>
