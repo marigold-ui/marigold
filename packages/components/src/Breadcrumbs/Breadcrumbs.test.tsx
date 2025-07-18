@@ -24,12 +24,11 @@ test('collapses breadcrumbs for too many items', () => {
   const home = screen.getByText('Home');
   const breadcrumb3 = screen.getByText('Breadcrumb3');
 
+  fireEvent.click(ellipsis);
+
   expect(ellipsis).toBeInTheDocument();
   expect(home).toBeInTheDocument();
   expect(breadcrumb3).toBeInTheDocument();
-
-  fireEvent.click(ellipsis);
-
   ['Breadcrumb1', 'Breadcrumb2'].forEach(text => {
     expect(screen.getByText(text)).toBeInTheDocument();
   });
@@ -70,14 +69,12 @@ test('collapses breadcrumbs with links for too many items', () => {
   const breadcrumb3 = screen.getByText('Breadcrumb3');
   const linkItems = screen.getAllByRole('link');
 
+  fireEvent.click(ellipsis);
+
   expect(ellipsis).toBeInTheDocument();
   expect(home).toBeInTheDocument();
   expect(breadcrumb3).toBeInTheDocument();
-
   expect(linkItems.length).toBe(1);
-
-  fireEvent.click(ellipsis);
-
   ['Breadcrumb1', 'Breadcrumb2'].forEach(text => {
     const breadcrumb = screen.getByText(text);
     expect(breadcrumb).toBeInTheDocument();
