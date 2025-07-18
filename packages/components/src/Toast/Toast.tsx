@@ -59,20 +59,17 @@ const icons = {
   ),
 };
 
-type ToastProp = {
-  content: {
-    title: string;
-    description?: string;
-    variant?: 'success' | 'info' | 'warning' | 'error';
-  };
-  key: string;
+export type ToastContentProp = {
+  title: string;
+  description?: string;
+  variant?: 'success' | 'info' | 'warning' | 'error';
 };
 
-export interface ToastContentProps {
-  toast: ToastProp;
+export interface ToastProps {
+  toast: { content: ToastContentProp } & { key: string };
 }
 
-export const Toast = ({ toast }: ToastContentProps) => {
+export const Toast = ({ toast }: ToastProps) => {
   const classNames = useClassNames({
     component: 'Toast',
     variant: toast.content.variant,

@@ -9,7 +9,6 @@ export default () => {
         onPress={() =>
           addToast({
             title: 'Updated Settings',
-            description: undefined,
             variant: 'success',
           })
         }

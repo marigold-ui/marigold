@@ -11,8 +11,6 @@ afterEach(() => {
   clearToasts();
 });
 
-beforeEach(async () => {});
-
 describe('Toast', () => {
   const { addToast, clearToasts } = useToast();
   test('renders without crashing', async () => {
