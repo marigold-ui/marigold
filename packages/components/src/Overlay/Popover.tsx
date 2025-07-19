@@ -1,7 +1,6 @@
 import { ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
-import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Underlay } from './Underlay';
 
