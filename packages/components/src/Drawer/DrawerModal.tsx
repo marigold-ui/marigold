@@ -14,9 +14,9 @@ const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => {
     <UNSAFE_PortalProvider getContainer={() => portal as HTMLElement | null}>
       <ModalOverlay
         {...props}
-        className="fixed inset-0 z-40 h-(--visual-viewport-height) bg-red-400"
+        className="fixed inset-0 z-40 h-(--visual-viewport-height)"
       >
-        <Modal className="flex">{children}</Modal>
+        <Modal className="flex *:flex-1">{children}</Modal>
       </ModalOverlay>
     </UNSAFE_PortalProvider>
   );
