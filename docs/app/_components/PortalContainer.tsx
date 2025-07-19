@@ -1,7 +1,5 @@
 'use client';
 
 export const PortalContaier = () => (
-  <div data-theme="rui">
-    <div id="portalContainer" className="not-prose" />
-  </div>
+  <div id="portalContainer" data-theme="rui" className="not-prose" />
 );
