@@ -53,7 +53,6 @@ window.matchMedia = mockMatchMedia([
   'screen and (min-width: 64em)',
 ]);
 
-// TODO: Adjust
 test('renders portal container', async () => {
   render(
     <>
