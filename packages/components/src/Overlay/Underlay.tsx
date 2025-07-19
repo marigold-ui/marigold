@@ -1,5 +1,4 @@
 import RAC, { ModalOverlay } from 'react-aria-components';
-import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { cn, useClassNames } from '@marigold/system';
 
 // Props
