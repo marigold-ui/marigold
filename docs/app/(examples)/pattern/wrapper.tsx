@@ -16,7 +16,7 @@ export const Wrapper = ({
     <div data-theme="rui">
       <OverlayContainerProvider container="portalContainer">
         <MarigoldProvider className={className} theme={ruiTheme}>
-          <div className="h-[calc(100dvh-var(--page-header-height))] p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
+          <div className="p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
             {children}
           </div>
         </MarigoldProvider>
