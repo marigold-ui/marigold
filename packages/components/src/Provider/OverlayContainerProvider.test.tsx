@@ -1,8 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { renderHook, screen, within } from '@testing-library/react';
-import React from 'react';
+import { render, screen, within } from '@testing-library/react';
 import { vi } from 'vitest';
 import { OverlayContainerProvider } from '@marigold/components';
 import { Theme, cva } from '@marigold/system';
@@ -56,11 +55,9 @@ window.matchMedia = mockMatchMedia([
 
 // TODO: Adjust
 test('renders portal container', async () => {
-  const containerRef = React.createRef<HTMLDivElement>();
-
-  const wrapper = () => (
+  render(
     <>
-      <OverlayContainerProvider container={containerRef.current as any}>
+      <OverlayContainerProvider container="container">
         <MarigoldProvider theme={theme}>
           <Select label="Label" defaultOpen>
             <Select.Section header="section">
@@ -70,7 +67,7 @@ test('renders portal container', async () => {
           </Select>
         </MarigoldProvider>
       </OverlayContainerProvider>
-      <div id="testid"></div>
+      <div id="container"></div>
     </>
   );
 

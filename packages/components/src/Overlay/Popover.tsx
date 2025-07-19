@@ -13,17 +13,13 @@ export interface PopoverProps
   > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
-  container?: Element;
   children: ReactNode;
 }
 
 // Component
 // ---------------
 const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  (
-    { keyboardDismissDisabled, placement, open, children, container, ...rest },
-    ref
-  ) => {
+  ({ keyboardDismissDisabled, placement, open, children, ...rest }, ref) => {
     const props: RAC.PopoverProps = {
       isKeyboardDismissDisabled: keyboardDismissDisabled,
       isOpen: open,
