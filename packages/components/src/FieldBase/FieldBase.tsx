@@ -68,8 +68,7 @@ const _FieldBase = <T extends ElementType>(
         'flex flex-col',
         twWidth[width],
         classNames,
-        className,
-        !label && `gap-x-0`
+        className
       )}
       data-required={props.isRequired ? true : undefined}
       data-error={props.isInvalid ? true : undefined}
@@ -79,9 +78,7 @@ const _FieldBase = <T extends ElementType>(
         <Label variant={variant} size={size}>
           {label}
         </Label>
-      ) : (
-        <span aria-hidden="true" />
-      )}
+      ) : null}
       {children}
       <HelpText
         variant={variant}

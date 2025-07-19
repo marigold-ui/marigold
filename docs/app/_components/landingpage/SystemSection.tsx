@@ -18,7 +18,7 @@ export const SystemSection = () => {
     <BlurFade className="md:col-span-3" inView inViewMargin="-100px">
       <Card variant="content" p={0}>
         <div data-theme={ruiTheme.name}>
-          <OverlayContainerProvider value="portalContainer">
+          <OverlayContainerProvider container="portalContainer">
             <MarigoldProvider theme={ruiTheme}>
               <div className="flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pt-16 pb-8">
                 <Stack space={4}>

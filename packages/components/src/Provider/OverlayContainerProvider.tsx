@@ -1,21 +1,40 @@
-import { createContext, useContext } from 'react';
-import { useIsSSR } from '@react-aria/ssr';
+import { PropsWithChildren } from 'react';
+import { UNSAFE_PortalProvider as PortalProvider } from '@react-aria/overlays';
 
-// needs an id for the portal container, it will be overgiven as string,
-// if there is no the body is used
-const OverlayContainerContext = createContext<string | undefined>(undefined);
-
-export const OverlayContainerProvider = OverlayContainerContext.Provider;
-
-export const usePortalContainer = () => {
-  const portalContainer = useContext(OverlayContainerContext);
-  const isSSR = useIsSSR();
-
-  const portal = isSSR
-    ? undefined
-    : portalContainer
-      ? document.getElementById(portalContainer) || undefined
-      : document.body;
-
-  return portal;
+// Helper
+// ---------------
+const getContainer = (container?: string) => () => {
+  if (container) {
+    const element = document.getElementById(container);
+    if (!element) {
+      console.warn(
+        `OverlayContainerProvider: Container with id "${container}" not found.`
+      );
+    }
+    return element;
+  }
+  return null;
 };
+
+// Props
+// ---------------
+export interface OverlayContainerProps extends PropsWithChildren {
+  /**
+   * The id of the container element where the overlay should be rendered.
+   * If not provided, the overlay will be rendered in the body.
+   *
+   * Note that the container must be present in the DOM before the overlay is rendered.
+   */
+  container?: string;
+}
+
+// Component
+// ---------------
+export const OverlayContainerProvider = ({
+  container,
+  children,
+}: OverlayContainerProps) => (
+  <PortalProvider getContainer={getContainer(container)}>
+    {children}
+  </PortalProvider>
+);

@@ -56,7 +56,7 @@ export const AccessibiltySection = () => {
       ];
   return (
     <div data-theme="rui" className="flex flex-col">
-      <OverlayContainerProvider value="portalContainer">
+      <OverlayContainerProvider container="portalContainer">
         <MarigoldProvider theme={ruiTheme} className="bg-transparent">
           <Grid
             areas={areas}

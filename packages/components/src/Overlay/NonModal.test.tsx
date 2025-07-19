@@ -221,7 +221,7 @@ test('supports isEntering and isExiting props', async () => {
 test('supports custom portal container', async () => {
   render(
     <>
-      <OverlayContainerProvider value="custom-container">
+      <OverlayContainerProvider container="custom-container">
         <DialogTrigger>
           <Button>Toggle</Button>
           <NonModal>

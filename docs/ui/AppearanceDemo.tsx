@@ -133,7 +133,7 @@ export const AppearanceDemo = ({ component }: AppearanceDemoProps) => {
           ) : null}
         </div>
         <div data-theme="rui">
-          <OverlayContainerProvider value="portalContainer">
+          <OverlayContainerProvider container="portalContainer">
             <MarigoldProvider theme={ruiTheme}>
               <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pt-24 pb-10">
                 <Demo {...selected} />
