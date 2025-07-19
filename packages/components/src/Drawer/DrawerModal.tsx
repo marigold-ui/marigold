@@ -1,26 +1,18 @@
 import RAC, { Modal, ModalOverlay } from 'react-aria-components';
-import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { cn, useSmallScreen } from '@marigold/system';
 import { NonModal } from '../Overlay';
 import type { NonModalProps } from '../Overlay';
-import { usePortalContainer } from '../Provider';
 
 // Mobile Modal
 // ---------------
-const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => {
-  const portal = usePortalContainer();
-
-  return (
-    <UNSAFE_PortalProvider getContainer={() => portal as HTMLElement | null}>
-      <ModalOverlay
-        {...props}
-        className="fixed inset-0 z-40 h-(--visual-viewport-height)"
-      >
-        <Modal className="flex *:flex-1">{children}</Modal>
-      </ModalOverlay>
-    </UNSAFE_PortalProvider>
-  );
-};
+const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
+  <ModalOverlay
+    {...props}
+    className="fixed inset-0 z-40 h-(--visual-viewport-height)"
+  >
+    <Modal className="flex *:flex-1">{children}</Modal>
+  </ModalOverlay>
+);
 
 // Props
 // ---------------

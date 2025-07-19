@@ -31,7 +31,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       lang="en"
       className="scrollbar scrollbar-thumb-slate-400 scrollbar-track-transparent scrollbar-thumb-rounded-full"
     >
-      <body className={`${fontSans.className} min-h-screen overflow-hidden`}>
+      <body className={`${fontSans.className} min-h-screen`}>
         <Suspense>
           <MarigoldProvider theme={theme} className="bg-bg-body min-h-screen">
             {children}

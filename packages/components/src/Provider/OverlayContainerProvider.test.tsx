@@ -4,10 +4,7 @@
 import { renderHook, screen, within } from '@testing-library/react';
 import React from 'react';
 import { vi } from 'vitest';
-import {
-  OverlayContainerProvider,
-  usePortalContainer,
-} from '@marigold/components';
+import { OverlayContainerProvider } from '@marigold/components';
 import { Theme, cva } from '@marigold/system';
 import { Select } from '../Select';
 import { MarigoldProvider } from './MarigoldProvider';
@@ -57,12 +54,13 @@ window.matchMedia = mockMatchMedia([
   'screen and (min-width: 64em)',
 ]);
 
+// TODO: Adjust
 test('renders portal container', async () => {
   const containerRef = React.createRef<HTMLDivElement>();
 
   const wrapper = () => (
     <>
-      <OverlayContainerProvider value={containerRef.current as any}>
+      <OverlayContainerProvider container={containerRef.current as any}>
         <MarigoldProvider theme={theme}>
           <Select label="Label" defaultOpen>
             <Select.Section header="section">
@@ -76,11 +74,8 @@ test('renders portal container', async () => {
     </>
   );
 
-  const { result } = renderHook(() => usePortalContainer(), { wrapper });
   const listbox = screen.getByRole('listbox');
   const item = within(listbox).getByText('two');
 
   expect(item).toBeInTheDocument();
-
-  expect(result.current).toBeNull();
 });

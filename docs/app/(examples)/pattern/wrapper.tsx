@@ -14,7 +14,7 @@ export const Wrapper = ({
 }: PropsWithChildren<WrapperProps>) => {
   return (
     <div data-theme="rui">
-      <OverlayContainerProvider value="portalContainer">
+      <OverlayContainerProvider container="portalContainer">
         <MarigoldProvider className={className} theme={ruiTheme}>
           <div className="h-[calc(100dvh-var(--page-header-height))] p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
             {children}
