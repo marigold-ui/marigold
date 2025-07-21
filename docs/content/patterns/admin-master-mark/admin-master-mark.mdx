@@ -10,7 +10,7 @@ The admin- and master mark is a visual pattern used to signal that a setting or 
 
 The admin- and master mark uses color and labeling to indicate internal access. It appears either as a badge placed near the related element or section of a page, or through direct coloring of the element itself.
 
-The badge contains the text "Admin" or "Master", depending on the role. To ensure quick visual differentiation, "Admin" is represented in purple and "Master" in orange. This consistent use of color helps communicate access levels clearly and supports scannability in shared interfaces.
+The badge contains the text "Admin" or "Master", depending on the role. To ensure quick visual differentiation, "Admin" is represented in orange and "Master" in purple. This consistent use of color helps communicate access levels clearly and supports scannability in shared interfaces.
 
 <ComponentDemo file="./admin-master-mark-anatomy.demo.tsx" mode="preview" />
 
@@ -23,7 +23,7 @@ The admin- and master mark is used to indicate that certain features in the user
 
 Apply the admin- and master mark in situations where internal-only functionality appears in shared views. Typical scenarios include:
 
-- Controls embedded in interfaces visible to external users.
+- Controls in user interfaces visible to external users.
 - Developer-specific configuration options that are not part of the public feature set.
 - Features that are technically in production but intentionally hidden from or not relevant to external users.
 - Functionality that is still under development, can only be partially enabled, or currently in a testing or staging phase.
@@ -32,7 +32,7 @@ This pattern is not a substitute for proper role-based access control. It should
 
 ### Placement
 
-The admin- and master mark should be placed directly next to the element or section it applies to. This ensures the access distinction is immediately visible and clearly tied to the relevant control.
+The admin- and master mark should be placed directly to the right of the label or heading of the section or element it applies to. This ensures the access distinction is immediately visible and clearly associated with the relevant control.
 
 Use the `<Badge>` component to place the mark next to the label in form fields or input groups. This ensures that users understand the access level before interacting with the field. Placing it beside the label ensures a clean layout and avoids any confusion about its relation to the field content.
 
