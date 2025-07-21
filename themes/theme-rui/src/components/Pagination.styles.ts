@@ -1,6 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Pagination: ThemeComponent<'Pagination'> = {
+  navigationContainer: cva('flex items-center justify-center space-x-2'),
   navigationButton: cva([
     'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors',
     'focus-visible:util-focus-ring outline-none',
@@ -10,6 +11,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
     'h-9 py-2 gap-1 px-2.5',
     'cursor-pointer',
   ]),
+  pageButtonContainer: cva('flex items-center space-x-2'),
   pageButton: cva([
     'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors bg-background size-9',
     'focus-visible:util-focus-ring outline-none',
@@ -20,4 +22,5 @@ export const Pagination: ThemeComponent<'Pagination'> = {
     'cursor-pointer',
   ]),
   icon: cva('h-4 w-4'),
+  ellipsis: cva('text-text-base flex h-8 w-8 items-center justify-center'),
 };
