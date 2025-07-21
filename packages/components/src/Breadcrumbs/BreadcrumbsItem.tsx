@@ -11,7 +11,7 @@ export interface BreadcrumbsItemProps
   /**
    * The content inside the breadcrumb.
    */
-  children?: ReactNode;
+  children: ReactNode;
 
   /**
    * Link for the breadcrumb item.
