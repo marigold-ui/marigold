@@ -153,11 +153,11 @@ const _Pagination = ({
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
   const pageRange = usePageRange({ currentPage, totalPages });
-  const { navigationContainer } = useClassNames({ component: 'Pagination' });
+  const { container } = useClassNames({ component: 'Pagination' });
 
   return (
     <nav
-      className={navigationContainer}
+      className={container}
       aria-label={`Page ${currentPage} of ${totalPages}`}
     >
       <FocusScope restoreFocus>

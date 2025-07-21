@@ -1,6 +1,6 @@
 import { KeyboardEvent, useRef } from 'react';
 import { useButton } from '@react-aria/button';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 interface PageButtonProps {
   page: number;
@@ -13,7 +13,7 @@ interface PageButtonProps {
 
 export const PageButton = (props: PageButtonProps) => {
   const ref = useRef<HTMLButtonElement>(null);
-  const { pageButton } = useClassNames({
+  const { button, pageButton } = useClassNames({
     component: 'Pagination',
   });
   let { buttonProps } = useButton(props, ref);
@@ -25,7 +25,7 @@ export const PageButton = (props: PageButtonProps) => {
       {...buttonProps}
       aria-label={`Page ${page}`}
       aria-current={selected ? 'page' : undefined}
-      className={pageButton}
+      className={cn(button, pageButton)}
       data-selected={selected}
       disabled={isDisabled}
       tabIndex={selected === true ? 0 : -1}
