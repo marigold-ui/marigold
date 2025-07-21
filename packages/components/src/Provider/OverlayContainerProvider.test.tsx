@@ -1,7 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-import { render, screen, within } from '@testing-library/react';
+import { prettyDOM, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { OverlayContainerProvider } from '@marigold/components';
 import { Theme, cva } from '@marigold/system';
@@ -10,6 +11,8 @@ import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup
 // ---------------
+const user = userEvent.setup();
+
 const theme: Theme = {
   name: 'test',
   colors: {
@@ -53,12 +56,12 @@ window.matchMedia = mockMatchMedia([
   'screen and (min-width: 64em)',
 ]);
 
-test('renders portal container', async () => {
+test('renders into a given container', async () => {
   render(
     <>
       <OverlayContainerProvider container="container">
         <MarigoldProvider theme={theme}>
-          <Select label="Label" defaultOpen>
+          <Select label="Label">
             <Select.Section header="section">
               <Select.Option id="one">one</Select.Option>
               <Select.Option id="two">two</Select.Option>
@@ -66,12 +69,17 @@ test('renders portal container', async () => {
           </Select>
         </MarigoldProvider>
       </OverlayContainerProvider>
-      <div id="container"></div>
+      <div id="container" data-testid="portal"></div>
     </>
   );
+
+  await user.click(screen.getByRole('button'));
 
   const listbox = screen.getByRole('listbox');
   const item = within(listbox).getByText('two');
 
   expect(item).toBeInTheDocument();
+
+  const portal = screen.getByTestId('portal');
+  expect(portal?.contains(listbox)).toBe(true);
 });
