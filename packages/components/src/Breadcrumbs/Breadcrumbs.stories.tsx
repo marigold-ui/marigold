@@ -19,17 +19,11 @@ const meta = {
     maxVisibleItems: {
       control: 'number',
     },
-    separatorType: {
-      control: 'radio',
-      options: ['chevron', 'slash'],
-    },
   },
   args: {
     variant: 'default',
     size: 'default',
     disabled: false,
-    maxVisibleItems: 3,
-    separatorType: 'chevron',
     children: [],
   },
 } satisfies Meta<typeof Breadcrumbs>;
@@ -38,16 +32,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => (
-    <Breadcrumbs {...args}>
-      <Breadcrumbs.Item>Home</Breadcrumbs.Item>
-      <Breadcrumbs.Item>Breadcrumb1</Breadcrumbs.Item>
-      <Breadcrumbs.Item>Breadcrumb2</Breadcrumbs.Item>
-    </Breadcrumbs>
-  ),
-};
-
-export const BasicWithLinks: Story = {
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
@@ -61,20 +45,9 @@ export const BasicWithLinks: Story = {
   ),
 };
 
-export const CollapsedText: Story = {
+export const Collapsed: Story = {
   render: args => (
-    <Breadcrumbs {...args}>
-      <Breadcrumbs.Item>Home</Breadcrumbs.Item>
-      <Breadcrumbs.Item>Breadcrumb1</Breadcrumbs.Item>
-      <Breadcrumbs.Item>Breadcrumb2</Breadcrumbs.Item>
-      <Breadcrumbs.Item>Breadcrumb3</Breadcrumbs.Item>
-    </Breadcrumbs>
-  ),
-};
-
-export const CollapsedWithLinks: Story = {
-  render: args => (
-    <Breadcrumbs {...args}>
+    <Breadcrumbs {...args} maxVisibleItems={3}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
       <Breadcrumbs.Item href="https://marigold-ui.io">
         Breadcrumb1
@@ -89,10 +62,10 @@ export const CollapsedWithLinks: Story = {
   ),
 };
 
-export const ManyItemsBreadcrumbs: Story = {
+export const ManyItems: Story = {
   render: args => (
-    <Breadcrumbs {...args}>
-      {[...Array(20).keys()].map(i => (
+    <Breadcrumbs {...args} maxVisibleItems={3}>
+      {[...Array(30).keys()].map(i => (
         <Breadcrumbs.Item key={i} href={`https://marigold-ui.io/`}>
           Breadcrumb {i + 1}
         </Breadcrumbs.Item>

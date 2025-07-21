@@ -2,8 +2,18 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import * as stories from './Breadcrumbs.stories';
 
-const { Basic, CollapsedText, BasicWithLinks, CollapsedWithLinks } =
-  composeStories(stories);
+const { Basic, Collapsed } = composeStories(stories);
+
+/**
+ * We need to mock `matchMedia` because JSOM does not
+ * implements it.
+ */
+const mockMatchMedia = (matches: string[]) =>
+  vi.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+
+window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
 test('renders breadcrumb items correctly', () => {
   render(<Basic />);
@@ -18,7 +28,7 @@ test('renders breadcrumb items correctly', () => {
 });
 
 test('collapses breadcrumbs for too many items', () => {
-  render(<CollapsedText />);
+  render(<Collapsed />);
 
   const ellipsis = screen.getByText('...');
   const home = screen.getByText('Home');
@@ -34,15 +44,15 @@ test('collapses breadcrumbs for too many items', () => {
   });
 });
 
-test('handles breadcrumbs correctly with links', () => {
-  render(<BasicWithLinks />);
+test('handles breadcrumbs links correctly', () => {
+  render(<Basic />);
 
   const link = screen.getByText('Home');
   const linkItems = screen.getAllByRole('link');
 
   expect(link).toBeInTheDocument();
   expect(link).toHaveAttribute('href', 'https://marigold-ui.io');
-  expect(linkItems.length).toBe(2);
+  expect(linkItems.length).toBe(3);
 });
 
 test('renders chevron separators', () => {
@@ -53,16 +63,8 @@ test('renders chevron separators', () => {
   expect(chevrons.length).toBeGreaterThan(0);
 });
 
-test('renders slash separators', () => {
-  render(<Basic {...Basic.args} separatorType="slash" />);
-
-  const slashes = screen.getAllByText('/');
-
-  expect(slashes.length).toBeGreaterThan(0);
-});
-
 test('collapses breadcrumbs with links for too many items', () => {
-  render(<CollapsedWithLinks />);
+  render(<Collapsed />);
 
   const ellipsis = screen.getByText('...');
   const home = screen.getByText('Home');
@@ -74,7 +76,11 @@ test('collapses breadcrumbs with links for too many items', () => {
   expect(ellipsis).toBeInTheDocument();
   expect(home).toBeInTheDocument();
   expect(breadcrumb3).toBeInTheDocument();
-  expect(linkItems.length).toBe(1);
+
+  expect(linkItems.length).toBe(2);
+
+  fireEvent.click(ellipsis);
+
   ['Breadcrumb1', 'Breadcrumb2'].forEach(text => {
     const breadcrumb = screen.getByText(text);
     expect(breadcrumb).toBeInTheDocument();

@@ -8,7 +8,7 @@ The `<Breadcrumbs>` component allows users to easily understand their current lo
 
 ## Anatomy
 
-The `<Breadcrumbs>` component consists of breadcrumb items and separators, such as slashes or chevrons, arranged in a horizontal trail to represent a navigation path.
+The `<Breadcrumbs>` component consists of breadcrumb items and separators, such as chevrons, arranged in a horizontal trail to represent a navigation path.
 
 <Image
   src="/breadcrumbs/breadcrumbs-anatomy.jpg"
@@ -26,15 +26,9 @@ The `<Breadcrumbs>` component consists of breadcrumb items and separators, such 
 
 ## Usage
 
-`<Breadcrumbs>` are typically used to display a navigational hierarchy, showing the path from the homepage to the current page, with clickable items that allow users to navigate back to previous levels. Breadcrumbs improve user experience by providing quick access to other parts of the website and reducing the number of clicks needed to navigate.
+`<Breadcrumbs>` are typically used to display a navigational hierarchy, showing the path from the homepage to the current page. Each `Breadcrumbs.Item` represents a step in this path and must include an `href` to define its destination. All items are rendered as links, allowing users to quickly navigate back to previous levels, reducing the number of clicks needed and improving the overall user experience.
 
 <ComponentDemo file="./breadcrumbs-appearance.demo.tsx" />
-
-### Links
-
-Breadcrumb items can be interactive links, allowing users to click on previous items in the hierarchy. It's important to set the `href` property for these items to make them navigable.
-
-<ComponentDemo file="./breadcrumbs-with-links.demo.tsx" />
 
 ### Collapsing Breadcrumbs
 

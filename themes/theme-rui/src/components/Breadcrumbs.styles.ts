@@ -8,9 +8,9 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
         default: 'text-foreground',
       },
       size: {
-        small: 'text-xs gap-1',
-        default: 'text-sm gap-1',
-        large: 'text-base gap-1',
+        small: 'text-xs gap-1.5',
+        default: 'text-sm gap-1.5',
+        large: 'text-base gap-1.5',
       },
     },
     defaultVariants: {
@@ -18,12 +18,7 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
       size: 'default',
     },
   }),
-  item: cva('inline-flex items-center gap-1 whitespace-nowrap'),
-  link: cva('hover:underline text-foreground'),
-  current: cva('text-foreground font-medium'),
-  ellipsisButton: cva('inline-flex items-center px-2 py-1 cursor-pointer'),
-  ellipsisList: cva(
-    'absolute min-w-max rounded border bg-white p-1 text-sm shadow'
-  ),
-  ellipsisItem: cva('px-3 py-1 hover:bg-gray-100'),
+  item: cva('inline-flex items-center gap-1.5 whitespace-nowrap '),
+  link: cva('hover:underline cursor-pointer'),
+  current: cva('font-medium'),
 };

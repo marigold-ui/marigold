@@ -1,11 +1,11 @@
-import { Breadcrumbs } from '@marigold/components';
+import { Breadcrumbs, BreadcrumbsProps } from '@marigold/components';
 
-export default () => {
+export default (props: BreadcrumbsProps) => {
   return (
-    <Breadcrumbs>
-      <Breadcrumbs.Item>Home</Breadcrumbs.Item>
-      <Breadcrumbs.Item>Events</Breadcrumbs.Item>
-      <Breadcrumbs.Item>Music</Breadcrumbs.Item>
+    <Breadcrumbs {...props}>
+      <Breadcrumbs.Item href="#">Home</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="#">Events</Breadcrumbs.Item>
+      <Breadcrumbs.Item href="#">Music</Breadcrumbs.Item>
     </Breadcrumbs>
   );
 };

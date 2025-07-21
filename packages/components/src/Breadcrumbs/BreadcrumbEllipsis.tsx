@@ -5,9 +5,9 @@ import {
   Menu,
   MenuItem,
   MenuTrigger,
-  Popover,
 } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
+import { Popover } from '../Overlay/Popover';
 import { BreadcrumbsItemProps } from './BreadcrumbsItem';
 
 interface BreadcrumbEllipsisProps extends React.ComponentProps<'span'> {
@@ -19,45 +19,38 @@ export const BreadcrumbEllipsis = ({
   hiddenItems = [],
   disabled = false,
 }: BreadcrumbEllipsisProps) => {
-  const { ellipsisButton, ellipsisList, ellipsisItem, link } = useClassNames({
+  const { container, item: menuItem } = useClassNames({
+    component: 'Menu',
+  });
+  const { item: breadcrumbsItem, link } = useClassNames({
     component: 'Breadcrumbs',
   });
 
   return (
     <MenuTrigger>
-      <Button type="button" className={ellipsisButton}>
+      <Button type="button" className={`${breadcrumbsItem} ${link}`}>
         ...
       </Button>
       <Popover>
-        <Menu className={ellipsisList}>
+        <Menu className={container}>
           {hiddenItems.map((item, index) => {
-            if (!item || typeof item === 'boolean') return null;
+            if (!React.isValidElement<BreadcrumbsItemProps>(item)) return null;
 
-            const breadcrumb = item as React.ReactElement<BreadcrumbsItemProps>;
-
-            const href = breadcrumb.props?.href ?? undefined;
-
-            const itemChildren = React.isValidElement(item)
-              ? breadcrumb.props.children
-              : item;
+            const { href, children: itemChildren } = item.props;
 
             return (
               <MenuItem
-                key={index}
-                className={ellipsisItem}
+                key={`${href}-${index}`}
+                className={menuItem}
                 onAction={() => {
-                  if (href && !disabled) {
+                  if (!disabled) {
                     window.location.href = href;
                   }
                 }}
               >
-                {href ? (
-                  <Link href={href} className={link} isDisabled={disabled}>
-                    {itemChildren}
-                  </Link>
-                ) : (
-                  itemChildren
-                )}
+                <Link href={href} isDisabled={disabled}>
+                  {itemChildren}
+                </Link>
               </MenuItem>
             );
           })}

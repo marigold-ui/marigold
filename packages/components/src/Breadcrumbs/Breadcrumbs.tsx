@@ -4,7 +4,7 @@ import React, {
   forwardRef,
 } from 'react';
 import {
-  Link,
+  Breadcrumb as RACBreadcrumb,
   Breadcrumbs as RACBreadcrumbs,
   BreadcrumbsProps as RACBreadcrumbsProps,
 } from 'react-aria-components';
@@ -28,15 +28,8 @@ export interface BreadcrumbsProps
 
   /**
    * Maximum number of visible items before the breadcrumbs collapse.
-   * @default 3
    */
   maxVisibleItems?: number;
-
-  /**
-   * Type of separator between breadcrumb items.
-   * @default 'chevron'
-   */
-  separatorType?: 'chevron' | 'slash';
 
   /**
    * The breadcrumb items to be displayed.
@@ -52,84 +45,77 @@ export interface BreadcrumbsComponent
 }
 
 const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
-  (
-    {
-      children,
-      variant,
-      size,
-      disabled,
-      maxVisibleItems = 3,
-      separatorType = 'chevron',
-      ...rest
-    },
-    ref
-  ) => {
-    const { container, link } = useClassNames({
+  ({ children, variant, size, disabled, maxVisibleItems, ...props }, ref) => {
+    const {
+      container,
+      item: breadcrumbsItem,
+      link,
+      current,
+    } = useClassNames({
       component: 'Breadcrumbs',
       variant,
       size,
     });
 
     const items = React.Children.toArray(children);
-
     const total = items.length;
 
-    const shouldCollapse = total > maxVisibleItems;
+    const shouldCollapse =
+      typeof maxVisibleItems === 'number' &&
+      maxVisibleItems >= 2 &&
+      total > maxVisibleItems;
 
     const hiddenItems = shouldCollapse ? items.slice(1, -1) : [];
 
+    const ellipsis = (
+      <BreadcrumbsItem key="ellipsis" href="">
+        <BreadcrumbEllipsis hiddenItems={hiddenItems} />
+      </BreadcrumbsItem>
+    );
+
     const displayedItems = shouldCollapse
-      ? [
-          items[0],
-          <BreadcrumbsItem key="ellipsis">
-            <BreadcrumbEllipsis hiddenItems={hiddenItems} disabled={disabled} />
-          </BreadcrumbsItem>,
-          items[total - 1],
-        ]
+      ? maxVisibleItems === 2
+        ? [items[0], ellipsis]
+        : [items[0], ellipsis, items[total - 1]]
       : items;
 
     return (
       <nav aria-label="Breadcrumbs">
         <RACBreadcrumbs
-          {...rest}
+          {...props}
           ref={ref}
           isDisabled={disabled}
-          className={cn(container)}
+          className={container}
         >
           {displayedItems.map((item, index) => {
+            if (!React.isValidElement<BreadcrumbsItemProps>(item)) return null;
+
             const isLast = index === displayedItems.length - 1;
 
-            if (!React.isValidElement(item) || item.type !== BreadcrumbsItem)
-              return null;
-
-            const { href, children: itemChildren } = (
-              item as React.ReactElement<BreadcrumbsItemProps>
-            ).props;
+            const { href, children: itemChildren, ...ariaProps } = item.props;
 
             return (
-              <BreadcrumbsItem key={index}>
-                {!isLast && href ? (
-                  <Link href={href} className={link}>
-                    {itemChildren}
-                  </Link>
-                ) : (
-                  itemChildren
-                )}
+              <RACBreadcrumb
+                key={`${href}-${index}`}
+                {...ariaProps}
+                className={breadcrumbsItem}
+              >
+                <a
+                  href={href}
+                  className={cn(link, isLast && current)}
+                  aria-current={isLast ? 'page' : undefined}
+                >
+                  {itemChildren}
+                </a>
 
-                {!isLast && separatorType === 'chevron' && (
+                {!isLast && (
                   <ChevronRight
-                    data-testid="breadcrumb-chevronright"
                     aria-hidden="true"
                     size={14}
+                    data-testid="breadcrumb-chevronright"
                   />
                 )}
-
-                {!isLast && separatorType === 'slash' && (
-                  <span className="px-1" aria-hidden="true">
-                    /
-                  </span>
-                )}
-              </BreadcrumbsItem>
+              </RACBreadcrumb>
             );
           })}
         </RACBreadcrumbs>
