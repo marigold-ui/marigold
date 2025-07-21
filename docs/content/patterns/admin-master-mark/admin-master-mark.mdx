@@ -34,7 +34,7 @@ This pattern is not a substitute for proper role-based access control. It should
 
 The admin- and master mark should be placed directly to the right of the label or heading of the section or element it applies to. This ensures the access distinction is immediately visible and clearly associated with the relevant control.
 
-Use the `<Badge>` component to place the mark next to the label in form fields or input groups. This ensures that users understand the access level before interacting with the field. Placing it beside the label ensures a clean layout and avoids any confusion about its relation to the field content.
+Use the `<Badge>` component with the "master" or "admin" variant to place the mark next to the label in form fields or input groups. This ensures that users understand the access level before interacting with the field. Placing it beside the label ensures a clean layout and avoids any confusion about its relation to the field content.
 
 In navigation elements such as tabs or grouped settings, place the mark next to the tab label or section heading. This makes it clear that the entire area is intended for internal use.
 
@@ -44,7 +44,7 @@ Avoid placing the mark at a distance from the related element. Doing so reduces 
 
 ### Within a Table
 
-In tables, the admin- and master mark is not applied as a badge. Instead, internal-only rows are visually distinguished through background color and a subtle inline indicator.
+In tables, the admin- and master mark is not applied as a badge. Instead, internal-only rows are visually distinguished through background color and a subtle inline indicator. To apply the color use the "master" or "admin" variant on the `<Table.Row>` component.
 
 This exception is intentional. Since badges can clutter dense tabular layouts, a more lightweight visual cue is used to signal internal visibility. A soft background tint helps set these rows apart without disrupting the structure of the table. An inline label or icon may be used when additional clarity is needed.
 
