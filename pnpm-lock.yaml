@@ -193,8 +193,8 @@ importers:
         specifier: 9.26.0
         version: 9.26.0(jiti@2.4.2)
       eslint-plugin-tailwindcss:
-        specifier: 3.18.0
-        version: 3.18.0(tailwindcss@4.1.11)
+        specifier: 3.18.2
+        version: 3.18.2(tailwindcss@4.1.11)
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -5744,8 +5744,8 @@ packages:
       eslint: '>=8'
       storybook: ^9.0.16
 
-  eslint-plugin-tailwindcss@3.18.0:
-    resolution: {integrity: sha512-PQDU4ZMzFH0eb2DrfHPpbgo87Zgg2EXSMOj1NSfzdZm+aJzpuwGerfowMIaVehSREEa0idbf/eoNYAOHSJoDAQ==}
+  eslint-plugin-tailwindcss@3.18.2:
+    resolution: {integrity: sha512-QbkMLDC/OkkjFQ1iz/5jkMdHfiMu/uwujUHLAJK5iwNHD8RTxVTlsUezE0toTZ6VhybNBsk+gYGPDq2agfeRNA==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
       tailwindcss: ^3.4.0
@@ -8104,10 +8104,6 @@ packages:
 
   postcss@8.4.31:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.5.4:
-    resolution: {integrity: sha512-QSa9EBe+uwlGTFmHsPKokv3B/oEMQZxfqW0QqNCyhpa6mB1afzulwn8hihglqAb2pOw+BJgNlmXQ8la2VeHB7w==}
     engines: {node: ^10 || ^12 || >=14}
 
   postcss@8.5.6:
@@ -16028,10 +16024,10 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-plugin-tailwindcss@3.18.0(tailwindcss@4.1.11):
+  eslint-plugin-tailwindcss@3.18.2(tailwindcss@4.1.11):
     dependencies:
       fast-glob: 3.3.3
-      postcss: 8.5.4
+      postcss: 8.5.6
       tailwindcss: 4.1.11
 
   eslint-plugin-testing-library@5.11.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3):
@@ -19033,12 +19029,6 @@ snapshots:
   postcss-value-parser@4.2.0: {}
 
   postcss@8.4.31:
-    dependencies:
-      nanoid: 3.3.11
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
-
-  postcss@8.5.4:
     dependencies:
       nanoid: 3.3.11
       picocolors: 1.1.1
