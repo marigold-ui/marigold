@@ -1,6 +1,6 @@
 ---
 title: Marigold v14.0.0
-date: 2025-08-08
+date: 2025-07-22
 type: Blog
 changed:
   - components/form/Button
@@ -13,11 +13,9 @@ The latest Marigold release brings a range of enhancements across components, do
 
 **Deprecation of className property on `<Button>` component**: The `className` property is no longer supported on the `<Button>` component. This change ensures a more consistent and predictable API. Instead of using `className` for custom styling, you should utilize the built-in styling properties such as `size` and `variant` to achieve your desired appearance. This approach maintains design system consistency while providing the flexibility you need for different button styles.
 
-## Improvements
+## Components
 
-### Components
-
-#### New Features:
+### New Features:
 
 **New `<SelectList.Action>` API**: We've enhanced the SelectList component with a new `<SelectList.Action>` API to provide better control over action positioning within SelectList items. This new API automatically handles the positioning of interactive elements like buttons or links at the end of each list item, ensuring consistent layout and improved user experience .
 
@@ -37,3 +35,19 @@ The latest Marigold release brings a range of enhancements across components, do
 ```
 
 The `<SelectList.Action>` automatically positions actions at the end of the item using CSS ordering, making it easier to create consistent interactive lists without manual positioning .
+
+## Documentation:
+
+**Mastermark and Adminmark**: Introduces Master- and Adminmark guidelines for the Reservix System. You now have clear guidance on how the marks should be used.
+
+Also we continued updating the component pages according to our new structure. You can now find updated docs for: 
+- VisuallyyHidden
+- Icon
+- SVG
+
+## Bug fixes:
+- Fixed `width` property on calendar component.
+- Fixed mobile navigation for our documentation.
+
+
+
