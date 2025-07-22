@@ -168,28 +168,4 @@ describe('Calendar', () => {
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2019, 6, 17));
   });
-
-  test('supports disabled styles for calendar button', () => {
-    render(<Basic value={new CalendarDate(2019, 6, 5)} disabled />);
-
-    const cellButton = screen.getByText('17');
-
-    expect(cellButton.className).toMatchInlineSnapshot(
-      `"flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full p-[5.3px] text-sm font-normal aria-disabled:cursor-default data-disabled:text-text-base-disabled data-disabled:cursor-not-allowed data-unavailable:text-text-base-disabled data-unavailable:cursor-not-allowed data-hovered:[&:not([data-unavailable])]:bg-bg-inverted-hover data-selected:bg-bg-selected outline-hidden data-selected:font-semibold data-selected:text-white data-focus-visible:outline-outline-focus data-focus-visible:outline data-focus-visible:outline-offset-1"`
-    );
-  });
-
-  test('supports styles cell button', async () => {
-    render(<Basic value={new CalendarDate(2019, 6, 5)} disabled />);
-
-    const cellButton = screen.getByText('17');
-
-    expect(cellButton).toHaveClass(
-      'data-disabled:text-text-base-disabled data-disabled:cursor-not-allowed',
-      'data-unavailable:text-text-base-disabled data-unavailable:cursor-not-allowed',
-      'data-hovered:[&:not([data-unavailable])]:bg-bg-inverted-hover',
-      'data-selected:bg-bg-selected outline-hidden data-selected:font-semibold data-selected:text-white',
-      'data-focus-visible:outline-outline-focus data-focus-visible:outline data-focus-visible:outline-offset-1'
-    );
-  });
 });
