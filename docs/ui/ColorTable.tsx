@@ -136,6 +136,10 @@ export const FeedbackSemanticTokens = () => (
       'info-muted',
       'info-muted-foreground',
       'info-muted-accent',
+      'access-admin',
+      'access-admin-foreground',
+      'access-master',
+      'access-master-foreground',
     ]}
   />
 );
