@@ -1,8 +1,8 @@
 ---
-"@marigold/docs": patch
-"@marigold/components": patch
-"@marigold/system": patch
-"@marigold/theme-rui": patch
+"@marigold/docs": minor
+"@marigold/components": minor
+"@marigold/system": minor
+"@marigold/theme-rui": minor
 ---
 
 feat([DST-737]): Add Toast component
