@@ -1,5 +1,34 @@
 # @marigold/docs
 
+## 14.0.0
+
+### Major Changes
+
+- 6d61be9: refa([DST-904]): **Breaking Changes**: Deprecate `className` prop from `<Button>` component.
+
+  - Styling should now use `variant` or `size` props instead.
+  - Added `SelectListAction` to `SelectList` for handing actions position.
+
+### Patch Changes
+
+- 5e08185: docs([DST-925]): Introduce "admin- and master mark" pattern
+  fix([DST-925]): Adjust styles of Tabs to work better with badges
+- 9311338: docs([DST-936]): Update tooltip page
+- bb9a8a4: docs([DST-918]): Revise Icon page to match component pages
+- 3a10a1a: docs([DST-886]): update table guidelines
+- 1f58d1a: docs([DST-922]): Revise VisuallyHidden docs
+- 164976c: docs([DST-920]): Revise SVG component page
+- Updated dependencies [a7ec9d3]
+- Updated dependencies [5e08185]
+- Updated dependencies [9311338]
+- Updated dependencies [6d61be9]
+- Updated dependencies [29e6133]
+  - @marigold/components@14.0.0
+  - @marigold/theme-rui@1.3.0
+  - @marigold/theme-docs@3.1.1
+  - @marigold/system@14.0.0
+  - @marigold/icons@1.3.15
+
 ## 13.0.0
 
 ### Major Changes
