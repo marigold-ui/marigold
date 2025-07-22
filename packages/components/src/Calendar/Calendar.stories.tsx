@@ -1,9 +1,9 @@
 import { CalendarDate } from '@internationalized/date';
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
+import { useState } from 'storybook/preview-api';
 import { Calendar } from './Calendar';
 
 const meta = {
@@ -39,6 +39,16 @@ const meta = {
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
+      },
+    },
+    width: {
+      control: {
+        type: 'text',
+      },
+      description: 'Width of the Calendar',
+      table: {
+        type: { summary: 'text' },
+        defaultValue: { summary: 'fit' },
       },
     },
   },

@@ -26,11 +26,17 @@
     },
     {
       "groupName": "testing",
-      "matchPackageNames": ["/jest/", "/testing-library/", "/swc/"]
+      "matchPackageNames": [
+        "/testing-library/",
+        "/swc/",
+        "/playwright/",
+        "/axe-playwright/",
+        "/vitest/"
+      ]
     },
     {
       "groupName": "storybook",
-      "matchPackageNames": ["/@storybook/", "/storybook/", "/vite/"]
+      "matchPackageNames": ["/@storybook/", "/storybook/"]
     },
     {
       "groupName": "mdx",
@@ -54,6 +60,42 @@
     {
       "groupName": "tailwind",
       "matchPackageNames": ["/postcss/", "/tailwind/"]
+    },
+    {
+      "groupName": "formatting",
+      "matchPackageNames": [
+        "/prettier/",
+        "prettier-plugin-tailwindcss",
+        "@trivago/prettier-plugin-sort-imports"
+      ]
+    },
+    {
+      "groupName": "vite",
+      "matchPackageNames": [
+        "/vite/",
+        "@vitejs/plugin-react",
+        "vite-tsconfig-paths"
+      ]
+    },
+    {
+      "groupName": "typescript",
+      "matchPackageNames": ["/typescript/", "/@types/", "type-fest"]
+    },
+    {
+      "groupName": "git-cli",
+      "matchPackageNames": ["simple-git", "zx", "concurrently"]
+    },
+    {
+      "groupName": "tanstack",
+      "matchPackageNames": ["/@tanstack/"]
+    },
+    {
+      "groupName": "zod",
+      "matchPackageNames": ["/zod/", "zod-form-data"]
+    },
+    {
+      "groupName": "react",
+      "matchPackageNames": ["/^react$/", "/^react-dom$/", "/^react-/"]
     },
     {
       "description": "Automerge non-major updates",

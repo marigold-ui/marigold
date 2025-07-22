@@ -1,6 +1,6 @@
 import { CalendarDate, DateValue } from '@internationalized/date';
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'storybook/preview-api';
 import { I18nProvider } from '@react-aria/i18n';
 import { DateField, DateFieldProps } from './DateField';
 

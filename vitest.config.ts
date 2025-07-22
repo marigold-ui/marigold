@@ -13,6 +13,7 @@ export default defineConfig({
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
     ],
     testTimeout: 30000,
+    // @ts-ignore
     coverage: {
       exclude: [
         '**/config/**',
@@ -45,6 +46,9 @@ export default defineConfig({
     },
     globals: true,
     environment: 'jsdom', // Use jsdom for browser-like tests
-    setupFiles: ['./vitest.setup.ts', './config/storybook/setupTest.ts'], // Path to your setup file
+    setupFiles: [
+      './vitest.setup.ts',
+      './config/storybook/.storybook/vitest.setup.ts',
+    ], // Path to your setup file
   },
 });

@@ -1,21 +1,15 @@
 'use client';
 
 import { getAppearance } from '@/lib/utils';
+import { ruiTheme } from '@/theme';
 import { Table, Theme } from '@/ui';
-import { useThemeSwitch } from './ThemeSwitch';
 
 export interface AppearanceTableProps {
   component: keyof Theme['components'];
 }
 
 export const AppearanceTable = ({ component }: AppearanceTableProps) => {
-  const { current, themes } = useThemeSwitch();
-
-  if (!current) {
-    return null;
-  }
-
-  const appearances = getAppearance(component, themes[current]);
+  const appearances = getAppearance(component, ruiTheme);
 
   return (
     <Table aria-labelledby="appearance table" variant="hover" stretch>

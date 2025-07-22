@@ -72,8 +72,8 @@ interface DialogTriggerProps
   open?: boolean;
 }
 
-const DialogTrigger = forwardRef<HTMLDivElement, DialogTriggerProps>(
-  ({ open, ...rest }, ref) => <RACDialogTrigger isOpen={open} {...rest} />
+const DialogTrigger = ({ open, ...rest }: DialogTriggerProps) => (
+  <RACDialogTrigger isOpen={open} {...rest} />
 );
 // Props
 // ---------------

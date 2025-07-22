@@ -142,14 +142,16 @@ test('passes down variant and size', () => {
 
   const label = screen.getByText('Label');
   expect(label.className).toMatchInlineSnapshot(
-    `"text-lime-300 p-1 inline-flex w-[var(--labelWidth)]"`
+    `"text-lime-300 p-1 inline-flex"`
   );
 
   const description = screen.getByText('Description');
   expect(description).toBeInTheDocument();
 
   const datefield = screen.getByTestId('date-field');
-  expect(datefield.className).toMatchInlineSnapshot(`"group/field w-full"`);
+  expect(datefield.className).toMatchInlineSnapshot(
+    `"group/field flex flex-col w-full"`
+  );
 });
 
 test('renders without icons', () => {

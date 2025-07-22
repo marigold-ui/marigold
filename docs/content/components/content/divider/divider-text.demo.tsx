@@ -1,9 +1,15 @@
-import { Divider, Text } from '@marigold/components';
+import { Divider, Stack, Text } from '@marigold/components';
 
 export default () => (
-  <>
-    <Text>Dark Side</Text>
+  <Stack space={4}>
+    <Stack space={2}>
+      <Text weight="bold">Account Information</Text>
+      <Text>Update your name, email address, and password.</Text>
+    </Stack>
     <Divider />
-    <Text>Bright Side</Text>
-  </>
+    <Stack space={2}>
+      <Text weight="bold">Notification Settings</Text>
+      <Text> Choose how you want to receive updates and alerts.</Text>
+    </Stack>
+  </Stack>
 );

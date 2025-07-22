@@ -1,7 +1,7 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormEvent } from 'react';
-import { FieldBase, FieldGroup, Inline, Stack } from '@marigold/components';
+import { useState } from 'storybook/preview-api';
+import { FieldBase, Inline, Stack } from '@marigold/components';
 import { Button } from '../Button';
 import { Form } from '../Form/Form';
 import { Slider } from './Slider';
@@ -156,18 +156,16 @@ export const Forms: Story = {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <FieldGroup labelWidth={'100px'}>
-          <Stack space={2}>
-            <FieldBase label="Choose opacity:">
-              <Slider
-                {...args}
-                maxValue={100}
-                thumbLabels={['opacity']}
-                width={48}
-              />
-            </FieldBase>
-          </Stack>
-        </FieldGroup>
+        <Stack space={2}>
+          <FieldBase label="Choose opacity:">
+            <Slider
+              {...args}
+              maxValue={100}
+              thumbLabels={['opacity']}
+              width={48}
+            />
+          </FieldBase>
+        </Stack>
         <Inline space={4} alignX={'right'}>
           <Button variant="primary" type="submit">
             Submit
@@ -190,19 +188,17 @@ export const MultiThumbsForm: Story = {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <FieldGroup labelWidth={'100px'}>
-          <Stack space={2}>
-            <FieldBase label="Age">
-              <Slider
-                {...args}
-                defaultValue={[20, 30]}
-                maxValue={100}
-                thumbLabels={['start', 'end']}
-                width={60}
-              />
-            </FieldBase>
-          </Stack>
-        </FieldGroup>
+        <Stack space={2}>
+          <FieldBase label="Age">
+            <Slider
+              {...args}
+              defaultValue={[20, 30]}
+              maxValue={100}
+              thumbLabels={['start', 'end']}
+              width={60}
+            />
+          </FieldBase>
+        </Stack>
         <Inline space={4} alignX={'right'}>
           <Button variant="primary" type="submit">
             Submit

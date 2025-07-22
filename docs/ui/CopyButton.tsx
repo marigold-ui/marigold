@@ -17,11 +17,7 @@ export const CopyButton = ({ codeString }: CopyProps) => {
   };
 
   return (
-    <Button
-      aria-label="Copy Code"
-      onPress={onPress}
-      className="translate-y-0.5 border-none p-0 outline-0"
-    >
+    <Button aria-label="Copy Code" onPress={onPress} variant="icon">
       {isCopied ? (
         <svg
           className="size-5 fill-white"

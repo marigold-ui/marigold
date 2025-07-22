@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Checkbox, CheckboxGroup } from '../Checkbox';
-import { Radio } from '../Radio';
-import { RadioGroup } from '../Radio/RadioGroup';
-import { Select } from '../Select';
-import { TextField } from '../TextField';
 import type { FieldBaseProps } from './FieldBase';
 import { FieldBase } from './FieldBase';
-import { FieldGroup } from './FieldGroup';
 
 const meta = {
   title: 'Components/FieldBase',
@@ -91,32 +85,5 @@ export const Basic: Story = {
     <FieldBase {...args}>
       <input className="border" />
     </FieldBase>
-  ),
-};
-
-export const WithFieldGroup: Story = {
-  render: args => (
-    <FieldGroup labelWidth="200px">
-      <FieldBase {...args} label="This is my Label">
-        <input type="text" className="border" />
-      </FieldBase>
-      <FieldBase {...args} label="This is my Label">
-        <input type="text" className="border" />
-      </FieldBase>
-      <TextField label="Hello TextField" />
-      <TextField label="Hello" description="my description" />
-      <Select label="Select me">
-        <Select.Option key="one">One</Select.Option>
-        <Select.Option key="two">Two</Select.Option>
-      </Select>
-      <RadioGroup label="Radios">
-        <Radio value="1">One</Radio>
-        <Radio value="2">Two</Radio>
-      </RadioGroup>
-      <CheckboxGroup label="Checkboxes">
-        <Checkbox label="One" value="1" />
-        <Checkbox label="Two" value="2" />
-      </CheckboxGroup>
-    </FieldGroup>
   ),
 };

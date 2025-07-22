@@ -1,12 +1,14 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { vi } from 'vitest';
 import * as stories from './Autocomplete.stories';
 
 // Setup
 // ---------------
-const { Basic } = composeStories(stories);
+const { Basic, WithSections } = composeStories(stories);
+const user = userEvent.setup();
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -74,4 +76,98 @@ test('supports default value', () => {
   render(<Basic defaultValue="garlic" />);
 
   expect(screen.getByRole('combobox')).toHaveValue('garlic');
+});
+
+test('uses field structure', () => {
+  render(
+    <Basic
+      label="Label"
+      description="Some helpful text"
+      errorMessage="Whoopsie"
+    />
+  );
+
+  const label = screen.queryByText('Label');
+  expect(label).toBeInTheDocument();
+
+  const description = screen.queryAllByText('Some helpful text')[0];
+  expect(description).toBeInTheDocument();
+
+  const error = screen.queryByText('Whoopsie');
+  expect(error).not.toBeInTheDocument();
+});
+
+test('opens the suggestions on user input', async () => {
+  render(<Basic label="Label" />);
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'ha');
+
+  const suggestions = await screen.findByText('Harry Potter');
+  expect(suggestions).toBeVisible();
+});
+
+test('opens the suggestions on focus', async () => {
+  render(<Basic label="Label" menuTrigger="focus" />);
+
+  const input = screen.getByRole('combobox');
+  await user.click(input);
+
+  const suggestions = await screen.findByText('Harry Potter');
+  expect(suggestions).toBeVisible();
+});
+
+test('opens the suggestions on arrow down (manual)', async () => {
+  render(<Basic label="Label" menuTrigger="manual" />);
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, '{arrowdown}');
+
+  const suggestions = await screen.findByText('Harry Potter');
+  expect(suggestions).toBeVisible();
+});
+
+test('shows suggestions based on user input', async () => {
+  render(<Basic label="Label" />);
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'ha');
+
+  expect(screen.getByText('Harry Potter')).toBeInTheDocument();
+
+  expect(screen.queryByText('Lord of the Rings')).not.toBeInTheDocument();
+  expect(screen.queryByText('Star Trek')).not.toBeInTheDocument();
+  expect(screen.queryByText('Firefly')).not.toBeInTheDocument();
+});
+
+test('supports disabling suggestions', async () => {
+  render(<Basic label="Label" disabledKeys={['Firefly']} />);
+
+  const input = screen.getAllByLabelText('Label')[0];
+  await user.type(input, 'fi');
+
+  const spinach = screen.getByRole('option', { name: 'Firefly' });
+  expect(spinach).toHaveAttribute('aria-disabled', 'true');
+});
+
+test('supports sections', async () => {
+  render(<WithSections label="Label" />);
+
+  const input = screen.getAllByLabelText('Label')[0];
+  await user.type(input, 'a');
+
+  const s1 = await screen.findByText('Veggies');
+  const s2 = await screen.findByText('Protein');
+  const s3 = await screen.findByText('Condiments');
+
+  expect(s1).toBeVisible();
+  expect(s2).toBeVisible();
+  expect(s3).toBeVisible();
+});
+
+test('supporst showing a help text', () => {
+  render(<Basic label="Label" description="This is a description" />);
+
+  const description = screen.queryAllByText('This is a description')[0];
+  expect(description).toBeInTheDocument();
 });

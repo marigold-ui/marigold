@@ -82,7 +82,9 @@ test('allows to set width via prop', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(`"group/field w-1/2"`);
+  expect(container?.className).toMatchInlineSnapshot(
+    `"group/field flex flex-col w-1/2"`
+  );
 });
 
 test('supports disabled', () => {

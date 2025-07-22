@@ -11,7 +11,7 @@ import {
   ThemeProvider,
 } from '@marigold/components';
 import { AutoRenew, ExternalLink, Lock, ResaleLogbook } from '@marigold/icons';
-import coreTheme from '@marigold/theme-core';
+import ruiTheme from '@marigold/theme-rui';
 
 const columns = [
   { name: 'Veranstaltung', key: 'event' },
@@ -89,7 +89,7 @@ export default () => {
     return state;
   };
   return (
-    <ThemeProvider theme={coreTheme}>
+    <ThemeProvider theme={ruiTheme}>
       <Stack space={1}>
         <Inline space={2}>
           <Headline level={4}>Veranstaltungen</Headline>

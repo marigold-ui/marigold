@@ -212,6 +212,7 @@ export const Multiselect = ({
   description,
   onChange,
   onSelectionChange,
+  width,
   ...rest
 }: MultipleSelectProps) => {
   const classNames = useClassNames({
@@ -266,7 +267,7 @@ export const Multiselect = ({
       ]}
     >
       <div
-        className={cn(classNames.field, 'group/field')}
+        className={cn(classNames.field, 'group/field', `w-${width}`)}
         data-required={props.required}
         data-invalid={error}
         data-readonly={readOnly}

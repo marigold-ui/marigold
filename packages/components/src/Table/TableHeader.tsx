@@ -22,7 +22,6 @@ export const TableHeader = ({ stickyHeader, children }: TableHeaderProps) => {
       {...rowGroupProps}
       className={cn(
         classNames?.thead,
-        // for sticky header &th needs to be sticky for b2b and core theme
         // for rui sticky is applied to thead
         stickyHeader ? 'sticky [&_th]:sticky [&_th]:top-0' : ''
       )}
