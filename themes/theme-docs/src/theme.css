@@ -151,7 +151,7 @@
   --color-bg-underlay: var(--color-secondary-500);
 
   --color-bg-surface: var(--color-secondary-50);
-  --color-bg-surface-raised: var(--color-secondary-50);
+  --color-bg-surface-raised: var(--color-white);
   --color-bg-surface-lowered: var(--color-secondary-100);
   --color-bg-surface-overlay: var(--color-white);
 

@@ -42,8 +42,8 @@ const IconListItem = ({ icon }: IconListItemProps) => {
   };
 
   return (
-    <div className="mt-2">
-      <Button onPress={handleClick} className="h-auto w-full p-0">
+    <div className="mt-2 [&>button]:h-auto [&>button]:w-full [&>button]:p-0">
+      <Button onPress={handleClick}>
         <Card p={3} variant="hovering">
           <div className="relative grid h-24 place-items-center">
             <div

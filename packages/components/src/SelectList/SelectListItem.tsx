@@ -52,7 +52,10 @@ const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
         isDisabled={disabled}
         textValue={textValue}
         {...props}
-        className={cn('group-[layout=grid]/list:flex-row', classNames?.item)}
+        className={cn(
+          classNames?.item,
+          'grid grid-flow-col [grid-template-columns:min-content_1fr]'
+        )}
         ref={ref}
       >
         {({ selectionMode }) => (
