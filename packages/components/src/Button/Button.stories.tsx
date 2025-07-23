@@ -79,7 +79,7 @@ export const Basic: Story = {
     onPress: fn(),
   },
   render: args => <Button {...args}>Button</Button>,
-  play: async ({ args, canvasElement }) => {
+  play: async ({ args, canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByText('Button'));
