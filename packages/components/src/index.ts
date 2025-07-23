@@ -59,6 +59,7 @@ export * from './TextField';
 export * from './DateField';
 export * from './Tiles';
 export * from './Tooltip';
+export * from './Toast';
 export * from './TagGroup';
 export * from './VisuallyHidden';
 export * from './XLoader';
