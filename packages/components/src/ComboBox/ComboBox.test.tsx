@@ -410,15 +410,24 @@ test('supports autocompletion', async () => {
   expect(input).toHaveValue('Spinach');
 });
 
-test('loading state', () => {
+test('supports loading state', () => {
   render(
     <ComboBox label="Label" loading>
       <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
       <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   );
-  const svg = screen.getByRole('progressbar');
-  expect(svg).toBeInTheDocument();
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('hides loading state when loading is false', () => {
+  render(
+    <ComboBox label="Label" loading={false}>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+    </ComboBox>
+  );
+
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
