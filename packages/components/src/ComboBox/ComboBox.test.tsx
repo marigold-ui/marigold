@@ -72,6 +72,7 @@ const theme: Theme = {
       },
     }),
     IconButton: cva(),
+    ProgressCycle: cva(),
   },
 };
 
@@ -407,4 +408,20 @@ test('supports autocompletion', async () => {
   await user.click(spinach);
 
   expect(input).toHaveValue('Spinach');
+});
+
+test('supports loading state', () => {
+  render(
+    <ComboBox label="Label" loading>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
+    </ComboBox>
+  );
+  const svg = screen.getAllByRole('progressbar');
+  setTimeout(() => {
+    expect(svg).toBeInTheDocument();
+  }, 3000);
+  expect(svg).toBeInTheDocument();
 });

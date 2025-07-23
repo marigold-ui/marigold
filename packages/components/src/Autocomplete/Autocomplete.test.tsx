@@ -425,3 +425,47 @@ test('supports submit handler', async () => {
     ]
   `);
 });
+
+test('supports loading state', () => {
+  render(
+    <Autocomplete label="Label" loading>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+    </Autocomplete>
+  );
+
+  // Should show loading spinner when loading is true
+  expect(screen.getByTestId('progress-cycle')).toBeInTheDocument();
+});
+
+test('hides loading state when loading is false', () => {
+  render(
+    <Autocomplete label="Label" loading={false}>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+    </Autocomplete>
+  );
+
+  // Should not show loading spinner when loading is false
+  expect(screen.queryByTestId('progress-cycle')).not.toBeInTheDocument();
+});
+
+test('loading spinner shows in action area', () => {
+  const { rerender } = render(
+    <Autocomplete label="Label" loading={false}>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+    </Autocomplete>
+  );
+
+  // Initially should not show spinner
+  expect(screen.queryByTestId('progress-cycle')).not.toBeInTheDocument();
+
+  // When loading becomes true, should show spinner
+  rerender(
+    <Autocomplete label="Label" loading>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+    </Autocomplete>
+  );
+
+  expect(screen.getByTestId('progress-cycle')).toBeInTheDocument();
+});

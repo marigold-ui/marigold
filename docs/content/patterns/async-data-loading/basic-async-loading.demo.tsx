@@ -4,7 +4,7 @@ import { Center, ComboBox } from '@marigold/components';
 export default function () {
   const [searchQuery, setSearchQuery] = useState('');
   const [tickets, setTickets] = useState([]);
-  const [error, setError] = useState('');
+
   const [isPending, setTransition] = useTransition();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function () {
         }
         setTickets(data);
       } catch (err) {
-        setError(err as string);
+        console.error('Error fetching tickets:', err);
       }
     });
   }, [searchQuery]);
@@ -30,7 +30,8 @@ export default function () {
       onChange={setSearchQuery}
       defaultItems={tickets}
       allowsEmptyCollection
-      renderEmptyState={<Center>No Result Found</Center>}
+      emptyState={<Center>No Result Found</Center>}
+      loading={isPending}
     >
       {item => <ComboBox.Option key={item.name}>{item.name}</ComboBox.Option>}
     </ComboBox>
