@@ -13,7 +13,7 @@ interface PageButtonProps {
 
 export const PageButton = (props: PageButtonProps) => {
   const ref = useRef<HTMLButtonElement>(null);
-  const { button, pageButton } = useClassNames({
+  const { pageButton } = useClassNames({
     component: 'Pagination',
   });
   let { buttonProps } = useButton(props, ref);
@@ -25,7 +25,7 @@ export const PageButton = (props: PageButtonProps) => {
       {...buttonProps}
       aria-label={`Page ${page}`}
       aria-current={selected ? 'page' : undefined}
-      className={cn(button, pageButton)}
+      className={cn(pageButton)}
       data-selected={selected}
       disabled={isDisabled}
       tabIndex={selected === true ? 0 : -1}

@@ -1,21 +1,22 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
+const button =
+  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors' +
+  'focus-visible:util-focus-ring outline-none' +
+  'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground' +
+  '[&_svg]:pointer-events-none [&_svg]:shrink-0' +
+  'hover:bg-hover hover:text-hover-foreground' +
+  'cursor-pointer';
+
 export const Pagination: ThemeComponent<'Pagination'> = {
   container: cva('flex items-center justify-center space-x-2'),
-  button: cva([
-    'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors',
-    'focus-visible:util-focus-ring outline-none',
-    'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground',
-    '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-    'hover:bg-hover hover:text-hover-foreground',
-    'cursor-pointer',
-  ]),
   navigationButton: cva([
+    button,
     'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground',
     'h-9 py-2 gap-1 px-2.5',
   ]),
-  pageButtonContainer: cva('flex items-center space-x-2'),
   pageButton: cva([
+    button,
     'bg-background size-9',
     'data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs',
   ]),

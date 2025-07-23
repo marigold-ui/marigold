@@ -77,7 +77,7 @@ const InnerPagination = ({
     }
   };
 
-  const { icon, pageButtonContainer } = useClassNames({
+  const { icon, container } = useClassNames({
     component: 'Pagination',
   });
 
@@ -109,7 +109,7 @@ const InnerPagination = ({
         <ChevronLeft className={icon} />
       </NavigationButton>
 
-      <div className={pageButtonContainer}>
+      <div className={container}>
         {totalPages > 0 ? (
           pageRange.map((pageNumber, index) =>
             pageNumber === 'ellipsis' ? (
