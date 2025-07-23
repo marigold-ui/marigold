@@ -409,3 +409,16 @@ test('supports autocompletion', async () => {
 
   expect(input).toHaveValue('Spinach');
 });
+
+test('loading state', () => {
+  render(
+    <ComboBox label="Label" loading>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
+    </ComboBox>
+  );
+  const svg = screen.getByRole('progressbar');
+  expect(svg).toBeInTheDocument();
+});
