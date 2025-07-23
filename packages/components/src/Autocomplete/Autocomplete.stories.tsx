@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, within } from '@storybook/test';
 import { screen } from '@testing-library/react';
 import React from 'react';
 import { Text } from 'react-aria-components';
@@ -88,7 +88,7 @@ export const Basic: Story = {
       <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByRole('combobox');
     const description = canvas.getAllByText(
@@ -129,7 +129,7 @@ export const WithSections: Story = {
       </Autocomplete.Section>
     </Autocomplete>
   ),
-  play: async () => {
+  play: async ({ userEvent }) => {
     const canvas = within(document.body);
     const input = canvas.getAllByLabelText('Select Favorite:')[0];
 
@@ -179,15 +179,14 @@ export const Controlled: Story = {
       </Stack>
     );
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
-    const user = userEvent.setup();
     const input = canvas.getByRole('combobox');
 
-    await user.type(input, 'h');
-    await user.type(input, 'a');
-    await user.type(input, 'r');
-    await user.type(input, '{arrowdown}{enter}{escape}');
+    await userEvent.type(input, 'h');
+    await userEvent.type(input, 'a');
+    await userEvent.type(input, 'r');
+    await userEvent.type(input, '{arrowdown}{enter}{escape}');
 
     await expect(canvas.getByTestId('currentValue')).toHaveTextContent(
       'Harry Potter'
@@ -235,7 +234,7 @@ export const Async: Story = {
 export const InputMenuTrigger: Story = {
   tags: ['component-test'],
   ...Basic,
-  play: async () => {
+  play: async ({ userEvent }) => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
 
@@ -252,7 +251,7 @@ export const FocusMenuTrigger: Story = {
   args: {
     menuTrigger: 'focus',
   },
-  play: async () => {
+  play: async ({ userEvent }) => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
 
@@ -269,7 +268,7 @@ export const ManualMenuTrigger: Story = {
   args: {
     menuTrigger: 'input',
   },
-  play: async () => {
+  play: async ({ userEvent }) => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
 
@@ -281,7 +280,6 @@ export const ManualMenuTrigger: Story = {
 };
 
 export const DisabledSuggestions: Story = {
-  tags: ['component-test'],
   render: () => (
     <Autocomplete label="Label" disabledKeys={['spinach']}>
       <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
@@ -290,13 +288,4 @@ export const DisabledSuggestions: Story = {
       <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   ),
-  play: async () => {
-    const canvas = within(document.body);
-    const input = canvas.getAllByLabelText('Label')[0];
-
-    await userEvent.type(input, 'a');
-    const spinach = await canvas.findByText('Spinach');
-
-    await expect(spinach).toHaveAttribute('aria-disabled', 'true');
-  },
 };

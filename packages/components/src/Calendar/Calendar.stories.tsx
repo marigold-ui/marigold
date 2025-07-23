@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
+import { expect, fn, within } from '@storybook/test';
 import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
@@ -75,7 +75,7 @@ export const Controlled: Story = {
       </>
     );
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     await userEvent.keyboard('{arrowleft}');
@@ -95,7 +95,7 @@ export const Uncontrolled: Story = {
     defaultValue: new CalendarDate(2019, 6, 5),
     onChange: fn(),
   },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ args, canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByTestId('year'));
@@ -117,13 +117,19 @@ export const Disabled: Story = {
     disabled: true,
     onChange: fn(),
   },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const calendar = canvas.getByRole('application');
+    const days = canvas.getAllByRole('gridcell');
+    const monthButton = canvas.getByTestId('month');
+    const yearButton = canvas.getByTestId('year');
 
-    await userEvent.click(canvas.getByText('17'));
-    await userEvent.click(canvas.getByText('20'));
-
-    await expect(args.onChange).not.toHaveBeenCalled();
+    await expect(calendar).toHaveAttribute('data-disabled');
+    for (const day of days.slice(0, 3)) {
+      await expect(day).toHaveAttribute('aria-disabled', 'true');
+    }
+    await expect(monthButton).toHaveAttribute('disabled');
+    await expect(yearButton).toHaveAttribute('disabled');
   },
 };
 
@@ -134,7 +140,7 @@ export const ReadOnly: Story = {
     readOnly: true,
     onChange: fn(),
   },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ args, canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByText('15'));
