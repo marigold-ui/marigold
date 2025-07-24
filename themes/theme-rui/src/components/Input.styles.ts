@@ -2,7 +2,7 @@ import { cva } from '@marigold/system';
 import type { ThemeComponent } from '@marigold/system';
 
 export const inputContainer =
-  'flex w-full px-3 py-2 rounded-lg shadow-sm shadow-black/5 border border-input bg-background text-sm text-foreground transition-shadow group-read-only/field:bg-muted';
+  'flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow group-read-only/field:bg-muted';
 export const inputDisabled =
   'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled';
 export const inputInvalid =
