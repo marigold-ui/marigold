@@ -1,7 +1,14 @@
 'use client';
 
 import { venueTypes, venues } from '@/lib/data/venues';
-import { Center, Inline, Stack, Table, Text } from '@marigold/components';
+import {
+  Badge,
+  Center,
+  Inline,
+  Stack,
+  Table,
+  Text,
+} from '@marigold/components';
 import { Star } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
 import { useFilter, useSearch } from './utils';
@@ -82,6 +89,14 @@ export const VenuesView = () => {
     if (filter.capacity && filter.capacity < venue.capacity) return false;
     if (filter.price && filter.price < venue.price.to) return false;
     if (filter.rating && filter.rating > venue.rating) return false;
+    if (
+      Array.isArray(filter.traits) &&
+      !filter.traits.some(trait =>
+        (venue.traits as any as string[]).includes(trait)
+      )
+    )
+      return false;
+
     return true;
   });
 
@@ -93,6 +108,7 @@ export const VenuesView = () => {
         <Table.Column>Address</Table.Column>
         <Table.Column align="right">Capacity</Table.Column>
         <Table.Column align="right">Price</Table.Column>
+        <Table.Column>Traits</Table.Column>
         <Table.Column align="right">Rating</Table.Column>
       </Table.Header>
       <Table.Body>
@@ -119,9 +135,16 @@ export const VenuesView = () => {
               />
             </Table.Cell>
             <Table.Cell>
+              <Inline space="0.5">
+                {venue.traits.map(trait => (
+                  <Badge key={trait}>{trait}</Badge>
+                ))}
+              </Inline>
+            </Table.Cell>
+            <Table.Cell>
               <Inline space="0.5" alignY="center">
                 <NumericFormat value={venue.rating} minimumFractionDigits={1} />{' '}
-                <Star size={14} />
+                <Star className="self-center" size={14} />
               </Inline>
             </Table.Cell>
           </Table.Row>
