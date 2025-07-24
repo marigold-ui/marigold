@@ -39,7 +39,7 @@ export default () => {
               €{item.price}
             </Text>
           </div>
-          <div className="ml-auto">
+          <SelectList.Action>
             <ActionMenu variant="ghost">
               <Menu.Item
                 onAction={() => alert(`Show details for ${item.name}`)}
@@ -53,7 +53,7 @@ export default () => {
                 Transfer
               </Menu.Item>
             </ActionMenu>
-          </div>
+          </SelectList.Action>
         </SelectList.Item>
       )}
     </SelectList>
