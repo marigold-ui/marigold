@@ -3,6 +3,7 @@ import { Headline } from '@/ui';
 import { allContentPages } from 'contentlayer/generated';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { PhaseBadge } from '@/ui/PhaseBadge';
 import { RelativeTime } from '@/ui/RelativeTime';
 import { TocContainer } from '@/ui/Toc';
 import { Mdx } from '@/ui/mdx';
@@ -62,6 +63,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
   return (
     <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
       <div className="col-span-full">
+        {page.badge ? <PhaseBadge phase={page.badge} /> : null}
         <Headline level={1}>{page.title}</Headline>
         <div className="text-secondary-400 pt-1">{page.caption}</div>
       </div>
