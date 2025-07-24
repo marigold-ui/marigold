@@ -10,6 +10,7 @@ import type RAC from 'react-aria-components';
 import { GridList as SelectList } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { SelectListContext } from './Context';
+import { SelectListAction } from './SelectListAction';
 import { SelectListItem } from './SelectListItem';
 
 type RemoveProps = 'style' | 'className' | 'onSelectionChange';
@@ -32,6 +33,7 @@ interface SelectListComponent
    * Items of the SelectList.
    */
   Item: typeof SelectListItem;
+  Action: typeof SelectListAction;
 }
 
 const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
@@ -64,5 +66,6 @@ const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
 ) as SelectListComponent;
 
 _SelectList.Item = SelectListItem;
+_SelectList.Action = SelectListAction;
 
 export { _SelectList as SelectList };

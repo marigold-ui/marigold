@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "MIT",
   "type": "module",
   "exports": "./main.js",
@@ -41,7 +41,7 @@
     "react-dom": "19.1.0",
     "storybook": "^9.0.15",
     "typescript": "5.8.3",
-    "vite": "6.3.5",
+    "vite": "7.0.4",
     "eslint-plugin-storybook": "9.0.16",
     "@storybook/addon-docs": "^9.0.15"
   },
