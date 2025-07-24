@@ -10,8 +10,6 @@ export const TagGroupHiddenInput = ({ name }: TagGroupHiddenInputProps) => {
 
   if (!selectedKeys.length) return null;
 
-  console.log(selectedKeys);
-
   return (
     <div hidden aria-hidden="true">
       {selectedKeys.map(key => (
