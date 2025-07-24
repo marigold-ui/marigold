@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm';
 import { DateFormat, cn } from '@marigold/system';
 import { IconList } from '@/ui/IconList';
 import {
+  Badge,
   Card,
   Columns,
   Headline,
@@ -172,6 +173,7 @@ const components = {
   LatestPost,
   PostList,
   // Marigold Components
+  Badge,
   Card,
   Columns,
   DateFormat,
