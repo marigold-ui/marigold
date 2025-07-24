@@ -14,7 +14,7 @@ export const AppliedFilter = () => {
   const removeFilter = (keys: Set<FilterKeys>) => {
     const next = { ...filter };
     keys.forEach(key => {
-      next[key] = defaultFilter[key] as (number & [number, number]) | undefined;
+      next[key] = defaultFilter[key] as any;
     });
     setFilter(next);
   };
