@@ -1,17 +1,13 @@
 # Description
 
-Please include a summary of the change and which issue is fixed when no corresponding ticket is available. Add additional informations the reviewers should know.
-
-- [ ] This change requires a UI-Kit update - inform @tirado-rx @benjirsvx
-
-# What should be tested?
-
-## Are they some special informations required to test something?
+# 📝 Test Instructions:
 
 # Reviewers:
 
-Which persons should review this PR? Add person with @mentions
-
-Examples:
 @marigold-ui/developer
-@marigold-ui/designer
+
+# ✅ Pull Request Checklist:
+
+- [ ] Marigold docs and Storybook Preview is available
+- [ ] Added/updated unit tests and storybook for this change (for new code or code which already has tests).
+- [ ] Added/Updated documentation (if it already exists for this component).
