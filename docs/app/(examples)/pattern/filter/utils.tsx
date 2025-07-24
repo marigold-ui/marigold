@@ -106,10 +106,23 @@ export const toDisplayValue = {
 
 // Hooks
 // ---------------
-export const useFilter = () =>
-  useQueryState(
+type FilterKeys = keyof typeof defaultFilter;
+
+export const useFilter = () => {
+  const [filter, setFilter] = useQueryState(
     'filter',
     parseAsJson(urlSchema.parse).withDefault(defaultFilter)
   );
+
+  const removeFilter = (keys: Set<FilterKeys>) => {
+    const next = { ...filter };
+    keys.forEach(key => {
+      next[key] = defaultFilter[key] as any;
+    });
+    setFilter(next);
+  };
+
+  return { filter, setFilter, removeFilter } as const;
+};
 
 export const useSearch = () => useQueryState('q', { defaultValue: '' });

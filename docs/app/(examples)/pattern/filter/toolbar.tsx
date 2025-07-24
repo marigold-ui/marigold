@@ -119,7 +119,7 @@ const FilterForm = ({ state }: FilterFormProps) => (
 // Component
 // ---------------
 export const Toolbar = () => {
-  const [filter, setFilter] = useFilter();
+  const { filter, setFilter } = useFilter();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -77,7 +77,7 @@ const EmptyState = () => (
 
 export const VenuesView = () => {
   const [search] = useSearch();
-  const [filter] = useFilter();
+  const { filter } = useFilter();
 
   const result = venues.filter(venue => {
     // Search
