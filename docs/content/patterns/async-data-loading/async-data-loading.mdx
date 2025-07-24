@@ -12,7 +12,7 @@ Async data loading should be:
 
 - **Predictable.** Components should follow consistent patterns for fetching, loading, and error states.
 - **Responsive.** User input should be properly debounced to minimize unnecessary network requests.
-- **Accessible.** Loading and empty states should be announced to screen readers.
+- **Accessible.** Empty state should be announced to screen readers.
 
 These patterns apply to components that:
 
@@ -90,3 +90,52 @@ For most async data loading scenarios, we recommend using `useAsyncList` from `@
 <ComponentDemo file="./use-async-list.demo.tsx" />
 
 `useAsyncList` handles the complexity of async data management automatically and integrates seamlessly with Marigold components. For more detailed examples and advanced usage, see our [useAsyncList documentation](/components/hooks-and-utils/useAsyncListData).
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Combobox',
+      href: '../../components/form/combobox',
+      caption: 'Learn more about Combobox component.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Autocomplete',
+      href: '../../components/form/autocomplete',
+      caption: 'Learn more about Autocomplete component.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>
