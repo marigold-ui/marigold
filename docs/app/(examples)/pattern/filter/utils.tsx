@@ -96,7 +96,14 @@ export const toDisplayValue = {
       />
     </>
   ),
-  traits: (value: string[]) => <>Traits: {value.join(', ')}</>,
+  traits: (value: string[]) => (
+    <>
+      Traits:{' '}
+      {value.length <= 3
+        ? value.join(', ')
+        : `${value.slice(0, 2).join(', ')} (+${value.length - 2} more)`}
+    </>
+  ),
   rating: (value: number) => (
     <>
       Rating: <NumericFormat value={value} minimumFractionDigits={1} />
