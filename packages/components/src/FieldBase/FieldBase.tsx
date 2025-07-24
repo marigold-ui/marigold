@@ -79,9 +79,7 @@ const _FieldBase = <T extends ElementType>(
         <Label variant={variant} size={size}>
           {label}
         </Label>
-      ) : (
-        <span aria-hidden="true" />
-      )}
+      ) : null}
       {children}
       <HelpText
         variant={variant}
