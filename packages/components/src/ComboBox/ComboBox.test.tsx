@@ -72,6 +72,7 @@ const theme: Theme = {
       },
     }),
     IconButton: cva(),
+    ProgressCycle: cva(),
   },
 };
 
@@ -407,4 +408,26 @@ test('supports autocompletion', async () => {
   await user.click(spinach);
 
   expect(input).toHaveValue('Spinach');
+});
+
+test('supports loading state', () => {
+  render(
+    <ComboBox label="Label" loading>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+    </ComboBox>
+  );
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('hides loading state when loading is false', () => {
+  render(
+    <ComboBox label="Label" loading={false}>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+    </ComboBox>
+  );
+
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });

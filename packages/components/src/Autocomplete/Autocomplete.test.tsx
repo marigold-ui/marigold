@@ -62,6 +62,7 @@ const theme: Theme = {
       header: cva(),
     },
     Button: cva(),
+    ProgressCycle: cva(''),
   },
 };
 
@@ -424,4 +425,26 @@ test('supports submit handler', async () => {
       ],
     ]
   `);
+});
+
+test('supports loading state', () => {
+  render(
+    <Autocomplete label="Label" loading>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+    </Autocomplete>
+  );
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('hides loading state when loading is false', () => {
+  render(
+    <Autocomplete label="Label" loading={false}>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+    </Autocomplete>
+  );
+
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
