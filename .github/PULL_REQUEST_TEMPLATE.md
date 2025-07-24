@@ -1,12 +1,12 @@
 # Description
 
-# 📝 Test Instructions:
+# Test Instructions:
 
 # Reviewers:
 
 @marigold-ui/developer
 
-# ✅ Pull Request Checklist:
+# Pull Request Checklist:
 
 - [ ] Marigold docs and Storybook Preview is available
 - [ ] Added/updated unit tests and storybook for this change (for new code or code which already has tests).
