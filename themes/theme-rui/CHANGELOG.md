@@ -1,5 +1,20 @@
 # @marigold/theme-rui
 
+## 1.4.0
+
+### Minor Changes
+
+- cc493fc: feat([DST-737]): Add Toast component
+
+  Added ToastProvider Component with corresponding documentation and stories. It's a small Temporary Notification on the edge of the screen, that should be used for messages that don’t need immediate interaction.
+
+### Patch Changes
+
+- Updated dependencies [cc493fc]
+- Updated dependencies [8e178b7]
+  - @marigold/components@14.1.0
+  - @marigold/system@14.1.0
+
 ## 1.3.0
 
 ### Minor Changes
