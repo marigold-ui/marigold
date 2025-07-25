@@ -1,0 +1,47 @@
+---
+title: Breadcrumbs
+caption: A component for displaying hierarchical navigation with separators.
+badge: beta
+---
+
+The `<Breadcrumbs>` component allows users to easily understand their current location within a website or app. It shows a sequence of clickable items, each representing a step or level in the hierarchy, making it easier to navigate back to previous pages or sections.
+
+## Anatomy
+
+The `<Breadcrumbs>` component consists of breadcrumb items and separators, such as chevrons, arranged in a horizontal trail to represent a navigation path.
+
+<Image
+  src="/breadcrumbs/breadcrumbs-anatomy.jpg"
+  alt="Anatomy of breadcrumbs"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+`<Breadcrumbs>` are typically used to display a navigational hierarchy, showing the path from the homepage to the current page. Each `Breadcrumbs.Item` represents a step in this path and must include an `href` to define its destination. All items are rendered as links, allowing users to quickly navigate back to previous levels, reducing the number of clicks needed and improving the overall user experience.
+
+<ComponentDemo file="./breadcrumbs-appearance.demo.tsx" />
+
+### Collapsing Breadcrumbs
+
+When the breadcrumb list exceeds the maximum number of visible items, it can collapse to show an ellipsis ("..."). This feature is helpful when dealing with deep navigation structures that may overwhelm the user.
+
+<ComponentDemo file="./breadcrumbs-collapsing.demo.tsx" />
+
+## Props
+
+### Breadcrumbs
+
+<PropsTable component={title} />
+
+### Breadcrumbs.Item
+
+<PropsTable component="BreadcrumbsItem" />
