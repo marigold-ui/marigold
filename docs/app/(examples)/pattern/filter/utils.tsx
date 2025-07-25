@@ -82,12 +82,12 @@ export const toDisplayValue = {
   type: (value: number) => `Type: ${venueTypes[value] ?? 'Unknown'}`,
   capacity: (value: number) => (
     <>
-      Capacity: <NumericFormat value={value} />
+      Min Capacity: <NumericFormat value={value} />
     </>
   ),
   price: (value: number) => (
     <>
-      Price:{' '}
+      Max. Price:{' '}
       <NumericFormat
         style="currency"
         value={value}
@@ -106,7 +106,7 @@ export const toDisplayValue = {
   ),
   rating: (value: number) => (
     <>
-      Rating: <NumericFormat value={value} minimumFractionDigits={1} />
+      Min. Rating: <NumericFormat value={value} minimumFractionDigits={1} />
     </>
   ),
 };
