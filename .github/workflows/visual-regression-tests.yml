@@ -41,5 +41,3 @@ jobs:
           storybookBuildDir: 'storybook-static'
           storybookBaseDir: 'config/storybook'
           debug: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
