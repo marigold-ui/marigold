@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 14.1.0
+
+### Minor Changes
+
+- cc493fc: feat([DST-737]): Add Toast component
+
+  Added ToastProvider Component with corresponding documentation and stories. It's a small Temporary Notification on the edge of the screen, that should be used for messages that don’t need immediate interaction.
+
+### Patch Changes
+
+- 8e178b7: fix([DST-942]): Fix `<Drawer>` on mobile and refactor `<OverlayContainerProvider>`
+- Updated dependencies [cc493fc]
+  - @marigold/system@14.1.0
+
 ## 14.0.0
 
 ### Major Changes
