@@ -1,6 +1,6 @@
 'use client';
 
-import { venueTypes } from '@/lib/data/venues';
+import { venueTraits, venueTypes } from '@/lib/data/venues';
 import type { FormEvent } from 'react';
 import {
   Button,
@@ -12,10 +12,12 @@ import {
   SearchField,
   Slider,
   Stack,
+  Tag,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
 import {
   defaultFilter,
+  getFormData,
   toFormSchema,
   toUrlSchema,
   useFilter,
@@ -57,6 +59,7 @@ interface FilterFormProps {
     type: string;
     capacity: number;
     price: number;
+    traits: string[];
     rating: string;
   };
 }
@@ -90,6 +93,18 @@ const FilterForm = ({ state }: FilterFormProps) => (
         minimumFractionDigits: 0,
       }}
     />
+    <Tag.Group
+      label="Traits"
+      name="traits"
+      selectionMode="multiple"
+      defaultSelectedKeys={state.traits}
+    >
+      {venueTraits.map(trait => (
+        <Tag key={trait} id={trait}>
+          {trait}
+        </Tag>
+      ))}
+    </Tag.Group>
     <Radio.Group label="Min. Rating" name="rating" defaultValue={state.rating}>
       <Radio value="">none</Radio>
       <Radio value="1">1</Radio>
@@ -104,12 +119,11 @@ const FilterForm = ({ state }: FilterFormProps) => (
 // Component
 // ---------------
 export const Toolbar = () => {
-  const [filter, setFilter] = useFilter();
+  const { filter, setFilter } = useFilter();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const entries = Object.fromEntries(new FormData(e.currentTarget).entries());
-    const { success, error, data } = toUrlSchema(entries);
+    const { success, error, data } = toUrlSchema(getFormData(e));
     if (!success) {
       console.error('Invalid form data', error);
       return;

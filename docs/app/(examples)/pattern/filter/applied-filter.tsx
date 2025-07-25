@@ -6,18 +6,13 @@ import { defaultFilter, toDisplayValue, useFilter } from './utils';
 type FilterKeys = keyof typeof defaultFilter;
 
 export const AppliedFilter = () => {
-  const [filter, setFilter] = useFilter();
-  const appliedFilters = Object.entries(filter).filter(
-    ([name, value]) => `${value}` !== `${defaultFilter[name as FilterKeys]}`
-  );
+  const { filter, removeFilter } = useFilter();
 
-  const removeFilter = (keys: Set<FilterKeys>) => {
-    const next = { ...filter };
-    keys.forEach(key => {
-      next[key] = defaultFilter[key] as (number & [number, number]) | undefined;
-    });
-    setFilter(next);
-  };
+  const appliedFilters = Object.entries(filter).filter(([name, value]) =>
+    Array.isArray(value)
+      ? value.length !== defaultFilter[name as 'traits'].length
+      : `${value}` !== `${defaultFilter[name as FilterKeys]}`
+  );
 
   if (!appliedFilters.length) {
     return null;

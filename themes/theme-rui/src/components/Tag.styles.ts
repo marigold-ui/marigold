@@ -15,5 +15,5 @@ export const Tag: ThemeComponent<'Tag'> = {
     'size-4',
     'disabled:bg-disabled disabled:text-disabled-foreground disabled:cursor-not-allowed',
   ]),
-  listItems: cva('flex flex-wrap items-center gap-1'),
+  listItems: cva('flex flex-wrap items-center gap-1 mb-0'), // mb-0 prevents whitespace when the hidden field is rendered
 };

@@ -18,6 +18,7 @@ export const venues = [
     capacity: 500,
     price: { from: 1000, to: 5000 },
     rating: 4.7,
+    traits: ['outdoor', 'lush', 'cozy'],
   },
   {
     id: '2',
@@ -31,6 +32,7 @@ export const venues = [
     capacity: 300,
     price: { from: 750, to: 3500 },
     rating: 3.6,
+    traits: ['quirky', 'urban'],
   },
   {
     id: '3',
@@ -44,6 +46,7 @@ export const venues = [
     capacity: 150,
     price: { from: 500, to: 2500 },
     rating: 2.3,
+    traits: ['cozy', 'cheap'],
   },
   {
     id: '4',
@@ -57,6 +60,7 @@ export const venues = [
     capacity: 600,
     price: { from: 2000, to: 7000 },
     rating: 4.2,
+    traits: ['quirky', 'vibey'],
   },
   {
     id: '5',
@@ -70,6 +74,7 @@ export const venues = [
     capacity: 250,
     price: { from: 1000, to: 4000 },
     rating: 3.1,
+    traits: ['hype', 'cheap'],
   },
   {
     id: '6',
@@ -83,6 +88,7 @@ export const venues = [
     capacity: 800,
     price: { from: 3000, to: 10000 },
     rating: 5.0,
+    traits: ['formal'],
   },
   {
     id: '7',
@@ -96,6 +102,7 @@ export const venues = [
     capacity: 400,
     price: { from: 1500, to: 5000 },
     rating: 4.4,
+    traits: ['cozy', 'vibey', 'formal'],
   },
   {
     id: '8',
@@ -109,6 +116,7 @@ export const venues = [
     capacity: 350,
     price: { from: 1200, to: 4500 },
     rating: 3.8,
+    traits: ['urban'],
   },
   {
     id: '9',
@@ -122,6 +130,7 @@ export const venues = [
     capacity: 450,
     price: { from: 1800, to: 5500 },
     rating: 2.9,
+    traits: ['outdoor', 'quirky', 'cheap'],
   },
   {
     id: '10',
@@ -135,7 +144,14 @@ export const venues = [
     capacity: 1000,
     price: { from: 4000, to: 12000 },
     rating: 4.5,
+    traits: ['outdoor', 'lush'],
   },
 ] as const;
 
 export type Venue = (typeof venues)[number];
+
+export const venueTraits = Array.from(
+  new Set(venues.flatMap(venue => venue.traits))
+).sort();
+
+export type VenueTrait = (typeof venueTraits)[number];
