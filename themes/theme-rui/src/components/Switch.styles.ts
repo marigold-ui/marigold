@@ -13,7 +13,7 @@ export const Switch: ThemeComponent<'Switch'> = {
   ]),
   thumb: cva([
     'pointer-events-none block size-5 rounded-full',
-    'bg-background shadow-sm shadow-black/5',
+    'bg-background shadow-xs',
     'ring-0 transition-transform duration-150 ease-out-quint',
     'group-selected/switch:translate-x-4 translate-x-0',
   ]),
