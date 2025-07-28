@@ -13,7 +13,6 @@ import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay/Popover';
-import { ProgressCycle } from '../ProgressCycle';
 
 // Search Input (we can't use our SearchField because of FieldBase)
 //----------------
@@ -54,7 +53,7 @@ const AutocompleteInput = ({
   return (
     <SearchInput
       ref={ref}
-      action={loading && ((<ProgressCycle />) as any)}
+      loading={loading}
       className={{
         action: cn(
           state?.inputValue === '' ? 'invisible' : 'visible',
