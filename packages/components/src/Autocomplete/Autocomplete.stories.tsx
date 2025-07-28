@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { expect, within } from '@storybook/test';
 import { screen } from '@testing-library/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Text } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
 import { useAsyncList } from '@react-stately/data';
+import { Center } from '../Center';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
 
@@ -222,12 +222,34 @@ export const Async: Story = {
         items={items}
         value={filterText}
         onChange={setFilterText}
+        allowsEmptyCollection
+        emptyState={<Center>no character found</Center>}
       >
         {(item: any) => (
           <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
         )}
       </Autocomplete>
     );
+  },
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'xyz');
+
+    // Open the dropdown to show the empty state
+    await userEvent.click(input);
+
+    // Wait for the empty state to appear after the simulated delay
+    const result = await canvas.findByText(
+      (content, element) => {
+        return content.includes('no character found');
+      },
+      {},
+      { timeout: 3000 }
+    );
+
+    await expect(result).toBeVisible();
   },
 };
 
