@@ -15,7 +15,7 @@ const Preview = ({ name }: { name: keyof typeof registry }) => {
         data-theme="rui"
         className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
       >
-        <OverlayContainerProvider value="portalContainer">
+        <OverlayContainerProvider container="portalContainer">
           <MarigoldProvider theme={ruiTheme}>
             <div className="not-prose size-full overflow-x-auto p-4">
               <Demo />

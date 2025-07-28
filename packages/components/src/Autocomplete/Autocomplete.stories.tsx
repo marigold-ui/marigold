@@ -1,13 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Key } from 'react';
+import { expect, within } from '@storybook/test';
+import { screen } from '@testing-library/react';
+import React from 'react';
 import { Text } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
 
-const meta = {
+const meta: Meta<typeof Autocomplete> = {
   title: 'Components/Autocomplete',
+  component: Autocomplete,
   argTypes: {
     label: {
       control: {
@@ -20,7 +23,6 @@ const meta = {
         type: 'text',
       },
       description: 'Help Text',
-      defaultValue: 'This is a help text description',
     },
     disabled: {
       control: {
@@ -45,16 +47,14 @@ const meta = {
         type: 'text',
       },
       description: 'Error Message',
-      defaultValue: 'Something went wrong',
-    },
-    menuTrigger: {
-      control: {
-        type: 'select',
-      },
-      options: ['focus', 'input', 'manual'],
-      description: 'Set which interaction shows the menu',
     },
     width: {
+      control: {
+        type: 'text',
+      },
+      description: 'The width of the field',
+    },
+    placeholder: {
       control: {
         type: 'text',
       },
@@ -65,6 +65,7 @@ const meta = {
     label: 'Select Favorite:',
     description: 'This is a help text description',
     errorMessage: 'Something went wrong',
+    placeholder: 'Movie',
   },
 } satisfies Meta<typeof Autocomplete>;
 
@@ -72,8 +73,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   render: args => (
-    <Autocomplete placeholder="Movie" {...args}>
+    <Autocomplete {...args}>
       <Autocomplete.Option id="Harry Potter" textValue="Harry Potter">
         <Text slot="label">Harry Potter</Text>
         <Text slot="description">best series ever</Text>
@@ -86,11 +88,30 @@ export const Basic: Story = {
       <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
+  play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('combobox');
+    const description = canvas.getAllByText(
+      'This is a help text description'
+    )[0];
+    const clearButton = screen.getByLabelText('Clear search');
+
+    await userEvent.click(input);
+    await userEvent.type(input, 'sp');
+    await userEvent.click(clearButton);
+
+    await expect(input).toHaveFocus();
+    await expect(input).toBeVisible();
+    await expect(description).toBeInTheDocument();
+    await expect(clearButton).toBeInTheDocument();
+    await expect(input).toHaveValue('');
+  },
 };
 
 export const WithSections: Story = {
+  tags: ['component-test'],
   render: args => (
-    <Autocomplete placeholder="Pick a food" {...args}>
+    <Autocomplete {...args} placeholder="Pick a food">
       <Autocomplete.Section header="Veggies">
         <Autocomplete.Option id="lettuce">Lettuce</Autocomplete.Option>
         <Autocomplete.Option id="tomato">Tomato</Autocomplete.Option>
@@ -108,15 +129,24 @@ export const WithSections: Story = {
       </Autocomplete.Section>
     </Autocomplete>
   ),
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getAllByLabelText('Select Favorite:')[0];
+
+    await userEvent.type(input, 'o');
+    const sectionOne = await screen.findByText('Veggies');
+    const sectionTwo = await screen.findByText('Protein');
+
+    expect(sectionOne).toBeVisible();
+    expect(sectionTwo).toBeVisible();
+  },
 };
 
 export const Controlled: Story = {
+  tags: ['component-test'],
   render: args => {
-    const [submitted, setSubmitted] = useState<
-      [Key | null, string | number | null]
-    >(['', '']);
+    const [submitted, setSubmitted] = useState<string | number | null>('');
     const [current, setCurrent] = useState<string>('');
-    const keyToRender = submitted[0] !== null ? submitted[0].toString() : null;
 
     return (
       <Stack space={4}>
@@ -124,7 +154,7 @@ export const Controlled: Story = {
           {...args}
           value={current}
           onChange={setCurrent}
-          onSubmit={(key, val) => setSubmitted([key, val])}
+          onSubmit={val => setSubmitted(val)}
           disabledKeys={['star-trek']}
         >
           <Autocomplete.Option id="harry-potter" textValue="Harry Potter">
@@ -144,38 +174,54 @@ export const Controlled: Story = {
           </Autocomplete.Option>
           <Autocomplete.Option id="firefly">Firefly</Autocomplete.Option>
         </Autocomplete>
-        <pre>current: {current}</pre>
-        <pre>
-          submitted: (key: {keyToRender}, value: {submitted[1]})
-        </pre>
+        <pre data-testid="currentValue">current: {current}</pre>
+        <pre data-testid="submittedValue">submitted value: {submitted}</pre>
       </Stack>
+    );
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'h');
+    await userEvent.type(input, 'a');
+    await userEvent.type(input, 'r');
+    await userEvent.type(input, '{arrowdown}{enter}{escape}');
+
+    await expect(canvas.getByTestId('currentValue')).toHaveTextContent(
+      'Harry Potter'
+    );
+    await expect(canvas.getByTestId('submittedValue')).toHaveTextContent(
+      'harry-potter'
     );
   },
 };
 
 export const Async: Story = {
   render: args => {
-    const list = useAsyncList<{ name: string }>({
-      async load({ signal, filterText }) {
-        const res = await fetch(
-          `https://swapi.py4e.com/api/people/?search=${filterText}`,
-          { signal }
-        );
-        const json = await res.json();
+    const { items, filterText, setFilterText } = useAsyncList<{ name: string }>(
+      {
+        async load({ signal, filterText }) {
+          const res = await fetch(
+            `https://swapi.py4e.com/api/people/?search=${filterText}`,
+            { signal }
+          );
+          const json = await res.json();
 
-        return {
-          items: json.results,
-        };
-      },
-    });
+          return {
+            items: json.results,
+          };
+        },
+      }
+    );
 
     return (
       <Autocomplete
-        label="Search Star Wars Characters"
-        items={list.items}
-        value={list.filterText}
-        onChange={list.setFilterText}
         {...args}
+        label="Search Star Wars Characters"
+        items={items}
+        value={filterText}
+        onChange={setFilterText}
       >
         {(item: any) => (
           <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
@@ -183,4 +229,63 @@ export const Async: Story = {
       </Autocomplete>
     );
   },
+};
+
+export const InputMenuTrigger: Story = {
+  tags: ['component-test'],
+  ...Basic,
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'ha');
+    const result = canvas.getAllByText('Harry Potter')[0];
+
+    await expect(result).toBeVisible();
+  },
+};
+
+export const FocusMenuTrigger: Story = {
+  tags: ['component-test'],
+  ...Basic,
+  args: {
+    menuTrigger: 'focus',
+  },
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.click(input);
+    const result = await canvas.findByText('Star Wars');
+
+    await expect(result).toBeVisible();
+  },
+};
+
+export const ManualMenuTrigger: Story = {
+  tags: ['component-test'],
+  ...Basic,
+  args: {
+    menuTrigger: 'input',
+  },
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, '{arrowdown}');
+    const result = await canvas.findByText('Lord of the Rings');
+
+    await expect(result).toBeVisible();
+  },
+};
+
+export const DisabledSuggestions: Story = {
+  render: () => (
+    <Autocomplete label="Label" disabledKeys={['spinach']}>
+      <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
+      <Autocomplete.Option id="carrots">Carrots</Autocomplete.Option>
+      <Autocomplete.Option id="broccoli">Broccoli</Autocomplete.Option>
+      <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
+    </Autocomplete>
+  ),
 };

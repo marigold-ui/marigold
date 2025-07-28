@@ -19,7 +19,7 @@ export const Menu: ThemeComponent<'Menu'> = {
       variants: {
         variant: {
           secondary:
-            'border border-input bg-background shadow-sm shadow-black/5 hover:bg-hover hover:text-foreground expanded:bg-hover',
+            'border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
           ghost: 'hover:bg-hover hover:text-foreground expanded:bg-hover',
         },
         size: {
