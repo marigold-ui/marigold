@@ -261,8 +261,6 @@ Row actions let users interact with individual records directly from a table, su
 
 Use the `<Button>` component with the secondary (default) variant to display row actions. For destructive actions, use the destructive variant. Place actions consistently at the end of the row to support predictable scanning. This helps users quickly identify available actions and understand which parts of the row are interactive.
 
-Keep row actions visually distinct from content and separate from navigation. Avoid inline links, as they resemble content and add visual noise. However, the identifying attribute of a record (such as a name or title) may be a link if it opens the item.
-
 > insert example showing a single row action "edit", clicking on the name fakes going to the record element (e.g. alert with some info?)
 
 Show only the most important 1–3 actions per row. When you need to show more than 3 actions, place the less frequently used ones (e.g. "Archive", "Share") in a contextual menu (see [`<ActionMenu`](/components/overlay/menu#actionmenu) section). Too many visible actions create clutter and reduce clarity. Prioritize key actions (e.g. “Edit”, “View”). Use icon buttons with tooltips for compact actions.
@@ -289,7 +287,9 @@ Show only the most important 1–3 actions per row. When you need to show more t
 
 ### Links
 
-If you want to use links inside tables, use the default `<Link>` component. If your table contains many links, consider revising your design to avoid overwhelming users. If reducing the number of links is not possible, use the `secondary` variant of `<Link>` to minimize visual noise and maintain clarity.
+Keep row actions clearly separated from content and navigation. Avoid inline links for actions, as they can be mistaken for content and add visual noise. A common and appropriate use of links in tables is placing one on the identifying attribute of a record, such as a name or title, when it leads to the related item or detail view.
+
+When using links in tables, default to the standard `<Link>` component. If the table contains many links, consider simplifying the layout to reduce visual clutter. If links cannot be reduced, use the secondary variant of `<Link>` to maintain clarity and minimize distraction.
 
 <ComponentDemo file="./table-links.demo.tsx" />
 
