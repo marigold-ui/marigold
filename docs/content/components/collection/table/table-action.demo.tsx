@@ -4,9 +4,9 @@ import { Button, Table } from '@marigold/components';
 export default () => (
   <Table aria-label="Venue List" stretch>
     <Table.Header>
-      <Table.Column>Event</Table.Column>
-      <Table.Column>Date</Table.Column>
-      <Table.Column align="right">Ticket Number</Table.Column>
+      <Table.Column>Venue</Table.Column>
+      <Table.Column>Address</Table.Column>
+      <Table.Column align="right">Rating</Table.Column>
       <Table.Column>Action</Table.Column>
     </Table.Header>
     <Table.Body>
