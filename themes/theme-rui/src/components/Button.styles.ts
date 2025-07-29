@@ -18,9 +18,6 @@ export const Button: ThemeComponent<'Button'> = cva(
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-hover hover:text-foreground',
-        // only used for calendar in MonthListBox and YearListBox to have a hover over other options
-        // TODO: Remove this in future and rethink the MonthListBox and YearListBox or use another variant
-        text: 'hover:bg-hover',
       },
       size: {
         default: 'h-button px-4 py-2 [&_svg]:size-4',
