@@ -4,9 +4,7 @@ import {
 } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { flushSync } from 'react-dom';
-import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { useClassNames } from '@marigold/system';
-import { usePortalContainer } from '../Provider';
 import { Toast } from './Toast';
 import { ToastContentProps } from './Toast';
 
@@ -39,19 +37,13 @@ type ToastPosition =
   | 'bottom';
 
 const ToastProvider = ({ position = 'bottom-right' }: ToastProviderProps) => {
-  const portal = usePortalContainer();
   const classNames = useClassNames({
     component: 'Toast',
   });
   return (
-    <UNSAFE_PortalProvider getContainer={() => portal as HTMLElement | null}>
-      <ToastRegion
-        queue={queue}
-        className={`${classNames[position]} z-50 gap-2`}
-      >
-        {({ toast }) => <Toast toast={toast} />}
-      </ToastRegion>
-    </UNSAFE_PortalProvider>
+    <ToastRegion queue={queue} className={`${classNames[position]} z-50 gap-2`}>
+      {({ toast }) => <Toast toast={toast} />}
+    </ToastRegion>
   );
 };
 
