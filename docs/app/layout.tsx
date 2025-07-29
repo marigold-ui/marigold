@@ -3,7 +3,6 @@ import { MarigoldProvider } from '@/ui';
 import { ReactNode, Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
 import { Analytics } from './_components/Analytics';
-import { PortalContainer } from './_components/PortalContainer';
 import './globals.css';
 
 // Metadata
@@ -36,7 +35,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
           <MarigoldProvider theme={theme} className="bg-bg-body min-h-screen">
             {children}
           </MarigoldProvider>
-          <PortalContainer />
+          <div id="portalContainer" data-theme="rui" className="not-prose" />
         </Suspense>
         <Analytics />
       </body>

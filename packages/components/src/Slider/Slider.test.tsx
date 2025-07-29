@@ -127,7 +127,7 @@ test('takes full width by default', () => {
 
   const container = screen.getByRole('group');
   expect(container.className).toMatchInlineSnapshot(
-    `"group/field flex-col grid grid-cols-[auto_1fr] gap-y-1 w-full gap-x-0"`
+    `"group/field flex-col grid grid-cols-[auto_1fr] gap-y-1 w-full"`
   );
 });
 
@@ -136,7 +136,7 @@ test('allows to set width via prop', () => {
 
   const container = screen.getByRole('group');
   expect(container.className).toMatchInlineSnapshot(
-    `"group/field flex-col grid grid-cols-[auto_1fr] gap-y-1 w-44 gap-x-0"`
+    `"group/field flex-col grid grid-cols-[auto_1fr] gap-y-1 w-44"`
   );
 });
 

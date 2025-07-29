@@ -7,7 +7,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     'has-focus-visible:util-focus-ring outline-none',
     inputInvalid,
     inputReadOnly,
-    'border border-input text-sm shadow-sm shadow-black/5 transition-shadow',
+    'border border-input text-sm shadow-xs transition-shadow',
     'data-invalid:data-[focus-within]:border-destructive data-invalid:data-[focus-within]:ring-destructive/20',
   ]),
   stepper: cva([

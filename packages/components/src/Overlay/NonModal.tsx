@@ -21,7 +21,6 @@ import {
   useViewportSize,
 } from '@react-aria/utils';
 import type { AriaLabelingProps, RefObject } from '@react-types/shared';
-import { usePortalContainer } from '../Provider';
 import type { RenderProps } from '../utils/useRenderProps';
 import { useRenderProps } from '../utils/useRenderProps';
 import type { AriaNonModalProps } from './useNonModal';
@@ -60,7 +59,6 @@ interface NonModalInnerProps
 const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
   const { nonModalProps } = useNonModal(props, state);
   const ref = props.nonModalRef as RefObject<HTMLDivElement | null>;
-  const portalContainer = usePortalContainer();
   const isEntering = useEnterAnimation(ref) || props.isEntering || false;
 
   const renderProps = useRenderProps({
@@ -98,11 +96,7 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
   );
 
   return (
-    <Overlay
-      isExiting={isExiting}
-      portalContainer={portalContainer}
-      disableFocusManagement
-    >
+    <Overlay isExiting={isExiting} disableFocusManagement>
       <FocusScope restoreFocus>
         <Provider values={[[OverlayTriggerStateContext, state]]}>
           {overlay}
