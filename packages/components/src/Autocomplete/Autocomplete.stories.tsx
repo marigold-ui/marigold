@@ -223,7 +223,9 @@ export const Async: Story = {
         value={filterText}
         onChange={setFilterText}
         allowsEmptyCollection
-        emptyState={<Center>no character found</Center>}
+        emptyState={
+          <Center data-testid="empty-state">no character found</Center>
+        }
       >
         {(item: any) => (
           <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
@@ -233,22 +235,13 @@ export const Async: Story = {
   },
   play: async ({ userEvent }) => {
     const canvas = within(document.body);
-    const input = canvas.getByRole('combobox');
 
+    const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
 
-    // Open the dropdown to show the empty state
-    await userEvent.click(input);
+    await userEvent.type(input, '{arrowdown}');
 
-    // Wait for the empty state to appear after the simulated delay
-    const result = await canvas.findByText(
-      (content, element) => {
-        return content.includes('no character found');
-      },
-      {},
-      { timeout: 3000 }
-    );
-
+    const result = await canvas.getByTestId('empty-state');
     await expect(result).toBeVisible();
   },
 };
