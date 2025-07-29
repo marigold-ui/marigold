@@ -36,6 +36,16 @@ When the breadcrumb list exceeds the maximum number of visible items, it can col
 
 <ComponentDemo file="./breadcrumbs-collapsing.demo.tsx" />
 
+### As Navigation
+
+Here’s a revised version with a more supportive tone:
+
+Using breadcrumbs as navigation
+
+When breadcrumbs represent the primary or secondary navigation for a page, place them in a `<nav>` element with an appropriate `aria-label` (e.g. `aria-label="Breadcrumbs"`). This creates a navigation landmark that helps assistive technologies identify key sections of the page. To support a clearer page structure, keep the number of landmarks minimal and avoid using them for breadcrumbs in contexts like table rows or popovers.
+
+<ComponentDemo file="./breadcrumbs-navigation.demo.tsx" />
+
 ## Props
 
 <StorybookHintMessage component={title} />

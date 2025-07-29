@@ -80,46 +80,44 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       : items;
 
     return (
-      <nav aria-label="Breadcrumbs">
-        <RACBreadcrumbs
-          {...props}
-          ref={ref}
-          isDisabled={disabled}
-          className={container}
-        >
-          {displayedItems.map((item, index) => {
-            if (!React.isValidElement<BreadcrumbsItemProps>(item)) return null;
+      <RACBreadcrumbs
+        {...props}
+        ref={ref}
+        isDisabled={disabled}
+        className={container}
+      >
+        {displayedItems.map((item, index) => {
+          if (!React.isValidElement<BreadcrumbsItemProps>(item)) return null;
 
-            const isLast = index === displayedItems.length - 1;
+          const isLast = index === displayedItems.length - 1;
 
-            const { href, children: itemChildren, ...ariaProps } = item.props;
+          const { href, children: itemChildren, ...ariaProps } = item.props;
 
-            return (
-              <RACBreadcrumb
-                key={`${href}-${index}`}
-                {...ariaProps}
-                className={breadcrumbsItem}
+          return (
+            <RACBreadcrumb
+              key={`${href}-${index}`}
+              {...ariaProps}
+              className={breadcrumbsItem}
+            >
+              <a
+                href={href}
+                className={cn(link, isLast && current)}
+                aria-current={isLast ? 'page' : undefined}
               >
-                <a
-                  href={href}
-                  className={cn(link, isLast && current)}
-                  aria-current={isLast ? 'page' : undefined}
-                >
-                  {itemChildren}
-                </a>
+                {itemChildren}
+              </a>
 
-                {!isLast && (
-                  <ChevronRight
-                    aria-hidden="true"
-                    size={14}
-                    data-testid="breadcrumb-chevronright"
-                  />
-                )}
-              </RACBreadcrumb>
-            );
-          })}
-        </RACBreadcrumbs>
-      </nav>
+              {!isLast && (
+                <ChevronRight
+                  aria-hidden="true"
+                  size={14}
+                  data-testid="breadcrumb-chevronright"
+                />
+              )}
+            </RACBreadcrumb>
+          );
+        })}
+      </RACBreadcrumbs>
     );
   }
 ) as BreadcrumbsComponent;
