@@ -246,6 +246,39 @@ export const Async: Story = {
   },
 };
 
+export const DefaultEmptyState: Story = {
+  tags: ['component-test'],
+  args: {
+    allowsEmptyCollection: true,
+  },
+  ...Basic,
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'xyz');
+    const result = canvas.getByText('no result found');
+    await expect(result).toBeVisible();
+  },
+};
+
+export const EmptyState: Story = {
+  tags: ['component-test'],
+  args: {
+    allowsEmptyCollection: true,
+    emptyState: <Center>can't find value</Center>,
+  },
+  ...Basic,
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'xyz');
+    const result = canvas.getByText("can't find value");
+    await expect(result).toBeVisible();
+  },
+};
+
 export const InputMenuTrigger: Story = {
   tags: ['component-test'],
   ...Basic,
