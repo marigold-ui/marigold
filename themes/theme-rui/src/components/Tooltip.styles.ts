@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Tooltip: ThemeComponent<'Tooltip'> = {
   container: cva(
     [
-      'text-brand-foreground bg-brand relative z-50 max-w-70 rounded-md border border-brand px-3 py-1.5 text-sm ',
+      'relative z-50 max-w-70 rounded-md border px-3 py-1.5 text-sm',
       'placement-top:mb-2',
       'placement-bottom:mt-2',
       'placement-right:ml-2',
@@ -12,7 +12,7 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
     {
       variants: {
         variant: {
-          default: '',
+          default: 'text-brand-foreground bg-brand border-brand',
           white: 'text-secondary-foreground border-border bg-white',
         },
       },
@@ -24,21 +24,17 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
 
   arrow: cva(
     [
-      'fill-brand  stroke-brand',
-
       // right
       'data-[placement=right]:[&_svg]:rotate-90',
-
       // left
       'data-[placement=left]:[&_svg]:-rotate-90',
-
       // bottom
       'data-[placement=bottom]:[&_svg]:rotate-180',
     ],
     {
       variants: {
         variant: {
-          default: '',
+          default: 'fill-brand  stroke-brand',
           white: 'fill-white  stroke-border ',
         },
       },
