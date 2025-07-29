@@ -105,7 +105,6 @@ export const WithAction: Story = {
       action={
         <Button
           size="small"
-          variant="text"
           onPress={() => alert('Action executed')}
         >
           <Delete />
@@ -121,7 +120,7 @@ export const WithIcons: Story = {
     <Input
       icon={<Search />}
       action={
-        <Button size="small" variant="text">
+        <Button size="small">
           <Delete />
         </Button>
       }
