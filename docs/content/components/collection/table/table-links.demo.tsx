@@ -12,7 +12,7 @@ export default () => (
       {venues.slice(0, 4).map(venue => (
         <Table.Row key={venue.id}>
           <Table.Cell>
-            <Link href={`#venue-${venue.id}`}>{venue.name}</Link>
+            <Link href={`#`}>{venue.name}</Link>
           </Table.Cell>
           <Table.Cell>
             {venue.street}, {venue.city}
