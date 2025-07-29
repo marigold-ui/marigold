@@ -263,25 +263,19 @@ Use the `<Button>` component with the secondary (default) variant for row action
 
 <ComponentDemo file="./table-action.demo.tsx" />
 
-Show only the most important 1–3 actions per row. When you need to show more than 3 actions, place the less frequently used ones (e.g. "Archive", "Share") in a contextual menu (see [`<ActionMenu`](/components/overlay/menu#actionmenu) section). Too many visible actions create clutter and reduce clarity. Prioritize key actions (e.g. “Edit”, “View”). Use icon buttons with tooltips for compact actions.
+Show only the most important 1–3 actions per row. These should be the actions users are most likely to need or expect to find without having to open a menu, such as “Edit” or “View.” If you need to support more than three actions, prioritize them by frequency and importance: display the most critical ones directly, and group the rest into a contextual menu using an `<ActionMenu>` (see [ActionMenu section](/components/overlay/menu#actionmenu)). This keeps the row clean and scannable while still offering access to all necessary actions.
 
-> insert more complex example with edit + one other button that is visible and uses icon + tooltip. have an action menu with additional options. maybe also delete?
+Using too many visible actions at once can overwhelm users, make it hard to identify what to do, and increase visual clutter. If space is limited or the layout feels crowded, consider using icon buttons to keep actions compact. Pair them with tooltips to clearly communicate each action’s purpose without adding visual noise.
 
-<GuidelineTiles>
-  <Do>
-    <Do.Description>
-      Only use one cell with one action at the end of the Table to call actions.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Description>
-      <ul>
-        <li>Don't use two or more action cells</li>
-        <li>Don't write two or more action components in one action cell.</li>
-      </ul>
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
+<SectionMessage>
+  <SectionMessage.Title>Use icons with care</SectionMessage.Title>
+  <SectionMessage.Content>
+    Only use icons when their meaning is clear without explanation. If the icon
+    might be ambiguous, prefer a labeled button or add context with a tooltip.
+  </SectionMessage.Content>
+</SectionMessage>
+
+<ComponentDemo file="./table-action-menu.demo.tsx" />
 
 If you cannot place all row actions at the end of the row, be mindful of clarity and consistency. Actions should remain visually distinct from content and navigation, and be grouped where possible to support scannability. Apply consistent styling to each action and avoid placing them in unexpected locations, as this can increase cognitive load and make it harder for users to understand what they can do in each row.
 
