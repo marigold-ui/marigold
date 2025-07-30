@@ -288,9 +288,9 @@ export const BasicActionMenu: Story = {
   render: args => {
     return (
       <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
-        <Menu.Item id="edit">Open in editor</Menu.Item>
-        <Menu.Item id="settings">Settings</Menu.Item>
-        <Menu.Item id="delete">Delete</Menu.Item>
+        <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
+        <ActionMenu.Item id="settings">Settings</ActionMenu.Item>
+        <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
       </ActionMenu>
     );
   },
