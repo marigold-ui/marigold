@@ -42,14 +42,14 @@ export default () => (
               </Tooltip.Trigger>
               <ActionMenu>
                 <Menu.Item id="assign">
-                  <UserCog className="size-4" /> Assign account manager
+                  <UserCog /> Assign account manager
                 </Menu.Item>
                 <Menu.Item id="download">
-                  <CloudDownload className="size-4" />
+                  <CloudDownload />
                   Download Data
                 </Menu.Item>
                 <Menu.Item id="archive">
-                  <Archive className="size-4" /> Archive
+                  <Archive /> Archive
                 </Menu.Item>
               </ActionMenu>
             </Inline>
