@@ -15,7 +15,7 @@ export default function () {
   return (
     <Stack space={6}>
       <Switch label="toggle description" onChange={toggleDescription} />
-      <Inline alignY="center" space={6}>
+      <Inline alignToInputBaseline space={6}>
         <div className="flex-1">
           <TextField label="My label is great." description={description} />
         </div>
