@@ -168,4 +168,29 @@ describe('Calendar', () => {
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2019, 6, 17));
   });
+
+  test('renders month selection', async () => {
+    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+
+    expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
+
+    const monthSelection = screen.getByRole('button', { name: 'Jan' });
+    await user.click(monthSelection);
+
+    expect(screen.getByTestId('monthOptions')).toBeInTheDocument();
+  });
+
+  test('renders year selection', async () => {
+    // Mock scrollIntoView to prevent errors in JSDOM
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
+    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+
+    expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
+
+    const yearSelection = screen.getByRole('button', { name: '2025' });
+    await user.click(yearSelection);
+
+    expect(screen.getByTestId('yearOptions')).toBeInTheDocument();
+  });
 });
