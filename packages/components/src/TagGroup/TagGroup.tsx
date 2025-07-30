@@ -35,7 +35,6 @@ export interface TagGroupProps
 // Component
 // ---------------
 const _TagGroup = ({
-  width,
   items,
   children,
   emptyState,
