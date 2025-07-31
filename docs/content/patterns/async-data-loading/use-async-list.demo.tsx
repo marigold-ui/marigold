@@ -1,4 +1,4 @@
-import { Autocomplete, Center, useAsyncList } from '@marigold/components';
+import { Center, ComboBox, useAsyncList } from '@marigold/components';
 
 export default function Example() {
   const list = useAsyncList<{ name: string }>({
@@ -16,7 +16,7 @@ export default function Example() {
   });
 
   return (
-    <Autocomplete
+    <ComboBox
       label="Search Star Wars Characters"
       items={list.items}
       value={list.filterText}
@@ -26,8 +26,8 @@ export default function Example() {
       emptyState={<Center>No results found</Center>}
     >
       {(item: any) => (
-        <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
+        <ComboBox.Option id={item.name}>{item.name}</ComboBox.Option>
       )}
-    </Autocomplete>
+    </ComboBox>
   );
 }
