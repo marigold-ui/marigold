@@ -19,6 +19,7 @@ export interface BreadcrumbsItemProps
   href: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function BreadcrumbsItem(_: BreadcrumbsItemProps): null {
   return null;
 }
