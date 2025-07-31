@@ -2,6 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as stories from './Breadcrumbs.stories';
+import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 const { Basic, Collapsed } = composeStories(stories);
 const user = userEvent.setup();
@@ -95,4 +96,12 @@ test('expand collapsed items', async () => {
   expect(
     screen.getByRole('menuitem', { name: 'Breadcrumb2' })
   ).toBeInTheDocument();
+});
+
+test('BreadcrumbsItem renders nothing', () => {
+  render(
+    <BreadcrumbsItem href="https://example.com">Test Item</BreadcrumbsItem>
+  );
+
+  expect(screen.queryByText('Test Item')).not.toBeInTheDocument();
 });

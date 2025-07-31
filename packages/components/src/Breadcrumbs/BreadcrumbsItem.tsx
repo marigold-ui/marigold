@@ -1,4 +1,3 @@
-/* v8 ignore start */
 import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 
@@ -21,7 +20,4 @@ export interface BreadcrumbsItemProps
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BreadcrumbsItem(_: BreadcrumbsItemProps): null {
-  return null;
-}
-/* v8 ignore stop */
+export const BreadcrumbsItem = (_: BreadcrumbsItemProps) => null;
