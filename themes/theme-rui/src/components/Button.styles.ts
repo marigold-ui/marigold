@@ -4,7 +4,7 @@ import { cva } from '@marigold/system';
 export const Button: ThemeComponent<'Button'> = cva(
   [
     'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow]',
-    '[&_svg]:shrink-0',
+    '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     'focus-visible:util-focus-ring outline-none disabled:util-disabled',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
     'cursor-pointer',
