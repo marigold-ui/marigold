@@ -29,18 +29,18 @@ export default () => (
           <Table.Cell>
             <Inline space={1} alignX="center">
               <Tooltip.Trigger>
-                <Button>
+                <Button size="small">
                   <Edit />
                 </Button>
                 <Tooltip>Edit</Tooltip>
               </Tooltip.Trigger>
               <Tooltip.Trigger>
-                <Button>
+                <Button size="small">
                   <Star />
                 </Button>
                 <Tooltip>View Ratings</Tooltip>
               </Tooltip.Trigger>
-              <ActionMenu>
+              <ActionMenu size="small">
                 <Menu.Item id="assign">
                   <UserCog /> Assign account manager
                 </Menu.Item>

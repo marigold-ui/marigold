@@ -259,7 +259,9 @@ If your table contains cells with multiple lines of text, use the `alignY="top"`
 
 Row actions let users interact with individual records directly from a table, such as editing, viewing details, or triggering specific operations. These interactions are essential for working with tabular data, and thoughtful design helps users stay oriented and confident. To support clarity, predictability, and efficiency, it’s important to align how and where these actions appear.
 
-Use the `<Button>` component with the secondary (default) variant for row actions. If the action is destructive, apply the destructive variant instead. Users should always know where to find row actions, so always place them at the end of the row. This improves scannability and helps clarify which parts of the row are interactive.
+Use the `<Button>` component with the secondary (default) variant for row actions. If the action is destructive, use the destructive variant instead. In both cases, apply the small button size to maintain visual consistency and minimize visual noise in dense table layouts.
+
+When it comes to placement, always position row actions at the end of the row. This improves scannability and clearly signals which parts of the row are interactive, helping users quickly locate available actions.
 
 <ComponentDemo file="./table-action.demo.tsx" />
 
