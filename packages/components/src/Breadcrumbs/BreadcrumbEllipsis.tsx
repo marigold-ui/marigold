@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Link,
-  Menu,
-  MenuItem,
-  MenuTrigger,
-} from 'react-aria-components';
+import { Button, Menu, MenuItem, MenuTrigger } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { Popover } from '../Overlay/Popover';
 import { BreadcrumbsItemProps } from './BreadcrumbsItem';
