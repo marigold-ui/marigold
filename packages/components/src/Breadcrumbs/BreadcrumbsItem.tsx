@@ -1,3 +1,4 @@
+/* v8 ignore start */
 import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 
@@ -23,3 +24,4 @@ export interface BreadcrumbsItemProps
 export function BreadcrumbsItem(_: BreadcrumbsItemProps): null {
   return null;
 }
+/* v8 ignore stop */

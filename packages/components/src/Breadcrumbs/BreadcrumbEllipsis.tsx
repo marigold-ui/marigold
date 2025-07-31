@@ -42,15 +42,10 @@ export const BreadcrumbEllipsis = ({
               <MenuItem
                 key={`${href}-${index}`}
                 className={menuItem}
-                onAction={() => {
-                  if (!disabled) {
-                    window.location.href = href;
-                  }
-                }}
+                href={href}
+                isDisabled={disabled}
               >
-                <Link href={href} isDisabled={disabled}>
-                  {itemChildren}
-                </Link>
+                {itemChildren}
               </MenuItem>
             );
           })}
