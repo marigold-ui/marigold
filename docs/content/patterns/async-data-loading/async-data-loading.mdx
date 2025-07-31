@@ -31,6 +31,14 @@ When implementing async data loading, manage these essential states:
 
 In the next examples we will discover how to handle the previous states
 
+## useAsyncList (Recommended)
+
+For most async data loading scenarios, we recommend using `useAsyncList` from `@react-stately/data`. This hook is specifically designed for handling async data in lists and provides built-in loading states, error handling, and filtering capabilities.
+
+<ComponentDemo file="./use-async-list.demo.tsx" />
+
+`useAsyncList` handles the complexity of async data management automatically and integrates seamlessly with Marigold components. For more detailed examples and advanced usage, see our [useAsyncList documentation](/components/hooks-and-utils/useAsyncListData).
+
 ## Basic Async Loading
 
 ### Simple Data Loading on Mount
@@ -82,14 +90,6 @@ React Query provides automatic caching, request deduplication, and built-in load
 Learn more about useDeferredValue in the [React documentation](https://react.dev/reference/react/useDeferredValue).
 
 <ComponentDemo file="./react-query-basic.demo.tsx" />
-
-## useAsyncList (Recommended)
-
-For most async data loading scenarios, we recommend using `useAsyncList` from `@react-stately/data`. This hook is specifically designed for handling async data in lists and provides built-in loading states, error handling, and filtering capabilities.
-
-<ComponentDemo file="./use-async-list.demo.tsx" />
-
-`useAsyncList` handles the complexity of async data management automatically and integrates seamlessly with Marigold components. For more detailed examples and advanced usage, see our [useAsyncList documentation](/components/hooks-and-utils/useAsyncListData).
 
 ## Related
 
