@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
 import { composeStories } from '@storybook/react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, prettyDOM, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import * as stories from '../Calendar/Calendar.stories';
@@ -180,6 +180,19 @@ describe('Calendar', () => {
     expect(screen.getByTestId('monthOptions')).toBeInTheDocument();
   });
 
+  test('select a month', async () => {
+    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+
+    const monthSelection = screen.getByRole('button', { name: 'Jan' });
+    await user.click(monthSelection);
+
+    const monthOption = screen.getByText('Feb');
+    await user.click(monthOption);
+
+    expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Feb' })).toBeInTheDocument();
+  });
+
   test('renders year selection', async () => {
     // Mock scrollIntoView to prevent errors in JSDOM
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
@@ -192,5 +205,23 @@ describe('Calendar', () => {
     await user.click(yearSelection);
 
     expect(screen.getByTestId('yearOptions')).toBeInTheDocument();
+  });
+
+  test('select a year', async () => {
+    // Mock scrollIntoView to prevent errors in JSDOM
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
+    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+
+    expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
+
+    const yearSelection = screen.getByRole('button', { name: '2025' });
+    await user.click(yearSelection);
+
+    const yearhOption = screen.getByText('2024');
+    await user.click(yearhOption);
+
+    expect(screen.queryByTestId('yearhOptions')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '2024' })).toBeInTheDocument();
   });
 });
