@@ -465,7 +465,7 @@ importers:
         specifier: 3.14.0
         version: 3.14.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/calendar':
-        specifier: ^3.9.0
+        specifier: 3.9.0
         version: 3.9.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/focus':
         specifier: 3.21.0
