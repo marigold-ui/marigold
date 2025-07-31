@@ -13,10 +13,10 @@ const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
   const state = useContext(CalendarStateContext)!;
   const months = useFormattedMonths(state.timeZone, state.focusedDate);
 
-  let onChange = (index: Key) => {
-    let value = Number(index) + 1;
-    let date = state.focusedDate.set({ month: value });
+  const onPress = (index: Key) => {
+    const date = state.focusedDate.set({ month: Number(index) + 1 });
     state.setFocusedDate(date);
+    setSelectedDropdown(undefined);
   };
 
   const { classNames } = useCalendarContext();
@@ -32,10 +32,7 @@ const MonthListBox = ({ setSelectedDropdown }: MonthDropdownProps) => {
           <li className="flex justify-center" key={index}>
             <Button
               slot="previous"
-              onPress={() => {
-                onChange(index);
-                setSelectedDropdown(undefined);
-              }}
+              onPress={() => onPress(index)}
               key={index + 1}
               aria-current={isSelected}
               className={cn(
