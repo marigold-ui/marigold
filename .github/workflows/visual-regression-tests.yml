@@ -1,13 +1,13 @@
 name: Visual-Regression-Tests
 on:
-  push:
-    branches:
-      - changeset-release/main
-      - '!renovate/**' # shouldn't trigger when changes coming from renovate branches
-#  pull_request - could be used with turbosnap to keep snapshots low
+  pull_request:
+    branches-ignore:
+      - 'renovate/**'
+    types: [opened, synchronize, ready_for_review, labeled]
 
 jobs:
   chromatic:
+    if: github.event.pull_request.draft == false && contains(github.event.pull_request.labels.*.name, 'run-vrt')
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     steps:
