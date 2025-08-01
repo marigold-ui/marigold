@@ -1,7 +1,9 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Menu: ThemeComponent<'Menu'> = {
-  container: cva(['text-foreground z-50 overflow-hidden rounded-md p-1']),
+  container: cva([
+    'text-foreground z-50 overflow-hidden rounded-md p-1 outline-none',
+  ]),
   item: cva([
     'relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none',
     'focus:bg-focus',

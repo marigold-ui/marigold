@@ -4,7 +4,6 @@ import {
   ActionMenu,
   Button,
   Inline,
-  Menu,
   Table,
   Tooltip,
 } from '@marigold/components';
@@ -41,16 +40,16 @@ export default () => (
                 <Tooltip>View Ratings</Tooltip>
               </Tooltip.Trigger>
               <ActionMenu size="small">
-                <Menu.Item id="assign">
+                <ActionMenu.Item id="assign">
                   <UserCog /> Assign account manager
-                </Menu.Item>
-                <Menu.Item id="download">
+                </ActionMenu.Item>
+                <ActionMenu.Item id="download">
                   <CloudDownload />
                   Download Data
-                </Menu.Item>
-                <Menu.Item id="archive">
+                </ActionMenu.Item>
+                <ActionMenu.Item id="archive">
                   <Archive /> Archive
-                </Menu.Item>
+                </ActionMenu.Item>
               </ActionMenu>
             </Inline>
           </Table.Cell>
