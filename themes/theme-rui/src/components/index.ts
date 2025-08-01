@@ -46,3 +46,4 @@ export { Toast } from './Toast.styles';
 export { Tooltip } from './Tooltip.styles';
 export { Underlay } from './Underlay.styles';
 export { XLoader } from './XLoader.styles';
+export { Breadcrumbs } from './Breadcrumbs.styles';
