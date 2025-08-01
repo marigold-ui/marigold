@@ -99,9 +99,9 @@ const meta = {
     },
   },
   args: {
-    placement: 'bottom',
+    placement: undefined,
     variant: undefined,
-    size: 'default',
+    size: undefined,
   },
 } satisfies Meta<typeof Menu>;
 
