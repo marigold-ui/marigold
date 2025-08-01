@@ -117,7 +117,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Pagination?: Record<
-      'navigationButton' | 'pageButton' | 'icon',
+      'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
     >;
     ProgressCycle?: ComponentStyleFunction<string, string>;
