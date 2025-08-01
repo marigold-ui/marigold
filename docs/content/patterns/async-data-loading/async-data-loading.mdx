@@ -1,0 +1,139 @@
+---
+title: Async Data Loading
+caption: Learn how to implement async data loading patterns in interactive components.
+badge: new
+---
+
+Async data loading patterns provide clear guidelines for implementing components that fetch data from remote sources. These patterns ensure consistent user experience across `<ComboBox>`, `<Autocomplete>`, and other interactive components that work with dynamic data.
+
+Async data loading should be:
+
+- **Predictable**: Components should follow consistent patterns for fetching, loading, and error states.
+- **Responsive**: User input should be properly debounced to minimize unnecessary network requests.
+- **Accessible**: Empty state should be announced to screen readers.
+
+These patterns apply to components that:
+
+- Accept a list of options that may not be available at initial render
+- Respond to user input (e.g., search terms or filtering)
+- Require integration with APIs or remote sources (e.g., typeahead, suggestion services)
+
+## State Management
+
+When implementing async data loading, manage these essential states:
+
+- **Loading State**: Display an indicator while data is being fetched to provide visual feedback.
+- **Error State**: Handle and display fetch errors gracefully with actionable error messages.
+- **Empty State**: Provide meaningful messaging when no options match the user's query.
+- **Value State**: Manage selection consistently with fetched data, ensuring selected values persist during refetches.
+
+In the next examples we will discover how to handle the previous states
+
+## useAsyncList (Recommended)
+
+For most async data loading scenarios, we recommend using `useAsyncList` from `@react-stately/data`. This hook is specifically designed for handling async data in lists and provides built-in loading states, error handling, and filtering capabilities.
+
+<ComponentDemo file="./use-async-list.demo.tsx" />
+
+`useAsyncList` handles the complexity of async data management automatically and integrates seamlessly with Marigold components. For more detailed examples and advanced usage, see our [useAsyncList documentation](/components/hooks-and-utils/useAsyncListData).
+
+## Basic Async Loading
+
+### Simple Data Loading on Mount
+
+This pattern loads data when the component mounts using `useEffect`. It demonstrates the fundamental loading, error, and data states that every async component should handle.
+
+<ComponentDemo file="./basic-async-loading.demo.tsx" />
+
+### The Problem: Too Many API Requests
+
+When implementing search functionality, a common mistake is making an API request for every character the user types. This creates several problems:
+
+- **Performance Issues**: Excessive network requests can slow down the application
+- **Server Load**: Bombarding your API with requests can overwhelm your backend
+- **Poor User Experience**: Rapid state changes can make the interface feel jittery
+- **Wasted Resources**: Many intermediate requests become irrelevant as the user continues typing
+
+<Image
+  src="/excessive-requests.gif"
+  alt="Network requests being sent for each keystroke while typing"
+  width={800}
+  height={400}
+  className="mx-auto block"
+/>
+
+To solve this problem, we can implement debouncing. Debouncing is a technique that delays the execution of a function until after a specified period of inactivity. In our case, we wait for the user to stop typing before making the API request.
+
+<ComponentDemo file="./debounced-search.demo.tsx" />
+
+This approach solves the excessive requests problem by:
+
+- **Waiting for pauses**: Only sends requests after the user stops typing for a specified delay (typically 300-500ms)
+- **Canceling previous requests**: Uses AbortController to cancel outdated requests
+- **Reducing server load**: Dramatically fewer API calls mean better performance
+- **Improving UX**: Smoother interactions without constant loading states
+
+<Image
+  src="/debounced-requests.gif"
+  alt="Network requests being sent in a debounced way"
+  width={800}
+  height={400}
+  className="mx-auto block"
+/>
+
+## React Query for Async Data Loading
+
+React Query provides automatic caching, request deduplication, and built-in loading states for async data. In this example, we combine it with `useDeferredValue` - a React hook that defers updating a value until more urgent updates have finished. This helps prioritize user interactions over background updates.
+
+Learn more about useDeferredValue in the [React documentation](https://react.dev/reference/react/useDeferredValue).
+
+<ComponentDemo file="./react-query-basic.demo.tsx" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Combobox',
+      href: '../../components/form/combobox',
+      caption: 'Learn more about Combobox component.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Autocomplete',
+      href: '../../components/form/autocomplete',
+      caption: 'Learn more about Autocomplete component.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>

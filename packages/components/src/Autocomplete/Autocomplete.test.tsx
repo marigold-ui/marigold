@@ -171,3 +171,17 @@ test('supporst showing a help text', () => {
   const description = screen.queryAllByText('This is a description')[0];
   expect(description).toBeInTheDocument();
 });
+
+test('supports loading state', () => {
+  render(<Basic label="Label" loading description="This is a description" />);
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('hides loading state when loading is false', () => {
+  render(
+    <Basic label="Label" loading={false} description="This is a description" />
+  );
+
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+});
