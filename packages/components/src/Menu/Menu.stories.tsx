@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { expect, spyOn, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
+import { Delete } from '@marigold/icons';
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
@@ -290,7 +291,9 @@ export const BasicActionMenu: Story = {
       <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
         <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
         <ActionMenu.Item id="settings">Settings</ActionMenu.Item>
-        <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
+        <ActionMenu.Item id="delete">
+          <Delete /> Delete
+        </ActionMenu.Item>
       </ActionMenu>
     );
   },

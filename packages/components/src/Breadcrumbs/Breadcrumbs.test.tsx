@@ -1,8 +1,11 @@
 import { composeStories } from '@storybook/react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import * as stories from './Breadcrumbs.stories';
+import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 const { Basic, Collapsed } = composeStories(stories);
+const user = userEvent.setup();
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -27,14 +30,14 @@ test('renders breadcrumb items correctly', () => {
   expect(breadcrumb2).toBeInTheDocument();
 });
 
-test('collapses breadcrumbs for too many items', () => {
+test('collapses breadcrumbs for too many items', async () => {
   render(<Collapsed />);
 
   const ellipsis = screen.getByText('...');
   const home = screen.getByText('Home');
   const breadcrumb3 = screen.getByText('Breadcrumb3');
 
-  fireEvent.click(ellipsis);
+  await user.click(ellipsis);
 
   expect(ellipsis).toBeInTheDocument();
   expect(home).toBeInTheDocument();
@@ -66,25 +69,39 @@ test('renders chevron separators', () => {
 test('collapses breadcrumbs with links for too many items', () => {
   render(<Collapsed />);
 
-  const ellipsis = screen.getByText('...');
-  const home = screen.getByText('Home');
-  const breadcrumb3 = screen.getByText('Breadcrumb3');
-  const linkItems = screen.getAllByRole('link');
+  // First
+  expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
+  // Last
+  expect(screen.getByRole('link', { name: 'Breadcrumb3' })).toBeInTheDocument();
 
-  fireEvent.click(ellipsis);
+  // Collapsed items
+  expect(screen.getByRole('button', { name: '...' })).toBeInTheDocument();
+  expect(
+    screen.queryByRole('link', { name: 'Breadcrumb1' })
+  ).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('link', { name: 'Breadcrumb2' })
+  ).not.toBeInTheDocument();
+});
 
-  expect(ellipsis).toBeInTheDocument();
-  expect(home).toBeInTheDocument();
-  expect(breadcrumb3).toBeInTheDocument();
+test('expand collapsed items', async () => {
+  render(<Collapsed />);
 
-  expect(linkItems.length).toBe(2);
+  const ellipsis = screen.getByRole('button', { name: '...' });
+  await user.click(ellipsis);
 
-  fireEvent.click(ellipsis);
+  expect(
+    screen.getByRole('menuitem', { name: 'Breadcrumb1' })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole('menuitem', { name: 'Breadcrumb2' })
+  ).toBeInTheDocument();
+});
 
-  ['Breadcrumb1', 'Breadcrumb2'].forEach(text => {
-    const breadcrumb = screen.getByText(text);
-    expect(breadcrumb).toBeInTheDocument();
-    const link = screen.getByRole('link', { name: text });
-    expect(link).toHaveAttribute('href');
-  });
+test('BreadcrumbsItem renders nothing', () => {
+  render(
+    <BreadcrumbsItem href="https://example.com">Test Item</BreadcrumbsItem>
+  );
+
+  expect(screen.queryByText('Test Item')).not.toBeInTheDocument();
 });

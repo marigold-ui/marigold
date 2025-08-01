@@ -78,7 +78,7 @@ const typography = {
   h6: (props: HTMLAttributes<HTMLHeadingElement>) => (
     <Headline level={6} {...props} />
   ),
-  a: (props: HTMLAttributes<HTMLAnchorElement>) => <Link {...props} />,
+  a: (props: any) => <Link {...props} />,
   blockquote: (props: HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote className="mt-6 border-l-2 pl-6 italic" {...props} />
   ),
