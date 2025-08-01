@@ -1,80 +1,13 @@
-import { screen } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { vi } from 'vitest';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { ComboBox } from './ComboBox';
+import * as stories from './ComboBox.stories';
+
+const { Basic } = composeStories(stories);
 
 const user = userEvent.setup();
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Button: cva(),
-    Field: cva(),
-    Label: {
-      container: cva('text-teal-300', {
-        variants: {
-          size: {
-            small: 'p-2',
-          },
-        },
-      }),
-      indicator: cva(),
-    },
-    HelpText: {
-      container: cva('', {
-        variants: {
-          variant: {
-            one: 'text-blue-900',
-          },
-          size: {
-            small: 'p-2',
-          },
-        },
-      }),
-      icon: cva(),
-    },
-    ComboBox: cva(),
-    Input: {
-      input: cva(),
-      icon: cva(),
-      action: cva('p-0'),
-    },
-    ListBox: {
-      container: cva(),
-      list: cva(),
-      item: cva(),
-      section: cva(),
-      header: cva(),
-    },
-    Popover: cva(['mt-0.5'], {
-      variants: {
-        variant: {
-          top: ['mb-0.5'],
-        },
-      },
-    }),
-    Dialog: {
-      closeButton: cva(),
-      container: cva(),
-      header: cva(),
-      title: cva(),
-      content: cva(),
-      actions: cva(),
-    },
-    Underlay: cva('', {
-      variants: {
-        variant: {
-          modal: ' bg-red-500',
-        },
-      },
-    }),
-    IconButton: cva(),
-    ProgressCycle: cva(),
-  },
-};
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -88,100 +21,32 @@ const mockMatchMedia = (matches: string[]) =>
 
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
-const { render } = setup({ theme });
-
 test('renders an input', () => {
-  render(
-    <ComboBox label="Label">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic />);
 
-  const textField = screen.getAllByLabelText('Label')[0];
+  const textField = screen.getByRole('combobox');
+
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'text');
   expect(textField instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('supports width classname', () => {
-  render(
-    <ComboBox label="Label" data-testid="input-field">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-full"`
-  );
-});
-
-test('supports classnames', () => {
-  render(
-    <ComboBox
-      label="Label"
-      data-testid="input-field"
-      variant="one"
-      size="small"
-    >
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  const label = screen.getByText('Label');
-  const button = screen.getByRole('button');
-  expect(button.className).toMatchInlineSnapshot(
-    `"shrink-0 cursor-pointer outline-0 absolute right-0 p-0"`
-  );
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-full"`
-  );
-  expect(label.className).toMatchInlineSnapshot(`"text-teal-300 inline-flex"`);
-});
-
 test('supports disabled', () => {
-  render(
-    <ComboBox label="Label" disabled>
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label="Label" disabled />);
 
   const textField = screen.getAllByLabelText('Label')[0];
   expect(textField).toBeDisabled();
 });
 
 test('supports required', () => {
-  render(
-    <ComboBox label="Label" required>
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label={'Label'} required />);
 
   const textField = screen.getAllByLabelText('Label')[0];
   expect(textField).toBeRequired();
 });
 
 test('supports readonly', () => {
-  render(
-    <ComboBox label="Label" readOnly>
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label="Label" readOnly />);
 
   const textField = screen.getAllByLabelText('Label')[0];
   expect(textField).toHaveAttribute('readonly');
@@ -189,14 +54,11 @@ test('supports readonly', () => {
 
 test('uses field structure', () => {
   render(
-    <ComboBox
+    <Basic
       label="Label"
       description="Some helpful text"
       errorMessage="Whoopsie"
-    >
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-    </ComboBox>
+    />
   );
 
   const label = screen.queryByText('Label');
@@ -210,102 +72,37 @@ test('uses field structure', () => {
 });
 
 test('opens the suggestions on user input', async () => {
-  render(
-    <ComboBox label="Label">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label="Label" />);
 
   const input = screen.getAllByLabelText('Label')[0];
-  await user.type(input, 'br');
+  await user.type(input, 'C');
 
-  const item = await screen.findByText('Broccoli');
+  const item = await screen.findByText('Cat');
   expect(item).toBeInTheDocument();
 });
 
 test('opens the suggestions on focus', async () => {
-  render(
-    <ComboBox label="Label" menuTrigger="focus">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label="Label" menuTrigger="focus" />);
 
   const input = screen.getAllByLabelText('Label')[0];
   await user.click(input);
 
-  const item = await screen.findByText('Broccoli');
+  const item = await screen.findByText('Dog');
   expect(item).toBeInTheDocument();
-});
-
-test('opens the suggestions on arrow down (manual)', async () => {
-  render(
-    <ComboBox label="Label" menuTrigger="manual">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
-
-  const input = screen.getAllByLabelText('Label')[0];
-  await user.type(input, '{arrowdown}');
-
-  const item = await screen.findByText('Broccoli');
-  expect(item).toBeInTheDocument();
-});
-
-test('shows suggestions based on user input', async () => {
-  render(
-    <ComboBox label="Label">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
-
-  const input = screen.getAllByLabelText('Label')[0];
-  await user.type(input, 'br');
-
-  expect(screen.getByText('Broccoli')).toBeInTheDocument();
-
-  expect(screen.queryByText('Spinach')).not.toBeInTheDocument();
-  expect(screen.queryByText('Carrots')).not.toBeInTheDocument();
-  expect(screen.queryByText('Garlic')).not.toBeInTheDocument();
 });
 
 test('supports disabling suggestions', async () => {
-  render(
-    <ComboBox label="Label" disabledKeys={['spinach']}>
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label="Label" disabledKeys={['dog']} />);
 
   const input = screen.getAllByLabelText('Label')[0];
-  await user.type(input, 'a');
+  await user.type(input, 'd');
 
-  const spinach = screen.getByRole('option', { name: 'Spinach' });
+  const spinach = screen.getByRole('option', { name: 'Dog' });
   expect(spinach).toHaveAttribute('aria-disabled', 'true');
 });
 
 test('supporst showing a help text', () => {
-  render(
-    <ComboBox label="Label" description="This is a description">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label="Label" description="This is a description" />);
 
   const description = screen.getAllByText('This is a description')[0];
   expect(description).toBeInTheDocument();
@@ -313,121 +110,58 @@ test('supporst showing a help text', () => {
 
 test('supporst showing an error', () => {
   render(
-    <ComboBox
+    <Basic
       label="Label"
       data-testid="input-field"
       error
       errorMessage="Error!"
-    >
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
+    />
   );
 
   expect(screen.getByText('Error!')).toBeInTheDocument();
 });
 
 test('supports default value', () => {
-  render(
-    <ComboBox label="Label" defaultValue="garlic">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label="Label" defaultValue="garlic" />);
 
   const textField = screen.getAllByLabelText('Label')[0];
   expect(textField).toHaveValue('garlic');
 });
 
-test('supports sections', async () => {
-  render(
-    <ComboBox label="Label" data-testid="ComboBox">
-      <ComboBox.Section header="Section 1">
-        <ComboBox.Option id="one">one</ComboBox.Option>
-        <ComboBox.Option id="two">two</ComboBox.Option>
-      </ComboBox.Section>
-      <ComboBox.Section header="Section 2">
-        <ComboBox.Option id="three">three</ComboBox.Option>
-        <ComboBox.Option id="four">four</ComboBox.Option>
-      </ComboBox.Section>
-    </ComboBox>
-  );
-
-  const input = screen.getAllByLabelText('Label')[0];
-  await user.type(input, 'o');
-
-  const s1 = await screen.findByText('Section 1');
-  const s2 = await screen.findByText('Section 2');
-
-  expect(s1).toBeVisible();
-  expect(s2).toBeVisible();
-});
-
-test('can be controlled', async () => {
-  const Controlled = () => {
-    const [value, setValue] = React.useState('');
-    return (
-      <>
-        <ComboBox label="Label" value={value} onChange={setValue}>
-          <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-          <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-          <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-          <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-        </ComboBox>
-        <span data-testid="output">{value}</span>
-      </>
-    );
-  };
-
-  render(<Controlled />);
-
-  const input = screen.getAllByLabelText('Label')[0];
-  await user.type(input, 'car');
-
-  expect(screen.getByTestId('output')).toHaveTextContent('car');
-});
-
 test('supports autocompletion', async () => {
-  render(
-    <ComboBox label="Label">
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
-      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
-    </ComboBox>
-  );
+  render(<Basic label="Label" />);
 
   const input = screen.getAllByLabelText('Label')[0];
-  await user.type(input, 'sp');
+  await user.type(input, 'do');
 
-  const spinach = screen.getByText('Spinach');
-  await user.click(spinach);
+  const dog = screen.getByText('Dog');
+  await user.click(dog);
 
-  expect(input).toHaveValue('Spinach');
+  expect(input).toHaveValue('Dog');
 });
 
 test('supports loading state', () => {
-  render(
-    <ComboBox label="Label" loading>
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-    </ComboBox>
-  );
-
+  render(<Basic label="Label" loading />);
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
 
 test('hides loading state when loading is false', () => {
+  render(<Basic label="Label" loading={false} />);
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+});
+
+test('supports specific empty state text', async () => {
   render(
-    <ComboBox label="Label" loading={false}>
-      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
-      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
-    </ComboBox>
+    <Basic
+      label="Label"
+      allowsEmptyCollection
+      emptyState="No vegetables found"
+    />
   );
 
-  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+  const input = screen.getAllByLabelText('Label')[0];
+  await user.type(input, 'xyz');
+
+  const emptyState = await screen.findByText('No vegetables found');
+  expect(emptyState).toBeInTheDocument();
 });

@@ -6,6 +6,7 @@ import type {
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { Center } from '../Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
@@ -15,6 +16,7 @@ import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { ProgressCycle } from '../ProgressCycle';
 import { ChevronDown } from '../icons';
+import { intlMessages } from '../intl/messages';
 
 // Props
 // ---------------
@@ -149,9 +151,9 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
     };
 
     const classNames = useClassNames({ component: 'ComboBox', variant, size });
-
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
     return (
-      <FieldBase as={ComboBox} ref={ref} {...props} allowsEmptyCollection>
+      <FieldBase as={ComboBox} ref={ref} {...props}>
         <Input
           action={
             <IconButton className={classNames}>
@@ -162,7 +164,9 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
         <Popover>
           <ListBox
             renderEmptyState={() =>
-              emptyState ?? <Center>no result found</Center>
+              emptyState ?? (
+                <Center>{stringFormatter.format('noResultsFound')}</Center>
+              )
             }
           >
             {children}
