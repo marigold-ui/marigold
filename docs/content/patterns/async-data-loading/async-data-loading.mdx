@@ -16,8 +16,6 @@ For most async data loading scenarios, we recommend using `useAsyncList` from `@
 
 ## Basic Async Loading
 
-### Simple Data Loading on Mount
-
 This pattern loads data when the component mounts using `useEffect`. It demonstrates the fundamental loading, error, and data states that every async component should handle.
 
 <ComponentDemo file="./basic-async-loading.demo.tsx" />
@@ -55,7 +53,7 @@ This approach solves the excessive requests problem by:
 
 React Query provides automatic caching, request deduplication, and built-in loading states for async data. In this example, we combine it with `useDeferredValue` - a React hook that defers updating a value until more urgent updates have finished. This helps prioritize user interactions over background updates.
 
-Learn more about useDeferredValue in the [React documentation](https://react.dev/reference/react/useDeferredValue).
+Learn more about useDeferredValue in [React documentation](https://react.dev/reference/react/useDeferredValue).
 
 <ComponentDemo file="./react-query-basic.demo.tsx" />
 
