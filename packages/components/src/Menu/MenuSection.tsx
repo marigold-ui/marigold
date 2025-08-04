@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { MenuSection } from 'react-aria-components';
+import { Header, MenuSection } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { Header } from '../Header';
 
 // Props
 // ---------------
