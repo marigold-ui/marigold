@@ -8,7 +8,6 @@ import {
   Aside,
   Button,
   Card,
-  Image,
   Inline,
   Scrollable,
   SectionMessage,
@@ -56,7 +55,7 @@ const Venues = () => {
         {data.map(v => (
           <Card key={v.id}>
             <Aside sideWidth="160px" space={8}>
-              <Image alt="" src={v.image} />
+              <img alt="" src={v.image} />
               <Stack
                 space={6}
                 id="venueDetails"

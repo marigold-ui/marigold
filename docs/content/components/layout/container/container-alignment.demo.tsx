@@ -1,13 +1,13 @@
-import { Aspect, Container, Headline, Image, Text } from '@marigold/components';
+import { Aspect, Container, Headline, Text } from '@marigold/components';
 
 export default () => (
   <Container space={4} contentLength="short" align="center" alignItems="center">
     <Headline level="3">Taking care of Marigolds</Headline>
     <Aspect maxWidth="250px" ratio="ultrawide">
-      <Image
+      <img
         src="/marigold-watering.webp"
         alt="Watering a marigold flower"
-        fit="cover"
+        className="object-cover"
       />
     </Aspect>
     <Text>

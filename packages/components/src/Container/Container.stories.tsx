@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Aspect } from '../Aspect';
-import { Image } from '../Image';
 import { Text } from '../Text';
 import { Container } from './Container';
 
@@ -62,10 +61,10 @@ export const Base: Story = {
         dispatched thousands of remote probes into the far reaches of space....
       </Text>
       <Aspect maxWidth="400px" ratio="ultrawide">
-        <Image
+        <img
           src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Grogu"
-          fit="cover"
+          className="object-cover"
         />
       </Aspect>
     </Container>

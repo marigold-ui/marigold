@@ -3,7 +3,6 @@ import {
   Breakout,
   Container,
   Headline,
-  Image,
   Text,
 } from '@marigold/components';
 
@@ -14,7 +13,7 @@ export default () => (
     </Headline>
     <Breakout>
       <Aspect ratio="ultrawide">
-        <Image src="/venues/comedy-show.webp" alt="" />
+        <img src="/venues/comedy-show.webp" alt="" />
       </Aspect>
     </Breakout>
     <Text>
