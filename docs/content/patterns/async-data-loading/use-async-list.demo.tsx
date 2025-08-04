@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react';
 import { Center, ComboBox, useAsyncList } from '@marigold/components';
 
 export default function Example() {
+  const [showLoading, setShowLoading] = useState(false);
+
   const list = useAsyncList<{ name: string }>({
     async load({ signal, filterText }) {
       const res = await fetch(
@@ -15,13 +18,23 @@ export default function Example() {
     },
   });
 
+  // Only show loading after a short delay to avoid flicker for fast APIs
+  useEffect(() => {
+    if (list.isLoading) {
+      const timer = setTimeout(() => setShowLoading(true), 500);
+      return () => clearTimeout(timer);
+    } else {
+      setShowLoading(false);
+    }
+  }, [list.isLoading]);
+
   return (
     <ComboBox
       label="Search Star Wars Characters"
       items={list.items}
       value={list.filterText}
       onChange={list.setFilterText}
-      loading={list.isLoading}
+      loading={showLoading}
       allowsEmptyCollection
       emptyState={<Center>No results found</Center>}
     >

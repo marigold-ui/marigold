@@ -8,54 +8,54 @@ Async data loading patterns provide clear guidelines for implementing components
 
 ## useAsyncList (Recommended)
 
+**Best for**: Most scenarios with simple data fetching and built-in filtering.
+
 For most async data loading scenarios, we recommend using `useAsyncList` from `@react-stately/data`. This hook is specifically designed for handling async data in lists and provides built-in loading states, error handling, and filtering capabilities.
 
 <ComponentDemo file="./use-async-list.demo.tsx" />
 
 `useAsyncList` handles the complexity of async data management automatically and integrates seamlessly with Marigold components. For more detailed examples and advanced usage, see our [useAsyncList documentation](/components/hooks-and-utils/useAsyncListData).
 
-## Basic Async Loading
+## React Query for Advanced Caching
 
-This pattern loads data when the component mounts using `useEffect`. It demonstrates the fundamental loading, error, and data states that every async component should handle.
+**Best for**: Complex caching needs, request deduplication, and advanced data management. Automatically handles loading states for cached data.
 
-<ComponentDemo file="./basic-async-loading.demo.tsx" />
+React Query provides automatic caching, request deduplication, and built-in loading states for async data. Use when you need sophisticated caching strategies.
 
-When implementing search functionality, a common mistake is making an API request for every character the user types.
+**Best for**: Applications with complex data fetching needs, background updates, and advanced caching requirements.
 
-<Image
-  src="/excessive-requests.gif"
-  alt="Network requests being sent for each keystroke while typing"
-  width={800}
-  height={400}
-  className="mx-auto block"
-/>
+## Handling Empty States
 
-To solve this problem, we can implement debouncing. Debouncing is a technique that delays the execution of a function until after a specified period of inactivity. In our case, we wait for the user to stop typing before making the API request.
+Handle these common scenarios in your async components:
 
-<ComponentDemo file="./debounced-search.demo.tsx" />
+- **No search results**: Clear messaging with search suggestions
+- **Loading states**: Show loading indicators during data fetching
+- **Error states**: Provide retry options and helpful error messages
+- **Empty data**: Guide users on next steps when no data exists
 
-This approach solves the excessive requests problem by:
+Both `useAsyncList` and `ComboBox`/`Autocomplete` support `emptyState` props for custom empty state content.
 
-- **Waiting for pauses**: Only sends requests after the user stops typing for a specified delay (typically 300-500ms)
-- **Canceling previous requests**: Uses AbortController to cancel outdated requests
-- **Reducing server load**: Dramatically fewer API calls mean better performance
-- **Improving UX**: Smoother interactions without constant loading states
+## Prefetching Data
 
-<Image
-  src="/debounced-requests.gif"
-  alt="Network requests being sent in a debounced way"
-  width={800}
-  height={400}
-  className="mx-auto block"
-/>
+Use prefetching to improve perceived performance by loading data before users explicitly request it:
 
-## React Query for Async Data Loading
+**When to prefetch:**
 
-React Query provides automatic caching, request deduplication, and built-in loading states for async data. In this example, we combine it with `useDeferredValue` - a React hook that defers updating a value until more urgent updates have finished. This helps prioritize user interactions over background updates.
+- **On hover**: Load item details when users hover over list items
+- **Pagination**: Preload next/previous pages while users view current data
+- **Common user paths**: Data users are likely to need based on usage patterns
+- **During idle time**: Fetch data when the browser isn't busy with user interactions
 
-Learn more about useDeferredValue in [React documentation](https://react.dev/reference/react/useDeferredValue).
+**When NOT to prefetch:**
 
-<ComponentDemo file="./react-query-basic.demo.tsx" />
+- On slow/metered connections (respect user's data usage)
+- For rarely accessed data (low probability of use)
+- During high activity periods (prioritize current user actions)
+
+**Implementation:**
+
+- **With useAsyncList**: Use the `load` function to prefetch data based on user interactions
+- **With React Query**: Use `queryClient.prefetchQuery()` for anticipated data needs
 
 ## Related
 
