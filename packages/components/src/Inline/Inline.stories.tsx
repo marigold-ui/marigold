@@ -42,16 +42,6 @@ const meta = {
       options: ['top', 'center', 'bottom'],
       description: 'Set the Vertical Alignment',
     },
-    alignToInputBaseline: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'align button to the bottom of the input field',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
   },
 } satisfies Meta<typeof Inline>;
 
@@ -87,9 +77,8 @@ export const Basic: Story = {
 export const InputButtonAlignment: Story = {
   tags: ['component-test'],
   args: {
-    alignY: 'center',
+    alignY: 'bottom',
     space: 6,
-    alignToInputBaseline: true,
   },
   render: args => {
     const [description, setDescription] = useState('');

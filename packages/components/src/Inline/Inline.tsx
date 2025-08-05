@@ -18,12 +18,6 @@ export interface InlineProps extends GapSpaceProp, AriaRegionProps {
    * Vertical alignment of the items inside the element.
    */
   alignY?: keyof typeof alignment.horizontal.alignmentY;
-
-  /**
-   * Aligns the button with the bottom of the input field.
-   * Useful when the input has a description or error message.
-   */
-  alignToInputBaseline?: boolean;
 }
 
 // Component
@@ -32,7 +26,6 @@ export const Inline = ({
   space = 0,
   alignX,
   alignY,
-  alignToInputBaseline,
   children,
   ...props
 }: InlineProps) => (
@@ -43,8 +36,7 @@ export const Inline = ({
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
       alignY && alignment?.horizontal?.alignmentY[alignY],
-      alignToInputBaseline &&
-        'items-end [&:has([slot=description])]:items-end [&:has([slot=description])_button]:mb-6 [&:has([slot=errorMessage])]:mb-6'
+      '[&:has([slot=description])]:items-start [&:has([slot=description])_button]:mt-[33px] [&:has([slot=errorMessage])]:mt-[33px]'
     )}
   >
     {children}
