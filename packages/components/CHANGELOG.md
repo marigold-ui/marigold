@@ -1,11 +1,37 @@
 # @marigold/components
 
+## 14.1.0
+
+### Minor Changes
+
+- cc493fc: feat([DST-737]): Add Toast component
+
+  Added ToastProvider Component with corresponding documentation and stories. It's a small Temporary Notification on the edge of the screen, that should be used for messages that don’t need immediate interaction.
+
+- 2163518: feat([DST-899]):Breadcrumb Component
+
+  We added a new Breadcrumbs component to improve navigation and accessibility in the UI.
+  It supports collapsing long breadcrumb lists, custom separators (chevron or slash), and integrates with react-aria-components for full accessibility and keyboard navigation.
+  The component is flexible, supports links and custom content, and includes comprehensive documentation and usage examples.
+
+### Patch Changes
+
+- 930e633: chore: Update `react-aria` (Release 22/07/2025)
+- 8f550ec: refa([DST-976]): Remove unused class names from `ContextualHelp`
+- 69e7b61: refa([DST-978]): Add item and section as child component of `ActionMenu`
+- ea0f758: fix(DST-968): Fix `<Tag>` styles and add multiselect tag filter to filter pattern example
+- 8e178b7: fix([DST-942]): Fix `<Drawer>` on mobile and refactor `<OverlayContainerProvider>`
+- 37f40ba: feat([DST-977]): Style icons inside `<Menu.Item>`
+- Updated dependencies [cc493fc]
+- Updated dependencies [930e633]
+- Updated dependencies [2163518]
+  - @marigold/system@14.1.0
+
 ## 14.0.0
 
 ### Major Changes
 
 - 6d61be9: refa([DST-904]): **Breaking Changes**: Deprecate `className` prop from `<Button>` component.
-
   - Styling should now use `variant` or `size` props instead.
   - Added `SelectListAction` to `SelectList` for handing actions position.
 
@@ -33,7 +59,6 @@
   **Breaking Change**: Some propertys has been removed, including `className` and HtMLElement props.
 
 - d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
-
   - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
   - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
   - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
@@ -228,7 +253,6 @@
 - 619b4b2: fix([DST-702]): add space for multiple selection mode in `<SelectList>`
 
   There were no space between `<Checkbox>` and `children` when using `<SelectList>` in multiple selection mode.
-
   - @marigold/system@11.2.1
 
 ## 11.2.0
@@ -274,7 +298,6 @@
 - 8e58923: fix([DSTSUP-104]): mobile behaviour for `<Popover>`
 
   `<Underlay>` stayed remaining open on small screens while `<Popover>` was correctly closing, fixed this and added styles for `<Popover>` back.
-
   - @marigold/system@11.0.2
 
 ## 11.0.1
@@ -300,7 +323,6 @@
   **BREAKING CHANGE:** This PR includes breaking changes, because we removed and changed a lot ot the props API of `<Container>` and `<Breakout>`. The `<Container>` now only works with `<Text>` and `<Headline>` component. This allows for a smoother developer experience and prevents suprises.
 
   Make the `<Container>` and `<Breakout>` component more usable for real world scenarios.
-
   - `<Container>` supporst `space` style prop
   - simplify `<Container>` usage by removing unnecessary props
   - simplify `<Breakout>` and make it composable with other layout components
@@ -320,14 +342,12 @@
 ### Patch Changes
 
 - bb2049f: bugfix[DSTSUP-100]: Bug in pagination component
-
   - display of results counter fixed
   - when page size changed the first page will now be selected
 
 - 7f0841d: fix(DSTSUP-102): Set dimensions of checkmark
 
   Fixes a bug in Safari where the checkmark was not displayed.
-
   - @marigold/system@10.2.1
 
 ## 10.2.0
@@ -368,7 +388,6 @@
   Added possibility to control the dismissable state in `<SectionMessage>`, you can now use `onClose` and `close` to control the closing of a section message.
 
 - d52e52f: docs([DST-624]): Revise `<Calendar>` page and change some properties
-
   - Revised the page according to our new template.
   - Rename `isDateUnavailable` to `dateUnavailable`.
   - Remove the props: `visibleDuration` and `pageBehavior`.
@@ -379,7 +398,6 @@
   Some controlled stories in Storybook were incorrect because the useState import from react was used, resulting in an error.
 
   The stories of the following component were affected:
-
   - Calendar
   - DateField
   - DatePicker
@@ -388,7 +406,6 @@
   - SearchField
 
 - 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
-
   - Refactored the `<XLoader>` component to be more accessible
   - Updated the `<XLoader>` documentation page
   - Adjusted styling to fit regular underlay styles when using "fullsize" mode
@@ -441,7 +458,6 @@
   The `<Slider>` component appears in a new guise. Functionalities and documentation have been significantly revised. So make sure to check out the Marigold documentation and storybook. It's worth it.
 
   Some key features are:
-
   - multithumb or range slider
   - visual indicator for selected track
   - use slider in forms
@@ -472,7 +488,6 @@
   Added disabled styles for `data-unavailable` in both b2b and core theme
 
 - caefbe4: refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
-
   - Added the possibility to use sections with `<Combobox>` and `<Autocomplete>`
   - Refactored the `<Section>` (from `<Listbox>`) to fit our API, no need for the extra `<Header>` anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
   - Renamed `<Item>` to `<Option>` in `<Combobox>` and `<Autocomplete>` to align with `<Select>`
@@ -485,7 +500,6 @@
     Use the newly added `header` prop instead. Additionally, to unify the APIs all choices of `<Select>`, `<Combobox>` and `<Autocomplete>` are now called `<Option>` instead of `<Item>`.
 
 - 2d9917f: **Breaking changes**
-
   - `Dialog.Headline` has been renamed to `Dialog.Title`. Please update your code accordingly.
   - `<Dialog.Content>` and `<Dialog.Actions>` have been introduced for better organization and flexibility.
   - The internal layout now uses grid areas, ensuring consistent ordering and layout of the dialog elements.
@@ -498,7 +512,6 @@
   Using `size` with a `<Dialog>` will allow the dialog to be at most sm/md/lg wide. Will use full width on smaller screens.
 
 - 6687af7: refa: remove footer from `<Dialog>` + allow styles
-
   - dialogs can only have action now
   - align buttons in `<Dialog.Actions>` correctly
 
@@ -540,7 +553,6 @@
 - bfd2843: chore: refa `<Text>` component. Based on the slot property it now takes the RAC text or not. Needed to prevent other components breaking.
 - 0e77996: docs([DST-572]): Adding a general form guideline in docs explaining different concepts such as when to use lable and help text
 - b8cd92a: feat: `CheckboxGroup` can now be used as a compound component
-
   - Refactored the `CheckboxGroup` to be a compound component and align it with other components: `<CheckboxGroup>` -> `<Checkbox.Group>`
   - Adjusted the Checkbox appearance demo a bit
 
@@ -1719,7 +1731,6 @@
 ### Major Changes
 
 - [#2463](https://github.com/marigold-ui/marigold/pull/2463) [`fcb15230`](https://github.com/marigold-ui/marigold/commit/fcb15230d4565eba65c7164ffaa042d59ad02e7a) Thanks [@sebald](https://github.com/sebald)! - refa: Improve behavior of `<Stack>` and remove option to render it as a list (use `<List>` instead)
-
   - `<Stack>` will no longer align items by default, since this will cause children to not take all the available space
   - `<Stack as="ul|ol">` will no longer work, we have a `<List>` comopnent for that
 
@@ -1960,7 +1971,6 @@
 * [#2054](https://github.com/marigold-ui/marigold/pull/2054) [`3c86c3b7`](https://github.com/marigold-ui/marigold/commit/3c86c3b7399a525c2743a1a42b806f862b050cd3) Thanks [@sebald](https://github.com/sebald)! - refa: Move &lt;Label&gt; and &lt;HelpText&gt; to components root
 
 - [#2069](https://github.com/marigold-ui/marigold/pull/2069) [`c35afcf2`](https://github.com/marigold-ui/marigold/commit/c35afcf21c10bb043041e56e91f954efc2083eff) Thanks [@sebald](https://github.com/sebald)! - refa: `<Tooltip>`
-
   - with arrow pointer yay!
   - allows to change placement
   - uses `useComponentStyles`
@@ -2364,13 +2374,11 @@
 - [#1132](https://github.com/marigold-ui/marigold/pull/1132) [`b6614f1f`](https://github.com/marigold-ui/marigold/commit/b6614f1f54165bc295709fa2e7f1c50892163fc3) Thanks [@sebald](https://github.com/sebald)! - feat(compoents): Make `<Text>` and `<Link>` polymorphic
 
   **`<Text>`**
-
   - the `as` prop supports arbitrary inputs
   - supporst ref
   - supports style props (text-align, color, cursor, user-select)
 
   **`<Link>`**
-
   - the `as` prop supports arbitrary inputs
   - does not support `ref`!
   - improved accessibility (react-aria)

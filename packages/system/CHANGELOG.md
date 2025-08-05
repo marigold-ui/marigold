@@ -1,5 +1,23 @@
 # @marigold/system
 
+## 14.1.0
+
+### Minor Changes
+
+- cc493fc: feat([DST-737]): Add Toast component
+
+  Added ToastProvider Component with corresponding documentation and stories. It's a small Temporary Notification on the edge of the screen, that should be used for messages that don’t need immediate interaction.
+
+- 2163518: feat([DST-899]):Breadcrumb Component
+
+  We added a new Breadcrumbs component to improve navigation and accessibility in the UI.
+  It supports collapsing long breadcrumb lists, custom separators (chevron or slash), and integrates with react-aria-components for full accessibility and keyboard navigation.
+  The component is flexible, supports links and custom content, and includes comprehensive documentation and usage examples.
+
+### Patch Changes
+
+- 930e633: chore: Update `react-aria` (Release 22/07/2025)
+
 ## 14.0.0
 
 ## 13.0.0
@@ -7,7 +25,6 @@
 ### Major Changes
 
 - d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
-
   - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
   - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
   - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
@@ -169,7 +186,6 @@
 ### Patch Changes
 
 - 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
-
   - Refactored the `<XLoader>` component to be more accessible
   - Updated the `<XLoader>` documentation page
   - Adjusted styling to fit regular underlay styles when using "fullsize" mode
@@ -183,7 +199,6 @@
   The `<Slider>` component appears in a new guise. Functionalities and documentation have been significantly revised. So make sure to check out the Marigold documentation and storybook. It's worth it.
 
   Some key features are:
-
   - multithumb or range slider
   - visual indicator for selected track
   - use slider in forms
@@ -193,7 +208,6 @@
 ### Major Changes
 
 - caefbe4: refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
-
   - Added the possibility to use sections with `<Combobox>` and `<Autocomplete>`
   - Refactored the `<Section>` (from `<Listbox>`) to fit our API, no need for the extra `<Header>` anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
   - Renamed `<Item>` to `<Option>` in `<Combobox>` and `<Autocomplete>` to align with `<Select>`
@@ -208,7 +222,6 @@
 ### Minor Changes
 
 - 6687af7: refa: remove footer from `<Dialog>` + allow styles
-
   - dialogs can only have action now
   - align buttons in `<Dialog.Actions>` correctly
 
