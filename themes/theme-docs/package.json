@@ -43,11 +43,11 @@
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "4.1.11",
-    "cssnano": "7.0.7",
+    "cssnano": "7.1.0",
     "postcss-cli": "11.0.1",
     "postcss-prefix-selector": "2.1.1",
     "tailwindcss": "4.1.11",
-    "tsup": "8.4.0"
+    "tsup": "8.5.0"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",

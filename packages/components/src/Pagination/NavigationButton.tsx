@@ -16,7 +16,7 @@ interface PaginationButtonProps {
 
 export const NavigationButton = (props: PaginationButtonProps) => {
   const ref = useRef<HTMLButtonElement>(null);
-  const classNames = useClassNames({
+  const { navigationButton } = useClassNames({
     component: 'Pagination',
   });
   let { buttonProps } = useButton(props, ref);
@@ -36,7 +36,7 @@ export const NavigationButton = (props: PaginationButtonProps) => {
       {...buttonProps}
       {...rest}
       disabled={isDisabled}
-      className={cn(classNames.navigationButton, controlLabel && 'w-24 px-2')}
+      className={cn(navigationButton, controlLabel && 'w-24 px-2')}
       data-selected={isSelected}
     >
       {position === 'left' && children}

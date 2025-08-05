@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Link,
-  Menu,
-  MenuItem,
-  MenuTrigger,
-} from 'react-aria-components';
+import { Button, Menu, MenuItem, MenuTrigger } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { Popover } from '../Overlay/Popover';
 import { BreadcrumbsItemProps } from './BreadcrumbsItem';
@@ -42,15 +36,10 @@ export const BreadcrumbEllipsis = ({
               <MenuItem
                 key={`${href}-${index}`}
                 className={menuItem}
-                onAction={() => {
-                  if (!disabled) {
-                    window.location.href = href;
-                  }
-                }}
+                href={href}
+                isDisabled={disabled}
               >
-                <Link href={href} isDisabled={disabled}>
-                  {itemChildren}
-                </Link>
+                {itemChildren}
               </MenuItem>
             );
           })}
