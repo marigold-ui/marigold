@@ -1,5 +1,20 @@
 # @marigold/theme-docs
 
+## 3.1.2
+
+### Patch Changes
+
+- Updated dependencies [cc493fc]
+- Updated dependencies [930e633]
+- Updated dependencies [8f550ec]
+- Updated dependencies [69e7b61]
+- Updated dependencies [ea0f758]
+- Updated dependencies [8e178b7]
+- Updated dependencies [2163518]
+- Updated dependencies [37f40ba]
+  - @marigold/components@14.1.0
+  - @marigold/system@14.1.0
+
 ## 3.1.1
 
 ### Patch Changes
@@ -319,7 +334,6 @@
 ### Minor Changes
 
 - 6687af7: refa: remove footer from `<Dialog>` + allow styles
-
   - dialogs can only have action now
   - align buttons in `<Dialog.Actions>` correctly
 

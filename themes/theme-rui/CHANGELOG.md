@@ -1,5 +1,35 @@
 # @marigold/theme-rui
 
+## 1.4.0
+
+### Minor Changes
+
+- cc493fc: feat([DST-737]): Add Toast component
+
+  Added ToastProvider Component with corresponding documentation and stories. It's a small Temporary Notification on the edge of the screen, that should be used for messages that don’t need immediate interaction.
+
+- 2163518: feat([DST-899]):Breadcrumb Component
+
+  We added a new Breadcrumbs component to improve navigation and accessibility in the UI.
+  It supports collapsing long breadcrumb lists, custom separators (chevron or slash), and integrates with react-aria-components for full accessibility and keyboard navigation.
+  The component is flexible, supports links and custom content, and includes comprehensive documentation and usage examples.
+
+### Patch Changes
+
+- ea0f758: fix(DST-968): Fix `<Tag>` styles and add multiselect tag filter to filter pattern example
+- 906c84f: refa([DST-969]): Remove obsolete "text" variant from `<Button>`
+- 37f40ba: feat([DST-977]): Style icons inside `<Menu.Item>`
+- Updated dependencies [cc493fc]
+- Updated dependencies [930e633]
+- Updated dependencies [8f550ec]
+- Updated dependencies [69e7b61]
+- Updated dependencies [ea0f758]
+- Updated dependencies [8e178b7]
+- Updated dependencies [2163518]
+- Updated dependencies [37f40ba]
+  - @marigold/components@14.1.0
+  - @marigold/system@14.1.0
+
 ## 1.3.0
 
 ### Minor Changes

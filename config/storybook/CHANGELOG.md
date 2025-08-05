@@ -1,5 +1,22 @@
 # @marigold/storybook-config
 
+## 3.0.2
+
+### Patch Changes
+
+- 930e633: chore: Update `react-aria` (Release 22/07/2025)
+- Updated dependencies [cc493fc]
+- Updated dependencies [930e633]
+- Updated dependencies [8f550ec]
+- Updated dependencies [69e7b61]
+- Updated dependencies [ea0f758]
+- Updated dependencies [8e178b7]
+- Updated dependencies [2163518]
+- Updated dependencies [906c84f]
+- Updated dependencies [37f40ba]
+  - @marigold/components@14.1.0
+  - @marigold/theme-rui@1.4.0
+
 ## 3.0.1
 
 ### Patch Changes
@@ -17,7 +34,6 @@
 ### Major Changes
 
 - d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
-
   - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
   - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
   - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
