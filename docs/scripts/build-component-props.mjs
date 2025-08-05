@@ -31,6 +31,7 @@ const parser = docgen.withCustomConfig('./tsconfig.json', {
     'RadioComponent',
     'SelectComponent',
     'SelectListComponent',
+    'BreadcrumbsComponent',
   ],
 });
 
@@ -157,12 +158,13 @@ const transformTypeValue = async val => {
     'number | number[]',
     'CellElement | CellElement[] | CellRenderer',
     '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
-    '"Accordion" | "Badge" | "Body" | "Button" | "Card" | "CloseButton" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | "Footer" | "Header" | "Headline" | ... 31 more ... | "XLoader"',
+    '"Accordion" | "Badge" | "Body" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | "Footer" | "Header" | ... 33 more ... | "XLoader"',
     'string | { [slot in keyof ThemeComponent<C>]?: string; }',
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
     'keyof NumberFormatOptionsSignDisplayRegistry',
     'T[]',
+    'ReactNode | ReactNode[]',
   ];
   let text = val.type.name;
 

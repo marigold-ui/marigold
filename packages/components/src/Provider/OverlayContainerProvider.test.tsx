@@ -1,19 +1,18 @@
 /**
  * @jest-environment jsdom
  */
-import { renderHook, screen, within } from '@testing-library/react';
-import React from 'react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import {
-  OverlayContainerProvider,
-  usePortalContainer,
-} from '@marigold/components';
+import { OverlayContainerProvider } from '@marigold/components';
 import { Theme, cva } from '@marigold/system';
 import { Select } from '../Select';
 import { MarigoldProvider } from './MarigoldProvider';
 
 // Setup
 // ---------------
+const user = userEvent.setup();
+
 const theme: Theme = {
   name: 'test',
   colors: {
@@ -57,14 +56,12 @@ window.matchMedia = mockMatchMedia([
   'screen and (min-width: 64em)',
 ]);
 
-test('renders portal container', async () => {
-  const containerRef = React.createRef<HTMLDivElement>();
-
-  const wrapper = () => (
+test('renders into a given container', async () => {
+  render(
     <>
-      <OverlayContainerProvider value={containerRef.current as any}>
+      <OverlayContainerProvider container="container">
         <MarigoldProvider theme={theme}>
-          <Select label="Label" defaultOpen>
+          <Select label="Label">
             <Select.Section header="section">
               <Select.Option id="one">one</Select.Option>
               <Select.Option id="two">two</Select.Option>
@@ -72,15 +69,17 @@ test('renders portal container', async () => {
           </Select>
         </MarigoldProvider>
       </OverlayContainerProvider>
-      <div id="testid"></div>
+      <div id="container" data-testid="portal"></div>
     </>
   );
 
-  const { result } = renderHook(() => usePortalContainer(), { wrapper });
+  await user.click(screen.getByRole('button'));
+
   const listbox = screen.getByRole('listbox');
   const item = within(listbox).getByText('two');
 
   expect(item).toBeInTheDocument();
 
-  expect(result.current).toBeNull();
+  const portal = screen.getByTestId('portal');
+  expect(portal?.contains(listbox)).toBe(true);
 });

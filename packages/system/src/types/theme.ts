@@ -34,6 +34,11 @@ export type Theme = {
     >;
     Badge?: ComponentStyleFunction<string, string>;
     Body?: ComponentStyleFunction<string, string>;
+    Breadcrumbs?: Record<
+      'container' | 'item' | 'link' | 'current',
+      ComponentStyleFunction<string, string>
+    >;
+
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
@@ -112,7 +117,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Pagination?: Record<
-      'navigationButton' | 'pageButton' | 'icon',
+      'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
     >;
     ProgressCycle?: ComponentStyleFunction<string, string>;
@@ -145,6 +150,21 @@ export type Theme = {
     TextArea?: ComponentStyleFunction<string, string>;
     Tooltip?: Record<
       'container' | 'arrow',
+      ComponentStyleFunction<string, string>
+    >;
+    Toast?: Record<
+      | 'toast'
+      | 'title'
+      | 'description'
+      | 'closeButton'
+      | 'icon'
+      | 'content'
+      | 'bottom-left'
+      | 'bottom-right'
+      | 'top-left'
+      | 'top-right'
+      | 'top'
+      | 'bottom',
       ComponentStyleFunction<string, string>
     >;
     Tabs?: Record<

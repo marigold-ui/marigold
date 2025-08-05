@@ -77,7 +77,9 @@ const InnerPagination = ({
     }
   };
 
-  const classNames = useClassNames({ component: 'Pagination' });
+  const { icon, container } = useClassNames({
+    component: 'Pagination',
+  });
 
   // handeling arrow keys and enter key
   const handleKeyDown =
@@ -104,10 +106,10 @@ const InnerPagination = ({
         position="left"
         onKeyDown={handleKeyDown(() => handlePageChange(currentPage - 1))}
       >
-        <ChevronLeft className={classNames.icon} />
+        <ChevronLeft className={icon} />
       </NavigationButton>
 
-      <div className="flex items-center space-x-2">
+      <div className={container}>
         {totalPages > 0 ? (
           pageRange.map((pageNumber, index) =>
             pageNumber === 'ellipsis' ? (
@@ -135,7 +137,7 @@ const InnerPagination = ({
         position="right"
         onKeyDown={handleKeyDown(() => handlePageChange(currentPage + 1))}
       >
-        <ChevronRight className={classNames.icon} />
+        <ChevronRight className={icon} />
       </NavigationButton>
     </>
   );
@@ -151,10 +153,11 @@ const _Pagination = ({
   const [currentPage, setCurrentPage] = useState(page ?? defaultPage);
   const totalPages = Math.ceil(totalItems / pageSize);
   const pageRange = usePageRange({ currentPage, totalPages });
+  const { container } = useClassNames({ component: 'Pagination' });
 
   return (
     <nav
-      className="flex items-center justify-center space-x-2"
+      className={container}
       aria-label={`Page ${currentPage} of ${totalPages}`}
     >
       <FocusScope restoreFocus>

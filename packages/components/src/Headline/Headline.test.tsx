@@ -110,11 +110,11 @@ test('get theme color', () => {
 
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
-<h1
-  class="m-0 font-black text-[2rem] max-w-(--maxHeadlineWidth) text-left"
-  data-testid="headline"
-/>
-`);
+    <h1
+      class="m-0 font-black text-[2rem] max-w-(--maxHeadlineWidth) text-left"
+      data-testid="headline"
+    />
+  `);
 });
 
 test('support string as level', () => {

@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Checkbox: ThemeComponent<'Checkbox'> = {
   checkbox: cva([
     'grid size-4 shrink-0 place-content-center rounded',
-    'border border-input shadow-sm shadow-black/5',
+    'border border-input shadow-xs',
     'group-focus-visible/checkbox:util-focus-ring outline-none',
     'group-disabled/checkbox:group-selected/checkbox:bg-disabled group-disabled/checkbox:border-disabled! group-disabled/checkbox:text-disabled-foreground group-disabled/checkbox:cursor-not-allowed',
     'group-selected/checkbox:border-brand group-selected/checkbox:bg-brand group-selected/checkbox:text-brand-foreground',

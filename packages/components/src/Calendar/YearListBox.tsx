@@ -44,9 +44,9 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
     }
   }, [state.focusedDate]);
 
-  let onChange = (key: Key) => {
-    let index = Number(key);
-    let date = years[index].value;
+  const onChange = (key: Key) => {
+    const index = Number(key);
+    const date = years[index].value;
     state.setFocusedDate(date);
   };
 

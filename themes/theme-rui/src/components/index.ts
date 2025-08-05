@@ -42,6 +42,8 @@ export { Tabs } from './Tabs.styles';
 export { Tag } from './Tag.styles';
 export { TextArea } from './TextArea.styles';
 export { Text } from './Text.styles';
+export { Toast } from './Toast.styles';
 export { Tooltip } from './Tooltip.styles';
 export { Underlay } from './Underlay.styles';
 export { XLoader } from './XLoader.styles';
+export { Breadcrumbs } from './Breadcrumbs.styles';
