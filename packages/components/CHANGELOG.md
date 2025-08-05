@@ -1,5 +1,15 @@
 # @marigold/components
 
+## 14.1.1
+
+### Patch Changes
+
+- 424e2f4: feat([DST-998]): prevent page bounce when `<Scrollable>` is used inside a page.
+- 81f1c9d: fix broken release
+- Updated dependencies [81f1c9d]
+  - @marigold/system@14.1.1
+  - @marigold/types@1.3.2
+
 ## 14.1.0
 
 ### Minor Changes

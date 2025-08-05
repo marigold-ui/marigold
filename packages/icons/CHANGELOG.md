@@ -1,5 +1,13 @@
 # @marigold/icons
 
+## 1.3.17
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+- Updated dependencies [81f1c9d]
+  - @marigold/system@14.1.1
+
 ## 1.3.16
 
 ### Patch Changes

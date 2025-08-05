@@ -1,5 +1,19 @@
 # @marigold/docs
 
+## 14.1.1
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+- Updated dependencies [424e2f4]
+- Updated dependencies [81f1c9d]
+  - @marigold/components@14.1.1
+  - @marigold/eslint-config@1.0.2
+  - @marigold/icons@1.3.17
+  - @marigold/system@14.1.1
+  - @marigold/theme-docs@3.1.3
+  - @marigold/theme-rui@1.4.1
+
 ## 14.1.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @marigold/theme-docs
 
+## 3.1.3
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+- Updated dependencies [424e2f4]
+- Updated dependencies [81f1c9d]
+  - @marigold/components@14.1.1
+  - @marigold/system@14.1.1
+  - @marigold/theme-plugins@1.0.2
+
 ## 3.1.2
 
 ### Patch Changes

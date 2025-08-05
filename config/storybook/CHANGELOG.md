@@ -1,5 +1,15 @@
 # @marigold/storybook-config
 
+## 3.0.3
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+- Updated dependencies [424e2f4]
+- Updated dependencies [81f1c9d]
+  - @marigold/components@14.1.1
+  - @marigold/theme-rui@1.4.1
+
 ## 3.0.2
 
 ### Patch Changes
