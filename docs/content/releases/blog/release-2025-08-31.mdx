@@ -3,6 +3,7 @@ title: Marigold v15.0.0
 date: 2025-08-31
 type: Blog
 changed:
+  - components/collection/table
   - components/navigation/breadcrumbs
   - components/overlay/tooltip
 ---
@@ -72,9 +73,44 @@ const { addToast } = useToast();
 </Button>
 ```
 
-## Documentation:
+### Menu
 
-- release phases
-- updated row actions in table
+Add item and section as child component of `ActionMenu`
 
-## Bug fixes:
+You can now easily access `ActionMenu.Item` and `ActionMenu.Section` directly, without needing to use the `Menu` component when working with `ActionMenu` alone. Learn more in the [Menu documentation](/components/overlay/menu#actionmenu).
+
+**Before 15.0.0:**
+
+```tsx
+<ActionMenu>
+  <Menu.Section title="Section 1">
+    <Menu.Item>Item 1</Menu.Item>
+    <Menu.Item>Item 2</Menu.Item>
+  </Menu.Section>
+</ActionMenu>
+```
+
+**With 15.0.0:**
+
+```tsx
+<ActionMenu>
+  <ActionMenu.Section title="Section 1">
+    <ActionMenu.Item>Item 1</ActionMenu.Item>
+    <ActionMenu.Item>Item 2</ActionMenu.Item>
+  </ActionMenu.Section>
+</ActionMenu>
+```
+
+## Design
+
+- Icons inside `<Menu.Item>` and `<ActionMenu.Item>` are now styled consistently with the rest of the menu content. This ensures better alignment and visual clarity for menus that include icons alongside text, making your menus look more polished out of the box.
+- Prevent page bounce when `<Scrollable>` is used inside a page.
+
+## Documentation
+
+- The release process for components is now fully documented. Learn more in the [Release Phases guide](/getting-started/release-phases).
+- The row actions guidelines for tables have been updated and improved. See details in the [Table documentation](/components/collection/table#row-actions).
+
+## Bug fixes
+
+- Fix `<Drawer>` on small screens
