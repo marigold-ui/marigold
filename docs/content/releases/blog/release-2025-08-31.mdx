@@ -7,32 +7,43 @@ changed:
   - components/overlay/tooltip
 ---
 
-The latest Marigold release introduces refined APIs, improved documentation, and a key styling update—aimed at boosting consistency, usability, and developer experience.
+While many are taking a summer break, Marigold never rests! v15.0.0 arrives with hot new features and improvements to keep your projects blooming all season long. Check out what’s fresh below! 🍉
 
 ## Breaking Changes
 
-- removed header, body, footer components. this components were planned to be used as reusable parts in a components like `<Dialog>` and `<Card>`. but we had better dev experience with creating dedicated compound component, like `<Dialog.Content>` etc. this makes available sub components more discoverable and easier to style different base on their usage.
-- removed image, didn't do a lot can do the same using tailwind directly
+### `<Header>`, `<Body>`, and `<Footer>` removed
 
-  | Prop type    | Prop value    | Tailwind class        |
-  | ------------ | ------------- | --------------------- |
-  | **fit**      | `contain`     | `object-contain`      |
-  |              | `cover`       | `object-cover`        |
-  |              | `fill`        | `object-fill`         |
-  |              | `none`        | `unset`               |
-  |              | `scaleDown`   | `object-scale-down`   |
-  | **position** | `none`        | — (no class)          |
-  |              | `bottom`      | `object-bottom`       |
-  |              | `center`      | `object-center`       |
-  |              | `left`        | `object-left`         |
-  |              | `leftBottom`  | `object-left-bottom`  |
-  |              | `leftTop`     | `object-left-top`     |
-  |              | `right`       | `object-right`        |
-  |              | `rightBottom` | `object-right-bottom` |
-  |              | `rightTop`    | `object-right-top`    |
-  |              | `top`         | `object-top`          |
+The `<Header>`, `<Body>`, and `<Footer>` components have been removed. These were originally intended as reusable building blocks for components like `<Dialog>` and `<Card>`, but we found that dedicated compound components (such as `<Dialog.Content>`) offer a better developer experience. Subcomponents are more discoverable and easier to style based on their specific usage.
+
+### `<Image>` component removed
+
+The `<Image>` component has been removed. It didn’t provide significant benefits beyond offering shortcuts for Tailwind classes, which can easily be applied directly to native `<img>` elements as needed.
+
+| Prop type    | Prop value    | Tailwind class        |
+| ------------ | ------------- | --------------------- |
+| **fit**      | `contain`     | `object-contain`      |
+|              | `cover`       | `object-cover`        |
+|              | `fill`        | `object-fill`         |
+|              | `none`        | `unset`               |
+|              | `scaleDown`   | `object-scale-down`   |
+| **position** | `none`        | — (no class)          |
+|              | `bottom`      | `object-bottom`       |
+|              | `center`      | `object-center`       |
+|              | `left`        | `object-left`         |
+|              | `leftBottom`  | `object-left-bottom`  |
+|              | `leftTop`     | `object-left-top`     |
+|              | `right`       | `object-right`        |
+|              | `rightBottom` | `object-right-bottom` |
+|              | `rightTop`    | `object-right-top`    |
+|              | `top`         | `object-top`          |
 
 ## Components
+
+- new way to release components, read more about our release process here
+
+### Breadcrumbs (beta)
+
+### Toast (beta)
 
 ## Documentation:
 
