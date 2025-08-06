@@ -3,7 +3,6 @@ import {
   Breakout,
   Container,
   Headline,
-  Image,
   Inline,
   Text,
 } from '@marigold/components';
@@ -14,13 +13,13 @@ export default () => (
     <Breakout>
       <Inline space={4} alignY="center" alignX="center">
         <Aspect maxWidth="200px">
-          <Image src="/venues/petal-punchlines.webp" alt="" />
+          <img src="/venues/petal-punchlines.webp" alt="" />
         </Aspect>
         <Aspect maxWidth="200px">
-          <Image src="/venues/chuckles-and-chill.webp" alt="" />
+          <img src="/venues/chuckles-and-chill.webp" alt="" />
         </Aspect>
         <Aspect maxWidth="200px">
-          <Image src="/venues/botanical-banter.webp" alt="" />
+          <img src="/venues/botanical-banter.webp" alt="" />
         </Aspect>
       </Inline>
     </Breakout>
