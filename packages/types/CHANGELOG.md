@@ -1,5 +1,11 @@
 # @marigold/types
 
+## 1.3.2
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+
 ## 1.3.1
 
 ### Patch Changes
@@ -149,13 +155,11 @@
 * [#1132](https://github.com/marigold-ui/marigold/pull/1132) [`b6614f1f`](https://github.com/marigold-ui/marigold/commit/b6614f1f54165bc295709fa2e7f1c50892163fc3) Thanks [@sebald](https://github.com/sebald)! - feat(compoents): Make `<Text>` and `<Link>` polymorphic
 
   **`<Text>`**
-
   - the `as` prop supports arbitrary inputs
   - supporst ref
   - supports style props (text-align, color, cursor, user-select)
 
   **`<Link>`**
-
   - the `as` prop supports arbitrary inputs
   - does not support `ref`!
   - improved accessibility (react-aria)

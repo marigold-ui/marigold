@@ -1,5 +1,11 @@
 # @marigold/prettier-config
 
+## 0.3.2
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+
 ## 0.3.1
 
 ### Patch Changes
