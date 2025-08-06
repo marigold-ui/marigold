@@ -1,11 +1,4 @@
-import {
-  Body,
-  Card,
-  Footer,
-  Header,
-  Headline,
-  Text,
-} from '@marigold/components';
+import { Body, Card, Header, Headline, Text } from '@marigold/components';
 
 export default () => (
   <Card>
@@ -15,8 +8,8 @@ export default () => (
     <Body>
       <Text>In this body fits really great content.</Text>
     </Body>
-    <Footer>
+    <footer>
       <Text>And awesome footer!</Text>
-    </Footer>
+    </footer>
   </Card>
 );
