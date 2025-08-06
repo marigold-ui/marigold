@@ -1,0 +1,41 @@
+---
+title: Marigold v15.0.0
+date: 2025-08-31
+type: Blog
+changed:
+  - components/navigation/breadcrumbs
+  - components/overlay/tooltip
+---
+
+The latest Marigold release introduces refined APIs, improved documentation, and a key styling update—aimed at boosting consistency, usability, and developer experience.
+
+## Breaking Changes
+
+- removed header, body, footer components. this components were planned to be used as reusable parts in a components like `<Dialog>` and `<Card>`. but we had better dev experience with creating dedicated compound component, like `<Dialog.Content>` etc. this makes available sub components more discoverable and easier to style different base on their usage.
+- removed image, didn't do a lot can do the same using tailwind directly
+
+  | Prop type    | Prop value    | Tailwind class        |
+  | ------------ | ------------- | --------------------- |
+  | **fit**      | `contain`     | `object-contain`      |
+  |              | `cover`       | `object-cover`        |
+  |              | `fill`        | `object-fill`         |
+  |              | `none`        | `unset`               |
+  |              | `scaleDown`   | `object-scale-down`   |
+  | **position** | `none`        | — (no class)          |
+  |              | `bottom`      | `object-bottom`       |
+  |              | `center`      | `object-center`       |
+  |              | `left`        | `object-left`         |
+  |              | `leftBottom`  | `object-left-bottom`  |
+  |              | `leftTop`     | `object-left-top`     |
+  |              | `right`       | `object-right`        |
+  |              | `rightBottom` | `object-right-bottom` |
+  |              | `rightTop`    | `object-right-top`    |
+  |              | `top`         | `object-top`          |
+
+## Components
+
+## Documentation:
+
+- updated row actions in table
+
+## Bug fixes:
