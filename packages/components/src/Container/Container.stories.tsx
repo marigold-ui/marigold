@@ -64,7 +64,7 @@ export const Base: Story = {
         <img
           src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Grogu"
-          className="object-cover"
+          className="size-full object-cover"
         />
       </Aspect>
     </Container>
