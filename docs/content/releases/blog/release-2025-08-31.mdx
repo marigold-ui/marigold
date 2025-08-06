@@ -35,14 +35,46 @@ The `<Image>` component has been removed. It didn’t provide significant benefi
 
 ## Components
 
-- new way to release components, read more about our release process here
+Components now follow a clear release process with three phases: **Alpha** for early feedback, **Beta** for broader testing, and **Stable** for production-ready confidence. This approach helps teams understand the maturity of each component and when it’s best to use them. Read more about it [here](/getting-started/release-phases).
 
 ### Breadcrumbs (beta)
 
+The `<Breadcrumbs>` component provides users with a clear path of navigation, helping them understand their current location and easily move back to previous sections. It’s ideal for sites and apps with hierarchical structures.
+
+Learn more in the [Breadcrumbs documentation](/components/navigation/breadcrumbs).
+
+**Example:**
+
+```tsx
+<Breadcrumbs>
+  <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+  <Breadcrumbs.Item href="/products">Products</Breadcrumbs.Item>
+  <Breadcrumbs.Item href="/products/123">Product Details</Breadcrumbs.Item>
+</Breadcrumbs>
+```
+
 ### Toast (beta)
+
+The `<Toast>` component lets you display brief, auto-dismissing notifications to inform users about important events or actions. Toasts appear temporarily and do not interrupt the user’s workflow, making them ideal for confirmations, warnings, or status updates.
+
+Learn more in the [Toast documentation](/components/overlay/toast).
+
+**Example:**
+
+```tsx
+const { addToast } = useToast();
+
+<ToastProvider position="bottom-right" />
+<Button
+  onPress={() => addToast({ title: 'Simple Toast', variant: 'success' })}
+>
+  Show Toast
+</Button>
+```
 
 ## Documentation:
 
+- release phases
 - updated row actions in table
 
 ## Bug fixes:
