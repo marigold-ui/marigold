@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { Body } from '../Body';
 import { Footer } from '../Footer';
-import { Header } from '../Header';
 import { Card } from './Card';
 
 const theme: Theme = {
@@ -99,7 +98,7 @@ test('has no default spacing', () => {
   render(
     <ThemeProvider theme={theme}>
       <Card data-testid="card">
-        <Header>Header</Header>
+        <header>Header</header>
         <Body>This is the body</Body>
         <Footer>Footer!</Footer>
       </Card>
@@ -114,7 +113,7 @@ test('allows to set spacing between children', () => {
   render(
     <ThemeProvider theme={theme}>
       <Card data-testid="card" space={5}>
-        <Header>Header</Header>
+        <header>Header</header>
         <Body>This is the body</Body>
         <Footer>Footer!</Footer>
       </Card>

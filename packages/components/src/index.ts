@@ -24,7 +24,6 @@ export * from './FieldBase';
 export * from './Footer';
 export * from './Form';
 export * from './Grid';
-export * from './Header';
 export * from './Headline';
 export * from './Inline';
 export * from './Input';
