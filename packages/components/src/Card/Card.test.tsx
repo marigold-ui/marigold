@@ -5,8 +5,6 @@ import { Card } from './Card';
 const theme: Theme = {
   name: 'test',
   components: {
-    Header: cva(),
-
     Card: cva('border border-solid border-gray-700 p-1', {
       variants: {
         variant: {
