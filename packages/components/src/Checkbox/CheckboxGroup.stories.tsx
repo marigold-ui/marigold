@@ -108,6 +108,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   render: args => {
     const [selected, setSelected] = useState<string[]>([]);
     return (
@@ -159,6 +160,7 @@ export const Error: Story = {
 };
 
 export const Controlled: Story = {
+  tags: ['component-test'],
   ...Basic,
   args: {
     onChange: fn(),
