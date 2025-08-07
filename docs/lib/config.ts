@@ -65,10 +65,6 @@ export const siteConfig = {
       slug: 'patterns',
     },
     {
-      name: 'Recipes',
-      slug: 'recipes',
-    },
-    {
       name: 'Releases',
       slug: 'releases',
       subsections: [
