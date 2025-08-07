@@ -7,5 +7,6 @@ export const CloseButton: ThemeComponent<'CloseButton'> = cva([
   'transition-[color,box-shadow]',
   'mixin-ring-focus-visible',
   'rounded',
+  'duration-150 active:scale-[0.98] pressed:scale-[0.98] transition-transform',
   '[&_svg]:size-4 [&_svg]:opacity-60 [&_svg]:transition-opacity hover:[&_svg]:opacity-100',
 ]);

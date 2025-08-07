@@ -1,5 +1,11 @@
 # @marigold/tsconfig
 
+## 0.4.1
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+
 ## 0.4.0
 
 ### Minor Changes

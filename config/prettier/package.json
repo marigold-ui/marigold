@@ -1,7 +1,7 @@
 {
   "name": "@marigold/prettier-config",
   "description": "Marigold's prettier configuration",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "license": "MIT",
   "keywords": [
     "marigold",

@@ -99,9 +99,9 @@ const meta = {
     },
   },
   args: {
-    placement: 'bottom',
+    placement: undefined,
     variant: undefined,
-    size: 'default',
+    size: undefined,
   },
 } satisfies Meta<typeof Menu>;
 
@@ -289,11 +289,11 @@ export const BasicActionMenu: Story = {
   render: args => {
     return (
       <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
-        <Menu.Item id="edit">Open in editor</Menu.Item>
-        <Menu.Item id="settings">Settings</Menu.Item>
-        <Menu.Item id="delete">
+        <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
+        <ActionMenu.Item id="settings">Settings</ActionMenu.Item>
+        <ActionMenu.Item id="delete">
           <Delete /> Delete
-        </Menu.Item>
+        </ActionMenu.Item>
       </ActionMenu>
     );
   },

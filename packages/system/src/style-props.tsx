@@ -591,27 +591,6 @@ export const aspect = {
   golden: 'aspect-[1.6180/1]',
 };
 
-export const objectFit = {
-  contain: 'object-contain',
-  cover: 'object-cover',
-  fill: 'object-fill',
-  none: 'unset',
-  scaleDown: 'object-scale-down',
-};
-
-export const objectPosition = {
-  none: undefined,
-  bottom: 'object-bottom',
-  center: 'object-center',
-  left: 'object-left',
-  leftBottom: 'object-left-bottom',
-  leftTop: 'object-left-top',
-  right: 'object-right',
-  rightBottom: 'object-right-bottom',
-  rightTop: 'object-right-top',
-  top: 'object-top',
-};
-
 export const cursorStyle = {
   auto: 'cursor-auto',
   default: 'cursor-default',
@@ -686,20 +665,6 @@ export type GapSpaceProp = {
    * The space between the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
    */
   space?: keyof typeof gapSpace;
-};
-
-export type ObjectFitProp = {
-  /**
-   * Set the object-fit property for the element.
-   */
-  fit?: keyof typeof objectFit;
-};
-
-export type ObjectPositionProp = {
-  /**
-   * Set the object-position property for the element. You can see allowed tokens [here](https://tailwindcss.com/docs/object-position).
-   */
-  position?: keyof typeof objectPosition;
 };
 
 export type PaddingSpaceProp = {
