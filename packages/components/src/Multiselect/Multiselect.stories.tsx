@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { expect, within } from 'storybook/test';
 import { Stack } from '../Stack';
+import { Text } from '../Text';
 import { Multiselect } from './Multiselect';
 
 const meta: Meta<typeof Multiselect> = {
@@ -26,6 +27,15 @@ const meta: Meta<typeof Multiselect> = {
       table: {
         type: { summary: 'text' },
         defaultValue: { summary: 'This is a help text description' },
+      },
+    },
+    emptyState: {
+      control: {
+        type: 'text',
+      },
+      description: 'Set text when there is no result.',
+      table: {
+        type: { summary: 'text' },
       },
     },
     disabled: {
@@ -201,5 +211,39 @@ export const Controlled: Story = {
         </pre>
       </Stack>
     );
+  },
+};
+
+const ticketTypes = [
+  { value: '1', label: 'Login Issue' },
+  { value: '2', label: 'Payment Failed' },
+  { value: '3', label: 'Bug Report' },
+  { value: '4', label: 'Feature Request' },
+  { value: '5', label: 'Account Setup' },
+  { value: '6', label: 'Performance Issue' },
+  { value: '7', label: 'Security Concern' },
+  { value: '8', label: 'API Integration' },
+];
+
+export const EmptyResult: Story = {
+  render: args => {
+    return (
+      <Multiselect
+        {...args}
+        label="Ticket Types"
+        items={ticketTypes}
+        placeholder="select a city..."
+        emptyState={() => <Text>no result found</Text>}
+      />
+    );
+  },
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+
+    const input = canvas.getByLabelText('Ticket Types');
+    await userEvent.type(input, 'xyz');
+
+    const result = await canvas.getByText('no result found');
+    expect(result).toBeInTheDocument();
   },
 };

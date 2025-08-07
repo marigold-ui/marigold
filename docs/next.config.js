@@ -40,16 +40,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/recipes/multiselect-recipes',
-        destination: '/components/form/multiselect',
-        permanent: true,
-      },
-      {
-        source: '/recipes',
-        destination: '/recipes/overview',
-        permanent: true,
-      },
-      {
         source: '/resources',
         destination: '/resources/overview',
         permanent: true,
