@@ -33,7 +33,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
-    Body?: ComponentStyleFunction<string, string>;
+
     Breadcrumbs?: Record<
       'container' | 'item' | 'link' | 'current',
       ComponentStyleFunction<string, string>
