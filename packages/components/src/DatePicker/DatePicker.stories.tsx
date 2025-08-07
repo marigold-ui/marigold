@@ -109,7 +109,9 @@ export const Basic: Story = {
 
 export const Controlled: Story = {
   render: args => {
-    const [value, setValue] = useState(today(getLocalTimeZone()) as DateValue);
+    const [value, setValue] = useState(
+      new CalendarDate(2025, 8, 7) as DateValue
+    );
 
     return (
       <I18nProvider locale="de-DE">
