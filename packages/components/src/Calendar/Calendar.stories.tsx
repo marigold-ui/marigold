@@ -52,6 +52,9 @@ const meta = {
       },
     },
   },
+  args: {
+    defaultValue: new CalendarDate(2025, 8, 7),
+  },
 } satisfies Meta<typeof Calendar>;
 
 export default meta;
