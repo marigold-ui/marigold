@@ -1,6 +1,6 @@
 export { Accordion } from './Accordion.styles';
 export { Badge } from './Badge.styles';
-export { Body } from './Body.styles';
+
 export { Button } from './Button.styles';
 export { Card } from './Card.styles';
 export { Checkbox } from './Checkbox.styles';

@@ -1,20 +1,18 @@
-import { Aspect, Image, Stack } from '@marigold/components';
+import { Aspect, Stack } from '@marigold/components';
 
 export default () => (
   <Stack space={4}>
     <Aspect ratio="ultrawide">
-      <Image
+      <img
         src="/marigold-field.webp"
-        fit="cover"
-        position="bottom"
+        className="object-cover object-bottom"
         alt="a field of marigold flowers and a bright blue sky"
       />
     </Aspect>
     <Aspect ratio="ultrawide">
-      <Image
+      <img
         src="/marigold-field.webp"
-        fit="cover"
-        position="top"
+        className="object-cover object-top"
         alt="a field of marigold flowers and a bright blue sky"
       />
     </Aspect>
