@@ -104,7 +104,6 @@ export const Controlled: Story = {
 
 export const ReadOnly: Story = {
   tags: ['component-test'],
-
   args: {
     defaultChecked: true,
     readOnly: true,
