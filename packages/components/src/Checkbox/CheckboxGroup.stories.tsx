@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { waitFor } from '@testing-library/react';
 import React from 'react';
 import { useState } from 'storybook/preview-api';
+import { expect, fn, within } from 'storybook/test';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 
@@ -106,15 +108,42 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  tags: ['component-test'],
   render: args => {
     const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
         <CheckboxGroup
+          {...args}
           onChange={setSelected}
           description="Choose your Options"
           errorMessage="Oh no"
+        >
+          <Checkbox value="ham" data-testid="one" label="Ham" />
+          <Checkbox value="salami" data-testid="two" disabled label="Salami" />
+          <Checkbox value="cheese" data-testid="three" label="Cheese" />
+          <Checkbox value="tomato" data-testid="four" label="Tomate" />
+          <Checkbox value="cucumber" data-testid="five" label="Cucumber" />
+          <Checkbox value="onions" data-testid="six" label="Onions" />
+        </CheckboxGroup>
+        <hr />
+        <pre data-testid="result">Selected values: {selected.join(', ')}</pre>
+      </>
+    );
+  },
+};
+
+export const Error: Story = {
+  render: args => {
+    const [selected, setSelected] = useState<string[]>([]);
+    return (
+      <>
+        <CheckboxGroup
           {...args}
+          onChange={setSelected}
+          description="my desc"
+          error
+          errorMessage="This is an error"
         >
           <Checkbox value="ham" label="Ham" />
           <Checkbox value="salami" disabled label="Salami" />
@@ -130,27 +159,45 @@ export const Basic: Story = {
   },
 };
 
-export const Error: Story = {
+export const Controlled: Story = {
+  tags: ['component-test'],
+  ...Basic,
+  args: {
+    onChange: fn(),
+  },
   render: args => {
-    const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
         <CheckboxGroup
-          onChange={setSelected}
-          description="my desc"
-          errorMessage="This is an error"
           {...args}
+          label="Select Event Types"
+          onChange={args.onChange}
         >
-          <Checkbox value="ham" label="Ham" />
-          <Checkbox value="salami" disabled label="Salami" />
-          <Checkbox value="cheese" label="Cheese" />
-          <Checkbox value="tomato" label="Tomate" />
-          <Checkbox value="cucumber" label="Cucumber" />
-          <Checkbox value="onions" label="Onions" />
+          <Checkbox value="concert" label="Concert" />
+          <Checkbox value="festival" label="Festival" disabled />
+          <Checkbox value="conference" label="Conference" />
+          <Checkbox value="meetup" label="Meetup" />
+          <Checkbox value="webinar" label="Webinar" />
         </CheckboxGroup>
-        <hr />
-        <pre>Selected values: {selected.join(', ')}</pre>
       </>
     );
+  },
+  play: async ({ args, canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+    let concert = canvas.getByRole('checkbox', { name: /Concert/i });
+    let festival = canvas.getByRole('checkbox', { name: /Festival/i });
+    let conference = canvas.getByRole('checkbox', { name: /Conference/i });
+
+    await userEvent.click(concert);
+    await userEvent.click(festival);
+    await userEvent.click(conference);
+
+    await expect(concert).toBeChecked();
+    await expect(festival).not.toBeChecked();
+    await expect(conference).toBeChecked();
+    await waitFor(() => {
+      expect(args.onChange).toHaveBeenCalledWith(['concert', 'conference']);
+      expect(args.onChange).toHaveBeenCalledTimes(2);
+    });
   },
 };

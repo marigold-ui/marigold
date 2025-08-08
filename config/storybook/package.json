@@ -43,6 +43,7 @@
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "storybook": "^9.1.1",
+    "storybook-addon-test-codegen": "2.0.1",
     "typescript": "5.9.2",
     "vite": "7.0.6"
   },
