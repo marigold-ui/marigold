@@ -107,6 +107,32 @@ test('opens the suggestions on user input', async () => {
   expect(suggestions).toBeVisible();
 });
 
+test('supports default empty state text', async () => {
+  render(<Basic label="Label" allowsEmptyCollection />);
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'xyz');
+
+  const result = await screen.findByText('No result found');
+  expect(result).toBeVisible();
+});
+
+test('supports passting  empty state text', async () => {
+  render(
+    <Basic
+      label="Label"
+      emptyState={<span>can not find value</span>}
+      allowsEmptyCollection
+    />
+  );
+
+  const input = screen.getByRole('combobox');
+  await user.type(input, 'xyz');
+
+  const result = await screen.findByText('can not find value');
+  expect(result).toBeVisible();
+});
+
 test('opens the suggestions on focus', async () => {
   render(<Basic label="Label" menuTrigger="focus" />);
 
@@ -170,4 +196,18 @@ test('supporst showing a help text', () => {
 
   const description = screen.queryAllByText('This is a description')[0];
   expect(description).toBeInTheDocument();
+});
+
+test('supports loading state', () => {
+  render(<Basic label="Label" loading description="This is a description" />);
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('hides loading state when loading is false', () => {
+  render(
+    <Basic label="Label" loading={false} description="This is a description" />
+  );
+
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });

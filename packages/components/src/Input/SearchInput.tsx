@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import { Button } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
+import { ProgressCycle } from '../ProgressCycle';
 import type { InputProps } from './Input';
 import { Input } from './Input';
 
@@ -36,6 +37,7 @@ const SearchIcon = (props: { className?: string }) => (
 // ---------------
 export interface SearchInputProps
   extends Omit<InputProps, 'icon' | 'className'> {
+  loading?: boolean;
   className?: {
     input?: string;
     action?: string;
@@ -46,7 +48,7 @@ export interface SearchInputProps
 // Component
 // ---------------
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ className, onClear, ...props }, ref) => {
+  ({ className, loading, onClear, ...props }, ref) => {
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
     return (
@@ -59,23 +61,27 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         ref={ref}
         icon={<SearchIcon />}
         action={
-          <Button
-            className={className?.action}
-            onPress={() => onClear?.()}
-            aria-label={stringFormatter.format('Clear search')}
-            excludeFromTabOrder={true}
-            preventFocusOnPress={true}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              width={20}
-              height={20}
+          loading ? (
+            <ProgressCycle />
+          ) : (
+            <Button
+              className={className?.action}
+              onPress={() => onClear?.()}
+              aria-label={stringFormatter.format('Clear search')}
+              excludeFromTabOrder={true}
+              preventFocusOnPress={true}
             >
-              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-            </svg>
-          </Button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                width={20}
+                height={20}
+              >
+                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+              </svg>
+            </Button>
+          )
         }
         {...props}
       />
