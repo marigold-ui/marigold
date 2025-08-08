@@ -1,0 +1,116 @@
+---
+title: Marigold v15.0.0
+date: 2025-08-31
+type: Blog
+changed:
+  - components/collection/table
+  - components/navigation/breadcrumbs
+  - components/overlay/tooltip
+---
+
+While many are taking a summer break, Marigold never rests! v15.0.0 arrives with hot new features and improvements to keep your projects blooming all season long. Check out what’s fresh below! 🍉
+
+## Breaking Changes
+
+The `<Header>`, `<Body>`, and `<Footer>` components have been removed. These were originally intended as reusable building blocks for components like `<Dialog>` and `<Card>`, but we found that dedicated compound components (such as `<Dialog.Content>`) offer a better developer experience. Subcomponents are more discoverable and easier to style based on their specific usage.
+
+The `<Image>` component has been removed. It didn’t provide significant benefits beyond offering shortcuts for Tailwind classes, which can easily be applied directly to native `<img>` elements as needed.
+
+| Prop type    | Prop value    | Tailwind class        |
+| ------------ | ------------- | --------------------- |
+| **fit**      | `contain`     | `object-contain`      |
+|              | `cover`       | `object-cover`        |
+|              | `fill`        | `object-fill`         |
+|              | `none`        | `unset`               |
+|              | `scaleDown`   | `object-scale-down`   |
+| **position** | `none`        | — (no class)          |
+|              | `bottom`      | `object-bottom`       |
+|              | `center`      | `object-center`       |
+|              | `left`        | `object-left`         |
+|              | `leftBottom`  | `object-left-bottom`  |
+|              | `leftTop`     | `object-left-top`     |
+|              | `right`       | `object-right`        |
+|              | `rightBottom` | `object-right-bottom` |
+|              | `rightTop`    | `object-right-top`    |
+|              | `top`         | `object-top`          |
+
+## Components
+
+Components now follow a clear release process with three phases: **Alpha** for early feedback, **Beta** for broader testing, and **Stable** for production-ready confidence. This approach helps teams understand the maturity of each component and when it’s best to use them. Read more about it [here](/getting-started/release-phases).
+
+### Breadcrumbs (beta)
+
+The `<Breadcrumbs>` component provides users with a clear path of navigation, helping them understand their current location and easily move back to previous sections. It’s ideal for sites and apps with hierarchical structures.
+
+Learn more in the [Breadcrumbs documentation](/components/navigation/breadcrumbs).
+
+**Example:**
+
+```tsx
+<Breadcrumbs>
+  <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+  <Breadcrumbs.Item href="/products">Products</Breadcrumbs.Item>
+  <Breadcrumbs.Item href="/products/123">Product Details</Breadcrumbs.Item>
+</Breadcrumbs>
+```
+
+### Toast (beta)
+
+The `<Toast>` component lets you display brief, auto-dismissing notifications to inform users about important events or actions. Toasts appear temporarily and do not interrupt the user’s workflow, making them ideal for confirmations, warnings, or status updates.
+
+Learn more in the [Toast documentation](/components/overlay/toast).
+
+**Example:**
+
+```tsx
+const { addToast } = useToast();
+
+<ToastProvider position="bottom-right" />
+<Button
+  onPress={() => addToast({ title: 'Simple Toast', variant: 'success' })}
+>
+  Show Toast
+</Button>
+```
+
+### Menu
+
+Add item and section as child component of `ActionMenu`
+
+You can now easily access `ActionMenu.Item` and `ActionMenu.Section` directly, without needing to use the `Menu` component when working with `ActionMenu` alone. Learn more in the [Menu documentation](/components/overlay/menu#actionmenu).
+
+**Before 15.0.0:**
+
+```tsx
+<ActionMenu>
+  <Menu.Section title="Section 1">
+    <Menu.Item>Item 1</Menu.Item>
+    <Menu.Item>Item 2</Menu.Item>
+  </Menu.Section>
+</ActionMenu>
+```
+
+**With 15.0.0:**
+
+```tsx
+<ActionMenu>
+  <ActionMenu.Section title="Section 1">
+    <ActionMenu.Item>Item 1</ActionMenu.Item>
+    <ActionMenu.Item>Item 2</ActionMenu.Item>
+  </ActionMenu.Section>
+</ActionMenu>
+```
+
+## Design
+
+- Icons inside `<Menu.Item>` and `<ActionMenu.Item>` are now styled consistently with the rest of the menu content. This ensures better alignment and visual clarity for menus that include icons alongside text, making your menus look more polished out of the box.
+- Prevent page bounce when `<Scrollable>` is used inside a page.
+
+## Documentation
+
+- The release process for components is now fully documented. Learn more in the [Release Phases guide](/getting-started/release-phases).
+- The row actions guidelines for tables have been updated and improved. See details in the [Table documentation](/components/collection/table#row-actions).
+
+## Bug fixes
+
+- Fix `<Drawer>` on small screens
