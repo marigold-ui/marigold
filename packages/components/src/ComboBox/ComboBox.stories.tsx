@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Key } from 'react';
+import React, { Key } from 'react';
 import { useState } from 'storybook/preview-api';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack';
 import { Text } from '../Text';
@@ -124,18 +125,19 @@ export const Basic: StoryObj<typeof ComboBox> = {
 };
 
 export const Controlled: StoryObj<typeof ComboBox> = {
+  tags: ['component-test'],
   render: args => {
     const [current, setCurrent] = useState<string | undefined>('');
     const [id, setId] = useState<Key | null>(null);
     return (
       <Stack>
         <ComboBox
+          {...args}
           value={current}
           defaultSelectedKey={3}
           onChange={setCurrent}
           onSelectionChange={id => setId(id)}
           label="Animals"
-          {...args}
         >
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>
@@ -148,6 +150,34 @@ export const Controlled: StoryObj<typeof ComboBox> = {
         </pre>
       </Stack>
     );
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    const body = canvasElement.ownerDocument.body;
+    const canvas = within(body);
+    const combobox = canvas.queryByRole('combobox', { name: 'Animals' });
+
+    await userEvent.click(
+      await canvas.findByRole('combobox', { name: 'Animals' })
+    );
+    await userEvent.keyboard('{arrowdown}');
+    await userEvent.type(
+      await canvas.findByRole('combobox', { name: 'Animals' }),
+      'do'
+    );
+    await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
+    //click outside - enter doesn't work 🤷‍♂️
+    await userEvent.click(
+      body.querySelector('#storybook-root > div > div') as HTMLElement
+    );
+
+    await waitFor(() =>
+      expect(
+        canvas.queryByText('current:', { exact: false })
+      ).toHaveTextContent('current: Dog, selected: dog')
+    );
+    await waitFor(() => expect(combobox).toBeVisible());
+    await waitFor(() => expect(combobox).toBeInTheDocument());
+    await waitFor(() => expect(combobox).toHaveValue('Dog'));
   },
 };
 
@@ -185,6 +215,7 @@ export const AsyncLoading: StoryObj<typeof ComboBox> = {
 };
 
 export const Sections: StoryObj<typeof ComboBox> = {
+  tags: ['component-test'],
   render: args => (
     <ComboBox {...args}>
       <ComboBox.Section header="Fantasy">
@@ -211,4 +242,111 @@ export const Sections: StoryObj<typeof ComboBox> = {
       </ComboBox.Section>
     </ComboBox>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      await canvas.findByRole('combobox', { name: 'Label' })
+    );
+    await userEvent.keyboard('{arrowdown}');
+    const s1 = await canvas.findByText('Fantasy');
+    const s2 = await canvas.findByText('Sci-Fi');
+
+    expect(s1).toBeVisible();
+    expect(s2).toBeVisible();
+  },
+};
+
+export const InputTrigger: StoryObj<typeof ComboBox> = {
+  tags: ['component-test'],
+  ...Basic,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.ownerDocument.body);
+    const input = canvas.findByRole('combobox', { name: 'Label' });
+    const result = canvas.queryByRole('combobox', { name: 'Label' });
+
+    await userEvent.click(await input);
+    await userEvent.type(await input, 'ard');
+    await userEvent.click(
+      await canvas.findByRole('option', { name: 'Aardvark' })
+    );
+
+    await waitFor(() => expect(result).toBeInTheDocument());
+    await waitFor(() => expect(result).toHaveValue('Aardvark'));
+    await waitFor(() => expect(result).toBeVisible());
+  },
+};
+
+export const FocusTrigger: StoryObj<typeof ComboBox> = {
+  tags: ['component-test'],
+  ...Basic,
+  args: {
+    menuTrigger: 'focus',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.ownerDocument.body);
+    const combobox = canvas.queryByRole('combobox', { name: 'Label' });
+
+    await userEvent.type(
+      await canvas.findByRole('combobox', { name: 'Label' }),
+      'oo'
+    );
+    await userEvent.click(
+      await canvas.findByRole('option', { name: 'Kangaroo' })
+    );
+
+    await waitFor(() => expect(combobox).toBeVisible());
+    await waitFor(() => expect(combobox).toBeInTheDocument());
+    await waitFor(() => expect(combobox).toHaveValue('Kangaroo'));
+  },
+};
+
+export const ManualTrigger: StoryObj<typeof ComboBox> = {
+  tags: ['component-test'],
+  ...Basic,
+  args: {
+    menuTrigger: 'manual',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.ownerDocument.body);
+    const combobox = canvas.queryByRole('combobox', { name: 'Label' });
+
+    await userEvent.click(
+      await canvas.findByRole('combobox', { name: 'Label' })
+    );
+    await userEvent.keyboard('{arrowdown}');
+    await userEvent.keyboard('{enter}');
+
+    await waitFor(() => expect(combobox).toBeInTheDocument());
+    await waitFor(() => expect(combobox).toBeVisible());
+    await waitFor(() => expect(combobox).toHaveValue('Red Panda'));
+  },
+};
+
+export const DisabledKeys: StoryObj<typeof ComboBox> = {
+  tags: ['component-test'],
+  render: args => (
+    <ComboBox {...args} disabledKeys={['spinach']}>
+      <ComboBox.Option id="spinach">Spinach</ComboBox.Option>
+      <ComboBox.Option id="carrots">Carrots</ComboBox.Option>
+      <ComboBox.Option id="broccoli">Broccoli</ComboBox.Option>
+      <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
+    </ComboBox>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(
+      await canvas.findByRole('combobox', { name: 'Label' })
+    );
+    await userEvent.type(
+      await canvas.findByRole('combobox', { name: 'Label' }),
+      'spi'
+    );
+
+    expect(canvas.queryByRole('option', { name: 'Spinach' })).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    );
+  },
 };
