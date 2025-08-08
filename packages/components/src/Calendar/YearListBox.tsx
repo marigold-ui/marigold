@@ -8,15 +8,22 @@ import {
   useRef,
 } from 'react';
 import { Button, CalendarStateContext } from 'react-aria-components';
+import { DateValue } from 'react-aria-components';
 import { useDateFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { useCalendarContext } from './Context';
 
 interface YearDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
+  minValue?: DateValue;
+  maxValue?: DateValue;
 }
 
-const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
+const YearListBox = ({
+  setSelectedDropdown,
+  minValue,
+  maxValue,
+}: YearDropdownProps) => {
   const state = useContext(CalendarStateContext)!;
   const { classNames } = useCalendarContext();
   const years: { value: CalendarDate; formatted: string }[] = [];
@@ -32,6 +39,9 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
     });
   }
 
+  const minYear = minValue ? minValue.year : -Infinity;
+  const maxYear = maxValue ? maxValue.year : Infinity;
+
   const activeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -44,10 +54,11 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
     }
   }, [state.focusedDate]);
 
-  const onChange = (key: Key) => {
-    const index = Number(key);
+  const onChange = (index: number, isDisabled: boolean) => {
+    if (isDisabled) return;
     const date = years[index].value;
     state.setFocusedDate(date);
+    setSelectedDropdown(undefined);
   };
 
   return (
@@ -56,7 +67,9 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
       className="grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-scroll p-2"
     >
       {years.map((year, index) => {
-        const isSelected = +year.formatted === state.focusedDate.year;
+        const yearNum = year.value.year;
+        const isDisabled = yearNum < minYear || yearNum > maxYear;
+        const isSelected = yearNum === state.focusedDate.year;
 
         return (
           <li className="flex justify-center" key={index}>
@@ -68,12 +81,13 @@ const YearListBox = ({ setSelectedDropdown }: YearDropdownProps) => {
                 slot="previous"
                 className={cn(
                   classNames.calendarListboxButton,
-                  'inline-flex items-center justify-center gap-[0.5ch]'
+                  'inline-flex items-center justify-center gap-[0.5ch]',
+                  isDisabled && 'cursor-not-allowed opacity-50'
                 )}
                 onPress={() => {
-                  onChange(index);
-                  setSelectedDropdown(undefined);
+                  onChange(index, isDisabled);
                 }}
+                isDisabled={isDisabled}
                 key={index}
                 data-value={year.formatted}
                 aria-current={isSelected}
