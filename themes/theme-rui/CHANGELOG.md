@@ -1,5 +1,18 @@
 # @marigold/theme-rui
 
+## 1.4.2
+
+### Patch Changes
+
+- 9881913: feat([DST-728]): Animate `<Button>` on press
+- Updated dependencies [80a4427]
+- Updated dependencies [9bac182]
+- Updated dependencies [62ac4b8]
+- Updated dependencies [6d2d2d4]
+- Updated dependencies [1ab48da]
+  - @marigold/system@15.0.0
+  - @marigold/components@15.0.0
+
 ## 1.4.1
 
 ### Patch Changes
