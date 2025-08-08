@@ -36,8 +36,7 @@ export const Inline = ({
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
       alignY && alignment?.horizontal?.alignmentY[alignY],
-      alignY === 'center' &&
-        'items-end [&:has([slot=description])]:items-center [&:has([slot=errorMessage])]:items-center'
+      '[&:has([slot=description])]:items-start [&:has([slot=description])_button]:mt-[33px] [&:has([slot=errorMessage])]:mt-[33px]'
     )}
   >
     {children}
