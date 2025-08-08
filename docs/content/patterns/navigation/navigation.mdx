@@ -1,17 +1,30 @@
 ---
 title: Navigation
-caption: This recipe show how to build a top navigation.
+caption: How to building a navigation in our applications.
+badge: alpha
 ---
 
-This pattern recipe might help you building your top navigation for Reservix Applications. It's a pattern that is used by all new Reservix Applications build with Marigold.
+<SectionMessage variant="warning">
+  <SectionMessage.Title>Under Development</SectionMessage.Title>
+  <SectionMessage.Content>
+    This pattern is currently under development and will change in the future.
+    It is an intermediate step that teams can use in preparation for a more
+    thorough navigation pattern.
+  </SectionMessage.Content>
+</SectionMessage>
 
-## Example
+This guideline provides recommendations and considerations for building navigation in Reservix applications. It covers layout structure, component usage, accessibility, and styling approaches that align with our design system. The current pattern is intended for desktop applications and does not yet address mobile navigation.
 
-Here you can see how a top navigation can be build with our components. Keep in mind this is only the desktop version and will not work on mobile view.
+## Top Navigation
 
-We used for the layouts the [`<Inline>`](/components/layout/inline/) and [`<Split>`](/components/layout/split/) component.
-And because we currently don't have a navigation component we build it with `<div>` and `<a>` elements.
+The top navigation is placed at the very top of the application and stretches across the full width of the screen. It sits above all page content and just below any global banner or announcement that might appear. When you scroll down the page, the navigation moves out of view with the rest of the content. It appears again when you scroll back up.
 
-To get the logout button, you have to use the `@marigold/icon` package to get the icon and wrap a [`<Button>`](/components/form/button/) with text variant around it.
+The top navigation consists of the following elements:
+
+- **Container:** A full-width bordered container with padding that wraps all navigation elements.
+- **Logo area:** Positioned on the left using `<Inline>`, containing the Reservix or application logo.
+- **Navigation links:** A `<Tabs>` component displaying main navigation items such as Home, Settings, and Messages.
+- **Spacer:** A `<Split>` component that pushes actions to the far right.
+- **Action area:** Contains actions like logout, implemented as a `<Button>` or with a `<Menu>`.
 
 <ComponentDemo file="./topnavigation.demo.tsx" />
