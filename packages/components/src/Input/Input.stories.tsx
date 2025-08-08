@@ -103,10 +103,7 @@ export const WithAction: Story = {
   render: args => (
     <Input
       action={
-        <Button
-          size="small"
-          onPress={() => alert('Action executed')}
-        >
+        <Button size="small" onPress={() => alert('Action executed')}>
           <Delete />
         </Button>
       }
