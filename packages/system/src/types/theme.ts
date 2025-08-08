@@ -66,8 +66,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
-    Footer?: ComponentStyleFunction<string, string>;
-    Header?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
@@ -75,7 +73,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     IconButton?: ComponentStyleFunction<string, string>;
-    Image?: ComponentStyleFunction<string, string>;
     Checkbox?: Record<
       'container' | 'label' | 'checkbox' | 'group',
       ComponentStyleFunction<string, string>
