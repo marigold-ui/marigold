@@ -1,5 +1,6 @@
-import { internal, links, themeswitch } from '@/lib/config';
+import { internal, links } from '@/lib/config';
 import { iterateTokens } from '@/lib/utils';
+import { ruiTheme } from '@/theme';
 import { Icons, cn } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
 import {
@@ -12,11 +13,10 @@ import {
 } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Inline, Split } from '@marigold/components';
 import { ExternalLink } from '@marigold/icons';
-import { useThemeSwitch } from '@/ui/ThemeSwitch';
-import { Theme } from '@/ui/icons/Theme';
+import { NestedStringObject } from '@marigold/system';
 import { Hotkey } from './SiteMenu';
 
 interface CopyItemProps {
@@ -59,10 +59,9 @@ const useGoto = (
   setPages?: Dispatch<SetStateAction<[]>>
 ) => {
   const router = useRouter();
-  const params = useSearchParams();
 
   const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
-    const url = `/${slug}?${params.toString() || 'theme=core'}${hash}`;
+    const url = `/${slug}${hash}`;
 
     router.push(url);
     setOpen(false);
@@ -104,11 +103,7 @@ export const CopyItem = ({ children, copyValue, ...props }: CopyItemProps) => {
 };
 
 export const TokenItem = ({ classNames }: CommandItemProps) => {
-  const { current, themes } = useThemeSwitch();
-  if (!current) {
-    return null;
-  }
-  const tokens = iterateTokens(themes[current].colors || {});
+  const tokens = iterateTokens(ruiTheme.colors as NestedStringObject);
   return (
     <CommandGroup heading="Colors" key="color" className={classNames.section}>
       {tokens.map(([token]) => (
@@ -153,41 +148,6 @@ export const IconItem = ({ classNames }: CommandItemProps) => {
         </CopyItem>
       ))}
     </CommandGroup>
-  );
-};
-
-export const ChangeThemeItem = ({
-  classNames,
-  setOpen,
-}: ChangeOpenItemProps) => {
-  const { updateTheme } = useThemeSwitch();
-  const changeTheme = (theme: string) => {
-    updateTheme(theme);
-    setOpen(false);
-  };
-  return (
-    <>
-      {themeswitch.map(({ name, items }) => (
-        <CommandGroup heading={name} key={name} className={classNames.section}>
-          {items?.map(item => (
-            <Command.Item
-              className={classNames.item}
-              key={item.name}
-              value={item.name}
-              keywords={['change', 'theme']}
-              onSelect={() => changeTheme(item.theme)}
-            >
-              <Inline space={4} alignY="center">
-                <span className="text-text-primary-muted text-xs">
-                  <Theme />
-                </span>
-                {item.name}
-              </Inline>
-            </Command.Item>
-          ))}
-        </CommandGroup>
-      ))}
-    </>
   );
 };
 

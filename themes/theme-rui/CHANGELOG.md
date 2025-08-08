@@ -1,5 +1,93 @@
 # @marigold/theme-rui
 
+## 1.4.1
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+- Updated dependencies [424e2f4]
+- Updated dependencies [81f1c9d]
+  - @marigold/components@14.1.1
+  - @marigold/system@14.1.1
+  - @marigold/theme-plugins@1.0.2
+
+## 1.4.0
+
+### Minor Changes
+
+- cc493fc: feat([DST-737]): Add Toast component
+
+  Added ToastProvider Component with corresponding documentation and stories. It's a small Temporary Notification on the edge of the screen, that should be used for messages that don’t need immediate interaction.
+
+- 2163518: feat([DST-899]):Breadcrumb Component
+
+  We added a new Breadcrumbs component to improve navigation and accessibility in the UI.
+  It supports collapsing long breadcrumb lists, custom separators (chevron or slash), and integrates with react-aria-components for full accessibility and keyboard navigation.
+  The component is flexible, supports links and custom content, and includes comprehensive documentation and usage examples.
+
+### Patch Changes
+
+- ea0f758: fix(DST-968): Fix `<Tag>` styles and add multiselect tag filter to filter pattern example
+- 906c84f: refa([DST-969]): Remove obsolete "text" variant from `<Button>`
+- 37f40ba: feat([DST-977]): Style icons inside `<Menu.Item>`
+- Updated dependencies [cc493fc]
+- Updated dependencies [930e633]
+- Updated dependencies [8f550ec]
+- Updated dependencies [69e7b61]
+- Updated dependencies [ea0f758]
+- Updated dependencies [8e178b7]
+- Updated dependencies [2163518]
+- Updated dependencies [37f40ba]
+  - @marigold/components@14.1.0
+  - @marigold/system@14.1.0
+
+## 1.3.0
+
+### Minor Changes
+
+- 29e6133: feat([DST-937]): Add master and admin mark variants
+
+### Patch Changes
+
+- a7ec9d3: fix[DSTSUP-169]: Fix width property on Calendar component
+- 5e08185: docs([DST-925]): Introduce "admin- and master mark" pattern
+  fix([DST-925]): Adjust styles of Tabs to work better with badges
+- 9311338: docs([DST-936]): Update tooltip page
+- Updated dependencies [a7ec9d3]
+- Updated dependencies [5e08185]
+- Updated dependencies [6d61be9]
+- Updated dependencies [29e6133]
+  - @marigold/components@14.0.0
+  - @marigold/system@14.0.0
+
+## 1.2.0
+
+### Minor Changes
+
+- 0d7f9db: docs([DST-815]):Updated token display to use RUI theme structure. Replaced deprecated Core and B2B token references with RUI semantic tokens that align with the current design system.
+
+### Patch Changes
+
+- 9a5791c: docs([DST-914]): Update Divider docs to match new structure of component pages
+
+  **Breaking Change**: Removed `className` property on this component.
+
+- e31a116: [DSTSUP-161]: The `<Multiselect>` matches now our default `<input>` styles in RUI.
+- 854e00b: refa([DST-871]): Enhance Inline component to dynamically align buttons with input fields when descriptions are present.
+- c33ad07: docs([DST-921]): Revise text component page to new component page structure.
+
+  **Breaking Change**: Some propertys has been removed, including `className` and HtMLElement props.
+
+- Updated dependencies [9a5791c]
+- Updated dependencies [854e00b]
+- Updated dependencies [430c266]
+- Updated dependencies [c33ad07]
+- Updated dependencies [98bea2e]
+- Updated dependencies [16f6dbb]
+- Updated dependencies [d224a2f]
+  - @marigold/components@13.0.0
+  - @marigold/system@13.0.0
+
 ## 1.1.5
 
 ### Patch Changes

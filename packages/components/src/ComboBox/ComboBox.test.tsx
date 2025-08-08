@@ -117,7 +117,9 @@ test('supports width classname', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
+  expect(container?.className).toMatchInlineSnapshot(
+    `"group/field flex flex-col w-full"`
+  );
 });
 
 test('supports classnames', () => {
@@ -142,10 +144,10 @@ test('supports classnames', () => {
   expect(button.className).toMatchInlineSnapshot(
     `"shrink-0 cursor-pointer outline-0 absolute right-0 p-0"`
   );
-  expect(container?.className).toMatchInlineSnapshot(`"group/field w-full"`);
-  expect(label.className).toMatchInlineSnapshot(
-    `"text-teal-300 inline-flex w-[var(--labelWidth)]"`
+  expect(container?.className).toMatchInlineSnapshot(
+    `"group/field flex flex-col w-full"`
   );
+  expect(label.className).toMatchInlineSnapshot(`"text-teal-300 inline-flex"`);
 });
 
 test('supports disabled', () => {
@@ -290,7 +292,7 @@ test('supports disabling suggestions', async () => {
   const input = screen.getAllByLabelText('Label')[0];
   await user.type(input, 'a');
 
-  const spinach = await screen.findByText('Spinach');
+  const spinach = screen.getByRole('option', { name: 'Spinach' });
   expect(spinach).toHaveAttribute('aria-disabled', 'true');
 });
 

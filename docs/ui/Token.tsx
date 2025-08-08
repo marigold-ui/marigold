@@ -3,7 +3,6 @@
 import { Card, Inline, Stack, Table, alignment, cn, paddingSpace } from '@/ui';
 import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
-import { useThemeSwitch } from './ThemeSwitch';
 
 export const AlignmentsX = () => {
   return (
@@ -100,31 +99,23 @@ export const BorderRadius = () => (
 );
 
 export const Breakpoints = () => {
-  const { current } = useThemeSwitch();
-
   const [breakpoints, setBreakpoints] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (!current) {
-      const breakpointKeys = ['sm', 'md', 'lg', 'xl', '2xl'];
-      const breakpointValues: Record<string, string> = {};
+    const breakpointKeys = ['sm', 'md', 'lg', 'xl', '2xl'];
+    const breakpointValues: Record<string, string> = {};
 
-      breakpointKeys.forEach(key => {
-        breakpointValues[key] = getComputedStyle(
-          document.querySelector(`[data-theme="${current}"]`)!
-        ).getPropertyValue(`--breakpoint-${key}`);
-      });
+    breakpointKeys.forEach(key => {
+      breakpointValues[key] = getComputedStyle(
+        document.querySelector('[data-theme="rui"]')!
+      ).getPropertyValue(`--breakpoint-${key}`);
+    });
 
-      setBreakpoints(breakpointValues);
-    }
-  }, [current]);
-
-  if (!current) {
-    return null;
-  }
+    setBreakpoints(breakpointValues);
+  }, []);
 
   return (
-    <div data-theme={current}>
+    <div data-theme="rui">
       <Table aria-label="breakpoints" stretch>
         <Table.Header>
           <Table.Column key={'name'}>Name</Table.Column>

@@ -1,12 +1,12 @@
-import { Body, Headline, Text } from '@marigold/components';
+import { Headline, Text } from '@marigold/components';
 
 export default () => (
-  <Body>
-    <Headline level="3">Awesome Headline!</Headline>
+  <div>
+    <Headline level="3">Your Tickets for Summer Festival 2025</Headline>
     <Text>
-      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-      eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-      voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+      Below you’ll find all your purchased tickets and event details. Please
+      present your QR code at the entrance. If you have any questions, contact
+      our support team.
     </Text>
-  </Body>
+  </div>
 );

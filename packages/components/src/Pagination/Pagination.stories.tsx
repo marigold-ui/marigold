@@ -1,9 +1,8 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
 import React from 'react';
+import { useState } from 'storybook/preview-api';
+import { expect, fn, within } from 'storybook/test';
 import {
-  FieldGroup,
   Inline,
   Select,
   Split,
@@ -56,7 +55,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement, step }) => {
+  play: async ({ canvasElement, step, userEvent }) => {
     const canvas = within(canvasElement);
 
     await step('Select an item from pagination', async () => {
@@ -181,18 +180,16 @@ export const FullScreenSize: Story = {
           pageSize={pageSize!}
         />
         <Split />
-        <FieldGroup labelWidth="100px">
-          <Select
-            width={40}
-            aria-label="Page size"
-            defaultSelectedKey="10"
-            label="Results per page"
-          >
-            <Select.Option id="10">10</Select.Option>
-            <Select.Option id="20">20</Select.Option>
-            <Select.Option id="30">30</Select.Option>
-          </Select>
-        </FieldGroup>
+        <Select
+          width={40}
+          aria-label="Page size"
+          defaultSelectedKey="10"
+          label="Results per page"
+        >
+          <Select.Option id="10">10</Select.Option>
+          <Select.Option id="20">20</Select.Option>
+          <Select.Option id="30">30</Select.Option>
+        </Select>
       </Inline>
     </div>
   ),
@@ -294,7 +291,10 @@ export const WithButtonLabels: Story = {
 
 export const DisabledPreviousButton: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement }) => {
+  args: {
+    defaultPage: 2,
+  },
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const previousButton = canvas.getByLabelText('Page previous');
 
@@ -310,7 +310,7 @@ export const DisabledNextButton: Story = {
   args: {
     defaultPage: 9,
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
     const nextButton = canvas.getByLabelText('Page next');
 
@@ -326,7 +326,7 @@ export const UseOnChange: Story = {
   args: {
     onChange: fn(),
   },
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement, args, userEvent }) => {
     const canvas = within(canvasElement);
     const page2Button = canvas.getByLabelText('Page 2');
 

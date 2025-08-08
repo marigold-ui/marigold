@@ -1,17 +1,11 @@
 import { getAppearance } from '@/lib/utils';
 import { registry } from '@/registry/demos';
+import { ruiTheme } from '@/theme';
 import type { Theme } from '@/ui';
-import {
-  Card,
-  FieldGroup,
-  MarigoldProvider,
-  OverlayContainerProvider,
-  Select,
-} from '@/ui';
-import type { ComponentType, ReactNode } from 'react';
+import { Card, MarigoldProvider, OverlayContainerProvider, Select } from '@/ui';
+import type { ComponentType } from 'react';
 import { useState } from 'react';
 import { Info } from '@marigold/icons';
-import { useThemeSwitch } from '@/ui/ThemeSwitch';
 
 // Helpers
 // ---------------
@@ -40,15 +34,11 @@ const getSelectWidth = (options: string[]) => {
 // ---------------
 export interface AppearanceDemoProps {
   component: keyof Theme['components'];
-  disableLabelWidth?: boolean;
 }
 
 // Component
 // ---------------
-export const AppearanceDemo = ({
-  component,
-  disableLabelWidth,
-}: AppearanceDemoProps) => {
+export const AppearanceDemo = ({ component }: AppearanceDemoProps) => {
   const name = `${component.toLowerCase()}-appearance` as keyof typeof registry;
 
   if (!registry[name]) {
@@ -56,9 +46,7 @@ export const AppearanceDemo = ({
   }
 
   const Demo: ComponentType<any> = registry[name].demo;
-  const { current, themes } = useThemeSwitch();
-  const theme = themes[current];
-  const appearance = getAppearance(component, theme);
+  const appearance = getAppearance(component, ruiTheme);
 
   const [selected, setSelected] = useState({
     variant: appearance.variant.length
@@ -72,13 +60,6 @@ export const AppearanceDemo = ({
         : appearance.size[0]
       : 'none',
   });
-
-  const Wrapper = ({ children }: { children: ReactNode }) =>
-    current === 'core' && !disableLabelWidth ? (
-      <FieldGroup labelWidth="100px">{children}</FieldGroup>
-    ) : (
-      children
-    );
 
   let disabledAppearance = '';
   if (appearance.variant.length === 0 && appearance.size.length === 0) {
@@ -102,7 +83,7 @@ export const AppearanceDemo = ({
       </p>
 
       <Card variant="content" p={0}>
-        <div className="absolute left-4 top-3 flex flex-wrap gap-2">
+        <div className="absolute top-3 left-4 flex flex-wrap gap-2">
           <Select
             label="Variant"
             variant="floating"
@@ -151,13 +132,11 @@ export const AppearanceDemo = ({
             </div>
           ) : null}
         </div>
-        <div data-theme={current}>
-          <OverlayContainerProvider value="portalContainer">
-            <MarigoldProvider theme={theme}>
-              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pb-10 pt-24">
-                <Wrapper>
-                  <Demo {...selected} />
-                </Wrapper>
+        <div data-theme="rui">
+          <OverlayContainerProvider container="portalContainer">
+            <MarigoldProvider theme={ruiTheme}>
+              <div className="not-prose flex size-full min-h-56 items-center justify-center overflow-x-auto px-4 pt-24 pb-10">
+                <Demo {...selected} />
               </div>
             </MarigoldProvider>
           </OverlayContainerProvider>

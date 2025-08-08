@@ -1,28 +1,29 @@
 'use client';
 
+import { ruiTheme } from '@/theme';
 import { MarigoldProvider, OverlayContainerProvider } from '@/ui';
 import type { PropsWithChildren } from 'react';
-import { useThemeSwitch } from '@/ui/ThemeSwitch';
+import { cn } from '@marigold/system';
 
 export interface WrapperProps {
   className?: string;
-  theme?: string;
 }
 
 export const Wrapper = ({
   className,
-  theme,
   children,
 }: PropsWithChildren<WrapperProps>) => {
-  const { current, themes } = useThemeSwitch();
-  const selectedTheme = themes[theme ?? current];
   return (
-    <div data-theme={current}>
-      <OverlayContainerProvider value="portalContainer">
-        <MarigoldProvider className={className} theme={selectedTheme}>
-          <div className="h-[calc(100dvh-var(--page-header-height))] p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)">
-            {children}
-          </div>
+    <div data-theme="rui">
+      <OverlayContainerProvider container="portalContainer">
+        <MarigoldProvider
+          className={cn(
+            'p-(--page-padding) md:p-(--page-padding-md) xl:p-(--page-padding-xl)',
+            className
+          )}
+          theme={ruiTheme}
+        >
+          {children}
         </MarigoldProvider>
       </OverlayContainerProvider>
     </div>

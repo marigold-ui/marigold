@@ -1,5 +1,60 @@
 # @marigold/theme-docs
 
+## 3.1.3
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+- Updated dependencies [424e2f4]
+- Updated dependencies [81f1c9d]
+  - @marigold/components@14.1.1
+  - @marigold/system@14.1.1
+  - @marigold/theme-plugins@1.0.2
+
+## 3.1.2
+
+### Patch Changes
+
+- Updated dependencies [cc493fc]
+- Updated dependencies [930e633]
+- Updated dependencies [8f550ec]
+- Updated dependencies [69e7b61]
+- Updated dependencies [ea0f758]
+- Updated dependencies [8e178b7]
+- Updated dependencies [2163518]
+- Updated dependencies [37f40ba]
+  - @marigold/components@14.1.0
+  - @marigold/system@14.1.0
+
+## 3.1.1
+
+### Patch Changes
+
+- Updated dependencies [a7ec9d3]
+- Updated dependencies [5e08185]
+- Updated dependencies [6d61be9]
+- Updated dependencies [29e6133]
+  - @marigold/components@14.0.0
+  - @marigold/system@14.0.0
+
+## 3.1.0
+
+### Minor Changes
+
+- 0d7f9db: docs([DST-815]):Updated token display to use RUI theme structure. Replaced deprecated Core and B2B token references with RUI semantic tokens that align with the current design system.
+
+### Patch Changes
+
+- Updated dependencies [9a5791c]
+- Updated dependencies [854e00b]
+- Updated dependencies [430c266]
+- Updated dependencies [c33ad07]
+- Updated dependencies [98bea2e]
+- Updated dependencies [16f6dbb]
+- Updated dependencies [d224a2f]
+  - @marigold/components@13.0.0
+  - @marigold/system@13.0.0
+
 ## 3.0.7
 
 ### Patch Changes
@@ -290,7 +345,6 @@
 ### Minor Changes
 
 - 6687af7: refa: remove footer from `<Dialog>` + allow styles
-
   - dialogs can only have action now
   - align buttons in `<Dialog.Actions>` correctly
 

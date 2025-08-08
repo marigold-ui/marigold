@@ -1,5 +1,136 @@
 # @marigold/docs
 
+## 14.1.1
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+- Updated dependencies [424e2f4]
+- Updated dependencies [81f1c9d]
+  - @marigold/components@14.1.1
+  - @marigold/eslint-config@1.0.2
+  - @marigold/icons@1.3.17
+  - @marigold/system@14.1.1
+  - @marigold/theme-docs@3.1.3
+  - @marigold/theme-rui@1.4.1
+
+## 14.1.0
+
+### Minor Changes
+
+- cc493fc: feat([DST-737]): Add Toast component
+
+  Added ToastProvider Component with corresponding documentation and stories. It's a small Temporary Notification on the edge of the screen, that should be used for messages that don’t need immediate interaction.
+
+- 2163518: feat([DST-899]):Breadcrumb Component
+
+  We added a new Breadcrumbs component to improve navigation and accessibility in the UI.
+  It supports collapsing long breadcrumb lists, custom separators (chevron or slash), and integrates with react-aria-components for full accessibility and keyboard navigation.
+  The component is flexible, supports links and custom content, and includes comprehensive documentation and usage examples.
+
+### Patch Changes
+
+- 930e633: chore: Update `react-aria` (Release 22/07/2025)
+- 69e7b61: refa([DST-978]): Add item and section as child component of `ActionMenu`
+- ea0f758: fix(DST-968): Fix `<Tag>` styles and add multiselect tag filter to filter pattern example
+- 8e178b7: fix([DST-942]): Fix `<Drawer>` on mobile and refactor `<OverlayContainerProvider>`
+- e4224da: docs([DST-875]): Rework row action guideliens for tables
+- Updated dependencies [cc493fc]
+- Updated dependencies [930e633]
+- Updated dependencies [8f550ec]
+- Updated dependencies [69e7b61]
+- Updated dependencies [ea0f758]
+- Updated dependencies [8e178b7]
+- Updated dependencies [2163518]
+- Updated dependencies [906c84f]
+- Updated dependencies [37f40ba]
+  - @marigold/components@14.1.0
+  - @marigold/system@14.1.0
+  - @marigold/theme-rui@1.4.0
+  - @marigold/theme-docs@3.1.2
+  - @marigold/icons@1.3.16
+
+## 14.0.0
+
+### Major Changes
+
+- 6d61be9: refa([DST-904]): **Breaking Changes**: Deprecate `className` prop from `<Button>` component.
+  - Styling should now use `variant` or `size` props instead.
+  - Added `SelectListAction` to `SelectList` for handing actions position.
+
+### Patch Changes
+
+- 5e08185: docs([DST-925]): Introduce "admin- and master mark" pattern
+  fix([DST-925]): Adjust styles of Tabs to work better with badges
+- 9311338: docs([DST-936]): Update tooltip page
+- bb9a8a4: docs([DST-918]): Revise Icon page to match component pages
+- 3a10a1a: docs([DST-886]): update table guidelines
+- 1f58d1a: docs([DST-922]): Revise VisuallyHidden docs
+- 164976c: docs([DST-920]): Revise SVG component page
+- Updated dependencies [a7ec9d3]
+- Updated dependencies [5e08185]
+- Updated dependencies [9311338]
+- Updated dependencies [6d61be9]
+- Updated dependencies [29e6133]
+  - @marigold/components@14.0.0
+  - @marigold/theme-rui@1.3.0
+  - @marigold/theme-docs@3.1.1
+  - @marigold/system@14.0.0
+  - @marigold/icons@1.3.15
+
+## 13.0.0
+
+### Major Changes
+
+- d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
+  - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
+  - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
+  - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
+  - If you are using either of these themes , please update your project to our lates release.
+
+### Minor Changes
+
+- 0d7f9db: docs([DST-815]):Updated token display to use RUI theme structure. Replaced deprecated Core and B2B token references with RUI semantic tokens that align with the current design system.
+
+### Patch Changes
+
+- 1db0d9c: docs([DST-911]): revise `<RouterProvider>` page to new structure
+- 146a8a2: docs: July release blog
+- 9a5791c: docs([DST-914]): Update Divider docs to match new structure of component pages
+
+  **Breaking Change**: Removed `className` property on this component.
+
+- d224a2f: [DST-721]: Deprecate B2B and Core Theme.
+
+  R.I.P core and b2b theme. The core and b2b theme will be no longer maintained but we keep their latest version.
+
+  Also in Marigold-Docs and Storybook it will be no longer possible to switch between the old themes.
+
+- f235ce6: docs: Adding explaination for async loading in `Autocomplete` component docs page
+- 430c266: feat([DSTSUP-158]): List accessibility for `<Stack>` component
+
+  The `<Stack>` component supports a new property `asList` making it possible to provide accessibility when using a `<Stack>` which behaves as a list element. The `<List>` has an updated documentation.
+
+- c33ad07: docs([DST-921]): Revise text component page to new component page structure.
+
+  **Breaking Change**: Some propertys has been removed, including `className` and HtMLElement props.
+
+- 98bea2e: docs([DST-917]): Revise Headline documentation
+- Updated dependencies [0d7f9db]
+- Updated dependencies [9a5791c]
+- Updated dependencies [e31a116]
+- Updated dependencies [854e00b]
+- Updated dependencies [430c266]
+- Updated dependencies [c33ad07]
+- Updated dependencies [98bea2e]
+- Updated dependencies [16f6dbb]
+- Updated dependencies [d224a2f]
+  - @marigold/theme-docs@3.1.0
+  - @marigold/theme-rui@1.2.0
+  - @marigold/components@13.0.0
+  - @marigold/system@13.0.0
+  - @marigold/icons@1.3.14
+
 ## 12.0.5
 
 ### Patch Changes
@@ -343,7 +474,6 @@
   **BREAKING CHANGE:** This PR includes breaking changes, because we removed and changed a lot ot the props API of `<Container>` and `<Breakout>`. The `<Container>` now only works with `<Text>` and `<Headline>` component. This allows for a smoother developer experience and prevents suprises.
 
   Make the `<Container>` and `<Breakout>` component more usable for real world scenarios.
-
   - `<Container>` supporst `space` style prop
   - simplify `<Container>` usage by removing unnecessary props
   - simplify `<Breakout>` and make it composable with other layout components
@@ -446,7 +576,6 @@
   Added possibility to control the dismissable state in `<SectionMessage>`, you can now use `onClose` and `close` to control the closing of a section message.
 
 - d52e52f: docs([DST-624]): Revise `<Calendar>` page and change some properties
-
   - Revised the page according to our new template.
   - Rename `isDateUnavailable` to `dateUnavailable`.
   - Remove the props: `visibleDuration` and `pageBehavior`.
@@ -457,7 +586,6 @@
   Revised `<Inset>` documentation page according to the new structure.
 
 - 85e8cba: feat(DST-608): Make `<XLoader>` accessible and update documentation
-
   - Refactored the `<XLoader>` component to be more accessible
   - Updated the `<XLoader>` documentation page
   - Adjusted styling to fit regular underlay styles when using "fullsize" mode
@@ -526,7 +654,6 @@
   The `<Slider>` component appears in a new guise. Functionalities and documentation have been significantly revised. So make sure to check out the Marigold documentation and storybook. It's worth it.
 
   Some key features are:
-
   - multithumb or range slider
   - visual indicator for selected track
   - use slider in forms
@@ -577,7 +704,6 @@
 ### Major Changes
 
 - caefbe4: refa(listbox): Allow sections in `<Combobox>` and `<Autocomplete>`, adjust Section API in `<Select>`, `<Combobox>` and `<Autocomplete>`.
-
   - Added the possibility to use sections with `<Combobox>` and `<Autocomplete>`
   - Refactored the `<Section>` (from `<Listbox>`) to fit our API, no need for the extra `<Header>` anymore. Instead you can do `<Select.Section header="My header">`, same for the other components
   - Renamed `<Item>` to `<Option>` in `<Combobox>` and `<Autocomplete>` to align with `<Select>`
@@ -592,7 +718,6 @@
 ### Minor Changes
 
 - 6687af7: refa: remove footer from `<Dialog>` + allow styles
-
   - dialogs can only have action now
   - align buttons in `<Dialog.Actions>` correctly
 
@@ -610,7 +735,6 @@
   [DST-494]: added prop `mode`to the `<XLoader />` to support inline and full-section loading
 
 - e83566d: docs: remove examples from checkbox page and add guidline section
-
   - removed the examples section
   - add a guidline about the difference between a checkbox and a switch
   - site clean up
@@ -618,7 +742,6 @@
 - 9ff555b: docs: add landing page to the site
 - 0e77996: docs([DST-572]): Adding a general form guideline in docs explaining different concepts such as when to use lable and help text
 - 380704d: docs[DST-519]: Clean up Marigold Docs/ Improve Navigation
-
   - deleted old files (scripts, about , release)
   - updated some faqs
   - improved the navigation structure
@@ -627,7 +750,6 @@
   - adjust some links
 
 - b8cd92a: feat: `CheckboxGroup` can now be used as a compound component
-
   - Refactored the `CheckboxGroup` to be a compound component and align it with other components: `<CheckboxGroup>` -> `<Checkbox.Group>`
   - Adjusted the Checkbox appearance demo a bit
 

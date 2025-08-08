@@ -5,9 +5,16 @@ import { SVGProps, cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox';
 import { useSelectListContext } from './Context';
 
+type RemovedProps = 'className' | 'style' | 'isDisabled';
+
 export interface SelectListItemProps
-  extends Omit<RAC.GridListItemProps<object>, 'className' | 'style'> {
+  extends Omit<RAC.GridListItemProps<object>, RemovedProps> {
   children?: ReactNode;
+  /**
+   * Whether the item is disabled.
+   * @default false
+   */
+  disabled?: RAC.GridListItemProps<object>['isDisabled'];
 }
 
 const CheckMark = ({ className }: SVGProps) => (
@@ -36,22 +43,26 @@ const SelectionIndicator = ({ selectionMode }: SelectionIndicatorProps) => {
 };
 
 const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
-  ({ children, ...props }, ref) => {
+  ({ children, disabled, ...props }, ref) => {
     let textValue = typeof children === 'string' ? children : undefined;
 
     const { classNames } = useSelectListContext();
     return (
       <SelectListItem
+        isDisabled={disabled}
         textValue={textValue}
         {...props}
-        className={cn('group-[layout=grid]/list:flex-row', classNames?.item)}
+        className={cn(
+          classNames?.item,
+          'grid grid-flow-col [grid-template-columns:min-content_1fr]'
+        )}
         ref={ref}
       >
         {({ selectionMode }) => (
-          <>
+          <div className="selection-indicator contents">
             <SelectionIndicator selectionMode={selectionMode} />
             {children}
-          </>
+          </div>
         )}
       </SelectListItem>
     );

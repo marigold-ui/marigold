@@ -5,7 +5,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { ProgressCycle } from '../ProgressCycle';
 
 // Button is currently only component accepting className because of internal use.
-type RemovedProps = 'isDisabled' | 'isPending';
+type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
 export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   variant?: string;
@@ -16,11 +16,6 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
    * @default false
    */
   fullWidth?: boolean;
-
-  /**
-   * Class of the component.
-   */
-  className?: string;
   /**
    * Children of the component
    */
@@ -40,23 +35,13 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
 
 const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    {
-      children,
-      variant,
-      size,
-      className,
-      disabled,
-      loading,
-      fullWidth,
-      ...props
-    },
+    { children, variant, size, disabled, loading, fullWidth, ...props },
     ref
   ) => {
     const classNames = useClassNames({
       component: 'Button',
       variant,
       size,
-      className,
     });
 
     return (

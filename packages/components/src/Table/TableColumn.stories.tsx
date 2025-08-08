@@ -1,14 +1,11 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
 import { Table } from './Table';
 
 const meta = {
   title: 'Components/Table',
-  parameters: {
-    disableLabelWidth: true,
-  },
   argTypes: {
     align: {
       control: {

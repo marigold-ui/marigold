@@ -1,9 +1,7 @@
 import { ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
-import { UNSAFE_PortalProvider } from '@react-aria/overlays';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
-import { usePortalContainer } from '../Provider/OverlayContainerProvider';
 import { Underlay } from './Underlay';
 
 // Props
@@ -15,17 +13,13 @@ export interface PopoverProps
   > {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
-  container?: Element;
   children: ReactNode;
 }
 
 // Component
 // ---------------
 const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  (
-    { keyboardDismissDisabled, placement, open, children, container, ...rest },
-    ref
-  ) => {
+  ({ keyboardDismissDisabled, placement, open, children, ...rest }, ref) => {
     const props: RAC.PopoverProps = {
       isKeyboardDismissDisabled: keyboardDismissDisabled,
       isOpen: open,
@@ -40,40 +34,31 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
     });
 
     const isSmallScreen = useSmallScreen();
-    const portal = usePortalContainer();
 
     return (
       <>
         {isSmallScreen ? (
-          <UNSAFE_PortalProvider
-            getContainer={() => (portal instanceof HTMLElement ? portal : null)}
+          <Popover
+            ref={ref}
+            {...props}
+            className={cn(
+              'fixed! top-auto! bottom-0! left-0! max-h-fit! w-full',
+              classNames
+            )}
           >
-            <Popover
-              ref={ref}
-              {...props}
-              className={cn(
-                'fixed! top-auto! bottom-0! left-0! max-h-fit! w-full',
-                classNames
-              )}
-            >
-              {children}
-              <Underlay open={open} />
-            </Popover>
-          </UNSAFE_PortalProvider>
+            {children}
+            <Underlay open={open} />
+          </Popover>
         ) : (
-          <UNSAFE_PortalProvider
-            getContainer={() => (portal instanceof HTMLElement ? portal : null)}
+          <Popover
+            ref={ref}
+            {...props}
+            className={classNames}
+            placement={placement}
+            offset={0}
           >
-            <Popover
-              ref={ref}
-              {...props}
-              className={classNames}
-              placement={placement}
-              offset={0}
-            >
-              {children}
-            </Popover>
-          </UNSAFE_PortalProvider>
+            {children}
+          </Popover>
         )}
       </>
     );

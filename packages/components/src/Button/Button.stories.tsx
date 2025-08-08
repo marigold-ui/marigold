@@ -1,6 +1,6 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
+import { useState } from 'storybook/preview-api';
+import { expect, fn, within } from 'storybook/test';
 import { Container, Stack } from '@marigold/components';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
@@ -75,6 +75,22 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
+  args: {
+    onPress: fn(),
+  },
+  render: args => <Button {...args}>Button</Button>,
+  play: async ({ args, canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByText('Button'));
+
+    await expect(args.onPress).toHaveBeenCalled();
+    await expect(canvas.getByText('Button')).toHaveTextContent('Button');
+  },
+};
+
+export const ButtonVariants: Story = {
+  tags: ['component-test'],
   parameters: {
     controls: { exclude: ['variant', 'children', 'loading'] },
   },
@@ -97,7 +113,7 @@ export const Basic: Story = {
       </Stack>
     </Container>
   ),
-  play: async ({ args, canvasElement }) => {
+  play: async ({ args, canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByText('Primary'));
@@ -112,18 +128,22 @@ export const Basic: Story = {
 export const WithIcon: Story = {
   render: ({ children, ...args }) => (
     <Button {...args}>
-      <Facebook />
+      <Facebook size={30} data-testid="facebook" />
       {children}
     </Button>
   ),
 };
 
 export const OnPress: Story = {
-  render: args => <Button {...args} onPress={() => alert('Button clicked.')} />,
+  args: {
+    onPress: () => alert('Button clicked.'),
+  },
 };
 
 export const FullWidth: Story = {
-  render: args => <Button {...args} fullWidth />,
+  args: {
+    fullWidth: true,
+  },
 };
 
 export const Loading: Story = {

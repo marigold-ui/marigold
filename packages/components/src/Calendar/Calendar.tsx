@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components';
-import { WidthProp, cn, useClassNames } from '@marigold/system';
+import {
+  WidthProp,
+  cn,
+  width as twWidth,
+  useClassNames,
+} from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarListBox } from './CalendarListBox';
 import { CalendarContext } from './Context';
@@ -37,7 +42,8 @@ export interface CalendarProps
   variant?: string;
   size?: string;
   /**
-   * Width of the calendar.
+   * Sets the width of the calendar. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default fit
    */
   width?: WidthProp['width'];
   /**
@@ -54,6 +60,7 @@ const _Calendar = ({
   readOnly,
   size,
   variant,
+  width = 'fit',
   dateUnavailable,
   ...rest
 }: CalendarProps) => {
@@ -79,7 +86,8 @@ const _Calendar = ({
     <CalendarContext.Provider value={{ classNames }}>
       <Calendar
         className={cn(
-          'relative flex min-h-[350px] w-fit flex-col rounded-xs p-4',
+          'relative flex min-h-[350px] flex-col rounded-xs p-4',
+          twWidth[width],
           classNames.calendar
         )}
         {...props}

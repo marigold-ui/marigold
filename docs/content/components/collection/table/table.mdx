@@ -106,14 +106,38 @@ Also with the support of single or multiple row actions, they make it convenient
   <Dont.Description>Don't use a table for layouting content.</Dont.Description>
 </Dont>
 
+### Variants
+
+<ul>
+  <li>
+    **Default:** You should use the default variant of the Table component when
+    you want a clean, standard table appearance. It’s ideal for most use cases
+    where you want to display tabular data clearly and simply. The default
+    variant is a good starting point for most tables.
+  </li>
+  <li>
+    **Muted:** Use the `muted` variant for table to reduce visual noise and
+    improve clarity, especially in tables with extensive content. This helps
+    users focus on the data while maintaining a clean and organized appearance.
+  </li>
+  <li>
+    **Grid:** The `grid` variant is useful if you want clearer separation
+    between columns, especially for tables with many columns or dense data. The
+    grid variant adds vertical borders between columns, making it easier to scan
+    and compare values across rows.
+  </li>
+  <li>
+    **Admin- and Master:** Use this variant to identify rows that are only
+    relevant for internal users. [Learn more about its
+    usage.](/patterns/admin-master-mark)
+  </li>
+</ul>
+
 ### Display secondary information
 
 Secondary data in a cell is needed when additional context or details are necessary to fully understand the primary data. The primary data of a table cell should always be displayed clearly. It provides better readability and can improve the user experience. Too much secondary data can overwelm users and make the table complexer and harder to read.
 
-<ComponentDemo
-  file="./table-secondary-content.demo.tsx"
-  disableLabelWidth="true"
-/>
+<ComponentDemo file="./table-secondary-content.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -152,13 +176,13 @@ Secondary data in a cell is needed when additional context or details are necess
 
 If you have large data tables, setting the header to sticky can provide context when scrolling. To do this, set the `stickyHeader` property on the `<Table>` and wrap it in the [Scrollable](../layout/scrollable) component with a specified height, as shown in the example below.
 
-<ComponentDemo file="./table-fixed-header.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-fixed-header.demo.tsx" />
 
 ### Highlight data
 
 This is an example of how you can use the [`<Badge>`](../content/badge) within the `<Table>`. Badges can be used in a table to highlight or categorize certain data, making it easier for users to quickly identify key information. This is a common use case if you need to add status indicators, categorizations, labels or tags within the table.
 
-<ComponentDemo file="./table-badge.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-badge.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -183,7 +207,7 @@ The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, 
 
 To make async sorting more convenient, you can use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
 
-<ComponentDemo file="./table-async.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-async.demo.tsx" />
 
 ### Handling numeric values
 
@@ -191,7 +215,7 @@ With our formatting helper components for dates and numeric values you can easil
 
 Also you see how to use the `align` property on the columns. With that you can set the content of a column to left, center or right.
 
-<ComponentDemo file="./table-numeric.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-numeric.demo.tsx" />
 
 <Do>
   <Do.Description>
@@ -202,37 +226,13 @@ Also you see how to use the `align` property on the columns. With that you can s
   </Do.Description>
 </Do>
 
-### Action on records
-
-Action cells are useful when you need to perform actions. For example, if you need to edit the content of a cell, you can provide an action to open a modal and edit the fields associated with the content.
-
-In this example an [`<ActionMenu>`](../overlay/menu) is used to make interaction possible. The table should only be used with one action cell at the end of the columns.
-
-<ComponentDemo file="./table-action.demo.tsx" disableLabelWidth="true" />
-
-<GuidelineTiles>
-  <Do>
-    <Do.Description>
-      Only use one cell with one action at the end of the Table to call actions.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Description>
-      <ul>
-        <li>Don't use two or more action cells</li>
-        <li>Don't write two or more action components in one action cell.</li>
-      </ul>
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
-
 ### Nested columns
 
 Nested columns can be useful in tables when you need to organize complex or hierarchical data in a more structured format. These columns can be nested, which will result in more than one header row to be created.
 
 Note the usage of `isRowHeader` in the example below. It controls which columns are included in the [accessibility name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name) for each row. By default, only the first column is included, meaning the aria label will be on the first column only.
 
-<ComponentDemo file="./table-nested.demo.tsx" disableLabelWidth="true" />
+<ComponentDemo file="./table-nested.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -249,9 +249,45 @@ Note the usage of `isRowHeader` in the example below. It controls which columns 
   </Dont>
 </GuidelineTiles>
 
-### Multiple Line Table
+### Multiple line cells
 
 If your table contains cells with multiple lines of text, use the `alignY="top"` property on the `<Table>` component to align cell content to the top. This ensures text consistently starts at the top of each cell, making it easier to scan down columns. It also keeps buttons, text, and icons visually aligned, avoiding uneven spacing caused by varying content heights.
+
+<ComponentDemo file="./table-align-top.demo.tsx" />
+
+### Row Actions
+
+Row actions let users interact with individual records directly from a table, such as editing, viewing details, or triggering specific operations. These interactions are essential for working with tabular data, and thoughtful design helps users stay oriented and confident. To support clarity, predictability, and efficiency, it’s important to align how and where these actions appear.
+
+Use the `<Button>` component with the secondary (default) variant for row actions. If the action is destructive, use the destructive variant instead. In both cases, apply the small button size to maintain visual consistency and minimize visual noise in dense table layouts.
+
+When it comes to placement, always position row actions at the end of the row. This improves scannability and clearly signals which parts of the row are interactive, helping users quickly locate available actions.
+
+<ComponentDemo file="./table-action.demo.tsx" />
+
+Show only the most important 1–3 actions per row. These should be the actions users are most likely to need or expect to find without having to open a menu, such as “Edit” or “View.” If you need to support more than three actions, prioritize them by frequency and importance: display the most critical ones directly, and group the rest into a contextual menu using an `<ActionMenu>` (see [ActionMenu section](/components/overlay/menu#actionmenu)). This keeps the row clean and scannable while still offering access to all necessary actions.
+
+Using too many visible actions at once can overwhelm users, make it hard to identify what to do, and increase visual clutter. If space is limited or the layout feels crowded, consider using icon buttons to keep actions compact. Pair them with tooltips to clearly communicate each action’s purpose without adding visual noise.
+
+<SectionMessage>
+  <SectionMessage.Title>Use icons with care</SectionMessage.Title>
+  <SectionMessage.Content>
+    Only use icons when their meaning is clear without explanation. If the icon
+    might be ambiguous, prefer a labeled button or add context with a tooltip.
+  </SectionMessage.Content>
+</SectionMessage>
+
+<ComponentDemo file="./table-action-menu.demo.tsx" />
+
+If you cannot place all row actions at the end of the row, be mindful of clarity and consistency. Actions should remain visually distinct from content and navigation, and be grouped where possible to support scannability. Apply consistent styling to each action and avoid placing them in unexpected locations, as this can increase cognitive load and make it harder for users to understand what they can do in each row.
+
+### Links
+
+Inline links for actions can sometimes be mistaken for regular content and may add visual noise, so it’s best to use them with care. A common and appropriate use of links in tables is placing one on the identifying attribute of a record, such as a name or title, when it leads to the related item or detail view.
+
+When using links in tables, default to the standard `<Link>` component. If the table contains many links, consider simplifying the layout to reduce visual clutter. If links cannot be reduced, use the secondary variant of `<Link>` to maintain clarity and minimize distraction.
+
+<ComponentDemo file="./table-links.demo.tsx" />
 
 ## Props
 
@@ -328,21 +364,24 @@ Is there still not the right alternative for you please [get in touch](../../res
 <TeaserList
   items={[
     {
-      title: 'Recipe for Core Table',
-      href: '../../recipes/table-recipes',
-      caption: 'A recipe for a typical core table.',
+      title: 'Admin- & master mark',
+      href: '/patterns/admin-master-mark',
+      caption: 'Used for marking internal-only features.',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
           viewBox="0 0 24 24"
-          fill="currentColor"
-          className="size-6"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
         >
-          <path
-            fillRule="evenodd"
-            d="M1.5 5.625c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v12.75c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 18.375V5.625ZM21 9.375A.375.375 0 0 0 20.625 9h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5Zm0 3.75a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5Zm0 3.75a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5a.375.375 0 0 0 .375-.375v-1.5ZM10.875 18.75a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375h7.5ZM3.375 15h7.5a.375.375 0 0 0 .375-.375v-1.5a.375.375 0 0 0-.375-.375h-7.5a.375.375 0 0 0-.375.375v1.5c0 .207.168.375.375.375Zm0-3.75h7.5a.375.375 0 0 0 .375-.375v-1.5A.375.375 0 0 0 10.875 9h-7.5A.375.375 0 0 0 3 9.375v1.5c0 .207.168.375.375.375Z"
-            clipRule="evenodd"
-          />
+          <path d="M9 11l-6 6v3h9l3-3" />
+          <path d="M22 12l-4.6 4.6a2 2 0 01-2.8 0l-5.2-5.2a2 2 0 010-2.8L14 4" />
         </svg>
       ),
     },

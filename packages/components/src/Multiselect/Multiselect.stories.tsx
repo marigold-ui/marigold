@@ -1,7 +1,8 @@
-import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { useState } from 'storybook/preview-api';
+import { expect, within } from 'storybook/test';
 import { Stack } from '../Stack';
+import { Text } from '../Text';
 import { Multiselect } from './Multiselect';
 
 const meta: Meta<typeof Multiselect> = {
@@ -26,6 +27,15 @@ const meta: Meta<typeof Multiselect> = {
       table: {
         type: { summary: 'text' },
         defaultValue: { summary: 'This is a help text description' },
+      },
+    },
+    emptyState: {
+      control: {
+        type: 'text',
+      },
+      description: 'Set text when there is no result.',
+      table: {
+        type: { summary: 'text' },
       },
     },
     disabled: {
@@ -110,14 +120,14 @@ export const Basic: Story = {
   tags: ['component-test'],
   render: args => (
     <Multiselect
+      {...args}
       label="Ticket Categories"
       items={ticketCategories}
       placeholder="Select categories..."
       isOptionDisabled={(item: { value: string }) => item.value === 'backstage'}
-      {...args}
     />
   ),
-  play: async ({ step }) => {
+  play: async ({ step, userEvent }) => {
     const canvas = within(document.body);
 
     await step('Open Multiselect', async () => {
@@ -125,7 +135,7 @@ export const Basic: Story = {
 
       await userEvent.click(input);
 
-      expect(await canvas.findByText('General Admission')).toBeVisible();
+      await expect(await canvas.findByText('General Admission')).toBeVisible();
     });
 
     await step('Select an item from Multiselect', async () => {
@@ -133,7 +143,7 @@ export const Basic: Story = {
 
       await userEvent.click(generalOption);
 
-      expect(await canvas.findByText('General Admission')).toBeVisible();
+      await expect(await canvas.findByText('General Admission')).toBeVisible();
     });
 
     await step('Select another item from Multiselect', async () => {
@@ -141,7 +151,9 @@ export const Basic: Story = {
 
       await userEvent.click(VIPOption);
 
-      expect(await canvas.findByText('VIP Experience')).toBeInTheDocument();
+      await expect(
+        await canvas.findByText('VIP Experience')
+      ).toBeInTheDocument();
     });
 
     await step('Support removing selections', async () => {
@@ -152,7 +164,7 @@ export const Basic: Story = {
 
       await userEvent.click(removeButton[0]);
 
-      expect(generalOption).not.toBeVisible();
+      await expect(generalOption).not.toBeVisible();
     });
 
     await step('close Multiselect', async () => {
@@ -161,8 +173,8 @@ export const Basic: Story = {
       await userEvent.keyboard('{Escape}');
       input.blur();
 
-      expect(input).not.toHaveFocus();
-      expect(input).toHaveAttribute('aria-expanded', 'false');
+      await expect(input).not.toHaveFocus();
+      await expect(input).toHaveAttribute('aria-expanded', 'false');
     });
   },
 };
@@ -175,6 +187,7 @@ export const Controlled: Story = {
     return (
       <Stack space={3}>
         <Multiselect
+          {...args}
           label="Ticket Priorities"
           placeholder="Set priorities..."
           items={ticketPriorities}
@@ -185,7 +198,6 @@ export const Controlled: Story = {
           onSelectionChange={(selectedValues: object[]) =>
             setSelectedItems(selectedValues)
           }
-          {...args}
           selectedItems={selectedItems}
         />
         <hr />
@@ -199,5 +211,39 @@ export const Controlled: Story = {
         </pre>
       </Stack>
     );
+  },
+};
+
+const ticketTypes = [
+  { value: '1', label: 'Login Issue' },
+  { value: '2', label: 'Payment Failed' },
+  { value: '3', label: 'Bug Report' },
+  { value: '4', label: 'Feature Request' },
+  { value: '5', label: 'Account Setup' },
+  { value: '6', label: 'Performance Issue' },
+  { value: '7', label: 'Security Concern' },
+  { value: '8', label: 'API Integration' },
+];
+
+export const EmptyResult: Story = {
+  render: args => {
+    return (
+      <Multiselect
+        {...args}
+        label="Ticket Types"
+        items={ticketTypes}
+        placeholder="select a city..."
+        emptyState={() => <Text>no result found</Text>}
+      />
+    );
+  },
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+
+    const input = canvas.getByLabelText('Ticket Types');
+    await userEvent.type(input, 'xyz');
+
+    const result = await canvas.getByText('no result found');
+    expect(result).toBeInTheDocument();
   },
 };

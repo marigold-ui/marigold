@@ -6,7 +6,6 @@ import {
   Card,
   Columns,
   Form,
-  Image,
   Inline,
   Select,
   Stack,
@@ -48,7 +47,7 @@ export default () => {
       </Form>
       <Card px={4} py={6}>
         <Aside sideWidth="160px" space={8}>
-          <Image alt="" src={current.image} />
+          <img alt="" src={current.image} />
           <Stack space={6} id="venueDetails" role="region" aria-live="polite">
             <Stack>
               <Text weight="extrabold" fontSize="2xl">

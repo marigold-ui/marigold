@@ -1,5 +1,5 @@
-import { useState } from '@storybook/preview-api';
 import { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'storybook/preview-api';
 import { Inset } from '../Inset';
 import { Stack } from '../Stack';
 import { Text } from '../Text';

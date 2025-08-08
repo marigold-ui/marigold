@@ -5,8 +5,13 @@ import { useListBoxContext } from './Context';
 
 export type ListBoxItemProps = Omit<
   RAC.ListBoxItemProps,
-  'style' | 'className'
->;
+  'style' | 'className' | 'children'
+> & {
+  /**
+   * The children of the component
+   */
+  children?: React.ReactNode;
+};
 
 const CheckMark = ({ className }: SVGProps) => (
   <svg width="12px" height="10px" viewBox="0 0 12 10" className={className}>
@@ -27,10 +32,10 @@ export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
       // textValue needed because ListBoxItem in this case has multiple children
       textValue={props.textValue ?? String(props.children)}
     >
-      <>
+      <div className="selection-indicator contents">
         <CheckMark className="hidden" />
         {props.children}
-      </>
+      </div>
     </ListBoxItem>
   );
 };

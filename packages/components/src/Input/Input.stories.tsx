@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
 import React from 'react';
+import { expect, within } from 'storybook/test';
 import { Delete, Search } from '@marigold/icons';
 import { Button } from '../Button';
 import { Input } from './Input';
@@ -84,7 +84,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   tags: ['component-test'],
   render: args => <Input {...args} data-testid="input" />,
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     await userEvent.type(canvas.getByTestId('input'), 'Hello World');
@@ -103,11 +103,7 @@ export const WithAction: Story = {
   render: args => (
     <Input
       action={
-        <Button
-          size="small"
-          variant="text"
-          onPress={() => alert('Action executed')}
-        >
+        <Button size="small" onPress={() => alert('Action executed')}>
           <Delete />
         </Button>
       }
@@ -121,7 +117,7 @@ export const WithIcons: Story = {
     <Input
       icon={<Search />}
       action={
-        <Button size="small" variant="text">
+        <Button size="small">
           <Delete />
         </Button>
       }

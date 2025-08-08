@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm';
 import { DateFormat, cn } from '@marigold/system';
 import { IconList } from '@/ui/IconList';
 import {
+  Badge,
   Card,
   Columns,
   Headline,
@@ -78,7 +79,7 @@ const typography = {
   h6: (props: HTMLAttributes<HTMLHeadingElement>) => (
     <Headline level={6} {...props} />
   ),
-  a: (props: HTMLAttributes<HTMLAnchorElement>) => <Link {...props} />,
+  a: (props: any) => <Link {...props} />,
   blockquote: (props: HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote className="mt-6 border-l-2 pl-6 italic" {...props} />
   ),
@@ -172,6 +173,7 @@ const components = {
   LatestPost,
   PostList,
   // Marigold Components
+  Badge,
   Card,
   Columns,
   DateFormat,

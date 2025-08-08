@@ -1,11 +1,9 @@
-import { ActionMenu, Menu } from '@marigold/components';
+import { ActionMenu } from '@marigold/components';
 
-export default () => {
-  return (
-    <ActionMenu onAction={action => alert(`Action: ${action}`)}>
-      <Menu.Item id="edit">Open in editor</Menu.Item>
-      <Menu.Item id="settings">Settings</Menu.Item>
-      <Menu.Item id="delete">Delete</Menu.Item>
-    </ActionMenu>
-  );
-};
+export default () => (
+  <ActionMenu onAction={action => alert(`Action: ${action}`)}>
+    <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
+    <ActionMenu.Item id="settings">Settings</ActionMenu.Item>
+    <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
+  </ActionMenu>
+);

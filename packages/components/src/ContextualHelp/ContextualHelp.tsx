@@ -26,7 +26,7 @@ const icons = {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="lucide lucide-circle-help-icon lucide-circle-help h-5"
+      className="size-5"
     >
       <circle cx="12" cy="12" r="10" />
       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
@@ -44,7 +44,7 @@ const icons = {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="lucide lucide-info-icon lucide-info h-5"
+      className="size-5"
     >
       <circle cx="12" cy="12" r="10" />
       <path d="M12 16v-4" />
@@ -72,8 +72,8 @@ interface DialogTriggerProps
   open?: boolean;
 }
 
-const DialogTrigger = forwardRef<HTMLDivElement, DialogTriggerProps>(
-  ({ open, ...rest }, ref) => <RACDialogTrigger isOpen={open} {...rest} />
+const DialogTrigger = ({ open, ...rest }: DialogTriggerProps) => (
+  <RACDialogTrigger isOpen={open} {...rest} />
 );
 // Props
 // ---------------

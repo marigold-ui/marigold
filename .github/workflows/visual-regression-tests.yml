@@ -1,0 +1,42 @@
+name: Visual-Regression-Tests
+on:
+  pull_request:
+    branches-ignore:
+      - 'renovate/**'
+    types: [opened, synchronize, ready_for_review, labeled]
+
+jobs:
+  chromatic:
+    if: github.event.pull_request.draft == false && contains(github.event.pull_request.labels.*.name, 'run-vrt')
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # 👇only needed when using trigger pull-request nad turbosnap
+          ref: ${{ github.event.pull_request.head.ref }}
+        env:
+          CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.ref }}
+          CHROMATIC_SLUG: ${{ github.repository }}
+      - uses: pnpm/action-setup@v4.0.0 # Uses version from package.json#packageManager
+      - name: Setup Node (using .node-version)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build Storybook
+        run: pnpm build:storybook
+      - name: Run visual regression tests on chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          onlyChanged: false # set to true to enable TurboSnap https://www.chromatic.com/docs/turbosnap/setup/
+          storybookConfigDir: 'config/storybook/.storybook'
+          storybookBuildDir: 'storybook-static'
+          storybookBaseDir: 'config/storybook'
+          debug: true

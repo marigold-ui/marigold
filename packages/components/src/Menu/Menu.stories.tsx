@@ -1,7 +1,8 @@
-import { useState } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, spyOn, userEvent, within } from '@storybook/test';
+import { useState } from 'storybook/preview-api';
+import { expect, spyOn, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
+import { Delete } from '@marigold/icons';
 import { Button } from '../Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
@@ -98,9 +99,9 @@ const meta = {
     },
   },
   args: {
-    placement: 'bottom',
+    placement: undefined,
     variant: undefined,
-    size: 'default',
+    size: undefined,
   },
 } satisfies Meta<typeof Menu>;
 
@@ -117,7 +118,7 @@ export const Basic: Story = {
       <Menu.Item id="slytherin">Slytherin</Menu.Item>
     </Menu>
   ),
-  play: async ({ step }) => {
+  play: async ({ step, userEvent }) => {
     const canvas = within(document.body);
 
     await step('Open the menu', async () => {
@@ -161,7 +162,7 @@ export const OnActionMenu: Story = {
       </Menu>
     );
   },
-  play: async () => {
+  play: async ({ userEvent }) => {
     const canvas = within(document.body);
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
@@ -288,9 +289,11 @@ export const BasicActionMenu: Story = {
   render: args => {
     return (
       <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
-        <Menu.Item id="edit">Open in editor</Menu.Item>
-        <Menu.Item id="settings">Settings</Menu.Item>
-        <Menu.Item id="delete">Delete</Menu.Item>
+        <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
+        <ActionMenu.Item id="settings">Settings</ActionMenu.Item>
+        <ActionMenu.Item id="delete">
+          <Delete /> Delete
+        </ActionMenu.Item>
       </ActionMenu>
     );
   },

@@ -433,7 +433,9 @@ test('DatePicker supports width prop', () => {
   );
   const picker = screen.getByTestId('picker');
 
-  expect(picker.className).toMatchInlineSnapshot(`"group/field w-10 gap-x-0"`);
+  expect(picker.className).toMatchInlineSnapshot(
+    `"group/field flex flex-col w-10"`
+  );
 });
 
 test('DatePicker supports data unavailable property', async () => {

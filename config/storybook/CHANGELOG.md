@@ -1,5 +1,74 @@
 # @marigold/storybook-config
 
+## 3.0.3
+
+### Patch Changes
+
+- 81f1c9d: fix broken release
+- Updated dependencies [424e2f4]
+- Updated dependencies [81f1c9d]
+  - @marigold/components@14.1.1
+  - @marigold/theme-rui@1.4.1
+
+## 3.0.2
+
+### Patch Changes
+
+- 930e633: chore: Update `react-aria` (Release 22/07/2025)
+- Updated dependencies [cc493fc]
+- Updated dependencies [930e633]
+- Updated dependencies [8f550ec]
+- Updated dependencies [69e7b61]
+- Updated dependencies [ea0f758]
+- Updated dependencies [8e178b7]
+- Updated dependencies [2163518]
+- Updated dependencies [906c84f]
+- Updated dependencies [37f40ba]
+  - @marigold/components@14.1.0
+  - @marigold/theme-rui@1.4.0
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [a7ec9d3]
+- Updated dependencies [5e08185]
+- Updated dependencies [9311338]
+- Updated dependencies [6d61be9]
+- Updated dependencies [29e6133]
+  - @marigold/components@14.0.0
+  - @marigold/theme-rui@1.3.0
+
+## 3.0.0
+
+### Major Changes
+
+- d224a2f: style([DST-721]): **Breaking Changes**: Deprecate B2B and Core themes
+  - **_@marigold/theme-b2b_** and **_@marigold/theme-core_** are now deprecated and will no longer receive updates or maintenance. Please migrate to RUI theme package.
+  - The **FieldGroup** component has been removed and is no longer available in `@marigold/components`.
+  - All documentation and Storybook references to the B2B and Core themes, as well as FieldGroup, have been removed.
+  - If you are using either of these themes , please update your project to our lates release.
+
+### Patch Changes
+
+- d224a2f: [DST-721]: Deprecate B2B and Core Theme.
+
+  R.I.P core and b2b theme. The core and b2b theme will be no longer maintained but we keep their latest version.
+
+  Also in Marigold-Docs and Storybook it will be no longer possible to switch between the old themes.
+
+- Updated dependencies [0d7f9db]
+- Updated dependencies [9a5791c]
+- Updated dependencies [e31a116]
+- Updated dependencies [854e00b]
+- Updated dependencies [430c266]
+- Updated dependencies [c33ad07]
+- Updated dependencies [98bea2e]
+- Updated dependencies [16f6dbb]
+- Updated dependencies [d224a2f]
+  - @marigold/theme-rui@1.2.0
+  - @marigold/components@13.0.0
+
 ## 2.0.19
 
 ### Patch Changes

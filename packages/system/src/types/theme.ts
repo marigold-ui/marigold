@@ -33,7 +33,12 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
-    Body?: ComponentStyleFunction<string, string>;
+
+    Breadcrumbs?: Record<
+      'container' | 'item' | 'link' | 'current',
+      ComponentStyleFunction<string, string>
+    >;
+
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
@@ -61,8 +66,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
-    Footer?: ComponentStyleFunction<string, string>;
-    Header?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
@@ -70,7 +73,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     IconButton?: ComponentStyleFunction<string, string>;
-    Image?: ComponentStyleFunction<string, string>;
     Checkbox?: Record<
       'container' | 'label' | 'checkbox' | 'group',
       ComponentStyleFunction<string, string>
@@ -112,7 +114,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Pagination?: Record<
-      'navigationButton' | 'pageButton' | 'icon',
+      'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
     >;
     ProgressCycle?: ComponentStyleFunction<string, string>;
@@ -145,6 +147,21 @@ export type Theme = {
     TextArea?: ComponentStyleFunction<string, string>;
     Tooltip?: Record<
       'container' | 'arrow',
+      ComponentStyleFunction<string, string>
+    >;
+    Toast?: Record<
+      | 'toast'
+      | 'title'
+      | 'description'
+      | 'closeButton'
+      | 'icon'
+      | 'content'
+      | 'bottom-left'
+      | 'bottom-right'
+      | 'top-left'
+      | 'top-right'
+      | 'top'
+      | 'bottom',
       ComponentStyleFunction<string, string>
     >;
     Tabs?: Record<
