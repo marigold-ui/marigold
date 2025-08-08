@@ -3,6 +3,7 @@ import { Button } from 'react-aria-components';
 import { cn } from '@marigold/system';
 
 interface ListBoxProps<T> {
+  dataTestid: string;
   items: T[];
   isDisabled: (item: T, index: number) => boolean;
   isSelected: (item: T, index: number) => boolean;
@@ -14,6 +15,7 @@ interface ListBoxProps<T> {
 }
 
 export function ListBox<T>({
+  dataTestid,
   items,
   isDisabled,
   isSelected,
@@ -29,6 +31,7 @@ export function ListBox<T>({
         'grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 p-2',
         ulClassName
       )}
+      data-testid={dataTestid}
     >
       {items.map((item, index) => {
         const disabled = isDisabled(item, index);

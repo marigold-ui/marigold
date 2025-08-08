@@ -32,6 +32,7 @@ const YearListBox = ({
 
   return (
     <ListBox
+      dataTestid="yearOptions"
       items={years}
       isDisabled={year => year.year < minYear || year.year > maxYear}
       isSelected={year => year.year === state.focusedDate.year}
