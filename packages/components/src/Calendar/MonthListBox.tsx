@@ -28,6 +28,7 @@ const MonthListBox = ({
 
   return (
     <ListBox
+      dataTestid="monthOptions"
       items={months}
       isDisabled={(_, monthIndex) =>
         monthIndex + 1 < minMonth || monthIndex + 1 > maxMonth
