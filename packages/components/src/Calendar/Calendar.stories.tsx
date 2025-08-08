@@ -1,9 +1,9 @@
 import { CalendarDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, fn, within } from '@storybook/test';
 import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { expect, fn, within } from 'storybook/test';
 import { Calendar } from './Calendar';
 
 const meta = {
@@ -51,9 +51,6 @@ const meta = {
         defaultValue: { summary: 'fit' },
       },
     },
-  },
-  args: {
-    defaultValue: new CalendarDate(2025, 8, 7),
   },
 } satisfies Meta<typeof Calendar>;
 
@@ -150,5 +147,23 @@ export const ReadOnly: Story = {
     await userEvent.click(canvas.getByText('19'));
 
     await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+export const OnlyOneMonthAndYear: Story = {
+  ...Basic,
+  tags: ['component-test'],
+  args: {
+    minValue: new CalendarDate(2020, 5, 5),
+    maxValue: new CalendarDate(2020, 5, 20),
+    onChange: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const monthButton = canvas.getByTestId('month');
+    const yearButton = canvas.getByTestId('year');
+
+    await expect(monthButton).toHaveAttribute('disabled');
+    await expect(yearButton).toHaveAttribute('disabled');
   },
 };
