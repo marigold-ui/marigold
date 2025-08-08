@@ -1,5 +1,104 @@
 # @marigold/docs
 
+## 15.0.0
+
+### Major Changes
+
+- 62ac4b8: refa([DST-919]): Remove `<Image>` component
+
+  ## Breaking Change
+
+  The `<Image>` component has been removed from Marigold.
+  Please replace it with the native `<img>` element.
+
+  If you previously used the `fit` or `position` props, you can replicate the same behavior using the corresponding Tailwind CSS utility classes.
+
+  ### Replacement table
+
+  | Prop type    | Prop value    | Tailwind class        |
+  | ------------ | ------------- | --------------------- |
+  | **fit**      | `contain`     | `object-contain`      |
+  |              | `cover`       | `object-cover`        |
+  |              | `fill`        | `object-fill`         |
+  |              | `none`        | `unset`               |
+  |              | `scaleDown`   | `object-scale-down`   |
+  | **position** | `none`        | — (no class)          |
+  |              | `bottom`      | `object-bottom`       |
+  |              | `center`      | `object-center`       |
+  |              | `left`        | `object-left`         |
+  |              | `leftBottom`  | `object-left-bottom`  |
+  |              | `leftTop`     | `object-left-top`     |
+  |              | `right`       | `object-right`        |
+  |              | `rightBottom` | `object-right-bottom` |
+  |              | `rightTop`    | `object-right-top`    |
+  |              | `top`         | `object-top`          |
+
+### Patch Changes
+
+- 47a05e9: docs([DST-938]): Update `DateField` docs to show how to display time and timezone
+- 80a4427: fix: remove deprecated components from theme type
+- de7e592: docs([DST-943]): Remove "recipes" section
+- 6d2d2d4: refa([DST-916]): Remove `<Header>` component and replace with native `<header>`
+
+  ## Breaking Change: `<Header>` component removed
+
+  The `<Header>` component has been removed from Marigold.
+  Please replace it with the native HTML `<header>` element.
+
+  Example migration:
+
+  **Before**
+
+  ```tsx
+  <Header>
+    <h1>Page title</h1>
+  </Header>
+  ```
+
+  **After**
+
+  ```tsx
+  <header>
+    <h1>Page title</h1>
+  </header>
+  ```
+
+- 700ba1b: docs([DST-1002]): Remove banner about core-theme in `Button` docs
+- 1ab48da: refa([DST-915]): Remove `Footer` component
+
+  ## Breaking Change: `<Footer>` component removed
+
+  The `<Footer>` component has been removed from Marigold.
+  Please replace it with the native HTML `<footer>` element.
+
+  **Before**
+
+  ```tsx
+  <Footer>
+    <p>© 2025 Company Name</p>
+  </Footer>
+  ```
+
+  After
+
+  ```tsx
+  <footer>
+    <p>© 2025 Company Name</p>
+  </footer>
+  ```
+
+- Updated dependencies [9881913]
+- Updated dependencies [80a4427]
+- Updated dependencies [9bac182]
+- Updated dependencies [62ac4b8]
+- Updated dependencies [6d2d2d4]
+- Updated dependencies [1ab48da]
+  - @marigold/theme-rui@1.4.2
+  - @marigold/system@15.0.0
+  - @marigold/components@15.0.0
+  - @marigold/icons@1.3.18
+  - @marigold/theme-docs@3.1.4
+
 ## 14.1.1
 
 ### Patch Changes

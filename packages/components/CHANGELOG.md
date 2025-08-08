@@ -1,5 +1,93 @@
 # @marigold/components
 
+## 15.0.0
+
+### Major Changes
+
+- 9bac182: refa([DST-904]): **Breaking Changes**: Rename `noOptionsMessage` property to `emptyState` in `<Multiselect>` component.
+- 62ac4b8: refa([DST-919]): Remove `<Image>` component
+
+  ## Breaking Change
+
+  The `<Image>` component has been removed from Marigold.
+  Please replace it with the native `<img>` element.
+
+  If you previously used the `fit` or `position` props, you can replicate the same behavior using the corresponding Tailwind CSS utility classes.
+
+  ### Replacement table
+
+  | Prop type    | Prop value    | Tailwind class        |
+  | ------------ | ------------- | --------------------- |
+  | **fit**      | `contain`     | `object-contain`      |
+  |              | `cover`       | `object-cover`        |
+  |              | `fill`        | `object-fill`         |
+  |              | `none`        | `unset`               |
+  |              | `scaleDown`   | `object-scale-down`   |
+  | **position** | `none`        | — (no class)          |
+  |              | `bottom`      | `object-bottom`       |
+  |              | `center`      | `object-center`       |
+  |              | `left`        | `object-left`         |
+  |              | `leftBottom`  | `object-left-bottom`  |
+  |              | `leftTop`     | `object-left-top`     |
+  |              | `right`       | `object-right`        |
+  |              | `rightBottom` | `object-right-bottom` |
+  |              | `rightTop`    | `object-right-top`    |
+  |              | `top`         | `object-top`          |
+
+### Patch Changes
+
+- 6d2d2d4: refa([DST-916]): Remove `<Header>` component and replace with native `<header>`
+
+  ## Breaking Change: `<Header>` component removed
+
+  The `<Header>` component has been removed from Marigold.
+  Please replace it with the native HTML `<header>` element.
+
+  Example migration:
+
+  **Before**
+
+  ```tsx
+  <Header>
+    <h1>Page title</h1>
+  </Header>
+  ```
+
+  **After**
+
+  ```tsx
+  <header>
+    <h1>Page title</h1>
+  </header>
+  ```
+
+- 1ab48da: refa([DST-915]): Remove `Footer` component
+
+  ## Breaking Change: `<Footer>` component removed
+
+  The `<Footer>` component has been removed from Marigold.
+  Please replace it with the native HTML `<footer>` element.
+
+  **Before**
+
+  ```tsx
+  <Footer>
+    <p>© 2025 Company Name</p>
+  </Footer>
+  ```
+
+  After
+
+  ```tsx
+  <footer>
+    <p>© 2025 Company Name</p>
+  </footer>
+  ```
+
+- Updated dependencies [80a4427]
+- Updated dependencies [62ac4b8]
+  - @marigold/system@15.0.0
+
 ## 14.1.1
 
 ### Patch Changes
