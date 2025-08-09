@@ -15,19 +15,16 @@ export const AppliedFilter = () => {
       : `${value}` !== `${defaultFilter[name as FilterKeys]}`
   );
 
-  if (!appliedFilters.length) {
-    return (
-      <Inline alignY="center" space="0.5">
-        <Info className="text-muted-foreground size-4 self-center" />
-        <Text variant="muted" fontSize="sm">
-          No filters applied
-        </Text>
-      </Inline>
-    );
-  }
-
   return (
-    <Tag.Group label="Applied Filters" onRemove={removeFilter}>
+    <Tag.Group
+      label="Applied Filters"
+      onRemove={removeFilter}
+      emptyState={() => (
+        <Text variant="muted" fontSize="sm" fontStyle="italic">
+          None
+        </Text>
+      )}
+    >
       {appliedFilters.map(([name, value]) => (
         <Tag id={name} key={name}>
           {toDisplayValue[name as FilterKeys](value as any)}
