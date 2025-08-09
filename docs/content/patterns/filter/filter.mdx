@@ -4,4 +4,47 @@ caption: Understand methods to refine data.
 badge: alpha
 ---
 
-Filtering lets users control which items appear in a data set by showing only those with specific properties. While commonly used with [tables](/components/collection/table), these principles are relevant to a wide range of data sets and application contexts.
+Filtering lets users control which items appear in a data set by showing only those with specific properties. While commonly used with [tables](/components/collection/table) or [tiles](/components/layout/tiles), these principles are relevant to a wide range of data sets and application contexts.
+
+## Anatomy
+
+The filtering pattern brings together components that form a reusable structure, enabling clear and efficient data filtering. While the overall layout is always the same, the individual filters are flexible and can change to match the data set and the application’s needs. This flexibility allows the pattern to fit a wide variety of use cases while still delivering the best possible user experience.
+
+In the image, you can see the main areas of this pattern, along with a visual representation of how they are arranged and how each one contributes to the overall filtering process:
+
+**Data set:** The collection of items or records that the filter operates on. It defines the scope of what can be shown or hidden based on user-selected filter criteria.
+
+**Filter panel:** Interactive controls, contained within a non-modal overlay, that allow users to set parameters or choose values to narrow down which items from the data set are displayed. This approach keeps the filtering options accessible without blocking interaction with the rest of the page, enabling quicker adjustments and a smoother workflow.
+
+**Applied filters:** A visible list or summary of the currently active filter selections, enabling users to quickly review and adjust the filtering criteria. This helps maintain clarity about what is being shown, reduces the chance of confusion, and allows for faster modifications to refine results.
+
+**Pagination:** A way to split the filtered data set into smaller, easier-to-browse pages, improving performance and making navigation through large data sets more manageable.
+
+### Maaaany filters (Simple vs complex)
+
+- required?
+- inline bar vs page sidebar vs inline sidebar ?
+- inline bar only when you have simple filters at most 5?
+
+Page-level sidebars can be used to filter a data set presented in a non-tabular fashion and if filtering the content of the entire page is required. A sidebar should be oriented on the left (start) side of the viewport.
+
+## Usage
+
+Batch filtering supports the user making multiple selections across different parameters and only updating the results of the data set when the user interacts with a global "apply" function. This method is useful when the data set is very large or when the filter parameters are complex.
+
+### Show Applied filters
+
+- add a number badge in the sidebar? (or at the filter element)
+- This, when combined with the applied filters provides a detailed snapshot of what specific filter values are applied to the data set and the relevant parameters that they correspond with.
+
+### Revert filters
+
+If applying filters to a data set yields no results, offer users an option to clear all or specific filters.
+
+This can be done by adding a "Clear all" action to the Application State or by including dismissible Tags for each applied filter.
+
+TODO: Toolbar (from RAC)
+TODO: Collapsable (from RAC Disclosure?)
+TODO: "No filter applied" empty state for applied filters
+
+[Example](/pattern/filter)
