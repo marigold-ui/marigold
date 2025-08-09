@@ -1,7 +1,6 @@
 'use client';
 
-import { Info } from 'lucide-react';
-import { Inline, Tag, Text } from '@marigold/components';
+import { Tag, Text } from '@marigold/components';
 import { defaultFilter, toDisplayValue, useFilter } from './utils';
 
 type FilterKeys = keyof typeof defaultFilter;
