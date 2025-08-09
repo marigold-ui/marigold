@@ -1,6 +1,7 @@
 'use client';
 
-import { Tag } from '@marigold/components';
+import { Info } from 'lucide-react';
+import { Inline, Tag, Text } from '@marigold/components';
 import { defaultFilter, toDisplayValue, useFilter } from './utils';
 
 type FilterKeys = keyof typeof defaultFilter;
@@ -15,7 +16,14 @@ export const AppliedFilter = () => {
   );
 
   if (!appliedFilters.length) {
-    return null;
+    return (
+      <Inline alignY="center" space="0.5">
+        <Info className="text-muted-foreground size-4 self-center" />
+        <Text variant="muted" fontSize="sm">
+          No filters applied
+        </Text>
+      </Inline>
+    );
   }
 
   return (
