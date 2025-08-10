@@ -1,20 +1,24 @@
 ---
-title: Filter
+title: Search and Filter
 caption: Understand methods to refine data.
 badge: alpha
 ---
 
-Filtering lets users control which items appear in a data set by showing only those with specific properties. While commonly used with [tables](/components/collection/table) or [tiles](/components/layout/tiles), these principles are relevant to a wide range of data sets and application contexts.
+In many applications, users often face large or complex data sets that can be overwhelming to navigate. To make sense of this information and get to what matters most, search and filtering features come into play. They help with common tasks such as finding a specific record, narrowing results to meet certain criteria, or comparing a smaller group of items. By reducing the need to scroll through irrelevant results, these tools make workflows faster and more efficient.
 
 ## Anatomy
 
-The filtering pattern brings together components that form a reusable structure, enabling clear and efficient data filtering. While the overall layout remains consistent across implementations, individual component usage is flexible, adapting to the specific data set and the application’s needs. This flexibility allows the pattern to fit a wide variety of use cases while still delivering the best possible user experience.
+The search and filter pattern brings together components that form a reusable structure, enabling clear and efficient data filtering. While the overall layout remains consistent across implementations, individual component usage is flexible, adapting to the specific data set and the application’s needs. This flexibility allows the pattern to fit a wide variety of use cases while still delivering the best possible user experience.
 
 The following image illustrates the main areas of the pattern, showing their placement within the layout and the relationships between them.
 
 ### Data set
 
 _Data set_ is the collection of items to which filters are applied. Items matching the filter parameters are displayed, while others are hidden. This area usually takes up most of the layout because it is the most relevant for the user. Depending on the data, it may appear as a [table](/components/collection/table) or as items arranged in [tiles](/components/layout/tiles) of [cards](/components/content/card).
+
+### Toolbar
+
+The _toolbar_ is an area positioned above the data set. It can contain elements such as a search field, an option to sort the items, and a button to open the full filter panel. This placement provides users with immediate tools to refine results without scrolling, keeping high-priority actions within easy reach.
 
 **Filter panel:** Interactive controls, contained within a non-modal overlay, that allow users to set parameters or choose values to narrow down which items from the data set are displayed. This approach keeps the filtering options accessible without blocking interaction with the rest of the page, enabling quicker adjustments and a smoother workflow.
 
