@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Image } from '../Image';
 import { Aspect } from './Aspect';
 
 const meta = {
@@ -40,10 +39,10 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => (
     <Aspect {...args}>
-      <Image
+      <img
         src="https://images.unsplash.com/photo-1472457897821-70d3819a0e24?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2669&q=80"
         alt="some image"
-        fit="cover"
+        className="object-cover"
       />
     </Aspect>
   ),

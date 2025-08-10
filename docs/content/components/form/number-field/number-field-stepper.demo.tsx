@@ -1,17 +1,11 @@
-import {
-  Header,
-  Headline,
-  NumberField,
-  Stack,
-  Text,
-} from '@marigold/components';
+import { Headline, NumberField, Stack, Text } from '@marigold/components';
 
 export default () => (
   <Stack space={5}>
-    <Header>
+    <div>
       <Headline level={3}>Confirm Guests</Headline>
       <Text>Who’s going on your trip?</Text>
-    </Header>
+    </div>
     <NumberField
       defaultValue={3}
       minValue={0}

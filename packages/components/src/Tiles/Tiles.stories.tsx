@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Headline, Image, Stack, Text, Tiles } from '@marigold/components';
+import { Headline, Stack, Text, Tiles } from '@marigold/components';
 
 const meta = {
   title: 'Components/Tiles',
@@ -52,7 +52,7 @@ export const Basic: StoryObj<typeof Tiles> = {
     <Tiles {...args}>
       <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
-          <Image
+          <img
             src="https://www.pokewiki.de/images/0/09/Hauptartwork_004.png"
             alt="glumanda"
             width={200}
@@ -68,7 +68,7 @@ export const Basic: StoryObj<typeof Tiles> = {
       </div>
       <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
-          <Image
+          <img
             src="https://www.pokewiki.de/images/0/08/Hauptartwork_005.png"
             alt="glutexo"
             width={200}
@@ -85,7 +85,7 @@ export const Basic: StoryObj<typeof Tiles> = {
       </div>
       <div className="border-border-brand border bg-orange-100 p-1">
         <Stack space={4} alignX="center">
-          <Image
+          <img
             src="https://www.pokewiki.de/images/d/de/Hauptartwork_006.png"
             alt="glurak"
             width={250}

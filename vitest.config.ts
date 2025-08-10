@@ -22,6 +22,7 @@ export default defineConfig({
         '**/themes/**',
         '**/packages/types/**',
         '**/*.stories.tsx',
+        'storybook-static/**',
         '**/theme-plugins/**',
         'packages/components/src/_propTableTypes/**',
         // needed for coverage not to break should be fixed soon

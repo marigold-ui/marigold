@@ -1,6 +1,6 @@
 'use client';
 
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 import {
   Button,
   ButtonContext,
@@ -81,6 +81,10 @@ interface MultipleSelectProps
    * Handler that is called when the input changes.
    */
   onChange?: SelectProps['onInputChange'];
+  /**
+   * Provides content to display when there are no items in the list.
+   */
+  emptyState?: (obj: { inputValue: string }) => ReactNode;
   /**
    * Handler that is called when the selection changes.
    */
@@ -210,6 +214,7 @@ export const Multiselect = ({
   variant,
   placeholder,
   description,
+  emptyState,
   onChange,
   onSelectionChange,
   width,
@@ -226,6 +231,7 @@ export const Multiselect = ({
     defaultInputValue: defaultValue,
     defaultValue: defaultSelectedItems,
     value: selectedItems,
+    noOptionsMessage: emptyState,
     onInputChange: onChange,
     onChange: onSelectionChange,
     ...rest,

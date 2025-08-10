@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Dialog, Header } from '@/ui';
+import { Button, Dialog } from '@/ui';
 import { Logo } from '@/ui/Logo';
 import { Navigation } from '@/ui/navigation/Navigation';
 
@@ -33,11 +33,11 @@ export const MobileNavigation = () => (
     <Dialog variant="fullscreen" closeButton>
       {({ close }) => (
         <>
-          <Header className="flex items-center gap-2 pl-4 text-3xl font-bold uppercase tracking-tight text-[#46505a]">
+          <header className="flex items-center gap-2 pl-4 text-3xl font-bold tracking-tight text-[#46505a] uppercase">
             <Logo className="size-10" />
             Marigold
-          </Header>
-          <div className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full bottom-0 right-0 -mr-4 h-[calc(100vh-90px)] overflow-y-auto">
+          </header>
+          <div className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-thumb-rounded-full right-0 bottom-0 -mr-4 h-[calc(100vh-90px)] overflow-y-auto">
             <Navigation onClick={close} />
           </div>
         </>

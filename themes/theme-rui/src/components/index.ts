@@ -1,6 +1,6 @@
 export { Accordion } from './Accordion.styles';
 export { Badge } from './Badge.styles';
-export { Body } from './Body.styles';
+
 export { Button } from './Button.styles';
 export { Card } from './Card.styles';
 export { Checkbox } from './Checkbox.styles';
@@ -16,11 +16,8 @@ export { Drawer } from './Drawer.styles';
 export { IconButton } from './IconButton.styles';
 export { Input } from './Input.styles';
 export { Field } from './Field.styles';
-export { Footer } from './Footer.styles';
-export { Header } from './Header.styles';
 export { Headline } from './Headline.styles';
 export { HelpText } from './HelpText.styles';
-export { Image } from './Image.styles';
 export { Label } from './Label.styles';
 export { Link } from './Link.styles';
 export { List } from './List.styles';
@@ -46,3 +43,4 @@ export { Toast } from './Toast.styles';
 export { Tooltip } from './Tooltip.styles';
 export { Underlay } from './Underlay.styles';
 export { XLoader } from './XLoader.styles';
+export { Breadcrumbs } from './Breadcrumbs.styles';
