@@ -4,27 +4,33 @@ caption: Understand methods to refine data.
 badge: alpha
 ---
 
-In many applications, users often face large or complex data sets that can be overwhelming to navigate. To make sense of this information and get to what matters most, filtering features come into play. They help with tasks such as narrowing results to meet certain criteria or comparing a smaller group of items. By reducing the need to scroll through irrelevant results, filtering makes workflows faster and more efficient.
+In many applications, large or complex data sets can be difficult to navigate. Filtering helps users focus on what matters most by narrowing results to meet specific criteria or comparing a smaller subset of items. By removing irrelevant results, filtering improves efficiency and makes workflows smoother.
 
 ## Anatomy
 
-The filter pattern brings together components that form a reusable structure, enabling clear and efficient data filtering. While the overall layout remains consistent across implementations, individual component usage is flexible, adapting to the specific data set and the application’s needs. This flexibility allows the pattern to fit a wide variety of use cases while still delivering the best possible user experience.
+The filtering pattern in Marigold combines consistent layout with flexible component usage. While the overall structure remains the same, the specific components used can be adapted to the data set and the application’s context. This adaptability allows the pattern to support a wide range of use cases while delivering a clear and efficient user experience.
 
-The following image illustrates the main areas of the pattern, showing their placement within the layout and the relationships between them.
+The image below shows the main areas of the pattern, their placement within the layout, and how they work together.
 
-### Data set
+### Data Set
 
-_Data set_ is the collection of items to which filters are applied. Items matching the filter parameters are displayed, while others are hidden. This area usually takes up most of the layout because it is the most relevant for the user. Depending on the data, it may appear as a [table](/components/collection/table) or as items arranged in [tiles](/components/layout/tiles) of [cards](/components/content/card).
+The data set is the collection of items to which filters are applied. Items that match the filter criteria are displayed, while others are hidden. This area typically takes up most of the layout because it is the primary focus for the user. Depending on the type of data, it can appear as a [table](/components/collection/table) or as items arranged in [tiles](/components/layout/tiles) and [cards](/components/content/card).
 
 ### Toolbar
 
-The _toolbar_ is an area positioned above the data set. It can contain elements such as a search field, an option to sort the items, and a button to open the full filter panel. This placement provides users with immediate tools to refine results without scrolling, keeping high-priority actions within easy reach.
+The toolbar is positioned above the data set and may include elements such as a search field, sorting options, and a button to open the filter panel. Placing these controls here gives users quick access to actions that refine results without requiring them to scroll.
 
-**Filter panel:** Interactive controls, contained within a non-modal overlay, that allow users to set parameters or choose values to narrow down which items from the data set are displayed. This approach keeps the filtering options accessible without blocking interaction with the rest of the page, enabling quicker adjustments and a smoother workflow.
+### Applied Filter
 
-**Applied filters:** A visible list or summary of the currently active filter selections, enabling users to quickly review and adjust the filtering criteria. This helps maintain clarity about what is being shown, reduces the chance of confusion, and allows for faster modifications to refine results.
+This area lists the filters currently in use, allowing quick review and adjustments. It also offers a single action to clear all filters at once. This gives the user clarity about what is being displayed, prevents confusion, and enables faster refinements.
 
-**Pagination:** A way to split the filtered data set into smaller, easier-to-browse pages, improving performance and making navigation through large data sets more manageable.
+### Filter Panel
+
+The filter controls, for example checkboxes, radio buttons and sliders, are shown in a panel that slides in from the right side of the page. While it overlaps part of the content, it does not block the rest of the page, so other content remains visible and interactive. This approach allows filters to be changed without breaking the flow of work, keeping the process quick and seamless.
+
+### Pagination
+
+Located below the data set, the pagination divides the filtered results into smaller, manageable pages. Placing it here keeps navigation controls close to the content they affect, provides a natural reading flow from the data to the controls, and reduces cognitive load, making it easier to browse large data sets.
 
 ## Maaaany filters (Simple vs complex)
 
