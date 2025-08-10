@@ -8,11 +8,13 @@ Filtering lets users control which items appear in a data set by showing only th
 
 ## Anatomy
 
-The filtering pattern brings together components that form a reusable structure, enabling clear and efficient data filtering. While the overall layout is always the same, the individual filters are flexible and can change to match the data set and the application’s needs. This flexibility allows the pattern to fit a wide variety of use cases while still delivering the best possible user experience.
+The filtering pattern brings together components that form a reusable structure, enabling clear and efficient data filtering. While the overall layout remains consistent across implementations, individual component usage is flexible, adapting to the specific data set and the application’s needs. This flexibility allows the pattern to fit a wide variety of use cases while still delivering the best possible user experience.
 
-In the image, you can see the main areas of this pattern, along with a visual representation of how they are arranged and how each one contributes to the overall filtering process:
+The following image illustrates the main areas of the pattern, showing their placement within the layout and the relationships between them.
 
-**Data set:** The collection of items or records that the filter operates on. It defines the scope of what can be shown or hidden based on user-selected filter criteria.
+### Data set
+
+_Data set_ is the collection of items to which filters are applied. Items matching the filter parameters are displayed, while others are hidden. This area usually takes up most of the layout because it is the most relevant for the user. Depending on the data, it may appear as a [table](/components/collection/table) or as items arranged in [tiles](/components/layout/tiles) of [cards](/components/content/card).
 
 **Filter panel:** Interactive controls, contained within a non-modal overlay, that allow users to set parameters or choose values to narrow down which items from the data set are displayed. This approach keeps the filtering options accessible without blocking interaction with the rest of the page, enabling quicker adjustments and a smoother workflow.
 
@@ -20,13 +22,11 @@ In the image, you can see the main areas of this pattern, along with a visual re
 
 **Pagination:** A way to split the filtered data set into smaller, easier-to-browse pages, improving performance and making navigation through large data sets more manageable.
 
-### Maaaany filters (Simple vs complex)
+## Maaaany filters (Simple vs complex)
 
 - required?
 - inline bar vs page sidebar vs inline sidebar ?
 - inline bar only when you have simple filters at most 5?
-
-Page-level sidebars can be used to filter a data set presented in a non-tabular fashion and if filtering the content of the entire page is required. A sidebar should be oriented on the left (start) side of the viewport.
 
 ## Usage
 
