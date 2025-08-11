@@ -43,7 +43,11 @@ export default () => {
                 />
               </Table.Cell>
               <Table.Cell>
-                <DateFormat value={event.date} dateStyle="medium" />
+                <DateFormat
+                  value={event.date}
+                  dateStyle="medium"
+                  tabular={tabular}
+                />
               </Table.Cell>
             </Table.Row>
           ))}
