@@ -101,6 +101,22 @@ You can now easily access `ActionMenu.Item` and `ActionMenu.Section` directly, w
 </ActionMenu>
 ```
 
+### Formatters
+
+`<DateFormat>` now supports formatting and localizing date ranges by accepting a tuple of dates. This makes it easy to display periods like "Jan 1, 2025 – Dec 31, 2025" in a way that adapts to the user's locale.
+
+```tsx
+<DateFormat value={[new Date(2025, 0, 1), new Date(2025, 11, 31)]} />
+```
+
+### Multiselect
+
+The `<Multiselect>` component now supports an empty state, providing clear feedback when no options are available or selected.
+
+```tsx
+<Multiselect emptyState={() => 'No results found.'}>{/* ... */}</Multiselect>
+```
+
 ## Design
 
 - Icons inside `<Menu.Item>` and `<ActionMenu.Item>` are now styled consistently with the rest of the menu content. This ensures better alignment and visual clarity for menus that include icons alongside text, making your menus look more polished out of the box.
@@ -109,7 +125,9 @@ You can now easily access `ActionMenu.Item` and `ActionMenu.Section` directly, w
 ## Documentation
 
 - The release process for components is now fully documented. Learn more in the [Release Phases guide](/getting-started/release-phases).
+- Removed the "recipe" section in favor of more complete patterns. Relevant information can now be found in the "patterns" section (e.g. the preliminary navigation).
 - The row actions guidelines for tables have been updated and improved. See details in the [Table documentation](/components/collection/table#row-actions).
+- The `<DateField>` documentation now includes examples for enabling time input alongside the calendar date, making it easier to support use cases that require both date and time selection.
 
 ## Bug fixes
 
