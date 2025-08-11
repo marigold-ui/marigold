@@ -110,6 +110,9 @@ export const ButtonVariants: Story = {
         <Button {...args} variant="ghost">
           Ghost
         </Button>
+        <Button {...args} variant="link">
+          Link
+        </Button>
       </Stack>
     </Container>
   ),
