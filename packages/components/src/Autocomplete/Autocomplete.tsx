@@ -1,16 +1,20 @@
 import React, {
   ForwardRefExoticComponent,
+  ReactNode,
   Ref,
   RefAttributes,
   forwardRef,
 } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
+import { Center } from '../Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Overlay/Popover';
+import { intlMessages } from '../intl/messages';
 
 // Search Input (we can't use our SearchField because of FieldBase)
 //----------------
@@ -34,9 +38,12 @@ interface AutocompleteInputProps {
    * Ref to the input element.
    */
   ref?: Ref<HTMLInputElement> | undefined;
+
+  loading?: boolean;
 }
 
 const AutocompleteInput = ({
+  loading,
   onSubmit,
   onClear,
   ref,
@@ -48,6 +55,7 @@ const AutocompleteInput = ({
   return (
     <SearchInput
       ref={ref}
+      loading={loading}
       className={{
         action: cn(
           state?.inputValue === '' ? 'invisible' : 'visible',
@@ -143,6 +151,17 @@ export interface AutocompleteProps
    */
   readOnly?: RAC.ComboBoxProps<object>['isReadOnly'];
 
+  /**
+   * Provides content to display when there are no items in the list.
+   */
+  emptyState?: ReactNode;
+
+  /**
+   * If `true`, a loading spinner will show up.
+   * @default false
+   */
+  loading?: boolean;
+
   variant?: string;
   size?: string;
   placeholder?: string;
@@ -182,13 +201,15 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       children,
       defaultValue,
       value,
-      onChange,
-      onClear,
-      onSubmit,
       disabled,
       error,
       readOnly,
       required,
+      emptyState,
+      loading,
+      onChange,
+      onClear,
+      onSubmit,
       ...rest
     }: AutocompleteProps,
     ref
@@ -206,11 +227,26 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       ...rest,
     };
 
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
-        <AutocompleteInput onSubmit={onSubmit} onClear={onClear} ref={ref} />
+        <AutocompleteInput
+          loading={loading}
+          onSubmit={onSubmit}
+          onClear={onClear}
+          ref={ref}
+        />
         <Popover>
-          <ListBox>{children}</ListBox>
+          <ListBox
+            renderEmptyState={() =>
+              emptyState ?? (
+                <Center>{stringFormatter.format('noResultsFound')}</Center>
+              )
+            }
+          >
+            {children}
+          </ListBox>
         </Popover>
       </FieldBase>
     );

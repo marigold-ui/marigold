@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { screen } from '@testing-library/react';
 import React, { Key } from 'react';
+import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
@@ -28,6 +30,25 @@ const meta = {
       table: {
         type: { summary: 'text' },
         defaultValue: { summary: 'This is a help text description' },
+      },
+    },
+    emptyState: {
+      control: {
+        type: 'text',
+      },
+      description: 'Set text when there is no result.',
+      table: {
+        type: { summary: 'text' },
+      },
+    },
+    allowsEmptyCollection: {
+      control: {
+        type: 'boolean',
+      },
+      description: 'allow empty collection',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
     disabled: {
@@ -106,21 +127,37 @@ const meta = {
 } satisfies Meta;
 
 export default meta;
+type Story = StoryObj<typeof ComboBox>;
 
-export const Basic: StoryObj<typeof ComboBox> = {
+export const Basic: Story = {
+  tags: ['component-test'],
   render: args => {
     return (
-      <ComboBox label="Animals" disabledKeys={['snake']} {...args}>
-        <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
-        <ComboBox.Option id="cat">Cat</ComboBox.Option>
-        <ComboBox.Option id="dog">Dog</ComboBox.Option>
-        <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
-        <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
-        <ComboBox.Option id="snake">Snake</ComboBox.Option>
-        <ComboBox.Option id="vegan">Vegan</ComboBox.Option>
-        <ComboBox.Option id="mar">Margrita</ComboBox.Option>
-      </ComboBox>
+      <I18nProvider locale="de-DE">
+        <ComboBox
+          label="Animals"
+          disabledKeys={['snake']}
+          allowsEmptyCollection
+          {...args}
+        >
+          <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+          <ComboBox.Option id="cat">Cat</ComboBox.Option>
+          <ComboBox.Option id="dog">Dog</ComboBox.Option>
+          <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+          <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+          <ComboBox.Option id="snake">Snake</ComboBox.Option>
+          <ComboBox.Option id="vegan">Vegan</ComboBox.Option>
+          <ComboBox.Option id="mar">Margrita</ComboBox.Option>
+        </ComboBox>
+      </I18nProvider>
     );
+  },
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+    await userEvent.type(input, 'xyz');
+    const emptyState = await screen.findByText('Kein Ergebnis gefunden');
+    expect(emptyState).toBeInTheDocument();
   },
 };
 
@@ -145,7 +182,7 @@ export const Controlled: StoryObj<typeof ComboBox> = {
           <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
           <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
         </ComboBox>
-        <pre>
+        <pre data-testid="output">
           current: {current}, selected: {id?.toString()}
         </pre>
       </Stack>
@@ -181,7 +218,24 @@ export const Controlled: StoryObj<typeof ComboBox> = {
   },
 };
 
-export const AsyncLoading: StoryObj<typeof ComboBox> = {
+export const ManualMenuTrigger: Story = {
+  tags: ['component-test'],
+  ...Basic,
+  args: {
+    menuTrigger: 'manual',
+  },
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, '{arrowdown}');
+    const result = await canvas.findByText('Red Panda');
+
+    await expect(result).toBeVisible();
+  },
+};
+
+export const AsyncLoading: Story = {
   render: args => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
@@ -211,6 +265,15 @@ export const AsyncLoading: StoryObj<typeof ComboBox> = {
         )}
       </ComboBox>
     );
+  },
+  play: async ({ userEvent }) => {
+    const canvas = within(document.body);
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'luke');
+
+    const option = await screen.findByText('Luke Skywalker');
+    expect(option).toBeVisible();
   },
 };
 
