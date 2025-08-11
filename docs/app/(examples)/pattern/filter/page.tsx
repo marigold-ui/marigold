@@ -7,7 +7,7 @@
  * TODO: indicate when there is a unapplied filters (drawer)?
  * TODO: TagGroup can not be used in a form, because it has no name attribute
  */
-import { Headline, Stack } from '@/ui';
+import { Stack } from '@/ui';
 import { AppliedFilter } from './applied-filter';
 import { Toolbar } from './toolbar';
 import { VenuesView } from './venues-view';
@@ -15,7 +15,6 @@ import { VenuesView } from './venues-view';
 const FilterPage = () => {
   return (
     <Stack space={8}>
-      <Headline>Venues</Headline>
       <Toolbar />
       <AppliedFilter />
       <VenuesView />
