@@ -6,6 +6,9 @@ changed:
   - components/collection/table
   - components/navigation/breadcrumbs
   - components/overlay/tooltip
+  - components/form/autocomplete
+  - components/form/combobox
+  - patterns/async-data-loading
 ---
 
 While many are taking a summer break, Marigold never rests! v15.0.0 arrives with hot new features and improvements to keep your projects blooming all season long. Check out what’s fresh below! 🍉
@@ -123,6 +126,24 @@ The `<Multiselect>` component now supports an empty state, providing clear feedb
 - Prevent page bounce when `<Scrollable>` is used inside a page.
 
 ## Documentation
+
+We've added comprehensive async data loading pattern documentation that provides clear guidelines for implementing components that fetch data from remote sources. These patterns ensure consistent user experience across `<ComboBox>`, `<Autocomplete>`, and other interactive components that work with dynamic data. The documentation covers two main approaches: **useAsyncList** for built-in filtering and loading states (recommended for most scenarios), and **React Query** for advanced caching with automatic request deduplication when you need sophisticated caching strategies.
+
+**Example:**
+
+```tsx
+const list = useAsyncList({
+  async load({ signal, filterText }) {
+    const res = await fetch(`/api/search?q=${filterText}`, { signal });
+    const json = await res.json();
+    return { items: json.results };
+  },
+});
+
+<Autocomplete items={list.items} onInputChange={list.setFilterText}>
+  {/* Autocomplete content */}
+</Autocomplete>;
+```
 
 - The release process for components is now fully documented. Learn more in the [Release Phases guide](/getting-started/release-phases).
 - Removed the "recipe" section in favor of more complete patterns. Relevant information can now be found in the "patterns" section (e.g. the preliminary navigation).
