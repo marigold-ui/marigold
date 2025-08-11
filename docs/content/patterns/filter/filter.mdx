@@ -68,10 +68,6 @@ Another helpful method is adding a filter filter, which is a small search field 
 // the `Autocomplete` from RAC?
 ```
 
-### Applied Filter Labels
-
-When constructing labels for applied filters, use a clear structure so users can immediately understand what the label means. The recommended method is to combine three parts: the identifier (what is being filtered, such as category, property, or type), the relative or absolute operator (how the filter applies, for example is, is above, is between, or a direct match), and the value (the specific number, threshold, or date).
-
 ### Batch Filtering
 
 Batch filtering allows multiple selections to be made across different parameters without instantly updating the results. Instead, the data set is refreshed only when a global "apply" action is triggered. This approach is particularly effective for very large data sets or when the filtering parameters are complex, as it prevents unnecessary refreshes and provides users with more control over when the results update.
@@ -81,15 +77,6 @@ Batch filtering allows multiple selections to be made across different parameter
 Empty states occur when no items match the applied filters, often because the criteria are too narrow, the filters conflict with each other, or the data set lacks matching values. This situation should be clearly communicated through the data set area itself, for example by displaying a clear message or visual placeholder where results would normally appear. Doing so helps users quickly understand why no results are shown and guides them toward resolving the issue. Supportive actions can include suggesting broader parameters, offering related content, or providing an easy-to-access "clear filters" control to reset the view and start fresh.
 
 <ComponentDemo file="./filter-empty-state.demo.tsx" />
-
-### Reverting Filters
-
-When applying filters results in no matches, it is important to provide a quick way to remove them. This can include options to remove individual filters directly from the applied filters area, or to completely clear all filters at once using an action in the toolbar. These approaches ensure users can easily adjust or reset their selections without unnecessary steps.
-
-```js
-//TODO: What element do we need to use here? Do we need a button
-// with variant "link" (which just makes it blue)
-```
 
 ### Applied Filter Labels
 
@@ -103,6 +90,15 @@ When an applied filter contains a large number of values, avoid grouping them al
 
 ```js
 // TODO: should we make a helps to create these labels? this could also do i18n
+```
+
+### Reverting Filters
+
+When applying filters results in no matches, it is important to provide a quick way to remove them. This can include options to remove individual filters directly from the applied filters area, or to completely clear all filters at once using an action in the toolbar. These approaches ensure users can easily adjust or reset their selections without unnecessary steps.
+
+```js
+//TODO: What element do we need to use here? Do we need a button
+// with variant "link" (which just makes it blue)
 ```
 
 ## Demo
