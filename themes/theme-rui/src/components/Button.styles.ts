@@ -17,9 +17,9 @@ export const Button: ThemeComponent<'Button'> = cva(
         secondary:
           'border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
         ghost: 'hover:bg-hover hover:text-foreground',
-        link: 'text-link',
+        link: 'text-link util-touch-hitbox',
       },
       size: {
         default: 'text-sm',
