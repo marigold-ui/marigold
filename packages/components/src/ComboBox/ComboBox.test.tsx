@@ -1,10 +1,13 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { vi } from 'vitest';
 import * as stories from './ComboBox.stories';
 
 const { Basic } = composeStories(stories);
+
+const user = userEvent.setup();
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -109,4 +112,42 @@ test('supports default value', () => {
   const textField = screen.getAllByLabelText('Label')[0];
 
   expect(textField).toHaveValue('garlic');
+});
+
+test('supports autocompletion', async () => {
+  render(<Basic label="Label" />);
+
+  const input = screen.getAllByLabelText('Label')[0];
+  await user.type(input, 'do');
+
+  const dog = screen.getByText('Dog');
+  await user.click(dog);
+
+  expect(input).toHaveValue('Dog');
+});
+
+test('supports loading state', () => {
+  render(<Basic label="Label" loading />);
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('hides loading state when loading is false', () => {
+  render(<Basic label="Label" loading={false} />);
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+});
+
+test('supports specific empty state text', async () => {
+  render(
+    <Basic
+      label="Label"
+      allowsEmptyCollection
+      emptyState="No vegetables found"
+    />
+  );
+
+  const input = screen.getAllByLabelText('Label')[0];
+  await user.type(input, 'xyz');
+
+  const emptyState = await screen.findByText('No vegetables found');
+  expect(emptyState).toBeInTheDocument();
 });
