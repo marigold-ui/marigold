@@ -3,7 +3,7 @@ import { cva } from '@marigold/system';
 
 export const Button: ThemeComponent<'Button'> = cva(
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
+    'inline-flex gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
     'duration-150 active:scale-[0.98] pressed:scale-[0.98]',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     'focus-visible:util-focus-ring outline-none disabled:util-disabled',
@@ -33,6 +33,10 @@ export const Button: ThemeComponent<'Button'> = cva(
       size: 'default',
     },
     compoundVariants: [
+      {
+        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        class: 'items-center justify-center',
+      },
       {
         variant: ['primary', 'secondary', 'destructive', 'ghost'],
         size: 'default',
