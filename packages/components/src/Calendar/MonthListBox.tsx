@@ -1,4 +1,4 @@
-import { Dispatch, Key, SetStateAction, useContext } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import { CalendarStateContext, DateValue } from 'react-aria-components';
 import { useCalendarContext } from './Context';
 import { ListBox } from './ListBox';
