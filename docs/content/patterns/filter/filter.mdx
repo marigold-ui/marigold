@@ -30,12 +30,6 @@ The image below shows the main areas of the pattern, their placement within the 
 
 Filters are most valuable when a data set is too large or complex for users to easily scan in its entirety. They become especially useful when multiple parameters or categories can significantly narrow the results. Well-applied filters streamline the process of finding relevant items, reduce information overload, and enable users to complete tasks more efficiently.
 
-<Center>[View Demo](/pattern/filter)</Center>
-
-```js
-// TODO: make the demo more prominent, e.g. by putting a image with a link here
-```
-
 ### Types and Formats
 
 Filters can be presented in several formats depending on the type of data and how users are expected to interact with it. The choice of filter type should reflect the nature of the data, the available space in the interface, and the intended user workflow. Common types include:
@@ -99,16 +93,26 @@ When applying filters results in no matches, it is important to provide a quick 
 // with variant "link" (which just makes it blue)
 ```
 
-### Show Applied filters
+### Applied Filter Labels
 
 The recommended approach for applied filter labels is to keep them clear and structured. Combine three parts: the _identifier_ (what is filtered, such as category, property, or type), the relative or absolute _operator_ (how it applies, for example is, is above, is between, or a direct match), and the _value_ (the number, threshold, or date).
 
 For absolute values, pair the filter name with its exact value, for example "Status is Approved", to be concise yet precise. For relative values, add the relative term and exact dates or details, such as "Last 7 days (Aug 3 – Aug 9)", to avoid ambiguity. Use clear operators like "is", "is between", "before", "after", and "in the last" for readability. Symbols (>, =, :) can work in compact or technical views but may be less clear for broad audiences, especially with relative timeframes.
 
-Whether using absolute or relative values, apply the same format throughout the interface. Consistency helps users quickly scan and understand their filters, which is especially important in complex filtering scenarios.
+When an applied filter contains a large number of values, avoid grouping them all into a single tag, as this makes scanning and reading difficult and disrupts consistent sizing. Instead, display only the first two or three values, then indicate the number of remaining ones with a clear count, for example “(+7 more)”.
+
+<ComponentDemo file="./filter-applied-filter-label.demo.tsx" />
 
 ```js
-// TODO: Demo showing some filter examples
+// TODO: should we make a helps to create these labels? this could also do i18n
+```
+
+## Demo
+
+<Center>[View Demo](/pattern/filter)</Center>
+
+```js
+// TODO: make the demo more prominent, e.g. by putting a image with a link here
 ```
 
 ---
