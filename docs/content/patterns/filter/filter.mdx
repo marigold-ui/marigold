@@ -19,7 +19,6 @@ The image below shows the main areas of the pattern, their placement within the 
   width="400"
   height="300"
 />
-<Center>[View Demo](/pattern/filter)</Center>
 
 - **Data Set:** The data set is the collection of items to which filters are applied. Items that match the filter criteria are displayed, while others are hidden. This area typically takes up most of the layout because it is the primary focus for the user. Depending on the type of data, it can appear as a [table](/components/collection/table) or as items arranged in [tiles](/components/layout/tiles) and [cards](/components/content/card).
 - **Toolbar:** The toolbar is positioned above the data set and may include elements such as a search field, sorting options, and a button to open the filter panel. Placing these controls here gives users quick access to actions that refine results without requiring them to scroll.
@@ -31,30 +30,91 @@ The image below shows the main areas of the pattern, their placement within the 
 
 Filters are most valuable when a data set is too large or complex for users to easily scan in its entirety. They become especially useful when multiple parameters or categories can significantly narrow the results. Well-applied filters streamline the process of finding relevant items, reduce information overload, and enable users to complete tasks more efficiently.
 
+<Center>[View Demo](/pattern/filter)</Center>
+
+```js
+// TODO: make the demo more prominent, e.g. by putting a image with a link here
+```
+
+### Types and Formats
+
+Filters can be presented in several formats depending on the type of data and how users are expected to interact with it. The choice of filter type should reflect the nature of the data, the available space in the interface, and the intended user workflow. Common types include:
+
+| Type         | Description                                                                                                                                                                                               | Component                                    |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **Single**   | Allows only one option to be chosen from a set, such as selecting a single category or status. A radio group is typically used, as it makes the one-choice rule clear and supports quick decision-making. | [Radio](/components/form/radio)              |
+| **Multiple** | Enables users to select several options at once, for example multiple categories or attributes. Checkboxes clearly signal that multiple selections are possible and give instant visual confirmation.     | [Checkbox](/components/form/checkbox)        |
+| **Range**    | Lets users choose values within a continuous range, making it ideal for filtering quantities, prices, or measurements. Sliders provide an intuitive way to adjust values without manual input.            | [Slider](/components/form/slider)            |
+| **Min/Max**  | Provides precise control over numeric ranges by allowing exact lower and upper limits to be entered. This is useful when accuracy is important.                                                           | [NumberField](/components/form/number-field) |
+| **Contains** | Filters items based on specific words or phrases entered by the user. This method is valuable for keyword searches or partial matches.                                                                    | [TextField](/components/form/text-field)     |
+
 ### Creating Effective Filters
 
 When creating filters, ensure the chosen parameters directly match actual properties or categories in the data set, so it is obvious to the user how their selections change the displayed results. Each filter’s purpose should be unambiguous, allowing users to refine results in a precise and efficient way without confusion.
 
 Organize filters in a logical order, such as by most-used, so they are intuitive to find and apply. Use clear, descriptive labels so their purpose is immediately understood. Limit the number of filters to those that provide genuine value, keeping the interface focused, uncluttered, and easy to navigate.
 
-###
+```js
+// TODO: need some visual break here to have not too much text. maybe do/donts?
+```
 
-### Batch filtering
+### Managing Many Options
 
-Batch filtering supports the user making multiple selections across different parameters and only updating the results of the data set when the user interacts with a global "apply" function. This method is useful when the data set is very large or when the filter parameters are complex.
+When a filter offers many possible options, showing them all at once can overwhelm users and make scanning difficult. A better approach is to display only the most relevant or frequently used options first, with a "show more" button to reveal the full list when needed. This keeps the panel compact, easier to read, and still allows full access when required.
+
+```js
+// TODO: demo with a more link (should we include this in radio and checkboxes?)
+```
+
+Another helpful method is adding a filter filter, which is a small search field within the filter panel. This allows users to quickly locate specific options without scrolling through long lists. Using these techniques together makes it faster and easier to find the right criteria, reducing effort and improving the overall experience.
+
+```js
+// TODO: Create a demo. Issue is that this is only possible with a
+// `<ListBox>` in RAC currently. but maybe we can do this without
+// the `Autocomplete` from RAC?
+```
+
+### Applied Filter Labels
+
+When constructing labels for applied filters, use a clear structure so users can immediately understand what the label means. The recommended method is to combine three parts: the identifier (what is being filtered, such as category, property, or type), the relative or absolute operator (how the filter applies, for example is, is above, is between, or a direct match), and the value (the specific number, threshold, or date).
+
+### Batch Filtering
+
+Batch filtering allows multiple selections to be made across different parameters without instantly updating the results. Instead, the data set is refreshed only when a global "apply" action is triggered. This approach is particularly effective for very large data sets or when the filtering parameters are complex, as it prevents unnecessary refreshes and provides users with more control over when the results update.
+
+### Handling Empty States
+
+Empty states occur when no items match the applied filters, often because the criteria are too narrow, the filters conflict with each other, or the data set lacks matching values. This situation should be clearly communicated through the data set area itself, for example by displaying a clear message or visual placeholder where results would normally appear. Doing so helps users quickly understand why no results are shown and guides them toward resolving the issue. Supportive actions can include suggesting broader parameters, offering related content, or providing an easy-to-access "clear filters" control to reset the view and start fresh.
+
+```js
+//TODO: Demo with empty state
+```
+
+### Reverting Filters
+
+When applying filters results in no matches, it is important to provide a quick way to remove them. This can include options to remove individual filters directly from the applied filters area, or to completely clear all filters at once using an action in the toolbar. These approaches ensure users can easily adjust or reset their selections without unnecessary steps.
+
+```js
+//TODO: What element do we need to use here? Do we need a button
+// with variant "link" (which just makes it blue)
+```
 
 ### Show Applied filters
 
-### Revert filters
+The recommended approach for applied filter labels is to keep them clear and structured. Combine three parts: the _identifier_ (what is filtered, such as category, property, or type), the relative or absolute _operator_ (how it applies, for example is, is above, is between, or a direct match), and the _value_ (the number, threshold, or date).
 
-If applying filters to a data set yields no results, offer users an option to clear all or specific filters.
+For absolute values, pair the filter name with its exact value, for example "Status is Approved", to be concise yet precise. For relative values, add the relative term and exact dates or details, such as "Last 7 days (Aug 3 – Aug 9)", to avoid ambiguity. Use clear operators like "is", "is between", "before", "after", and "in the last" for readability. Symbols (>, =, :) can work in compact or technical views but may be less clear for broad audiences, especially with relative timeframes.
 
-This can be done by adding a "Clear all" action to the Application State or by including dismissible Tags for each applied filter.
+Whether using absolute or relative values, apply the same format throughout the interface. Consistency helps users quickly scan and understand their filters, which is especially important in complex filtering scenarios.
+
+```js
+// TODO: Demo showing some filter examples
+```
+
+---
 
 - TODO: Can filter controls always be a `<Listbox>` with different selectionmodes???
 - TODO: Toolbar (from RAC) for the ... toolbar.
 - TODO: Collapsable (from RAC Disclosure?) for applied filters (if there are too much)
 - TODO: "No filter applied" empty state for applied filters
 - TODO: add a number badge in the sidebar? (or at the filter element, when combined with the applied filters provides a detailed snapshot of what specific filter values are applied to the data set and the relevant parameters that they correspond with)
-
-[Example](/pattern/filter)
