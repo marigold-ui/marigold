@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { intlMessages } from '../intl/messages';
 import { Collapsible } from './Collapsible';
 
 export interface MoreProps {
@@ -10,6 +12,7 @@ export interface MoreProps {
 }
 
 export const More = ({ children }: MoreProps) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   /**
    * We need to add state here, because toggling on a checkbox will
    * force a rerender and without the state the <Collapsible> will be collapsed.
@@ -23,7 +26,9 @@ export const More = ({ children }: MoreProps) => {
         variant="link"
         onPress={() => setIsExpanded(!isExpanded)}
       >
-        show more
+        {isExpanded
+          ? stringFormatter.format('showLess')
+          : stringFormatter.format('showMore')}
       </Collapsible.Trigger>
     </Collapsible>
   );
