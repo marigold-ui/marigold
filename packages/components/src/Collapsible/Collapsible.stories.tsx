@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Collapsible } from './Collapsible';
+import { More } from './More';
 
 const meta: Meta<typeof Collapsible> = {
   title: 'Components/Collapsible',
@@ -17,4 +18,8 @@ export const Basic: StoryObj<typeof Collapsible> = {
       </Collapsible.Content>
     </Collapsible>
   ),
+};
+
+export const ShowMore: StoryObj<typeof Collapsible> = {
+  render: () => <More>This is moooooore content!</More>,
 };

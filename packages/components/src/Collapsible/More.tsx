@@ -1,5 +1,6 @@
-import { ReactNode, useState } from 'react';
-import { Button, Disclosure, DisclosurePanel } from 'react-aria-components';
+import type { ReactNode } from 'react';
+import { useState } from 'react';
+import { Collapsible } from './Collapsible';
 
 export interface MoreProps {
   /**
@@ -11,16 +12,19 @@ export interface MoreProps {
 export const More = ({ children }: MoreProps) => {
   /**
    * We need to add state here, because toggling on a checkbox will
-   * force a rerender and without the state the <Disclosure> will be collapsed.
+   * force a rerender and without the state the <Collapsible> will be collapsed.
    */
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Disclosure isExpanded={isExpanded}>
-      <DisclosurePanel>{children}</DisclosurePanel>
-      <Button slot="trigger" onPress={() => setIsExpanded(!isExpanded)}>
+    <Collapsible isExpanded={isExpanded}>
+      <Collapsible.Content>{children}</Collapsible.Content>
+      <Collapsible.Trigger
+        variant="link"
+        onPress={() => setIsExpanded(!isExpanded)}
+      >
         show more
-      </Button>
-    </Disclosure>
+      </Collapsible.Trigger>
+    </Collapsible>
   );
 };

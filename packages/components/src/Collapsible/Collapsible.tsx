@@ -20,7 +20,7 @@ export const Collapsible = ({
   const classNames = useClassNames({ component: 'Collapsible', variant, size });
   return (
     <CollapsibleProvider value={{ variant, size }}>
-      <Disclosure {...props} className={classNames.trigger}>
+      <Disclosure {...props} className={classNames.container}>
         {children}
       </Disclosure>
     </CollapsibleProvider>
