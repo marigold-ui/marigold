@@ -7,6 +7,7 @@ changed:
   - components/navigation/breadcrumbs
   - components/overlay/tooltip
   - components/form/autocomplete
+  - components/form/button
   - components/form/combobox
   - patterns/async-data-loading
 ---
@@ -124,10 +125,13 @@ The `<Multiselect>` component now supports an empty state, providing clear feedb
 
 - Icons inside `<Menu.Item>` and `<ActionMenu.Item>` are now styled consistently with the rest of the menu content. This ensures better alignment and visual clarity for menus that include icons alongside text, making your menus look more polished out of the box.
 - Prevent page bounce when `<Scrollable>` is used inside a page.
+- Added a small button animation when a button is clicked.
 
 ## Documentation
 
 We've added comprehensive async data loading pattern documentation that provides clear guidelines for implementing components that fetch data from remote sources. These patterns ensure consistent user experience across `<ComboBox>`, `<Autocomplete>`, and other interactive components that work with dynamic data. The documentation covers two main approaches: **useAsyncList** for built-in filtering and loading states (recommended for most scenarios), and **React Query** for advanced caching with automatic request deduplication when you need sophisticated caching strategies.
+
+You can read more about it [here](/patterns/async-data-loading).
 
 **Example:**
 
