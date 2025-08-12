@@ -1,6 +1,7 @@
 ---
 title: DateFormat
 caption: Helper component for formatting date values based on the current language and locale-specific conventions.
+badge: updated
 ---
 
 With `<DateFormat>` helper, you can easily ensure consistent and accurate display of date and time values taking into account factors such as date formats, time formats, time zones, and locale-specific conventions. It provides a way to format and localize dates and times based on the user's preferred language and region.
@@ -49,3 +50,49 @@ Use the `tabular` prop to align dates in columns or tables. When enabled, each d
 ## Props
 
 <PropsTable component={title} />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'DateField',
+      href: '/components/form/datefield',
+      caption: 'Component for entering date in forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <path d="M12 20h-1a2 2 0 01-2-2 2 2 0 01-2 2H6M13 8h7a2 2 0 012 2v4a2 2 0 01-2 2h-7M5 16H4a2 2 0 01-2-2v-4a2 2 0 012-2h1M6 4h1a2 2 0 012 2 2 2 0 012-2h1M9 6v12" />
+        </svg>
+      ),
+    },
+    {
+      title: 'DatePicker',
+      href: '/components/form/datepicker',
+      caption: 'Component used to pick date value.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <path d="M8 2v4M16 2v4M21 17V6a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h11zM3 10h18" />
+          <path d="M15 22v-4a2 2 0 012-2h4" />
+        </svg>
+      ),
+    },
+  ]}
+/>

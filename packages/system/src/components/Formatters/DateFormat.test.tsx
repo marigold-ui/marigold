@@ -25,5 +25,6 @@ test('formats a date range', () => {
   );
 
   const date = screen.getByText('07.–08.11.2021');
+
   expect(date).toBeInTheDocument();
 });

@@ -1,6 +1,7 @@
 ---
 title: NumericFormat
 caption: Helper component for formatting numeric based on the current language and locale-specific conventions.
+badge: updated
 ---
 
 With `<NumericFormat>` helper, you can easily ensure that numeric values are displayed consistently and accurately, taking into account factors such as decimal separators, currency symbols, and grouping separators specific to each language.
@@ -55,3 +56,32 @@ Different locales use different numeral systems (for instance, Arabic or Devanag
 ## Props
 
 <PropsTable component={title} />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'NumberField',
+      href: '/components/form/numberfield',
+      caption: 'Component for entering numberic values in forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <path d="M4 22h14a2 2 0 002-2V7l-5-5H6a2 2 0 00-2 2v4" />
+          <path d="M14 2v4a2 2 0 002 2h4" />
+          <rect width={4} height={6} x={2} y={12} rx={2} />
+          <path d="M10 12h2v6M10 18h4" />
+        </svg>
+      ),
+    },
+  ]}
+/>
