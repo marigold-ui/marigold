@@ -1,13 +1,15 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { dirname, join } from 'path';
 import path from 'path';
+import { mergeConfig } from 'vite';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 const projectRoot = path.resolve(__dirname, '../../../');
 
 const config: StorybookConfig = {
   stories: [
-    '../../../packages/components/src/**/*.stories.tsx',
-    '../../../packages/system/src/**/*.stories.tsx',
+    path.resolve(projectRoot, 'packages/components/src/**/*.stories.tsx'),
+    path.resolve(projectRoot, 'packages/system/src/**/*.stories.tsx'),
   ],
   addons: [
     {
@@ -43,14 +45,21 @@ const config: StorybookConfig = {
     check: false,
   },
   // needed because without package have incorrect exports...
-  viteFinal: async config => {
-    // Configure environment for coverage
-    config.define = {
-      ...config.define,
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'test'),
-    };
-
-    return config;
+  async viteFinal(config) {
+    return mergeConfig(config, {
+      root: __dirname,
+      plugins: [
+        viteTsConfigPaths({
+          root: projectRoot,
+        }),
+      ],
+      use: [
+        {
+          loader: require.resolve('@storybook/source-loader'),
+          options: {} /* your sourceLoaderOptions here */,
+        },
+      ],
+    });
   },
   staticDirs: ['./assets'],
 };
