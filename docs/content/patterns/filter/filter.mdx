@@ -105,7 +105,11 @@ Batch filtering allows multiple selections to be made across different parameter
 
 Empty states occur when no items match the applied filters, often because the criteria are too narrow, the filters conflict with each other, or the data set lacks matching values. This situation should be clearly communicated through the data set area itself, for example by displaying a clear message or visual placeholder where results would normally appear. Doing so helps users quickly understand why no results are shown and guides them toward resolving the issue. Supportive actions can include suggesting broader parameters, offering related content, or providing an easy-to-access "clear filters" control to reset the view and start fresh.
 
-<ComponentDemo file="./filter-empty-state.demo.tsx" />
+<ComponentDemo file="./filter-empty-state-table.demo.tsx" />
+
+An empty state can also occur in the applied filters area when no filters are currently active. Displaying this state helps users understand that no filtering criteria are in place and that all available results are being shown.
+
+<ComponentDemo file="./filter-empty-state-applied-filter.demo.tsx" />
 
 ### Applied Filter Labels
 
@@ -145,3 +149,4 @@ When applying filters results in no matches, it is important to provide a quick 
 - TODO: Collapsable (from RAC Disclosure?) for applied filters (if there are too much)
 - TODO: "No filter applied" empty state for applied filters
 - TODO: add a number badge in the sidebar? (or at the filter element, when combined with the applied filters provides a detailed snapshot of what specific filter values are applied to the data set and the relevant parameters that they correspond with)
+- TODO: Do we need a strictly technical part or at least a filter need to be part of the URL guideline?
