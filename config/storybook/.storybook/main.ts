@@ -1,17 +1,35 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { dirname, join } from 'path';
-import { mergeConfig } from 'vite';
-import viteTsConfigPaths from 'vite-tsconfig-paths';
-import path from 'node:path';
+import path from 'path';
 
 const projectRoot = path.resolve(__dirname, '../../../');
 
 const config: StorybookConfig = {
   stories: [
-    path.resolve(projectRoot, 'packages/components/src/**/*.stories.tsx'),
-    path.resolve(projectRoot, 'packages/system/src/**/*.stories.tsx'),
+    '../../../packages/components/src/**/*.stories.tsx',
+    '../../../packages/system/src/**/*.stories.tsx',
   ],
   addons: [
+    {
+      name: '@storybook/addon-coverage',
+      options: {
+        istanbul: {
+          all: true,
+          include: [
+            'packages/components/src/**/*.{ts,tsx}',
+            'packages/system/src/**/*.{ts,tsx}',
+          ],
+          exclude: [
+            '**/*.stories.*',
+            '**/*.test.*',
+            '**/node_modules/**',
+            '**/.storybook/**',
+            '**/coverage/**',
+            '**/dist/**',
+          ],
+        },
+      },
+    },
     getAbsolutePath('@storybook/addon-themes'),
     getAbsolutePath('@storybook/addon-a11y'),
     getAbsolutePath('@storybook/addon-docs'),
@@ -25,21 +43,14 @@ const config: StorybookConfig = {
     check: false,
   },
   // needed because without package have incorrect exports...
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      root: __dirname,
-      plugins: [
-        viteTsConfigPaths({
-          root: projectRoot,
-        }),
-      ],
-      use: [
-        {
-          loader: require.resolve('@storybook/source-loader'),
-          options: {} /* your sourceLoaderOptions here */,
-        },
-      ],
-    });
+  viteFinal: async config => {
+    // Configure environment for coverage
+    config.define = {
+      ...config.define,
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'test'),
+    };
+
+    return config;
   },
   staticDirs: ['./assets'],
 };
