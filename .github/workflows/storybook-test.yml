@@ -1,0 +1,20 @@
+name: Storybook Tests
+
+on: ['push']
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Run Storybook tests
+        run: pnpm test-storybook --includeTags='component-test' -- --coverage
