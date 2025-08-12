@@ -201,3 +201,29 @@ export const Controlled: Story = {
     });
   },
 };
+
+export const More: Story = {
+  tags: ['component-test'],
+  render: args => {
+    const [selected, setSelected] = useState<string[]>([]);
+
+    return (
+      <>
+        <CheckboxGroup {...args} onChange={setSelected} collapseAt={5}>
+          <Checkbox value="ham" data-testid="one" label="Ham" />
+          <Checkbox value="salami" data-testid="two" label="Salami" />
+          <Checkbox value="cheese" data-testid="three" label="Cheese" />
+          <Checkbox value="tomato" data-testid="four" label="Tomato" />
+          <Checkbox value="cucumber" data-testid="five" label="Cucumber" />
+          <Checkbox value="onions" data-testid="six" label="Onions" />
+          <Checkbox value="pepper" data-testid="seven" label="Pepper" />
+          <Checkbox value="mushrooms" data-testid="eight" label="Mushrooms" />
+          <Checkbox value="olives" data-testid="nine" label="Olives" />
+          <Checkbox value="lettuce" data-testid="ten" label="Lettuce" />
+        </CheckboxGroup>
+        <hr />
+        <pre data-testid="result">Selected values: {selected.join(', ')}</pre>
+      </>
+    );
+  },
+};

@@ -1,0 +1,34 @@
+import type { ButtonProps, HeadingProps } from 'react-aria-components';
+import { Button, Heading } from 'react-aria-components';
+import { useClassNames } from '@marigold/system';
+import { CollapsibleContext } from './Context';
+
+export interface CollapsibleTriggerProps
+  extends Omit<ButtonProps, 'className' | 'style'>,
+    Pick<HeadingProps, 'level'> {
+  variant?: string;
+  size?: string;
+}
+
+export const CollapsibleTrigger = ({
+  variant,
+  size,
+  children,
+  level,
+  ...props
+}: CollapsibleTriggerProps) => {
+  const classNames = useClassNames({
+    component: 'Collapsible',
+    variant,
+    size,
+    context: CollapsibleContext,
+  });
+
+  return (
+    <Heading level={level}>
+      <Button {...props} slot="trigger" className={classNames.trigger}>
+        {children}
+      </Button>
+    </Heading>
+  );
+};
