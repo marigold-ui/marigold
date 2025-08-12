@@ -43,3 +43,5 @@ jobs:
           pr-number: ${{ steps.findPr.outputs.number }}
           message: |
             Accessibility tests executed. Download the report [here](${{ steps.artifact-upload-step.outputs.artifact-url }}).
+      - name: Run Storybook tests with coverage
+        run: pnpm test-storybook --includeTags='component-test' -- --coverage
