@@ -16,7 +16,11 @@ export const Tag: ThemeComponent<'Tag'> = {
     'size-4',
     'disabled:bg-disabled disabled:text-disabled-foreground disabled:cursor-not-allowed',
   ]),
-  listItems: cva('flex flex-wrap items-center gap-1 mb-0'), // mb-0 prevents whitespace when the hidden field is rendered
+  listItems: cva([
+    'flex flex-wrap items-center gap-1',
+    // mb-0 prevents whitespace when the hidden field is rendered
+    'mb-0',
+  ]),
   removeAll: cva([
     'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform]',
     'duration-150 active:scale-[0.98] pressed:scale-[0.98]',
