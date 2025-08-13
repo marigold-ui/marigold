@@ -2,7 +2,9 @@ import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { RadioGroup } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
+import { More } from '../Collapsible/More';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { splitChildren } from '../utils/children.utils';
 import { RadioGroupContext } from './Context';
 
 type RemovedProps =
@@ -81,6 +83,15 @@ export interface RadioGroupProps
    * @default vertical
    */
   orientation?: 'horizontal' | 'vertical';
+
+  /**
+   * The number of items to display before collapsing the rest.
+   * Items beyond this number will be hidden until the user clicks
+   * the "Show more" control.
+   *
+   * @default undefined
+   */
+  collapseAt?: number;
 }
 
 const _RadioGroup = ({
@@ -96,6 +107,7 @@ const _RadioGroup = ({
   orientation = 'vertical',
   children,
   width,
+  collapseAt,
   ...rest
 }: RadioGroupProps) => {
   const classNames = useClassNames({ component: 'Radio', variant, size });
@@ -107,6 +119,11 @@ const _RadioGroup = ({
     isInvalid: error,
     ...rest,
   } as const;
+
+  const [visibleChildren, collapsedChildren] = splitChildren(
+    children,
+    collapseAt
+  );
 
   return (
     <FieldBase
@@ -132,7 +149,10 @@ const _RadioGroup = ({
         )}
       >
         <RadioGroupContext.Provider value={{ width, variant, size }}>
-          {children}
+          {visibleChildren}
+          {collapsedChildren.length > 0 ? (
+            <More>{collapsedChildren}</More>
+          ) : null}
         </RadioGroupContext.Provider>
       </div>
     </FieldBase>

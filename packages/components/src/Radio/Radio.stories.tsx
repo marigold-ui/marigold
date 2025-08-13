@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { Radio, Stack } from '@marigold/components';
+import { expect } from 'storybook/test';
+import { I18nProvider, Radio, Stack } from '@marigold/components';
 import { RadioGroup } from './RadioGroup';
 
 const meta = {
@@ -141,5 +142,58 @@ export const Controlled: Story = {
         </pre>
       </Stack>
     );
+  },
+};
+
+export const CollapseAt: Story = {
+  tags: ['component-test'],
+  args: {
+    collapseAt: 3,
+  },
+  render: args => (
+    <I18nProvider locale="en-US">
+      <Radio.Group {...args} defaultValue="salami">
+        <Radio value="ham" data-testid="one">
+          Ham
+        </Radio>
+        <Radio value="salami" data-testid="two">
+          Salami
+        </Radio>
+        <Radio value="cheese" data-testid="three">
+          Cheese
+        </Radio>
+        <Radio value="tomato" data-testid="four">
+          Tomato
+        </Radio>
+        <Radio value="cucumber" data-testid="five">
+          Cucumber
+        </Radio>
+        <Radio value="onions" data-testid="six">
+          Onions
+        </Radio>
+        <Radio value="pepper" data-testid="seven">
+          Pepper
+        </Radio>
+      </Radio.Group>
+    </I18nProvider>
+  ),
+  play: async ({ step, canvas, userEvent }) => {
+    await step('show more', async () => {
+      await userEvent.click(canvas.getByText('Show more'));
+
+      expect(canvas.queryByTestId('four')).toBeVisible();
+      expect(canvas.queryByTestId('five')).toBeVisible();
+      expect(canvas.queryByTestId('six')).toBeVisible();
+      expect(canvas.queryByTestId('seven')).toBeVisible();
+    });
+
+    await step('show less', async () => {
+      await userEvent.click(canvas.getByText('Show less'));
+
+      expect(canvas.queryByTestId('four')).not.toBeVisible();
+      expect(canvas.queryByTestId('five')).not.toBeVisible();
+      expect(canvas.queryByTestId('six')).not.toBeVisible();
+      expect(canvas.queryByTestId('seven')).not.toBeVisible();
+    });
   },
 };

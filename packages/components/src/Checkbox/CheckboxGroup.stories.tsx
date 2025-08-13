@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react';
 import React from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn } from 'storybook/test';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 
@@ -183,8 +183,7 @@ export const Controlled: Story = {
       </>
     );
   },
-  play: async ({ args, canvasElement, userEvent }) => {
-    const canvas = within(canvasElement);
+  play: async ({ args, canvas, userEvent }) => {
     let concert = canvas.getByRole('checkbox', { name: /Concert/i });
     let festival = canvas.getByRole('checkbox', { name: /Festival/i });
     let conference = canvas.getByRole('checkbox', { name: /Conference/i });
