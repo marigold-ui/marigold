@@ -20,12 +20,9 @@ export const More = ({ children }: MoreProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Collapsible isExpanded={isExpanded}>
+    <Collapsible variant="link" isExpanded={isExpanded}>
       <Collapsible.Content>{children}</Collapsible.Content>
-      <Collapsible.Trigger
-        variant="link"
-        onPress={() => setIsExpanded(!isExpanded)}
-      >
+      <Collapsible.Trigger onPress={() => setIsExpanded(!isExpanded)}>
         {isExpanded
           ? stringFormatter.format('showLess')
           : stringFormatter.format('showMore')}
