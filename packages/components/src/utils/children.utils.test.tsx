@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import type { PropsWithChildren } from 'react';
 import { splitChildren } from './children.utils';
 
-describe('splitChilren', () => {
+describe('splitChildren', () => {
   const Component = ({ children, at }: PropsWithChildren<{ at?: number }>) => {
     const [left, right] = splitChildren(children, at);
 
