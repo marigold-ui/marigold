@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react';
+import { isValidElement, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { CheckboxGroup } from 'react-aria-components';
+import {
+  CheckboxGroup,
+  CheckboxGroupStateContext,
+} from 'react-aria-components';
 import { Orientation } from '@react-types/shared';
 import type { WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';
@@ -9,6 +13,27 @@ import type { FieldBaseProps } from '../FieldBase/FieldBase';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { splitChildren } from '../utils/children.utils';
 import { CheckboxGroupContext } from './Context';
+
+// Helpers
+// ---------------
+interface CollapsibleGroupProps {
+  children?: ReactNode[];
+}
+
+const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
+  const state = useContext(CheckboxGroupStateContext)!;
+
+  if (!children || children.length === 0) {
+    return null;
+  }
+
+  const defaultExpanded = children.some(
+    child =>
+      isValidElement(child) && state.value.includes((child.props as any).value)
+  );
+
+  return <More defaultExpanded={defaultExpanded}>{children}</More>;
+};
 
 // Props
 // ---------------
@@ -128,9 +153,7 @@ const _CheckboxGroup = ({
       >
         <CheckboxGroupContext.Provider value={{ width, variant, size }}>
           {visibleChildren}
-          {collapsedChildren.length > 0 ? (
-            <More>{collapsedChildren}</More>
-          ) : null}
+          <CollapsibleGroup>{collapsedChildren}</CollapsibleGroup>
         </CheckboxGroupContext.Provider>
       </div>
     </FieldBase>

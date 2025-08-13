@@ -5,19 +5,24 @@ import { intlMessages } from '../intl/messages';
 import type { CollapsibleProps } from './Collapsible';
 import { Collapsible } from './Collapsible';
 
-export interface MoreProps extends Pick<CollapsibleProps, 'unstyled'> {
+export interface MoreProps
+  extends Pick<CollapsibleProps, 'unstyled' | 'defaultExpanded'> {
   /**
    * The children of the component
    */
   children?: ReactNode;
 }
 
-export const More = ({ children, unstyled = true }: MoreProps) => {
+export const More = ({
+  children,
+  defaultExpanded = false,
+  unstyled = true,
+}: MoreProps) => {
   /**
    * We need to add state here, because toggling on a checkbox will
    * force a rerender and without the state the <Collapsible> will be collapsed.
    */
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
 
   return (
