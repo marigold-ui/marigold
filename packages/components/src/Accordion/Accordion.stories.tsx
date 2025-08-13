@@ -213,7 +213,6 @@ export const CoreExample: Story = {
       <Accordion {...args}>
         <Accordion.Item key={1}>
           <Accordion.Header>
-            {' '}
             <Inline space={2} alignX="left" alignY="center">
               <Parking className="fill-text-info" />
               <Text weight="bold">Parking tickets:</Text>
