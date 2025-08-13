@@ -8,7 +8,6 @@ export const baseUrl =
 // ---------------
 export const siteConfig = {
   version: process.env.version,
-  defaultTheme: 'rui',
   navigation: [
     {
       name: 'Getting Started',
