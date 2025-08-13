@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import type { ReactNode } from 'react';
-import { I18nProvider } from 'react-aria-components';
 import { expect } from 'storybook/test';
 import { Collapsible } from './Collapsible';
 import { More } from './More';
