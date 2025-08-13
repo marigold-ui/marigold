@@ -27,7 +27,7 @@ describe('splitChildren', () => {
     expect(screen.getByTestId('right').textContent).toBe('Child 3Child 4');
   });
 
-  test('all children in first part when "at" it too large', () => {
+  test('all children in first part when "at" is too large', () => {
     render(
       <Component at={4}>
         <span>Child 1</span>
