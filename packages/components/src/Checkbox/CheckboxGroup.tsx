@@ -108,11 +108,11 @@ const _CheckboxGroup = ({
   };
 
   const c = Children.toArray(children);
-  let collapsedChildren = undefined;
+  let collapsedChildren: ReactNode[] = [];
   [children, collapsedChildren] =
     collapseAt && c.length
       ? [c.slice(0, collapseAt), c.slice(collapseAt)]
-      : [c, null];
+      : [c, []];
 
   return (
     <FieldBase as={CheckboxGroup} width={width} {...props}>
@@ -130,7 +130,9 @@ const _CheckboxGroup = ({
       >
         <CheckboxGroupContext.Provider value={{ width, variant, size }}>
           {children}
-          {collapsedChildren ? <More>{collapsedChildren}</More> : null}
+          {collapsedChildren.length > 0 ? (
+            <More>{collapsedChildren}</More>
+          ) : null}
         </CheckboxGroupContext.Provider>
       </div>
     </FieldBase>

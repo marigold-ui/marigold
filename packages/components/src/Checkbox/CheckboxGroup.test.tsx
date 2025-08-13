@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import * as stories from './CheckboxGroup.stories';
 
-const { Basic, Error } = composeStories(stories);
+const { Basic, Error, CollapseAt } = composeStories(stories);
 
 test('renders label and group of checkboxes', () => {
   render(<Basic />);
@@ -143,4 +143,21 @@ test('horiziontal orientation style', () => {
     );
 
   expect(presentation[0].className).toContain('flex-row gap-[1.5ch]');
+});
+
+test('don\'t show "show more" when list is too short', () => {
+  render(<CollapseAt collapseAt={100} />);
+
+  expect(screen.getByTestId('one')).toBeVisible();
+  expect(screen.getByTestId('two')).toBeVisible();
+  expect(screen.getByTestId('three')).toBeVisible();
+  expect(screen.getByTestId('four')).toBeVisible();
+  expect(screen.getByTestId('five')).toBeVisible();
+  expect(screen.getByTestId('six')).toBeVisible();
+  expect(screen.getByTestId('seven')).toBeVisible();
+  expect(screen.getByTestId('eight')).toBeVisible();
+  expect(screen.getByTestId('nine')).toBeVisible();
+  expect(screen.getByTestId('ten')).toBeVisible();
+
+  expect(screen.queryByText('Show more')).not.toBeInTheDocument();
 });

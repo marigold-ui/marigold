@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import type { ReactNode } from 'react';
+import { I18nProvider } from 'react-aria-components';
 import { expect } from 'storybook/test';
 import { Collapsible } from './Collapsible';
 import { More } from './More';
@@ -28,18 +29,22 @@ export const Basic: StoryObj<typeof meta> = {
       <Collapsible.Content>{children as ReactNode}</Collapsible.Content>
     </Collapsible>
   ),
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByText('Click me'));
+  play: async ({ step, canvas, userEvent }) => {
+    await step('expand', async () => {
+      await userEvent.click(canvas.getByText('Click me'));
 
-    expect(
-      canvas.getByText('This is the content of the collapsible component.')
-    ).toBeVisible();
+      expect(
+        canvas.getByText('This is the content of the collapsible component.')
+      ).toBeVisible();
+    });
 
-    await userEvent.click(canvas.getByText('Click me'));
+    await step('collapse', async () => {
+      await userEvent.click(canvas.getByText('Click me'));
 
-    expect(
-      canvas.queryByText('This is the content of the collapsible component.')
-    ).not.toBeVisible();
+      expect(
+        canvas.queryByText('This is the content of the collapsible component.')
+      ).not.toBeVisible();
+    });
   },
 };
 
@@ -47,4 +52,21 @@ export const ShowMore: StoryObj<typeof meta> = {
   render: ({ children, ...args }) => (
     <More {...args}>{children as ReactNode}</More>
   ),
+  play: async ({ step, canvas, userEvent }) => {
+    await step('show more', async () => {
+      await userEvent.click(canvas.getByRole('button'));
+
+      expect(
+        canvas.getByText('This is the content of the collapsible component.')
+      ).toBeVisible();
+    });
+
+    await step('show less', async () => {
+      await userEvent.click(canvas.getByRole('button'));
+
+      expect(
+        canvas.queryByText('This is the content of the collapsible component.')
+      ).not.toBeVisible();
+    });
+  },
 };

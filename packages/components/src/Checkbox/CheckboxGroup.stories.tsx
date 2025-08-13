@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
+import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, within } from 'storybook/test';
 import { Checkbox } from './Checkbox';
@@ -202,14 +203,17 @@ export const Controlled: Story = {
   },
 };
 
-export const More: Story = {
+export const CollapseAt: Story = {
   tags: ['component-test'],
+  args: {
+    collapseAt: 5,
+  },
   render: args => {
     const [selected, setSelected] = useState<string[]>([]);
 
     return (
-      <>
-        <CheckboxGroup {...args} onChange={setSelected} collapseAt={5}>
+      <I18nProvider locale="en-US">
+        <CheckboxGroup {...args} onChange={setSelected}>
           <Checkbox value="ham" data-testid="one" label="Ham" />
           <Checkbox value="salami" data-testid="two" label="Salami" />
           <Checkbox value="cheese" data-testid="three" label="Cheese" />
@@ -223,7 +227,28 @@ export const More: Story = {
         </CheckboxGroup>
         <hr />
         <pre data-testid="result">Selected values: {selected.join(', ')}</pre>
-      </>
+      </I18nProvider>
     );
+  },
+  play: async ({ step, canvas, userEvent }) => {
+    await step('show more', async () => {
+      await userEvent.click(canvas.getByText('Show more'));
+
+      expect(canvas.getByTestId('six')).toBeVisible();
+      expect(canvas.getByTestId('seven')).toBeVisible();
+      expect(canvas.getByTestId('eight')).toBeVisible();
+      expect(canvas.getByTestId('nine')).toBeVisible();
+      expect(canvas.getByTestId('ten')).toBeVisible();
+    });
+
+    await step('show less', async () => {
+      await userEvent.click(canvas.getByText('Show less'));
+
+      expect(canvas.queryByTestId('six')).not.toBeVisible();
+      expect(canvas.queryByTestId('seven')).not.toBeVisible();
+      expect(canvas.queryByTestId('eight')).not.toBeVisible();
+      expect(canvas.queryByTestId('nine')).not.toBeVisible();
+      expect(canvas.queryByTestId('ten')).not.toBeVisible();
+    });
   },
 };
