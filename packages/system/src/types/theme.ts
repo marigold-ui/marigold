@@ -140,7 +140,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'tag' | 'listItems' | 'closeButton',
+      'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
