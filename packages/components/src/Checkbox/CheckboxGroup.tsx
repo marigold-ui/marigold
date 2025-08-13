@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { Children } from 'react';
 import type RAC from 'react-aria-components';
 import { CheckboxGroup } from 'react-aria-components';
 import { Orientation } from '@react-types/shared';
@@ -8,6 +7,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { More } from '../Collapsible/More';
 import type { FieldBaseProps } from '../FieldBase/FieldBase';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { splitChildren } from '../utils/children.utils';
 import { CheckboxGroupContext } from './Context';
 
 // Props
@@ -107,12 +107,10 @@ const _CheckboxGroup = ({
     ...rest,
   };
 
-  const c = Children.toArray(children);
-  let collapsedChildren: ReactNode[] = [];
-  [children, collapsedChildren] =
-    collapseAt && c.length
-      ? [c.slice(0, collapseAt), c.slice(collapseAt)]
-      : [c, []];
+  const [visibleChildren, collapsedChildren] = splitChildren(
+    children,
+    collapseAt
+  );
 
   return (
     <FieldBase as={CheckboxGroup} width={width} {...props}>
@@ -129,7 +127,7 @@ const _CheckboxGroup = ({
         )}
       >
         <CheckboxGroupContext.Provider value={{ width, variant, size }}>
-          {children}
+          {visibleChildren}
           {collapsedChildren.length > 0 ? (
             <More>{collapsedChildren}</More>
           ) : null}
