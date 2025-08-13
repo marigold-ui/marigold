@@ -113,7 +113,7 @@ export const Basic: Story = {
     const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
-        <CheckboxGroup
+        <Checkbox.Group
           {...args}
           onChange={setSelected}
           description="Choose your Options"
@@ -125,7 +125,7 @@ export const Basic: Story = {
           <Checkbox value="tomato" data-testid="four" label="Tomate" />
           <Checkbox value="cucumber" data-testid="five" label="Cucumber" />
           <Checkbox value="onions" data-testid="six" label="Onions" />
-        </CheckboxGroup>
+        </Checkbox.Group>
         <hr />
         <pre data-testid="result">Selected values: {selected.join(', ')}</pre>
       </>
@@ -138,7 +138,7 @@ export const Error: Story = {
     const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
-        <CheckboxGroup
+        <Checkbox.Group
           {...args}
           onChange={setSelected}
           description="my desc"
@@ -151,7 +151,7 @@ export const Error: Story = {
           <Checkbox value="tomato" label="Tomate" />
           <Checkbox value="cucumber" label="Cucumber" />
           <Checkbox value="onions" label="Onions" />
-        </CheckboxGroup>
+        </Checkbox.Group>
         <hr />
         <pre>Selected values: {selected.join(', ')}</pre>
       </>
@@ -168,7 +168,7 @@ export const Controlled: Story = {
   render: args => {
     return (
       <>
-        <CheckboxGroup
+        <Checkbox.Group
           {...args}
           label="Select Event Types"
           onChange={args.onChange}
@@ -178,7 +178,7 @@ export const Controlled: Story = {
           <Checkbox value="conference" label="Conference" />
           <Checkbox value="meetup" label="Meetup" />
           <Checkbox value="webinar" label="Webinar" />
-        </CheckboxGroup>
+        </Checkbox.Group>
       </>
     );
   },
@@ -211,7 +211,7 @@ export const CollapseAt: Story = {
 
     return (
       <I18nProvider locale="en-US">
-        <CheckboxGroup {...args} onChange={setSelected}>
+        <Checkbox.Group {...args} onChange={setSelected}>
           <Checkbox value="ham" data-testid="one" label="Ham" />
           <Checkbox value="salami" data-testid="two" label="Salami" />
           <Checkbox value="cheese" data-testid="three" label="Cheese" />
@@ -222,7 +222,7 @@ export const CollapseAt: Story = {
           <Checkbox value="mushrooms" data-testid="eight" label="Mushrooms" />
           <Checkbox value="olives" data-testid="nine" label="Olives" />
           <Checkbox value="lettuce" data-testid="ten" label="Lettuce" />
-        </CheckboxGroup>
+        </Checkbox.Group>
         <hr />
         <pre data-testid="result">Selected values: {selected.join(', ')}</pre>
       </I18nProvider>
