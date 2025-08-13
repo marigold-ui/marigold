@@ -4,13 +4,6 @@ import * as stories from './Radio.stories';
 
 const { Basic, CollapseAt } = composeStories(stories);
 
-// There is no real accesible way to get to the element that acts as radio
-const getVisibleRadios = () => {
-  const label = screen.getByText('With Label');
-  // eslint-disable-next-line testing-library/no-node-access
-  return label.parentElement?.querySelectorAll('[aria-hidden="true"]');
-};
-
 // Tests
 // ---------------
 test('label is optional (can use aria-label instead)', () => {
