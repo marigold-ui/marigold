@@ -1,7 +1,7 @@
 import type { ButtonProps, HeadingProps } from 'react-aria-components';
 import { Button, Heading } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { CollapsibleContext, useCollapsibleContext } from './Context';
+import { CollapsibleContext } from './Context';
 
 export interface CollapsibleProps
   extends Omit<ButtonProps, 'className' | 'style'>,
