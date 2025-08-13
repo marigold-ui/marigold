@@ -1,12 +1,37 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { isValidElement, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { RadioGroup } from 'react-aria-components';
+import { RadioGroup, RadioGroupStateContext } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { More } from '../Collapsible/More';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { splitChildren } from '../utils/children.utils';
 import { RadioGroupContext } from './Context';
 
+// Helpers
+// ---------------
+interface CollapsibleGroupProps {
+  children?: ReactNode[];
+}
+
+const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
+  const state = useContext(RadioGroupStateContext)!;
+
+  if (!children || children.length === 0) {
+    return null;
+  }
+
+  const defaultExpanded = children.some(
+    child =>
+      isValidElement(child) &&
+      state.selectedValue === (child.props as any).value
+  );
+
+  return <More defaultExpanded={defaultExpanded}>{children}</More>;
+};
+
+// Props
+// ---------------
 type RemovedProps =
   | 'className'
   | 'style'
@@ -94,6 +119,8 @@ export interface RadioGroupProps
   collapseAt?: number;
 }
 
+// Component
+// ---------------
 const _RadioGroup = ({
   variant,
   size,
@@ -150,9 +177,7 @@ const _RadioGroup = ({
       >
         <RadioGroupContext.Provider value={{ width, variant, size }}>
           {visibleChildren}
-          {collapsedChildren.length > 0 ? (
-            <More>{collapsedChildren}</More>
-          ) : null}
+          <CollapsibleGroup>{collapsedChildren}</CollapsibleGroup>
         </RadioGroupContext.Provider>
       </div>
     </FieldBase>

@@ -150,7 +150,7 @@ export const CollapseAt: Story = {
   },
   render: args => (
     <I18nProvider locale="en-US">
-      <Radio.Group {...args} defaultValue="salami">
+      <Radio.Group defaultValue="salami" {...args}>
         <Radio value="ham" data-testid="one">
           Ham
         </Radio>

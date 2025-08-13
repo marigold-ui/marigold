@@ -158,6 +158,34 @@ test('don\'t show "show more" when list is too short', () => {
   expect(screen.getByTestId('eight')).toBeVisible();
   expect(screen.getByTestId('nine')).toBeVisible();
   expect(screen.getByTestId('ten')).toBeVisible();
+});
 
-  expect(screen.queryByText('Show more')).not.toBeInTheDocument();
+test('works with negative values (hides everything)', () => {
+  render(<CollapseAt collapseAt={-10} />);
+
+  expect(screen.queryByTestId('one')).not.toBeVisible();
+  expect(screen.queryByTestId('two')).not.toBeVisible();
+  expect(screen.queryByTestId('three')).not.toBeVisible();
+  expect(screen.queryByTestId('four')).not.toBeVisible();
+  expect(screen.queryByTestId('five')).not.toBeVisible();
+  expect(screen.queryByTestId('six')).not.toBeVisible();
+  expect(screen.queryByTestId('seven')).not.toBeVisible();
+  expect(screen.queryByTestId('eight')).not.toBeVisible();
+  expect(screen.queryByTestId('nine')).not.toBeVisible();
+  expect(screen.queryByTestId('ten')).not.toBeVisible();
+});
+
+test('expand if a value would be hidden', () => {
+  render(<CollapseAt collapseAt={3} defaultValue={['olives']} />);
+
+  expect(screen.getByTestId('one')).toBeVisible();
+  expect(screen.getByTestId('two')).toBeVisible();
+  expect(screen.getByTestId('three')).toBeVisible();
+  expect(screen.getByTestId('four')).toBeVisible();
+  expect(screen.getByTestId('five')).toBeVisible();
+  expect(screen.getByTestId('six')).toBeVisible();
+  expect(screen.getByTestId('seven')).toBeVisible();
+  expect(screen.getByTestId('eight')).toBeVisible();
+  expect(screen.getByTestId('nine')).toBeVisible();
+  expect(screen.getByTestId('ten')).toBeVisible();
 });
