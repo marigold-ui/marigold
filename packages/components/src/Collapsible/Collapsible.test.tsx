@@ -1,70 +1,62 @@
-import { composeStories } from '@storybook/testing-react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { I18nProvider } from 'react-aria-components';
 import { describe, expect, it } from 'vitest';
-import { Collapsible } from './Collapsible';
 import * as stories from './Collapsible.stories';
 
-const { Default, WithContent, WithVariantAndSize } = composeStories(stories);
+const { Basic, ShowMore } = composeStories(stories);
+const user = userEvent.setup();
 
 describe('Collapsible', () => {
-  it('renders children', () => {
-    render(
-      <Collapsible>
-        <span>Test Content</span>
-      </Collapsible>
-    );
+  it('always renders children even when collapsed', () => {
+    render(<Basic>Test Content</Basic>);
     expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 
-  it('applies variant and size classNames', () => {
-    render(
-      <Collapsible variant="primary" size="large">
-        <span>Content</span>
-      </Collapsible>
+  it('can render without breaking layout', async () => {
+    render(<Basic unstyled>Test Content</Basic>);
+
+    await user.click(screen.getByText('Click me'));
+
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(screen.getByText('Test Content').parentElement).toHaveClass(
+      'expanded:contents expanded:[&_[role=group]]:contents'
     );
-    const container = screen.getByText('Content').closest('[class]');
-    expect(container?.className).toMatch(/Collapsible/);
-    expect(container?.className).toMatch(/primary/);
-    expect(container?.className).toMatch(/large/);
   });
+});
 
-  it('renders Collapsible.Trigger and Collapsible.Content', () => {
+describe('More', () => {
+  it('renders a localized "more" text as trigger label', () => {
     render(
-      <Collapsible>
-        <Collapsible.Trigger>Toggle</Collapsible.Trigger>
-        <Collapsible.Content>Panel Content</Collapsible.Content>
-      </Collapsible>
+      <>
+        <I18nProvider locale="en-US">
+          <ShowMore />
+        </I18nProvider>
+        <I18nProvider locale="de-DE">
+          <ShowMore />
+        </I18nProvider>
+      </>
     );
-    expect(screen.getByText('Toggle')).toBeInTheDocument();
-    expect(screen.getByText('Panel Content')).toBeInTheDocument();
+    expect(screen.getByText('Show more')).toBeInTheDocument();
+    expect(screen.getByText('Mehr anzeigen')).toBeInTheDocument();
   });
 
-  it('toggles content visibility when trigger is clicked', async () => {
-    render(
-      <Collapsible>
-        <Collapsible.Trigger>Open</Collapsible.Trigger>
-        <Collapsible.Content>Hidden Content</Collapsible.Content>
-      </Collapsible>
+  it('is unstyled by default', () => {
+    render(<ShowMore>Test Content</ShowMore>);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(screen.getByText('Test Content').parentElement).toHaveClass(
+      'expanded:contents expanded:[&_[role=group]]:contents'
     );
-    const trigger = screen.getByText('Open');
-    const content = screen.getByText('Hidden Content');
-    expect(content).toHaveAttribute('hidden');
-    fireEvent.click(trigger);
-    expect(content).not.toHaveAttribute('hidden');
   });
 
-  it('renders Default story', () => {
-    render(<Default />);
-    expect(screen.getByText(/trigger/i)).toBeInTheDocument();
-  });
+  it('can render styled', () => {
+    render(<ShowMore unstyled={false}>Test Content</ShowMore>);
 
-  it('renders WithContent story', () => {
-    render(<WithContent />);
-    expect(screen.getByText(/content/i)).toBeInTheDocument();
-  });
-
-  it('renders WithVariantAndSize story', () => {
-    render(<WithVariantAndSize />);
-    expect(screen.getByText(/trigger/i)).toBeInTheDocument();
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(screen.getByText('Test Content').parentElement).not.toHaveClass(
+      'expanded:contents expanded:[&_[role=group]]:contents'
+    );
   });
 });
