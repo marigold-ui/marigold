@@ -1,8 +1,12 @@
+import { composeStories } from '@storybook/react';
 import { fireEvent, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Radio } from './Radio';
+import * as stories from './Radio.stories';
+
+const { CollapseAt } = composeStories(stories);
 
 const theme: Theme = {
   name: 'test',
@@ -217,4 +221,18 @@ test('controlled', () => {
 
   expect(onChange).toHaveBeenCalledTimes(1);
   expect(onChange).toHaveBeenCalledWith('1');
+});
+
+test('don\'t show "show more" when list is too short', () => {
+  render(<CollapseAt collapseAt={100} />);
+
+  expect(screen.getByTestId('one')).toBeVisible();
+  expect(screen.getByTestId('two')).toBeVisible();
+  expect(screen.getByTestId('three')).toBeVisible();
+  expect(screen.getByTestId('four')).toBeVisible();
+  expect(screen.getByTestId('five')).toBeVisible();
+  expect(screen.getByTestId('six')).toBeVisible();
+  expect(screen.getByTestId('seven')).toBeVisible();
+
+  expect(screen.queryByText('Show more')).not.toBeInTheDocument();
 });

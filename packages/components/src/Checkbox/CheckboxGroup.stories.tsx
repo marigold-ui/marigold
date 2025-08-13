@@ -101,7 +101,6 @@ const meta = {
     disabled: false,
     required: false,
     error: false,
-    children: 'This is a Checkbox',
   },
 } satisfies Meta<typeof CheckboxGroup>;
 

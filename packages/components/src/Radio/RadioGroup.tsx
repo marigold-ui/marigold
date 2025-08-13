@@ -41,7 +41,7 @@ export interface RadioGroupProps
   /**
    * The children elements of the radio group.
    */
-  children: ReactNode[];
+  children?: ReactNode[];
 
   /**
    * Control the width of the field.

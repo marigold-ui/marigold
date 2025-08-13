@@ -6,6 +6,7 @@ import { RadioGroup } from './RadioGroup';
 
 const meta = {
   title: 'Components/Radio',
+  component: RadioGroup,
   argTypes: {
     label: {
       control: {
@@ -67,9 +68,6 @@ const meta = {
   },
   args: {
     label: 'Label',
-    error: false,
-    disabled: false,
-    required: false,
   },
 } satisfies Meta<typeof RadioGroup>;
 
