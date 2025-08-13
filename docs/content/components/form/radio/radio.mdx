@@ -20,10 +20,14 @@ The radio button component is comprised of a set of clickable circles (the input
 />
 
 - **Group label:** Describes the group of options or provides guidance for making a selection.
-
 - **Radio button input:** Indicates the state of a radio button. By default, no option will be preselected.
-
 - **Radio button label:** Describes the information you want to select or unselect.
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
 
 ## Usage
 
@@ -106,9 +110,9 @@ Text should wrap beneath the radio button.
   </Dont>
 </GuidelineTiles>
 
-### Long lists of options
+### Number of options
 
-If you have moderate number of options (e.g., 5-15) to choose from, use [select](../form/select) component instead.
+Radio groups are most effective with a small set of choices that can be taken in at a glance. Once the list grows to around five or more options, scanning becomes slower and the vertical space required increases. If the number of options falls into a moderate range, roughly five to fifteen, use the [select](/components/form/select) component instead to keep the interface compact and maintain scanning efficiency.
 
 <GuidelineTiles>
   <Do>
@@ -137,9 +141,13 @@ If you have moderate number of options (e.g., 5-15) to choose from, use [select]
   </Dont>
 </GuidelineTiles>
 
-<StorybookHintMessage component={title} />
+When a radio group is long enough to create clutter, overload, or excessive scrolling, keep it compact while ensuring all options remain accessible. Present only the most relevant five to eight choices initially, with the rest hidden until revealed. Apply this approach sparingly when all options can be scanned easily without causing frustration.
+
+<ComponentDemo file="./radio-more.demo.tsx" />
 
 ## Props
+
+<StorybookHintMessage component={title} />
 
 ### Radio
 
@@ -148,30 +156,6 @@ If you have moderate number of options (e.g., 5-15) to choose from, use [select]
 ### Radio.Group
 
 <PropsTable component="RadioGroup" />
-
-### Simple Radio
-
-In this example you can see a simple `<Radio.Group>` within `<Radio>`. There is also a single `<Radio>` disabled.
-
-<ComponentDemo file="./radio.demo.tsx" />
-
-### Disabed Radio
-
-Here you can see a complete disabled `<Radio.Group>`. You can also just disable single `<Radio>`.
-
-<ComponentDemo file="./radio-disabled.demo.tsx" />
-
-### Required Radio with horizontal orientation
-
-In this example the `<Radio.Group>` is required and the `orientation` is set to `horizontal`. With these props you can determine the direction of the `<Radio>` options.
-
-<ComponentDemo file="./radio-required.demo.tsx" />
-
-### Error Radio
-
-In this example you can see how an `errorMessage` would look on a `<RadioGroup>`.
-
-<ComponentDemo file="./radio-error.demo.tsx" />
 
 ## Alternative components
 
@@ -185,6 +169,7 @@ Choosing the right alternative to radio buttons is important for providing an op
     hide the options until needed, saving space in the UI.
   </li>
 </ul>
+
 ## Related
 
 <TeaserList
