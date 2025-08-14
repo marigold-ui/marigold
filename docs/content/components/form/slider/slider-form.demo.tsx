@@ -11,7 +11,7 @@ import {
 export default () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    let formData = new FormData(e.target as HTMLFormElement);
+    const formData = new FormData(e.target as HTMLFormElement);
     alert(
       `Age is selected from ${formData.get('start')} to ${formData.get('end')}.`
     );
@@ -26,7 +26,7 @@ export default () => {
               <Slider
                 defaultValue={[20, 30]}
                 maxValue={100}
-                thumbLabels={['start', 'end']}
+                name={['start', 'end']}
                 width={60}
               />
             </FieldBase>

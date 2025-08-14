@@ -67,7 +67,7 @@ To make it work you need at least to define `defaultValues` (uncontrolled) or `v
 Selecting a precise value using a slider can be challenging, as it often requires fine motor control, even with a well-designed slider.
 When attempting to pick a single, specific value, users may find themselves overshooting or undershooting the target.
 
-<strong>Task</strong>: Try picking a random number on the slider, then attempt
+**Task:** Try picking a random number on the slider, then attempt
 to pick the very next number without using the keyboard for assistance. Take
 note of how many attempts it takes to reach that exact number.
 
@@ -94,10 +94,9 @@ Values are formatted as a percentage by default, but this can be modified by usi
 
 <ComponentDemo file="./slider-format.demo.tsx" />
 
-### Form
+### Usage in Forms
 
-Sliders can also be used in forms. To access the values of multiple thumbs you have to setup the `thumbLabels` prop.
-The default label for a single thumb is <strong>start</strong>.
+The `name` attribute determines how the slider’s value is submitted with the form. For a single-thumb slider, name accepts a string and will submit a single numeric value. For a two-thumb slider, name accepts a string tuple, allowing both the minimum and maximum values to be submitted as separate fields. This ensures that the form captures the full range selection without additional processing.
 
 <ComponentDemo file="./slider-form.demo.tsx" />
 
