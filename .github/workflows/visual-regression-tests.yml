@@ -22,7 +22,7 @@ jobs:
         if: steps.findpr.outputs.pr != ''
         uses: mheap/github-action-required-labels@v5
         with:
-          mode: exactly
+          mode: minimum
           count: 1
           labels: run-vrt
           exit_type: success
