@@ -8,6 +8,6 @@
 
 /* marigold components */
 @source './../../packages/{components,system}/**/*.{tsx,ts}';
-@source './../../themes/theme-rui/src/components/*.styles.ts'
+@source './../../themes/theme-rui/src/components/*.styles.ts';
 @source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/**/*.{test}.{tsx,ts}';
