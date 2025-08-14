@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Ref, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -41,7 +42,7 @@ export interface SliderProps<T>
   /**
    * Set the label of the slider.
    */
-  label?: string;
+  label?: ReactNode;
 }
 
 const _Slider = forwardRef(
