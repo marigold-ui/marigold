@@ -2,7 +2,8 @@ name: Visual-Regression-Tests
 on:
   push:
     branches:
-      - '*ui*' # run on any branch name containing "ui"
+      - 'ui-*'
+      - '*-ui'
     branches-ignore:
       - 'renovate/**'
 
