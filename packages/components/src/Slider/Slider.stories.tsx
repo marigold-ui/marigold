@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormEvent } from 'react';
 import { useState } from 'storybook/preview-api';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
-import { FieldBase, I18nProvider, Inline, Stack } from '@marigold/components';
+import { expect } from 'storybook/test';
+import { I18nProvider, Stack } from '@marigold/components';
 import { Button } from '../Button';
 import { Form } from '../Form/Form';
 import { Slider } from './Slider';
