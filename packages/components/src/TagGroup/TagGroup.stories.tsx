@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Tag } from '.';
 import { Button } from '../Button';
@@ -75,11 +75,8 @@ export const RemovableTags: Story = {
     await userEvent.click(within(news).getByRole('button'));
     await userEvent.click(within(shopping).getByRole('button'));
 
-    // Sleep for flaky test
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    await expect(news).not.toBeInTheDocument();
-    await expect(shopping).not.toBeInTheDocument();
+    await waitFor(() => expect(news).not.toBeInTheDocument());
+    await waitFor(() => expect(shopping).not.toBeInTheDocument());
 
     await userEvent.click(canvas.getByText('Reset'));
   },
@@ -124,18 +121,21 @@ export const RemovableAllTags: Story = {
     );
   },
   play: async ({ canvas, userEvent }) => {
-    expect(canvas.getByText('News')).toBeInTheDocument();
-    expect(canvas.getByText('Travel')).toBeInTheDocument();
-    expect(canvas.getByText('Gaming')).toBeInTheDocument();
-    expect(canvas.getByText('Shopping')).toBeInTheDocument();
-
     const removeAll = canvas.getByText('Remove all');
     await userEvent.click(removeAll);
 
-    expect(canvas.queryByText('News')).toBeInTheDocument();
-    expect(canvas.queryByText('Travel')).toBeInTheDocument();
-    expect(canvas.queryByText('Gaming')).toBeInTheDocument();
-    expect(canvas.queryByText('Shopping')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(canvas.queryByText('News')).not.toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(canvas.queryByText('Travel')).not.toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(canvas.queryByText('Gaming')).not.toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(canvas.queryByText('Shopping')).not.toBeInTheDocument()
+    );
 
     await userEvent.click(canvas.getByText('Reset'));
   },
