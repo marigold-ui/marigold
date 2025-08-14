@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { screen } from '@testing-library/react';
 import React, { Key } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
@@ -156,7 +155,7 @@ export const Basic: Story = {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
-    const emptyState = await screen.findByText('Kein Ergebnis gefunden');
+    const emptyState = await canvas.findByText('Kein Ergebnis gefunden');
     expect(emptyState).toBeInTheDocument();
   },
 };
@@ -271,8 +270,7 @@ export const AsyncLoading: Story = {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, 'luke');
-
-    const option = await screen.findByText('Luke Skywalker');
+    const option = await canvas.findByText('Luke Skywalker');
     expect(option).toBeVisible();
   },
 };
