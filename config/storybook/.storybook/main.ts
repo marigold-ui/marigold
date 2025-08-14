@@ -16,11 +16,8 @@ const config: StorybookConfig = {
       name: '@storybook/addon-coverage',
       options: {
         istanbul: {
-          all: true,
-          include: [
-            'packages/components/src/**/*.{ts,tsx}',
-            'packages/system/src/**/*.{ts,tsx}',
-          ],
+          cwd: projectRoot,
+          include: ['packages/components/src/**', 'packages/system/src/**'],
           exclude: [
             '**/*.stories.*',
             '**/*.test.*',
