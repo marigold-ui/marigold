@@ -272,8 +272,12 @@ export const AsyncLoading: Story = {
 
     await userEvent.type(input, 'luke');
 
-    const option = await screen.findByText('Luke Skywalker');
-    expect(option).toBeVisible();
+    // Wait because we poll a real API that is slow sometimes
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    await waitFor(() =>
+      expect(screen.queryByText('Luke Skywalker')).toBeVisible()
+    );
   },
 };
 
