@@ -22,10 +22,12 @@ jobs:
         if: steps.findpr.outputs.pr != ''
         uses: mheap/github-action-required-labels@v5
         with:
-          mode: minimum
+          mode: exactly
           count: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
           labels: run-vrt
           exit_type: success
+          message: 'Requires {{ errorString }} {{ count }} of: {{ provided }}. Found: {{ applied }}'
 
   chromatic:
     name: Visual Regression Tests
