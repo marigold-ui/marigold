@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormEvent } from 'react';
 import { useState } from 'storybook/preview-api';
-import { FieldBase, Inline, Stack } from '@marigold/components';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { FieldBase, I18nProvider, Inline, Stack } from '@marigold/components';
 import { Button } from '../Button';
 import { Form } from '../Form/Form';
 import { Slider } from './Slider';
@@ -80,21 +81,27 @@ export const Basic: Story = {
 
 export const ValueFormatting: Story = {
   render: args => (
-    <Stack space={4}>
-      <Slider
-        label="Price"
-        {...args}
-        formatOptions={{ style: 'currency', currency: 'EUR' }}
-      />
-      <Slider
-        label="Percent"
-        {...args}
-        formatOptions={{ style: 'percent' }}
-        step={0.01}
-        maxValue={1}
-      />
-    </Stack>
+    <I18nProvider locale="en-US">
+      <Stack space={4}>
+        <Slider
+          label="Price"
+          {...args}
+          formatOptions={{ style: 'currency', currency: 'EUR' }}
+        />
+        <Slider
+          label="Percent"
+          {...args}
+          formatOptions={{ style: 'percent' }}
+          step={0.01}
+          maxValue={1}
+        />
+      </Stack>
+    </I18nProvider>
   ),
+  play: async ({ canvas }) => {
+    expect(canvas.queryAllByRole('status')[0]).toHaveTextContent('€0.00');
+    expect(canvas.queryAllByRole('status')[1]).toHaveTextContent('0%');
+  },
 };
 
 export const MultipleThumbs: Story = {
@@ -102,10 +109,17 @@ export const MultipleThumbs: Story = {
     <Slider
       label="Range"
       {...args}
-      defaultValue={[30, 60]}
+      defaultValue={[20, 40]}
       thumbLabels={['start', 'end']}
     />
   ),
+
+  play: async ({ canvas }) => {
+    const slider = canvas.getAllByRole('slider');
+
+    expect(slider[0]).toHaveValue('20');
+    expect(slider[1]).toHaveValue('40');
+  },
 };
 
 export const Controlled: Story = {
