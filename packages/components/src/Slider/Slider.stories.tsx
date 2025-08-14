@@ -66,10 +66,7 @@ const meta = {
     },
   },
   args: {
-    label: 'Label',
-    disabled: false,
     description: 'This is a help text description',
-    thumbLabels: ['start'],
   },
 } satisfies Meta<typeof Slider>;
 
@@ -82,16 +79,16 @@ export const ValueFormatting: Story = {
   render: args => (
     <Stack space={4}>
       <Slider
+        label="Price"
         {...args}
         formatOptions={{ style: 'currency', currency: 'EUR' }}
-        label="Price"
       />
       <Slider
+        label="Percent"
         {...args}
         formatOptions={{ style: 'percent' }}
         step={0.01}
         maxValue={1}
-        label="Percent"
       />
     </Stack>
   ),
@@ -100,10 +97,10 @@ export const ValueFormatting: Story = {
 export const MultipleThumbs: Story = {
   render: args => (
     <Slider
+      label="Range"
       {...args}
       defaultValue={[30, 60]}
       thumbLabels={['start', 'end']}
-      label="Range"
     />
   ),
 };
@@ -113,7 +110,7 @@ export const Controlled: Story = {
     const [value, setValue] = useState<number | number[]>(25);
 
     return (
-      <>
+      <Stack space={2}>
         <Slider
           value={value}
           onChange={setValue}
@@ -121,7 +118,7 @@ export const Controlled: Story = {
           label="Cookies to buy"
         />
         <p>Current value: {value}</p>
-      </>
+      </Stack>
     );
   },
 };
@@ -131,7 +128,7 @@ export const MultiThumbsControlled: Story = {
     const [value, setValue] = useState<number | number[]>([25, 75]);
 
     return (
-      <>
+      <Stack space={2}>
         <Slider
           value={value}
           onChange={setValue}
@@ -139,9 +136,9 @@ export const MultiThumbsControlled: Story = {
           label="Tickets for sale"
         />
         <p>
-          Current value: {typeof value !== 'number' ? value?.join(' – ') : null}
+          Current value: {typeof value !== 'number' ? value?.join(' - ') : null}
         </p>
-      </>
+      </Stack>
     );
   },
 };
@@ -156,21 +153,18 @@ export const Forms: Story = {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <Stack space={2}>
-          <FieldBase label="Choose opacity:">
-            <Slider
-              {...args}
-              maxValue={100}
-              thumbLabels={['opacity']}
-              width={48}
-            />
-          </FieldBase>
-        </Stack>
-        <Inline space={4} alignX={'right'}>
+        <Stack space={6} alignX="left">
+          <Slider
+            label="Choose opacity"
+            {...args}
+            maxValue={100}
+            name="opacity"
+            width={48}
+          />
           <Button variant="primary" type="submit">
             Submit
           </Button>
-        </Inline>
+        </Stack>
       </Form>
     );
   },
@@ -188,22 +182,19 @@ export const MultiThumbsForm: Story = {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <Stack space={2}>
-          <FieldBase label="Age">
-            <Slider
-              {...args}
-              defaultValue={[20, 30]}
-              maxValue={100}
-              thumbLabels={['start', 'end']}
-              width={60}
-            />
-          </FieldBase>
-        </Stack>
-        <Inline space={4} alignX={'right'}>
+        <Stack space={6} alignX="left">
+          <Slider
+            label="Age"
+            {...args}
+            defaultValue={[20, 30]}
+            maxValue={100}
+            name={['start', 'end']}
+            width={60}
+          />
           <Button variant="primary" type="submit">
             Submit
           </Button>
-        </Inline>
+        </Stack>
       </Form>
     );
   },

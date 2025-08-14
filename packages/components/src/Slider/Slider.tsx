@@ -22,9 +22,16 @@ export interface SliderProps<T>
   size?: string;
 
   /**
-   * Labels for the thumbs in the slider. Also used for the name when submitting the form.
+   * The `name` attribute for the slider input(s), used for form submission.
+   * - For single-thumb sliders, provide a string.
+   * - For range sliders (two thumbs), provide a tuple of two strings, one for each thumb.
    */
-  thumbLabels?: string[];
+  name?: string | [string, string];
+
+  /**
+   * Aria labels for the thumbs in the slider.
+   */
+  thumbLabels?: string | [string, string];
 
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
@@ -47,12 +54,13 @@ export interface SliderProps<T>
 const _Slider = forwardRef(
   <T extends number | number[]>(
     {
-      thumbLabels,
       variant,
       size,
       width = 'full',
       disabled,
       label,
+      name,
+      thumbLabels,
       ...rest
     }: SliderProps<T>,
     ref: Ref<HTMLDivElement>
@@ -62,10 +70,13 @@ const _Slider = forwardRef(
       variant,
       size,
     });
+
+    const names = Array.isArray(name) ? name : [name];
     const props = {
       isDisabled: disabled,
       ...rest,
     } satisfies RAC.SliderProps<T>;
+
     return (
       <FieldBase
         as={Slider}
@@ -80,7 +91,7 @@ const _Slider = forwardRef(
         {label && <Label>{label}</Label>}
         <SliderOutput className={cn('flex justify-end', classNames.output)}>
           {({ state }) =>
-            state.values.map((_, i) => state.getThumbValueLabel(i)).join(' – ')
+            state.values.map((_, i) => state.getThumbValueLabel(i)).join(' - ')
           }
         </SliderOutput>
 
@@ -120,7 +131,7 @@ const _Slider = forwardRef(
                   key={i}
                   index={i}
                   aria-label={thumbLabels?.[i]}
-                  name={thumbLabels?.[i]}
+                  name={names?.[i]}
                 />
               ))}
             </>
