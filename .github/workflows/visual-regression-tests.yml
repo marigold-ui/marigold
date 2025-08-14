@@ -9,7 +9,7 @@ jobs:
     name: Resolve PR and check label
     runs-on: ubuntu-latest
     outputs:
-      run_vrt: ${{ steps.setflag.outputs.run_vrt }}
+      status: ${{ steps.check-labels.outputs.status }}
     steps:
       - name: Find PR for this commit
         id: findpr
@@ -20,24 +20,17 @@ jobs:
       - name: Get PR labels
         id: prlabels
         if: steps.findpr.outputs.pr != ''
-        uses: mheap/github-action-pr-labels@v4
+        uses: mheap/github-action-required-labels@v5
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-number: ${{ steps.findpr.outputs.pr }}
-
-      - name: Set run flag based on label
-        id: setflag
-        run: |
-          if [[ "${{ steps.prlabels.outputs.labels }}" == *"run-vrt"* ]]; then
-            echo "run_vrt=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run_vrt=false" >> "$GITHUB_OUTPUT"
-          fi
+          mode: exactly
+          count: 1
+          labels: run-vrt
+          exit_type: success
 
   chromatic:
     name: Visual Regression Tests
     needs: [resolve-pr-and-check-label]
-    if: needs.resolve-pr-and-check-label.outputs.run_vrt == 'true'
+    if: needs.resolve-pr-and-check-label.outputs.status == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
