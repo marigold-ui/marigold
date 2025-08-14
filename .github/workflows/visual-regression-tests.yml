@@ -19,7 +19,6 @@ jobs:
 
       - name: Get PR labels
         id: prlabels
-        if: steps.findpr.outputs.pr != ''
         uses: mheap/github-action-required-labels@v5
         with:
           mode: exactly
