@@ -4,8 +4,6 @@ on:
     branches:
       - 'ui-*'
       - '*-ui'
-    branches-ignore:
-      - 'renovate/**'
 
 jobs:
   chromatic:
