@@ -14,8 +14,8 @@ The radio button component is comprised of a set of clickable circles (the input
 <Image
   src="/radio/radio-anatomy.jpg"
   alt="Anatomy of radio component"
-  width={800}
-  height={550}
+  width={550}
+  height={400}
   className="mx-auto block"
 />
 
@@ -144,6 +144,14 @@ Radio groups are most effective with a small set of choices that can be taken in
 When a radio group is long enough to create clutter, overload, or excessive scrolling, keep it compact while ensuring all options remain accessible. Present only the most relevant five to eight choices initially, with the rest hidden until revealed. Apply this approach sparingly when all options can be scanned easily without causing frustration.
 
 <ComponentDemo file="./radio-more.demo.tsx" />
+
+<SectionMessage>
+  <SectionMessage.Title>Auto-Expand on Selection</SectionMessage.Title>
+  <SectionMessage.Content>
+    If the selected value is within the collapsed section, the component renders
+    in its expanded state by default.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ## Props
 
