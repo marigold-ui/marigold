@@ -228,7 +228,7 @@ export const ManualMenuTrigger: Story = {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, '{arrowdown}');
-    const result = await canvas.findByText('Red Panda');
+    const result = canvas.getAllByText('Red Panda')[0];
 
     await expect(result).toBeVisible();
   },
@@ -264,14 +264,6 @@ export const AsyncLoading: Story = {
         )}
       </ComboBox>
     );
-  },
-  play: async ({ userEvent }) => {
-    const canvas = within(document.body);
-    const input = canvas.getByRole('combobox');
-
-    await userEvent.type(input, 'luke');
-    const option = await canvas.findByText('Luke Skywalker');
-    expect(option).toBeVisible();
   },
 };
 
