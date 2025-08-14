@@ -36,29 +36,13 @@ The thumbs can be dragged to allow a user to change their value. In addition, th
 
 ## Usage
 
-Sliders allow users to view and select a value (or range) along a track. They’re ideal for adjusting settings such as volume and brightness.
+A slider is useful when selecting a value or range within a continuous or evenly spaced numeric scale feels more natural through direct manipulation than by entering values manually. It is well suited for inputs where the approximate position on a scale matters more than exact precision, such as setting volume, adjusting brightness, or filtering results within a price or date range. By making the scale visible and interactive, a slider allows users to quickly explore and adjust values while maintaining a clear sense of their relative position.
 
-A slider’s `step` size defines the increments at which the slider can move, allowing users to make finer or coarser adjustments based on the context — such as adjusting volume in single steps versus increments of ten. Setting an appropriate step size enhances usability, especially for precise inputs. The `step` default increment is 1.
+### Ranges
 
-### Label
+Use the range feature of a slider when users need to select both a minimum and maximum value within the same scale, such as defining a price range, date span, or acceptable measurement limits. This approach works best when the range boundaries are equally important and the relationship between them is immediately clear in a single, continuous control.
 
-The label is automatically placed on top of the slider and aligned to its left side. It informs users what value(s) they have selected. You can place it with the `label` prop.
-
-<ComponentDemo file="./slider-do-label.demo.tsx" />
-
-<GuidelineTiles>
-  <Do>
-    <Do.Description>
-      Do label the slider appropriately with the value being modified.
-    </Do.Description>
-  </Do>
-</GuidelineTiles>
-
-### Range slider
-
-The slider can be configured with multiple thumbs to select a range of related values. A common use-case of this component is a price range picker that allows a user to set the minimum and maximum price.
-
-To make it work you need at least to define `defaultValues` (uncontrolled) or `value` (controlled) and for accessibility reasons, you should set the `thumbLabels` prop.
+When multiple thumbs are rendered, each thumb should have an `aria-label`, which is provided via the `thumbLabels` prop.
 
 <ComponentDemo file="./slider-range.demo.tsx" />
 
