@@ -22,5 +22,5 @@ export const Pagination: ThemeComponent<'Pagination'> = {
     'data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs',
   ]),
   icon: cva('h-4 w-4'),
-  ellipsis: cva('text-text-base flex h-8 w-8 items-center justify-center'),
+  ellipsis: cva('text-foreground flex h-8 w-8 items-center justify-center'),
 };
