@@ -177,7 +177,7 @@ export const CollapseAt: Story = {
   ),
   play: async ({ step, canvas, userEvent }) => {
     await step('show more', async () => {
-      await userEvent.click(canvas.getByText('Show 4 more'));
+      await userEvent.click(canvas.getByText('Show 5 more'));
 
       expect(canvas.queryByTestId('four')).toBeVisible();
       expect(canvas.queryByTestId('five')).toBeVisible();
@@ -186,7 +186,7 @@ export const CollapseAt: Story = {
     });
 
     await step('show less', async () => {
-      await userEvent.click(canvas.getByText('Show 4 less'));
+      await userEvent.click(canvas.getByText('Show 5 less'));
 
       expect(canvas.queryByTestId('four')).not.toBeVisible();
       expect(canvas.queryByTestId('five')).not.toBeVisible();
