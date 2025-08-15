@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormEvent } from 'react';
 import { useState } from 'storybook/preview-api';
-import { FieldBase, Inline, Stack } from '@marigold/components';
+import { expect } from 'storybook/test';
+import { I18nProvider, Stack } from '@marigold/components';
 import { Button } from '../Button';
 import { Form } from '../Form/Form';
 import { Slider } from './Slider';
@@ -66,46 +67,59 @@ const meta = {
     },
   },
   args: {
-    label: 'Label',
-    disabled: false,
     description: 'This is a help text description',
-    thumbLabels: ['start'],
   },
 } satisfies Meta<typeof Slider>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = { render: args => <Slider {...args} /> };
+export const Basic: Story = {
+  args: { label: 'Label' },
+  render: args => <Slider {...args} />,
+};
 
 export const ValueFormatting: Story = {
   render: args => (
-    <Stack space={4}>
-      <Slider
-        {...args}
-        formatOptions={{ style: 'currency', currency: 'EUR' }}
-        label="Price"
-      />
-      <Slider
-        {...args}
-        formatOptions={{ style: 'percent' }}
-        step={0.01}
-        maxValue={1}
-        label="Percent"
-      />
-    </Stack>
+    <I18nProvider locale="en-US">
+      <Stack space={4}>
+        <Slider
+          label="Price"
+          {...args}
+          formatOptions={{ style: 'currency', currency: 'EUR' }}
+        />
+        <Slider
+          label="Percent"
+          {...args}
+          formatOptions={{ style: 'percent' }}
+          step={0.01}
+          maxValue={1}
+        />
+      </Stack>
+    </I18nProvider>
   ),
+  play: async ({ canvas }) => {
+    expect(canvas.queryAllByRole('status')[0]).toHaveTextContent('€0.00');
+    expect(canvas.queryAllByRole('status')[1]).toHaveTextContent('0%');
+  },
 };
 
 export const MultipleThumbs: Story = {
   render: args => (
     <Slider
-      {...args}
-      defaultValue={[30, 60]}
-      thumbLabels={['start', 'end']}
       label="Range"
+      {...args}
+      defaultValue={[20, 40]}
+      thumbLabels={['start', 'end']}
     />
   ),
+
+  play: async ({ canvas }) => {
+    const slider = canvas.getAllByRole('slider');
+
+    expect(slider[0]).toHaveValue('20');
+    expect(slider[1]).toHaveValue('40');
+  },
 };
 
 export const Controlled: Story = {
@@ -113,7 +127,7 @@ export const Controlled: Story = {
     const [value, setValue] = useState<number | number[]>(25);
 
     return (
-      <>
+      <Stack space={2}>
         <Slider
           value={value}
           onChange={setValue}
@@ -121,7 +135,7 @@ export const Controlled: Story = {
           label="Cookies to buy"
         />
         <p>Current value: {value}</p>
-      </>
+      </Stack>
     );
   },
 };
@@ -131,7 +145,7 @@ export const MultiThumbsControlled: Story = {
     const [value, setValue] = useState<number | number[]>([25, 75]);
 
     return (
-      <>
+      <Stack space={2}>
         <Slider
           value={value}
           onChange={setValue}
@@ -139,9 +153,9 @@ export const MultiThumbsControlled: Story = {
           label="Tickets for sale"
         />
         <p>
-          Current value: {typeof value !== 'number' ? value?.join(' – ') : null}
+          Current value: {typeof value !== 'number' ? value?.join(' - ') : null}
         </p>
-      </>
+      </Stack>
     );
   },
 };
@@ -156,21 +170,18 @@ export const Forms: Story = {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <Stack space={2}>
-          <FieldBase label="Choose opacity:">
-            <Slider
-              {...args}
-              maxValue={100}
-              thumbLabels={['opacity']}
-              width={48}
-            />
-          </FieldBase>
-        </Stack>
-        <Inline space={4} alignX={'right'}>
+        <Stack space={6} alignX="left">
+          <Slider
+            label="Choose opacity"
+            {...args}
+            maxValue={100}
+            name="opacity"
+            width={48}
+          />
           <Button variant="primary" type="submit">
             Submit
           </Button>
-        </Inline>
+        </Stack>
       </Form>
     );
   },
@@ -188,22 +199,19 @@ export const MultiThumbsForm: Story = {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <Stack space={2}>
-          <FieldBase label="Age">
-            <Slider
-              {...args}
-              defaultValue={[20, 30]}
-              maxValue={100}
-              thumbLabels={['start', 'end']}
-              width={60}
-            />
-          </FieldBase>
-        </Stack>
-        <Inline space={4} alignX={'right'}>
+        <Stack space={6} alignX="left">
+          <Slider
+            label="Age"
+            {...args}
+            defaultValue={[20, 30]}
+            maxValue={100}
+            name={['start', 'end']}
+            width={60}
+          />
           <Button variant="primary" type="submit">
             Submit
           </Button>
-        </Inline>
+        </Stack>
       </Form>
     );
   },
