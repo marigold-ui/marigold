@@ -152,3 +152,24 @@ export const ReadOnly: Story = {
     await expect(args.onChange).not.toHaveBeenCalled();
   },
 };
+
+export const OnlyOneMonthAndYear: Story = {
+  ...Basic,
+  tags: ['component-test'],
+  args: {
+    minValue: new CalendarDate(2020, 5, 5),
+    maxValue: new CalendarDate(2020, 5, 20),
+    onChange: fn(),
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
+    const monthButton = canvas.getByTestId('month');
+    const yearButton = canvas.getByTestId('year');
+
+    await userEvent.click(monthButton);
+    await userEvent.click(yearButton);
+
+    expect(canvas.queryByRole('dialog')).toBeNull();
+    expect(canvas.queryByRole('listbox')).toBeNull();
+  },
+};
