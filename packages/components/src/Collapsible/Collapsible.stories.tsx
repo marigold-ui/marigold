@@ -47,8 +47,8 @@ export const Basic: StoryObj<typeof meta> = {
   },
 };
 
-export const ShowMore: StoryObj<typeof meta> = {
-  render: ({ children, ...args }) => (
+export const ShowMore: StoryObj<typeof More> = {
+  render: ({ children = <p>Test Content</p>, ...args }) => (
     <More {...args}>{children as ReactNode}</More>
   ),
   play: async ({ step, canvas, userEvent }) => {

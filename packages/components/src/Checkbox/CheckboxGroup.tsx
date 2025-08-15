@@ -32,7 +32,11 @@ const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
       isValidElement(child) && state.value.includes((child.props as any).value)
   );
 
-  return <More defaultExpanded={defaultExpanded}>{children}</More>;
+  return (
+    <More defaultExpanded={defaultExpanded} showCount>
+      {children}
+    </More>
+  );
 };
 
 // Props

@@ -42,6 +42,46 @@ describe('More', () => {
     expect(screen.getByText('Mehr anzeigen')).toBeInTheDocument();
   });
 
+  it('renders a localized "less" text as trigger label', async () => {
+    render(
+      <>
+        <I18nProvider locale="en-US">
+          <ShowMore />
+        </I18nProvider>
+        <I18nProvider locale="de-DE">
+          <ShowMore />
+        </I18nProvider>
+      </>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Show more' }));
+    await user.click(screen.getByRole('button', { name: 'Mehr anzeigen' }));
+
+    expect(screen.getByText('Show less')).toBeInTheDocument();
+    expect(screen.getByText('Weniger anzeigen')).toBeInTheDocument();
+  });
+
+  it('renders a localized "more" text with a counter as trigger label', () => {
+    render(
+      <>
+        <I18nProvider locale="en-US">
+          <ShowMore showCount>
+            <p>1</p>
+            <p>2</p>
+          </ShowMore>
+        </I18nProvider>
+        <I18nProvider locale="de-DE">
+          <ShowMore showCount>
+            <p>1</p>
+            <p>2</p>
+          </ShowMore>
+        </I18nProvider>
+      </>
+    );
+    expect(screen.getByText('Show 2 more')).toBeInTheDocument();
+    expect(screen.getByText('2 weitere anzeigen')).toBeInTheDocument();
+  });
+
   it('is unstyled by default', () => {
     render(<ShowMore>Test Content</ShowMore>);
 

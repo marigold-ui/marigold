@@ -27,7 +27,11 @@ const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
       state.selectedValue === (child.props as any).value
   );
 
-  return <More defaultExpanded={defaultExpanded}>{children}</More>;
+  return (
+    <More defaultExpanded={defaultExpanded} showCount>
+      {children}
+    </More>
+  );
 };
 
 // Props
