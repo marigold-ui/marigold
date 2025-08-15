@@ -42,6 +42,10 @@ export type Theme = {
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
+    Collapsible?: Record<
+      'container' | 'trigger' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     ContextualHelp?: Record<
       'trigger' | 'popover' | 'dialog' | 'title' | 'content',
       ComponentStyleFunction<string, string>

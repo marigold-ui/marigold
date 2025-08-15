@@ -1,10 +1,41 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { isValidElement, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { RadioGroup } from 'react-aria-components';
+import { RadioGroup, RadioGroupStateContext } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
+import { More } from '../Collapsible/More';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { splitChildren } from '../utils/children.utils';
 import { RadioGroupContext } from './Context';
 
+// Helpers
+// ---------------
+interface CollapsibleGroupProps {
+  children?: ReactNode[];
+}
+
+const CollapsibleGroup = ({ children }: CollapsibleGroupProps) => {
+  const state = useContext(RadioGroupStateContext)!;
+
+  if (!children || children.length === 0) {
+    return null;
+  }
+
+  const defaultExpanded = children.some(
+    child =>
+      isValidElement(child) &&
+      state.selectedValue === (child.props as any).value
+  );
+
+  return (
+    <More defaultExpanded={defaultExpanded} showCount>
+      {children}
+    </More>
+  );
+};
+
+// Props
+// ---------------
 type RemovedProps =
   | 'className'
   | 'style'
@@ -39,7 +70,7 @@ export interface RadioGroupProps
   /**
    * The children elements of the radio group.
    */
-  children: ReactNode[];
+  children?: ReactNode[];
 
   /**
    * Control the width of the field.
@@ -81,8 +112,19 @@ export interface RadioGroupProps
    * @default vertical
    */
   orientation?: 'horizontal' | 'vertical';
+
+  /**
+   * The number of items to display before collapsing the rest.
+   * Items beyond this number will be hidden until the user clicks
+   * the "Show more" control.
+   *
+   * @default undefined
+   */
+  collapseAt?: number;
 }
 
+// Component
+// ---------------
 const _RadioGroup = ({
   variant,
   size,
@@ -96,6 +138,7 @@ const _RadioGroup = ({
   orientation = 'vertical',
   children,
   width,
+  collapseAt,
   ...rest
 }: RadioGroupProps) => {
   const classNames = useClassNames({ component: 'Radio', variant, size });
@@ -107,6 +150,11 @@ const _RadioGroup = ({
     isInvalid: error,
     ...rest,
   } as const;
+
+  const [visibleChildren, collapsedChildren] = splitChildren(
+    children,
+    collapseAt
+  );
 
   return (
     <FieldBase
@@ -132,7 +180,8 @@ const _RadioGroup = ({
         )}
       >
         <RadioGroupContext.Provider value={{ width, variant, size }}>
-          {children}
+          {visibleChildren}
+          <CollapsibleGroup>{collapsedChildren}</CollapsibleGroup>
         </RadioGroupContext.Provider>
       </div>
     </FieldBase>
