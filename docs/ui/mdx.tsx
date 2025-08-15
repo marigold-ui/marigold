@@ -9,6 +9,7 @@ import { IconList } from '@/ui/IconList';
 import {
   Badge,
   Card,
+  Center,
   Columns,
   Headline,
   Inline,
@@ -175,6 +176,7 @@ const components = {
   // Marigold Components
   Badge,
   Card,
+  Center,
   Columns,
   DateFormat,
   Headline,
