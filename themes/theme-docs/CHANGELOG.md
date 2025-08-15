@@ -1,5 +1,23 @@
 # @marigold/theme-docs
 
+## 3.1.4
+
+### Patch Changes
+
+- Updated dependencies [2a64b4f]
+- Updated dependencies [7e33a7f]
+- Updated dependencies [82370d2]
+- Updated dependencies [80a4427]
+- Updated dependencies [9bac182]
+- Updated dependencies [62ac4b8]
+- Updated dependencies [17318a8]
+- Updated dependencies [6d2d2d4]
+- Updated dependencies [5e06780]
+- Updated dependencies [41da911]
+- Updated dependencies [1ab48da]
+  - @marigold/components@15.0.0
+  - @marigold/system@15.0.0
+
 ## 3.1.3
 
 ### Patch Changes
