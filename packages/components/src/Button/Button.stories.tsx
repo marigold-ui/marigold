@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { Container, Stack } from '@marigold/components';
 import { Facebook } from '@marigold/icons';
 import { Button } from './Button';
@@ -79,7 +79,7 @@ export const Basic: Story = {
     onPress: fn(),
   },
   render: args => <Button {...args}>Button</Button>,
-  play: async ({ args, canvasElement, userEvent }) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByText('Button'));
@@ -116,7 +116,7 @@ export const ButtonVariants: Story = {
       </Stack>
     </Container>
   ),
-  play: async ({ args, canvasElement, userEvent }) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByText('Primary'));

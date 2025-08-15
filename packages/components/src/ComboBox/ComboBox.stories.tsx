@@ -152,7 +152,7 @@ export const Basic: Story = {
       </I18nProvider>
     );
   },
-  play: async ({ userEvent }) => {
+  play: async () => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
@@ -188,7 +188,7 @@ export const Controlled: StoryObj<typeof ComboBox> = {
       </Stack>
     );
   },
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement }) => {
     const body = canvasElement.ownerDocument.body;
     const canvas = within(body);
     const combobox = canvas.queryByRole('combobox', { name: 'Animals' });
@@ -224,7 +224,7 @@ export const ManualMenuTrigger: Story = {
   args: {
     menuTrigger: 'manual',
   },
-  play: async ({ userEvent }) => {
+  play: async () => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
 
@@ -266,7 +266,7 @@ export const AsyncLoading: Story = {
       </ComboBox>
     );
   },
-  play: async ({ userEvent }) => {
+  play: async () => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
 

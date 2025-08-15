@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
 import { useState } from 'storybook/preview-api';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 
@@ -182,7 +182,7 @@ export const Controlled: Story = {
       </>
     );
   },
-  play: async ({ args, canvasElement, userEvent }) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     let concert = canvas.getByRole('checkbox', { name: /Concert/i });
     let festival = canvas.getByRole('checkbox', { name: /Festival/i });
