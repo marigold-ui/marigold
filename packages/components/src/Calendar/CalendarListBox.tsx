@@ -25,10 +25,19 @@ export function CalendarListBox({
 
   return (
     <button
-      disabled={isDisabled}
-      onClick={() => setSelectedDropdown(type)}
-      className={cn(buttonStyles, classNames.select)}
+      onClick={() => !isDisabled && setSelectedDropdown(type)}
+      className={cn(
+        buttonStyles,
+        classNames.select,
+        classNames.calendarListboxButton
+      )}
       data-testid={type}
+      aria-disabled={isDisabled}
+      aria-label={
+        type === 'month'
+          ? `${months[state.focusedDate.month - 1].substring(0, 3)}${isDisabled ? ' not selectable' : ''}`
+          : `${state.focusedDate.year}${isDisabled ? ' not selectable' : ''}`
+      }
     >
       {type === 'month'
         ? months[state.focusedDate.month - 1].substring(0, 3)

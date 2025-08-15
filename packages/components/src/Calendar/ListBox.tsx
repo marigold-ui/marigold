@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
-import { Button } from 'react-aria-components';
+import {
+  ListBox as RACAriaListBox,
+  ListBoxItem as RACListBoxItem,
+} from 'react-aria-components';
 import { cn } from '@marigold/system';
+import { useCalendarContext } from './Context';
 
 interface ListBoxProps<T> {
   dataTestid: string;
@@ -9,9 +13,6 @@ interface ListBoxProps<T> {
   isSelected: (item: T, index: number) => boolean;
   onSelect: (item: T, index: number) => void;
   format: (item: T, index: number) => ReactNode;
-  buttonClassName?: string;
-  ulClassName?: string;
-  activeButtonRef?: React.RefObject<HTMLButtonElement>;
 }
 
 export function ListBox<T>({
@@ -21,40 +22,40 @@ export function ListBox<T>({
   isSelected,
   onSelect,
   format,
-  buttonClassName,
-  ulClassName,
-  activeButtonRef,
 }: ListBoxProps<T>) {
+  const { classNames } = useCalendarContext();
   return (
-    <ul
+    <RACAriaListBox
       className={cn(
-        'grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 p-2',
-        ulClassName
+        'grid h-full max-h-[300px] min-w-[300px] grid-cols-3 gap-y-10 overflow-y-auto p-2'
       )}
       data-testid={dataTestid}
+      selectionMode="single"
+      aria-label={dataTestid}
     >
       {items.map((item, index) => {
         const disabled = isDisabled(item, index);
         const selected = isSelected(item, index);
         return (
-          <li className="flex justify-center" key={index}>
-            <Button
-              slot="previous"
-              ref={selected && activeButtonRef ? activeButtonRef : undefined}
-              onPress={() => onSelect(item, index)}
-              isDisabled={disabled}
-              aria-current={selected}
-              className={cn(
-                buttonClassName,
-                'inline-flex items-center justify-center gap-[0.5ch]',
-                disabled && 'cursor-not-allowed opacity-50'
-              )}
-            >
-              {format(item, index)}
-            </Button>
-          </li>
+          <RACListBoxItem
+            key={index}
+            id={String(index)}
+            textValue={String(format(item, index))}
+            isDisabled={disabled}
+            aria-label={`${format(item, index)}${
+              selected ? ' selected' : disabled ? ' not selectable' : ''
+            }`}
+            className={cn(
+              classNames.calendarListboxButton,
+              'inline-flex items-center justify-center gap-[0.5ch]',
+              disabled && 'cursor-not-allowed opacity-50'
+            )}
+            onPress={() => !disabled && onSelect(item, index)}
+          >
+            {format(item, index)}
+          </RACListBoxItem>
         );
       })}
-    </ul>
+    </RACAriaListBox>
   );
 }

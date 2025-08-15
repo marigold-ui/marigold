@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { CalendarStateContext, DateValue } from 'react-aria-components';
-import { useCalendarContext } from './Context';
 import { ListBox } from './ListBox';
 import { useFormattedMonths } from './useFormattedMonths';
 
@@ -24,8 +23,6 @@ const MonthListBox = ({
   const maxMonth =
     maxValue && maxValue.year === currentYear ? maxValue.month : 12;
 
-  const { classNames } = useCalendarContext();
-
   return (
     <ListBox
       dataTestid="monthOptions"
@@ -39,7 +36,6 @@ const MonthListBox = ({
         setSelectedDropdown(undefined);
       }}
       format={month => month.substring(0, 3)}
-      buttonClassName={classNames.calendarListboxButton}
     />
   );
 };
