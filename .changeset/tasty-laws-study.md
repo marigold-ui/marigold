@@ -2,4 +2,4 @@
 "@marigold/theme-rui": patch
 ---
 
-fix(Pagination): correctly apply classnames
+fix: correct broken classnames in `<Pagination>` and `<Slider>`
