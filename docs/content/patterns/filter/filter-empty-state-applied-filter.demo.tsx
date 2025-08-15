@@ -4,7 +4,7 @@ export default () => (
   <Tag.Group
     label="Applied Filters"
     emptyState={() => (
-      <Text variant="muted" fontStyle="italic">
+      <Text variant="muted" fontSize="sm" fontStyle="italic">
         None
       </Text>
     )}

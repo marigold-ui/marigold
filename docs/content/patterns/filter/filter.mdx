@@ -127,14 +127,24 @@ When an applied filter contains a large number of values, avoid grouping them al
 
 ### Reverting Filters
 
-When applying filters results in no matches, it is important to provide a quick way to remove them. This can include options to remove individual filters directly from the applied filters area, or to completely clear all filters at once using an action in the toolbar. These approaches ensure users can easily adjust or reset their selections without unnecessary steps.
+When applied filters result in no displayed results, for example when criteria are too restrictive, conflicting, or simply no longer relevant, it is important to offer quick and accessible ways to revert them. This prevents users from becoming stuck or frustrated and allows them to continue exploring the data set with minimal effort.
+
+Two recommendations are:
+
+1. Allow the user to remove individual filters directly from the applied filters area, enabling them to quickly discard any selection that is no longer relevant and immediately see the effect on the data set without disrupting other active filters.
+2. Clear all filters at once using an action in the applied filters area. This instantly resets the filtering state and returns the view to its unfiltered default. It allows the user to remove every active filter in one simple step and immediately restore full visibility of all available data.
+
+Offering both options provides flexibility. Users can make precise adjustments by removing specific filters or start fresh by clearing them all.
 
 <ComponentDemo file="./filter-revert.demo.tsx" />
 
-```js
-//TODO: What element do we need to use here? Do we need a button
-// with variant "link" (which just makes it blue)
-```
+<SectionMessage>
+  <SectionMessage.Title>"Remove all" Visibility</SectionMessage.Title>
+  <SectionMessage.Content>
+    The "Remove all" action is automatically hidden when only one filter is
+    active, as removing it individually is simpler and cleaner.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ## Demo
 

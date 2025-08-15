@@ -1,7 +1,11 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Tag: ThemeComponent<'Tag'> = {
-  container: cva('flex gap-3'),
+  container: cva([
+    'flex gap-3',
+    // prevent collapsing when the empty state is shown
+    'min-h-button-small',
+  ]),
   tag: cva([
     'relative inline-flex items-center gap-[7px]',
     'border border-solid border-input rounded-md',
