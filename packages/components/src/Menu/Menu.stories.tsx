@@ -22,7 +22,7 @@ const meta = {
       control: {
         type: 'radio',
       },
-      options: ['secondary', 'ghost'],
+      options: ['default', 'ghost'],
       description: 'Variant of the button',
     },
     open: {

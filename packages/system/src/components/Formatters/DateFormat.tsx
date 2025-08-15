@@ -5,7 +5,7 @@ interface DateFormatProps extends DateFormatterOptions {
   /**
    * Value to be formatted.
    */
-  value: Date;
+  value: Date | [Date, Date];
   /**
    * Specifies that the digits should take the full width.
    * @default true
@@ -14,13 +14,15 @@ interface DateFormatProps extends DateFormatterOptions {
 }
 
 export const DateFormat = ({ value, tabular, ...props }: DateFormatProps) => {
-  const dateFormatter = useDateFormatter({
+  const formatter = useDateFormatter({
     ...props,
   });
 
   return (
     <span className={tabular ? 'tabular-nums' : ''}>
-      {dateFormatter.format(value)}
+      {Array.isArray(value)
+        ? formatter.formatRange(value[0], value[1])
+        : formatter.format(value)}
     </span>
   );
 };
