@@ -34,6 +34,43 @@ Checkboxes are used when there are multiple items to select in a list. Each chec
 
 Particularly checkboxes are useful in settings where users need to make non-exclusive selections. They provide a clear and straightforward way to toggle options on or off. When used in a group, they can help simplify complex decision-making processes. Additionally, checkboxes can be combined with other form elements.
 
+### Labeling
+
+We recommend checkbox labels being fewer than three words because shorter checkbox labels improve readability and reduce cognitive load, making it easier for users to quickly understand and select options. This enhances the overall user experience, especially on small screens.
+
+If you are tight on space, consider rewording the label. Do not truncate checkbox label text with an ellipsis. Long labels may wrap to a second line, and this is preferable to truncation.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-do-multipleline.jpg"
+        alt="If the label is long, wrap to a second line."
+      />
+    </Do.Figure>
+    <Do.Description>
+      If the label is long, wrap to a second line.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-dont-multipleline.jpg"
+        alt="Do not truncate checkbox label text with an ellipsis."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Do not truncate checkbox label text with an ellipsis.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
 ### Number of options
 
 Use checkboxes when there are no more than 10 to 15 options, as too many of them can overwhelm users and clutter the interface. For larger sets of options, refer to the [Multiple Selection Pattern](/patterns/multiple-selection) for a better user experience.
@@ -87,43 +124,6 @@ When a checkbox list is long enough to create clutter, overload, or excessive sc
 ### Ordering of Options
 
 Options should be arranged by relevance to help users find what they need quickly. Prioritizing by factors such as frequency of use, overall popularity, or recency of interaction ensures the most useful items appear first. Alphabetical order should be considered only when no meaningful ranking criteria are available, as it may not align with user priorities or usage patterns.
-
-### Label Text
-
-We recommend checkbox labels being fewer than three words because shorter checkbox labels improve readability and reduce cognitive load, making it easier for users to quickly understand and select options. This enhances the overall user experience, especially on small screens.
-
-If you are tight on space, consider rewording the label. Do not truncate checkbox label text with an ellipsis. Long labels may wrap to a second line, and this is preferable to truncation.
-
-<GuidelineTiles>
-  <Do>
-    <Do.Figure>
-      <Image
-        width={400}
-        height={400}
-        unoptimized
-        src="/checkbox/checkbox-do-multipleline.jpg"
-        alt="If the label is long, wrap to a second line."
-      />
-    </Do.Figure>
-    <Do.Description>
-      If the label is long, wrap to a second line.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Figure>
-      <Image
-        width={400}
-        height={400}
-        unoptimized
-        src="/checkbox/checkbox-dont-multipleline.jpg"
-        alt="Do not truncate checkbox label text with an ellipsis."
-      />
-    </Dont.Figure>
-    <Dont.Description>
-      Do not truncate checkbox label text with an ellipsis.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
 
 ### Checkbox or switch
 

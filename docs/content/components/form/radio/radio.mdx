@@ -36,41 +36,6 @@ Radio buttons are used for mutually exclusive choices, where only one option can
 
 The `<Radio>` should never be used alone because radio buttons are designed for selecting one option from multiple mutually exclusive choices. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
 
-### Selecting options
-
-If a user can select from multiple options, use checkboxes instead of radio buttons. Radio buttons allow the user to select only one item in a set whereas checkboxes allow the user to select multiple items.
-
-<GuidelineTiles>
-  <Do>
-    <Do.Figure>
-      <Image
-        width={400}
-        height={400}
-        unoptimized
-        src="/radio/dosAndDonts_checkbox_select.jpg"
-        alt="Do use checkboxes when multiple items can be selected"
-      />
-    </Do.Figure>
-    <Do.Description>
-      Do use checkboxes when multiple items can be selected.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Figure>
-      <Image
-        width={400}
-        height={400}
-        unoptimized
-        src="/radio/dosAndDonts_radio_select.jpg"
-        alt="Don't use radio buttons when multiple items can be selected."
-      />
-    </Dont.Figure>
-    <Dont.Description>
-      Don't use radio buttons when multiple items can be selected.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
-
 ### Overflow content
 
 We recommend radio button labels being fewer than three words because shorter radio button labels improve readability and reduce cognitive load, making it easier for users to quickly understand and select options. This enhances the overall user experience, especially on small screens.
@@ -153,6 +118,30 @@ When a radio group is long enough to create clutter, overload, or excessive scro
     in its expanded state by default.
   </SectionMessage.Content>
 </SectionMessage>
+
+### Ordering of Options
+
+Options should be arranged by relevance to help users find what they need quickly. Prioritizing by factors such as frequency of use, overall popularity, or recency of interaction ensures the most useful items appear first. Alphabetical order should be considered only when no meaningful ranking criteria are available, as it may not align with user priorities or usage patterns.
+
+### Single vs. Multiple Selection
+
+Use radio buttons when users must choose only one option from a group. For example, selecting a payment method like Credit Card, PayPal, or Invoice, or picking a seat category such as Balcony, Orchestra, or Standing.
+
+Radio buttons are best when the options are mutually exclusive, the user is required to make a choice, and the number of options is limited and visible. If users can select more than one option, use [checkboxes](/components/form/checkbox) instead, such as when subscribing to event categories (Concerts, Theater, Sports) or enabling account notifications (Email, SMS, App), where each option is independent.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use radio buttons when only one option can be selected.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Use [checkboxes](/components/form/checkbox) when more than one option can
+      be selected.
+    </Do.Description>
+  </Do>
+</GuidelineTiles>
 
 ## Props
 
