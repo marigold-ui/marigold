@@ -1,52 +1,8 @@
-import { Undo2 } from 'lucide-react';
-import {
-  Button,
-  Inline,
-  NumberField,
-  Slider,
-  Stack,
-  Tooltip,
-} from '@marigold/components';
-
-const Reset = () => (
-  <Tooltip.Trigger>
-    <Button size="small" variant="link" slot={null}>
-      <Undo2 className="size-4" strokeWidth={2.5} />
-    </Button>
-    <Tooltip>Reset filter</Tooltip>
-  </Tooltip.Trigger>
-);
+import { Tag } from '@marigold/components';
 
 export default () => (
-  <div className="mx-auto w-1/2">
-    <Stack space={6}>
-      <NumberField
-        label={
-          <Inline space={2}>
-            <>Min. available Tickets</>
-            <Reset />
-          </Inline>
-        }
-        defaultValue={2}
-        minValue={0}
-        maxValue={150}
-      />
-      <Slider
-        label={
-          <Inline space={2}>
-            <>Ticket Price</>
-            <Reset />
-          </Inline>
-        }
-        defaultValue={[30, 80]}
-        step={10}
-        maxValue={150}
-        formatOptions={{
-          style: 'currency',
-          currency: 'EUR',
-          minimumFractionDigits: 0,
-        }}
-      />
-    </Stack>
-  </div>
+  <Tag.Group label="Applied Filters" onRemove={() => {}} removeAll>
+    <Tag id="type">Type is Club or Lounge</Tag>
+    <Tag id="traits">Traits are cheap, hype (+5 more)</Tag>
+  </Tag.Group>
 );
