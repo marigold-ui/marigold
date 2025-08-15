@@ -2,7 +2,6 @@ import { CalendarDate } from '@internationalized/date';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { CalendarStateContext, DateValue } from 'react-aria-components';
 import { useDateFormatter } from '@react-aria/i18n';
-import { useCalendarContext } from './Context';
 import { ListBox } from './ListBox';
 
 interface YearDropdownProps {
@@ -17,7 +16,6 @@ const YearListBox = ({
   maxValue,
 }: YearDropdownProps) => {
   const state = useContext(CalendarStateContext)!;
-  const { classNames } = useCalendarContext();
   const years: CalendarDate[] = [];
   for (let i = -20; i <= 20; i++) {
     years.push(state.focusedDate.add({ years: i }));
@@ -34,15 +32,13 @@ const YearListBox = ({
     <ListBox
       dataTestid="yearOptions"
       items={years}
-      isDisabled={year => year.year < minYear || year.year > maxYear}
-      isSelected={year => year.year === state.focusedDate.year}
+      isDisabled={({ year }) => year < minYear || year > maxYear}
+      isSelected={({ year }) => year === state.focusedDate.year}
       onSelect={year => {
         state.setFocusedDate(year);
         setSelectedDropdown(undefined);
       }}
       format={year => formatter.format(year.toDate(state.timeZone))}
-      buttonClassName={classNames.calendarListboxButton}
-      ulClassName="overflow-y-scroll"
     />
   );
 };
