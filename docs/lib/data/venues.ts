@@ -113,7 +113,7 @@ export const venues = [
   },
   {
     id: '5',
-    name: 'The Cellar Lounge',
+    name: 'Cellar Lounge',
     type: 1,
     image: '/venues/cellar-lounge.webp',
     description:
