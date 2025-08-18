@@ -65,6 +65,7 @@
     "test:coverage": "vitest run --coverage",
     "test:ci": "vitest",
     "test:storybook": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config test",
+    "test:coverage:storybook": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config test:coverage",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist' -o -name '.next' -o -name '.turbo' -o -name 'storybook-static'`",
     "clean:build": "rm -rf `find . -type d -name 'dist'` coverage",
     "lint": "eslint . --no-warn-ignored",
