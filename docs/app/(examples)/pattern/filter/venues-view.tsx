@@ -1,6 +1,11 @@
 'use client';
 
-import { venueTypes, venues } from '@/lib/data/venues';
+import {
+  amenitiesOptions,
+  parkingOptions,
+  venueTypes,
+  venues,
+} from '@/lib/data/venues';
 import {
   Badge,
   Center,
@@ -109,6 +114,8 @@ export const VenuesView = () => {
         <Table.Column align="right">Capacity</Table.Column>
         <Table.Column align="right">Price</Table.Column>
         <Table.Column>Traits</Table.Column>
+        <Table.Column>Amenities</Table.Column>
+        <Table.Column>Parking</Table.Column>
         <Table.Column align="right">Rating</Table.Column>
       </Table.Header>
       <Table.Body>
@@ -138,6 +145,20 @@ export const VenuesView = () => {
               <Inline space="0.5">
                 {venue.traits.map(trait => (
                   <Badge key={trait}>{trait}</Badge>
+                ))}
+              </Inline>
+            </Table.Cell>
+            <Table.Cell>
+              <Inline space="0.5">
+                {venue.amenities.map(amenity => (
+                  <Badge key={amenity}>{amenitiesOptions[amenity]}</Badge>
+                ))}
+              </Inline>
+            </Table.Cell>
+            <Table.Cell>
+              <Inline space="0.5">
+                {venue.parking.map(space => (
+                  <Badge key={space}>{parkingOptions[space]}</Badge>
                 ))}
               </Inline>
             </Table.Cell>

@@ -25,13 +25,13 @@ export const seatingTypeOptions = [
 ] as const;
 
 export const amenitiesOptions = [
-  'bar',
-  'coat_check',
-  'hearing_loop',
-  'projector',
-  'screen',
-  'tables_chairs',
-  'wifi',
+  'Bar',
+  'Coat check',
+  'Hearing loop',
+  'Projector',
+  'Screen',
+  'Tables & chairs',
+  'WiFi',
 ] as const;
 
 export const venues = [
