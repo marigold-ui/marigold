@@ -3,6 +3,8 @@
  * TODO: need more visual separation between the filters in the drawer
  * TODO: close drawer after applying filters?
  * TODO: indicate when there is a unapplied filters (drawer)?
+ *
+ * FIX: forward/backward in browser does not work anymore with filters
  */
 import { Stack } from '@/ui';
 import { AppliedFilter } from './applied-filter';

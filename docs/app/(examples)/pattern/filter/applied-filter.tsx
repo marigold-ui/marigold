@@ -18,6 +18,7 @@ export const AppliedFilter = () => {
     <Tag.Group
       label="Applied Filters"
       onRemove={removeFilter}
+      removeAll
       emptyState={() => (
         <Text variant="muted" fontSize="sm" fontStyle="italic">
           None
