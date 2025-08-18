@@ -219,7 +219,7 @@ export const venues = [
     id: '11',
     name: 'Riverside Theatre',
     type: 3,
-    image: '/venues/riverside-theatre.png',
+    image: '/venues/riverside-theatre.webp',
     description:
       'A modern theatre on the riverfront offering excellent acoustics and seating for cultural and entertainment events.',
     street: '11 Riverside Lane',
