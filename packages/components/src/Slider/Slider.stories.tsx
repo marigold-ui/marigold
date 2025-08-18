@@ -80,11 +80,11 @@ export const Basic: Story = {
 };
 
 export const ValueFormatting: Story = {
+  args: { label: 'Price' },
   render: args => (
     <I18nProvider locale="en-US">
       <Stack space={4}>
         <Slider
-          label="Price"
           {...args}
           formatOptions={{ style: 'currency', currency: 'EUR' }}
         />
@@ -123,17 +123,13 @@ export const MultipleThumbs: Story = {
 };
 
 export const Controlled: Story = {
+  args: { label: 'Cookies to buy' },
   render: args => {
     const [value, setValue] = useState<number | number[]>(25);
 
     return (
       <Stack space={2}>
-        <Slider
-          value={value}
-          onChange={setValue}
-          {...args}
-          label="Cookies to buy"
-        />
+        <Slider value={value} onChange={setValue} {...args} />
         <p>Current value: {value}</p>
       </Stack>
     );
@@ -141,17 +137,13 @@ export const Controlled: Story = {
 };
 
 export const MultiThumbsControlled: Story = {
+  args: { label: 'Tickets for sale' },
   render: args => {
     const [value, setValue] = useState<number | number[]>([25, 75]);
 
     return (
       <Stack space={2}>
-        <Slider
-          value={value}
-          onChange={setValue}
-          {...args}
-          label="Tickets for sale"
-        />
+        <Slider value={value} onChange={setValue} {...args} />
         <p>
           Current value: {typeof value !== 'number' ? value?.join(' - ') : null}
         </p>
@@ -161,6 +153,7 @@ export const MultiThumbsControlled: Story = {
 };
 
 export const Forms: Story = {
+  args: { label: 'Opacity' },
   render: args => {
     const handleSubmit = (e: FormEvent) => {
       e.preventDefault();
@@ -171,13 +164,7 @@ export const Forms: Story = {
     return (
       <Form onSubmit={handleSubmit}>
         <Stack space={6} alignX="left">
-          <Slider
-            label="Choose opacity"
-            {...args}
-            maxValue={100}
-            name="opacity"
-            width={48}
-          />
+          <Slider {...args} maxValue={100} name="opacity" width={48} />
           <Button variant="primary" type="submit">
             Submit
           </Button>
@@ -188,6 +175,7 @@ export const Forms: Story = {
 };
 
 export const MultiThumbsForm: Story = {
+  args: { label: 'Age' },
   render: args => {
     const handleSubmit = (e: FormEvent) => {
       e.preventDefault();
@@ -201,7 +189,6 @@ export const MultiThumbsForm: Story = {
       <Form onSubmit={handleSubmit}>
         <Stack space={6} alignX="left">
           <Slider
-            label="Age"
             {...args}
             defaultValue={[20, 30]}
             maxValue={100}
@@ -218,10 +205,12 @@ export const MultiThumbsForm: Story = {
 };
 
 export const Disabled: Story = {
+  args: { label: 'Disabled' },
   render: args => <Slider {...args} defaultValue={20} disabled />,
 };
 
 export const MultiThumbsDisabled: Story = {
+  args: { label: 'Disabled' },
   render: args => (
     <Slider
       {...args}
@@ -255,5 +244,6 @@ export const Steps: Story = {
 };
 
 export const MinAndMaxValue: Story = {
+  args: { label: 'Budget' },
   render: args => <Slider {...args} minValue={50} maxValue={100} />,
 };
