@@ -34,7 +34,7 @@ export default () => {
             width={48}
             defaultSelectedKey={selectedVenue}
           >
-            {venues.map(venue => (
+            {venues.slice(0, 10).map(venue => (
               <Select.Option key={venue.id} id={venue.id}>
                 {venue.name}
               </Select.Option>
