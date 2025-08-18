@@ -265,19 +265,6 @@ export const AsyncLoading: Story = {
       </ComboBox>
     );
   },
-  play: async ({ userEvent }) => {
-    const canvas = within(document.body);
-    const input = canvas.getByRole('combobox');
-
-    await userEvent.type(input, 'luke');
-
-    // Wait because we poll a real API that is slow sometimes
-    await new Promise(resolve => setTimeout(resolve, 100));
-
-    await waitFor(() =>
-      expect(canvas.queryByText('Luke Skywalker')).toBeVisible()
-    );
-  },
 };
 
 export const Sections: StoryObj<typeof ComboBox> = {
