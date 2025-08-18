@@ -3,10 +3,9 @@
  * TODO: need more visual separation between the filters in the drawer
  * TODO: close drawer after applying filters?
  * TODO: indicate when there is a unapplied filters (drawer)?
- *
- * FIX: forward/backward in browser does not work anymore with filters
  */
 import { Stack } from '@/ui';
+import { Suspense } from 'react';
 import { AppliedFilter } from './applied-filter';
 import { Toolbar } from './toolbar';
 import { VenuesView } from './venues-view';
@@ -14,9 +13,11 @@ import { VenuesView } from './venues-view';
 const FilterPage = () => {
   return (
     <Stack space={8}>
-      <Toolbar />
-      <AppliedFilter />
-      <VenuesView />
+      <Suspense>
+        <Toolbar />
+        <AppliedFilter />
+        <VenuesView />
+      </Suspense>
     </Stack>
   );
 };
