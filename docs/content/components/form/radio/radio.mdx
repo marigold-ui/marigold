@@ -1,6 +1,7 @@
 ---
 title: Radio
 caption: Component which allows to select only one option from a list.
+badge: updated
 ---
 
 The `<Radio>` and `<Radio.Group>` components allow users to select one option from a set of options. They are useful for presenting a list of options to users and collecting their responses.
@@ -14,57 +15,26 @@ The radio button component is comprised of a set of clickable circles (the input
 <Image
   src="/radio/radio-anatomy.jpg"
   alt="Anatomy of radio component"
-  width={800}
-  height={550}
+  width={550}
+  height={400}
   className="mx-auto block"
 />
 
 - **Group label:** Describes the group of options or provides guidance for making a selection.
-
 - **Radio button input:** Indicates the state of a radio button. By default, no option will be preselected.
-
 - **Radio button label:** Describes the information you want to select or unselect.
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
 
 ## Usage
 
 Radio buttons are used for mutually exclusive choices, where only one option can be selected at a time. They are ideal when you want the user to choose a single option from a small list of predefined choices. When a user selects a new option, the previous choice is automatically deselected.
 
 The `<Radio>` should never be used alone because radio buttons are designed for selecting one option from multiple mutually exclusive choices. For that the `<Radio.Group>` should be wrapped around the `<Radio>`. If you want one option you could use the [`<Checkbox>`](/components/checkbox/) instead.
-
-### Selecting options
-
-If a user can select from multiple options, use checkboxes instead of radio buttons. Radio buttons allow the user to select only one item in a set whereas checkboxes allow the user to select multiple items.
-
-<GuidelineTiles>
-  <Do>
-    <Do.Figure>
-      <Image
-        width={400}
-        height={400}
-        unoptimized
-        src="/radio/dosAndDonts_checkbox_select.jpg"
-        alt="Do use checkboxes when multiple items can be selected"
-      />
-    </Do.Figure>
-    <Do.Description>
-      Do use checkboxes when multiple items can be selected.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Figure>
-      <Image
-        width={400}
-        height={400}
-        unoptimized
-        src="/radio/dosAndDonts_radio_select.jpg"
-        alt="Don't use radio buttons when multiple items can be selected."
-      />
-    </Dont.Figure>
-    <Dont.Description>
-      Don't use radio buttons when multiple items can be selected.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
 
 ### Overflow content
 
@@ -106,9 +76,9 @@ Text should wrap beneath the radio button.
   </Dont>
 </GuidelineTiles>
 
-### Long lists of options
+### Number of options
 
-If you have moderate number of options (e.g., 5-15) to choose from, use [select](../form/select) component instead.
+Radio groups are most effective with a small set of choices that can be taken in at a glance. Once the list grows to around five or more options, scanning becomes slower and the vertical space required increases. If the number of options falls into a moderate range, roughly five to fifteen, use the [select](/components/form/select) component instead to keep the interface compact and maintain scanning efficiency.
 
 <GuidelineTiles>
   <Do>
@@ -137,9 +107,45 @@ If you have moderate number of options (e.g., 5-15) to choose from, use [select]
   </Dont>
 </GuidelineTiles>
 
-<StorybookHintMessage component={title} />
+When a radio group is long enough to create clutter, overload, or excessive scrolling, keep it compact while ensuring all options remain accessible. Present only the most relevant five to eight choices initially, with the rest hidden until revealed. Apply this approach sparingly when all options can be scanned easily without causing frustration.
+
+<ComponentDemo file="./radio-more.demo.tsx" />
+
+<SectionMessage>
+  <SectionMessage.Title>Auto-Expand on Selection</SectionMessage.Title>
+  <SectionMessage.Content>
+    If the selected value is within the collapsed section, the component renders
+    in its expanded state by default.
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Ordering of Options
+
+Options should be arranged by relevance to help users find what they need quickly. Prioritizing by factors such as frequency of use, overall popularity, or recency of interaction ensures the most useful items appear first. Alphabetical order should be considered only when no meaningful ranking criteria are available, as it may not align with user priorities or usage patterns.
+
+### Single vs. Multiple Selection
+
+Use radio buttons when users must choose only one option from a group. For example, selecting a payment method like Credit Card, PayPal, or Invoice, or picking a seat category such as Balcony, Orchestra, or Standing.
+
+Radio buttons are best when the options are mutually exclusive, the user is required to make a choice, and the number of options is limited and visible. If users can select more than one option, use [checkboxes](/components/form/checkbox) instead, such as when subscribing to event categories (Concerts, Theater, Sports) or enabling account notifications (Email, SMS, App), where each option is independent.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use radio buttons when only one option can be selected.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Use [checkboxes](/components/form/checkbox) when more than one option can
+      be selected.
+    </Do.Description>
+  </Do>
+</GuidelineTiles>
 
 ## Props
+
+<StorybookHintMessage component={title} />
 
 ### Radio
 
@@ -148,30 +154,6 @@ If you have moderate number of options (e.g., 5-15) to choose from, use [select]
 ### Radio.Group
 
 <PropsTable component="RadioGroup" />
-
-### Simple Radio
-
-In this example you can see a simple `<Radio.Group>` within `<Radio>`. There is also a single `<Radio>` disabled.
-
-<ComponentDemo file="./radio.demo.tsx" />
-
-### Disabed Radio
-
-Here you can see a complete disabled `<Radio.Group>`. You can also just disable single `<Radio>`.
-
-<ComponentDemo file="./radio-disabled.demo.tsx" />
-
-### Required Radio with horizontal orientation
-
-In this example the `<Radio.Group>` is required and the `orientation` is set to `horizontal`. With these props you can determine the direction of the `<Radio>` options.
-
-<ComponentDemo file="./radio-required.demo.tsx" />
-
-### Error Radio
-
-In this example you can see how an `errorMessage` would look on a `<RadioGroup>`.
-
-<ComponentDemo file="./radio-error.demo.tsx" />
 
 ## Alternative components
 
@@ -185,6 +167,7 @@ Choosing the right alternative to radio buttons is important for providing an op
     hide the options until needed, saving space in the UI.
   </li>
 </ul>
+
 ## Related
 
 <TeaserList

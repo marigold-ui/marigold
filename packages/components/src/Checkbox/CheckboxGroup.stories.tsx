@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { waitFor } from '@testing-library/react';
 import React from 'react';
+import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn } from 'storybook/test';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 
@@ -100,7 +101,6 @@ const meta = {
     disabled: false,
     required: false,
     error: false,
-    children: 'This is a Checkbox',
   },
 } satisfies Meta<typeof CheckboxGroup>;
 
@@ -113,7 +113,7 @@ export const Basic: Story = {
     const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
-        <CheckboxGroup
+        <Checkbox.Group
           {...args}
           onChange={setSelected}
           description="Choose your Options"
@@ -125,7 +125,7 @@ export const Basic: Story = {
           <Checkbox value="tomato" data-testid="four" label="Tomate" />
           <Checkbox value="cucumber" data-testid="five" label="Cucumber" />
           <Checkbox value="onions" data-testid="six" label="Onions" />
-        </CheckboxGroup>
+        </Checkbox.Group>
         <hr />
         <pre data-testid="result">Selected values: {selected.join(', ')}</pre>
       </>
@@ -138,7 +138,7 @@ export const Error: Story = {
     const [selected, setSelected] = useState<string[]>([]);
     return (
       <>
-        <CheckboxGroup
+        <Checkbox.Group
           {...args}
           onChange={setSelected}
           description="my desc"
@@ -151,7 +151,7 @@ export const Error: Story = {
           <Checkbox value="tomato" label="Tomate" />
           <Checkbox value="cucumber" label="Cucumber" />
           <Checkbox value="onions" label="Onions" />
-        </CheckboxGroup>
+        </Checkbox.Group>
         <hr />
         <pre>Selected values: {selected.join(', ')}</pre>
       </>
@@ -168,7 +168,7 @@ export const Controlled: Story = {
   render: args => {
     return (
       <>
-        <CheckboxGroup
+        <Checkbox.Group
           {...args}
           label="Select Event Types"
           onChange={args.onChange}
@@ -178,12 +178,11 @@ export const Controlled: Story = {
           <Checkbox value="conference" label="Conference" />
           <Checkbox value="meetup" label="Meetup" />
           <Checkbox value="webinar" label="Webinar" />
-        </CheckboxGroup>
+        </Checkbox.Group>
       </>
     );
   },
-  play: async ({ args, canvasElement, userEvent }) => {
-    const canvas = within(canvasElement);
+  play: async ({ args, canvas, userEvent }) => {
     let concert = canvas.getByRole('checkbox', { name: /Concert/i });
     let festival = canvas.getByRole('checkbox', { name: /Festival/i });
     let conference = canvas.getByRole('checkbox', { name: /Conference/i });
@@ -198,6 +197,56 @@ export const Controlled: Story = {
     await waitFor(() => {
       expect(args.onChange).toHaveBeenCalledWith(['concert', 'conference']);
       expect(args.onChange).toHaveBeenCalledTimes(2);
+    });
+  },
+};
+
+export const CollapseAt: Story = {
+  tags: ['component-test'],
+  args: {
+    collapseAt: 5,
+  },
+  render: args => {
+    const [selected, setSelected] = useState<string[]>([]);
+
+    return (
+      <I18nProvider locale="en-US">
+        <Checkbox.Group {...args} onChange={setSelected}>
+          <Checkbox value="ham" data-testid="one" label="Ham" />
+          <Checkbox value="salami" data-testid="two" label="Salami" />
+          <Checkbox value="cheese" data-testid="three" label="Cheese" />
+          <Checkbox value="tomato" data-testid="four" label="Tomato" />
+          <Checkbox value="cucumber" data-testid="five" label="Cucumber" />
+          <Checkbox value="onions" data-testid="six" label="Onions" />
+          <Checkbox value="pepper" data-testid="seven" label="Pepper" />
+          <Checkbox value="mushrooms" data-testid="eight" label="Mushrooms" />
+          <Checkbox value="olives" data-testid="nine" label="Olives" />
+          <Checkbox value="lettuce" data-testid="ten" label="Lettuce" />
+        </Checkbox.Group>
+        <hr />
+        <pre data-testid="result">Selected values: {selected.join(', ')}</pre>
+      </I18nProvider>
+    );
+  },
+  play: async ({ step, canvas, userEvent }) => {
+    await step('show more', async () => {
+      await userEvent.click(canvas.getByText('Show 5 more'));
+
+      expect(canvas.getByTestId('six')).toBeVisible();
+      expect(canvas.getByTestId('seven')).toBeVisible();
+      expect(canvas.getByTestId('eight')).toBeVisible();
+      expect(canvas.getByTestId('nine')).toBeVisible();
+      expect(canvas.getByTestId('ten')).toBeVisible();
+    });
+
+    await step('show less', async () => {
+      await userEvent.click(canvas.getByText('Show 5 less'));
+
+      expect(canvas.queryByTestId('six')).not.toBeVisible();
+      expect(canvas.queryByTestId('seven')).not.toBeVisible();
+      expect(canvas.queryByTestId('eight')).not.toBeVisible();
+      expect(canvas.queryByTestId('nine')).not.toBeVisible();
+      expect(canvas.queryByTestId('ten')).not.toBeVisible();
     });
   },
 };
