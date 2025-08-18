@@ -5,6 +5,23 @@ export const venueTypes = [
   'Formal Venue',
 ] as const;
 
+export const parkingOptions = [
+  'On-site',
+  'Street',
+  'Garage',
+  'None',
+  'Bus-friendly',
+  'Bike racks',
+] as const;
+
+export const seatingTypeOptions = [
+  'Standing',
+  'Theatre',
+  'Cabaret',
+  'Banquet',
+  'Classroom',
+] as const;
+
 export const venues = [
   {
     id: '1',
@@ -19,6 +36,11 @@ export const venues = [
     price: { from: 1000, to: 5000 },
     rating: 4.7,
     traits: ['outdoor', 'lush', 'cozy'],
+    parking: [0, 1],
+    publicTransitMinutes: 8,
+    seatingTypes: [0, 1],
+    indoor: false,
+    amenities: ['wifi', 'projector', 'screen', 'bar'],
   },
   {
     id: '2',
@@ -33,6 +55,11 @@ export const venues = [
     price: { from: 750, to: 3500 },
     rating: 3.6,
     traits: ['quirky', 'urban'],
+    parking: [1, 2],
+    publicTransitMinutes: 3,
+    seatingTypes: [1, 0],
+    indoor: true,
+    amenities: ['wifi', 'bar'],
   },
   {
     id: '3',
@@ -47,6 +74,11 @@ export const venues = [
     price: { from: 500, to: 2500 },
     rating: 2.3,
     traits: ['cozy', 'cheap'],
+    parking: [0],
+    publicTransitMinutes: 12,
+    seatingTypes: [1, 0],
+    indoor: true,
+    amenities: ['wifi'],
   },
   {
     id: '4',
@@ -61,6 +93,11 @@ export const venues = [
     price: { from: 2000, to: 7000 },
     rating: 4.2,
     traits: ['quirky', 'vibey'],
+    parking: [2, 1],
+    publicTransitMinutes: 6,
+    seatingTypes: [0, 1],
+    indoor: false,
+    amenities: ['wifi', 'projector', 'screen'],
   },
   {
     id: '5',
@@ -75,6 +112,11 @@ export const venues = [
     price: { from: 1000, to: 4000 },
     rating: 3.1,
     traits: ['hype', 'cheap'],
+    parking: [1],
+    publicTransitMinutes: 4,
+    seatingTypes: [1, 0],
+    indoor: true,
+    amenities: ['wifi', 'bar'],
   },
   {
     id: '6',
@@ -89,6 +131,11 @@ export const venues = [
     price: { from: 3000, to: 10000 },
     rating: 5.0,
     traits: ['formal'],
+    parking: [0, 2, 5],
+    publicTransitMinutes: 5,
+    seatingTypes: [1, 3, 4],
+    indoor: true,
+    amenities: ['wifi', 'projector', 'screen', 'bar', 'coat_check'],
   },
   {
     id: '7',
@@ -103,6 +150,11 @@ export const venues = [
     price: { from: 1500, to: 5000 },
     rating: 4.4,
     traits: ['cozy', 'vibey', 'formal'],
+    parking: [2, 1],
+    publicTransitMinutes: 7,
+    seatingTypes: [1, 3],
+    indoor: true,
+    amenities: ['wifi', 'projector', 'hearing_loop'],
   },
   {
     id: '8',
@@ -117,6 +169,11 @@ export const venues = [
     price: { from: 1200, to: 4500 },
     rating: 3.8,
     traits: ['urban'],
+    parking: [1, 3],
+    publicTransitMinutes: 2,
+    seatingTypes: [1, 0, 2],
+    indoor: true,
+    amenities: ['wifi', 'projector'],
   },
   {
     id: '9',
@@ -131,6 +188,11 @@ export const venues = [
     price: { from: 1800, to: 5500 },
     rating: 2.9,
     traits: ['outdoor', 'quirky', 'cheap'],
+    parking: [1, 0],
+    publicTransitMinutes: 9,
+    seatingTypes: [0, 1],
+    indoor: false,
+    amenities: ['wifi', 'screen'],
   },
   {
     id: '10',
@@ -145,6 +207,11 @@ export const venues = [
     price: { from: 4000, to: 12000 },
     rating: 4.5,
     traits: ['outdoor', 'lush'],
+    parking: [0, 1, 5],
+    publicTransitMinutes: 10,
+    seatingTypes: [0, 1],
+    indoor: false,
+    amenities: ['wifi'],
   },
 ] as const;
 
