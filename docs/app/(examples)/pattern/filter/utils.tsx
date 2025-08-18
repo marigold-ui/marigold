@@ -118,7 +118,9 @@ type FilterKeys = keyof typeof defaultFilter;
 export const useFilter = () => {
   const [filter, setFilter] = useQueryState(
     'filter',
-    parseAsJson(urlSchema.parse).withDefault(defaultFilter)
+    parseAsJson(urlSchema.parse).withDefault(defaultFilter).withOptions({
+      history: 'push',
+    })
   );
 
   const removeFilter = (keys: Set<FilterKeys>) => {
@@ -132,4 +134,5 @@ export const useFilter = () => {
   return { filter, setFilter, removeFilter } as const;
 };
 
-export const useSearch = () => useQueryState('q', { defaultValue: '' });
+export const useSearch = () =>
+  useQueryState('q', { defaultValue: '', history: 'push' });

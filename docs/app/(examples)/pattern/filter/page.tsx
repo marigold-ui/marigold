@@ -5,21 +5,16 @@
  * TODO: indicate when there is a unapplied filters (drawer)?
  */
 import { Stack } from '@/ui';
-import { Suspense } from 'react';
 import { AppliedFilter } from './applied-filter';
 import { Toolbar } from './toolbar';
 import { VenuesView } from './venues-view';
 
-const FilterPage = () => {
-  return (
-    <Stack space={8}>
-      <Suspense>
-        <Toolbar />
-        <AppliedFilter />
-        <VenuesView />
-      </Suspense>
-    </Stack>
-  );
-};
+const FilterPage = () => (
+  <Stack space={8}>
+    <Toolbar />
+    <AppliedFilter />
+    <VenuesView />
+  </Stack>
+);
 
 export default FilterPage;
