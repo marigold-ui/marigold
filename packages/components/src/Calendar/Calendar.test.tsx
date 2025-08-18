@@ -222,8 +222,8 @@ describe('Calendar', () => {
     );
     const monthButton = screen.getByTestId('month');
     const yearButton = screen.getByTestId('year');
-    expect(monthButton).toHaveAttribute('aria-disabled', 'true');
-    expect(yearButton).toHaveAttribute('aria-disabled', 'true');
+    expect(monthButton).toBeDisabled();
+    expect(yearButton).toBeDisabled();
     await user.click(monthButton);
     await user.click(yearButton);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
