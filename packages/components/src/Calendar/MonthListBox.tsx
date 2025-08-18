@@ -5,8 +5,8 @@ import { useFormattedMonths } from './useFormattedMonths';
 
 interface MonthDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
-  minValue?: DateValue;
-  maxValue?: DateValue;
+  minValue?: DateValue | null;
+  maxValue?: DateValue | null;
 }
 
 const MonthListBox = ({

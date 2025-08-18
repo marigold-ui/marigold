@@ -1,8 +1,8 @@
 import { DateValue } from 'react-aria-components';
 
 export function hasOnlyOneSelectableMonth(
-  minValue?: DateValue,
-  maxValue?: DateValue
+  minValue?: DateValue | null,
+  maxValue?: DateValue | null
 ) {
   if (!minValue || !maxValue || minValue.year !== maxValue.year) {
     return false;
@@ -11,8 +11,8 @@ export function hasOnlyOneSelectableMonth(
 }
 
 export function hasOnlyOneSelectableYear(
-  minValue?: DateValue,
-  maxValue?: DateValue
+  minValue?: DateValue | null,
+  maxValue?: DateValue | null
 ) {
   if (!minValue || !maxValue || minValue.year !== maxValue.year) {
     return false;

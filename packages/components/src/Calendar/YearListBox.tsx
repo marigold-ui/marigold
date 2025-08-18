@@ -6,8 +6,8 @@ import { ListBox } from './ListBox';
 
 interface YearDropdownProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
-  minValue?: DateValue;
-  maxValue?: DateValue;
+  minValue?: DateValue | null;
+  maxValue?: DateValue | null;
 }
 
 const YearListBox = ({

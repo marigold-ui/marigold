@@ -71,8 +71,8 @@ const _Calendar = ({
   maxValue: _maxValue,
   ...rest
 }: CalendarProps) => {
-  const minValue = _minValue ?? undefined;
-  const maxValue = _maxValue ?? undefined;
+  const minValue = _minValue;
+  const maxValue = _maxValue;
   const props: RAC.CalendarProps<DateValue> = {
     isDisabled: disabled,
     isReadOnly: readOnly,

@@ -32,7 +32,7 @@ export function CalendarListBox({
         classNames.calendarListboxButton
       )}
       data-testid={type}
-      aria-disabled={isDisabled}
+      disabled={isDisabled}
       aria-label={
         type === 'month'
           ? `${months[state.focusedDate.month - 1].substring(0, 3)}${isDisabled ? ' not selectable' : ''}`
