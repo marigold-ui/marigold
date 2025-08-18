@@ -13,5 +13,5 @@ export const Slider: ThemeComponent<'Slider'> = {
     'focus-visible:util-focus-borderless-ring outline-none',
     'disabled:cursor-not-allowed',
   ]),
-  output: cva('text-text-base text-sm'),
+  output: cva('text-foreground text-sm'),
 };
