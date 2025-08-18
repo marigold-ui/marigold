@@ -31,7 +31,7 @@ export default () => {
           <Select
             aria-label="Select a venue:"
             name="venue"
-            width={48}
+            width={64}
             defaultSelectedKey={selectedVenue}
           >
             {venues.slice(0, 10).map(venue => (
