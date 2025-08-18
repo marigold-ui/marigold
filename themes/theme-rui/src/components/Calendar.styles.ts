@@ -35,7 +35,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow',
     'focus-visible:util-focus-ring outline-none',
     'h-input',
-    'aria-disabled:cursor-not-allowed aria-disabled:text-disabled-foreground aria-disabled:bg-disabled',
+    'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',
     'cursor-pointer',
   ]),
 };
