@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, spyOn, within } from 'storybook/test';
+import { expect, spyOn, userEvent, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
 import { Button } from '../Button';
@@ -22,7 +22,7 @@ const meta = {
       control: {
         type: 'radio',
       },
-      options: ['secondary', 'ghost'],
+      options: ['default', 'ghost'],
       description: 'Variant of the button',
     },
     open: {
@@ -118,7 +118,7 @@ export const Basic: Story = {
       <Menu.Item id="slytherin">Slytherin</Menu.Item>
     </Menu>
   ),
-  play: async ({ step, userEvent }) => {
+  play: async ({ step }) => {
     const canvas = within(document.body);
 
     await step('Open the menu', async () => {
@@ -162,7 +162,7 @@ export const OnActionMenu: Story = {
       </Menu>
     );
   },
-  play: async ({ userEvent }) => {
+  play: async () => {
     const canvas = within(document.body);
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 

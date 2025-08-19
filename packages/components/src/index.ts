@@ -9,7 +9,7 @@ export * from './Autocomplete';
 export * from './ComboBox';
 export * from './Badge';
 export * from './Breakout';
-export * from './Body';
+
 export * from './Button';
 export * from './Card';
 export * from './Center';

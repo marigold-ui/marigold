@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, within } from '@storybook/test';
+import { expect, fn, userEvent, within } from '@storybook/test';
 import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
@@ -52,6 +52,9 @@ const meta = {
       },
     },
   },
+  args: {
+    defaultValue: new CalendarDate(2025, 8, 7),
+  },
 } satisfies Meta<typeof Calendar>;
 
 export default meta;
@@ -75,7 +78,7 @@ export const Controlled: Story = {
       </>
     );
   },
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     await userEvent.keyboard('{arrowleft}');
@@ -95,7 +98,7 @@ export const Uncontrolled: Story = {
     defaultValue: new CalendarDate(2019, 6, 5),
     onChange: fn(),
   },
-  play: async ({ args, canvasElement, userEvent }) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByTestId('year'));
@@ -140,7 +143,7 @@ export const ReadOnly: Story = {
     readOnly: true,
     onChange: fn(),
   },
-  play: async ({ args, canvasElement, userEvent }) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByText('15'));

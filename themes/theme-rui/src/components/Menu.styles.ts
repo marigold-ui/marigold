@@ -23,7 +23,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     {
       variants: {
         variant: {
-          secondary:
+          default:
             'border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
           ghost: 'hover:bg-hover hover:text-foreground expanded:bg-hover',
         },
@@ -35,7 +35,7 @@ export const Menu: ThemeComponent<'Menu'> = {
         },
       },
       defaultVariants: {
-        variant: 'secondary',
+        variant: 'default',
         size: 'default',
       },
     }

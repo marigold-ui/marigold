@@ -1,95 +1,41 @@
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { Checkbox } from './Checkbox';
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
+import * as stories from './CheckboxGroup.stories';
 
-const theme: Theme = {
-  name: 'checkbox group testing',
-  components: {
-    Checkbox: {
-      container: cva([], {
-        variants: {
-          size: {
-            small: 'text-sm',
-          },
-        },
-      }),
-      label: cva('data-disabled:text-checkbox-label-disabled leading-[1.125]'),
-      checkbox: cva([
-        'border-checkbox-base-border bg-checkbox-base-background rounded-[2] p-0.5',
-        'data-hover:border-checkbox-base-hover',
-        'data-focus:outline-checkbox-base-focus data-focus:outline-offset[3] data-focus:outline data-focus:outline-2',
-        'data-checked:border-checkbox-base-checked data-checked:bg-checkbox-base-checkedBackground data-checked:text-white',
-        'data-indeterminate:border-checkbox-base-indeterminate data-indeterminate:bg-checkbox-base-indeterminateBackground data-indeterminate:text-white',
-        'data-disabled:border-checkbox-base-disabled data-disabled:bg-checkbox-base-disabledBackground',
-      ]),
-      group: cva('pt-2'),
-    },
-    Field: cva(),
-    Label: { container: cva(), indicator: cva() },
-    HelpText: {
-      container: cva(''),
-      icon: cva(''),
-    },
-  },
-};
-
-const { render } = setup({ theme });
-const user = userEvent.setup();
+const { Basic, Error, CollapseAt } = composeStories(stories);
 
 test('renders label and group of checkboxes', () => {
-  render(
-    <Checkbox.Group label="Group of Checkboxes">
-      <Checkbox value="one" label="one" />
-      <Checkbox value="two" label="two" />
-      <Checkbox value="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Basic />);
 
-  expect(screen.getByText('Group of Checkboxes')).toBeInTheDocument();
-  expect(screen.getByText('one')).toBeInTheDocument();
-  expect(screen.getByText('two')).toBeInTheDocument();
-  expect(screen.getByText('three')).toBeInTheDocument();
+  expect(screen.getByText('This is a label')).toBeInTheDocument();
+  expect(screen.getByText('Ham')).toBeInTheDocument();
+  expect(screen.getByText('Salami')).toBeInTheDocument();
+  expect(screen.getByText('Cheese')).toBeInTheDocument();
+  expect(screen.getByText('Tomate')).toBeInTheDocument();
+  expect(screen.getByText('Cucumber')).toBeInTheDocument();
+  expect(screen.getByText('Onions')).toBeInTheDocument();
+  expect(screen.getAllByRole('checkbox').length).toBe(6);
 });
 
 test('label is optional (can use aria-label instead)', () => {
-  render(
-    <Checkbox.Group aria-label="Aria Label">
-      <Checkbox value="one" label="one" />
-      <Checkbox value="two" label="two" />
-      <Checkbox value="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Basic aria-label="Aria Label" />);
 
   expect(screen.queryByText('Group of Checkboxes')).not.toBeInTheDocument();
-  expect(screen.getByText('one')).toBeInTheDocument();
-  expect(screen.getByText('two')).toBeInTheDocument();
-  expect(screen.getByText('three')).toBeInTheDocument();
+  expect(screen.getByLabelText('Aria Label')).toBeInTheDocument();
 });
 
 test('applies group styles from theme', () => {
-  render(
-    <Checkbox.Group aria-label="With Label">
-      <Checkbox value="one" label="one" />
-      <Checkbox value="two" label="two" />
-      <Checkbox value="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Basic />);
 
   const group = screen.getByRole('group');
-  expect(group.className).toContain('pt-2');
+
+  expect(group.className).toMatchInlineSnapshot(
+    `"group/field flex flex-col w-full space-y-2 gap-x-2"`
+  );
 });
 
 test('passes down "disabled" to checkboxes', () => {
-  render(
-    <Checkbox.Group label="Group of Checkboxes" disabled>
-      <Checkbox value="one" data-testid="one" label="one" />
-      <Checkbox value="two" data-testid="two" label="two" />
-      <Checkbox value="three" data-testid="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Basic disabled />);
 
   // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toBeDisabled();
@@ -97,16 +43,16 @@ test('passes down "disabled" to checkboxes', () => {
   expect(screen.getByTestId('two')!.querySelector('input')).toBeDisabled();
   // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('three')!.querySelector('input')).toBeDisabled();
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('four')!.querySelector('input')).toBeDisabled();
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('five')!.querySelector('input')).toBeDisabled();
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('six')!.querySelector('input')).toBeDisabled();
 });
 
 test('passes down "read-only" to checkboxes', () => {
-  render(
-    <Checkbox.Group label="Group of Checkboxes" readOnly>
-      <Checkbox value="one" data-testid="one" label="one" />
-      <Checkbox value="two" data-testid="two" label="two" />
-      <Checkbox value="three" data-testid="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Basic readOnly />);
 
   // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toHaveAttribute(
@@ -123,16 +69,25 @@ test('passes down "read-only" to checkboxes', () => {
     'aria-readonly',
     'true'
   );
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('four')!.querySelector('input')).toHaveAttribute(
+    'aria-readonly',
+    'true'
+  );
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('five')!.querySelector('input')).toHaveAttribute(
+    'aria-readonly',
+    'true'
+  );
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('six')!.querySelector('input')).toHaveAttribute(
+    'aria-readonly',
+    'true'
+  );
 });
 
 test('passes down "error" to checkboxes', () => {
-  render(
-    <Checkbox.Group label="Group of Checkboxes" error>
-      <Checkbox value="one" data-testid="one" label="one" />
-      <Checkbox value="two" data-testid="two" label="two" />
-      <Checkbox value="three" data-testid="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Basic error />);
 
   // Bug in `react-aria-components` props are spread on input AND label...
   // eslint-disable-next-line testing-library/no-node-access
@@ -150,63 +105,37 @@ test('passes down "error" to checkboxes', () => {
     'aria-invalid',
     'true'
   );
-});
-
-test('controlled', async () => {
-  const onChange = vi.fn();
-  render(
-    <Checkbox.Group label="Group of Checkboxes" onChange={onChange}>
-      <Checkbox value="one" data-testid="one" label="one" />
-      <Checkbox value="two" data-testid="two" label="two" />
-      <Checkbox value="three" data-testid="three" label="three" />
-    </Checkbox.Group>
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('four')!.querySelector('input')).toHaveAttribute(
+    'aria-invalid',
+    'true'
   );
-
-  await user.click(screen.getByTestId('one'));
-  expect(onChange).toHaveBeenCalledWith(['one']);
-
-  await user.click(screen.getByTestId('three'));
-  expect(onChange).toHaveBeenCalledWith(['one', 'three']);
-
-  await user.click(screen.getByTestId('two'));
-  expect(onChange).toHaveBeenCalledWith(['one', 'three', 'two']);
-
-  await user.click(screen.getByTestId('three'));
-  expect(onChange).toHaveBeenCalledWith(['one', 'two']);
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('five')!.querySelector('input')).toHaveAttribute(
+    'aria-invalid',
+    'true'
+  );
+  // eslint-disable-next-line testing-library/no-node-access
+  expect(screen.getByTestId('six')!.querySelector('input')).toHaveAttribute(
+    'aria-invalid',
+    'true'
+  );
 });
 
 test('accepts description', () => {
-  render(
-    <Checkbox.Group label="Group of Checkboxes" description="My description">
-      <Checkbox value="one" data-testid="one" label="one" />
-      <Checkbox value="two" data-testid="two" label="two" />
-      <Checkbox value="three" data-testid="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Basic />);
 
-  expect(screen.getByText('My description')).toBeInTheDocument();
+  expect(screen.getByText('Choose your Options')).toBeInTheDocument();
 });
 
 test('accepts error message', () => {
-  render(
-    <Checkbox.Group label="Group of Checkboxes" error errorMessage="My Error">
-      <Checkbox value="one" data-testid="one" label="one" />
-      <Checkbox value="two" data-testid="two" label="two" />
-      <Checkbox value="three" data-testid="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Error />);
 
-  expect(screen.getByText('My Error')).toBeInTheDocument();
+  expect(screen.getByText('This is an error')).toBeInTheDocument();
 });
 
 test('horiziontal orientation style', () => {
-  render(
-    <Checkbox.Group label="Group of Checkboxes" orientation="horizontal">
-      <Checkbox value="one" label="one" />
-      <Checkbox value="two" label="two" />
-      <Checkbox value="three" label="three" />
-    </Checkbox.Group>
-  );
+  render(<Basic orientation="horizontal" />);
   const presentation = screen
     .getAllByRole('presentation')
     .filter(
@@ -216,16 +145,47 @@ test('horiziontal orientation style', () => {
   expect(presentation[0].className).toContain('flex-row gap-[1.5ch]');
 });
 
-test('pass down variant and size to <Checkbox>', () => {
-  render(
-    <Checkbox.Group label="Group of Checkboxes" size="small">
-      <Checkbox value="one" data-testid="one" label="one" />
-    </Checkbox.Group>
-  );
+test('don\'t show "show more" when list is too short', () => {
+  render(<CollapseAt collapseAt={100} />);
 
-  const one = screen
-    .getAllByTestId('one')
-    .filter(el => el.classList.contains('group/checkbox'))[0];
+  expect(screen.getByTestId('one')).toBeVisible();
+  expect(screen.getByTestId('two')).toBeVisible();
+  expect(screen.getByTestId('three')).toBeVisible();
+  expect(screen.getByTestId('four')).toBeVisible();
+  expect(screen.getByTestId('five')).toBeVisible();
+  expect(screen.getByTestId('six')).toBeVisible();
+  expect(screen.getByTestId('seven')).toBeVisible();
+  expect(screen.getByTestId('eight')).toBeVisible();
+  expect(screen.getByTestId('nine')).toBeVisible();
+  expect(screen.getByTestId('ten')).toBeVisible();
+});
 
-  expect(one).toHaveClass('text-sm');
+test('works with negative values (hides everything)', () => {
+  render(<CollapseAt collapseAt={-10} />);
+
+  expect(screen.queryByTestId('one')).not.toBeVisible();
+  expect(screen.queryByTestId('two')).not.toBeVisible();
+  expect(screen.queryByTestId('three')).not.toBeVisible();
+  expect(screen.queryByTestId('four')).not.toBeVisible();
+  expect(screen.queryByTestId('five')).not.toBeVisible();
+  expect(screen.queryByTestId('six')).not.toBeVisible();
+  expect(screen.queryByTestId('seven')).not.toBeVisible();
+  expect(screen.queryByTestId('eight')).not.toBeVisible();
+  expect(screen.queryByTestId('nine')).not.toBeVisible();
+  expect(screen.queryByTestId('ten')).not.toBeVisible();
+});
+
+test('expand if a value would be hidden', () => {
+  render(<CollapseAt collapseAt={3} defaultValue={['olives']} />);
+
+  expect(screen.getByTestId('one')).toBeVisible();
+  expect(screen.getByTestId('two')).toBeVisible();
+  expect(screen.getByTestId('three')).toBeVisible();
+  expect(screen.getByTestId('four')).toBeVisible();
+  expect(screen.getByTestId('five')).toBeVisible();
+  expect(screen.getByTestId('six')).toBeVisible();
+  expect(screen.getByTestId('seven')).toBeVisible();
+  expect(screen.getByTestId('eight')).toBeVisible();
+  expect(screen.getByTestId('nine')).toBeVisible();
+  expect(screen.getByTestId('ten')).toBeVisible();
 });

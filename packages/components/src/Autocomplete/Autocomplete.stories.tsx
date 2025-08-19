@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { expect, within } from '@storybook/test';
+import { expect, userEvent, within } from '@storybook/test';
 import { screen } from '@testing-library/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Text } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
 import { useAsyncList } from '@react-stately/data';
+import { Center } from '../Center';
 import { Stack } from '../Stack';
 import { Autocomplete } from './Autocomplete';
 
@@ -88,7 +88,7 @@ export const Basic: Story = {
       <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByRole('combobox');
     const description = canvas.getAllByText(
@@ -129,7 +129,7 @@ export const WithSections: Story = {
       </Autocomplete.Section>
     </Autocomplete>
   ),
-  play: async ({ userEvent }) => {
+  play: async () => {
     const canvas = within(document.body);
     const input = canvas.getAllByLabelText('Select Favorite:')[0];
 
@@ -179,7 +179,7 @@ export const Controlled: Story = {
       </Stack>
     );
   },
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByRole('combobox');
 
@@ -222,6 +222,10 @@ export const Async: Story = {
         items={items}
         value={filterText}
         onChange={setFilterText}
+        allowsEmptyCollection
+        emptyState={
+          <Center data-testid="empty-state">no character found</Center>
+        }
       >
         {(item: any) => (
           <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
@@ -229,12 +233,23 @@ export const Async: Story = {
       </Autocomplete>
     );
   },
+  play: async () => {
+    const canvas = within(document.body);
+
+    const input = canvas.getByRole('combobox');
+    await userEvent.type(input, 'xyz');
+
+    await userEvent.type(input, '{arrowdown}');
+
+    const result = await canvas.getByTestId('empty-state');
+    await expect(result).toBeVisible();
+  },
 };
 
 export const InputMenuTrigger: Story = {
   tags: ['component-test'],
   ...Basic,
-  play: async ({ userEvent }) => {
+  play: async () => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
 
@@ -251,7 +266,7 @@ export const FocusMenuTrigger: Story = {
   args: {
     menuTrigger: 'focus',
   },
-  play: async ({ userEvent }) => {
+  play: async () => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
 
@@ -268,7 +283,7 @@ export const ManualMenuTrigger: Story = {
   args: {
     menuTrigger: 'input',
   },
-  play: async ({ userEvent }) => {
+  play: async () => {
     const canvas = within(document.body);
     const input = canvas.getByRole('combobox');
 

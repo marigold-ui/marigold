@@ -33,7 +33,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
-    Body?: ComponentStyleFunction<string, string>;
+
     Breadcrumbs?: Record<
       'container' | 'item' | 'link' | 'current',
       ComponentStyleFunction<string, string>
@@ -42,6 +42,10 @@ export type Theme = {
     Button?: ComponentStyleFunction<string, string>;
     Card?: ComponentStyleFunction<string, string>;
     CloseButton?: ComponentStyleFunction<string, string>;
+    Collapsible?: Record<
+      'container' | 'trigger' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     ContextualHelp?: Record<
       'trigger' | 'popover' | 'dialog' | 'title' | 'content',
       ComponentStyleFunction<string, string>
@@ -66,8 +70,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
-    Footer?: ComponentStyleFunction<string, string>;
-    Header?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
     HelpText?: Record<
@@ -75,7 +77,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     IconButton?: ComponentStyleFunction<string, string>;
-    Image?: ComponentStyleFunction<string, string>;
     Checkbox?: Record<
       'container' | 'label' | 'checkbox' | 'group',
       ComponentStyleFunction<string, string>
@@ -143,7 +144,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
-      'tag' | 'listItems' | 'closeButton',
+      'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;

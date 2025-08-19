@@ -15,9 +15,9 @@
  * Use this as a default for all components (that don't have their own border).
  */
 @utility util-focus-* {
-  border-color: --value(--color- *);
+  border-color: --value(--color-*);
 
-  --tw-ring-color: --alpha(--value(--color- *) / 50%);
+  --tw-ring-color: --alpha(--value(--color-*) / 50%);
   --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
   box-shadow:
     var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
@@ -32,7 +32,7 @@
  * Use this when the component has its own border and you need to keep it.
  */
 @utility util-focus-borderless-* {
-  --tw-ring-color: --alpha(--value(--color- *) / 50%);
+  --tw-ring-color: --alpha(--value(--color-*) / 50%);
   --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
   box-shadow:
     var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
@@ -99,4 +99,27 @@
   box-shadow:
     var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
     var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+/*
+ * Applies a touch-friendly hitbox to elements, ensuring they are easily tappable on touch devices. 
+ * This is important for accessibility, as it helps meet WCAG guidelines for minimum touch target size 
+ * and improves usability for users with motor impairments.
+ */
+@utility util-touch-hitbox {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    /* 24x24px is WCAG before 2.2, to support 2.2 this needs to be 44x44px */
+    min-height: 24px;
+    min-width: 24px;
+    z-index: 9999;
+  }
 }
