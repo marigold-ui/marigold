@@ -16,6 +16,8 @@ While many are taking a summer break, Marigold never rests! v15.0.0 arrives with
 
 ## Breaking Changes
 
+### Removed components
+
 The `<Header>`, `<Body>`, and `<Footer>` components have been removed. These were originally intended as reusable building blocks for components like `<Dialog>` and `<Card>`, but we found that dedicated compound components (such as `<Dialog.Content>`) offer a better developer experience. Subcomponents are more discoverable and easier to style based on their specific usage.
 
 The `<Image>` component has been removed. It didn’t provide significant benefits beyond offering shortcuts for Tailwind classes, which can easily be applied directly to native `<img>` elements as needed.
@@ -38,6 +40,14 @@ The `<Image>` component has been removed. It didn’t provide significant benefi
 |              | `rightTop`    | `object-right-top`    |
 |              | `top`         | `object-top`          |
 
+### Menu
+
+Renamed `"secondary"` to `"default"` variant. If you used `<Menu variant="secondary">` remove the variant prop to enable the previous appearance.
+
+### Slider
+
+Separate `aria-label` and `name` for slider's thumbs. The aria label (`thumbLabels`) and `name` attributes for slider thumbs are now separate. Update implementations to set both explicitly if needed.
+
 ## Components
 
 Components now follow a clear release process with three phases: **Alpha** for early feedback, **Beta** for broader testing, and **Stable** for production-ready confidence. This approach helps teams understand the maturity of each component and when it’s best to use them. Read more about it [here](/getting-started/release-phases).
@@ -58,24 +68,34 @@ Learn more in the [Breadcrumbs documentation](/components/navigation/breadcrumbs
 </Breadcrumbs>
 ```
 
-### Toast (beta)
+### Checkbox
 
-The `<Toast>` component lets you display brief, auto-dismissing notifications to inform users about important events or actions. Toasts appear temporarily and do not interrupt the user’s workflow, making them ideal for confirmations, warnings, or status updates.
-
-Learn more in the [Toast documentation](/components/overlay/toast).
-
-**Example:**
+Checkbox groups can now be collapsed when they contain many options using the new `collapseAt` prop. This automatically hides options beyond the specified count, making long lists more manageable and improving usability for forms with extensive choices.
 
 ```tsx
-const { addToast } = useToast();
-
-<ToastProvider position="bottom-right" />
-<Button
-  onPress={() => addToast({ title: 'Simple Toast', variant: 'success' })}
->
-  Show Toast
-</Button>
+<Checkbox.Group collapseAt={5}>{/* ... */}</Checkbox.Group>
 ```
+
+### Formatters
+
+`<DateFormat>` now supports formatting and localizing date ranges by accepting a tuple of dates. This makes it easy to display periods like "Jan 1, 2025 – Dec 31, 2025" in a way that adapts to the user's locale.
+
+```tsx
+<DateFormat value={[new Date(2025, 0, 1), new Date(2025, 11, 31)]} />
+```
+
+### Inline
+
+Make it convenient to align inputs with buttons by using the new `alignY="input"` value.
+
+```tsx
+<Inline alignY="input">
+  <TextField>
+  <Button>Click me</Button>
+</Inline>
+```
+
+Fix alignment of buttons and inputs in `<Inline>` component.
 
 ### Menu
 
@@ -105,14 +125,6 @@ You can now easily access `ActionMenu.Item` and `ActionMenu.Section` directly, w
 </ActionMenu>
 ```
 
-### Formatters
-
-`<DateFormat>` now supports formatting and localizing date ranges by accepting a tuple of dates. This makes it easy to display periods like "Jan 1, 2025 – Dec 31, 2025" in a way that adapts to the user's locale.
-
-```tsx
-<DateFormat value={[new Date(2025, 0, 1), new Date(2025, 11, 31)]} />
-```
-
 ### Multiselect
 
 The `<Multiselect>` component now supports an empty state, providing clear feedback when no options are available or selected.
@@ -121,11 +133,49 @@ The `<Multiselect>` component now supports an empty state, providing clear feedb
 <Multiselect emptyState={() => 'No results found.'}>{/* ... */}</Multiselect>
 ```
 
+### Radio
+
+Radio groups can now be collapsed when they contain many options using the new `collapseAt` prop. This automatically hides options beyond the specified count, making long lists more manageable and improving usability for forms with extensive choices.
+
+```tsx
+<Radio.Group collapseAt={5}>{/* ... */}</Radio.Group>
+```
+
+### Tag
+
+`<Tag.Group>` does not provide a "remove all" action. The remove all option is only available when the `onRemove` prop is also provided. The removal of tags needs to be handled in the `onRemove` handler.
+
+```tsx
+<Tag.Group onRemove={removeFilter} removeAll>
+  {/* ... */}
+</Tag.Group>
+```
+
+### Toast (beta)
+
+The `<Toast>` component lets you display brief, auto-dismissing notifications to inform users about important events or actions. Toasts appear temporarily and do not interrupt the user’s workflow, making them ideal for confirmations, warnings, or status updates.
+
+Learn more in the [Toast documentation](/components/overlay/toast).
+
+**Example:**
+
+```tsx
+const { addToast } = useToast();
+
+<ToastProvider position="bottom-right" />
+<Button
+  onPress={() => addToast({ title: 'Simple Toast', variant: 'success' })}
+>
+  Show Toast
+</Button>
+```
+
 ## Design
 
 - Icons inside `<Menu.Item>` and `<ActionMenu.Item>` are now styled consistently with the rest of the menu content. This ensures better alignment and visual clarity for menus that include icons alongside text, making your menus look more polished out of the box.
 - Prevent page bounce when `<Scrollable>` is used inside a page.
 - Added a small button animation when a button is clicked.
+- Added a new variant "link" to `<Button>`\*\*\*\*
 
 ## Documentation
 
@@ -157,3 +207,6 @@ const list = useAsyncList({
 ## Bug fixes
 
 - Fix `<Drawer>` on small screens
+- Fix incorrect class names in `<Pagination>` and `<Slider>`
+
+---
