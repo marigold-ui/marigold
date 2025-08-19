@@ -6,18 +6,18 @@ order: 4
 
 On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
 
-## Benefits of Design Tokens
+## Benefits of design tokens
 
 - **Consistency:** Ensure uniform styling across all components and applications
 - **Maintainability:** Centralized values make updates and changes easier to manage
 - **Scalability:** Support multiple themes and design variations
 - **Developer Experience:** Clear naming conventions make tokens intuitive to use
 
-## Token Structure
+## Token structure
 
 Our RUI theme uses a semantic naming convention that directly reflects the purpose and context of each token. Instead of descriptive names, we use functional names that describe what the token does, not what it looks like.
 
-### Naming Convention
+### Naming convention
 
 Tokens use semantic names that describe their purpose:
 
@@ -35,7 +35,7 @@ The property prefix (bg-, text-, border-) is added when using tokens in Tailwind
 - `text-destructive` uses the destructive color for text
 - `border-input` uses the input color for borders
 
-## Color Tokens
+## Color tokens
 
 A carefully curated set of semantic colors ensures our product maintains a consistent and recognizable palette. Our color tokens are organized by their semantic meaning and intended use case.
 
@@ -47,11 +47,11 @@ A carefully curated set of semantic colors ensures our product maintains a consi
   </SectionMessage.Content>
 </SectionMessage>
 
-### Background and Foreground System
+### Background and foreground system
 
 Our color system follows a semantic approach where colors are defined by their purpose rather than their appearance.
 
-#### Background and Foreground Pairing
+#### Background and foreground pairing
 
 Every background color token has a corresponding foreground token to ensure proper contrast ratios and accessibility. This pairing system guarantees that text remains readable when placed on colored backgrounds.
 
@@ -63,7 +63,7 @@ Every background color token has a corresponding foreground token to ensure prop
 
 This approach eliminates guesswork and ensures consistent, accessible color combinations across your entire application.
 
-### Base Colors
+### Base colors
 
 Base colors form the foundation of our design system and are used for primary interface elements.
 
@@ -76,7 +76,7 @@ Base colors form the foundation of our design system and are used for primary in
 - `muted` / `muted-foreground` - Subdued colors for secondary information
 - `disabled` / `disabled-foreground` - Colors for disabled states
 
-### Feedback Colors
+### Feedback colors
 
 Feedback colors communicate different states and provide user feedback through color semantics.
 
@@ -94,7 +94,7 @@ Each feedback color also includes muted variants for subtle backgrounds:
 - `warning-muted` / `warning-muted-foreground` / `warning-muted-accent`
 - `info-muted` / `info-muted-foreground` / `info-muted-accent`
 
-### Component-Specific Colors
+### Component-specific colors
 
 These tokens are designed for specific component needs and interface elements.
 
@@ -118,7 +118,7 @@ Outline tokens have a special use case and should be used sparingly. Their usage
 
 There are no modifiers for outline tokens.
 
-## Effect Tokens
+## Effect tokens
 
 Effects serve various purposes, both aesthetic and functional. They can indicate interactivity, such as making a button appear clickable with a shadow. Additionally, effects encompass background filters like blur and animations.
 
@@ -143,7 +143,7 @@ The "surface" intent is used to create visual hierachy. The following modifiers 
 - **overlay:** Applied to surfaces with significant height, like popovers
 - **sunken:** Applied to surface that creates a backdrop
 
-## Number Tokens
+## Number tokens
 
 Number tokens encompass properties represented by numerical values, contributing to the management of elements such as white space and typography sizes. They play a crucial role in creating hierarchy and vertical rhythm.
 
