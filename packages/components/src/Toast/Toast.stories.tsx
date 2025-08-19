@@ -75,7 +75,7 @@ export const Basic: Story = {
       </>
     );
   },
-  play: async ({ step, userEvent }) => {
+  play: async ({ step }) => {
     const canvas = within(window.document.body);
     const button = canvas.getByRole('button', { name: /show toast/i });
 

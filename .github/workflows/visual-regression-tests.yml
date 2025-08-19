@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build Storybook
-        run: pnpm build:storybook
+        run: pnpm build:sb
       - name: Run visual regression tests on chromatic
         uses: chromaui/action@latest
         with:
