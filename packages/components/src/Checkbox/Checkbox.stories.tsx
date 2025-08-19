@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { Checkbox } from './Checkbox';
 
 const meta = {
@@ -75,7 +75,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = await canvas.findByRole('checkbox');
 
@@ -90,7 +90,7 @@ export const Controlled: Story = {
   args: {
     onChange: fn(),
   },
-  play: async ({ args, canvasElement, userEvent }) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByLabelText<HTMLInputElement>('This is a Checkbox');
 
@@ -108,7 +108,7 @@ export const ReadOnly: Story = {
     defaultChecked: true,
     readOnly: true,
   },
-  play: async ({ canvasElement, userEvent }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox =
       canvas.getByLabelText<HTMLInputElement>('This is a Checkbox');
