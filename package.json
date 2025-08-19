@@ -51,7 +51,7 @@
     "zx": "8.7.2"
   },
   "scripts": {
-    "docs": "pnpm --filter @marigold/docs dev",
+    "start": "pnpm --filter @marigold/docs dev",
     "sb": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
     "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
     "build:docs": "turbo run --filter @marigold/docs... build",
