@@ -95,14 +95,34 @@ Another helpful method is adding a filter filter, which is a small search field 
 // the `Autocomplete` from RAC?
 ```
 
-### "Select All" Options
+### Showing Option Counts
+
+Displaying counts next to filter options gives users a sense of scale and helps them make informed choices. A category labeled “Concerts (85)” or “Workshops (12)” communicates availability without the user needing to test the filter.
+
+This is particularly helpful in large datasets where the number of matching results can guide prioritization. Counts should update dynamically as filters are applied, so that users can see immediately how their selections affect the result set. Keeping the counts visible ensures transparency and avoids the frustration of selecting filters that return little or no data.
+
+```js
+// TODO: create a demo here
+```
+
+### Select All Options
 
 In multi-select filters, leaving everything unchecked typically means all results are shown, so a "Select all" option is not always required. It becomes valuable in long lists where users often want nearly everything, or when a parent-child structure enables bulk toggling. In these scenarios it reduces effort and makes the common “all except a few” pattern easier to achieve.
 
 When included, "Select all" should appear in the filter header and be paired with a "Clear" control for quick reset. Partial selections can be communicated with an indeterminate parent state. Always display how many items are selected, and use accessible labels that clarify scope, such as “Select all 125 items.”
 
 ```js
-// TODO: create a demo here. also allow our checkbox to have a count feature?
+// TODO: create a demo here. also allow our checkbox / listbox to have a "count" feature?
+```
+
+### Exclude Filters
+
+Exclude filters can be helpful, but they add complexity. They work best when users want nearly everything yet need to remove only a small number of items. In these situations, beginning with all items selected and then deselecting a few creates a natural flow.
+
+This approach produces an “All except” state that is easier to grasp. It makes intent clear in both the filter panel and the summary, reducing long lists of checkmarks while still giving a precise description of what has been excluded.
+
+```js
+// TODO: create a demo here. again ... a count feature would be nice
 ```
 
 ### Batch Filtering
