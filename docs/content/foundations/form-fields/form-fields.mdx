@@ -86,7 +86,7 @@ This is problematic for the following reasons:
   </Dont>
 </GuidelineTiles>
 
-### Help Text
+### Help text
 
 Help Text should be used to provide additional clarification or instructions when the label alone isn't enough to explain the input (e.g., complex or uncommon fields). It’s helpful for explaining specific formats or validation rules. However, it shouldn't be used when the input is straightforward and the label is clear, as it can clutter the form and overwhelm the user with unnecessary details.
 
@@ -134,7 +134,7 @@ HTML forms enable developers to collect and submit user input on web pages, and 
 
 Marigold's components seamlessly integrate with HTML forms, offering a developer-friendly solution for input data validation. It supports native attributes like `required` and validation based on input types. Additionally, Marigold's form elements allow custom validation functions to extend the browser's validation capabilities.
 
-#### Built-in / Native Form Validation
+#### Built-in / native form validation
 
 The most straightforward way to validate user input is to use the built-in [constraint validation](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation). Marigold's form components work seamlessly with this API, allowing you to set constraints for each field. The browser will check these constraints on blur (user leaves the field) or when the form is submitted.
 
@@ -144,7 +144,7 @@ Here is an email subscription form. If you submit it without entering an email a
 
 <ComponentDemo file="./validation-base.demo.tsx" />
 
-#### Custom Message
+#### Custom message
 
 While browser-provided error messages are helpful, they might not be very descriptive. In such instances, you have the flexibility to override them by using a function with the `errorMessages` prop of the field. This allows you to display custom error messages tailored to better describe the occured error.
 
@@ -152,7 +152,7 @@ The example below customizes the default error messages for an unfilled required
 
 <ComponentDemo file="./validation-custom-message.demo.tsx" />
 
-#### Custom Validation
+#### Custom validation
 
 When the native validation options are insufficient or not ideal, it's also possible to entirely override them and implement a custom validation method by using the `validate` prop of a field. Ensure that the prop is assigned a function that returns one or more error messages. If there are multiple error messages, they should be provided as a string array.
 
