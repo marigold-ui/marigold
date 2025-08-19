@@ -95,6 +95,16 @@ Another helpful method is adding a filter filter, which is a small search field 
 // the `Autocomplete` from RAC?
 ```
 
+### "Select All" Options
+
+In multi-select filters, leaving everything unchecked typically means all results are shown, so a "Select all" option is not always required. It becomes valuable in long lists where users often want nearly everything, or when a parent-child structure enables bulk toggling. In these scenarios it reduces effort and makes the common “all except a few” pattern easier to achieve.
+
+When included, "Select all" should appear in the filter header and be paired with a "Clear" control for quick reset. Partial selections can be communicated with an indeterminate parent state. Always display how many items are selected, and use accessible labels that clarify scope, such as “Select all 125 items.”
+
+```js
+// TODO: create a demo here. also allow our checkbox to have a count feature?
+```
+
 ### Batch Filtering
 
 Batch filtering allows multiple selections to be made across different parameters without instantly updating the results. Instead, the data set is refreshed only when a global "apply" action is triggered. This approach is particularly effective for very large data sets or when the filtering parameters are complex, as it prevents unnecessary refreshes and provides users with more control over when the results update.
