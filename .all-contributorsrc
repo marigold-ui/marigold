@@ -165,7 +165,12 @@
         "code",
         "design",
         "example",
-        "test"
+        "test",
+        "question",
+        "bug",
+        "infra",
+        "maintenance",
+        "review"
       ]
     },
     {
