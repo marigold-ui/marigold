@@ -51,7 +51,6 @@ const _FieldBase = <T extends ElementType>(
     description,
     errorMessage,
     className,
-    stateProps,
     ...rest
   } = props;
   const classNames = useClassNames({

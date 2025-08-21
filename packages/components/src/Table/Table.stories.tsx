@@ -59,7 +59,7 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: ['default', 'grid', 'linedTable', 'muted'],
+      options: ['default', 'master', 'muted', 'muted', 'admin', 'grid'],
       description: 'variant for the table',
     },
     size: {

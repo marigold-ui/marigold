@@ -17,7 +17,7 @@ export interface InlineProps extends GapSpaceProp, AriaRegionProps {
   /**
    * Vertical alignment of the items inside the element.
    */
-  alignY?: keyof typeof alignment.horizontal.alignmentY | 'inputBaseline';
+  alignY?: keyof typeof alignment.horizontal.alignmentY | 'input';
 }
 
 // Component
@@ -35,11 +35,9 @@ export const Inline = ({
       'flex flex-wrap',
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
-      alignY === 'inputBaseline' &&
+      alignY === 'input' &&
         'items-end [&:has([slot=description])]:items-end [&:has([slot=description])_button]:mb-6 [&:has([slot=errorMessage])]:mb-6',
-      alignY &&
-        alignY !== 'inputBaseline' &&
-        alignment?.horizontal?.alignmentY[alignY]
+      alignY && alignY !== 'input' && alignment?.horizontal?.alignmentY[alignY]
     )}
   >
     {children}
