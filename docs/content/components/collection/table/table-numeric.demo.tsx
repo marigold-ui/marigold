@@ -41,12 +41,7 @@ const rows = [
 ] as const;
 
 export default () => (
-  <Table
-    aria-label="Data Table"
-    selectionMode="multiple"
-    size="compact"
-    variant="linedTable"
-  >
+  <Table aria-label="Data Table" selectionMode="multiple" size="compact">
     <Table.Header>
       <Table.Column>Event</Table.Column>
       <Table.Column>Date</Table.Column>

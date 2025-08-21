@@ -93,7 +93,6 @@ export default () => {
         </header>
         <Table
           aria-labelledby="table-header table-description"
-          variant="linedTable"
           selectionMode="multiple"
           stretch
           selectedKeys={selected}
