@@ -190,6 +190,21 @@
         "doc",
         "example"
       ]
+    },
+    {
+      "login": "jim761",
+      "name": "Jim Wiedemann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/146172605?v=4",
+      "profile": "https://github.com/jim761",
+      "contributions": [
+        "a11y",
+        "question",
+        "code",
+        "design",
+        "doc",
+        "example",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 5,
