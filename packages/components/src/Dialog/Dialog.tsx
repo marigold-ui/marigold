@@ -68,7 +68,7 @@ const _Dialog = forwardRef(
       variant,
       size,
     });
-    const { isDismissable, isKeyboardDismissDisabled, isOpen } =
+    const { isDismissable, isKeyboardDismissDisabled, isOpen, onOpenChange } =
       useContext(DialogContext);
 
     const state = useContext(OverlayTriggerStateContext);
@@ -86,6 +86,7 @@ const _Dialog = forwardRef(
         keyboardDismissable={isKeyboardDismissDisabled}
         open={isOpen}
         size={size}
+        onOpenChange={onOpenChange}
       >
         <Dialog
           {...props}
