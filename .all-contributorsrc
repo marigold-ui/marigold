@@ -19,7 +19,11 @@
         "code",
         "design",
         "doc",
-        "review"
+        "review",
+        "example",
+        "infra",
+        "maintenance",
+        "test"
       ]
     },
     {
