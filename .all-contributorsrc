@@ -31,7 +31,10 @@
         "code",
         "design",
         "doc",
-        "review"
+        "review",
+        "example",
+        "maintenance",
+        "test"
       ]
     },
     {
