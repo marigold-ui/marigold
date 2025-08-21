@@ -211,8 +211,7 @@
         "design",
         "doc",
         "example",
-        "test",
-        "a11y"
+        "test"
       ]
     }
   ],
