@@ -22,6 +22,15 @@ Do you want to start using the Marigold Design System?
 
 Then get started in the [Marigold documentation](https://www.marigold-ui.io/getting-started/installation).
 
+## Techstack
+
+[![React](https://img.shields.io/badge/-React-61DAFB?style=for-the-badge&logo=react&logoColor=000)](https://react.dev)
+[![React Aria](https://img.shields.io/badge/-React%20Aria-FA0F00?style=for-the-badge&logo=adobe&logoColor=fff)](https://react-spectrum.adobe.com/react-aria/)
+[![Vitest](https://img.shields.io/badge/-Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=fff)](https://vitest.dev)
+[![Storybook](https://img.shields.io/badge/-Storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=fff)](https://storybook.js.org/)
+[![Next.js](https://img.shields.io/badge/-Next.js-000000?style=for-the-badge&logo=next.js&logoColor=fff)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=fff)](https://www.typescriptlang.org/)
+
 ## Local Development
 
 ### Setup & Usage
