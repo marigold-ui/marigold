@@ -195,7 +195,10 @@
       "contributions": [
         "code",
         "doc",
-        "example"
+        "example",
+        "design",
+        "maintenance",
+        "test"
       ]
     },
     {
