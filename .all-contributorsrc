@@ -176,6 +176,20 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "sinan-rsvx",
+      "name": "Sinan Akdesir",
+      "avatar_url": "https://avatars.githubusercontent.com/u/159138340?v=4",
+      "profile": "https://github.com/sinan-rsvx",
+      "contributions": [
+        "a11y",
+        "blog",
+        "bug",
+        "code",
+        "doc",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 5,
