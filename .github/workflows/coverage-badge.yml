@@ -8,7 +8,7 @@ on:
 
 jobs:
   coverage-badge:
-    name: Generate and (optionally) upload coverage badge
+    name: Generate and upload coverage badge
     runs-on: ubuntu-latest
     env:
       GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
@@ -17,17 +17,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      - uses: pnpm/action-setup@v4.0.0 # Uses version from package.json#packageManager
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version-file: '.node-version'
           cache: 'pnpm'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.13.1
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -73,8 +68,8 @@ jobs:
           // Also expose outputs
           const githubOutput = process.env.GITHUB_OUTPUT;
           if (githubOutput) {
-            fs.appendFileSync(githubOutput, `coverage_pct=${pct}\n`);
-            fs.appendFileSync(githubOutput, `badge_path=${outFile}\n`);
+            fs.appendFileSync(githubOutput, 'coverage_pct=' + pct + '\n');
+            fs.appendFileSync(githubOutput, 'badge_path=' + outFile + '\n');
           }
           "
 
