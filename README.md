@@ -4,7 +4,7 @@
 <br>
 <br>
 
-[![ci][ci-badge]][ci] ![coverage-badge-gist] [![MIT License][license-badge]][license] [![version][version-badge]][package]
+[![ci][ci-badge]][ci] [![Coverage][coverage-badge-gist]] [![MIT License][license-badge]][license] [![version][version-badge]][package]
 
 [![Open in Visual Studio Code](https://shields.io/badge/-Open%20in%20Visual%20Studio%20Code-blue?logo=visualstudiocode&style=for-the-badge)](https://open.vscode.dev/marigold-ui/marigold)
 
