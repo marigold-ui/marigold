@@ -24,6 +24,10 @@ export function ListBox<T>({
   format,
 }: ListBoxProps<T>) {
   const { classNames } = useCalendarContext();
+  const selectedItemKeys = items
+    .map((item, index) => (isSelected(item, index) ? String(index) : undefined))
+    .filter((key): key is string => typeof key === 'string');
+
   return (
     <RACAriaListBox
       className={cn(
@@ -32,6 +36,8 @@ export function ListBox<T>({
       data-testid={dataTestid}
       selectionMode="single"
       aria-label={dataTestid}
+      selectedKeys={selectedItemKeys}
+      autoFocus={true}
     >
       {items.map((item, index) => {
         const disabled = isDisabled(item, index);
@@ -42,6 +48,7 @@ export function ListBox<T>({
             id={String(index)}
             textValue={String(format(item, index))}
             isDisabled={disabled}
+            aria-current={selected ? 'true' : undefined}
             aria-label={`${format(item, index)}${
               selected ? ' selected' : disabled ? ' not selectable' : ''
             }`}
