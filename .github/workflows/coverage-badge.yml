@@ -82,9 +82,7 @@ jobs:
           path: artifacts/vitest-coverage-badge.json
 
       - name: Upload badge to Gist (only for main target)
-        if: >-
-          (github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'))
-          && (secrets.GIST_TOKEN != '' && secrets.GIST_ID != '')
+        if: ${{ (github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main')) && (secrets.GIST_TOKEN != '' && secrets.GIST_ID != '') }}
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_TOKEN }}
