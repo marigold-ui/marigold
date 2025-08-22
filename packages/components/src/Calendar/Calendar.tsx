@@ -55,6 +55,7 @@ export interface CalendarProps
 type ViewMapKeys = 'month' | 'year';
 // Component
 // ---------------
+
 const _Calendar = ({
   disabled,
   readOnly,
@@ -62,12 +63,18 @@ const _Calendar = ({
   variant,
   width = 'fit',
   dateUnavailable,
+  minValue: _minValue,
+  maxValue: _maxValue,
   ...rest
 }: CalendarProps) => {
+  const minValue = _minValue ?? undefined;
+  const maxValue = _maxValue ?? undefined;
   const props: RAC.CalendarProps<DateValue> = {
     isDisabled: disabled,
     isReadOnly: readOnly,
     isDateUnavailable: dateUnavailable,
+    minValue,
+    maxValue,
     ...rest,
   };
 
@@ -78,8 +85,20 @@ const _Calendar = ({
   >();
 
   const ViewMap = {
-    month: <MonthListBox setSelectedDropdown={setSelectedDropdown} />,
-    year: <YearListBox setSelectedDropdown={setSelectedDropdown} />,
+    month: (
+      <MonthListBox
+        setSelectedDropdown={setSelectedDropdown}
+        minValue={minValue}
+        maxValue={maxValue}
+      />
+    ),
+    year: (
+      <YearListBox
+        setSelectedDropdown={setSelectedDropdown}
+        minValue={minValue}
+        maxValue={maxValue}
+      />
+    ),
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
   return (
