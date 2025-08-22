@@ -40,6 +40,14 @@ The `<Image>` component has been removed. It didn’t provide significant benefi
 |              | `rightTop`    | `object-right-top`    |
 |              | `top`         | `object-top`          |
 
+### Multiselect
+
+To ensure consistency, use the `emptyState` prop instead of the deprecated `noOptionsMessage` prop in the `<Multiselect>` component.
+
+```tsx
+<Multiselect emptyState={() => 'No results found.'}>{/* ... */}</Multiselect>
+```
+
 ### Menu
 
 Renamed `"secondary"` to `"default"` variant. If you used `<Menu variant="secondary">` remove the variant prop to enable the previous appearance.
@@ -123,14 +131,6 @@ You can now easily access `ActionMenu.Item` and `ActionMenu.Section` directly, w
     <ActionMenu.Item>Item 2</ActionMenu.Item>
   </ActionMenu.Section>
 </ActionMenu>
-```
-
-### Multiselect
-
-The `<Multiselect>` component now supports an empty state, providing clear feedback when no options are available or selected.
-
-```tsx
-<Multiselect emptyState={() => 'No results found.'}>{/* ... */}</Multiselect>
 ```
 
 ### Radio
