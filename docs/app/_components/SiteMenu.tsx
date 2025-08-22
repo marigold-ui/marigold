@@ -126,7 +126,7 @@ export const SiteMenu = () => {
   };
 
   return (
-    <Dialog.Trigger open={open} onOpenChange={setOpen}>
+    <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
       <Button variant="sunken" size="small" onPress={onPress}>
         Search...
         <Hotkey letter="K" />
