@@ -13,6 +13,10 @@ import { CalendarContext } from './Context';
 import MonthControls from './MonthControls';
 import MonthListBox from './MonthListBox';
 import YearListBox from './YearListBox';
+import {
+  hasOnlyOneSelectableMonth,
+  hasOnlyOneSelectableYear,
+} from './calendarListBoxSelectableCheck';
 
 // Props
 // ---------------
@@ -128,14 +132,24 @@ const _Calendar = ({
         >
           <div className="mb-4 flex items-center justify-between">
             <div className="flex w-fit gap-4">
-              {['month', 'year'].map(dateType => (
-                <CalendarListBox
-                  key={dateType}
-                  type={dateType}
-                  isDisabled={props.isDisabled}
-                  setSelectedDropdown={setSelectedDropdown}
-                />
-              ))}
+              <CalendarListBox
+                key="month"
+                type="month"
+                isDisabled={
+                  hasOnlyOneSelectableMonth(minValue, maxValue) ||
+                  props.isDisabled
+                }
+                setSelectedDropdown={setSelectedDropdown}
+              />
+              <CalendarListBox
+                key="year"
+                type="year"
+                isDisabled={
+                  hasOnlyOneSelectableYear(minValue, maxValue) ||
+                  props.isDisabled
+                }
+                setSelectedDropdown={setSelectedDropdown}
+              />
             </div>
             <MonthControls />
           </div>

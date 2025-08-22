@@ -52,9 +52,6 @@ const meta = {
       },
     },
   },
-  args: {
-    defaultValue: new CalendarDate(2025, 8, 7),
-  },
 } satisfies Meta<typeof Calendar>;
 
 export default meta;
@@ -150,5 +147,23 @@ export const ReadOnly: Story = {
     await userEvent.click(canvas.getByText('19'));
 
     await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+export const OnlyOneMonthAndYear: Story = {
+  ...Basic,
+  tags: ['component-test'],
+  args: {
+    minValue: new CalendarDate(2020, 5, 5),
+    maxValue: new CalendarDate(2020, 5, 20),
+    onChange: fn(),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const monthButton = canvas.getByTestId('month');
+    const yearButton = canvas.getByTestId('year');
+
+    await expect(monthButton).toHaveAttribute('disabled');
+    await expect(yearButton).toHaveAttribute('disabled');
   },
 };
