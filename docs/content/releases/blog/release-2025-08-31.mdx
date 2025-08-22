@@ -1,6 +1,6 @@
 ---
 title: Marigold v15.0.0
-date: 2025-08-31
+date: 2025-08-25
 type: Blog
 changed:
   - components/collection/table
@@ -203,11 +203,15 @@ const list = useAsyncList({
 - Removed the "recipe" section in favor of more complete patterns. Relevant information can now be found in the "patterns" section (e.g. the preliminary navigation).
 - The row actions guidelines for tables have been updated and improved. See details in the [Table documentation](/components/collection/table#row-actions).
 - The `<DateField>` documentation now includes examples for enabling time input alongside the calendar date, making it easier to support use cases that require both date and time selection.
+- The `<TextArea>` page was revised - so check out the ✨ [documentation](/components/form/textarea).
 - We are working on a [filter pattern (alpha)](/patterns/filter) which is ready to get tested from certain teams and also feedback is welcome. This pattern aims in the first place to get used in the core system but will also be handy for our product teams. If you are interested in trying it out, please [get in touch](/getting-started/get-in-touch) with us.
 
 ## Bug fixes
 
-- Fix `<Drawer>` on small screens
-- Fix incorrect class names in `<Pagination>` and `<Slider>`
+- Fixed `<Drawer>` on small screens
+- Fixed incorrect class names in `<Pagination>` and `<Slider>`
+- Fixed `<Inline>` alignment using inputs with buttons
+- Fixed broken Link from `<Split>` to `<Stack>` page
+- Property table shows now the correct properties in `<Toast>` documentation
 
 ---
