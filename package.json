@@ -12,7 +12,7 @@
   "dependencies": {
     "@babel/core": "7.28.3",
     "@changesets/changelog-git": "0.2.1",
-    "@changesets/cli": "2.29.5",
+    "@changesets/cli": "2.29.6",
     "@eslint/eslintrc": "3.3.1",
     "@eslint/js": "9.32.0",
     "@manypkg/get-packages": "3.1.0",
