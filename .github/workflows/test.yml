@@ -18,6 +18,8 @@ jobs:
     env:
       CI: true
       PR_NUMBER: ${{ github.event.number }}
+      GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+      GIST_ID: ${{ secrets.GIST_ID }}
     steps:
       # Setup
       - uses: actions/checkout@v4
@@ -41,3 +43,73 @@ jobs:
           pr-number: 'auto'
           json-summary-path: './coverage/coverage-summary.json'
           json-final-path: './coverage/coverage-final.json'
+
+      - name: Read coverage and prepare badge JSON
+        id: prepare_badge
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const summaryPath = path.join(process.cwd(), 'coverage', 'coverage-summary.json');
+          if (!fs.existsSync(summaryPath)) {
+            console.error('coverage-summary.json not found at', summaryPath);
+            process.exit(1);
+          }
+          const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+          const pct = Number(summary?.total?.lines?.pct ?? 0);
+          const message = pct.toFixed(0) + '%';
+          let color = 'red';
+          if (pct >= 90) color = 'brightgreen';
+          else if (pct >= 80) color = 'green';
+          else if (pct >= 65) color = 'orange';
+          else if (pct >= 50) color = 'yellow';
+
+          const badge = {
+            schemaVersion: 1,
+            label: 'Vitest',
+            message,
+            color,
+            labelColor: 'black',
+            namedLogo: 'vitest',
+            logoColor: 'white'
+          };
+          const outDir = path.join(process.cwd(), 'artifacts');
+          fs.mkdirSync(outDir, { recursive: true });
+          const outFile = path.join(outDir, 'vitest-coverage-badge.json');
+          fs.writeFileSync(outFile, JSON.stringify(badge));
+          console.log('Badge JSON written to', outFile);
+
+          // Also expose outputs
+          const githubOutput = process.env.GITHUB_OUTPUT;
+          if (githubOutput) {
+            fs.appendFileSync(githubOutput, 'coverage_pct=' + pct + '\n');
+            fs.appendFileSync(githubOutput, 'badge_path=' + outFile + '\n');
+          }
+          "
+
+      - name: Upload badge JSON as artifact (for debugging)
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-coverage-badge
+          path: artifacts/vitest-coverage-badge.json
+
+      - name: Upload badge to Gist (only for main target)
+        if: ${{ (github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main')) && (env.GIST_TOKEN != '' && env.GIST_ID != '') }}
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ secrets.GIST_ID }}
+          filename: vitest-coverage-badge.json
+          label: Vitest
+          message: ${{ steps.prepare_badge.outputs.coverage_pct }}%
+          color: >-
+            ${{
+              steps.prepare_badge.outputs.coverage_pct >= 90 && 'brightgreen' ||
+              steps.prepare_badge.outputs.coverage_pct >= 80 && 'green' ||
+              steps.prepare_badge.outputs.coverage_pct >= 65 && 'orange' ||
+              steps.prepare_badge.outputs.coverage_pct >= 50 && 'yellow' ||
+              'red'
+            }}
+          labelColor: black
+          namedLogo: vitest
+          logoColor: white
