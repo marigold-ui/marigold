@@ -17,8 +17,8 @@ type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
 export interface BreadcrumbsProps
   extends Omit<RACBreadcrumbsProps<object>, RemovedProps> {
-  variant?: string;
-  size?: string;
+  variant?: 'default' | (string & {});
+  size?: 'small' | 'default' | 'large' | (string & {});
 
   /**
    * Disables the breadcrumbs.

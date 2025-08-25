@@ -8,8 +8,17 @@ import { ProgressCycle } from '../ProgressCycle';
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
 export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
-  variant?: string;
-  size?: string;
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'destructive'
+    | 'ghost'
+    | 'link'
+    | 'sunken'
+    | 'inverted'
+    | 'icon'
+    | (string & {});
+  size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 
   /**
    * Stretches the button width with full available space.

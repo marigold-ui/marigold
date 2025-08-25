@@ -29,8 +29,8 @@ export interface MenuProps
    */
   label?: ReactNode;
 
-  variant?: string;
-  size?: string;
+  variant?: 'default' | 'ghost' | (string & {});
+  size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 
   /**
    * Handler that is called when an action is performed on an item.

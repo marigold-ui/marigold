@@ -6,8 +6,8 @@ import { CollapsibleContext } from './Context';
 export interface CollapsibleProps
   extends Omit<ButtonProps, 'className' | 'style'>,
     Pick<HeadingProps, 'level'> {
-  variant?: string;
-  size?: string;
+  variant?: 'default' | 'link' | (string & {});
+  size?: 'default' | (string & {});
 }
 
 export const CollapsibleTrigger = ({

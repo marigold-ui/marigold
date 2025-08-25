@@ -1,3 +1,3 @@
-import { Badge, ButtonProps } from '@marigold/components';
+import { Badge, BadgeProps } from '@marigold/components';
 
-export default (props: ButtonProps) => <Badge {...props}>basic</Badge>;
+export default (props: BadgeProps) => <Badge {...props}>basic</Badge>;

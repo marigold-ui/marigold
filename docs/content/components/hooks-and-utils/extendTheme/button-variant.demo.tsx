@@ -20,7 +20,7 @@ export default () => {
   );
   return (
     <MarigoldProvider theme={theme}>
-      <Button size="medium" variant="tertiary">
+      <Button size={'medium'} variant={'tertiary'}>
         Click Me
       </Button>
     </MarigoldProvider>

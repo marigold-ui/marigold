@@ -108,9 +108,7 @@ export const CoreCard: Story = {
           <Close />
         </Inline>
         <Center>
-          <Link variant="cardText" href={'#'}>
-            Reservix GmbH (1)
-          </Link>
+          <Link href={'#'}>Reservix GmbH (1)</Link>
         </Center>
       </Card>
 
@@ -123,10 +121,8 @@ export const CoreCard: Story = {
           <Close />
         </Inline>
         <Center>
-          <Text variant="bold">Interne Verkaufsstelle</Text>
-          <Link variant="cardText" href={'#'}>
-            Kasse 2 (9)
-          </Link>
+          <Text>Interne Verkaufsstelle</Text>
+          <Link href={'#'}>Kasse 2 (9)</Link>
         </Center>
       </Card>
     </Tiles>
@@ -135,7 +131,7 @@ export const CoreCard: Story = {
 
 export const Stretch: Story = {
   render: args => (
-    <Card {...args} size={'stretch'}>
+    <Card {...args}>
       <h2>Professor Severus Snape</h2>
       <section>
         <p>

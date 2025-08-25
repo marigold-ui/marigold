@@ -18,9 +18,7 @@ export default (props: CardProps) => (
       <Close />
     </Inline>
     <Center>
-      <Link variant="cardText" href={'#'}>
-        Reservix GmbH (1)
-      </Link>
+      <Link href={'#'}>Reservix GmbH (1)</Link>
     </Center>
   </Card>
 );
