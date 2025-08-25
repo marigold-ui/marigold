@@ -2,7 +2,7 @@ import { Button, Dialog, Headline, Inline } from '@marigold/components';
 import { Exclamation } from '@marigold/icons';
 
 export default () => (
-  <Dialog>
+  <Dialog isNonModal>
     <Dialog.Title>
       <Inline alignY="center" space={2}>
         <Exclamation color="text-warning" />
@@ -14,7 +14,7 @@ export default () => (
       save your changes first?
     </Dialog.Content>
     <Dialog.Actions>
-      <Button variant="text">Leave without saving</Button>
+      <Button variant="ghost">Leave without saving</Button>
       <Button variant="primary">Save and leave page</Button>
     </Dialog.Actions>
   </Dialog>

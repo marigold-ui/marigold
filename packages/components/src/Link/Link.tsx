@@ -6,8 +6,16 @@ import { useClassNames } from '@marigold/system';
 type RemovedProps = 'className' | 'isDisabled' | 'slot';
 
 export interface LinkProps extends Omit<RAC.LinkProps, RemovedProps> {
-  variant?: string;
-  size?: string;
+  variant?:
+    | 'default'
+    | 'secondary'
+    | 'primary'
+    | 'toc'
+    | 'cta'
+    | 'ghost'
+    | 'shiny'
+    | (string & {});
+  size?: 'inline' | 'xsmall' | 'small' | 'regular' | 'large' | (string & {});
   /**
    * The link can't be clicked
    * @default false
