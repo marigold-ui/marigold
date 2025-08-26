@@ -213,5 +213,6 @@ const list = useAsyncList({
 - Fixed `<Inline>` alignment using inputs with buttons
 - Fixed broken Link from `<Split>` to `<Stack>` page
 - Property table shows now the correct properties in `<Toast>` documentation
+- In the `<Calendar>` component the month and year dropdown buttons are automatically disabled when only one option is available, and the dropdowns themselves correctly disable non-selectable months or years based on min/max values. Additionally, the dropdown can be closed again even when minValue and maxValue are set to the same year or month.
 
 ---
