@@ -32,7 +32,7 @@ export interface TableProps
       | 'showDragButtons'
       | 'allowDuplicateSelectionEvents'
     > {
-  variant?: 'default' | 'grid' | (string & {});
+  variant?: 'string';
   size?: string;
 
   /**
