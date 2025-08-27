@@ -20,8 +20,8 @@ export interface LoaderProps
    * Children of the component that will make up the label.
    */
   children?: ReactNode;
-  size?: string;
-  variant?: string;
+  variant?: 'default' | 'inverted';
+  size?: 'default' | 'large' | 'fit';
 }
 
 // Base
