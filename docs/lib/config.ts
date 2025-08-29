@@ -117,7 +117,7 @@ export const links = [
       },
       {
         name: 'Marigold Playground',
-        href: 'https://stackblitz.com/github/marigold-ui/starter?file=package.json',
+        href: 'https://stackblitz.com/github/marigold-ui/starter',
         keywords: ['playground', 'starter', 'stackblitz'],
       },
       {
