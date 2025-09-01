@@ -4,7 +4,7 @@ import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps = 'className' | 'style';
 export interface DividerProps extends Omit<RAC.SeparatorProps, RemovedProps> {
-  variant?: string;
+  variant?: 'default' | 'bold' | (string & {});
 }
 
 const _Divider = ({ variant, ...props }: DividerProps) => {

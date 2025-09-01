@@ -7,7 +7,16 @@ export interface BadgeProps {
    * Children of the component
    */
   children?: React.ReactNode;
-  variant?: string;
+  variant?:
+    | 'default'
+    | 'primary'
+    | 'success'
+    | 'warning'
+    | 'info'
+    | 'error'
+    | 'admin'
+    | 'master'
+    | (string & {});
   size?: string;
 }
 

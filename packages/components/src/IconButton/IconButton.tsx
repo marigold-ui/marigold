@@ -4,7 +4,7 @@ import { cn, useClassNames } from '@marigold/system';
 
 interface IconButtonProps extends RAC.ButtonProps {
   className?: string;
-  variant?: string;
+  variant?: 'navigation' | (string & {});
   size?: string;
 }
 

@@ -7,8 +7,8 @@ import { CollapsibleProvider } from './Context';
 
 export interface CollapsibleProps
   extends Omit<DisclosureProps, 'className' | 'style'> {
-  variant?: string;
-  size?: string;
+  variant?: 'default' | 'link' | (string & {});
+  size?: 'default' | (string & {});
 
   /**
    * Removes the form's visual container so that it does not impact the layout,
