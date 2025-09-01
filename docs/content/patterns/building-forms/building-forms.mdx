@@ -11,8 +11,6 @@ Accessibility best practices should be followed, such as providing clear, descri
 
 Here you can see how to layout a classic form with Marigold's `<TextField>` and `<Select>` components.
 
-If you want to see more examples of forms with Marigold, check out our recipes: [ Marigold Form Recipes](/recipes/form-recipes)
-
 <ComponentDemo file="./layout-forms.demo.tsx" />
 
 ## Controlled or uncontrolled Components?
@@ -23,7 +21,7 @@ Uncontrolled components don't use any state to update. You can use props like `d
 
 When the state or props change, React will automatically re-render the component with its new data. This is called [data-binding](https://www.joshwcomeau.com/react/data-binding/). Components recive data from its parents component and update their output in response to changes in that data by using state and props, this allows to have a dynamic and reactive user interface.
 
-## Interactive Forms
+## Interactive forms
 
 Interactive forms can have several features like error handling, [validation](/foundations/validation), real-time feedback (password-strength indicator), logic (hide fields if a several field is checked etc.) or autocomplete.
 All these features help to make interactive fields more user friendly and more efficient.
@@ -62,7 +60,7 @@ Below is a basic example of extracting data from an [uncontrolled](https://react
 
 <ComponentDemo file="./building-forms-submit.demo.tsx" />
 
-## Handling complex Forms and Form State
+## Handling complex forms and form state
 
 You can simplify form handling in your React components and avoid repetitive tasks such as manually updating the form state, validating user inputs, and handling form submissions.
 We decided to use `react-form-hook` for this because its reducing re-renders caused by state updates, you don't have much to configure and supports integrating UI libraries.
@@ -103,7 +101,7 @@ With React Hook Form, you can easily manage form state without the need for cont
 
 For some examples have a look at [Building Forms](/patterns/building-forms#handling-complex-forms-and-form-state) section.
 
-### Async Forms and useActionState hook
+### Async forms and useActionState hook
 
 In React 19, you can handle async form submissions using Actions. With the `useActionState` hook, there's no need to manually manage an `isPending` state, React takes care of it automatically. Additionally, you can return a state directly from the action, eliminating the need for `useState`. This makes handling form state more streamlined and efficient.
 

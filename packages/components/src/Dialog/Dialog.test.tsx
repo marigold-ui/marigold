@@ -37,7 +37,6 @@ const theme: Theme = {
       title: cva(''),
     },
     Headline: cva(''),
-    Header: cva(''),
     Underlay: cva('bg-black opacity-5'),
     Modal: cva(''),
   },
@@ -163,6 +162,33 @@ test('close Dialog by clicking on the Underlay', () => {
       </Dialog>
     </Dialog.Trigger>
   );
+  const button = screen.getByText('Open');
+  fireEvent.click(button);
+
+  const dialog = screen.getByRole('dialog');
+
+  fireEvent.mouseDown(document.body);
+  fireEvent.mouseUp(document.body);
+
+  expect(dialog).not.toBeVisible();
+});
+
+test('close controlled Dialog by clicking on the Underlay', () => {
+  const Component = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Dialog.Trigger open={open} onOpenChange={setOpen} dismissable>
+        <Button>Open</Button>
+        <Dialog closeButton>
+          <Dialog.Title>Headline</Dialog.Title>
+          Content
+        </Dialog>
+      </Dialog.Trigger>
+    );
+  };
+
+  render(<Component />);
   const button = screen.getByText('Open');
   fireEvent.click(button);
 

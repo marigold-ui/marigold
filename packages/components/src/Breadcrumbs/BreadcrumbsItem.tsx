@@ -5,8 +5,8 @@ type RemovedProps = 'className' | 'style';
 
 export interface BreadcrumbsItemProps
   extends Omit<RAC.BreadcrumbProps, RemovedProps> {
-  variant?: string;
-  size?: string;
+  variant?: 'default' | (string & {});
+  size?: 'small' | 'default' | 'large' | (string & {});
 
   /**
    * The content inside the breadcrumb.

@@ -93,7 +93,6 @@ export default () => {
         </header>
         <Table
           aria-labelledby="table-header table-description"
-          variant="linedTable"
           selectionMode="multiple"
           stretch
           selectedKeys={selected}
@@ -127,7 +126,9 @@ export default () => {
                   <NumericFormat value={item.availableTickets} tabular />
                 </Table.Cell>
                 <Table.Cell>
-                  <Badge variant={STATUS[item.status]}>{item.status}</Badge>
+                  <Badge variant={STATUS[item.status] as any}>
+                    {item.status}
+                  </Badge>
                 </Table.Cell>
               </Table.Row>
             )}

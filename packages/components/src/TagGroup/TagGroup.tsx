@@ -3,6 +3,7 @@ import { TagGroup, TagList, TagListProps } from 'react-aria-components';
 import { WidthProp, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { TagGroupHiddenInput } from './TagGroupHiddenInput';
+import { TagGroupRemoveAll } from './TagGroupRemoveAll';
 
 // Props
 // ---------------
@@ -30,6 +31,12 @@ export interface TagGroupProps
    * Provides content to display when there are no items in the tag list.
    */
   emptyState?: TagListProps<object>['renderEmptyState'];
+
+  /**
+   * Renders a "remove all" option, when a the `onRemove` prop is also set.
+   * @default false
+   */
+  removeAll?: boolean;
 }
 
 // Component
@@ -41,19 +48,28 @@ const _TagGroup = ({
   variant,
   size,
   name,
+  removeAll,
   ...rest
 }: TagGroupProps) => {
   const classNames = useClassNames({ component: 'Tag', variant, size });
 
   return (
     <FieldBase as={TagGroup} {...rest}>
-      <TagList
-        items={items}
-        className={classNames.listItems}
-        renderEmptyState={emptyState}
-      >
-        {children}
-      </TagList>
+      <div className={classNames.container}>
+        <TagList
+          items={items}
+          className={classNames.listItems}
+          renderEmptyState={emptyState}
+        >
+          {children}
+        </TagList>
+        {rest.onRemove && removeAll ? (
+          <TagGroupRemoveAll
+            className={classNames.removeAll}
+            onRemove={rest.onRemove}
+          />
+        ) : null}
+      </div>
       {name ? <TagGroupHiddenInput name={name} /> : null}
     </FieldBase>
   );

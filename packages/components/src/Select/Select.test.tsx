@@ -38,7 +38,6 @@ const theme: Theme = {
         },
       },
     }),
-    Header: cva('text-xl'),
     HelpText: {
       container: cva('', {
         variants: {

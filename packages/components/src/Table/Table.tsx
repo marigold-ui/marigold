@@ -32,7 +32,7 @@ export interface TableProps
       | 'showDragButtons'
       | 'allowDuplicateSelectionEvents'
     > {
-  variant?: string;
+  variant?: 'grid' | 'default' | 'muted' | (string & {});
   size?: string;
 
   /**
@@ -193,7 +193,7 @@ Table.Header = Header;
 Table.Row = Row;
 
 export interface RowProps extends ReactAriaRowProps<any> {
-  variant?: string;
+  variant?: 'default' | 'grid' | 'admin' | 'master' | (string & {});
   size?: string;
 }
 

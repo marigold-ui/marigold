@@ -3,7 +3,8 @@ import { cva } from '@marigold/system';
 
 export const Button: ThemeComponent<'Button'> = cva(
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow]',
+    'inline-flex gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
+    'duration-150 active:scale-[0.98] pressed:scale-[0.98]',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     'focus-visible:util-focus-ring outline-none disabled:util-disabled',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
@@ -16,19 +17,46 @@ export const Button: ThemeComponent<'Button'> = cva(
         secondary:
           'border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
         ghost: 'hover:bg-hover hover:text-foreground',
+        link: 'text-link util-touch-hitbox',
       },
       size: {
-        default: 'h-button px-4 py-2 [&_svg]:size-4',
-        small: 'h-button-small px-3 text-xs [&_svg]:size-3.5',
-        large: 'h-button-large px-8 [&_svg]:size-5',
-        icon: 'size-button [&_svg]:size-4',
+        default: 'text-sm',
+        small: 'text-xs',
+        large: '',
+        icon: '',
       },
     },
     defaultVariants: {
       variant: 'secondary',
       size: 'default',
     },
+    compoundVariants: [
+      {
+        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        class: 'items-center justify-center',
+      },
+      {
+        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        size: 'default',
+        class: 'h-button px-4 py-2 [&_svg]:size-4',
+      },
+      {
+        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        size: 'small',
+        class: 'h-button-small px-3 [&_svg]:size-3.5',
+      },
+      {
+        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        size: 'large',
+        class: 'h-button-large px-8 [&_svg]:size-5',
+      },
+      {
+        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        size: 'icon',
+        class: 'size-button [&_svg]:size-4',
+      },
+    ],
   }
 );

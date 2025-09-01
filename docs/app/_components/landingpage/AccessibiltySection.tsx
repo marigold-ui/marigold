@@ -69,7 +69,7 @@ export const AccessibiltySection = () => {
             </Block>
             {isLargeScreeen ? (
               <Block name="loader" order={2}>
-                <XLoader size="small" />
+                <XLoader />
               </Block>
             ) : null}
             {isLargeScreeen ? (
