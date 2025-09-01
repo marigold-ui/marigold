@@ -28,7 +28,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'focus-visible:util-focus-ring outline-none',
     'cursor-pointer',
     'hover:bg-hover',
-    'aria-[current=true]:bg-brand aria-[current=true]:text-brand-foreground aria-[current=true]:shadow-xs aria-[current=true]:hover:bg-brand/90',
+    'aria-selected:bg-brand aria-selected:text-brand-foreground aria-selected:shadow-xs aria-selected:hover:bg-brand/90',
   ]),
   select: cva([
     '[&svg]:text-muted-foreground/80',

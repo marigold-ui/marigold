@@ -22,19 +22,6 @@ const keyCodes = {
 };
 
 describe('Calendar', () => {
-  beforeAll(() => {
-    vi.useRealTimers();
-    Object.defineProperty(window, 'matchMedia', {
-      value: vi.fn(() => {
-        return {
-          matches: true,
-          addListener: vi.fn(),
-          removeListener: vi.fn(),
-        };
-      }),
-    });
-  });
-
   const user = userEvent.setup();
 
   test('renders with default value', () => {

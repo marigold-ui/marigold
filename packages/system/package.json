@@ -46,7 +46,7 @@
     "react-dom": ">=17.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.0",
+    "@babel/core": "7.28.3",
     "@marigold/tsconfig": "workspace:*",
     "@types/react": "19.1.9",
     "postcss": "8.5.6",
