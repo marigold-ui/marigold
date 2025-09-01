@@ -1,5 +1,41 @@
 # @marigold/theme-rui
 
+## 2.0.0
+
+### Major Changes
+
+- cd21a2c: refa([DST-1007]): Rename "secondary" to "default" variant and fix appearance demo
+
+  **Breaking Change:** If you used `<Menu variant="secondary">` remove the variant prop.
+
+### Minor Changes
+
+- 2a64b4f: feat([DST-1008]): Introduce a "remove all" function for `<Tag.Group>`
+- 41da911: feat([DST-1005]): Add a "link" variant to `<Button>`
+
+### Patch Changes
+
+- 9881913: feat([DST-728]): Animate `<Button>` on press
+- bbed52e: fix: correct broken classnames in `<Pagination>` and `<Slider>`
+- Updated dependencies [6d8358c]
+- Updated dependencies [44ceb28]
+- Updated dependencies [2a64b4f]
+- Updated dependencies [7e33a7f]
+- Updated dependencies [82370d2]
+- Updated dependencies [80a4427]
+- Updated dependencies [801e968]
+- Updated dependencies [9bac182]
+- Updated dependencies [62ac4b8]
+- Updated dependencies [0585db1]
+- Updated dependencies [17318a8]
+- Updated dependencies [6d2d2d4]
+- Updated dependencies [5e06780]
+- Updated dependencies [41da911]
+- Updated dependencies [13d27bf]
+- Updated dependencies [1ab48da]
+  - @marigold/components@15.0.0
+  - @marigold/system@15.0.0
+
 ## 1.4.1
 
 ### Patch Changes

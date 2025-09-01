@@ -1,5 +1,143 @@
 # @marigold/docs
 
+## 15.0.0
+
+### Major Changes
+
+- 62ac4b8: refa([DST-919]): Remove `<Image>` component
+
+  ## Breaking Change
+
+  The `<Image>` component has been removed from Marigold.
+  Please replace it with the native `<img>` element.
+
+  If you previously used the `fit` or `position` props, you can replicate the same behavior using the corresponding Tailwind CSS utility classes.
+
+  ### Replacement table
+
+  | Prop type    | Prop value    | Tailwind class        |
+  | ------------ | ------------- | --------------------- |
+  | **fit**      | `contain`     | `object-contain`      |
+  |              | `cover`       | `object-cover`        |
+  |              | `fill`        | `object-fill`         |
+  |              | `none`        | `unset`               |
+  |              | `scaleDown`   | `object-scale-down`   |
+  | **position** | `none`        | — (no class)          |
+  |              | `bottom`      | `object-bottom`       |
+  |              | `center`      | `object-center`       |
+  |              | `left`        | `object-left`         |
+  |              | `leftBottom`  | `object-left-bottom`  |
+  |              | `leftTop`     | `object-left-top`     |
+  |              | `right`       | `object-right`        |
+  |              | `rightBottom` | `object-right-bottom` |
+  |              | `rightTop`    | `object-right-top`    |
+  |              | `top`         | `object-top`          |
+
+- cd21a2c: refa([DST-1007]): Rename "secondary" to "default" variant and fix appearance demo
+
+  **Breaking Change:** If you used `<Menu variant="secondary">` remove the variant prop.
+
+- 0585db1: refa([DST-1010]): Separate `aria-label` and `name` for slider's thumbs
+
+  **Breaking Change:** The aria-label (`thumbLabels`) and `name` attributes for slider thumbs are now separate. Update implementations to set both explicitly if needed.
+
+### Minor Changes
+
+- 6d8358c: feat([DST-1003]): Improve type safety for component variants.
+- 2a64b4f: feat([DST-1008]): Introduce a "remove all" function for `<Tag.Group>`
+- 82370d2: feat([DST-1004]): Format ranges with `DateFormat`
+- bccd9d5: docs([DST-980]): Filter pattern (alpha)
+- 13d27bf: feat([DST-1006]): Introduce a collapsible section for long checkbox groups and radios
+
+### Patch Changes
+
+- 44ceb28: bugfix([DST-935]): Controlled `<Dialog>` now working correctly when dismissable is set to `true`
+- 7e33a7f: docs: Add alpha to for top navigation (previously a recipe)
+- 47a05e9: docs([DST-938]): Update `DateField` docs to show how to display time and timezone
+- 80a4427: fix: remove deprecated components from theme type
+- 45ad86f: docs(Textarea): Revise `<TextArea>` docs
+- 45ad86f: docs: Revise `<TextArea>` docs
+- de7e592: docs([DST-943]): Remove "recipes" section
+- 17318a8: fix([DSTSUP-172]): Fix alignment of buttons and inputs in `<Inline>` component.
+- 6d2d2d4: refa([DST-916]): Remove `<Header>` component and replace with native `<header>`
+
+  ## Breaking Change: `<Header>` component removed
+
+  The `<Header>` component has been removed from Marigold.
+  Please replace it with the native HTML `<header>` element.
+
+  Example migration:
+
+  **Before**
+
+  ```tsx
+  <Header>
+    <h1>Page title</h1>
+  </Header>
+  ```
+
+  **After**
+
+  ```tsx
+  <header>
+    <h1>Page title</h1>
+  </header>
+  ```
+
+- 5e06780: docs([DST-902]): Define asyncronous data loading patterns for components like `<Combobox>` and `<Autocomplete>`.
+
+  Both `<Combobox>` and `<Autocomplete>` now accept a new prop called `emptyState` that allows you to provide custom content to display when there are no items in the list, such as a message
+
+- 8c9e75e: docs: Normalize headlines to sentence case
+- 700ba1b: docs([DST-1002]): Remove banner about core-theme in `Button` docs
+- 1ab48da: refa([DST-915]): Remove `Footer` component
+
+  ## Breaking Change: `<Footer>` component removed
+
+  The `<Footer>` component has been removed from Marigold.
+  Please replace it with the native HTML `<footer>` element.
+
+  **Before**
+
+  ```tsx
+  <Footer>
+    <p>© 2025 Company Name</p>
+  </Footer>
+  ```
+
+  After
+
+  ```tsx
+  <footer>
+    <p>© 2025 Company Name</p>
+  </footer>
+  ```
+
+- Updated dependencies [6d8358c]
+- Updated dependencies [44ceb28]
+- Updated dependencies [9881913]
+- Updated dependencies [2a64b4f]
+- Updated dependencies [7e33a7f]
+- Updated dependencies [82370d2]
+- Updated dependencies [80a4427]
+- Updated dependencies [801e968]
+- Updated dependencies [9bac182]
+- Updated dependencies [62ac4b8]
+- Updated dependencies [cd21a2c]
+- Updated dependencies [0585db1]
+- Updated dependencies [17318a8]
+- Updated dependencies [6d2d2d4]
+- Updated dependencies [bbed52e]
+- Updated dependencies [5e06780]
+- Updated dependencies [41da911]
+- Updated dependencies [13d27bf]
+- Updated dependencies [1ab48da]
+  - @marigold/components@15.0.0
+  - @marigold/theme-rui@2.0.0
+  - @marigold/system@15.0.0
+  - @marigold/theme-docs@3.1.4
+  - @marigold/icons@1.3.18
+
 ## 14.1.1
 
 ### Patch Changes
