@@ -17,7 +17,7 @@ import { DrawerTrigger } from './DrawerTrigger';
 // ---------------
 export interface DrawerProps
   extends Omit<DialogProps, 'className' | 'style' | 'isOpen' | 'role'> {
-  size?: string;
+  size?: 'default' | 'xsmall' | 'small' | 'medium' | (string & {});
 
   /**
    * Whether the overlay is open by default (controlled).
