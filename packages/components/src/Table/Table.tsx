@@ -193,7 +193,7 @@ Table.Header = Header;
 Table.Row = Row;
 
 export interface RowProps extends ReactAriaRowProps<any> {
-  variant?: 'default' | 'grid' | 'admin' | 'master';
+  variant?: 'default' | 'grid' | 'admin' | 'master' | 'muted' | (string & {});
   size?: string;
 }
 
