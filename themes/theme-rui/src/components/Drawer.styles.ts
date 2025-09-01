@@ -17,10 +17,6 @@ export const Drawer: ThemeComponent<'Drawer'> = {
         small: 'w-72',
         medium: 'w-96',
       },
-      defaultVariants: {
-        variant: 'right',
-        size: 'default',
-      },
     },
     compoundVariants: [
       {

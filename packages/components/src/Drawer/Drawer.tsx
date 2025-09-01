@@ -59,7 +59,7 @@ export interface DrawerProps
 // ---------------
 export const Drawer = ({
   children,
-  size,
+  size = 'default',
   open,
   keyboardDismissable,
   closeButton,

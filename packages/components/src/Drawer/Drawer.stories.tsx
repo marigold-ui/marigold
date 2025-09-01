@@ -92,6 +92,35 @@ export const Basic: Story = {
   ),
 };
 
+export const LeftPlacement: Story = {
+  args: {
+    placement: 'left',
+  },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Left Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Title>Left Drawer</Drawer.Title>
+        <Drawer.Content>
+          <Stack space={8}>
+            <p>This drawer slides in from the left side of the screen.</p>
+            <p>
+              It's perfect for navigation menus or additional controls that
+              should be easily accessible.
+            </p>
+          </Stack>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close</Button>
+          <Button slot="close" variant="primary">
+            Confirm
+          </Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+};
+
 export const WithForms: Story = {
   render: args => (
     <Drawer.Trigger>
