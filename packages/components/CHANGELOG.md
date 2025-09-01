@@ -1,5 +1,114 @@
 # @marigold/components
 
+## 15.0.0
+
+### Major Changes
+
+- 9bac182: refa([DST-904]): **Breaking Changes**: Rename `noOptionsMessage` property to `emptyState` in `<Multiselect>` component.
+- 62ac4b8: refa([DST-919]): Remove `<Image>` component
+
+  ## Breaking Change
+
+  The `<Image>` component has been removed from Marigold.
+  Please replace it with the native `<img>` element.
+
+  If you previously used the `fit` or `position` props, you can replicate the same behavior using the corresponding Tailwind CSS utility classes.
+
+  ### Replacement table
+
+  | Prop type    | Prop value    | Tailwind class        |
+  | ------------ | ------------- | --------------------- |
+  | **fit**      | `contain`     | `object-contain`      |
+  |              | `cover`       | `object-cover`        |
+  |              | `fill`        | `object-fill`         |
+  |              | `none`        | `unset`               |
+  |              | `scaleDown`   | `object-scale-down`   |
+  | **position** | `none`        | — (no class)          |
+  |              | `bottom`      | `object-bottom`       |
+  |              | `center`      | `object-center`       |
+  |              | `left`        | `object-left`         |
+  |              | `leftBottom`  | `object-left-bottom`  |
+  |              | `leftTop`     | `object-left-top`     |
+  |              | `right`       | `object-right`        |
+  |              | `rightBottom` | `object-right-bottom` |
+  |              | `rightTop`    | `object-right-top`    |
+  |              | `top`         | `object-top`          |
+
+- 0585db1: refa([DST-1010]): Separate `aria-label` and `name` for slider's thumbs
+
+  **Breaking Change:** The aria-label (`thumbLabels`) and `name` attributes for slider thumbs are now separate. Update implementations to set both explicitly if needed.
+
+### Minor Changes
+
+- 6d8358c: feat([DST-1003]): Improve type safety for component variants.
+- 2a64b4f: feat([DST-1008]): Introduce a "remove all" function for `<Tag.Group>`
+- 41da911: feat([DST-1005]): Add a "link" variant to `<Button>`
+- 13d27bf: feat([DST-1006]): Introduce a collapsible section for long checkbox groups and radios
+
+### Patch Changes
+
+- 44ceb28: bugfix([DST-935]): Controlled `<Dialog>` now working correctly when dismissable is set to `true`
+- 7e33a7f: docs: Add alpha to for top navigation (previously a recipe)
+- 801e968: fix([DSTSUP-176]): Calendar - Hide, disable, limit the MonthListBox and YearListBox depening on minValue and maxValue
+- 17318a8: fix([DSTSUP-172]): Fix alignment of buttons and inputs in `<Inline>` component.
+- 6d2d2d4: refa([DST-916]): Remove `<Header>` component and replace with native `<header>`
+
+  ## Breaking Change: `<Header>` component removed
+
+  The `<Header>` component has been removed from Marigold.
+  Please replace it with the native HTML `<header>` element.
+
+  Example migration:
+
+  **Before**
+
+  ```tsx
+  <Header>
+    <h1>Page title</h1>
+  </Header>
+  ```
+
+  **After**
+
+  ```tsx
+  <header>
+    <h1>Page title</h1>
+  </header>
+  ```
+
+- 5e06780: docs([DST-902]): Define asyncronous data loading patterns for components like `<Combobox>` and `<Autocomplete>`.
+
+  Both `<Combobox>` and `<Autocomplete>` now accept a new prop called `emptyState` that allows you to provide custom content to display when there are no items in the list, such as a message
+
+- 1ab48da: refa([DST-915]): Remove `Footer` component
+
+  ## Breaking Change: `<Footer>` component removed
+
+  The `<Footer>` component has been removed from Marigold.
+  Please replace it with the native HTML `<footer>` element.
+
+  **Before**
+
+  ```tsx
+  <Footer>
+    <p>© 2025 Company Name</p>
+  </Footer>
+  ```
+
+  After
+
+  ```tsx
+  <footer>
+    <p>© 2025 Company Name</p>
+  </footer>
+  ```
+
+- Updated dependencies [2a64b4f]
+- Updated dependencies [82370d2]
+- Updated dependencies [80a4427]
+- Updated dependencies [62ac4b8]
+  - @marigold/system@15.0.0
+
 ## 14.1.1
 
 ### Patch Changes
