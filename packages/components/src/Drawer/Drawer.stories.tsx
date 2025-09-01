@@ -11,7 +11,22 @@ import { Drawer, DrawerProps } from './Drawer';
 const meta = {
   title: 'Components/Drawer',
   component: Drawer,
-  argTypes: {},
+  argTypes: {
+    placement: {
+      control: {
+        type: 'radio',
+      },
+      description: 'The placement of the drawer on the screen.',
+      options: ['right', 'left', 'top', 'bottom'],
+    },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      description: 'The size of the drawer on the screen.',
+      options: ['default', 'xsmall', 'small', 'medium'],
+    },
+  },
   args: {},
 } satisfies Meta<DrawerProps>;
 

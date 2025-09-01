@@ -17,7 +17,6 @@ import { DrawerTrigger } from './DrawerTrigger';
 // ---------------
 export interface DrawerProps
   extends Omit<DialogProps, 'className' | 'style' | 'isOpen' | 'role'> {
-  variant?: string;
   size?: string;
 
   /**
@@ -30,6 +29,13 @@ export interface DrawerProps
    * Whether pressing the escape key closes the modal.
    * @default true
    */
+
+  /**
+   * The placement of the drawer on the screen.
+   * @default right
+   */
+  placement?: 'top' | 'bottom' | 'left' | 'right';
+
   keyboardDismissable?: boolean;
 
   /**
@@ -53,16 +59,20 @@ export interface DrawerProps
 // ---------------
 export const Drawer = ({
   children,
-  variant,
   size,
   open,
   keyboardDismissable,
   closeButton,
   role = 'complementary',
+  placement = 'right',
   ...props
 }: DrawerProps) => {
   const ref = useRef<HTMLElement | null>(null);
-  const classNames = useClassNames({ component: 'Drawer', variant, size });
+  const classNames = useClassNames({
+    component: 'Drawer',
+    variant: placement,
+    size,
+  });
 
   const ctx = useContext(OverlayTriggerStateContext);
 
@@ -80,7 +90,7 @@ export const Drawer = ({
       open={open}
       keyboardDismissable={keyboardDismissable}
     >
-      <DrawerContext.Provider value={{ variant, size }}>
+      <DrawerContext.Provider value={{ variant: placement, size }}>
         <Dialog
           {...props}
           // Override RAC here so we can set an appropriate role
