@@ -5,6 +5,7 @@ import { Checkbox } from '../Checkbox';
 import { Select } from '../Select';
 import { Slider } from '../Slider';
 import { Stack } from '../Stack';
+import { Text } from '../Text';
 import { TextField } from '../TextField';
 import { Drawer, DrawerProps } from './Drawer';
 
@@ -103,11 +104,11 @@ export const LeftPlacement: Story = {
         <Drawer.Title>Left Drawer</Drawer.Title>
         <Drawer.Content>
           <Stack space={8}>
-            <p>This drawer slides in from the left side of the screen.</p>
-            <p>
+            <Text>This drawer slides in from the left side of the screen.</Text>
+            <Text>
               It's perfect for navigation menus or additional controls that
               should be easily accessible.
-            </p>
+            </Text>
           </Stack>
         </Drawer.Content>
         <Drawer.Actions>
