@@ -89,6 +89,7 @@ export const Drawer = ({
       className={classNames.overlay}
       open={open}
       keyboardDismissable={keyboardDismissable}
+      data-testid="drawer-modal"
     >
       <DrawerContext.Provider value={{ variant: placement, size }}>
         <Dialog
