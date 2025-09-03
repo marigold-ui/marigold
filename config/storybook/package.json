@@ -26,7 +26,7 @@
     "@storybook/source-loader": "^8.6.12",
     "@storybook/test": "8.6.14",
     "@tailwindcss/vite": "4.1.11",
-    "@types/react": "19.1.9",
+    "@types/react": "19.1.12",
     "@vitejs/plugin-react": "4.7.0",
     "axe-playwright": "2.1.0",
     "tailwindcss": "4.1.11",
@@ -38,7 +38,7 @@
     "@storybook/cli": "^9.1.1",
     "@storybook/react-vite": "^9.1.1",
     "@storybook/test-runner": "0.23.0",
-    "@types/node": "24.2.0",
+    "@types/node": "24.3.0",
     "eslint-plugin-storybook": "9.1.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
@@ -51,7 +51,7 @@
     "@storybook/react": "^9.0.15",
     "react": "19.x",
     "react-dom": "19.x",
-    "typescript": "5.3.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x"
+    "typescript": "5.3.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x || 5.9.x"
   },
   "scripts": {
     "start": "storybook dev -p 6006 -c .storybook/",
