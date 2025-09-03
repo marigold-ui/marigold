@@ -52,8 +52,23 @@ export interface TextProps
    *  A slot name for the component. Slots allow the component to receive props from a parent component.
    */
   slot?: string;
-  variant?: string;
-  size?: string;
+  variant?: 'default' | 'muted' | (string & {});
+  size?:
+    | 'default'
+    | 'xs'
+    | 'sm'
+    | 'base'
+    | 'lg'
+    | 'xl'
+    | '2xl'
+    | '3xl'
+    | '4xl'
+    | '5xl'
+    | '6xl'
+    | '7xl'
+    | '8xl'
+    | '9xl'
+    | (string & {});
 }
 
 // Component

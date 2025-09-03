@@ -26,7 +26,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Storybook tests
-        run: pnpm test:storybook
+        run: pnpm test:sb
         env:
           TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
       - name: Upload Accessibility Report

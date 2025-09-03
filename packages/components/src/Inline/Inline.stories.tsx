@@ -77,7 +77,7 @@ export const Basic: Story = {
 export const InputButtonAlignment: Story = {
   tags: ['component-test'],
   args: {
-    alignY: 'center',
+    alignY: 'input',
     space: 6,
   },
   render: args => {

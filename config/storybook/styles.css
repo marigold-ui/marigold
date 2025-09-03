@@ -1,5 +1,13 @@
 @import 'tailwindcss';
-@import './node_modules/@marigold/theme-rui/dist/styles.css';
+@import '@marigold/theme-rui/theme.css';
+@import './node_modules/@marigold/theme-rui/dist/global.css';
 
+@source './node_modules/@marigold';
 @source './.storybook/preview.tsx';
 @source '../../packages/{components,system}/**/*.stories.{tsx,ts}';
+
+/* marigold components */
+@source './../../packages/{components,system}/**/*.{tsx,ts}';
+@source './../../themes/theme-rui/src/components/*.styles.ts';
+@source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
+@source '!../../packages/{components,system}/**/*.{test}.{tsx,ts}';

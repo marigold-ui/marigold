@@ -11,7 +11,7 @@ export interface TooltipProps extends Omit<RAC.TooltipProps, RemovedProps> {
    * The children of the component.
    */
   children?: ReactNode;
-  variant?: string;
+  variant?: 'default' | 'white' | (string & {});
   size?: string;
   /**
    * Whether the element is rendered.

@@ -72,11 +72,11 @@ test('renders div per default', () => {
   expect(inline instanceof HTMLDivElement).toBeTruthy();
 });
 
-test('adjusts vertical alignment when input fields display helper text or error message', () => {
+test('adjusts the button to be aligned with input baseline', () => {
   render(<InputButtonAlignment />);
 
   const inline = screen.getByTestId('inline');
   expect(inline.className).toMatchInlineSnapshot(
-    `"flex flex-wrap gap-6 items-end [&:has([slot=description])]:items-center [&:has([slot=errorMessage])]:items-center"`
+    `"flex flex-wrap gap-6 items-end [&:has([slot=description])]:items-end [&:has([slot=description])_button]:mb-6 [&:has([slot=errorMessage])]:mb-6"`
   );
 });

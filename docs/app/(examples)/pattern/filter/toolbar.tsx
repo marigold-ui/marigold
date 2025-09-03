@@ -83,7 +83,8 @@ const FilterForm = ({ state }: FilterFormProps) => (
     />
     <Slider
       label="Max. Price"
-      thumbLabels={['price']}
+      thumbLabels="price"
+      name="price"
       defaultValue={state.price}
       step={100}
       maxValue={defaultFilter.price}

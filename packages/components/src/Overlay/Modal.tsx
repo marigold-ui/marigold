@@ -21,26 +21,32 @@ const _Modal = forwardRef<
     ModalProps,
     'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
   >
->(({ size, open, dismissable, keyboardDismissable, ...rest }, ref) => {
-  const props: RAC.ModalOverlayProps = {
-    isOpen: open,
-    isDismissable: dismissable,
-    isKeyboardDismissDisabled: keyboardDismissable,
-    ...rest,
-  };
-  const className = useClassNames({ component: 'Modal', size });
+>(
+  (
+    { size, open, dismissable, keyboardDismissable, onOpenChange, ...rest },
+    ref
+  ) => {
+    const props: RAC.ModalOverlayProps = {
+      isOpen: open,
+      isDismissable: dismissable,
+      isKeyboardDismissDisabled: keyboardDismissable,
+      ...rest,
+    };
+    const className = useClassNames({ component: 'Modal', size });
 
-  return (
-    <Underlay
-      dismissable={dismissable}
-      keyboardDismissable={keyboardDismissable}
-      open={open}
-    >
-      <Modal {...props} className={className} ref={ref}>
-        {props.children}
-      </Modal>
-    </Underlay>
-  );
-});
+    return (
+      <Underlay
+        dismissable={dismissable}
+        keyboardDismissable={keyboardDismissable}
+        open={open}
+        onOpenChange={onOpenChange}
+      >
+        <Modal {...props} className={className} ref={ref}>
+          {props.children}
+        </Modal>
+      </Underlay>
+    );
+  }
+);
 
 export { _Modal as Modal };

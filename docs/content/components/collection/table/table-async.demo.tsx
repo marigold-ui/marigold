@@ -40,7 +40,6 @@ export default () => {
       sortDescriptor={list.sortDescriptor}
       onSortChange={list.sort}
       stretch
-      variant="linedTable"
     >
       <Table.Header>
         <Table.Column key="name" allowsSorting width="2/5">

@@ -19,7 +19,11 @@
         "code",
         "design",
         "doc",
-        "review"
+        "review",
+        "example",
+        "infra",
+        "maintenance",
+        "test"
       ]
     },
     {
@@ -31,7 +35,10 @@
         "code",
         "design",
         "doc",
-        "review"
+        "review",
+        "example",
+        "maintenance",
+        "test"
       ]
     },
     {
@@ -165,7 +172,10 @@
         "code",
         "design",
         "example",
-        "test"
+        "test",
+        "infra",
+        "maintenance",
+        "review"
       ]
     },
     {
@@ -175,6 +185,33 @@
       "profile": "https://github.com/pauleitenbichler",
       "contributions": [
         "code"
+      ]
+    },
+    {
+      "login": "sinan-rsvx",
+      "name": "Sinan Akdesir",
+      "avatar_url": "https://avatars.githubusercontent.com/u/159138340?v=4",
+      "profile": "https://github.com/sinan-rsvx",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "design",
+        "maintenance",
+        "test"
+      ]
+    },
+    {
+      "login": "jim761",
+      "name": "Jim Wiedemann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/146172605?v=4",
+      "profile": "https://github.com/jim761",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "example",
+        "test"
       ]
     }
   ],
