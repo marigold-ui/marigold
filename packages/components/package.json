@@ -55,8 +55,8 @@
     "@react-stately/tree": "3.9.2",
     "@react-types/shared": "3.32.0",
     "@react-types/table": "3.13.3",
-    "react-aria-components": "1.11.0",
-    "react-stately": "3.40.0"
+    "react-aria-components": "1.12.1",
+    "react-stately": "3.41.0"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
