@@ -43,7 +43,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   }),
   container: cva([
     'w-full relative grid-rows-[auto_1fr_auto]',
-    'util-surface-overlay border-y-0! border-r-0!',
+    'util-surface-overlay',
   ]),
   closeButton: cva(['absolute top-3.5 right-3 z-50', 'size-7']),
   header: cva('border-border border-b px-6 py-4'),
