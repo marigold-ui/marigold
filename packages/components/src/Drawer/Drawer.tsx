@@ -93,7 +93,7 @@ export const Drawer = ({
       data-testid="drawer-modal"
       data-placement={placement}
     >
-      <DrawerContext.Provider value={{ variant: placement, size }}>
+      <DrawerContext.Provider value={{ variant, size }}>
         <Dialog
           {...props}
           // Override RAC here so we can set an appropriate role
