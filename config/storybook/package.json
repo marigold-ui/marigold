@@ -29,7 +29,7 @@
     "@types/react": "19.1.12",
     "@vitejs/plugin-react": "4.7.0",
     "axe-playwright": "2.1.0",
-    "tailwindcss": "4.1.11",
+    "tailwindcss": "4.1.12",
     "vite-tsconfig-paths": "5.1.4"
   },
   "devDependencies": {
