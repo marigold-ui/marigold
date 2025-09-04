@@ -90,6 +90,7 @@ export const Drawer = ({
       open={open}
       keyboardDismissable={keyboardDismissable}
       data-testid="drawer-modal"
+      data-placement={placement}
     >
       <DrawerContext.Provider value={{ variant: placement, size }}>
         <Dialog
@@ -101,6 +102,7 @@ export const Drawer = ({
             'grid [grid-template-areas:"title"_"content"_"actions"]',
             classNames.container
           )}
+          data-placement={placement}
         >
           {closeButton && (
             <CloseButton

@@ -1,50 +1,27 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Drawer: ThemeComponent<'Drawer'> = {
-  overlay: cva(['group/overlay'], {
-    variants: {
-      variant: {
-        right:
-          'entering:animate-slide-in-right exiting:animate-slide-out-right top-0 right-0',
-        left: 'entering:animate-slide-in-left exiting:animate-slide-out-left top-0 left-0',
-        top: '[&>:first-child]:h-full entering:animate-slide-in-top exiting:animate-slide-out-top top-0 left-0',
-        bottom:
-          '[&>:first-child]:h-full entering:animate-slide-in-bottom exiting:animate-slide-out-bottom bottom-0 left-0',
-      },
-      size: {
-        default: 'w-80',
-        xsmall: 'w-64',
-        small: 'w-72',
-        medium: 'w-96',
-      },
-    },
-    compoundVariants: [
-      {
-        variant: ['top', 'bottom'],
-        size: ['default', 'xsmall', 'small', 'medium'],
-        class: 'w-full',
-      },
-      {
-        variant: ['top', 'bottom'],
-        size: 'xsmall',
-        class: 'h-48',
-      },
-      {
-        variant: ['top', 'bottom'],
-        size: 'small',
-        class: 'h-64',
-      },
-      {
-        variant: ['top', 'bottom'],
-        size: 'medium',
-        class: 'h-80',
-      },
-    ],
-  }),
-  container: cva([
-    'w-full relative grid-rows-[auto_1fr_auto]',
-    'util-surface-overlay',
+  overlay: cva([
+    'group/overlay',
+    'data-[placement=top]:entering:animate-slide-in-top data-[placement=top]:exiting:animate-slide-out-top data-[placement=top]:top-0 data-[placement=top]:left-0',
+    'data-[placement=left]:entering:animate-slide-in-left data-[placement=left]:exiting:animate-slide-out-left data-[placement=left]:top-0 data-[placement=left]:left-0',
   ]),
+  container: cva(
+    [
+      'w-full relative grid-rows-[auto_1fr_auto]',
+      'util-surface-overlay border-y-0! border-r-0!',
+      'data-[placement=top]:w-full data-[placement=bottom]:w-full',
+    ],
+    {
+      variants: {
+        size: {
+          xsmall: 'w-64 data-[placement=top]:h-48 data-[placement=bottom]:h-48',
+          small: 'w-72 data-[placement=top]:h-64 data-[placement=bottom]:h-64',
+          medium: 'w-96 data-[placement=top]:h-80 data-[placement=bottom]:h-80',
+        },
+      },
+    }
+  ),
   closeButton: cva(['absolute top-3.5 right-3 z-50', 'size-7']),
   header: cva('border-border border-b px-6 py-4'),
   title: cva('font-semibold text-base'),
