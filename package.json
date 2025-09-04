@@ -30,7 +30,7 @@
     "@vitest/ui": "3.2.4",
     "all-contributors-cli": "6.26.1",
     "autoprefixer": "10.4.21",
-    "concurrently": "9.2.0",
+    "concurrently": "9.2.1",
     "eslint": "9.32.0",
     "husky": "9.1.7",
     "next": "15.4.7",
@@ -48,7 +48,7 @@
     "typescript": "5.9.2",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.4",
-    "zx": "8.7.2"
+    "zx": "8.8.1"
   },
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",
