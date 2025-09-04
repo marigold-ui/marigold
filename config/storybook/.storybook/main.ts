@@ -1,8 +1,8 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { dirname, join } from 'path';
+import path from 'path';
 import { mergeConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
-import path from 'node:path';
 
 const projectRoot = path.resolve(__dirname, '../../../');
 
@@ -12,6 +12,23 @@ const config: StorybookConfig = {
     path.resolve(projectRoot, 'packages/system/src/**/*.stories.tsx'),
   ],
   addons: [
+    {
+      name: '@storybook/addon-coverage',
+      options: {
+        istanbul: {
+          cwd: projectRoot,
+          include: ['packages/components/src/**', 'packages/system/src/**'],
+          exclude: [
+            '**/*.stories.*',
+            '**/*.test.*',
+            '**/node_modules/**',
+            '**/.storybook/**',
+            '**/coverage/**',
+            '**/dist/**',
+          ],
+        },
+      },
+    },
     getAbsolutePath('@storybook/addon-themes'),
     getAbsolutePath('@storybook/addon-a11y'),
     getAbsolutePath('@storybook/addon-docs'),
