@@ -33,12 +33,6 @@ const config: StorybookConfig = {
           root: projectRoot,
         }),
       ],
-      use: [
-        {
-          loader: require.resolve('@storybook/source-loader'),
-          options: {} /* your sourceLoaderOptions here */,
-        },
-      ],
     });
   },
   staticDirs: ['./assets'],
