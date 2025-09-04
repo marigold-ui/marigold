@@ -33,7 +33,7 @@ export interface CardProps
     PaddingTopProp {
   children?: ReactNode;
   variant?: string;
-  size?: string;
+  size?: 'default' | 'full' | (string & {});
 
   /**
    * Padding of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
