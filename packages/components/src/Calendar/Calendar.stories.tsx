@@ -1,9 +1,9 @@
 import { CalendarDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
 import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { Calendar } from './Calendar';
 
 const meta = {
