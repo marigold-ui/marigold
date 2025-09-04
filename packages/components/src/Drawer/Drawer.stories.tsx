@@ -25,7 +25,7 @@ const meta = {
         type: 'radio',
       },
       description: 'The size of the drawer on the screen.',
-      options: ['default', 'xsmall', 'small', 'medium'],
+      options: ['xsmall', 'small', 'medium'],
     },
   },
   args: {},

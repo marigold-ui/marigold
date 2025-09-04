@@ -17,8 +17,8 @@ import { DrawerTrigger } from './DrawerTrigger';
 // ---------------
 export interface DrawerProps
   extends Omit<DialogProps, 'className' | 'style' | 'isOpen' | 'role'> {
-  size?: 'default' | 'xsmall' | 'small' | 'medium' | (string & {});
-
+  size?: 'xsmall' | 'small' | 'medium' | (string & {});
+  variant?: string;
   /**
    * Whether the overlay is open by default (controlled).
    * @default undefined
@@ -59,7 +59,8 @@ export interface DrawerProps
 // ---------------
 export const Drawer = ({
   children,
-  size = 'default',
+  size = 'medium',
+  variant,
   open,
   keyboardDismissable,
   closeButton,
@@ -70,7 +71,7 @@ export const Drawer = ({
   const ref = useRef<HTMLElement | null>(null);
   const classNames = useClassNames({
     component: 'Drawer',
-    variant: placement,
+    variant,
     size,
   });
 
