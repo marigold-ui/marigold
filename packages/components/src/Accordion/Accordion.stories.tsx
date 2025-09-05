@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
 import { Badge } from '../Badge';
 import { Button } from '../Button/Button';
@@ -76,6 +77,24 @@ export const Basic: Story = {
       </Accordion.Item>
     </Accordion>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const user = userEvent.setup();
+
+    const item = canvas.getByText('Informations');
+    const itemtwo = canvas.getByText('Personal Settings');
+
+    await user.click(item);
+    await user.click(itemtwo);
+
+    expect(canvas.getByText('Here are some infos')).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+    expect(
+      canvas.getByText('Some longer Text to see if it looks good')
+    ).toHaveAttribute('aria-hidden', 'false');
+  },
 };
 
 let items = [
