@@ -3,15 +3,15 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Drawer: ThemeComponent<'Drawer'> = {
   overlay: cva([
     'group/overlay',
-    'data-[placement=top]:entering:animate-slide-in-top data-[placement=top]:exiting:animate-slide-out-top data-[placement=top]:top-0 data-[placement=top]:left-0',
-    'data-[placement=bottom]:entering:animate-slide-in-bottom data-[placement=bottom]:exiting:animate-slide-out-bottom data-[placement=bottom]:bottom-0 data-[placement=bottom]:left-0',
+    'data-[placement=top]:w-full data-[placement=top]:entering:animate-slide-in-top data-[placement=top]:exiting:animate-slide-out-top data-[placement=top]:top-0 data-[placement=top]:left-0',
+    'data-[placement=bottom]:w-full data-[placement=bottom]:entering:animate-slide-in-bottom data-[placement=bottom]:exiting:animate-slide-out-bottom data-[placement=bottom]:bottom-0 data-[placement=bottom]:left-0',
     'data-[placement=left]:entering:animate-slide-in-left data-[placement=left]:exiting:animate-slide-out-left data-[placement=left]:top-0 data-[placement=left]:left-0',
     'data-[placement=right]:entering:animate-slide-in-right data-[placement=right]:exiting:animate-slide-out-right data-[placement=right]:top-0 data-[placement=right]:right-0',
   ]),
   container: cva(
     [
       'w-full relative grid-rows-[auto_1fr_auto]',
-      'util-surface-overlay border-y-0! border-r-0!',
+      'util-surface-overlay',
       'data-[placement=top]:w-full data-[placement=bottom]:w-full',
     ],
     {
