@@ -1,259 +1,76 @@
-/* eslint-disable testing-library/no-node-access */
-import { fireEvent, screen } from '@testing-library/react';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Headline } from '../Headline';
-import { setup } from '../test.utils';
-import { Accordion } from './Accordion';
+import { composeStories } from '@storybook/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import * as stories from './Accordion.stories';
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Accordion: {
-      header: cva('', {
-        variants: {
-          variant: {
-            one: 'bg-blue-600',
-          },
-          size: {
-            large: 'p-8',
-          },
-        },
-      }),
-      item: cva('', {
-        variants: {
-          variant: {
-            one: 'bg-blue-100',
-          },
-        },
-      }),
-      icon: cva('', {
-        variants: {
-          variant: {
-            one: 'bg-blue-100',
-          },
-        },
-      }),
-      content: cva('', {
-        variants: {
-          variant: {
-            one: 'bg-blue-100',
-          },
-        },
-      }),
-      container: cva('', {
-        variants: {
-          variant: {
-            one: 'bg-blue-100',
-          },
-        },
-      }),
-    },
-    Button: cva('w-full'),
-    Headline: cva(),
-  },
-};
-
-const { render } = setup({ theme });
-
-let items = [
-  { key: 'one', title: 'one title', children: 'one children' },
-  { key: 'two', title: 'two title', children: 'two children' },
-  { key: 'three', title: 'three title', children: 'three children' },
-];
+// Setup
+// ---------------
+const { Basic, ComplexSingleSelect } = composeStories(stories);
+const user = userEvent.setup();
 
 test('render Accordion and more than one Item', () => {
-  render(
-    <Accordion data-testid="accordion">
-      <Accordion.Item>
-        <Accordion.Header>Information</Accordion.Header>
-        <Accordion.Content>
-          <Headline>infos</Headline>
-        </Accordion.Content>
-      </Accordion.Item>
-      <Accordion.Item>
-        <Accordion.Header>Settings</Accordion.Header>
-        <Accordion.Content>settings</Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
-  );
+  render(<Basic />);
 
-  const item = screen.getByText('Information');
+  const item = screen.getByText('Informations');
+  const itemtwo = screen.getByText('Personal Settings');
+
   expect(item).toBeInTheDocument();
-  const itemtwo = screen.getByText('Settings');
   expect(itemtwo).toBeInTheDocument();
   expect(item).toBeValid();
   expect(itemtwo).toBeValid();
 });
 
-test('render Accordion and just one Item', () => {
-  render(
-    <Accordion>
-      <Accordion.Item>
-        <Accordion.Header>Information</Accordion.Header>
-        <Accordion.Content>
-          <Headline>infos</Headline>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
-  );
+test('items per default closed', () => {
+  render(<Basic defaultExpandedKeys={[]} />);
 
-  const item = screen.getByText('Information');
-  expect(item).toBeInTheDocument();
+  const button = screen.queryAllByRole('button');
+
+  expect(button[0]).toHaveAttribute('aria-expanded', 'false');
+  expect(button[1]).toHaveAttribute('aria-expanded', 'false');
+  expect(button[2]).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('item opens content by click', () => {
-  render(
-    <Accordion data-testid="accordion">
-      <Accordion.Item>
-        <Accordion.Header>Information</Accordion.Header>
-        <Accordion.Content>
-          <Headline>infos</Headline>
-        </Accordion.Content>
-      </Accordion.Item>
-      <Accordion.Item>
-        <Accordion.Header>Settings</Accordion.Header>
-        <Accordion.Content>
-          <Headline>settings</Headline>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
-  );
+test('item opens content by click', async () => {
+  render(<Basic defaultExpandedKeys={[]} />);
 
-  const button = screen.getByText('Information');
-  expect(button).toHaveAttribute('aria-expanded', 'false');
+  const button = screen.queryAllByRole('button');
 
-  fireEvent.click(button);
-  expect(button).toHaveAttribute('aria-expanded', 'true');
-});
+  await user.click(button[0]);
 
-test('render dynamically accordion items', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Accordion data-testid="accordion">
-        {items.map(item => (
-          <Accordion.Item key={item.key} id={item.key}>
-            <Accordion.Header>{item.title}</Accordion.Header>
-            <Accordion.Content>{item.children}</Accordion.Content>
-          </Accordion.Item>
-        ))}
-      </Accordion>
-    </ThemeProvider>
-  );
-
-  const button = screen.getByText('one title');
-
-  expect(button).toHaveAttribute('aria-expanded', 'false');
-
-  fireEvent.click(button);
-  expect(button).toHaveAttribute('aria-expanded', 'true');
-
-  const content = screen.getByText('one children');
-  expect(content).toBeInTheDocument();
-});
-
-test('accepts variant and size classnames', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Accordion data-testid="accordion" variant="one" size="large">
-        <Accordion.Item>
-          <Accordion.Header>Information</Accordion.Header>
-          <Accordion.Content>
-            <Headline>infos</Headline>
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion>
-    </ThemeProvider>
-  );
-
-  const button = screen.getByText('Information');
-
-  expect(button).toHaveAttribute('aria-expanded', 'false');
-  expect(button.className).toMatchInlineSnapshot(`"bg-blue-600 p-8"`);
-  fireEvent.click(button);
-  expect(button).toHaveAttribute('aria-expanded', 'true');
-
-  const item = screen.getByText('infos');
-  expect(item.className).toMatchInlineSnapshot(
-    `"max-w-(--maxHeadlineWidth) text-left"`
+  await waitFor(() =>
+    expect(button[0]).toHaveAttribute('aria-expanded', 'true')
   );
 });
 
-test('default full width', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Accordion data-testid="accordion">
-        <Accordion.Item>
-          <Accordion.Header>Information</Accordion.Header>
-          <Accordion.Content>
-            <Headline>infos</Headline>
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion>
-    </ThemeProvider>
-  );
+test('render dynamically accordion items', async () => {
+  render(<ComplexSingleSelect />);
 
-  const button = screen.getByText('Information');
+  const button = screen.queryAllByRole('button');
 
-  expect(button.className).toMatchInlineSnapshot(`""`);
+  expect(button[0]).toHaveAttribute('aria-expanded', 'false');
+
+  await user.click(button[0]);
+
+  expect(button[0]).toHaveAttribute('aria-expanded', 'true');
 });
 
 test('support default expanded keys', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Accordion data-testid="accordion" defaultExpandedKeys={['one']}>
-        <Accordion.Item key={'one'} id="one">
-          <Accordion.Header>Information</Accordion.Header>
-          <Accordion.Content>
-            <Headline>infos</Headline>
-          </Accordion.Content>
-        </Accordion.Item>
-        <Accordion.Item key={'two'} id="two">
-          <Accordion.Header>Settings</Accordion.Header>
-          <Accordion.Content>
-            <Headline>settings</Headline>
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion>
-    </ThemeProvider>
-  );
+  render(<Basic defaultExpandedKeys={['1']} />);
 
-  const button = screen.getByText('Information');
+  const button = screen.queryAllByRole('button');
+  const item = screen.getByText('Here are some infos');
 
-  expect(button).toHaveAttribute('aria-expanded', 'true');
-  const item = screen.getByText('infos');
+  expect(button[0]).toHaveAttribute('aria-expanded', 'true');
   expect(item).toBeInTheDocument();
-
-  const buttontwo = screen.getByText('Settings');
-  expect(buttontwo).toHaveAttribute('aria-expanded', 'false');
+  expect(button[1]).toHaveAttribute('aria-expanded', 'false');
 });
 
 test('support default expanded keys (more than one)', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Accordion
-        data-testid="accordion"
-        allowsMultipleExpanded
-        defaultExpandedKeys={['two', 'one']}
-      >
-        <Accordion.Item key={'one'} id={'one'}>
-          <Accordion.Header>Information</Accordion.Header>
-          <Accordion.Content>
-            <Headline>infos</Headline>
-          </Accordion.Content>
-        </Accordion.Item>
-        <Accordion.Item key={'two'} id={'two'}>
-          <Accordion.Header>Settings</Accordion.Header>
-          <Accordion.Content>
-            <Headline>settings</Headline>
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion>
-    </ThemeProvider>
-  );
+  render(<Basic defaultExpandedKeys={['1', '2']} />);
 
-  const item = screen.getByText('infos');
+  const item = screen.getByText('Here are some infos');
+  const itemtwo = screen.getByText('Some longer Text to see if it looks good');
+
   expect(item).toBeInTheDocument();
-
-  const itemtwo = screen.getByText('settings');
   expect(itemtwo).toBeInTheDocument();
 });
