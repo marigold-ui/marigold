@@ -17,9 +17,8 @@ import { DrawerTrigger } from './DrawerTrigger';
 // ---------------
 export interface DrawerProps
   extends Omit<DialogProps, 'className' | 'style' | 'isOpen' | 'role'> {
+  size?: 'xsmall' | 'small' | 'medium' | (string & {});
   variant?: string;
-  size?: string;
-
   /**
    * Whether the overlay is open by default (controlled).
    * @default undefined
@@ -30,6 +29,13 @@ export interface DrawerProps
    * Whether pressing the escape key closes the modal.
    * @default true
    */
+
+  /**
+   * The placement of the drawer on the screen.
+   * @default right
+   */
+  placement?: 'top' | 'bottom' | 'left' | 'right';
+
   keyboardDismissable?: boolean;
 
   /**
@@ -53,16 +59,21 @@ export interface DrawerProps
 // ---------------
 export const Drawer = ({
   children,
+  size = 'medium',
   variant,
-  size,
   open,
   keyboardDismissable,
   closeButton,
   role = 'complementary',
+  placement = 'right',
   ...props
 }: DrawerProps) => {
   const ref = useRef<HTMLElement | null>(null);
-  const classNames = useClassNames({ component: 'Drawer', variant, size });
+  const classNames = useClassNames({
+    component: 'Drawer',
+    variant,
+    size,
+  });
 
   const ctx = useContext(OverlayTriggerStateContext);
 
@@ -79,6 +90,8 @@ export const Drawer = ({
       className={classNames.overlay}
       open={open}
       keyboardDismissable={keyboardDismissable}
+      data-testid="drawer-modal"
+      data-placement={placement}
     >
       <DrawerContext.Provider value={{ variant, size }}>
         <Dialog
@@ -90,6 +103,7 @@ export const Drawer = ({
             'grid [grid-template-areas:"title"_"content"_"actions"]',
             classNames.container
           )}
+          data-placement={placement}
         >
           {closeButton && (
             <CloseButton

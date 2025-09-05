@@ -16,7 +16,9 @@ const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
 
 // Props
 // ---------------
-export type DrawerModalProps = NonModalProps;
+interface DrawerModalProps extends NonModalProps {
+  placement?: 'left' | 'right' | 'top' | 'bottom';
+}
 
 // Component
 // ---------------
@@ -30,10 +32,7 @@ export const DrawerModal = ({
   return isSmallScreen ? (
     <MobileModal>{children}</MobileModal>
   ) : (
-    <NonModal
-      {...props}
-      className={cn('fixed top-0 right-0 bottom-0', className)}
-    >
+    <NonModal {...props} className={cn('fixed', className)}>
       {children}
     </NonModal>
   );
