@@ -58,24 +58,20 @@ type Story = StoryObj<typeof Accordion>;
 export const Basic: Story = {
   render: args => (
     <Accordion {...args}>
-      <Accordion.Item>
+      <Accordion.Item id="1">
         <Accordion.Header>Informations</Accordion.Header>
-        <Accordion.Content>
-          <Headline level={3}>Some Informations</Headline>
-          <TextField label="Name" />
-        </Accordion.Content>
+        <Accordion.Content>Here are some infos</Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item>
+      <Accordion.Item id="2">
         <Accordion.Header>Personal Settings</Accordion.Header>
         <Accordion.Content>
           Some longer Text to see if it looks good
         </Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item>
+      <Accordion.Item id="3">
         <Accordion.Header>Billing Adress</Accordion.Header>
         <Accordion.Content>
-          <Headline level={3}>Some Informations</Headline>
-          <Button>Don&apos;t click me</Button>
+          Please provide your billing adress
         </Accordion.Content>
       </Accordion.Item>
     </Accordion>
