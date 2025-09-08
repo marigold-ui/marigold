@@ -89,6 +89,19 @@ test('opens/closes via trigger', async () => {
   expect(drawer).not.toBeInTheDocument();
 });
 
+test('slides from the left', async () => {
+  render(<Component placement="left" />);
+
+  const button = screen.getByRole('button', { name: 'Toggle' });
+  await user.click(button);
+
+  const drawerModal = screen.getByTestId('drawer-modal');
+  expect(drawerModal).toBeInTheDocument();
+  expect(drawerModal?.className).toMatchSnapshot(
+    `"entering:animate-slide-in-left exiting:animate-slide-out-left top-0 left-0"`
+  );
+});
+
 test('can be closed with esc key', async () => {
   render(<Component />);
 

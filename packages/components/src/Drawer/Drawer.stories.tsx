@@ -5,13 +5,29 @@ import { Checkbox } from '../Checkbox';
 import { Select } from '../Select';
 import { Slider } from '../Slider';
 import { Stack } from '../Stack';
+import { Text } from '../Text';
 import { TextField } from '../TextField';
 import { Drawer, DrawerProps } from './Drawer';
 
 const meta = {
   title: 'Components/Drawer',
   component: Drawer,
-  argTypes: {},
+  argTypes: {
+    placement: {
+      control: {
+        type: 'radio',
+      },
+      description: 'The placement of the drawer on the screen.',
+      options: ['right', 'left', 'top', 'bottom'],
+    },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      description: 'The size of the drawer on the screen.',
+      options: ['xsmall', 'small', 'medium'],
+    },
+  },
   args: {},
 } satisfies Meta<DrawerProps>;
 
@@ -74,6 +90,35 @@ export const Basic: Story = {
         width={80}
       />
     </Stack>
+  ),
+};
+
+export const LeftPlacement: Story = {
+  args: {
+    placement: 'left',
+  },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Left Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Title>Left Drawer</Drawer.Title>
+        <Drawer.Content>
+          <Stack space={8}>
+            <Text>This drawer slides in from the left side of the screen.</Text>
+            <Text>
+              It's perfect for navigation menus or additional controls that
+              should be easily accessible.
+            </Text>
+          </Stack>
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button slot="close">Close</Button>
+          <Button slot="close" variant="primary">
+            Confirm
+          </Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Drawer.Trigger>
   ),
 };
 
