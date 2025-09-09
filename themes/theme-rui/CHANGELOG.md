@@ -1,5 +1,18 @@
 # @marigold/theme-rui
 
+## 2.0.1
+
+### Patch Changes
+
+- df57868: Fix([DSTSUP-181]): Adjust Accordion.Header styles to support full width
+- 00d230a: chore: allow `react-aria` patch version range as dependencies
+- b351484: feat([DST-981]): Drawer supports controlling the origin of the `<Drawer>` by using `placement` property (e.g. left, right, top, bottom), also supports configurable sizes to adapt to different sizes.
+- Updated dependencies [df57868]
+- Updated dependencies [00d230a]
+- Updated dependencies [b351484]
+  - @marigold/components@15.0.1
+  - @marigold/system@15.0.1
+
 ## 2.0.0
 
 ### Major Changes
