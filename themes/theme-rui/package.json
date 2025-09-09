@@ -55,7 +55,7 @@
     "@marigold/system": "workspace:*",
     "@marigold/theme-plugins": "workspace:*",
     "tailwindcss-animate": "1.0.7",
-    "tailwindcss-react-aria-components": "2.0.1"
+    "tailwindcss-react-aria-components": "^2.0.1"
   },
   "scripts": {
     "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css src/global.css src/utils.css dist/"
