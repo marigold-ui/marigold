@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Stack } from '../Stack';
 import { Headline } from './Headline';
 
 const meta = {
@@ -56,4 +57,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => <Headline {...args}>This is a Headline!!</Headline>,
+};
+
+export const Levels: Story = {
+  render: () => (
+    <Stack space={4}>
+      <Headline level="1">This is a level 1 Headline!!</Headline>
+      <Headline level="2">This is a level 2 Headline!!</Headline>
+      <Headline level="3">This is a level 3 Headline!!</Headline>
+      <Headline level="4">This is a level 4 Headline!!</Headline>
+      <Headline level="5">This is a level 5 Headline!!</Headline>
+      <Headline level="6">This is a level 6 Headline!!</Headline>
+    </Stack>
+  ),
 };
