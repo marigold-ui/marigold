@@ -450,7 +450,7 @@ importers:
   packages/components:
     dependencies:
       '@internationalized/date':
-        specifier: 3.9.0
+        specifier: ^3.9.0
         version: 3.9.0
       '@marigold/system':
         specifier: workspace:*
@@ -459,67 +459,67 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@react-aria/button':
-        specifier: 3.14.1
+        specifier: ^3.14.1
         version: 3.14.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/calendar':
-        specifier: 3.9.1
+        specifier: ^3.9.1
         version: 3.9.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/focus':
-        specifier: 3.21.1
+        specifier: ^3.21.1
         version: 3.21.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/i18n':
-        specifier: 3.12.12
+        specifier: ^3.12.12
         version: 3.12.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/interactions':
-        specifier: 3.25.5
+        specifier: ^3.25.5
         version: 3.25.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/label':
-        specifier: 3.7.21
+        specifier: ^3.7.21
         version: 3.7.21(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/landmark':
-        specifier: 3.0.6
+        specifier: ^3.0.6
         version: 3.0.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/overlays':
-        specifier: 3.29.1
+        specifier: ^3.29.1
         version: 3.29.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/selection':
-        specifier: 3.25.1
+        specifier: ^3.25.1
         version: 3.25.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/ssr':
-        specifier: 3.9.10
+        specifier: ^3.9.10
         version: 3.9.10(react@19.1.1)
       '@react-aria/table':
-        specifier: 3.17.7
+        specifier: ^3.17.7
         version: 3.17.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/utils':
-        specifier: 3.30.1
+        specifier: ^3.30.1
         version: 3.30.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-aria/visually-hidden':
-        specifier: 3.8.27
+        specifier: ^3.8.27
         version: 3.8.27(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@react-stately/collections':
-        specifier: 3.12.7
+        specifier: ^3.12.7
         version: 3.12.7(react@19.1.1)
       '@react-stately/data':
-        specifier: 3.14.0
+        specifier: ^3.14.0
         version: 3.14.0(react@19.1.1)
       '@react-stately/table':
-        specifier: 3.15.0
+        specifier: ^3.15.0
         version: 3.15.0(react@19.1.1)
       '@react-stately/tree':
-        specifier: 3.9.2
+        specifier: ^3.9.2
         version: 3.9.2(react@19.1.1)
       '@react-types/shared':
-        specifier: 3.32.0
+        specifier: ^3.32.0
         version: 3.32.0(react@19.1.1)
       '@react-types/table':
-        specifier: 3.13.3
+        specifier: ^3.13.3
         version: 3.13.3(react@19.1.1)
       react-aria-components:
-        specifier: 1.12.1
+        specifier: ^1.12.1
         version: 1.12.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-stately:
-        specifier: 3.41.0
+        specifier: ^3.41.0
         version: 3.41.0(react@19.1.1)
     devDependencies:
       '@marigold/icons':
@@ -563,7 +563,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@react-aria/i18n':
-        specifier: 3.12.12
+        specifier: ^3.12.12
         version: 3.12.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       class-variance-authority:
         specifier: 0.7.1
@@ -664,7 +664,7 @@ importers:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@4.1.12)
       tailwindcss-react-aria-components:
-        specifier: 2.0.1
+        specifier: ^2.0.1
         version: 2.0.1(tailwindcss@4.1.12)
     devDependencies:
       '@marigold/tsconfig':
