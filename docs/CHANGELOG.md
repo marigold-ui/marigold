@@ -1,5 +1,16 @@
 # @marigold/docs
 
+## 15.0.2
+
+### Patch Changes
+
+- Updated dependencies [16ae83d]
+  - @marigold/theme-rui@2.0.2
+  - @marigold/system@15.0.2
+  - @marigold/components@15.0.2
+  - @marigold/icons@1.3.20
+  - @marigold/theme-docs@3.1.6
+
 ## 15.0.1
 
 ### Patch Changes
