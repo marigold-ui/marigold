@@ -1,5 +1,13 @@
 # @marigold/theme-rui
 
+## 2.0.2
+
+### Patch Changes
+
+- 16ae83d: style([DST-1034]): update styles for headline levels
+  - @marigold/system@15.0.2
+  - @marigold/components@15.0.2
+
 ## 2.0.1
 
 ### Patch Changes
