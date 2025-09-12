@@ -1,5 +1,12 @@
 # @marigold/components
 
+## 15.0.3
+
+### Patch Changes
+
+- 7b3caca: feat([DST-1035]): Apply `data-rac` attribute to our table elements.
+  - @marigold/system@15.0.3
+
 ## 15.0.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @marigold/theme-rui
 
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies [7b3caca]
+  - @marigold/components@15.0.3
+  - @marigold/system@15.0.3
+
 ## 2.0.2
 
 ### Patch Changes
