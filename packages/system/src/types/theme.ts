@@ -78,7 +78,7 @@ export type Theme = {
     >;
     IconButton?: ComponentStyleFunction<string, string>;
     Checkbox?: Record<
-      'container' | 'label' | 'checkbox' | 'group',
+      'container' | 'label' | 'checkbox' | 'group' | 'helptext',
       ComponentStyleFunction<string, string>
     >;
     Switch?: Record<
