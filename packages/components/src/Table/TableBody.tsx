@@ -31,12 +31,13 @@ export const TableBody = ({
 
   if (state.collection.size === 0 && emptyState) {
     return (
-      <tbody className={className}>
-        <tr className={classNames?.row} role="row">
+      <tbody className={className} data-rac>
+        <tr className={classNames?.row} role="row" data-rac>
           <td
             className={classNames?.cell}
             colSpan={state.collection.columnCount}
             role="rowheader"
+            data-rac
           >
             {emptyState()}
           </td>
@@ -46,7 +47,7 @@ export const TableBody = ({
   }
 
   return (
-    <tbody {...rowGroupProps} className={className}>
+    <tbody {...rowGroupProps} className={className} data-rac>
       {children}
     </tbody>
   );

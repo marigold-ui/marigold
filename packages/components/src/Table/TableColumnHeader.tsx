@@ -46,6 +46,7 @@ export const TableColumnHeader = ({
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}
+      data-rac
     >
       {column.rendered}
       {column.props.allowsSorting &&
