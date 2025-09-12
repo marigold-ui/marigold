@@ -9,11 +9,13 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
     'group-selected/checkbox:border-brand group-selected/checkbox:bg-brand group-selected/checkbox:text-brand-foreground',
     'group-[indeterminate]/checkbox:border-brand group-[indeterminate]/checkbox:bg-brand group-[indeterminate]/checkbox:text-brand-foreground',
   ]),
-  container: cva('cursor-pointer read-only:cursor-default'),
+  container: cva('cursor-pointer read-only:cursor-default gap-2'),
   label: cva([
     'flex items-center gap-1',
     'text-sm leading-4 group-[group="checkbox"]/checkboxgroup:font-normal font-medium text-foregroun',
     'group-disabled/checkbox:text-disabled-foreground',
   ]),
   group: cva(),
+  // Align the helptext with the label text (checkbox size + container gap)
+  helptext: cva('pl-6'),
 };

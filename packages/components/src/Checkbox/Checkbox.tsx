@@ -1,16 +1,54 @@
 import type {
   ForwardRefExoticComponent,
+  PropsWithChildren,
   ReactNode,
   RefAttributes,
 } from 'react';
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Checkbox } from 'react-aria-components';
+import {
+  Checkbox,
+  CheckboxContext,
+  Provider,
+  TextContext,
+} from 'react-aria-components';
+import { useId } from '@react-aria/utils';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
+import { HelpText } from '../HelpText';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 
-// SVG Icon
+// Field Wrapper
+// ---------------
+const Field = ({
+  description,
+  children,
+  className,
+}: PropsWithChildren<{ description: ReactNode; className: string }>) => {
+  const fieldClassName = useClassNames({
+    component: 'Field',
+  });
+  const descriptionId = useId();
+
+  if (!description) return children;
+
+  return (
+    <div className={fieldClassName}>
+      <Provider
+        values={[
+          [CheckboxContext, { 'aria-describedby': descriptionId }],
+          [TextContext, { id: descriptionId, className }],
+        ]}
+      >
+        {children}
+        <HelpText description={description} />
+      </Provider>
+    </div>
+  );
+};
+
+// Icons
+// ---------------
 const CheckMark = () => (
   <svg width="12px" height="10px" viewBox="0 0 12 10">
     <path
@@ -55,6 +93,8 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
   );
 };
 
+// Component
+// ---------------
 export type RemovedProps =
   | 'children'
   | 'className'
@@ -110,6 +150,10 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
    *
    */
   label?: ReactNode;
+  /**
+   * A helpful text.
+   */
+  description?: ReactNode;
 }
 
 export interface CheckboxComponent
@@ -137,6 +181,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
       variant,
       size,
       label,
+      description,
       ...rest
     },
     ref
@@ -161,26 +206,28 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     });
 
     return (
-      <Checkbox
-        ref={ref}
-        className={cn(
-          'group/checkbox flex items-center gap-[0.5rem]',
-          'cursor-pointer data-disabled:cursor-not-allowed',
-          classNames.container
-        )}
-        {...props}
-      >
-        {({ isSelected, isIndeterminate }) => (
-          <>
-            <Icon
-              checked={isSelected}
-              indeterminate={isIndeterminate}
-              className={classNames.checkbox}
-            />
-            {label && <div className={classNames.label}>{label}</div>}
-          </>
-        )}
-      </Checkbox>
+      <Field description={description} className={classNames.helptext}>
+        <Checkbox
+          ref={ref}
+          className={cn(
+            'group/checkbox flex items-center',
+            'cursor-pointer data-disabled:cursor-not-allowed',
+            classNames.container
+          )}
+          {...props}
+        >
+          {({ isSelected, isIndeterminate }) => (
+            <>
+              <Icon
+                checked={isSelected}
+                indeterminate={isIndeterminate}
+                className={classNames.checkbox}
+              />
+              {label && <div className={classNames.label}>{label}</div>}
+            </>
+          )}
+        </Checkbox>
+      </Field>
     );
   }
 ) as CheckboxComponent;

@@ -24,7 +24,9 @@ const theme: Theme = {
       container: cva('flex'),
       label: cva('text-black-300'),
       group: cva('flex'),
+      helptext: cva(''),
     },
+    Field: cva(''),
   },
 };
 
