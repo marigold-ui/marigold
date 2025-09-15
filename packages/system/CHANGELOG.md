@@ -1,5 +1,12 @@
 # @marigold/system
 
+## 15.1.0
+
+### Minor Changes
+
+- a3ddf47: feat([DST-1037]): Add `description` (help text) to `<Checkbox>` component
+- 0583b77: feat([DST-1039]): Allow `<Text>` to not wrap lines
+
 ## 15.0.2
 
 ## 15.0.1

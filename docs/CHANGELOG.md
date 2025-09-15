@@ -1,5 +1,23 @@
 # @marigold/docs
 
+## 15.1.0
+
+### Minor Changes
+
+- a3ddf47: feat([DST-1037]): Add `description` (help text) to `<Checkbox>` component
+
+### Patch Changes
+
+- Updated dependencies [e46a11d]
+- Updated dependencies [7b3caca]
+- Updated dependencies [a3ddf47]
+- Updated dependencies [0583b77]
+  - @marigold/theme-rui@2.1.0
+  - @marigold/components@15.1.0
+  - @marigold/system@15.1.0
+  - @marigold/theme-docs@3.1.7
+  - @marigold/icons@1.3.21
+
 ## 15.0.2
 
 ### Patch Changes
