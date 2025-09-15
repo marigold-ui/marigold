@@ -1,5 +1,4 @@
-import { Button, Drawer } from '@marigold/components';
-import { DrawerProps } from '@marigold/components/src/Drawer/Drawer';
+import { Button, Drawer, DrawerProps } from '@marigold/components';
 
 export default (props: DrawerProps) => (
   <Drawer.Trigger>

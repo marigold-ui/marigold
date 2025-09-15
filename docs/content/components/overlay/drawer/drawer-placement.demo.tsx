@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { Button, Drawer, Inline } from '@marigold/components';
-
-type Placement = 'top' | 'bottom' | 'left' | 'right';
+import { Button, Drawer, DrawerProps, Inline } from '@marigold/components';
 
 export default function DrawerDemo() {
-  const [placement, setPlacement] = useState<Placement>('right');
+  const [placement, setPlacement] = useState<DrawerProps['placement']>('right');
   const [open, setOpen] = useState(false);
 
-  const handleOpen = (nextPlacement: Placement) => {
+  const handleOpen = (nextPlacement: DrawerProps['placement']) => {
     // Case 1: drawer open + same placement => close
     if (open && nextPlacement === placement) {
       setOpen(false);
