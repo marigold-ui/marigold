@@ -5,4 +5,4 @@
 "@marigold/theme-rui": minor
 ---
 
-feat([DST-1037]): Add `description` (hept text) to `<Checkbox>` component
+feat([DST-1037]): Add `description` (help text) to `<Checkbox>` component
