@@ -67,6 +67,7 @@ export const TableRow = ({ children, row }: TableRowProps) => {
       )}
       {...mergeProps(rowProps, focusProps, hoverProps)}
       {...stateProps}
+      data-rac
     >
       {children as ReactNode}
     </tr>

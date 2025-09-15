@@ -53,6 +53,7 @@ export const TableCell = ({
       {...stateProps}
       align={align}
       valign={alignY}
+      data-rac
     >
       {cell.rendered}
     </td>

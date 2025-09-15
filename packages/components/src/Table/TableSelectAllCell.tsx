@@ -58,6 +58,7 @@ export const TableSelectAllCell = ({
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}
+      data-rac
     >
       <Checkbox {...checkboxProps} />
     </th>
