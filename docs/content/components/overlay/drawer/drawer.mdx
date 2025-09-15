@@ -1,0 +1,54 @@
+---
+title: Drawer
+caption: Component for showing additional content alongside the main page..
+badge: beta
+---
+
+The `<Drawer>` component is a flexible UI element used to present additional content is a side-in panel, typically from the edge of the screen. Unlike dialogs, it doesn't block interaction with the rest of the page, making it ideal for non-modal interactions.
+
+Key features of the `<Drawer>` component include customizable placemnt, adjustable sizes and abilitly to remain non-modal for uninterrupted page interaction.
+
+## Anatomy
+
+A `<Drawer>` consists of an optinal title, content, actions. The title provides context for the user, while the content holds the main message or interactive elements like forms. The actions section contains controls such as buttons for confirming or cancelling.
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+A drawer is used to display supplemental content in a way that complements the main page wihtout blocking interaction, it should feel lightweight and unobtrusive, allowing users to access extra information or controls while continuing their workflow.
+
+<Do>
+  <Do.Description>
+    Use a drawer when
+    {/* prettier-ignore */}
+    <ul>
+      <li>allowing users to adjust settings or view details without leaving the page,</li>
+      <li>keeping the main workflow uninterrupted,</li>
+      <li>presenting secondary or supporting content.</li>
+    </ul>
+  </Do.Description>
+</Do>
+
+When using a drawer, it’s important to maintain clarity, avoid overwhelming the user with too much content, and ensure smooth transitions that feel consistent with the overall interface. Drawers should enhance the experience without distracting from the primary task.
+
+<Dont>
+  <Dont.Description>
+    Avoid using a drawer when
+    {/* prettier-ignore */}
+    <ul>
+      <li>the task requires full user attention or focus,</li>
+      <li>critical information must be acknowledged before continuing,</li>
+    </ul>
+  </Dont.Description>
+</Dont>
+
+### Placemnt
+
+The `<Drawer>` can be placed on any edge of the screen using `placement` prop.
+
+<ComponentDemo file="./drawer-placement.demo.tsx" />
