@@ -25,6 +25,7 @@ const theme: Theme = {
       row: cva('bg-blue-700'),
       cell: cva('p-10'),
     },
+    Field: cva(''),
   },
 };
 

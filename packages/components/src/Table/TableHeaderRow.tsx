@@ -24,7 +24,7 @@ export const TableHeaderRow = ({
   const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 
   return (
-    <tr {...rowProps} className={className} ref={ref}>
+    <tr {...rowProps} className={className} ref={ref} data-rac>
       {children}
     </tr>
   );
