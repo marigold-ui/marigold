@@ -15,7 +15,6 @@ const theme: Theme = {
       container: cva(),
       label: cva(),
       group: cva(),
-      helptext: cva(''),
     },
     Table: {
       table: cva('border-collapse'),
