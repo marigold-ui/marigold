@@ -62,14 +62,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => (
-    <Text {...args}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-      dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada,
-      massa nec ultricies efficitur, lectus ante consequat magna, a porttitor
-      massa ex ut quam.
-    </Text>
-  ),
+  args: {
+    children:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a porttitor massa ex ut quam.',
+  },
+  render: args => <Text {...args} />,
 };
 
 export const Slot: Story = {

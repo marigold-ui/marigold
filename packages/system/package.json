@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "15.0.0",
+  "version": "15.0.2",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -46,7 +46,7 @@
     "react-dom": ">=17.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.3",
+    "@babel/core": "7.28.4",
     "@marigold/tsconfig": "workspace:*",
     "@types/react": "19.1.12",
     "postcss": "8.5.6",

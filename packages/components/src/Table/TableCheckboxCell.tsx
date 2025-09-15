@@ -45,6 +45,7 @@ export const TableCheckboxCell = ({
       {...mergeProps(gridCellProps, focusProps)}
       {...stateProps}
       valign={alignY}
+      data-rac
     >
       <Checkbox {...checkboxProps} />
     </td>

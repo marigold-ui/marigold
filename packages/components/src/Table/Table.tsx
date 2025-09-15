@@ -115,6 +115,7 @@ export const Table: Table = ({
     >
       <table
         ref={tableRef}
+        data-rac
         className={cn(
           'group/table border-collapse',
           /**

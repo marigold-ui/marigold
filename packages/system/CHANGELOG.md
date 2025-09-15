@@ -1,5 +1,13 @@
 # @marigold/system
 
+## 15.0.2
+
+## 15.0.1
+
+### Patch Changes
+
+- 00d230a: chore: allow `react-aria` patch version range as dependencies
+
 ## 15.0.0
 
 ### Major Changes

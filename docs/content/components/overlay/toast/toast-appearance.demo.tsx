@@ -1,5 +1,5 @@
+import type { ToastContentProps } from '@marigold/components';
 import { Toast } from '@marigold/components';
-import { ToastContentProps } from '@marigold/components/src/Toast/Toast';
 
 const variantContent: Record<string, { title: string; description: string }> = {
   success: {

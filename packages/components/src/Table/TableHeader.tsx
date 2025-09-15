@@ -25,6 +25,7 @@ export const TableHeader = ({ stickyHeader, children }: TableHeaderProps) => {
         // for rui sticky is applied to thead
         stickyHeader ? 'sticky [&_th]:sticky [&_th]:top-0' : ''
       )}
+      data-rac
     >
       {children}
     </thead>
