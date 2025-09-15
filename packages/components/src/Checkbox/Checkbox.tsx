@@ -23,9 +23,8 @@ import { useCheckboxGroupContext } from './Context';
 const Field = ({
   description,
   children,
-  className,
-}: PropsWithChildren<{ description: ReactNode; className: string }>) => {
-  const fieldClassName = useClassNames({
+}: PropsWithChildren<{ description: ReactNode }>) => {
+  const className = useClassNames({
     component: 'Field',
   });
   const descriptionId = useId();
@@ -33,11 +32,11 @@ const Field = ({
   if (!description) return children;
 
   return (
-    <div className={fieldClassName}>
+    <div className={className}>
       <Provider
         values={[
           [CheckboxContext, { 'aria-describedby': descriptionId }],
-          [TextContext, { id: descriptionId, className }],
+          [TextContext, { id: descriptionId }],
         ]}
       >
         {children}
@@ -206,7 +205,7 @@ const _Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     });
 
     return (
-      <Field description={description} className={classNames.helptext}>
+      <Field description={description}>
         <Checkbox
           ref={ref}
           className={cn(

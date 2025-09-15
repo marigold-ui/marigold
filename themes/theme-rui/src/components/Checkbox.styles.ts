@@ -16,6 +16,4 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
     'group-disabled/checkbox:text-disabled-foreground',
   ]),
   group: cva(),
-  // Align the helptext with the label text (checkbox size + container gap)
-  helptext: cva('pl-6'),
 };

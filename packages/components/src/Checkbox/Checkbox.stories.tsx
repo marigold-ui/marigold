@@ -57,6 +57,12 @@ const meta = {
       },
       description: 'Padding y (top and bottom)',
     },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'Description text',
+    },
   },
   args: {
     readOnly: false,
