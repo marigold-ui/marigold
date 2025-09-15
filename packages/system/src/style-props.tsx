@@ -227,7 +227,7 @@ export const fontWeight = {
 };
 
 export const textSize = {
-  xs: 'text-[13px]',
+  xs: 'text-xs',
   sm: 'text-sm',
   base: 'text-base',
   lg: 'text-lg',
@@ -245,6 +245,13 @@ export const textSize = {
 export const textStyle = {
   italic: 'italic',
   normal: 'not-italic',
+};
+
+export const textWrap = {
+  wrap: 'text-wrap',
+  noWrap: 'text-nowrap',
+  balance: 'text-balance',
+  pretty: 'text-pretty',
 };
 
 export const gapSpace = {
@@ -644,6 +651,13 @@ export type FontStyleProp = {
    * Set the font style for the text element.
    */
   fontStyle?: keyof typeof textStyle;
+};
+
+export type TextWrapProp = {
+  /**
+   * Set text wrapping behavior.
+   */
+  wrap?: keyof typeof textWrap;
 };
 
 export type FontWeightProp = {
