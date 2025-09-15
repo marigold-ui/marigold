@@ -12,6 +12,14 @@ Key features of the `<Drawer>` component include customizable placemnt, adjustab
 
 A `<Drawer>` consists of an optinal title, content, actions. The title provides context for the user, while the content holds the main message or interactive elements like forms. The actions section contains controls such as buttons for confirming or cancelling.
 
+<Image
+  src="/drawer/drawer-anatomy.jpg"
+  alt="Anatomy of a drawer"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
 ## Appearance
 
 <AppearanceDemo component={title} />
@@ -41,14 +49,29 @@ When using a drawer, it’s important to maintain clarity, avoid overwhelming th
     Avoid using a drawer when
     {/* prettier-ignore */}
     <ul>
+      <li>needing critical confirmations or desctructive actions,</li>
+      <li>having deep navigation or complex multi-step flows,</li>
       <li>the task requires full user attention or focus,</li>
       <li>critical information must be acknowledged before continuing,</li>
     </ul>
   </Dont.Description>
 </Dont>
 
+### Filter
+
+A common use case for drawers is displaying filter panels. Drawers provide a non-intrusive way to expose filtering options while keeping the main content visible and interactive. This allows users to adjust filters, apply changes, and immediately see updated results without leaving the page.
+
+<ComponentDemo file="./drawer-filter.demo.tsx" />
+
 ### Placemnt
 
 The `<Drawer>` can be placed on any edge of the screen using `placement` prop.
 
 <ComponentDemo file="./drawer-placement.demo.tsx" />
+
+### Dismissal
+
+While drawer component is open, users can still interact with the rest of the page. To accomodate both mouse and keyboard usersm the `<Drawer>` provide multiple ways to close it:
+
+- clicking the same trigger button again will close the drawer,
+- pressing the `Esc` key will also close the drawer.

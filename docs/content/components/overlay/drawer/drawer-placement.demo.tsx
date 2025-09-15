@@ -8,13 +8,13 @@ export default function DrawerDemo() {
   const [open, setOpen] = useState(false);
 
   const handleOpen = (nextPlacement: Placement) => {
-    // Case 1: drawer open + same placement → close
+    // Case 1: drawer open + same placement => close
     if (open && nextPlacement === placement) {
       setOpen(false);
       return;
     }
 
-    // Case 2: drawer open + different placement → close, then reopen
+    // Case 2: drawer open + different placement => close, then reopen
     if (open && nextPlacement !== placement) {
       setOpen(false);
       setTimeout(() => {
@@ -24,7 +24,7 @@ export default function DrawerDemo() {
       return;
     }
 
-    // Case 3: drawer closed → open with new placement
+    // Case 3: drawer closed => open with new placement
     setPlacement(nextPlacement);
     setOpen(true);
   };
