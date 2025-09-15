@@ -57,6 +57,12 @@ const meta = {
       },
       description: 'Padding y (top and bottom)',
     },
+    description: {
+      control: {
+        type: 'text',
+      },
+      description: 'Description text',
+    },
   },
   args: {
     readOnly: false,
@@ -90,8 +96,7 @@ export const Controlled: Story = {
   args: {
     onChange: fn(),
   },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ args, canvas }) => {
     const input = canvas.getByLabelText<HTMLInputElement>('This is a Checkbox');
 
     await userEvent.click(input);
@@ -108,8 +113,7 @@ export const ReadOnly: Story = {
     defaultChecked: true,
     readOnly: true,
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas }) => {
     const checkbox =
       canvas.getByLabelText<HTMLInputElement>('This is a Checkbox');
     const component = canvas.getByText('This is a Checkbox');
@@ -117,5 +121,23 @@ export const ReadOnly: Story = {
     await userEvent.click(component);
 
     await expect(checkbox.checked).toBeTruthy();
+  },
+};
+
+export const WithDescription: Story = {
+  args: {
+    description: 'This is a description',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const checkbox = await canvas.findByRole('checkbox');
+    const description = await canvas.queryByText('This is a description');
+
+    const helpTextId = description?.getAttribute('id');
+    const checkboxDescribedBy = checkbox.getAttribute('aria-describedby');
+
+    expect(description).toBeInTheDocument();
+    expect(checkboxDescribedBy).toBe(helpTextId);
   },
 };
