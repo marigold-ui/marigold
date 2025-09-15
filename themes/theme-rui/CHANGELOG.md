@@ -1,5 +1,20 @@
 # @marigold/theme-rui
 
+## 2.1.0
+
+### Minor Changes
+
+- a3ddf47: feat([DST-1037]): Add `description` (help text) to `<Checkbox>` component
+
+### Patch Changes
+
+- e46a11d: fix(Drawer): Apply `z-index` to prevent overlap
+- Updated dependencies [7b3caca]
+- Updated dependencies [a3ddf47]
+- Updated dependencies [0583b77]
+  - @marigold/components@15.1.0
+  - @marigold/system@15.1.0
+
 ## 2.0.2
 
 ### Patch Changes

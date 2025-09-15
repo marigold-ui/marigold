@@ -1,5 +1,19 @@
 # @marigold/components
 
+## 15.1.0
+
+### Minor Changes
+
+- a3ddf47: feat([DST-1037]): Add `description` (help text) to `<Checkbox>` component
+- 0583b77: feat([DST-1039]): Allow `<Text>` to not wrap lines
+
+### Patch Changes
+
+- 7b3caca: feat([DST-1035]): Apply `data-rac` attribute to our table elements.
+- Updated dependencies [a3ddf47]
+- Updated dependencies [0583b77]
+  - @marigold/system@15.1.0
+
 ## 15.0.2
 
 ### Patch Changes
