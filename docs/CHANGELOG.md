@@ -1,5 +1,20 @@
 # @marigold/docs
 
+## 15.2.0
+
+### Minor Changes
+
+- 6147cf9: style(DST-1041): Switch Master and Admin Colors
+
+### Patch Changes
+
+- Updated dependencies [6147cf9]
+  - @marigold/theme-rui@2.2.0
+  - @marigold/system@15.2.0
+  - @marigold/components@15.2.0
+  - @marigold/icons@1.3.22
+  - @marigold/theme-docs@3.1.8
+
 ## 15.1.0
 
 ### Minor Changes
