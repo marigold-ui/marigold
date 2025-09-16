@@ -4,12 +4,24 @@ export const Menu: ThemeComponent<'Menu'> = {
   container: cva([
     'text-foreground z-50 overflow-hidden rounded-md p-1 outline-none',
   ]),
-  item: cva([
-    'relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none',
-    'focus:bg-focus',
-    'disabled:text-disabled-foreground',
-    '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 [&_svg]:opacity-60',
-  ]),
+  item: cva(
+    [
+      'relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none',
+      'disabled:text-disabled-foreground',
+      '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
+    ],
+    {
+      variants: {
+        variant: {
+          default: 'text-foreground focus:bg-focus [&_svg]:opacity-60',
+          destructive: 'text-destructive focus:bg-destructive/10',
+        },
+      },
+      defaultVariants: {
+        variant: 'default',
+      },
+    }
+  ),
   section: cva(
     'text-muted-foreground px-2 py-1.5 text-xs font-medium border-t border-t-border in-first:border-t-0'
   ),
