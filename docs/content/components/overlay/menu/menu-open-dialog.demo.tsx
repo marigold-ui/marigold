@@ -20,7 +20,9 @@ export default () => {
     <>
       <Menu onAction={handleAction} label="Settings">
         <Menu.Item id="save">Save</Menu.Item>
-        <Menu.Item id="delete">Delete</Menu.Item>
+        <Menu.Item id="delete" variant="destructive">
+          Delete
+        </Menu.Item>
       </Menu>
       <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
         <Dialog closeButton>
