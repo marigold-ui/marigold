@@ -81,7 +81,12 @@ A common use case for drawers is displaying filter panels. Drawers provide a non
 
 ### Placement
 
-The `<Drawer>` can be placed on any edge of the screen using `placement` prop.
+The `<Drawer>` can be placed on any edge of the screen using `placement` prop,, placement should relfect the type of content and user's workflow:
+
+- Right(most common): details, contextual utilities.
+- left: navigaiton, or menus.
+- top: lightweight global actions like notifications or system alerts.
+- bottom: confirmation actions, or quick picks.
 
 <ComponentDemo file="./drawer-placement.demo.tsx" />
 

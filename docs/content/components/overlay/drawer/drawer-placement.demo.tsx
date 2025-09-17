@@ -5,7 +5,7 @@ import {
   Inline,
   Stack,
   Text,
-  TextField,
+  TextArea,
 } from '@marigold/components';
 
 const drawers = {
@@ -25,7 +25,7 @@ const drawers = {
     content: (
       <Drawer.Content>
         <Stack space={4}>
-          <TextField label="Your message" placeholder="Type a quick reply..." />
+          <TextArea label="Your message" placeholder="Type a quick reply..." />
         </Stack>
       </Drawer.Content>
     ),
