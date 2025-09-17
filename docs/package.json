@@ -3,7 +3,7 @@
   "version": "15.0.2",
   "private": true,
   "scripts": {
-    "dev": "pnpm registry && pnpm build:component-props && next dev",
+    "dev": "pnpm registry && next dev",
     "build": "pnpm registry && pnpm build:component-props && pnpm build:changelog && next build",
     "start": "next start",
     "registry": "zx ./scripts/build-registry.mjs",
