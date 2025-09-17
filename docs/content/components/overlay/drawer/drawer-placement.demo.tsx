@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   Button,
   Drawer,
-  DrawerProps,
   Inline,
   Stack,
   Text,
