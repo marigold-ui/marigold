@@ -11,7 +11,7 @@ export default function () {
             <Text>
               Need assistance while handling tickets? Here are some quick links:
             </Text>
-            <ul>
+            <ul className="flex flex-col gap-3">
               <li>
                 <Link href="#">How to reset a user password</Link>
               </li>

@@ -7,7 +7,7 @@ export default function () {
       <Drawer>
         <Drawer.Title>Settings</Drawer.Title>
         <Drawer.Content>
-          <Stack>
+          <Stack space={3}>
             <TextField label="Display Name" placeholder="Enter your name" />
             <TextField label="Email" placeholder="user@example.com" />
             <Switch label="Enable Notifications" />
