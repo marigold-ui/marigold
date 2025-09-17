@@ -28,15 +28,6 @@ A button consists of a pressable area, often containing a textual label or icon,
 
 ## Usage
 
-<SectionMessage variant="warning">
-  <SectionMessage.Title>Removed className Support</SectionMessage.Title>
-  <SectionMessage.Content>
-    Custom styling via `className` is no longer supported. Instead replace
-    overrides with the component's built-in `variant` or `size` props. If
-    additional styling is needed.
-  </SectionMessage.Content>
-</SectionMessage>
-
 Buttons have a wide range of applications. Their most common usage is to submit forms, but they are also used for other actions like opening a `<Menu>` or `<Dialog>`.
 
 It is essential that the label and context around the button clearly set expectations for what will happen when the user interacts with it. In user interfaces, buttons guide interactions, providing clear call-to-action elements that help users navigate and complete tasks.
@@ -215,11 +206,11 @@ Full-width buttons are especially useful for emphasizing primary actions like su
 
 ### Button or link
 
-If the user interacts with the element and it results in navigation to another page without submitting a form, use an anchor element (`<Link>`). For all other interactions that perform actions on the same page, use a button (`<Button>`).
+If the user interacts with the element and it results in navigation to another page without submitting a form, use an anchor element (`<Link>` or `<LinkButton>`). For all other interactions that perform actions on the same page, use a button (`<Button>`).
 
 Understanding this distinction is crucial: anchors handle navigation, while buttons handle page-specific actions. Misusing them can cause accessibility and usability issues, as anchors support tab-opening and navigation, while buttons do not.
 
-To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<Link>`](/components/actions/link) component with the corresponding `variant`, usually `secondary`. This way, the action is clear and prominent while keeping its navigation function.
+To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<ButtonLink>`](/components/actions/button-link) component with the corresponding `variant`, usually the default `secondary`. This way, the action is clear and prominent while keeping its navigation function.
 
 <ComponentDemo file="./button-link.demo.tsx" />
 
@@ -253,3 +244,4 @@ Each handler receives a `PressEvent`, providing details about the target and the
 ## Alternative components
 
 - [Link](/components/actions/link): A component to navigate to another page.
+- [LinkButton](/components/actions/link-button): A component to navigate to another page but looks like a button.
