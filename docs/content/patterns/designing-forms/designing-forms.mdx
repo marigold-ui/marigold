@@ -1,0 +1,81 @@
+---
+title: Designing Forms
+caption: Guidelines for form structure
+badge: new
+---
+
+Form design guidelines are essential in a design system to ensure consistency, usability, and accessibility across all user interfaces. When forms follow established patterns, users can navigate and complete them more efficiently while reducing cognitive load. This consistency not only improves the overall user experience but also helps maintain brand coherence and streamlines development workflows.
+
+Forms consist of various inputs and controls for submitting data. These guidelines will help you structure forms consistently throughout your application.
+
+## Which components can I use?
+
+We have a bunch of components which are suitable for forms. You can find a detailed guide for this on the page [Form Fields](/foundation/form-fields). The guide shows you how to create meaningful form components.
+
+## Basis layout
+
+It is important to consider the overall layout of the form, including the use of white space and the placement of buttons and other elements.
+Accessibility best practices should be followed, such as providing clear, descriptive labels and ensuring that form fields are appropriately labeled and structured for screen readers.
+
+A basic form can contain sections within according fields.
+Each section groups related fields together, making the form easier to scan and understand. Notice how the sections are visually separated with consistent spacing, helping users process the information in digestible chunks.
+
+The maximal width of a form should be 800px. This ensures that the form remains readable and user-friendly across different devices and screen sizes. A narrower form width helps prevent users from feeling overwhelmed by too many fields at once, making it easier to focus on completing the form.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Group related fields inside sections to provide more context and make the
+      UI easier scannable.
+    </Do.Description>
+  </Do>
+</GuidelineTiles>
+
+## Sections
+
+Forms with multiple sections should maintain a spacing of 56px between each section. You can achieve this by using the `<Stack>` component with the `space` prop set to `56`.
+
+<ComponentDemo file="./form-spacing-sections.demo.tsx" mode="preview" />
+
+This spacing provides enough visual separation to distinguish between different groups of content while maintaining a cohesive layout. The spacing ensures that users can easily identify where one section ends and another begins, improving the overall form completion experience.
+
+### When to use sections
+
+- **Complex forms**: When your form has more than 6-8 fields
+- **Different data types**: When collecting different categories of information (e.g., personal info, billing details, preferences)
+- **Progressive disclosure**: When some fields are conditional based on previous selections
+- **Multi-step processes**: When breaking a long form into smaller, focused steps
+
+## Fields
+
+Fields should have a length of the maximal content. This ensures that fields are neither too wide nor too narrow, promoting better readability and usability. A well-sized field helps users focus on the task at hand without feeling overwhelmed by excessive width or struggling with cramped input areas.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      <ul>
+        <li>Follow a predictable order of fields when creating forms.</li>
+        <li>Place required fields before optional ones within each section.</li>
+        <li>Position dependent fields immediately after their parent field.</li>
+      </ul>
+    </Do.Description>
+  </Do>
+</GuidelineTiles>
+
+### Spacing between fields
+
+- **Vertical spacing**: Use 32px spacing between individual fields within a section. This can be archieved by using the `<Stack>` component with the `space` prop set to `8`.
+- **Related fields**: Group closely related fields (like address) with 16px spacing also add extra padding to the Y-axis inside the group. This can be achieved by wrapping the related fields in another `<Stack>` component with the `space` prop set to `4` and adding padding to the Y-axis with a `<Inset>` using the `spaceY` prop set to `4`.
+
+<ComponentDemo file="./form-spacing-fields.demo.tsx" />
+
+# Layout
+
+    - buttons in forms
+    - actions in forms
+
+# Structure
+
+    - width
+    - accordions
+    - content
