@@ -1,11 +1,68 @@
 import { useState } from 'react';
-import { Button, Drawer, DrawerProps, Inline } from '@marigold/components';
+import {
+  Button,
+  Drawer,
+  DrawerProps,
+  Inline,
+  Stack,
+  Text,
+  TextField,
+} from '@marigold/components';
+
+const drawers = {
+  top: {
+    title: 'System Notification',
+    content: (
+      <Stack space={3}>
+        <Text>⚡ Scheduled maintenance on Sep 20, 2025</Text>
+        <Text>📢 New feature: bulk ticket assignment now available</Text>
+        <Text>✅ Ticket #4499 has been resolved</Text>
+      </Stack>
+    ),
+    actions: <Button slot="close">Dismiss</Button>,
+  },
+  bottom: {
+    title: 'Reply to ticket',
+    content: (
+      <Drawer.Content>
+        <Stack space={4}>
+          <TextField label="Your message" placeholder="Type a quick reply..." />
+        </Stack>
+      </Drawer.Content>
+    ),
+    actions: (
+      <>
+        <Button slot="close">Cancel</Button>
+        <Button slot="close" variant="primary">
+          Send
+        </Button>
+      </>
+    ),
+  },
+
+  right: {
+    title: 'Agent Activity',
+    content: (
+      <Stack space={4}>
+        <Text>👩‍💻 Jane Doe assigned ticket #4521 to herself.</Text>
+        <Text>🕒 Ticket #4477 marked as "In Progress".</Text>
+        <Text>📤 John Smith replied to customer on ticket #4502.</Text>
+        <Text>✅ Ticket #4499 was resolved.</Text>
+      </Stack>
+    ),
+    actions: <Button slot="close">Close</Button>,
+  },
+};
+
+type Placement = 'right' | 'top' | 'bottom';
 
 export default function DrawerDemo() {
-  const [placement, setPlacement] = useState<DrawerProps['placement']>('right');
+  const [placement, setPlacement] = useState<Placement>('right');
   const [open, setOpen] = useState(false);
 
-  const handleOpen = (nextPlacement: DrawerProps['placement']) => {
+  const currentDrawer = drawers[placement];
+
+  const handleOpen = (nextPlacement: Placement) => {
     // Case 1: drawer open + same placement => close
     if (open && nextPlacement === placement) {
       setOpen(false);
@@ -37,14 +94,9 @@ export default function DrawerDemo() {
         ))}
       </Inline>
       <Drawer placement={placement}>
-        <Drawer.Title>{placement} Drawer</Drawer.Title>
-        <Drawer.Content>Some content</Drawer.Content>
-        <Drawer.Actions>
-          <Button slot="close">Close</Button>
-          <Button slot="close" variant="primary">
-            Confirm
-          </Button>
-        </Drawer.Actions>
+        <Drawer.Title>{currentDrawer.title}</Drawer.Title>
+        <Drawer.Content>{currentDrawer.content}</Drawer.Content>
+        <Drawer.Actions>{currentDrawer.actions}</Drawer.Actions>
       </Drawer>
     </Drawer.Trigger>
   );
