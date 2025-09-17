@@ -219,7 +219,7 @@ If the user interacts with the element and it results in navigation to another p
 
 Understanding this distinction is crucial: anchors handle navigation, while buttons handle page-specific actions. Misusing them can cause accessibility and usability issues, as anchors support tab-opening and navigation, while buttons do not.
 
-To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<Link>`](/components/content/link) component with the corresponding `variant`, usually `secondary`. This way, the action is clear and prominent while keeping its navigation function.
+To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<Link>`](/components/actions/link) component with the corresponding `variant`, usually `secondary`. This way, the action is clear and prominent while keeping its navigation function.
 
 <ComponentDemo file="./button-link.demo.tsx" />
 
@@ -252,4 +252,4 @@ Each handler receives a `PressEvent`, providing details about the target and the
 
 ## Alternative components
 
-- [Link](/components/content/link): A component to navigate to another page.
+- [Link](/components/actions/link): A component to navigate to another page.

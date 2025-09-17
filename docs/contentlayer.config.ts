@@ -19,7 +19,7 @@ const git = simpleGit();
  *
  * Output:
  * - concepts/layouts -> concepts/layouts
- * - components/form/button/button -> components/form/button
+ * - components/actions/button/button -> components/actions/button
  */
 const getNormalizedPath = (val: string) => {
   let paths = val.split('/');
