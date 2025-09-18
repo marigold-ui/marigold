@@ -1,10 +1,10 @@
-import { ReactNode, forwardRef } from 'react';
+import type { ReactNode } from 'react';
+import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { ProgressCycle } from '../ProgressCycle';
 
-// Button is currently only component accepting className because of internal use.
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
 export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
@@ -18,7 +18,7 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
   size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 
   /**
-   * Stretches the button width with full available space.
+   * If true, the element stretches to fill the available width.
    * @default false
    */
   fullWidth?: boolean;
@@ -55,7 +55,6 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
         ref={ref}
         className={cn(
-          'inline-flex items-center justify-center gap-[0.5ch]',
           classNames,
           fullWidth ? 'w-full' : undefined,
           loading && 'cursor-progress!'

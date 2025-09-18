@@ -41,13 +41,26 @@ const getKeysFromSlots = (o: {
 };
 
 /**
+ * Come components don't have their own styles (e.g LinkButton uses Button styles)
+ */
+const getSharedAppearance = (name: string, theme: Theme) => {
+  switch (name) {
+    case 'LinkButton':
+      return theme.components.Button;
+    default:
+      return null;
+  }
+};
+
+/**
  * Get variants and sizes (= apperances) from a component
  */
 export const getAppearance = (
-  name: keyof Theme['components'],
+  name: keyof Theme['components'] | (string & {}),
   theme: Theme
 ) => {
-  const styles = theme.components[name] || {};
+  const styles =
+    (theme.components as any)[name] || getSharedAppearance(name, theme) || {};
   const appearances =
     'variants' in styles
       ? getKeys(styles.variants as ConfigSchema)
