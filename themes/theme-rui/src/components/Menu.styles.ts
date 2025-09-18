@@ -6,7 +6,7 @@ export const Menu: ThemeComponent<'Menu'> = {
   ]),
   item: cva(
     [
-      'relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none',
+      'relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none text-nowrap',
       'disabled:text-disabled-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
     ],
