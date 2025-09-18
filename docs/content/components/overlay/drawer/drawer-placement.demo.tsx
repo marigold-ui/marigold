@@ -92,8 +92,8 @@ export default function DrawerDemo() {
   return (
     <Drawer.Trigger open={open} onOpenChange={setOpen}>
       <Inline space={3}>
-        {['right', 'left', 'top', 'bottom'].map(p => (
-          <Button key={p} onPress={() => handleOpen(p as typeof placement)}>
+        {['right', 'left', 'top', 'bottom'].map((p: Placement) => (
+          <Button key={p} onPress={() => handleOpen(p)}>
             {p}
           </Button>
         ))}
