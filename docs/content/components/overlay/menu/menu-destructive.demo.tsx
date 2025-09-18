@@ -8,7 +8,11 @@ export default () => {
     <>
       <Menu label="Settings">
         <Menu.Item id="save">Save</Menu.Item>
-        <Menu.Item id="delete" onAction={() => setDialogOpen(true)}>
+        <Menu.Item
+          id="delete"
+          variant="destructive"
+          onAction={() => setDialogOpen(true)}
+        >
           Delete
         </Menu.Item>
       </Menu>
