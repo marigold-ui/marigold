@@ -8,36 +8,50 @@ Form design guidelines are essential in a design system to ensure consistency, u
 
 Forms consist of various inputs and controls for submitting data. These guidelines will help you structure forms consistently throughout your application.
 
-## Which components can I use?
-
-We have a bunch of components which are suitable for forms. You can find a detailed guide for this on the page [Form Fields](/foundation/form-fields). The guide shows you how to create meaningful form components.
-
 ## Basis layout
 
 It is important to consider the overall layout of the form, including the use of white space and the placement of buttons and other elements.
 Accessibility best practices should be followed, such as providing clear, descriptive labels and ensuring that form fields are appropriately labeled and structured for screen readers.
 
-A basic form can contain sections within according fields.
-Each section groups related fields together, making the form easier to scan and understand. Notice how the sections are visually separated with consistent spacing, helping users process the information in digestible chunks.
-
-The maximal width of a form should be 800px. This ensures that the form remains readable and user-friendly across different devices and screen sizes. A narrower form width helps prevent users from feeling overwhelmed by too many fields at once, making it easier to focus on completing the form.
-
 <GuidelineTiles>
   <Do>
     <Do.Description>
-      Group related fields inside sections to provide more context and make the
-      UI easier scannable.
+      <ul>
+        <li>
+          Group related fields inside sections to provide more context and make
+          the UI easier scannable.
+        </li>
+        <li>
+          Use a maximum width of 800px for forms to ensure readability across
+          devices.
+        </li>
+        <li>
+          Align form content to the left for better scanning and organization.
+        </li>
+        <li>Follow a predictable order of fields when creating forms.</li>
+      </ul>
     </Do.Description>
   </Do>
 </GuidelineTiles>
 
+### Which components can I use?
+
+We have various components suitable for forms. You can find a detailed guide on the [Form Fields](/foundation/form-fields) page.
+
+Key components for form structure:
+
+- **Layout components**: `<Stack>`, `<Inline>`, and `<Inset>` to organize fields and sections
+- **Accordion**: Group fields with expandable sections for lengthy forms or optional fields
+- **Buttons**: Use primary buttons for form submission, secondary for additional actions like "View PDF"
+- **Links**: For navigation to privacy policies or terms of service, not for form actions
+
 ## Sections
 
-Forms with multiple sections should maintain a spacing of 56px between each section. You can achieve this by using the `<Stack>` component with the `space` prop set to `56`.
+Sections help organize related fields together, making forms easier to scan and understand. They provide visual separation and context, allowing users to process information in manageable chunks.
+
+Forms with multiple sections should maintain 56px spacing between sections using `<Stack space={14}>`.
 
 <ComponentDemo file="./form-spacing-sections.demo.tsx" mode="preview" />
-
-This spacing provides enough visual separation to distinguish between different groups of content while maintaining a cohesive layout. The spacing ensures that users can easily identify where one section ends and another begins, improving the overall form completion experience.
 
 ### When to use sections
 
@@ -48,7 +62,7 @@ This spacing provides enough visual separation to distinguish between different 
 
 ## Fields
 
-Fields should have a length of the maximal content. This ensures that fields are neither too wide nor too narrow, promoting better readability and usability. A well-sized field helps users focus on the task at hand without feeling overwhelmed by excessive width or struggling with cramped input areas.
+Fields should have appropriate width based on their expected content length.
 
 <GuidelineTiles>
   <Do>
@@ -69,13 +83,23 @@ Fields should have a length of the maximal content. This ensures that fields are
 
 <ComponentDemo file="./form-spacing-fields.demo.tsx" />
 
-# Layout
+### When to group fields
 
-    - buttons in forms
-    - actions in forms
+- **Related information**: When fields share a common context or purpose (e.g. address fields, date and time)
+- **Conditional fields**: When certain fields are only relevant based on previous answers
 
-# Structure
+## Actions
 
-    - width
-    - accordions
-    - content
+Form actions guide users through completion and submission. Every form requires a primary submit action, but many forms benefit from additional secondary actions that provide alternative paths or supplementary functionality.
+
+### Submit placement
+
+The submit button should be positioned at the bottom of the form, aligned to the left to follow the natural reading flow. Place the primary action first, followed by secondary actions with appropriate spacing.
+
+<ComponentDemo file="./form-action.demo.tsx" mode="preview" />
+
+<ComponentDemo file="./form-link.demo.tsx" mode="preview" />
+
+## Full demo
+
+<ComponentDemo file="./form.demo.tsx" />
