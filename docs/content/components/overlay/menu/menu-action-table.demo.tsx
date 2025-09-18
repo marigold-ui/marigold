@@ -57,6 +57,7 @@ export default () => {
                   View Details
                 </Menu.Item>
                 <Menu.Item
+                  variant="destructive"
                   onAction={() =>
                     setTickets(
                       tickets.filter(

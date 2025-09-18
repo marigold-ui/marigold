@@ -6,7 +6,9 @@ export default () => {
     <Menu label="Actions" onAction={action => alert(`Your action: ${action}`)}>
       <Menu.Item id="edit">Open in editor</Menu.Item>
       <Menu.Item id="settings">Settings</Menu.Item>
-      <Menu.Item id="delete">Delete</Menu.Item>
+      <Menu.Item id="delete" variant="destructive">
+        Delete
+      </Menu.Item>
     </Menu>
   );
 };
