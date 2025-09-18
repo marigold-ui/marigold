@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import {
   Button,
   Drawer,
@@ -8,7 +8,15 @@ import {
   TextArea,
 } from '@marigold/components';
 
-const drawers = {
+interface DrawerConfig {
+  [key: string]: {
+    title: string;
+    content: ReactNode;
+    actions?: ReactNode;
+  };
+}
+
+const drawers: DrawerConfig = {
   top: {
     title: 'System Notification',
     content: (
@@ -18,7 +26,6 @@ const drawers = {
         <Text>✅ Ticket #4499 has been resolved</Text>
       </Stack>
     ),
-    actions: <Button slot="close">Dismiss</Button>,
   },
   bottom: {
     title: 'Reply to ticket',
@@ -49,7 +56,6 @@ const drawers = {
         <Text>✅ Ticket #4499 was resolved.</Text>
       </Stack>
     ),
-    actions: <Button slot="close">Close</Button>,
   },
 };
 
