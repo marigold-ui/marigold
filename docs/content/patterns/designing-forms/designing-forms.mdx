@@ -88,15 +88,15 @@ Fields should have appropriate width based on their expected content length.
 - **Related information**: When fields share a common context or purpose (e.g. address fields, date and time)
 - **Conditional fields**: When certain fields are only relevant based on previous answers
 
+### Required vs. optional fields
+
+These fields must be filled out for the form to be submitted. They are clearly indicated with an asterisk (\*) next to the label. Optional fields do not have this indicator, allowing users to skip them if they choose.
+
+When using `<Accordion>` components to group fields, ensure that required fields are placed outside of the accordion to maintain visibility and accessibility.
+
 ## Actions
 
 Form actions guide users through completion and submission. Every form requires a primary submit action, but many forms benefit from additional secondary actions that provide alternative paths or supplementary functionality.
-
-### Submit placement
-
-The submit button should be positioned at the bottom of the form, aligned to the left to follow the natural reading flow. Place the primary action first, followed by secondary actions with appropriate spacing.
-
-<ComponentDemo file="./form-action.demo.tsx" mode="preview" />
 
 ### Using additional actions in forms
 
@@ -106,6 +106,14 @@ Place the action near the related field where the action is for with that contex
 
 <ComponentDemo file="./form-link.demo.tsx" mode="preview" />
 
+### Submit placement
+
+The submit button should be positioned at the bottom of the form, aligned to the left to follow the natural reading flow. Place the primary action first, followed by secondary actions with appropriate spacing.
+
+<ComponentDemo file="./form-action.demo.tsx" mode="preview" />
+
 ## Full demo
+
+Here is a full example of a well-structured form with sections using the guidelines mentioned above. This is a fictional event registration form that includes various field types, sections, and actions.
 
 <ComponentDemo file="./form.demo.tsx" />

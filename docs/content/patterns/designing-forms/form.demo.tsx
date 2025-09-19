@@ -112,8 +112,8 @@ export default () => {
       <Stack space={8}>
         <Headline level={2}>Location & Capacity</Headline>
         <TextField
-          label="Venue Name"
-          description="Enter the venue or platform name"
+          label="Location Description"
+          description="Provide additional details about the event location"
         />
         <Inset spaceY={4}>
           <Stack space={4}>
@@ -135,7 +135,6 @@ export default () => {
                 Create new venue
               </Button>
             </Inline>
-
             <TextField label="Name" value={name} onChange={setName} />
             <TextField label="Street" value={street} onChange={setStreet} />
             <Inline space={5}>
@@ -152,7 +151,7 @@ export default () => {
                 onChange={setCity}
               />
             </Inline>
-            <Stack>
+            <Stack space={1}>
               <Select
                 label="Country"
                 placeholder="Select country"
@@ -185,12 +184,8 @@ export default () => {
                   label="Room"
                   description="Specify room or area within the venue"
                 />
-                <Stack>
-                  <TextField
-                    label="Online Meeting Link"
-                    description="URL for virtual events"
-                    type="url"
-                  />
+                <Stack space={1}>
+                  <TextField label="Online Meeting Link" type="url" />
                   <Link href="#">Open online meeting link</Link>
                 </Stack>
                 <NumberField
@@ -207,16 +202,18 @@ export default () => {
 
       <Stack space={8}>
         <Headline level={2}>Registration Settings</Headline>
-        <Checkbox.Group>
-          <Checkbox label="Require registration approval" />
-          <Checkbox label="Send confirmation emails" />
-        </Checkbox.Group>
+        <Checkbox label="Require registration approval" />
+        <Checkbox label="Send confirmation emails" />
         <TextField
           label="Contact Email"
           description="Email for event inquiries"
           type="email"
           required
         />
+        <Stack space={1}>
+          <TextField type="file" label="Upload Registration Document" />
+          <Link href="#">View PDF</Link>
+        </Stack>
         <NumberField
           label="Registration Fee"
           description="Enter amount (leave empty if free)"

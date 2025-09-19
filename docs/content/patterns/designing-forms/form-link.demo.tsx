@@ -75,7 +75,7 @@ export default () => {
         />
         <TextField label="City" width={44} value={city} onChange={setCity} />
       </Inline>
-      <Stack>
+      <Stack space={1}>
         <Select
           label="Country"
           placeholder="Select country"
