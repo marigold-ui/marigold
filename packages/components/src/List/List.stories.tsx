@@ -17,9 +17,17 @@ const meta = {
         defaultValue: { summary: 'ul' },
       },
     },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: ['default', 'small'],
+      description: 'Size of the list items',
+    },
   },
   args: {
     as: 'ul',
+    size: 'default',
   },
 } satisfies Meta<typeof List>;
 
