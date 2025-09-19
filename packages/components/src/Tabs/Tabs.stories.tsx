@@ -4,13 +4,6 @@ import { Tabs, TabsProps } from './Tabs';
 const meta = {
   title: 'Components/Tabs',
   argTypes: {
-    variant: {
-      control: {
-        type: 'select',
-      },
-      options: ['none', 'sunken'],
-      description: 'Variant of the tabs (core only)',
-    },
     disabled: {
       control: { type: 'boolean' },
       description: 'Disable all the tabs',
@@ -18,11 +11,6 @@ const meta = {
     selectedKey: {
       control: { type: 'text' },
       description: 'Select the active tab',
-    },
-    size: {
-      control: { type: 'select' },
-      description: 'Select the size of the tab controller',
-      options: ['small', 'medium', 'large'],
     },
     keyboardActivation: {
       defaultValue: 'automatic',
