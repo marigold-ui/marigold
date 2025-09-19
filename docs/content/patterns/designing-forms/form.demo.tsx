@@ -2,7 +2,9 @@ import { venues } from '@/lib/data/venues';
 import { useState } from 'react';
 import {
   Accordion,
+  Badge,
   Button,
+  Card,
   Checkbox,
   DatePicker,
   Headline,
@@ -168,6 +170,7 @@ export default () => {
               <Link
                 href={`https://www.google.com/maps/search/?api=1&query=${name},${city},${country}`}
                 target="_blank"
+                size="small"
               >
                 Open in maps
               </Link>
@@ -186,7 +189,9 @@ export default () => {
                 />
                 <Stack space={1}>
                   <TextField label="Online Meeting Link" type="url" />
-                  <Link href="#">Open online meeting link</Link>
+                  <Link href="#" size="small">
+                    Open online meeting link
+                  </Link>
                 </Stack>
                 <NumberField
                   label="Maximum Attendees"
@@ -212,7 +217,9 @@ export default () => {
         />
         <Stack space={1}>
           <TextField type="file" label="Upload Registration Document" />
-          <Link href="#">View PDF</Link>
+          <Link href="#" size="small">
+            View PDF
+          </Link>
         </Stack>
         <NumberField
           label="Registration Fee"
@@ -220,6 +227,15 @@ export default () => {
           hideStepper
           width={32}
         />
+        <Card variant="master">
+          <Checkbox
+            label={
+              <>
+                Enable early bird pricing <Badge variant="master">Master</Badge>
+              </>
+            }
+          />
+        </Card>
       </Stack>
 
       <Inline space={4}>

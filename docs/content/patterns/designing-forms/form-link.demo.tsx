@@ -92,6 +92,7 @@ export default () => {
         <Link
           href={`https://www.google.com/maps/search/?api=1&query=${name},${city},${country}`}
           target="_blank"
+          size="small"
         >
           Open in maps
         </Link>
