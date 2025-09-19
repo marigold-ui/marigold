@@ -57,9 +57,29 @@ const drawers: DrawerConfig = {
       </Stack>
     ),
   },
+  left: {
+    title: 'Support Teams',
+    content: (
+      <Stack space={5}>
+        <Stack>
+          <Text>🎟 Frontline Support</Text>
+          <Text>Active tickets: 34</Text>
+        </Stack>
+        <Stack>
+          <Text>💳 Billing Team</Text>
+          <Text>Active tickets: 12</Text>
+        </Stack>
+        <Stack>
+          <Text>⚙️ Technical Support</Text>
+          <Text>Active tickets: 8</Text>
+        </Stack>
+      </Stack>
+    ),
+    actions: <Button slot="close">Close</Button>,
+  },
 };
 
-type Placement = 'right' | 'top' | 'bottom';
+type Placement = 'right' | 'left' | 'top' | 'bottom';
 
 export default function DrawerDemo() {
   const [placement, setPlacement] = useState<Placement>('right');
