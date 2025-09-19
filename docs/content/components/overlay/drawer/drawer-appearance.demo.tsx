@@ -10,7 +10,7 @@ import {
 export default (props: DrawerProps) => (
   <Drawer.Trigger>
     <Button>Open Ticket Details</Button>
-    <Drawer {...props} size="medium">
+    <Drawer {...props}>
       <Drawer.Title>Ticket #4521 - Login Issue</Drawer.Title>
       <Drawer.Content>
         <Stack space={6}>
