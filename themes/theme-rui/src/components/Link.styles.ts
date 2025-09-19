@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Link: ThemeComponent<'Link'> = cva(
-  'aria-[disabled]:cursor-not-allowed',
+  'text-sm aria-[disabled]:cursor-not-allowed',
   {
     variants: {
       variant: {
