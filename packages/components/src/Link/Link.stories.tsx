@@ -11,14 +11,14 @@ const meta = {
         type: 'radio',
       },
       options: ['default', 'secondary'],
-      description: 'Variants of the link, content only for core.',
+      description: 'Variants of the link.',
     },
     size: {
       control: {
         type: 'radio',
       },
       options: ['default', 'small'],
-      description: 'Variants of the link, content only for core.',
+      description: 'Sizes of the link.',
     },
     href: {
       control: {
