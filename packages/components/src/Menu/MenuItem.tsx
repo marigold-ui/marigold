@@ -5,12 +5,15 @@ import { useClassNames } from '@marigold/system';
 // Props
 // ---------------
 type RemovedProps = 'style' | 'className';
-export type MenuItemProps = Omit<RAC.MenuItemProps, RemovedProps>;
+export interface MenuItemProps extends Omit<RAC.MenuItemProps, RemovedProps> {
+  variant?: 'destructive' | 'default' | (string & {});
+  size?: string;
+}
 
 // Component
 // ---------------
-const _MenuItem = ({ children, ...props }: MenuItemProps) => {
-  const classNames = useClassNames({ component: 'Menu' });
+const _MenuItem = ({ children, variant, size, ...props }: MenuItemProps) => {
+  const classNames = useClassNames({ component: 'Menu', variant, size });
   return (
     <MenuItem {...props} className={classNames.item}>
       {children}

@@ -34,11 +34,15 @@ const getSelectWidth = (options: string[]) => {
 // ---------------
 export interface AppearanceDemoProps {
   component: keyof Theme['components'];
+  exclude?: {
+    variant?: string[];
+    size?: string[];
+  };
 }
 
 // Component
 // ---------------
-export const AppearanceDemo = ({ component }: AppearanceDemoProps) => {
+export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
   const name = `${component.toLowerCase()}-appearance` as keyof typeof registry;
 
   if (!registry[name]) {
@@ -46,7 +50,21 @@ export const AppearanceDemo = ({ component }: AppearanceDemoProps) => {
   }
 
   const Demo: ComponentType<any> = registry[name].demo;
-  const appearance = getAppearance(component, ruiTheme);
+  let appearance = getAppearance(component, ruiTheme);
+
+  /**
+   * Exclude variants and sizes from the dropdown which are not desired in the demo.
+   * This is useful when variants and sizes are only part of child components and have
+   * no relevance for the demo itself.
+   */
+  appearance = {
+    variant: exclude?.variant
+      ? appearance.variant.filter(v => !exclude.variant!.includes(v))
+      : appearance.variant,
+    size: exclude?.size
+      ? appearance.size.filter(s => !exclude.size!.includes(s))
+      : appearance.size,
+  };
 
   const [selected, setSelected] = useState({
     variant: appearance.variant.length

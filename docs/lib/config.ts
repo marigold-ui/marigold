@@ -30,6 +30,10 @@ export const siteConfig = {
           slug: 'layout',
         },
         {
+          name: 'Actions',
+          slug: 'actions',
+        },
+        {
           name: 'Form',
           slug: 'form',
         },

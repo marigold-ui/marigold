@@ -32,6 +32,7 @@ export * from './DatePicker';
 export * from './Inset';
 export * from './Label';
 export * from './Link';
+export * from './LinkButton';
 export * from './List';
 export * from './Menu';
 export * from './SectionMessage';
