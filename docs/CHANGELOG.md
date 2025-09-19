@@ -1,5 +1,27 @@
 # @marigold/docs
 
+## 15.3.0
+
+### Minor Changes
+
+- 91a5e7b: feat([DST-1044]): Introduce `LinkButton` component
+- beeba04: feat([DST-1042]): Add "destrutive" variant to `<Menu.Item>`
+
+### Patch Changes
+
+- 76860f0: docs: remove info message from pagination docs
+- Updated dependencies [fa1f489]
+- Updated dependencies [4395d2e]
+- Updated dependencies [91a5e7b]
+- Updated dependencies [89e2b70]
+- Updated dependencies [beeba04]
+- Updated dependencies [ce13acf]
+  - @marigold/theme-rui@2.3.0
+  - @marigold/components@15.3.0
+  - @marigold/theme-docs@3.1.9
+  - @marigold/system@15.3.0
+  - @marigold/icons@1.3.23
+
 ## 15.2.0
 
 ### Minor Changes

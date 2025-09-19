@@ -1,5 +1,23 @@
 # @marigold/theme-rui
 
+## 2.3.0
+
+### Minor Changes
+
+- 4395d2e: feat([DST-1047]): Improve `<List>` styles and add `small` variant
+- beeba04: feat([DST-1042]): Add "destrutive" variant to `<Menu.Item>`
+
+### Patch Changes
+
+- fa1f489: fix(Link): Add 'text-sm' class to Link component styles
+- 89e2b70: fix(Tag): Adjust tag styles (no extra padding if empty state is small, e.g. only text)
+- ce13acf: fix([DST-1046]): Remove extra padding at the bottom of `<Select>`.
+- Updated dependencies [4395d2e]
+- Updated dependencies [91a5e7b]
+- Updated dependencies [beeba04]
+  - @marigold/components@15.3.0
+  - @marigold/system@15.3.0
+
 ## 2.2.0
 
 ### Minor Changes
