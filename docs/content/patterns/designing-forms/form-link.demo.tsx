@@ -12,13 +12,36 @@ import {
 
 export default () => {
   const [selectedVenueId, setSelectedVenueId] = useState<string>(venues[0].id);
-  const selectedVenue =
-    venues.find(venue => venue.id === selectedVenueId) || null;
+  const [name, setName] = useState<string>(venues[0].name);
+  const [street, setStreet] = useState<string>(venues[0].street);
+  const [postcode, setPostcode] = useState<string>(venues[0].postcode);
+  const [city, setCity] = useState<string>(venues[0].city);
+  const [country, setCountry] = useState<string>(venues[0].country);
+
   const uniqueCountries = Array.from(
     new Set(venues.map(venue => venue.country))
   );
 
-  console.log(selectedVenue);
+  const handleVenueChange = (venueId: string) => {
+    setSelectedVenueId(venueId);
+    const venue = venues.find(v => v.id === venueId);
+    if (venue) {
+      setName(venue.name);
+      setStreet(venue.street);
+      setPostcode(venue.postcode);
+      setCity(venue.city);
+      setCountry(venue.country);
+    }
+  };
+
+  const handleReset = () => {
+    setSelectedVenueId('');
+    setName('');
+    setStreet('');
+    setPostcode('');
+    setCity('');
+    setCountry('');
+  };
 
   return (
     <Stack space={4}>
@@ -26,8 +49,8 @@ export default () => {
         <Select
           label="Venue"
           selectedKey={selectedVenueId}
-          onChange={key => setSelectedVenueId(key as string)}
-          width={80}
+          onChange={handleVenueChange}
+          width={96}
         >
           {venues.map(venue => (
             <Select.Option key={venue.id} id={venue.id}>
@@ -36,27 +59,29 @@ export default () => {
           ))}
         </Select>
         <Split />
-        <Button variant="secondary" onPress={() => setSelectedVenueId('')}>
-          Add new venue
+        <Button variant="secondary" onPress={handleReset}>
+          Create new venue
         </Button>
       </Inline>
 
-      <TextField label="Name" value={selectedVenue?.name || ''} />
-      <TextField label="Street" value={selectedVenue?.street || ''} />
+      <TextField label="Name" value={name} onChange={setName} />
+      <TextField label="Street" value={street} onChange={setStreet} />
       <Inline space={5}>
         <TextField
           label="Postcode"
           width={20}
-          value={selectedVenue?.postcode || ''}
+          value={postcode}
+          onChange={setPostcode}
         />
-        <TextField label="City" width={44} value={selectedVenue?.city || ''} />
+        <TextField label="City" width={44} value={city} onChange={setCity} />
       </Inline>
       <Stack>
         <Select
           label="Country"
           placeholder="Select country"
           width={40}
-          selectedKey={selectedVenue?.country || ''}
+          selectedKey={country}
+          onChange={key => setCountry(key as string)}
         >
           {uniqueCountries.map(country => (
             <Select.Option key={country} id={country}>
@@ -65,10 +90,10 @@ export default () => {
           ))}
         </Select>
         <Link
-          href={`https://www.google.com/maps/search/?api=1&query=${selectedVenue?.name || ''},${selectedVenue?.city || ''},${selectedVenue?.country || ''}`}
+          href={`https://www.google.com/maps/search/?api=1&query=${name},${city},${country}`}
           target="_blank"
         >
-          Open maps
+          Open in maps
         </Link>
       </Stack>
     </Stack>
