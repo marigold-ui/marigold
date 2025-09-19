@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 15.3.0
+
+### Minor Changes
+
+- 4395d2e: feat([DST-1047]): Improve `<List>` styles and add `small` variant
+- 91a5e7b: feat([DST-1044]): Introduce `LinkButton` component
+- beeba04: feat([DST-1042]): Add "destrutive" variant to `<Menu.Item>`
+
+### Patch Changes
+
+- @marigold/system@15.3.0
+
 ## 15.2.0
 
 ### Patch Changes
