@@ -1,5 +1,6 @@
 import {
   Badge,
+  Card,
   Checkbox,
   List,
   Select,
@@ -35,28 +36,32 @@ export default () => (
           <Select.Option id="promoter">Promoter</Select.Option>
           <Select.Option id="freelancer">Freelancer</Select.Option>
         </Select>
-        <Select
-          label={
-            <>
-              Associated Team <Badge variant="master">Master</Badge>
-            </>
-          }
-          width={56}
-          defaultSelectedKey={'regional'}
-        >
-          <Select.Option id="inbound">Inbound Sales</Select.Option>
-          <Select.Option id="outbound">Outbound Sales</Select.Option>
-          <Select.Option id="keyaccounts">Key Accounts</Select.Option>
-          <Select.Option id="regional">Regional Sales</Select.Option>
-        </Select>
-        <Checkbox
-          label={
-            <>
-              Enable Diagnostics <Badge variant="admin">Admin</Badge>
-            </>
-          }
-          defaultChecked
-        />
+        <Card variant="master">
+          <Select
+            label={
+              <>
+                Associated Team <Badge variant="master">Master</Badge>
+              </>
+            }
+            width={56}
+            defaultSelectedKey={'regional'}
+          >
+            <Select.Option id="inbound">Inbound Sales</Select.Option>
+            <Select.Option id="outbound">Outbound Sales</Select.Option>
+            <Select.Option id="keyaccounts">Key Accounts</Select.Option>
+            <Select.Option id="regional">Regional Sales</Select.Option>
+          </Select>
+        </Card>
+        <Card variant="admin">
+          <Checkbox
+            label={
+              <>
+                Enable Diagnostics <Badge variant="admin">Admin</Badge>
+              </>
+            }
+            defaultChecked
+          />
+        </Card>
       </Stack>
     </Tabs.TabPanel>
     <Tabs.TabPanel id="events">
