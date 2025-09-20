@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { chain } from '@react-aria/utils';
 import { Button } from '../Button';
 import { intlMessages } from '../intl/messages';
 import type { DialogProps } from './Dialog';
@@ -28,7 +29,7 @@ export interface ConfirmationDialogProps
    */
   onPrimaryAction?: () => void;
   /**
-   * Handler that is called when the secondary button is pressed.
+   * Button to focus by default when the dialog opens.
    */
   autoFocusButton?: 'cancel' | 'primary';
   /**
@@ -41,6 +42,9 @@ export const ConfirmationDialog = ({
   title,
   actionLabel,
   cancelLabel,
+  onCancel,
+  onPrimaryAction,
+  autoFocusButton,
   children,
   variant,
   size = 'xsmall',
@@ -50,16 +54,29 @@ export const ConfirmationDialog = ({
 
   return (
     <Dialog role="alertdialog" variant={variant} size={size} {...props}>
-      <Dialog.Title>{title}</Dialog.Title>
-      <Dialog.Content>{children}</Dialog.Content>
-      <Dialog.Actions>
-        <Button variant="ghost" slot="close">
-          {cancelLabel ?? stringFormatter.format('cancel')}
-        </Button>
-        <Button variant={variant === 'destructive' ? 'destructive' : 'primary'}>
-          {actionLabel}
-        </Button>
-      </Dialog.Actions>
+      {({ close }) => (
+        <>
+          <Dialog.Title>{title}</Dialog.Title>
+          <Dialog.Content>{children}</Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              onPress={() => chain(close(), onCancel?.())}
+              autoFocus={autoFocusButton === 'cancel'}
+            >
+              {cancelLabel ?? stringFormatter.format('cancel')}
+            </Button>
+            <Button
+              variant={variant === 'destructive' ? 'destructive' : 'primary'}
+              onPress={() => chain(close(), onPrimaryAction?.())}
+              autoFocus={autoFocusButton === 'primary'}
+            >
+              {actionLabel}
+            </Button>
+          </Dialog.Actions>
+        </>
+      )}
     </Dialog>
   );
 };
+
+ConfirmationDialog.Trigger = Dialog.Trigger;

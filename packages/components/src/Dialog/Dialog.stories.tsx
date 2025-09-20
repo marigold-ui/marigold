@@ -148,11 +148,11 @@ export const OpenFromMenu: Story = {
 
 export const Confirmation: Story = {
   render: () => (
-    <Dialog.Trigger>
+    <ConfirmationDialog.Trigger>
       <Button>Confirm</Button>
       <ConfirmationDialog title="Confirmation" actionLabel="Confirm">
         Are you sure you want to proceed with this action?
       </ConfirmationDialog>
-    </Dialog.Trigger>
+    </ConfirmationDialog.Trigger>
   ),
 };
