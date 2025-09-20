@@ -49,7 +49,7 @@ export const ConfirmationDialog = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
 
   return (
-    <Dialog variant={variant} size={size} {...props}>
+    <Dialog role="alertdialog" variant={variant} size={size} {...props}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>{children}</Dialog.Content>
       <Dialog.Actions>
