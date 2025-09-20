@@ -6,7 +6,7 @@ import type { DialogProps } from './Dialog';
 import { Dialog } from './Dialog';
 
 export interface ConfirmationDialogProps
-  extends Pick<DialogProps, 'variant' | 'size'> {
+  extends Pick<DialogProps, 'variant' | 'size' | 'closeButton'> {
   /**
    * The dialog's title.
    */
@@ -44,11 +44,12 @@ export const ConfirmationDialog = ({
   children,
   variant,
   size = 'xsmall',
+  ...props
 }: ConfirmationDialogProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
 
   return (
-    <Dialog variant={variant} size={size}>
+    <Dialog variant={variant} size={size} {...props}>
       <Dialog.Title>{title}</Dialog.Title>
       <Dialog.Content>{children}</Dialog.Content>
       <Dialog.Actions>

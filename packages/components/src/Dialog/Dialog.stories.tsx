@@ -4,6 +4,7 @@ import { Button } from '../Button';
 import { Menu } from '../Menu';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
 const meta = {
@@ -143,4 +144,15 @@ export const OpenFromMenu: Story = {
       </>
     );
   },
+};
+
+export const Confirmation: Story = {
+  render: () => (
+    <Dialog.Trigger>
+      <Button>Confirm</Button>
+      <ConfirmationDialog title="Confirmation" actionLabel="Confirm">
+        Are you sure you want to proceed with this action?
+      </ConfirmationDialog>
+    </Dialog.Trigger>
+  ),
 };
