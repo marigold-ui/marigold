@@ -15,10 +15,12 @@ import { DialogContent } from './DialogContent';
 import { DialogTitle } from './DialogTitle';
 import { DialogContext, DialogTrigger } from './DialogTrigger';
 
+// Props
+// ---------------
 export interface DialogProps
   extends Omit<RAC.DialogProps, 'className' | 'style'> {
   variant?: string;
-  size?: string;
+  size?: 'xsmall' | 'small' | 'medium' | (string & {});
   /**
    * Show the close button.
    */
@@ -29,35 +31,14 @@ interface DialogComponent
   extends ForwardRefExoticComponent<
     DialogProps & RefAttributes<HTMLInputElement>
   > {
-  /**
-   * Options for the Combobox.
-   */
   Trigger: typeof DialogTrigger;
-
   Title: typeof DialogTitle;
-
   Content: typeof DialogContent;
-
   Actions: typeof DialogActions;
 }
 
-// Props
+// Component
 // ---------------
-export interface DialogProps
-  extends Omit<RAC.DialogProps, 'className' | 'style'> {
-  variant?: string;
-  size?: string;
-  /**
-   * Show the close button.
-   */
-  closeButton?: boolean;
-  /**
-   * If `true`, the dialog will be non-modal, meaning it will not block interaction with the background content.
-   * @default false
-   */
-  isNonModal?: boolean;
-}
-
 const _Dialog = forwardRef(
   (
     { variant, size, ...props }: DialogProps,
