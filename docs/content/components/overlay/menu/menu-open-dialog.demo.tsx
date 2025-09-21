@@ -24,24 +24,18 @@ export default () => {
           Delete
         </Menu.Item>
       </Menu>
-      <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
-        <Dialog closeButton>
-          {({ close }) => (
-            <>
-              <Dialog.Title>Confirm delete</Dialog.Title>
-              <Dialog.Content>Do you really wanna delete this?</Dialog.Content>
-              <Dialog.Actions>
-                <Button variant="ghost" onPress={close}>
-                  Cancel
-                </Button>
-                <Button variant="destructive" onPress={close}>
-                  Delete
-                </Button>
-              </Dialog.Actions>
-            </>
-          )}
-        </Dialog>
-      </Dialog.Trigger>
+      <Dialog closeButton open={open} onOpenChange={setDialogOpen}>
+        <Dialog.Title>Confirm delete</Dialog.Title>
+        <Dialog.Content>Do you really wanna delete this?</Dialog.Content>
+        <Dialog.Actions>
+          <Button slot="close" variant="ghost" onPress={close}>
+            Cancel
+          </Button>
+          <Button slot="close" variant="destructive" onPress={close}>
+            Delete
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
     </>
   );
 };
