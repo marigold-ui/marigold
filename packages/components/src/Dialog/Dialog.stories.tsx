@@ -126,18 +126,20 @@ export const OpenFromMenu: Story = {
           </Menu.Item>
         </Menu>
         <Dialog open={open} onOpenChange={setDialogOpen} closeButton>
-          <Dialog.Title>Confirm delete</Dialog.Title>
-          <Dialog.Content>
-            <Text>Do you really wanna delete this?</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button slot="close" variant="secondary">
-              Cancel
-            </Button>
-            <Button slot="close" variant="primary">
-              Delete
-            </Button>
-          </Dialog.Actions>
+          {({ close }) => (
+            <>
+              <Dialog.Title>Confirm delete</Dialog.Title>
+              <Dialog.Content>
+                <Text>Do you really wanna delete this?</Text>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button slot="close">Cancel</Button>
+                <Button variant="primary" onPress={close}>
+                  Delete
+                </Button>
+              </Dialog.Actions>
+            </>
+          )}
         </Dialog>
       </>
     );

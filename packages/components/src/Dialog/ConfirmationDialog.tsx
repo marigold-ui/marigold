@@ -63,14 +63,14 @@ export const ConfirmationDialog = ({
           <Dialog.Content>{children}</Dialog.Content>
           <Dialog.Actions>
             <Button
-              onPress={() => chain(close, onCancel)}
+              onPress={() => chain(close(), onCancel?.())}
               autoFocus={autoFocusButton === 'cancel'}
             >
               {cancelLabel ?? stringFormatter.format('cancel')}
             </Button>
             <Button
               variant={variant === 'destructive' ? 'destructive' : 'primary'}
-              onPress={() => chain(close, onPrimaryAction)}
+              onPress={() => chain(close(), onPrimaryAction?.())}
               autoFocus={autoFocusButton === 'action'}
             >
               {actionLabel}
