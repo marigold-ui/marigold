@@ -10,10 +10,11 @@ import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton';
 import { Modal, ModalProps } from '../Overlay';
+import { DialogContext } from './Context';
 import { DialogActions } from './DialogActions';
 import { DialogContent } from './DialogContent';
 import { DialogTitle } from './DialogTitle';
-import { DialogContext, DialogTrigger } from './DialogTrigger';
+import { DialogTrigger } from './DialogTrigger';
 
 // Helper
 // ---------------

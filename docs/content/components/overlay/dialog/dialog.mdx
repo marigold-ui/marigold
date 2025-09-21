@@ -97,13 +97,22 @@ When a dialog requires the user's immediate attention, such as for an error or w
 
 It is essential for situations where the user must address an issue before continuing, such as critical system errors or warnings about destructive actions. Proper use of `role="alertdialog"` improves accessibility and ensures important messages are not missed.
 
-### Controlled
+### Confirmation
 
-You can programmatically open a dialog by using the `open` and `onOpenChange` props from the `<Dialog.Trigger>`. This is particularly helpful when the action cannot be initiated by a simple `<Button>` component, such as when selecting an option from a dropdown menu or a context menu that requires additional confirmation before proceeding.
+A confirmation dialog asks a user to verify an action, preventing accidental and destructive outcomes. Use it for irreversible actions with significant consequences, such as permanently deleting a file or discarding unsaved changes.
 
-For instance, selecting "Delete" from a menu might trigger a confirmation dialog to ensure the user fully understands the destructive nature of the action and its consequences. This extra step helps prevent accidental deletions by requiring explicit confirmation before proceeding.
+For an effective dialog, be specific in your prompt. For example, ask "Permanently delete this account?" instead of a generic "Are you sure?". Action buttons should have clear, unambiguous labels like "Delete" and "Cancel". To avoid user fatigue, reserve confirmation dialogs only for actions that truly warrant a second thought, not for minor tasks.
 
 <ComponentDemo file="./dialog-from-menu.demo.tsx" />
+
+<SectionMessage>
+  <SectionMessage.Title>
+    Styling for Negative Consequences
+  </SectionMessage.Title>
+  <SectionMessage.Content>
+    For actions with potentially negative consequences, such as deleting an item, apply the `"destructive"` variant to the `<ConfirmationDialog>`. This will automatically style the dialog and its primary action button to visually communicate a serious or irreversible operation
+  </SectionMessage.Content>
+</SectionMessage>
 
 ## Props
 

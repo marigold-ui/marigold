@@ -25,6 +25,7 @@ export default () => {
         </Menu.Item>
       </Menu>
       <ConfirmationDialog
+        variant="destructive"
         title="Confirm delete"
         actionLabel="Delete"
         closeButton
