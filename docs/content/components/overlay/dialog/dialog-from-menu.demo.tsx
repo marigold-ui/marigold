@@ -22,16 +22,16 @@ export default () => {
         <Menu.Item id="save">Save</Menu.Item>
         <Menu.Item id="delete">Delete</Menu.Item>
       </Menu>
-      <ConfirmationDialog.Trigger open={open} onOpenChange={setDialogOpen}>
-        <ConfirmationDialog
-          title="Confirm delete"
-          actionLabel="Delete"
-          closeButton
-        >
-          Are you sure you want to delete this event? This action cannot be
-          undone.
-        </ConfirmationDialog>
-      </ConfirmationDialog.Trigger>
+      <ConfirmationDialog
+        title="Confirm delete"
+        actionLabel="Delete"
+        closeButton
+        open={open}
+        onOpenChange={setDialogOpen}
+      >
+        Are you sure you want to delete this event? This action cannot be
+        undone.
+      </ConfirmationDialog>
     </>
   );
 };

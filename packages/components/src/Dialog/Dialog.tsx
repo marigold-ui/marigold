@@ -9,7 +9,7 @@ import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton';
-import { Modal } from '../Overlay';
+import { Modal, ModalProps } from '../Overlay';
 import { DialogActions } from './DialogActions';
 import { DialogContent } from './DialogContent';
 import { DialogTitle } from './DialogTitle';
@@ -18,7 +18,8 @@ import { DialogContext, DialogTrigger } from './DialogTrigger';
 // Props
 // ---------------
 export interface DialogProps
-  extends Omit<RAC.DialogProps, 'className' | 'style'> {
+  extends Omit<RAC.DialogProps, 'className' | 'style'>,
+    Pick<ModalProps, 'open' | 'onOpenChange'> {
   variant?: string;
   size?: 'xsmall' | 'small' | 'medium' | (string & {});
   /**
@@ -41,7 +42,7 @@ interface DialogComponent
 // ---------------
 const _Dialog = forwardRef(
   (
-    { variant, size, ...props }: DialogProps,
+    { variant, size, open, onOpenChange, ...props }: DialogProps,
     ref: Ref<HTMLElement> | undefined
   ) => {
     const classNames = useClassNames({
@@ -49,9 +50,7 @@ const _Dialog = forwardRef(
       variant,
       size,
     });
-    const { isDismissable, isKeyboardDismissDisabled, isOpen, onOpenChange } =
-      useContext(DialogContext);
-
+    const ctx = useContext(DialogContext);
     const state = useContext(OverlayTriggerStateContext);
 
     const children =
@@ -63,11 +62,11 @@ const _Dialog = forwardRef(
 
     return (
       <Modal
-        dismissable={isDismissable}
-        keyboardDismissable={isKeyboardDismissDisabled}
-        open={isOpen}
+        dismissable={ctx.isDismissable}
+        keyboardDismissable={ctx.isKeyboardDismissDisabled}
         size={size}
-        onOpenChange={onOpenChange}
+        open={typeof open === 'boolean' ? open : ctx.isOpen}
+        onOpenChange={onOpenChange || ctx.onOpenChange}
       >
         <Dialog
           {...props}

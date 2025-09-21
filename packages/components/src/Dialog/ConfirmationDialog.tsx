@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { chain } from '@react-aria/utils';
 import { Button } from '../Button';
 import { intlMessages } from '../intl/messages';
 import type { DialogProps } from './Dialog';
@@ -57,27 +56,25 @@ export const ConfirmationDialog = ({
 
   return (
     <Dialog role="alertdialog" variant={variant} size={size} {...props}>
-      {({ close }) => (
-        <>
-          <Dialog.Title>{title}</Dialog.Title>
-          <Dialog.Content>{children}</Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              onPress={() => chain(close(), onCancel?.())}
-              autoFocus={autoFocusButton === 'cancel'}
-            >
-              {cancelLabel ?? stringFormatter.format('cancel')}
-            </Button>
-            <Button
-              variant={variant === 'destructive' ? 'destructive' : 'primary'}
-              onPress={() => chain(close(), onPrimaryAction?.())}
-              autoFocus={autoFocusButton === 'action'}
-            >
-              {actionLabel}
-            </Button>
-          </Dialog.Actions>
-        </>
-      )}
+      <Dialog.Title>{title}</Dialog.Title>
+      <Dialog.Content>{children}</Dialog.Content>
+      <Dialog.Actions>
+        <Button
+          slot="close"
+          onPress={onCancel}
+          autoFocus={autoFocusButton === 'cancel'}
+        >
+          {cancelLabel ?? stringFormatter.format('cancel')}
+        </Button>
+        <Button
+          slot="close"
+          variant={variant === 'destructive' ? 'destructive' : 'primary'}
+          onPress={onPrimaryAction}
+          autoFocus={autoFocusButton === 'action'}
+        >
+          {actionLabel}
+        </Button>
+      </Dialog.Actions>
     </Dialog>
   );
 };

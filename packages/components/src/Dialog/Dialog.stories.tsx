@@ -125,22 +125,20 @@ export const OpenFromMenu: Story = {
             Delete
           </Menu.Item>
         </Menu>
-        <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
-          <Dialog closeButton>
-            <Dialog.Title>Confirm delete</Dialog.Title>
-            <Dialog.Content>
-              <Text>Do you really wanna delete this?</Text>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button slot="close" variant="secondary">
-                Cancel
-              </Button>
-              <Button slot="close" variant="primary">
-                Delete
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Dialog.Trigger>
+        <Dialog open={open} onOpenChange={setDialogOpen} closeButton>
+          <Dialog.Title>Confirm delete</Dialog.Title>
+          <Dialog.Content>
+            <Text>Do you really wanna delete this?</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button slot="close" variant="secondary">
+              Cancel
+            </Button>
+            <Button slot="close" variant="primary">
+              Delete
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
       </>
     );
   },
