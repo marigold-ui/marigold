@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, ConfirmationDialog, Menu } from '@marigold/components';
+import { ConfirmationDialog, Menu } from '@marigold/components';
 
 export default () => {
   const [open, setDialogOpen] = useState(false);
@@ -26,8 +26,6 @@ export default () => {
         <ConfirmationDialog
           title="Confirm delete"
           actionLabel="Delete"
-          onCancel={close}
-          onAction={close}
           closeButton
         >
           Are you sure you want to delete this event? This action cannot be
