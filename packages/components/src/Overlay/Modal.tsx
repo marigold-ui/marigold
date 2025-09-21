@@ -35,7 +35,6 @@ const _Modal = forwardRef<
     ref
   ) => {
     const className = useClassNames({ component: 'Modal', size });
-
     return (
       <Underlay
         dismissable={dismissable}

@@ -62,9 +62,9 @@ const _Dialog = forwardRef(
 
     return (
       <Modal
+        size={size}
         dismissable={ctx.isDismissable}
         keyboardDismissable={ctx.isKeyboardDismissDisabled}
-        size={size}
         open={typeof open === 'boolean' ? open : ctx.isOpen}
         onOpenChange={onOpenChange || ctx.onOpenChange}
       >
