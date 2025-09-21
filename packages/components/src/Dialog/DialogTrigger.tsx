@@ -8,6 +8,7 @@ type RemovedProps =
   | 'isOpen'
   | 'isDismissable'
   | 'isKeyboardDismissDisabled';
+
 export interface ModalProps extends RAC.ModalOverlayProps {
   open?: boolean;
   dismissable?: boolean;
@@ -27,14 +28,18 @@ const _DialogTrigger = ({
   keyboardDismissable,
   ...rest
 }: DialogTriggerProps): ReactNode => {
-  const props = {
-    isOpen: open,
+  const ctx = {
     isDismissable: dismissable,
     isKeyboardDismissDisabled: !keyboardDismissable,
+  };
+
+  const props: RAC.DialogTriggerProps = {
+    isOpen: open,
     ...rest,
   };
+
   return (
-    <DialogContext.Provider value={props}>
+    <DialogContext.Provider value={ctx}>
       <DialogTrigger {...props}>
         <PressResponder isPressed={false}>{props.children}</PressResponder>
       </DialogTrigger>
