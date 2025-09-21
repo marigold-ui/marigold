@@ -7,7 +7,10 @@ import type { DialogProps } from './Dialog';
 import { Dialog } from './Dialog';
 
 export interface ConfirmationDialogProps
-  extends Pick<DialogProps, 'variant' | 'size' | 'closeButton'> {
+  extends Pick<
+    DialogProps,
+    'variant' | 'size' | 'closeButton' | 'open' | 'onOpenChange'
+  > {
   /**
    * The dialog's title.
    */
