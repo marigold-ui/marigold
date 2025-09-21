@@ -126,7 +126,7 @@ it('calls onPrimaryAction on primary button press', async () => {
       <ConfirmationDialog
         title="Confirm Dialog"
         actionLabel="Confirm"
-        onPrimaryAction={onPrimaryAction}
+        onAction={onPrimaryAction}
       >
         Are you sure you want to do this?
       </ConfirmationDialog>
@@ -185,14 +185,14 @@ it('closes on cancel button press', async () => {
   expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
 });
 
-it('autoFocuses the primary button if autoFocusButton is set to "primary"', async () => {
+it('autoFocuses the action button if autoFocusButton is set to "action"', async () => {
   render(
     <ConfirmationDialog.Trigger>
       <Button>Open</Button>
       <ConfirmationDialog
         title="Confirm Dialog"
         actionLabel="Confirm"
-        autoFocusButton="primary"
+        autoFocusButton="action"
       >
         Are you sure you want to do this?
       </ConfirmationDialog>

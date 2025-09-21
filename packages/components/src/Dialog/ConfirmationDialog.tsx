@@ -25,13 +25,13 @@ export interface ConfirmationDialogProps
    */
   onCancel?: () => void;
   /**
-   * Handler that is called when the primary button is pressed.
+   * Handler that is called when the action button is pressed.
    */
-  onPrimaryAction?: () => void;
+  onAction?: () => void;
   /**
    * Button to focus by default when the dialog opens.
    */
-  autoFocusButton?: 'cancel' | 'primary';
+  autoFocusButton?: 'cancel' | 'action';
   /**
    * The dialog's content.
    */
@@ -43,7 +43,7 @@ export const ConfirmationDialog = ({
   actionLabel,
   cancelLabel,
   onCancel,
-  onPrimaryAction,
+  onAction: onPrimaryAction,
   autoFocusButton,
   children,
   variant,
@@ -68,7 +68,7 @@ export const ConfirmationDialog = ({
             <Button
               variant={variant === 'destructive' ? 'destructive' : 'primary'}
               onPress={() => chain(close(), onPrimaryAction?.())}
-              autoFocus={autoFocusButton === 'primary'}
+              autoFocus={autoFocusButton === 'action'}
             >
               {actionLabel}
             </Button>
