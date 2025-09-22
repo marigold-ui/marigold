@@ -44,6 +44,7 @@ export default () => (
               </>
             }
             width={56}
+            description="Select the team responsible for this organizer."
             defaultSelectedKey={'regional'}
           >
             <Select.Option id="inbound">Inbound Sales</Select.Option>
@@ -59,6 +60,7 @@ export default () => (
                 Enable Diagnostics <Badge variant="admin">Admin</Badge>
               </>
             }
+            description="Allow system diagnostics and data collection for this organizer to improve service quality."
             defaultChecked
           />
         </Card>
