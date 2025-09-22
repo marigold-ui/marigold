@@ -121,15 +121,15 @@ it('uses custom cancel label if provided', () => {
   expect(screen.getByRole('button', { name: 'Abort' })).toBeInTheDocument();
 });
 
-it('calls onPrimaryAction on primary button press', async () => {
-  const onPrimaryAction = vi.fn();
+it('calls onConfirm on primary button press', async () => {
+  const onConfirm = vi.fn();
 
   render(
     <ConfirmationDialog.Trigger open>
       <ConfirmationDialog
         title="Confirm Dialog"
         confirmationLabel="Confirm"
-        onConfirm={onPrimaryAction}
+        onConfirm={onConfirm}
       >
         Are you sure you want to do this?
       </ConfirmationDialog>
@@ -138,7 +138,7 @@ it('calls onPrimaryAction on primary button press', async () => {
 
   await user.click(screen.getByRole('button', { name: 'Confirm' }));
 
-  expect(onPrimaryAction).toHaveBeenCalled();
+  expect(onConfirm).toHaveBeenCalled();
 });
 
 it('closes on primary button press', async () => {

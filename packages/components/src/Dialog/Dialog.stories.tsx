@@ -1,10 +1,14 @@
 import type { StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import { Button } from '../Button';
 import { Menu } from '../Menu';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
-import { ConfirmationDialog } from './ConfirmationDialog';
+import {
+  ConfirmationDialog,
+  ConfirmationDialogProps,
+} from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
 const meta = {
@@ -146,11 +150,16 @@ export const OpenFromMenu: Story = {
   },
 };
 
-export const Confirmation: Story = {
-  render: () => (
-    <ConfirmationDialog.Trigger>
-      <Button>Confirm</Button>
-      <ConfirmationDialog title="Confirmation" actionLabel="Confirm">
+export const Confirmation: StoryObj<ConfirmationDialogProps> = {
+  tags: ['component-test'],
+  args: {
+    onConfirm: fn(),
+    onCancel: fn(),
+  },
+  render: ({ ...args }) => (
+    <ConfirmationDialog.Trigger {...args}>
+      <Button>Open</Button>
+      <ConfirmationDialog title="Confirmation" confirmationLabel="Confirm">
         Are you sure you want to proceed with this action?
       </ConfirmationDialog>
     </ConfirmationDialog.Trigger>
