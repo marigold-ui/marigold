@@ -134,7 +134,7 @@ export const OpenFromMenu: Story = {
               </Dialog.Content>
               <Dialog.Actions>
                 <Button slot="close">Cancel</Button>
-                <Button variant="primary" onPress={close}>
+                <Button variant="destructive" onPress={close}>
                   Delete
                 </Button>
               </Dialog.Actions>
