@@ -58,7 +58,7 @@ it('renders title, content, and buttons', async () => {
   render(
     <ConfirmationDialog.Trigger>
       <Button>Open</Button>
-      <ConfirmationDialog title="Confirm Dialog" actionLabel="Confirm">
+      <ConfirmationDialog title="Confirm Dialog" confirmationLabel="Confirm">
         Are you sure you want to do this?
       </ConfirmationDialog>
     </ConfirmationDialog.Trigger>
@@ -80,7 +80,10 @@ it('renders a localized cancel label', async () => {
     <>
       <I18nProvider locale="en-US">
         <ConfirmationDialog.Trigger open>
-          <ConfirmationDialog title="Confirm Dialog" actionLabel="Confirm">
+          <ConfirmationDialog
+            title="Confirm Dialog"
+            confirmationLabel="Confirm"
+          >
             Are you sure you want to do this?
           </ConfirmationDialog>
         </ConfirmationDialog.Trigger>
@@ -89,7 +92,7 @@ it('renders a localized cancel label', async () => {
         <ConfirmationDialog.Trigger open>
           <ConfirmationDialog
             title="Bestätigungsdialog"
-            actionLabel="Bestätigen"
+            confirmationLabel="Bestätigen"
           >
             Sind Sie sicher, dass Sie dies tun möchten?
           </ConfirmationDialog>
@@ -107,7 +110,7 @@ it('uses custom cancel label if provided', () => {
     <ConfirmationDialog.Trigger open>
       <ConfirmationDialog
         title="Confirm"
-        actionLabel="Confirm"
+        confirmationLabel="Confirm"
         cancelLabel="Abort"
       >
         Are you sure you want to do this?
@@ -125,8 +128,8 @@ it('calls onPrimaryAction on primary button press', async () => {
     <ConfirmationDialog.Trigger open>
       <ConfirmationDialog
         title="Confirm Dialog"
-        actionLabel="Confirm"
-        onAction={onPrimaryAction}
+        confirmationLabel="Confirm"
+        onConfirm={onPrimaryAction}
       >
         Are you sure you want to do this?
       </ConfirmationDialog>
@@ -141,7 +144,7 @@ it('calls onPrimaryAction on primary button press', async () => {
 it('closes on primary button press', async () => {
   render(
     <ConfirmationDialog.Trigger defaultOpen>
-      <ConfirmationDialog title="Confirm Dialog" actionLabel="Confirm">
+      <ConfirmationDialog title="Confirm Dialog" confirmationLabel="Confirm">
         Are you sure you want to do this?
       </ConfirmationDialog>
     </ConfirmationDialog.Trigger>
@@ -158,7 +161,7 @@ it('calls onCancel on cancel button press', async () => {
     <ConfirmationDialog.Trigger open>
       <ConfirmationDialog
         title="Confirm Dialog"
-        actionLabel="Confirm"
+        confirmationLabel="Confirm"
         onCancel={onCancel}
       >
         Are you sure you want to delete this item?
@@ -174,7 +177,7 @@ it('calls onCancel on cancel button press', async () => {
 it('closes on cancel button press', async () => {
   render(
     <ConfirmationDialog.Trigger defaultOpen>
-      <ConfirmationDialog title="Confirm Dialog" actionLabel="Confirm">
+      <ConfirmationDialog title="Confirm Dialog" confirmationLabel="Confirm">
         Are you sure you want to do this?
       </ConfirmationDialog>
     </ConfirmationDialog.Trigger>
@@ -191,7 +194,7 @@ it('autoFocuses the action button if autoFocusButton is set to "action"', async 
       <Button>Open</Button>
       <ConfirmationDialog
         title="Confirm Dialog"
-        actionLabel="Confirm"
+        confirmationLabel="Confirm"
         autoFocusButton="action"
       >
         Are you sure you want to do this?
@@ -211,7 +214,7 @@ it('autoFocuses the cancel button if autoFocusButton is set to "cancel"', async 
       <Button>Open</Button>
       <ConfirmationDialog
         title="Confirm Dialog"
-        actionLabel="Confirm"
+        confirmationLabel="Confirm"
         autoFocusButton="cancel"
       >
         Are you sure you want to do this?

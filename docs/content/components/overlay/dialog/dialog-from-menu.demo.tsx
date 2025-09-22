@@ -27,7 +27,7 @@ export default () => {
       <ConfirmationDialog
         variant="destructive"
         title="Confirm delete"
-        actionLabel="Delete"
+        confirmationLabel="Delete"
         closeButton
         open={open}
         onOpenChange={setDialogOpen}
