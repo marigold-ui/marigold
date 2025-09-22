@@ -8,9 +8,14 @@ export const Link: ThemeComponent<'Link'> = cva(
         default: 'text-link font-normal',
         secondary: 'font-medium text-foreground underline hover:no-underline',
       },
+      size: {
+        default: '',
+        small: 'text-sm',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      size: 'default',
     },
   }
 );

@@ -8,10 +8,17 @@ const meta = {
   argTypes: {
     variant: {
       control: {
-        type: 'select',
+        type: 'radio',
       },
-      options: ['none', 'menuItemLink', 'content', 'secondary'],
-      description: 'Variants of the link, content only for core.',
+      options: ['default', 'secondary'],
+      description: 'Variants of the link.',
+    },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: ['default', 'small'],
+      description: 'Sizes of the link.',
     },
     href: {
       control: {
