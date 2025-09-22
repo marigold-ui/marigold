@@ -151,11 +151,6 @@ export const OpenFromMenu: Story = {
 };
 
 export const Confirmation: StoryObj<ConfirmationDialogProps> = {
-  tags: ['component-test'],
-  args: {
-    onConfirm: fn(),
-    onCancel: fn(),
-  },
   render: ({ ...args }) => (
     <ConfirmationDialog.Trigger {...args}>
       <Button>Open</Button>
