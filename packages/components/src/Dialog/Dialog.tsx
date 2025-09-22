@@ -18,17 +18,10 @@ import { DialogTrigger } from './DialogTrigger';
 
 // Helper
 // ---------------
-interface InnerDialogProps
-  extends Omit<RAC.DialogProps, 'className' | 'style'> {
-  className: {
-    container: string;
-    closeButton: string;
-  };
-  closeButton?: boolean;
-  children?:
-    | React.ReactNode
-    | ((args: { close: () => void }) => React.ReactNode);
-}
+type InnerDialogProps = Pick<
+  DialogProps,
+  'variant' | 'size' | 'closeButton' | 'children'
+>;
 
 /**
  * Needed so that the close button and function can be used inside the dialog,
@@ -36,10 +29,16 @@ interface InnerDialogProps
  */
 const InnerDialog = forwardRef(
   (
-    { className, closeButton, ...props }: InnerDialogProps,
+    { variant, size, closeButton, ...props }: InnerDialogProps,
     ref: Ref<HTMLElement> | undefined
   ) => {
     const state = useContext(OverlayTriggerStateContext);
+    const classNames = useClassNames({
+      component: 'Dialog',
+      variant,
+      size,
+    });
+
     const children =
       typeof props.children === 'function'
         ? props.children({
@@ -54,12 +53,12 @@ const InnerDialog = forwardRef(
         className={cn(
           'relative mx-auto outline-hidden',
           "grid [grid-template-areas:'title'_'content'_'actions']",
-          className.container
+          classNames.container
         )}
       >
         {closeButton && (
           <CloseButton
-            className={className.closeButton}
+            className={classNames.closeButton}
             onPress={state?.close}
           />
         )}
@@ -96,25 +95,20 @@ interface DialogComponent
 // ---------------
 const _Dialog = forwardRef(
   (
-    { variant, size, open, onOpenChange, children, ...props }: DialogProps,
+    { open, onOpenChange, children, ...props }: DialogProps,
     ref: Ref<HTMLElement> | undefined
   ) => {
-    const classNames = useClassNames({
-      component: 'Dialog',
-      variant,
-      size,
-    });
     const ctx = useContext(DialogContext);
 
     return (
       <Modal
-        size={size}
+        size={props.size}
         dismissable={ctx.isDismissable}
         keyboardDismissable={ctx.isKeyboardDismissDisabled}
         open={typeof open === 'boolean' ? open : undefined}
         onOpenChange={onOpenChange}
       >
-        <InnerDialog ref={ref} className={classNames} {...props}>
+        <InnerDialog ref={ref} {...props}>
           {children}
         </InnerDialog>
       </Modal>

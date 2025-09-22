@@ -7,8 +7,17 @@ import { Underlay } from './Underlay';
 // Props
 // ---------------
 export interface ModalProps extends RAC.ModalOverlayProps {
+  /** Whether the overlay is open by default (controlled). */
   open?: boolean;
+  /**
+   * Whether to close the modal when the user interacts outside it.
+   * @default false
+   */
   dismissable?: boolean;
+  /**
+   * Whether pressing the escape key to close the modal should be disabled.
+   * @default true
+   */
   keyboardDismissable?: boolean;
   size?: string;
 }
