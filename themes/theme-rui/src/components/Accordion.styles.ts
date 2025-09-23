@@ -12,7 +12,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variant: 'default',
     },
   }),
-  item: cva('border-b last:border-b-0 border-border ', {
+  item: cva('bg-background border-b last:border-b-0 border-border ', {
     variants: {
       variant: {
         default: '',
