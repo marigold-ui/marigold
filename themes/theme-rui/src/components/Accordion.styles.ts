@@ -12,7 +12,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variant: 'default',
     },
   }),
-  item: cva('bg-background border-b last:border-b-0 border-border ', {
+  item: cva('bg-background border-b last:border-b-0 border-border', {
     variants: {
       variant: {
         default: '',
@@ -29,7 +29,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   }),
   header: cva(
     [
-      'flex w-full items-center justify-between gap-4 rounded-md py-2 cursor-pointer',
+      'flex w-full items-center justify-between gap-4 rounded-md py-2 cursor-pointer text-foreground',
       'text-left text-sm font-semibold leading-6 transition-all',
       'hover:no-underline',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
