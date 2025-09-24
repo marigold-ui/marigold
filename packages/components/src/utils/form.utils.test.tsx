@@ -74,7 +74,7 @@ describe('parseFormData', () => {
     expect(result).toEqual({ colors: ['red', 'blue'] });
   });
 
-  test.only('parses file input', async () => {
+  test('parses file input', async () => {
     let result: any;
     const user = userEvent.setup();
     const file = new File(['image content'], 'image.png', {

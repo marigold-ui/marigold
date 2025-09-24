@@ -22,28 +22,3 @@ HTML forms can produce multiple values for a single field name, most commonly wi
 `parseFormData` automatically handles this scenario. It checks if any field name has more than one value associated with it. If it does, the utility will create an array containing all of those values under a single key in the final object. If a field name has only one value, it will be stored as a single string or file object. This ensures the output is always predictable and easy to work with.
 
 <ComponentDemo file="./parseFormData-multiple.demo.tsx" />
-
-### Handling File Inputs
-
-```tsx
-<form
-  onSubmit={e => {
-    e.preventDefault();
-    const data = parseFormData(e);
-    // Example output: { avatar: File }
-  }}
->
-  <input type="file" name="avatar" />
-  <button type="submit">Upload</button>
-</form>
-```
-
-## Guidelines
-
-- Use `parseFormData` for forms where you want to avoid managing state for each input.
-- For complex validation or dynamic forms, consider combining this utility with other form management solutions.
-- Remember that file inputs will return a `File` object.
-
-## Related
-
-- [MDN: FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
