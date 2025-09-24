@@ -9,50 +9,19 @@ It creates a plain object by mapping each form field's name to its corresponding
 
 ## Usage
 
-If a field appears multiple times (such as with checkboxes or multi-selects), the function returns an array of values for that field; otherwise, it returns a single value.
+The `parseFormData` utility is designed to convert all the data from an HTML form into a simple JavaScript object. The ideal place to use this function is directly within the `onSubmit` event handler of your `<Form>` element.
 
-### Basic Example
+When a user clicks the submit button, the `onSubmit` event captures the state of all form fields at that exact moment. By creating a `new FormData(event.currentTarget)` and passing it to `parseFormData`, you get a single object containing a complete snapshot of the user's input, which is perfect for immediate validation or for sending to an API.
 
-```tsx
-import { parseFormData } from '@marigold/components';
-
-function MyForm() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = parseFormData(e);
-    console.log(data);
-    // Example output: { username: "alice", remember: "on" }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input name="username" />
-      <input type="checkbox" name="remember" />
-      <button type="submit">Submit</button>
-    </form>
-  );
-}
-```
+<ComponentDemo file="./parseFormData-basic.demo.tsx" />
 
 ### Handling Multiple Values
 
-```tsx
-<form
-  onSubmit={e => {
-    e.preventDefault();
-    const data = parseFormData(e);
-    // Example output: { colors: ["red", "blue"] }
-  }}
->
-  <label>
-    <input type="checkbox" name="colors" value="red" /> Red
-  </label>
-  <label>
-    <input type="checkbox" name="colors" value="blue" /> Blue
-  </label>
-  <button type="submit">Submit</button>
-</form>
-```
+HTML forms can produce multiple values for a single field name, most commonly with a group of checkboxes or a [multiselect element](/patterns/multiple-selection). For example, if a user checks three boxes all named "interests", the `FormData` object will contain three separate entries for "interests".
+
+`parseFormData` automatically handles this scenario. It checks if any field name has more than one value associated with it. If it does, the utility will create an array containing all of those values under a single key in the final object. If a field name has only one value, it will be stored as a single string or file object. This ensures the output is always predictable and easy to work with.
+
+<ComponentDemo file="./parseFormData-multiple.demo.tsx" />
 
 ### Handling File Inputs
 
