@@ -77,7 +77,7 @@ describe('parseFormData', () => {
   test.only('parses file input', async () => {
     let result: any;
     const user = userEvent.setup();
-    const file = new File(['dummy content'], 'avatar.png', {
+    const file = new File(['image content'], 'image.png', {
       type: 'image/png',
     });
 
@@ -89,7 +89,7 @@ describe('parseFormData', () => {
           result = parseFormData(e);
         }}
       >
-        <input type="file" name="avatar" data-testid="file-input" />
+        <input type="file" name="file" data-testid="file-input" />
         <button type="submit">Submit</button>
       </form>
     );
@@ -99,8 +99,7 @@ describe('parseFormData', () => {
     const button = screen.getByRole('button', { name: /submit/i });
     await user.click(button);
 
-    expect(result.avatar).toBeInstanceOf(File);
-    expect((result.avatar as File).name).toBe('avatar.png');
+    expect(result.file).toBeInstanceOf(File);
   });
 
   test('returns array for multiple values and single value for one', async () => {

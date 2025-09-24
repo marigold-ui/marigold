@@ -1,0 +1,80 @@
+---
+title: parseFormData
+caption: Parse form data into objects
+---
+
+The `parseFormData` utility streamlines the handling of HTML form submissions by converting `FormData` into a plain JavaScript object.
+
+It creates a plain object by mapping each form field's name to its corresponding value. This approach is especially useful when working with uncontrolled components, as it allows you to bypass managing state for each individual input. Instead of tracking every field, you can efficiently gather all the form's values into a single object upon submission, making the data easy to process or send to an API.
+
+## Usage
+
+If a field appears multiple times (such as with checkboxes or multi-selects), the function returns an array of values for that field; otherwise, it returns a single value.
+
+### Basic Example
+
+```tsx
+import { parseFormData } from '@marigold/components';
+
+function MyForm() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = parseFormData(e);
+    console.log(data);
+    // Example output: { username: "alice", remember: "on" }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="username" />
+      <input type="checkbox" name="remember" />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+### Handling Multiple Values
+
+```tsx
+<form
+  onSubmit={e => {
+    e.preventDefault();
+    const data = parseFormData(e);
+    // Example output: { colors: ["red", "blue"] }
+  }}
+>
+  <label>
+    <input type="checkbox" name="colors" value="red" /> Red
+  </label>
+  <label>
+    <input type="checkbox" name="colors" value="blue" /> Blue
+  </label>
+  <button type="submit">Submit</button>
+</form>
+```
+
+### Handling File Inputs
+
+```tsx
+<form
+  onSubmit={e => {
+    e.preventDefault();
+    const data = parseFormData(e);
+    // Example output: { avatar: File }
+  }}
+>
+  <input type="file" name="avatar" />
+  <button type="submit">Upload</button>
+</form>
+```
+
+## Guidelines
+
+- Use `parseFormData` for forms where you want to avoid managing state for each input.
+- For complex validation or dynamic forms, consider combining this utility with other form management solutions.
+- Remember that file inputs will return a `File` object.
+
+## Related
+
+- [MDN: FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData)
