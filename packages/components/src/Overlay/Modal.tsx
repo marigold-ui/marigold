@@ -7,8 +7,17 @@ import { Underlay } from './Underlay';
 // Props
 // ---------------
 export interface ModalProps extends RAC.ModalOverlayProps {
+  /** Whether the overlay is open by default (controlled). */
   open?: boolean;
+  /**
+   * Whether to close the modal when the user interacts outside it.
+   * @default false
+   */
   dismissable?: boolean;
+  /**
+   * Whether pressing the escape key to close the modal should be disabled.
+   * @default true
+   */
   keyboardDismissable?: boolean;
   size?: string;
 }
@@ -23,17 +32,18 @@ const _Modal = forwardRef<
   >
 >(
   (
-    { size, open, dismissable, keyboardDismissable, onOpenChange, ...rest },
+    {
+      size,
+      open,
+      dismissable,
+      keyboardDismissable,
+      onOpenChange,
+      children,
+      ...props
+    },
     ref
   ) => {
-    const props: RAC.ModalOverlayProps = {
-      isOpen: open,
-      isDismissable: dismissable,
-      isKeyboardDismissDisabled: keyboardDismissable,
-      ...rest,
-    };
     const className = useClassNames({ component: 'Modal', size });
-
     return (
       <Underlay
         dismissable={dismissable}
@@ -42,7 +52,7 @@ const _Modal = forwardRef<
         onOpenChange={onOpenChange}
       >
         <Modal {...props} className={className} ref={ref}>
-          {props.children}
+          {children}
         </Modal>
       </Underlay>
     );

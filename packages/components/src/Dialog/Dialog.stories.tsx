@@ -4,6 +4,10 @@ import { Button } from '../Button';
 import { Menu } from '../Menu';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
+import {
+  ConfirmationDialog,
+  ConfirmationDialogProps,
+} from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
 const meta = {
@@ -124,23 +128,34 @@ export const OpenFromMenu: Story = {
             Delete
           </Menu.Item>
         </Menu>
-        <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
-          <Dialog closeButton>
-            <Dialog.Title>Confirm delete</Dialog.Title>
-            <Dialog.Content>
-              <Text>Do you really wanna delete this?</Text>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button slot="close" variant="secondary">
-                Cancel
-              </Button>
-              <Button slot="close" variant="primary">
-                Delete
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Dialog.Trigger>
+        <Dialog open={open} onOpenChange={setDialogOpen} closeButton>
+          {({ close }) => (
+            <>
+              <Dialog.Title>Confirm delete</Dialog.Title>
+              <Dialog.Content>
+                <Text>Do you really wanna delete this?</Text>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button slot="close">Cancel</Button>
+                <Button variant="destructive" onPress={close}>
+                  Delete
+                </Button>
+              </Dialog.Actions>
+            </>
+          )}
+        </Dialog>
       </>
     );
   },
+};
+
+export const Confirmation: StoryObj<ConfirmationDialogProps> = {
+  render: ({ ...args }) => (
+    <ConfirmationDialog.Trigger {...args}>
+      <Button>Open</Button>
+      <ConfirmationDialog title="Confirmation" confirmationLabel="Confirm">
+        Are you sure you want to proceed with this action?
+      </ConfirmationDialog>
+    </ConfirmationDialog.Trigger>
+  ),
 };

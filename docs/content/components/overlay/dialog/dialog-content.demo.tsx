@@ -1,4 +1,4 @@
-import { Button, Dialog, Stack, TextField } from '@marigold/components';
+import { Button, Dialog, Stack, Text, TextField } from '@marigold/components';
 import { User } from '@marigold/icons';
 
 export default () => (
@@ -6,10 +6,11 @@ export default () => (
     <Button variant="primary">
       <User /> Edit
     </Button>
-    <Dialog>
-      <Dialog.Title>Edit user info</Dialog.Title>
+    <Dialog size="xsmall">
+      <Dialog.Title>Edit User</Dialog.Title>
       <Dialog.Content>
         <Stack space={3}>
+          <Text>Update your account information.</Text>
           <TextField label="Name" autoFocus />
           <TextField label="Email" type="email" />
         </Stack>
