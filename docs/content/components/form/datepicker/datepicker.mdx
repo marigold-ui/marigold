@@ -64,6 +64,20 @@ If you're already using a date library like [date-fns](https://date-fns.org/), y
 
 <ComponentDemo file="./date-picker-with-date.demo.tsx" />
 
+### Paste Support
+
+The `<DatePicker>` supports pasting date values from the clipboard. Users can copy dates in common formats and paste them directly into the date picker field. The component automatically parses and validates the pasted content.
+
+**Supported date formats:**
+
+- ISO format: `2023-12-25`
+- European format: `25.12.2023` or `25/12/2023`
+- US format: `12/25/2023` or `12-25-2023`
+
+Invalid dates or unrecognized formats are ignored, ensuring data integrity.
+
+<ComponentDemo file="./datepicker-paste.demo.tsx" />
+
 ## Props
 
 <StorybookHintMessage component={title} />
