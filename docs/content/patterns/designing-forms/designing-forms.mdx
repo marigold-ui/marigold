@@ -5,37 +5,44 @@ badge: new
 order: 1
 ---
 
-Form design guidelines are essential in a design system to ensure consistency, usability, and accessibility across all user interfaces. When forms follow established patterns, users can navigate and complete them more efficiently while reducing cognitive load. This consistency not only improves the overall user experience but also helps maintain brand coherence and streamlines development workflows.
+Forms are the backbone of data submission, making their design critical to the user experience. Our Form Design Guidelines ensure every form in your application is consistent, usable, and accessible.
 
-Forms consist of various inputs and controls for submitting data. These guidelines will help you structure forms consistently throughout your application.
+## Layout & Structure
 
-## Basis layout
+The foundation of effective form design lies in thoughtful layout and structure. How you arrange elements on the page, use whitespace, and organize content directly impacts user comprehension and completion rates. A well-structured form creates a clear visual hierarchy and logical flow that guides users through the data entry process efficiently.
 
-It is important to consider the overall layout of the form, including the use of white space and the placement of buttons and other elements.
-Accessibility best practices should be followed, such as providing clear, descriptive labels and ensuring that form fields are appropriately labeled and structured for screen readers.
+### Overall form layout
+
+Forms should be left-aligned to follow the natural reading flow. Use a maximum width of 800px for forms to ensure readability across devices. We provide [spacing tokens](#TODO LINK) that helps you choose the correct spacing for your forms.
+Set the form width using the `max-container` spacing token.
+
+Ensure there is sufficient whitespace around and within the form to prevent clutter and enhance focus. Whitespace helps separate different sections and fields, making the form easier to scan and complete.
 
 <GuidelineTiles>
   <Do>
     <Do.Description>
       <ul>
         <li>
-          Group related fields inside sections to provide more context and make
-          the UI easier scannable.
+          Align form content to the left for better scanning and organization.
         </li>
         <li>
           Use a maximum width of 800px for forms to ensure readability across
           devices.
         </li>
         <li>
-          Align form content to the left for better scanning and organization.
+          Ensure sufficient whitespace around and within the form for a clear
+          visual hierarchy.
         </li>
-        <li>Follow a predictable order of fields when creating forms.</li>
+        <li>
+          Group related fields together to provide more context and make the UI
+          easier to scan.
+        </li>
       </ul>
     </Do.Description>
   </Do>
 </GuidelineTiles>
 
-### Which components can I use?
+### Available components
 
 We have various components suitable for forms. You can find a detailed guide on the [Form Fields](../../foundations/form-fields) page.
 
@@ -46,13 +53,15 @@ Key components for form structure:
 - **Buttons**: Use primary buttons for form submission, secondary for additional actions like "View PDF"
 - **Links**: For navigation to privacy policies or terms of service, not for form actions
 
-## Sections
+## Content Organization
+
+### Sections
 
 Sections help organize related fields together, making forms easier to scan and understand. They provide visual separation and context, allowing users to process information in manageable chunks.
 
 Forms with multiple sections should maintain 56px spacing between sections using `<Stack space={14}>`.
 
-### When to use sections
+#### When to use sections
 
 - **Complex forms**: When your form has more than 6-8 fields
 - **Different data types**: When collecting different categories of information (e.g., personal info, billing details, preferences)
@@ -61,9 +70,11 @@ Forms with multiple sections should maintain 56px spacing between sections using
 
 <ComponentDemo file="./form-spacing-sections.demo.tsx" mode="preview" />
 
-## Fields
+### Fields
 
-Fields should have appropriate width based on their expected content length.
+Individual fields are the building blocks of your form. Their arrangement, sizing, and presentation directly impact how users navigate and complete the form. Proper field organization reduces cognitive load and creates a logical flow that guides users through the data entry process.
+
+Following a predictable field order helps users build mental models and reduces the time spent deciding what to fill out next. Prioritizing required fields ensures critical information is collected first, while positioning dependent fields near their triggers maintains context and prevents confusion. Field widths that match expected content length provide visual cues about the type and amount of information needed, making forms more intuitive and efficient to complete.
 
 <GuidelineTiles>
   <Do>
@@ -72,19 +83,25 @@ Fields should have appropriate width based on their expected content length.
         <li>Follow a predictable order of fields when creating forms.</li>
         <li>Place required fields before optional ones within each section.</li>
         <li>Position dependent fields immediately after their parent field.</li>
+        <li>
+          Fields should have a maximum width based on their expected content
+          length.
+        </li>
       </ul>
     </Do.Description>
   </Do>
 </GuidelineTiles>
 
-### Spacing between fields
+#### Spacing between fields
+
+IMAGE
 
 - **Vertical spacing**: Use 32px spacing between individual fields within a section. This can be archieved by using the `<Stack>` component with the `space` prop set to `8`.
 - **Related fields**: Group closely related fields (like address) with 16px spacing also add extra padding to the Y-axis inside the group. This can be achieved by wrapping the related fields in another `<Stack>` component with the `space` prop set to `4` and adding padding to the Y-axis with a `<Inset>` using the `spaceY` prop set to `4`.
 
 <ComponentDemo file="./form-spacing-fields.demo.tsx" />
 
-### When to group fields
+#### When to group fields
 
 - **Related information**: When fields share a common context or purpose (e.g. address fields, date and time)
 - **Conditional fields**: When certain fields are only relevant based on previous answers
@@ -94,12 +111,6 @@ Fields should have appropriate width based on their expected content length.
 These fields must be filled out for the form to be submitted. They are clearly indicated with an asterisk (\*) next to the label. Optional fields do not have this indicator, allowing users to skip them if they choose.
 
 When using `<Accordion>` components to group fields, ensure that required fields are placed outside of the accordion to maintain visibility and accessibility.
-
-## Admin- and Mastermark
-
-Some forms may require special fields that are only accessible to users with administrator or master user roles. These fields should be clearly marked and separated from regular fields to avoid confusion.
-
-You can find a complete usage guide on the [Admin- and Mastermark](/patterns/admin-master-mark) page.
 
 ## Actions
 
@@ -118,6 +129,12 @@ Place the action near the related field where the action is for with that contex
 The submit button should be positioned at the bottom of the form, aligned to the left to follow the natural reading flow. Place the primary action first, followed by secondary actions with appropriate spacing.
 
 <ComponentDemo file="./form-action.demo.tsx" mode="preview" />
+
+## Admin- and Mastermark
+
+Some forms may require special fields that are only accessible to users with administrator or master user roles. These fields should be clearly marked and separated from regular fields to avoid confusion.
+
+You can find a complete usage guide on the [Admin- and Mastermark](/patterns/admin-master-mark) page.
 
 ## Full demo
 

@@ -14,7 +14,7 @@ import {
 
 export const RegistrationSettings = () => (
   <Accordion variant="card">
-    <Accordion.Item id="advanced-registration">
+    <Accordion.Item id="registration-settings">
       <Accordion.Header>
         <Headline level={2}>Registration Settings</Headline>
       </Accordion.Header>

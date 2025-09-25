@@ -43,8 +43,8 @@ export const EventDetails = () => {
         <Select.Option id="other">Other</Select.Option>
       </Select>
       <Accordion variant="card">
-        <Accordion.Item id="1">
-          <Accordion.Header>Extended Event Settings</Accordion.Header>
+        <Accordion.Item id="advanced-event-settings">
+          <Accordion.Header>Advanced Event Settings</Accordion.Header>
           <Accordion.Content>
             <Stack space={8}>
               <TextField label="Event Code" description="Optional event code" />

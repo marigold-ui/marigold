@@ -91,8 +91,8 @@ export const LocationSettings = () => {
         description="Any other accessibility information"
       />
       <Accordion variant="card">
-        <Accordion.Item id="2">
-          <Accordion.Header>Extended Location Settings</Accordion.Header>
+        <Accordion.Item id="advanced-location-settings">
+          <Accordion.Header>Advanced Location Settings</Accordion.Header>
           <Accordion.Content>
             <Stack space={8}>
               <TextField
