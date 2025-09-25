@@ -1,0 +1,104 @@
+'use client';
+
+import {
+  Accordion,
+  Badge,
+  Button,
+  Checkbox,
+  Headline,
+  Inline,
+  Select,
+  Stack,
+  TextArea,
+  TextField,
+} from '@marigold/components';
+
+export const OrganizerInfo = () => (
+  <Accordion variant="card">
+    <Accordion.Item id="organizer-details">
+      <Accordion.Header>
+        <Headline level={2}>Organizer Information</Headline>
+      </Accordion.Header>
+      <Accordion.Content>
+        <Stack space={8}>
+          <div className="flex gap-5">
+            <TextField label="First Name" width={'1/2'} />
+            <TextField label="Last Name" width={'1/2'} />
+          </div>
+          <TextField
+            label="Organization"
+            description="Company or organization name"
+          />
+          <TextField
+            label="Job Title"
+            description="Position within the organization"
+          />
+          <div className="flex gap-5">
+            <TextField
+              label="Email"
+              type="email"
+              width={'1/2'}
+              description="Primary contact email"
+            />
+            <TextField
+              label="Phone"
+              type="tel"
+              width={'1/2'}
+              description="Contact phone number"
+            />
+          </div>
+          <TextArea
+            label="Bio"
+            description="Brief biography or description of the organizer"
+            rows={3}
+          />
+          <Checkbox label="Display organizer information publicly" />
+          <div className="bg-access-master rounded-md border-0 p-4">
+            <Stack space={8}>
+              <Inline space={2}>
+                <Headline level={3}>Co-Organizer</Headline>
+                <Badge variant="master">Master</Badge>
+              </Inline>
+
+              <Checkbox label="This event has co-organizers" />
+              <Inline space={5}>
+                <TextField label="Name" />
+                <TextField label="Email" type="email" />
+              </Inline>
+              <TextField
+                label="Role"
+                description="Their role in organizing this event"
+              />
+              <Button variant="secondary" size="small">
+                Add another co-organizer
+              </Button>
+            </Stack>
+          </div>
+          <Stack space={8}>
+            <Headline level={3}>Contact Preferences</Headline>
+            <Checkbox label="Allow attendees to contact organizer directly" />
+            <Checkbox label="Include organizer contact in confirmation emails" />
+            <Select
+              label={
+                <Inline space={2} alignY="center">
+                  Preferred contact method
+                  <Badge variant="admin">Admin</Badge>
+                </Inline>
+              }
+              placeholder="Select preference"
+              width="fit"
+            >
+              <Select.Option id="email">Email</Select.Option>
+              <Select.Option id="phone">Phone</Select.Option>
+              <Select.Option id="both">Both Email and Phone</Select.Option>
+            </Select>
+            <TextField
+              label="Alternative Contact"
+              description="Optional alternative contact person or method"
+            />
+          </Stack>
+        </Stack>
+      </Accordion.Content>
+    </Accordion.Item>
+  </Accordion>
+);
