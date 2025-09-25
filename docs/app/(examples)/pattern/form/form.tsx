@@ -1,3 +1,5 @@
+'use client';
+
 import { venues } from '@/lib/data/venues';
 import {
   Accordion,
@@ -18,7 +20,7 @@ import {
   TextField,
 } from '@marigold/components';
 
-export default () => {
+export const Form = () => {
   const uniqueCountries = Array.from(
     new Set(venues.map(venue => venue.country))
   );
@@ -171,7 +173,7 @@ export default () => {
           hideStepper
           width={32}
         />
-        <Card variant="master">
+        <div className="bg-access-master rounded-md p-4">
           <Checkbox
             label={
               <>
@@ -179,7 +181,7 @@ export default () => {
               </>
             }
           />
-        </Card>
+        </div>
       </Stack>
 
       <Inline space={4}>
