@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { alignment } from 'packages/system/src/style-props';
 import { ReactNode } from 'react';
 import { Headline } from '../Headline';
 import { Text } from '../Text';
@@ -18,14 +19,14 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: ['none', 'left', 'center', 'right'],
+      options: Object.keys(alignment.horizontal.alignmentX),
       description: 'Horizontal Alignment',
     },
     alignY: {
       control: {
         type: 'select',
       },
-      options: ['none', 'top', 'center', 'bottom'],
+      options: Object.keys(alignment.vertical.alignmentY),
       description: 'Vertical Alignment',
     },
     stretch: {
