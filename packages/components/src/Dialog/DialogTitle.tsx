@@ -2,6 +2,7 @@ import { Header, Heading } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 export interface DialogTitleProps {
+  /** Children of the component. */
   children?: React.ReactNode;
   variant?: string;
   size?: string;

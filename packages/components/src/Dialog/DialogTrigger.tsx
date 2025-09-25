@@ -1,25 +1,27 @@
-import { ReactNode, createContext } from 'react';
+import type { ReactNode } from 'react';
 import { DialogTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { PressResponder } from '@react-aria/interactions';
+import type { DialogContextProps } from './Context';
+import { DialogContext } from './Context';
 
+// Props
+// ---------------
 type RemovedProps =
   | 'children'
   | 'isOpen'
   | 'isDismissable'
   | 'isKeyboardDismissDisabled';
-export interface ModalProps extends RAC.ModalOverlayProps {
-  open?: boolean;
-  dismissable?: boolean;
-  keyboardDismissable?: boolean;
-  size?: string;
-}
 
 export interface DialogTriggerProps
   extends Omit<RAC.DialogTriggerProps, 'isOpen'>,
-    Omit<ModalProps, RemovedProps> {}
+    Omit<DialogContextProps, RemovedProps> {
+  /** Whether the overlay is open by default (controlled). */
+  open?: boolean;
+}
 
-export const DialogContext = createContext<ModalProps>({});
+// Context
+// ---------------
 
 const _DialogTrigger = ({
   open,
@@ -27,14 +29,18 @@ const _DialogTrigger = ({
   keyboardDismissable,
   ...rest
 }: DialogTriggerProps): ReactNode => {
-  const props = {
-    isOpen: open,
+  const ctx = {
     isDismissable: dismissable,
     isKeyboardDismissDisabled: !keyboardDismissable,
+  };
+
+  const props: RAC.DialogTriggerProps = {
+    isOpen: open,
     ...rest,
   };
+
   return (
-    <DialogContext.Provider value={props}>
+    <DialogContext.Provider value={ctx}>
       <DialogTrigger {...props}>
         <PressResponder isPressed={false}>{props.children}</PressResponder>
       </DialogTrigger>

@@ -9,16 +9,72 @@ import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton';
-import { Modal } from '../Overlay';
+import { Modal, ModalProps } from '../Overlay';
+import { DialogContext } from './Context';
 import { DialogActions } from './DialogActions';
 import { DialogContent } from './DialogContent';
 import { DialogTitle } from './DialogTitle';
-import { DialogContext, DialogTrigger } from './DialogTrigger';
+import { DialogTrigger } from './DialogTrigger';
 
+// Helper
+// ---------------
+type InnerDialogProps = Pick<
+  DialogProps,
+  'variant' | 'size' | 'closeButton' | 'children'
+>;
+
+/**
+ * Needed so that the close button and function can be used inside the dialog,
+ * when the dialog is controlled and no <Dialog.Trigger> is used.
+ */
+const InnerDialog = forwardRef(
+  (
+    { variant, size, closeButton, ...props }: InnerDialogProps,
+    ref: Ref<HTMLElement> | undefined
+  ) => {
+    const state = useContext(OverlayTriggerStateContext);
+    const classNames = useClassNames({
+      component: 'Dialog',
+      variant,
+      size,
+    });
+
+    const children =
+      typeof props.children === 'function'
+        ? props.children({
+            close: state?.close ?? (() => {}),
+          })
+        : props.children;
+
+    return (
+      <Dialog
+        {...props}
+        ref={ref}
+        className={cn(
+          'relative mx-auto outline-hidden',
+          "grid [grid-template-areas:'title'_'content'_'actions']",
+          classNames.container
+        )}
+      >
+        {closeButton && (
+          <CloseButton
+            className={classNames.closeButton}
+            onPress={state?.close}
+          />
+        )}
+        {children}
+      </Dialog>
+    );
+  }
+);
+
+// Props
+// ---------------
 export interface DialogProps
-  extends Omit<RAC.DialogProps, 'className' | 'style'> {
+  extends Omit<RAC.DialogProps, 'className' | 'style'>,
+    Pick<ModalProps, 'open' | 'onOpenChange'> {
   variant?: string;
-  size?: string;
+  size?: 'xsmall' | 'small' | 'medium' | (string & {});
   /**
    * Show the close button.
    */
@@ -29,82 +85,32 @@ interface DialogComponent
   extends ForwardRefExoticComponent<
     DialogProps & RefAttributes<HTMLInputElement>
   > {
-  /**
-   * Options for the Combobox.
-   */
   Trigger: typeof DialogTrigger;
-
   Title: typeof DialogTitle;
-
   Content: typeof DialogContent;
-
   Actions: typeof DialogActions;
 }
 
-// Props
+// Component
 // ---------------
-export interface DialogProps
-  extends Omit<RAC.DialogProps, 'className' | 'style'> {
-  variant?: string;
-  size?: string;
-  /**
-   * Show the close button.
-   */
-  closeButton?: boolean;
-  /**
-   * If `true`, the dialog will be non-modal, meaning it will not block interaction with the background content.
-   * @default false
-   */
-  isNonModal?: boolean;
-}
-
 const _Dialog = forwardRef(
   (
-    { variant, size, ...props }: DialogProps,
+    { open, onOpenChange, children, ...props }: DialogProps,
     ref: Ref<HTMLElement> | undefined
   ) => {
-    const classNames = useClassNames({
-      component: 'Dialog',
-      variant,
-      size,
-    });
-    const { isDismissable, isKeyboardDismissDisabled, isOpen, onOpenChange } =
-      useContext(DialogContext);
-
-    const state = useContext(OverlayTriggerStateContext);
-
-    const children =
-      typeof props.children === 'function'
-        ? props.children({
-            close: state?.close ?? (() => {}),
-          })
-        : props.children;
+    const ctx = useContext(DialogContext);
 
     return (
       <Modal
-        dismissable={isDismissable}
-        keyboardDismissable={isKeyboardDismissDisabled}
-        open={isOpen}
-        size={size}
+        size={props.size}
+        dismissable={ctx.isDismissable}
+        keyboardDismissable={ctx.isKeyboardDismissDisabled}
+        open={typeof open === 'boolean' ? open : undefined}
         onOpenChange={onOpenChange}
       >
-        <Dialog
-          {...props}
-          ref={ref}
-          className={cn(
-            'relative mx-auto outline-hidden [&>*:not(:last-child)]:mb-4',
-            "grid [grid-template-areas:'title'_'content'_'actions']",
-            classNames.container
-          )}
-        >
-          {props.closeButton && (
-            <CloseButton
-              className={classNames.closeButton}
-              onPress={state?.close}
-            />
-          )}
+        <InnerDialog ref={ref} {...props}>
           {children}
-        </Dialog>
+        </InnerDialog>
       </Modal>
     );
   }
