@@ -9,6 +9,7 @@ import {
   ConfirmationDialogProps,
 } from './ConfirmationDialog';
 import { Dialog } from './Dialog';
+import { useConfirmation } from './useConfirmation';
 
 const meta = {
   title: 'Components/Dialog',
@@ -158,4 +159,20 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
       </ConfirmationDialog>
     </ConfirmationDialog.Trigger>
   ),
+};
+
+export const UseConfirmation: StoryObj = {
+  render: () => {
+    const confirm = useConfirmation();
+    const onPress = async () => {
+      await confirm({
+        variant: 'destructive',
+        title: 'Delete item',
+        content: 'Are you sure you want to delete this item?',
+        confirmationLabel: 'Delete',
+      });
+    };
+
+    return <Button onPress={onPress}>Open</Button>;
+  },
 };
