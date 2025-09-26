@@ -1,5 +1,24 @@
 # @marigold/components
 
+## 15.3.0
+
+### Minor Changes
+
+- 4395d2e: feat([DST-1047]): Improve `<List>` styles and add `small` variant
+- 91a5e7b: feat([DST-1044]): Introduce `LinkButton` component
+- baf550b: feat([DST-940]): Introduce `<Drawer>` component
+
+  Added `<Drawer>` component along with usage guideline and stories. The drawer offers a consisten way to present secondary content in a non-blocking way.
+
+- 5e62b84: feat([DST-1051]): Introduce `ConfirmationDialog`
+- beeba04: feat([DST-1042]): Add "destrutive" variant to `<Menu.Item>`
+
+### Patch Changes
+
+- c6fb6c2: feat: Expose `TimeValue` types
+- 061b5e9: feat([DST-1050]): Card master and adminmark variant
+  - @marigold/system@15.3.0
+
 ## 15.2.0
 
 ### Patch Changes
