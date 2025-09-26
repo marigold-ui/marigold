@@ -3,6 +3,7 @@
 import {
   Accordion,
   Badge,
+  Card,
   Checkbox,
   Headline,
   Inset,
@@ -51,7 +52,7 @@ export const RegistrationSettings = () => (
             hideStepper
             width={32}
           />
-          <div className="bg-access-master rounded-md border-0 p-4">
+          <Card variant="master">
             <Checkbox
               label={
                 <>
@@ -60,7 +61,7 @@ export const RegistrationSettings = () => (
                 </>
               }
             />
-          </div>
+          </Card>
         </Stack>
       </Accordion.Content>
     </Accordion.Item>

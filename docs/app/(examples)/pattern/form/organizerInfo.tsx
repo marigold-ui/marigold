@@ -4,6 +4,7 @@ import {
   Accordion,
   Badge,
   Button,
+  Card,
   Checkbox,
   Headline,
   Inline,
@@ -53,7 +54,7 @@ export const OrganizerInfo = () => (
             rows={3}
           />
           <Checkbox label="Display organizer information publicly" />
-          <div className="bg-access-master rounded-md border-0 p-4">
+          <Card variant="master">
             <Stack space={8}>
               <Inline space={2}>
                 <Headline level={3}>Co-Organizer</Headline>
@@ -73,25 +74,27 @@ export const OrganizerInfo = () => (
                 Add another co-organizer
               </Button>
             </Stack>
-          </div>
+          </Card>
           <Stack space={8}>
             <Headline level={3}>Contact Preferences</Headline>
             <Checkbox label="Allow attendees to contact organizer directly" />
             <Checkbox label="Include organizer contact in confirmation emails" />
-            <Select
-              label={
-                <Inline space={2} alignY="center">
-                  Preferred contact method
-                  <Badge variant="admin">Admin</Badge>
-                </Inline>
-              }
-              placeholder="Select preference"
-              width="fit"
-            >
-              <Select.Option id="email">Email</Select.Option>
-              <Select.Option id="phone">Phone</Select.Option>
-              <Select.Option id="both">Both Email and Phone</Select.Option>
-            </Select>
+            <Card variant="admin">
+              <Select
+                label={
+                  <Inline space={2} alignY="center">
+                    Preferred contact method
+                    <Badge variant="admin">Admin</Badge>
+                  </Inline>
+                }
+                placeholder="Select preference"
+                width="fit"
+              >
+                <Select.Option id="email">Email</Select.Option>
+                <Select.Option id="phone">Phone</Select.Option>
+                <Select.Option id="both">Both Email and Phone</Select.Option>
+              </Select>
+            </Card>
             <TextField
               label="Alternative Contact"
               description="Optional alternative contact person or method"
