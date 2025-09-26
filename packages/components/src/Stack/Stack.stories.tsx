@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { alignment } from 'packages/system/src/style-props';
 import { ReactNode } from 'react';
+import { alignment } from '@marigold/system';
 import { Headline } from '../Headline';
 import { Text } from '../Text';
 import { Stack } from './Stack';
