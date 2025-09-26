@@ -2,6 +2,7 @@ import type { StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { Button } from '../Button';
 import { Menu } from '../Menu';
+import { Stack } from '../Stack';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
 import {
@@ -163,9 +164,19 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
 
 export const UseConfirmation: StoryObj = {
   render: () => {
-    // TODO: Test with multiple confirmations
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const confirm = useConfirmation();
-    const onPress = async () => {
+
+    const onConfirmation = async () => {
+      await confirm({
+        title: 'Enable notifications',
+        content: 'Would you like to receive notifications for upcoming events?',
+        confirmationLabel: 'Enable',
+        cancelLabel: 'Cancel',
+      });
+    };
+
+    const onDelete = async () => {
       await confirm({
         variant: 'destructive',
         title: 'Delete item',
@@ -174,6 +185,13 @@ export const UseConfirmation: StoryObj = {
       });
     };
 
-    return <Button onPress={onPress}>Open</Button>;
+    return (
+      <Stack space={4} alignX="left">
+        <Button onPress={onConfirmation}>Confirm</Button>
+        <Button variant="destructive" onPress={onDelete}>
+          Delete
+        </Button>
+      </Stack>
+    );
   },
 };

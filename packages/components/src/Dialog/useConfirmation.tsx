@@ -59,6 +59,8 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
       <ConfirmationDialog
         open={open}
         onOpenChange={setOpen}
+        variant={confirmation?.variant}
+        size="xsmall"
         title={confirmation?.title || ''}
         confirmationLabel={confirmation?.confirmationLabel || 'Confirm'}
         cancelLabel={confirmation?.cancelLabel}
