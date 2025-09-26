@@ -106,6 +106,7 @@ export const Form: Story = {
 
 export const OpenFromMenu: Story = {
   render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setDialogOpen] = useState(false);
     const handleAction = (action: 'save' | 'delete') => {
       switch (action) {
