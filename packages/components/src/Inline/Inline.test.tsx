@@ -86,7 +86,7 @@ test('wrap by default', () => {
 
   const inline = screen.getByTestId('inline');
 
-  expect(inline).toHaveClass('flex-nowrap');
+  expect(inline).toHaveClass('flex-wrap');
 });
 
 test('allow to not wrap', () => {

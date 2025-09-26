@@ -12,7 +12,6 @@ export interface InlineProps extends GapSpaceProp, AriaRegionProps {
   children?: ReactNode;
   /**
    * Prevent the items from wrapping to the next line.
-   * @default false
    */
   noWrap?: boolean;
   /**
@@ -29,7 +28,7 @@ export interface InlineProps extends GapSpaceProp, AriaRegionProps {
 // ---------------
 export const Inline = ({
   space = 0,
-  noWrap = false,
+  noWrap,
   alignX,
   alignY,
   children,
@@ -39,7 +38,7 @@ export const Inline = ({
     {...props}
     className={cn(
       'flex',
-      !noWrap && 'flex-nowrap',
+      !noWrap && 'flex-wrap', // flexbox defaults to no-wrap
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
       alignY === 'input' &&

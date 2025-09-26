@@ -43,6 +43,9 @@ const meta = {
       description: 'Set the Vertical Alignment',
     },
   },
+  args: {
+    noWrap: undefined,
+  },
 } satisfies Meta<typeof Inline>;
 
 export default meta;
