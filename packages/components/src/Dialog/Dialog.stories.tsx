@@ -163,6 +163,7 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
 
 export const UseConfirmation: StoryObj = {
   render: () => {
+    // TODO: Test with multiple confirmations
     const confirm = useConfirmation();
     const onPress = async () => {
       await confirm({

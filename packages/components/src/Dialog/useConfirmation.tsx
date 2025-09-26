@@ -40,16 +40,16 @@ export const ConfirmationProvider = ({ children }: PropsWithChildren) => {
 
   const confirm = (config: ConfirmationConfig): Promise<ConfirmationResult> => {
     // Allow only one confirmation dialog at a time. Immediately resolve with a default status.
-    if (confirmation && open) {
+    if (open) {
       console.warn(
         'A confirmation dialog is already open. Rejecting new request.'
       );
       return Promise.resolve('cancelled');
     }
-    setOpen(true);
 
     return new Promise(resolve => {
       setConfirmation({ ...config, resolve });
+      setOpen(true);
     });
   };
 
