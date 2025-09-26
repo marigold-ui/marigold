@@ -88,6 +88,7 @@ Following a predictable field order helps users build mental models and reduces 
         <li>Place required fields before optional ones within each section.</li>
         <li>Position dependent fields immediately after their parent field.</li>
         <li>
+          {' '}
           Fields should have a maximum width based on their expected content
           length.
         </li>
@@ -100,7 +101,7 @@ Following a predictable field order helps users build mental models and reduces 
 
 IMAGE
 
-Proper spacing between fields creates a clear visual hierarchy and improves form readability. Use the token `field-Y` for vertical spacing between individual fields within a section, and the token `field-X` for horizontal spacing between fields that are positioned on the same line.
+Proper spacing between fields creates a clear visual hierarchy and improves form readability. Use the token `fieldY` for vertical spacing between individual fields within a section, and the token `fieldX` for horizontal spacing between fields that are positioned on the same line.
 
 When grouping related field, such as address components or date and time fields, you can create visual associations that make the form easier to understand. Use a `<Stack>` component to organize related fields and apply the `group` spacing token to maintain consistent spacing within the group.
 
@@ -141,41 +142,31 @@ We provide a set of spacing tokens to help you apply consistent spacing througho
     <Table.Row key={0}>
       <Table.Cell>`container`</Table.Cell>
       <Table.Cell>50rem (800px)</Table.Cell>
-      <Table.Cell>
-        Used width or max-width for the form container.
-      </Table.Cell>
+      <Table.Cell> Used width or max-width for the form container.</Table.Cell>
       <Table.Cell>`<div>`, `<Form>`</Table.Cell>
     </Table.Row>
     <Table.Row key={1}>
       <Table.Cell>`section`</Table.Cell>
       <Table.Cell>3.5rem (56px)</Table.Cell>
-      <Table.Cell>
-        Used for creating space between different form sections.
-      </Table.Cell>
+      <Table.Cell>Used for creating space between different form sections.</Table.Cell>
       <Table.Cell>`<Stack>`</Table.Cell>
     </Table.Row>
     <Table.Row key={2}>
       <Table.Cell>`fieldY`</Table.Cell>
       <Table.Cell>2rem (32px)</Table.Cell>
-      <Table.Cell>
-        Used for creating vertical space between individual form fields.
-      </Table.Cell>
+      <Table.Cell>Used for creating vertical space between individual form fields.</Table.Cell>
       <Table.Cell>`<Stack>`</Table.Cell>
     </Table.Row>
     <Table.Row key={3}>
       <Table.Cell>`fieldX`</Table.Cell>
       <Table.Cell>1.25rem (20px)</Table.Cell>
-      <Table.Cell>
-        Used for creating horizontal space between individual form fields.
-      </Table.Cell>
+      <Table.Cell>Used for creating horizontal space between individual form fields.</Table.Cell>
       <Table.Cell>`<Inline>`</Table.Cell>
     </Table.Row>
       <Table.Row key={4}>
       <Table.Cell>`group`</Table.Cell>
       <Table.Cell>1rem (16px)</Table.Cell>
-      <Table.Cell>
-        Used for grouping related fields together, such as address components or date and time fields.
-      </Table.Cell>
+      <Table.Cell>Used for grouping related fields together, such as address components or date and time fields.</Table.Cell>
       <Table.Cell>`<Stack>`, `<Inset>`</Table.Cell>
     </Table.Row>
   </Table.Body>
