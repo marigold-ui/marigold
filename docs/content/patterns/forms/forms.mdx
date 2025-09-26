@@ -15,7 +15,7 @@ The foundation of effective form design lies in thoughtful layout and structure.
 
 Forms should be left-aligned to follow natural reading flow and maintain consistency across your application. To ensure optimal readability across all devices, limit form width to a maximum of 800px using the `container` spacing token from.
 
-Whitespace plays a crucial role in form usability—it prevents visual clutter, enhances focus, and creates clear separation between sections and fields. Strategic use of whitespace makes forms easier to scan and complete, ultimately improving the user experience. We provide comprehensive [spacing tokens](#TODO LINK) to help you apply consistent spacing throughout your forms.
+Whitespace plays a crucial role in form usability—it prevents visual clutter, enhances focus, and creates clear separation between sections and fields. Strategic use of whitespace makes forms easier to scan and complete, ultimately improving the user experience. We provide comprehensive [spacing tokens](#spacing-tokens) to help you apply consistent spacing throughout your forms.
 
 <GuidelineTiles>
   <Do>
@@ -105,15 +105,77 @@ Grouping fields together provides additional context and makes the interface eas
 - **Related information**: When fields share a common context or purpose (e.g. address fields, date and time)
 - **Conditional fields**: When certain fields are only relevant based on previous answers
 
-For a complete reference of all available spacing options, see our [spacing tokens](#TODO LINK) documentation.
+For a complete reference of all available spacing options, see our [spacing tokens](#spacing-tokens) section.
 
 <ComponentDemo file="./form-spacing-fields.demo.tsx" />
+
+### Using accordions
+
+Accordions can be used effectively in two ways within forms:
+
+- **As sections themselves**: Use accordions to create collapsible sections that contain multiple related fields. This is particularly useful for optional information or advanced settings that don't need to be visible by default.
+- **Within sections**: Use accordions to group content within an existing section, allowing users to focus on the most important fields while keeping additional options easily accessible.
+
+When using accordions, ensure that required fields remain visible and are not hidden within collapsed sections to maintain accessibility and usability.
 
 ### Required vs. optional fields
 
 These fields must be filled out for the form to be submitted. They are clearly indicated with an asterisk (\*) next to the label. Optional fields do not have this indicator, allowing users to skip them if they choose.
 
-When using `<Accordion>` components to group fields, ensure that required fields are placed outside of the accordion to maintain visibility and accessibility.
+## Spacing tokens
+
+We provide a set of spacing tokens to help you apply consistent spacing throughout your forms. These tokens are designed to cover spacing needs for form layouts, including spacing between sections, fields, and groups of related fields.
+
+<Table aria-label="spacing tokens">
+  <Table.Header>
+    <Table.Column>Token</Table.Column>
+    <Table.Column>Value</Table.Column>
+    <Table.Column>Description</Table.Column>
+    <Table.Column>Relevant components</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row key={0}>
+      <Table.Cell>`container`</Table.Cell>
+      <Table.Cell>50rem (800px)</Table.Cell>
+      <Table.Cell>
+        Used width or max-width for the form container.
+      </Table.Cell>
+      <Table.Cell>`<div>`, `<Form>`</Table.Cell>
+    </Table.Row>
+    <Table.Row key={1}>
+      <Table.Cell>`section`</Table.Cell>
+      <Table.Cell>3.5rem (56px)</Table.Cell>
+      <Table.Cell>
+        Used for creating space between different form sections.
+      </Table.Cell>
+      <Table.Cell>`<Stack>`</Table.Cell>
+    </Table.Row>
+    <Table.Row key={2}>
+      <Table.Cell>`fieldY`</Table.Cell>
+      <Table.Cell>2rem (32px)</Table.Cell>
+      <Table.Cell>
+        Used for creating vertical space between individual form fields.
+      </Table.Cell>
+      <Table.Cell>`<Stack>`</Table.Cell>
+    </Table.Row>
+    <Table.Row key={3}>
+      <Table.Cell>`fieldX`</Table.Cell>
+      <Table.Cell>1.25rem (20px)</Table.Cell>
+      <Table.Cell>
+        Used for creating horizontal space between individual form fields.
+      </Table.Cell>
+      <Table.Cell>`<Inline>`</Table.Cell>
+    </Table.Row>
+      <Table.Row key={4}>
+      <Table.Cell>`group`</Table.Cell>
+      <Table.Cell>1rem (16px)</Table.Cell>
+      <Table.Cell>
+        Used for grouping related fields together, such as address components or date and time fields.
+      </Table.Cell>
+      <Table.Cell>`<Stack>`, `<Inset>`</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
 
 ## Actions
 
