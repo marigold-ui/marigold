@@ -13,10 +13,9 @@ The foundation of effective form design lies in thoughtful layout and structure.
 
 ### Overall form layout
 
-Forms should be left-aligned to follow the natural reading flow. Use a maximum width of 800px for forms to ensure readability across devices. We provide [spacing tokens](#TODO LINK) that helps you choose the correct spacing for your forms.
-Set the form width using the `max-container` spacing token.
+Forms should be left-aligned to follow natural reading flow and maintain consistency across your application. To ensure optimal readability across all devices, limit form width to a maximum of 800px using the `container` spacing token from.
 
-Ensure there is sufficient whitespace around and within the form to prevent clutter and enhance focus. Whitespace helps separate different sections and fields, making the form easier to scan and complete.
+Whitespace plays a crucial role in form usability—it prevents visual clutter, enhances focus, and creates clear separation between sections and fields. Strategic use of whitespace makes forms easier to scan and complete, ultimately improving the user experience. We provide comprehensive [spacing tokens](#TODO LINK) to help you apply consistent spacing throughout your forms.
 
 <GuidelineTiles>
   <Do>
@@ -46,12 +45,13 @@ Ensure there is sufficient whitespace around and within the form to prevent clut
 
 We have various components suitable for forms. You can find a detailed guide on the [Form Fields](../../foundations/form-fields) page.
 
-Key components for form structure:
+Other components for form structure:
 
-- **Layout components**: `<Stack>`, `<Inline>`, and `<Inset>` to organize fields and sections
-- **Accordion**: Group fields with expandable sections for lengthy forms or optional fields
-- **Buttons**: Use primary buttons for form submission, secondary for additional actions like "View PDF"
-- **Links**: For navigation to privacy policies or terms of service, not for form actions
+- **Layout components**: `<Stack>`, `<Inline>`, and `<Inset>` to organize fields and sections.
+- **Accordion**: Group fields with expandable sections for lengthy forms or optional fields.
+- **Buttons**: Use primary buttons for form submission, secondary for additional actions like "View PDF".
+- **Links**: For navigation to privacy policies or terms of service, not for form actions.
+- **Feedback components**: You can use feedback components like `<Tooltip>`, `<SectionMessage>`, and `<Toast>` to provide additional information or context.
 
 ## Content Organization
 
@@ -59,7 +59,7 @@ Key components for form structure:
 
 Sections help organize related fields together, making forms easier to scan and understand. They provide visual separation and context, allowing users to process information in manageable chunks.
 
-Forms with multiple sections should maintain 56px spacing between sections using `<Stack space={14}>`.
+Forms with multiple sections should maintain spacing between sections using `<Stack space='section'>`.
 
 #### When to use sections
 
@@ -96,15 +96,18 @@ Following a predictable field order helps users build mental models and reduces 
 
 IMAGE
 
-- **Vertical spacing**: Use 32px spacing between individual fields within a section. This can be archieved by using the `<Stack>` component with the `space` prop set to `8`.
-- **Related fields**: Group closely related fields (like address) with 16px spacing also add extra padding to the Y-axis inside the group. This can be achieved by wrapping the related fields in another `<Stack>` component with the `space` prop set to `4` and adding padding to the Y-axis with a `<Inset>` using the `spaceY` prop set to `4`.
+Proper spacing between fields creates a clear visual hierarchy and improves form readability. Use the token `field-Y` for vertical spacing between individual fields within a section, and the token `field-X` for horizontal spacing between fields that are positioned on the same line.
 
-<ComponentDemo file="./form-spacing-fields.demo.tsx" />
+When grouping related field, such as address components or date and time fields, you can create visual associations that make the form easier to understand. Use a `<Stack>` component to organize related fields and apply the `group` spacing token to maintain consistent spacing within the group.
 
-#### When to group fields
+Grouping fields together provides additional context and makes the interface easier to scan:
 
 - **Related information**: When fields share a common context or purpose (e.g. address fields, date and time)
 - **Conditional fields**: When certain fields are only relevant based on previous answers
+
+For a complete reference of all available spacing options, see our [spacing tokens](#TODO LINK) documentation.
+
+<ComponentDemo file="./form-spacing-fields.demo.tsx" />
 
 ### Required vs. optional fields
 

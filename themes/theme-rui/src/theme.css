@@ -158,7 +158,7 @@
   --spacing-button-large: 2.5rem;
 
   /* spacing between elements */
-  --spacing-max-container: 50rem; /* e.g. form container */
+  --spacing-container: 50rem; /* e.g. form container */
   --spacing-section: 3.5rem; /* e.g. between form sections */
   --spacing-field-Y: 2rem; /* e.g. between fields vertically */
   --spacing-field-X: 1.25rem; /* e.g. between fields horizontally */
