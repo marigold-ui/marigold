@@ -1,3 +1,4 @@
+import { MessageCircleHeart, User } from 'lucide-react';
 import { useState } from 'react';
 import { Button, Dialog, Menu, TextArea } from '@marigold/components';
 
@@ -20,8 +21,12 @@ export default () => {
   return (
     <>
       <Menu onAction={handleAction} label="User Menu">
-        <Menu.Item id="profile">View Profile</Menu.Item>
-        <Menu.Item id="feedback">Send Feedback</Menu.Item>
+        <Menu.Item id="profile">
+          <User /> View Profile
+        </Menu.Item>
+        <Menu.Item id="feedback">
+          <MessageCircleHeart /> Send Feedback
+        </Menu.Item>
       </Menu>
       <Dialog
         size="xsmall"
