@@ -34,6 +34,16 @@ test('support cascading themes', () => {
     },
     components: {
       Button: cva(),
+      Modal: cva(),
+      Dialog: {
+        container: cva(),
+        closeButton: cva(),
+        header: cva(),
+        content: cva(),
+        actions: cva(),
+        title: cva(),
+      },
+      Underlay: cva(),
     },
   };
 
@@ -44,6 +54,17 @@ test('support cascading themes', () => {
     },
     components: {
       Text: cva('text-black'),
+      Button: cva(),
+      Modal: cva(),
+      Dialog: {
+        container: cva(),
+        closeButton: cva(),
+        header: cva(),
+        content: cva(),
+        actions: cva(),
+        title: cva(),
+      },
+      Underlay: cva(),
     },
   };
 
@@ -72,7 +93,9 @@ test('support cascading themes', () => {
       "colors": {
         "primary": "coral"
       },
-      "components": {}
+      "components": {
+        "Dialog": {}
+      }
     }"
   `);
   expect(inner.innerHTML).toMatchInlineSnapshot(`
@@ -81,7 +104,9 @@ test('support cascading themes', () => {
       "colors": {
         "primary": "gainsboro"
       },
-      "components": {}
+      "components": {
+        "Dialog": {}
+      }
     }"
   `);
 });
@@ -94,6 +119,16 @@ test('cascading without a selector is allowed when inner theme has not root styl
     },
     components: {
       Button: cva(),
+      Modal: cva(),
+      Dialog: {
+        container: cva(),
+        closeButton: cva(),
+        header: cva(),
+        content: cva(),
+        actions: cva(),
+        title: cva(),
+      },
+      Underlay: cva(),
     },
   };
 
@@ -102,7 +137,19 @@ test('cascading without a selector is allowed when inner theme has not root styl
     colors: {
       primary: 'gainsboro',
     },
-    components: {},
+    components: {
+      Button: cva(),
+      Modal: cva(),
+      Dialog: {
+        container: cva(),
+        closeButton: cva(),
+        header: cva(),
+        content: cva(),
+        actions: cva(),
+        title: cva(),
+      },
+      Underlay: cva(),
+    },
   };
 
   expect(() =>
@@ -122,6 +169,16 @@ test('using classname prop', () => {
     },
     components: {
       Button: cva(),
+      Modal: cva(),
+      Dialog: {
+        container: cva(),
+        closeButton: cva(),
+        header: cva(),
+        content: cva(),
+        actions: cva(),
+        title: cva(),
+      },
+      Underlay: cva(),
     },
   };
 
