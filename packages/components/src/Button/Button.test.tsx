@@ -1,6 +1,6 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import { createRef } from 'react';
 import * as stories from './Button.stories';
 
 const { Basic, WithIcon } = composeStories(stories);
@@ -25,7 +25,7 @@ test('add icon in button works as expected', () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLButtonElement>();
+  const ref = createRef<HTMLButtonElement>();
   render(<Basic ref={ref} />);
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();

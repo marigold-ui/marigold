@@ -79,9 +79,7 @@ export const Basic: Story = {
     onPress: fn(),
   },
   render: args => <Button {...args}>Button</Button>,
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ args, canvas }) => {
     await userEvent.click(canvas.getByText('Button'));
 
     await expect(args.onPress).toHaveBeenCalled();
@@ -116,9 +114,7 @@ export const ButtonVariants: Story = {
       </Stack>
     </Container>
   ),
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ args, canvas }) => {
     await userEvent.click(canvas.getByText('Primary'));
     await userEvent.click(canvas.getByText('Secondary'));
     await userEvent.click(canvas.getByText('Destructive'));

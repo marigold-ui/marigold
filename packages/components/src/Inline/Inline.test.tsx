@@ -80,3 +80,19 @@ test('adjusts the button to be aligned with input baseline', () => {
     `"flex flex-wrap gap-6 items-end [&:has([slot=description])]:items-end [&:has([slot=description])_button]:mb-6 [&:has([slot=errorMessage])]:mb-6"`
   );
 });
+
+test('wrap by default', () => {
+  render(<Basic data-testid="inline" />);
+
+  const inline = screen.getByTestId('inline');
+
+  expect(inline).toHaveClass('flex-wrap');
+});
+
+test('allow to not wrap', () => {
+  render(<Basic data-testid="inline" noWrap />);
+
+  const inline = screen.getByTestId('inline');
+
+  expect(inline).not.toHaveClass('flex-nowrap');
+});

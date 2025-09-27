@@ -11,6 +11,10 @@ export interface InlineProps extends GapSpaceProp, AriaRegionProps {
    */
   children?: ReactNode;
   /**
+   * Prevent the items from wrapping to the next line.
+   */
+  noWrap?: boolean;
+  /**
    * Horizontal alignment of the items inside the element.
    */
   alignX?: keyof typeof alignment.horizontal.alignmentX;
@@ -24,6 +28,7 @@ export interface InlineProps extends GapSpaceProp, AriaRegionProps {
 // ---------------
 export const Inline = ({
   space = 0,
+  noWrap,
   alignX,
   alignY,
   children,
@@ -32,7 +37,8 @@ export const Inline = ({
   <div
     {...props}
     className={cn(
-      'flex flex-wrap',
+      'flex',
+      !noWrap && 'flex-wrap', // flexbox defaults to no-wrap
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
       alignY === 'input' &&
