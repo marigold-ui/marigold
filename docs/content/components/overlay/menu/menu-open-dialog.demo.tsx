@@ -1,16 +1,14 @@
-import { MessageCircleHeart, User } from 'lucide-react';
 import { useState } from 'react';
-import { Button, Dialog, Menu, TextArea } from '@marigold/components';
+import { Button, Dialog, Menu } from '@marigold/components';
 
 export default () => {
   const [open, setDialogOpen] = useState(false);
-
-  const handleAction = (action: 'profile' | 'feedback') => {
+  const handleAction = (action: 'save' | 'delete') => {
     switch (action) {
-      case 'profile':
-        alert('Profile opened!');
+      case 'save':
+        alert('saved!');
         break;
-      case 'feedback':
+      case 'delete':
         setDialogOpen(true);
         break;
       default:
@@ -20,30 +18,23 @@ export default () => {
 
   return (
     <>
-      <Menu onAction={handleAction} label="User Menu">
-        <Menu.Item id="profile">
-          <User /> View Profile
-        </Menu.Item>
-        <Menu.Item id="feedback">
-          <MessageCircleHeart /> Send Feedback
+      <Menu onAction={handleAction} label="Settings">
+        <Menu.Item id="save">Save</Menu.Item>
+        <Menu.Item id="delete" variant="destructive">
+          Delete
         </Menu.Item>
       </Menu>
-      <Dialog
-        size="xsmall"
-        closeButton
-        open={open}
-        onOpenChange={setDialogOpen}
-      >
+      <Dialog closeButton open={open} onOpenChange={setDialogOpen}>
         {({ close }) => (
           <>
-            <Dialog.Title>Send Feedback</Dialog.Title>
-            <Dialog.Content>
-              <TextArea placeholder="Your feedback..." rows={4} />
-            </Dialog.Content>
+            <Dialog.Title>Confirm delete</Dialog.Title>
+            <Dialog.Content>Do you really wanna delete this?</Dialog.Content>
             <Dialog.Actions>
-              <Button onPress={close}>Cancel</Button>
-              <Button variant="primary" onPress={close}>
-                Submit
+              <Button variant="ghost" onPress={close}>
+                Cancel
+              </Button>
+              <Button variant="destructive" onPress={close}>
+                Delete
               </Button>
             </Dialog.Actions>
           </>

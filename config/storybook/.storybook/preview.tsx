@@ -52,9 +52,7 @@ export const decorators: any = [
         theme={THEME[theme as ThemeNames]}
         className="bg-bg-surface"
       >
-        <div className="h-screen p-6">
-          <Story />
-        </div>
+        <div className="h-screen p-6">{Story()}</div>
       </MarigoldProvider>
     );
   },

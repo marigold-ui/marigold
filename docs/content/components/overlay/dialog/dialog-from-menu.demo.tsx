@@ -1,20 +1,15 @@
-import { Menu, useConfirmation } from '@marigold/components';
+import { useState } from 'react';
+import { ConfirmationDialog, Menu } from '@marigold/components';
 
 export default () => {
-  const confirm = useConfirmation();
-  const handleAction = async (action: 'save' | 'delete') => {
+  const [open, setDialogOpen] = useState(false);
+  const handleAction = (action: 'save' | 'delete') => {
     switch (action) {
       case 'save':
         alert('saved!');
         break;
       case 'delete':
-        await confirm({
-          variant: 'destructive',
-          title: 'Confirm delete',
-          content:
-            'Are you sure you want to delete this event? This action cannot be undone.',
-          confirmationLabel: 'Delete',
-        });
+        setDialogOpen(true);
         break;
       default:
         throw new Error(`Unhandled action "${action}"!`);
@@ -22,11 +17,24 @@ export default () => {
   };
 
   return (
-    <Menu onAction={handleAction} label="Settings">
-      <Menu.Item id="save">Save</Menu.Item>
-      <Menu.Item id="delete" variant="destructive">
-        Delete
-      </Menu.Item>
-    </Menu>
+    <>
+      <Menu onAction={handleAction} label="Settings">
+        <Menu.Item id="save">Save</Menu.Item>
+        <Menu.Item id="delete" variant="destructive">
+          Delete
+        </Menu.Item>
+      </Menu>
+      <ConfirmationDialog
+        variant="destructive"
+        title="Confirm delete"
+        confirmationLabel="Delete"
+        closeButton
+        open={open}
+        onOpenChange={setDialogOpen}
+      >
+        Are you sure you want to delete this event? This action cannot be
+        undone.
+      </ConfirmationDialog>
+    </>
   );
 };

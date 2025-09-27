@@ -42,15 +42,6 @@ const theme: Theme = {
     },
     Field: cva(),
     IconButton: cva(),
-    Modal: cva(),
-    Dialog: {
-      container: cva(),
-      closeButton: cva(),
-      header: cva(),
-      content: cva(),
-      actions: cva(),
-      title: cva(),
-    },
   },
 };
 

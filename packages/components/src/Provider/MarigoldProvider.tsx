@@ -1,5 +1,4 @@
 import { Theme, ThemeProvider, ThemeProviderProps } from '@marigold/system';
-import { ConfirmationProvider } from '../Dialog/useConfirmation';
 
 // Props
 // ---------------
@@ -14,7 +13,7 @@ export function MarigoldProvider<T extends Theme>({
 }: MarigoldProviderProps<T>) {
   return (
     <ThemeProvider theme={theme} className={className}>
-      <ConfirmationProvider>{children}</ConfirmationProvider>
+      {children}
     </ThemeProvider>
   );
 }
