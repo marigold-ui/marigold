@@ -5,6 +5,7 @@ export interface AccordionContext {
   classNames: {
     [Key in keyof ThemeComponent<'Accordion'>]: string;
   };
+  isStickyHeader: boolean;
 }
 
 const Context = createContext<AccordionContext | null>(null);
