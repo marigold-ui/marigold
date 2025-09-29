@@ -8,6 +8,7 @@ on:
 
 jobs:
   chromatic:
+    if: github.event.pull_request.draft == false && contains(github.event.pull_request.labels.*.name, 'run-vrt')
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     steps:
