@@ -61,11 +61,11 @@ Besides that we have some other components which you may need to build well-stru
 
 ### Sections
 
-Sections help organize related fields together, making forms easier to scan and understand. They provide visual separation and context, allowing users to process information in manageable chunks.
+Sections help organize related fields together, making forms easier to scan and understand. By providing visual separation and context, they allow users to process information in manageable chunks while transforming overwhelming forms into intuitive experiences.
 
-Forms with multiple sections should maintain spacing between sections using `<Stack space='section'>`.
+This organizational approach is particularly effective when your form serves multiple purposes or collects diverse types of data. Sections create logical groupings that match how users naturally think about information, reducing cognitive load and improving completion rates.
 
-#### When to use sections
+Use sections when your form has multiple purposes or collects different types of information. They work especially well for:
 
 - **Complex forms**: When your form has more than 6-8 fields, sections reduce cognitive load and prevent form abandonment by breaking information into manageable chunks.
 
@@ -75,7 +75,11 @@ Forms with multiple sections should maintain spacing between sections using `<St
 
 - **Multi-step processes**: When breaking long forms into smaller steps, sections serve as natural breakpoints and represent manageable progress toward completion.
 
-<ComponentDemo file="./form-spacing-sections.demo.tsx" mode="preview" />
+#### Spacing between sections
+
+Forms with multiple sections should maintain spacing between sections using `<Stack space='section'>`.
+
+IMAGE
 
 ### Fields
 
@@ -101,9 +105,9 @@ Following a predictable field order helps users build mental models and reduces 
 
 #### Spacing between fields
 
-IMAGE
-
 Proper spacing between fields creates a clear visual hierarchy and improves form readability. Use the token `fieldY` for vertical spacing between individual fields within a section, and the token `fieldX` for horizontal spacing between fields that are positioned on the same line.
+
+IMAGE
 
 When grouping related field, such as address components or date and time fields, you can create visual associations that make the form easier to understand. Use a `<Stack>` component to organize related fields and apply the `group` spacing token to maintain consistent spacing within the group.
 

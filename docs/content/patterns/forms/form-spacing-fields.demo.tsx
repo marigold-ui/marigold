@@ -12,6 +12,12 @@ export default () => (
   <Stack space={8}>
     <Headline level={2}>Personal Information</Headline>
     <TextField label="Name" description="Enter your full name" required />
+    <TextField
+      label="Email"
+      description="Enter your email address"
+      type="email"
+      required
+    />
     <NumberField label="Phone" hideStepper width={40} />
     <Inset spaceY={4}>
       <Stack space={4}>
@@ -34,11 +40,5 @@ export default () => (
         </Select>
       </Stack>
     </Inset>
-    <TextField
-      label="Email"
-      description="Enter your email address"
-      type="email"
-      required
-    />
   </Stack>
 );
