@@ -73,6 +73,8 @@ Use sections when your form has multiple purposes or collects different types of
 
 - **Progressive disclosure**: When some fields are conditional based on previous selections, sections help users understand the relationship between their choices and additional requirements.
 
+<ComponentDemo file="./form-section.demo.tsx" />
+
 #### Spacing between sections
 
 Forms with multiple sections should maintain spacing between sections using `<Stack space='section'>`.
@@ -90,6 +92,8 @@ Forms with multiple sections should maintain spacing between sections using `<St
 Individual fields are the building blocks of your form. Their arrangement, sizing, and presentation directly impact how users navigate and complete the form. Proper field organization reduces cognitive load and creates a logical flow that guides users through the data entry process.
 
 Following a predictable field order helps users build mental models and reduces the time spent deciding what to fill out next. Prioritizing required fields ensures critical information is collected first, while positioning dependent fields near their triggers maintains context and prevents confusion. Field widths that match expected content length provide visual cues about the type and amount of information needed, making forms more intuitive and efficient to complete.
+
+<ComponentDemo file="./form-spacing-fields.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
@@ -127,8 +131,6 @@ Grouping fields together provides additional context and makes the interface eas
 - **Conditional fields**: When certain fields are only relevant based on previous answers
 
 For a complete reference of all available spacing options, see our [spacing tokens](#spacing-tokens-alpha) section.
-
-<ComponentDemo file="./form-spacing-fields.demo.tsx" />
 
 ### Using accordions
 

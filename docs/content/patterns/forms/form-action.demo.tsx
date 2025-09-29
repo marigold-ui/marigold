@@ -1,10 +1,8 @@
-import { Button, Inline, Link } from '@marigold/components';
+import { Button, Inline } from '@marigold/components';
 
 export default () => (
-  <Inline space={5} alignY="center">
+  <Inline space="fieldX" alignY="center">
     <Button variant="primary">Save</Button>
-    <Link variant="secondary" href="#">
-      Cancel
-    </Link>
+    <Button variant="secondary">Cancel</Button>
   </Inline>
 );

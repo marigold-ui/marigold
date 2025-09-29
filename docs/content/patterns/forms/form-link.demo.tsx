@@ -44,8 +44,8 @@ export default () => {
   };
 
   return (
-    <Stack space={4}>
-      <Inline alignY="input" space={5}>
+    <Stack space="group">
+      <Inline alignY="input" space="fieldX">
         <Select
           label="Venue"
           selectedKey={selectedVenueId}
@@ -63,7 +63,6 @@ export default () => {
           Create new venue
         </Button>
       </Inline>
-
       <TextField label="Name" value={name} onChange={setName} />
       <TextField label="Street" value={street} onChange={setStreet} />
       <Inline space={5}>
@@ -75,7 +74,7 @@ export default () => {
         />
         <TextField label="City" width={44} value={city} onChange={setCity} />
       </Inline>
-      <Stack space={1}>
+      <Stack space="group">
         <Select
           label="Country"
           placeholder="Select country"

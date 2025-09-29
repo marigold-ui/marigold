@@ -9,7 +9,7 @@ import {
 } from '@marigold/components';
 
 export default () => (
-  <Stack space={8}>
+  <Stack space="fieldY">
     <Headline level={2}>Personal Information</Headline>
     <TextField label="Name" description="Enter your full name" required />
     <TextField
@@ -19,10 +19,10 @@ export default () => (
       required
     />
     <NumberField label="Phone" hideStepper width={40} />
-    <Inset spaceY={4}>
-      <Stack space={4}>
+    <Inset spaceY="group">
+      <Stack space="group">
         <TextField label="Street" />
-        <Inline space={5}>
+        <Inline space="fieldX">
           <TextField label="Postcode" width={20} />
           <TextField label="City" width={40} />
         </Inline>
