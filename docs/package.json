@@ -31,7 +31,7 @@
     "dotenv": "17.2.2",
     "eslint": "9.34.0",
     "eslint-config-next": "15.5.2",
-    "framer-motion": "12.23.12",
+    "framer-motion": "12.23.22",
     "github-slugger": "2.0.0",
     "lucide-react": "0.542.0",
     "mdast-util-toc": "7.1.0",
