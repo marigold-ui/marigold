@@ -37,7 +37,6 @@ const parseDateFromString = (dateString: string): CalendarDate | null => {
 
   //  European format (DD.MM.YYYY or DD/MM/YYYY)
   const europeanMatch = trimmed.match(formats[1]);
-  console.log('europeanMatch', europeanMatch);
   if (europeanMatch) {
     const day = parseInt(europeanMatch[1], 10);
     const month = parseInt(europeanMatch[2], 10);
@@ -50,7 +49,6 @@ const parseDateFromString = (dateString: string): CalendarDate | null => {
 
   //  US format (MM/DD/YYYY or MM-DD-YYYY)
   const usMatch = trimmed.match(formats[2]);
-  console.log('usMatch', usMatch);
   if (usMatch) {
     const month = parseInt(usMatch[1], 10);
     const day = parseInt(usMatch[2], 10);
