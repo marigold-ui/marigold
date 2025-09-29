@@ -254,6 +254,14 @@ export const textWrap = {
   pretty: 'text-pretty',
 };
 
+export const whiteSpace = {
+  normal: 'whitespace-normal',
+  nowrap: 'whitespace-nowrap',
+  pre: 'whitespace-pre',
+  preLine: 'whitespace-pre-line',
+  preWrap: 'whitespace-pre-wrap',
+};
+
 export const gapSpace = {
   0: 'gap-0',
   '0.5': 'gap-0.5',
@@ -658,6 +666,13 @@ export type TextWrapProp = {
    * Set text wrapping behavior.
    */
   wrap?: keyof typeof textWrap;
+};
+
+export type WhiteSpaceProps = {
+  /**
+   * Set how white space inside the element is handled.
+   */
+  whiteSpace?: keyof typeof whiteSpace;
 };
 
 export type FontWeightProp = {

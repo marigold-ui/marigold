@@ -127,3 +127,25 @@ test('supports wrap prop', () => {
   expect(balance).toHaveClass('text-balance');
   expect(pretty).toHaveClass('text-pretty');
 });
+
+test('supports whiteSpace prop', () => {
+  render(
+    <>
+      <Basic whiteSpace="normal">normal</Basic>
+      <Basic whiteSpace="pre">pre</Basic>
+      <Basic whiteSpace="preLine">preLine</Basic>
+      <Basic whiteSpace="preWrap">preWrap</Basic>
+    </>
+  );
+  const normal = screen.getByText(/normal/);
+  const pre = screen.getByText(/pre/);
+  const preLine = screen.getByText(/preLine/);
+  const preWrap = screen.getByText(/preWrap/);
+  const breakSpaces = screen.getByText(/breakSpaces/);
+
+  expect(normal).toHaveClass('whitespace-normal');
+  expect(pre).toHaveClass('whitespace-pre');
+  expect(preLine).toHaveClass('whitespace-pre-line');
+  expect(preWrap).toHaveClass('whitespace-pre-wrap');
+  expect(breakSpaces).toHaveClass('whitespace-break-spaces');
+});
