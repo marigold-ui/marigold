@@ -1,5 +1,6 @@
 import type { StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
+import { expect, waitFor } from 'storybook/test';
 import { Button } from '../Button';
 import { Menu } from '../Menu';
 import { Text } from '../Text';
@@ -71,6 +72,19 @@ export const Basic: Story = {
       </Dialog>
     </Dialog.Trigger>
   ),
+  play: async ({ canvas, userEvent }) => {
+    const user = userEvent;
+
+    // Open the dialog
+    await user.click(canvas.getByRole('button', { name: 'Open' }));
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    // Close the dialog
+    await user.click(canvas.getByRole('button', { name: 'Cancel' }));
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  },
 };
 
 export const Form: Story = {
