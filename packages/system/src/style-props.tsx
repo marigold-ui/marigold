@@ -68,11 +68,7 @@ export const width = {
   '9/12': 'w-9/12',
   '10/12': 'w-10/12',
   '11/12': 'w-11/12',
-  section: 'var(--spacing-section)',
-  fieldY: 'var(--spacing-field-Y)',
-  fieldX: 'var(--spacing-field-X)',
   container: 'var(--spacing-container)',
-  group: 'var(--spacing-group)',
 };
 
 export const maxWidth = {
@@ -145,11 +141,7 @@ export const maxWidth = {
   '9/12': 'max-w-9/12',
   '10/12': 'max-w-10/12',
   '11/12': 'max-w-11/12',
-  section: 'max-w-[var(--spacing-section)]',
-  fieldY: 'max-w-[var(--spacing-field-Y)]',
-  fieldX: 'max-w-[var(--spacing-field-X)]',
   container: 'max-w-[var(--spacing-container)]',
-  group: 'max-w-[var(--spacing-group)]',
 };
 
 export const height = {
@@ -341,11 +333,6 @@ export const paddingSpace = {
   72: 'p-72',
   80: 'p-80',
   96: 'p-96',
-  section: 'p-[var(--spacing-section)]',
-  fieldY: 'p-[var(--spacing-field-Y)]',
-  fieldX: 'p-[var(--spacing-field-X)]',
-  container: 'p-[var(--spacing-container)]',
-  group: 'p-[var(--spacing-group)]',
 };
 export const paddingSpaceX = {
   0: 'px-0',
@@ -382,11 +369,6 @@ export const paddingSpaceX = {
   72: 'px-72',
   80: 'px-80',
   96: 'px-96',
-  section: 'px-[var(--spacing-section)]',
-  fieldY: 'px-[var(--spacing-field-Y)]',
-  fieldX: 'px-[var(--spacing-field-X)]',
-  container: 'px-[var(--spacing-container)]',
-  group: 'px-[var(--spacing-group)]',
 };
 export const paddingSpaceY = {
   0: 'py-0',
@@ -465,11 +447,6 @@ export const paddingRight = {
   72: 'pr-72',
   80: 'pr-80',
   96: 'pr-96',
-  section: 'pr-[var(--spacing-section)]',
-  fieldY: 'pr-[var(--spacing-field-Y)]',
-  fieldX: 'pr-[var(--spacing-field-X)]',
-  container: 'pr-[var(--spacing-container)]',
-  group: 'pr-[var(--spacing-group)]',
 };
 
 export const paddingLeft = {
@@ -507,11 +484,6 @@ export const paddingLeft = {
   72: 'pl-72',
   80: 'pl-80',
   96: 'pl-96',
-  section: 'pl-[var(--spacing-section)]',
-  fieldY: 'pl-[var(--spacing-field-Y)]',
-  fieldX: 'pl-[var(--spacing-field-X)]',
-  container: 'pl-[var(--spacing-container)]',
-  group: 'pl-[var(--spacing-group)]',
 };
 
 export const paddingTop = {
@@ -549,11 +521,6 @@ export const paddingTop = {
   72: 'pt-72',
   80: 'pt-80',
   96: 'pt-96',
-  section: 'pt-[var(--spacing-section)]',
-  fieldY: 'pt-[var(--spacing-field-Y)]',
-  fieldX: 'pt-[var(--spacing-field-X)]',
-  container: 'pt-[var(--spacing-container)]',
-  group: 'pt-[var(--spacing-group)]',
 };
 
 export const paddingBottom = {
@@ -591,11 +558,6 @@ export const paddingBottom = {
   72: 'pb-72',
   80: 'pb-80',
   96: 'pb-96',
-  section: 'pb-[var(--spacing-section)]',
-  fieldY: 'pb-[var(--spacing-field-Y)]',
-  fieldX: 'pb-[var(--spacing-field-X)]',
-  container: 'pb-[var(--spacing-container)]',
-  group: 'pb-[var(--spacing-group)]',
 };
 
 export const alignment = {
