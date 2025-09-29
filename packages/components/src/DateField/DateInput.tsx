@@ -25,7 +25,6 @@ const parseDateFromString = (dateString: string): CalendarDate | null => {
 
   //  ISO format (YYYY-MM-DD)
   const isoMatch = trimmed.match(formats[0]);
-  console.log('isoMatch', isoMatch);
   if (isoMatch) {
     const year = parseInt(isoMatch[1], 10);
     const month = parseInt(isoMatch[2], 10);
