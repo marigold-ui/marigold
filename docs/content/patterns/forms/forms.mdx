@@ -141,6 +141,8 @@ Accordions can be used effectively in two ways within forms:
 
 When using accordions, ensure that required fields remain visible and are not hidden within collapsed sections to maintain accessibility and usability.
 
+<ComponentDemo file="./form-accordion.demo.tsx" />
+
 ### Required vs. optional fields
 
 These fields must be filled out for the form to be submitted. They are clearly indicated with an asterisk (\*) next to the label. Optional fields do not have this indicator, allowing users to skip them if they choose.
@@ -184,7 +186,7 @@ We provide a set of spacing tokens to help you apply consistent spacing througho
       <Table.Row key={4}>
       <Table.Cell>`group`</Table.Cell>
       <Table.Cell>1rem (16px)</Table.Cell>
-      <Table.Cell>Used for grouping related fields together, such as address components or date and time fields.</Table.Cell>
+      <Table.Cell>Used for grouping related fields (address components, date/time fields) or multiple accordion sections together.</Table.Cell>
       <Table.Cell>`<Stack>`, `<Inset>`</Table.Cell>
     </Table.Row>
   </Table.Body>
