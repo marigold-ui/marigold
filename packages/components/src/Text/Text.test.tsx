@@ -128,24 +128,15 @@ test('supports wrap prop', () => {
   expect(pretty).toHaveClass('text-pretty');
 });
 
-test('supports whiteSpace prop', () => {
-  render(
-    <>
-      <Basic whiteSpace="normal">normal</Basic>
-      <Basic whiteSpace="pre">pre</Basic>
-      <Basic whiteSpace="preLine">preLine</Basic>
-      <Basic whiteSpace="preWrap">preWrap</Basic>
-    </>
-  );
-  const normal = screen.getByText(/normal/);
-  const pre = screen.getByText(/pre/);
-  const preLine = screen.getByText(/preLine/);
-  const preWrap = screen.getByText(/preWrap/);
-  const breakSpaces = screen.getByText(/breakSpaces/);
-
-  expect(normal).toHaveClass('whitespace-normal');
-  expect(pre).toHaveClass('whitespace-pre');
-  expect(preLine).toHaveClass('whitespace-pre-line');
-  expect(preWrap).toHaveClass('whitespace-pre-wrap');
-  expect(breakSpaces).toHaveClass('whitespace-break-spaces');
+test.each([
+  { prop: 'normal', className: 'whitespace-normal' },
+  { prop: 'nowrap', className: 'whitespace-nowrap' },
+  { prop: 'pre', className: 'whitespace-pre' },
+  { prop: 'preLine', className: 'whitespace-pre-line' },
+  { prop: 'preWrap', className: 'whitespace-pre-wrap' },
+  { prop: 'breakSpaces', className: 'whitespace-break-spaces' },
+] as const)('supports whiteSpace prop: %s', ({ prop, className }) => {
+  render(<Basic whiteSpace={prop}>{prop}</Basic>);
+  const el = screen.getByText(prop);
+  expect(el).toHaveClass(className);
 });

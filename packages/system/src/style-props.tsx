@@ -260,6 +260,7 @@ export const whiteSpace = {
   pre: 'whitespace-pre',
   preLine: 'whitespace-pre-line',
   preWrap: 'whitespace-pre-wrap',
+  breakSpaces: 'whitespace-break-spaces',
 };
 
 export const gapSpace = {
