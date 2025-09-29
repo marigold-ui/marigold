@@ -9,12 +9,13 @@ export interface AccordionHeaderProps {
 }
 
 export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
-  const { classNames, isStickyHeader } = useAccordionContext();
+  const { classNames, isStickyHeader, iconPosition } = useAccordionContext();
   /**
    * Use context to rotate the chevron.
    * "group-aria-expaned" is currently bugged with the RAC tailwind plugin.
    */
   const { isExpanded } = useContext(DisclosureStateContext)!;
+  const chevronStyles = cn(classNames.icon, isExpanded && 'rotate-180');
 
   return (
     <div
@@ -26,10 +27,11 @@ export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
     >
       <Heading>
         <Button slot="trigger" className={classNames.header}>
+          {iconPosition === 'left' && <ChevronDown className={chevronStyles} />}
           <div className="flex-1">{children}</div>
-          <ChevronDown
-            className={cn(classNames.icon, isExpanded && 'rotate-180')}
-          />
+          {iconPosition === 'right' && (
+            <ChevronDown className={chevronStyles} />
+          )}
         </Button>
       </Heading>
     </div>

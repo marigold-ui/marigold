@@ -6,6 +6,7 @@ export interface AccordionContext {
     [Key in keyof ThemeComponent<'Accordion'>]: string;
   };
   isStickyHeader: boolean;
+  iconPosition: 'right' | 'left';
 }
 
 const Context = createContext<AccordionContext | null>(null);

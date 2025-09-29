@@ -46,10 +46,17 @@ const meta = {
       },
       options: ['default', 'card'],
     },
+    iconPosition: {
+      control: {
+        type: 'radio',
+      },
+      options: ['right', 'left'],
+    },
   },
   args: {
     defaultExpandedKeys: ['1'],
     variant: 'default',
+    iconPosition: 'right',
   },
 } satisfies Meta;
 
@@ -748,6 +755,34 @@ export const StickyHeader: Story = {
           labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
           et accusam et justo duo dolores et ea rebum. Stet clita kasd
           gubergren, no sea takimata sanctus est Lorem
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  ),
+};
+
+export const IconPositionLeft: Story = {
+  parameters: {
+    controls: { exclude: ['iconPosition'] },
+  },
+  render: args => (
+    <Accordion {...args} iconPosition="left">
+      <Accordion.Item id="1">
+        <Accordion.Header>Settings</Accordion.Header>
+        <Accordion.Content>
+          <Headline level={3}>Some setting options</Headline>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item id="2">
+        <Accordion.Header>Settings</Accordion.Header>
+        <Accordion.Content>
+          <Headline level={3}>Some setting options</Headline>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item id="3">
+        <Accordion.Header>Settings</Accordion.Header>
+        <Accordion.Content>
+          <Headline level={3}>Some setting options</Headline>
         </Accordion.Content>
       </Accordion.Item>
     </Accordion>

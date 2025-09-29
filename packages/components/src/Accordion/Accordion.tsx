@@ -14,6 +14,7 @@ export interface AccordionProps
   variant?: 'default' | 'card' | (string & {});
   size?: string;
   isStickyHeader?: boolean;
+  iconPosition?: 'right' | 'left';
 }
 
 export const Accordion = ({
@@ -22,12 +23,13 @@ export const Accordion = ({
   variant,
   size,
   isStickyHeader = false,
+  iconPosition = 'right',
   ...props
 }: AccordionProps) => {
   const classNames = useClassNames({ component: 'Accordion', variant, size });
 
   return (
-    <AccordionProvider value={{ classNames, isStickyHeader }}>
+    <AccordionProvider value={{ classNames, isStickyHeader, iconPosition }}>
       <DisclosureGroup
         {...props}
         isDisabled={disabled}
