@@ -7,7 +7,7 @@ order: 1
 
 Forms are the backbone of data submission, making their design critical to the user experience. Our Form Design Guidelines ensure every form in your application is consistent, usable, and accessible.
 
-This comprehensive guide covers the visual and structural aspects of form design—from overall layout principles and spacing strategies to organizing content with sections and fields. You'll learn how to create intuitive user flows, apply consistent spacing using our design tokens, and leverage components like accordions to manage complex forms effectively.
+This comprehensive guide covers the visual and structural aspects of form design, from overall layout principles and spacing strategies to organizing content with sections and fields. You'll learn how to create intuitive user flows, apply consistent spacing using our design tokens, and leverage components like accordions to manage complex forms effectively.
 
 These design patterns focus on the user experience and visual hierarchy of forms. For technical implementation details, state management, and validation patterns, refer to our [Form Implementation](/patterns/form-implementation) guide.
 
@@ -19,7 +19,7 @@ The foundation of effective form design lies in thoughtful layout and structure.
 
 Forms should be left-aligned to follow natural reading flow and maintain consistency across your application. To ensure optimal readability across all devices, limit form width to a maximum of 800px using the `container` spacing token from.
 
-Whitespace plays a crucial role in form usability—it prevents visual clutter, enhances focus, and creates clear separation between sections and fields. Strategic use of whitespace makes forms easier to scan and complete, ultimately improving the user experience. We provide comprehensive [spacing tokens](#spacing-tokens) to help you apply consistent spacing throughout your forms.
+Whitespace plays a crucial role in form usability—it prevents visual clutter, enhances focus, and creates clear separation between sections and fields. Strategic use of whitespace makes forms easier to scan and complete, ultimately improving the user experience. We provide comprehensive [spacing tokens](#spacing-tokens-alpha) to help you apply consistent spacing throughout your forms.
 
 <GuidelineTiles>
   <Do>
@@ -49,13 +49,13 @@ Whitespace plays a crucial role in form usability—it prevents visual clutter, 
 
 We have various components suitable for forms. You can find a detailed guide on the [Form Fields](../../foundations/form-fields) page.
 
-Other components for form structure:
+Besides that we have some other components which you may need to build well-structured forms:
 
 - **Layout components**: `<Stack>`, `<Inline>`, and `<Inset>` to organize fields and sections.
 - **Accordion**: Group fields with an accordion for lengthy forms or optional fields. Use accordions for sections that can be collapsed to save space and reduce cognitive load.
 - **Buttons**: Use primary buttons for form submission, secondary for additional actions like "View PDF".
 - **Links**: For navigation to privacy policies or terms of service, not for form actions.
-- **Feedback components**: You can use feedback components like `<Tooltip>`, `<SectionMessage>`, and `<Toast>` to provide additional information or context.
+- **Feedback components**: You can use feedback components like `<SectionMessage>` and `<Toast>` to provide additional information or context.
 
 ## Content Organization
 
@@ -112,7 +112,7 @@ Grouping fields together provides additional context and makes the interface eas
 - **Related information**: When fields share a common context or purpose (e.g. address fields, date and time)
 - **Conditional fields**: When certain fields are only relevant based on previous answers
 
-For a complete reference of all available spacing options, see our [spacing tokens](#spacing-tokens) section.
+For a complete reference of all available spacing options, see our [spacing tokens](#spacing-tokens-alpha) section.
 
 <ComponentDemo file="./form-spacing-fields.demo.tsx" />
 
@@ -237,7 +237,7 @@ Here is a full example of a well-structured form with sections using the guideli
       ),
     },
     {
-      title: 'Form Implementation guide',
+      title: 'Form Implementation Guide',
       href: '../../patterns/form-implementation',
       caption: 'Learn how to build forms.',
       icon: (
