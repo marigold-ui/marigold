@@ -29,8 +29,8 @@ Whitespace plays a crucial role in form usability—it prevents visual clutter, 
           Align form content to the left for better scanning and organization.
         </li>
         <li>
-          Use a maximum width of 800px for forms to ensure readability across
-          devices.
+          Use a maximum width of 800px (spacing token `container`) for forms to
+          ensure readability across devices.
         </li>
         <li>
           Ensure sufficient whitespace around and within the form for a clear
@@ -73,13 +73,17 @@ Use sections when your form has multiple purposes or collects different types of
 
 - **Progressive disclosure**: When some fields are conditional based on previous selections, sections help users understand the relationship between their choices and additional requirements.
 
-- **Multi-step processes**: When breaking long forms into smaller steps, sections serve as natural breakpoints and represent manageable progress toward completion.
-
 #### Spacing between sections
 
 Forms with multiple sections should maintain spacing between sections using `<Stack space='section'>`.
 
-IMAGE
+<Image
+  src="/forms/section-spacing.png"
+  alt="Section spacing"
+  width={305}
+  height={322}
+  className="mx-auto block"
+/>
 
 ### Fields
 
@@ -107,7 +111,13 @@ Following a predictable field order helps users build mental models and reduces 
 
 Proper spacing between fields creates a clear visual hierarchy and improves form readability. Use the token `fieldY` for vertical spacing between individual fields within a section, and the token `fieldX` for horizontal spacing between fields that are positioned on the same line.
 
-IMAGE
+<Image
+  src="/forms/field-spacing.png"
+  alt="Fields spacing"
+  width={394}
+  height={512}
+  className="mx-auto block"
+/>
 
 When grouping related field, such as address components or date and time fields, you can create visual associations that make the form easier to understand. Use a `<Stack>` component to organize related fields and apply the `group` spacing token to maintain consistent spacing within the group.
 
@@ -148,7 +158,7 @@ We provide a set of spacing tokens to help you apply consistent spacing througho
     <Table.Row key={0}>
       <Table.Cell>`container`</Table.Cell>
       <Table.Cell>50rem (800px)</Table.Cell>
-      <Table.Cell> Used width or max-width for the form container.</Table.Cell>
+      <Table.Cell>Used width or max-width for the form container.</Table.Cell>
       <Table.Cell>`<div>`, `<Form>`</Table.Cell>
     </Table.Row>
     <Table.Row key={1}>
