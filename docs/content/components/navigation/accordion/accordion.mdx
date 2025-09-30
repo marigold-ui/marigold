@@ -51,6 +51,18 @@ A controlled `Accordion` can be expanded and collapsed using expandedKeys and on
 
 <ComponentDemo file="./accordion-controlled-expanded.demo.tsx" />
 
+### Long-form content
+
+For Accordions with a lot of content inside it is handy to use the prop `stickyHeader` to provide context. While scrolling through the content the headline stays fixed at the top of the viewport.
+The `stickyHeader`applies to the entire Accordion: `<Accordion stickyHeader={true}>...</Accordion>`.
+
+### Icon position
+
+The icon or chevron in the Header of the `Accordion` can be positioned `right` and `left`. Especially when you use action in the header the position should be on the `left` side.
+The icon position also applied to the whole Accordion: `<Accordion iconPositon={'left'}>...</Accordion>`.
+
+<ComponentDemo file="./accordion-icon-position.demo.tsx" />
+
 ## Props
 
 <StorybookHintMessage component={title} />
