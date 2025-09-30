@@ -1,5 +1,12 @@
 # @marigold/system
 
+## 15.3.0
+
+### Minor Changes
+
+- 97adc14: feat([DST-1061]): Add more alignment options to `<Inline>`, `<Stack>` and `<Grid>`
+- 4ccbec2: feat([DST-1077]): Add white space control to `<Text>`
+
 ## 15.2.0
 
 ## 15.1.0
