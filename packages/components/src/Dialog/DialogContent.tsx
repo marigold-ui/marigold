@@ -17,7 +17,9 @@ export const DialogContent = ({
 }: DialogContentProps) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
   return (
-    <div className={cn('[grid-area:content]', classNames.content)}>
+    <div
+      className={cn('overflow-y-auto [grid-area:content]', classNames.content)}
+    >
       {children}
     </div>
   );

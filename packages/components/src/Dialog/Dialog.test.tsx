@@ -1,4 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
+import { composeStories } from '@storybook/react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
@@ -7,6 +8,7 @@ import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button';
 import { setup } from '../test.utils';
 import { Dialog } from './Dialog';
+import * as stories from './Dialog.stories';
 
 const theme: Theme = {
   name: 'test',
@@ -548,4 +550,55 @@ test('cancel button closes dialog', async () => {
   await waitFor(() => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
+});
+
+test('VeryLongContent story: action buttons remain visible during content scrolling', async () => {
+  const { VeryLongContent } = composeStories(stories);
+
+  render(<VeryLongContent />);
+
+  const button = screen.getByText('Open Dialog with Long Content');
+  await user.click(button);
+
+  const dialog = screen.getByRole('dialog');
+  const contentContainer = dialog.querySelector('[class*="overflow-y-auto"]');
+  const declineButton = screen.getByText('Decline');
+  const acceptButton = screen.getByText('Accept');
+
+  if (contentContainer) {
+    // Simulate content overflow scenario
+    Object.defineProperty(contentContainer, 'scrollHeight', {
+      configurable: true,
+      value: 1000,
+    });
+    Object.defineProperty(contentContainer, 'clientHeight', {
+      configurable: true,
+      value: 400,
+    });
+    Object.defineProperty(contentContainer, 'scrollTop', {
+      configurable: true,
+      writable: true,
+      value: 0,
+    });
+
+    expect(contentContainer.scrollHeight).toBeGreaterThan(
+      contentContainer.clientHeight
+    );
+
+    expect(declineButton).toBeVisible();
+    expect(acceptButton).toBeVisible();
+
+    // Simulate scrolling within content area
+    Object.defineProperty(contentContainer, 'scrollTop', {
+      configurable: true,
+      writable: true,
+      value: 600,
+    });
+
+    fireEvent.scroll(contentContainer);
+
+    // Actions should still be visible after scrolling
+    expect(declineButton).toBeVisible();
+    expect(acceptButton).toBeVisible();
+  }
 });

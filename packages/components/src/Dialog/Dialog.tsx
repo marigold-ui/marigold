@@ -51,8 +51,8 @@ const InnerDialog = forwardRef(
         {...props}
         ref={ref}
         className={cn(
-          'relative mx-auto outline-hidden',
-          "grid [grid-template-areas:'title'_'content'_'actions']",
+          'relative mx-auto max-h-full min-h-0 w-full max-w-lg outline-hidden',
+          "grid [grid-template-rows:auto_1fr_auto] [grid-template-areas:'title'_'content'_'actions']",
           classNames.container
         )}
       >
