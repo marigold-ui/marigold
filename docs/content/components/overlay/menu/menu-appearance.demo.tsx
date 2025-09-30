@@ -1,10 +1,11 @@
+import { Menu as MenuIcon } from 'lucide-react';
 import type { MenuProps } from '@marigold/components';
 import { Menu } from '@marigold/components';
 
 export default (props: MenuProps) => {
   return (
     <Menu
-      label="Ticket Options"
+      label={props.size === 'icon' ? <MenuIcon /> : 'Ticket options'}
       onAction={action => alert(`Action: ${action}`)}
       {...props}
     >

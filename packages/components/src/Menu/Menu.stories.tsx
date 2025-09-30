@@ -291,7 +291,7 @@ export const BasicActionMenu: Story = {
       <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
         <ActionMenu.Item id="edit">Open in editor</ActionMenu.Item>
         <ActionMenu.Item id="settings">Settings</ActionMenu.Item>
-        <ActionMenu.Item id="delete">
+        <ActionMenu.Item id="delete" variant="destructive">
           <Delete /> Delete
         </ActionMenu.Item>
       </ActionMenu>

@@ -100,6 +100,7 @@ export const Form: Story = {
 
 export const OpenFromMenu: Story = {
   render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setDialogOpen] = useState(false);
     const handleAction = (action: 'save' | 'delete') => {
       switch (action) {
@@ -124,22 +125,22 @@ export const OpenFromMenu: Story = {
             Delete
           </Menu.Item>
         </Menu>
-        <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
-          <Dialog closeButton>
-            <Dialog.Title>Confirm delete</Dialog.Title>
-            <Dialog.Content>
-              <Text>Do you really wanna delete this?</Text>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button slot="close" variant="secondary">
-                Cancel
-              </Button>
-              <Button slot="close" variant="primary">
-                Delete
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Dialog.Trigger>
+        <Dialog open={open} onOpenChange={setDialogOpen} closeButton>
+          {({ close }) => (
+            <>
+              <Dialog.Title>Confirm delete</Dialog.Title>
+              <Dialog.Content>
+                <Text>Do you really wanna delete this?</Text>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button slot="close">Cancel</Button>
+                <Button variant="destructive" onPress={close}>
+                  Delete
+                </Button>
+              </Dialog.Actions>
+            </>
+          )}
+        </Dialog>
       </>
     );
   },

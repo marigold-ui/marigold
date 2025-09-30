@@ -1,14 +1,16 @@
+import { MessageCircleHeart, User } from 'lucide-react';
 import { useState } from 'react';
-import { Button, Dialog, Menu } from '@marigold/components';
+import { Button, Dialog, Menu, TextArea } from '@marigold/components';
 
 export default () => {
   const [open, setDialogOpen] = useState(false);
-  const handleAction = (action: 'save' | 'delete') => {
+
+  const handleAction = (action: 'profile' | 'feedback') => {
     switch (action) {
-      case 'save':
-        alert('saved!');
+      case 'profile':
+        alert('Profile opened!');
         break;
-      case 'delete':
+      case 'feedback':
         setDialogOpen(true);
         break;
       default:
@@ -18,28 +20,35 @@ export default () => {
 
   return (
     <>
-      <Menu onAction={handleAction} label="Settings">
-        <Menu.Item id="save">Save</Menu.Item>
-        <Menu.Item id="delete">Delete</Menu.Item>
+      <Menu onAction={handleAction} label="User Menu">
+        <Menu.Item id="profile">
+          <User /> View Profile
+        </Menu.Item>
+        <Menu.Item id="feedback">
+          <MessageCircleHeart /> Send Feedback
+        </Menu.Item>
       </Menu>
-      <Dialog.Trigger open={open} onOpenChange={setDialogOpen}>
-        <Dialog closeButton>
-          {({ close }) => (
-            <>
-              <Dialog.Title>Confirm delete</Dialog.Title>
-              <Dialog.Content>Do you really wanna delete this?</Dialog.Content>
-              <Dialog.Actions>
-                <Button size="small" variant="ghost" onPress={close}>
-                  Cancel
-                </Button>
-                <Button size="small" variant="primary" onPress={close}>
-                  Delete
-                </Button>
-              </Dialog.Actions>
-            </>
-          )}
-        </Dialog>
-      </Dialog.Trigger>
+      <Dialog
+        size="xsmall"
+        closeButton
+        open={open}
+        onOpenChange={setDialogOpen}
+      >
+        {({ close }) => (
+          <>
+            <Dialog.Title>Send Feedback</Dialog.Title>
+            <Dialog.Content>
+              <TextArea placeholder="Your feedback..." rows={4} />
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={close}>Cancel</Button>
+              <Button variant="primary" onPress={close}>
+                Submit
+              </Button>
+            </Dialog.Actions>
+          </>
+        )}
+      </Dialog>
     </>
   );
 };
