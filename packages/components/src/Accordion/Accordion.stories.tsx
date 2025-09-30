@@ -315,16 +315,15 @@ export const StickyHeader: Story = {
     >
       <Accordion.Item id="1">
         <Accordion.Header>
-          <Inline space={2}>
+          <Columns columns={[1, 'fit', 'fit']} space={4}>
             <Headline level="2">Symfonie Abo 2025/2026</Headline>
-            <Split />
             <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Löschen
+              Delete
             </Button>
             <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Bearbeiten
+              Edit
             </Button>
-          </Inline>
+          </Columns>
         </Accordion.Header>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
@@ -776,16 +775,15 @@ export const StickyHeader: Story = {
       </Accordion.Item>
       <Accordion.Item id="2">
         <Accordion.Header>
-          <Inline space={2}>
+          <Columns columns={[1, 'fit', 'fit']} space={4}>
             <Headline level="2">Scroll Me Abo Season 25/26</Headline>
-            <Split />
             <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Löschen
+              Delete
             </Button>
             <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Bearbeiten
+              Edit
             </Button>
-          </Inline>
+          </Columns>
         </Accordion.Header>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
