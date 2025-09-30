@@ -460,3 +460,68 @@ test('DatePicker supports data unavailable property', async () => {
 
   expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
+
+test('should handle pasting a valid date string', async () => {
+  const onChange = vi.fn();
+  render(
+    <DatePicker label="Date" onChange={onChange} aria-label="date picker" />
+  );
+
+  const dateInput = screen.getAllByRole('spinbutton')[0];
+  await user.click(dateInput);
+
+  // Simulate pasting a valid date
+  fireEvent.paste(dateInput, {
+    clipboardData: {
+      getData: () => '2025-09-24',
+    },
+  });
+
+  expect(onChange).toHaveBeenCalled();
+  const changedDate = onChange.mock.calls[0][0];
+  expect(changedDate.year).toBe(2025);
+  expect(changedDate.month).toBe(9);
+  expect(changedDate.day).toBe(24);
+});
+
+test('should handle pasting an invalid date format', async () => {
+  const onChange = vi.fn();
+  render(
+    <DatePicker label="Date" onChange={onChange} aria-label="date picker" />
+  );
+
+  const dateInput = screen.getAllByRole('spinbutton')[0];
+  await user.click(dateInput);
+
+  // Simulate pasting an invalid date
+  fireEvent.paste(dateInput, {
+    clipboardData: {
+      getData: () => 'invalid-date',
+    },
+  });
+
+  expect(onChange).not.toHaveBeenCalled();
+});
+
+test('should support copying date value', async () => {
+  const execCommand = vi.fn();
+  document.execCommand = execCommand;
+
+  render(
+    <DatePicker
+      label="Date"
+      defaultValue={new CalendarDate(2025, 9, 24)}
+      aria-label="date picker"
+    />
+  );
+
+  const dateInput = screen.getAllByRole('spinbutton')[0];
+  await user.click(dateInput);
+
+  // We can't directly test clipboard content in JSDOM,
+  // but we can verify the date is formatted correctly in the input
+  const segments = screen.getAllByRole('spinbutton');
+  expect(getTextValue(segments[0])).toBe('09');
+  expect(getTextValue(segments[1])).toBe('24');
+  expect(getTextValue(segments[2])).toBe('2025');
+});

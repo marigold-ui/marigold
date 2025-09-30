@@ -1,6 +1,7 @@
 ---
 title: DatePicker
 caption: Component used to pick date value.
+badge: updated
 ---
 
 The `<DatePicker>` component is a user interface element that allows users to select a date from a calendar.
@@ -63,6 +64,20 @@ The simplest way to parse a Date for the datepicker is by using `parseAbsoluteTo
 If you're already using a date library like [date-fns](https://date-fns.org/), you can also utilizing `parseDate`. Ensure that you only pass the date part to `parseDate`, excluding the time and timezone information.
 
 <ComponentDemo file="./date-picker-with-date.demo.tsx" />
+
+### Paste Support
+
+The `<DatePicker>` supports pasting date values from the clipboard. Users can copy dates in common formats and paste them directly into the date picker field. The component automatically parses and validates the pasted content.
+
+**Supported date formats:**
+
+- ISO format: `2023-12-25`
+- European format: `25.12.2023` or `25/12/2023`
+- US format: `12/25/2023` or `12-25-2023`
+
+Invalid dates or unrecognized formats are ignored, ensuring data integrity.
+
+<ComponentDemo file="./datepicker-paste.demo.tsx" />
 
 ## Props
 
