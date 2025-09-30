@@ -8,6 +8,7 @@ import {
   FontWeightProp,
   TextAlignProp,
   TextWrapProp,
+  WhiteSpaceProps,
   cn,
   cursorStyle,
   ensureCssVar,
@@ -16,6 +17,7 @@ import {
   textSize,
   textStyle,
   textWrap,
+  whiteSpace as twWhiteSpace,
   useClassNames,
 } from '@marigold/system';
 import type { AriaLabelingProps } from '@marigold/types';
@@ -36,7 +38,8 @@ export interface TextProps
     FontWeightProp,
     FontStyleProp,
     CursorProp,
-    TextWrapProp {
+    TextWrapProp,
+    WhiteSpaceProps {
   /**
    * The children of the component
    */
@@ -86,6 +89,7 @@ const _Text = ({
   fontSize,
   fontStyle,
   wrap,
+  whiteSpace,
   children,
   as = 'div',
   ...props
@@ -115,7 +119,8 @@ const _Text = ({
         cursor && cursorStyle[cursor],
         weight && fontWeight[weight],
         fontSize && textSize[fontSize],
-        wrap && textWrap[wrap]
+        wrap && textWrap[wrap],
+        whiteSpace && twWhiteSpace[whiteSpace]
       )}
       style={{ color: color && ensureCssVar(color, 'color') }}
     >

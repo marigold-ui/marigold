@@ -3,3 +3,4 @@
  */
 
 export type { Selection } from '@react-types/shared';
+export type { TimeValue } from 'react-aria-components';
