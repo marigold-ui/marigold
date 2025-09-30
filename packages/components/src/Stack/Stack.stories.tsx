@@ -19,7 +19,7 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: Object.keys(alignment.horizontal.alignmentX),
+      options: Object.keys(alignment.vertical.alignmentX),
       description: 'Horizontal Alignment',
     },
     alignY: {

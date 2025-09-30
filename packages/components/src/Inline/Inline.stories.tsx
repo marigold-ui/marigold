@@ -40,7 +40,10 @@ const meta = {
         type: { summary: 'text' },
         defaultValue: { summary: 'undefined' },
       },
-      options: [...Object.keys(alignment.vertical.alignmentY), 'input'].flat(),
+      options: [
+        ...Object.keys(alignment.horizontal.alignmentY),
+        'input',
+      ].flat(),
       description: 'Set the Vertical Alignment',
     },
   },
