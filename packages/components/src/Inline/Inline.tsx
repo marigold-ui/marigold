@@ -3,6 +3,12 @@ import { alignment, cn, gapSpace } from '@marigold/system';
 import type { GapSpaceProp } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
+const inlineAlignmentY = {
+  ...alignment.horizontal.alignmentY,
+  input:
+    'items-end [&:has([slot=description])]:items-end [&:has([slot=description])_button]:mb-6 [&:has([slot=errorMessage])]:mb-6',
+};
+
 // Props
 // ---------------
 export interface InlineProps extends GapSpaceProp, AriaRegionProps {
@@ -21,7 +27,7 @@ export interface InlineProps extends GapSpaceProp, AriaRegionProps {
   /**
    * Vertical alignment of the items inside the element.
    */
-  alignY?: keyof typeof alignment.horizontal.alignmentY | 'input';
+  alignY?: keyof typeof inlineAlignmentY;
 }
 
 // Component
@@ -41,9 +47,7 @@ export const Inline = ({
       !noWrap && 'flex-wrap', // flexbox defaults to no-wrap
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],
-      alignY === 'input' &&
-        'items-end [&:has([slot=description])]:items-end [&:has([slot=description])_button]:mb-6 [&:has([slot=errorMessage])]:mb-6',
-      alignY && alignY !== 'input' && alignment?.horizontal?.alignmentY[alignY]
+      alignY && inlineAlignmentY[alignY]
     )}
   >
     {children}
