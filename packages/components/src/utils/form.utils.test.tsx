@@ -65,13 +65,14 @@ describe('parseFormData', () => {
       >
         <input type="checkbox" name="colors" value="red" defaultChecked />
         <input type="checkbox" name="colors" value="blue" defaultChecked />
+        <input type="checkbox" name="colors" value="green" defaultChecked />
         <button type="submit">Submit</button>
       </form>
     );
     const button = screen.getByRole('button', { name: /submit/i });
     await user.click(button);
 
-    expect(result).toEqual({ colors: ['red', 'blue'] });
+    expect(result).toEqual({ colors: ['red', 'blue', 'green'] });
   });
 
   test('parses file input', async () => {
