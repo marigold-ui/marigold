@@ -3,6 +3,9 @@ title: Marigold v15.3.0
 date: 2025-09-30
 type: Blog
 changed:
+  - components/layout/grid
+  - components/layout/inline
+  - components/layout/stack
   - components/actions/link
   - components/actions/linkbutton
   - components/content/card
@@ -26,7 +29,7 @@ We're excited to announce the release of Marigold v15.3.0! This update brings a 
 
 - Added a `description` property to the `<Checkbox>` component, allowing you to provide helpful text or guidance beneath the checkbox label.
 
-### Confirmation Dialog (beta)
+### Confirmation Dialog and Hook (beta)
 
 - Introduced the `<ConfirmationDialog>` component (beta), which provides a standardized modal dialog for confirming user actions such as deletions or submissions. This component helps ensure consistent confirmation flows across your application.
 
@@ -42,6 +45,27 @@ We're excited to announce the release of Marigold v15.3.0! This update brings a 
 ```
 
 Use `<ConfirmationDialog>` when you need to prompt users to confirm or cancel potentially destructive (`variant="destructive"`) or important actions.
+
+In addition, there is a new `useConfirmation` hook to conveniently open confirmation dialogs from anywhere in your application. This hook provides an easy way to trigger a confirmation dialog and handle user responses without manually managing dialog state.
+
+```jsx
+const confirm = useConfirmation();
+// Example mutation from TanStack React Query
+const mutation = useMutation(deleteItem);
+
+const handleDelete = async itemId => {
+  // Returns true if the user confirmed, false otherwise.
+  const confirmed = await confirm({
+    title: 'Delete Item',
+    description:
+      'Are you sure you want to delete this item? This action cannot be undone.',
+    variant: 'destructive',
+  });
+  if (confirmed) {
+    mutation.mutate(itemId);
+  }
+};
+```
 
 ### Drawer (beta)
 
@@ -75,6 +99,13 @@ Use `<ConfirmationDialog>` when you need to prompt users to confirm or cancel po
 ### Text
 
 - Added a `noWrap` property to the `<Text>` component, allowing you to prevent text from wrapping onto multiple lines. This is especially useful when `<Text>` is used in tables.
+- Add white space control to `<Text>`, allowing you to manage how whitespace is handled within text elements for improved formatting flexibility.
+
+## Miscellaneous
+
+- Exposed `TimeValue` types from `@marigold/components` to facilitate better type safety and integration when working with time-related properties in components like `<TimeField>`.
+- Added a helper function called `parseFormData` to conveniently parse form data, simplifying the process of extracting and handling form inputs in your applications when using the `onSubmit` handler.
+- Add more alignment options to `<Inline>`, `<Stack>` and `<Grid>` components, allowing for greater flexibility in layout and design.
 
 ## Design
 
