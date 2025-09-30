@@ -309,7 +309,7 @@ export const StickyHeader: Story = {
   render: args => (
     <Accordion
       {...args}
-      isStickyHeader
+      stickyHeader
       defaultExpandedKeys={['2']}
       iconPosition={'left'}
     >

@@ -13,7 +13,7 @@ describe('useAccordionContext', () => {
   it('returns the context when used inside the Accordion component', () => {
     const mockContextValue = {
       classNames: { container: 'container' } as any,
-      isStickyHeader: true,
+      stickyHeader: true,
       iconPosition: 'right' as const,
     };
     const wrapper = ({ children }: { children: React.ReactNode }) => (

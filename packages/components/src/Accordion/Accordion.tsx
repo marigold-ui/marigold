@@ -13,7 +13,7 @@ export interface AccordionProps
   disabled?: RAC.DisclosureGroupProps['isDisabled'];
   variant?: 'default' | 'card' | (string & {});
   size?: string;
-  isStickyHeader?: boolean;
+  stickyHeader?: boolean;
   iconPosition?: 'right' | 'left';
 }
 
@@ -22,14 +22,16 @@ export const Accordion = ({
   disabled,
   variant,
   size,
-  isStickyHeader = false,
+  stickyHeader = false,
   iconPosition = 'right',
   ...props
 }: AccordionProps) => {
   const classNames = useClassNames({ component: 'Accordion', variant, size });
 
   return (
-    <AccordionProvider value={{ classNames, isStickyHeader, iconPosition }}>
+    <AccordionProvider
+      value={{ classNames, stickyHeader: stickyHeader, iconPosition }}
+    >
       <DisclosureGroup
         {...props}
         isDisabled={disabled}

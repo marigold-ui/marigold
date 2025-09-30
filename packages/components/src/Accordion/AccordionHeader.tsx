@@ -9,7 +9,7 @@ export interface AccordionHeaderProps {
 }
 
 export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
-  const { classNames, isStickyHeader, iconPosition } = useAccordionContext();
+  const { classNames, stickyHeader, iconPosition } = useAccordionContext();
   /**
    * Use context to rotate the chevron.
    * "group-aria-expaned" is currently bugged with the RAC tailwind plugin.
@@ -19,11 +19,11 @@ export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
 
   return (
     <div
-      className={cn(
-        isStickyHeader
+      className={
+        stickyHeader
           ? 'bg-background/90 sticky top-0 z-1 backdrop-blur-xs'
-          : null
-      )}
+          : undefined
+      }
     >
       <Heading>
         <Button slot="trigger" className={classNames.header}>

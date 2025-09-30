@@ -5,7 +5,7 @@ export interface AccordionContext {
   classNames: {
     [Key in keyof ThemeComponent<'Accordion'>]: string;
   };
-  isStickyHeader: boolean;
+  stickyHeader: boolean;
   iconPosition: 'right' | 'left';
 }
 
