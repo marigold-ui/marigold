@@ -5,6 +5,8 @@ export interface AccordionContext {
   classNames: {
     [Key in keyof ThemeComponent<'Accordion'>]: string;
   };
+  stickyHeader: boolean;
+  iconPosition: 'right' | 'left';
 }
 
 const Context = createContext<AccordionContext | null>(null);
