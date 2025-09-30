@@ -1,5 +1,32 @@
 # @marigold/components
 
+## 15.3.0
+
+### Minor Changes
+
+- 95b55b8: feat([DST-1074]): Introduce a `useConfirmation` hook to conveniently open confirmation dialogs
+- bad3ef4: feat([DST-1056]): Add a helper to conveniently parse form data
+- 4395d2e: feat([DST-1047]): Improve `<List>` styles and add `small` variant
+- 97adc14: feat([DST-1061]): Add more alignment options to `<Inline>`, `<Stack>` and `<Grid>`
+- 91a5e7b: feat([DST-1044]): Introduce `LinkButton` component
+- baf550b: feat([DST-940]): Introduce `<Drawer>` component
+
+  Added `<Drawer>` component along with usage guideline and stories. The drawer offers a consisten way to present secondary content in a non-blocking way.
+
+- 4ccbec2: feat([DST-1077]): Add white space control to `<Text>`
+- 5e62b84: feat([DST-1051]): Introduce `ConfirmationDialog`
+- beeba04: feat([DST-1042]): Add "destrutive" variant to `<Menu.Item>`
+
+### Patch Changes
+
+- c6fb6c2: feat: Expose `TimeValue` types
+- ba5f502: feat([DST-1069]): Add `noWrap` prop to `<Inline>`
+- 061b5e9: feat([DST-1050]): Card master and adminmark variant
+- ce996ae: feat([DSTSUP-185]): added `stickyHeader`and `iconPosition`props to `Accordion`
+- Updated dependencies [97adc14]
+- Updated dependencies [4ccbec2]
+  - @marigold/system@15.3.0
+
 ## 15.2.0
 
 ### Patch Changes
