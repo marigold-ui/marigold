@@ -21,15 +21,15 @@ export const LocationSettings = () => {
     new Set(venues.map(venue => venue.country))
   );
   return (
-    <Stack space={8}>
+    <Stack space="fieldY">
       <Headline level={2}>Location & Capacity</Headline>
       <TextField
         label="Location Description"
         description="Provide additional details about the event location"
       />
-      <Inset spaceY={4}>
-        <Stack space={4}>
-          <Inline alignY="input" space={5}>
+      <Inset spaceY="group">
+        <Stack space="group">
+          <Inline alignY="input" space="fieldX">
             <Select label="Venue" width={96}>
               {venues.map(venue => (
                 <Select.Option key={venue.id} id={venue.id}>
@@ -42,7 +42,7 @@ export const LocationSettings = () => {
           </Inline>
           <TextField label="Name" />
           <TextField label="Street" />
-          <Inline space={5}>
+          <Inline space="fieldX">
             <TextField label="Postcode" width={20} />
             <TextField label="City" width={44} />
           </Inline>

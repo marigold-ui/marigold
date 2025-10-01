@@ -20,7 +20,7 @@ export const RegistrationSettings = () => (
         <Headline level={2}>Registration Settings</Headline>
       </Accordion.Header>
       <Accordion.Content>
-        <Stack space={8}>
+        <Stack space="fieldY">
           <Checkbox label="Require registration approval" />
           <Checkbox label="Send confirmation emails" />
           <TextField
@@ -29,8 +29,8 @@ export const RegistrationSettings = () => (
             type="email"
           />
 
-          <Inset spaceY={4}>
-            <Stack space={4}>
+          <Inset spaceY="group">
+            <Stack space="group">
               <Checkbox label="Enable waitlist" />
               <Checkbox label="Limit registrations to specific domains" />
               <TextField

@@ -9,7 +9,7 @@ import { RegistrationSettings } from './registrationSettings';
 const FormPage = () => (
   <div className="flex justify-center py-20">
     <Form maxWidth="container">
-      <Stack space={14}>
+      <Stack space="section">
         <EventDetails />
         <LocationSettings />
         <Stack space={4}>

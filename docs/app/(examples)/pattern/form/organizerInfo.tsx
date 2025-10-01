@@ -55,7 +55,7 @@ export const OrganizerInfo = () => (
           />
           <Checkbox label="Display organizer information publicly" />
           <Card variant="master">
-            <Stack space={8} alignX="left">
+            <Stack space="fieldY" alignX="left">
               <Inline space={2}>
                 <Headline level={3}>Co-Organizer</Headline>
                 <Badge variant="master">Master</Badge>
@@ -70,7 +70,7 @@ export const OrganizerInfo = () => (
               <Button variant="secondary">Add another co-organizer</Button>
             </Stack>
           </Card>
-          <Stack space={8}>
+          <Stack space="fieldY">
             <Headline level={3}>Contact Preferences</Headline>
             <Checkbox label="Allow attendees to contact organizer directly" />
             <Checkbox label="Include organizer contact in confirmation emails" />
