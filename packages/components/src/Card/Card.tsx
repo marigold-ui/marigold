@@ -25,15 +25,17 @@ import {
 // Props
 // ---------------
 export interface CardProps
-  extends GapSpaceProp,
-    PaddingSpaceProp,
-    PaddingRightProp,
+  extends PaddingRightProp,
     PaddingLeftProp,
     PaddingBottomProp,
     PaddingTopProp {
   children?: ReactNode;
   variant?: string;
   size?: 'default' | 'full' | (string & {});
+  /**
+   * Gap between children. You can see allowed tokens [here](../../foundations/design-token#spacing).
+   */
+  space?: GapSpaceProp['space'];
 
   /**
    * Padding of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
