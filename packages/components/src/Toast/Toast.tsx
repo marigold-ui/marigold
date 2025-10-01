@@ -97,7 +97,7 @@ export const Toast = ({ toast }: ToastProps) => {
           {toast.content.description}
         </Text>
         {toast.content.action && (
-          <div className="[grid-area:action]">{toast.content.action}</div>
+          <div className={classNames.action}>{toast.content.action}</div>
         )}
       </RAC_ToastContent>
       <CloseButton

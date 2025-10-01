@@ -56,4 +56,5 @@ export const Toast: ThemeComponent<'Toast'> = {
   bottom: cva([
     'fixed bottom-4 left-1/2 right-auto -translate-x-1/2 flex flex-col-reverse items-center w-auto align-middle',
   ]),
+  action: cva(['[grid-area:action] pl-4']),
 };
