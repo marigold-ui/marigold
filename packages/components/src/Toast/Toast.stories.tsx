@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Button } from '../Button';
+import { Link } from '../Link';
 import { Toast } from './Toast';
 import { ToastProvider, queue } from './ToastProvider';
 import { useToast } from './ToastQueue';
@@ -180,6 +181,86 @@ export const ToastContentTest: Story = {
           }}
         />
       </div>
+    );
+  },
+};
+
+export const WithLinks: Story = {
+  tags: ['component-test'],
+  args: {
+    title: 'Update Available',
+    variant: 'info',
+  },
+  render: ({ title, variant }) => {
+    const { addToast } = useToast();
+    const description = (
+      <>
+        A new version is available.{' '}
+        <Link
+          href="https://www.marigold-ui.io/releases/blog-overview"
+          target="_blank"
+        >
+          View changelog
+        </Link>{' '}
+        or{' '}
+        <Link href="https://github.com/marigold-ui/marigold">Update now</Link>
+      </>
+    );
+
+    return (
+      <>
+        <ToastProvider />
+        <Button
+          onPress={() =>
+            addToast({
+              title,
+              description,
+              variant,
+              timeout: 0,
+            })
+          }
+        >
+          Show Toast
+        </Button>
+      </>
+    );
+  },
+};
+
+export const WithAction: Story = {
+  tags: ['component-test'],
+  args: {
+    title: 'Update Available',
+    variant: 'info',
+    description: 'A new version is available.',
+  },
+  render: ({ title, variant, description }) => {
+    const { addToast } = useToast();
+
+    return (
+      <>
+        <ToastProvider />
+        <Button
+          onPress={() =>
+            addToast({
+              title,
+              description,
+              variant,
+              timeout: 0,
+              action: (
+                <Link
+                  size="small"
+                  href="https://github.com/marigold-ui/marigold"
+                >
+                  Update now
+                </Link>
+              ),
+            })
+          }
+        >
+          Show Toast
+        </Button>
+      </>
     );
   },
 };

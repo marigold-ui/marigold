@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { UNSTABLE_ToastContent as RAC_ToastContent } from 'react-aria-components';
 import { UNSTABLE_Toast as RAC_Toast, Text } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
@@ -61,7 +62,8 @@ const icons = {
 
 export type ToastContentProps = {
   title: string;
-  description?: string;
+  description?: ReactNode;
+  action?: ReactNode;
   variant?: 'success' | 'info' | 'warning' | 'error';
 };
 
@@ -94,6 +96,9 @@ export const Toast = ({ toast }: ToastProps) => {
         <Text slot="description" className={classNames.description}>
           {toast.content.description}
         </Text>
+        {toast.content.action && (
+          <div className="[grid-area:action]">{toast.content.action}</div>
+        )}
       </RAC_ToastContent>
       <CloseButton
         className={classNames.closeButton}
