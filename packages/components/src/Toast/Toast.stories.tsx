@@ -248,12 +248,9 @@ export const WithAction: Story = {
               variant,
               timeout: 0,
               action: (
-                <Link
-                  size="small"
-                  href="https://github.com/marigold-ui/marigold"
-                >
+                <Button size="small" variant="primary">
                   Update now
-                </Link>
+                </Button>
               ),
             })
           }
@@ -279,18 +276,13 @@ export const WithAction: Story = {
         await canvas.findByText('A new version is available.')
       ).toBeInTheDocument();
     });
-    await step('Click the link in toast', async () => {
-      const link = canvas.getByText('Update now');
-      const originalHref = link.getAttribute('href');
-      link.removeAttribute('href');
 
-      await userEvent.click(link);
-      await expect(link).toBeInTheDocument();
+    await step('Click the button in toast', async () => {
+      const button = canvas.getByText('Update now');
 
-      // Restore href for cleanup
-      if (originalHref) {
-        link.setAttribute('href', originalHref);
-      }
+      await userEvent.click(button);
+
+      await expect(button).toBeInTheDocument();
     });
   },
 };
