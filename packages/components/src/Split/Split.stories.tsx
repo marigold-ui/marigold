@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
-import { Inline } from '../Inline';
-import { Stack } from '../Stack';
+import { Inline } from '../Inline/Inline';
+import { Stack } from '../Stack/Stack';
 import { Split } from './Split';
 
 const Block = ({ children }: { children: ReactNode }) => (

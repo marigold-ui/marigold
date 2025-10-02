@@ -2,10 +2,10 @@ import React from 'react';
 import type RAC from 'react-aria-components';
 import { DatePicker, type DateValue, Dialog } from 'react-aria-components';
 import { WidthProp, useClassNames } from '@marigold/system';
-import { Calendar } from '../Calendar';
+import { Calendar } from '../Calendar/Calendar';
 import { DateInput } from '../DateField/DateInput';
-import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { IconButton } from '../IconButton';
+import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
+import { IconButton } from '../IconButton/IconButton';
 import { Popover } from '../Overlay/Popover';
 
 type RemovedProps =

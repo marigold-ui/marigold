@@ -14,7 +14,7 @@ import {
 } from 'react-aria-components';
 import { useId } from '@react-aria/utils';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
-import { HelpText } from '../HelpText';
+import { HelpText } from '../HelpText/HelpText';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 

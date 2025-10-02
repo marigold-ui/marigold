@@ -19,10 +19,10 @@ import Select, {
 import { useField } from '@react-aria/label';
 import { useId } from '@react-aria/utils';
 import { ComponentClassNames, cn, useClassNames } from '@marigold/system';
-import { FieldBaseProps } from '../FieldBase';
-import { HelpText } from '../HelpText';
-import { Label } from '../Label';
-import { ChevronDown } from '../icons';
+import { FieldBaseProps } from '../FieldBase/FieldBase';
+import { HelpText } from '../HelpText/HelpText';
+import { Label } from '../Label/Label';
+import { ChevronDown } from '../icons/ChevronDown';
 
 interface MultipleSelectProps
   extends Pick<

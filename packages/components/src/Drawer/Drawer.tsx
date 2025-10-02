@@ -5,7 +5,7 @@ import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
-import { CloseButton } from '../CloseButton';
+import { CloseButton } from '../CloseButton/CloseButton';
 import { DrawerContext } from './Context';
 import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';

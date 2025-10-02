@@ -1,7 +1,8 @@
 import React from 'react';
 import { cn, useClassNames } from '@marigold/system';
-import { IconButton } from '../IconButton';
-import { ChevronLeft, ChevronRight } from '../icons';
+import { IconButton } from '../IconButton/IconButton';
+import { ChevronLeft } from '../icons/ChevronLeft';
+import { ChevronRight } from '../icons/ChevronRight';
 
 function MonthControls() {
   const classNames = useClassNames({ component: 'Calendar' });

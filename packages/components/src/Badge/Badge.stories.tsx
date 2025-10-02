@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Stack } from '../Stack';
-import { Accessible } from '../icons';
+import { Stack } from '../Stack/Stack';
+import { Accessible } from '../icons/Accessible';
 import { Badge } from './Badge';
 
 const meta = {

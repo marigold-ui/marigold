@@ -1,7 +1,7 @@
 import RAC, { Modal, ModalOverlay } from 'react-aria-components';
 import { cn, useSmallScreen } from '@marigold/system';
-import { NonModal } from '../Overlay';
-import type { NonModalProps } from '../Overlay';
+import { NonModal } from '../Overlay/NonModal';
+import type { NonModalProps } from '../Overlay/NonModal';
 
 // Mobile Modal
 // ---------------

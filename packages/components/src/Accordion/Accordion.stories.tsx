@@ -2,16 +2,16 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
-import { Badge } from '../Badge';
+import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
-import { Columns } from '../Columns';
-import { Headline } from '../Headline';
-import { Inline } from '../Inline';
-import { NumberField } from '../NumberField';
-import { Split } from '../Split';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
-import { TextField } from '../TextField';
+import { Columns } from '../Columns/Columns';
+import { Headline } from '../Headline/Headline';
+import { Inline } from '../Inline/Inline';
+import { NumberField } from '../NumberField/NumberField';
+import { Split } from '../Split/Split';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
+import { TextField } from '../TextField/TextField';
 import { Accordion } from './Accordion';
 
 const meta = {

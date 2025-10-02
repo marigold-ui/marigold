@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Columns } from '@marigold/components';
+import { Columns } from './Columns';
 
 // eslint-disable-next-line testing-library/no-node-access
 const getColumnWrappers = (el: HTMLElement) => el.children!;
