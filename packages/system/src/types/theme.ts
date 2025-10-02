@@ -165,7 +165,8 @@ export type Theme = {
       | 'top-left'
       | 'top-right'
       | 'top'
-      | 'bottom',
+      | 'bottom'
+      | 'action',
       ComponentStyleFunction<string, string>
     >;
     Tabs?: Record<

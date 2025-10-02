@@ -49,10 +49,18 @@ All Toasts can be dismissed with `clearToasts`.
 
 <ComponentDemo file="./toast-close-all.demo.tsx" />
 
+### Action
+
+Toasts can also include an action element, which is typically a button or link that allows the user to take a specific action related to the toast message. This is useful for scenarios where you want to provide users with a way to respond to the notification.
+
+To add an action element, use the `action` prop which accepts any React component (button, link, etc.).
+
+<ComponentDemo file="./toast-action.demo.tsx" />
+
 ## Props
 
 <StorybookHintMessage component={title} />
 
-### Toast
+### Toast Provider
 
 <PropsTable component="ToastProvider" />

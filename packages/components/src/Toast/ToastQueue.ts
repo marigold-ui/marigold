@@ -1,15 +1,17 @@
+import { ReactNode } from 'react';
 import { queue } from './ToastProvider';
 
 export function useToast() {
   type ToastOptions = {
     title: string;
-    description?: string;
+    description?: ReactNode;
     variant?: 'info' | 'success' | 'error' | 'warning';
     timeout?: number;
+    action?: ReactNode;
   };
   const MINIMUM_TIMEOUT_MS = 5000;
   const addToast = (options: ToastOptions) => {
-    let { title, description, variant, timeout } = options;
+    let { title, description, variant, timeout, action } = options;
     if (timeout && timeout < MINIMUM_TIMEOUT_MS) {
       timeout = MINIMUM_TIMEOUT_MS; // Ensure a minimum timeout of 5000ms
     }
@@ -18,6 +20,7 @@ export function useToast() {
         title,
         description,
         variant,
+        action,
       },
       { timeout }
     );
