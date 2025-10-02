@@ -263,4 +263,34 @@ export const WithAction: Story = {
       </>
     );
   },
+  play: async ({ step }) => {
+    const canvas = within(window.document.body);
+    const button = canvas.getByRole('button', { name: /show toast/i });
+
+    await step('Click the Show Toast button', async () => {
+      await userEvent.click(button);
+    });
+
+    await step('Toast with title and description appears', async () => {
+      await expect(
+        await canvas.findByText('Update Available')
+      ).toBeInTheDocument();
+      await expect(
+        await canvas.findByText('A new version is available.')
+      ).toBeInTheDocument();
+    });
+    await step('Click the link in toast', async () => {
+      const link = canvas.getByText('Update now');
+      const originalHref = link.getAttribute('href');
+      link.removeAttribute('href');
+
+      await userEvent.click(link);
+      await expect(link).toBeInTheDocument();
+
+      // Restore href for cleanup
+      if (originalHref) {
+        link.setAttribute('href', originalHref);
+      }
+    });
+  },
 };
