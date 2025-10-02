@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import type { Theme } from '@marigold/system';
 import { cva } from '@marigold/system';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 import { setup } from '../test.utils';
 import type { DrawerProps } from './Drawer';
 import { Drawer } from './Drawer';

@@ -7,7 +7,7 @@ import {
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
-import { Label } from '../Label';
+import { Label } from '../Label/Label';
 
 type RemovedProps =
   | 'children'

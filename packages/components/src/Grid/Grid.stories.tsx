@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { alignment, cn } from '@marigold/system';
-import { Button } from '../Button';
-import { Text } from '../Text';
+import { Button } from '../Button/Button';
+import { Text } from '../Text/Text';
 import { Grid } from './Grid';
 
 const meta = {

@@ -3,10 +3,10 @@ import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
-import { Tag } from '.';
-import { Button } from '../Button';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
+import { Button } from '../Button/Button';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
+import { Tag } from './Tag';
 
 const meta = {
   title: 'Components/Tag',

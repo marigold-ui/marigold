@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
 import React from 'react';
-import { Link } from '../Link';
+import { Link } from '../Link/Link';
 import { ContextualHelp } from './ContextualHelp';
 
 const meta = {

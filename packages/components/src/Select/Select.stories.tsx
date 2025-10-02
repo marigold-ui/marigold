@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { Inset } from '../Inset';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
+import { Inset } from '../Inset/Inset';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
 import { Select } from './Select';
 
 const meta = {

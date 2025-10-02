@@ -1,7 +1,8 @@
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useClassNames } from '@marigold/system';
-import { ChevronLeft, ChevronRight } from '../icons';
+import { ChevronLeft } from '../icons/ChevronLeft';
+import { ChevronRight } from '../icons/ChevronRight';
 import { Ellipsis } from './Ellipsis';
 import { NavigationButton } from './NavigationButton';
 import { PageButton } from './PageButton';

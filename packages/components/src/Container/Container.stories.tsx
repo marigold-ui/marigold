@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Aspect } from '../Aspect';
-import { Text } from '../Text';
+import { Aspect } from '../Aspect/Aspect';
+import { Text } from '../Text/Text';
 import { Container } from './Container';
 
 const meta = {

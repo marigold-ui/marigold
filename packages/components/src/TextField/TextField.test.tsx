@@ -1,8 +1,9 @@
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { Button, Form } from '@marigold/components';
 import { Theme, cva } from '@marigold/system';
+import { Button } from '../Button/Button';
+import { Form } from '../Form/Form';
 import { setup } from '../test.utils';
 import { TextField } from './TextField';
 

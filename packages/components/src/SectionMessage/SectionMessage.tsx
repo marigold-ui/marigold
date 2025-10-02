@@ -1,7 +1,7 @@
 import { type ReactNode, useRef, useState } from 'react';
 import { useButton } from '@react-aria/button';
 import { cn, useClassNames } from '@marigold/system';
-import { CloseButton } from '../CloseButton';
+import { CloseButton } from '../CloseButton/CloseButton';
 import { SectionMessageContext } from './Context';
 import { SectionMessageContent } from './SectionMessageContent';
 import { SectionMessageTitle } from './SectionMessageTitle';

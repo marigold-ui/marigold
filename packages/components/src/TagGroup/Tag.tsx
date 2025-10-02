@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Tag } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { CloseButton } from '../CloseButton';
+import { CloseButton } from '../CloseButton/CloseButton';
 import { TagGroup } from './TagGroup';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
