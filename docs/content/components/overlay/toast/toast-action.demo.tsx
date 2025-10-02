@@ -20,7 +20,32 @@ export default () => {
           })
         }
       >
-        Show Toast
+        Show Toast with Link
+      </Button>
+      <Button
+        onPress={() =>
+          addToast({
+            title: 'File Upload Failed',
+            variant: 'error',
+            description:
+              'The file could not be uploaded due to network issues.',
+            timeout: 0,
+            action: (
+              <Button
+                size="small"
+                variant="primary"
+                onPress={() => {
+                  // Retry upload logic would go here
+                  console.log('Retrying upload...');
+                }}
+              >
+                Retry
+              </Button>
+            ),
+          })
+        }
+      >
+        Show Toast with Button
       </Button>
     </div>
   );
