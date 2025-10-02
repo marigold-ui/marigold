@@ -31,14 +31,7 @@ export default () => {
               'The file could not be uploaded due to network issues.',
             timeout: 0,
             action: (
-              <Button
-                size="small"
-                variant="primary"
-                onPress={() => {
-                  // Retry upload logic would go here
-                  console.log('Retrying upload...');
-                }}
-              >
+              <Button size="small" variant="primary">
                 Retry
               </Button>
             ),
