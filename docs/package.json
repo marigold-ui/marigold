@@ -19,7 +19,7 @@
     "@marigold/system": "workspace:*",
     "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
-    "@octokit/core": "7.0.4",
+    "@octokit/core": "7.0.5",
     "@react-aria/i18n": "3.12.12",
     "@tailwindcss/postcss": "4.1.12",
     "@tailwindcss/typography": "0.5.16",
