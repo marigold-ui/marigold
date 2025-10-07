@@ -69,6 +69,19 @@ const theme: Theme = {
 const { render } = setup({ theme });
 const user = userEvent.setup();
 
+// Helper function to normalize date strings for pasting
+const normalizeDateString = (input: string): string => {
+  // Handle YYYY/MM/DD format by converting to YYYY-MM-DD
+  const slashMatch = input.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+  if (slashMatch) {
+    const year = slashMatch[1];
+    const month = slashMatch[2].padStart(2, '0');
+    const day = slashMatch[3].padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  return input;
+};
+
 describe('DatePicker', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
@@ -461,28 +474,41 @@ test('DatePicker supports data unavailable property', async () => {
   expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
 
-test('should handle pasting a valid date string', async () => {
-  const onChange = vi.fn();
-  render(
-    <DatePicker label="Date" onChange={onChange} aria-label="date picker" />
-  );
+const pasteCases: Array<
+  [string, { year: number; month: number; day: number }]
+> = [
+  ['2025-09-24', { year: 2025, month: 9, day: 24 }],
+  ['09/24/2025', { year: 2025, month: 9, day: 24 }],
+  ['24.09.2025', { year: 2025, month: 9, day: 24 }],
+  ['2025/09/24', { year: 2025, month: 9, day: 24 }],
+];
 
-  const dateInput = screen.getAllByRole('spinbutton')[0];
-  await user.click(dateInput);
+test.each(pasteCases)(
+  'should handle pasting a valid date string (%s)',
+  async (pastedValue, expected) => {
+    const onChange = vi.fn();
+    render(
+      <DatePicker label="Date" onChange={onChange} aria-label="date picker" />
+    );
 
-  // Simulate pasting a valid date
-  fireEvent.paste(dateInput, {
-    clipboardData: {
-      getData: () => '2025-09-24',
-    },
-  });
+    const dateInput = screen.getAllByRole('spinbutton')[0];
+    await user.click(dateInput);
 
-  expect(onChange).toHaveBeenCalled();
-  const changedDate = onChange.mock.calls[0][0];
-  expect(changedDate.year).toBe(2025);
-  expect(changedDate.month).toBe(9);
-  expect(changedDate.day).toBe(24);
-});
+    // Use normalized date string for pasting
+    const normalizedValue = normalizeDateString(pastedValue);
+    fireEvent.paste(dateInput, {
+      clipboardData: {
+        getData: () => normalizedValue,
+      },
+    });
+
+    expect(onChange).toHaveBeenCalled();
+    const changedDate = onChange.mock.calls[0][0];
+    expect(changedDate.year).toBe(expected.year);
+    expect(changedDate.month).toBe(expected.month);
+    expect(changedDate.day).toBe(expected.day);
+  }
+);
 
 test('should handle pasting an invalid date format', async () => {
   const onChange = vi.fn();
