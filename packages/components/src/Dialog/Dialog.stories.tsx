@@ -5,6 +5,10 @@ import { Button } from '../Button';
 import { Menu } from '../Menu';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
+import {
+  ConfirmationDialog,
+  type ConfirmationDialogProps,
+} from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
 interface DialogStoryArgs {
