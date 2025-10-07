@@ -18,14 +18,14 @@ export const OrganizerInfo = () => (
   <Accordion variant="card">
     <Accordion.Item id="organizer-details">
       <Accordion.Header>
-        <Headline level={2}>Organizer Information</Headline>
+        <Headline level={3}>Organizer Information</Headline>
       </Accordion.Header>
       <Accordion.Content>
-        <Stack space={8}>
-          <div className="flex gap-5">
+        <Stack space="fieldY">
+          <Inline space="fieldX" noWrap>
             <TextField label="First Name" width={'1/2'} />
             <TextField label="Last Name" width={'1/2'} />
-          </div>
+          </Inline>
           <TextField
             label="Organization"
             description="Company or organization name"
@@ -34,7 +34,7 @@ export const OrganizerInfo = () => (
             label="Job Title"
             description="Position within the organization"
           />
-          <div className="flex gap-5">
+          <Inline space="fieldX" noWrap>
             <TextField
               label="Email"
               type="email"
@@ -47,7 +47,7 @@ export const OrganizerInfo = () => (
               width={'1/2'}
               description="Contact phone number"
             />
-          </div>
+          </Inline>
           <TextArea
             label="Bio"
             description="Brief biography or description of the organizer"

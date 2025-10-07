@@ -17,7 +17,7 @@ export const RegistrationSettings = () => (
   <Accordion variant="card">
     <Accordion.Item id="registration-settings">
       <Accordion.Header>
-        <Headline level={2}>Registration Settings</Headline>
+        <Headline level={3}>Registration Settings</Headline>
       </Accordion.Header>
       <Accordion.Content>
         <Stack space="fieldY">

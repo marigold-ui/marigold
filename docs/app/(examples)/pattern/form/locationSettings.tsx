@@ -29,8 +29,8 @@ export const LocationSettings = () => {
       />
       <Inset spaceY="group">
         <Stack space="group">
-          <Inline alignY="input" space="fieldX">
-            <Select label="Venue" width={96}>
+          <Inline alignY="input" space="fieldX" noWrap>
+            <Select label="Venue">
               {venues.map(venue => (
                 <Select.Option key={venue.id} id={venue.id}>
                   {venue.name}
