@@ -52,11 +52,11 @@
     "postcss": "8.5.6",
     "react": "19.1.1",
     "tailwindcss": "4.1.12",
-    "tsup": "8.5.0"
+    "tsdown": "0.15.6"
   },
   "scripts": {
-    "build": "tsup src/index.ts",
-    "watch": "tsup src/index.ts --watch",
+    "build": "tsdown src/index.ts",
+    "watch": "tsdown src/index.ts --watch",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
 }
