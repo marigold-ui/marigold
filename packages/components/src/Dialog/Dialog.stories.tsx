@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Button } from '../Button';
 import { Menu } from '../Menu';
 import { Text } from '../Text';
@@ -309,11 +309,15 @@ export const VeryLongContent: Story = {
 
     // Open the dialog
     await userEvent.click(canvas.getByText('Open Dialog with Long Content'));
-    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Wait for dialog to appear in the DOM
+    await waitFor(() => {
+      const dialog = document.querySelector('[role="dialog"]');
+      expect(dialog).toBeVisible();
+    });
 
     // Find dialog (rendered outside canvas)
     const dialog = document.querySelector('[role="dialog"]')!;
-    expect(dialog).toBeVisible();
 
     // Test scrollable content
     const dialogContent = dialog.querySelector(
