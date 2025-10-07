@@ -2,6 +2,7 @@ import { CalendarDate } from '@internationalized/date';
 import { ReactElement, useContext } from 'react';
 import type RAC from 'react-aria-components';
 import {
+  DateFieldStateContext,
   DateInput,
   DatePickerStateContext,
   Group,
@@ -11,55 +12,56 @@ import { DateSegment } from './DateSegment';
 
 type RemovedProps = 'style' | 'className' | 'children';
 
-const parseDateFromString = (dateString: string): CalendarDate | null => {
+interface ParsedDate {
+  year: number;
+  month: number;
+  day: number;
+}
+
+const extractCalendarDate = (
+  format: RegExp,
+  order: string[],
+  dateString: string
+): CalendarDate | undefined => {
   const trimmed = dateString.trim();
-  //  different date formats
+  const isMatch = trimmed.match(format);
+
+  if (!isMatch) return;
+
+  const date = order.reduce((accumulatedValue, currentVal, currentIndex) => {
+    return {
+      ...accumulatedValue,
+      [currentVal]: parseInt(isMatch[currentIndex + 1], 10),
+    };
+  }, {} as ParsedDate);
+
+  if (isValidDate(date.year, date.month, date.day)) {
+    return new CalendarDate(date.year, date.month, date.day);
+  }
+};
+
+const parseDateFromString = (dateString: string): CalendarDate | undefined => {
   const formats = [
     // ISO format: YYYY-MM-DD
-    /^(\d{4})-(\d{1,2})-(\d{1,2})$/,
+    { regex: /^(\d{4})-(\d{1,2})-(\d{1,2})$/, order: ['year', 'month', 'day'] },
     // European format: DD.MM.YYYY or DD/MM/YYYY
-    /^(\d{1,2})[./](\d{1,2})[./](\d{4})$/,
+    {
+      regex: /^(\d{1,2})[./](\d{1,2})[./](\d{4})$/,
+      order: ['day', 'month', 'year'],
+    },
     // US format: MM/DD/YYYY or MM-DD-YYYY
-    /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/,
+    {
+      regex: /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/,
+      order: ['month', 'day', 'year'],
+    },
   ];
 
-  //  ISO format (YYYY-MM-DD)
-  const isoMatch = trimmed.match(formats[0]);
-  if (isoMatch) {
-    const year = parseInt(isoMatch[1], 10);
-    const month = parseInt(isoMatch[2], 10);
-    const day = parseInt(isoMatch[3], 10);
-
-    if (isValidDate(year, month, day)) {
-      return new CalendarDate(year, month, day);
-    }
+  for (const format of formats) {
+    const result = extractCalendarDate(format.regex, format.order, dateString);
+    if (result) return result;
   }
 
-  //  European format (DD.MM.YYYY or DD/MM/YYYY)
-  const europeanMatch = trimmed.match(formats[1]);
-  if (europeanMatch) {
-    const day = parseInt(europeanMatch[1], 10);
-    const month = parseInt(europeanMatch[2], 10);
-    const year = parseInt(europeanMatch[3], 10);
-
-    if (isValidDate(year, month, day)) {
-      return new CalendarDate(year, month, day);
-    }
-  }
-
-  //  US format (MM/DD/YYYY or MM-DD-YYYY)
-  const usMatch = trimmed.match(formats[2]);
-  if (usMatch) {
-    const month = parseInt(usMatch[1], 10);
-    const day = parseInt(usMatch[2], 10);
-    const year = parseInt(usMatch[3], 10);
-
-    if (isValidDate(year, month, day)) {
-      return new CalendarDate(year, month, day);
-    }
-  }
-
-  return null;
+  return undefined;
 };
 
 const isValidDate = (year: number, month: number, day: number): boolean => {
@@ -82,7 +84,7 @@ export interface DateInputProps extends Omit<RAC.DateInputProps, RemovedProps> {
   variant?: string;
   size?: string;
   action?: ReactElement<any>;
-  onDatePaste?: (date: CalendarDate) => void;
+  onDatePaste: (date: CalendarDate) => void;
 }
 
 const _DateInput = ({
@@ -94,16 +96,19 @@ const _DateInput = ({
 }: DateInputProps) => {
   const classNames = useClassNames({ component: 'DateField', variant, size });
 
-  const ctx = useContext(DatePickerStateContext);
+  const dateFieldContext = useContext(DateFieldStateContext);
+  const datePickerContext = useContext(DatePickerStateContext);
+
+  const ctx = dateFieldContext ?? datePickerContext;
 
   const handlePaste = async (event: React.ClipboardEvent) => {
-    if (!onDatePaste) return;
     try {
       const clipboardData = event.clipboardData.getData('text');
 
       const parsedDate = parseDateFromString(clipboardData);
       if (parsedDate) {
         event.preventDefault();
+        // call onChange if it exists
         onDatePaste(parsedDate);
         ctx?.setValue(parsedDate);
       }
