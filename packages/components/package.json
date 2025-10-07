@@ -68,11 +68,11 @@
     "@types/react": "19.1.12",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "tsup": "8.5.0"
+    "tsdown": "0.15.6"
   },
   "scripts": {
-    "build": "tsup src/index.ts",
-    "watch": "tsup src/index.ts --watch",
+    "build": "tsdown src/index.ts",
+    "watch": "tsdown src/index.ts --watch",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
 }
