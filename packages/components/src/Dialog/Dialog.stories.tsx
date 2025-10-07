@@ -5,10 +5,6 @@ import { Button } from '../Button';
 import { Menu } from '../Menu';
 import { Text } from '../Text';
 import { TextField } from '../TextField';
-import {
-  ConfirmationDialog,
-  ConfirmationDialogProps,
-} from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
 interface DialogStoryArgs {
@@ -104,6 +100,7 @@ export const Form: Story = {
 
 export const OpenFromMenu: Story = {
   render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setDialogOpen] = useState(false);
     const handleAction = (action: 'save' | 'delete') => {
       switch (action) {

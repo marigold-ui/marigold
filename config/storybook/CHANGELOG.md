@@ -1,5 +1,35 @@
 # @marigold/storybook-config
 
+## 3.1.0
+
+### Minor Changes
+
+- 95b55b8: feat([DST-1074]): Introduce a `useConfirmation` hook to conveniently open confirmation dialogs
+
+### Patch Changes
+
+- Updated dependencies [95b55b8]
+- Updated dependencies [c6fb6c2]
+- Updated dependencies [bad3ef4]
+- Updated dependencies [fa1f489]
+- Updated dependencies [ba5f502]
+- Updated dependencies [4395d2e]
+- Updated dependencies [217d415]
+- Updated dependencies [97adc14]
+- Updated dependencies [f22bfdd]
+- Updated dependencies [061b5e9]
+- Updated dependencies [91a5e7b]
+- Updated dependencies [baf550b]
+- Updated dependencies [4ccbec2]
+- Updated dependencies [5e62b84]
+- Updated dependencies [89e2b70]
+- Updated dependencies [ce996ae]
+- Updated dependencies [8fa6736]
+- Updated dependencies [beeba04]
+- Updated dependencies [ce13acf]
+  - @marigold/components@15.3.0
+  - @marigold/theme-rui@2.3.0
+
 ## 3.0.8
 
 ### Patch Changes

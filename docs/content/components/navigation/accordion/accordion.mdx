@@ -1,6 +1,7 @@
 ---
 title: Accordion
 caption: Component to show and hide related content from the main page.
+badge: updated
 ---
 
 An `<Accordion>` is a component that allows you to organizing content into collapsible sections. Accordions are commonly used in website and application designs to present information in a compact and organized way, allowing users to focus on the specific information they are interested in without being overwhelmed by excessive content.
@@ -50,6 +51,18 @@ With the multiple expanded mode, you can collapse and hide items as needed while
 A controlled `Accordion` can be expanded and collapsed using expandedKeys and onExpandedChange. The expandedKeys must match the id on the `Accordion.Item` component(s) that you wish to expand.
 
 <ComponentDemo file="./accordion-controlled-expanded.demo.tsx" />
+
+### Long-form content
+
+For Accordions with a lot of content inside it is handy to use the prop `stickyHeader` to provide context. While scrolling through the content the headline stays fixed at the top of the viewport.
+The `stickyHeader`applies to the entire Accordion: `<Accordion stickyHeader={true}>...</Accordion>`.
+
+### Icon position
+
+The icon or chevron in the Header of the `Accordion` can be positioned `right` and `left`. Especially when you use action in the header the position should be on the `left` side.
+The icon position also applied to the whole Accordion: `<Accordion iconPositon={'left'}>...</Accordion>`.
+
+<ComponentDemo file="./accordion-icon-position.demo.tsx" />
 
 ## Props
 

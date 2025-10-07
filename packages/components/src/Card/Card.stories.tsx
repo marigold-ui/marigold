@@ -17,7 +17,7 @@ const meta = {
         type: 'radio',
       },
       description: 'The variant of the card',
-      options: ['default', 'hovering'],
+      options: ['default', 'master', 'admin'],
     },
     size: {
       control: {
