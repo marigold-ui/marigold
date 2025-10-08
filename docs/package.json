@@ -20,7 +20,7 @@
     "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@octokit/core": "7.0.5",
-    "@react-aria/i18n": "3.12.12",
+    "@react-aria/i18n": "3.12.13",
     "@tailwindcss/postcss": "4.1.14",
     "@tailwindcss/typography": "0.5.19",
     "@tanstack/react-query": "5.85.6",
@@ -58,7 +58,7 @@
     "zx": "8.8.1"
   },
   "devDependencies": {
-    "@internationalized/date": "3.9.0",
+    "@internationalized/date": "3.10.0",
     "@types/node": "24.3.0",
     "@types/react": "19.1.12",
     "@types/react-dom": "19.1.9",
