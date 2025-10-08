@@ -50,7 +50,7 @@ export const decorators: any = [
     return (
       <MarigoldProvider
         theme={THEME[theme as ThemeNames]}
-        className="bg-bg-surface"
+        className="bg-background"
       >
         <div className="h-screen p-6">
           <Story />
