@@ -4,8 +4,8 @@ import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
 import { ComboBox } from './ComboBox';
 
 const meta = {

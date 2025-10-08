@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, within } from 'storybook/test';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
 import { Multiselect } from './Multiselect';
 
 const meta: Meta<typeof Multiselect> = {

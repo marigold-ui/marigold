@@ -4,8 +4,8 @@ import { createRef } from 'react';
 import { DropIndicator, useDragAndDrop } from 'react-aria-components';
 import { vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Button } from '../Button';
-import { Checkbox } from '../Checkbox';
+import { Button } from '../Button/Button';
+import { Checkbox } from '../Checkbox/Checkbox';
 import { SelectList } from './SelectList';
 
 const theme: Theme = {

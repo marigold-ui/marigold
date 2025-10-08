@@ -8,10 +8,10 @@ import { Select, SelectValue, ValidationResult } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
-import { IconButton } from '../IconButton';
+import { IconButton } from '../IconButton/IconButton';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
-import { ChevronDown } from '../icons';
+import { ChevronDown } from '../icons/ChevronDown';
 
 // Props
 // ---------------

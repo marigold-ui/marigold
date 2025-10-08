@@ -1,7 +1,7 @@
 import { CSSProperties, Ref, forwardRef } from 'react';
 import { Button } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { ButtonProps } from '../Button';
+import { ButtonProps } from '../Button/Button';
 
 interface CloseButtonProps
   extends Pick<
