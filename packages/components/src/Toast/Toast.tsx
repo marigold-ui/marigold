@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 import { UNSTABLE_ToastContent as RAC_ToastContent } from 'react-aria-components';
 import { UNSTABLE_Toast as RAC_Toast, Text } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
-import { CloseButton } from '../CloseButton';
-import { Stack } from '../Stack';
+import { CloseButton } from '../CloseButton/CloseButton';
+import { Stack } from '../Stack/Stack';
 
 const icons = {
   success: () => (

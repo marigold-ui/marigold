@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode, useState } from 'react';
 import { alignment } from '@marigold/system';
-import { Button } from '../Button';
-import { Stack } from '../Stack';
-import { Switch } from '../Switch';
-import { TextField } from '../TextField';
+import { Button } from '../Button/Button';
+import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
+import { TextField } from '../TextField/TextField';
 import { Inline } from './Inline';
 
 const meta = {

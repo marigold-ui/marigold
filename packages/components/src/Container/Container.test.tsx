@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import React from 'react';
 import { Theme, cva } from '@marigold/system';
-import { Headline } from '../Headline';
-import { Text } from '../Text';
+import { Headline } from '../Headline/Headline';
+import { Text } from '../Text/Text';
 import { setup } from '../test.utils';
 import { Container } from './Container';
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Stack } from '../Stack';
+import { Stack } from '../Stack/Stack';
 import { Headline } from './Headline';
 
 const meta = {

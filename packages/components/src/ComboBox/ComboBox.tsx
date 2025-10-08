@@ -8,14 +8,14 @@ import type RAC from 'react-aria-components';
 import { ComboBox } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
-import { Center } from '../Center';
-import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { IconButton } from '../IconButton';
-import { Input } from '../Input';
+import { Center } from '../Center/Center';
+import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
+import { IconButton } from '../IconButton/IconButton';
+import { Input } from '../Input/Input';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
-import { ProgressCycle } from '../ProgressCycle';
-import { ChevronDown } from '../icons';
+import { ProgressCycle } from '../ProgressCycle/ProgressCycle';
+import { ChevronDown } from '../icons/ChevronDown';
 import { intlMessages } from '../intl/messages';
 
 // Props

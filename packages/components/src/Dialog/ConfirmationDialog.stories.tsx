@@ -1,6 +1,6 @@
 import type { StoryObj } from '@storybook/react';
-import { Button } from '../Button';
-import { Stack } from '../Stack';
+import { Button } from '../Button/Button';
+import { Stack } from '../Stack/Stack';
 import {
   ConfirmationDialog,
   ConfirmationDialogProps,
