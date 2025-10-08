@@ -61,7 +61,7 @@ describe('Pagination tests', () => {
                 <button
                   aria-current="page"
                   aria-label="Page 1"
-                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-background size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
+                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-white size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
                   data-react-aria-pressable="true"
                   data-selected="true"
                   tabindex="0"
@@ -71,7 +71,7 @@ describe('Pagination tests', () => {
                 </button>
                 <button
                   aria-label="Page 2"
-                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-background size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
+                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-white size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
                   data-react-aria-pressable="true"
                   data-selected="false"
                   tabindex="-1"
@@ -151,7 +151,7 @@ describe('Pagination tests', () => {
               >
                 <button
                   aria-label="Page 1"
-                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-background size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
+                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-white size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
                   data-react-aria-pressable="true"
                   disabled=""
                   tabindex="-1"

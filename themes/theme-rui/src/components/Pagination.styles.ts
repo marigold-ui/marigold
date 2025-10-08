@@ -18,7 +18,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
   ]),
   pageButton: cva([
     ...button,
-    'bg-background size-9',
+    'bg-white size-9',
     'data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs',
   ]),
   icon: cva('h-4 w-4'),

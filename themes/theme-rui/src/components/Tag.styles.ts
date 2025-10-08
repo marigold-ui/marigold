@@ -11,7 +11,7 @@ export const Tag: ThemeComponent<'Tag'> = {
     'border border-solid border-input rounded-lg',
     'font-medium text-xs',
     'h-7 px-2 cursor-default',
-    'bg-background',
+    'bg-white',
     'data-selected:text-white data-selected:bg-brand',
     'data-[disabled]:cursor-not-allowed data-[disabled]:text-disabled-foreground data-[disabled]:bg-disabled',
     'focus-visible:util-focus-ring outline-none',
