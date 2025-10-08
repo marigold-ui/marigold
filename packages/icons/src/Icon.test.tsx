@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { Facebook } from './social';
-import { ArrowUp } from './ui';
+import { Facebook } from './social/Facebook';
+import { ArrowUp } from './ui/ArrowUp';
 
 test('supports default size', () => {
   render(<Facebook data-testid="svg" />);
