@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Headline, Stack, Text, Tiles } from '@marigold/components';
+import { Headline } from '../Headline/Headline';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
+import { Tiles } from './Tiles';
 
 const meta = {
   title: 'Components/Tiles',

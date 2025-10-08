@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { I18nProvider } from '@react-aria/i18n';
-import { Stack } from '../Stack';
+import { Stack } from '../Stack/Stack';
 import { DatePicker } from './DatePicker';
 
 const meta = {

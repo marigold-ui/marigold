@@ -3,7 +3,7 @@ import { useState } from 'storybook/preview-api';
 import { expect, spyOn, userEvent, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 

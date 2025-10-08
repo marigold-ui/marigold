@@ -1,20 +1,20 @@
 import { CalendarDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Autocomplete } from '../Autocomplete';
-import { Button } from '../Button';
-import { Calendar } from '../Calendar';
-import { Checkbox } from '../Checkbox';
-import { Columns } from '../Columns';
-import { ComboBox } from '../ComboBox';
-import { DateField } from '../DateField';
-import { Inline } from '../Inline';
-import { Radio } from '../Radio';
-import { Select } from '../Select';
-import { SelectList } from '../SelectList';
-import { Slider } from '../Slider';
-import { Stack } from '../Stack';
-import { Switch } from '../Switch';
-import { TextField } from '../TextField';
+import { Autocomplete } from '../Autocomplete/Autocomplete';
+import { Button } from '../Button/Button';
+import { Calendar } from '../Calendar/Calendar';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { Columns } from '../Columns/Columns';
+import { ComboBox } from '../ComboBox/ComboBox';
+import { DateField } from '../DateField/DateField';
+import { Inline } from '../Inline/Inline';
+import { Radio } from '../Radio/Radio';
+import { Select } from '../Select/Select';
+import { SelectList } from '../SelectList/SelectList';
+import { Slider } from '../Slider/Slider';
+import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
+import { TextField } from '../TextField/TextField';
 import { Form, FormProps } from './Form';
 
 const meta = {
