@@ -14,12 +14,29 @@ export interface SelectProps<
   children?: React.ReactNode | ((item: T) => React.ReactNode);
 }
 
-const Select = (forwardRef as forwardRefType)(function Select<
+export type CompoundComponent = {
+  Item: () => null;
+  Section: () => null;
+};
+
+const SelectBase = (forwardRef as forwardRefType)(function Select<
   T extends object,
   M extends SelectionMode = 'single',
 >(props: SelectProps<T, M>, ref: Ref<HTMLButtonElement>) {
   return <button ref={ref}>Generic Select</button>;
 });
+
+export const Select = Object.assign(SelectBase, {
+  Item: () => null,
+  Section: () => null,
+});
+
+//== STATIC MEMBERS ==//
+
+Select.Item = () => null;
+Select.Section = () => null;
+
+//== VALIDATION ==//
 
 const setSingle = (value: RAC.Key | null) => value;
 const setMultiple = (value: RAC.Key[] | null) => value;
