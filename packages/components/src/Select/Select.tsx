@@ -15,6 +15,8 @@ import { ChevronDown } from '../icons/ChevronDown';
 
 // Props
 // ---------------
+export type SelectionMode = 'single' | 'multiple';
+
 type RemoveProps =
   | 'children'
   | 'isInvalid'
@@ -25,8 +27,8 @@ type RemoveProps =
   | 'className'
   | 'onSelectionChange';
 
-export interface SelectProps<T extends object>
-  extends Omit<RAC.SelectProps<T>, RemoveProps> {
+export interface SelectProps<T extends object, M extends 'single' | 'multiple'>
+  extends Omit<RAC.SelectProps<T, M>, RemoveProps> {
   /**
    * Set a label for the select.
    */
@@ -83,15 +85,13 @@ export interface SelectProps<T extends object>
    * @default false
    */
   error?: boolean;
-  /**
-   * Handler that is called when the selection changes.
-   */
-  onChange?: ((key: RAC.Key) => void) | undefined;
 }
 
-export interface SelectComponent
-  extends ForwardRefExoticComponent<
-    SelectProps<object> & RefAttributes<HTMLDivElement>
+export interface SelectComponent<
+  T extends object,
+  M extends SelectionMode = 'single',
+> extends ForwardRefExoticComponent<
+    SelectProps<T, M> & RefAttributes<HTMLButtonElement>
   > {
   /**
    * Options of the Select.
@@ -105,49 +105,55 @@ export interface SelectComponent
 
 // Component
 // ---------------
-const _Select = forwardRef<any, SelectProps<object>>(
-  (
-    {
-      disabled,
-      required,
-      items,
-      variant,
-      size,
-      error,
-      open,
-      onChange,
-      ...rest
-    },
-    ref
-  ) => {
-    const props: RAC.SelectProps<object> = {
-      isDisabled: disabled,
-      isInvalid: error,
-      isOpen: open,
-      isRequired: required,
-      onSelectionChange: onChange,
-      ...rest,
-    };
-    const classNames = useClassNames({ component: 'Select', variant, size });
+const _Select = forwardRef(function _Select<
+  T extends object,
+  M extends SelectionMode = 'single',
+>(
+  {
+    disabled,
+    required,
+    items,
+    variant,
+    size,
+    error,
+    open,
+    children,
+    ...rest
+  }: SelectProps<T, M>,
+  ref: React.Ref<HTMLButtonElement>
+) {
+  const props: RAC.SelectProps<T, M> = {
+    isDisabled: disabled,
+    isInvalid: error,
+    isOpen: open,
+    isRequired: required,
+    ...rest,
+  };
+  const classNames = useClassNames({ component: 'Select', variant, size });
 
-    return (
-      <FieldBase as={Select} ref={ref} variant={variant} size={size} {...props}>
-        <IconButton
-          className={cn(
-            'flex w-full items-center justify-between gap-1 overflow-hidden',
-            classNames.select
-          )}
-        >
-          <SelectValue className="[&>[slot=description]]:hidden" />
-          <ChevronDown className={cn('size-4', classNames.icon)} />
-        </IconButton>
-        <Popover>
-          <ListBox items={items}>{props.children}</ListBox>
-        </Popover>
-      </FieldBase>
-    );
-  }
-) as SelectComponent;
+  return (
+    <FieldBase
+      as={Select}
+      ref={ref as any}
+      variant={variant}
+      size={size}
+      {...props}
+    >
+      <IconButton
+        className={cn(
+          'flex w-full items-center justify-between gap-1 overflow-hidden',
+          classNames.select
+        )}
+      >
+        <SelectValue className="[&>[slot=description]]:hidden" />
+        <ChevronDown className={cn('size-4', classNames.icon)} />
+      </IconButton>
+      <Popover>
+        <ListBox items={items}>{children}</ListBox>
+      </Popover>
+    </FieldBase>
+  );
+}) as SelectComponent<any, any>;
 
 _Select.Option = ListBox.Item;
 _Select.Section = ListBox.Section;

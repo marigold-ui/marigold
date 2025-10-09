@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { Key } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
@@ -86,7 +87,7 @@ export default meta;
 
 export const Basic: StoryObj<typeof Select> = {
   render: args => {
-    const [selected, setSelected] = useState<string | number>('');
+    const [selected, setSelected] = useState<Key | Key[] | null>('');
     return (
       <Stack space={6}>
         <Select
@@ -94,6 +95,32 @@ export const Basic: StoryObj<typeof Select> = {
           onChange={setSelected}
           disabledKeys={['Firefly']}
           placeholder="Select Item"
+        >
+          <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+          <Select.Option id="Lord of the Rings">
+            Lord of the Rings
+          </Select.Option>
+          <Select.Option id="Star Wars">Star Wars</Select.Option>
+          <Select.Option id="Star Trek">Star Trek</Select.Option>
+          <Select.Option id="Firefly">Firefly</Select.Option>
+        </Select>
+        <hr />
+        <pre>selected: {selected}</pre>
+      </Stack>
+    );
+  },
+};
+
+export const Multiple: StoryObj<typeof Select> = {
+  render: args => {
+    const [selected, setSelected] = useState<Key | Key[] | null>([]);
+    return (
+      <Stack space={6}>
+        <Select
+          selectionMode="multiple"
+          value={selected}
+          onChange={setSelected}
+          {...args}
         >
           <Select.Option id="Harry Potter">Harry Potter</Select.Option>
           <Select.Option id="Lord of the Rings">
