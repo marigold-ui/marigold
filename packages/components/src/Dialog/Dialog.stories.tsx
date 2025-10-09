@@ -1,14 +1,25 @@
-import type { StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Menu } from '../Menu/Menu';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
+import {
+  ConfirmationDialog,
+  type ConfirmationDialogProps,
+} from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
-const meta = {
+interface DialogStoryArgs {
+  dismissable?: boolean;
+  keyboardDismissable?: boolean;
+  size?: 'xsmall' | 'small' | 'medium';
+}
+
+const meta: Meta<DialogStoryArgs> = {
   title: 'Components/Dialog',
-  component: Dialog.Trigger,
+  component: Dialog,
   argTypes: {
     dismissable: {
       control: { type: 'boolean' },
@@ -24,27 +35,20 @@ const meta = {
       },
       description: 'Size of the dialog',
       options: ['default', 'xsmall', 'small', 'medium'],
-      mapping: {
-        default: undefined,
-        xsmall: 'xsmall',
-        small: 'small',
-        medium: 'medium',
+      table: {
+        type: { summary: 'string' },
       },
     },
   },
   args: {
     dismissable: true,
     keyboardDismissable: true,
-    size: 'default',
+    size: 'small',
   },
 };
 
 export default meta;
-type Story = StoryObj<{
-  size?: string;
-  dismissable?: boolean;
-  keyboardDismissable?: boolean;
-}>;
+type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: ({ size, ...args }) => (
@@ -143,5 +147,192 @@ export const OpenFromMenu: Story = {
         </Dialog>
       </>
     );
+  },
+};
+
+export const Confirmation: StoryObj<ConfirmationDialogProps> = {
+  render: ({ ...args }) => (
+    <ConfirmationDialog.Trigger {...args}>
+      <Button>Open</Button>
+      <ConfirmationDialog title="Confirmation" confirmationLabel="Confirm">
+        Are you sure you want to proceed with this action?
+      </ConfirmationDialog>
+    </ConfirmationDialog.Trigger>
+  ),
+};
+
+export const VeryLongContent: Story = {
+  tags: ['component-test'],
+  render: args => {
+    const { size, ...triggerArgs } = args;
+    return (
+      <Dialog.Trigger {...triggerArgs}>
+        <Button variant="primary">Open Dialog with Long Content</Button>
+        <Dialog size={size} closeButton>
+          <Dialog.Title>Terms and Conditions</Dialog.Title>
+          <Dialog.Content>
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur.
+            </Text>
+            <Text>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+              officia deserunt mollit anim id est laborum. Sed ut perspiciatis
+              unde omnis iste natus error sit voluptatem accusantium doloremque
+              laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
+              veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </Text>
+            <Text>
+              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
+              aut fugit, sed quia consequuntur magni dolores eos qui ratione
+              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
+              ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia
+              non numquam eius modi tempora incidunt ut labore et dolore magnam
+              aliquam quaerat voluptatem.
+            </Text>
+            <Text>
+              Ut enim ad minima veniam, quis nostrum exercitationem ullam
+              corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
+              consequatur? Quis autem vel eum iure reprehenderit qui in ea
+              voluptate velit esse quam nihil molestiae consequatur, vel illum
+              qui dolorem eum fugiat quo voluptas nulla pariatur?
+            </Text>
+            <Text>
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atque corrupti quos
+              dolores et quas molestias excepturi sint occaecati cupiditate non
+              provident, similique sunt in culpa qui officia deserunt mollitia
+              animi, id est laborum et dolorum fuga.
+            </Text>
+            <Text>
+              Et harum quidem rerum facilis est et expedita distinctio. Nam
+              libero tempore, cum soluta nobis est eligendi optio cumque nihil
+              impedit quo minus id quod maxime placeat facere possimus, omnis
+              voluptas assumenda est, omnis dolor repellendus.
+            </Text>
+            <Text>
+              Temporibus autem quibusdam et aut officiis debitis aut rerum
+              necessitatibus saepe eveniet ut et voluptates repudiandae sint et
+              molestiae non recusandae. Itaque earum rerum hic tenetur a
+              sapiente delectus, ut aut reiciendis voluptatibus maiores alias
+              consequatur aut perferendis doloribus asperiores repellat.
+            </Text>
+            <Text>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
+              quae ab illo inventore veritatis et quasi architecto beatae vitae
+              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
+              aspernatur aut odit aut fugit.
+            </Text>
+            <Text>
+              Sed quia non numquam eius modi tempora incidunt ut labore et
+              dolore magnam aliquam quaerat voluptatem. Ut enim ad minima
+              veniam, quis nostrum exercitationem ullam corporis suscipit
+              laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem
+              vel eum iure reprehenderit qui in ea voluptate velit esse quam
+              nihil molestiae consequatur.
+            </Text>
+            <Text>
+              Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? At
+              vero eos et accusamus et iusto odio dignissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atque corrupti quos
+              dolores et quas molestias excepturi sint occaecati cupiditate non
+              provident, similique sunt in culpa qui officia deserunt mollitia
+              animi.
+            </Text>
+            <Text>
+              Id est laborum et dolorum fuga. Et harum quidem rerum facilis est
+              et expedita distinctio. Nam libero tempore, cum soluta nobis est
+              eligendi optio cumque nihil impedit quo minus id quod maxime
+              placeat facere possimus, omnis voluptas assumenda est, omnis dolor
+              repellendus.
+            </Text>
+            <Text>
+              Temporibus autem quibusdam et aut officiis debitis aut rerum
+              necessitatibus saepe eveniet ut et voluptates repudiandae sint et
+              molestiae non recusandae. Itaque earum rerum hic tenetur a
+              sapiente delectus, ut aut reiciendis voluptatibus maiores alias
+              consequatur aut perferendis doloribus asperiores repellat.
+            </Text>
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur.
+            </Text>
+            <Text>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+              officia deserunt mollit anim id est laborum. Sed ut perspiciatis
+              unde omnis iste natus error sit voluptatem accusantium doloremque
+              laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
+              veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </Text>
+            <Text>
+              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
+              aut fugit, sed quia consequuntur magni dolores eos qui ratione
+              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
+              ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia
+              non numquam eius modi tempora incidunt ut labore et dolore magnam
+              aliquam quaerat voluptatem.
+            </Text>
+            <Text>
+              Ut enim ad minima veniam, quis nostrum exercitationem ullam
+              corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
+              consequatur? Quis autem vel eum iure reprehenderit qui in ea
+              voluptate velit esse quam nihil molestiae consequatur, vel illum
+              qui dolorem eum fugiat quo voluptas nulla pariatur?
+            </Text>
+            <Text>
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atque corrupti quos
+              dolores et quas molestias excepturi sint occaecati cupiditate non
+              provident, similique sunt in culpa qui officia deserunt mollitia
+              animi, id est laborum et dolorum fuga.
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button variant="secondary" slot="close">
+              Decline
+            </Button>
+            <Button variant="primary" slot="close">
+              Accept
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Dialog.Trigger>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Open the dialog
+    await userEvent.click(canvas.getByText('Open Dialog with Long Content'));
+
+    // Wait for dialog to appear in the DOM
+    await waitFor(() => {
+      const dialog = document.querySelector('[role="dialog"]');
+      expect(dialog).toBeVisible();
+    });
+
+    // Find dialog (rendered outside canvas)
+    const dialog = document.querySelector('[role="dialog"]')!;
+
+    // Test scrollable content
+    const dialogContent = dialog.querySelector(
+      '[data-testid="dialog-content"]'
+    )!;
+    expect(dialogContent.scrollHeight).toBeGreaterThan(
+      dialogContent.clientHeight
+    );
+
+    // Test scroll functionality - scroll to bottom
+    dialogContent.scrollTop = dialogContent.scrollHeight;
+    expect(dialogContent.scrollTop).toBeGreaterThan(0);
   },
 };
