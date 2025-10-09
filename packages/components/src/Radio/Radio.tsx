@@ -1,3 +1,4 @@
+import { Dot } from 'packages/components/src/icons/Dot';
 import {
   ForwardRefExoticComponent,
   ReactNode,
@@ -27,12 +28,6 @@ export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
    */
   disabled?: RAC.RadioProps['isDisabled'];
 }
-
-const Dot = () => (
-  <svg viewBox="0 0 6 6">
-    <circle fill="currentColor" cx="3" cy="3" r="3" />
-  </svg>
-);
 
 interface IconProps {
   className?: string;

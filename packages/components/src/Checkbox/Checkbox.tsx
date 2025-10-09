@@ -1,3 +1,5 @@
+import { CheckMark } from 'packages/components/src/icons/CheckMark';
+import { IndeterminateMark } from 'packages/components/src/icons/IndeterminateMark';
 import type {
   ForwardRefExoticComponent,
   PropsWithChildren,
@@ -45,28 +47,6 @@ const Field = ({
     </div>
   );
 };
-
-// Icons
-// ---------------
-const CheckMark = () => (
-  <svg width="12px" height="10px" viewBox="0 0 12 10">
-    <path
-      fill="currentColor"
-      stroke="none"
-      d="M11.915 1.548 10.367 0 4.045 6.315 1.557 3.827 0 5.373l4.045 4.046 7.87-7.871Z"
-    />
-  </svg>
-);
-
-const IndeterminateMark = () => (
-  <svg width="12px" height="3px" viewBox="0 0 12 3">
-    <path
-      fill="currentColor"
-      stroke="none"
-      d="M11.5 2.04018H0.5V0.46875H11.5V2.04018Z"
-    />
-  </svg>
-);
 
 interface IconProps extends StateAttrProps {
   checked?: boolean;

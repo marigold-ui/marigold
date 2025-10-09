@@ -1,9 +1,5 @@
 import { forwardRef } from 'react';
-import { SVG, SVGProps as SVGPropsType } from '@marigold/system';
-
-interface SVGProps extends SVGPropsType {
-  className?: string;
-}
+import { SVG, SVGProps } from '@marigold/system';
 
 export const Accessible = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
   <SVG {...props} viewBox="0 0 24 24" ref={ref}>
