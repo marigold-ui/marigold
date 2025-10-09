@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Button } from '../Button/Button';
+import { Link } from '../Link/Link';
 import { Toast } from './Toast';
 import { ToastProvider, queue } from './ToastProvider';
 import { useToast } from './ToastQueue';
