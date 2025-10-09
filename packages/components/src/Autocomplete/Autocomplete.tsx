@@ -9,10 +9,10 @@ import type RAC from 'react-aria-components';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
-import { Center } from '../Center';
-import { FieldBase, FieldBaseProps } from '../FieldBase';
+import { Center } from '../Center/Center';
+import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
-import { ListBox } from '../ListBox';
+import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { intlMessages } from '../intl/messages';
 

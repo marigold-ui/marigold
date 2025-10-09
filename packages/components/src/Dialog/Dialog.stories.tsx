@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import { Button } from '../Button';
-import { Menu } from '../Menu';
-import { Text } from '../Text';
-import { TextField } from '../TextField';
+import { Button } from '../Button/Button';
+import { Menu } from '../Menu/Menu';
+import { Text } from '../Text/Text';
+import { TextField } from '../TextField/TextField';
 import {
   ConfirmationDialog,
   type ConfirmationDialogProps,

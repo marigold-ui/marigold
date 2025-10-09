@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Ticket } from '@marigold/icons';
-import { Button } from '../Button';
-import { Headline } from '../Headline';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
+import { Button } from '../Button/Button';
+import { Headline } from '../Headline/Headline';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
 import { Center } from './Center';
 
 const meta = {

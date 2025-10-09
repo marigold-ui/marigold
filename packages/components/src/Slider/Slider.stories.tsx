@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormEvent } from 'react';
+import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect } from 'storybook/test';
-import { I18nProvider, Stack } from '@marigold/components';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
+import { Stack } from '../Stack/Stack';
 import { Slider } from './Slider';
 
 const meta = {

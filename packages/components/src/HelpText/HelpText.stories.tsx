@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Form, TextField } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { Button } from '../Button';
-import { Input } from '../Input';
-import { Label } from '../Label';
-import { Stack } from '../Stack';
+import { Button } from '../Button/Button';
+import { Input } from '../Input/Input';
+import { Label } from '../Label/Label';
+import { Stack } from '../Stack/Stack';
 import { HelpText } from './HelpText';
 
 const meta = {

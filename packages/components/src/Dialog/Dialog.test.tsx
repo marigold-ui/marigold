@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { MockInstance, vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 import { setup } from '../test.utils';
 import { Dialog } from './Dialog';
 import * as stories from './Dialog.stories';

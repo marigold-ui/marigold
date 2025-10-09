@@ -8,7 +8,7 @@ import {
   Pressable,
 } from 'react-aria-components';
 import { vi } from 'vitest';
-import { OverlayContainerProvider } from '../Provider';
+import { OverlayContainerProvider } from '../Provider/OverlayContainerProvider';
 import type { NonModalProps } from './NonModal';
 import { NonModal } from './NonModal';
 

@@ -2,6 +2,7 @@
   "extends": "@marigold/tsconfig/react",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "allowUmdGlobalAccess": true
+    "allowUmdGlobalAccess": true,
+    "declarationMap": false
   }
 }
