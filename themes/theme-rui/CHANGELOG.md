@@ -1,5 +1,18 @@
 # @marigold/theme-rui
 
+## 2.3.1
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
+- 35df36a: style([DST-1082]): Use correct accordion font-size
+- Updated dependencies [f621653]
+  - @marigold/components@15.3.1
+  - @marigold/system@15.3.1
+
 ## 2.3.0
 
 ### Minor Changes

@@ -1,5 +1,23 @@
 # @marigold/docs
 
+## 15.3.1
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
+- 64525cd: feat([DST-1045]): Add guides and examples for structuring forms
+- 2f60e36: [DSTSTUP-188]: Extend table sorting example with date values.
+- Updated dependencies [f621653]
+- Updated dependencies [35df36a]
+  - @marigold/components@15.3.1
+  - @marigold/system@15.3.1
+  - @marigold/theme-rui@2.3.1
+  - @marigold/theme-docs@3.1.10
+  - @marigold/icons@1.3.24
+
 ## 15.3.0
 
 ### Minor Changes
