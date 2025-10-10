@@ -36,7 +36,7 @@ export const Menu: ThemeComponent<'Menu'> = {
       variants: {
         variant: {
           default:
-            'border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
+            'border border-input bg-white shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
           ghost: 'hover:bg-hover hover:text-foreground expanded:bg-hover',
         },
         size: {

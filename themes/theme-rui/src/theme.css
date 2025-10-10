@@ -37,7 +37,7 @@
   --color-orange-900: #7c3712;
   --color-orange-950: #431a07;
 
-  --color-background: var(--color-white);
+  --color-background: var(--color-stone-50);
   --color-foreground: var(--color-stone-950);
 
   /* stone (use for brand) */

@@ -2,7 +2,7 @@ import { cva } from '@marigold/system';
 import type { ThemeComponent } from '@marigold/system';
 
 export const inputContainer =
-  'flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow group-read-only/field:bg-muted';
+  'flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-white text-sm text-foreground transition-shadow group-read-only/field:bg-muted';
 export const inputDisabled =
   'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled';
 export const inputInvalid =
@@ -19,7 +19,7 @@ export const Input: ThemeComponent<'Input'> = {
     inputReadOnly,
     'h-input',
     'placeholder:text-placeholder',
-    '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:p-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',
+    '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-white [&[type=file]]:p-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',
     'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
     'group-[[data-icon]]/input:pl-8',
     'group-[[data-action]]/input:pr-7',

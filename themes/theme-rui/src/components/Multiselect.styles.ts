@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   field: cva('space-y-2'),
   container: cva([
-    'bg-background shadow-xs border',
+    'bg-white shadow-xs border',
     'px-3 text-sm text-foreground transition-shadow',
     'border border-input rounded-lg outline-hidden',
     'aria-disabled:bg-disabled aria-disabled:text-disabled-foreground aria-disabled:hover:border-input aria-disabled:border-input aria-disabled:cursor-not-allowed',
@@ -25,7 +25,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
 
   tag: cva([
     'border border-solid border-input rounded-md',
-    'bg-background',
+    'bg-white',
     'font-medium text-xs',
     'flex items-center gap-1 ',
     'h-7 px-2 cursor-default',

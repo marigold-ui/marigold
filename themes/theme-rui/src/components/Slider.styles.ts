@@ -9,7 +9,7 @@ export const Slider: ThemeComponent<'Slider'> = {
     'absolute bg-black data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full rounded-lg',
   ]),
   thumb: cva([
-    'block h-5 w-5 rounded-full border-2 border-primary bg-background transition-colors',
+    'block h-5 w-5 rounded-full border-2 border-primary bg-white transition-colors',
     'focus-visible:util-focus-borderless-ring outline-none',
     'disabled:cursor-not-allowed',
   ]),
