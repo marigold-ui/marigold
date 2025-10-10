@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Key } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
+import { expect, waitFor, within } from 'storybook/test';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -76,7 +77,7 @@ const meta = {
     },
   },
   args: {
-    label: 'Select for favorite:',
+    label: 'Favorite',
     error: false,
     required: false,
     disabled: false,
@@ -114,11 +115,12 @@ export const Basic: StoryObj<typeof Select> = {
 
 export const Multiple: StoryObj<typeof Select> = {
   // No args here, it breaks the types
-  render: () => {
+  render: ({ label }) => {
     const [selected, setSelected] = useState<Key[]>([]);
     return (
       <Stack space={6}>
         <Select
+          label={label}
           selectionMode="multiple"
           value={selected}
           onChange={setSelected}
@@ -133,8 +135,25 @@ export const Multiple: StoryObj<typeof Select> = {
           <Select.Option id="Firefly">Firefly</Select.Option>
         </Select>
         <hr />
-        <pre>selected: {JSON.stringify(selected)}</pre>
+        <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
       </Stack>
+    );
+  },
+  play: async ({ args, canvas, canvasElement, userEvent }) => {
+    await userEvent.click(canvas.getByLabelText(`${args.label}`));
+
+    const body = canvasElement.ownerDocument.body;
+    await waitFor(() => within(body).getByRole('dialog'));
+
+    const options = await within(body).getByRole('dialog');
+
+    await userEvent.click(within(options).getByText('Star Wars'));
+    await userEvent.click(within(options).getByText('Firefly'));
+
+    await userEvent.click(canvasElement);
+
+    expect(canvas.getByTestId('selected')).toHaveTextContent(
+      'selected: ["Star Wars","Firefly"]'
     );
   },
 };
