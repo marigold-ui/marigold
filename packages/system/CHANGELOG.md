@@ -1,5 +1,13 @@
 # @marigold/system
 
+## 15.3.1
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
 ## 15.3.0
 
 ### Minor Changes
