@@ -44,11 +44,11 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "4.1.12",
+    "@tailwindcss/postcss": "4.1.14",
     "cssnano": "7.1.1",
     "postcss-cli": "11.0.1",
-    "tailwindcss": "4.1.12",
-    "tsup": "8.5.0"
+    "tailwindcss": "4.1.14",
+    "tsdown": "0.15.6"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
@@ -58,6 +58,6 @@
     "tailwindcss-react-aria-components": "^2.0.1"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css src/global.css src/utils.css dist/"
+    "build": "NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && cp src/theme.css src/global.css src/utils.css dist/"
   }
 }

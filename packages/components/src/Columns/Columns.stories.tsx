@@ -1,14 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
-import {
-  Columns,
-  Divider,
-  Headline,
-  NumberField,
-  Stack,
-  Switch,
-  TextField,
-} from '@marigold/components';
+import { Divider } from '../Divider/Divider';
+import { Headline } from '../Headline/Headline';
+import { NumberField } from '../NumberField/NumberField';
+import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
+import { TextField } from '../TextField/TextField';
+import { Columns } from './Columns';
 
 const meta = {
   title: 'Components/Columns',

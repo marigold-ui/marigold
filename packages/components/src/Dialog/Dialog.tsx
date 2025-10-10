@@ -8,8 +8,8 @@ import {
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { CloseButton } from '../CloseButton';
-import { Modal, ModalProps } from '../Overlay';
+import { CloseButton } from '../CloseButton/CloseButton';
+import { Modal, ModalProps } from '../Overlay/Modal';
 import { DialogContext } from './Context';
 import { DialogActions } from './DialogActions';
 import { DialogContent } from './DialogContent';
@@ -51,7 +51,7 @@ const InnerDialog = forwardRef(
         {...props}
         ref={ref}
         className={cn(
-          'relative mx-auto outline-hidden',
+          'relative mx-auto max-h-[80vh] max-w-[90vw] outline-hidden',
           "grid [grid-template-areas:'title'_'content'_'actions']",
           classNames.container
         )}

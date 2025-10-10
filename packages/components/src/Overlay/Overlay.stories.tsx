@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { forwardRef } from 'react';
 import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
-import { Button } from '../Button';
-import { Dialog } from '../Dialog';
-import { Headline } from '../Headline';
-import { Text } from '../Text';
+import { Button } from '../Button/Button';
+import { Dialog } from '../Dialog/Dialog';
+import { Headline } from '../Headline/Headline';
+import { Text } from '../Text/Text';
 import { Modal } from './Modal';
 import { Popover } from './Popover';
 

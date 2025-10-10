@@ -42,12 +42,12 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "4.1.12",
+    "@tailwindcss/postcss": "4.1.14",
     "cssnano": "7.1.1",
     "postcss-cli": "11.0.1",
     "postcss-prefix-selector": "2.1.1",
-    "tailwindcss": "4.1.12",
-    "tsup": "8.5.0"
+    "tailwindcss": "4.1.14",
+    "tsdown": "0.15.6"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
@@ -55,6 +55,6 @@
     "@marigold/theme-plugins": "workspace:*"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsup && postcss -o dist/styles.css src/styles.css && cp src/theme.css dist/theme.css"
+    "build": "NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && cp src/theme.css dist/theme.css"
   }
 }

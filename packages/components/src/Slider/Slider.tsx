@@ -13,8 +13,8 @@ import {
   width as twWidth,
   useClassNames,
 } from '@marigold/system';
-import { FieldBase, FieldBaseProps } from '../FieldBase';
-import { Label } from '../Label';
+import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
+import { Label } from '../Label/Label';
 
 export interface SliderProps<T>
   extends Omit<RAC.SliderProps<T>, 'children' | 'isDisabled' | 'orientation'>,
