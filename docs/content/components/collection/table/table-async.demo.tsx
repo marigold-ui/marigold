@@ -25,22 +25,28 @@ export default () => {
           const first = a[sortDescriptor.column as keyof asyncData];
           const second = b[sortDescriptor.column as keyof asyncData];
           // Can be used for date sorting
-          const firstDate = Date.parse(first);
-          const secondDate = Date.parse(second);
-          const isFirstValidDate = !isNaN(firstDate);
-          const isSecondValidDate = !isNaN(secondDate);
-
+          const firstDate =
+            isNaN(first?.length) || first?.length > 4
+              ? Date.parse(first)
+              : null;
+          const secondDate =
+            isNaN(second?.length) || second?.length > 4
+              ? Date.parse(second)
+              : null;
+          const isFirstValidDate =
+            firstDate === null ? false : !isNaN(firstDate);
+          const isSecondValidDate =
+            secondDate === null ? false : !isNaN(secondDate);
           let cmp: number;
 
           if (isFirstValidDate && isSecondValidDate) {
-            cmp = firstDate < secondDate ? -1 : 1;
+            cmp = firstDate! < secondDate! ? -1 : 1;
           } else {
             cmp =
               (parseInt(first) || first) < (parseInt(second) || second)
                 ? -1
                 : 1;
           }
-
           if (sortDescriptor.direction === 'descending') {
             cmp *= -1;
           }
