@@ -80,6 +80,7 @@ const meta = {
     error: false,
     required: false,
     disabled: false,
+    width: 64,
   },
 } satisfies Meta<typeof Select>;
 
@@ -87,7 +88,7 @@ export default meta;
 
 export const Basic: StoryObj<typeof Select> = {
   render: args => {
-    const [selected, setSelected] = useState<Key | Key[] | null>('');
+    const [selected, setSelected] = useState<any>('');
     return (
       <Stack space={6}>
         <Select
@@ -112,15 +113,16 @@ export const Basic: StoryObj<typeof Select> = {
 };
 
 export const Multiple: StoryObj<typeof Select> = {
-  render: args => {
-    const [selected, setSelected] = useState<Key | Key[] | null>([]);
+  // No args here, it breaks the types
+  render: () => {
+    const [selected, setSelected] = useState<Key[]>([]);
     return (
       <Stack space={6}>
         <Select
           selectionMode="multiple"
           value={selected}
           onChange={setSelected}
-          {...args}
+          width={64}
         >
           <Select.Option id="Harry Potter">Harry Potter</Select.Option>
           <Select.Option id="Lord of the Rings">
@@ -131,7 +133,7 @@ export const Multiple: StoryObj<typeof Select> = {
           <Select.Option id="Firefly">Firefly</Select.Option>
         </Select>
         <hr />
-        <pre>selected: {selected}</pre>
+        <pre>selected: {JSON.stringify(selected)}</pre>
       </Stack>
     );
   },
