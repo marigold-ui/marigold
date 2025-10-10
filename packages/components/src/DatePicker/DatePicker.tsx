@@ -1,3 +1,4 @@
+import { CalendarDate } from '@internationalized/date';
 import React from 'react';
 import type RAC from 'react-aria-components';
 import { DatePicker, type DateValue, Dialog } from 'react-aria-components';
@@ -77,6 +78,7 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
       size,
       open,
       granularity = 'day',
+      onChange,
       ...rest
     },
     ref
@@ -89,6 +91,7 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
       isInvalid: error,
       isOpen: open,
       granularity,
+      onChange,
       ...rest,
     };
 
@@ -97,6 +100,12 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
       size,
       variant,
     });
+
+    const handleDatePaste = (date: CalendarDate) => {
+      if (onChange) {
+        onChange(date);
+      }
+    };
 
     return (
       <FieldBase
@@ -107,6 +116,7 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
         ref={ref}
       >
         <DateInput
+          onDatePaste={handleDatePaste}
           action={
             <IconButton className={classNames}>
               <svg
