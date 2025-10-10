@@ -120,14 +120,6 @@
   /* color input used for inputs as border or e.g. in switch as bg track color */
   --color-input: var(--color-stone-300);
 
-  /* TODO: Rename them to "component"? */
-  /* component height for input elements */
-  --spacing-input: 2.25rem;
-  /* component height for button elements */
-  --spacing-button: 2.25rem;
-  --spacing-button-small: 2rem;
-  --spacing-button-large: 2.5rem;
-
   --color-border: var(--color-stone-200);
 
   /* Focus color is used for focusing an element (e.g. segment on Datefield)*/
@@ -154,9 +146,27 @@
   --surface-overlay-border: var(--color-input);
 
   /* ==================== */
-  /*       ANIMATION      */
+  /*        SPACING       */
   /* ==================== */
 
+  /* TODO: Rename them to "component"? */
+  /* component height for input elements */
+  --spacing-input: 2.25rem;
+  /* component height for button elements */
+  --spacing-button: 2.25rem;
+  --spacing-button-small: 2rem;
+  --spacing-button-large: 2.5rem;
+
+  /* spacing between elements */
+  --spacing-container: 50rem; /* e.g. form container */
+  --spacing-section: 3.5rem; /* e.g. between form sections */
+  --spacing-field-Y: 2rem; /* e.g. between fields vertically */
+  --spacing-field-X: 1.25rem; /* e.g. between fields horizontally */
+  --spacing-group: 1rem; /* e.g. between related fields to group them */
+
+  /* ==================== */
+  /*       ANIMATION      */
+  /* ==================== */
   /* easing functions (https://gist.github.com/bendc/ac03faac0bf2aee25b49e5fd260a727d)*/
   --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
