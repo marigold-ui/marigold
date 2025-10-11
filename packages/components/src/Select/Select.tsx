@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Select as ReactAraiSelect, SelectValue } from 'react-aria-components';
+import { Select as ReactAriaSelect, SelectValue } from 'react-aria-components';
 import { forwardRefType } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
@@ -103,7 +103,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
 
   return (
     <FieldBase
-      as={ReactAraiSelect}
+      as={ReactAriaSelect}
       ref={ref as any}
       variant={variant}
       size={size}
