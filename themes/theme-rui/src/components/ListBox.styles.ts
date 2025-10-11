@@ -11,7 +11,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
     'hover:bg-hover hover:text-hover-foreground',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-    'focus-visible:util-focus-ring outline-none',
+    'focus-visible:util-focus-ring outline-none focus-visible:z-1',
     'cursor-default data-selection-mode:cursor-pointer',
   ]),
   section: cva(''),

@@ -41,7 +41,7 @@ export type DistributiveOmit<T, TOmitted extends PropertyKey> = T extends any
   : never;
 
 /**
- * Fix the weird behaviro or the forwardRef types.
+ * Fix the weird behavior of the forwardRef types.
  * Source: https://www.totaltypescript.com/pass-component-as-prop-react
  *
  * @example const fixedForwardRef = forwardRef as FixedForwardRef;

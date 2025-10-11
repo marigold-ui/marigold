@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
+import { Key } from 'react-aria-components';
+import { expect, waitFor, within } from 'storybook/test';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -75,10 +77,11 @@ const meta = {
     },
   },
   args: {
-    label: 'Select for favorite:',
+    label: 'Favorite',
     error: false,
     required: false,
     disabled: false,
+    width: 64,
   },
 } satisfies Meta<typeof Select>;
 
@@ -86,7 +89,7 @@ export default meta;
 
 export const Basic: StoryObj<typeof Select> = {
   render: args => {
-    const [selected, setSelected] = useState<string | number>('');
+    const [selected, setSelected] = useState<any>('');
     return (
       <Stack space={6}>
         <Select
@@ -106,6 +109,51 @@ export const Basic: StoryObj<typeof Select> = {
         <hr />
         <pre>selected: {selected}</pre>
       </Stack>
+    );
+  },
+};
+
+export const Multiple: StoryObj<typeof Select> = {
+  // No args here, it breaks the types
+  render: ({ label }) => {
+    const [selected, setSelected] = useState<Key[]>([]);
+    return (
+      <Stack space={6}>
+        <Select
+          label={label}
+          selectionMode="multiple"
+          value={selected}
+          onChange={setSelected}
+          width={64}
+        >
+          <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+          <Select.Option id="Lord of the Rings">
+            Lord of the Rings
+          </Select.Option>
+          <Select.Option id="Star Wars">Star Wars</Select.Option>
+          <Select.Option id="Star Trek">Star Trek</Select.Option>
+          <Select.Option id="Firefly">Firefly</Select.Option>
+        </Select>
+        <hr />
+        <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
+      </Stack>
+    );
+  },
+  play: async ({ args, canvas, canvasElement, userEvent }) => {
+    await userEvent.click(canvas.getByLabelText(`${args.label}`));
+
+    const body = canvasElement.ownerDocument.body;
+    await waitFor(() => within(body).getByRole('dialog'));
+
+    const options = await within(body).getByRole('dialog');
+
+    await userEvent.click(within(options).getByText('Star Wars'));
+    await userEvent.click(within(options).getByText('Firefly'));
+
+    await userEvent.click(canvasElement);
+
+    expect(canvas.getByTestId('selected')).toHaveTextContent(
+      'selected: ["Star Wars","Firefly"]'
     );
   },
 };

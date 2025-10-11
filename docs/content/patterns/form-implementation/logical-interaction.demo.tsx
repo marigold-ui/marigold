@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Key, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -11,7 +11,7 @@ import {
 
 export default () => {
   const [value] = useState('');
-  const [selected, setSelected] = useState<string | number>('');
+  const [selected, setSelected] = useState<Key | null>(null);
   return (
     <>
       <Headline level={2}>Account Registration</Headline>
@@ -62,7 +62,7 @@ export default () => {
             <Select.Option key={'austria'}>Austria</Select.Option>
             <Select.Option key={'switzerland'}>Switzerland</Select.Option>
           </Select>
-          {selected !== '' && selected !== 'none' && (
+          {selected && selected !== 'none' && (
             <Checkbox label="Agree to the terms" />
           )}
         </Stack>

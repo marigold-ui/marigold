@@ -261,8 +261,8 @@ export const WithTable: Story = {
               <Text fontSize="sm">Results per page</Text>
               <Select
                 width={'fit'}
-                selectedKey={pageSize.toString()}
-                onChange={val => setPageSize(parseInt(val.toString()))}
+                value={pageSize.toString()}
+                onChange={val => setPageSize(parseInt(`${val}`))}
               >
                 <Select.Option id="10">10</Select.Option>
                 <Select.Option id="20">20</Select.Option>
