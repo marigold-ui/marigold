@@ -25,10 +25,12 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
       },
     }
   ),
-  popover: cva(
-    'bg-white border border-gray-200 p-3 rounded shadow-md z-50 data-[small]:max-w-3xs data-[medium]:max-w-xs data-[large]:max-w-md'
-  ),
-  dialog: cva('text-sm leading-normal'),
+  popover: cva([
+    'flex flex-col gap-0 rounded-xl p-5 util-surface-overlay',
+    'data-[small]:max-w-3xs data-[medium]:max-w-xs data-[large]:max-w-md',
+    'overflow-y-auto util-scrollbar',
+  ]),
+  container: cva(''),
   title: cva('text-lg font-semibold mb-1'),
   content: cva('text-sm'),
 };

@@ -128,6 +128,10 @@
   /* Selected color is used when there is an active selection in the component */
   --color-selected: var(--color-stone-100);
 
+  --color-scrollbar: var(--color-stone-300);
+  --color-scrollbar-hover: var(--color-stone-950);
+  --color-scrollbar-track: transparent;
+
   /* ==================== */
   /*        SURFACE       */
   /* ==================== */

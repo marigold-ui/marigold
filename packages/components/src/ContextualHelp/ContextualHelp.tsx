@@ -132,7 +132,7 @@ export const _ContextualHelp = forwardRef<
       size,
       width,
       placement = 'bottom start',
-      offset = 8,
+      offset = 0,
       defaultOpen,
       open,
       onOpenChange,
@@ -168,7 +168,7 @@ export const _ContextualHelp = forwardRef<
             [`data-${width ?? 'medium'}`]: true,
           }}
         >
-          <Dialog className={(classNames.dialog, 'prose')}>{children}</Dialog>
+          <Dialog className={classNames.container}>{children}</Dialog>
         </Popover>
       </DialogTrigger>
     );
