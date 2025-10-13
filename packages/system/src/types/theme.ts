@@ -47,7 +47,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ContextualHelp?: Record<
-      'trigger' | 'popover' | 'dialog' | 'title' | 'content',
+      'trigger' | 'popover' | 'container' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
