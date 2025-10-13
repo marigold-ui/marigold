@@ -120,8 +120,8 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.0)(@vitest/ui@3.2.4)(jiti@2.6.1)(jsdom@20.0.3)(lightningcss@1.30.1)(yaml@2.7.1)
       zx:
-        specifier: 8.8.1
-        version: 8.8.1
+        specifier: 8.8.4
+        version: 8.8.4
 
   config/eslint:
     dependencies:
@@ -416,8 +416,8 @@ importers:
         specifier: 3.0.1
         version: 3.0.1(zod@4.1.12)
       zx:
-        specifier: 8.8.1
-        version: 8.8.1
+        specifier: 8.8.4
+        version: 8.8.4
     devDependencies:
       '@internationalized/date':
         specifier: 3.10.0
@@ -9384,8 +9384,8 @@ packages:
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
-  zx@8.8.1:
-    resolution: {integrity: sha512-qvsKBnvWHstHKCluKPlEgI/D3+mdiQyMoSSeFR8IX/aXzWIas5A297KxKgPJhuPXdrR6ma0Jzx43+GQ/8sqbrw==}
+  zx@8.8.4:
+    resolution: {integrity: sha512-44GcD+ZlM/v1OQtbwnSxLPcoE1ZEUICmR+RSbJZLAqfIixNLuMjLyh0DcS75OyfJ/sWYAwCWDmDvJ4hdnANAPQ==}
     engines: {node: '>= 12.17.0'}
     hasBin: true
 
@@ -20242,4 +20242,4 @@ snapshots:
 
   zwitch@2.0.4: {}
 
-  zx@8.8.1: {}
+  zx@8.8.4: {}

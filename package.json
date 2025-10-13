@@ -47,7 +47,7 @@
     "typescript": "5.9.2",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.4",
-    "zx": "8.8.1"
+    "zx": "8.8.4"
   },
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",

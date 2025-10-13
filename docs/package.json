@@ -55,7 +55,7 @@
     "tailwindcss": "4.1.14",
     "zod": "4.1.12",
     "zod-form-data": "3.0.1",
-    "zx": "8.8.1"
+    "zx": "8.8.4"
   },
   "devDependencies": {
     "@internationalized/date": "3.10.0",
