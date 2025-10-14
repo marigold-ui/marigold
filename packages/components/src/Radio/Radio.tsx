@@ -1,4 +1,3 @@
-import { Dot } from 'packages/components/src/icons/Dot';
 import {
   ForwardRefExoticComponent,
   ReactNode,
@@ -8,6 +7,7 @@ import {
 import type RAC from 'react-aria-components';
 import { Radio } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { Circle } from '../icons/Circle';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -43,7 +43,7 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
     aria-hidden="true"
     {...props}
   >
-    {checked ? <Dot /> : null}
+    {checked ? <Circle isFilled /> : null}
   </div>
 );
 

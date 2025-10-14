@@ -1,8 +1,8 @@
-import { Minus } from 'packages/components/src/icons/Minus';
-import { Plus } from 'packages/components/src/icons/Plus';
 import { Button } from 'react-aria-components';
 import { AriaButtonProps } from '@react-types/button';
 import { cn } from '@marigold/system';
+import { Minus } from '../icons/Minus';
+import { Plus } from '../icons/Plus';
 
 // Props
 // ---------------
@@ -29,7 +29,7 @@ const _StepButton = ({ direction, className, ...props }: StepButtonProps) => {
       )}
       {...props}
     >
-      <Icon />
+      <Icon size={16} />
     </Button>
   );
 };

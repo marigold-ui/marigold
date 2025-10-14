@@ -110,7 +110,7 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
         <DateInput
           action={
             <IconButton className={classNames}>
-              <CalendarIcon />
+              <CalendarIcon data-testid={'action'} />
             </IconButton>
           }
         />

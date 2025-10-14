@@ -1,10 +1,10 @@
-import { CloseSearch } from 'packages/components/src/icons/CloseSearch';
-import { Search } from 'packages/components/src/icons/Search';
 import { forwardRef } from 'react';
 import { Button } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
 import { ProgressCycle } from '../ProgressCycle/ProgressCycle';
+import { Search } from '../icons/Search';
+import { X } from '../icons/X';
 import type { InputProps } from './Input';
 import { Input } from './Input';
 
@@ -58,7 +58,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
               excludeFromTabOrder={true}
               preventFocusOnPress={true}
             >
-              <CloseSearch />
+              <X size={20} />
             </Button>
           )
         }

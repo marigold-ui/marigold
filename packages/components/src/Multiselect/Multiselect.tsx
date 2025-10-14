@@ -1,6 +1,5 @@
 'use client';
 
-import { Close } from 'packages/components/src/icons/Close';
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 import {
   Button,
@@ -24,6 +23,7 @@ import { FieldBaseProps } from '../FieldBase/FieldBase';
 import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label/Label';
 import { ChevronDown } from '../icons/ChevronDown';
+import { X } from '../icons/X';
 
 interface MultipleSelectProps
   extends Pick<
@@ -175,7 +175,7 @@ const Input = ({ innerRef, placeholder, hasValue, ...props }: InputProps) => {
 const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
   return (
     <Button slot="remove" {...(innerProps as any)}>
-      <Close />
+      <X />
     </Button>
   );
 };

@@ -1,8 +1,8 @@
-// https://lucide.dev/icons/chevron-right
+// https://lucide.dev/icons/arrow-up-z-a
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
+export const ArrowUpZA = ({ size = 24, className, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +15,16 @@ export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        'lucide lucide-chevron-right-icon lucide-chevron-right',
+        'lucide lucide-arrow-up-za-icon lucide-arrow-up-z-a',
         className
       )}
       {...rest}
     >
-      <path d="m9 18 6-6-6-6" />
+      <path d="m3 8 4-4 4 4" />
+      <path d="M7 4v16" />
+      <path d="M15 4h5l-5 6h5" />
+      <path d="M15 20v-3.5a2.5 2.5 0 0 1 5 0V20" />
+      <path d="M20 18h-5" />
     </svg>
   );
 };

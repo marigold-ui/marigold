@@ -1,6 +1,6 @@
-import { CheckMark } from 'packages/components/src/icons/CheckMark';
 import type RAC from 'react-aria-components';
 import { ListBoxItem } from 'react-aria-components';
+import { Check } from '../icons/Check';
 import { useListBoxContext } from './Context';
 
 export type ListBoxItemProps = Omit<
@@ -23,7 +23,7 @@ export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
       textValue={props.textValue ?? String(props.children)}
     >
       <div className="selection-indicator contents">
-        <CheckMark className="hidden" />
+        <Check size={12} className="hidden" />
         {props.children}
       </div>
     </ListBoxItem>

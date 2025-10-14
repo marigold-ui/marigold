@@ -1,5 +1,3 @@
-import { CheckMark } from 'packages/components/src/icons/CheckMark';
-import { IndeterminateMark } from 'packages/components/src/icons/IndeterminateMark';
 import type {
   ForwardRefExoticComponent,
   PropsWithChildren,
@@ -17,6 +15,8 @@ import {
 import { useId } from '@react-aria/utils';
 import { StateAttrProps, cn, useClassNames } from '@marigold/system';
 import { HelpText } from '../HelpText/HelpText';
+import { Check } from '../icons/Check';
+import { Minus } from '../icons/Minus';
 import { CheckboxGroup } from './CheckboxGroup';
 import { useCheckboxGroupContext } from './Context';
 
@@ -67,7 +67,11 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
       )}
       {...props}
     >
-      {indeterminate ? <IndeterminateMark /> : checked ? <CheckMark /> : null}
+      {indeterminate ? (
+        <Minus size={12} />
+      ) : checked ? (
+        <Check size={12} />
+      ) : null}
     </div>
   );
 };

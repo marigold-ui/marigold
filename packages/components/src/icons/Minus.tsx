@@ -1,13 +1,23 @@
-import { forwardRef } from 'react';
-import { SVG, SVGProps } from '@marigold/system';
+// https://lucide.dev/icons/minus
+import { cn } from '@marigold/system';
+import { IconProps } from './Icons.types';
 
-export const Minus = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (
-  <SVG {...props} width={16} height={16} viewBox="0 0 20 20" ref={ref}>
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      fill="currentColor"
-      d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-    />
-  </SVG>
-));
+export const Minus = ({ size = 24, className, ...rest }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn('lucide lucide-minus-icon lucide-minus', className)}
+      {...rest}
+    >
+      <path d="M5 12h14" />
+    </svg>
+  );
+};

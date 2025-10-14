@@ -1,11 +1,11 @@
-import { ErrorFilled } from 'packages/components/src/icons/ErrorFilled';
-import { InfoFilled } from 'packages/components/src/icons/InfoFilled';
-import { SuccessFilled } from 'packages/components/src/icons/SuccessFilled';
-import { WarningFilled } from 'packages/components/src/icons/WarningFilled';
 import { type ReactNode, useRef, useState } from 'react';
 import { useButton } from '@react-aria/button';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
+import { CircleAlert } from '../icons/CircleAlert';
+import { CircleCheck } from '../icons/CircleCheck';
+import { Info } from '../icons/Info';
+import { TriangleAlert } from '../icons/TriangleAlert';
 import { SectionMessageContext } from './Context';
 import { SectionMessageContent } from './SectionMessageContent';
 import { SectionMessageTitle } from './SectionMessageTitle';
@@ -13,10 +13,10 @@ import { SectionMessageTitle } from './SectionMessageTitle';
 // Icons
 // ---------------
 const icons = {
-  success: () => <SuccessFilled size={24} />,
-  info: () => <InfoFilled size={24} />,
-  warning: () => <WarningFilled size={24} />,
-  error: () => <ErrorFilled size={24} />,
+  success: () => <CircleCheck />,
+  info: () => <Info />,
+  warning: () => <CircleAlert />,
+  error: () => <TriangleAlert />,
 };
 
 // Props

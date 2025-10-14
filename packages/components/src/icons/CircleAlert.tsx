@@ -1,8 +1,8 @@
-// https://lucide.dev/icons/asterisk
+// https://lucide.dev/icons/circle-alert
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const Asterisk = ({ size = 24, className, ...rest }: IconProps) => {
+export const CircleAlert = ({ size = 24, className, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,12 +14,15 @@ export const Asterisk = ({ size = 24, className, ...rest }: IconProps) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn('lucide lucide-asterisk-icon lucide-asterisk', className)}
+      className={cn(
+        'lucide lucide-circle-alert-icon lucide-circle-alert',
+        className
+      )}
       {...rest}
     >
-      <path d="M12 6v12" />
-      <path d="M17.196 9 6.804 15" />
-      <path d="m6.804 9 10.392 6" />
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" x2="12" y1="8" y2="12" />
+      <line x1="12" x2="12.01" y1="16" y2="16" />
     </svg>
   );
 };

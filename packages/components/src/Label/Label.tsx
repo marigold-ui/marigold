@@ -1,7 +1,7 @@
-import { Asterisk } from 'packages/components/src/icons/Asterisk';
 import type RAC from 'react-aria-components';
 import { Label } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { Asterisk } from '../icons/Asterisk';
 
 type RemovedProps = 'className';
 export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
@@ -15,7 +15,11 @@ const _Label = ({ size, variant, children, ...props }: LabelProps) => {
   return (
     <Label {...props} className={cn(classNames.container, 'inline-flex')}>
       {children}
-      <Asterisk className={cn('hidden', classNames.indicator)} />
+      <Asterisk
+        size={16}
+        role={'presentation'}
+        className={cn('flex-none fill-current', 'hidden', classNames.indicator)}
+      />
     </Label>
   );
 };

@@ -1,8 +1,8 @@
-// https://lucide.dev/icons/asterisk
+// https://lucide.dev/icons/check
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const Asterisk = ({ size = 24, className, ...rest }: IconProps) => {
+export const Check = ({ size = 24, className, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,12 +14,10 @@ export const Asterisk = ({ size = 24, className, ...rest }: IconProps) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn('lucide lucide-asterisk-icon lucide-asterisk', className)}
+      className={cn('lucide lucide-check-icon lucide-check', className)}
       {...rest}
     >
-      <path d="M12 6v12" />
-      <path d="M17.196 9 6.804 15" />
-      <path d="m6.804 9 10.392 6" />
+      <path d="M20 6 9 17l-5-5" />
     </svg>
   );
 };

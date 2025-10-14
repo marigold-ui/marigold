@@ -1,8 +1,8 @@
-import { TooltipChevron } from 'packages/components/src/icons/TooltipChevron';
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { OverlayArrow, Tooltip } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { ChevronDown } from '../icons/ChevronDown';
 import { TooltipTrigger } from './TooltipTrigger';
 
 type RemovedProps = 'className' | 'isOpen' | 'style';
@@ -30,7 +30,7 @@ const _Tooltip = ({ children, variant, size, open, ...rest }: TooltipProps) => {
   return (
     <Tooltip {...props} className={cn('group/tooltip', classNames.container)}>
       <OverlayArrow className={classNames.arrow}>
-        <TooltipChevron />
+        <ChevronDown size={8} fill={'inherit'} viewBox="0 12 24 24" />
       </OverlayArrow>
       {children}
     </Tooltip>

@@ -1,5 +1,3 @@
-import { Help } from 'packages/components/src/icons/Help';
-import { Info } from 'packages/components/src/icons/Info';
 import {
   ForwardRefExoticComponent,
   ReactNode,
@@ -13,12 +11,14 @@ import {
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
+import { CircleQuestionMark } from '../icons/CircleQuestionMark';
+import { Info } from '../icons/Info';
 import { ContextualHelpContent } from './ContextualHelpContent';
 import { ContextualHelpTitle } from './ContextualHelpTitle';
 
 const icons = {
-  help: () => <Help />,
-  info: () => <Info />,
+  help: () => <CircleQuestionMark size={20} />,
+  info: () => <Info size={20} />,
 };
 
 interface ContextualHelpComponent

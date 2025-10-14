@@ -1,9 +1,9 @@
-import { HelpTextError } from 'packages/components/src/icons/HelpTextError';
 import type { ReactNode } from 'react';
 import { useContext } from 'react';
 import type { ValidationResult } from 'react-aria-components';
 import { FieldError, FieldErrorContext, Text } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { TriangleAlert } from '../icons/TriangleAlert';
 
 // Props
 // ---------------
@@ -60,13 +60,17 @@ export const HelpText = ({
           return Array.isArray(messages) ? (
             messages.map((msg, idx) => (
               <div key={idx} className="flex items-center justify-start gap-1">
-                <HelpTextError className={classNames.icon} />
+                <TriangleAlert
+                  className={cn('h-4 w-4 shrink-0', classNames.icon)}
+                />
                 {msg}
               </div>
             ))
           ) : (
             <div className="flex items-start justify-start gap-1">
-              <HelpTextError className={classNames.icon} />
+              <TriangleAlert
+                className={cn('h-4 w-4 shrink-0', classNames.icon)}
+              />
               {messages}
             </div>
           );

@@ -1,18 +1,18 @@
-import { ErrorFilled } from 'packages/components/src/icons/ErrorFilled';
-import { InfoFilled } from 'packages/components/src/icons/InfoFilled';
-import { SuccessFilled } from 'packages/components/src/icons/SuccessFilled';
-import { WarningFilled } from 'packages/components/src/icons/WarningFilled';
 import { UNSTABLE_ToastContent as RAC_ToastContent } from 'react-aria-components';
 import { UNSTABLE_Toast as RAC_Toast, Text } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Stack } from '../Stack/Stack';
+import { CircleAlert } from '../icons/CircleAlert';
+import { CircleCheck } from '../icons/CircleCheck';
+import { Info } from '../icons/Info';
+import { TriangleAlert } from '../icons/TriangleAlert';
 
 const icons = {
-  success: () => <SuccessFilled />,
-  info: () => <InfoFilled />,
-  warning: () => <WarningFilled />,
-  error: () => <ErrorFilled />,
+  success: () => <CircleCheck />,
+  info: () => <Info />,
+  warning: () => <CircleAlert />,
+  error: () => <TriangleAlert />,
 };
 
 export type ToastContentProps = {

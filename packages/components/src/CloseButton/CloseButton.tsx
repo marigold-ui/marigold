@@ -2,7 +2,7 @@ import { CSSProperties, Ref, forwardRef } from 'react';
 import { Button } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { ButtonProps } from '../Button/Button';
-import { Close } from '../icons/Close';
+import { X } from '../icons/X';
 
 interface CloseButtonProps
   extends Pick<
@@ -26,7 +26,7 @@ export const CloseButton = forwardRef(
     });
     return (
       <Button ref={ref} className={classNames} {...props}>
-        <Close />
+        <X />
       </Button>
     );
   }

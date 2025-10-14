@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { InfoFilled } from 'packages/components/src/icons/InfoFilled';
 import React from 'react';
 import { Button } from '../Button/Button';
+import { Info } from '../icons/Info';
 import { SelectList } from './SelectList';
 
 const meta = {
@@ -87,7 +87,7 @@ export const Action: Story = {
               aria-label="Info"
               onPress={() => alert(`Info for ${item.name}...`)}
             >
-              <InfoFilled width={30} height={30} />
+              <Info size={30} />
             </Button>
           </SelectList.Action>
           {item.name}
