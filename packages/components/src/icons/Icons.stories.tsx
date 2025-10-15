@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { PropsWithChildren } from 'react';
-import { Card, Headline, Inline, Stack } from '@marigold/components';
+import { Card, Headline, Inline, Stack, Text } from '@marigold/components';
 import { Accessibility } from './Accessibility';
-import { ArrowDownAZ } from './ArrowDownAZ';
-import { ArrowUpZA } from './ArrowUpZA';
 import { Asterisk } from './Asterisk';
 import { Calendar } from './Calendar';
 import { Check } from './Check';
@@ -59,11 +57,13 @@ export default meta;
 // TODO: Remove once we get rid of legacy icons for preview purposes
 const BasicIconCard = ({
   title,
+  isNotReplaced,
   children,
-}: PropsWithChildren<{ title: string }>) => (
+}: PropsWithChildren<{ title: string; isNotReplaced?: boolean }>) => (
   <Card>
     <Stack space={2}>
       <Headline level={3}>{title}</Headline>
+      {isNotReplaced && <Text size="sm">Icon not replaced yet</Text>}
       <Inline space={4} alignX={'center'}>
         {children}
       </Inline>
@@ -92,7 +92,7 @@ export const LegacyComparison: StoryObj = {
         <LegacyDot />
       </BasicIconCard>
       <BasicIconCard title={'Search'}>
-        <Search />
+        <Search size={20} />
         <LegacySearch />
       </BasicIconCard>
       <BasicIconCard title={'X'}>
@@ -115,12 +115,10 @@ export const LegacyComparison: StoryObj = {
         <Check size={12} />
         <LegacyCheck />
       </BasicIconCard>
-      <BasicIconCard title={'SortUp'}>
-        <ArrowUpZA />
+      <BasicIconCard title={'SortUp'} isNotReplaced>
         <LegacySortUp />
       </BasicIconCard>
-      <BasicIconCard title={'SortDown'}>
-        <ArrowDownAZ />
+      <BasicIconCard title={'SortDown'} isNotReplaced>
         <LegacySortDown />
       </BasicIconCard>
       <BasicIconCard title={'ChevronRight'}>
@@ -161,20 +159,6 @@ export const LegacyComparison: StoryObj = {
 
 export const AccessibilityIcon: StoryObj<typeof Accessibility> = {
   render: args => <Accessibility {...args} />,
-  args: {
-    size: 24,
-  },
-};
-
-export const ArrowDownAZIcon: StoryObj<typeof ArrowDownAZ> = {
-  render: args => <ArrowDownAZ {...args} />,
-  args: {
-    size: 24,
-  },
-};
-
-export const ArrowUpZAIcon: StoryObj<typeof ArrowUpZA> = {
-  render: args => <ArrowUpZA {...args} />,
   args: {
     size: 24,
   },

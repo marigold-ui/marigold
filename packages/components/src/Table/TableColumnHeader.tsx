@@ -5,8 +5,8 @@ import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 import { cn, width as twWidth, useStateProps } from '@marigold/system';
-import { ArrowDownAZ } from '../icons/ArrowDownAZ';
-import { ArrowUpZA } from '../icons/ArrowUpZA';
+import { SortDown } from '../icons/SortDown';
+import { SortUp } from '../icons/SortUp';
 import { useTableContext } from './Context';
 import { ColumnProps } from './Table';
 
@@ -53,13 +53,13 @@ export const TableColumnHeader = ({
       {column.props.allowsSorting &&
         (state.sortDescriptor?.column === column.key ? (
           state.sortDescriptor?.direction === 'ascending' ? (
-            <ArrowUpZA className="inline-block" />
+            <SortUp className="inline-block" />
           ) : (
-            <ArrowDownAZ className="inline-block" />
+            <SortDown className="inline-block" />
           )
         ) : (
           <span className="hidden">
-            <ArrowDownAZ className="inline-block" />
+            <SortDown className="inline-block" />
           </span>
         ))}
     </th>

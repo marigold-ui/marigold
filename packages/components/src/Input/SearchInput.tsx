@@ -46,7 +46,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           className?.input
         )}
         ref={ref}
-        icon={<Search />}
+        icon={<Search size={20} />}
         action={
           loading ? (
             <ProgressCycle />
