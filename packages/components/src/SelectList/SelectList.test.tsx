@@ -59,11 +59,9 @@ describe('SelectList', () => {
       <ThemeProvider theme={theme}>
         <SelectList aria-label="Test" slot="test">
           <SelectList.Item id="dog" textValue="Dog">
-            {' '}
             Dog
           </SelectList.Item>
           <SelectList.Item id="kangaroo" textValue="Kangaroo">
-            {' '}
             Kangaroo
           </SelectList.Item>
         </SelectList>
@@ -80,7 +78,6 @@ describe('SelectList', () => {
       <ThemeProvider theme={theme}>
         <SelectList aria-label="Test" ref={SelectListRef as any}>
           <SelectList.Item ref={itemRef as any} id="dog" textValue="Dog">
-            {' '}
             Dog
           </SelectList.Item>
         </SelectList>

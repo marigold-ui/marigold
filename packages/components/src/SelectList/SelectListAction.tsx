@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-interface SelectListAction {
+export interface SelectListActionProps {
   children: ReactNode;
 }
 
-export const SelectListAction = ({ children }: SelectListAction) => (
-  <div className="order-last">{children}</div>
+export const SelectListAction = ({ children }: SelectListActionProps) => (
+  <div className="col-start-2 row-start-3">{children}</div>
 );

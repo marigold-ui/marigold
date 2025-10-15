@@ -1,17 +1,20 @@
-import {
+import type {
   Dispatch,
   ForwardRefExoticComponent,
   Ref,
   RefAttributes,
   SetStateAction,
-  forwardRef,
 } from 'react';
+import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { GridList as SelectList } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { SelectListContext } from './Context';
 import { SelectListAction } from './SelectListAction';
+import { SelectListDescription } from './SelectListDescription';
+import { SelectListImage } from './SelectListImage';
 import { SelectListItem } from './SelectListItem';
+import { SelectListLabel } from './SelectListLabel';
 
 type RemoveProps = 'style' | 'className' | 'onSelectionChange';
 
@@ -22,7 +25,7 @@ export interface SelectListProps
    */
   onChange?:
     | RAC.GridListProps<object>['onSelectionChange']
-    | Dispatch<SetStateAction<any>>;
+    | Dispatch<SetStateAction<unknown>>;
 }
 
 interface SelectListComponent
@@ -34,6 +37,9 @@ interface SelectListComponent
    */
   Item: typeof SelectListItem;
   Action: typeof SelectListAction;
+  Image: typeof SelectListImage;
+  Label: typeof SelectListLabel;
+  Description: typeof SelectListDescription;
 }
 
 const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
@@ -41,7 +47,7 @@ const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
     const classNames = useClassNames({ component: 'ListBox' });
 
     const props: RAC.GridListProps<object> = {
-      onSelectionChange: onChange as any,
+      onSelectionChange: onChange,
       ...rest,
     };
 
@@ -52,10 +58,7 @@ const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
             {...props}
             layout="grid"
             ref={ref as Ref<HTMLDivElement>}
-            className={cn(
-              'group/list overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
-              classNames.list
-            )}
+            className={cn('group/list overflow-y-auto', classNames.list)}
           >
             {props.children}
           </SelectList>
@@ -67,5 +70,8 @@ const _SelectList = forwardRef<HTMLUListElement, SelectListProps>(
 
 _SelectList.Item = SelectListItem;
 _SelectList.Action = SelectListAction;
+_SelectList.Image = SelectListImage;
+_SelectList.Label = SelectListLabel;
+_SelectList.Description = SelectListDescription;
 
 export { _SelectList as SelectList };
