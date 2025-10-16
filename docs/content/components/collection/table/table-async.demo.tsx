@@ -9,6 +9,7 @@ export interface asyncData {
 
 export default () => {
   let list = useAsyncList<asyncData>({
+    initialSortDescriptor: { column: 'created', direction: 'ascending' },
     async load({ signal }) {
       let res = await fetch(`https://swapi.py4e.com/api/people/?search`, {
         signal,
@@ -21,10 +22,31 @@ export default () => {
     async sort({ items, sortDescriptor }) {
       return {
         items: items.sort((a, b) => {
-          let first = a[sortDescriptor.column as keyof asyncData];
-          let second = b[sortDescriptor.column as keyof asyncData];
-          let cmp =
-            (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+          const first = a[sortDescriptor.column as keyof asyncData];
+          const second = b[sortDescriptor.column as keyof asyncData];
+          // Can be used for date sorting
+          const firstDate =
+            isNaN(first?.length) || first?.length > 4
+              ? Date.parse(first)
+              : null;
+          const secondDate =
+            isNaN(second?.length) || second?.length > 4
+              ? Date.parse(second)
+              : null;
+          const isFirstValidDate =
+            firstDate === null ? false : !isNaN(firstDate);
+          const isSecondValidDate =
+            secondDate === null ? false : !isNaN(secondDate);
+          let cmp: number;
+
+          if (isFirstValidDate && isSecondValidDate) {
+            cmp = firstDate! < secondDate! ? -1 : 1;
+          } else {
+            cmp =
+              (parseInt(first) || first) < (parseInt(second) || second)
+                ? -1
+                : 1;
+          }
           if (sortDescriptor.direction === 'descending') {
             cmp *= -1;
           }
@@ -54,11 +76,20 @@ export default () => {
         <Table.Column key="birth_year" allowsSorting>
           Birth Year
         </Table.Column>
+        <Table.Column key="created" allowsSorting>
+          Created
+        </Table.Column>
       </Table.Header>
       <Table.Body items={list.items}>
         {item => (
           <Table.Row key={(item as any).name}>
-            {columnKey => <Table.Cell>{(item as any)[columnKey]}</Table.Cell>}
+            {columnKey => (
+              <Table.Cell>
+                {columnKey === 'created'
+                  ? `${new Date((item as any).created).toLocaleDateString()} ${new Date((item as any).created).toLocaleTimeString()}`
+                  : (item as any)[columnKey]}
+              </Table.Cell>
+            )}
           </Table.Row>
         )}
       </Table.Body>

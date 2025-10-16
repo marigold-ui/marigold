@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Card } from '../Card';
-import { Headline } from '../Headline';
-import { Inline } from '../Inline';
-import { Inset } from '../Inset';
-import { Text } from '../Text';
+import { Card } from '../Card/Card';
+import { Headline } from '../Headline/Headline';
+import { Inline } from '../Inline/Inline';
+import { Inset } from '../Inset/Inset';
+import { Text } from '../Text/Text';
 
 const meta = {
   title: 'Components/Inset',

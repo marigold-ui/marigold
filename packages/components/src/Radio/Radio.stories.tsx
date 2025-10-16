@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect } from 'storybook/test';
-import { I18nProvider, Radio, Stack } from '@marigold/components';
+import { Stack } from '../Stack/Stack';
+import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';
 
 const meta = {

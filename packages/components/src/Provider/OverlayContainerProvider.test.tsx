@@ -4,10 +4,10 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { OverlayContainerProvider } from '@marigold/components';
 import { Theme, cva } from '@marigold/system';
-import { Select } from '../Select';
+import { Select } from '../Select/Select';
 import { MarigoldProvider } from './MarigoldProvider';
+import { OverlayContainerProvider } from './OverlayContainerProvider';
 
 // Setup
 // ---------------
@@ -42,6 +42,15 @@ const theme: Theme = {
     },
     Field: cva(),
     IconButton: cva(),
+    Modal: cva(),
+    Dialog: {
+      container: cva(),
+      closeButton: cva(),
+      header: cva(),
+      content: cva(),
+      actions: cva(),
+      title: cva(),
+    },
   },
 };
 

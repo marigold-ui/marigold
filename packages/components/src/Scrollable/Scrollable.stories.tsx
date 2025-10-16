@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
-import { Card } from '../Card';
-import { Headline } from '../Headline';
-import { List } from '../List';
-import { Stack } from '../Stack';
-import { Table } from '../Table';
+import { Card } from '../Card/Card';
+import { Headline } from '../Headline/Headline';
+import { List } from '../List/List';
+import { Stack } from '../Stack/Stack';
+import { Table } from '../Table/Table';
 import { Scrollable } from './Scrollable';
 
 const meta = {

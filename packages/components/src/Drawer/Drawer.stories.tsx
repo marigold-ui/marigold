@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Button } from '../Button';
-import { Checkbox } from '../Checkbox';
-import { Select } from '../Select';
-import { Slider } from '../Slider';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
-import { TextField } from '../TextField';
+import { Button } from '../Button/Button';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { Select } from '../Select/Select';
+import { Slider } from '../Slider/Slider';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
+import { TextField } from '../TextField/TextField';
 import { Drawer, DrawerProps } from './Drawer';
 
 const meta = {

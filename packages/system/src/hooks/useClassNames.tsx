@@ -1,5 +1,5 @@
 import { Context, createContext, useContext } from 'react';
-import { ComponentNames, ThemeComponent } from '../types';
+import { ComponentNames, ThemeComponent } from '../types/theme';
 import { cn } from '../utils';
 import { useTheme } from './useTheme';
 

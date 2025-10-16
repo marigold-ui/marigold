@@ -9,7 +9,7 @@ import {
   BreadcrumbsProps as RACBreadcrumbsProps,
 } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { ChevronRight } from '../icons';
+import { ChevronRight } from '../icons/ChevronRight';
 import { BreadcrumbEllipsis } from './BreadcrumbEllipsis';
 import { BreadcrumbsItem, BreadcrumbsItemProps } from './BreadcrumbsItem';
 

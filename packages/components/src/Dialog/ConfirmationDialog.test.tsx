@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components';
 import { MockInstance, expect, it, vi } from 'vitest';
 import { type Theme, cva } from '@marigold/system';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 import { setup } from '../test.utils';
 import { ConfirmationDialog } from './ConfirmationDialog';
 

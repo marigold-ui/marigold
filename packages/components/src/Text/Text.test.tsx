@@ -127,3 +127,16 @@ test('supports wrap prop', () => {
   expect(balance).toHaveClass('text-balance');
   expect(pretty).toHaveClass('text-pretty');
 });
+
+test.each([
+  { prop: 'normal', className: 'whitespace-normal' },
+  { prop: 'nowrap', className: 'whitespace-nowrap' },
+  { prop: 'pre', className: 'whitespace-pre' },
+  { prop: 'preLine', className: 'whitespace-pre-line' },
+  { prop: 'preWrap', className: 'whitespace-pre-wrap' },
+  { prop: 'breakSpaces', className: 'whitespace-break-spaces' },
+] as const)('supports whiteSpace prop: %s', ({ prop, className }) => {
+  render(<Basic whiteSpace={prop}>{prop}</Basic>);
+  const el = screen.getByText(prop);
+  expect(el).toHaveClass(className);
+});

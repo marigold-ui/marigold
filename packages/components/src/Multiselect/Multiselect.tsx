@@ -19,10 +19,11 @@ import Select, {
 import { useField } from '@react-aria/label';
 import { useId } from '@react-aria/utils';
 import { ComponentClassNames, cn, useClassNames } from '@marigold/system';
-import { FieldBaseProps } from '../FieldBase';
-import { HelpText } from '../HelpText';
-import { Label } from '../Label';
-import { ChevronDown } from '../icons';
+import { FieldBaseProps } from '../FieldBase/FieldBase';
+import { HelpText } from '../HelpText/HelpText';
+import { Label } from '../Label/Label';
+import { ChevronDown } from '../icons/ChevronDown';
+import { X } from '../icons/X';
 
 interface MultipleSelectProps
   extends Pick<
@@ -174,9 +175,7 @@ const Input = ({ innerRef, placeholder, hasValue, ...props }: InputProps) => {
 const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
   return (
     <Button slot="remove" {...(innerProps as any)}>
-      <svg viewBox="0 0 20 20" fill="currentColor" width={20} height={20}>
-        <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path>
-      </svg>
+      <X />
     </Button>
   );
 };

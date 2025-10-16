@@ -1,6 +1,7 @@
 'use client';
 
 import { Card, Inline, Stack, Table, alignment, cn, paddingSpace } from '@/ui';
+import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
 
@@ -11,7 +12,7 @@ export const AlignmentsX = () => {
         {Object.entries(alignment.horizontal.alignmentX).map(([key]) => (
           <div className="h-full bg-slate-200 p-2" key={key}>
             <Stack
-              alignX={key as keyof typeof alignment.horizontal.alignmentX}
+              alignX={key as ComponentProps<typeof Stack>['alignX']}
               space={2}
             >
               <code className="before:content-none after:content-none">

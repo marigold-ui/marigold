@@ -1,5 +1,38 @@
 # @marigold/theme-rui
 
+## 2.3.0
+
+### Minor Changes
+
+- 4395d2e: feat([DST-1047]): Improve `<List>` styles and add `small` variant
+- 5e62b84: feat([DST-1051]): Introduce `ConfirmationDialog`
+- beeba04: feat([DST-1042]): Add "destrutive" variant to `<Menu.Item>`
+
+### Patch Changes
+
+- fa1f489: fix(Link): Add 'text-sm' class to Link component styles
+- 217d415: fix([DST-1054]): Add missing font color in accordion component
+- f22bfdd: fix([DST-1053]): Add missing background-color for Accordion
+- 061b5e9: feat([DST-1050]): Card master and adminmark variant
+- 89e2b70: fix(Tag): Adjust tag styles (no extra padding if empty state is small, e.g. only text)
+- 8fa6736: fix([DST-1057]): Add missing background color for master and admin badge
+- ce13acf: fix([DST-1046]): Remove extra padding at the bottom of `<Select>`.
+- Updated dependencies [95b55b8]
+- Updated dependencies [c6fb6c2]
+- Updated dependencies [bad3ef4]
+- Updated dependencies [ba5f502]
+- Updated dependencies [4395d2e]
+- Updated dependencies [97adc14]
+- Updated dependencies [061b5e9]
+- Updated dependencies [91a5e7b]
+- Updated dependencies [baf550b]
+- Updated dependencies [4ccbec2]
+- Updated dependencies [5e62b84]
+- Updated dependencies [ce996ae]
+- Updated dependencies [beeba04]
+  - @marigold/components@15.3.0
+  - @marigold/system@15.3.0
+
 ## 2.2.0
 
 ### Minor Changes

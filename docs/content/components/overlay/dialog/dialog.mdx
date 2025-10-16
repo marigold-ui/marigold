@@ -104,7 +104,7 @@ A confirmation dialog asks a user to verify an action, preventing accidental and
 
 For an effective dialog, be specific in your prompt. For example, ask "Permanently delete this account?" instead of a generic "Are you sure?". Action buttons should have clear, unambiguous labels like "Delete" and "Cancel". To avoid user fatigue, reserve confirmation dialogs only for actions that truly warrant a second thought, not for minor tasks.
 
-Use the `<ConfirmationDialog>` component for this use case. It looks and behaves like a regular dialog, but its API is specifically tailored to streamline the creation of confirmation prompts. It provides dedicated props for the title, description, and action buttons, which simplifies your code and enforces a consistent layout. You get the full power of the underlying dialog system with a more convenient and declarative interface built for this common pattern.
+Use the `useConfirmation` hook for this use case. This hook provides a simple API to trigger confirmation dialogs programmatically, making it easy to prompt users for confirmation before performing critical actions. It returns a function that opens the dialog and resolves with the user's response, allowing you to handle confirmation logic directly in your code.
 
 <ComponentDemo file="./dialog-from-menu.demo.tsx" />
 

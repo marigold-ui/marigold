@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Close, ExternalLink } from '@marigold/icons';
-import { Center } from '../Center';
-import { Container } from '../Container';
-import { Inline } from '../Inline';
-import { Link } from '../Link';
-import { Split } from '../Split';
-import { Text } from '../Text';
-import { Tiles } from '../Tiles';
+import { Center } from '../Center/Center';
+import { Container } from '../Container/Container';
+import { Inline } from '../Inline/Inline';
+import { Link } from '../Link/Link';
+import { Split } from '../Split/Split';
+import { Text } from '../Text/Text';
+import { Tiles } from '../Tiles/Tiles';
 import { Card } from './Card';
 
 const meta = {
@@ -17,7 +17,7 @@ const meta = {
         type: 'radio',
       },
       description: 'The variant of the card',
-      options: ['default', 'hovering'],
+      options: ['default', 'master', 'admin'],
     },
     size: {
       control: {

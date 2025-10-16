@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode, useState } from 'react';
-import { Button } from '../Button';
-import { Stack } from '../Stack';
-import { Switch } from '../Switch';
-import { TextField } from '../TextField';
+import { alignment } from '@marigold/system';
+import { Button } from '../Button/Button';
+import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
+import { TextField } from '../TextField/TextField';
 import { Inline } from './Inline';
 
 const meta = {
@@ -28,7 +29,7 @@ const meta = {
         type: { summary: 'text' },
         defaultValue: { summary: 'left' },
       },
-      options: ['left', 'center', 'right'],
+      options: Object.keys(alignment.horizontal.alignmentX),
       description: 'Set the Horizontal Alignment',
     },
     alignY: {
@@ -39,9 +40,15 @@ const meta = {
         type: { summary: 'text' },
         defaultValue: { summary: 'undefined' },
       },
-      options: ['top', 'center', 'bottom'],
+      options: [
+        ...Object.keys(alignment.horizontal.alignmentY),
+        'input',
+      ].flat(),
       description: 'Set the Vertical Alignment',
     },
+  },
+  args: {
+    noWrap: undefined,
   },
 } satisfies Meta<typeof Inline>;
 

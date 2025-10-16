@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { Text } from 'react-aria-components';
 import { expect, userEvent, within } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
-import { Center } from '../Center';
-import { Stack } from '../Stack';
+import { Center } from '../Center/Center';
+import { Stack } from '../Stack/Stack';
 import { Autocomplete } from './Autocomplete';
 
 const meta: Meta<typeof Autocomplete> = {

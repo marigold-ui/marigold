@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { CalendarStateContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
-import { ChevronDown } from '../icons';
+import { ChevronDown } from '../icons/ChevronDown';
 import { useCalendarContext } from './Context';
 import { useFormattedMonths } from './useFormattedMonths';
 
