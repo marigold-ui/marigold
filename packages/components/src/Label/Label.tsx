@@ -1,7 +1,6 @@
 import type RAC from 'react-aria-components';
 import { Label } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { Asterisk } from '../icons/Asterisk';
 
 type RemovedProps = 'className';
 export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
