@@ -8,7 +8,7 @@ import { FieldBase } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
-import { ChevronDown } from '../icons/ChevronDown';
+import { ChevronsVertical } from '../icons/ChevronsVertical';
 
 export type SelectionMode = 'single' | 'multiple';
 
@@ -116,7 +116,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
         )}
       >
         <SelectValue className="truncate text-nowrap [&>[slot=description]]:hidden" />
-        <ChevronDown className={cn('size-4', classNames.icon)} />
+        <ChevronsVertical size="16" className={classNames.icon} />
       </IconButton>
       <Popover>
         <ListBox items={items}>{children}</ListBox>

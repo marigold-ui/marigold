@@ -1,7 +1,8 @@
 // https://lucide.dev/icons/search
+import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const Search = ({ size = 24, ...props }: IconProps) => (
+export const Search = ({ size = 24, className, ...props }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -12,6 +13,7 @@ export const Search = ({ size = 24, ...props }: IconProps) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    className={cn('shrink-0', className)}
     {...props}
   >
     <path d="m21 21-4.34-4.34" />

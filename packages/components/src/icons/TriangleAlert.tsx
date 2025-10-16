@@ -1,7 +1,12 @@
 // https://lucide.dev/icons/triangle-alert
+import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const TriangleAlert = ({ size = 24, ...props }: IconProps) => (
+export const TriangleAlert = ({
+  size = 24,
+  className,
+  ...props
+}: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -12,6 +17,7 @@ export const TriangleAlert = ({ size = 24, ...props }: IconProps) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    className={cn('shrink-0', className)}
     {...props}
   >
     <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
