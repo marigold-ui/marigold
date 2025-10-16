@@ -1,4 +1,3 @@
-import { Icon } from 'lucide-react';
 import {
   ForwardRefExoticComponent,
   ReactNode,
