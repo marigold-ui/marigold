@@ -68,9 +68,9 @@ const Icon = ({ className, checked, indeterminate, ...props }: IconProps) => {
       {...props}
     >
       {indeterminate ? (
-        <Minus size={12} />
+        <Minus size={12} strokeWidth="4" />
       ) : checked ? (
-        <Check size={12} />
+        <Check size={12} strokeWidth="4" />
       ) : null}
     </div>
   );

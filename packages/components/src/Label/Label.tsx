@@ -15,11 +15,9 @@ const _Label = ({ size, variant, children, ...props }: LabelProps) => {
   return (
     <Label {...props} className={cn(classNames.container, 'inline-flex')}>
       {children}
-      <Asterisk
-        size={16}
-        role={'presentation'}
-        className={cn('flex-none fill-current', 'hidden', classNames.indicator)}
-      />
+      <span aria-hidden="true" className={cn('hidden', classNames.indicator)}>
+        *
+      </span>
     </Label>
   );
 };
