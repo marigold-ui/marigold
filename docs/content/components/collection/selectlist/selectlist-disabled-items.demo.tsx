@@ -2,9 +2,10 @@ import { SelectList } from '@marigold/components';
 
 export default () => (
   <SelectList
-    aria-label="Select venues"
-    selectionMode="multiple"
+    aria-label="Select a venue"
+    selectionMode="single"
     defaultSelectedKeys={['1']}
+    disabledKeys={['3']}
   >
     <SelectList.Item id="1" textValue="Main Street Park Amphitheater">
       <SelectList.Image
@@ -38,20 +39,7 @@ export default () => (
       />
       <SelectList.Label>Oak Ridge Barn</SelectList.Label>
       <SelectList.Description>
-        A restored timber barn with modern amenities, ideal for rustic weddings,
-        small concerts, and community gatherings.
-      </SelectList.Description>
-    </SelectList.Item>
-    <SelectList.Item id="4" textValue="Harborfront Promenade">
-      <SelectList.Image
-        src="/venues/harborfront-promenade.webp"
-        alt="Harborfront Promenade"
-        size="large"
-      />
-      <SelectList.Label>Harborfront Promenade</SelectList.Label>
-      <SelectList.Description>
-        A scenic waterfront venue perfect for outdoor events with stunning
-        harbor views and flexible event spaces.
+        A restored timber barn - Currently fully booked
       </SelectList.Description>
     </SelectList.Item>
   </SelectList>
