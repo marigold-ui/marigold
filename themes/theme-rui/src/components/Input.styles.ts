@@ -28,5 +28,5 @@ export const Input: ThemeComponent<'Input'> = {
     'pointer-events-none left-3',
     'text-muted-foreground disabled:text-disabled-foreground',
   ]),
-  action: cva(['text-muted-foreground pr-3']),
+  action: cva(['text-muted-foreground pr-1']),
 };
