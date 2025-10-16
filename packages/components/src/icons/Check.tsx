@@ -1,8 +1,7 @@
 // https://lucide.dev/icons/check
-import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const Check = ({ size = 24, className, ...rest }: IconProps) => (
+export const Check = ({ size = 24, ...props }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -13,8 +12,7 @@ export const Check = ({ size = 24, className, ...rest }: IconProps) => (
     strokeWidth="3"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className={cn('lucide lucide-check-icon lucide-check', className)}
-    {...rest}
+    {...props}
   >
     <path d="M20 6 9 17l-5-5" />
   </svg>

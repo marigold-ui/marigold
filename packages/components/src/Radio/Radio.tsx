@@ -43,7 +43,7 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
     aria-hidden="true"
     {...props}
   >
-    {checked ? <Circle isFilled /> : null}
+    {checked ? <Circle filled /> : null}
   </div>
 );
 

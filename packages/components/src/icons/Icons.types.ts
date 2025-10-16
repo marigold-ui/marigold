@@ -1,7 +1,10 @@
 import { SVGProps } from 'react';
 
-export type IconProps = Omit<SVGProps<SVGSVGElement>, 'width' | 'height'> & {
+export interface IconProps
+  extends Omit<SVGProps<SVGSVGElement>, 'width' | 'height'> {
   size?: number;
-};
+}
 
-export type IconWithFillProps = IconProps & { isFilled?: boolean };
+export interface IconWithFillProps extends IconProps {
+  filled?: boolean;
+}
