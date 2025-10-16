@@ -1,3 +1,4 @@
+import { Icon } from 'lucide-react';
 import {
   ForwardRefExoticComponent,
   ReactNode,
@@ -17,8 +18,8 @@ import { ContextualHelpContent } from './ContextualHelpContent';
 import { ContextualHelpTitle } from './ContextualHelpTitle';
 
 const icons = {
-  help: () => <CircleQuestionMark size={20} />,
-  info: () => <Info size={20} />,
+  help: CircleQuestionMark,
+  info: Info,
 };
 
 interface ContextualHelpComponent
@@ -107,7 +108,7 @@ export const _ContextualHelp = forwardRef<
     },
     ref
   ) => {
-    const icon = icons[variant]?.();
+    const Icon = icons[variant];
     const classNames = useClassNames({
       component: 'ContextualHelp',
       variant,
@@ -125,7 +126,7 @@ export const _ContextualHelp = forwardRef<
           className={classNames.trigger}
           aria-label={variant === 'info' ? 'Information' : 'Hilfe'}
         >
-          {icon}
+          <Icon size={20} />
         </Button>
 
         <Popover

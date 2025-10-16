@@ -46,7 +46,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           className?.input
         )}
         ref={ref}
-        icon={<Search size={20} />}
+        icon={<Search size="16" />}
         action={
           loading ? (
             <ProgressCycle />
@@ -58,7 +58,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
               excludeFromTabOrder={true}
               preventFocusOnPress={true}
             >
-              <X size={20} />
+              <X size="16" />
             </Button>
           )
         }
