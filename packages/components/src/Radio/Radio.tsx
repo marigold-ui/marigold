@@ -7,7 +7,6 @@ import {
 import type RAC from 'react-aria-components';
 import { Radio } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { Circle } from '../icons/Circle';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -37,13 +36,13 @@ interface IconProps {
 const Icon = ({ checked, className, ...props }: IconProps) => (
   <div
     className={cn(
-      'bg-secondary-50 flex h-4 w-4 items-center justify-center rounded-[50%] border p-1',
+      'flex h-4 w-4 items-center justify-center rounded-full border p-1',
       className
     )}
     aria-hidden="true"
     {...props}
   >
-    {checked ? <Circle filled /> : null}
+    {checked ? <div className="size-full rounded-full bg-current" /> : null}
   </div>
 );
 
