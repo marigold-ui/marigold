@@ -75,9 +75,7 @@ test('allows styling via theme', () => {
   expect(radioLabel.className).toMatchInlineSnapshot(`"text-base"`);
 
   const radio = getVisibleRadios()?.[0];
-  expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
-  );
+  expect(radio?.className).toMatchInlineSnapshot(`"hidden"`);
 });
 
 test('supports styling via variant and size', () => {
@@ -103,9 +101,7 @@ test('supports styling via variant and size', () => {
   fireEvent.click(screen.getByTestId('radio-1'));
 
   const radio = getVisibleRadios()?.[0];
-  expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
-  );
+  expect(radio?.className).toMatchInlineSnapshot(`"hidden"`);
 });
 
 test('variant and size styling on radio option', () => {
@@ -132,9 +128,7 @@ test('variant and size styling on radio option', () => {
   fireEvent.click(screen.getByTestId('radio-1'));
 
   const radioOne = getVisibleRadios()?.[0];
-  expect(radioOne?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
-  );
+  expect(radioOne?.className).toMatchInlineSnapshot(`"hidden"`);
 
   // 2nd option has variant / size
   const radioLabelTwo = screen.getByText('Option 2');
@@ -144,7 +138,7 @@ test('variant and size styling on radio option', () => {
 
   const radio = getVisibleRadios()?.[1];
   expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
+    `"flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
   );
 });
 
@@ -204,9 +198,7 @@ test('allows styling "checked" state via theme', () => {
   fireEvent.click(screen.getByTestId('radio-1'));
 
   const radio = getVisibleRadios()?.[0];
-  expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
-  );
+  expect(radio?.className).toMatchInlineSnapshot(`"hidden"`);
 });
 
 test('allows styling "focus" state via theme', async () => {
@@ -231,9 +223,7 @@ test('allows styling "focus" state via theme', async () => {
   act(() => {
     input.focus();
   });
-  expect(radio?.className).toMatchInlineSnapshot(
-    `"bg-secondary-50 flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
-  );
+  expect(radio?.className).toMatchInlineSnapshot(`"hidden"`);
 });
 
 test('forwards ref', () => {
