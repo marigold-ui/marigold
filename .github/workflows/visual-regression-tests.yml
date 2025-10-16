@@ -5,6 +5,7 @@ on:
       - 'ui-*'
       - '*-ui'
       - '**/ui-*'
+  workflow_dispatch:
 
 jobs:
   chromatic:
