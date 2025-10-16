@@ -1,8 +1,12 @@
-// https://lucide.dev/icons/chevron-right
+// https://lucide.dev/icons/circle-question-mark
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
+export const CircleQuestionMark = ({
+  size = 24,
+  className,
+  ...rest
+}: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +19,14 @@ export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        'lucide lucide-chevron-right-icon lucide-chevron-right',
+        'lucide lucide-circle-question-mark-icon lucide-circle-question-mark',
         className
       )}
       {...rest}
     >
-      <path d="m9 18 6-6-6-6" />
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+      <path d="M12 17h.01" />
     </svg>
   );
 };

@@ -1,8 +1,8 @@
-// https://lucide.dev/icons/chevron-right
+// https://lucide.dev/icons/accessibility
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
+export const Accessibility = ({ size = 24, className, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +15,16 @@ export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        'lucide lucide-chevron-right-icon lucide-chevron-right',
+        'lucide lucide-accessibility-icon lucide-accessibility',
         className
       )}
       {...rest}
     >
-      <path d="m9 18 6-6-6-6" />
+      <circle cx="16" cy="4" r="1" />
+      <path d="m18 19 1-7-6 1" />
+      <path d="m5 8 3-3 5.5 3-2.36 3.5" />
+      <path d="M4.24 14.5a5 5 0 0 0 6.88 6" />
+      <path d="M13.76 17.5a5 5 0 0 0-6.88-6" />
     </svg>
   );
 };

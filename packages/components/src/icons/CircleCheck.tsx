@@ -1,8 +1,8 @@
-// https://lucide.dev/icons/chevron-right
+// https://lucide.dev/icons/circle-check
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
+export const CircleCheck = ({ size = 24, className, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +15,13 @@ export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        'lucide lucide-chevron-right-icon lucide-chevron-right',
+        'lucide lucide-circle-check-icon lucide-circle-check',
         className
       )}
       {...rest}
     >
-      <path d="m9 18 6-6-6-6" />
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
     </svg>
   );
 };

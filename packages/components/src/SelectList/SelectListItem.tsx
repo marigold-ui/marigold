@@ -1,8 +1,9 @@
 import { ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { GridListItem as SelectListItem } from 'react-aria-components';
-import { SVGProps, cn } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { Check } from '../icons/Check';
 import { useSelectListContext } from './Context';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
@@ -17,16 +18,6 @@ export interface SelectListItemProps
   disabled?: RAC.GridListItemProps<object>['isDisabled'];
 }
 
-const CheckMark = ({ className }: SVGProps) => (
-  <svg width="12px" height="10px" viewBox="0 0 12 10" className={className}>
-    <path
-      fill="currentColor"
-      stroke="none"
-      d="M11.915 1.548 10.367 0 4.045 6.315 1.557 3.827 0 5.373l4.045 4.046 7.87-7.871Z"
-    />
-  </svg>
-);
-
 interface SelectionIndicatorProps {
   selectionMode: 'single' | 'multiple' | 'none';
 }
@@ -37,7 +28,7 @@ const SelectionIndicator = ({ selectionMode }: SelectionIndicatorProps) => {
       return <Checkbox slot="selection" />;
     }
     case 'single': {
-      return <CheckMark className="invisible hidden" />;
+      return <Check size={12} className="invisible hidden" />;
     }
   }
 };

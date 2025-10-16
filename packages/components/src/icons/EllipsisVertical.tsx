@@ -1,8 +1,12 @@
-// https://lucide.dev/icons/chevron-right
+// https://lucide.dev/icons/ellipsis-vertical
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
+export const EllipsisVertical = ({
+  size = 24,
+  className,
+  ...rest
+}: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +19,14 @@ export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        'lucide lucide-chevron-right-icon lucide-chevron-right',
+        'lucide lucide-ellipsis-vertical-icon lucide-ellipsis-vertical',
         className
       )}
       {...rest}
     >
-      <path d="m9 18 6-6-6-6" />
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="12" cy="5" r="1" />
+      <circle cx="12" cy="19" r="1" />
     </svg>
   );
 };

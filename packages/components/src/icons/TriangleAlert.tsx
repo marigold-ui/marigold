@@ -1,8 +1,8 @@
-// https://lucide.dev/icons/chevron-right
+// https://lucide.dev/icons/triangle-alert
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
+export const TriangleAlert = ({ size = 24, className, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +15,14 @@ export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        'lucide lucide-chevron-right-icon lucide-chevron-right',
+        'lucide lucide-triangle-alert-icon lucide-triangle-alert',
         className
       )}
       {...rest}
     >
-      <path d="m9 18 6-6-6-6" />
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
     </svg>
   );
 };

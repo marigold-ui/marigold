@@ -1,8 +1,8 @@
-// https://lucide.dev/icons/chevron-right
+// https://lucide.dev/icons/check
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
+export const Check = ({ size = 24, className, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,13 +14,10 @@ export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn(
-        'lucide lucide-chevron-right-icon lucide-chevron-right',
-        className
-      )}
+      className={cn('lucide lucide-check-icon lucide-check', className)}
       {...rest}
     >
-      <path d="m9 18 6-6-6-6" />
+      <path d="M20 6 9 17l-5-5" />
     </svg>
   );
 };

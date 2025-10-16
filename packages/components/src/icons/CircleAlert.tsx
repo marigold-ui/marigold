@@ -1,8 +1,8 @@
-// https://lucide.dev/icons/chevron-right
+// https://lucide.dev/icons/circle-alert
 import { cn } from '@marigold/system';
 import { IconProps } from './Icons.types';
 
-export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
+export const CircleAlert = ({ size = 24, className, ...rest }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,12 +15,14 @@ export const ChevronRight = ({ size = 24, className, ...rest }: IconProps) => {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        'lucide lucide-chevron-right-icon lucide-chevron-right',
+        'lucide lucide-circle-alert-icon lucide-circle-alert',
         className
       )}
       {...rest}
     >
-      <path d="m9 18 6-6-6-6" />
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" x2="12" y1="8" y2="12" />
+      <line x1="12" x2="12.01" y1="16" y2="16" />
     </svg>
   );
 };

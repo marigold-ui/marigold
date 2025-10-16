@@ -1,14 +1,26 @@
-import { forwardRef } from 'react';
-import { SVG, SVGProps as SVGPropsType } from '@marigold/system';
+// https://lucide.dev/icons/chevron-left
+import { cn } from '@marigold/system';
+import { IconProps } from './Icons.types';
 
-interface SVGProps extends SVGPropsType {
-  className?: string;
-}
-
-export const ChevronLeft = forwardRef<SVGSVGElement, SVGProps>(
-  ({ className, ...props }, ref) => (
-    <SVG className={className} {...props} viewBox="0 0 24 24" ref={ref}>
-      <path d="M16.8506 18.0244L10.8394 12L16.8506 5.97563L15 4.125L7.125 12L15 19.875L16.8506 18.0244Z" />
-    </SVG>
-  )
-);
+export const ChevronLeft = ({ size = 24, className, ...rest }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn(
+        'lucide lucide-chevron-left-icon lucide-chevron-left',
+        className
+      )}
+      {...rest}
+    >
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  );
+};
