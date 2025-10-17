@@ -131,6 +131,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Select?: Record<'select' | 'icon', ComponentStyleFunction<string, string>>;
+    SelectList?: Record<
+      'label' | 'description' | 'action' | 'image',
+      ComponentStyleFunction<string, string>
+    >;
     NumberField?: Record<
       'group' | 'stepper' | 'input',
       ComponentStyleFunction<string, string>

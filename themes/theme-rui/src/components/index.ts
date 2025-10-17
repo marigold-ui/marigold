@@ -33,6 +33,7 @@ export { Pagination } from './Pagination.styles';
 export { ProgressCycle } from './ProgressCycle.styles';
 export { SectionMessage } from './SectionMessage.styles';
 export { Select } from './Select.styles';
+export { SelectList } from './SelectList.styles';
 export { Slider } from './Slider.styles';
 export { Switch } from './Switch.styles';
 export { Table } from './Table.styles';

@@ -16,6 +16,7 @@ export * from './Modal.styles';
 export * from './SectionMessage.styles';
 export * from './Popover.styles';
 export * from './Select.styles';
+export * from './SelectList.styles';
 export * from './Tabs.styles';
 export * from './Table.styles';
 export * from './Text.styles';

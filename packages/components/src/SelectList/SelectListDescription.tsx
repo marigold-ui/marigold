@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useClassNames } from '@marigold/system';
 
 export interface SelectListDescriptionProps {
   children: ReactNode;
@@ -7,9 +8,6 @@ export interface SelectListDescriptionProps {
 export const SelectListDescription = ({
   children,
 }: SelectListDescriptionProps) => {
-  return (
-    <div className="col-start-2 row-start-2 text-sm text-gray-700">
-      {children}
-    </div>
-  );
+  const classNames = useClassNames({ component: 'SelectList' });
+  return <div className={classNames.description}>{children}</div>;
 };
