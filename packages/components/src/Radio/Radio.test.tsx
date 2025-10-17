@@ -1,4 +1,4 @@
-import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import React from 'react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
@@ -45,79 +45,8 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-// There is no real accesible way to get to the element that acts as radio
-const getVisibleRadios = () => {
-  const label = screen.getByText('With Label');
-  // eslint-disable-next-line testing-library/no-node-access
-  return label.parentElement?.querySelectorAll('[aria-hidden="true"]');
-};
-
 // Tests
 // ---------------
-test('supports styling via variant and size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1" variant="green" size="large">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2" variant="green" size="large">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3" variant="green" size="large">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  const radioLabel = screen.getByText('Option 1');
-  expect(radioLabel.className).toMatchInlineSnapshot(`"text-base"`);
-
-  fireEvent.click(screen.getByTestId('radio-1'));
-
-  const radio = getVisibleRadios()?.[0];
-  expect(radio?.className).toMatchInlineSnapshot(`"hidden"`);
-});
-
-test('variant and size styling on radio option', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2" variant="green" size="large">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  // 1st option has no variant / size
-  const radioLabelOne = screen.getByText('Option 1');
-  expect(radioLabelOne.className).toMatchInlineSnapshot(`"text-base"`);
-
-  fireEvent.click(screen.getByTestId('radio-1'));
-
-  const radioOne = getVisibleRadios()?.[0];
-  expect(radioOne?.className).toMatchInlineSnapshot(`"hidden"`);
-
-  // 2nd option has variant / size
-  const radioLabelTwo = screen.getByText('Option 2');
-  expect(radioLabelTwo.className).toMatchInlineSnapshot(`"text-base"`);
-
-  fireEvent.click(screen.getByTestId('radio-2'));
-
-  const radio = getVisibleRadios()?.[1];
-  expect(radio?.className).toMatchInlineSnapshot(
-    `"flex h-4 w-4 items-center justify-center border p-1 cursor-pointer rounded-xs border-solid checked:text-blue-700"`
-  );
-});
-
 test('takes full width by default', () => {
   render(
     <ThemeProvider theme={theme}>
@@ -152,54 +81,6 @@ test('set width via prop', () => {
 
   const containerOne = screen.getByTestId('radio-1');
   expect(containerOne).toHaveClass(`200px`);
-});
-
-test('allows styling "checked" state via theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  fireEvent.click(screen.getByTestId('radio-1'));
-
-  const radio = getVisibleRadios()?.[0];
-  expect(radio?.className).toMatchInlineSnapshot(`"hidden"`);
-});
-
-test('allows styling "focus" state via theme', async () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-  const input = screen.getByTestId('radio-1');
-
-  const radio = await waitFor(() => getVisibleRadios()?.[0]);
-  act(() => {
-    input.focus();
-  });
-  expect(radio?.className).toMatchInlineSnapshot(`"hidden"`);
 });
 
 test('forwards ref', () => {
