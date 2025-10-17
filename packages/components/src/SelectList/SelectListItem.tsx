@@ -5,7 +5,6 @@ import { GridListItem as RACGridListItem } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { Card } from '../Card/Card';
 import { Checkbox } from '../Checkbox/Checkbox';
-import { Check } from '../icons/Check';
 import { useSelectListContext } from './Context';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
