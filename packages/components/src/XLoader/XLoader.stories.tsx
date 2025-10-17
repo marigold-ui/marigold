@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Inline, Stack } from '@marigold/components';
 import { XLoader } from './XLoader';
 
 const meta = {
@@ -24,6 +25,17 @@ const meta = {
       },
       description: 'Size of the Loader.',
     },
+    loaderType: {
+      control: {
+        type: 'radio',
+      },
+      description: 'Type of the Loader.',
+      options: ['xloader', 'cycle'],
+    },
+  },
+  args: {
+    variant: undefined,
+    size: 'default',
   },
 } satisfies Meta<typeof XLoader>;
 
@@ -38,11 +50,7 @@ export const Fullscreen: Story = {
   args: {
     mode: 'fullscreen',
   },
-  render: args => (
-    <>
-      <XLoader {...args} />
-    </>
-  ),
+  render: args => <XLoader {...args} />,
 };
 
 export const Section: Story = {
@@ -54,4 +62,36 @@ export const Section: Story = {
       <XLoader {...args}>Please wait...</XLoader>
     </div>
   ),
+};
+
+export const CycleLoader: Story = {
+  args: {
+    loaderType: 'cycle',
+  },
+  render: args => (
+    <Stack space={8}>
+      <Inline space={8}>
+        <XLoader {...args} />
+        <XLoader {...args}>Loading...</XLoader>
+      </Inline>
+      <Inline space={8}>
+        <div className="h-96 w-96">
+          <XLoader {...args} mode="section" />
+        </div>
+        <div className="h-96 w-96">
+          <XLoader {...args} mode="section">
+            Please wait...
+          </XLoader>
+        </div>
+      </Inline>
+    </Stack>
+  ),
+};
+
+export const FullscreenCycleLoader: Story = {
+  args: {
+    mode: 'fullscreen',
+    loaderType: 'cycle',
+  },
+  render: args => <XLoader {...args}>Loading...</XLoader>,
 };
