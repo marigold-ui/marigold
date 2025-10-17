@@ -175,7 +175,7 @@ const Input = ({ innerRef, placeholder, hasValue, ...props }: InputProps) => {
 const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
   return (
     <Button slot="remove" {...(innerProps as any)}>
-      <X />
+      <X size="12" />
     </Button>
   );
 };

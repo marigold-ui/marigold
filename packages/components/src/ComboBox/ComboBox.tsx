@@ -15,7 +15,7 @@ import { Input } from '../Input/Input';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { ProgressCycle } from '../ProgressCycle/ProgressCycle';
-import { ChevronDown } from '../icons/ChevronDown';
+import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
 
 // Props
@@ -157,7 +157,7 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
         <Input
           action={
             <IconButton className={classNames}>
-              {loading ? <ProgressCycle /> : <ChevronDown className="size-4" />}
+              {loading ? <ProgressCycle /> : <ChevronsVertical size="16" />}
             </IconButton>
           }
         />
