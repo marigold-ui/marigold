@@ -24,7 +24,7 @@ window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 test('renders an input', () => {
   render(<Basic />);
 
-  const textField = screen.getAllByLabelText('Label')[0];
+  const textField = screen.getAllByLabelText(/Label/i)[0];
 
   expect(textField).toBeInTheDocument();
   expect(textField).toHaveAttribute('type', 'text');
@@ -40,7 +40,7 @@ test('check classname slots', () => {
   const button = screen.getByRole('button');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"shrink-0 outline-0 absolute cursor-pointer pr-3 text-muted-foreground/80 right-2"`
+    `"shrink-0 outline-0 absolute cursor-pointer pr-1 text-muted-foreground/80 right-2"`
   );
   expect(container?.className).toMatchInlineSnapshot(
     `"group/field flex flex-col w-full space-y-2"`
@@ -53,7 +53,7 @@ test('check classname slots', () => {
 test('supports disabled', () => {
   render(<Basic disabled />);
 
-  const textField = screen.getAllByLabelText('Label')[0];
+  const textField = screen.getAllByLabelText(/Label/i)[0];
 
   expect(textField).toBeDisabled();
 });
@@ -61,7 +61,7 @@ test('supports disabled', () => {
 test('supports required', () => {
   render(<Basic required />);
 
-  const textField = screen.getAllByLabelText('Label')[0];
+  const textField = screen.getAllByLabelText(/Label/i)[0];
 
   expect(textField).toBeRequired();
 });
@@ -69,7 +69,7 @@ test('supports required', () => {
 test('supports readonly', () => {
   render(<Basic readOnly />);
 
-  const textField = screen.getAllByLabelText('Label')[0];
+  const textField = screen.getAllByLabelText(/Label/i)[0];
 
   expect(textField).toHaveAttribute('readonly');
 });
@@ -109,7 +109,7 @@ test('supporst showing an error', () => {
 test('supports default value', () => {
   render(<Basic defaultValue="garlic" />);
 
-  const textField = screen.getAllByLabelText('Label')[0];
+  const textField = screen.getAllByLabelText(/Label/i)[0];
 
   expect(textField).toHaveValue('garlic');
 });
@@ -117,7 +117,7 @@ test('supports default value', () => {
 test('supports autocompletion', async () => {
   render(<Basic label="Label" />);
 
-  const input = screen.getAllByLabelText('Label')[0];
+  const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'do');
 
   const dog = screen.getByText('Dog');
@@ -145,7 +145,7 @@ test('supports specific empty state text', async () => {
     />
   );
 
-  const input = screen.getAllByLabelText('Label')[0];
+  const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'xyz');
 
   const emptyState = await screen.findByText('No vegetables found');
