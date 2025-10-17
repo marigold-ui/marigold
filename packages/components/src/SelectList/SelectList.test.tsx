@@ -25,6 +25,7 @@ const theme: Theme = {
       label: cva('text-black-300'),
       group: cva('flex'),
     },
+    Card: cva(''),
     Field: cva(''),
   },
 };
