@@ -240,7 +240,7 @@ export const EmptyResult: Story = {
   play: async () => {
     const canvas = within(document.body);
 
-    const input = canvas.getByLabelText('Ticket Types');
+    const input = canvas.getByLabelText(/Ticket Types/i);
     await userEvent.type(input, 'xyz');
 
     const result = await canvas.getByText('no result found');

@@ -140,7 +140,9 @@ export const Multiple: StoryObj<typeof Select> = {
     );
   },
   play: async ({ args, canvas, canvasElement, userEvent }) => {
-    await userEvent.click(canvas.getByLabelText(`${args.label}`));
+    await userEvent.click(
+      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
+    );
 
     const body = canvasElement.ownerDocument.body;
     await waitFor(() => within(body).getByRole('dialog'));
