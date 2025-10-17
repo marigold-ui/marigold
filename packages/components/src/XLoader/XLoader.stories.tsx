@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Stack } from '@marigold/components';
 import { XLoader } from './XLoader';
 
 const meta = {
@@ -32,6 +33,10 @@ const meta = {
       options: ['xloader', 'cycle'],
     },
   },
+  args: {
+    variant: undefined,
+    size: 'default',
+  },
 } satisfies Meta<typeof XLoader>;
 
 export default meta;
@@ -57,4 +62,28 @@ export const Section: Story = {
       <XLoader {...args}>Please wait...</XLoader>
     </div>
   ),
+};
+
+export const CycleLoader: Story = {
+  args: {
+    loaderType: 'cycle',
+  },
+  render: args => (
+    <Stack space={8}>
+      <XLoader {...args} />
+      <div className="h-96 w-96">
+        <XLoader {...args} mode="section">
+          Please wait...
+        </XLoader>
+      </div>
+    </Stack>
+  ),
+};
+
+export const FullscreenCycleLoader: Story = {
+  args: {
+    mode: 'fullscreen',
+    loaderType: 'cycle',
+  },
+  render: args => <XLoader {...args}>Loading...</XLoader>,
 };

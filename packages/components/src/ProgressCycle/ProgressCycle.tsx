@@ -12,12 +12,9 @@ export interface ProgressCycleProps extends RAC.ProgressBarProps {
 }
 
 export const ProgressCycleSvg = ({
-  size,
+  size = '16',
   variant,
-}: {
-  size: string;
-  variant?: string;
-}) => {
+}: ProgressCycleProps) => {
   const classNames = useClassNames({
     component: 'ProgressCycle',
     variant,
@@ -30,8 +27,11 @@ export const ProgressCycleSvg = ({
   } else if (size >= '32') {
     strokeWidth = 4;
   }
-
+  /**
+   * FIX sizing when with children
+   */
   const radius = `calc(50% - ${strokeWidth / 2}px)`;
+  console.log(radius);
 
   return (
     <SVG

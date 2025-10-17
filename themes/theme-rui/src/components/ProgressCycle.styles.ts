@@ -8,9 +8,9 @@ export const ProgressCycle: ThemeComponent<'ProgressCycle'> = {
         inverted: 'stroke-secondary',
       },
       size: {
-        default: 'size-20',
-        large: 'size-36',
-        fit: 'size-full',
+        default: '',
+        large: '',
+        fit: '',
       },
     },
     defaultVariants: {
