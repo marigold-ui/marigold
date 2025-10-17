@@ -528,6 +528,9 @@ importers:
       '@types/react':
         specifier: 19.1.12
         version: 19.1.12
+      lucide-react:
+        specifier: 0.542.0
+        version: 0.542.0(react@19.1.1)
       react:
         specifier: 19.1.1
         version: 19.1.1
@@ -11253,7 +11256,7 @@ snapshots:
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:
       '@emnapi/core': 1.5.0
-      '@emnapi/runtime': 1.4.4
+      '@emnapi/runtime': 1.5.0
       '@tybys/wasm-util': 0.10.1
     optional: true
 

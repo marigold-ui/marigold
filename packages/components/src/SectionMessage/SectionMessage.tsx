@@ -13,11 +13,11 @@ import { SectionMessageTitle } from './SectionMessageTitle';
 // Icons
 // ---------------
 const icons = {
-  success: () => <CircleCheck />,
-  info: () => <Info />,
-  warning: () => <CircleAlert />,
-  error: () => <TriangleAlert />,
-};
+  success: CircleCheck,
+  info: Info,
+  warning: CircleAlert,
+  error: TriangleAlert,
+} as const;
 
 // Props
 // ---------------
@@ -84,7 +84,7 @@ export const SectionMessage = ({
         className={cn('grid auto-rows-min', classNames.container)}
       >
         <div className={cn('[grid-area:icon]', classNames.icon)}>
-          {Icon && <Icon />}
+          {Icon && <Icon size="20" />}
         </div>
         {closeButton && (
           <CloseButton

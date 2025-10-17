@@ -8,14 +8,14 @@ const { Basic } = composeStories(stories);
 test('renders input and label', () => {
   render(<Basic />);
 
-  expect(screen.getByLabelText('Ticket Categories')).toBeInTheDocument();
+  expect(screen.getByLabelText(/Ticket Categories/i)).toBeInTheDocument();
   expect(screen.getByText('Ticket Categories')).toBeInTheDocument();
 });
 
 test('supports disabled state', () => {
   render(<Basic disabled />);
 
-  const input = screen.getByLabelText('Ticket Categories');
+  const input = screen.getByLabelText(/Ticket Categories/i);
   expect(input).toBeInTheDocument();
   expect(input).toBeDisabled();
 });

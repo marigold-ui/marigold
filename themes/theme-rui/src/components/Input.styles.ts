@@ -25,8 +25,8 @@ export const Input: ThemeComponent<'Input'> = {
     'group-[[data-action]]/input:pr-7',
   ]),
   icon: cva([
-    'pointer-events-none left-1',
+    'pointer-events-none left-2',
     'text-muted-foreground disabled:text-disabled-foreground',
   ]),
-  action: cva(['text-muted-foreground right-1']),
+  action: cva(['text-muted-foreground pr-1']),
 };
