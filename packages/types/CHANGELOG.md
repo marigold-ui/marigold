@@ -1,5 +1,11 @@
 # @marigold/types
 
+## 1.4.0
+
+### Minor Changes
+
+- e985fe2: feat([DST-1091]): Add multiselection mode to `<Select>`
+
 ## 1.3.2
 
 ### Patch Changes
