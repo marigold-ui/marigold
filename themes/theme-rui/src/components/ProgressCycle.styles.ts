@@ -18,16 +18,16 @@ export const ProgressCycle: ThemeComponent<'ProgressCycle'> = {
       size: 'default',
     },
   }),
-  loader: cva('size-full', {
+  loader: cva('', {
     variants: {
       variant: {
         default: '',
         inverted: '',
       },
       size: {
-        default: '',
-        large: '',
-        fit: '',
+        default: 'size-20',
+        large: 'size-36',
+        fit: 'size-fit',
       },
     },
     defaultVariants: {

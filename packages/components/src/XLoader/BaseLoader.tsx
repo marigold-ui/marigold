@@ -6,12 +6,6 @@ import { LoaderVisualType, ProgressCycleSvg } from '@marigold/components';
 import { useClassNames } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
 
-/**
- * TODO
- * rewrite tests to stories
- * add tests, stories
- */
-
 // Props
 // ---------------
 export interface LoaderProps

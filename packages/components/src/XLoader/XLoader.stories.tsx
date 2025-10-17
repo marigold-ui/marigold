@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Stack } from '@marigold/components';
+import { Inline, Stack } from '@marigold/components';
 import { XLoader } from './XLoader';
 
 const meta = {
@@ -70,12 +70,20 @@ export const CycleLoader: Story = {
   },
   render: args => (
     <Stack space={8}>
-      <XLoader {...args} />
-      <div className="h-96 w-96">
-        <XLoader {...args} mode="section">
-          Please wait...
-        </XLoader>
-      </div>
+      <Inline space={8}>
+        <XLoader {...args} />
+        <XLoader {...args}>Loading...</XLoader>
+      </Inline>
+      <Inline space={8}>
+        <div className="h-96 w-96">
+          <XLoader {...args} mode="section" />
+        </div>
+        <div className="h-96 w-96">
+          <XLoader {...args} mode="section">
+            Please wait...
+          </XLoader>
+        </div>
+      </Inline>
     </Stack>
   ),
 };
