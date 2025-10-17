@@ -24,6 +24,13 @@ const meta = {
       },
       description: 'Size of the Loader.',
     },
+    loaderType: {
+      control: {
+        type: 'radio',
+      },
+      description: 'Type of the Loader.',
+      options: ['xloader', 'cycle'],
+    },
   },
 } satisfies Meta<typeof XLoader>;
 
@@ -38,11 +45,7 @@ export const Fullscreen: Story = {
   args: {
     mode: 'fullscreen',
   },
-  render: args => (
-    <>
-      <XLoader {...args} />
-    </>
-  ),
+  render: args => <XLoader {...args} />,
 };
 
 export const Section: Story = {
