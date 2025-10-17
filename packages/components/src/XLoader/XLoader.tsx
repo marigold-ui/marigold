@@ -5,6 +5,8 @@ import { Underlay } from '../Overlay/Underlay';
 import type { LoaderProps } from './BaseLoader';
 import { BaseLoader } from './BaseLoader';
 
+export type LoaderVisualType = 'xloader' | 'cycle';
+
 // Full Size
 // ---------------
 export interface XLoaderProps extends LoaderProps {
@@ -13,6 +15,11 @@ export interface XLoaderProps extends LoaderProps {
    * @default undefined
    */
   mode?: 'fullscreen' | 'section';
+  /**
+   * Selects the visual style of the loading indicator shown when loading is true. Accepts built-in types like "xloader" or "cycle".
+   * @default xloader
+   */
+  loaderType?: LoaderVisualType;
 }
 
 // Full Screen
