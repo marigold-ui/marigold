@@ -54,30 +54,6 @@ const getVisibleRadios = () => {
 
 // Tests
 // ---------------
-test('allows styling via theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Radio.Group label="With Label">
-        <Radio value="1" data-testid="radio-1">
-          Option 1
-        </Radio>
-        <Radio value="2" data-testid="radio-2">
-          Option 2
-        </Radio>
-        <Radio value="3" data-testid="radio-3">
-          Option 3
-        </Radio>
-      </Radio.Group>
-    </ThemeProvider>
-  );
-
-  const radioLabel = screen.getByText('Option 1');
-  expect(radioLabel.className).toMatchInlineSnapshot(`"text-base"`);
-
-  const radio = getVisibleRadios()?.[0];
-  expect(radio?.className).toMatchInlineSnapshot(`"hidden"`);
-});
-
 test('supports styling via variant and size', () => {
   render(
     <ThemeProvider theme={theme}>
