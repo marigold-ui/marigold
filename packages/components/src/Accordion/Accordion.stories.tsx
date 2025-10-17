@@ -315,15 +315,17 @@ export const StickyHeader: Story = {
     >
       <Accordion.Item id="1">
         <Accordion.Header>
-          <Columns columns={[1, 'fit', 'fit']} space={4}>
+          <Inline space={4} alignY="center" alignX="between">
             <Headline level="2">Symfonie Abo 2025/2026</Headline>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Delete
-            </Button>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Edit
-            </Button>
-          </Columns>
+            <Inline space={2}>
+              <Button onPress={() => alert('Do NOT click! Come on!')}>
+                Delete
+              </Button>
+              <Button onPress={() => alert('Do NOT click! Come on!')}>
+                Edit
+              </Button>
+            </Inline>
+          </Inline>
         </Accordion.Header>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
@@ -775,15 +777,17 @@ export const StickyHeader: Story = {
       </Accordion.Item>
       <Accordion.Item id="2">
         <Accordion.Header>
-          <Columns columns={[1, 'fit', 'fit']} space={4}>
+          <Inline space={4} alignY="center" alignX="between">
             <Headline level="2">Scroll Me Abo Season 25/26</Headline>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Delete
-            </Button>
-            <Button onPress={() => alert('Do NOT click! Come on!')}>
-              Edit
-            </Button>
-          </Columns>
+            <Inline space={2}>
+              <Button onPress={() => alert('Do NOT click! Come on!')}>
+                Delete
+              </Button>
+              <Button onPress={() => alert('Do NOT click! Come on!')}>
+                Edit
+              </Button>
+            </Inline>
+          </Inline>
         </Accordion.Header>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
