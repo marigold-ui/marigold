@@ -131,7 +131,7 @@ export const Basic: Story = {
     const canvas = within(document.body);
 
     await step('Open Multiselect', async () => {
-      const input = canvas.getByLabelText('Ticket Categories');
+      const input = canvas.getByLabelText(/Ticket Categories/i);
 
       await userEvent.click(input);
 
@@ -168,7 +168,7 @@ export const Basic: Story = {
     });
 
     await step('close Multiselect', async () => {
-      const input = canvas.getByLabelText('Ticket Categories');
+      const input = canvas.getByLabelText(/Ticket Categories/i);
 
       await userEvent.keyboard('{Escape}');
       input.blur();
