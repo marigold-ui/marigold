@@ -7,6 +7,7 @@ import {
 import type RAC from 'react-aria-components';
 import { Radio } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { Circle } from '../icons/Circle';
 import { useRadioGroupContext } from './Context';
 import { RadioGroup } from './RadioGroup';
 
@@ -28,12 +29,6 @@ export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
   disabled?: RAC.RadioProps['isDisabled'];
 }
 
-const Dot = () => (
-  <svg viewBox="0 0 6 6">
-    <circle fill="currentColor" cx="3" cy="3" r="3" />
-  </svg>
-);
-
 interface IconProps {
   className?: string;
   checked?: boolean;
@@ -48,7 +43,7 @@ const Icon = ({ checked, className, ...props }: IconProps) => (
     aria-hidden="true"
     {...props}
   >
-    {checked ? <Dot /> : null}
+    {checked ? <Circle isFilled /> : null}
   </div>
 );
 

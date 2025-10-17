@@ -3,7 +3,7 @@ title: Select
 caption: Dropdown for selecting an option among different options.
 ---
 
-The `<Select>` is a form component with which you can choose exactly one option from a list with predefined options. It should be used with other form components in a [`<Form>`](../form/form/).
+The `<Select>` is a form component that allows you to select one or more elements from a list of predefined options. It should be used with other form components in a [`<Form>`](../form/form/).
 
 ## Anatomy
 
@@ -92,6 +92,14 @@ Keep in mind that you always should write information why a certain option is di
 
 <ComponentDemo file="./select-disabled-keys.demo.tsx" />
 
+### Multiselection
+
+Sometimes you need to offer a way for users to select multiple options from a list, but you don't have much room in your layout. In these situations, enabling multiselection (`selectionMode="multiple"`) on the `<Select>` is an effective approach. A common use case for this is when filtering a list of products. For instance, a user could select both a specific brand and a particular feature, and the dropdown would neatly contain both selections.
+
+However, be mindful of the user experience when offering multiple selections. As more options are chosen, the display text will likely be truncated, hiding the full list of what's been selected. Note that for use cases requiring all selected options to be clearly visible, a dedicated [Multiselect](/components/form/multiselect) component might be a better choice.
+
+<ComponentDemo file="./select-multiple.demo.tsx" />
+
 ## Props
 
 <StorybookHintMessage component={title} />
@@ -133,7 +141,7 @@ Keep in mind that you always should write information why a certain option is di
   items={[
     {
       title: 'Building forms',
-      href: '../../patterns/building-forms',
+      href: '../../patterns/form-implementation',
       caption: 'Learn how to build forms.',
       icon: (
         <svg

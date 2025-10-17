@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Stack } from '../Stack/Stack';
-import { Accessible } from '../icons/Accessible';
+import { Accessibility } from '../icons/Accessibility';
 import { Badge } from './Badge';
 
 const meta = {
@@ -72,7 +72,7 @@ export const Icon: Story = {
   },
   render: args => (
     <Badge {...args}>
-      <Accessible />
+      <Accessibility />
     </Badge>
   ),
 };

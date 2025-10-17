@@ -43,7 +43,11 @@ export const TableColumnHeader = ({
     <th
       colSpan={column.colspan}
       ref={ref}
-      className={cn('cursor-default', twWidth[width], classNames?.header)}
+      className={cn(
+        'whitespace-nowrap data-[react-aria-pressable="true"]:cursor-pointer',
+        twWidth[width],
+        classNames?.header
+      )}
       {...mergeProps(columnHeaderProps, hoverProps, focusProps)}
       {...stateProps}
       align={align}

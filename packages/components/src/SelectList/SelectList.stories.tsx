@@ -48,16 +48,16 @@ export const Basic: Story = {
   },
   render: args => (
     <SelectList {...args} aria-labelledby="SelectList" selectionMode="single">
-      <SelectList.Item id="charizard" textValue="Charizard" variant="card">
+      <SelectList.Item id="charizard" textValue="Charizard">
         <SelectList.Label>Charizard</SelectList.Label>
       </SelectList.Item>
-      <SelectList.Item id="blastoise" textValue="Blastoise" variant="card">
+      <SelectList.Item id="blastoise" textValue="Blastoise">
         <SelectList.Label>Blastoise</SelectList.Label>
       </SelectList.Item>
-      <SelectList.Item id="venusaur" textValue="Venusaur" variant="card">
+      <SelectList.Item id="venusaur" textValue="Venusaur">
         <SelectList.Label>Venusaur</SelectList.Label>
       </SelectList.Item>
-      <SelectList.Item id="pikachu" textValue="Pikachu" variant="card">
+      <SelectList.Item id="pikachu" textValue="Pikachu">
         <SelectList.Label>Pikachu</SelectList.Label>
       </SelectList.Item>
     </SelectList>
@@ -89,7 +89,7 @@ export const Basic: Story = {
 export const Compound: Story = {
   render: args => (
     <SelectList {...args} aria-labelledby="SelectList" selectionMode="single">
-      <SelectList.Item id="charizard" textValue="Charizard" variant="card">
+      <SelectList.Item id="charizard" textValue="Charizard">
         <SelectList.Image
           src="https://www.pokewiki.de/images/0/08/Hauptartwork_005.png"
           alt="Charizard"
@@ -106,7 +106,7 @@ export const Compound: Story = {
           a fierce temper and is known to breathe fire.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="blastoise" textValue="Blastoise" variant="card">
+      <SelectList.Item id="blastoise" textValue="Blastoise">
         <SelectList.Image
           src="https://www.pokewiki.de/images/2/22/Hauptartwork_009.png"
           alt="Blastoise"
@@ -121,7 +121,7 @@ export const Compound: Story = {
           and is known to shoot water from its cannons.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="venusaur" textValue="Venusaur" variant="card">
+      <SelectList.Item id="venusaur" textValue="Venusaur">
         <SelectList.Image
           src="https://www.pokewiki.de/images/1/1a/Hauptartwork_003.png"
           alt="Venusaur"
@@ -138,7 +138,7 @@ export const Compound: Story = {
           gentle personality and is known to have a large flower on its back.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="pikachu" textValue="Pikachu" variant="card">
+      <SelectList.Item id="pikachu" textValue="Pikachu">
         <SelectList.Image
           src="https://www.pokewiki.de/images/9/9e/Hauptartwork_025.png"
           alt="Pikachu"
@@ -164,7 +164,7 @@ export const WithMultiSelection: Story = {
   },
   render: (args: RenderProps) => (
     <SelectList {...args} aria-labelledby="SelectList" selectionMode="multiple">
-      <SelectList.Item id="charizard" textValue="Charizard" variant="card">
+      <SelectList.Item id="charizard" textValue="Charizard">
         <SelectList.Image
           src="https://www.pokewiki.de/images/0/08/Hauptartwork_005.png"
           alt="Charizard"
@@ -181,7 +181,7 @@ export const WithMultiSelection: Story = {
           a fierce temper and is known to breathe fire.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="blastoise" textValue="Blastoise" variant="card">
+      <SelectList.Item id="blastoise" textValue="Blastoise">
         <SelectList.Image
           src="https://www.pokewiki.de/images/2/22/Hauptartwork_009.png"
           alt="Blastoise"
@@ -196,7 +196,7 @@ export const WithMultiSelection: Story = {
           and is known to shoot water from its cannons.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="venusaur" textValue="Venusaur" variant="card">
+      <SelectList.Item id="venusaur" textValue="Venusaur">
         <SelectList.Image
           src="https://www.pokewiki.de/images/1/1a/Hauptartwork_003.png"
           alt="Venusaur"
@@ -213,7 +213,7 @@ export const WithMultiSelection: Story = {
           gentle personality and is known to have a large flower on its back.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="pikachu" textValue="Pikachu" variant="card">
+      <SelectList.Item id="pikachu" textValue="Pikachu">
         <SelectList.Image
           src="https://www.pokewiki.de/images/9/9e/Hauptartwork_025.png"
           alt="Pikachu"
@@ -253,11 +253,7 @@ export const WithMultiSelection: Story = {
 export const WithLabelImage: Story = {
   render: args => (
     <SelectList {...args} aria-labelledby="SelectList" selectionMode="single">
-      <SelectList.Item
-        id="payment_card"
-        textValue="Payment card"
-        variant="card"
-      >
+      <SelectList.Item id="payment_card" textValue="Payment card">
         <SelectList.Label>
           <img src={cardImg} alt="Payment Card" width={36} />
           Payment card
@@ -270,7 +266,7 @@ export const WithLabelImage: Story = {
           a fierce temper and is known to breathe fire.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="credit_card" textValue="Credit card" variant="card">
+      <SelectList.Item id="credit_card" textValue="Credit card">
         <SelectList.Label>
           <img src={cardImg} alt="Credit Card" width={36} />
           Credit card
@@ -288,7 +284,7 @@ export const WithLabelImage: Story = {
 export const WithLongDescription: Story = {
   render: args => (
     <SelectList {...args} aria-labelledby="SelectList" selectionMode="single">
-      <SelectList.Item id="charizard" textValue="Charizard" variant="card">
+      <SelectList.Item id="charizard" textValue="Charizard">
         <SelectList.Image
           src="https://www.pokewiki.de/images/0/08/Hauptartwork_005.png"
           alt="Charizard"
@@ -313,7 +309,7 @@ export const WithLongDescription: Story = {
           unique new abilities.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="blastoise" textValue="Blastoise" variant="card">
+      <SelectList.Item id="blastoise" textValue="Blastoise">
         <SelectList.Image
           src="https://www.pokewiki.de/images/2/22/Hauptartwork_009.png"
           alt="Blastoise"
@@ -336,7 +332,7 @@ export const WithLongDescription: Story = {
           central cannon.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="venusaur" textValue="Venusaur" variant="card">
+      <SelectList.Item id="venusaur" textValue="Venusaur">
         <SelectList.Image
           src="https://www.pokewiki.de/images/1/1a/Hauptartwork_003.png"
           alt="Venusaur"
@@ -361,7 +357,7 @@ export const WithLongDescription: Story = {
           resilience and natural energy even further.
         </SelectList.Description>
       </SelectList.Item>
-      <SelectList.Item id="pikachu" textValue="Pikachu" variant="card">
+      <SelectList.Item id="pikachu" textValue="Pikachu">
         <SelectList.Image
           src="https://www.pokewiki.de/images/9/9e/Hauptartwork_025.png"
           alt="Pikachu"
@@ -395,7 +391,7 @@ export const WithAction: Story = {
   },
   render: (args: RenderProps) => (
     <SelectList {...args} aria-labelledby="SelectList" selectionMode="single">
-      <SelectList.Item id="charizard" textValue="Charizard" variant="card">
+      <SelectList.Item id="charizard" textValue="Charizard">
         <SelectList.Image
           src="https://www.pokewiki.de/images/0/08/Hauptartwork_005.png"
           alt="Charizard"
@@ -420,7 +416,7 @@ export const WithAction: Story = {
           </Button>
         </SelectList.Action>
       </SelectList.Item>
-      <SelectList.Item id="blastoise" textValue="Blastoise" variant="card">
+      <SelectList.Item id="blastoise" textValue="Blastoise">
         <SelectList.Image
           src="https://www.pokewiki.de/images/2/22/Hauptartwork_009.png"
           alt="Blastoise"
@@ -443,7 +439,7 @@ export const WithAction: Story = {
           </Button>
         </SelectList.Action>
       </SelectList.Item>
-      <SelectList.Item id="venusaur" textValue="Venusaur" variant="card">
+      <SelectList.Item id="venusaur" textValue="Venusaur">
         <SelectList.Image
           src="https://www.pokewiki.de/images/1/1a/Hauptartwork_003.png"
           alt="Venusaur"
@@ -468,7 +464,7 @@ export const WithAction: Story = {
           </Button>
         </SelectList.Action>
       </SelectList.Item>
-      <SelectList.Item id="pikachu" textValue="Pikachu" variant="card">
+      <SelectList.Item id="pikachu" textValue="Pikachu">
         <SelectList.Image
           src="https://www.pokewiki.de/images/9/9e/Hauptartwork_025.png"
           alt="Pikachu"

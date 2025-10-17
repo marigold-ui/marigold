@@ -213,8 +213,21 @@
         "example",
         "test"
       ]
+    },
+    {
+      "login": "marekgieldatsh",
+      "name": "marekgieldatsh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/64067674?v=4",
+      "profile": "https://github.com/marekgieldatsh",
+      "contributions": [
+        "code",
+        "design",
+        "example",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 5,
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs"
 }
