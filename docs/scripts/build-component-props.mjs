@@ -160,7 +160,7 @@ const transformTypeValue = async val => {
     'number | number[]',
     'CellElement | CellElement[] | CellRenderer',
     '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
-    '"Accordion" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | "Headline" | ... 31 more ... | "XLoader"',
+    '"Accordion" | "Badge" | "Breadcrumbs" | "Button" | "Calendar" | "Card" | "Checkbox" | "CloseButton" | "Collapsible" | "ComboBox" | "ContextualHelp" | "DateField" | "DatePicker" | "Dialog" | "Divider" | "Drawer" | "Field" | "Headline" | "HelpText" | "IconButton" | "Input" | "Label" | "Link" | "List" | "ListBox" | "Menu" | "Modal" | "MultiSelect" | "NumberField" | "Pagination" | "Popover" | "ProgressCycle" | "Radio" | "SectionMessage" | "Select" | "SelectList" | "Slider" | "Switch" | "Table" | "Tabs" | "Tag" | "Text" | "TextArea" | "Toast" | "Tooltip" | "Underlay" | "XLoader"',
     'string | { [slot in keyof ThemeComponent<C>]?: string; }',
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
@@ -168,9 +168,18 @@ const transformTypeValue = async val => {
     'T[]',
     'ReactNode | ReactNode[]',
   ];
+
+  // Regex patterns to match truncated types (e.g., "... 32 more ...")
+  const ignorePrettierPatterns = [/\.\.\.\s+\d+\s+more\s+\.\.\./];
+
   let text = val.type.name;
 
-  if (!ignorePrettier.includes(text)) {
+  // Check if text matches any exact string or regex pattern
+  const shouldIgnorePrettier =
+    ignorePrettier.includes(text) ||
+    ignorePrettierPatterns.some(pattern => pattern.test(text));
+
+  if (!shouldIgnorePrettier) {
     text = applyFormatSteps(text);
 
     text = await prettier

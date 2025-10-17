@@ -1,8 +1,7 @@
-import { SelectList, SelectListProps } from '@marigold/components';
+import { SelectList } from '@marigold/components';
 
-export default (props: SelectListProps) => (
+export default () => (
   <SelectList
-    {...props}
     aria-label="Select a venue"
     selectionMode="single"
     defaultSelectedKeys={['1']}
@@ -10,25 +9,22 @@ export default (props: SelectListProps) => (
     <SelectList.Item id="1" textValue="Main Street Park Amphitheater">
       <SelectList.Label>Main Street Park Amphitheater</SelectList.Label>
       <SelectList.Description>
-        Capacity: 500 guests • Outdoor venue
+        An open-air amphitheater in the town park with lawn seating and a
+        covered stage
       </SelectList.Description>
     </SelectList.Item>
     <SelectList.Item id="2" textValue="Shakytown Comedy Club">
       <SelectList.Label>Shakytown Comedy Club</SelectList.Label>
       <SelectList.Description>
-        Capacity: 300 guests • Intimate indoor club
+        A cozy comedy club offering an intimate atmosphere where every seat is
+        close to the laughter
       </SelectList.Description>
     </SelectList.Item>
     <SelectList.Item id="3" textValue="Oak Ridge Barn">
       <SelectList.Label>Oak Ridge Barn</SelectList.Label>
       <SelectList.Description>
-        Capacity: 150 guests • Rustic barn setting
-      </SelectList.Description>
-    </SelectList.Item>
-    <SelectList.Item id="4" textValue="Harborfront Promenade">
-      <SelectList.Label>Harborfront Promenade</SelectList.Label>
-      <SelectList.Description>
-        Capacity: 200 guests • Waterfront location
+        A restored timber barn with modern amenities, ideal for rustic weddings
+        and concerts
       </SelectList.Description>
     </SelectList.Item>
   </SelectList>

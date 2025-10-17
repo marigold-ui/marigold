@@ -1,21 +1,30 @@
 ---
 title: SelectList
-caption: A component for displaying a list of interactive items, with support for keyboard navigation, single or multiple selection, and row actions.
+caption: Display selectable lists with support for single or multiple selections, keyboard navigation, and interactive actions.
+badge: updated
 ---
 
-The `SelectList` can be used to select multiple items from a list simultaneously. It provides a familiar interface where users can select multiple items.
+The `<SelectList>` component displays a list of items that users can select. It supports both single and multiple selection modes, making it ideal for scenarios where users need to choose from a set of options.
+
+Built on React Aria Components, it provides full keyboard navigation and screen reader support, ensuring an accessible experience for all users.
 
 ## Anatomy
 
-A `SelectList` consists of a container element, with rows of data inside. The rows within a list may contain focusable elements or plain text content. If the list supports row selection, each row includes a selection indicator.
-
 <Image
-  src="/selectlist/selectlist-anatomy.jpg"
-  alt="Anatomy of selectlist"
+  src="/selectlist/selectlist-anatomy.png"
+  alt="Anatomy of SelectList"
   width={800}
   height={550}
   className="mx-auto block"
 />
+
+- **Container:** The outer wrapper containing all list items
+- **List item:** Individual selectable row containing content
+- **Selection indicator:** Checkbox (multiple) or radio indicator (single) showing selection state
+- **Label:** Primary text describing the item
+- **Description:** Optional secondary text with additional details
+- **Image:** Optional visual element (avatar, thumbnail, icon)
+- **Action:** Optional interactive element (button, menu) for item-specific actions
 
 ## Appearance
 
@@ -25,29 +34,98 @@ A `SelectList` consists of a container element, with rows of data inside. The ro
 
 ## Usage
 
-The `SelectList` component is used to display a list of items that can be selected by the user. It supports both single and multiple selection modes, allowing users to choose one or more items from the list.
+Use `<SelectList>` when you need to present users with a set of options to choose from. It works well for configuration settings, filter selections, item management interfaces, and any scenario requiring user choice from a predefined set.
 
-Built with accessibility in mind, it supports full keyboard navigation, making it easy to interact with using only the keyboard.
+The component is particularly effective when options need descriptive text or visual elements to help users make informed decisions. For simple form inputs with fewer options, consider using [`<Select>`](/components/form/select/) or [`<RadioGroup>`](/components/form/radiogroup/) instead.
 
-### SelectList with multiple selection mode
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use clear, descriptive labels that help users understand each option.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Provide visual hierarchy with images and descriptions when options benefit
+      from additional context.
+    </Do.Description>
+  </Do>
+</GuidelineTiles>
 
-If you want to allow users to select multiple items, you can set the `selectionMode` prop to `multiple`. This enables checkboxes for each item, allowing users to select or deselect multiple items at once.
+### Basic SelectList
 
-You can also provide interactive actions for each item by using `<SelectList.Action>`, such as buttons or links, to perform specific actions on the selected items.
+A simple `<SelectList>` with single selection mode allows users to choose one option from the list. Each item must have a unique `id` and a `textValue` for accessibility.
 
-<ComponentDemo
-  disableLabelWidth
-  file="./selectlist-multiple-selection.demo.tsx"
-/>
+<ComponentDemo file="./selectlist-basic.demo.tsx" />
 
-### Disabled behavior
+### SelectList with descriptions
 
-The `<SelectList>` lets you disable certain items, which is helpful if you don’t want users to select them. You can use the `disabledBehavior` prop to control what happens with those disabled items. In the example below, we use `disabledBehavior="selection"`. This means the disabled items can’t be selected and won’t show a selection indicator — but you can still use their actions (like buttons or links inside them).
+Add descriptions to provide additional context for each option. This helps users make informed decisions when selecting items.
 
-<ComponentDemo
-  disableLabelWidth
-  file="./selectlist-disabledbehavior.demo.tsx"
-/>
+<ComponentDemo file="./selectlist-with-description.demo.tsx" />
+
+### SelectList with images
+
+Use `<SelectList.Image>` to add visual elements to your list items. Images help users quickly identify options and create a more engaging interface.
+
+<ComponentDemo file="./selectlist-with-images.demo.tsx" />
+
+### Multiple selection mode
+
+Set `selectionMode="multiple"` to allow users to select multiple items. Checkboxes appear automatically, making it clear that multiple selections are possible.
+
+<ComponentDemo file="./selectlist-multiple-selection.demo.tsx" />
+
+### SelectList with actions
+
+Add interactive actions to items using `<SelectList.Action>`. This is useful for providing item-specific operations like viewing details, editing, or deleting.
+
+Actions remain accessible even when items are disabled, allowing users to perform operations without requiring selection.
+
+<ComponentDemo file="./selectlist-with-action.demo.tsx" />
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Actions vs Selection</SectionMessage.Title>
+  <SectionMessage.Content>
+    Use `<SelectList.Action>` for item-specific operations that don't require
+    the item to be selected. For bulk operations on selected items, place
+    actions outside the list.
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Disabled items
+
+Disable specific items using the `disabledKeys` prop or the `disabled` prop on individual items. Disabled items cannot be selected but remain visible in the list.
+
+<ComponentDemo file="./selectlist-disabled-items.demo.tsx" />
+
+## Accessibility
+
+The `<SelectList>` component is built with accessibility in mind:
+
+**Keyboard Navigation:**
+
+- **Tab:** Move focus in and out of the list
+- **Arrow Up/Down:** Navigate between items
+- **Space:** Toggle selection of the focused item
+- **Enter:** Activate the focused item's default action
+- **Home/End:** Jump to first/last item
+
+**Screen Reader Support:**
+
+- Proper ARIA roles (`grid`, `row`) for list structure
+- Selection state announced with `aria-selected`
+- Disabled state announced with `aria-disabled`
+- Item counts and position information
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Accessible Labels</SectionMessage.Title>
+  <SectionMessage.Content>
+    Always provide an `aria-label` or `aria-labelledby` to describe the purpose
+    of the list. Each item should have a `textValue` to ensure proper screen
+    reader announcements.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ## Props
 
@@ -61,9 +139,26 @@ The `<SelectList>` lets you disable certain items, which is helpful if you don�
 
 <PropsTable component="SelectListItem" />
 
-## Alternative components
+### SelectList.Label
 
-The `SelectList` is a versatile component that can be used in various scenarios where users need to select multiple items from a list. But there are alternative components that might be more suitable depending on your specific use case:
+The label provides the primary text for each list item.
 
-- **Table**: If you need to display tabular data with multiple selection capabilities, consider using the `<Table>` component. It provides a structured layout for displaying data in rows and columns, along with selection features.
-- **Stack**: If you need to display a list of items with a more compact layout, consider using the `<Stack>` component. It allows you to create a vertical stack of items, which can be useful for displaying lists with less emphasis on selection.
+### SelectList.Description
+
+The description provides secondary, supporting text for each list item.
+
+### SelectList.Image
+
+Displays an image within a list item. Accepts `size` prop for controlling dimensions.
+
+### SelectList.Action
+
+Contains interactive elements (buttons, menus) for item-specific actions.
+
+## Related Components
+
+- **[Select](/components/form/select/)**: Use for form inputs when users need to choose a single option from a dropdown
+- **[RadioGroup](/components/form/radiogroup/)**: Use for single selection when all options should be visible
+- **[CheckboxGroup](/components/form/checkboxgroup/)**: Use for multiple selection in forms with fewer options
+- **[Table](/components/content/table/)**: Use for tabular data with selection capabilities and complex layouts
+- **[ListBox](/components/collection/listbox/)**: Use for simpler list selections without the rich content layout
