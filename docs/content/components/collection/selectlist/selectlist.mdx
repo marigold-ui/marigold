@@ -50,13 +50,19 @@ The component is particularly effective when options need descriptive text or vi
       from additional context.
     </Do.Description>
   </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use generic labels like "Item 1" or "Option A" that don't convey
+      meaning.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Description>
+      Don't overload items with too much information—keep labels concise and use
+      descriptions for details.
+    </Dont.Description>
+  </Dont>
 </GuidelineTiles>
-
-### Basic SelectList
-
-A simple `<SelectList>` with single selection mode allows users to choose one option from the list. Each item must have a unique `id` and a `textValue` for accessibility.
-
-<ComponentDemo file="./selectlist-basic.demo.tsx" />
 
 ### SelectList with descriptions
 
@@ -72,7 +78,7 @@ Use `<SelectList.Image>` to add visual elements to your list items. Images help 
 
 ### Multiple selection mode
 
-Set `selectionMode="multiple"` to allow users to select multiple items. Checkboxes appear automatically, making it clear that multiple selections are possible.
+Use multiple selection when users need to choose several related items at once, such as selecting multiple event categories for notifications or filtering by multiple criteria. Set `selectionMode="multiple"` to allow users to select multiple items—checkboxes appear automatically, making it clear that multiple selections are possible.
 
 <ComponentDemo file="./selectlist-multiple-selection.demo.tsx" />
 
@@ -95,7 +101,7 @@ Actions remain accessible even when items are disabled, allowing users to perfor
 
 ### Disabled items
 
-Disable specific items using the `disabledKeys` prop or the `disabled` prop on individual items. Disabled items cannot be selected but remain visible in the list.
+Disable items when they're temporarily unavailable or when users don't have the required permissions. Keeping disabled items visible helps users see the full range of options, even if they can't select them right now.
 
 <ComponentDemo file="./selectlist-disabled-items.demo.tsx" />
 
@@ -141,24 +147,25 @@ The `<SelectList>` component is built with accessibility in mind:
 
 ### SelectList.Label
 
-The label provides the primary text for each list item.
+<PropsTable component="SelectListLabel" />
 
 ### SelectList.Description
 
-The description provides secondary, supporting text for each list item.
+<PropsTable component="SelectListDescription" />
 
 ### SelectList.Image
 
-Displays an image within a list item. Accepts `size` prop for controlling dimensions.
+<PropsTable component="SelectListImage" />
 
 ### SelectList.Action
 
-Contains interactive elements (buttons, menus) for item-specific actions.
+<PropsTable component="SelectListAction" />
 
-## Related Components
+## Alternative Components
 
 - **[Select](/components/form/select/)**: Use for form inputs when users need to choose a single option from a dropdown
 - **[RadioGroup](/components/form/radiogroup/)**: Use for single selection when all options should be visible
 - **[CheckboxGroup](/components/form/checkboxgroup/)**: Use for multiple selection in forms with fewer options
 - **[Table](/components/content/table/)**: Use for tabular data with selection capabilities and complex layouts
 - **[ListBox](/components/collection/listbox/)**: Use for simpler list selections without the rich content layout
+- **[Stack](/components/layout/stack/)**: Use when you need to display non-interactive lists without selection functionality

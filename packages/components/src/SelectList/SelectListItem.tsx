@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { GridListItem as RACGridListItem } from 'react-aria-components';
+import { GridListItem as SelectListItem } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { Card } from '../Card/Card';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -58,7 +58,7 @@ const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
     const { classNames } = useSelectListContext();
 
     return (
-      <RACGridListItem
+      <SelectListItem
         isDisabled={disabled}
         textValue={textValue}
         {...props}
@@ -78,7 +78,7 @@ const _SelectListItem = forwardRef<HTMLDivElement, SelectListItemProps>(
             </div>
           </Card>
         )}
-      </RACGridListItem>
+      </SelectListItem>
     );
   }
 );

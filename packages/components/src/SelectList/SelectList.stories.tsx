@@ -257,24 +257,22 @@ export const WithLabelImage: Story = {
         <SelectList.Label>
           <img src={cardImg} alt="Payment Card" width={36} />
           Payment card
-          <span className="text-sm font-normal text-gray-600">
-            (Fire/Flying)
-          </span>
+          <span className="text-sm font-normal text-gray-600">(Debit)</span>
         </SelectList.Label>
         <SelectList.Description>
-          A Pokemon with fire and flying abilities, lives in volcanic areas. Has
-          a fierce temper and is known to breathe fire.
+          A payment card that deducts money directly from your checking account.
+          Widely accepted for purchases and ATM withdrawals.
         </SelectList.Description>
       </SelectList.Item>
       <SelectList.Item id="credit_card" textValue="Credit card">
         <SelectList.Label>
           <img src={cardImg} alt="Credit Card" width={36} />
           Credit card
-          <span className="text-sm font-normal text-gray-600">(Water)</span>
+          <span className="text-sm font-normal text-gray-600">(Credit)</span>
         </SelectList.Label>
         <SelectList.Description>
-          A Pokemon with water abilities, lives in water. Has a calm personality
-          and is known to shoot water from its cannons.
+          A payment card that allows you to borrow funds up to a certain limit.
+          Offers rewards and requires monthly payments.
         </SelectList.Description>
       </SelectList.Item>
     </SelectList>
