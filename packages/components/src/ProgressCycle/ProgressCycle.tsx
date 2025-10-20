@@ -29,7 +29,6 @@ export const ProgressCycleSvg = ({
   }
 
   const radius = `calc(50% - ${strokeWidth / 2}px)`;
-  console.log(radius);
 
   return (
     <SVG
