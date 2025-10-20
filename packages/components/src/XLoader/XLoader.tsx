@@ -16,7 +16,7 @@ export interface XLoaderProps extends LoaderProps {
    */
   mode?: 'fullscreen' | 'section';
   /**
-   * Selects the visual style of the loading indicator shown when loading is true. Accepts built-in types like "xloader" or "cycle".
+   * Selects the visual style of the loading indicator shown when loading is true. Accepts `xloader` or `cycle`.
    * @default xloader
    */
   loaderType?: LoaderVisualType;
