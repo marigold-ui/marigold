@@ -35,7 +35,7 @@
     "husky": "9.1.7",
     "next": "15.5.2",
     "next-router-mock": "1.0.2",
-    "playwright": "1.55.0",
+    "playwright": "1.55.1",
     "postcss-import": "16.1.1",
     "postcss-loader": "8.2.0",
     "prettier": "3.6.2",
