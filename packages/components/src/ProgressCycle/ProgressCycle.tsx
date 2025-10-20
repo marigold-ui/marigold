@@ -27,10 +27,7 @@ export const ProgressCycleSvg = ({
   } else if (size >= '32') {
     strokeWidth = 4;
   }
-  /**
-   * TODO
-   * FIX sizing when fit or/and with children
-   */
+
   const radius = `calc(50% - ${strokeWidth / 2}px)`;
   console.log(radius);
 
