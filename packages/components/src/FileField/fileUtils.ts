@@ -55,3 +55,18 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
   // Exact mime
   return fileType === t;
 };
+
+export const normalizeAndLimitFiles = (
+  files: File[],
+  {
+    acceptedFileTypes,
+    allowsMultiple,
+  }: {
+    acceptedFileTypes?: ReadonlyArray<string>;
+    allowsMultiple?: boolean;
+  }
+): File[] => {
+  const accepted = filterAcceptedFiles(files, acceptedFileTypes);
+
+  return allowsMultiple ? accepted : accepted.slice(0, 1);
+};
