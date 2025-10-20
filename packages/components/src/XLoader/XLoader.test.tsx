@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react';
-import { render, screen } from '@testing-library/react';
+import { prettyDOM, render, screen } from '@testing-library/react';
 import { I18nProvider } from 'react-aria-components';
 import * as stories from './XLoader.stories';
 
@@ -13,7 +13,7 @@ test('renders loader', () => {
   expect(loader).toBeInTheDocument();
 });
 
-test('renders loader with differnet size', () => {
+test('renders loader with different size', () => {
   render(<Basic aria-label="loading" size="large" />);
 
   const loader = screen.getByRole('progressbar');
@@ -72,4 +72,53 @@ test('translate loading message to German', () => {
   const loader = screen.getByRole('progressbar');
 
   expect(loader.getAttribute('aria-label')).toMatchInlineSnapshot(`"Lade..."`);
+});
+
+test('renders loader with loaderType cycle', () => {
+  render(<Basic loaderType="cycle" />);
+
+  console.log(prettyDOM(window.document.body));
+  const loader = screen.getByRole('progressbar');
+
+  expect(loader.getAttribute('aria-label')).toMatchInlineSnapshot(
+    `"Loading..."`
+  );
+  expect(loader).toMatchInlineSnapshot(`
+    <div
+      aria-label="Loading..."
+      aria-valuemax="100"
+      aria-valuemin="0"
+      class="grid place-items-center text-brand size-20"
+      data-rac=""
+      id="react-aria-«r0»"
+      role="progressbar"
+    >
+      <svg
+        aria-hidden="true"
+        class="flex-none animate-rotate-spinner origin-center fill-none size-20"
+        height="defaultpx"
+        role="img"
+        width="defaultpx"
+      >
+        <circle
+          class="stroke-transparent"
+          cx="50%"
+          cy="50%"
+          r="calc(50% - 2px)"
+          stroke-width="4"
+        />
+        <circle
+          class="animate-progress-cycle origin-center -rotate-90 stroke-foreground"
+          cx="50%"
+          cy="50%"
+          pathLength="100"
+          r="calc(50% - 2px)"
+          stroke-dasharray="100 200"
+          stroke-dashoffset="0"
+          stroke-linecap="round"
+          stroke-width="4"
+        />
+      </svg>
+    </div>
+  `);
 });
