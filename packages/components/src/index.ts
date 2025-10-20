@@ -91,6 +91,11 @@ export type { DrawerProps } from './Drawer/Drawer';
 export { FieldBase } from './FieldBase/FieldBase';
 export type { FieldBaseProps } from './FieldBase/FieldBase';
 
+export { FileTrigger } from './FileField/FileTrigger';
+export type { FileTriggerProps } from './FileField/FileTrigger';
+export { FileField } from './FileField/FileField';
+export type { FileFieldProps } from './FileField/FileField';
+
 export { Form } from './Form/Form';
 export type { FormProps } from './Form/Form';
 
