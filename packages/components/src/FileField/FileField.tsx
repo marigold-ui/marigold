@@ -8,11 +8,7 @@ import {
   FileTrigger,
 } from '@marigold/components';
 import type { WidthProp } from '@marigold/system';
-
-// Props
-// ---------------
-// Keep prop names aligned with other Marigold field components
-// and map them to RAC props internally.
+import { filterAcceptedFiles, isFileDropItem } from './fileUtils';
 
 type RemovedProps =
   | 'className'
@@ -50,20 +46,16 @@ export interface FileFieldProps
   allowsMultiple?: RAC.FileTriggerProps['allowsMultiple'];
 
   /**
-   * Called when files are selected from the dialog.
+   * Unified change handler called with a list of File objects regardless of whether
+   * the user selected files via the file picker or dropped them in the drop zone.
    */
-  onSelect?: RAC.FileTriggerProps['onSelect'];
+  onChange?: (files: File[]) => void;
 
   /**
    * Optional drag and drop support. If true, wraps the trigger in a DropZone.
    * For advanced control, also provide onDrop.
    */
   dropZone?: boolean;
-
-  /**
-   * Handler when files are dropped via drag and drop.
-   */
-  onDrop?: RAC.DropZoneProps['onDrop'];
 
   /**
    * Optional label shown inside the DropZone before the trigger.
@@ -96,19 +88,45 @@ const _FileField = forwardRef<HTMLDivElement, FileFieldProps>(
     disabled,
     acceptedFileTypes,
     allowsMultiple,
-    onSelect,
+    onChange,
     dropZone,
-    onDrop,
     dropZoneLabel = 'Drop files here',
     dropZoneLabelDescription = 'JPG or GIF (max 2MB)',
     children,
-    ...rest
   }) => {
+    const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
+      if (!onChange) return;
+
+      const list = files ? Array.from(files) : [];
+      const accepted = filterAcceptedFiles(list, acceptedFileTypes);
+      const finalFiles = allowsMultiple ? accepted : accepted.slice(0, 1);
+
+      onChange(finalFiles);
+    };
+
+    const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
+      if (!onChange) return;
+
+      try {
+        const filePromises = e.items
+          .filter(isFileDropItem)
+          .map(item => (item as any).getFile());
+        const raw = await Promise.all(filePromises);
+        const files = raw.filter(Boolean) as File[];
+        const accepted = filterAcceptedFiles(files, acceptedFileTypes);
+        const finalFiles = allowsMultiple ? accepted : accepted.slice(0, 1);
+
+        onChange(finalFiles);
+      } catch {
+        // swallow errors from reading dropped items
+      }
+    };
+
     // Map our simplified props to RAC FileTrigger props
     const fileTriggerProps: RAC.FileTriggerProps = {
       acceptedFileTypes,
       allowsMultiple,
-      onSelect,
+      onSelect: handleSelect,
     };
 
     return (
@@ -122,7 +140,7 @@ const _FileField = forwardRef<HTMLDivElement, FileFieldProps>(
         width={width}
       >
         {dropZone ? (
-          <DropZone onDrop={onDrop}>
+          <DropZone onDrop={handleDrop} isDisabled={disabled}>
             <div className="border-input has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 data-[dragging=true]:bg-accent/50 relative flex min-h-52 flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px]">
               {dropZoneLabel ? (
                 <p className="mb-2 text-sm font-medium">{dropZoneLabel}</p>

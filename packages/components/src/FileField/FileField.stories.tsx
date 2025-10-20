@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { FileDropItem } from '@react-types/shared';
 import { FileField } from './FileField';
 
 const meta = {
@@ -109,19 +108,12 @@ export const Basic: Story = {
           {...args}
           dropZoneLabel="Drop your files here"
           dropZone={true}
-          onDrop={e => {
-            let files = e.items.filter(
-              file => file.kind === 'file'
-            ) as FileDropItem[];
-            let filenames = files.map(file => file.name);
-            setFiles(filenames.join(', '));
-          }}
           allowsMultiple
-          onSelect={e => {
-            let files = Array.from(e);
+          onChange={files => {
             let filenames = files.map(file => file.name);
             setFiles(filenames.join(', '));
           }}
+          acceptedFileTypes={['image/png']}
         >
           <p>{files || 'Drop files here'}</p>
         </FileField>
