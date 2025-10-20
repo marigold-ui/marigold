@@ -62,7 +62,7 @@ const meta: Meta<typeof Autocomplete> = {
     },
   },
   args: {
-    label: 'Select Favorite:',
+    label: 'Select Favorite',
     description: 'This is a help text description',
     errorMessage: 'Something went wrong',
     placeholder: 'Movie',
@@ -94,7 +94,7 @@ export const Basic: Story = {
     const description = canvas.getAllByText(
       'This is a help text description'
     )[0];
-    const clearButton = screen.getByLabelText('Clear search');
+    const clearButton = screen.getByLabelText(/Clear search/i);
 
     await userEvent.click(input);
     await userEvent.type(input, 'sp');
@@ -131,7 +131,7 @@ export const WithSections: Story = {
   ),
   play: async () => {
     const canvas = within(document.body);
-    const input = canvas.getAllByLabelText('Select Favorite:')[0];
+    const input = canvas.getAllByLabelText(/Select Favorite/i)[0];
 
     await userEvent.type(input, 'o');
     const sectionOne = await screen.findByText('Veggies');

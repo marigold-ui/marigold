@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import { Accessibility } from 'lucide-react';
 import { Stack } from '../Stack/Stack';
-import { Accessibility } from '../icons/Accessibility';
 import { Badge } from './Badge';
 
 const meta = {

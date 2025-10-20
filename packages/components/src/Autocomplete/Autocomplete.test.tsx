@@ -169,7 +169,7 @@ test('shows suggestions based on user input', async () => {
 test('supports disabling suggestions', async () => {
   render(<Basic label="Label" disabledKeys={['Firefly']} />);
 
-  const input = screen.getAllByLabelText('Label')[0];
+  const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'fi');
 
   const spinach = screen.getByRole('option', { name: 'Firefly' });
@@ -179,7 +179,7 @@ test('supports disabling suggestions', async () => {
 test('supports sections', async () => {
   render(<WithSections label="Label" />);
 
-  const input = screen.getAllByLabelText('Label')[0];
+  const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'a');
 
   const s1 = await screen.findByText('Veggies');

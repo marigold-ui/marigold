@@ -19,14 +19,14 @@ function MonthControls() {
         variant="navigation"
         slot="previous"
       >
-        <ChevronLeft />
+        <ChevronLeft size="20" />
       </IconButton>
       <IconButton
         className={cn('inline-flex items-center justify-center gap-[0.5ch]')}
         variant="navigation"
         slot="next"
       >
-        <ChevronRight />
+        <ChevronRight size="20" />
       </IconButton>
     </div>
   );

@@ -23,7 +23,7 @@ export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {
       textValue={props.textValue ?? String(props.children)}
     >
       <div className="selection-indicator contents">
-        <Check size={12} className="hidden" />
+        <Check size={16} strokeWidth="3" className="hidden" />
         {props.children}
       </div>
     </ListBoxItem>

@@ -66,6 +66,7 @@
     "@marigold/icons": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
     "@types/react": "19.1.12",
+    "lucide-react": "0.542.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "tsdown": "0.15.6"

@@ -58,7 +58,7 @@ test('should navigate with keyboard keys through items', async () => {
 test('renders label', () => {
   render(<Basic aria-label="tag group" label="Categories" />);
 
-  const label = screen.queryByLabelText('Categories');
+  const label = screen.queryByLabelText(/Categories/i);
   expect(label).toBeInTheDocument();
 });
 

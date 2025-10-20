@@ -10,11 +10,11 @@ import { Info } from '../icons/Info';
 import { TriangleAlert } from '../icons/TriangleAlert';
 
 const icons = {
-  success: () => <CircleCheck />,
-  info: () => <Info />,
-  warning: () => <CircleAlert />,
-  error: () => <TriangleAlert />,
-};
+  success: CircleCheck,
+  info: Info,
+  warning: CircleAlert,
+  error: TriangleAlert,
+} as const;
 
 export type ToastContentProps = {
   title: string;
@@ -42,7 +42,7 @@ export const Toast = ({ toast }: ToastProps) => {
       <RAC_ToastContent className={classNames.content}>
         {Icon && (
           <div className={classNames.icon} slot="icon" data-testid="toast-icon">
-            <Icon />
+            <Icon size="20" />
           </div>
         )}
         <Text slot="title" className={classNames.title}>

@@ -42,7 +42,7 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
         ? cloneElement(action, {
             ...action.props,
             className: cn(
-              'absolute right-0',
+              'absolute right-0 cursor-pointer',
               classNames.action,
               action.props.className
             ),

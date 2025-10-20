@@ -1,8 +1,12 @@
-// https://lucide.dev/icons/circle-check
+// https://lucide.dev/icons/chevrons-up-down
 import { cn } from '@marigold/system';
-import { IconProps } from './Icons.types';
+import type { IconProps } from './Icons.types';
 
-export const CircleCheck = ({ size = 24, className, ...props }: IconProps) => (
+export const ChevronsVertical = ({
+  size = 24,
+  className,
+  ...props
+}: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -16,7 +20,6 @@ export const CircleCheck = ({ size = 24, className, ...props }: IconProps) => (
     className={cn('shrink-0', className)}
     {...props}
   >
-    <circle cx="12" cy="12" r="10" />
-    <path d="m9 12 2 2 4-4" />
+    <path d="M7 15l5 5 5-5M7 9l5-5 5 5" />
   </svg>
 );
