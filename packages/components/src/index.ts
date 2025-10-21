@@ -95,6 +95,7 @@ export { FileTrigger } from './FileField/FileTrigger';
 export type { FileTriggerProps } from './FileField/FileTrigger';
 export { FileField } from './FileField/FileField';
 export type { FileFieldProps } from './FileField/FileField';
+export { FileFieldItem } from './FileField/FileFieldItem';
 
 export { Form } from './Form/Form';
 export type { FormProps } from './Form/Form';

@@ -101,7 +101,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    let [files, setFiles] = useState<string | null>(null);
+    let [files, setFiles] = useState<File[] | null>(null);
     return (
       <>
         <FileField
@@ -110,12 +110,20 @@ export const Basic: Story = {
           dropZone={true}
           allowsMultiple
           onChange={files => {
-            let filenames = files.map(file => file.name);
-            setFiles(filenames.join(', '));
+            setFiles(files);
           }}
           acceptedFileTypes={['image/png']}
         >
-          <p>{files || 'Drop files here'}</p>
+          {files?.map((file, index) => (
+            <FileField.Item key={index}>
+              <div className="flex min-w-0 flex-col gap-0.5">
+                <p className="truncate text-[13px] font-medium">{file.name}</p>
+                <p className="text-muted-foreground text-xs">
+                  {file.size / 1024} MB
+                </p>
+              </div>
+            </FileField.Item>
+          ))}
         </FileField>
       </>
     );

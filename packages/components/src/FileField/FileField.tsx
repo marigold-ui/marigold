@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
-import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components';
 import { type FieldBaseProps, FileTrigger } from '@marigold/components';
 import type { WidthProp } from '@marigold/system';
+import { FileFieldItem } from './FileFieldItem';
 import { isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
 
 type RemovedProps =
@@ -73,72 +73,80 @@ export interface FileFieldProps
 
 // Component
 // ---------------
-const _FileField = forwardRef<HTMLDivElement, FileFieldProps>(
-  ({
-    disabled,
+export const FileField = ({
+  disabled,
+  acceptedFileTypes,
+  allowsMultiple,
+  onChange,
+  dropZone,
+  dropZoneLabel = 'Drop files here',
+  dropZoneDescription = 'JPG or GIF (max 2MB)',
+  children,
+}: FileFieldProps) => {
+  const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
+    if (!onChange) return;
+
+    const list = files ? Array.from(files) : [];
+    onChange(
+      normalizeAndLimitFiles(list, { acceptedFileTypes, allowsMultiple })
+    );
+  };
+
+  const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
+    if (!onChange) return;
+
+    try {
+      const filePromises = e.items
+        .filter(isFileDropItem)
+        .map(item => (item as any).getFile());
+      const raw = await Promise.all(filePromises);
+      const files = raw.filter(Boolean) as File[];
+      onChange(
+        normalizeAndLimitFiles(files, { acceptedFileTypes, allowsMultiple })
+      );
+    } catch {
+      // swallow errors from reading dropped items
+    }
+  };
+
+  const fileTriggerProps: RAC.FileTriggerProps = {
     acceptedFileTypes,
     allowsMultiple,
-    onChange,
-    dropZone,
-    dropZoneLabel = 'Drop files here',
-    dropZoneDescription = 'JPG or GIF (max 2MB)',
-    children,
-  }) => {
-    const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
-      if (!onChange) return;
+    onSelect: handleSelect,
+  };
 
-      const list = files ? Array.from(files) : [];
-      onChange(
-        normalizeAndLimitFiles(list, { acceptedFileTypes, allowsMultiple })
-      );
-    };
-
-    const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
-      if (!onChange) return;
-
-      try {
-        const filePromises = e.items
-          .filter(isFileDropItem)
-          .map(item => (item as any).getFile());
-        const raw = await Promise.all(filePromises);
-        const files = raw.filter(Boolean) as File[];
-        onChange(
-          normalizeAndLimitFiles(files, { acceptedFileTypes, allowsMultiple })
-        );
-      } catch {
-        // swallow errors from reading dropped items
-      }
-    };
-
-    const fileTriggerProps: RAC.FileTriggerProps = {
-      acceptedFileTypes,
-      allowsMultiple,
-      onSelect: handleSelect,
-    };
-
-    return (
-      <>
-        {dropZone ? (
-          <DropZone onDrop={handleDrop} isDisabled={disabled}>
-            <div className="border-input has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 data-[dragging=true]:bg-accent/50 relative flex min-h-52 flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px]">
+  return (
+    <>
+      {dropZone ? (
+        <div className="space-y-2">
+          <DropZone
+            onDrop={handleDrop}
+            isDisabled={disabled}
+            className="data-[drop-target=true]:bg-muted border-input has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px]"
+          >
+            <div className="flex flex-col items-center justify-center gap-2 px-4 py-3 text-center">
               {dropZoneLabel ? (
-                <p className="mb-2 text-sm font-medium">{dropZoneLabel}</p>
+                <p className="text-sm font-medium">{dropZoneLabel}</p>
               ) : null}
               {dropZoneDescription && dropZoneLabel ? (
                 <p className="text-muted-foreground text-xs">
                   {dropZoneDescription}
                 </p>
               ) : null}
-              <FileTrigger {...fileTriggerProps} label="Upload" />
+              <FileTrigger
+                {...fileTriggerProps}
+                label="Upload"
+                disabled={disabled}
+              />
             </div>
-            {children}
           </DropZone>
-        ) : (
-          <FileTrigger {...fileTriggerProps} label="Upload" />
-        )}
-      </>
-    );
-  }
-);
+          {children}
+        </div>
+      ) : (
+        <FileTrigger {...fileTriggerProps} label="Upload" disabled={disabled} />
+      )}
+    </>
+  );
+};
 
-export { _FileField as FileField };
+FileField.Item = FileFieldItem;
