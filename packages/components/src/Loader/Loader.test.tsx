@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import { I18nProvider } from 'react-aria-components';
-import * as stories from './XLoader.stories';
+import * as stories from './Loader.stories';
 
 const { Basic } = composeStories(stories);
 

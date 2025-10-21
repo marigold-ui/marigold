@@ -251,8 +251,8 @@ export type { TooltipProps } from './Tooltip/Tooltip';
 
 export { VisuallyHidden } from './VisuallyHidden/VisuallyHidden';
 
-export { XLoader } from './XLoader/XLoader';
-export type { XLoaderProps, LoaderVisualType } from './XLoader/XLoader';
+export { Loader } from './Loader/Loader';
+export type { LoaderProps, LoaderVisualType } from './Loader/Loader';
 
 // Utility exports
 export * from './utils/form.utils';

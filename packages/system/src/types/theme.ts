@@ -189,7 +189,7 @@ export type Theme = {
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: ComponentStyleFunction<string, string>;
-    XLoader?: Record<
+    Loader?: Record<
       'container' | 'loader' | 'label',
       ComponentStyleFunction<string, string>
     >;
