@@ -48,20 +48,13 @@ export interface FileFieldProps
   onChange?: (files: File[]) => void;
 
   /**
-   * Optional drag and drop support. If true, wraps the trigger in a DropZone.
-   * For advanced control, also provide onDrop.
-   */
-  dropZone?: boolean;
-
-  /**
    * Optional label shown inside the DropZone before the trigger.
-   * Ignored if dropZone is false.
    */
   dropZoneLabel?: ReactNode;
 
   /**
    * Optional description shown inside the DropZone before the trigger.
-   * Ignored if dropZone is false and no dropZoneLabel set.
+   * Ignored if no dropZoneLabel is set.
    */
   dropZoneDescription?: ReactNode;
 
@@ -78,7 +71,6 @@ export const FileField = ({
   acceptedFileTypes,
   allowsMultiple,
   onChange,
-  dropZone,
   dropZoneLabel = 'Drop files here',
   dropZoneDescription = 'JPG or GIF (max 2MB)',
   children,
@@ -116,36 +108,30 @@ export const FileField = ({
   };
 
   return (
-    <>
-      {dropZone ? (
-        <div className="space-y-2">
-          <DropZone
-            onDrop={handleDrop}
-            isDisabled={disabled}
-            className="data-[drop-target=true]:bg-muted border-input has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px]"
-          >
-            <div className="flex flex-col items-center justify-center gap-2 px-4 py-3 text-center">
-              {dropZoneLabel ? (
-                <p className="text-sm font-medium">{dropZoneLabel}</p>
-              ) : null}
-              {dropZoneDescription && dropZoneLabel ? (
-                <p className="text-muted-foreground text-xs">
-                  {dropZoneDescription}
-                </p>
-              ) : null}
-              <FileTrigger
-                {...fileTriggerProps}
-                label="Upload"
-                disabled={disabled}
-              />
-            </div>
-          </DropZone>
-          {children}
+    <div className="space-y-2">
+      <DropZone
+        onDrop={handleDrop}
+        isDisabled={disabled}
+        className="data-[drop-target=true]:bg-muted border-input has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px]"
+      >
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-3 text-center">
+          {dropZoneLabel ? (
+            <p className="text-sm font-medium">{dropZoneLabel}</p>
+          ) : null}
+          {dropZoneDescription && dropZoneLabel ? (
+            <p className="text-muted-foreground text-xs">
+              {dropZoneDescription}
+            </p>
+          ) : null}
+          <FileTrigger
+            {...fileTriggerProps}
+            label="Upload"
+            disabled={disabled}
+          />
         </div>
-      ) : (
-        <FileTrigger {...fileTriggerProps} label="Upload" disabled={disabled} />
-      )}
-    </>
+      </DropZone>
+      {children}
+    </div>
   );
 };
 

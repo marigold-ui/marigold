@@ -44,14 +44,6 @@ const meta = {
         defaultValue: { summary: '["pdf"]' },
       },
     },
-    dropZone: {
-      control: { type: 'boolean' },
-      description: 'Wraps the trigger with a DropZone',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
     width: {
       control: { type: 'text' },
       description: 'Sets the width of the field',
@@ -62,7 +54,6 @@ const meta = {
     description: 'Choose a file to upload',
     disabled: false,
     allowsMultiple: false,
-    dropZone: false,
     acceptedFileTypes: ['*'],
     dropZoneLabel: 'Choose a file to upload',
   },
@@ -82,7 +73,6 @@ export const Basic: Story = {
         <FileField
           {...args}
           dropZoneLabel="Drop your files here"
-          dropZone={true}
           allowsMultiple
           onChange={files => {
             setFiles(files);
