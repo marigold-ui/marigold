@@ -160,7 +160,7 @@ const transformTypeValue = async val => {
     'number | number[]',
     'CellElement | CellElement[] | CellRenderer',
     '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
-    '"Accordion" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | "Headline" | ... 31 more ... | "XLoader"',
+    '"Accordion" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | "Headline" | ... 31 more ... | "Loader"',
     'string | { [slot in keyof ThemeComponent<C>]?: string; }',
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',

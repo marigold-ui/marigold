@@ -8,7 +8,7 @@ import { intlMessages } from '../intl/messages';
 
 // Props
 // ---------------
-export interface LoaderProps
+export interface BaseLoaderProps
   extends Pick<
     ProgressBarProps,
     | 'id'
@@ -189,11 +189,11 @@ export const BaseLoader = ({
   size,
   children,
   'aria-label': ariaLabel,
-  loaderType = 'xloader',
+  loaderType = 'cycle',
   ...props
-}: LoaderProps) => {
+}: BaseLoaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
-  const className = useClassNames({ component: 'XLoader', variant, size });
+  const className = useClassNames({ component: 'Loader', variant, size });
 
   return (
     <ProgressBar

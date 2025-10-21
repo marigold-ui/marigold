@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Inline, Stack } from '@marigold/components';
-import { XLoader } from './XLoader';
+import { Loader } from './Loader';
 
 const meta = {
-  title: 'Components/XLoader',
-  component: XLoader,
+  title: 'Components/Loader',
+  component: Loader,
   argTypes: {
     mode: {
       control: {
@@ -37,20 +37,20 @@ const meta = {
     variant: undefined,
     size: 'default',
   },
-} satisfies Meta<typeof XLoader>;
+} satisfies Meta<typeof Loader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: args => <XLoader {...args} />,
+  render: args => <Loader {...args} />,
 };
 
 export const Fullscreen: Story = {
   args: {
     mode: 'fullscreen',
   },
-  render: args => <XLoader {...args} />,
+  render: args => <Loader {...args} />,
 };
 
 export const Section: Story = {
@@ -59,7 +59,7 @@ export const Section: Story = {
   },
   render: args => (
     <div className="h-96 w-96">
-      <XLoader {...args}>Please wait...</XLoader>
+      <Loader {...args}>Please wait...</Loader>
     </div>
   ),
 };
@@ -71,17 +71,17 @@ export const CycleLoader: Story = {
   render: args => (
     <Stack space={8}>
       <Inline space={8}>
-        <XLoader {...args} />
-        <XLoader {...args}>Loading...</XLoader>
+        <Loader {...args} />
+        <Loader {...args}>Loading...</Loader>
       </Inline>
       <Inline space={8}>
         <div className="h-96 w-96">
-          <XLoader {...args} mode="section" />
+          <Loader {...args} mode="section" />
         </div>
         <div className="h-96 w-96">
-          <XLoader {...args} mode="section">
+          <Loader {...args} mode="section">
             Please wait...
-          </XLoader>
+          </Loader>
         </div>
       </Inline>
     </Stack>
@@ -93,5 +93,5 @@ export const FullscreenCycleLoader: Story = {
     mode: 'fullscreen',
     loaderType: 'cycle',
   },
-  render: args => <XLoader {...args}>Loading...</XLoader>,
+  render: args => <Loader {...args}>Loading...</Loader>,
 };
