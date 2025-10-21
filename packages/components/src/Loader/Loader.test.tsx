@@ -14,7 +14,7 @@ test('renders loader', () => {
 });
 
 test('renders loader with different size', () => {
-  render(<Basic aria-label="loading" size="large" />);
+  render(<Basic loaderType="xloader" aria-label="loading" size="large" />);
 
   const loader = screen.getByRole('progressbar');
   // eslint-disable-next-line testing-library/no-node-access
