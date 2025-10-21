@@ -22,29 +22,6 @@ const meta = {
         defaultValue: { summary: 'Choose a file to upload' },
       },
     },
-    error: {
-      control: { type: 'boolean' },
-      description: 'Marks the field as invalid',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    errorMessage: {
-      control: { type: 'text' },
-      description: 'Error message shown when error is true',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Something went wrong' },
-      },
-    },
-    required: {
-      control: { type: 'boolean' },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
     disabled: {
       control: { type: 'boolean' },
       table: {
@@ -52,14 +29,14 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
-    multiple: {
+    allowsMultiple: {
       control: { type: 'boolean' },
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    accept: {
+    acceptedFileTypes: {
       control: { type: 'object' },
       description: 'Accepted file types',
       table: {
@@ -83,13 +60,10 @@ const meta = {
   args: {
     label: 'Upload file',
     description: 'Choose a file to upload',
-    errorMessage: 'Something went wrong',
     disabled: false,
-    required: false,
-    error: false,
-    multiple: false,
+    allowsMultiple: false,
     dropZone: false,
-    accept: ['*'],
+    acceptedFileTypes: ['*'],
     dropZoneLabel: 'Choose a file to upload',
   },
 } satisfies Meta<typeof FileField>;
@@ -102,6 +76,7 @@ export const Basic: Story = {
   render: args => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     let [files, setFiles] = useState<File[] | null>(null);
+
     return (
       <>
         <FileField
@@ -115,7 +90,12 @@ export const Basic: Story = {
           acceptedFileTypes={['image/png']}
         >
           {files?.map((file, index) => (
-            <FileField.Item key={index}>
+            <FileField.Item
+              key={index}
+              onRemove={() =>
+                setFiles(prev => (prev ?? []).filter((_, i) => i !== index))
+              }
+            >
               <div className="flex min-w-0 flex-col gap-0.5">
                 <p className="truncate text-[13px] font-medium">{file.name}</p>
                 <p className="text-muted-foreground text-xs">
