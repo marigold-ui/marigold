@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { useState } from 'react';
 import type RAC from 'react-aria-components';
 import { DropZone } from 'react-aria-components';
 import { useLocale } from '@react-aria/i18n';
@@ -41,28 +41,6 @@ export interface FileFieldProps
    * Whether multiple files can be selected.
    */
   allowsMultiple?: RAC.FileTriggerProps['allowsMultiple'];
-
-  /**
-   * Unified change handler called with a list of File objects regardless of whether
-   * the user selected files via the file picker or dropped them in the drop zone.
-   */
-  onChange?: (files: File[]) => void;
-
-  /**
-   * Optional label shown inside the DropZone before the trigger.
-   */
-  dropZoneLabel?: ReactNode;
-
-  /**
-   * Optional description shown inside the DropZone before the trigger.
-   * Ignored if no dropZoneLabel is set.
-   */
-  dropZoneDescription?: ReactNode;
-
-  /**
-   * Custom trigger element. If not provided, a default Button is rendered.
-   */
-  children?: ReactNode;
 }
 
 // Component
@@ -71,33 +49,29 @@ export const FileField = ({
   disabled,
   acceptedFileTypes,
   allowsMultiple,
-  onChange,
-  children,
 }: FileFieldProps) => {
+  const [files, setFiles] = useState<File[] | null>(null);
   const { locale } = useLocale();
   const dropZoneLabel =
     locale == 'de-DE' ? 'Dateien hierher ziehen' : 'Drop files here';
   const buttonLabel = locale == 'de-DE' ? 'Hochladen' : 'Upload';
 
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
-    if (!onChange) return;
-
     const list = files ? Array.from(files) : [];
-    onChange(
+    setFiles(
       normalizeAndLimitFiles(list, { acceptedFileTypes, allowsMultiple })
     );
   };
 
   const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
-    if (!onChange) return;
-
     try {
       const filePromises = e.items
         .filter(isFileDropItem)
         .map(item => (item as any).getFile());
       const raw = await Promise.all(filePromises);
       const files = raw.filter(Boolean) as File[];
-      onChange(
+
+      setFiles(
         normalizeAndLimitFiles(files, { acceptedFileTypes, allowsMultiple })
       );
     } catch {
@@ -127,7 +101,21 @@ export const FileField = ({
           />
         </div>
       </DropZone>
-      {children}
+      {files?.map((file, index) => (
+        <FileField.Item
+          key={index}
+          onRemove={() =>
+            setFiles(prev => (prev ?? []).filter((_, i) => i !== index))
+          }
+        >
+          <div className="flex min-w-0 flex-col gap-0.5">
+            <p className="truncate text-[13px] font-medium">{file.name}</p>
+            <p className="text-muted-foreground text-xs">
+              {Math.round(file.size / 1024).toFixed(2)} KB
+            </p>
+          </div>
+        </FileField.Item>
+      ))}
     </div>
   );
 };

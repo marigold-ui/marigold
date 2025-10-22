@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'storybook/preview-api';
 import { FileField } from './FileField';
 
 const meta = {
@@ -65,37 +64,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    let [files, setFiles] = useState<File[] | null>(null);
+    //let [files, setFiles] = useState<File[] | null>(null);
 
     return (
-      <>
-        <FileField
-          {...args}
-          dropZoneLabel="Drop your files here"
-          allowsMultiple
-          onChange={files => {
-            setFiles(files);
-          }}
-          acceptedFileTypes={['image/png']}
-        >
-          {files?.map((file, index) => (
-            <FileField.Item
-              key={index}
-              onRemove={() =>
-                setFiles(prev => (prev ?? []).filter((_, i) => i !== index))
-              }
-            >
-              <div className="flex min-w-0 flex-col gap-0.5">
-                <p className="truncate text-[13px] font-medium">{file.name}</p>
-                <p className="text-muted-foreground text-xs">
-                  {file.size / 1024} MB
-                </p>
-              </div>
-            </FileField.Item>
-          ))}
-        </FileField>
-      </>
+      <FileField
+        {...args}
+        dropZoneLabel="Drop your files here"
+        allowsMultiple
+        acceptedFileTypes={['image/png']}
+      />
     );
   },
 };
