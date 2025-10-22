@@ -59,14 +59,14 @@ const matchesAcceptedToken = (file: File, token: string): boolean => {
 export const normalizeAndLimitFiles = (
   files: File[],
   {
-    acceptedFileTypes,
-    allowsMultiple,
+    accepts,
+    multiple,
   }: {
-    acceptedFileTypes?: ReadonlyArray<string>;
-    allowsMultiple?: boolean;
+    accepts?: ReadonlyArray<string>;
+    multiple?: boolean;
   }
 ): File[] => {
-  const accepted = filterAcceptedFiles(files, acceptedFileTypes);
+  const accepted = filterAcceptedFiles(files, accepts);
 
-  return allowsMultiple ? accepted : accepted.slice(0, 1);
+  return multiple ? accepted : accepted.slice(0, 1);
 };

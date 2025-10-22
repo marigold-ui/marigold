@@ -13,14 +13,6 @@ const meta = {
         defaultValue: { summary: 'Upload file' },
       },
     },
-    description: {
-      control: { type: 'text' },
-      description: 'Help text displayed below the field',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Choose a file to upload' },
-      },
-    },
     disabled: {
       control: { type: 'boolean' },
       table: {
@@ -28,14 +20,14 @@ const meta = {
         defaultValue: { summary: 'false' },
       },
     },
-    allowsMultiple: {
+    multiple: {
       control: { type: 'boolean' },
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    acceptedFileTypes: {
+    accepts: {
       control: { type: 'object' },
       description: 'Accepted file types',
       table: {
@@ -50,11 +42,9 @@ const meta = {
   },
   args: {
     label: 'Upload file',
-    description: 'Choose a file to upload',
     disabled: false,
-    allowsMultiple: false,
-    acceptedFileTypes: ['*'],
-    dropZoneLabel: 'Choose a file to upload',
+    multiple: false,
+    accepts: ['*'],
   },
 } satisfies Meta<typeof FileField>;
 
@@ -64,15 +54,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: args => {
-    //let [files, setFiles] = useState<File[] | null>(null);
-
-    return (
-      <FileField
-        {...args}
-        dropZoneLabel="Drop your files here"
-        allowsMultiple
-        acceptedFileTypes={['image/png']}
-      />
-    );
+    return <FileField {...args} />;
   },
 };

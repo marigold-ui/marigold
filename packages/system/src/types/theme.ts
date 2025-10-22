@@ -190,6 +190,16 @@ export type Theme = {
       'container' | 'loader' | 'label',
       ComponentStyleFunction<string, string>
     >;
+    FileField?: Record<
+      | 'container'
+      | 'dropZone'
+      | 'dropZoneContent'
+      | 'dropZoneLabel'
+      | 'item'
+      | 'itemLabel'
+      | 'itemDescription',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 
