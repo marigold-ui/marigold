@@ -38,7 +38,7 @@ export interface FileFieldProps
   /**
    * Accepted file types for selection.
    */
-  accepts?: RAC.FileTriggerProps['acceptedFileTypes'];
+  accept?: RAC.FileTriggerProps['acceptedFileTypes'];
 
   /**
    * Whether multiple files can be selected.
@@ -49,9 +49,9 @@ export interface FileFieldProps
 // Component
 // ---------------
 export const FileField = ({
-  disabled,
-  accepts,
-  multiple,
+  disabled = false,
+  accept = ['*'],
+  multiple = false,
   width,
   label,
   ...props
@@ -64,7 +64,7 @@ export const FileField = ({
 
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
     const list = files ? Array.from(files) : [];
-    setFiles(normalizeAndLimitFiles(list, { accepts, multiple }));
+    setFiles(normalizeAndLimitFiles(list, { accept, multiple }));
   };
 
   const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
@@ -75,14 +75,14 @@ export const FileField = ({
       const raw = await Promise.all(filePromises);
       const files = raw.filter(Boolean) as File[];
 
-      setFiles(normalizeAndLimitFiles(files, { accepts, multiple }));
+      setFiles(normalizeAndLimitFiles(files, { accept, multiple }));
     } catch {
       // swallow errors from reading dropped items
     }
   };
 
   const fileTriggerProps: RAC.FileTriggerProps = {
-    acceptedFileTypes: accepts,
+    acceptedFileTypes: accept,
     allowsMultiple: multiple,
     onSelect: handleSelect,
   };
@@ -100,6 +100,7 @@ export const FileField = ({
           onDrop={handleDrop}
           isDisabled={disabled}
           className={classNames.dropZone}
+          data-testid="dropzone"
           {...props}
         >
           <div className={classNames.dropZoneContent}>
