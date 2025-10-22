@@ -47,4 +47,19 @@ describe('Toast', () => {
 
     expect(toast).not.toBeInTheDocument();
   });
+
+  test('renders action when provided', async () => {
+    render(<Basic />);
+    const actionButton = <button>Undo</button>;
+
+    await addToast({
+      title: 'Test Toast with Action',
+      description: 'This toast has an action',
+      action: actionButton,
+    });
+
+    const actionElement = screen.getByText('Undo');
+
+    expect(actionElement).toBeInTheDocument();
+  });
 });

@@ -68,6 +68,7 @@ export const width = {
   '9/12': 'w-9/12',
   '10/12': 'w-10/12',
   '11/12': 'w-11/12',
+  container: 'var(--spacing-container)',
 } as const;
 
 export const maxWidth = {
@@ -140,6 +141,7 @@ export const maxWidth = {
   '9/12': 'max-w-9/12',
   '10/12': 'max-w-10/12',
   '11/12': 'max-w-11/12',
+  container: 'max-w-[var(--spacing-container)]',
 } as const;
 
 export const height = {
@@ -298,6 +300,11 @@ export const gapSpace = {
   72: 'gap-72',
   80: 'gap-80',
   96: 'gap-96',
+  section: 'gap-[var(--spacing-section)]',
+  fieldY: 'gap-[var(--spacing-field-Y)]',
+  fieldX: 'gap-[var(--spacing-field-X)]',
+  container: 'gap-[var(--spacing-container)]',
+  group: 'gap-[var(--spacing-group)]',
 } as const;
 
 export const paddingSpace = {
@@ -409,6 +416,11 @@ export const paddingSpaceY = {
   72: 'py-72',
   80: 'py-80',
   96: 'py-96',
+  section: 'py-[var(--spacing-section)]',
+  fieldY: 'py-[var(--spacing-field-Y)]',
+  fieldX: 'py-[var(--spacing-field-X)]',
+  container: 'py-[var(--spacing-container)]',
+  group: 'py-[var(--spacing-group)]',
 } as const;
 
 export const paddingRight = {

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { CalendarStateContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
-import { ChevronDown } from '../icons';
+import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { useCalendarContext } from './Context';
 import { useFormattedMonths } from './useFormattedMonths';
 
@@ -11,11 +11,11 @@ interface CalendarButtonListBoxProps {
   setSelectedDropdown: Dispatch<SetStateAction<string | undefined>>;
 }
 
-export function CalendarListBox({
+export const CalendarListBox = ({
   type,
   isDisabled,
   setSelectedDropdown,
-}: CalendarButtonListBoxProps) {
+}: CalendarButtonListBoxProps) => {
   const state = useContext(CalendarStateContext)!;
   const months = useFormattedMonths(state.timeZone, state.focusedDate);
 
@@ -42,7 +42,7 @@ export function CalendarListBox({
       {type === 'month'
         ? months[state.focusedDate.month - 1].substring(0, 3)
         : state.focusedDate.year}
-      <ChevronDown />
+      <ChevronsVertical size="16" className="shrink-0" />
     </button>
   );
-}
+};

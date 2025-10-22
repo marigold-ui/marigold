@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, within } from 'storybook/test';
-import { Stack } from '../Stack';
-import { Text } from '../Text';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
 import { Multiselect } from './Multiselect';
 
 const meta: Meta<typeof Multiselect> = {
@@ -131,7 +131,7 @@ export const Basic: Story = {
     const canvas = within(document.body);
 
     await step('Open Multiselect', async () => {
-      const input = canvas.getByLabelText('Ticket Categories');
+      const input = canvas.getByLabelText(/Ticket Categories/i);
 
       await userEvent.click(input);
 
@@ -168,7 +168,7 @@ export const Basic: Story = {
     });
 
     await step('close Multiselect', async () => {
-      const input = canvas.getByLabelText('Ticket Categories');
+      const input = canvas.getByLabelText(/Ticket Categories/i);
 
       await userEvent.keyboard('{Escape}');
       input.blur();
@@ -240,7 +240,7 @@ export const EmptyResult: Story = {
   play: async () => {
     const canvas = within(document.body);
 
-    const input = canvas.getByLabelText('Ticket Types');
+    const input = canvas.getByLabelText(/Ticket Types/i);
     await userEvent.type(input, 'xyz');
 
     const result = await canvas.getByText('no result found');

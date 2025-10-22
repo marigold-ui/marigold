@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Group, Input, NumberField } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
-import { FieldBase, FieldBaseProps } from '../FieldBase';
+import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { StepButton } from './StepButton';
 
 // Props

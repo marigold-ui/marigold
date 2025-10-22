@@ -27,10 +27,12 @@ export const AccordionHeader = ({ children }: AccordionHeaderProps) => {
     >
       <Heading>
         <Button slot="trigger" className={classNames.header}>
-          {iconPosition === 'left' && <ChevronDown className={chevronStyles} />}
-          <div className="flex-1">{children}</div>
+          {iconPosition === 'left' && (
+            <ChevronDown size="16" className={chevronStyles} />
+          )}
+          <div className="flex-1 items-center">{children}</div>
           {iconPosition === 'right' && (
-            <ChevronDown className={chevronStyles} />
+            <ChevronDown size="16" className={chevronStyles} />
           )}
         </Button>
       </Heading>

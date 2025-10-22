@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
 import { alignment } from '@marigold/system';
-import { Headline } from '../Headline';
-import { Text } from '../Text';
+import { Headline } from '../Headline/Headline';
+import { Text } from '../Text/Text';
 import { Stack } from './Stack';
 
 const meta = {

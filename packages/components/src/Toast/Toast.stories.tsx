@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { expect, userEvent, within } from 'storybook/test';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
+import { Link } from '../Link/Link';
 import { Toast } from './Toast';
 import { ToastProvider, queue } from './ToastProvider';
 import { useToast } from './ToastQueue';
@@ -181,5 +182,107 @@ export const ToastContentTest: Story = {
         />
       </div>
     );
+  },
+};
+
+export const WithLinks: Story = {
+  tags: ['component-test'],
+  args: {
+    title: 'Update Available',
+    variant: 'info',
+  },
+  render: ({ title, variant }) => {
+    const { addToast } = useToast();
+    const description = (
+      <>
+        A new version is available.{' '}
+        <Link
+          href="https://www.marigold-ui.io/releases/blog-overview"
+          target="_blank"
+        >
+          View changelog
+        </Link>{' '}
+        or{' '}
+        <Link href="https://github.com/marigold-ui/marigold">Update now</Link>
+      </>
+    );
+
+    return (
+      <>
+        <ToastProvider />
+        <Button
+          onPress={() =>
+            addToast({
+              title,
+              description,
+              variant,
+              timeout: 0,
+            })
+          }
+        >
+          Show Toast
+        </Button>
+      </>
+    );
+  },
+};
+
+export const WithAction: Story = {
+  tags: ['component-test'],
+  args: {
+    title: 'Update Available',
+    variant: 'info',
+    description: 'A new version is available.',
+  },
+  render: ({ title, variant, description }) => {
+    const { addToast } = useToast();
+
+    return (
+      <>
+        <ToastProvider />
+        <Button
+          onPress={() =>
+            addToast({
+              title,
+              description,
+              variant,
+              timeout: 0,
+              action: (
+                <Button size="small" variant="primary">
+                  Update now
+                </Button>
+              ),
+            })
+          }
+        >
+          Show Toast
+        </Button>
+      </>
+    );
+  },
+  play: async ({ step }) => {
+    const canvas = within(window.document.body);
+    const button = canvas.getByRole('button', { name: /show toast/i });
+
+    await step('Click the Show Toast button', async () => {
+      await userEvent.click(button);
+    });
+
+    await step('Toast with title and description appears', async () => {
+      await expect(
+        await canvas.findByText('Update Available')
+      ).toBeInTheDocument();
+      await expect(
+        await canvas.findByText('A new version is available.')
+      ).toBeInTheDocument();
+    });
+
+    await step('Click the button in toast', async () => {
+      const button = canvas.getByText('Update now');
+
+      await userEvent.click(button);
+
+      await expect(button).toBeInTheDocument();
+    });
   },
 };

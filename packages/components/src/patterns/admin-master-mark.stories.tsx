@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Badge } from '../Badge';
-import { Checkbox } from '../Checkbox';
-import { Radio } from '../Radio';
-import { Stack } from '../Stack';
-import { Table } from '../Table';
-import { TextField } from '../TextField';
+import { Badge } from '../Badge/Badge';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { Radio } from '../Radio/Radio';
+import { Stack } from '../Stack/Stack';
+import { Table } from '../Table/Table';
+import { TextField } from '../TextField/TextField';
 
 const meta = {
   title: 'Patterns/Master- & Admin-Mark',

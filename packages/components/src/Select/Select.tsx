@@ -1,32 +1,38 @@
-import {
-  ForwardRefExoticComponent,
-  ReactNode,
-  RefAttributes,
-  forwardRef,
-} from 'react';
-import { Select, SelectValue, ValidationResult } from 'react-aria-components';
+import { forwardRef } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
+import { Select as ReactAriaSelect, SelectValue } from 'react-aria-components';
+import { forwardRefType } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
-import { IconButton } from '../IconButton';
+import { IconButton } from '../IconButton/IconButton';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
-import { ChevronDown } from '../icons';
+import { ChevronsVertical } from '../icons/ChevronsVertical';
 
-// Props
-// ---------------
-type RemoveProps =
+export type SelectionMode = 'single' | 'multiple';
+
+type RemovedProps =
   | 'children'
   | 'isInvalid'
   | 'isDisabled'
   | 'isOpen'
   | 'isRequired'
   | 'style'
-  | 'className'
-  | 'onSelectionChange';
+  | 'className';
 
-export interface SelectProps<T extends object>
-  extends Omit<RAC.SelectProps<T>, RemoveProps> {
+export interface SelectProps<
+  T extends object,
+  M extends SelectionMode = 'single',
+> extends Omit<RAC.SelectProps<T, M>, RemovedProps>,
+    WidthProp {
+  variant?: string;
+  size?: string;
+
+  /**
+   * Children of the select.
+   */
+  children?: React.ReactNode | ((item: T) => React.ReactNode);
   /**
    * Set a label for the select.
    */
@@ -38,27 +44,11 @@ export interface SelectProps<T extends object>
   /**
    * Set a error message for the select.
    */
-  errorMessage?: string | ((validation: ValidationResult) => string);
+  errorMessage?: string | ((validation: RAC.ValidationResult) => string);
   /**
    * Items of the select.
    */
   items?: Iterable<T>;
-  /**
-   * Children of the select.
-   */
-  children: React.ReactNode | ((item: T) => React.ReactNode);
-  /**
-   * sets the variant of the select.
-   */
-  variant?: string;
-  /**
-   * Sets the size of the select.
-   */
-  size?: string;
-  /**
-   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
-   */
-  width?: WidthProp['width'];
   /**
    * If the select should be required.
    *
@@ -83,73 +73,59 @@ export interface SelectProps<T extends object>
    * @default false
    */
   error?: boolean;
-  /**
-   * Handler that is called when the selection changes.
-   */
-  onChange?: ((key: RAC.Key) => void) | undefined;
 }
 
-export interface SelectComponent
-  extends ForwardRefExoticComponent<
-    SelectProps<object> & RefAttributes<HTMLDivElement>
-  > {
-  /**
-   * Options of the Select.
-   */
-  Option: typeof ListBox.Item;
-  /**
-   * Section of the Select.
-   */
-  Section: typeof ListBox.Section;
-}
+const SelectBase = (forwardRef as forwardRefType)(function Select<
+  T extends object,
+  M extends SelectionMode = 'single',
+>(
+  {
+    disabled,
+    required,
+    items,
+    variant,
+    size,
+    error,
+    open,
+    children,
+    ...rest
+  }: SelectProps<T, M>,
+  ref: Ref<HTMLButtonElement>
+) {
+  const props: RAC.SelectProps<T, M> = {
+    isDisabled: disabled,
+    isInvalid: error,
+    isOpen: open,
+    isRequired: required,
+    ...rest,
+  };
+  const classNames = useClassNames({ component: 'Select', variant, size });
 
-// Component
-// ---------------
-const _Select = forwardRef<any, SelectProps<object>>(
-  (
-    {
-      disabled,
-      required,
-      items,
-      variant,
-      size,
-      error,
-      open,
-      onChange,
-      ...rest
-    },
-    ref
-  ) => {
-    const props: RAC.SelectProps<object> = {
-      isDisabled: disabled,
-      isInvalid: error,
-      isOpen: open,
-      isRequired: required,
-      onSelectionChange: onChange,
-      ...rest,
-    };
-    const classNames = useClassNames({ component: 'Select', variant, size });
+  return (
+    <FieldBase
+      as={ReactAriaSelect}
+      ref={ref as any}
+      variant={variant}
+      size={size}
+      {...props}
+    >
+      <IconButton
+        className={cn(
+          'flex w-full items-center justify-between gap-1 overflow-hidden',
+          classNames.select
+        )}
+      >
+        <SelectValue className="truncate text-nowrap [&>[slot=description]]:hidden" />
+        <ChevronsVertical size="16" className={classNames.icon} />
+      </IconButton>
+      <Popover>
+        <ListBox items={items}>{children}</ListBox>
+      </Popover>
+    </FieldBase>
+  );
+});
 
-    return (
-      <FieldBase as={Select} ref={ref} variant={variant} size={size} {...props}>
-        <IconButton
-          className={cn(
-            'flex w-full items-center justify-between gap-1 overflow-hidden',
-            classNames.select
-          )}
-        >
-          <SelectValue className="[&>[slot=description]]:hidden" />
-          <ChevronDown className={cn('size-4', classNames.icon)} />
-        </IconButton>
-        <Popover>
-          <ListBox items={items}>{props.children}</ListBox>
-        </Popover>
-      </FieldBase>
-    );
-  }
-) as SelectComponent;
-
-_Select.Option = ListBox.Item;
-_Select.Section = ListBox.Section;
-
-export { _Select as Select };
+export const Select = Object.assign(SelectBase, {
+  Option: ListBox.Item,
+  Section: ListBox.Section,
+});

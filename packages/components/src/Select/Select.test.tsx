@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { vi } from 'vitest';
 import { Theme, cva, useSmallScreen } from '@marigold/system';
-import { Text } from '../Text';
+import { Text } from '../Text/Text';
 import { setup } from '../test.utils';
 import { Select } from './Select';
 
@@ -315,8 +315,8 @@ test('allows select to be required', () => {
   );
 
   // eslint-disable-next-line testing-library/no-node-access
-  const label = screen.getAllByText('Label')[0].parentElement!;
-  const requiredIcon = within(label).getByRole('presentation');
+  const label = screen.getAllByText(/Label/i)[0].parentElement!;
+  const requiredIcon = within(label).getByText('*');
   expect(requiredIcon).toBeInTheDocument();
 });
 

@@ -45,13 +45,19 @@ describe('Pagination tests', () => {
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-4 w-4"
-                  height="24px"
+                  class="shrink-0 h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
-                  width="24px"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M16.8506 18.0244L10.8394 12L16.8506 5.97563L15 4.125L7.125 12L15 19.875L16.8506 18.0244Z"
+                    d="m15 18-6-6 6-6"
                   />
                 </svg>
               </button>
@@ -88,13 +94,19 @@ describe('Pagination tests', () => {
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-4 w-4"
-                  height="24px"
+                  class="shrink-0 h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
-                  width="24px"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M7.125 18.0244L13.1363 12L7.125 5.97563L8.97563 4.125L16.8506 12L8.97563 19.875L7.125 18.0244Z"
+                    d="m9 18 6-6-6-6"
                   />
                 </svg>
               </button>
@@ -136,13 +148,19 @@ describe('Pagination tests', () => {
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-4 w-4"
-                  height="24px"
+                  class="shrink-0 h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
-                  width="24px"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M16.8506 18.0244L10.8394 12L16.8506 5.97563L15 4.125L7.125 12L15 19.875L16.8506 18.0244Z"
+                    d="m15 18-6-6 6-6"
                   />
                 </svg>
               </button>
@@ -168,13 +186,19 @@ describe('Pagination tests', () => {
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-4 w-4"
-                  height="24px"
+                  class="shrink-0 h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
-                  width="24px"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M7.125 18.0244L13.1363 12L7.125 5.97563L8.97563 4.125L16.8506 12L8.97563 19.875L7.125 18.0244Z"
+                    d="m9 18 6-6-6-6"
                   />
                 </svg>
               </button>

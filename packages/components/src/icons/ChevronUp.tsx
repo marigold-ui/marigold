@@ -1,14 +1,21 @@
-import { forwardRef } from 'react';
-import { SVG, SVGProps as SVGPropsType } from '@marigold/system';
+// https://lucide.dev/icons/chevron-up
+import { cn } from '@marigold/system';
+import { IconProps } from './Icons.types';
 
-interface SVGProps extends SVGPropsType {
-  className?: string;
-}
-
-export const ChevronUp = forwardRef<SVGSVGElement, SVGProps>(
-  ({ className, ...props }, ref) => (
-    <SVG className={className} {...props} viewBox="0 0 24 24" ref={ref}>
-      <path d="M5.97563 16.8506L12 10.8394L18.0244 16.8506L19.875 15L12 7.125L4.125 15L5.97563 16.8506Z" />
-    </SVG>
-  )
+export const ChevronUp = ({ size = 24, className, ...props }: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={cn('shrink-0', className)}
+    {...props}
+  >
+    <path d="m18 15-6-6-6 6" />
+  </svg>
 );

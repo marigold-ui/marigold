@@ -1,4 +1,4 @@
-import { Theme } from '../types';
+import { Theme } from '../types/theme';
 import { cva } from '../utils';
 
 export type StylesProps = {

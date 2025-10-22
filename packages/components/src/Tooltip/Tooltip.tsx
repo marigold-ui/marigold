@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { OverlayArrow, Tooltip } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { TooltipArrow } from './TooltipArrow';
 import { TooltipTrigger } from './TooltipTrigger';
 
 type RemovedProps = 'className' | 'isOpen' | 'style';
@@ -29,9 +30,7 @@ const _Tooltip = ({ children, variant, size, open, ...rest }: TooltipProps) => {
   return (
     <Tooltip {...props} className={cn('group/tooltip', classNames.container)}>
       <OverlayArrow className={classNames.arrow}>
-        <svg width={8} height={8} viewBox="0 0 8 8">
-          <path d="M0 0 L4 4 L8 0" />
-        </svg>
+        <TooltipArrow />
       </OverlayArrow>
       {children}
     </Tooltip>

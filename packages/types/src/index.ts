@@ -1,6 +1,20 @@
+// Re-export from type-fest
 export * from 'type-fest';
-export * from './html';
-export * from './react';
+
+// HTML types
+export type { AriaLabelingProps, AriaRegionProps } from './html';
+
+// React types
+export type {
+  HtmlProps,
+  HtmlPropsWithRef,
+  PropsOf,
+  DistributiveOmit,
+  FixedForwardRef,
+  OwnProps,
+  IntrinsicElement,
+  PolymorphicComponent,
+} from './react';
 
 /**
  * Makes types more readable.

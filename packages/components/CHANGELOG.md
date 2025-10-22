@@ -1,5 +1,27 @@
 # @marigold/components
 
+## 15.4.0
+
+### Minor Changes
+
+- e985fe2: feat([DST-1091]): Add multiselection mode to `<Select>`
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
+- 025d6e9: fix([DST-1095]): Don't break table header when sorting indicator is shown and use `cursor` when sortable
+- ffbebd0: refa([DST-1099]): Adjust icons sizes in some components to bette fit their container.
+- 9ec4620: fix([DSTSUP-193]): update Inline components `alignY=input` now also alignes with input elements regardless of description
+- 77e0417: fix([DST-1078]): Fix scrolling within `<ContextualHelp>`
+- Updated dependencies [f621653]
+- Updated dependencies [e985fe2]
+- Updated dependencies [77e0417]
+  - @marigold/system@15.4.0
+  - @marigold/types@1.4.0
+
 ## 15.3.0
 
 ### Minor Changes
