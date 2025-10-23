@@ -5,9 +5,6 @@ const pkg = require('./package.json');
 const nextConfig = {
   reactStrictMode: false,
   distDir: '.next',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   transpilePackages: ['@marigold/components', '@marigold/system'],
   env: {
     version: pkg.version,

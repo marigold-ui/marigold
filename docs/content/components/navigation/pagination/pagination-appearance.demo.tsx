@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pagination, PaginationProps } from '@marigold/components';
 
 export default (props: PaginationProps) => (
