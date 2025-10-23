@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
 export const SmilieNeutral = forwardRef<SVGSVGElement, SVGProps>(

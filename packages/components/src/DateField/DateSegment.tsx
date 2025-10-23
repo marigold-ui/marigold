@@ -1,4 +1,3 @@
-import React from 'react';
 import type RAC from 'react-aria-components';
 import { DateSegment } from 'react-aria-components';
 import { cn } from '@marigold/system';

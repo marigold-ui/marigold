@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import { CalendarStateContext } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { ChevronsVertical } from '../icons/ChevronsVertical';

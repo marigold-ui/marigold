@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Delete, Search } from '@marigold/icons';
 import { Button } from '../Button/Button';
