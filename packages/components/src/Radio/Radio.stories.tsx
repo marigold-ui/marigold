@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { expect } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import { Stack } from '../Stack/Stack';
 import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';
@@ -177,7 +177,8 @@ export const CollapseAt: Story = {
       </Radio.Group>
     </I18nProvider>
   ),
-  play: async ({ step, canvas, userEvent }) => {
+  play: async ({ step, canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
     await step('show more', async () => {
       await userEvent.click(canvas.getByText('Show 4 more'));
 

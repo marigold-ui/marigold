@@ -96,7 +96,8 @@ export const Controlled: Story = {
   args: {
     onChange: fn(),
   },
-  play: async ({ args, canvas }) => {
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
     const input = canvas.getByLabelText<HTMLInputElement>('This is a Checkbox');
 
     await userEvent.click(input);
@@ -113,7 +114,8 @@ export const ReadOnly: Story = {
     defaultChecked: true,
     readOnly: true,
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
     const checkbox =
       canvas.getByLabelText<HTMLInputElement>('This is a Checkbox');
     const component = canvas.getByText('This is a Checkbox');

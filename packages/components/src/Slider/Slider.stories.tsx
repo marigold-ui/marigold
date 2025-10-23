@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { FormEvent } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { expect } from 'storybook/test';
+import { expect, within } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
 import { Stack } from '../Stack/Stack';
@@ -99,7 +99,9 @@ export const ValueFormatting: Story = {
       </Stack>
     </I18nProvider>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
     expect(canvas.queryAllByRole('status')[0]).toHaveTextContent('€0.00');
     expect(canvas.queryAllByRole('status')[1]).toHaveTextContent('0%');
   },
@@ -115,7 +117,8 @@ export const MultipleThumbs: Story = {
     />
   ),
 
-  play: async ({ canvas }) => {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
     const slider = canvas.getAllByRole('slider');
 
     expect(slider[0]).toHaveValue('20');

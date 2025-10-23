@@ -139,7 +139,8 @@ export const Multiple: StoryObj<typeof Select> = {
       </Stack>
     );
   },
-  play: async ({ args, canvas, canvasElement, userEvent }) => {
+  play: async ({ args, canvasElement, userEvent }) => {
+    const canvas = within(canvasElement);
     await userEvent.click(
       canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
     );
