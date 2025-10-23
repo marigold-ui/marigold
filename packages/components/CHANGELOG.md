@@ -1,5 +1,12 @@
 # @marigold/components
 
+## 15.4.1
+
+### Patch Changes
+
+- d710177: fix(drawer): Fix drawer styles for some enviroments
+  - @marigold/system@15.4.1
+
 ## 15.4.0
 
 ### Minor Changes

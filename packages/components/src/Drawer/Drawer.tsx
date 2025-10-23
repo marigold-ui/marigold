@@ -100,7 +100,8 @@ export const Drawer = ({
           {...(landmarkProps as any)}
           className={cn(
             'h-(--visual-viewport-height) outline-none',
-            'grid [grid-template-areas:"title"_"content"_"actions"]',
+            // Use single quotes, in some enviroments the class is not correctly applied otherwise
+            "grid [grid-template-areas:'title'_'content'_'actions']",
             classNames.container
           )}
           data-placement={placement}
