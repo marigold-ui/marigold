@@ -319,7 +319,7 @@ test('supports focus and open dialog with keyboard', async () => {
     </Dialog.Trigger>
   );
 
-  user.tab();
+  await user.tab();
   await user.keyboard('[Enter]');
 
   const dialog = screen.getByRole('dialog');
