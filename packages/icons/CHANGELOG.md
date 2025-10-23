@@ -1,5 +1,11 @@
 # @marigold/icons
 
+## 1.3.25
+
+### Patch Changes
+
+- @marigold/system@15.4.1
+
 ## 1.3.24
 
 ### Patch Changes
