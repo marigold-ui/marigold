@@ -6,9 +6,9 @@
     "dev:contentlayer": "contentlayer2 dev",
     "dev:next": "pnpm registry && next dev",
     "dev": "pnpm run /^dev:.*/",
-    "build": "pnpm registry && pnpm build:component-props && pnpm build:changelog && next build",
     "start": "next start",
     "registry": "zx ./scripts/build-registry.mjs",
+    "build": "pnpm registry && pnpm build:component-props && pnpm build:changelog && pnpm build:contentlayer && next build",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs",
     "build:contentlayer": "pnpm contentlayer2 build"
