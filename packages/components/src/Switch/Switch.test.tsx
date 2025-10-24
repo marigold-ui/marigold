@@ -126,17 +126,17 @@ test('focus element and toggle switch per keyboard space', async () => {
   render(<Switch label="Label" />);
 
   const { input, track } = getSwitchParts();
-  user.tab();
+  await user.tab();
 
   // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(track).toHaveAttribute('data-focus'));
-  user.keyboard('{space}');
+  await user.keyboard('{space}');
   // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(track).toHaveStyle(`background-color: orange`));
   // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(input.checked).toBeTruthy());
 
-  user.keyboard('{space}');
+  await user.keyboard('{space}');
   // eslint-disable-next-line testing-library/await-async-utils
   waitFor(() => expect(track).toHaveStyle(`background-color: blue`));
   // eslint-disable-next-line testing-library/await-async-utils
