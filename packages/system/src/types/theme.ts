@@ -121,7 +121,10 @@ export type Theme = {
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
     >;
-    ProgressCycle?: ComponentStyleFunction<string, string>;
+    ProgressCycle?: Record<
+      'container' | 'loader' | 'label',
+      ComponentStyleFunction<string, string>
+    >;
     Radio?: Record<
       'container' | 'label' | 'radio' | 'group',
       ComponentStyleFunction<string, string>
@@ -186,7 +189,7 @@ export type Theme = {
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: ComponentStyleFunction<string, string>;
-    XLoader?: Record<
+    Loader?: Record<
       'container' | 'loader' | 'label',
       ComponentStyleFunction<string, string>
     >;
