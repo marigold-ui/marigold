@@ -1,13 +1,9 @@
-const { withContentlayer } = require('next-contentlayer2');
 const pkg = require('./package.json');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   distDir: '.next',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   transpilePackages: ['@marigold/components', '@marigold/system'],
   env: {
     version: pkg.version,
@@ -48,4 +44,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withContentlayer(nextConfig);
+module.exports = nextConfig;

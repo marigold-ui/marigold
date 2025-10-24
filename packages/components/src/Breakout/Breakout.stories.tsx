@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { Container } from '../Container/Container';
 import { Text } from '../Text/Text';
 import { Breakout } from './Breakout';

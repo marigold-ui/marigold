@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { vi } from 'vitest';
 import { useResponsiveValue } from '@marigold/system';
 import { ThemeProvider } from './useTheme';

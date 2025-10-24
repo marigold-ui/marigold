@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { screen } from '@testing-library/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text } from 'react-aria-components';
 import { expect, userEvent, within } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
