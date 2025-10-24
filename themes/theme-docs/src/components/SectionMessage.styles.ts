@@ -4,7 +4,7 @@ export const SectionMessage: ThemeComponent<'SectionMessage'> = {
   container: cva(
     [
       'not-prose items-center rounded-lg p-4',
-      "grid-cols-[min-content_auto] gap-1 [grid-template-areas:'icon_title_title'none_content_content']",
+      "grid-cols-[min-content_auto] gap-1 [grid-template-areas:'icon_title_title''none_content_content']",
     ],
     {
       variants: {
