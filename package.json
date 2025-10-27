@@ -10,7 +10,7 @@
   },
   "packageManager": "pnpm@10.15.1",
   "dependencies": {
-    "@babel/core": "7.28.4",
+    "@babel/core": "7.28.5",
     "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.29.7",
     "@eslint/eslintrc": "3.3.1",
@@ -33,8 +33,6 @@
     "concurrently": "9.2.1",
     "eslint": "9.34.0",
     "husky": "9.1.7",
-    "next": "15.5.2",
-    "next-router-mock": "1.0.2",
     "playwright": "1.55.1",
     "postcss-import": "16.1.1",
     "postcss-loader": "8.2.0",

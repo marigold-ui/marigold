@@ -1,5 +1,27 @@
 # @marigold/docs
 
+## 15.4.3
+
+### Patch Changes
+
+- Updated dependencies [2d7f163]
+  - @marigold/theme-docs@3.1.13
+  - @marigold/theme-rui@3.0.3
+  - @marigold/system@15.4.3
+  - @marigold/components@15.4.3
+  - @marigold/icons@1.3.27
+
+## 15.4.2
+
+### Patch Changes
+
+- Updated dependencies [961eaf5]
+  - @marigold/theme-docs@3.1.12
+  - @marigold/theme-rui@3.0.2
+  - @marigold/system@15.4.2
+  - @marigold/components@15.4.2
+  - @marigold/icons@1.3.26
+
 ## 15.4.1
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 15.4.3
+
+### Patch Changes
+
+- @marigold/system@15.4.3
+
+## 15.4.2
+
+### Patch Changes
+
+- @marigold/system@15.4.2
+
 ## 15.4.1
 
 ### Patch Changes
