@@ -3,6 +3,7 @@ import { iterateTokens } from '@/lib/utils';
 import { ruiTheme } from '@/theme';
 import { Icons, cn } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
+import type { Route } from 'next';
 import {
   Dispatch,
   ReactNode,
@@ -18,6 +19,10 @@ import { Inline, Split } from '@marigold/components';
 import { ExternalLink } from '@marigold/icons';
 import { NestedStringObject } from '@marigold/system';
 import { Hotkey } from './SiteMenu';
+
+type RouteWithoutSlash<T extends string = Route> = T extends `/${infer Rest}`
+  ? Rest
+  : T;
 
 interface CopyItemProps {
   children: ReactNode;
@@ -60,8 +65,17 @@ const useGoto = (
 ) => {
   const router = useRouter();
 
-  const goto = ({ slug, hash = '' }: { slug: string; hash?: string }) => {
-    const url = `/${slug}${hash}`;
+  const goto = ({
+    slug,
+    hash,
+  }: {
+    slug: RouteWithoutSlash;
+    hash?: `#${string}`;
+  }) => {
+    let url: Route = `/${slug}`;
+    if (hash && hash.startsWith('#')) {
+      url = `/${slug}${hash}`;
+    }
 
     router.push(url);
     setOpen(false);
@@ -195,7 +209,7 @@ export const PagesItem = ({
             key={page.slug}
             value={page.slug}
             keywords={[page.title]}
-            onSelect={() => goto({ slug: page.slug })}
+            onSelect={() => goto({ slug: page.slug as RouteWithoutSlash })}
           >
             <Inline space={4} alignY="center">
               {page.title}
@@ -215,7 +229,10 @@ export const PagesItem = ({
                       classNames.item
                     )}
                     onSelect={() =>
-                      goto({ slug: page.slug, hash: `#${sub.slug}` })
+                      goto({
+                        slug: page.slug as RouteWithoutSlash,
+                        hash: `#${sub.slug}`,
+                      })
                     }
                   >
                     {sub.text}
@@ -241,7 +258,7 @@ export const InternalPage = ({ classNames, setOpen }: ChangeOpenItemProps) => {
               className={classNames.item}
               key={name}
               value={slug}
-              onSelect={() => goto({ slug })}
+              onSelect={() => goto({ slug: slug as RouteWithoutSlash })}
             >
               {name}
             </Command.Item>

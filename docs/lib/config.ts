@@ -146,4 +146,4 @@ export const internal = [
       },
     ],
   },
-];
+] as const;
