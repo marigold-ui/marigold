@@ -2,10 +2,9 @@ import { Menu, SelectList } from '@marigold/components';
 
 export default () => (
   <SelectList
-    aria-label="Select venues"
-    selectionMode="multiple"
+    aria-label="Select a venue"
+    selectionMode="single"
     defaultSelectedKeys={['1']}
-    disabledBehavior="selection"
   >
     <SelectList.Item id="1" textValue="Main Street Park Amphitheater">
       <SelectList.Image
@@ -28,16 +27,9 @@ export default () => (
             Details
           </Menu.Item>
           <Menu.Item
-            onAction={() =>
-              alert('Contact about Main Street Park Amphitheater')
-            }
+            onAction={() => alert('Book Main Street Park Amphitheater')}
           >
-            Contact
-          </Menu.Item>
-          <Menu.Item
-            onAction={() => alert('Share Main Street Park Amphitheater')}
-          >
-            Share
+            Book Venue
           </Menu.Item>
         </Menu>
       </SelectList.Action>
@@ -60,13 +52,8 @@ export default () => (
           >
             Details
           </Menu.Item>
-          <Menu.Item
-            onAction={() => alert('Contact about Shakytown Comedy Club')}
-          >
-            Contact
-          </Menu.Item>
-          <Menu.Item onAction={() => alert('Share Shakytown Comedy Club')}>
-            Share
+          <Menu.Item onAction={() => alert('Book Shakytown Comedy Club')}>
+            Book Venue
           </Menu.Item>
         </Menu>
       </SelectList.Action>
@@ -87,39 +74,8 @@ export default () => (
           <Menu.Item onAction={() => alert('Show details for Oak Ridge Barn')}>
             Details
           </Menu.Item>
-          <Menu.Item onAction={() => alert('Contact about Oak Ridge Barn')}>
-            Contact
-          </Menu.Item>
-          <Menu.Item onAction={() => alert('Share Oak Ridge Barn')}>
-            Share
-          </Menu.Item>
-        </Menu>
-      </SelectList.Action>
-    </SelectList.Item>
-    <SelectList.Item id="4" textValue="Harborfront Promenade" disabled>
-      <SelectList.Image
-        src="/venues/harborfront-promenade.webp"
-        alt="Harborfront Promenade"
-        size="large"
-      />
-      <SelectList.Label>Harborfront Promenade</SelectList.Label>
-      <SelectList.Description>
-        A scenic waterfront venue - Currently under renovation
-      </SelectList.Description>
-      <SelectList.Action>
-        <Menu label="Action" size="small">
-          <Menu.Item
-            onAction={() => alert('Show details for Harborfront Promenade')}
-          >
-            Details
-          </Menu.Item>
-          <Menu.Item
-            onAction={() => alert('Contact about Harborfront Promenade')}
-          >
-            Contact
-          </Menu.Item>
-          <Menu.Item onAction={() => alert('Share Harborfront Promenade')}>
-            Share
+          <Menu.Item onAction={() => alert('Book Oak Ridge Barn')}>
+            Book Venue
           </Menu.Item>
         </Menu>
       </SelectList.Action>

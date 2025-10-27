@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 import { useClassNames } from '@marigold/system';
 
-export interface SelectListActionProps {
+export interface SelectListLabelProps {
   children: ReactNode;
 }
 
-export const SelectListAction = ({ children }: SelectListActionProps) => {
+export const SelectListLabel = ({ children }: SelectListLabelProps) => {
   const classNames = useClassNames({ component: 'SelectList' });
-  return <div className={classNames.action}>{children}</div>;
+  return <div className={classNames.label}>{children}</div>;
 };
