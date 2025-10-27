@@ -1,5 +1,6 @@
 'use client';
 
+import type { Route } from 'next';
 import { usePathname } from 'next/navigation';
 import { Badge } from '@marigold/components';
 import { NavLink } from '@/ui/navigation/NavLink';
@@ -25,7 +26,7 @@ export const SectionNavigation = () => {
             className="flex items-center gap-4"
             key={href}
             current={pathname === href}
-            href={href}
+            href={href as Route}
           >
             {name}
             {badge && <Badge variant="dark">{badge}</Badge>}
@@ -42,7 +43,7 @@ export const SectionNavigation = () => {
                   <NavLink
                     className="flex items-center gap-4"
                     current={pathname === href}
-                    href={href}
+                    href={href as Route}
                   >
                     {name}
                     {badge && <Badge variant="dark">{badge}</Badge>}

@@ -1,5 +1,6 @@
 'use client';
 
+import type { Route } from 'next';
 import { usePathname } from 'next/navigation';
 import { NavLink } from '@/ui/navigation/NavLink';
 import { useNavigation } from '@/ui/navigation/Navigation';
@@ -21,7 +22,7 @@ export const SiteNavigation = () => {
           className="text-sm font-medium lg:px-1"
           key={index}
           current={pathname.startsWith(`/${slug}`)}
-          href={link?.href ?? `/${slug}`}
+          href={(link?.href ?? `/${slug}`) as Route}
         >
           {name}
         </NavLink>

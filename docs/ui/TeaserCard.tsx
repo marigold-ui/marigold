@@ -1,4 +1,5 @@
 import { Card, Stack, Tiles } from '@/ui';
+import type { Route } from 'next';
 import type { ReactElement } from 'react';
 import Link from 'next/link';
 
@@ -10,7 +11,7 @@ export interface TeaserCardProps {
 }
 
 export const TeaserCard = ({ href, icon, title, caption }: TeaserCardProps) => (
-  <Link className="flex no-underline" href={href}>
+  <Link className="flex no-underline" href={href as Route}>
     <Card variant="hovering">
       <Stack space={4}>
         <div className="bg-bg-muted grid size-12 place-items-center rounded-full p-2">

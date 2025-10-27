@@ -1,3 +1,4 @@
+import type { Route } from 'next';
 import type { ReactNode } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { type VariantProps, cn, cva } from '@marigold/system';
@@ -42,7 +43,9 @@ const styles = cva([], {
   },
 });
 
-export interface NavLinkProps extends VariantProps<typeof styles>, LinkProps {
+export interface NavLinkProps
+  extends VariantProps<typeof styles>,
+    LinkProps<Route> {
   className: string;
   children: ReactNode;
 }

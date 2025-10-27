@@ -3,6 +3,7 @@
 import { siteConfig } from '@/lib/config';
 import { Badge } from '@/ui';
 import { ContentPage, allContentPages } from 'contentlayer/generated';
+import type { Route } from 'next';
 import { usePathname } from 'next/navigation';
 import { NavLink } from './NavLink';
 
@@ -87,7 +88,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
                 className="flex items-center gap-4"
                 key={href}
                 current={pathname === href}
-                href={href}
+                href={href as Route}
                 onClick={onClick}
               >
                 {name}
@@ -107,7 +108,7 @@ export const Navigation = ({ onClick }: NavigationProps) => {
                       <NavLink
                         className="flex items-center gap-4"
                         current={pathname === href}
-                        href={href}
+                        href={href as Route}
                         onClick={onClick}
                       >
                         {name}
