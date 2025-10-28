@@ -25,6 +25,3 @@ export const setup: Function = <T extends Theme>({ theme }: SetupProps<T>) => {
 
 export const makeFile = (name: string, type: string, size = 1024) =>
   new File([new Uint8Array(size)], name, { type });
-
-export const file = (name: string, type: string, size?: number) =>
-  makeFile(name, type, size);

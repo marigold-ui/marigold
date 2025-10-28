@@ -132,7 +132,6 @@ export const MultipleFileUpload: Story = {
 };
 
 export const Disabled: Story = {
-  tags: ['component-test'],
   args: {
     label: 'Disabled',
     disabled: true,

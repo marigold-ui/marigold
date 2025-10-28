@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { file } from '../test.utils';
+import { makeFile } from '../test.utils';
 import {
   filterAcceptedFiles,
   isFileDropItem,
@@ -8,7 +8,10 @@ import {
 
 describe('filterAcceptedFiles', () => {
   it('returns all files when accept is undefined', () => {
-    const files = [file('a.txt', 'text/plain'), file('b.jpg', 'image/jpeg')];
+    const files = [
+      makeFile('a.txt', 'text/plain'),
+      makeFile('b.jpg', 'image/jpeg'),
+    ];
     const result = filterAcceptedFiles(files);
 
     expect(result).toHaveLength(2);
@@ -16,7 +19,7 @@ describe('filterAcceptedFiles', () => {
   });
 
   it('returns all files when accept is empty', () => {
-    const files = [file('a.txt', 'text/plain')];
+    const files = [makeFile('a.txt', 'text/plain')];
     const result = filterAcceptedFiles(files, []);
 
     expect(result).toHaveLength(1);
@@ -24,14 +27,20 @@ describe('filterAcceptedFiles', () => {
   });
 
   it("returns all files when any token allows all (e.g. '*')", () => {
-    const files = [file('a.txt', 'text/plain'), file('b.jpg', 'image/jpeg')];
+    const files = [
+      makeFile('a.txt', 'text/plain'),
+      makeFile('b.jpg', 'image/jpeg'),
+    ];
 
     const result = filterAcceptedFiles(files, ['*']);
     expect(result).toHaveLength(2);
   });
 
   it("returns all files when any token allows all (e.g. '*/*')", () => {
-    const files = [file('a.txt', 'text/plain'), file('b.jpg', 'image/jpeg')];
+    const files = [
+      makeFile('a.txt', 'text/plain'),
+      makeFile('b.jpg', 'image/jpeg'),
+    ];
     const result = filterAcceptedFiles(files, ['text/plain', '*/*']);
 
     expect(result).toHaveLength(2);
@@ -39,8 +48,8 @@ describe('filterAcceptedFiles', () => {
 
   it('matches by exact mime type', () => {
     const files = [
-      file('doc.pdf', 'application/pdf'),
-      file('pic.jpg', 'image/jpeg'),
+      makeFile('doc.pdf', 'application/pdf'),
+      makeFile('pic.jpg', 'image/jpeg'),
     ];
     const result = filterAcceptedFiles(files, ['application/pdf']);
 
@@ -50,9 +59,9 @@ describe('filterAcceptedFiles', () => {
 
   it('matches by mime wildcard (e.g., image/*)', () => {
     const files = [
-      file('pic.jpg', 'image/jpeg'),
-      file('vector.svg', 'image/svg+xml'),
-      file('doc.pdf', 'application/pdf'),
+      makeFile('pic.jpg', 'image/jpeg'),
+      makeFile('vector.svg', 'image/svg+xml'),
+      makeFile('doc.pdf', 'application/pdf'),
     ];
     const result = filterAcceptedFiles(files, ['image/*']);
 
@@ -61,8 +70,8 @@ describe('filterAcceptedFiles', () => {
 
   it('matches by extension without dot (e.g., pdf)', () => {
     const files = [
-      file('REPORT.PDF', 'application/pdf'),
-      file('readme.txt', 'text/plain'),
+      makeFile('REPORT.PDF', 'application/pdf'),
+      makeFile('readme.txt', 'text/plain'),
     ];
 
     const result = filterAcceptedFiles(files, ['pdf']);
@@ -72,9 +81,9 @@ describe('filterAcceptedFiles', () => {
 
   it('matches by extension with dot (e.g., .txt) case-insensitively', () => {
     const files = [
-      file('notes.txt', 'text/plain'),
-      file('script.TXT', 'text/plain'),
-      file('pic.jpg', 'image/jpeg'),
+      makeFile('notes.txt', 'text/plain'),
+      makeFile('script.TXT', 'text/plain'),
+      makeFile('pic.jpg', 'image/jpeg'),
     ];
     const result = filterAcceptedFiles(files, ['.Txt']);
 
@@ -82,7 +91,10 @@ describe('filterAcceptedFiles', () => {
   });
 
   it('filters out non-matching files', () => {
-    const files = [file('a.txt', 'text/plain'), file('b.jpg', 'image/jpeg')];
+    const files = [
+      makeFile('a.txt', 'text/plain'),
+      makeFile('b.jpg', 'image/jpeg'),
+    ];
     const result = filterAcceptedFiles(files, ['application/pdf']);
 
     expect(result).toHaveLength(0);
@@ -92,8 +104,8 @@ describe('filterAcceptedFiles', () => {
 describe('normalizeAndLimitFiles', () => {
   it('returns only first accepted when multiple is false', () => {
     const files = [
-      file('a.txt', 'text/plain'),
-      file('doc.pdf', 'application/pdf'),
+      makeFile('a.txt', 'text/plain'),
+      makeFile('doc.pdf', 'application/pdf'),
     ];
     const result = normalizeAndLimitFiles(files, {
       accept: ['application/pdf'],
@@ -106,9 +118,9 @@ describe('normalizeAndLimitFiles', () => {
 
   it('returns all accepted when multiple is true', () => {
     const files = [
-      file('a.txt', 'text/plain'),
-      file('doc.pdf', 'application/pdf'),
-      file('pic.jpg', 'image/jpeg'),
+      makeFile('a.txt', 'text/plain'),
+      makeFile('doc.pdf', 'application/pdf'),
+      makeFile('pic.jpg', 'image/jpeg'),
     ];
     const result = normalizeAndLimitFiles(files, {
       accept: ['.pdf', 'image/*'],
@@ -119,7 +131,10 @@ describe('normalizeAndLimitFiles', () => {
   });
 
   it('keeps first of all files when no accept is given and multiple is false', () => {
-    const files = [file('a.txt', 'text/plain'), file('b.jpg', 'image/jpeg')];
+    const files = [
+      makeFile('a.txt', 'text/plain'),
+      makeFile('b.jpg', 'image/jpeg'),
+    ];
     const result = normalizeAndLimitFiles(files, { multiple: false });
 
     expect(result).toHaveLength(1);
@@ -131,7 +146,7 @@ describe('isFileDropItem', () => {
   it('returns true for objects with kind="file" and getFile function', () => {
     const item = {
       kind: 'file',
-      getFile: async () => file('a.txt', 'text/plain'),
+      getFile: async () => makeFile('a.txt', 'text/plain'),
     };
 
     expect(isFileDropItem(item)).toBe(true);
@@ -140,7 +155,7 @@ describe('isFileDropItem', () => {
   it('returns false when kind is not "file"', () => {
     const item = {
       kind: 'string',
-      getFile: async () => file('a.txt', 'text/plain'),
+      getFile: async () => makeFile('a.txt', 'text/plain'),
     } as any;
 
     expect(isFileDropItem(item)).toBeFalsy();

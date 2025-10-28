@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import RAC, { DropZone } from 'react-aria-components';
-import { useLocale } from '@react-aria/i18n';
-import {
-  FieldBase,
-  type FieldBaseProps,
-  FileTrigger,
-} from '@marigold/components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { FieldBase, type FieldBaseProps } from '@marigold/components';
 import { WidthProp, useClassNames } from '@marigold/system';
+import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
+import { FileTrigger } from './FileTrigger';
 import { isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
 
 type RemovedProps =
@@ -19,7 +17,7 @@ type RemovedProps =
 
 export interface FileFieldProps
   extends Omit<RAC.DropZoneProps, RemovedProps>,
-    Pick<FieldBaseProps<'label'>, 'label'> {
+    Pick<FieldBaseProps<'input'>, 'label'> {
   variant?: string;
   size?: string;
 
@@ -57,10 +55,9 @@ export const FileField = ({
   ...props
 }: FileFieldProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
-  const { locale } = useLocale();
-  const dropZoneLabel =
-    locale == 'de-DE' ? 'Dateien hierher ziehen' : 'Drop files here';
-  const buttonLabel = locale == 'de-DE' ? 'Hochladen' : 'Upload';
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const dropZoneLabel = stringFormatter.format('dropZoneLabel');
+  const buttonLabel = stringFormatter.format('uploadLabel');
 
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
     const list = files ? Array.from(files) : [];
@@ -94,40 +91,44 @@ export const FileField = ({
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     /* @ts-expect-error */
-    <FieldBase as={'div'} width={width} label={label} {...props}>
-      <div className={classNames.container}>
-        <DropZone
-          onDrop={handleDrop}
-          isDisabled={disabled}
-          className={classNames.dropZone}
-          data-testid="dropzone"
-          {...props}
+    <FieldBase
+      as={'div'}
+      width={width}
+      label={label}
+      className={classNames.container}
+      {...props}
+    >
+      <DropZone
+        onDrop={handleDrop}
+        isDisabled={disabled}
+        className={classNames.dropZone}
+        data-testid="dropzone"
+        {...props}
+      >
+        <div className={classNames.dropZoneContent}>
+          <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
+          <FileTrigger
+            {...fileTriggerProps}
+            label={buttonLabel}
+            disabled={disabled}
+          />
+        </div>
+      </DropZone>
+      {files?.map((file, index) => (
+        <FileField.Item
+          key={index}
+          onRemove={() =>
+            setFiles(prev => (prev ?? []).filter((_, i) => i !== index))
+          }
         >
-          <div className={classNames.dropZoneContent}>
-            <p className={classNames.dropZoneLabel}>{dropZoneLabel}</p>
-            <FileTrigger
-              {...fileTriggerProps}
-              label={buttonLabel}
-              disabled={disabled}
-            />
+          <div className={classNames.item}>
+            <p className={classNames.itemLabel}>{file.name}</p>
+            <p className={classNames.itemDescription}>
+              {(file.size / 1024 / 1024).toFixed(2)} MB
+            </p>
           </div>
-        </DropZone>
-        {files?.map((file, index) => (
-          <FileField.Item
-            key={index}
-            onRemove={() =>
-              setFiles(prev => (prev ?? []).filter((_, i) => i !== index))
-            }
-          >
-            <div className={classNames.item}>
-              <p className={classNames.itemLabel}>{file.name}</p>
-              <p className={classNames.itemDescription}>
-                {(file.size / 1024 / 1024).toFixed(2)} MB
-              </p>
-            </div>
-          </FileField.Item>
-        ))}
-      </div>
+        </FileField.Item>
+      ))}
     </FieldBase>
   );
 };

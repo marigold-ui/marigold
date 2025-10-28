@@ -1,5 +1,5 @@
-import { FileField } from '@marigold/components';
+import { FileField, FileFieldProps } from '@marigold/components';
 
-export default () => {
-  return <FileField />;
+export default (props: FileFieldProps) => {
+  return <FileField {...props} />;
 };
