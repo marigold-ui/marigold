@@ -39,7 +39,7 @@ describe('Pagination tests', () => {
               />
               <button
                 aria-label="Page previous"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
@@ -88,7 +88,7 @@ describe('Pagination tests', () => {
               </div>
               <button
                 aria-label="Page next"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
                 data-react-aria-pressable="true"
                 tabindex="0"
                 type="button"
@@ -142,7 +142,7 @@ describe('Pagination tests', () => {
               />
               <button
                 aria-label="Page previous"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
@@ -180,7 +180,7 @@ describe('Pagination tests', () => {
               </div>
               <button
                 aria-label="Page next"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
