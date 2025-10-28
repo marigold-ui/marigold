@@ -146,7 +146,6 @@ const _CheckboxGroup = ({
       <div
         role="presentation"
         data-orientation={orientation}
-        data-group="checkbox"
         className={cn(
           classNames.group,
           'group/checkboxgroup flex items-start',
