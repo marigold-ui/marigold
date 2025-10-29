@@ -9,12 +9,12 @@ import {
   Button,
   Card,
   Inline,
+  Loader,
   Scrollable,
   SectionMessage,
   Split,
   Stack,
   Text,
-  XLoader,
 } from '@marigold/components';
 
 const Venues = () => {
@@ -33,7 +33,7 @@ const Venues = () => {
   if (status === 'pending' || isFetching) {
     return (
       <div className="h-[300px] w-full">
-        <XLoader mode="section" />
+        <Loader mode="section" />
       </div>
     );
   }

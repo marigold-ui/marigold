@@ -2,22 +2,29 @@ import { Dialog, Modal } from 'react-aria-components';
 import { useId } from '@react-aria/utils';
 import { useClassNames } from '@marigold/system';
 import { Underlay } from '../Overlay/Underlay';
-import type { LoaderProps } from './BaseLoader';
+import type { BaseLoaderProps } from './BaseLoader';
 import { BaseLoader } from './BaseLoader';
+
+export type LoaderVisualType = 'xloader' | 'cycle';
 
 // Full Size
 // ---------------
-export interface XLoaderProps extends LoaderProps {
+export interface LoaderProps extends BaseLoaderProps {
   /**
    * Show the loader in `fullscreen` to overlay and block interaction with the site or `section` to show loading for a certain area.
    * @default undefined
    */
   mode?: 'fullscreen' | 'section';
+  /**
+   * Selects the visual style of the loading indicator shown when loading is true. Accepts `xloader` or `cycle`.
+   * @default cycle
+   */
+  loaderType?: LoaderVisualType;
 }
 
 // Full Screen
 // ---------------
-const LoaderFullScreen = (props: LoaderProps) => {
+const LoaderFullScreen = (props: BaseLoaderProps) => {
   const id = useId();
 
   return (
@@ -33,7 +40,7 @@ const LoaderFullScreen = (props: LoaderProps) => {
 
 // Section
 // ---------------
-const LoaderSection = (props: LoaderProps) => {
+const LoaderSection = (props: BaseLoaderProps) => {
   const className = useClassNames({
     component: 'Underlay',
     variant: 'modal',
@@ -49,7 +56,7 @@ const LoaderSection = (props: LoaderProps) => {
 
 // Component
 // ---------------
-export const XLoader = ({ mode, variant, ...props }: XLoaderProps) =>
+export const Loader = ({ mode, variant, ...props }: LoaderProps) =>
   mode === 'fullscreen' ? (
     <LoaderFullScreen variant={variant ?? 'inverted'} {...props} />
   ) : mode === 'section' ? (
