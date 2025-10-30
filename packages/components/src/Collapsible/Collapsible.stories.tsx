@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import type { ReactNode } from 'react';
-import { expect, within } from 'storybook/test';
+import { expect } from 'storybook/test';
 import { Collapsible } from './Collapsible';
 import { More } from './More';
 
@@ -28,8 +28,7 @@ export const Basic: StoryObj<typeof meta> = {
       <Collapsible.Content>{children as ReactNode}</Collapsible.Content>
     </Collapsible>
   ),
-  play: async ({ step, canvasElement, userEvent }) => {
-    const canvas = within(canvasElement);
+  play: async ({ step, canvas, userEvent }) => {
     await step('expand', async () => {
       await userEvent.click(canvas.getByText('Click me'));
 
@@ -52,8 +51,7 @@ export const ShowMore: StoryObj<typeof More> = {
   render: ({ children = <p>Test Content</p>, ...args }) => (
     <More {...args}>{children as ReactNode}</More>
   ),
-  play: async ({ step, canvasElement, userEvent }) => {
-    const canvas = within(canvasElement);
+  play: async ({ step, canvas, userEvent }) => {
     await step('show more', async () => {
       await userEvent.click(canvas.getByRole('button'));
 

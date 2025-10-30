@@ -228,8 +228,7 @@ export const CollapseAt: Story = {
       </I18nProvider>
     );
   },
-  play: async ({ step, canvasElement, userEvent }) => {
-    const canvas = within(canvasElement);
+  play: async ({ step, canvas, userEvent }) => {
     await step('show more', async () => {
       await userEvent.click(canvas.getByText('Show 5 more'));
 
