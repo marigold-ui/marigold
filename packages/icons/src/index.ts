@@ -28,6 +28,7 @@ export { SortUp } from './action/SortUp';
 export { Star } from './action/Star';
 export { Stop } from './action/Stop';
 export { Underlined } from './action/Underlined';
+export { Upload } from './action/Upload';
 export { Zoom } from './action/Zoom';
 
 // Info icons
