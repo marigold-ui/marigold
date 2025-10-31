@@ -29,7 +29,7 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<
-      'container' | 'item' | 'header' | 'content' | 'icon',
+      'container' | 'item' | 'header' | 'panel' | 'content' | 'icon',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
