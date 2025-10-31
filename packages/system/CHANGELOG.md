@@ -1,5 +1,11 @@
 # @marigold/system
 
+## 15.5.0
+
+### Minor Changes
+
+- 98bf929: [DST-1075]: Introduce `<FileField>`component
+
 ## 15.4.3
 
 ## 15.4.2

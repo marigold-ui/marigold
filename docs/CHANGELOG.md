@@ -1,5 +1,21 @@
 # @marigold/docs
 
+## 15.5.0
+
+### Minor Changes
+
+- 98bf929: [DST-1075]: Introduce `<FileField>`component
+
+### Patch Changes
+
+- Updated dependencies [832e3fa]
+- Updated dependencies [98bf929]
+  - @marigold/components@15.5.0
+  - @marigold/theme-rui@3.1.0
+  - @marigold/system@15.5.0
+  - @marigold/theme-docs@3.1.14
+  - @marigold/icons@1.3.28
+
 ## 15.4.3
 
 ### Patch Changes

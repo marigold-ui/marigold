@@ -1,5 +1,19 @@
 # @marigold/theme-rui
 
+## 3.1.0
+
+### Minor Changes
+
+- 98bf929: [DST-1075]: Introduce `<FileField>`component
+
+### Patch Changes
+
+- 832e3fa: fix(styles): Remove extra spacing when hidden/a11y elements are causing it
+- Updated dependencies [832e3fa]
+- Updated dependencies [98bf929]
+  - @marigold/components@15.5.0
+  - @marigold/system@15.5.0
+
 ## 3.0.3
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @marigold/components
 
+## 15.5.0
+
+### Minor Changes
+
+- 98bf929: [DST-1075]: Introduce `<FileField>`component
+
+### Patch Changes
+
+- 832e3fa: fix(styles): Remove extra spacing when hidden/a11y elements are causing it
+- Updated dependencies [98bf929]
+  - @marigold/system@15.5.0
+
 ## 15.4.3
 
 ### Patch Changes
