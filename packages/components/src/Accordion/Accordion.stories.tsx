@@ -93,12 +93,11 @@ export const Basic: Story = {
     await user.click(item);
     await user.click(itemtwo);
 
-    expect(canvas.getByText('Here are some infos')).toHaveAttribute(
-      'aria-hidden',
-      'true'
-    );
     expect(
-      canvas.getByText('Some longer Text to see if it looks good')
+      canvas.getByText('Here are some infos').parentElement
+    ).toHaveAttribute('aria-hidden', 'true');
+    expect(
+      canvas.getByText('Some longer Text to see if it looks good').parentElement
     ).toHaveAttribute('aria-hidden', 'false');
   },
 };

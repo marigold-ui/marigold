@@ -6,17 +6,24 @@ import { AccordionHeader } from './AccordionHeader';
 import { AccordionItem } from './AccordionItem';
 import { AccordionPanel } from './AccordionPanel';
 
+// Props
+// ---------------
 type RemovedProps = 'isDisabled';
+
 export interface AccordionProps
   extends Omit<RAC.DisclosureGroupProps, RemovedProps> {
-  /** Whether all items are disabled. */
-  disabled?: RAC.DisclosureGroupProps['isDisabled'];
   variant?: 'default' | 'card' | (string & {});
   size?: string;
+  /** Whether all items are disabled. */
+  disabled?: RAC.DisclosureGroupProps['isDisabled'];
+  /** Whether the header should stick to the top when scrolling. */
   stickyHeader?: boolean;
+  /** Position of the icon in the header. */
   iconPosition?: 'right' | 'left';
 }
 
+// Component
+// ---------------
 export const Accordion = ({
   children,
   disabled,
