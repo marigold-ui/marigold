@@ -12,6 +12,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "require": "./dist/index.js",
@@ -44,11 +45,11 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "4.1.15",
+    "@tailwindcss/postcss": "4.1.16",
     "cssnano": "7.1.1",
     "postcss-cli": "11.0.1",
-    "tailwindcss": "4.1.15",
-    "tsdown": "0.15.9"
+    "tailwindcss": "4.1.16",
+    "tsdown": "0.15.12"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",

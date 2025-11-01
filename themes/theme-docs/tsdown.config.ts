@@ -6,5 +6,5 @@ export default defineConfig({
   tsconfig: './tsconfig.build.json',
   dts: true,
   sourcemap: true,
-  clean: process.env.NODE_ENV === 'production',
+  clean: true,
 });
