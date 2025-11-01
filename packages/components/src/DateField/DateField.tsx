@@ -1,3 +1,4 @@
+import { CalendarDate } from '@internationalized/date';
 import { ReactElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { DateField, DateValue } from 'react-aria-components';
@@ -67,6 +68,7 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
       required,
       error,
       readOnly,
+      onChange,
       ...rest
     }: DateFieldProps,
     ref
@@ -79,6 +81,12 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
       ...rest,
     };
 
+    const handleDatePaste = (date: CalendarDate) => {
+      if (onChange) {
+        onChange(date);
+      }
+    };
+
     return (
       <FieldBase
         as={DateField}
@@ -87,7 +95,7 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
         ref={ref}
         {...props}
       >
-        <DateInput action={action} />
+        <DateInput onDatePaste={handleDatePaste} action={action} />
       </FieldBase>
     );
   }
