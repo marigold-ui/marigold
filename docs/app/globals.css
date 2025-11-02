@@ -19,11 +19,6 @@
 @source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
 
-/* tailwind plugins */
-@plugin '@tailwindcss/typography';
-@plugin 'tailwindcss-animate';
-@plugin 'tailwind-scrollbar';
-
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still

@@ -168,6 +168,7 @@
   --color-border-error: var(--color-red-400);
 }
 
-@plugin "@marigold/theme-plugins/src/tw-rac-plugins";
-@plugin "@marigold/theme-plugins/src/tw-custom-placement-plugin";
-@plugin "@marigold/theme-plugins/src/tw-custom-aria-variants-plugin";
+@plugin 'tailwindcss-react-aria-components';
+@plugin '@tailwindcss/typography';
+@plugin 'tailwindcss-animate';
+@plugin 'tailwind-scrollbar';
