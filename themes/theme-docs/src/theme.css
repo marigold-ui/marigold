@@ -166,6 +166,9 @@
 
   --color-border-success: var(--color-lime-500);
   --color-border-error: var(--color-red-400);
+
+  /* focus colors */
+  --color-ring: var(--color-amber-400);
 }
 
 @plugin 'tailwindcss-react-aria-components';
