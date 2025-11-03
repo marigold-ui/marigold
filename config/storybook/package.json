@@ -36,7 +36,7 @@
     "@storybook/cli": "^9.1.13",
     "@storybook/react-vite": "^9.1.13",
     "@storybook/test-runner": "0.23.0",
-    "@types/node": "24.9.1",
+    "@types/node": "24.9.2",
     "eslint-plugin-storybook": "9.1.13",
     "react": "19.2.0",
     "react-dom": "19.2.0",
