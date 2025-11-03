@@ -52,7 +52,6 @@
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/system": "workspace:*",
-    "@marigold/theme-plugins": "workspace:*",
     "@tailwindcss/typography": "0.5.19",
     "tailwind-scrollbar": "4.0.2",
     "tailwindcss-animate": "1.0.7",

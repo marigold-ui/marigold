@@ -600,8 +600,6 @@ importers:
         specifier: 0.15.9
         version: 0.15.9(typescript@5.9.3)
 
-  packages/theme-plugins: {}
-
   packages/types:
     dependencies:
       type-fest:
@@ -620,9 +618,6 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
-      '@marigold/theme-plugins':
-        specifier: workspace:*
-        version: link:../../packages/theme-plugins
       '@tailwindcss/typography':
         specifier: 0.5.19
         version: 0.5.19(tailwindcss@4.1.15)
@@ -666,9 +661,6 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
-      '@marigold/theme-plugins':
-        specifier: workspace:*
-        version: link:../../packages/theme-plugins
       tailwindcss-animate:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@4.1.15)

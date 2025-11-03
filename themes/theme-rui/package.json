@@ -53,7 +53,6 @@
   "dependencies": {
     "@marigold/components": "workspace:*",
     "@marigold/system": "workspace:*",
-    "@marigold/theme-plugins": "workspace:*",
     "tailwindcss-animate": "1.0.7",
     "tailwindcss-react-aria-components": "^2.0.1"
   },
