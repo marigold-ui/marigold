@@ -13,19 +13,16 @@ const theme: Theme = {
   name: 'test',
   components: {
     Field: cva(),
-    Label: {
-      container: cva('', {
-        variants: {
-          variant: {
-            blue: 'text-blue-600',
-          },
-          size: {
-            small: 'text-base',
-          },
+    Label: cva('', {
+      variants: {
+        variant: {
+          blue: 'text-blue-600',
         },
-      }),
-      indicator: cva(''),
-    },
+        size: {
+          small: 'text-base',
+        },
+      },
+    }),
     HelpText: {
       container: cva('p-1', {
         variants: {

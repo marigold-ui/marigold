@@ -21,15 +21,12 @@ const theme: Theme = {
   name: 'test',
   components: {
     Field: cva(''),
-    Label: {
-      container: cva('', {
-        variants: {
-          variant: { lime: 'text-lime-500' },
-          size: { small: 'text-sm' },
-        },
-      }),
-      indicator: cva(),
-    },
+    Label: cva('', {
+      variants: {
+        variant: { lime: 'text-lime-500' },
+        size: { small: 'text-sm' },
+      },
+    }),
     Text: cva(),
     Popover: cva(['mt-0.5'], {
       variants: {

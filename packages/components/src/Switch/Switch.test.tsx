@@ -9,10 +9,7 @@ import { Switch } from './Switch';
 const theme: Theme = {
   name: 'switch test',
   components: {
-    Label: {
-      container: cva(),
-      indicator: cva(),
-    },
+    Label: cva(),
     ProgressCycle: cva(),
     Switch: {
       container: cva(),
