@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
+import { Badge } from '../Badge/Badge';
+import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -312,6 +314,61 @@ export const SelectedScroll: StoryObj<typeof Select> = {
         <Select.Option id="Avengers: Endgame">Avengers: Endgame</Select.Option>
         <Select.Option id="Dune">Dune</Select.Option>
       </Select>
+    );
+  },
+};
+
+export const Status: StoryObj<typeof Select> = {
+  render: function StatusExample(args) {
+    const [status, setStatus] = useState<any>('');
+    return (
+      <Stack space={6}>
+        <Select
+          {...args}
+          label="Project Status"
+          placeholder="Select a status"
+          onChange={setStatus}
+          width={80}
+        >
+          <Select.Option id="draft">
+            <Inline space={3} alignY="center">
+              <Text slot="label">Draft</Text>
+              <Badge variant="info">In Progress</Badge>
+            </Inline>
+            <Text slot="description">Work in progress</Text>
+          </Select.Option>
+          <Select.Option id="review">
+            <Inline space={3} alignY="center">
+              <Text>In Review</Text>
+              <Badge variant="warning">Pending</Badge>
+            </Inline>
+            <Text slot="description">Awaiting review</Text>
+          </Select.Option>
+          <Select.Option id="approved">
+            <Inline space={3} alignY="center">
+              <Text>Approved</Text>
+              <Badge variant="success">Ready</Badge>
+            </Inline>
+            <Text slot="description">Approved for release</Text>
+          </Select.Option>
+          <Select.Option id="published">
+            <Inline space={3} alignY="center">
+              <Text>Published</Text>
+              <Badge variant="success">Live</Badge>
+            </Inline>
+            <Text slot="description">Released to public</Text>
+          </Select.Option>
+          <Select.Option id="archived">
+            <Inline space={3} alignY="center">
+              <Text>Archived</Text>
+              <Badge>Inactive</Badge>
+            </Inline>
+            <Text slot="description">No longer active</Text>
+          </Select.Option>
+        </Select>
+        <hr />
+        <pre>selected status: {status}</pre>
+      </Stack>
     );
   },
 };
