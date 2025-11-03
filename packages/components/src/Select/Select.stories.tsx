@@ -107,8 +107,22 @@ export const Basic: StoryObj<typeof Select> = {
           <Select.Option id="Firefly">Firefly</Select.Option>
         </Select>
         <hr />
-        <pre>selected: {selected}</pre>
+        <pre data-testid="selected">selected: {selected}</pre>
       </Stack>
+    );
+  },
+  play: async ({ args, canvas, canvasElement, userEvent }) => {
+    await userEvent.click(canvas.getByLabelText(`${args.label}`));
+
+    const body = canvasElement.ownerDocument.body;
+    await waitFor(() => within(body).getByRole('dialog'));
+
+    const options = await within(body).getByRole('dialog');
+
+    await userEvent.click(within(options).getByText('Star Wars'));
+
+    expect(canvas.getByTestId('selected')).toHaveTextContent(
+      'selected: Star Wars'
     );
   },
 };
@@ -140,9 +154,7 @@ export const Multiple: StoryObj<typeof Select> = {
     );
   },
   play: async ({ args, canvas, canvasElement, userEvent }) => {
-    await userEvent.click(
-      canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
-    );
+    await userEvent.click(canvas.getByLabelText(`${args.label}`));
 
     const body = canvasElement.ownerDocument.body;
     await waitFor(() => within(body).getByRole('dialog'));
