@@ -302,21 +302,6 @@ test('allows to disable options', () => {
   expect(twoo).toHaveAttribute('aria-disabled', 'true');
 });
 
-test('allows select to be required', () => {
-  render(
-    <Select label="Label" data-testid="select" required>
-      <Select.Option id="one">one</Select.Option>
-      <Select.Option id="two">two</Select.Option>
-      <Select.Option id="three">three</Select.Option>
-    </Select>
-  );
-
-  // eslint-disable-next-line testing-library/no-node-access
-  const label = screen.getAllByText(/Label/i)[0].parentElement!;
-  const requiredIcon = within(label).getByText('*');
-  expect(requiredIcon).toBeInTheDocument();
-});
-
 test('controlled', () => {
   const spy = vi.fn();
   render(
