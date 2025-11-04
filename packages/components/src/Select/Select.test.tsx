@@ -288,49 +288,11 @@ test('renders as tray', () => {
 });
 
 test('error is there', () => {
-  render(
-    <Select
-      label="Label"
-      data-testid="select"
-      width="1/2"
-      error
-      errorMessage="Error"
-    >
-      <Select.Option id="one">one</Select.Option>
-      <Select.Option id="two">two</Select.Option>
-    </Select>
-  );
+  render(<Basic label="Label" error />);
 
   // We need to query all, since there is also a label in the hidden select
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Label')[0].parentElement;
+
   expect(container).toHaveAttribute('data-error');
-});
-
-test('supports text slots in select', () => {
-  render(
-    <Select label="Label">
-      <Select.Option id="one" textValue="one">
-        <Text slot="label">one</Text>
-        <Text slot="description">description for one</Text>
-      </Select.Option>
-      <Select.Option id="two" textValue="two">
-        <Text slot="label">two</Text>
-        <Text slot="description">description for two</Text>
-      </Select.Option>
-      <Select.Option id="three" textValue="three">
-        <Text slot="label">three</Text>
-        <Text slot="description">description for three</Text>
-      </Select.Option>
-    </Select>
-  );
-
-  const button = screen.getByRole('button');
-  fireEvent.click(button);
-
-  const label = screen.getByLabelText('one');
-  const description = screen.getByText('description for one');
-
-  expect(label).toBeInTheDocument();
-  expect(description).toBeInTheDocument();
 });

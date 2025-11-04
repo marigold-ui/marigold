@@ -470,16 +470,40 @@ export const WithImages: StoryObj<typeof Select> = {
       width={80}
     >
       {people.map(person => (
-        <Select.Option key={person.id} id={person.id}>
-          <img
-            src={person.avatar}
-            alt={person.name}
-            className="size-6 rounded-full object-cover"
-          />
-          <Text slot="label">{person.name}</Text>
+        <Select.Option key={person.id} id={person.id} textValue={person.name}>
+          <Inline space={2} alignY="center">
+            <img
+              src={person.avatar}
+              alt={person.name}
+              className="size-6 rounded-full object-cover"
+            />
+            <Text slot="label">{person.name}</Text>
+          </Inline>
           <Text slot="description">{person.jobTitle}</Text>
         </Select.Option>
       ))}
     </Select>
   ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    const body = canvasElement.ownerDocument.body;
+
+    await step('Open the select dropdown', async () => {
+      const button = canvas.getByRole('button');
+      await userEvent.click(button);
+      expect(button).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await step('Verify text slots are rendered', async () => {
+      await waitFor(() => {
+        expect(within(body).getByRole('listbox')).toBeInTheDocument();
+      });
+
+      const label = within(body).getByLabelText('Alice Johnson');
+      const description = within(body).getByText('Product Manager');
+
+      expect(label).toBeInTheDocument();
+      expect(description).toBeInTheDocument();
+    });
+  },
 };
