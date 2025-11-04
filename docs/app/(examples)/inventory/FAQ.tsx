@@ -47,7 +47,9 @@ export const FAQ = () => (
     <Accordion iconPosition="left">
       {faqs.map(faq => (
         <Accordion.Item key={faq.id} id={faq.id}>
-          <Accordion.Header>{faq.question}</Accordion.Header>
+          <Accordion.Header>
+            <Headline level="4">{faq.question}</Headline>
+          </Accordion.Header>
           <Accordion.Content>
             <Text variant="muted">{faq.answer}</Text>
           </Accordion.Content>

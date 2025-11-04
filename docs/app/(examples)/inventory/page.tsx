@@ -23,4 +23,5 @@ export default InventoryPage;
  * - we need more variants than just "muted" for text
  * - improve fontweight usage? e.g. light?
  * - when using left icon in accordion, should the content automatically be inset?
+ * - accordion needs variants with "relaxed" spacing
  */
