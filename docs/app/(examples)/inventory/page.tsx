@@ -1,13 +1,11 @@
-import { Headline, Inset, Stack } from '@/ui';
+import { Headline, Stack } from '@/ui';
 import { Newsletter } from './Newsletter';
 
 const FilterPage = () => (
-  <Inset spaceX={12} spaceY={6}>
-    <Stack space={20}>
-      <Headline>Inventory</Headline>
-      <Newsletter />
-    </Stack>
-  </Inset>
+  <Stack space={20}>
+    <Headline>Inventory</Headline>
+    <Newsletter />
+  </Stack>
 );
 
 export default FilterPage;
