@@ -10,7 +10,6 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { vi } from 'vitest';
 import { Theme, cva, useSmallScreen } from '@marigold/system';
-import { Text } from '../Text/Text';
 import { setup } from '../test.utils';
 import { Select } from './Select';
 import * as stories from './Select.stories';
