@@ -4,4 +4,4 @@
 "@marigold/theme-rui": patch
 ---
 
-([DSTSUP-196]): Fix Listbox layout when more than one element is used.
+fix([DSTSUP-196]): Fix Listbox layout when more than one element is used.
