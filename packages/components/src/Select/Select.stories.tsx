@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
-import { expect, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { Badge } from '../Badge/Badge';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
@@ -113,6 +113,51 @@ export const Basic: StoryObj<typeof Select> = {
       </Stack>
     );
   },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    const body = canvasElement.ownerDocument.body;
+
+    await step('Open the select dropdown', async () => {
+      const button = canvas.getByRole('button');
+
+      await userEvent.click(button);
+
+      await expect(button).toBeVisible();
+    });
+
+    await step('Wait for listbox to appear', async () => {
+      await waitFor(() => within(body).getByRole('listbox'));
+      const listbox = within(body).getByRole('listbox');
+
+      expect(listbox).toBeVisible();
+    });
+
+    await step('Verify disabled option has aria-disabled', async () => {
+      const listbox = within(body).getByRole('listbox');
+      const disabledOption = within(listbox).getByRole('option', {
+        name: 'Firefly',
+      });
+
+      expect(disabledOption).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    await step('Select an item from the list', async () => {
+      const listbox = within(body).getByRole('listbox');
+      const option = within(listbox).getByText('Star Wars');
+
+      await userEvent.click(option);
+    });
+
+    await step('Verify the select is closed', async () => {
+      await waitFor(() => {
+        expect(within(body).queryByRole('listbox')).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Verify the selected value is displayed', async () => {
+      expect(canvas.getByText('selected: Star Wars')).toBeVisible();
+    });
+  },
 };
 
 export const Multiple: StoryObj<typeof Select> = {
@@ -183,6 +228,36 @@ export const LongItems: StoryObj<typeof Select> = {
         </Select>
       </Inset>
     );
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    const body = canvasElement.ownerDocument.body;
+
+    await step('Open the select dropdown', async () => {
+      const button = canvas.getByRole('button');
+
+      await userEvent.click(button);
+
+      expect(button).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await step('Verify listbox is visible', async () => {
+      await waitFor(() => within(body).getByRole('listbox'));
+      const listbox = within(body).getByRole('listbox');
+
+      expect(listbox).toBeVisible();
+    });
+
+    await step('Dismiss select with Escape key', async () => {
+      const button = canvas.getByRole('button');
+
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => {
+        expect(within(body).queryByRole('listbox')).not.toBeInTheDocument();
+      });
+
+      expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
   },
 };
 
