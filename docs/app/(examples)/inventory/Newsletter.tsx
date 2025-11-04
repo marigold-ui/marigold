@@ -17,7 +17,7 @@ export const Newsletter = () => (
     <Container contentLength="long" space={6}>
       <Stack space={2}>
         <Headline level="2">Subscribe to our Newsletter</Headline>
-        <Text variant="muted" fontSize="lg">
+        <Text variant="muted" fontSize="lg" weight="light">
           Get updates, exclusive offers, and expert insights delivered to your
           inbox. Subscribe to our newsletter for the latest news and promotions!
         </Text>
@@ -37,7 +37,7 @@ export const Newsletter = () => (
           <CalendarDays className="size-full" strokeWidth={1.5} />
         </div>
         <Headline level="3">Weekly articles</Headline>
-        <Text variant="muted">
+        <Text variant="muted" weight="light">
           Every week, get curated articles covering the latest trends, tips, and
           insights.
         </Text>
@@ -47,7 +47,7 @@ export const Newsletter = () => (
           <MailCheck className="size-full" strokeWidth={1.5} />
         </div>
         <Headline level="3">No spam</Headline>
-        <Text variant="muted">
+        <Text variant="muted" weight="light">
           Enjoy valuable content with no spam, just insights and offers tailored
           for you. Unsubscribe anytime.
         </Text>
