@@ -1,11 +1,4 @@
-export interface Person {
-  id: string;
-  name: string;
-  jobTitle: string;
-  avatar: string;
-}
-
-export const people: Person[] = [
+export const people = [
   {
     id: 'alice',
     name: 'Alice Johnson',
@@ -54,4 +47,6 @@ export const people: Person[] = [
     jobTitle: 'Frontend Developer',
     avatar: 'https://i.pravatar.cc/150?img=24',
   },
-];
+] as const;
+
+export type Person = (typeof people)[number];

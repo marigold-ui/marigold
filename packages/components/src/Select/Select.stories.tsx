@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { people } from 'docs/lib/data/people';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
@@ -365,6 +364,27 @@ export const WithBadges: StoryObj<typeof Select> = {
     </Select>
   ),
 };
+
+const people = [
+  {
+    id: 'alice',
+    name: 'Alice Johnson',
+    jobTitle: 'Product Manager',
+    avatar: 'https://i.pravatar.cc/150?img=1',
+  },
+  {
+    id: 'bob',
+    name: 'Bob Smith',
+    jobTitle: 'Senior Developer',
+    avatar: 'https://i.pravatar.cc/150?img=12',
+  },
+  {
+    id: 'charlie',
+    name: 'Charlie Davis',
+    jobTitle: 'UX Designer',
+    avatar: 'https://i.pravatar.cc/150?img=5',
+  },
+];
 
 export const WithImages: StoryObj<typeof Select> = {
   render: args => (
