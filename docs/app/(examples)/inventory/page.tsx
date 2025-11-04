@@ -3,6 +3,7 @@ import { ContactForm } from './ContactForm';
 import { FAQ } from './FAQ';
 import { Newsletter } from './Newsletter';
 import { OurMission } from './OurMission';
+import { Settings } from './Settings';
 
 const InventoryPage = () => (
   <div className="mx-auto grid max-w-6xl gap-48 py-6">
@@ -11,6 +12,7 @@ const InventoryPage = () => (
     <Blog />
     <ContactForm />
     <FAQ />
+    <Settings />
   </div>
 );
 
@@ -24,4 +26,7 @@ export default InventoryPage;
  * - improve fontweight usage? e.g. light?
  * - when using left icon in accordion, should the content automatically be inset?
  * - accordion needs variants with "relaxed" spacing
+ * - columns: convert to modern css with grid (columns are more flexible, e.g. min-content)? collapse with container query
+ * - automatic style for svgs in tab items (see settings example)
+ * - select: use field size as default width?
  */
