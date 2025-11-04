@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { people } from 'docs/lib/data/people';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
 import { expect, waitFor, within } from 'storybook/test';
@@ -318,57 +319,72 @@ export const SelectedScroll: StoryObj<typeof Select> = {
   },
 };
 
-export const Status: StoryObj<typeof Select> = {
-  render: function StatusExample(args) {
-    const [status, setStatus] = useState<any>('');
-    return (
-      <Stack space={6}>
-        <Select
-          {...args}
-          label="Project Status"
-          placeholder="Select a status"
-          onChange={setStatus}
-          width={80}
-        >
-          <Select.Option id="draft">
-            <Inline space={3} alignY="center">
-              <Text slot="label">Draft</Text>
-              <Badge variant="info">In Progress</Badge>
-            </Inline>
-            <Text slot="description">Work in progress</Text>
-          </Select.Option>
-          <Select.Option id="review">
-            <Inline space={3} alignY="center">
-              <Text>In Review</Text>
-              <Badge variant="warning">Pending</Badge>
-            </Inline>
-            <Text slot="description">Awaiting review</Text>
-          </Select.Option>
-          <Select.Option id="approved">
-            <Inline space={3} alignY="center">
-              <Text>Approved</Text>
-              <Badge variant="success">Ready</Badge>
-            </Inline>
-            <Text slot="description">Approved for release</Text>
-          </Select.Option>
-          <Select.Option id="published">
-            <Inline space={3} alignY="center">
-              <Text>Published</Text>
-              <Badge variant="success">Live</Badge>
-            </Inline>
-            <Text slot="description">Released to public</Text>
-          </Select.Option>
-          <Select.Option id="archived">
-            <Inline space={3} alignY="center">
-              <Text>Archived</Text>
-              <Badge>Inactive</Badge>
-            </Inline>
-            <Text slot="description">No longer active</Text>
-          </Select.Option>
-        </Select>
-        <hr />
-        <pre>selected status: {status}</pre>
-      </Stack>
-    );
-  },
+export const WithBadges: StoryObj<typeof Select> = {
+  render: args => (
+    <Select
+      {...args}
+      label="Project Status"
+      placeholder="Select a status"
+      width={80}
+    >
+      <Select.Option id="draft">
+        <Inline space={3} alignY="center">
+          <Text slot="label">Draft</Text>
+          <Badge variant="info">In Progress</Badge>
+        </Inline>
+        <Text slot="description">Work in progress</Text>
+      </Select.Option>
+      <Select.Option id="review">
+        <Inline space={3} alignY="center">
+          <Text>In Review</Text>
+          <Badge variant="warning">Pending</Badge>
+        </Inline>
+        <Text slot="description">Awaiting review</Text>
+      </Select.Option>
+      <Select.Option id="approved">
+        <Inline space={3} alignY="center">
+          <Text>Approved</Text>
+          <Badge variant="success">Ready</Badge>
+        </Inline>
+        <Text slot="description">Approved for release</Text>
+      </Select.Option>
+      <Select.Option id="published">
+        <Inline space={3} alignY="center">
+          <Text>Published</Text>
+          <Badge variant="success">Live</Badge>
+        </Inline>
+        <Text slot="description">Released to public</Text>
+      </Select.Option>
+      <Select.Option id="archived">
+        <Inline space={3} alignY="center">
+          <Text slot="label">Archived</Text>
+          <Badge>Inactive</Badge>
+        </Inline>
+        <Text slot="description">No longer active</Text>
+      </Select.Option>
+    </Select>
+  ),
+};
+
+export const WithImages: StoryObj<typeof Select> = {
+  render: args => (
+    <Select
+      {...args}
+      label="Assign to User"
+      placeholder="Select a user"
+      width={80}
+    >
+      {people.map(person => (
+        <Select.Option key={person.id} id={person.id}>
+          <img
+            src={person.avatar}
+            alt={person.name}
+            className="size-6 rounded-full object-cover"
+          />
+          <Text slot="label">{person.name}</Text>
+          <Text slot="description">{person.jobTitle}</Text>
+        </Select.Option>
+      ))}
+    </Select>
+  ),
 };

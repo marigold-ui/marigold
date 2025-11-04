@@ -13,7 +13,6 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
     'focus-visible:util-focus-ring outline-none focus-visible:z-1',
     'cursor-default data-selection-mode:cursor-pointer',
-    '[&:has([slot=description])]:items-start',
     '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-muted-foreground',
   ]),
   section: cva(''),
