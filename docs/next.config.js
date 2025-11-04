@@ -4,7 +4,11 @@ const pkg = require('./package.json');
 const nextConfig = {
   reactStrictMode: false,
   distDir: '.next',
-  transpilePackages: ['@marigold/components', '@marigold/system'],
+  transpilePackages: [
+    '@marigold/components',
+    '@marigold/system',
+    '@marigold/theme-docs',
+  ],
   env: {
     version: pkg.version,
   },
