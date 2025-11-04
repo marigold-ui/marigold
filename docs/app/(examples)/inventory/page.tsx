@@ -1,13 +1,14 @@
-import { Stack } from '@/ui';
+import { Blog } from './Blog';
+import { CallToAction } from './CallToActions';
 import { Newsletter } from './Newsletter';
 import { OurMission } from './OurMission';
 
 const FilterPage = () => (
-  <div className="mx-auto max-w-6xl py-6">
-    <Stack space={32}>
-      <OurMission />
-      <Newsletter />
-    </Stack>
+  <div className="mx-auto grid max-w-6xl gap-48 py-6">
+    <OurMission />
+    <CallToAction />
+    <Newsletter />
+    <Blog />
   </div>
 );
 
