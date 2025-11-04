@@ -600,8 +600,6 @@ importers:
         specifier: 0.15.9
         version: 0.15.9(typescript@5.9.3)
 
-  packages/theme-plugins: {}
-
   packages/types:
     dependencies:
       type-fest:
@@ -620,9 +618,18 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
-      '@marigold/theme-plugins':
-        specifier: workspace:*
-        version: link:../../packages/theme-plugins
+      '@tailwindcss/typography':
+        specifier: 0.5.19
+        version: 0.5.19(tailwindcss@4.1.15)
+      tailwind-scrollbar:
+        specifier: 4.0.2
+        version: 4.0.2(react@19.2.0)(tailwindcss@4.1.15)
+      tailwindcss-animate:
+        specifier: 1.0.7
+        version: 1.0.7(tailwindcss@4.1.15)
+      tailwindcss-react-aria-components:
+        specifier: 2.0.1
+        version: 2.0.1(tailwindcss@4.1.15)
     devDependencies:
       '@marigold/tsconfig':
         specifier: workspace:*
@@ -654,9 +661,6 @@ importers:
       '@marigold/system':
         specifier: workspace:*
         version: link:../../packages/system
-      '@marigold/theme-plugins':
-        specifier: workspace:*
-        version: link:../../packages/theme-plugins
       tailwindcss-animate:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@4.1.15)
