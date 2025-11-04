@@ -17,7 +17,7 @@ import * as stories from './Select.stories';
 
 // Setup
 // ---------------
-const { Basic, WithImages } = composeStories(stories);
+const { Basic } = composeStories(stories);
 const user = userEvent.setup();
 
 const theme: Theme = {
