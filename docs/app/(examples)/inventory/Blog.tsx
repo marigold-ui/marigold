@@ -15,7 +15,7 @@ const posts = [
     author: {
       name: "Chip 'Pixel' Patterson",
       position: 'Chief Button Herder',
-      image: '/persons/chip-patterson.jpg',
+      image: '/people/chip-patterson.jpg',
     },
     tags: ['ui', 'ux'],
     title:
@@ -28,7 +28,7 @@ const posts = [
     author: {
       name: "Dr. Alex 'Token' Chen",
       position: 'Font Whisperer & Color Alchemist',
-      image: '/persons/alex-chen.jpg',
+      image: '/people/alex-chen.jpg',
     },
     tags: ['tokens', 'css', 'development'],
     title: 'Design Tokens: The Marie Kondo of Your Stylesheet',
@@ -40,7 +40,7 @@ const posts = [
     author: {
       name: "Sandy 'Specs' Vega",
       position: 'Director of Component Choreography',
-      image: '/persons/sandy-vega.jpg',
+      image: '/people/sandy-vega.jpg',
     },
     tags: ['documentation', 'ux writing', 'collaboration'],
     title: "Stop Naming Components Like You're Naming a Pet",

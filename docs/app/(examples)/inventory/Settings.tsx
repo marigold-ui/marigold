@@ -30,7 +30,7 @@ export const Settings = () => (
         <Columns columns={['fit', 1]} space={12}>
           <div className="w-32">
             <img
-              src="/persons/chip-patterson.jpg"
+              src="/people/chip-patterson.jpg"
               alt="Chip Patterson"
               className="block w-32 rounded-full"
             />

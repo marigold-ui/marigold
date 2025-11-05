@@ -1,3 +1,4 @@
+import { people } from '@/lib/data/people';
 import { amenitiesOptions, venues } from '@/lib/data/venues';
 import {
   Badge,
@@ -147,6 +148,12 @@ export const FormExample = () => (
             </Stack>
           </Columns>
         </Card>
+        <Inline space={2}>
+          <Badge>basic</Badge>
+          <Badge variant="success">free</Badge>
+          <Badge variant="error">on sale</Badge>
+          <Badge variant="info">recommended</Badge>
+        </Inline>
         <Inline space="fieldX" noWrap>
           <SearchField
             aria-label="Search products"
@@ -154,18 +161,31 @@ export const FormExample = () => (
           />
           <Button variant="primary">Search</Button>
         </Inline>
-        <Inline space={2}>
-          <Badge>basic</Badge>
-          <Badge variant="success">free</Badge>
-          <Badge variant="error">on sale</Badge>
-          <Badge variant="info">recommended</Badge>
-        </Inline>
+        <Select label="Assign to User" placeholder="Select a user" width={80}>
+          {people.map(person => (
+            <Select.Option
+              key={person.id}
+              id={person.id}
+              textValue={person.name}
+            >
+              <Inline space={2} alignY="center">
+                <img
+                  src={person.avatar}
+                  alt={person.name}
+                  className="size-6 rounded-full object-cover"
+                />
+                <Text slot="label">{person.name}</Text>
+              </Inline>
+              <Text slot="description">{person.jobTitle}</Text>
+            </Select.Option>
+          ))}
+        </Select>
         <Slider
           label="Price Range"
           minValue={0}
           maxValue={1000}
           step={10}
-          defaultValue={[300, 500]}
+          defaultValue={[150, 700]}
           description="Set your preferred budget range."
           formatOptions={{
             style: 'currency',
