@@ -72,14 +72,12 @@ export const Basic: Story = {
     </Dialog.Trigger>
   ),
   play: async ({ canvas, userEvent }) => {
-    const user = userEvent;
-
     // Open the dialog
-    await user.click(canvas.getByRole('button', { name: 'Open' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
     await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
 
     // Close the dialog
-    await user.click(canvas.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
     await waitFor(() =>
       expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
     );
@@ -321,10 +319,7 @@ export const VeryLongContent: Story = {
       </Dialog.Trigger>
     );
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // Open the dialog
+  play: async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByText('Open Dialog with Long Content'));
 
     // Wait for dialog to appear in the DOM
@@ -347,5 +342,8 @@ export const VeryLongContent: Story = {
     // Test scroll functionality - scroll to bottom
     dialogContent.scrollTop = dialogContent.scrollHeight;
     expect(dialogContent.scrollTop).toBeGreaterThan(0);
+
+    // Close the dialog
+    await userEvent.click(canvas.getByRole('button', { name: 'Decline' }));
   },
 };
