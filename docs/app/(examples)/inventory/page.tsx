@@ -10,7 +10,7 @@ import { OurMission } from './OurMission';
 import { Settings } from './Settings';
 
 const InventoryPage = () => (
-  <div className="mx-auto grid max-w-6xl gap-48 py-6">
+  <div className="mx-auto grid max-w-6xl gap-48">
     <FormExample />
     <Divider />
     <OurMission />
@@ -35,4 +35,6 @@ export default InventoryPage;
  * - columns: convert to modern css with grid (columns are more flexible, e.g. min-content)? collapse with container query
  * - automatic style for svgs in tab items (see settings example)
  * - select: use field size as default width?
+ * - radio: should it also have a label?
+ * - listbox: custom scrollbar (no background at least)
  */
