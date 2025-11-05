@@ -20,11 +20,15 @@ export const UserTable = () => (
           email and role.
         </Text>
       </Stack>
-      <Button variant="primary" size="large">
+      <Button variant="primary">
         <UserRoundPlus /> Add user
       </Button>
     </Inline>
-    <Table stretch>
+    <Table
+      selectionMode="multiple"
+      stretch
+      defaultSelectedKeys={[people[0].id, people[1].id]}
+    >
       <Table.Header>
         <Table.Column>Name</Table.Column>
         <Table.Column>Email</Table.Column>
