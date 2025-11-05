@@ -38,4 +38,5 @@ export default InventoryPage;
  * - radio: should it also have a label?
  * - listbox: custom scrollbar (no background at least)
  * - select: make it possible to adjust what is rendered in the selected value
+ * - menu: divider is missing
  */

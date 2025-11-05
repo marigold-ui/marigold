@@ -1,17 +1,30 @@
 import { people } from '@/lib/data/people';
 import { amenitiesOptions, venueTypes, venues } from '@/lib/data/venues';
+import { CalendarDate } from '@internationalized/date';
 import {
+  CalendarPlus,
+  CircleQuestionMark,
+  MapPin,
+  Share2,
+  TicketMinus,
+  Tickets,
+} from 'lucide-react';
+import {
+  ActionMenu,
   Badge,
   Button,
   Card,
+  Checkbox,
   Columns,
   ComboBox,
+  DatePicker,
   Divider,
   Form,
   Headline,
   Inline,
   NumberField,
   NumericFormat,
+  Pagination,
   Radio,
   SearchField,
   SectionMessage,
@@ -213,6 +226,38 @@ export const Inventory = () => (
             </Tag>
           ))}
         </Tag.Group>
+        <Checkbox
+          label="Include sold items"
+          defaultChecked
+          description="Show items that are sold out"
+        />
+        <DatePicker
+          label="Event Date"
+          defaultValue={new CalendarDate(2026, 6, 3)}
+        />
+        <Inline space={2} noWrap>
+          <Button variant="primary">
+            <Tickets /> View tickets
+          </Button>
+          <Button>
+            <MapPin /> Get directions
+          </Button>
+          <ActionMenu>
+            <ActionMenu.Item id="share">
+              <Share2 /> Share event
+            </ActionMenu.Item>
+            <ActionMenu.Item id="calendar">
+              <CalendarPlus /> Add to calendar
+            </ActionMenu.Item>
+            <ActionMenu.Item id="support">
+              <CircleQuestionMark /> Contact support
+            </ActionMenu.Item>
+            <ActionMenu.Item id="cancel" variant="destructive">
+              <TicketMinus /> Cancel event
+            </ActionMenu.Item>
+          </ActionMenu>
+        </Inline>
+        <Pagination page={2} pageSize={1} totalItems={4} />
       </Stack>
     </Columns>
   </Form>
