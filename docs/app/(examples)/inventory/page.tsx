@@ -3,6 +3,7 @@
 import { Divider } from '@marigold/components';
 import { Blog } from './Blog';
 import { ContactForm } from './ContactForm';
+import { ContactTiles } from './ContactTiles';
 import { FAQ } from './FAQ';
 import { Inventory } from './Inventory';
 import { Newsletter } from './Newsletter';
@@ -21,6 +22,7 @@ const InventoryPage = () => (
     <FAQ />
     <Settings />
     <UserTable />
+    <ContactTiles />
   </div>
 );
 
