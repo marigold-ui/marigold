@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Menu } from '../Menu/Menu';
 import { Text } from '../Text/Text';
