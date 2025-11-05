@@ -1,7 +1,7 @@
-import React from 'react';
 import { cn, useClassNames } from '@marigold/system';
-import { IconButton } from '../IconButton';
-import { ChevronLeft, ChevronRight } from '../icons';
+import { IconButton } from '../IconButton/IconButton';
+import { ChevronLeft } from '../icons/ChevronLeft';
+import { ChevronRight } from '../icons/ChevronRight';
 
 function MonthControls() {
   const classNames = useClassNames({ component: 'Calendar' });
@@ -18,14 +18,14 @@ function MonthControls() {
         variant="navigation"
         slot="previous"
       >
-        <ChevronLeft />
+        <ChevronLeft size="20" />
       </IconButton>
       <IconButton
         className={cn('inline-flex items-center justify-center gap-[0.5ch]')}
         variant="navigation"
         slot="next"
       >
-        <ChevronRight />
+        <ChevronRight size="20" />
       </IconButton>
     </div>
   );

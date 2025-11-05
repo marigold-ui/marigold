@@ -68,7 +68,8 @@ export const width = {
   '9/12': 'w-9/12',
   '10/12': 'w-10/12',
   '11/12': 'w-11/12',
-};
+  container: 'var(--spacing-container)',
+} as const;
 
 export const maxWidth = {
   auto: 'max-w-auto',
@@ -140,7 +141,8 @@ export const maxWidth = {
   '9/12': 'max-w-9/12',
   '10/12': 'max-w-10/12',
   '11/12': 'max-w-11/12',
-};
+  container: 'max-w-[var(--spacing-container)]',
+} as const;
 
 export const height = {
   auto: 'h-auto',
@@ -212,7 +214,7 @@ export const height = {
   '9/12': 'h-9/12',
   '10/12': 'h-10/12',
   '11/12': 'h-11/12',
-};
+} as const;
 
 export const fontWeight = {
   thin: 'font-thin',
@@ -224,7 +226,7 @@ export const fontWeight = {
   bold: 'font-bold',
   extrabold: 'font-extrabold',
   black: 'font-black',
-};
+} as const;
 
 export const textSize = {
   xs: 'text-xs',
@@ -240,18 +242,27 @@ export const textSize = {
   '7xl': 'text-7xl',
   '8xl': 'text-8xl',
   '9xl': 'text-9xl',
-};
+} as const;
 
 export const textStyle = {
   italic: 'italic',
   normal: 'not-italic',
-};
+} as const;
 
 export const textWrap = {
   wrap: 'text-wrap',
   noWrap: 'text-nowrap',
   balance: 'text-balance',
   pretty: 'text-pretty',
+} as const;
+
+export const whiteSpace = {
+  normal: 'whitespace-normal',
+  nowrap: 'whitespace-nowrap',
+  pre: 'whitespace-pre',
+  preLine: 'whitespace-pre-line',
+  preWrap: 'whitespace-pre-wrap',
+  breakSpaces: 'whitespace-break-spaces',
 };
 
 export const gapSpace = {
@@ -289,7 +300,12 @@ export const gapSpace = {
   72: 'gap-72',
   80: 'gap-80',
   96: 'gap-96',
-};
+  section: 'gap-[var(--spacing-section)]',
+  fieldY: 'gap-[var(--spacing-field-Y)]',
+  fieldX: 'gap-[var(--spacing-field-X)]',
+  container: 'gap-[var(--spacing-container)]',
+  group: 'gap-[var(--spacing-group)]',
+} as const;
 
 export const paddingSpace = {
   0: 'p-0',
@@ -326,7 +342,8 @@ export const paddingSpace = {
   72: 'p-72',
   80: 'p-80',
   96: 'p-96',
-};
+} as const;
+
 export const paddingSpaceX = {
   0: 'px-0',
   '0.5': 'px-0.5',
@@ -362,7 +379,8 @@ export const paddingSpaceX = {
   72: 'px-72',
   80: 'px-80',
   96: 'px-96',
-};
+} as const;
+
 export const paddingSpaceY = {
   0: 'py-0',
   '0.5': 'py-0.5',
@@ -398,7 +416,12 @@ export const paddingSpaceY = {
   72: 'py-72',
   80: 'py-80',
   96: 'py-96',
-};
+  section: 'py-[var(--spacing-section)]',
+  fieldY: 'py-[var(--spacing-field-Y)]',
+  fieldX: 'py-[var(--spacing-field-X)]',
+  container: 'py-[var(--spacing-container)]',
+  group: 'py-[var(--spacing-group)]',
+} as const;
 
 export const paddingRight = {
   0: 'pr-0',
@@ -435,7 +458,7 @@ export const paddingRight = {
   72: 'pr-72',
   80: 'pr-80',
   96: 'pr-96',
-};
+} as const;
 
 export const paddingLeft = {
   0: 'pl-0',
@@ -472,7 +495,7 @@ export const paddingLeft = {
   72: 'pl-72',
   80: 'pl-80',
   96: 'pl-96',
-};
+} as const;
 
 export const paddingTop = {
   0: 'pt-0',
@@ -509,7 +532,7 @@ export const paddingTop = {
   72: 'pt-72',
   80: 'pt-80',
   96: 'pt-96',
-};
+} as const;
 
 export const paddingBottom = {
   0: 'pb-0',
@@ -546,7 +569,7 @@ export const paddingBottom = {
   72: 'pb-72',
   80: 'pb-80',
   96: 'pb-96',
-};
+} as const;
 
 export const alignment = {
   vertical: {
@@ -559,6 +582,9 @@ export const alignment = {
       top: 'justify-start',
       center: 'justify-center',
       bottom: 'justify-end',
+      between: 'justify-between',
+      around: 'justify-around',
+      evenly: 'justify-evenly',
     },
   },
   horizontal: {
@@ -571,23 +597,26 @@ export const alignment = {
       left: 'justify-start',
       center: 'justify-center',
       right: 'justify-end',
+      between: 'justify-between',
+      around: 'justify-around',
+      evenly: 'justify-evenly',
     },
   },
-};
+} as const;
 
 export const placeItems = {
   none: undefined,
   left: 'place-items-start',
   center: 'place-items-center',
   right: 'place-items-end',
-};
+} as const;
 
 export const textAlign = {
   none: undefined,
   left: 'text-left',
   center: 'text-center',
   right: 'text-right',
-};
+} as const;
 
 export const aspect = {
   square: 'aspect-[1]',
@@ -596,7 +625,7 @@ export const aspect = {
   widescreen: 'aspect-16/9',
   ultrawide: 'aspect-18/5',
   golden: 'aspect-[1.6180/1]',
-};
+} as const;
 
 export const cursorStyle = {
   auto: 'cursor-auto',
@@ -624,7 +653,7 @@ export const cursorStyle = {
   nsResize: 'cursor-ns-resize',
   zoomIn: 'cursor-zoom-in',
   zoomOut: 'cursor-zoom-out',
-};
+} as const;
 
 export type AspectProp = { ratio?: keyof typeof aspect };
 export type AlignmentProp = {
@@ -658,6 +687,13 @@ export type TextWrapProp = {
    * Set text wrapping behavior.
    */
   wrap?: keyof typeof textWrap;
+};
+
+export type WhiteSpaceProps = {
+  /**
+   * Set how white space inside the element is handled.
+   */
+  whiteSpace?: keyof typeof whiteSpace;
 };
 
 export type FontWeightProp = {

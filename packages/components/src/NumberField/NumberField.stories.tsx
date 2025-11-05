@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { Inline } from '../Inline';
+import { Inline } from '../Inline/Inline';
 import { NumberField } from './NumberField';
 
 const meta = {

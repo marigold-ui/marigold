@@ -1,4 +1,4 @@
-import { Theme } from './types';
+import { Theme } from './types/theme';
 
 export const defaultTheme = {
   name: 'default',

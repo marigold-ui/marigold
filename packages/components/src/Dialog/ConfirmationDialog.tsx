@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { chain } from '@react-aria/utils';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 import { intlMessages } from '../intl/messages';
 import type { DialogProps } from './Dialog';
 import { Dialog } from './Dialog';

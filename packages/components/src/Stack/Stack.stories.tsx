@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
-import { Headline } from '../Headline';
-import { Text } from '../Text';
+import { alignment } from '@marigold/system';
+import { Headline } from '../Headline/Headline';
+import { Text } from '../Text/Text';
 import { Stack } from './Stack';
 
 const meta = {
@@ -18,14 +19,14 @@ const meta = {
       control: {
         type: 'select',
       },
-      options: ['none', 'left', 'center', 'right'],
+      options: Object.keys(alignment.vertical.alignmentX),
       description: 'Horizontal Alignment',
     },
     alignY: {
       control: {
         type: 'select',
       },
-      options: ['none', 'top', 'center', 'bottom'],
+      options: Object.keys(alignment.vertical.alignmentY),
       description: 'Vertical Alignment',
     },
     stretch: {

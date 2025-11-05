@@ -15,6 +15,11 @@ export const Pagination: ThemeComponent<'Pagination'> = {
     ...button,
     'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground',
     'h-9 py-2 gap-1 px-2.5',
+    /**
+     * Removes the spacing from the button when when there are hidden
+     * elements (e.g. the hidden elements for accessibility).
+     */
+    'has-[+_[hidden]]:mr-0',
   ]),
   pageButton: cva([
     ...button,

@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Form } from '../Form';
+import { Form } from '../Form/Form';
 import * as stories from './TagGroup.stories';
 
 const { Basic } = composeStories(stories);
@@ -58,7 +58,7 @@ test('should navigate with keyboard keys through items', async () => {
 test('renders label', () => {
   render(<Basic aria-label="tag group" label="Categories" />);
 
-  const label = screen.queryByLabelText('Categories');
+  const label = screen.queryByLabelText(/Categories/i);
   expect(label).toBeInTheDocument();
 });
 

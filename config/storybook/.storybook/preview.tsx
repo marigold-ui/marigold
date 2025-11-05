@@ -53,10 +53,12 @@ export const decorators: any = [
     return (
       <MarigoldProvider
         theme={THEME[theme as ThemeNames]}
-        className="bg-bg-surface"
+        className="h-screen p-6"
       >
         <OverlayContainerProvider container="storybook-root">
-          <div className="h-screen p-6">{Story()}</div>
+          <div className="h-screen p-6">
+            <Story />
+          </div>
         </OverlayContainerProvider>
       </MarigoldProvider>
     );

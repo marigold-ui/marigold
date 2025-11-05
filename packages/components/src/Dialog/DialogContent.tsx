@@ -17,7 +17,13 @@ export const DialogContent = ({
 }: DialogContentProps) => {
   const classNames = useClassNames({ component: 'Dialog', variant, size });
   return (
-    <div className={cn('[grid-area:content]', classNames.content)}>
+    <div
+      className={cn(
+        'min-h-0 overflow-auto [grid-area:content]',
+        classNames.content
+      )}
+      data-testid="dialog-content"
+    >
       {children}
     </div>
   );

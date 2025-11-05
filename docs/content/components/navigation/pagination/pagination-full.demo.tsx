@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Inline,
   Pagination,
@@ -75,8 +75,8 @@ export default (paginationProps: PaginationProps, tableProps: TableProps) => {
             <Text fontSize="sm">Results per page</Text>
             <Select
               width={'fit'}
-              selectedKey={pageSize.toString()}
-              onChange={val => setPageSize(parseInt(val.toString()))}
+              value={pageSize.toString()}
+              onChange={val => setPageSize(parseInt(`${val}`))}
             >
               <Select.Option id="10">10</Select.Option>
               <Select.Option id="20">20</Select.Option>

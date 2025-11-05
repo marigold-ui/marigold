@@ -1,5 +1,73 @@
 # @marigold/components
 
+## 15.4.3
+
+### Patch Changes
+
+- @marigold/system@15.4.3
+
+## 15.4.2
+
+### Patch Changes
+
+- @marigold/system@15.4.2
+
+## 15.4.1
+
+### Patch Changes
+
+- d710177: fix(drawer): Fix drawer styles for some enviroments
+  - @marigold/system@15.4.1
+
+## 15.4.0
+
+### Minor Changes
+
+- e985fe2: feat([DST-1091]): Add multiselection mode to `<Select>`
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
+- 025d6e9: fix([DST-1095]): Don't break table header when sorting indicator is shown and use `cursor` when sortable
+- ffbebd0: refa([DST-1099]): Adjust icons sizes in some components to bette fit their container.
+- 9ec4620: fix([DSTSUP-193]): update Inline components `alignY=input` now also alignes with input elements regardless of description
+- 77e0417: fix([DST-1078]): Fix scrolling within `<ContextualHelp>`
+- Updated dependencies [f621653]
+- Updated dependencies [e985fe2]
+- Updated dependencies [77e0417]
+  - @marigold/system@15.4.0
+  - @marigold/types@1.4.0
+
+## 15.3.0
+
+### Minor Changes
+
+- 95b55b8: feat([DST-1074]): Introduce a `useConfirmation` hook to conveniently open confirmation dialogs
+- bad3ef4: feat([DST-1056]): Add a helper to conveniently parse form data
+- 4395d2e: feat([DST-1047]): Improve `<List>` styles and add `small` variant
+- 97adc14: feat([DST-1061]): Add more alignment options to `<Inline>`, `<Stack>` and `<Grid>`
+- 91a5e7b: feat([DST-1044]): Introduce `LinkButton` component
+- baf550b: feat([DST-940]): Introduce `<Drawer>` component
+
+  Added `<Drawer>` component along with usage guideline and stories. The drawer offers a consisten way to present secondary content in a non-blocking way.
+
+- 4ccbec2: feat([DST-1077]): Add white space control to `<Text>`
+- 5e62b84: feat([DST-1051]): Introduce `ConfirmationDialog`
+- beeba04: feat([DST-1042]): Add "destrutive" variant to `<Menu.Item>`
+
+### Patch Changes
+
+- c6fb6c2: feat: Expose `TimeValue` types
+- ba5f502: feat([DST-1069]): Add `noWrap` prop to `<Inline>`
+- 061b5e9: feat([DST-1050]): Card master and adminmark variant
+- ce996ae: feat([DSTSUP-185]): added `stickyHeader`and `iconPosition`props to `Accordion`
+- Updated dependencies [97adc14]
+- Updated dependencies [4ccbec2]
+  - @marigold/system@15.3.0
+
 ## 15.2.0
 
 ### Patch Changes

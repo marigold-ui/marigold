@@ -5,7 +5,7 @@ import * as stories from './Accordion.stories';
 
 // Setup
 // ---------------
-const { Basic, ComplexSingleSelect } = composeStories(stories);
+const { Basic, ComplexSingleSelect, StickyHeader } = composeStories(stories);
 const user = userEvent.setup();
 
 test('render Accordion and more than one Item', () => {
@@ -73,4 +73,21 @@ test('support default expanded keys (more than one)', () => {
 
   expect(item).toBeInTheDocument();
   expect(itemtwo).toBeInTheDocument();
+});
+
+test('renders sticky header wrapper with expected utility classes', () => {
+  render(<StickyHeader />);
+
+  const trigger = screen.getByRole('button', {
+    name: /Symfonie Abo 2025\/2026/i,
+  });
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const stickyWrapper = trigger.closest('div');
+
+  expect(stickyWrapper).toHaveClass('sticky');
+  expect(stickyWrapper).toHaveClass('top-0');
+  expect(stickyWrapper).toHaveClass('z-1');
+  expect(stickyWrapper).toHaveClass('backdrop-blur-xs');
+  expect(stickyWrapper).toHaveClass('bg-background/90');
 });

@@ -28,12 +28,6 @@ export interface RadioProps extends Omit<RAC.RadioProps, RemovedProps> {
   disabled?: RAC.RadioProps['isDisabled'];
 }
 
-const Dot = () => (
-  <svg viewBox="0 0 6 6">
-    <circle fill="currentColor" cx="3" cy="3" r="3" />
-  </svg>
-);
-
 interface IconProps {
   className?: string;
   checked?: boolean;
@@ -42,13 +36,13 @@ interface IconProps {
 const Icon = ({ checked, className, ...props }: IconProps) => (
   <div
     className={cn(
-      'bg-secondary-50 flex h-4 w-4 items-center justify-center rounded-[50%] border p-1',
+      'flex h-4 w-4 items-center justify-center rounded-full border p-1',
       className
     )}
     aria-hidden="true"
     {...props}
   >
-    {checked ? <Dot /> : null}
+    {checked ? <div className="size-full rounded-full bg-current" /> : null}
   </div>
 );
 

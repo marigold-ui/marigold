@@ -1,5 +1,30 @@
 # @marigold/system
 
+## 15.4.3
+
+## 15.4.2
+
+## 15.4.1
+
+## 15.4.0
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
+- 77e0417: fix([DST-1078]): Fix scrolling within `<ContextualHelp>`
+- Updated dependencies [e985fe2]
+  - @marigold/types@1.4.0
+
+## 15.3.0
+
+### Minor Changes
+
+- 97adc14: feat([DST-1061]): Add more alignment options to `<Inline>`, `<Stack>` and `<Grid>`
+- 4ccbec2: feat([DST-1077]): Add white space control to `<Text>`
+
 ## 15.2.0
 
 ## 15.1.0

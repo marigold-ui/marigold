@@ -1,15 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import {
-  Inline,
-  Select,
-  Split,
-  Stack,
-  Table,
-  Text,
-} from '@marigold/components';
+import { Inline } from '../Inline/Inline';
+import { Select } from '../Select/Select';
+import { Split } from '../Split/Split';
+import { Stack } from '../Stack/Stack';
+import { Table } from '../Table/Table';
+import { Text } from '../Text/Text';
 import { Pagination, PaginationProps } from './Pagination';
 
 const meta = {
@@ -263,8 +260,8 @@ export const WithTable: Story = {
               <Text fontSize="sm">Results per page</Text>
               <Select
                 width={'fit'}
-                selectedKey={pageSize.toString()}
-                onChange={val => setPageSize(parseInt(val.toString()))}
+                value={pageSize.toString()}
+                onChange={val => setPageSize(parseInt(`${val}`))}
               >
                 <Select.Option id="10">10</Select.Option>
                 <Select.Option id="20">20</Select.Option>

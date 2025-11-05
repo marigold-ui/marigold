@@ -3,8 +3,8 @@ import { screen } from '@testing-library/react';
 import React from 'react';
 import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
-import { Button } from '../Button';
-import { Text } from '../Text';
+import { Button } from '../Button/Button';
+import { Text } from '../Text/Text';
 import { setup } from '../test.utils';
 import { Popover } from './Popover';
 

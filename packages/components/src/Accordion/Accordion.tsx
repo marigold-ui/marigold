@@ -1,5 +1,5 @@
-import { DisclosureGroup } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { DisclosureGroup } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { AccordionProvider } from './AccordionContext';
 import { AccordionHeader } from './AccordionHeader';
@@ -13,6 +13,8 @@ export interface AccordionProps
   disabled?: RAC.DisclosureGroupProps['isDisabled'];
   variant?: 'default' | 'card' | (string & {});
   size?: string;
+  stickyHeader?: boolean;
+  iconPosition?: 'right' | 'left';
 }
 
 export const Accordion = ({
@@ -20,12 +22,16 @@ export const Accordion = ({
   disabled,
   variant,
   size,
+  stickyHeader = false,
+  iconPosition = 'right',
   ...props
 }: AccordionProps) => {
   const classNames = useClassNames({ component: 'Accordion', variant, size });
 
   return (
-    <AccordionProvider value={{ classNames }}>
+    <AccordionProvider
+      value={{ classNames, stickyHeader: stickyHeader, iconPosition }}
+    >
       <DisclosureGroup
         {...props}
         isDisabled={disabled}

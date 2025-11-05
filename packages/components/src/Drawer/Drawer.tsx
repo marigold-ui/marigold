@@ -5,7 +5,7 @@ import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
-import { CloseButton } from '../CloseButton';
+import { CloseButton } from '../CloseButton/CloseButton';
 import { DrawerContext } from './Context';
 import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
@@ -100,7 +100,8 @@ export const Drawer = ({
           {...(landmarkProps as any)}
           className={cn(
             'h-(--visual-viewport-height) outline-none',
-            'grid [grid-template-areas:"title"_"content"_"actions"]',
+            // Use single quotes, in some enviroments the class is not correctly applied otherwise
+            "grid [grid-template-areas:'title'_'content'_'actions']",
             classNames.container
           )}
           data-placement={placement}

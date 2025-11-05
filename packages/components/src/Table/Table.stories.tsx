@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
-import type { Selection } from '@marigold/components';
-import { TextArea } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';
-import { Badge } from '../Badge';
-import { Button } from '../Button';
-import { Center } from '../Center';
-import { Checkbox } from '../Checkbox';
-import { Scrollable } from '../Scrollable';
-import { Select } from '../Select';
-import { Stack } from '../Stack';
-import { Table } from '../Table';
-import { Text } from '../Text';
+import { Badge } from '../Badge/Badge';
+import { Button } from '../Button/Button';
+import { Center } from '../Center/Center';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { Scrollable } from '../Scrollable/Scrollable';
+import { Select } from '../Select/Select';
+import { Stack } from '../Stack/Stack';
+import { Text } from '../Text/Text';
+import { TextArea } from '../TextArea/TextArea';
+import type { Selection } from '../types';
+import { Table } from './Table';
 
 const meta = {
   title: 'Components/Table',

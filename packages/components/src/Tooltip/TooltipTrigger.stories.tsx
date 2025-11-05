@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { useState } from 'storybook/preview-api';
-import { Button } from '../Button';
+import { Button } from '../Button/Button';
 import { Tooltip } from './Tooltip';
 
 const meta = {

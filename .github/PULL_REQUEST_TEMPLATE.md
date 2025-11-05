@@ -11,3 +11,4 @@
 - [ ] Marigold docs and Storybook Preview is available
 - [ ] Added/updated unit tests and storybook for this change (for new code or code which already has tests).
 - [ ] Added/Updated documentation (if it already exists for this component).
+- [ ] Updated visual regression tests (only necessary when ui changes in the PR)

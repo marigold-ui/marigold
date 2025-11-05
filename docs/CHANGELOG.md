@@ -1,5 +1,110 @@
 # @marigold/docs
 
+## 15.4.3
+
+### Patch Changes
+
+- Updated dependencies [2d7f163]
+  - @marigold/theme-docs@3.1.13
+  - @marigold/theme-rui@3.0.3
+  - @marigold/system@15.4.3
+  - @marigold/components@15.4.3
+  - @marigold/icons@1.3.27
+
+## 15.4.2
+
+### Patch Changes
+
+- Updated dependencies [961eaf5]
+  - @marigold/theme-docs@3.1.12
+  - @marigold/theme-rui@3.0.2
+  - @marigold/system@15.4.2
+  - @marigold/components@15.4.2
+  - @marigold/icons@1.3.26
+
+## 15.4.1
+
+### Patch Changes
+
+- Updated dependencies [d710177]
+  - @marigold/components@15.4.1
+  - @marigold/theme-docs@3.1.11
+  - @marigold/theme-rui@3.0.1
+  - @marigold/system@15.4.1
+  - @marigold/icons@1.3.25
+
+## 15.4.0
+
+### Minor Changes
+
+- e985fe2: feat([DST-1091]): Add multiselection mode to `<Select>`
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
+- 64525cd: feat([DST-1045]): Add guides and examples for structuring forms
+- 2f60e36: [DSTSTUP-188]: Extend table sorting example with date values.
+- Updated dependencies [f621653]
+- Updated dependencies [025d6e9]
+- Updated dependencies [ffbebd0]
+- Updated dependencies [35df36a]
+- Updated dependencies [e985fe2]
+- Updated dependencies [9ec4620]
+- Updated dependencies [77e0417]
+  - @marigold/components@15.4.0
+  - @marigold/system@15.4.0
+  - @marigold/theme-rui@3.0.0
+  - @marigold/theme-docs@3.1.10
+  - @marigold/icons@1.3.24
+
+## 15.3.0
+
+### Minor Changes
+
+- 95b55b8: feat([DST-1074]): Introduce a `useConfirmation` hook to conveniently open confirmation dialogs
+- bad3ef4: feat([DST-1056]): Add a helper to conveniently parse form data
+- 91a5e7b: feat([DST-1044]): Introduce `LinkButton` component
+- baf550b: feat([DST-940]): Introduce `<Drawer>` component
+
+  Added `<Drawer>` component along with usage guideline and stories. The drawer offers a consisten way to present secondary content in a non-blocking way.
+
+- 5e62b84: feat([DST-1051]): Introduce `ConfirmationDialog`
+- beeba04: feat([DST-1042]): Add "destrutive" variant to `<Menu.Item>`
+
+### Patch Changes
+
+- 76860f0: docs: remove info message from pagination docs
+- ba5f502: feat([DST-1069]): Add `noWrap` prop to `<Inline>`
+- 061b5e9: feat([DST-1050]): Card master and adminmark variant
+- ce996ae: feat([DSTSUP-185]): added `stickyHeader`and `iconPosition`props to `Accordion`
+- Updated dependencies [95b55b8]
+- Updated dependencies [c6fb6c2]
+- Updated dependencies [bad3ef4]
+- Updated dependencies [fa1f489]
+- Updated dependencies [ba5f502]
+- Updated dependencies [4395d2e]
+- Updated dependencies [217d415]
+- Updated dependencies [97adc14]
+- Updated dependencies [f22bfdd]
+- Updated dependencies [061b5e9]
+- Updated dependencies [91a5e7b]
+- Updated dependencies [baf550b]
+- Updated dependencies [4ccbec2]
+- Updated dependencies [5e62b84]
+- Updated dependencies [89e2b70]
+- Updated dependencies [ce996ae]
+- Updated dependencies [8fa6736]
+- Updated dependencies [beeba04]
+- Updated dependencies [ce13acf]
+  - @marigold/components@15.3.0
+  - @marigold/theme-rui@2.3.0
+  - @marigold/system@15.3.0
+  - @marigold/theme-docs@3.1.9
+  - @marigold/icons@1.3.23
+
 ## 15.2.0
 
 ### Minor Changes

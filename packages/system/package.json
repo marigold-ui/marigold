@@ -1,6 +1,6 @@
 {
   "name": "@marigold/system",
-  "version": "15.2.0",
+  "version": "15.4.3",
   "description": "Marigold System Library",
   "license": "MIT",
   "keywords": [
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@marigold/types": "workspace:*",
-    "@react-aria/i18n": "^3.12.12",
+    "@react-aria/i18n": "^3.12.13",
     "class-variance-authority": "0.7.1",
     "deepmerge": "4.3.1",
     "react-fast-compare": "3.2.2",
@@ -46,17 +46,17 @@
     "react-dom": ">=17.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.4",
+    "@babel/core": "7.28.5",
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "19.1.12",
+    "@types/react": "19.2.2",
     "postcss": "8.5.6",
-    "react": "19.1.1",
-    "tailwindcss": "4.1.12",
-    "tsup": "8.5.0"
+    "react": "19.2.0",
+    "tailwindcss": "4.1.15",
+    "tsdown": "0.15.9"
   },
   "scripts": {
-    "build": "tsup src/index.ts",
-    "watch": "tsup src/index.ts --watch",
+    "build": "tsdown src/index.ts",
+    "watch": "tsdown src/index.ts --watch",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
 }

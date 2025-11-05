@@ -31,7 +31,6 @@ const parser = docgen.withCustomConfig('./tsconfig.json', {
     'ComboBoxComponent',
     'DialogComponent',
     'RadioComponent',
-    'SelectComponent',
     'SelectListComponent',
     'BreadcrumbsComponent',
   ],
@@ -146,13 +145,15 @@ const transformTypeValue = async val => {
   //List of types prettier can't handle see https://prettier.io/playground
   const ignorePrettier = [
     'readonly any[]',
+    'readonly string[]',
     'string | number | readonly string[]',
     'any[]',
     'string | number | readonly string[]',
     'string[]',
     '(number | "fit")[]',
     'TemplateValue[]',
-    '0 | "auto" | "full" | "fit" | "min" | "max" | "screen" | "svh" | "lvh" | "dvh" | "px" | "0.5" | 1 | "1.5" | 2 | "2.5" | 3 | "3.5" | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 14 | 16 | 20 | 24 | 28 | ... 37 more ...',
+    'Key | Key[] | null',
+    '0 | "auto" | "full" | "fit" | "min" | "max" | "screen" | "svh" | "lvh" | "dvh" | "px" | "0.5" | 1 | "1.5" | 2 | "2.5" | 3 | "3.5" | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 14 | 16 | 20 | 24 | 28 | ... 38 more ...',
     '{ vertical?: { alignY?: "none" | "center" | "top" | "bottom"; alignX?: "none" | "left" | "center" | "right"; } | undefined; horizontal?: { alignX?: "none" | "left" | "center" | "right" | undefined; alignY?: "none" | ... 3 more ... | undefined; } | undefined; } | undefined',
     '{ input?: string; action?: string; } | undefined',
     '(path: string, routerOptions: undefined) => void',
@@ -160,7 +161,7 @@ const transformTypeValue = async val => {
     'number | number[]',
     'CellElement | CellElement[] | CellRenderer',
     '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
-    '"Accordion" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | "Headline" | ... 31 more ... | "XLoader"',
+    '"Accordion" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | "Headline" | ... 32 more ... | "FileField"',
     'string | { [slot in keyof ThemeComponent<C>]?: string; }',
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
@@ -222,7 +223,6 @@ const output = {};
 
 for await (const file of files) {
   const docs = parser.parse(file);
-
   if (docs.length === 0) {
     continue;
   }
@@ -237,7 +237,6 @@ for await (const file of files) {
     const { parent, ...val } = props[key];
 
     replacePropName(val);
-
     val.type.value = await transformTypeValue(val);
 
     if (val.defaultValue) {

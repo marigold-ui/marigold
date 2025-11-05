@@ -2,7 +2,6 @@
  * Based on https://theme-ui.com/packages/match-media/
  */
 import { useEffect, useState } from 'react';
-
 /**
  * Hardcode fallback breakpoints, not make sure `useEffect`
  * doesn't trigger on every render. Since it is part of the

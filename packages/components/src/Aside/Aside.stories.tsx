@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { Headline } from '../Headline';
-import { List } from '../List';
-import { Text } from '../Text';
+import { Headline } from '../Headline/Headline';
+import { List } from '../List/List';
+import { Text } from '../Text/Text';
 import { Aside } from './Aside';
 
 const meta = {

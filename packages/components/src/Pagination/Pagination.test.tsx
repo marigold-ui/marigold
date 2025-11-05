@@ -39,19 +39,25 @@ describe('Pagination tests', () => {
               />
               <button
                 aria-label="Page previous"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-4 w-4"
-                  height="24px"
+                  class="shrink-0 h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
-                  width="24px"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M16.8506 18.0244L10.8394 12L16.8506 5.97563L15 4.125L7.125 12L15 19.875L16.8506 18.0244Z"
+                    d="m15 18-6-6 6-6"
                   />
                 </svg>
               </button>
@@ -82,19 +88,25 @@ describe('Pagination tests', () => {
               </div>
               <button
                 aria-label="Page next"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
                 data-react-aria-pressable="true"
                 tabindex="0"
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-4 w-4"
-                  height="24px"
+                  class="shrink-0 h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
-                  width="24px"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M7.125 18.0244L13.1363 12L7.125 5.97563L8.97563 4.125L16.8506 12L8.97563 19.875L7.125 18.0244Z"
+                    d="m9 18 6-6-6-6"
                   />
                 </svg>
               </button>
@@ -130,19 +142,25 @@ describe('Pagination tests', () => {
               />
               <button
                 aria-label="Page previous"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-4 w-4"
-                  height="24px"
+                  class="shrink-0 h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
-                  width="24px"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M16.8506 18.0244L10.8394 12L16.8506 5.97563L15 4.125L7.125 12L15 19.875L16.8506 18.0244Z"
+                    d="m15 18-6-6 6-6"
                   />
                 </svg>
               </button>
@@ -162,19 +180,25 @@ describe('Pagination tests', () => {
               </div>
               <button
                 aria-label="Page next"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
                 data-react-aria-pressable="true"
                 disabled=""
                 type="button"
               >
                 <svg
-                  class="flex-none fill-current h-4 w-4"
-                  height="24px"
+                  class="shrink-0 h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
                   viewBox="0 0 24 24"
-                  width="24px"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M7.125 18.0244L13.1363 12L7.125 5.97563L8.97563 4.125L16.8506 12L8.97563 19.875L7.125 18.0244Z"
+                    d="m9 18 6-6-6-6"
                   />
                 </svg>
               </button>
