@@ -444,19 +444,19 @@ const people = [
   {
     id: 'alice',
     name: 'Alice Johnson',
-    jobTitle: 'Product Manager',
+    position: 'Product Manager',
     avatar: 'https://i.pravatar.cc/150?img=1',
   },
   {
     id: 'bob',
     name: 'Bob Smith',
-    jobTitle: 'Senior Developer',
+    position: 'Senior Developer',
     avatar: 'https://i.pravatar.cc/150?img=12',
   },
   {
     id: 'charlie',
     name: 'Charlie Davis',
-    jobTitle: 'UX Designer',
+    position: 'UX Designer',
     avatar: 'https://i.pravatar.cc/150?img=5',
   },
 ];
@@ -479,7 +479,7 @@ export const WithImages: StoryObj<typeof Select> = {
             />
             <Text slot="label">{person.name}</Text>
           </Inline>
-          <Text slot="description">{person.jobTitle}</Text>
+          <Text slot="description">{person.position}</Text>
         </Select.Option>
       ))}
     </Select>

@@ -161,7 +161,7 @@ export const FormExample = () => (
           />
           <Button variant="primary">Search</Button>
         </Inline>
-        <Select label="Assign to User" placeholder="Select a user" width={80}>
+        <Select label="Assign to User" placeholder="Select a user">
           {people.map(person => (
             <Select.Option
               key={person.id}
@@ -176,7 +176,7 @@ export const FormExample = () => (
                 />
                 <Text slot="label">{person.name}</Text>
               </Inline>
-              <Text slot="description">{person.jobTitle}</Text>
+              <Text slot="description">{person.position}</Text>
             </Select.Option>
           ))}
         </Select>

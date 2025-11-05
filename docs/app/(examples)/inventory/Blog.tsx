@@ -15,7 +15,7 @@ const posts = [
     author: {
       name: "Chip 'Pixel' Patterson",
       position: 'Chief Button Herder',
-      image: '/people/chip-patterson.jpg',
+      avatar: '/people/chip-patterson.jpg',
     },
     tags: ['ui', 'ux'],
     title:
@@ -28,7 +28,7 @@ const posts = [
     author: {
       name: "Dr. Alex 'Token' Chen",
       position: 'Font Whisperer & Color Alchemist',
-      image: '/people/alex-chen.jpg',
+      avatar: '/people/alex-chen.jpg',
     },
     tags: ['tokens', 'css', 'development'],
     title: 'Design Tokens: The Marie Kondo of Your Stylesheet',
@@ -40,14 +40,14 @@ const posts = [
     author: {
       name: "Sandy 'Specs' Vega",
       position: 'Director of Component Choreography',
-      image: '/people/sandy-vega.jpg',
+      avatar: '/people/sandy-vega.jpg',
     },
     tags: ['documentation', 'ux writing', 'collaboration'],
     title: "Stop Naming Components Like You're Naming a Pet",
     abstract:
       "If your design system has a 'MegaChonk-Card-v3-final-FINAL', we need to talk. This post is a intervention. We're diving into the art of writing documentation that people *actually* want to read, how to name things so they make sense, and why 'Button-Primary' is a way better name than 'Sir-Reginald-Clicky-IV'.",
   },
-];
+] as const;
 
 export const Blog = () => (
   <Stack space={12}>
@@ -81,7 +81,7 @@ export const Blog = () => (
           </Stack>
           <Inline space={6} alignY="center">
             <img
-              src={post.author.image}
+              src={post.author.avatar}
               alt={post.author.name}
               className="size-10 rounded-full"
             />
