@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { expect } from 'storybook/test';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
