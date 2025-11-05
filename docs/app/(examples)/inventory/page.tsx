@@ -1,12 +1,18 @@
+'use client';
+
+import { Divider } from '@marigold/components';
 import { Blog } from './Blog';
 import { ContactForm } from './ContactForm';
 import { FAQ } from './FAQ';
+import { FormExample } from './FormExample';
 import { Newsletter } from './Newsletter';
 import { OurMission } from './OurMission';
 import { Settings } from './Settings';
 
 const InventoryPage = () => (
   <div className="mx-auto grid max-w-6xl gap-48 py-6">
+    <FormExample />
+    <Divider />
     <OurMission />
     <Newsletter />
     <Blog />

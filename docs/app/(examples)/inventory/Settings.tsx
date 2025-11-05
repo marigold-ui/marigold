@@ -1,5 +1,3 @@
-'use client';
-
 import { Bell, Shield, UserRound } from 'lucide-react';
 import {
   Button,
@@ -9,7 +7,6 @@ import {
   Select,
   Stack,
   Tabs,
-  Text,
   TextArea,
   TextField,
 } from '@marigold/components';

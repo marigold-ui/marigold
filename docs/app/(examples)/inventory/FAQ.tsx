@@ -1,5 +1,3 @@
-'use client';
-
 import { Accordion, Headline, Stack, Text } from '@marigold/components';
 
 const faqs = [

@@ -1,5 +1,3 @@
-'use client';
-
 import { CalendarDays, MailCheck } from 'lucide-react';
 import {
   Button,
