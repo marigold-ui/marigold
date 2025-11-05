@@ -1,18 +1,26 @@
+import { amenitiesOptions, venues } from '@/lib/data/venues';
 import {
+  Badge,
   Button,
+  Card,
   Columns,
   ComboBox,
   Divider,
   Form,
   Headline,
   Inline,
+  NumericFormat,
   Radio,
+  SearchField,
   Select,
+  Slider,
   Stack,
   Text,
   TextArea,
   TextField,
 } from '@marigold/components';
+
+const venue = venues.find(v => v.id === '9')!;
 
 export const FormExample = () => (
   <Form autoComplete="off">
@@ -94,7 +102,78 @@ export const FormExample = () => (
           <Button>Cancel</Button>
         </Inline>
       </Stack>
-      <Stack>asd</Stack>
+      <Stack space={6}>
+        <Card space={6}>
+          <Inline noWrap space={5}>
+            <img
+              src={venue.image}
+              alt=""
+              className="aspect-square size-16 rounded-full"
+            />
+            <Stack>
+              <Headline level="4">{venue.name}</Headline>
+              <Text variant="muted" fontSize="sm" weight="light">
+                {venue.city}, {venue.country}
+              </Text>
+            </Stack>
+          </Inline>
+          <Columns columns={['fit', 1]} space={4}>
+            <Stack alignX="right" space={1}>
+              <Text fontSize="sm" weight="semibold">
+                Capacity:
+              </Text>
+              <Text fontSize="sm" weight="semibold">
+                Price:
+              </Text>
+              <Text fontSize="sm" weight="semibold">
+                Amenities:
+              </Text>
+            </Stack>
+            <Stack space={1}>
+              <Text fontSize="sm">{venue.capacity}</Text>
+              <Text fontSize="sm">
+                <NumericFormat
+                  value={[venue.price.from, venue.price.to]}
+                  style="currency"
+                  currency="EUR"
+                  minimumFractionDigits={0}
+                />
+              </Text>
+              <Text fontSize="sm">
+                {venue.amenities
+                  .map(amenity => amenitiesOptions[amenity])
+                  .join(', ')}
+              </Text>
+            </Stack>
+          </Columns>
+        </Card>
+        <Inline space="fieldX" noWrap>
+          <SearchField
+            aria-label="Search products"
+            placeholder="Search products..."
+          />
+          <Button variant="primary">Search</Button>
+        </Inline>
+        <Inline space={2}>
+          <Badge>basic</Badge>
+          <Badge variant="success">free</Badge>
+          <Badge variant="error">on sale</Badge>
+          <Badge variant="info">recommended</Badge>
+        </Inline>
+        <Slider
+          label="Price Range"
+          minValue={0}
+          maxValue={1000}
+          step={10}
+          defaultValue={[300, 500]}
+          description="Set your preferred budget range."
+          formatOptions={{
+            style: 'currency',
+            currency: 'EUR',
+            maximumFractionDigits: 0,
+          }}
+        />
+      </Stack>
       <Stack>asd</Stack>
     </Columns>
   </Form>
