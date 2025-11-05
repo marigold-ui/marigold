@@ -4,14 +4,14 @@ import { Divider } from '@marigold/components';
 import { Blog } from './Blog';
 import { ContactForm } from './ContactForm';
 import { FAQ } from './FAQ';
-import { FormExample } from './FormExample';
+import { Inventory } from './Inventory';
 import { Newsletter } from './Newsletter';
 import { OurMission } from './OurMission';
 import { Settings } from './Settings';
 
 const InventoryPage = () => (
   <div className="mx-auto grid max-w-6xl gap-48">
-    <FormExample />
+    <Inventory />
     <Divider />
     <OurMission />
     <Newsletter />
@@ -37,4 +37,5 @@ export default InventoryPage;
  * - select: use field size as default width?
  * - radio: should it also have a label?
  * - listbox: custom scrollbar (no background at least)
+ * - select: make it possible to adjust what is rendered in the selected value
  */

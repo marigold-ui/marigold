@@ -1,3 +1,4 @@
+import { people } from '@/lib/data/people';
 import { Bell, Shield, UserRound } from 'lucide-react';
 import {
   Button,
@@ -10,6 +11,8 @@ import {
   TextArea,
   TextField,
 } from '@marigold/components';
+
+const user = people.find(person => person.id === 'chippy')!;
 
 export const Settings = () => (
   <Stack space={4}>
@@ -30,18 +33,18 @@ export const Settings = () => (
         <Columns columns={['fit', 1]} space={12}>
           <div className="w-32">
             <img
-              src="/people/chip-patterson.jpg"
-              alt="Chip Patterson"
+              src={user.avatar}
+              alt={user.name}
               className="block w-32 rounded-full"
             />
           </div>
           <Stack space="fieldY" alignX="left">
-            <TextField label="Full name" defaultValue="Chip Patterson" />
-            <TextField label="Username" defaultValue="chippy" />
+            <TextField label="Full name" defaultValue={user.name} />
+            <TextField label="Username" defaultValue={user.id} />
             <TextField
               label="Email address"
               type="email"
-              defaultValue="chip.patterson@example.com"
+              defaultValue={user.email}
             />
             <TextArea
               label="Bio"

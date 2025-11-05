@@ -1,3 +1,4 @@
+import { people } from '@/lib/data/people';
 import {
   Badge,
   Container,
@@ -12,11 +13,7 @@ import {
 const posts = [
   {
     date: '2025-10-28',
-    author: {
-      name: "Chip 'Pixel' Patterson",
-      position: 'Chief Button Herder',
-      avatar: '/people/chip-patterson.jpg',
-    },
+    author: people.find(person => person.id === 'chippy')!,
     tags: ['ui', 'ux'],
     title:
       "Why Your Design System Needs a 'Panic' Button (And Other Bad Ideas)",
@@ -25,11 +22,7 @@ const posts = [
   },
   {
     date: '2025-11-03',
-    author: {
-      name: "Dr. Alex 'Token' Chen",
-      position: 'Font Whisperer & Color Alchemist',
-      avatar: '/people/alex-chen.jpg',
-    },
+    author: people.find(person => person.id === 'token')!,
     tags: ['tokens', 'css', 'development'],
     title: 'Design Tokens: The Marie Kondo of Your Stylesheet',
     abstract:
@@ -37,11 +30,7 @@ const posts = [
   },
   {
     date: '2025-11-10',
-    author: {
-      name: "Sandy 'Specs' Vega",
-      position: 'Director of Component Choreography',
-      avatar: '/people/sandy-vega.jpg',
-    },
+    author: people.find(person => person.id === 'sandy')!,
     tags: ['documentation', 'ux writing', 'collaboration'],
     title: "Stop Naming Components Like You're Naming a Pet",
     abstract:

@@ -1,5 +1,5 @@
 import { people } from '@/lib/data/people';
-import { amenitiesOptions, venues } from '@/lib/data/venues';
+import { amenitiesOptions, venueTypes, venues } from '@/lib/data/venues';
 import {
   Badge,
   Button,
@@ -10,12 +10,16 @@ import {
   Form,
   Headline,
   Inline,
+  NumberField,
   NumericFormat,
   Radio,
   SearchField,
+  SectionMessage,
   Select,
   Slider,
   Stack,
+  Switch,
+  Tag,
   Text,
   TextArea,
   TextField,
@@ -23,7 +27,7 @@ import {
 
 const venue = venues.find(v => v.id === '9')!;
 
-export const FormExample = () => (
+export const Inventory = () => (
   <Form autoComplete="off">
     <Columns columns={[1, 1, 1]} space={8} collapseAt="800px">
       <Stack space="fieldY">
@@ -77,14 +81,6 @@ export const FormExample = () => (
               </Text>
             </Inline>
           </Radio>
-          <Radio value="overnight">
-            <Inline alignY="center" alignX="between">
-              <Text>Overnight Shipping</Text>
-              <Text variant="muted" fontSize="sm" weight="light">
-                (next day)
-              </Text>
-            </Inline>
-          </Radio>
           <Radio value="pickup">
             <Inline alignY="center" alignX="between">
               <Text>In-Store Pickup</Text>
@@ -109,7 +105,7 @@ export const FormExample = () => (
             <img
               src={venue.image}
               alt=""
-              className="aspect-square size-16 rounded-full"
+              className="aspect-square size-16 rounded-xl object-cover"
             />
             <Stack>
               <Headline level="4">{venue.name}</Headline>
@@ -161,7 +157,12 @@ export const FormExample = () => (
           />
           <Button variant="primary">Search</Button>
         </Inline>
-        <Select label="Assign to User" placeholder="Select a user">
+        <NumberField label="Quantity" defaultValue={8} />
+        <Select
+          label="Assign to User"
+          placeholder="Select a user"
+          defaultValue="crash"
+        >
           {people.map(person => (
             <Select.Option
               key={person.id}
@@ -174,9 +175,11 @@ export const FormExample = () => (
                   alt={person.name}
                   className="size-6 rounded-full object-cover"
                 />
-                <Text slot="label">{person.name}</Text>
+                <Stack>
+                  <Text slot="label">{person.name}</Text>
+                  <Text slot="description">{person.position}</Text>
+                </Stack>
               </Inline>
-              <Text slot="description">{person.position}</Text>
             </Select.Option>
           ))}
         </Select>
@@ -193,8 +196,24 @@ export const FormExample = () => (
             maximumFractionDigits: 0,
           }}
         />
+        <SectionMessage>
+          <SectionMessage.Title>Note</SectionMessage.Title>
+          <SectionMessage.Content>
+            Remember to review your order details before submitting to ensure
+            accuracy.
+          </SectionMessage.Content>
+        </SectionMessage>
+        <Switch label="Gift Wrap" defaultSelected />
       </Stack>
-      <Stack>asd</Stack>
+      <Stack space={6}>
+        <Tag.Group label="Venue types" onRemove={() => {}}>
+          {venueTypes.map(type => (
+            <Tag key={type} id={type}>
+              {type}
+            </Tag>
+          ))}
+        </Tag.Group>
+      </Stack>
     </Columns>
   </Form>
 );
