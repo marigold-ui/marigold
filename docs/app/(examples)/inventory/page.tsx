@@ -8,6 +8,7 @@ import { Inventory } from './Inventory';
 import { Newsletter } from './Newsletter';
 import { OurMission } from './OurMission';
 import { Settings } from './Settings';
+import { UserTable } from './UserTable';
 
 const InventoryPage = () => (
   <div className="mx-auto grid max-w-6xl gap-48">
@@ -19,6 +20,7 @@ const InventoryPage = () => (
     <ContactForm />
     <FAQ />
     <Settings />
+    <UserTable />
   </div>
 );
 
