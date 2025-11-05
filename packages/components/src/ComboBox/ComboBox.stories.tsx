@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Key } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
