@@ -19,6 +19,7 @@ import {
   ComboBox,
   DatePicker,
   Divider,
+  FileField,
   Form,
   Headline,
   Inline,
@@ -219,6 +220,7 @@ export const Inventory = () => (
         <Switch label="Gift Wrap" defaultSelected />
       </Stack>
       <Stack space={6}>
+        <Pagination page={2} pageSize={1} totalItems={4} />
         <Tag.Group label="Venue types" onRemove={() => {}}>
           {venueTypes.map(type => (
             <Tag key={type} id={type}>
@@ -257,7 +259,7 @@ export const Inventory = () => (
             </ActionMenu.Item>
           </ActionMenu>
         </Inline>
-        <Pagination page={2} pageSize={1} totalItems={4} />
+        <FileField label="Upload venue image" />
       </Stack>
     </Columns>
   </Form>
