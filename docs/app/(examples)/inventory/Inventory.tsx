@@ -259,6 +259,12 @@ export const Inventory = () => (
             </ActionMenu.Item>
           </ActionMenu>
         </Inline>
+        <TextField
+          label="Venue name"
+          defaultValue={venue.name}
+          error
+          errorMessage="A venue with that name already exists."
+        />
         <FileField label="Upload venue image" />
       </Stack>
     </Columns>
