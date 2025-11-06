@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SVGProps, use } from 'react';
+import { SVGProps } from 'react';
 import { vi } from 'vitest';
 import * as stories from './Menu.stories';
 
