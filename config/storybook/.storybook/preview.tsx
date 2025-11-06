@@ -55,8 +55,9 @@ export const decorators: any = [
         theme={THEME[theme as ThemeNames]}
         className="h-screen p-6"
       >
-        <OverlayContainerProvider container="storybook-root">
+        <OverlayContainerProvider container="overlay-container">
           <Story />
+          <div id="overlay-container" />
         </OverlayContainerProvider>
       </MarigoldProvider>
     );
