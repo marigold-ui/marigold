@@ -56,9 +56,7 @@ export const decorators: any = [
         className="h-screen p-6"
       >
         <OverlayContainerProvider container="storybook-root">
-          <div className="h-screen p-6">
-            <Story />
-          </div>
+          <Story />
         </OverlayContainerProvider>
       </MarigoldProvider>
     );
