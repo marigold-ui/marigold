@@ -3,6 +3,7 @@ import { expect } from 'storybook/test';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
 import { ContextualHelp } from './ContextualHelp';
+import type { ContextualHelpProps } from './ContextualHelp';
 
 const meta = {
   title: 'Components/ContextualHelp',
@@ -68,7 +69,7 @@ const meta = {
 } satisfies Meta<typeof ContextualHelp>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ContextualHelpProps>;
 
 export const Basic: Story = {
   render: args => (
