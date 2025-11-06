@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, spyOn, userEvent, within } from 'storybook/test';
+import { expect, spyOn, userEvent } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
 import { Button } from '../Button/Button';
