@@ -113,12 +113,9 @@ export const Basic: StoryObj<typeof Select> = {
       </Stack>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-    const body = canvasElement.ownerDocument.body;
-
+  play: async ({ canvas, step, args }) => {
     await step('Open the select dropdown', async () => {
-      const button = canvas.getByRole('button');
+      const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
       await userEvent.click(button);
 
@@ -126,14 +123,14 @@ export const Basic: StoryObj<typeof Select> = {
     });
 
     await step('Wait for listbox to appear', async () => {
-      await waitFor(() => within(body).getByRole('listbox'));
-      const listbox = within(body).getByRole('listbox');
+      await waitFor(() => canvas.getByRole('listbox'));
+      const listbox = canvas.getByRole('listbox');
 
       expect(listbox).toBeVisible();
     });
 
     await step('Verify disabled option has aria-disabled', async () => {
-      const listbox = within(body).getByRole('listbox');
+      const listbox = canvas.getByRole('listbox');
       const disabledOption = within(listbox).getByRole('option', {
         name: 'Firefly',
       });
@@ -142,7 +139,7 @@ export const Basic: StoryObj<typeof Select> = {
     });
 
     await step('Select an item from the list', async () => {
-      const listbox = within(body).getByRole('listbox');
+      const listbox = canvas.getByRole('listbox');
       const option = within(listbox).getByText('Star Wars');
 
       await userEvent.click(option);
@@ -150,7 +147,7 @@ export const Basic: StoryObj<typeof Select> = {
 
     await step('Verify the select is closed', async () => {
       await waitFor(() => {
-        expect(within(body).queryByRole('listbox')).not.toBeInTheDocument();
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument();
       });
     });
 
@@ -186,20 +183,19 @@ export const Multiple: StoryObj<typeof Select> = {
       </Stack>
     );
   },
-  play: async ({ args, canvas, canvasElement, userEvent }) => {
+  play: async ({ args, canvas, userEvent }) => {
     await userEvent.click(
       canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
     );
 
-    const body = canvasElement.ownerDocument.body;
-    await waitFor(() => within(body).getByRole('dialog'));
+    await waitFor(() => canvas.getByRole('dialog'));
 
-    const options = await within(body).getByRole('dialog');
+    const options = await canvas.getByRole('dialog');
 
     await userEvent.click(within(options).getByText('Star Wars'));
     await userEvent.click(within(options).getByText('Firefly'));
 
-    await userEvent.click(canvasElement);
+    await userEvent.click(document.body);
 
     expect(canvas.getByTestId('selected')).toHaveTextContent(
       'selected: ["Star Wars","Firefly"]'
@@ -229,31 +225,26 @@ export const LongItems: StoryObj<typeof Select> = {
       </Inset>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-    const body = canvasElement.ownerDocument.body;
+  play: async ({ canvas, step }) => {
+    const button = canvas.getByLabelText(/Favorite character/i);
 
     await step('Open the select dropdown', async () => {
-      const button = canvas.getByRole('button');
-
       await userEvent.click(button);
 
       expect(button).toHaveAttribute('aria-expanded', 'true');
     });
 
     await step('Verify listbox is visible', async () => {
-      await waitFor(() => within(body).getByRole('listbox'));
-      const listbox = within(body).getByRole('listbox');
+      await waitFor(() => canvas.getByRole('listbox'));
+      const listbox = canvas.getByRole('listbox');
 
       expect(listbox).toBeVisible();
     });
 
     await step('Dismiss select with Escape key', async () => {
-      const button = canvas.getByRole('button');
-
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
-        expect(within(body).queryByRole('listbox')).not.toBeInTheDocument();
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument();
       });
 
       expect(button).toHaveAttribute('aria-expanded', 'false');
@@ -484,23 +475,20 @@ export const WithImages: StoryObj<typeof Select> = {
       ))}
     </Select>
   ),
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-    const body = canvasElement.ownerDocument.body;
-
+  play: async ({ canvas, step }) => {
     await step('Open the select dropdown', async () => {
-      const button = canvas.getByRole('button');
+      const button = canvas.getByLabelText(/Assign to User/i);
       await userEvent.click(button);
       expect(button).toHaveAttribute('aria-expanded', 'true');
     });
 
     await step('Verify text slots are rendered', async () => {
       await waitFor(() => {
-        expect(within(body).getByRole('listbox')).toBeInTheDocument();
+        expect(canvas.getByRole('listbox')).toBeInTheDocument();
       });
 
-      const label = within(body).getByLabelText('Alice Johnson');
-      const description = within(body).getByText('Product Manager');
+      const label = canvas.getByLabelText('Alice Johnson');
+      const description = canvas.getByText('Product Manager');
 
       expect(label).toBeInTheDocument();
       expect(description).toBeInTheDocument();

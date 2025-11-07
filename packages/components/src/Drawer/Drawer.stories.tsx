@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { expect, waitFor } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Form } from '../Form/Form';
@@ -92,6 +93,14 @@ export const Basic: Story = {
       />
     </Stack>
   ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    await waitFor(() =>
+      expect(canvas.getByText('Drawer Title')).toBeInTheDocument()
+    );
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+  },
 };
 
 export const LeftPlacement: Story = {
