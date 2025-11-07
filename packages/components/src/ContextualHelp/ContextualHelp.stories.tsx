@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import { expect } from 'storybook/test';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
 import { ContextualHelp } from './ContextualHelp';
+import type { ContextualHelpProps } from './ContextualHelp';
 
 const meta = {
   title: 'Components/ContextualHelp',
@@ -68,23 +69,44 @@ const meta = {
 } satisfies Meta<typeof ContextualHelp>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ContextualHelpProps>;
 
-export const Basic = (props: React.ComponentProps<typeof ContextualHelp>) => (
-  <div className="flex h-96 items-center justify-center">
-    <ContextualHelp {...props} size={props.size}>
-      <ContextualHelp.Title>Whats this?</ContextualHelp.Title>
-      <ContextualHelp.Content>
-        This feature explains important functions to you directly in the context
-        of the page.
-        <br />
-        <Link href="https://www.marigold-ui.io/components/overview?theme=rui">
-          To the documentation
-        </Link>
-      </ContextualHelp.Content>
-    </ContextualHelp>
-  </div>
-);
+export const Basic: Story = {
+  render: args => (
+    <div className="flex h-96 items-center justify-center">
+      <ContextualHelp {...args}>
+        <ContextualHelp.Title>Whats this?</ContextualHelp.Title>
+        <ContextualHelp.Content>
+          This feature explains important functions to you directly in the
+          context of the page.
+          <br />
+          <Link href="https://www.marigold-ui.io/components/overview?theme=rui">
+            To the documentation
+          </Link>
+        </ContextualHelp.Content>
+      </ContextualHelp>
+    </div>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    const helpButton = await canvas.getByLabelText(/help|hilfe/i);
+    await userEvent.click(helpButton);
+
+    expect(await canvas.findByText('Whats this?')).toBeInTheDocument();
+    expect(
+      await canvas.findByText(
+        'This feature explains important functions to you directly in the context of the page.'
+      )
+    ).toBeInTheDocument();
+    expect(
+      await canvas.findByRole('link', {
+        name: 'To the documentation',
+      })
+    ).toBeInTheDocument();
+
+    // Reset
+    await userEvent.click(document.body);
+  },
+};
 
 export const LongContent: Story = {
   render: args => (

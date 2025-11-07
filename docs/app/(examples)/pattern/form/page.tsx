@@ -8,7 +8,7 @@ import { RegistrationSettings } from './registrationSettings';
 
 const FormPage = () => (
   <Center>
-    <div className="w-[var(--spacing-container)] py-20">
+    <div className="w-container py-20">
       <Form>
         <Stack space="section">
           <EventDetails />

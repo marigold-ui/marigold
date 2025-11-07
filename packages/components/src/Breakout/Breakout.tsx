@@ -5,6 +5,8 @@ export interface BreakoutProps extends AriaRegionProps {
   children?: ReactNode;
 }
 
-export const Breakout = ({ children }: BreakoutProps) => {
-  return <div className="![grid-column:1/-1]">{children}</div>;
-};
+export const Breakout = ({ children }: BreakoutProps) => (
+  <div data-breakout className="col-span-full!">
+    {children}
+  </div>
+);

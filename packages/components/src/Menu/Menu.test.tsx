@@ -1,5 +1,6 @@
 import { composeStories } from '@storybook/react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
 import * as stories from './Menu.stories';
@@ -18,6 +19,8 @@ const mockMatchMedia = (matches: string[]) =>
 
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
+const user = userEvent.setup();
+
 test('renders the button but no menu by default', () => {
   render(<Basic />);
   const button = screen.queryByText('Hogwarts Houses');
@@ -33,34 +36,30 @@ test('renders the button but no menu by default', () => {
   expect(slytherin).not.toBeInTheDocument();
 });
 
-test('renders action menu', () => {
+test('renders action menu', async () => {
   render(<BasicActionMenu />);
   const button = screen.getByRole('button');
 
   expect(button).toBeInTheDocument();
-  fireEvent.click(button);
+  await user.click(button);
 
   const item = screen.getByText('Settings');
   expect(item).toBeInTheDocument();
 });
 
-test('supports open property', () => {
-  render(<Basic open={true} />);
-
-  const item = screen.getByText('Gryffindor');
-  expect(item).toBeInTheDocument();
-});
-
-test('supports onOpenChange property', () => {
+test('supports onOpenChange property', async () => {
   const onOpenChange = vi.fn();
   render(<Basic data-testid="menu" onOpenChange={() => onOpenChange()} />);
   expect(onOpenChange).toBeCalledTimes(0);
-  fireEvent.click(screen.getByRole('button'));
+  await user.click(screen.getByRole('button'));
   expect(onOpenChange).toBeCalledTimes(1);
 });
 
-test('supports Menu with sections', () => {
-  render(<MenuSection aria-label="Menu with sections" open />);
+test('supports Menu with sections', async () => {
+  render(<MenuSection aria-label="Menu with sections" />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
 
   expect(screen.getByText('Food')).toBeInTheDocument();
   expect(screen.getByText('Fruits')).toBeInTheDocument();

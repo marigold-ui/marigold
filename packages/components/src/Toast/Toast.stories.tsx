@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
 import { Toast } from './Toast';
@@ -76,8 +76,7 @@ export const Basic: Story = {
       </>
     );
   },
-  play: async ({ step }) => {
-    const canvas = within(window.document.body);
+  play: async ({ canvas, step }) => {
     const button = canvas.getByRole('button', { name: /show toast/i });
 
     await step('Click the Show Toast button', async () => {
@@ -131,8 +130,7 @@ export const ToggleToast: Story = {
     );
   },
 
-  play: async ({ step }) => {
-    const canvas = within(window.document.body);
+  play: async ({ canvas, step }) => {
     const button = canvas.getByRole('button', { name: /show toast/i });
 
     await step('Click the Show Toast button', async () => {
@@ -260,8 +258,7 @@ export const WithAction: Story = {
       </>
     );
   },
-  play: async ({ step }) => {
-    const canvas = within(window.document.body);
+  play: async ({ canvas, step }) => {
     const button = canvas.getByRole('button', { name: /show toast/i });
 
     await step('Click the Show Toast button', async () => {
