@@ -13,7 +13,7 @@ export default () => (
           />
           <Text slot="label">{person.name}</Text>
         </Inline>
-        <Text slot="description">{person.jobTitle}</Text>
+        <Text slot="description">{person.position}</Text>
       </Select.Option>
     ))}
   </Select>
