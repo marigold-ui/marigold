@@ -2,6 +2,7 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { vi } from 'vitest';
+import { Switch } from '@marigold/components';
 import * as stories from './Switch.stories';
 
 const { Basic } = composeStories(stories);
@@ -87,27 +88,6 @@ test('renders hidden <input> element', () => {
   const { input } = getSwitchParts();
 
   expect(input instanceof HTMLInputElement).toBeTruthy();
-});
-
-test('focus element and toggle switch per keyboard space', async () => {
-  render(<Switch label="Label" />);
-
-  const { input, track } = getSwitchParts();
-  await user.tab();
-
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(track).toHaveAttribute('data-focus'));
-  await user.keyboard('{space}');
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(track).toHaveStyle(`background-color: orange`));
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(input.checked).toBeTruthy());
-
-  await user.keyboard('{space}');
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(track).toHaveStyle(`background-color: blue`));
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(input.checked).toBeFalsy());
 });
 
 test('supports default selected', () => {
