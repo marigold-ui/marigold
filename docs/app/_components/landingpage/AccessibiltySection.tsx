@@ -5,6 +5,7 @@ import {
   Badge,
   Button,
   Grid,
+  Loader,
   MarigoldProvider,
   NumberField,
   OverlayContainerProvider,
@@ -12,7 +13,6 @@ import {
   Stack,
   Switch,
   Tag,
-  XLoader,
 } from '@/ui';
 import type { PropsWithChildren } from 'react';
 import { useResponsiveValue } from '@marigold/system';
@@ -69,7 +69,7 @@ export const AccessibiltySection = () => {
             </Block>
             {isLargeScreeen ? (
               <Block name="loader" order={2}>
-                <XLoader />
+                <Loader />
               </Block>
             ) : null}
             {isLargeScreeen ? (

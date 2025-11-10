@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NumericFormat, Stack, Switch, Table } from '@marigold/components';
 
 interface Product {

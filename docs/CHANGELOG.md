@@ -1,5 +1,65 @@
 # @marigold/docs
 
+## 15.4.3
+
+### Patch Changes
+
+- Updated dependencies [2d7f163]
+  - @marigold/theme-docs@3.1.13
+  - @marigold/theme-rui@3.0.3
+  - @marigold/system@15.4.3
+  - @marigold/components@15.4.3
+  - @marigold/icons@1.3.27
+
+## 15.4.2
+
+### Patch Changes
+
+- Updated dependencies [961eaf5]
+  - @marigold/theme-docs@3.1.12
+  - @marigold/theme-rui@3.0.2
+  - @marigold/system@15.4.2
+  - @marigold/components@15.4.2
+  - @marigold/icons@1.3.26
+
+## 15.4.1
+
+### Patch Changes
+
+- Updated dependencies [d710177]
+  - @marigold/components@15.4.1
+  - @marigold/theme-docs@3.1.11
+  - @marigold/theme-rui@3.0.1
+  - @marigold/system@15.4.1
+  - @marigold/icons@1.3.25
+
+## 15.4.0
+
+### Minor Changes
+
+- e985fe2: feat([DST-1091]): Add multiselection mode to `<Select>`
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
+- 64525cd: feat([DST-1045]): Add guides and examples for structuring forms
+- 2f60e36: [DSTSTUP-188]: Extend table sorting example with date values.
+- Updated dependencies [f621653]
+- Updated dependencies [025d6e9]
+- Updated dependencies [ffbebd0]
+- Updated dependencies [35df36a]
+- Updated dependencies [e985fe2]
+- Updated dependencies [9ec4620]
+- Updated dependencies [77e0417]
+  - @marigold/components@15.4.0
+  - @marigold/system@15.4.0
+  - @marigold/theme-rui@3.0.0
+  - @marigold/theme-docs@3.1.10
+  - @marigold/icons@1.3.24
+
 ## 15.3.0
 
 ### Minor Changes

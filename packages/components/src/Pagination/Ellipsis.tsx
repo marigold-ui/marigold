@@ -1,4 +1,3 @@
-import React from 'react';
 import { useClassNames } from '@marigold/system';
 
 export const Ellipsis = () => {

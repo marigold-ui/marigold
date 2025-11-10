@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { expect, waitFor } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { Form } from '../Form/Form';
 import { Select } from '../Select/Select';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
@@ -91,6 +93,14 @@ export const Basic: Story = {
       />
     </Stack>
   ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+    await waitFor(() =>
+      expect(canvas.getByText('Drawer Title')).toBeInTheDocument()
+    );
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+  },
 };
 
 export const LeftPlacement: Story = {
@@ -127,40 +137,42 @@ export const WithForms: Story = {
     <Drawer.Trigger>
       <Button>Configure Filter</Button>
       <Drawer {...args}>
-        <Drawer.Title>Filter</Drawer.Title>
-        <Drawer.Content>
-          <Stack space={8}>
-            <Slider
-              label="Price"
-              formatOptions={{ style: 'currency', currency: 'EUR' }}
-              minValue={10}
-              maxValue={140}
-              defaultValue={[30, 60]}
-              thumbLabels={['min', 'max']}
-            />
-            <Select label="Category">
-              <Select.Option id="all">All</Select.Option>
-              <Select.Option id="classic">Classic</Select.Option>
-              <Select.Option id="rock">Rock</Select.Option>
-              <Select.Option id="pop">Pop</Select.Option>
-              <Select.Option id="jazz">Jazz</Select.Option>
-            </Select>
-            <Checkbox.Group label="Amenities">
-              <Checkbox label="Fast Lane" value="fast-lane" />
-              <Checkbox label="VIP Parking" value="parking" />
-            </Checkbox.Group>
-          </Stack>
-        </Drawer.Content>
-        <Drawer.Actions>
-          <Button slot="close">Close</Button>
-          <Button
-            slot="close"
-            variant="primary"
-            onPress={() => alert('Apply filters and close dialog')}
-          >
-            Apply
-          </Button>
-        </Drawer.Actions>
+        <Form unstyled>
+          <Drawer.Title>Filter</Drawer.Title>
+          <Drawer.Content>
+            <Stack space={8}>
+              <Slider
+                label="Price"
+                formatOptions={{ style: 'currency', currency: 'EUR' }}
+                minValue={10}
+                maxValue={140}
+                defaultValue={[30, 60]}
+                thumbLabels={['min', 'max']}
+              />
+              <Select label="Category">
+                <Select.Option id="all">All</Select.Option>
+                <Select.Option id="classic">Classic</Select.Option>
+                <Select.Option id="rock">Rock</Select.Option>
+                <Select.Option id="pop">Pop</Select.Option>
+                <Select.Option id="jazz">Jazz</Select.Option>
+              </Select>
+              <Checkbox.Group label="Amenities">
+                <Checkbox label="Fast Lane" value="fast-lane" />
+                <Checkbox label="VIP Parking" value="parking" />
+              </Checkbox.Group>
+            </Stack>
+          </Drawer.Content>
+          <Drawer.Actions>
+            <Button slot="close">Close</Button>
+            <Button
+              slot="close"
+              variant="primary"
+              onPress={() => alert('Apply filters and close dialog')}
+            >
+              Apply
+            </Button>
+          </Drawer.Actions>
+        </Form>
       </Drawer>
     </Drawer.Trigger>
   ),

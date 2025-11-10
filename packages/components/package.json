@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "15.3.0",
+  "version": "15.4.3",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -65,10 +65,11 @@
   "devDependencies": {
     "@marigold/icons": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "19.1.12",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
-    "tsdown": "0.15.6"
+    "@types/react": "19.2.2",
+    "lucide-react": "0.546.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "tsdown": "0.15.9"
   },
   "scripts": {
     "build": "tsdown src/index.ts",

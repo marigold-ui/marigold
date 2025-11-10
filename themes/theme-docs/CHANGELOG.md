@@ -1,5 +1,42 @@
 # @marigold/theme-docs
 
+## 3.1.13
+
+### Patch Changes
+
+- 2d7f163: fix(SectionMessage): Fix Section Message Styles
+  - @marigold/system@15.4.3
+  - @marigold/components@15.4.3
+
+## 3.1.12
+
+### Patch Changes
+
+- 961eaf5: fix: Make `grid-templates-areas` class more robust
+  - @marigold/system@15.4.2
+  - @marigold/components@15.4.2
+
+## 3.1.11
+
+### Patch Changes
+
+- Updated dependencies [d710177]
+  - @marigold/components@15.4.1
+  - @marigold/system@15.4.1
+
+## 3.1.10
+
+### Patch Changes
+
+- Updated dependencies [f621653]
+- Updated dependencies [025d6e9]
+- Updated dependencies [ffbebd0]
+- Updated dependencies [e985fe2]
+- Updated dependencies [9ec4620]
+- Updated dependencies [77e0417]
+  - @marigold/components@15.4.0
+  - @marigold/system@15.4.0
+
 ## 3.1.9
 
 ### Patch Changes

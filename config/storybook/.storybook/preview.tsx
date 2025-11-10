@@ -1,6 +1,9 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { Preview } from '@storybook/react';
-import { MarigoldProvider } from '@marigold/components';
+import {
+  MarigoldProvider,
+  OverlayContainerProvider,
+} from '@marigold/components';
 import rui from '@marigold/theme-rui';
 import './../styles.css';
 
@@ -50,11 +53,12 @@ export const decorators: any = [
     return (
       <MarigoldProvider
         theme={THEME[theme as ThemeNames]}
-        className="bg-bg-surface"
+        className="h-screen p-6"
       >
-        <div className="h-screen p-6">
+        <OverlayContainerProvider container="overlay-container">
           <Story />
-        </div>
+          <div id="overlay-container" />
+        </OverlayContainerProvider>
       </MarigoldProvider>
     );
   },

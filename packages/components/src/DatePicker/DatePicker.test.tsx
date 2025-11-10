@@ -277,6 +277,7 @@ describe('DatePicker', () => {
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
 
+      // eslint-disable-next-line testing-library/await-async-events
       user.click(button);
 
       const popovers = screen.getAllByRole('presentation');

@@ -1,5 +1,55 @@
 # @marigold/theme-rui
 
+## 3.0.3
+
+### Patch Changes
+
+- 2d7f163: fix(SectionMessage): Fix Section Message Styles
+  - @marigold/system@15.4.3
+  - @marigold/components@15.4.3
+
+## 3.0.2
+
+### Patch Changes
+
+- 961eaf5: fix: Make `grid-templates-areas` class more robust
+  - @marigold/system@15.4.2
+  - @marigold/components@15.4.2
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [d710177]
+  - @marigold/components@15.4.1
+  - @marigold/system@15.4.1
+
+## 3.0.0
+
+### Major Changes
+
+- 77e0417: fix([DST-1078]): Fix scrolling within `<ContextualHelp>`
+
+### Minor Changes
+
+- e985fe2: feat([DST-1091]): Add multiselection mode to `<Select>`
+
+### Patch Changes
+
+- f621653: feat([DSTSUP-187]): Enhance Toast component with action support
+  - Introduced `action` property
+  - Update description to support JSX
+
+- 35df36a: style([DST-1082]): Use correct accordion font-size
+- Updated dependencies [f621653]
+- Updated dependencies [025d6e9]
+- Updated dependencies [ffbebd0]
+- Updated dependencies [e985fe2]
+- Updated dependencies [9ec4620]
+- Updated dependencies [77e0417]
+  - @marigold/components@15.4.0
+  - @marigold/system@15.4.0
+
 ## 2.3.0
 
 ### Minor Changes

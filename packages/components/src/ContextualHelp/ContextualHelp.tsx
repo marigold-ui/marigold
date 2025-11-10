@@ -10,15 +10,17 @@ import {
   Popover,
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
+import { intlMessages } from '../intl/messages';
 import { ContextualHelpContent } from './ContextualHelpContent';
 import { ContextualHelpTitle } from './ContextualHelpTitle';
 
 const icons = {
-  help: () => <CircleQuestionMark size={20} />,
-  info: () => <Info size={20} />,
+  help: CircleQuestionMark,
+  info: Info,
 };
 
 interface ContextualHelpComponent
@@ -87,6 +89,9 @@ export interface ContextualHelpProps {
 
   /** Handler that is called when the open state changes. */
   onOpenChange?: (isOpen: boolean) => void;
+
+  /** Accessible label for the button. */
+  ariaLabel?: string;
 }
 
 export const _ContextualHelp = forwardRef<
@@ -104,15 +109,17 @@ export const _ContextualHelp = forwardRef<
       defaultOpen,
       open,
       onOpenChange,
+      ariaLabel,
     },
     ref
   ) => {
-    const icon = icons[variant]?.();
+    const Icon = icons[variant];
     const classNames = useClassNames({
       component: 'ContextualHelp',
       variant,
       size,
     });
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
     return (
       <DialogTrigger
@@ -123,9 +130,14 @@ export const _ContextualHelp = forwardRef<
         <Button
           ref={ref}
           className={classNames.trigger}
-          aria-label={variant === 'info' ? 'Information' : 'Hilfe'}
+          aria-label={
+            ariaLabel ??
+            (variant === 'info'
+              ? stringFormatter.format('moreInfo')
+              : stringFormatter.format('help'))
+          }
         >
-          {icon}
+          <Icon size={20} />
         </Button>
 
         <Popover

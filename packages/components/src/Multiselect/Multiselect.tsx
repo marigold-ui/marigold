@@ -22,7 +22,7 @@ import { ComponentClassNames, cn, useClassNames } from '@marigold/system';
 import { FieldBaseProps } from '../FieldBase/FieldBase';
 import { HelpText } from '../HelpText/HelpText';
 import { Label } from '../Label/Label';
-import { ChevronDown } from '../icons/ChevronDown';
+import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { X } from '../icons/X';
 
 interface MultipleSelectProps
@@ -175,7 +175,7 @@ const Input = ({ innerRef, placeholder, hasValue, ...props }: InputProps) => {
 const MultiValueRemove = ({ innerProps }: MultiValueRemoveProps) => {
   return (
     <Button slot="remove" {...(innerProps as any)}>
-      <X />
+      <X size="16" />
     </Button>
   );
 };
@@ -319,7 +319,7 @@ export const Multiselect = ({
                 disabled={isDisabled}
                 className={classNames.icon}
               >
-                <ChevronDown className={'size-4'} />
+                <ChevronsVertical size="16" />
               </button>
             ),
           }}
