@@ -24,9 +24,9 @@ const newInputContainer = cva([
   // 'bg-background bg-clip-padding',
   'text-foreground text-sm',
   'border-input rounded-lg border',
-  // 'shadow-xs transition-shadow has-[:disabled,:focus-visible,[aria-invalid]]:shadow-none',
+  'shadow-xs transition-shadow has-[:disabled,:focus-visible,[aria-invalid]]:shadow-none',
 
-  // 'has-aria-invalid:border-destructive/36 has-focus-visible:has-aria-invalid:border-destructive/64 has-focus-visible:has-aria-invalid:ring-destructive/16 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/10%)]',
+  'has-aria-invalid:border-destructive/36 has-focus-visible:has-aria-invalid:border-destructive/64 has-focus-visible:has-aria-invalid:ring-destructive/16 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/10%)]',
 ]);
 
 const newInput = cva(
