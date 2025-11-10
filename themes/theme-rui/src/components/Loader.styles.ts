@@ -1,6 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const XLoader: ThemeComponent<'XLoader'> = {
+export const Loader: ThemeComponent<'Loader'> = {
   container: cva('grid place-items-center text-brand', {
     variants: {
       variant: {
