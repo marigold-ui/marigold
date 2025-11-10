@@ -36,8 +36,8 @@ const newInput = cva(
 /** ================================ */
 
 export const Input: ThemeComponent<'Input'> = {
-  container: (props: any) =>
-    cn(newDisabled(props), newFocus(props), newInputContainer(props)),
+  container: ((props: any) =>
+    cn(newDisabled(props), newFocus(props), newInputContainer(props))) as any,
   input: newInput,
   // input: cva([
   // 'utils-input',
