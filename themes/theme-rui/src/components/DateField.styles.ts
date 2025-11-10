@@ -15,7 +15,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     inputInvalid,
     inputReadOnly,
     'invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20',
-    'data-[focus-within]:util-focus-ring outline-0',
+    'data-focus-within:util-focus-ring outline-0',
   ]),
   segment: cva([
     inputDisabled,

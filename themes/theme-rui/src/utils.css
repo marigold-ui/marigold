@@ -7,6 +7,31 @@
  * components, and other consistent UI patterns.
  */
 
+.utils-input-container {
+  @apply relative inline-flex w-full;
+
+  @apply bg-background bg-clip-padding;
+
+  @apply border-input rounded-lg border;
+
+  @apply text-foreground text-sm;
+
+  @apply ring-ring/25 has-focus-visible:border-ring has-focus-visible:ring-[3px];
+
+  @apply has-disabled:opacity-64;
+
+  @apply shadow-xs transition-shadow;
+
+  /* the `not-has-disabled` and `not-has-focus-visible` variants do not exist -> react-aria-plugin? */
+  @apply has-aria-invalid:border-destructive/36 has-focus-visible:has-aria-invalid:border-destructive/64 has-focus-visible:has-aria-invalid:ring-destructive/16 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/10%)];
+
+  @apply has-[:disabled,:focus-visible,[aria-invalid]]:shadow-none;
+}
+
+.utils-input {
+  @apply w-full min-w-0 rounded-[inherit] px-[calc(--spacing(3)-1px)] py-[calc(--spacing(1.5)-1px)] outline-none;
+}
+
 /*
  * Applies a consistent visual style for keyboard focus states across components.
  * This utility sets a colored focus ring and border based on the given theme color,
