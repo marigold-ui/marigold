@@ -10,7 +10,7 @@
 .utils-input-container {
   @apply relative inline-flex w-full;
 
-  @apply bg-background bg-clip-padding;
+  @apply bg-red-500 bg-clip-padding;
 
   @apply border-input rounded-lg border;
 
@@ -23,7 +23,7 @@
   @apply shadow-xs transition-shadow;
 
   /* the `not-has-disabled` and `not-has-focus-visible` variants do not exist -> react-aria-plugin? */
-  @apply has-aria-invalid:border-destructive/36 has-focus-visible:has-aria-invalid:border-destructive/64 has-focus-visible:has-aria-invalid:ring-destructive/16 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/10%)];
+  @apply has-aria-invalid:border-destructive/36 has-focus-visible:has-aria-invalid:border-destructive/64 has-focus-visible:has-aria-invalid:ring-destructive/16 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/5%)];
 
   @apply has-[:disabled,:focus-visible,[aria-invalid]]:shadow-none;
 }
