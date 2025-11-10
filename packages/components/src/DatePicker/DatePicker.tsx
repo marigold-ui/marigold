@@ -1,7 +1,12 @@
 import { CalendarDate } from '@internationalized/date';
-import React from 'react';
+import React, { ReactElement, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { DatePicker, type DateValue, Dialog } from 'react-aria-components';
+import {
+  DatePicker,
+  DatePickerStateContext,
+  type DateValue,
+  Dialog,
+} from 'react-aria-components';
 import { WidthProp, useClassNames } from '@marigold/system';
 import { Calendar } from '../Calendar/Calendar';
 import { DateInput } from '../DateField/DateInput';
@@ -102,12 +107,6 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
       variant,
     });
 
-    const handleDatePaste = (date: CalendarDate) => {
-      if (onChange) {
-        onChange(date);
-      }
-    };
-
     return (
       <FieldBase
         as={DatePicker}
@@ -116,14 +115,15 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
         {...props}
         ref={ref}
       >
-        <DateInput
-          onDatePaste={handleDatePaste}
+        <DatePickerWithPasteWrapper
+          onChange={onChange}
           action={
             <IconButton className={classNames}>
               <CalendarIcon data-testid={'action'} />
             </IconButton>
           }
         />
+
         <Popover>
           <Dialog>
             <Calendar disabled={disabled} />
@@ -135,3 +135,24 @@ const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
 );
 
 export { _DatePicker as DatePicker };
+
+interface DatePickerWithPasteWrapperProps {
+  onChange?: (value: RAC.DateValue | null) => void;
+  action?: ReactElement<any>;
+}
+
+const DatePickerWithPasteWrapper = ({
+  onChange,
+  ...props
+}: DatePickerWithPasteWrapperProps) => {
+  const ctx = useContext(DatePickerStateContext);
+
+  const onPaste = (date: CalendarDate) => {
+    if (onChange) {
+      onChange(date);
+    }
+    ctx?.setValue(date);
+  };
+
+  return <DateInput onPaste={onPaste} {...props} />;
+};

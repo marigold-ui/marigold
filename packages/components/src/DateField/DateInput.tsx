@@ -1,12 +1,7 @@
 import { CalendarDate } from '@internationalized/date';
-import { ReactElement, useContext } from 'react';
+import { ReactElement } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  DateFieldStateContext,
-  DateInput,
-  DatePickerStateContext,
-  Group,
-} from 'react-aria-components';
+import { DateInput, Group } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { DateSegment } from './DateSegment';
 
@@ -84,22 +79,17 @@ export interface DateInputProps extends Omit<RAC.DateInputProps, RemovedProps> {
   variant?: string;
   size?: string;
   action?: ReactElement<any>;
-  onDatePaste: (date: CalendarDate) => void;
+  onPaste: (date: CalendarDate) => void;
 }
 
 const _DateInput = ({
   variant,
   size,
   action,
-  onDatePaste,
+  onPaste,
   ...props
 }: DateInputProps) => {
   const classNames = useClassNames({ component: 'DateField', variant, size });
-
-  const dateFieldContext = useContext(DateFieldStateContext);
-  const datePickerContext = useContext(DatePickerStateContext);
-
-  const ctx = dateFieldContext ?? datePickerContext;
 
   const handlePaste = async (event: React.ClipboardEvent) => {
     try {
@@ -108,9 +98,7 @@ const _DateInput = ({
       const parsedDate = parseDateFromString(clipboardData);
       if (parsedDate) {
         event.preventDefault();
-        // call onChange if it exists
-        onDatePaste(parsedDate);
-        ctx?.setValue(parsedDate);
+        onPaste(parsedDate);
       }
     } catch (error) {
       console.warn('Failed to parse pasted date:', error);

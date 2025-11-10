@@ -1,7 +1,11 @@
 import { CalendarDate } from '@internationalized/date';
-import { ReactElement, forwardRef } from 'react';
+import { ReactElement, forwardRef, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { DateField, DateValue } from 'react-aria-components';
+import {
+  DateField,
+  DateFieldStateContext,
+  DateValue,
+} from 'react-aria-components';
 import { WidthProp } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { DateInput } from './DateInput';
@@ -80,13 +84,6 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
       isRequired: required,
       ...rest,
     };
-
-    const handleDatePaste = (date: CalendarDate) => {
-      if (onChange) {
-        onChange(date);
-      }
-    };
-
     return (
       <FieldBase
         as={DateField}
@@ -95,10 +92,33 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
         ref={ref}
         {...props}
       >
-        <DateInput onDatePaste={handleDatePaste} action={action} />
+        <DateInputWithPasteWrapper onChange={onChange} action={action} />
       </FieldBase>
     );
   }
 );
 
 export { _DateField as DateField };
+
+interface DateInputWithPasteWrapperProps {
+  onChange?: (value: RAC.DateValue | null) => void;
+  action?: ReactElement<any>;
+}
+
+const DateInputWithPasteWrapper = ({
+  onChange,
+  ...props
+}: DateInputWithPasteWrapperProps) => {
+  const ctx = useContext(DateFieldStateContext);
+
+  const onPaste = (date: CalendarDate) => {
+    if (onChange) {
+      onChange(date);
+    }
+    ctx?.setValue(date);
+  };
+
+  return <DateInput onPaste={onPaste} {...props} />;
+};
+
+// 02.02.2020
