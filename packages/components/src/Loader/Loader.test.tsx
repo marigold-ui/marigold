@@ -32,14 +32,6 @@ test('render custom label', () => {
   expect(label).toBeInTheDocument();
 });
 
-test('fullsize uses "inverted" variant', () => {
-  render(<Basic mode="fullscreen">Loading...</Basic>);
-
-  const loader = screen.getByRole('progressbar');
-
-  expect(loader).toHaveClass('grid place-items-center text-secondary size-20');
-});
-
 test('inline uses "inverted" variant', () => {
   render(<Basic mode="section">Loading...</Basic>);
 

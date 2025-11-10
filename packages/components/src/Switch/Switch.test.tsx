@@ -2,7 +2,6 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { vi } from 'vitest';
-import { Switch } from '@marigold/components';
 import * as stories from './Switch.stories';
 
 const { Basic } = composeStories(stories);
@@ -91,7 +90,7 @@ test('renders hidden <input> element', () => {
 });
 
 test('supports default selected', () => {
-  render(<Switch defaultSelected label="Label" />);
+  render(<Basic defaultSelected label="Label" />);
 
   const { input } = getSwitchParts();
 
