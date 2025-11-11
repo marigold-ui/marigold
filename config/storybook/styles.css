@@ -1,13 +1,13 @@
 @import 'tailwindcss';
-@import '@marigold/theme-rui/theme.css';
-@import './node_modules/@marigold/theme-rui/dist/global.css';
 
-@source './node_modules/@marigold';
+@import '../../themes/theme-rui/src/theme.css';
+@import '../../themes/theme-rui/src/global.css';
+
 @source './.storybook/preview.tsx';
-@source '../../packages/{components,system}/**/*.stories.{tsx,ts}';
+@source '../../packages/{components,system,themes}/**/*.stories.{tsx,ts}';
 
 /* marigold components */
-@source './../../packages/{components,system}/**/*.{tsx,ts}';
-@source './../../themes/theme-rui/src/components/*.styles.ts';
-@source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
-@source '!../../packages/{components,system}/**/*.{test}.{tsx,ts}';
+@source './../../themes/theme-rui/src/**/*';
+@source './../../packages/{components,system,themes}/**/*.{tsx,ts}';
+@source '!../../packages/{components,system,themes}/node_modules/**/*.{tsx,ts}';
+@source '!../../packages/{components,system,themes}/**/*.{test}.{tsx,ts}';
