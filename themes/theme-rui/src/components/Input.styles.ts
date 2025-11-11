@@ -21,12 +21,13 @@ const newFocus = cva(
 
 const newInputContainer = cva([
   'relative inline-flex w-full h-input',
-  'bg-background bg-clip-padding',
+  'bg-surface bg-clip-padding',
   'text-foreground text-sm',
-  'border-input rounded-lg border',
+  'border border-surface-border rounded-lg',
   'shadow-xs transition-shadow has-[:disabled,:focus-visible,[aria-invalid]]:shadow-none',
 
-  'has-aria-invalid:border-destructive/36 has-focus-visible:has-aria-invalid:border-destructive/64 has-focus-visible:has-aria-invalid:ring-destructive/16 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/10%)]',
+  'has-aria-invalid:border-destructive/36 has-focus-visible:has-aria-invalid:border-destructive/64 has-focus-visible:has-aria-invalid:ring-destructive/16',
+  'before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/10%)]',
 ]);
 
 const newInput = cva(
@@ -37,7 +38,10 @@ const newInput = cva(
 
 export const Input: ThemeComponent<'Input'> = {
   container: ((props: any) =>
-    cn(newDisabled(props), newFocus(props), newInputContainer(props))) as any,
+    cn(
+      /*newDisabled(props),*/ newFocus(props),
+      newInputContainer(props)
+    )) as any,
   input: newInput,
   // input: cva([
   // 'utils-input',

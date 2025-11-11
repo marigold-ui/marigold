@@ -82,7 +82,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   tags: ['component-test'],
-  render: args => <Input {...args} data-testid="input" />,
+  render: args => (
+    <div className="grid gap-8">
+      <Input {...args} data-testid="input" />
+      <div className="surface surface-ring surface-error surface-disabled">
+        <input className="w-full min-w-0 rounded-[inherit] px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)] text-sm outline-none" />
+      </div>
+    </div>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
