@@ -12,11 +12,7 @@ export const surface = {
     'before:rounded-[calc(var(--radius-surface)-1px)]', // this makes a 1px border
     'has-default-state:before:shadow-surface',
   ],
-  ring: [
-    'ring-ring/25',
-    'has-focus-visible:border-ring',
-    'has-focus-visible:ring-[3px]',
-  ],
+  ring: ['ring-ring/25', 'has-focus:border-ring', 'has-focus:ring-[3px]'],
   disabled: 'has-disabled:opacity-65',
   error: [
     'group-invalid/field:border-destructive',
