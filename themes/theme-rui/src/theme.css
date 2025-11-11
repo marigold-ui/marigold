@@ -1,5 +1,6 @@
 @import './utils.css';
 @import './surface.css';
+@import './variants.css';
 
 /*
     TODO: how to do normalization so we doesn't break everything?
@@ -139,6 +140,7 @@
   --color-surface: var(--color-white);
   --color-surface-border: var(--color-stone-300);
   --radius-surface: var(--radius-lg);
+  --shadow-surface: 0 1px --theme(--color-black / 10%);
 
   --surface-sunken: var(--color-muted);
   --surface-sunken-shadow: 0 0 #0000;

@@ -1,0 +1,1 @@
+@custom-variant has-default-state (&:not(:has(:disabled, :focus-visible, [aria-invalid="true"])));
