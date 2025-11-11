@@ -29,7 +29,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   }),
   header: cva(
     [
-      'flex w-full items-center justify-between gap-4 rounded-md py-2 cursor-pointer text-foreground',
+      'flex w-full items-center justify-between gap-4 py-2 rounded-md cursor-pointer text-foreground',
       'text-left text-base font-semibold leading-6 transition-all',
       'hover:no-underline',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
@@ -46,8 +46,11 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       },
     }
   ),
-  content: cva('in-data-[expanded]:pb-2'),
+  panel: cva(
+    'overflow-clip h-(--disclosure-panel-height) transition-[height,padding] duration-250'
+  ),
+  content: cva('pb-2'),
   icon: cva(
-    'pointer-events-none shrink-0 opacity-60 transition-transform duration-200'
+    'pointer-events-none shrink-0 opacity-60 transition-transform duration-250'
   ),
 };
