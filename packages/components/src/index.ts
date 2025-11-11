@@ -163,7 +163,7 @@ export type { UnderlayProps } from './Overlay/Underlay';
 export { Pagination } from './Pagination/Pagination';
 export type { PaginationProps } from './Pagination/Pagination';
 
-export { ProgressCycle } from './ProgressCycle/ProgressCycle';
+export { ProgressCycle, ProgressCycleSvg } from './ProgressCycle/ProgressCycle';
 export type { ProgressCycleProps } from './ProgressCycle/ProgressCycle';
 
 export { I18nProvider } from '@react-aria/i18n';
@@ -251,8 +251,8 @@ export type { TooltipProps } from './Tooltip/Tooltip';
 
 export { VisuallyHidden } from './VisuallyHidden/VisuallyHidden';
 
-export { XLoader } from './XLoader/XLoader';
-export type { XLoaderProps } from './XLoader/XLoader';
+export { Loader } from './Loader/Loader';
+export type { LoaderProps, LoaderVisualType } from './Loader/Loader';
 
 // Utility exports
 export * from './utils/form.utils';
