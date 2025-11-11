@@ -135,6 +135,10 @@
   /* ==================== */
   /*        SURFACE       */
   /* ==================== */
+  --color-surface: var(--color-white);
+  --color-surface-border: var(--color-stone-300);
+  --radius-surface: var(--radius-lg);
+
   --surface-sunken: var(--color-muted);
   --surface-sunken-shadow: 0 0 #0000;
 

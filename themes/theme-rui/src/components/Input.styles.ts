@@ -21,7 +21,7 @@ const newFocus = cva(
 
 const newInputContainer = cva([
   'relative inline-flex w-full h-input',
-  // 'bg-background bg-clip-padding',
+  'bg-background bg-clip-padding',
   'text-foreground text-sm',
   'border-input rounded-lg border',
   'shadow-xs transition-shadow has-[:disabled,:focus-visible,[aria-invalid]]:shadow-none',
@@ -56,6 +56,7 @@ export const Input: ThemeComponent<'Input'> = {
   icon: cva([
     'pointer-events-none left-2',
     'text-muted-foreground disabled:text-disabled-foreground',
+    'disabled:text-gray-50',
   ]),
   action: cva(['text-muted-foreground pr-1']),
 };
