@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, XLoader } from '@marigold/components';
+import { Button, Loader } from '@marigold/components';
 
 export default () => {
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ export default () => {
       <Button variant="primary" onPress={handlePress}>
         Submit
       </Button>
-      {loading ? <XLoader mode="fullscreen" /> : null}
+      {loading ? <Loader mode="fullscreen" /> : null}
     </>
   );
 };

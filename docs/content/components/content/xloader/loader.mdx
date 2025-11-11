@@ -1,9 +1,9 @@
 ---
-title: XLoader
+title: Loader
 caption: Used to indicate the progress of the task.
 ---
 
-The `<XLoader>` component indicates a task in progress, serving as a placeholder during loading or blocking interactions during processes like data fetching or form submission, keeping users informed and reducing confusion.
+The `<Loader>` component indicates a task in progress, serving as a placeholder during loading or blocking interactions during processes like data fetching or form submission, keeping users informed and reducing confusion.
 
 ## Appearance
 
@@ -13,7 +13,7 @@ The `<XLoader>` component indicates a task in progress, serving as a placeholder
 
 ## Usage
 
-The `<XLoader>` should be used to inform users that a process is currently in progress, particularly when it takes more than a second. They are useful for situations like data fetching, form submissions, or page loads, where visual feedback reassures users that their action is being processed. However, avoid showing a loading indicator for very brief tasks, as it can feel disruptive.
+The `<Loader>` should be used to inform users that a process is currently in progress, particularly when it takes more than a second. They are useful for situations like data fetching, form submissions, or page loads, where visual feedback reassures users that their action is being processed. However, avoid showing a loading indicator for very brief tasks, as it can feel disruptive.
 
 ### Fullscreen
 
@@ -21,7 +21,7 @@ A fullscreen loader blocks all interactions with the underlying content, prevent
 
 However, overuse of fullscreen loaders can lead to a frustrating user experience, so they should be reserved for situations where it's necessary to ensure users can't proceed until the task is fully complete.
 
-<ComponentDemo file="./xloader-fullscreen.demo.tsx" />
+<ComponentDemo file="./loader-fullscreen.demo.tsx" />
 
 ### Section
 
@@ -29,7 +29,7 @@ A section loader is used to indicate that a specific section of the page is curr
 
 Use section loaders for non-blocking tasks, like loading a list of items. They should ideally not cause layout shifts, ensuring the rest of the page remains stable while the content is being loaded, providing a seamless experience for the user.
 
-<ComponentDemo file="./xloader-section.demo.tsx" />
+<ComponentDemo file="./loader-section.demo.tsx" />
 
 ## Props
 
