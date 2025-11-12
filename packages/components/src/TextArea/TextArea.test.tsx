@@ -9,15 +9,12 @@ const theme = {
   name: 'test',
   components: {
     Field: cva(''),
-    Label: {
-      container: cva('', {
-        variants: {
-          variant: { lime: 'text-lime-500' },
-          size: { small: 'text-sm' },
-        },
-      }),
-      indicator: cva(),
-    },
+    Label: cva('', {
+      variants: {
+        variant: { lime: 'text-lime-500' },
+        size: { small: 'text-sm' },
+      },
+    }),
     HelpText: {
       container: cva('', {
         variants: {

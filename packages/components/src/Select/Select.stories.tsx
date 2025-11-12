@@ -109,7 +109,7 @@ export const Basic: StoryObj<typeof Select> = {
           <Select.Option id="Firefly">Firefly</Select.Option>
         </Select>
         <hr />
-        <pre>selected: {selected}</pre>
+        <pre data-testid="selected">selected: {selected}</pre>
       </Stack>
     );
   },

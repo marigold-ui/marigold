@@ -25,10 +25,7 @@ const theme: Theme = {
       icon: cva(),
       select: cva(),
     },
-    Label: {
-      container: cva(),
-      indicator: cva(),
-    },
+    Label: cva(),
     HelpText: {
       container: cva(),
       icon: cva(),
