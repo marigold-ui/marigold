@@ -57,7 +57,6 @@ export const decorators: any = [
       >
         <OverlayContainerProvider container="overlay-container">
           <Story />
-          <div id="overlay-container" />
         </OverlayContainerProvider>
       </MarigoldProvider>
     );
