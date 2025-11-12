@@ -5,8 +5,8 @@
  * - state: disabled, readOnly, error, focus
  * - input (this is kind of "specially", maybe it really needs to be only on <input> elements)
  * - maybe "field" would also more sense or this is even more specific to inputs? (e.g. the `has-` does not work when using the focus stuff with buttons)
+ * - focus still needs a "borderless" version
  */
-
 export const surface = {
   base: [
     'relative inline-flex w-full',

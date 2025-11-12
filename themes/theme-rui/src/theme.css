@@ -1,7 +1,10 @@
 @import './utils.css';
-@import './surface.css';
+
+/* custom variants */
 @import './variants.css';
 
+/* utilities */
+@import './utilities/surface.css';
 /*
     TODO: how to do normalization so we doesn't break everything?
     TODO: omit "background" in the naming convention? (https://ui.shadcn.com/docs/theming#convention)

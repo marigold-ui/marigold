@@ -1,0 +1,24 @@
+@utility surface {
+  @apply bg-surface bg-clip-padding;
+  @apply border-surface-border rounded-surface border;
+  @apply has-default-state:shadow-xs transition-[box-shadow,border];
+
+  /* ::before */
+  @apply has-default-state:before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
+}
+
+@utility surface-disabled {
+  @apply text-disabled-foreground bg-disabled cursor-not-allowed;
+}
+
+@utility surface-readonly {
+  @apply bg-muted;
+}
+
+@utility surface-error {
+  @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
+}
+
+@utility surface-focus {
+  @apply ring-ring/25 border-ring ring-[3px];
+}

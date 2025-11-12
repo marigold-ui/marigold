@@ -3,4 +3,4 @@
 * Meaning they are not disabled, not focused, and not marked as invalid.
 */
 @custom-variant default-state (&:not(:disabled, :focus-visible, [aria-invalid="true"], [data-rac][data-invalid="true"]));
-@custom-variant has-default-state (&:not(:has(:disabled, :focus-visible, [aria-invalid="true"], [data-rac][data-invalid="true"])));
+/* @custom-variant has-default-state (&:not(:has(:disabled, :focus-visible, [aria-invalid="true"], [data-rac][data-invalid="true"]))); */

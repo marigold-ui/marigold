@@ -1,7 +1,7 @@
 import { cva } from '@marigold/system';
 import type { ThemeComponent } from '@marigold/system';
-import { input, surface } from '../surface';
 
+// TODO: Remove them!
 export const inputContainer =
   'flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow group-read-only/field:bg-muted';
 export const inputDisabled =
@@ -11,20 +11,19 @@ export const inputInvalid =
 
 export const inputReadOnly = 'group-read-only/field:bg-muted';
 
-/** ================================ */
-
 export const Input: ThemeComponent<'Input'> = {
   container: cva([
-    ...surface.base,
-    ...surface.disabled,
-    ...surface.readOnly,
-    ...surface.error,
-    ...surface.ring,
-    'h-input',
+    'relative inline-flex w-full h-input',
+    'surface',
+    'disabled:surface-disabled',
+    'group-read-only/field:surface-readonly',
+    'group-invalid/field:surface-error',
+    'has-focus:surface-focus',
   ]),
   input: cva([
-    input,
+    'w-full min-w-0 rounded-[inherit] px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)] outline-none text-sm text-foreground',
     'placeholder:text-placeholder',
+    'readonly:cursor-default',
     '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:p-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',
     'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
     'group-data-icon/input:pl-8',
