@@ -64,7 +64,7 @@ export const Section: Story = {
   ),
 };
 
-export const CycleLoader: Story = {
+export const CircleLoader: Story = {
   args: {
     loaderType: 'circle',
   },
@@ -88,7 +88,7 @@ export const CycleLoader: Story = {
   ),
 };
 
-export const FullscreenCycleLoader: Story = {
+export const FullscreenCircleLoader: Story = {
   args: {
     mode: 'fullscreen',
     loaderType: 'circle',

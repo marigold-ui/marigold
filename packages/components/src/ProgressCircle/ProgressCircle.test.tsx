@@ -1,6 +1,6 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './ProgressCycle.stories';
+import * as stories from './ProgressCircle.stories';
 
 const { Basic } = composeStories(stories);
 
@@ -17,29 +17,29 @@ test('renders an progressbar', () => {
 test('supports different sizes', () => {
   render(<Basic size="20" />);
 
-  const progressCycle = screen.getByRole('progressbar');
+  const progressCircle = screen.getByRole('progressbar');
 
   // eslint-disable-next-line testing-library/no-node-access
-  expect(progressCycle.firstChild).toHaveAttribute('height', '20px');
+  expect(progressCircle.firstChild).toHaveAttribute('height', '20px');
   // eslint-disable-next-line testing-library/no-node-access
-  expect(progressCycle.firstChild).toHaveAttribute('width', '20px');
+  expect(progressCircle.firstChild).toHaveAttribute('width', '20px');
 });
 
 test('supports strokewidth with bigger size', () => {
   render(<Basic size="40" />);
 
-  const progressCycle = screen.getByRole('progressbar');
+  const progressCircle = screen.getByRole('progressbar');
 
   // eslint-disable-next-line testing-library/no-node-access
-  expect(progressCycle.firstChild).toHaveAttribute('height', '40px');
+  expect(progressCircle.firstChild).toHaveAttribute('height', '40px');
   // eslint-disable-next-line testing-library/no-node-access
-  expect(progressCycle.firstChild).toHaveAttribute('width', '40px');
+  expect(progressCircle.firstChild).toHaveAttribute('width', '40px');
 });
 
 test('has aria label', () => {
   render(<Basic />);
 
-  const progressCycle = screen.getByRole('progressbar');
+  const progressCircle = screen.getByRole('progressbar');
 
-  expect(progressCycle).toHaveAttribute('aria-label', 'loading');
+  expect(progressCircle).toHaveAttribute('aria-label', 'loading');
 });

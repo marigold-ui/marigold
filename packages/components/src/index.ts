@@ -163,8 +163,11 @@ export type { UnderlayProps } from './Overlay/Underlay';
 export { Pagination } from './Pagination/Pagination';
 export type { PaginationProps } from './Pagination/Pagination';
 
-export { ProgressCycle, ProgressCycleSvg } from './ProgressCycle/ProgressCycle';
-export type { ProgressCycleProps } from './ProgressCycle/ProgressCycle';
+export {
+  ProgressCircle,
+  ProgressCircleSvg,
+} from './ProgressCircle/ProgressCircle';
+export type { ProgressCircleProps } from './ProgressCircle/ProgressCircle';
 
 export { I18nProvider } from '@react-aria/i18n';
 export { useTheme, ThemeProvider } from '@marigold/system';

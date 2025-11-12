@@ -66,8 +66,8 @@ test('translate loading message to German', () => {
   expect(loader.getAttribute('aria-label')).toMatchInlineSnapshot(`"Lade..."`);
 });
 
-test('renders loader with loaderType cycle', () => {
-  render(<Basic loaderType="cycle" />);
+test('renders loader with loaderType circle', () => {
+  render(<Basic loaderType="circle" />);
 
   const loader = screen.getByRole('progressbar');
   // eslint-disable-next-line testing-library/no-node-access
