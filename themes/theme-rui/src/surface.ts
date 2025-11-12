@@ -12,13 +12,13 @@ export const surface = {
     'before:rounded-[calc(var(--radius-surface)-1px)]', // this makes a 1px border
     'has-default-state:before:shadow-surface',
   ],
-  ring: ['ring-ring/25', 'has-focus:border-ring', 'has-focus:ring-[3px]'],
-  disabled: 'has-disabled:opacity-65',
+  disabled: ['has-disabled:opacity-65'],
   error: [
     'group-invalid/field:border-destructive',
-    'group-invalid/field:focus-visible:border-destructive',
-    'group-invalid/field:focus-visible:ring-destructive/20',
+    'group-invalid/field:has-focus:border-destructive',
+    'group-invalid/field:has-focus:ring-destructive/20',
   ],
+  ring: ['ring-ring/25', 'has-focus:border-ring has-focus:ring-[3px]'],
 };
 
 export const input =

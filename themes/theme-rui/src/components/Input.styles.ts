@@ -14,18 +14,18 @@ export const inputReadOnly = 'group-read-only/field:bg-muted';
 /** ================================ */
 
 export const Input: ThemeComponent<'Input'> = {
-  container: cva([...surface.base, ...surface.ring]),
+  container: cva([
+    ...surface.base,
+    ...surface.disabled,
+    ...surface.error,
+    ...surface.ring,
+    'h-input',
+  ]),
   input: cva([
     input,
-    // inputContainer,
-    // inputDisabled,
-    // inputInvalid,
-    // 'focus:util-focus-ring outline-none',
-    // inputReadOnly,
-    // 'h-input',
-    // 'placeholder:text-placeholder',
-    // '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:p-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',
-    // 'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
+    'placeholder:text-placeholder',
+    '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:p-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',
+    'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
     'group-data-icon/input:pl-8',
     'group-data-action/input:pr-7',
   ]),
