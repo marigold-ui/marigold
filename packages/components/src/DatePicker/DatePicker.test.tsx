@@ -32,10 +32,7 @@ const theme: Theme = {
       segment: cva(''),
     },
     Field: cva(''),
-    Label: {
-      container: cva(''),
-      indicator: cva(''),
-    },
+    Label: cva(''),
     Button: cva(''),
     Underlay: cva(''),
     Calendar: {

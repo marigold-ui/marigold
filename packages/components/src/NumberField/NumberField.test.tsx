@@ -16,7 +16,7 @@ const theme: Theme = {
     },
 
     Field: cva(''),
-    Label: { container: cva(), indicator: cva() },
+    Label: cva(),
     HelpText: {
       container: cva('', {
         variants: {

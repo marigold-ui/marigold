@@ -89,10 +89,7 @@ export type Theme = {
       'container' | 'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
-    Label?: Record<
-      'container' | 'indicator',
-      ComponentStyleFunction<string, string>
-    >;
+    Label?: ComponentStyleFunction<string, string>;
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<

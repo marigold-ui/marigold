@@ -5,19 +5,16 @@ import { Label } from './Label';
 const theme: Theme = {
   name: 'test',
   components: {
-    Label: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'p-1',
-          },
+    Label: cva('', {
+      variants: {
+        variant: {
+          lime: 'text-lime-600',
         },
-      }),
-      indicator: cva(''),
-    },
+        size: {
+          small: 'p-1',
+        },
+      },
+    }),
   },
 };
 

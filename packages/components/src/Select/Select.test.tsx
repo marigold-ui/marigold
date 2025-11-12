@@ -23,15 +23,12 @@ const theme: Theme = {
   name: 'test',
   components: {
     Field: cva(''),
-    Label: {
-      container: cva('', {
-        variants: {
-          variant: { lime: 'text-lime-500' },
-          size: { small: 'text-sm' },
-        },
-      }),
-      indicator: cva(),
-    },
+    Label: cva('', {
+      variants: {
+        variant: { lime: 'text-lime-500' },
+        size: { small: 'text-sm' },
+      },
+    }),
     Text: cva(),
     Popover: cva(['mt-0.5'], {
       variants: {
@@ -152,13 +149,22 @@ test('allows to disable select', () => {
   expect(button).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('allows select to be required', () => {
-  render(<Basic label="Label" required />);
-  // eslint-disable-next-line testing-library/no-node-access
-  const label = screen.getAllByText(/Label/i)[0].parentElement!;
-  const requiredIcon = within(label).getByText('*');
+test('allows to disable options', () => {
+  render(
+    <Select label="Label" data-testid="select" disabledKeys={['two']}>
+      <Select.Option id="one">one</Select.Option>
+      <Select.Option id="two">two</Select.Option>
+      <Select.Option id="three">three</Select.Option>
+    </Select>
+  );
 
-  expect(requiredIcon).toBeInTheDocument();
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+
+  const options = screen.getByRole('listbox');
+  const twoo = within(options).getByRole('option', { name: 'two' });
+
+  expect(twoo).toHaveAttribute('aria-disabled', 'true');
 });
 
 test('controlled', () => {

@@ -11,19 +11,16 @@ const theme: Theme = {
   name: 'test',
   components: {
     Field: cva(),
-    Label: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'p-1',
-          },
+    Label: cva('', {
+      variants: {
+        variant: {
+          lime: 'text-lime-600',
         },
-      }),
-      indicator: cva(''),
-    },
+        size: {
+          small: 'p-1',
+        },
+      },
+    }),
     HelpText: {
       container: cva('', {
         variants: {

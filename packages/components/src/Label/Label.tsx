@@ -9,14 +9,11 @@ export interface LabelProps extends Omit<RAC.LabelProps, RemovedProps> {
 }
 
 const _Label = ({ size, variant, children, ...props }: LabelProps) => {
-  const classNames = useClassNames({ component: 'Label', size, variant });
+  const className = useClassNames({ component: 'Label', size, variant });
 
   return (
-    <Label {...props} className={cn(classNames.container, 'inline-flex')}>
+    <Label {...props} className={cn(className, 'inline-flex')}>
       {children}
-      <span aria-hidden="true" className={cn('hidden', classNames.indicator)}>
-        *
-      </span>
     </Label>
   );
 };
