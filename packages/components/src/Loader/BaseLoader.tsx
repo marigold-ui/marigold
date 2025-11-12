@@ -189,7 +189,7 @@ export const BaseLoader = ({
   size,
   children,
   'aria-label': ariaLabel,
-  loaderType = 'cycle',
+  loaderType = 'circle',
   ...props
 }: BaseLoaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');

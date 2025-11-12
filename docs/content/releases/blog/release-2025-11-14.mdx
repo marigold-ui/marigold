@@ -1,0 +1,47 @@
+---
+title: Marigold v16.0.0
+date: 2025-11-14
+type: Blog
+changed:
+  - componentes/navigation/accordion
+  - components/content/loader
+  - components/form/file-field
+---
+
+The leaves are falling, the air is crisp, and that familiar end-of-year rush is in full swing. Everyone is head-down, pushing to hit those final goals and wrap up projects before the holidays.
+
+We know this is the busiest time of the year. You need tools that are fast, reliable, and don't get in your way.
+
+That’s why we have another major Marigold release packed with some notable changes. Get ready to read all the changes, new features we created in Marigold v16.0.0 to make your final sprint as smooth and productive as possible.
+
+## Components
+
+### Accordion - Breaking change
+
+- We have added smoother animation for expanding/collapsing the Accordion
+- Be aware if you override our styles. The classname `content` is renamed to `panel`. `content` still exists but moved one level deeper in component hierarchy and has other styles now.
+
+### Label - Breaking change
+
+- We removed the `indicator` styling from `<Label>`. The component is no longer a multipart component. Rather than styling the required indicator through a dedicated part (previsouly `indicator`), you can now apply it anyway you want, for example by using `'group-required/field:after:content-["*"]'`.
+- Be aware if you override our styles. `container` and `indicator` no longer exists. There are just default styles now including `'group-required/field:after:content-["*"]'`.
+
+### XLoader - Breaking change
+
+We made the `<XLoader>` more generic.
+
+- `<XLoader>` now is called `<Loader>`
+- We added a new prop `loaderType` which shows by default a loading circle. The value `xloader` shows the well-known xLoader icon.
+- If you still want the xloader icon you have to add the prop `loaderType='xloder'`
+
+### FileField - new component (alpha)
+
+We now provide a dedicated component for file uploads. Check out our storybook for some first impressions.
+
+This component is in an early state and we are looking for early adopters to collect feedback and finalize this component. So please contact us!
+
+## Hotfixes
+
+- Remove extra spacing when hidden/a11y elements are causing it
+- Show focus ring of `<CloseButton> only when focused with keyboard
+- Fix Listbox layout when more than one element is used.
