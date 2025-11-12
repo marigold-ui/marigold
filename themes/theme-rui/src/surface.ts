@@ -1,3 +1,12 @@
+/**
+ * Separate this in:
+ *
+ * - surface: base -> "variants" with elevation
+ * - state: disabled, readOnly, error, focus
+ * - input (this is kind of "specially", maybe it really needs to be only on <input> elements)
+ * - maybe "field" would also more sense or this is even more specific to inputs? (e.g. the `has-` does not work when using the focus stuff with buttons)
+ */
+
 export const surface = {
   base: [
     'relative inline-flex w-full',
