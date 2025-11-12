@@ -17,6 +17,7 @@ export const Input: ThemeComponent<'Input'> = {
   container: cva([
     ...surface.base,
     ...surface.disabled,
+    ...surface.readOnly,
     ...surface.error,
     ...surface.ring,
     'h-input',
