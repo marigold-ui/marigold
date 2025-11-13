@@ -16,8 +16,9 @@ export const Input: ThemeComponent<'Input'> = {
     'relative inline-flex w-full h-input',
     'surface has-default-state:elevation-raised',
     'disabled:state-disabled',
+    // 'has-read-only:state-readonly', // not working but shouldn't, fix later!
     'group-read-only/field:state-readonly',
-    'group-invalid/field:surface-error',
+    'has-invalid:surface-error',
     'has-focus:state-focus',
   ]),
   input: cva([
