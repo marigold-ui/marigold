@@ -145,6 +145,11 @@
   --radius-surface: var(--radius-lg);
   --shadow-surface: 0 1px --theme(--color-black / 10%);
 
+  --shadow-elevation-raised: var(--shadow-xs);
+  --shadow-elevation-overlay: var(--shadow-lg);
+
+  /* ---- */
+
   --surface-sunken: var(--color-muted);
   --surface-sunken-shadow: 0 0 #0000;
 
