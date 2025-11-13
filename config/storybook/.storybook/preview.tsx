@@ -1,5 +1,4 @@
-import { withThemeByDataAttribute } from '@storybook/addon-themes';
-import { Preview } from '@storybook/react';
+import { Decorator, Preview } from '@storybook/react';
 import {
   MarigoldProvider,
   OverlayContainerProvider,
@@ -38,24 +37,16 @@ export const parameters: Preview['parameters'] = {
   },
 };
 
-// fix type any
-export const decorators: any = [
-  withThemeByDataAttribute({
-    themes: {
-      rui: rui.name,
-    },
-    defaultTheme: rui.name,
-    attributeName: 'data-theme',
-  }),
-
-  (Story: any) => {
+export const decorators: Decorator[] = [
+  Story => {
     const theme = 'rui';
     return (
       <MarigoldProvider
         theme={THEME[theme as ThemeNames]}
         className="h-screen p-6"
       >
-        <OverlayContainerProvider container="overlay-container">
+        {/* Use the "storybook-root" container for overlays to interaction tests work. */}
+        <OverlayContainerProvider container="storybook-root">
           <Story />
         </OverlayContainerProvider>
       </MarigoldProvider>
