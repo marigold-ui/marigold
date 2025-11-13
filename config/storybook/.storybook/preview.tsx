@@ -3,16 +3,8 @@ import {
   MarigoldProvider,
   OverlayContainerProvider,
 } from '@marigold/components';
-import rui from '@marigold/theme-rui';
+import theme from '@marigold/theme-rui';
 import './../styles.css';
-
-// Helpers
-// ---------------
-const THEME = {
-  rui,
-};
-
-type ThemeNames = keyof typeof THEME;
 
 // Parameters
 // ---------------
@@ -38,18 +30,17 @@ export const parameters: Preview['parameters'] = {
 };
 
 export const decorators: Decorator[] = [
-  Story => {
-    const theme = 'rui';
-    return (
-      <MarigoldProvider
-        theme={THEME[theme as ThemeNames]}
-        className="h-screen p-6"
-      >
-        {/* Use the "storybook-root" container for overlays to interaction tests work. */}
-        <OverlayContainerProvider container="storybook-root">
-          <Story />
-        </OverlayContainerProvider>
-      </MarigoldProvider>
-    );
-  },
+  // Wrapper to provide an overlay container
+  Story => (
+    <div id="overlay-container">
+      <Story />
+    </div>
+  ),
+  Story => (
+    <MarigoldProvider theme={theme} className="h-screen p-6">
+      <OverlayContainerProvider container="overlay-container">
+        <Story />
+      </OverlayContainerProvider>
+    </MarigoldProvider>
+  ),
 ];
