@@ -11,11 +11,11 @@ export const DateField: ThemeComponent<'DateField'> = {
     'h-input',
     inputContainer,
     inputDisabled,
-    'has-focus-visible:util-focus-ring outline-none',
+    'has-focus-visible:state-focus outline-none',
     inputInvalid,
     inputReadOnly,
     'invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20',
-    'data-focus-within:util-focus-ring outline-0',
+    'data-focus-within:state-focus outline-0',
   ]),
   segment: cva([
     inputDisabled,
