@@ -11,15 +11,18 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   container: cva(
     [
       'w-full relative grid-rows-[auto_1fr_auto]',
-      'util-surface-overlay util-scrollbar',
-      'placement-top:w-full placement-bottom:w-full',
+      'bg-surface border-surface-border elevation-overlay util-scrollbar',
+      'placement-right:border-l placement-left:border-r placement-top:border-b placement-bottom:border-t',
     ],
     {
       variants: {
         size: {
-          xsmall: 'w-64 placement-top:h-48 placement-bottom:h-48',
-          small: 'w-72 placement-top:h-64 placement-bottom:h-64',
-          medium: 'w-96 placement-top:h-80 placement-bottom:h-80',
+          xsmall:
+            'placement-right:w-64 placement-left:w-64 placement-top:h-48 placement-bottom:h-48',
+          small:
+            'placement-right:w-72 placement-left:w-72 placement-top:h-64 placement-bottom:h-64',
+          medium:
+            'placement-right:w-96 placement-left:w-96 placement-top:h-80 placement-bottom:h-80',
         },
       },
     }
