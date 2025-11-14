@@ -29,6 +29,10 @@
 /* === STATE === */
 
 @utility surface-error {
+  @apply border-destructive focus:border-destructive focus:ring-destructive/20;
+}
+
+@utility surface-has-error {
   @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
 }
 

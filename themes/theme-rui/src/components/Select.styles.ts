@@ -4,7 +4,7 @@ export const Select: ThemeComponent<'Select'> = {
   icon: cva('text-muted-foreground/80'),
   select: cva([
     'surface surface-input elevation-raised h-input',
-    'invalid:surface-error',
+    'group-invalid/field:surface-error!',
     'disabled:state-disabled',
     'focus-visible:state-focus outline-none',
     '*:data-placeholder:text-placeholder',

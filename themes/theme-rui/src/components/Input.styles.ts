@@ -17,7 +17,7 @@ export const Input: ThemeComponent<'Input'> = {
     'surface has-default-state:elevation-raised',
     'disabled:state-disabled',
     'group-read-only/field:state-readonly',
-    'has-invalid:surface-error',
+    'has-invalid:surface-has-error',
     'has-focus:state-focus',
   ]),
   input: cva([
