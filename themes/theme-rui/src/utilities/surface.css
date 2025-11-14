@@ -1,6 +1,7 @@
 /* === SURFACE === */
 
 @utility surface {
+  @apply relative;
   @apply bg-surface bg-clip-padding;
   @apply border-surface-border rounded-surface border;
   @apply transition-[box-shadow,border];

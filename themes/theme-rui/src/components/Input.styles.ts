@@ -13,7 +13,7 @@ export const inputReadOnly = 'group-read-only/field:bg-muted';
 
 export const Input: ThemeComponent<'Input'> = {
   container: cva([
-    'relative inline-flex w-full h-input',
+    'inline-flex w-full h-input',
     'surface has-default-state:elevation-raised',
     'disabled:state-disabled',
     'group-read-only/field:state-readonly',

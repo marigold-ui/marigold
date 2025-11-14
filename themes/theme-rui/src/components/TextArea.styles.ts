@@ -2,7 +2,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const TextArea: ThemeComponent<'TextArea'> = {
   container: cva([
-    'relative inline-flex w-full',
+    'inline-flex w-full',
     'surface has-default-state:elevation-raised',
     'disabled:state-disabled',
     'group-read-only/field:state-readonly',

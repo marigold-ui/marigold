@@ -3,7 +3,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const Select: ThemeComponent<'Select'> = {
   icon: cva('text-muted-foreground/80'),
   select: cva([
-    'surface surface-input elevation-raised h-input',
+    'surface surface-input default-state:elevation-raised h-input',
     'group-invalid/field:surface-error!',
     'disabled:state-disabled',
     'focus-visible:state-focus outline-none',
