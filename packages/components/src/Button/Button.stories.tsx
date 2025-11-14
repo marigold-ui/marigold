@@ -106,6 +106,9 @@ export const ButtonVariants: Story = {
         <Button {...args} variant="destructive">
           Destructive
         </Button>
+        <Button {...args} variant="destructive-light">
+          Destructive Light
+        </Button>
         <Button {...args} variant="ghost">
           Ghost
         </Button>
