@@ -4,12 +4,11 @@ import { inputContainer, inputDisabled, inputInvalid } from './Input.styles';
 export const Select: ThemeComponent<'Select'> = {
   icon: cva('text-muted-foreground/80'),
   select: cva([
-    inputContainer,
-    inputInvalid,
-    inputDisabled,
-    'focus-visible:util-focus-ring outline-none',
+    'surface elevation-raised h-input',
+    // inputInvalid,
+    // inputDisabled,
+    'focus-visible:state-focus outline-none',
     'h-input',
-    'cursor-pointer',
     '*:data-placeholder:text-placeholder',
     /**
      * Removes the spacing from the field when there is no

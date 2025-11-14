@@ -9,6 +9,13 @@
   @apply before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
 }
 
+@utility surface-input {
+  @apply w-full min-w-0;
+  @apply rounded-[inherit] px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)];
+  @apply text-foreground placeholder:text-placeholder text-sm;
+  @apply outline-none;
+}
+
 /* === ELEVATION === */
 
 @utility elevation-raised {

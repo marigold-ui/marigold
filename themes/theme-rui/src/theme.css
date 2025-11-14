@@ -143,7 +143,7 @@
   --color-surface: var(--color-white);
   --color-surface-border: var(--color-stone-300);
   --radius-surface: var(--radius-lg);
-  --shadow-surface: 0 1px --theme(--color-black / 15%);
+  --shadow-surface: 0 1px --theme(--color-black / 10%);
 
   --shadow-elevation-raised: var(--shadow-xs);
   --shadow-elevation-overlay: var(--shadow-lg);
