@@ -1,16 +1,6 @@
 import { cva } from '@marigold/system';
 import type { ThemeComponent } from '@marigold/system';
 
-// TODO: Remove them!
-export const inputContainer =
-  'flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow group-read-only/field:bg-muted';
-export const inputDisabled =
-  'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled';
-export const inputInvalid =
-  'group-invalid/field:border-destructive group-invalid/field:focus:border-destructive group-invalid/field:focus:ring-destructive/20';
-
-export const inputReadOnly = 'group-read-only/field:bg-muted';
-
 export const Input: ThemeComponent<'Input'> = {
   container: cva([
     'inline-flex w-full h-input',

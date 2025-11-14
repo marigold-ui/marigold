@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import type RAC from 'react-aria-components';
 import { DateInput, Group } from 'react-aria-components';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { DateSegment } from './DateSegment';
 
 type RemovedProps = 'style' | 'className' | 'children';
@@ -17,7 +17,10 @@ const _DateInput = ({ variant, size, action, ...props }: DateInputProps) => {
 
   return (
     <Group className={classNames.field}>
-      <DateInput className="flex flex-1 items-center" {...props}>
+      <DateInput
+        className={cn('flex flex-1 items-center', classNames.input)}
+        {...props}
+      >
         {segment => (
           <DateSegment className={classNames.segment} segment={segment} />
         )}

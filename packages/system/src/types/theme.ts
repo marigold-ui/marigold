@@ -51,7 +51,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
-      'segment' | 'field' | 'action',
+      'segment' | 'field' | 'input' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<
