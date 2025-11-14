@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Group, Input, NumberField } from 'react-aria-components';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -88,6 +88,8 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       variant,
     });
 
+    const hasSelectedRef = useRef(false);
+
     const props: RAC.NumberFieldProps = {
       isDisabled: disabled,
       isReadOnly: readOnly,
@@ -97,6 +99,17 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
     };
 
     const showStepper = !hideStepper && !readOnly;
+
+    const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+      if (!hasSelectedRef.current) {
+        e.currentTarget.select();
+        hasSelectedRef.current = true;
+      }
+    };
+
+    const handleBlur = () => {
+      hasSelectedRef.current = false;
+    };
 
     return (
       <FieldBase
@@ -116,6 +129,8 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
           <Input
             ref={ref}
             className={cn('h-full flex-1 outline-none', classNames.input)}
+            onClick={handleClick}
+            onBlur={handleBlur}
           />
           {showStepper && (
             <StepButton
