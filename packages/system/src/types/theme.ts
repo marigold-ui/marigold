@@ -148,7 +148,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
-    TextArea?: ComponentStyleFunction<string, string>;
+    TextArea?: Record<
+      'container' | 'textarea',
+      ComponentStyleFunction<string, string>
+    >;
     Tooltip?: Record<
       'container' | 'arrow',
       ComponentStyleFunction<string, string>
