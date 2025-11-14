@@ -5,7 +5,7 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
     [
       'inline-flex items-center justify-center rounded-full transition-[color,box-shadow] hover:bg-hover hover:text-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-      'focus-visible:util-focus-ring outline-none',
+      'focus-visible:state-focus outline-none',
       'cursor-pointer',
     ],
     {
@@ -27,10 +27,11 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
   ),
   popover: cva([
     'flex flex-col gap-0 rounded-xl p-5 util-surface-overlay',
-    'data-[small]:max-w-3xs data-[medium]:max-w-xs data-[large]:max-w-md',
+    'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
+
     'overflow-y-auto util-scrollbar',
   ]),
-  container: cva(''),
+  container: cva('outline-none'),
   title: cva('text-lg font-semibold mb-1'),
   content: cva('text-sm'),
 };

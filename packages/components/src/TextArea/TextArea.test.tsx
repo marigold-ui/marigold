@@ -28,12 +28,15 @@ const theme = {
       }),
       icon: cva(''),
     },
-    TextArea: cva('text-blue-500', {
-      variants: {
-        variant: { lime: 'text-lime-500' },
-        size: { small: 'text-sm' },
-      },
-    }),
+    TextArea: {
+      container: cva(''),
+      textarea: cva('text-blue-500', {
+        variants: {
+          variant: { lime: 'text-lime-500' },
+          size: { small: 'text-sm' },
+        },
+      }),
+    },
   },
 } satisfies Theme;
 

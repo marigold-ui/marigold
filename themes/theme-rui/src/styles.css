@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import './theme.css' theme(inline);
 @import './global.css' theme(inline);
-@source inline("{bg}-{stone}-{50,{100..900..100},950}");
+@source inline('{bg}-{stone}-{50,{100..900..100},950}');
 
 /* from tailwind.config.ts */
 @source 'src/**/*.*.ts';

@@ -13,6 +13,6 @@ export const Tabs: ThemeComponent<'Tabs'> = {
   tab: cva([
     'text-text-primary-muted aria-selected:text-text-primary px-2 py-1 text-sm font-medium',
     'aria-selected:border-border-primary -m-px border-b-2 border-transparent',
-    'focus:outline-hidden focus-visible:outline',
+    'focus:outline-hidden focus-visible:state-focus-borderless',
   ]),
 };

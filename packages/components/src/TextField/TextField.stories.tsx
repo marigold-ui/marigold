@@ -122,6 +122,10 @@ export const Basic: Story = {
   render: args => <TextField {...args} label="My label is great." />,
 };
 
+export const WithError: Story = {
+  render: args => <TextField {...args} label="My label is great." error />,
+};
+
 export const Controlled: Story = {
   render: args => {
     const [value, setValue] = useState('');

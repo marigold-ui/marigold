@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent } from 'storybook/test';
 import { Facebook } from '@marigold/icons';
-import { Container } from '../Container/Container';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
 
@@ -97,23 +96,21 @@ export const ButtonVariants: Story = {
     onPress: fn(),
   },
   render: args => (
-    <Container>
-      <Stack space={4} alignX="left">
-        <Button {...args} variant="primary">
-          Primary
-        </Button>
-        <Button {...args}>Secondary</Button>
-        <Button {...args} variant="destructive">
-          Destructive
-        </Button>
-        <Button {...args} variant="ghost">
-          Ghost
-        </Button>
-        <Button {...args} variant="link">
-          Link
-        </Button>
-      </Stack>
-    </Container>
+    <Stack space={4} alignX="left">
+      <Button {...args} variant="primary">
+        Primary
+      </Button>
+      <Button {...args}>Secondary</Button>
+      <Button {...args} variant="destructive">
+        Destructive
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+    </Stack>
   ),
   play: async ({ args, canvas }) => {
     await userEvent.click(canvas.getByText('Primary'));

@@ -1,0 +1,54 @@
+/* === SURFACE === */
+
+@utility surface {
+  @apply relative;
+  @apply bg-surface bg-clip-padding;
+  @apply border-surface-border rounded-surface border;
+  @apply transition-[box-shadow,border];
+
+  /* ::before */
+  @apply before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
+}
+
+@utility surface-input {
+  @apply w-full min-w-0;
+  @apply px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)];
+  @apply text-foreground placeholder:text-placeholder text-sm;
+  @apply outline-none;
+}
+
+/* === ELEVATION === */
+
+@utility elevation-raised {
+  @apply shadow-elevation-raised;
+}
+
+@utility elevation-overlay {
+  @apply shadow-elevation-overlay;
+}
+
+/* === STATE === */
+
+@utility surface-error {
+  @apply border-destructive focus:border-destructive focus:ring-destructive/20;
+}
+
+@utility surface-has-error {
+  @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
+}
+
+@utility state-disabled {
+  @apply text-disabled-foreground bg-disabled cursor-not-allowed;
+}
+
+@utility state-readonly {
+  @apply bg-muted;
+}
+
+@utility state-focus {
+  @apply ring-ring/50 border-ring ring-[3px];
+}
+
+@utility state-focus-borderless {
+  @apply ring-ring/50 ring-[3px];
+}

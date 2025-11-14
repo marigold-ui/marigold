@@ -25,11 +25,11 @@ export const Tooltip: ThemeComponent<'Tooltip'> = {
   arrow: cva(
     [
       // right
-      'data-[placement=right]:[&_svg]:rotate-90',
+      'placement-right:[&_svg]:rotate-90',
       // left
-      'data-[placement=left]:[&_svg]:-rotate-90',
+      'placement-left:[&_svg]:-rotate-90',
       // bottom
-      'data-[placement=bottom]:[&_svg]:rotate-180',
+      'placement-bottom:[&_svg]:rotate-180',
     ],
     {
       variants: {
