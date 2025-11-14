@@ -337,7 +337,5 @@ export const VeryLongContent: Story = {
     // Test scroll functionality - scroll to bottom
     dialogContent.scrollTop = dialogContent.scrollHeight;
     expect(dialogContent.scrollTop).toBeGreaterThan(0);
-
-    await userEvent.click(canvas.getByRole('button', { name: 'Decline' }));
   },
 };

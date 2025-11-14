@@ -13,7 +13,6 @@ const config: StorybookConfig = {
     path.resolve(projectRoot, 'themes/theme-rui/src/*.stories.tsx'),
   ],
   addons: [
-    getAbsolutePath('@storybook/addon-themes'),
     getAbsolutePath('@storybook/addon-a11y'),
     getAbsolutePath('@storybook/addon-docs'),
     'storybook-addon-test-codegen',

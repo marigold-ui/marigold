@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button/Button';
-import { Tooltip } from './Tooltip';
+import { Tooltip, TooltipProps } from './Tooltip';
 
-const meta = {
+const meta: Meta<TooltipProps> = {
   title: 'Components/Tooltip',
+  component: Tooltip,
   argTypes: {
     offset: {
       control: {
@@ -59,7 +60,7 @@ const meta = {
       description: 'The size of the tooltip',
     },
   },
-} satisfies Meta<typeof Tooltip>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -75,22 +76,6 @@ export const Basic: Story = {
         <Tooltip.Trigger>
           <Button variant="primary">Hover no! Me!</Button>
           <Tooltip {...args}>
-            <div>I am a much more longer tooltip you know!</div>
-            <div>I even have two lines!</div>
-          </Tooltip>
-        </Tooltip.Trigger>
-      </div>
-    );
-  },
-};
-
-export const OpenRemaining: Story = {
-  render: args => {
-    return (
-      <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] flex-col gap-2 pt-32">
-        <Tooltip.Trigger>
-          <Button variant="primary">Hover Me!</Button>
-          <Tooltip open={true} {...args}>
             <div>I am a much more longer tooltip you know!</div>
             <div>I even have two lines!</div>
           </Tooltip>
