@@ -1,5 +1,32 @@
 # @marigold/docs
 
+## 16.0.0
+
+### Minor Changes
+
+- 98bf929: [DST-1075]: Introduce `<FileField>`component
+
+### Patch Changes
+
+- 845f26c: feat([DST-1025]): Adding possibilty to paste date values in `<DatePicker>` component.
+- 2ac63f7: fix([DSTSUP-196]): Fix Listbox layout when more than one element is used.
+- 0040853: fix(docs): Remove old broken Tailwind plugins
+- Updated dependencies [832e3fa]
+- Updated dependencies [13b5c4b]
+- Updated dependencies [845f26c]
+- Updated dependencies [b947276]
+- Updated dependencies [2ac63f7]
+- Updated dependencies [29494b4]
+- Updated dependencies [98bf929]
+- Updated dependencies [0040853]
+- Updated dependencies [f10119a]
+- Updated dependencies [4eebff4]
+  - @marigold/components@16.0.0
+  - @marigold/theme-rui@4.0.0
+  - @marigold/system@16.0.0
+  - @marigold/theme-docs@4.0.0
+  - @marigold/icons@1.3.28
+
 ## 15.4.3
 
 ### Patch Changes
