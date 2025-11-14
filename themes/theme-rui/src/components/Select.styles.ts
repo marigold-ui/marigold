@@ -1,14 +1,12 @@
 import { type ThemeComponent, cva } from '@marigold/system';
-import { inputContainer, inputDisabled, inputInvalid } from './Input.styles';
 
 export const Select: ThemeComponent<'Select'> = {
   icon: cva('text-muted-foreground/80'),
   select: cva([
-    'surface elevation-raised h-input',
-    // inputInvalid,
-    // inputDisabled,
+    'surface surface-input elevation-raised h-input',
+    'invalid:surface-error',
+    'disabled:state-disabled',
     'focus-visible:state-focus outline-none',
-    'h-input',
     '*:data-placeholder:text-placeholder',
     /**
      * Removes the spacing from the field when there is no

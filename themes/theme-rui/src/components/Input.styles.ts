@@ -16,13 +16,12 @@ export const Input: ThemeComponent<'Input'> = {
     'relative inline-flex w-full h-input',
     'surface has-default-state:elevation-raised',
     'disabled:state-disabled',
-    // 'has-read-only:state-readonly', // not working but shouldn't, fix later!
     'group-read-only/field:state-readonly',
     'has-invalid:surface-error',
     'has-focus:state-focus',
   ]),
   input: cva([
-    'surface-input',
+    'surface-input rounded-[inherit]',
     'group-read-only/field:cursor-default',
     '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:p-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',
     'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
