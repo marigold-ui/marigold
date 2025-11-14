@@ -9,10 +9,6 @@
   @apply before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
 }
 
-@utility surface-error {
-  @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
-}
-
 /* === ELEVATION === */
 
 @utility elevation-raised {
@@ -24,6 +20,10 @@
 }
 
 /* === STATE === */
+
+@utility surface-error {
+  @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
+}
 
 @utility state-disabled {
   @apply text-disabled-foreground bg-disabled cursor-not-allowed;
