@@ -29,7 +29,7 @@
     "@vitest/coverage-v8": "4.0.4",
     "@vitest/ui": "4.0.4",
     "all-contributors-cli": "6.26.1",
-    "autoprefixer": "10.4.21",
+    "autoprefixer": "10.4.22",
     "concurrently": "9.2.1",
     "eslint": "9.38.0",
     "husky": "9.1.7",
