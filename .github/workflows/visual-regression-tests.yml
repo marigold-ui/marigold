@@ -1,20 +1,48 @@
 name: Visual-Regression-Tests
 on:
+  # When branches has "ui" in their name
   push:
     branches:
       - 'ui-*'
       - '*-ui'
       - '**/ui-*'
+
+  # Manual trigger
   workflow_dispatch:
+
+  # When a comment is created on an issue or PR
+  issue_comment:
+    types: [created]
 
 jobs:
   chromatic:
+    # Run if it's a PR push, OR a dispatch button, OR a valid comment command
+    if: >
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        contains(github.event.comment.body, '/run-chromatic')
+      )
+
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          # This requires a "ternary" logic to pick the right ref:
+          # 1. If PR push: Use the PR head SHA.
+          # 2. If Comment: Construct the specific pull request ref.
+          # 3. If Dispatch: Leave empty (defaults to the selected branch).
+          ref: >-
+            ${{ 
+              github.event_name == 'pull_request' && github.event.pull_request.head.sha || 
+              github.event_name == 'issue_comment' && format('refs/pull/{0}/head', github.event.issue.number) || 
+              '' 
+            }}
+          # Required by Chromatic
           fetch-depth: 0
       - uses: pnpm/action-setup@v4.1.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
