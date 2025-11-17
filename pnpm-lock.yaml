@@ -66,8 +66,8 @@ importers:
         specifier: 6.26.1
         version: 6.26.1
       autoprefixer:
-        specifier: 10.4.21
-        version: 10.4.21(postcss@8.5.6)
+        specifier: 10.4.22
+        version: 10.4.22(postcss@8.5.6)
       concurrently:
         specifier: 9.2.1
         version: 9.2.1
@@ -4426,8 +4426,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  autoprefixer@10.4.21:
-    resolution: {integrity: sha512-O+A6LWV5LDHSJD3LjHYoNi4VLsj/Whi7k6zG12xTYaU4cQ8oxQGckXNX8cRHK5yOZ/ppVHe0ZBXGzSV9jXdVbQ==}
+  autoprefixer@10.4.22:
+    resolution: {integrity: sha512-ARe0v/t9gO28Bznv6GgqARmVqcWOV3mfgUPn9becPHMiD3o9BwlRgaeccZnwTpZ7Zwqrm+c1sUSsMxIzQzc8Xg==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
@@ -5697,8 +5697,8 @@ packages:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
     engines: {node: '>=0.4.x'}
 
-  fraction.js@4.3.7:
-    resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
+  fraction.js@5.3.4:
+    resolution: {integrity: sha512-1X1NTtiJphryn/uLQz3whtY6jK3fTqoE3ohKs0tT+Ujr1W59oopxmoEh7Lu5p6vBaPbgoM0bzveAW4Qi5RyWDQ==}
 
   framer-motion@12.23.24:
     resolution: {integrity: sha512-HMi5HRoRCTou+3fb3h9oTLyJGBxHfW+HnNE25tAXOvVx/IvwMHK0cx7IR4a2ZU6sh3IX1Z+4ts32PcYBOqka8w==}
@@ -13842,11 +13842,11 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  autoprefixer@10.4.21(postcss@8.5.6):
+  autoprefixer@10.4.22(postcss@8.5.6):
     dependencies:
-      browserslist: 4.25.1
-      caniuse-lite: 1.0.30001731
-      fraction.js: 4.3.7
+      browserslist: 4.27.0
+      caniuse-lite: 1.0.30001754
+      fraction.js: 5.3.4
       normalize-range: 0.1.2
       picocolors: 1.1.1
       postcss: 8.5.6
@@ -14099,7 +14099,7 @@ snapshots:
   caniuse-api@3.0.0:
     dependencies:
       browserslist: 4.27.0
-      caniuse-lite: 1.0.30001731
+      caniuse-lite: 1.0.30001754
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
 
@@ -14310,7 +14310,7 @@ snapshots:
 
   core-js-compat@3.42.0:
     dependencies:
-      browserslist: 4.25.1
+      browserslist: 4.27.0
 
   core-util-is@1.0.3: {}
 
@@ -15469,7 +15469,7 @@ snapshots:
 
   format@0.2.2: {}
 
-  fraction.js@4.3.7: {}
+  fraction.js@5.3.4: {}
 
   framer-motion@12.23.24(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
