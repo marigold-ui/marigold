@@ -3,14 +3,6 @@
 /* custom variants */
 @import './variants.css';
 
-/* utilities */
-@import './utilities/surface.css';
-/*
-    TODO: how to do normalization so we doesn't break everything?
-    TODO: omit "background" in the naming convention? (https://ui.shadcn.com/docs/theming#convention)
-    TODO: create component styles files and compile to CSS classes?
-*/
-
 /*
     - create tokens if we think:
         - it is necessary for a component
