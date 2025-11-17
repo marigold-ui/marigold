@@ -45,10 +45,18 @@
   @apply bg-muted;
 }
 
+/*
+ * Applies a consistent visual style used for keyboard focus states across components.
+ * Used this when the border of the component can be changed.
+ */
 @utility state-focus {
   @apply ring-ring/50 border-ring ring-[3px];
 }
 
+/*
+ * Applies a consistent visual style used for keyboard focus states across components.
+ * Used this when the border of the component should not be changed.
+ */
 @utility state-focus-borderless {
   @apply ring-ring/50 ring-[3px];
 }

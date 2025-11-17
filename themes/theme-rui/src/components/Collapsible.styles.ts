@@ -5,9 +5,9 @@ export const Collapsible: ThemeComponent<'Collapsible'> = {
   trigger: cva(
     [
       'inline-flex gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
-      'duration-150 active:scale-[0.98] pressed:scale-[0.98]',
+      'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-      'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+      'focus-visible:state-focus outline-none disabled:util-disabled',
       'cursor-pointer',
     ],
     {

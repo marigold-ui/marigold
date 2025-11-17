@@ -8,38 +8,6 @@
  */
 
 /*
- * Applies a consistent visual style for keyboard focus states across components.
- * This utility sets a colored focus ring and border based on the given theme color,
- * while removing the default outline.
- *
- * Use this as a default for all components (that don't have their own border).
- */
-@utility util-focus-* {
-  border-color: --value(--color-*);
-
-  --tw-ring-color: --alpha(--value(--color-*) / 50%);
-  --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-}
-
-/*
- * Applies a consistent visual style for keyboard focus states across components.
- * This utility sets a colored focus ring based on the given theme color,
- * while removing the default outline.
- *
- * Use this when the component has its own border and you need to keep it.
- */
-@utility util-focus-borderless-* {
-  --tw-ring-color: --alpha(--value(--color-*) / 50%);
-  --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-}
-
-/*
  * Defines a consistent visual and behavioral style for disabled UI elements.
  */
 @utility util-disabled {
