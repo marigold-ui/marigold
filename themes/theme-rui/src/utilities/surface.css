@@ -1,3 +1,12 @@
+/*
+ * Custom Tailwind utilities
+ *
+ * This file contains reusable utility functions and class shortcuts that
+ * encapsulate common design decisions across the theme. These include
+ * standardized styling for interactive states like keyboard focus, disabled
+ * components, and other consistent UI patterns.
+ */
+
 /* ========================= */
 /*    Surface & Elevation    */
 /* ========================= */

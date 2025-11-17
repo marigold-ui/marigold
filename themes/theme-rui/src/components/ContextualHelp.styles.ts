@@ -26,7 +26,8 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
     }
   ),
   popover: cva([
-    'flex flex-col gap-0 rounded-xl p-5 util-surface-overlay',
+    'flex flex-col gap-0 p-5',
+    'surface elevation-overlay',
     'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
 
     'overflow-y-auto util-scrollbar',
