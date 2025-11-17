@@ -1,5 +1,11 @@
-/* === SURFACE === */
+/* ========================= */
+/*    Surface & Elevation    */
+/* ========================= */
 
+/*
+ * The "surface" utitlities define visual surfaces with distinct background colors. Apply 
+ * elevation levels to them when needed.
+ */
 @utility surface {
   @apply relative;
   @apply bg-surface bg-clip-padding;
@@ -10,6 +16,11 @@
   @apply before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
 }
 
+/*
+ * Ensures input elements have consistent padding, text styles, and full-width behavior when used 
+ * as surfaces.Since input elements cannot use ::before, wrap them with an additional element and 
+ * apply this utility to the input itself for proper styling.
+ */
 @utility surface-input {
   @apply w-full min-w-0;
   @apply px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)];
@@ -17,30 +28,58 @@
   @apply outline-none;
 }
 
-/* === ELEVATION === */
+/*
+ * The "elevation" utilities define elevation levels.
+ * Elevation is conveyed through shadows and borders, helping establish 
+ * depth, hierarchy, and separation between interface layers. Use them to apply 
+ * consistent surface styling across components.
+ */
 
+/*
+ * Use this utility when you want to visually lift an element above the base level,
+ * such as for cards, or interactive components that require emphasis. This is the 
+ * lowest elevation level.
+ */
 @utility elevation-raised {
   @apply shadow-elevation-raised;
 }
 
+/*
+ * Use this utility when you want to visually lift an element above the raised level,
+ * such as for dialogs, or popups. This is the highest elevation level.
+ */
 @utility elevation-overlay {
   @apply shadow-elevation-overlay;
 }
 
-/* === STATE === */
+/* ========================= */
+/*           State           */
+/* ========================= */
 
+/*
+ * Applies a consistent visual style for invalid elements.
+ */
 @utility surface-error {
   @apply border-destructive focus:border-destructive focus:ring-destructive/20;
 }
 
+/*
+ * Applies a consistent visual style when an element has an invalid child element.
+ */
 @utility surface-has-error {
   @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
 }
 
+/*
+ * Applies a consistent visual style for disabled elements.
+ */
 @utility state-disabled {
   @apply text-disabled-foreground bg-disabled cursor-not-allowed;
 }
 
+/*
+ * Applies a consistent visual style for readonly elements.
+ */
 @utility state-readonly {
   @apply bg-muted;
 }
@@ -59,4 +98,61 @@
  */
 @utility state-focus-borderless {
   @apply ring-ring/50 ring-[3px];
+}
+
+/* ========================= */
+/*            Misc           */
+/* ========================= */
+
+/*
+ * Applies a touch-friendly hitbox to elements, ensuring they are easily tappable on touch devices. 
+ * This is important for accessibility, as it helps meet WCAG guidelines for minimum touch target size 
+ * and improves usability for users with motor impairments.
+ */
+@utility util-touch-hitbox {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    /* 24x24px is WCAG before 2.2, to support 2.2 this needs to be 44x44px */
+    min-height: 24px;
+    min-width: 24px;
+    z-index: 9999;
+  }
+}
+
+/*
+ * Custom scrollbar styling to match the theme's design.
+ * This utility provides a consistent look for scrollbars across different browsers.
+ */
+@utility util-scrollbar {
+  scrollbar-width: auto;
+  scrollbar-color: var(--color-scrollbar) var(--color-scrollbar-track);
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 12px;
+    height: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--color-scrollbar-track);
+    border-radius: var(--radius-full);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    transition: background-color 0.2s var(--ease-out-quad);
+    background-color: var(--color-scrollbar);
+    border-radius: var(--radius-full);
+    border: 0px solid transparent;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-scrollbar-hover);
+  }
 }
