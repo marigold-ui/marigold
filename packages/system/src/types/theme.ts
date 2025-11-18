@@ -71,7 +71,10 @@ export type Theme = {
     >;
     Field?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
-    Popover?: ComponentStyleFunction<string, string>;
+    Popover?: Record<
+      'container' | 'content',
+      ComponentStyleFunction<string, string>
+    >;
     HelpText?: Record<
       'container' | 'icon',
       ComponentStyleFunction<string, string>
