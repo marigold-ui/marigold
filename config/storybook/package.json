@@ -27,7 +27,7 @@
     "@types/react": "19.2.2",
     "@vitejs/plugin-react": "5.0.4",
     "axe-playwright": "2.2.2",
-    "tailwindcss": "4.1.15",
+    "tailwindcss": "4.1.17",
     "vite-tsconfig-paths": "5.1.4"
   },
   "devDependencies": {

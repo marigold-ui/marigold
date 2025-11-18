@@ -40,7 +40,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-select": "5.10.2",
-    "tailwindcss": "4.1.15",
+    "tailwindcss": "4.1.17",
     "turbo": "2.5.8",
     "typescript": "5.9.3",
     "vite-tsconfig-paths": "5.1.4",
