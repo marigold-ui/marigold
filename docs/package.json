@@ -23,7 +23,7 @@
     "@marigold/theme-rui": "workspace:*",
     "@octokit/core": "7.0.6",
     "@react-aria/i18n": "3.12.13",
-    "@tailwindcss/postcss": "4.1.15",
+    "@tailwindcss/postcss": "4.1.17",
     "@tailwindcss/typography": "0.5.19",
     "@tanstack/react-query": "5.90.8",
     "@vercel/analytics": "1.5.0",
@@ -55,7 +55,7 @@
     "shiki": "3.13.0",
     "simple-git": "3.28.0",
     "tailwind-scrollbar": "4.0.2",
-    "tailwindcss": "4.1.15",
+    "tailwindcss": "4.1.17",
     "zod": "4.1.12",
     "zod-form-data": "3.0.1",
     "zx": "8.8.5"
