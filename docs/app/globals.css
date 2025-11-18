@@ -2,10 +2,10 @@
 
 /* own theme */
 @import './../../themes/theme-docs/dist/theme.css';
-@source './../../themes/theme-docs/src/**/*.ts';
-
 /* rui theme */
 @import './../../themes/theme-rui/dist/styles.css';
+
+@source './../../themes/theme-docs/src/**/*.ts';
 
 /* demos */
 @source './../content/**/*.{js,ts,jsx,tsx,mdx}';
