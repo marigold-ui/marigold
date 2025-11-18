@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Trash } from 'lucide-react';
 import { useState } from 'storybook/preview-api';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -89,7 +90,10 @@ export const ControlledSectionMessage: Story = {
           onCloseChange={setDeleteSuccessful}
         >
           <SectionMessage.Content>
-            I am really not that good at righting copy texts, sorry.
+            <Stack space={4} alignX="left">
+              I am really not that good at righting copy texts, sorry.
+              <Button variant="secondary">Delete Account</Button>
+            </Stack>
           </SectionMessage.Content>
           <SectionMessage.Title>
             Hey! You! I am an info box! Please notice me, it might help you!

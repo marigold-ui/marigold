@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
@@ -874,4 +875,184 @@ export const InputTable: Story = {
       </Stack>
     );
   },
+};
+
+export const Destructive: Story = {
+  render: args => (
+    <Table
+      aria-label="User Management Table"
+      selectionMode="multiple"
+      size="expanded"
+      {...args}
+    >
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column>Email</Table.Column>
+        <Table.Column>Status</Table.Column>
+        <Table.Column align="right">Actions</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key="1">
+          <Table.Cell>Jane Doe</Table.Cell>
+          <Table.Cell>jane.doe@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>active</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="2">
+          <Table.Cell>John Smith</Table.Cell>
+          <Table.Cell>john.smith@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>inactive</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="3">
+          <Table.Cell>Emily Johnson</Table.Cell>
+          <Table.Cell>emily.johnson@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>suspended</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="4">
+          <Table.Cell>Michael Brown</Table.Cell>
+          <Table.Cell>michael.brown@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>active</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="5">
+          <Table.Cell>Olivia Wilson</Table.Cell>
+          <Table.Cell>olivia.wilson@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>inactive</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="6">
+          <Table.Cell>William Lee</Table.Cell>
+          <Table.Cell>william.lee@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>active</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="7">
+          <Table.Cell>Sophia Martinez</Table.Cell>
+          <Table.Cell>sophia.martinez@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>suspended</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="8">
+          <Table.Cell>James Anderson</Table.Cell>
+          <Table.Cell>james.anderson@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>inactive</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="9">
+          <Table.Cell>Charlotte Thomas</Table.Cell>
+          <Table.Cell>charlotte.thomas@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>active</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key="10">
+          <Table.Cell>Benjamin Harris</Table.Cell>
+          <Table.Cell>benjamin.harris@example.com</Table.Cell>
+          <Table.Cell>
+            <Badge>suspended</Badge>
+          </Table.Cell>
+          <Table.Cell>
+            <Button variant="ghost" size="small">
+              Edit
+            </Button>{' '}
+            <Button variant="ghost" size="small">
+              <Trash2 />
+              Delete
+            </Button>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
 };
