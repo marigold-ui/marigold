@@ -7,11 +7,11 @@ import {
 import {
   Button,
   Dialog,
-  Popover,
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
+import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
 import { intlMessages } from '../intl/messages';
@@ -140,15 +140,15 @@ export const _ContextualHelp = forwardRef<
           <Icon size={20} />
         </Button>
 
-        <Popover
-          placement={placement}
-          offset={offset}
-          className={classNames.popover}
-          {...{
-            [`data-${width ?? 'medium'}`]: true,
-          }}
-        >
-          <Dialog className={classNames.container}>{children}</Dialog>
+        <Popover placement={placement} offset={offset}>
+          <Dialog
+            className={classNames.container}
+            {...{
+              [`data-${width ?? 'medium'}`]: true,
+            }}
+          >
+            {children}
+          </Dialog>
         </Popover>
       </DialogTrigger>
     );

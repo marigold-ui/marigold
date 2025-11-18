@@ -19,7 +19,10 @@ export interface PopoverProps
 // Component
 // ---------------
 const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  ({ keyboardDismissDisabled, placement, open, children, ...rest }, ref) => {
+  (
+    { keyboardDismissDisabled, placement, offset = 0, open, children, ...rest },
+    ref
+  ) => {
     const props: RAC.PopoverProps = {
       isKeyboardDismissDisabled: keyboardDismissDisabled,
       isOpen: open,
@@ -55,7 +58,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             {...props}
             className={cn('flex', classNames)}
             placement={placement}
-            offset={0}
+            offset={offset}
           >
             {children}
           </Popover>

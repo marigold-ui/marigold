@@ -2,14 +2,13 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
-    'surface',
+    'flex surface',
     // Standalone
     'not-group-data-trigger/popover:elevation-raised',
     // In a Popover
     'group-data-trigger/popover:elevation-overlay',
     'group-data-trigger/popover:w-full',
     'group-data-trigger/popover:overflow-hidden',
-    'flex',
   ]),
   list: cva(['p-1 text-sm outline-0 space-y-px overflow-y-auto w-full']),
   item: cva([

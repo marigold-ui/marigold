@@ -25,14 +25,12 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
       },
     }
   ),
-  popover: cva([
-    'flex flex-col gap-0 p-5',
+  container: cva([
+    'outline-none',
     'surface elevation-overlay',
+    'p-5 overflow-y-auto',
     'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
-
-    'overflow-y-auto util-scrollbar',
   ]),
-  container: cva('outline-none'),
   title: cva('text-lg font-semibold mb-1'),
   content: cva('text-sm'),
 };
