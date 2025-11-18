@@ -120,5 +120,3 @@ const DateInputWithPasteWrapper = ({
 
   return <DateInput onPaste={onPaste} {...props} />;
 };
-
-// 02.02.2020
