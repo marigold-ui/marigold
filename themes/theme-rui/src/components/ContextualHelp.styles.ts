@@ -27,8 +27,8 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
   ),
   container: cva([
     'outline-none',
-    'surface elevation-overlay',
-    'p-5 overflow-y-auto',
+    'surface elevation-overlay util-scrollbar',
+    'p-5',
     'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
   ]),
   title: cva('text-lg font-semibold mb-1'),

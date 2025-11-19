@@ -1,4 +1,4 @@
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 
 export interface ContextualHelpContentProps {
   children: React.ReactNode;
@@ -17,5 +17,14 @@ export const ContextualHelpContent = ({
     size,
   });
 
-  return <div className={classNames.content}>{children}</div>;
+  return (
+    <div
+      className={cn(
+        'min-h-0 overflow-y-auto [grid-area:content]',
+        classNames.content
+      )}
+    >
+      {children}
+    </div>
+  );
 };

@@ -10,7 +10,7 @@ import {
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
@@ -142,7 +142,10 @@ export const _ContextualHelp = forwardRef<
 
         <Popover placement={placement} offset={offset}>
           <Dialog
-            className={classNames.container}
+            className={cn(
+              "grid [grid-template-areas:'title'_'content']",
+              classNames.container
+            )}
             {...{
               [`data-${width ?? 'medium'}`]: true,
             }}
