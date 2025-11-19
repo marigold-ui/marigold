@@ -89,9 +89,7 @@ export const ControlledSectionMessage: Story = {
           onCloseChange={setDeleteSuccessful}
         >
           <SectionMessage.Content>
-            <Stack space={4} alignX="left">
-              I am really not that good at righting copy texts, sorry.
-            </Stack>
+            I am really not that good at righting copy texts, sorry.
           </SectionMessage.Content>
           <SectionMessage.Title>
             Hey! You! I am an info box! Please notice me, it might help you!
