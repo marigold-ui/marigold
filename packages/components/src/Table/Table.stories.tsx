@@ -877,7 +877,7 @@ export const InputTable: Story = {
   },
 };
 
-export const Destructive: Story = {
+export const DestructiveAction: Story = {
   render: args => (
     <Table
       aria-label="User Management Table"
@@ -902,8 +902,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -918,8 +917,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -934,8 +932,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -950,8 +947,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -966,8 +962,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -982,8 +977,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -998,8 +992,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -1014,8 +1007,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -1030,8 +1022,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>
@@ -1046,8 +1037,7 @@ export const Destructive: Story = {
             <Button variant="ghost" size="small">
               Edit
             </Button>{' '}
-            <Button variant="ghost" size="small">
-              <Trash2 />
+            <Button variant="destructive-ghost" size="small">
               Delete
             </Button>
           </Table.Cell>

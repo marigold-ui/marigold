@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Trash } from 'lucide-react';
 import { useState } from 'storybook/preview-api';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -92,7 +91,6 @@ export const ControlledSectionMessage: Story = {
           <SectionMessage.Content>
             <Stack space={4} alignX="left">
               I am really not that good at righting copy texts, sorry.
-              <Button variant="secondary">Delete Account</Button>
             </Stack>
           </SectionMessage.Content>
           <SectionMessage.Title>
