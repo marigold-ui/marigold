@@ -2,7 +2,7 @@ import { useState } from 'react';
 import RAC, { DropZone } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { FieldBase, type FieldBaseProps } from '@marigold/components';
-import { WidthProp, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger } from './FileTrigger';
@@ -92,7 +92,7 @@ export const FileField = ({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     /* @ts-expect-error */
     <FieldBase
-      as={'div'}
+      as="div"
       width={width}
       label={label}
       className={classNames.container}
@@ -121,11 +121,16 @@ export const FileField = ({
             setFiles(prev => (prev ?? []).filter((_, i) => i !== index))
           }
         >
-          <div className={classNames.item}>
-            <p className={classNames.itemLabel}>{file.name}</p>
-            <p className={classNames.itemDescription}>
-              {(file.size / 1024 / 1024).toFixed(2)} MB
-            </p>
+          <div className={cn('[grid-area:label]', classNames.itemLabel)}>
+            {file.name}
+          </div>
+          <div
+            className={cn(
+              '[grid-area:description]',
+              classNames.itemDescription
+            )}
+          >
+            {(file.size / 1024 / 1024).toFixed(2)} MB
           </div>
         </FileField.Item>
       ))}

@@ -200,7 +200,8 @@ export type Theme = {
       | 'dropZoneLabel'
       | 'item'
       | 'itemLabel'
-      | 'itemDescription',
+      | 'itemDescription'
+      | 'itemRemove',
       ComponentStyleFunction<string, string>
     >;
   };
