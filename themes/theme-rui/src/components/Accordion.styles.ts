@@ -18,8 +18,8 @@ export const Accordion: ThemeComponent<'Accordion'> = {
         default: '',
         card: [
           'surface elevation-raised px-4 py-1 outline-none last:border-b',
-          // TODO: focus is still shown even if an item within the item is focused
-          'has-focus-visible:state-focus outline-none',
+          // Show focus border when the trigger is focused
+          'has-[[slot=trigger]:focus-visible]:state-focus outline-none',
         ],
       },
     },
