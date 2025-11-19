@@ -22,5 +22,3 @@ export const FileField: ThemeComponent<'FileField'> = {
   itemDescription: cva([' text-muted-foreground text-xs']),
   itemRemove: cva(['flex items-center']),
 };
-
-// "bg-background border-input flex items-center justify-between gap-2 rounded-lg border p-2 pe-3"
