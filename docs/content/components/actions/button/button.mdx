@@ -1,6 +1,7 @@
 ---
 title: Button
 caption: Buttons allow users to trigger actions.
+badge: updated
 ---
 
 The `<Button>` component is a crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
@@ -79,6 +80,24 @@ This primary button should represent the most crucial action within that section
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
+
+### Placement and order
+
+Depending on where buttons are used, it is advisable to place them appropriately and in the correct order.
+
+- on full size pages buttons should be aligned from left to right means using the variants from primary → secondary → ghost
+
+- on dialogs, drawers, toasts or even wizards buttons should be aligned from right to left, also using the variants from primary → secondary → ghost
+
+<SectionMessage>
+    <SectionMessage.Title>Navigation</SectionMessage.Title>
+    <SectionMessage.Content>
+        When using actions to navigate away from the page you should use the `<LinkButton>` or the `<Link>` component.
+        `<Link>` has no `ghost` variant - use `secondary` instead.
+    </SectionMessage.Content>
+</SectionMessage>
+
+<ComponentDemo file="./button-placement-order.demo.tsx" />
 
 ### Icons and labels
 
