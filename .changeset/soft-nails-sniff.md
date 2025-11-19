@@ -17,3 +17,7 @@ If you only want to migrate and do not need style adjustments, move the styles t
 - `<Textarea>` has now an additional `container` style and is now a multipart component (breaking change)
 - `<Input>` has now a `container` part to style
 - `<DateInput>` has now a `input` part to style
+- Deprecated and removed the `util-focus-*` utilities
+- Deprecated and removed the `util-disabled` utilitiy
+- Fixed the Datepicker dropdown, it now fits the content and no longer the input if it is wider than the calendar popover
+- `<FileField>` no longer has hardcoded unchangable styles
