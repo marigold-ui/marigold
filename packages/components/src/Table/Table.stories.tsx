@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
