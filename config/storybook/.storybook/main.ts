@@ -10,7 +10,6 @@ const config: StorybookConfig = {
   stories: [
     path.resolve(projectRoot, 'packages/components/src/**/*.stories.tsx'),
     path.resolve(projectRoot, 'packages/system/src/**/*.stories.tsx'),
-    path.resolve(projectRoot, 'themes/theme-rui/src/*.stories.tsx'),
   ],
   addons: [
     getAbsolutePath('@storybook/addon-a11y'),
