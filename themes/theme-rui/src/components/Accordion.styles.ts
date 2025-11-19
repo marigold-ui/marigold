@@ -17,9 +17,9 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variant: {
         default: '',
         card: [
-          'rounded-md border px-4 py-1 outline-none last:border-b',
+          'surface elevation-raised px-4 py-1 outline-none last:border-b',
           // TODO: focus is still shown even if an item within the item is focused
-          'has-focus-visible:state-ring outline-none',
+          'has-focus-visible:state-focus outline-none',
         ],
       },
     },
@@ -37,7 +37,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     {
       variants: {
         variant: {
-          default: 'focus-visible:state-ring outline-none',
+          default: 'focus-visible:state-focus outline-none',
           card: 'outline-none',
         },
       },
