@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
+import { expect, userEvent, within } from 'storybook/test';
 import { Inline } from '../Inline/Inline';
 import { NumberField } from './NumberField';
 
@@ -171,5 +172,32 @@ export const Controlled: Story = {
         </pre>
       </>
     );
+  },
+};
+
+export const SelectOnClick: Story = {
+  tags: ['component-test'],
+  args: {
+    label: 'Price',
+    defaultValue: 42,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input: HTMLInputElement = canvas.getByRole('textbox', {
+      name: 'Price',
+    });
+
+    await userEvent.click(input);
+    await expect(input.selectionStart).toBe(0);
+    await expect(input.selectionEnd).toBe(input.value.length);
+
+    const selectionEnd = input.selectionEnd;
+    await userEvent.click(input);
+    await expect(input.selectionEnd).toBe(selectionEnd);
+
+    await userEvent.tab();
+    await userEvent.click(input);
+    await expect(input.selectionStart).toBe(0);
+    await expect(input.selectionEnd).toBe(input.value.length);
   },
 };
