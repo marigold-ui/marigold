@@ -30,7 +30,7 @@ export { NumberField } from './NumberField.styles';
 export { Popover } from './Popover.styles';
 export { Radio } from './Radio.styles';
 export { Pagination } from './Pagination.styles';
-export { ProgressCycle } from './ProgressCycle.styles';
+export { ProgressCircle } from './ProgressCircle.styles';
 export { SectionMessage } from './SectionMessage.styles';
 export { Select } from './Select.styles';
 export { Slider } from './Slider.styles';

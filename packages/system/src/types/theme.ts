@@ -118,7 +118,7 @@ export type Theme = {
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
     >;
-    ProgressCycle?: Record<
+    ProgressCircle?: Record<
       'container' | 'loader' | 'label',
       ComponentStyleFunction<string, string>
     >;
