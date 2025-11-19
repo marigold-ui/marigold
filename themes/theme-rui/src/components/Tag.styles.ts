@@ -8,10 +8,9 @@ export const Tag: ThemeComponent<'Tag'> = {
   ]),
   tag: cva([
     'relative inline-flex items-center gap-[7px]',
-    'border border-solid border-input rounded-lg',
+    'surface elevation-raised',
     'font-medium text-xs',
     'h-7 px-2 cursor-default',
-    'bg-background',
     'selected:text-white selected:bg-brand',
     'data-disabled:cursor-not-allowed data-disabled:text-disabled-foreground data-disabled:bg-disabled',
     'focus-visible:state-focus outline-none transition-all',
