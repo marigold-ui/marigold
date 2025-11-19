@@ -7,6 +7,7 @@
 @source '../../packages/{components,system,themes}/**/*.stories.{tsx,ts}';
 
 /* marigold components */
+@source './../../themes/theme-rui/src/**/*';
 @source './../../packages/{components,system,themes}/**/*.{tsx,ts}';
 @source '!../../packages/{components,system,themes}/node_modules/**/*.{tsx,ts}';
 @source '!../../packages/{components,system,themes}/**/*.{test}.{tsx,ts}';
