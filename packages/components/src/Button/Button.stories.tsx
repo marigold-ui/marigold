@@ -90,6 +90,7 @@ export const Basic: Story = {
   render: args => <Button {...args}>Button</Button>,
   play: async ({ args, canvas }) => {
     await userEvent.click(canvas.getByText('Button'));
+
     await expect(args.onPress).toHaveBeenCalled();
     await expect(canvas.getByText('Button')).toHaveTextContent('Button');
   },
