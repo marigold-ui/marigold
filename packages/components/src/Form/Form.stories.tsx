@@ -1,5 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import type { Meta, StoryObj } from '@storybook/react';
+import { Link } from '@marigold/components';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
@@ -39,6 +40,10 @@ export const Basic: Story = {
             <Select.Option id="product">Product</Select.Option>
           </Select>
           <Checkbox label="Subscribe to Employee Newsletter" />
+          <Inline space={4} alignY="center">
+            <Button variant="primary">Save</Button>
+            <Link variant="secondary">Cancel</Link>
+          </Inline>
         </Stack>
       </Form>
     );

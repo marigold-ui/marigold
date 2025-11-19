@@ -98,7 +98,7 @@ export const ButtonVariants: Story = {
   },
   render: args => (
     <Container>
-      <Stack space={4}>
+      <Stack space={4} alignX="left">
         <Button {...args} variant="primary">
           Primary
         </Button>
