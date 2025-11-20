@@ -35,6 +35,7 @@ const theme: Theme = {
       icon: cva(''),
     },
     Input: {
+      container: cva(),
       input: cva('border-blue-700'),
       icon: cva(),
       action: cva(),

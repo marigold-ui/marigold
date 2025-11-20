@@ -2,11 +2,12 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva([
-    'text-foreground z-50 overflow-hidden rounded-md p-1 outline-none',
+    'surface elevation-overlay w-full',
+    'text-foreground z-50 overflow-hidden p-1 outline-none',
   ]),
   item: cva(
     [
-      'relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none text-nowrap',
+      'relative flex cursor-pointer items-center gap-2 rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap',
       'disabled:text-disabled-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
     ],
@@ -23,14 +24,15 @@ export const Menu: ThemeComponent<'Menu'> = {
     }
   ),
   section: cva(
-    'text-muted-foreground px-2 py-1.5 text-xs font-medium border-t border-t-border in-first:border-t-0'
+    'text-muted-foreground p-2 text-xs font-medium border-t border-t-border in-first:border-t-0'
   ),
   button: cva(
     [
-      'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow]',
-      '[&_svg]:shrink-0 [&_svg]:pointer-events-none',
-      'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+      'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium',
+      'surface elevation-raised',
+      'focus-visible:state-focus outline-none disabled:state-disabled',
       'cursor-pointer',
+      '[&_svg]:shrink-0 [&_svg]:pointer-events-none',
     ],
     {
       variants: {

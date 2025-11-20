@@ -4,22 +4,23 @@ import { cva } from '@marigold/system';
 export const Button: ThemeComponent<'Button'> = cva(
   [
     'inline-flex items-center justify-center gap-2',
-    'whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
-    'duration-150 active:scale-[0.98] pressed:scale-[0.98]',
+    'whitespace-nowrap font-medium transition-[color,box-shadow,transform]',
+    'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-    'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+    'focus-visible:state-focus outline-none disabled:state-disabled',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
     'cursor-pointer',
   ],
   {
     variants: {
       variant: {
-        primary: 'bg-brand text-brand-foreground shadow-xs hover:bg-brand/90',
+        primary:
+          'rounded-surface bg-brand text-brand-foreground shadow-xs hover:bg-brand/90',
         secondary:
-          'border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
+          'rounded-surface bg-surface shadow-xs enabled:border border-surface-border hover:bg-hover hover:text-foreground expanded:bg-hover',
         destructive:
-          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
-        ghost: 'hover:bg-hover hover:text-foreground',
+          'rounded-surface bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
+        ghost: 'rounded-surface hover:bg-hover hover:text-foreground',
         link: 'text-link util-touch-hitbox',
       },
       size: {
