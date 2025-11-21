@@ -12,6 +12,7 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
     | 'primary'
     | 'secondary'
     | 'destructive'
+    | 'destructive-ghost'
     | 'ghost'
     | 'link'
     | (string & {});
