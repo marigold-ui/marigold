@@ -8,4 +8,17 @@ Space is the invisible structure of our interface. It isn't just empty pixels to
 
 To ensure consistency, this system relies on a _relational scale_ of semantic tokens rather than arbitrary pixel values. By decoupling spacing from hard-coded numbers, we allow the interface to adapt gracefully across different contexts and density settings.
 
-# hello
+## Space = Relationship
+
+We utilize a relational scale rather than a purely size-based system. While traditional T-shirt sizing (sm, md, or lg) is useful for general dimensions, a relational approach better captures the cognitive connection between objects.
+
+The tokens in the spacing scale describe the strength of the bond between elements rather than size references. In traditional systems, spacing involves a translation step: identifying the relationship ("these items should look like a pair") and then recalling the specific pixel value that represents it.
+
+Using a relational system removes that translation step. When you choose a token, you are not asking "How big should this gap be?" You are asking "How closely related are these two elements?"
+
+By naming tokens after the relationship (e.g., related, peer), we embed design logic directly into the code. You don't need to memorize the pixel value of "related". You simply identify that a label and input are related to each other, and the system handles the math.
+
+**The fundamental principle**
+
+- **High relatedness** = Less space (Elements function as a unit).
+- **Low Relatedness** = More Space (Elements are independent ideas).
