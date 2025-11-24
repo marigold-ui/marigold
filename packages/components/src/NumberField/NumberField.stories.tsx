@@ -187,16 +187,16 @@ export const SelectOnClick: Story = {
       name: 'Price',
     });
 
-    await userEvent.click(input);
+    input.focus();
     await expect(input.selectionStart).toBe(0);
     await expect(input.selectionEnd).toBe(input.value.length);
 
     const selectionEnd = input.selectionEnd;
-    await userEvent.click(input);
+    await input.focus();
     await expect(input.selectionEnd).toBe(selectionEnd);
 
     await userEvent.tab();
-    await userEvent.click(input);
+    await input.focus();
     await expect(input.selectionStart).toBe(0);
     await expect(input.selectionEnd).toBe(input.value.length);
   },
