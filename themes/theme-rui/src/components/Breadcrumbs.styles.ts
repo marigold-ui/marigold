@@ -3,11 +3,13 @@ import { cva } from '@marigold/system';
 
 export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
   container: cva(
-    ['flex flex-wrap items-center gap-1.5 wrap-break-word text-sm sm:gap-2.5'],
+    [
+      'flex flex-wrap items-center gap-1.5 wrap-break-word text-sm sm:gap-2.5 text-muted-foreground',
+    ],
     {
       variants: {
         variant: {
-          default: 'text-foreground',
+          default: '',
         },
         size: {
           small: 'text-xs',
@@ -21,9 +23,7 @@ export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
       },
     }
   ),
-  item: cva(
-    'inline-flex items-center text-muted-foreground gap-1.5 sm:gap-2.5'
-  ),
+  item: cva('inline-flex items-center  gap-1.5 sm:gap-2.5'),
   link: cva('transition-colors hover:text-foreground cursor-pointer'),
   current: cva('font-normal text-foreground'),
 };
