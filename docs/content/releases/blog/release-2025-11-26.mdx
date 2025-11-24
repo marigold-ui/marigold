@@ -6,48 +6,49 @@ changed:
   - componentes/navigation/accordion
   - components/content/loader
   - components/form/file-field
+  - components/form/label
+  - components/layout/container
 ---
 
 The leaves are falling, the air is crisp, and that familiar end-of-year rush is in full swing. Everyone is head-down, pushing to hit those final goals and wrap up projects before the holidays.
 
-We know this is the busiest time of the year. You need tools that are fast, reliable, and don't get in your way.
+Marigold v16.0.0 is here with smoother interactions, improved APIs, and new features to help you finish the year strong. See what’s new below!
 
-That’s why we have another major Marigold release packed with some notable changes. Get ready to read all the changes, new features we created in Marigold v16.0.0 to make your final sprint as smooth and productive as possible.
+## Breaking Changes
+
+### Accordion
+
+- Smoother animation for expanding/collapsing.
+- The classname `content` is renamed to `panel`. `content` now exists one level deeper in the hierarchy for additional styling if needed.
+
+### Label
+
+- Removed the `indicator` styling from `<Label>`. The component is no longer multipart (style directly with `cva()`). Style the required indicator as needed, e.g. `'group-required/field:after:content-["*"]'`.
+
+### Loader (formerly XLoader)
+
+- `<XLoader>` is now `<Loader>`.
+- New prop `loaderType` (default: loading circle). Use `loaderType='xloader'` for the classic xloader icon.
 
 ## Components
 
-### Accordion - Breaking change
+### FileField (alpha)
 
-We have added smoother animation for expanding/collapsing the Accordion
+A new dedicated component for file uploads: `<FileField>`. Check out our [storybook](https://marigold-latest.vercel.app/?path=/story/components-filefield--basic) for a preview. This component is in early alpha—feedback and early adopters are welcome!
 
-Please note the following when extending the theme. The classname `content` is renamed to `panel`. `content` still exists but moved one level deeper in component hierarchy and has other styles now.
+## Documentation
 
-### Label - Breaking change
+- Usage guidelines for button placement and order are now available. See the [documentation](/components/actions/button) for details.
+- Updated documentation for Accordion, Loader, and FileField components.
+- Button usage guidelines added.
 
-We removed the `indicator` styling from `<Label>`. The component is no longer a multipart component. Rather than styling the required indicator through a dedicated part (previsouly `indicator`), you can now apply it anyway you want, for example by using `'group-required/field:after:content-["*"]'`.
+## Bug fixes
 
-Please note the following when extending the theme. `container` and `indicator` no longer exists. There are just default styles now including `'group-required/field:after:content-["*"]'`.
+- Removed extra spacing caused by hidden/a11y elements in.
+- Removed extra spacing in `<Container>`.
+- Focus ring for `<CloseButton>` now only appears when focused via keyboard.
+- Fixed Listbox layout when a `<ListBox.Item>` contains more than one element (e.g., both a label and a description).
 
-### XLoader - Breaking change
+---
 
-We made the `<XLoader>` more generic.
-
-- `<XLoader>` now is called `<Loader>`
-- we added a new prop `loaderType` which shows by default a loading circle. The value `xloader` shows the well-known xloader icon
-- if you still want the xloader icon you have to add the prop `loaderType='xloader'`
-
-### FileField - new component (alpha)
-
-We now provide a dedicated component for file uploads. Check out our [storybook](https://marigold-latest.vercel.app/?path=/story/components-filefield--basic) for some first impressions.
-
-This component is in an early state and we are looking for early adopters to collect feedback and finalize this component. So please contact us!
-
-## Button - update
-
-We have usage guidelines for the buttons placement and order. Check out the [documentation](/components/actions/button) for more information.
-
-## Hotfixes
-
-- removed extra spacing when hidden/a11y elements are causing it
-- show focus ring of `<CloseButton>` only when focused with keyboard
-- fix Listbox layout when more than one element is used.
+As always, we welcome your feedback and wish you a productive end to 2025!
