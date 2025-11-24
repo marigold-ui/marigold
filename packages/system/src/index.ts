@@ -95,12 +95,13 @@ export type {
   ConfigVariantsMulti,
   Config,
   Props,
-} from './utils';
+} from './utils/className.utils';
+export { cva, cn } from './utils/className.utils';
 export {
-  cva,
-  cn,
   createVar,
-  get,
-  isValidCssCustomPropertyName,
+  createSpacingVar,
   ensureCssVar,
-} from './utils';
+  isScale,
+  isValidCssCustomPropertyName,
+} from './utils/css-variables.utils';
+export { get } from './utils/object.utils';
