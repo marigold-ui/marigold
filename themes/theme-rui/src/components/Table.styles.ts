@@ -64,8 +64,8 @@ export const Table: ThemeComponent<'Table'> = {
     {
       variants: {
         variant: {
-          default: 'aria-[selected=true]:bg-muted',
-          grid: 'aria-[selected=true]:bg-muted [&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
+          default: 'aria-selected:bg-muted',
+          grid: 'aria-selected:bg-muted [&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
           admin: [
             'bg-access-admin',
             '[&_td:first-child]:relative [&_td:first-child]:pl-4',

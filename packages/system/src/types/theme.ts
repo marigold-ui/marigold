@@ -47,11 +47,11 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ContextualHelp?: Record<
-      'trigger' | 'popover' | 'container' | 'title' | 'content',
+      'trigger' | 'container' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
-      'segment' | 'field' | 'action',
+      'segment' | 'field' | 'input' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<
@@ -86,7 +86,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Input?: Record<
-      'input' | 'icon' | 'action',
+      'container' | 'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Label?: ComponentStyleFunction<string, string>;
@@ -148,7 +148,10 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
-    TextArea?: ComponentStyleFunction<string, string>;
+    TextArea?: Record<
+      'container' | 'textarea',
+      ComponentStyleFunction<string, string>
+    >;
     Tooltip?: Record<
       'container' | 'arrow',
       ComponentStyleFunction<string, string>
@@ -197,7 +200,8 @@ export type Theme = {
       | 'dropZoneLabel'
       | 'item'
       | 'itemLabel'
-      | 'itemDescription',
+      | 'itemDescription'
+      | 'itemRemove',
       ComponentStyleFunction<string, string>
     >;
   };

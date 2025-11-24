@@ -68,7 +68,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: args => {
     return (
-      <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
+      <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] gap-2 pt-32">
         <Tooltip.Trigger>
           <Button variant="primary">Hover me!</Button>
           <Tooltip {...args}>Look at this tooltip!</Tooltip>

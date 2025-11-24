@@ -31,6 +31,7 @@ const theme: Theme = {
       icon: cva(''),
     },
     Input: {
+      container: cva(),
       action: cva(),
       icon: cva(),
       input: cva(),

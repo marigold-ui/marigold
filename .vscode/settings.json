@@ -19,5 +19,6 @@
     ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
     ["cn\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ],
-  "tailwindCSS.experimental.configFile": "./themes/theme-rui/src/styles.css"
+  "tailwindCSS.experimental.configFile": "./themes/theme-rui/src/styles.css",
+  "tailwindCSS.classFunctions": ["cva", "cx", "cn"]
 }

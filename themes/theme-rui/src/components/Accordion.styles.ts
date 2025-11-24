@@ -17,9 +17,9 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variant: {
         default: '',
         card: [
-          'rounded-md border px-4 py-1 outline-none last:border-b',
-          // TODO: focus is still shown even if an item within the item is focused
-          'has-focus-visible:util-focus-ring outline-none',
+          'surface elevation-raised py-1 outline-none last:border-b',
+          // Show focus border when the trigger is focused
+          'has-[[slot=trigger]:focus-visible]:state-focus outline-none',
         ],
       },
     },
@@ -29,7 +29,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   }),
   header: cva(
     [
-      'flex w-full items-center justify-between gap-4 py-2 rounded-md cursor-pointer text-foreground',
+      'flex w-full items-center justify-between gap-4 px-4 py-2 rounded-md cursor-pointer text-foreground',
       'text-left text-base font-semibold leading-6 transition-all',
       'hover:no-underline',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
@@ -37,7 +37,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     {
       variants: {
         variant: {
-          default: 'focus-visible:util-focus-ring outline-none',
+          default: 'focus-visible:state-focus outline-none',
           card: 'outline-none',
         },
       },
@@ -49,7 +49,14 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   panel: cva(
     'overflow-clip h-(--disclosure-panel-height) transition-[height,padding] duration-250'
   ),
-  content: cva('pb-2'),
+  content: cva('pb-2', {
+    variants: {
+      variant: {
+        default: '',
+        card: 'px-4',
+      },
+    },
+  }),
   icon: cva(
     'pointer-events-none shrink-0 opacity-60 transition-transform duration-250'
   ),

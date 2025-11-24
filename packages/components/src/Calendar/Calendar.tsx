@@ -109,7 +109,7 @@ const _Calendar = ({
     <CalendarContext.Provider value={{ classNames }}>
       <Calendar
         className={cn(
-          'relative flex min-h-[350px] flex-col rounded-xs p-4',
+          'relative flex min-h-[350px] flex-col',
           twWidth[width],
           classNames.calendar
         )}

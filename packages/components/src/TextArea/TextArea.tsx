@@ -107,7 +107,9 @@ const _TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 
     return (
       <FieldBase as={TextField} {...props} variant={variant} size={size}>
-        <TextArea className={classNames} ref={ref} rows={rows} />
+        <div className={classNames.container}>
+          <TextArea className={classNames.textarea} ref={ref} rows={rows} />
+        </div>
       </FieldBase>
     );
   }
