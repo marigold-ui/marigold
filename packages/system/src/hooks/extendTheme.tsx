@@ -1,5 +1,5 @@
 import { Theme } from '../types/theme';
-import { cva } from '../utils';
+import { cva } from '../utils/className.utils';
 
 export type StylesProps = {
   [K in keyof Theme['components']]: Partial<Theme['components'][K]>;
