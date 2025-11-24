@@ -16,14 +16,11 @@ export const Table: ThemeComponent<'Table'> = {
       },
     },
   }),
-  cell: cva(
-    ['text-text-primary px-3 py-3.5 text-xs', 'border-secondary-200 border-t'],
-    {
-      variants: {
-        variant: {
-          colorTable: 'p-4 align-middle',
-        },
+  cell: cva(['prose px-3 py-3.5 text-sm', 'border-secondary-200 border-t'], {
+    variants: {
+      variant: {
+        colorTable: 'p-4 align-middle',
       },
-    }
-  ),
+    },
+  }),
 };

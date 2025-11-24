@@ -1,6 +1,6 @@
 ---
 title: Spacing
-caption: Here are all design tokens for each theme listet.
+caption: ?????????
 order: 99
 ---
 
@@ -8,7 +8,7 @@ Space is the invisible structure of our interface. It isn't just empty pixels to
 
 To ensure consistency, this system relies on a _relational scale_ of semantic tokens rather than arbitrary pixel values. By decoupling spacing from hard-coded numbers, we allow the interface to adapt gracefully across different contexts and density settings.
 
-## Space = Relationship
+## Space communicates relationship
 
 We utilize a relational scale rather than a purely size-based system. While traditional T-shirt sizing (sm, md, or lg) is useful for general dimensions, a relational approach better captures the cognitive connection between objects.
 
@@ -22,3 +22,91 @@ By naming tokens after the relationship (e.g., related, peer), we embed design l
 
 - **High relatedness** = Less space (Elements function as a unit).
 - **Low Relatedness** = More Space (Elements are independent ideas).
+
+## Tokens
+
+The scale consists of 7 tokens, where each maps to a specific intent. This granular approach ensures that every spacing decision, from the smallest micro interaction border to the largest page level break, follows a consistent vertical and horizontal rhythm. Limiting choices to these seven distinct levels eliminates decision fatigue and ensures that similar relationships always look identical across the application.
+
+{/* prettier-ignore-start */}
+
+<Table aria-label="Token explanation">
+  <Table.Header>
+    <Table.Column>Token</Table.Column>
+    <Table.Column>Description</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>**Joined**</Table.Cell>
+      <Table.Cell>
+        Elements appear attached to each other. They touch to function as a
+        single interactive object, communicating that they act as one unit.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Tight**</Table.Cell>
+      <Table.Cell>
+        Refers to packed containers side-by-side without any wasted space, like
+        a dense list of data cells or entries in a table. It communicates
+        high-density scanning where maximum information is prioritized over
+        breathing room.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Related**</Table.Cell>
+      <Table.Cell>
+        This is the minimal unit of separation needed to acknowledge two
+        elements are distinct. The small gap communicates that they form a
+        single conceptual pair or thought, such as a label and its input field.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Peer**</Table.Cell>
+      <Table.Cell>
+        Represents rhythmic independence. The wider, balanced space indicates
+        two individual, self-contained elements standing as equals (Peers)
+        within the same content flow. This is the page's standard reading
+        rhythm.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Group**</Table.Cell>
+      <Table.Cell>
+        Defines the major structural boundaries of the layout. Typically used to
+        separate large primary page regions, such as the main content area from
+        a dedicated sidebar.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Region**</Table.Cell>
+      <Table.Cell>
+        Implies a complete context switch or narrative break. Often used to
+        separate entirely different thematic themes or major sections on a
+        single page.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+{/* prettier-ignore-end */}
+
+## Flow
+
+Spacing is applied differently depending on the direction of content flow. Every interface layout is a composition of elements stacking, sitting inline, or containing other elements. Identifying the Axis of Flow ensures we apply the relational scale in a way that respects the component's internal logic.
+
+### Stack (Vertical flow)
+
+The stack axis manages vertical rhythm, addressing how elements pile on top of one another down the page (Y-axis). This flow separates vertical siblings—like a label sitting above an input or paragraphs in an article.
+
+### Inline (Horizontal flow)
+
+The inline axis governs the horizontal association of elements, managing how peers sit side-by-side (X-axis). This context determines the separation between horizontal siblings, such as buttons in a toolbar or an icon next to text.
+
+### Inset (Internal container flow)
+
+The inset axis controls the internal "breathing room" of a container, pushing inward to frame content rather than pushing outward against neighbors. Unlike the stack or inline axes which manage relationships between siblings, inset defines the relationship between a parent container and its children.
+
+While a standard "square inset" applies equal padding on all sides for cards and panels, specific contexts require optical correction. A "squish inset" reduces vertical padding to balance elements like buttons that would otherwise look awkwardly tall, whereas a "stretch inset" reduces horizontal padding to maximize screen real estate in narrow columns or mobile views.
+
+### Grid (Two-directional flow)
+
+The grid axis handles the macro-layout skeleton where items flow in both X and Y directions simultaneously. This two-directional structure defines the gutters in complex layouts like dashboard masonry or image galleries, establishing a consistent rhythm across the entire 2-dimensional plane.
