@@ -177,7 +177,7 @@
 
   /* NEW semantic spacing tokens */
 
-  --spacing-joined: 1px;
+  --spacing-joined: --spacing(0.25);
   --spacing-tight: --spacing(1);
   --spacing-related: --spacing(2);
   --spacing-peer: --spacing(4);
