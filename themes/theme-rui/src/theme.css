@@ -1,7 +1,10 @@
 @import './utils.css';
 
-/* custom variants */
-@import './variants.css';
+/*
+    TODO: how to do normalization so we doesn't break everything?
+    TODO: omit "background" in the naming convention? (https://ui.shadcn.com/docs/theming#convention)
+    TODO: create component styles files and compile to CSS classes?
+*/
 
 /*
     - create tokens if we think:
@@ -132,16 +135,6 @@
   /* ==================== */
   /*        SURFACE       */
   /* ==================== */
-  --color-surface: var(--color-white);
-  --color-surface-border: var(--color-stone-300);
-  --radius-surface: var(--radius-lg);
-  --shadow-surface: 0 1px --theme(--color-black / 10%);
-
-  --shadow-elevation-raised: var(--shadow-xs);
-  --shadow-elevation-overlay: var(--shadow-lg);
-
-  /* ---- */
-
   --surface-sunken: var(--color-muted);
   --surface-sunken-shadow: 0 0 #0000;
 
@@ -174,6 +167,16 @@
   --spacing-field-Y: 2rem; /* e.g. between fields vertically */
   --spacing-field-X: 1.25rem; /* e.g. between fields horizontally */
   --spacing-group: 1rem; /* e.g. between related fields to group them */
+
+  /* NEW semantic spacing tokens */
+
+  --spacing-stack-joined: --spacing(0.5);
+  --spacing-stack-compact: --spacing(1);
+  --spacing-stack-related: --spacing(2);
+  --spacing-stack-distinct: --spacing(4);
+  --spacing-stack-group: --spacing(6);
+  --spacing-stack-region: --spacing(8);
+  --spacing-stack-section: --spacing(12);
 
   /* ==================== */
   /*       ANIMATION      */
