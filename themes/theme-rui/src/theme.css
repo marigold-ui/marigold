@@ -177,13 +177,13 @@
 
   /* NEW semantic spacing tokens */
 
-  --spacing-joined: --spacing(0.25);
-  --spacing-tight: --spacing(1);
-  --spacing-related: --spacing(2);
-  --spacing-peer: --spacing(4);
-  --spacing-group: --spacing(8);
-  --spacing-region: --spacing(12);
-  --spacing-section: --spacing(20);
+  --spacing-new-joined: --spacing(0.25);
+  --spacing-new-tight: --spacing(1);
+  --spacing-new-related: --spacing(2);
+  --spacing-new-peer: --spacing(4);
+  --spacing-new-group: --spacing(8);
+  --spacing-new-region: --spacing(12);
+  --spacing-new-section: --spacing(20);
 
   /* ==================== */
   /*       ANIMATION      */
