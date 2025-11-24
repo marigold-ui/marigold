@@ -48,7 +48,8 @@ export const createVar = (o: { [key: string]: string | number | undefined }) =>
   ) as CSSProperties;
 
 /**
- * Generates a CSS custom property for spacing that uses either a calc expression or a spacing variable reference.
+ * Generates a CSS custom property for spacing that uses either a calc expression or a
+ * spacing variable reference.
  *
  * If `value` is a number (integer or decimal), uses the `--spacing` scale from Tailwind with calc().
  * Otherwise, references a specific spacing variable (e.g., `--spacing-group`).
