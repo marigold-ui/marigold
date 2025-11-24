@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Menu, MenuItem, MenuTrigger } from 'react-aria-components';
+import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
+import { IconButton } from '../IconButton/IconButton';
 import { Popover } from '../Overlay/Popover';
 import { BreadcrumbsItemProps } from './BreadcrumbsItem';
 
@@ -16,15 +17,10 @@ export const BreadcrumbEllipsis = ({
   const { container, item: menuItem } = useClassNames({
     component: 'Menu',
   });
-  const { item: breadcrumbsItem, link } = useClassNames({
-    component: 'Breadcrumbs',
-  });
 
   return (
     <MenuTrigger>
-      <Button type="button" className={`${breadcrumbsItem} ${link}`}>
-        ...
-      </Button>
+      <IconButton aria-label="These breadcrumbs are hidden">...</IconButton>
       <Popover>
         <Menu className={container}>
           {hiddenItems.map((item, index) => {
