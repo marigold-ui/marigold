@@ -149,6 +149,42 @@ Icon-only buttons should only be used when the icon is universally recognized an
   </Dont>
 </GuidelineTiles>
 
+### Destructive buttons
+
+Destructive buttons are reserved for actions that carry significant and often irreversible consequences, such as permanently deleting data, formatting storage, or performing actions that are difficult to undo. They must be visually distinct to immediately signal to the user the potential impact of their decision.
+
+In Marigold, we offer two dedicated visual variants for implementing destructive actions:
+
+<Table>
+  <Table.Header>
+    <Table.Column>Variant</Table.Column>
+    <Table.Column>Prominence</Table.Column>
+    <Table.Column>Use Case</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>destructive</Table.Cell>
+      <Table.Cell>High</Table.Cell>
+      <Table.Cell>
+        Use for the primary destructive action within a context, such as the
+        "Delete Permanently" button in a final confirmation dialog. Use
+        sparingly to avoid overwhelming users with too many high-risk options.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>destructive-ghost</Table.Cell>
+      <Table.Cell>Low</Table.Cell>
+      <Table.Cell>
+        Use for secondary destructive actions, particularly when the main action
+        in the current view is non-destructive (e.g., a small "Delete" button on
+        an item in a list view).
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<ComponentDemo file="./button-destructive.demo.tsx" />
+
 ### Avoid disabled buttons
 
 A disabled button can't be actioned. Keep buttons active and use validation and error messages to guide users on what needs to be done to proceed.
