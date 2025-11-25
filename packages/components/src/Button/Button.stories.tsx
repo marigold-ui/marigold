@@ -51,7 +51,15 @@ const meta = {
       control: {
         type: 'radio',
       },
-      options: ['primary', 'secondary', 'destructive', 'ghost', 'icon', 'text'],
+      options: [
+        'primary',
+        'secondary',
+        'destructive',
+        'destructive-ghost',
+        'ghost',
+        'icon',
+        'text',
+      ],
       description: 'Variant of the button',
     },
     children: {
@@ -98,13 +106,16 @@ export const ButtonVariants: Story = {
   },
   render: args => (
     <Container>
-      <Stack space={4}>
+      <Stack space={4} alignX="left">
         <Button {...args} variant="primary">
           Primary
         </Button>
         <Button {...args}>Secondary</Button>
         <Button {...args} variant="destructive">
           Destructive
+        </Button>
+        <Button {...args} variant="destructive-ghost">
+          Destructive Ghost
         </Button>
         <Button {...args} variant="ghost">
           Ghost
@@ -119,9 +130,10 @@ export const ButtonVariants: Story = {
     await userEvent.click(canvas.getByText('Primary'));
     await userEvent.click(canvas.getByText('Secondary'));
     await userEvent.click(canvas.getByText('Destructive'));
+    await userEvent.click(canvas.getByText('Destructive Ghost'));
     await userEvent.click(canvas.getByText('Ghost'));
 
-    await expect(args.onPress).toHaveBeenCalledTimes(4);
+    await expect(args.onPress).toHaveBeenCalledTimes(5);
   },
 };
 
