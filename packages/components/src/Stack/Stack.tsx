@@ -40,7 +40,7 @@ export const Stack = ({
   children,
   space = 0,
   stretch = false,
-  alignX,
+  alignX = 'left',
   alignY,
   asList = false,
   ...props
@@ -53,11 +53,11 @@ export const Stack = ({
   return (
     <Component
       className={cn(
-        'flex flex-col',
+        'flex w-full flex-col',
         'gap-y-(--space)',
         alignX && alignment?.vertical?.alignmentX[alignX],
         alignY && alignment?.vertical?.alignmentY[alignY],
-        stretch && 'h-full w-full'
+        stretch && 'h-full'
       )}
       style={createSpacingVar('space', `${space}`)}
       {...props}
