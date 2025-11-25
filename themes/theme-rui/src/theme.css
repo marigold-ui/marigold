@@ -17,8 +17,8 @@
  text-destructive like used in inputs
 */
 
-@plugin "tailwindcss-react-aria-components";
-@plugin "tailwindcss-animate";
+@plugin 'tailwindcss-react-aria-components';
+@plugin 'tailwindcss-animate';
 
 @theme static {
   --font-sans: Inter, system-ui, sans-serif;

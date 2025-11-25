@@ -9,19 +9,16 @@ import { DateField } from './DateField';
 const theme: Theme = {
   name: 'test',
   components: {
-    Label: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-300',
-          },
-          size: {
-            small: 'p-1',
-          },
+    Label: cva('', {
+      variants: {
+        variant: {
+          lime: 'text-lime-300',
         },
-      }),
-      indicator: cva(),
-    },
+        size: {
+          small: 'p-1',
+        },
+      },
+    }),
     HelpText: {
       container: cva(),
       icon: cva(),

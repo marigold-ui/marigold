@@ -5,5 +5,5 @@ import { Breakout } from './Breakout';
 test('spans all columns', () => {
   render(<Breakout>breakout</Breakout>);
   const breakout = screen.getByText(/breakout/);
-  expect(breakout.className).toMatchInlineSnapshot(`"![grid-column:1/-1]"`);
+  expect(breakout.className).toMatchInlineSnapshot(`"col-span-full!"`);
 });

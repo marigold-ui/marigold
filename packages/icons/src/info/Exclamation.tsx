@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { SVG, SVGProps } from '@marigold/system';
 
 export const Exclamation = forwardRef<SVGSVGElement, SVGProps>((props, ref) => (

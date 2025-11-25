@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
-import React, { Key } from 'react';
+import { Key } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -151,8 +151,7 @@ export const Basic: Story = {
       </I18nProvider>
     );
   },
-  play: async () => {
-    const canvas = within(document.body);
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
     const emptyState = await canvas.findByText('Kein Ergebnis gefunden');
@@ -187,9 +186,7 @@ export const Controlled: StoryObj<typeof ComboBox> = {
       </Stack>
     );
   },
-  play: async ({ canvasElement }) => {
-    const body = canvasElement.ownerDocument.body;
-    const canvas = within(body);
+  play: async ({ canvas }) => {
     const combobox = canvas.queryByRole('combobox', { name: 'Animals' });
 
     await userEvent.click(
@@ -202,9 +199,7 @@ export const Controlled: StoryObj<typeof ComboBox> = {
     );
     await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
     //click outside - enter doesn't work 🤷‍♂️
-    await userEvent.click(
-      body.querySelector('#storybook-root > div > div') as HTMLElement
-    );
+    await userEvent.click(document.body);
 
     await waitFor(() =>
       expect(
@@ -223,8 +218,7 @@ export const ManualMenuTrigger: Story = {
   args: {
     menuTrigger: 'manual',
   },
-  play: async () => {
-    const canvas = within(document.body);
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, '{arrowdown}');
@@ -295,9 +289,7 @@ export const Sections: StoryObj<typeof ComboBox> = {
       </ComboBox.Section>
     </ComboBox>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement.ownerDocument.body);
-
+  play: async ({ canvas }) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
@@ -313,10 +305,9 @@ export const Sections: StoryObj<typeof ComboBox> = {
 export const InputTrigger: StoryObj<typeof ComboBox> = {
   tags: ['component-test'],
   ...Basic,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement.ownerDocument.body);
-    const input = canvas.findByRole('combobox', { name: 'Label' });
-    const result = canvas.queryByRole('combobox', { name: 'Label' });
+  play: async ({ canvas }) => {
+    const input = await canvas.findByRole('combobox', { name: 'Label' });
+    const result = await canvas.queryByRole('combobox', { name: 'Label' });
 
     await userEvent.click(await input);
     await userEvent.type(await input, 'ard');
@@ -336,9 +327,8 @@ export const FocusTrigger: StoryObj<typeof ComboBox> = {
   args: {
     menuTrigger: 'focus',
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement.ownerDocument.body);
-    const combobox = canvas.queryByRole('combobox', { name: 'Label' });
+  play: async ({ canvas }) => {
+    const combobox = await canvas.findByRole('combobox', { name: 'Label' });
 
     await userEvent.type(
       await canvas.findByRole('combobox', { name: 'Label' }),
@@ -360,8 +350,7 @@ export const ManualTrigger: StoryObj<typeof ComboBox> = {
   args: {
     menuTrigger: 'manual',
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement.ownerDocument.body);
+  play: async ({ canvas }) => {
     const combobox = canvas.queryByRole('combobox', { name: 'Label' });
 
     await userEvent.click(
@@ -386,9 +375,7 @@ export const DisabledKeys: StoryObj<typeof ComboBox> = {
       <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement.ownerDocument.body);
-
+  play: async ({ canvas }) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );

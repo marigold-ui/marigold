@@ -1,4 +1,3 @@
-import React from 'react';
 import { DateFormatterOptions, useDateFormatter } from '@react-aria/i18n';
 
 interface DateFormatProps extends DateFormatterOptions {

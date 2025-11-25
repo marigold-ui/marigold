@@ -1,4 +1,3 @@
-import React from 'react';
 import { cn, useClassNames } from '@marigold/system';
 import { IconButton } from '../IconButton/IconButton';
 import { ChevronLeft } from '../icons/ChevronLeft';

@@ -77,3 +77,32 @@ export const Basic: Story = {
     await expect(button).toBeChecked();
   },
 };
+
+export const KeyboardToggle: Story = {
+  tags: ['component-test'],
+  play: async ({ canvas }) => {
+    const input: HTMLInputElement = canvas.getByRole('switch');
+
+    await userEvent.tab();
+
+    await userEvent.keyboard('{enter}');
+    await expect(input.checked).toBeTruthy();
+
+    await userEvent.keyboard('{enter}');
+    await expect(input.checked).toBeFalsy();
+  },
+};
+
+export const DefaultSelected: Story = {
+  tags: ['component-test'],
+  args: {
+    defaultSelected: true,
+  },
+  play: async ({ canvas, userEvent }) => {
+    const input: HTMLInputElement = canvas.getByRole('switch');
+
+    await userEvent.click(input);
+
+    await expect(input.checked).toBeFalsy();
+  },
+};

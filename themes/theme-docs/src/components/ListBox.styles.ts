@@ -13,7 +13,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     [
       'text-text-primary',
       'cursor-pointer rounded-xs outline-hidden',
-      'rac-hover:bg-bg-hover rac-focus:bg-bg-hover',
+      'hover:bg-bg-hover focus:bg-bg-hover',
       'aria-selected:bg-bg-hover',
     ],
     {

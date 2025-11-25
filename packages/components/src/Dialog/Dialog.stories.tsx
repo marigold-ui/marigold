@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Menu } from '../Menu/Menu';
 import { Text } from '../Text/Text';
@@ -71,6 +71,15 @@ export const Basic: Story = {
       </Dialog>
     </Dialog.Trigger>
   ),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  },
 };
 
 export const Form: Story = {
@@ -308,22 +317,16 @@ export const VeryLongContent: Story = {
       </Dialog.Trigger>
     );
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // Open the dialog
+  play: async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByText('Open Dialog with Long Content'));
 
-    // Wait for dialog to appear in the DOM
     await waitFor(() => {
       const dialog = document.querySelector('[role="dialog"]');
       expect(dialog).toBeVisible();
     });
 
-    // Find dialog (rendered outside canvas)
     const dialog = document.querySelector('[role="dialog"]')!;
 
-    // Test scrollable content
     const dialogContent = dialog.querySelector(
       '[data-testid="dialog-content"]'
     )!;

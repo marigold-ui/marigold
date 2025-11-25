@@ -29,7 +29,7 @@ export type Theme = {
   root?: ComponentStyleFunction;
   components: {
     Accordion?: Record<
-      'container' | 'item' | 'header' | 'content' | 'icon',
+      'container' | 'item' | 'header' | 'panel' | 'content' | 'icon',
       ComponentStyleFunction<string, string>
     >;
     Badge?: ComponentStyleFunction<string, string>;
@@ -89,10 +89,7 @@ export type Theme = {
       'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
-    Label?: Record<
-      'container' | 'indicator',
-      ComponentStyleFunction<string, string>
-    >;
+    Label?: ComponentStyleFunction<string, string>;
     List?: Record<'ol' | 'ul' | 'item', ComponentStyleFunction<string, string>>;
     Link?: ComponentStyleFunction<string, string>;
     ListBox?: Record<
@@ -121,7 +118,10 @@ export type Theme = {
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
     >;
-    ProgressCycle?: ComponentStyleFunction<string, string>;
+    ProgressCircle?: Record<
+      'container' | 'loader' | 'label',
+      ComponentStyleFunction<string, string>
+    >;
     Radio?: Record<
       'container' | 'label' | 'radio' | 'group',
       ComponentStyleFunction<string, string>
@@ -186,8 +186,18 @@ export type Theme = {
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
     ComboBox?: ComponentStyleFunction<string, string>;
-    XLoader?: Record<
+    Loader?: Record<
       'container' | 'loader' | 'label',
+      ComponentStyleFunction<string, string>
+    >;
+    FileField?: Record<
+      | 'container'
+      | 'dropZone'
+      | 'dropZoneContent'
+      | 'dropZoneLabel'
+      | 'item'
+      | 'itemLabel'
+      | 'itemDescription',
       ComponentStyleFunction<string, string>
     >;
   };

@@ -1,5 +1,4 @@
 import { DateFormat } from '@/ui';
-import React from 'react';
 import { Badge, I18nProvider, Table } from '@marigold/components';
 
 export default () => {

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Multiselect } from './Multiselect';
@@ -127,9 +127,7 @@ export const Basic: Story = {
       isOptionDisabled={(item: { value: string }) => item.value === 'backstage'}
     />
   ),
-  play: async ({ step }) => {
-    const canvas = within(document.body);
-
+  play: async ({ canvas, step }) => {
     await step('Open Multiselect', async () => {
       const input = canvas.getByLabelText(/Ticket Categories/i);
 
@@ -237,9 +235,7 @@ export const EmptyResult: Story = {
       />
     );
   },
-  play: async () => {
-    const canvas = within(document.body);
-
+  play: async ({ canvas }) => {
     const input = canvas.getByLabelText(/Ticket Types/i);
     await userEvent.type(input, 'xyz');
 

@@ -8,7 +8,7 @@ export const HelpText: ThemeComponent<'HelpText'> = {
      * Removes the spacing from the field when when there are hidden
      * elements (e.g. the hidden select rendered by react-aria).
      */
-    'has-[+_[aria-hidden="true"]]:mb-0',
+    'has-[+_[aria-hidden=true]]:mb-0',
   ]),
   icon: cva(''),
 };

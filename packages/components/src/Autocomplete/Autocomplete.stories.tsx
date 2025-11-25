@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { screen } from '@testing-library/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text } from 'react-aria-components';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
 import { Center } from '../Center/Center';
 import { Stack } from '../Stack/Stack';
@@ -88,13 +88,14 @@ export const Basic: Story = {
       <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
     const description = canvas.getAllByText(
       'This is a help text description'
     )[0];
-    const clearButton = screen.getByLabelText(/Clear search/i);
+    const clearButton = screen.getByLabelText(
+      /Clear search|Suche zurücksetzen/i
+    );
 
     await userEvent.click(input);
     await userEvent.type(input, 'sp');
@@ -129,8 +130,7 @@ export const WithSections: Story = {
       </Autocomplete.Section>
     </Autocomplete>
   ),
-  play: async () => {
-    const canvas = within(document.body);
+  play: async ({ canvas }) => {
     const input = canvas.getAllByLabelText(/Select Favorite/i)[0];
 
     await userEvent.type(input, 'o');
@@ -179,8 +179,7 @@ export const Controlled: Story = {
       </Stack>
     );
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, 'h');
@@ -233,9 +232,7 @@ export const Async: Story = {
       </Autocomplete>
     );
   },
-  play: async () => {
-    const canvas = within(document.body);
-
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
 
@@ -249,8 +246,7 @@ export const Async: Story = {
 export const InputMenuTrigger: Story = {
   tags: ['component-test'],
   ...Basic,
-  play: async () => {
-    const canvas = within(document.body);
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, 'ha');
@@ -266,8 +262,7 @@ export const FocusMenuTrigger: Story = {
   args: {
     menuTrigger: 'focus',
   },
-  play: async () => {
-    const canvas = within(document.body);
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.click(input);
@@ -283,8 +278,7 @@ export const ManualMenuTrigger: Story = {
   args: {
     menuTrigger: 'input',
   },
-  play: async () => {
-    const canvas = within(document.body);
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, '{arrowdown}');

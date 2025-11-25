@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
-import { expect, spyOn, userEvent, within } from 'storybook/test';
+import { expect, spyOn, userEvent } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
 import { Button } from '../Button/Button';
@@ -118,9 +118,7 @@ export const Basic: Story = {
       <Menu.Item id="slytherin">Slytherin</Menu.Item>
     </Menu>
   ),
-  play: async ({ step }) => {
-    const canvas = within(document.body);
-
+  play: async ({ canvas, step }) => {
     await step('Open the menu', async () => {
       const button = canvas.getByText('Hogwarts Houses');
 
@@ -162,8 +160,7 @@ export const OnActionMenu: Story = {
       </Menu>
     );
   },
-  play: async () => {
-    const canvas = within(document.body);
+  play: async ({ canvas }) => {
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
     const button = canvas.getByText('Choose');

@@ -1,8 +1,11 @@
 @import 'tailwindcss';
-@import './../node_modules/@marigold/theme-docs/dist/theme.css';
 
-@import './../node_modules/@marigold/theme-rui/dist/styles.css';
-@import './../node_modules/@marigold/theme-rui/dist/utils.css';
+/* own theme */
+@import './../../themes/theme-docs/dist/theme.css';
+/* rui theme */
+@import './../../themes/theme-rui/dist/styles.css';
+
+@source './../../themes/theme-docs/src/**/*.ts';
 
 /* demos */
 @source './../content/**/*.{js,ts,jsx,tsx,mdx}';
@@ -11,17 +14,10 @@
 @source './../ui/**/*.{js,ts,jsx,tsx,mdx}';
 @source './**/*.{js,ts,jsx,tsx,mdx}';
 
-@source './../../themes/theme-docs/src/**/*.ts';
-
 /* marigold components */
 @source './../../packages/{components,system}/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
-
-/* tailwind plugins */
-@plugin '@tailwindcss/typography';
-@plugin 'tailwindcss-animate';
-@plugin 'tailwind-scrollbar';
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,

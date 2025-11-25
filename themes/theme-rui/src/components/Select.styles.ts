@@ -16,6 +16,6 @@ export const Select: ThemeComponent<'Select'> = {
      * helptext. Spacing is applied because the select is followed
      * by a hidden select that is rendered by react-aria.
      */
-    'has-[+_[aria-hidden="true"]]:mb-0',
+    'has-[+_[aria-hidden=true]]:mb-0',
   ]),
 };

@@ -12,7 +12,7 @@ export const Checkbox: ThemeComponent<'Checkbox'> = {
   container: cva('cursor-pointer read-only:cursor-default gap-2'),
   label: cva([
     'flex items-center gap-1',
-    'text-sm leading-4 group-[group="checkbox"]/checkboxgroup:font-normal font-medium text-foregroun',
+    'text-sm leading-4 group-[&]/checkboxgroup:font-normal font-medium text-foregroun',
     'group-disabled/checkbox:text-disabled-foreground',
   ]),
   group: cva(),

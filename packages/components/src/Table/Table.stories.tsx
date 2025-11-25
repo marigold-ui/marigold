@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
@@ -872,6 +872,108 @@ export const InputTable: Story = {
           </Table.Body>
         </Table>
       </Stack>
+    );
+  },
+};
+
+export const DestructiveAction: Story = {
+  render: args => {
+    const users = [
+      {
+        id: '1',
+        name: 'Jane Doe',
+        email: 'jane.doe@example.com',
+        status: 'active',
+      },
+      {
+        id: '2',
+        name: 'John Smith',
+        email: 'john.smith@example.com',
+        status: 'inactive',
+      },
+      {
+        id: '3',
+        name: 'Emily Johnson',
+        email: 'emily.johnson@example.com',
+        status: 'suspended',
+      },
+      {
+        id: '4',
+        name: 'Michael Brown',
+        email: 'michael.brown@example.com',
+        status: 'active',
+      },
+      {
+        id: '5',
+        name: 'Olivia Wilson',
+        email: 'olivia.wilson@example.com',
+        status: 'inactive',
+      },
+      {
+        id: '6',
+        name: 'William Lee',
+        email: 'william.lee@example.com',
+        status: 'active',
+      },
+      {
+        id: '7',
+        name: 'Sophia Martinez',
+        email: 'sophia.martinez@example.com',
+        status: 'suspended',
+      },
+      {
+        id: '8',
+        name: 'James Anderson',
+        email: 'james.anderson@example.com',
+        status: 'inactive',
+      },
+      {
+        id: '9',
+        name: 'Charlotte Thomas',
+        email: 'charlotte.thomas@example.com',
+        status: 'active',
+      },
+      {
+        id: '10',
+        name: 'Benjamin Harris',
+        email: 'benjamin.harris@example.com',
+        status: 'suspended',
+      },
+    ];
+
+    return (
+      <Table
+        aria-label="User Management Table"
+        selectionMode="multiple"
+        size="expanded"
+        {...args}
+      >
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Status</Table.Column>
+          <Table.Column align="right">Actions</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {users.map(user => (
+            <Table.Row key={user.id}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>
+                <Badge>{user.status}</Badge>
+              </Table.Cell>
+              <Table.Cell>
+                <Button variant="secondary" size="small">
+                  Edit
+                </Button>{' '}
+                <Button variant="destructive-ghost" size="small">
+                  Delete
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
     );
   },
 };

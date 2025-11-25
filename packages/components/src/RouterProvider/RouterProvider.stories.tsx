@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { RouterProvider } from './RouterProvider';

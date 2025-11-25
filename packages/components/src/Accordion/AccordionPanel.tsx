@@ -9,6 +9,8 @@ export interface AccordionPanelProps {
 export const AccordionPanel = ({ children }: AccordionPanelProps) => {
   const { classNames } = useAccordionContext();
   return (
-    <DisclosurePanel className={classNames.content}>{children}</DisclosurePanel>
+    <DisclosurePanel className={classNames.panel}>
+      <div className={classNames.content}>{children}</div>
+    </DisclosurePanel>
   );
 };

@@ -1,7 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
-import { expect, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { Badge } from '../Badge/Badge';
+import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -107,9 +109,51 @@ export const Basic: StoryObj<typeof Select> = {
           <Select.Option id="Firefly">Firefly</Select.Option>
         </Select>
         <hr />
-        <pre>selected: {selected}</pre>
+        <pre data-testid="selected">selected: {selected}</pre>
       </Stack>
     );
+  },
+  play: async ({ canvas, step, args }) => {
+    await step('Open the select dropdown', async () => {
+      const button = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+      await userEvent.click(button);
+
+      await expect(button).toBeVisible();
+    });
+
+    await step('Wait for listbox to appear', async () => {
+      await waitFor(() => canvas.getByRole('listbox'));
+      const listbox = canvas.getByRole('listbox');
+
+      expect(listbox).toBeVisible();
+    });
+
+    await step('Verify disabled option has aria-disabled', async () => {
+      const listbox = canvas.getByRole('listbox');
+      const disabledOption = within(listbox).getByRole('option', {
+        name: 'Firefly',
+      });
+
+      expect(disabledOption).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    await step('Select an item from the list', async () => {
+      const listbox = canvas.getByRole('listbox');
+      const option = within(listbox).getByText('Star Wars');
+
+      await userEvent.click(option);
+    });
+
+    await step('Verify the select is closed', async () => {
+      await waitFor(() => {
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Verify the selected value is displayed', async () => {
+      expect(canvas.getByText('selected: Star Wars')).toBeVisible();
+    });
   },
 };
 
@@ -139,20 +183,19 @@ export const Multiple: StoryObj<typeof Select> = {
       </Stack>
     );
   },
-  play: async ({ args, canvas, canvasElement, userEvent }) => {
+  play: async ({ args, canvas, userEvent }) => {
     await userEvent.click(
       canvas.getByLabelText(new RegExp(`${args.label}`, 'i'))
     );
 
-    const body = canvasElement.ownerDocument.body;
-    await waitFor(() => within(body).getByRole('dialog'));
+    await waitFor(() => canvas.getByRole('dialog'));
 
-    const options = await within(body).getByRole('dialog');
+    const options = await canvas.getByRole('dialog');
 
     await userEvent.click(within(options).getByText('Star Wars'));
     await userEvent.click(within(options).getByText('Firefly'));
 
-    await userEvent.click(canvasElement);
+    await userEvent.click(document.body);
 
     expect(canvas.getByTestId('selected')).toHaveTextContent(
       'selected: ["Star Wars","Firefly"]'
@@ -181,6 +224,31 @@ export const LongItems: StoryObj<typeof Select> = {
         </Select>
       </Inset>
     );
+  },
+  play: async ({ canvas, step }) => {
+    const button = canvas.getByLabelText(/Favorite character/i);
+
+    await step('Open the select dropdown', async () => {
+      await userEvent.click(button);
+
+      expect(button).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await step('Verify listbox is visible', async () => {
+      await waitFor(() => canvas.getByRole('listbox'));
+      const listbox = canvas.getByRole('listbox');
+
+      expect(listbox).toBeVisible();
+    });
+
+    await step('Dismiss select with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => {
+        expect(canvas.queryByRole('listbox')).not.toBeInTheDocument();
+      });
+
+      expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
   },
 };
 
@@ -313,5 +381,117 @@ export const SelectedScroll: StoryObj<typeof Select> = {
         <Select.Option id="Dune">Dune</Select.Option>
       </Select>
     );
+  },
+};
+
+export const WithBadges: StoryObj<typeof Select> = {
+  render: args => (
+    <Select
+      {...args}
+      label="Project Status"
+      placeholder="Select a status"
+      width={80}
+    >
+      <Select.Option id="draft">
+        <Inline space={3} alignY="center">
+          <Text slot="label">Draft</Text>
+          <Badge variant="info">In Progress</Badge>
+        </Inline>
+        <Text slot="description">Work in progress</Text>
+      </Select.Option>
+      <Select.Option id="review">
+        <Inline space={3} alignY="center">
+          <Text>In Review</Text>
+          <Badge variant="warning">Pending</Badge>
+        </Inline>
+        <Text slot="description">Awaiting review</Text>
+      </Select.Option>
+      <Select.Option id="approved">
+        <Inline space={3} alignY="center">
+          <Text>Approved</Text>
+          <Badge variant="success">Ready</Badge>
+        </Inline>
+        <Text slot="description">Approved for release</Text>
+      </Select.Option>
+      <Select.Option id="published">
+        <Inline space={3} alignY="center">
+          <Text>Published</Text>
+          <Badge variant="success">Live</Badge>
+        </Inline>
+        <Text slot="description">Released to public</Text>
+      </Select.Option>
+      <Select.Option id="archived">
+        <Inline space={3} alignY="center">
+          <Text slot="label">Archived</Text>
+          <Badge>Inactive</Badge>
+        </Inline>
+        <Text slot="description">No longer active</Text>
+      </Select.Option>
+    </Select>
+  ),
+};
+
+const people = [
+  {
+    id: 'alice',
+    name: 'Alice Johnson',
+    position: 'Product Manager',
+    avatar: 'https://i.pravatar.cc/150?img=1',
+  },
+  {
+    id: 'bob',
+    name: 'Bob Smith',
+    position: 'Senior Developer',
+    avatar: 'https://i.pravatar.cc/150?img=12',
+  },
+  {
+    id: 'charlie',
+    name: 'Charlie Davis',
+    position: 'UX Designer',
+    avatar: 'https://i.pravatar.cc/150?img=5',
+  },
+];
+
+export const WithImages: StoryObj<typeof Select> = {
+  render: args => (
+    <Select
+      {...args}
+      label="Assign to User"
+      placeholder="Select a user"
+      width={80}
+    >
+      {people.map(person => (
+        <Select.Option key={person.id} id={person.id} textValue={person.name}>
+          <Inline space={2} alignY="center">
+            <img
+              src={person.avatar}
+              alt={person.name}
+              className="size-6 rounded-full object-cover"
+            />
+            <Text slot="label">{person.name}</Text>
+          </Inline>
+          <Text slot="description">{person.position}</Text>
+        </Select.Option>
+      ))}
+    </Select>
+  ),
+  play: async ({ canvas, step }) => {
+    await step('Open the select dropdown', async () => {
+      const button = canvas.getByLabelText(/Assign to User/i);
+      await userEvent.click(button);
+      expect(button).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    await step('Verify text slots are rendered', async () => {
+      await waitFor(() => {
+        expect(canvas.getByRole('listbox')).toBeInTheDocument();
+      });
+
+      const label = canvas.getByLabelText('Alice Johnson');
+      const description = canvas.getByText('Product Manager');
+
+      expect(label).toBeInTheDocument();
+      expect(description).toBeInTheDocument();
+    });
   },
 };

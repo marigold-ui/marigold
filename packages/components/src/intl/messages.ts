@@ -8,6 +8,11 @@ export const intlMessages = {
     showMoreCount: '{count} weitere anzeigen',
     showLess: 'Weniger anzeigen',
     showLessCount: '{count} weniger anzeigen',
+    dropZoneLabel: 'Dateien hierher ziehen',
+    uploadLabel: 'Hochladen',
+    moreInfo: 'Mehr Informationen',
+    help: 'Hilfe',
+    hiddenBreadcrumbs: 'Diese Breadcrumbs sind ausgeblendet',
   },
   'en-US': {
     cancel: 'Cancel',
@@ -18,5 +23,10 @@ export const intlMessages = {
     showMoreCount: 'Show {count} more',
     showLess: 'Show less',
     showLessCount: 'Show {count} less',
+    dropZoneLabel: 'Drop files here',
+    uploadLabel: 'Upload',
+    moreInfo: 'More information',
+    help: 'Help',
+    hiddenBreadcrumbs: 'These breadcrumbs are hidden',
   },
 };

@@ -16,7 +16,7 @@ const theme: Theme = {
     },
 
     Field: cva(''),
-    Label: { container: cva(), indicator: cva() },
+    Label: cva(),
     HelpText: {
       container: cva('', {
         variants: {
@@ -223,7 +223,7 @@ test('increment and decrement value via stepper', async () => {
   const input: HTMLInputElement = screen.getByRole('textbox');
   const [decrement, increment] = screen.getAllByRole('button');
 
-  user.click(increment);
+  await user.click(increment);
   await user.click(increment);
   await user.click(increment);
 
@@ -252,7 +252,7 @@ test('increment and decrement value via stepper (with min and max)', async () =>
   const group = screen.getByRole('group');
   const [decrement, increment] = within(group).getAllByRole('button');
 
-  user.click(decrement);
+  await user.click(decrement);
   await user.click(decrement);
   await user.click(decrement);
   await user.click(decrement);
@@ -286,7 +286,7 @@ test('increment and decrement with custom steps', async () => {
   const group = screen.getByRole('group');
   const [decrement, increment] = within(group).queryAllByRole('button');
 
-  user.click(increment);
+  await user.click(increment);
   await user.click(increment);
 
   expect(input.value).toEqual('20');
@@ -362,4 +362,58 @@ test('allows formatting of displayed value', () => {
 
   const unit: HTMLInputElement = screen.getByDisplayValue('150 cm');
   expect(unit.value).toEqual('150 cm');
+});
+
+test('selects all text on first click', async () => {
+  const user = userEvent.setup();
+
+  render(<NumberField label="A Label" defaultValue={42} />);
+
+  const input: HTMLInputElement = screen.getByRole('textbox');
+  const selectSpy = vi.spyOn(input, 'select');
+
+  await user.click(input);
+
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+});
+
+test('does not select text on subsequent clicks without blur', async () => {
+  const user = userEvent.setup();
+
+  render(<NumberField label="A Label" defaultValue={42} />);
+
+  const input: HTMLInputElement = screen.getByRole('textbox');
+  const selectSpy = vi.spyOn(input, 'select');
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+});
+
+test('resets selection behavior after blur', async () => {
+  const user = userEvent.setup();
+
+  render(
+    <>
+      <NumberField label="A Label" defaultValue={42} />
+      <button>Outside</button>
+    </>
+  );
+
+  const input: HTMLInputElement = screen.getByRole('textbox');
+  const outsideButton = screen.getByRole('button', { name: 'Outside' });
+  const selectSpy = vi.spyOn(input, 'select');
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+
+  await user.click(outsideButton);
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(2);
 });

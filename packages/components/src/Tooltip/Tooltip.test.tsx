@@ -121,7 +121,7 @@ test('can be opened programatically', () => {
   expect(screen.queryByText('Look at this tooltip!')).toBeVisible();
 });
 
-test('allows to change tooltip placement', () => {
+test('allows to change tooltip placement', async () => {
   // Note: There is no real way to test this without actually rendering the tooltip
   render(
     <Tooltip.Trigger>
@@ -130,10 +130,10 @@ test('allows to change tooltip placement', () => {
     </Tooltip.Trigger>
   );
 
-  user.tab();
+  await user.tab();
+
   const tooltip = screen.queryByRole('tooltip');
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => {
+  await waitFor(() => {
     expect(tooltip).toBeVisible();
   });
 });

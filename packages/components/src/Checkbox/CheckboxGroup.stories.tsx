@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { waitFor } from '@testing-library/react';
-import React from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';

@@ -18,9 +18,9 @@ const containerHeadlineLength = {
 };
 
 export const gridColsAlign = {
-  left: 'grid-cols-[minmax(0,max-content)_1fr_1fr]',
-  center: 'grid-cols-[1fr_minmax(0,max-content)_1fr]',
-  right: ' grid-cols-[1fr_1fr_minmax(0,max-content)]',
+  left: 'has-[[data-breakout]]:grid-cols-[minmax(0,max-content)_1fr_1fr]',
+  center: 'has-[[data-breakout]]:grid-cols-[1fr_minmax(0,max-content)_1fr]',
+  right: 'has-[[data-breakout]]:grid-cols-[1fr_1fr_minmax(0,max-content)]',
 };
 
 export const gridColumn = {

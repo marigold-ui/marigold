@@ -8,10 +8,7 @@ const theme: Theme = {
   name: 'test',
   components: {
     Field: cva(),
-    Label: {
-      container: cva(),
-      indicator: cva(),
-    },
+    Label: cva(),
     HelpText: {
       container: cva('', {
         variants: {

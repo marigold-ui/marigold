@@ -1,5 +1,44 @@
 # @marigold/theme-rui
 
+## 4.0.0
+
+### Major Changes
+
+- b947276: style(DST-1089): Add expand/collapse animation to `<Accordion>`
+- f10119a: refa(DST-1109): Remove required indicator from the label's text content
+
+  **BREACKING CHANGE:** We removed the `indicator` styling from `<Label>`. The component is no longer a multi-part component. Rather than styling the required indicator through a dedicated part (previsouly `indicator`), you can now apply it anyway you want, for example by using `'group-required/field:after:content-["*"]'`.
+
+### Minor Changes
+
+- 98bf929: [DST-1075]: Introduce `<FileField>`component
+
+### Patch Changes
+
+- 832e3fa: fix(styles): Remove extra spacing when hidden/a11y elements are causing it
+- 13b5c4b: fix(DST-1112): Show focus ring of `<CloseButton>` only when focused with keyboard
+- 2ac63f7: fix([DSTSUP-196]): Fix Listbox layout when more than one element is used.
+- 57a2bd3: style([DST-1126]): Fix Breadcrumb styling
+- 0040853: fix(docs): Remove old broken Tailwind plugins
+- 62692a6: style(DST-1086): Add a new destructive button variant
+- 4eebff4: [DSTSUP-191]:
+  Breaking chnge: `<XLoader />` renamed to `<Loader />`
+  Added a new prop `loaderType` which is by default `cycle`. New option `cycle` shows a spinning cycle.
+- Updated dependencies [832e3fa]
+- Updated dependencies [845f26c]
+- Updated dependencies [1e98c67]
+- Updated dependencies [9027ce9]
+- Updated dependencies [b947276]
+- Updated dependencies [2ac63f7]
+- Updated dependencies [29494b4]
+- Updated dependencies [98bf929]
+- Updated dependencies [57a2bd3]
+- Updated dependencies [62692a6]
+- Updated dependencies [f10119a]
+- Updated dependencies [4eebff4]
+  - @marigold/components@16.0.0
+  - @marigold/system@16.0.0
+
 ## 3.0.3
 
 ### Patch Changes

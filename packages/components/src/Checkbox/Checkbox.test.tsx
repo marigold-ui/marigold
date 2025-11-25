@@ -50,7 +50,7 @@ test('check if all slot class names are applied correctly', () => {
     `"grow-0 basis-4 items-center justify-center p-px bg-white border-solid grid size-4 shrink-0 place-content-center rounded border border-input shadow-xs group-focus-visible/checkbox:util-focus-ring outline-none group-disabled/checkbox:group-selected/checkbox:bg-disabled group-disabled/checkbox:border-disabled! group-disabled/checkbox:text-disabled-foreground group-disabled/checkbox:cursor-not-allowed group-selected/checkbox:border-brand group-selected/checkbox:bg-brand group-selected/checkbox:text-brand-foreground group-[indeterminate]/checkbox:border-brand group-[indeterminate]/checkbox:bg-brand group-[indeterminate]/checkbox:text-brand-foreground"`
   );
   expect(label.className).toMatchInlineSnapshot(
-    `"flex items-center gap-1 text-sm leading-4 group-[group="checkbox"]/checkboxgroup:font-normal font-medium text-foregroun group-disabled/checkbox:text-disabled-foreground"`
+    `"flex items-center gap-1 text-sm leading-4 group-[&]/checkboxgroup:font-normal font-medium text-foregroun group-disabled/checkbox:text-disabled-foreground"`
   );
 });
 

@@ -1,4 +1,5 @@
 import type { StoryObj } from '@storybook/react';
+import { expect } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import {
@@ -23,6 +24,17 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
       </ConfirmationDialog>
     </ConfirmationDialog.Trigger>
   ),
+  play: async ({ canvas }) => {
+    await canvas.getByRole('button', { name: 'Open' }).click();
+
+    expect(
+      await canvas.findByText(
+        'Are you sure you want to proceed with this action?'
+      )
+    ).toBeInTheDocument();
+
+    await canvas.getByRole('button', { name: 'Confirm' }).click();
+  },
 };
 
 export const UseConfirmation: StoryObj = {

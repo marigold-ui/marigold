@@ -3,9 +3,9 @@ import {
   Button,
   Form,
   Headline,
+  Loader,
   Stack,
   TextField,
-  XLoader,
 } from '@marigold/components';
 
 export default () => {
@@ -51,7 +51,7 @@ export default () => {
           {searchTerm && `You searched for ${searchTerm}.`}
         </Stack>
       </Form>
-      {isLoading && <XLoader mode="fullscreen" />}
+      {isLoading && <Loader mode="fullscreen" />}
     </div>
   );
 };

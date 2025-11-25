@@ -1,16 +1,10 @@
-import { withThemeByDataAttribute } from '@storybook/addon-themes';
-import { Preview } from '@storybook/react';
-import { MarigoldProvider } from '@marigold/components';
-import rui from '@marigold/theme-rui';
+import { Decorator, Preview } from '@storybook/react';
+import {
+  MarigoldProvider,
+  OverlayContainerProvider,
+} from '@marigold/components';
+import theme from '@marigold/theme-rui';
 import './../styles.css';
-
-// Helpers
-// ---------------
-const THEME = {
-  rui,
-};
-
-type ThemeNames = keyof typeof THEME;
 
 // Parameters
 // ---------------
@@ -35,27 +29,18 @@ export const parameters: Preview['parameters'] = {
   },
 };
 
-// fix type any
-export const decorators: any = [
-  withThemeByDataAttribute({
-    themes: {
-      rui: rui.name,
-    },
-    defaultTheme: rui.name,
-    attributeName: 'data-theme',
-  }),
-
-  (Story: any) => {
-    const theme = 'rui';
-    return (
-      <MarigoldProvider
-        theme={THEME[theme as ThemeNames]}
-        className="bg-bg-surface"
-      >
-        <div className="h-screen p-6">
-          <Story />
-        </div>
-      </MarigoldProvider>
-    );
-  },
+export const decorators: Decorator[] = [
+  // Wrapper to provide an overlay container
+  Story => (
+    <div id="overlay-container">
+      <Story />
+    </div>
+  ),
+  Story => (
+    <MarigoldProvider theme={theme} className="min-h-screen p-6">
+      <OverlayContainerProvider container="overlay-container">
+        <Story />
+      </OverlayContainerProvider>
+    </MarigoldProvider>
+  ),
 ];
