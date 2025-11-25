@@ -53,7 +53,7 @@ export const Stack = ({
   return (
     <Component
       className={cn(
-        'flex w-full flex-col',
+        'grid w-full',
         'gap-y-(--space)',
         alignX && alignment?.vertical?.alignmentX[alignX],
         alignY && alignment?.vertical?.alignmentY[alignY],
