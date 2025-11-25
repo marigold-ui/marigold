@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Button, Tabs } from '@marigold/components';
 import { Theme } from '../types/theme';
-import { cva } from '../utils';
+import { cva } from '../utils/className.utils';
 import { StylesProps, extendTheme } from './extendTheme';
 import { ThemeProvider } from './useTheme';
 

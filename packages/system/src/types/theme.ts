@@ -47,11 +47,11 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     ContextualHelp?: Record<
-      'trigger' | 'container' | 'title' | 'content',
+      'trigger' | 'popover' | 'container' | 'title' | 'content',
       ComponentStyleFunction<string, string>
     >;
     DateField?: Record<
-      'segment' | 'field' | 'input' | 'action',
+      'segment' | 'field' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Dialog?: Record<
@@ -86,7 +86,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Input?: Record<
-      'container' | 'input' | 'icon' | 'action',
+      'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Label?: ComponentStyleFunction<string, string>;
@@ -118,7 +118,7 @@ export type Theme = {
       'container' | 'navigationButton' | 'pageButton' | 'icon' | 'ellipsis',
       ComponentStyleFunction<string, string>
     >;
-    ProgressCycle?: Record<
+    ProgressCircle?: Record<
       'container' | 'loader' | 'label',
       ComponentStyleFunction<string, string>
     >;
@@ -148,10 +148,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
-    TextArea?: Record<
-      'container' | 'textarea',
-      ComponentStyleFunction<string, string>
-    >;
+    TextArea?: ComponentStyleFunction<string, string>;
     Tooltip?: Record<
       'container' | 'arrow',
       ComponentStyleFunction<string, string>
@@ -200,8 +197,7 @@ export type Theme = {
       | 'dropZoneLabel'
       | 'item'
       | 'itemLabel'
-      | 'itemDescription'
-      | 'itemRemove',
+      | 'itemDescription',
       ComponentStyleFunction<string, string>
     >;
   };
