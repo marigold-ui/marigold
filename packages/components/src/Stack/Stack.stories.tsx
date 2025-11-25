@@ -120,6 +120,7 @@ export const Nested: Story = {
 
 export const Stretch: Story = {
   args: {
+    space: 8,
     stretch: true,
   },
   render: args => (

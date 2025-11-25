@@ -7,7 +7,7 @@ export const Block = ({
 }: PropsWithChildren<{ className?: string }>) => (
   <div
     className={cn(
-      'rounded-lg border-2 border-dashed border-orange-400 bg-orange-50 p-4',
+      'rounded-lg border-2 border-dashed border-black/25 bg-black/5 p-4',
       className
     )}
   >
