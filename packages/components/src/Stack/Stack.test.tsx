@@ -11,6 +11,7 @@ describe('Stack', () => {
       render(<Basic />);
 
       const headline = screen.getByText(/Getting Started with Stack/);
+
       expect(headline).toBeInTheDocument();
     });
 
@@ -20,6 +21,7 @@ describe('Stack', () => {
       const description = screen.getByText(
         /The Stack component provides a flexible layout system/
       );
+
       expect(description).toBeInTheDocument();
     });
 
@@ -27,6 +29,7 @@ describe('Stack', () => {
       render(<Nested />);
 
       const headlines = screen.getAllByText(/spacing/);
+
       expect(headlines.length).toBeGreaterThan(0);
     });
 
@@ -34,7 +37,9 @@ describe('Stack', () => {
       render(<Stretch />);
 
       expect(screen.getByText(/Lirum/)).toBeInTheDocument();
+
       expect(screen.getByText(/Larum/)).toBeInTheDocument();
+
       expect(screen.getByText(/Löffelstiel/)).toBeInTheDocument();
     });
   });
@@ -45,6 +50,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack?.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 0)'
       );
@@ -55,6 +61,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack?.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 2)'
       );
@@ -67,6 +74,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack).toHaveClass('items-start');
     });
 
@@ -75,6 +83,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack).toHaveClass('items-center');
     });
 
@@ -83,6 +92,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack).toHaveClass('items-end');
     });
 
@@ -91,6 +101,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack).toHaveClass('justify-start');
     });
 
@@ -99,6 +110,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack).toHaveClass('justify-center');
     });
 
@@ -107,6 +119,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack).toHaveClass('justify-end');
     });
   });
@@ -117,6 +130,7 @@ describe('Stack', () => {
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
+
       expect(stack instanceof HTMLDivElement).toBeTruthy();
     });
 
@@ -125,6 +139,7 @@ describe('Stack', () => {
 
       const blocks = screen.getAllByText(/Lirum|Larum|Löffelstiel/);
       const stack = blocks[0].parentElement;
+
       expect(stack).toHaveClass('h-full');
     });
 
@@ -132,6 +147,7 @@ describe('Stack', () => {
       render(<AsList />);
 
       const stack = screen.getByText('first').parentElement?.parentElement;
+
       expect(stack instanceof HTMLUListElement).toBeTruthy();
     });
   });

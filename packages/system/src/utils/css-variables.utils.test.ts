@@ -130,6 +130,7 @@ describe('ensureCssVar', () => {
 describe('createVar', () => {
   it('should create CSS custom properties from an object', () => {
     const result = createVar({ color: 'red', size: '16' });
+
     expect(result).toEqual({
       '--color': 'red',
       '--size': '16',
@@ -138,6 +139,7 @@ describe('createVar', () => {
 
   it('should handle numeric values', () => {
     const result = createVar({ spacing: 8, opacity: 0.5 });
+
     expect(result).toEqual({
       '--spacing': 8,
       '--opacity': 0.5,
@@ -146,6 +148,7 @@ describe('createVar', () => {
 
   it('should handle undefined values', () => {
     const result = createVar({ color: 'blue', missing: undefined });
+
     expect(result).toEqual({
       '--color': 'blue',
       '--missing': undefined,
@@ -157,6 +160,7 @@ describe('createVar', () => {
       'primary-color': '#000',
       'border-radius': '4px',
     });
+
     expect(result).toEqual({
       '--primary-color': '#000',
       '--border-radius': '4px',
@@ -165,6 +169,7 @@ describe('createVar', () => {
 
   it('should handle empty object', () => {
     const result = createVar({});
+
     expect(result).toEqual({});
   });
 });
@@ -172,6 +177,7 @@ describe('createVar', () => {
 describe('createSpacingVar', () => {
   it('should return a CSS custom property with a number value using calc', () => {
     const result = createSpacingVar('gap', '4');
+
     expect(result).toEqual({
       '--gap': 'calc(var(--spacing) * 4)',
     });
@@ -179,6 +185,7 @@ describe('createSpacingVar', () => {
 
   it('should return a CSS custom property with a decimal value', () => {
     const result = createSpacingVar('padding', '2.5');
+
     expect(result).toEqual({
       '--padding': 'calc(var(--spacing) * 2.5)',
     });
@@ -186,6 +193,7 @@ describe('createSpacingVar', () => {
 
   it('should reference a spacing variable for non-number values', () => {
     const result = createSpacingVar('margin', 'group');
+
     expect(result).toEqual({
       '--margin': 'var(--spacing-group)',
     });
@@ -193,6 +201,7 @@ describe('createSpacingVar', () => {
 
   it('should handle custom property names', () => {
     const result = createSpacingVar('custom-spacing-name', 'peer');
+
     expect(result).toEqual({
       '--custom-spacing-name': 'var(--spacing-peer)',
     });
@@ -202,6 +211,7 @@ describe('createSpacingVar', () => {
     const tokens = ['joined', 'tight', 'related', 'group', 'region'];
     tokens.forEach(token => {
       const result = createSpacingVar('space', token);
+
       expect(result).toEqual({
         '--space': `var(--spacing-${token})`,
       });

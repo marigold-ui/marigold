@@ -4,6 +4,7 @@ import { get } from './object.utils';
 describe('get', () => {
   it('should get a value from a flat object', () => {
     const obj = { name: 'John', age: 30 };
+
     expect(get(obj, 'name')).toBe('John');
     expect(get(obj, 'age')).toBe(30);
   });
@@ -17,29 +18,34 @@ describe('get', () => {
         },
       },
     };
+
     expect(get(obj, 'user.profile.name')).toBe('Jane');
     expect(get(obj, 'user.profile.email')).toBe('jane@example.com');
   });
 
   it('should return fallback when path does not exist', () => {
     const obj = { name: 'John' };
+
     expect(get(obj, 'age', 0)).toBe(0);
     expect(get(obj, 'address.street', 'N/A')).toBe('N/A');
   });
 
   it('should return undefined when path does not exist and no fallback provided', () => {
     const obj = { name: 'John' };
+
     expect(get(obj, 'age')).toBeUndefined();
     expect(get(obj, 'user.profile.name')).toBeUndefined();
   });
 
   it('should return fallback when value is undefined', () => {
     const obj = { name: undefined };
+
     expect(get(obj, 'name', 'Unknown')).toBe('Unknown');
   });
 
   it('should return the actual value if it is falsy but not undefined', () => {
     const obj = { count: 0, active: false, empty: '' };
+
     expect(get(obj, 'count')).toBe(0);
     expect(get(obj, 'active')).toBe(false);
     expect(get(obj, 'empty')).toBe('');
@@ -53,6 +59,7 @@ describe('get', () => {
         },
       },
     };
+
     expect(get(obj, 'user.invalid.name', 'default')).toBe('default');
     expect(get(obj, 'user.profile.age', 0)).toBe(0);
   });
@@ -69,6 +76,7 @@ describe('get', () => {
         },
       },
     };
+
     expect(get(obj, 'level1.level2.level3.level4.value')).toBe('deep');
   });
 
@@ -76,6 +84,7 @@ describe('get', () => {
     const obj = {
       users: [{ name: 'John' }, { name: 'Jane' }],
     };
+
     expect(get(obj, 'users.0.name')).toBe('John');
     expect(get(obj, 'users.1.name')).toBe('Jane');
   });
@@ -84,6 +93,7 @@ describe('get', () => {
     const obj = {
       user: null,
     };
+
     expect(get(obj, 'user', 'fallback')).toBe(null);
   });
 
@@ -102,6 +112,7 @@ describe('get', () => {
         },
       },
     };
+
     expect(get(obj, 'app.config.database.host')).toBe('localhost');
     expect(get(obj, 'app.config.database.credentials.username')).toBe('admin');
     expect(get(obj, 'app.config.database.ssl', false)).toBe(false);
@@ -109,6 +120,7 @@ describe('get', () => {
 
   it('should return the fallback value with the correct type', () => {
     const obj = {};
+
     expect(get(obj, 'count', 0)).toBe(0);
     expect(get(obj, 'name', '')).toBe('');
     expect(get(obj, 'active', true)).toBe(true);

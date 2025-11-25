@@ -99,6 +99,7 @@ describe('cn', () => {
   it('should handle conditional classes', () => {
     const isActive = true;
     const isDisabled = false;
+
     expect(cn('px-4', isActive && 'py-2', isDisabled && 'py-4')).toBe(
       'px-4 py-2'
     );
@@ -136,6 +137,7 @@ describe('cn', () => {
       isLoading && 'bg-red-500',
       hasError && 'bg-blue-500'
     );
+
     expect(result).toBe('py-2 text-white px-8 bg-blue-500');
   });
 });
