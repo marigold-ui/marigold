@@ -22,7 +22,6 @@
     "@marigold/components": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@mdx-js/react": "3.1.1",
-    "@storybook/addon-a11y": "^10.0.8",
     "@tailwindcss/vite": "4.1.15",
     "@types/react": "19.2.2",
     "@vitejs/plugin-react": "5.0.4",
@@ -31,10 +30,12 @@
     "vite-tsconfig-paths": "5.1.4"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^10.0.8",
     "@storybook/addon-docs": "^10.0.8",
     "@storybook/cli": "^10.0.8",
     "@storybook/react-vite": "^10.0.8",
     "@storybook/test-runner": "0.24.1",
+    "@storybook/react": "^10.0.8",
     "@types/node": "24.9.2",
     "eslint-plugin-storybook": "10.0.8",
     "react": "19.2.0",
@@ -45,7 +46,6 @@
     "vite": "7.1.12"
   },
   "peerDependencies": {
-    "@storybook/react": "^10.0.8",
     "react": "19.x",
     "react-dom": "19.x",
     "typescript": "5.3.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x || 5.9.x"
