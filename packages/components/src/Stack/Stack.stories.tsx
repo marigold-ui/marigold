@@ -8,9 +8,6 @@ import { Block } from './__internal__/Block';
 const meta = {
   title: 'Components/Stack',
   component: Stack,
-  args: {
-    space: 4,
-  },
   argTypes: {
     space: {
       control: {
@@ -46,9 +43,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  args: {
+    space: 4,
+  },
   render: args => (
     <div className="rounded-xl bg-linear-to-b from-gray-50 to-white p-8">
-      <Stack space={4} {...args}>
+      <Stack {...args}>
         <Block className="max-w-sm">
           <Headline level={2}>Getting Started with Stack</Headline>
         </Block>
