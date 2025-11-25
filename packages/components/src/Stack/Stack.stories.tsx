@@ -137,8 +137,8 @@ export const Stretch: Story = {
 };
 
 export const AsList: Story = {
-  render: () => (
-    <Stack asList>
+  render: args => (
+    <Stack {...args} asList>
       <Block>first</Block>
       <Block>second</Block>
     </Stack>
