@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components';
-import { ProgressCycle } from '@marigold/components';
+import { ProgressCircle } from '@marigold/components';
 import { cn, useClassNames } from '@marigold/system';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
@@ -66,7 +66,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {loading ? (
           <>
             <span className="absolute">
-              <ProgressCycle />
+              <ProgressCircle />
             </span>
             <span className="invisible flex gap-[inherit]">{children}</span>
           </>

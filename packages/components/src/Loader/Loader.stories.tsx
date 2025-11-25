@@ -30,7 +30,7 @@ const meta = {
         type: 'radio',
       },
       description: 'Type of the Loader.',
-      options: ['xloader', 'cycle'],
+      options: ['xloader', 'circle'],
     },
   },
   args: {
@@ -64,9 +64,9 @@ export const Section: Story = {
   ),
 };
 
-export const CycleLoader: Story = {
+export const CircleLoader: Story = {
   args: {
-    loaderType: 'cycle',
+    loaderType: 'circle',
   },
   render: args => (
     <Stack space={8}>
@@ -88,10 +88,10 @@ export const CycleLoader: Story = {
   ),
 };
 
-export const FullscreenCycleLoader: Story = {
+export const FullscreenCircleLoader: Story = {
   args: {
     mode: 'fullscreen',
-    loaderType: 'cycle',
+    loaderType: 'circle',
   },
   render: args => <Loader {...args}>Loading...</Loader>,
 };
