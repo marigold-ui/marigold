@@ -135,3 +135,12 @@ export const Stretch: Story = {
     </Block>
   ),
 };
+
+export const AsList: Story = {
+  render: () => (
+    <Stack asList>
+      <Block>first</Block>
+      <Block>second</Block>
+    </Stack>
+  ),
+};
