@@ -364,3 +364,57 @@ test('allows formatting of displayed value', () => {
   const unit: HTMLInputElement = screen.getByDisplayValue('150 cm');
   expect(unit.value).toEqual('150 cm');
 });
+
+test('selects all text on first click', async () => {
+  const user = userEvent.setup();
+
+  render(<NumberField label="A Label" defaultValue={42} />);
+
+  const input: HTMLInputElement = screen.getByRole('textbox');
+  const selectSpy = vi.spyOn(input, 'select');
+
+  await user.click(input);
+
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+});
+
+test('does not select text on subsequent clicks without blur', async () => {
+  const user = userEvent.setup();
+
+  render(<NumberField label="A Label" defaultValue={42} />);
+
+  const input: HTMLInputElement = screen.getByRole('textbox');
+  const selectSpy = vi.spyOn(input, 'select');
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+});
+
+test('resets selection behavior after blur', async () => {
+  const user = userEvent.setup();
+
+  render(
+    <>
+      <NumberField label="A Label" defaultValue={42} />
+      <button>Outside</button>
+    </>
+  );
+
+  const input: HTMLInputElement = screen.getByRole('textbox');
+  const outsideButton = screen.getByRole('button', { name: 'Outside' });
+  const selectSpy = vi.spyOn(input, 'select');
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(1);
+
+  await user.click(outsideButton);
+
+  await user.click(input);
+  expect(selectSpy).toHaveBeenCalledTimes(2);
+});

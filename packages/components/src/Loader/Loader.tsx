@@ -5,7 +5,7 @@ import { Underlay } from '../Overlay/Underlay';
 import type { BaseLoaderProps } from './BaseLoader';
 import { BaseLoader } from './BaseLoader';
 
-export type LoaderVisualType = 'xloader' | 'cycle';
+export type LoaderVisualType = 'xloader' | 'circle';
 
 // Full Size
 // ---------------

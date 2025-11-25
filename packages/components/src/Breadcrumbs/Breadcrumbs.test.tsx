@@ -75,7 +75,9 @@ test('collapses breadcrumbs with links for too many items', () => {
   expect(screen.getByRole('link', { name: 'Breadcrumb3' })).toBeInTheDocument();
 
   // Collapsed items
-  expect(screen.getByRole('button', { name: '...' })).toBeInTheDocument();
+  expect(
+    screen.getByRole('button', { name: 'These breadcrumbs are hidden' })
+  ).toBeInTheDocument();
   expect(
     screen.queryByRole('link', { name: 'Breadcrumb1' })
   ).not.toBeInTheDocument();
@@ -87,7 +89,9 @@ test('collapses breadcrumbs with links for too many items', () => {
 test('expand collapsed items', async () => {
   render(<Collapsed />);
 
-  const ellipsis = screen.getByRole('button', { name: '...' });
+  const ellipsis = screen.getByRole('button', {
+    name: 'These breadcrumbs are hidden',
+  });
   await user.click(ellipsis);
 
   expect(

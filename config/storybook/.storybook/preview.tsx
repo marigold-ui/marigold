@@ -37,7 +37,7 @@ export const decorators: Decorator[] = [
     </div>
   ),
   Story => (
-    <MarigoldProvider theme={theme} className="h-screen p-6">
+    <MarigoldProvider theme={theme} className="min-h-screen p-6">
       <OverlayContainerProvider container="overlay-container">
         <Story />
       </OverlayContainerProvider>

@@ -110,7 +110,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
               {!isLast && (
                 <ChevronRight
                   aria-hidden="true"
-                  size={14}
+                  size={16}
                   data-testid="breadcrumb-chevronright"
                 />
               )}
