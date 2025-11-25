@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { ReactNode, createContext } from 'react';
 import { Theme } from '../types/theme';
-import { cn, cva } from '../utils';
+import { cn, cva } from '../utils/className.utils';
 import { UseClassNamesProps, useClassNames } from './useClassNames';
 import { ThemeProvider } from './useTheme';
 
