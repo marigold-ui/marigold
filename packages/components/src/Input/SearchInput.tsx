@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { Button } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn } from '@marigold/system';
-import { ProgressCycle } from '../ProgressCycle/ProgressCycle';
+import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { Search } from '../icons/Search';
 import { X } from '../icons/X';
 import type { InputProps } from './Input';
@@ -49,7 +49,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         icon={<Search size="16" />}
         action={
           loading ? (
-            <ProgressCycle />
+            <ProgressCircle />
           ) : (
             <Button
               className={className?.action}

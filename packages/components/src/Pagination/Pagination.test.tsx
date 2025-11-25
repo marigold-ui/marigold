@@ -18,199 +18,71 @@ afterEach(() => {
 });
 
 describe('Pagination tests', () => {
-  test('renders correctly', () => {
-    const { asFragment } = render(<Basic totalItems={20} pageSize={10} />);
+  test('renders navigation element with correct page information', () => {
+    render(<Basic totalItems={20} pageSize={10} />);
 
-    expect(asFragment()).toMatchInlineSnapshot(`
-      <DocumentFragment>
-        <div
-          class="h-screen p-6"
-        >
-          <div
-            id="overlay-container"
-          >
-            <nav
-              aria-label="Page 1 of 2"
-              class="flex items-center justify-center space-x-2"
-            >
-              <span
-                data-focus-scope-start="true"
-                hidden=""
-              />
-              <button
-                aria-label="Page previous"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
-                data-react-aria-pressable="true"
-                disabled=""
-                type="button"
-              >
-                <svg
-                  class="shrink-0 h-4 w-4"
-                  fill="none"
-                  height="24"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="m15 18-6-6 6-6"
-                  />
-                </svg>
-              </button>
-              <div
-                class="flex items-center justify-center space-x-2"
-              >
-                <button
-                  aria-current="page"
-                  aria-label="Page 1"
-                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-background size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
-                  data-react-aria-pressable="true"
-                  data-selected="true"
-                  tabindex="0"
-                  type="button"
-                >
-                  1
-                </button>
-                <button
-                  aria-label="Page 2"
-                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-background size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
-                  data-react-aria-pressable="true"
-                  data-selected="false"
-                  tabindex="-1"
-                  type="button"
-                >
-                  2
-                </button>
-              </div>
-              <button
-                aria-label="Page next"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
-                data-react-aria-pressable="true"
-                tabindex="0"
-                type="button"
-              >
-                <svg
-                  class="shrink-0 h-4 w-4"
-                  fill="none"
-                  height="24"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="m9 18 6-6-6-6"
-                  />
-                </svg>
-              </button>
-              <span
-                data-focus-scope-end="true"
-                hidden=""
-              />
-            </nav>
-          </div>
-        </div>
-      </DocumentFragment>
-    `);
+    const nav = screen.getByRole('navigation');
+    expect(nav).toHaveAttribute('aria-label', 'Page 1 of 2');
   });
 
-  test('renders correctly when no data is available', () => {
-    const { asFragment } = render(<Basic totalItems={0} pageSize={10} />);
+  test('renders previous and next buttons', () => {
+    render(<Basic totalItems={20} pageSize={10} />);
 
-    expect(asFragment()).toMatchInlineSnapshot(`
-      <DocumentFragment>
-        <div
-          class="h-screen p-6"
-        >
-          <div
-            id="overlay-container"
-          >
-            <nav
-              aria-label="Page 1 of 0"
-              class="flex items-center justify-center space-x-2"
-            >
-              <span
-                data-focus-scope-start="true"
-                hidden=""
-              />
-              <button
-                aria-label="Page previous"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
-                data-react-aria-pressable="true"
-                disabled=""
-                type="button"
-              >
-                <svg
-                  class="shrink-0 h-4 w-4"
-                  fill="none"
-                  height="24"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="m15 18-6-6 6-6"
-                  />
-                </svg>
-              </button>
-              <div
-                class="flex items-center justify-center space-x-2"
-              >
-                <button
-                  aria-label="Page 1"
-                  class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer bg-background size-9 data-[selected=true]:border data-[selected=true]:border-input data-[selected=true]:shadow-xs"
-                  data-react-aria-pressable="true"
-                  disabled=""
-                  tabindex="-1"
-                  type="button"
-                >
-                  1
-                </button>
-              </div>
-              <button
-                aria-label="Page next"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:util-focus-ring outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 hover:bg-hover hover:text-hover-foreground cursor-pointer disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground h-9 py-2 gap-1 px-2.5 has-[+_[hidden]]:mr-0"
-                data-react-aria-pressable="true"
-                disabled=""
-                type="button"
-              >
-                <svg
-                  class="shrink-0 h-4 w-4"
-                  fill="none"
-                  height="24"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="m9 18 6-6-6-6"
-                  />
-                </svg>
-              </button>
-              <span
-                data-focus-scope-end="true"
-                hidden=""
-              />
-            </nav>
-          </div>
-        </div>
-      </DocumentFragment>
-    `);
+    const previousButton = screen.getByLabelText('Page previous');
+    const nextButton = screen.getByLabelText('Page next');
+
+    expect(previousButton).toBeInTheDocument();
+    expect(nextButton).toBeInTheDocument();
+  });
+
+  test('renders correct number of page buttons', () => {
+    render(<Basic totalItems={50} pageSize={10} />);
+
+    const pageButtons = screen.getAllByRole('button').filter(button => {
+      const label = button.getAttribute('aria-label');
+      return (
+        label?.startsWith('Page ') &&
+        !label?.includes('previous') &&
+        !label?.includes('next')
+      );
+    });
+
+    // 5 pages total
+    expect(pageButtons).toHaveLength(5);
+  });
+
+  test('first page button is selected on initial render', () => {
+    render(<Basic totalItems={20} pageSize={10} />);
+
+    const pageButton1 = screen.getByLabelText('Page 1');
+    expect(pageButton1).toHaveAttribute('data-selected', 'true');
+  });
+
+  test('renders disabled buttons when no data is available', () => {
+    render(<Basic totalItems={0} pageSize={10} />);
+
+    const previousButton = screen.getByLabelText('Page previous');
+    const nextButton = screen.getByLabelText('Page next');
+    const pageButton = screen.getByLabelText('Page 1');
+
+    expect(previousButton).toBeDisabled();
+    expect(nextButton).toBeDisabled();
+    expect(pageButton).toBeDisabled();
+  });
+
+  test('renders single page button when data fits on one page', () => {
+    render(<Basic totalItems={5} pageSize={10} />);
+
+    const pageButtons = screen.getAllByRole('button').filter(button => {
+      const label = button.getAttribute('aria-label');
+      return (
+        label?.startsWith('Page ') &&
+        !label?.includes('previous') &&
+        !label?.includes('next')
+      );
+    });
+
+    expect(pageButtons).toHaveLength(1);
   });
 
   test('has the correct role', () => {

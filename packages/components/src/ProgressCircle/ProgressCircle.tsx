@@ -2,7 +2,7 @@ import type RAC from 'react-aria-components';
 import { ProgressBar } from 'react-aria-components';
 import { SVG, cn, useClassNames } from '@marigold/system';
 
-export interface ProgressCycleProps extends RAC.ProgressBarProps {
+export interface ProgressCircleProps extends RAC.ProgressBarProps {
   /**
    * Defines the height and width of the component
    * @default 16
@@ -11,12 +11,12 @@ export interface ProgressCycleProps extends RAC.ProgressBarProps {
   variant?: 'default' | 'inverted';
 }
 
-export const ProgressCycleSvg = ({
+export const ProgressCircleSvg = ({
   size = '16',
   variant,
-}: ProgressCycleProps) => {
+}: ProgressCircleProps) => {
   const classNames = useClassNames({
-    component: 'ProgressCycle',
+    component: 'ProgressCircle',
     variant,
     size,
   });
@@ -65,13 +65,13 @@ export const ProgressCycleSvg = ({
   );
 };
 
-export const ProgressCycle = ({
+export const ProgressCircle = ({
   size = '16',
   ...props
-}: ProgressCycleProps) => {
+}: ProgressCircleProps) => {
   return (
     <ProgressBar {...props} aria-label="loading" isIndeterminate>
-      <ProgressCycleSvg size={size} />
+      <ProgressCircleSvg size={size} />
     </ProgressBar>
   );
 };

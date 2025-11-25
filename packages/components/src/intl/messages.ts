@@ -12,6 +12,7 @@ export const intlMessages = {
     uploadLabel: 'Hochladen',
     moreInfo: 'Mehr Informationen',
     help: 'Hilfe',
+    hiddenBreadcrumbs: 'Diese Breadcrumbs sind ausgeblendet',
   },
   'en-US': {
     cancel: 'Cancel',
@@ -26,5 +27,6 @@ export const intlMessages = {
     uploadLabel: 'Upload',
     moreInfo: 'More information',
     help: 'Help',
+    hiddenBreadcrumbs: 'These breadcrumbs are hidden',
   },
 };

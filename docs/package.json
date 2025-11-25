@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "15.4.3",
+  "version": "16.0.0",
   "private": true,
   "scripts": {
     "dev:contentlayer": "contentlayer2 dev",
