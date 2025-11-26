@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import { createRef, useState } from 'react';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
@@ -232,7 +232,7 @@ test('can have default value', () => {
 
 test('can be controlled', async () => {
   const Controlled = () => {
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = useState('');
 
     return (
       <>

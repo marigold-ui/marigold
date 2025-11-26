@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import { createRef, useState } from 'react';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { TextArea } from './TextArea';
@@ -235,7 +235,7 @@ test('passes down "rows" attribute', () => {
 
 test('can be controlled', async () => {
   const Controlled = () => {
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = useState('');
     return (
       <>
         <TextArea data-testid="textarea" label="A Label" onChange={setValue} />
