@@ -164,9 +164,7 @@ export const Test = () => (
     {/* Button as Link accepts onClick prop, but it must be explicitly typed */}
     <Button
       as={Link}
-      onClick={(event: MouseEvent<HTMLAnchorElement, MouseEvent>) =>
-        event.altKey
-      }
+      onClick={(event: MouseEvent<HTMLAnchorElement>) => event.altKey}
     />
 
     {/* ExtendedButton accepts isExtended prop */}
