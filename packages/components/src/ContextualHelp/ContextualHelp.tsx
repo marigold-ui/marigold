@@ -1,4 +1,5 @@
 import {
+  ComponentProps,
   ForwardRefExoticComponent,
   ReactNode,
   RefAttributes,
@@ -38,7 +39,7 @@ interface ContextualHelpComponent
 
 type RemovedProps = 'isOpen';
 interface DialogTriggerProps
-  extends Omit<React.ComponentProps<typeof RACDialogTrigger>, RemovedProps> {
+  extends Omit<ComponentProps<typeof RACDialogTrigger>, RemovedProps> {
   open?: boolean;
 }
 

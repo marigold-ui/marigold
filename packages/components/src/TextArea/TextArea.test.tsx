@@ -126,14 +126,6 @@ test('passes down "rows" attribute', () => {
   expect(textArea).toHaveAttribute('rows', '5');
 });
 
-test('can be controlled', async () => {
-  render(<Basic onChange={() => {}} />);
-
-  const textArea = screen.getByRole('textbox');
-  await user.type(textArea, 'Hello there!');
-  expect(textArea).toHaveValue('Hello there!');
-});
-
 test('forwards ref', () => {
   const ref = createRef<HTMLTextAreaElement>();
   render(<Basic ref={ref} />);

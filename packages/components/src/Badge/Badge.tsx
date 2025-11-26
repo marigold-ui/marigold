@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useClassNames } from '@marigold/system';
 
 // Props
@@ -6,7 +7,7 @@ export interface BadgeProps {
   /**
    * Children of the component
    */
-  children?: React.ReactNode;
+  children?: ReactNode;
   variant?:
     | 'default'
     | 'primary'

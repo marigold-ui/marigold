@@ -2,7 +2,6 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { I18nProvider } from '@react-aria/i18n';
 import { makeFile } from './../test.utils';
 import * as stories from './FileField.stories';

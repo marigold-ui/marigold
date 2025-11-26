@@ -1,6 +1,5 @@
-import { useContext } from 'react';
-import { createContext, useState } from 'react';
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { ConfirmationDialog } from './ConfirmationDialog';
 import type { ConfirmationDialogProps } from './ConfirmationDialog';
 
@@ -16,7 +15,7 @@ export interface ConfirmationConfig
     | 'cancelLabel'
     | 'autoFocusButton'
   > {
-  content?: React.ReactNode;
+  content?: ReactNode;
 }
 
 // Context

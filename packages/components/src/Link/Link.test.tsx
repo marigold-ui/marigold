@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
-import React from 'react';
+import { createRef } from 'react';
 import { MockInstance, vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
@@ -81,7 +81,7 @@ test('link supports disabled variant', () => {
 });
 
 test('renders anchor element', () => {
-  const ref = React.createRef<HTMLAnchorElement>();
+  const ref = createRef<HTMLAnchorElement>();
   render(
     <Link href="/" ref={ref}>
       Link
@@ -92,7 +92,7 @@ test('renders anchor element', () => {
 });
 
 test('renders span element when no href', () => {
-  const ref = React.createRef<HTMLAnchorElement>();
+  const ref = createRef<HTMLAnchorElement>();
   render(<Link ref={ref}>Link</Link>);
 
   expect(ref.current).toBeInstanceOf(HTMLSpanElement);
