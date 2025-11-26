@@ -50,7 +50,7 @@ export const Tiles = ({
     <div
       {...props}
       className={cn(
-        'grid',
+        'grid w-full',
         gapSpace[space],
         'grid-cols-[repeat(auto-fit,var(--column))]',
         equalHeight && 'auto-rows-[1fr]'
