@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import { createRef } from 'react';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
@@ -255,7 +255,7 @@ test('can be controlled', async () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLInputElement>();
+  const ref = createRef<HTMLInputElement>();
   render(<TextField data-testid="text-field" label="A Label" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);

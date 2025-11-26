@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { Stack, Table, TextArea } from '@marigold/components';
 
 export default () => {
@@ -35,7 +35,7 @@ export default () => {
       description: 'Summer is calling.',
     },
   ];
-  const [data, setData] = React.useState(rowData);
+  const [data, setData] = useState(rowData);
 
   function handleChange(id: string, newValue: string, key: string): void {
     const changedData = data.map(item => {
