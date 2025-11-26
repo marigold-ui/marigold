@@ -10,7 +10,7 @@ test('set tiles width via prop', () => {
   const tiles = screen.getByTestId(/tiles/);
   expect(tiles).toMatchInlineSnapshot(`
     <div
-      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
+      class="grid w-full gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
       data-testid="tiles"
       style="--column: min(200px, 100%); --tilesWidth: 200px;"
     >
@@ -30,7 +30,7 @@ test('supports setting tiles width with design tokens', () => {
   const tiles = screen.getByTestId(/tiles/);
   expect(tiles).toMatchInlineSnapshot(`
     <div
-      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
+      class="grid w-full gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
       data-testid="tiles"
       style="--column: min(large, 100%); --tilesWidth: large;"
     >
@@ -60,7 +60,7 @@ test('supports responsive grid via stretch prop', () => {
   const tiles = screen.getByTestId(/tiles/);
   expect(tiles).toMatchInlineSnapshot(`
     <div
-      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
+      class="grid w-full gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
       data-testid="tiles"
       style="--column: minmax(min(300px, 100%), 1fr); --tilesWidth: 300px;"
     >
