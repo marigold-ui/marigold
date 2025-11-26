@@ -1,14 +1,12 @@
 {
   "name": "@marigold/docs",
-  "version": "16.0.0",
+  "version": "16.0.1",
   "private": true,
   "scripts": {
-    "dev:contentlayer": "contentlayer2 dev",
-    "dev:next": "pnpm registry && next dev",
-    "dev": "pnpm run /^dev:.*/",
+    "dev": "pnpm registry && next dev --webpack",
+    "build": "pnpm registry && pnpm build:component-props && pnpm build:changelog && next build --webpack",
     "start": "next start",
     "registry": "zx ./scripts/build-registry.mjs",
-    "build": "pnpm registry && pnpm build:component-props && pnpm build:changelog && pnpm build:contentlayer && next build",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs",
     "build:contentlayer": "pnpm contentlayer2 build"

@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Header, Heading } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { DrawerContext } from './Context';
@@ -10,7 +10,7 @@ export interface DrawerTitleProps {
   /**
    * Children of the component.
    */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export const DrawerTitle = ({ variant, size, children }: DrawerTitleProps) => {

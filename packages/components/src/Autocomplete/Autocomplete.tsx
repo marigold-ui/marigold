@@ -1,9 +1,10 @@
-import React, {
+import {
   ForwardRefExoticComponent,
   ReactNode,
   Ref,
   RefAttributes,
   forwardRef,
+  useContext,
 } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
@@ -48,7 +49,7 @@ const AutocompleteInput = ({
   onClear,
   ref,
 }: AutocompleteInputProps) => {
-  const state = React.useContext(ComboBoxStateContext);
+  const state = useContext(ComboBoxStateContext);
   // needed to get the triggerwidth on the right button
   const classNames = useClassNames({ component: 'ComboBox' });
 

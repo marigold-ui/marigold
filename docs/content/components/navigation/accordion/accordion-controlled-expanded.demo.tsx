@@ -1,9 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import { Key } from '@react-types/shared';
 import { Accordion, TextField } from '@marigold/components';
 
 export default () => {
-  let [expandedKeys, setExpandedKeys] = React.useState<Set<Key>>(
+  let [expandedKeys, setExpandedKeys] = useState<Set<Key>>(
     new Set(['personal'])
   );
 

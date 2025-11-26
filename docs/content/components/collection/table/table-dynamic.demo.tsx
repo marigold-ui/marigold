@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { Table } from '@marigold/components';
 
 export default () => {
@@ -47,7 +47,7 @@ export default () => {
       status: 'updated',
     },
   ];
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set());
+  const [selectedKeys, setSelectedKeys] = useState(new Set());
   const selected = Array.from(selectedKeys);
   return (
     <>

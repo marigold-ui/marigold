@@ -1,5 +1,18 @@
 # @marigold/docs
 
+## 16.0.1
+
+### Patch Changes
+
+- 77a64e8: fix: Use relative imports & remove default React import usage
+- Updated dependencies [77a64e8]
+- Updated dependencies [b90a67e]
+  - @marigold/components@16.0.1
+  - @marigold/icons@1.3.29
+  - @marigold/system@16.0.1
+  - @marigold/theme-docs@4.0.1
+  - @marigold/theme-rui@4.0.1
+
 ## 16.0.0
 
 ### Minor Changes

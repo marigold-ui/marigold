@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type RAC from 'react-aria-components';
 import { Calendar, DateValue } from 'react-aria-components';
 import {
