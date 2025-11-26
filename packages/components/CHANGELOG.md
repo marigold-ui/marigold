@@ -1,5 +1,13 @@
 # @marigold/components
 
+## 16.0.1
+
+### Patch Changes
+
+- 77a64e8: fix: Use relative imports & remove default React import usage
+- b90a67e: fix(FileField): Use local svg instead from @marigold/icons
+  - @marigold/system@16.0.1
+
 ## 16.0.0
 
 ### Major Changes
