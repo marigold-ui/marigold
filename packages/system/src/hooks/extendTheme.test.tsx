@@ -33,7 +33,7 @@ const theme: Theme = {
     Tabs: {
       container: cva('flex'),
       tabpanel: cva('border-3 border-solid border-red-400'),
-      tabsList: cva('mb-[10px]'),
+      tabsList: cva('mb-2.5'),
       tab: cva(
         [
           'selected:border-red-500  selected:border-b-8  selected:border-solid ',
@@ -130,7 +130,7 @@ test('Should support new variant and existing size', () => {
       Tabs: {
         container: cva('flex'),
         tabpanel: cva('border-3 border-solid border-red-400'),
-        tabsList: cva('mb-[10px]'),
+        tabsList: cva('mb-2.5'),
         tab: cva(
           [
             'selected:border-red-500  selected:border-b-8  selected:border-solid ',
