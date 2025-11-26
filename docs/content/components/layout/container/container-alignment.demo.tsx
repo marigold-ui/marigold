@@ -1,15 +1,23 @@
-import { Aspect, Container, Headline, Text } from '@marigold/components';
+import {
+  Aspect,
+  Breakout,
+  Container,
+  Headline,
+  Text,
+} from '@marigold/components';
 
 export default () => (
   <Container space={4} contentLength="short" align="center" alignItems="center">
     <Headline level="3">Taking care of Marigolds</Headline>
-    <Aspect maxWidth="250px" ratio="ultrawide">
-      <img
-        src="/marigold-watering.webp"
-        alt="Watering a marigold flower"
-        className="object-cover"
-      />
-    </Aspect>
+    <Breakout>
+      <Aspect maxWidth="350px" ratio="ultrawide">
+        <img
+          src="/marigold-watering.webp"
+          alt="Watering a marigold flower"
+          className="object-cover"
+        />
+      </Aspect>
+    </Breakout>
     <Text>
       Caring for marigold flowers is straightforward, making them a popular
       choice for many gardeners. Marigolds thrive best in full sunlight, so make
