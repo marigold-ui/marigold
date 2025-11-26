@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "16.0.0",
+  "version": "16.0.1",
   "private": true,
   "scripts": {
     "dev": "pnpm registry && next dev --webpack",

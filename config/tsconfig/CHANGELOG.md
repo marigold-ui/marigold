@@ -1,5 +1,11 @@
 # @marigold/tsconfig
 
+## 0.4.2
+
+### Patch Changes
+
+- 77a64e8: fix: Use relative imports & remove default React import usage
+
 ## 0.4.1
 
 ### Patch Changes
