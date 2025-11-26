@@ -1,3 +1,4 @@
+const { withContentlayer } = require('next-contentlayer2');
 const pkg = require('./package.json');
 
 /** @type {import('next').NextConfig} */
@@ -48,4 +49,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withContentlayer(nextConfig);

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import RAC, { DropZone } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { FieldBase, type FieldBaseProps } from '@marigold/components';
 import { WidthProp, useClassNames } from '@marigold/system';
+import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger } from './FileTrigger';

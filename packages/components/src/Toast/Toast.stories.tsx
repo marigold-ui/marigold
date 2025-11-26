@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
@@ -109,7 +109,7 @@ export const Basic: Story = {
 
 export const ToggleToast: Story = {
   render: ({ position, title, description, variant, timeout }) => {
-    const [toastKey, setToastKey] = React.useState<string | null>(null);
+    const [toastKey, setToastKey] = useState<string | null>(null);
     const { addToast, removeToast } = useToast();
     return (
       <>

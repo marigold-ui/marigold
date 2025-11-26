@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import { createRef } from 'react';
 import * as stories from './Checkbox.stories';
 
 const { Basic } = composeStories(stories);
@@ -81,7 +81,7 @@ test('supports indeterminate state', () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLLabelElement>();
+  const ref = createRef<HTMLLabelElement>();
   render(<Basic label="Check it" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);

@@ -5,6 +5,6 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   tsconfig: './tsconfig.build.json',
   dts: true,
-  external: 'react',
+  external: ['react', 'react-dom', 'react/jsx-runtime'],
   clean: true,
 });
