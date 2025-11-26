@@ -1,6 +1,6 @@
 import RAC, { FileTrigger } from 'react-aria-components';
 import { Button } from '@marigold/components';
-import { Upload } from '@marigold/icons';
+import { Upload } from '../icons/Upload';
 
 type RemovedProps = 'className' | 'style';
 
