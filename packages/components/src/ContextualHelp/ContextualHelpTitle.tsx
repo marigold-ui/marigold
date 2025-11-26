@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react';
 import { Heading } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 
 export interface ContextualHelpTitleProps {
-  children: React.ReactNode;
+  children: ReactNode;
   variant?: string;
   size?: string;
 }

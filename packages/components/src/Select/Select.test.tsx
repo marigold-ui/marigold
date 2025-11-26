@@ -7,7 +7,7 @@ import {
   within,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import { createRef } from 'react';
 import { vi } from 'vitest';
 import { Theme, cva, useSmallScreen } from '@marigold/system';
 import { setup } from '../test.utils';
@@ -250,7 +250,7 @@ test('set width via props', () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLButtonElement>();
+  const ref = createRef<HTMLButtonElement>();
   render(
     <Select label="Label" data-testid="select" ref={ref as any}>
       <Select.Section header="Section 1">
@@ -264,7 +264,7 @@ test('forwards ref', () => {
 });
 
 test('renders as tray', () => {
-  const ref = React.createRef<HTMLButtonElement>();
+  const ref = createRef<HTMLButtonElement>();
 
   let resize: () => void;
   window.addEventListener = vi.fn().mockImplementation((event, cb) => {

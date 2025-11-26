@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import React, { ReactElement, useContext } from 'react';
+import { ReactElement, forwardRef, useContext } from 'react';
 import type RAC from 'react-aria-components';
 import {
   DatePicker,
@@ -72,7 +72,7 @@ export interface DatePickerProps
   width?: WidthProp['width'];
 }
 
-const _DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
+const _DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
   (
     {
       dateUnavailable,
