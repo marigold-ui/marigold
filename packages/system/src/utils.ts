@@ -4,6 +4,7 @@ import {
   ClassValue,
   StringToBoolean,
 } from 'class-variance-authority/dist/types';
+import type { CSSProperties } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export type { ClassValue };
@@ -47,7 +48,7 @@ export const cn = (...inputs: ClassValue[]) => twMerge(cx(inputs));
 export const createVar = (o: { [key: string]: string | number | undefined }) =>
   Object.fromEntries(
     Object.entries(o).map(([name, val]) => [`--${name}`, val])
-  ) as React.CSSProperties;
+  ) as CSSProperties;
 
 /**
  * Safely get a dot-notated path within a nested object, with ability

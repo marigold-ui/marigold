@@ -1,5 +1,26 @@
 # @marigold/system
 
+## 16.0.1
+
+## 16.0.0
+
+### Major Changes
+
+- b947276: style(DST-1089): Add expand/collapse animation to `<Accordion>`
+- f10119a: refa(DST-1109): Remove required indicator from the label's text content
+
+  **BREACKING CHANGE:** We removed the `indicator` styling from `<Label>`. The component is no longer a multi-part component. Rather than styling the required indicator through a dedicated part (previsouly `indicator`), you can now apply it anyway you want, for example by using `'group-required/field:after:content-["*"]'`.
+
+### Minor Changes
+
+- 98bf929: [DST-1075]: Introduce `<FileField>`component
+
+### Patch Changes
+
+- 4eebff4: [DSTSUP-191]:
+  Breaking chnge: `<XLoader />` renamed to `<Loader />`
+  Added a new prop `loaderType` which is by default `cycle`. New option `cycle` shows a spinning cycle.
+
 ## 15.4.3
 
 ## 15.4.2

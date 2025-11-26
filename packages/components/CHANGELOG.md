@@ -1,5 +1,49 @@
 # @marigold/components
 
+## 16.0.1
+
+### Patch Changes
+
+- 77a64e8: fix: Use relative imports & remove default React import usage
+- b90a67e: fix(FileField): Use local svg instead from @marigold/icons
+  - @marigold/system@16.0.1
+
+## 16.0.0
+
+### Major Changes
+
+- b947276: style(DST-1089): Add expand/collapse animation to `<Accordion>`
+- f10119a: refa(DST-1109): Remove required indicator from the label's text content
+
+  **BREACKING CHANGE:** We removed the `indicator` styling from `<Label>`. The component is no longer a multi-part component. Rather than styling the required indicator through a dedicated part (previsouly `indicator`), you can now apply it anyway you want, for example by using `'group-required/field:after:content-["*"]'`.
+
+- 4eebff4: [DSTSUP-191]:
+  Breaking chnge: `<XLoader />` renamed to `<Loader />`
+  Added a new prop `loaderType` which is by default `cycle`. New option `cycle` shows a spinning cycle.
+
+### Minor Changes
+
+- 98bf929: [DST-1075]: Introduce `<FileField>`component
+
+### Patch Changes
+
+- 832e3fa: fix(styles): Remove extra spacing when hidden/a11y elements are causing it
+- 845f26c: feat([DST-1025]): Adding possibilty to paste date values in `<DatePicker>` component.
+- 1e98c67: [DST-1103]: Added a new section "Placement and order" onto the `<Button>` component page.
+- 9027ce9: feat([DST-973]): Select value on focus in `<NumberField>`
+- 2ac63f7: fix([DSTSUP-196]): Fix Listbox layout when more than one element is used.
+- 29494b4: fix(DST-1110): Remove extra whitespace from `<Container>`
+
+  When there is no `<Breakout>` inside the container we do not have to apply the 3 column layout. Otherwise this causes 2 empty columns to be there.
+
+- 57a2bd3: style([DST-1126]): Fix Breadcrumb styling
+- 62692a6: style(DST-1086): Add a new destructive button variant
+- Updated dependencies [b947276]
+- Updated dependencies [98bf929]
+- Updated dependencies [f10119a]
+- Updated dependencies [4eebff4]
+  - @marigold/system@16.0.0
+
 ## 15.4.3
 
 ### Patch Changes

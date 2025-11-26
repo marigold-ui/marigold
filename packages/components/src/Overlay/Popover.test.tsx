@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { screen } from '@testing-library/react';
-import React from 'react';
+import { createRef } from 'react';
 import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -51,7 +51,7 @@ window.matchMedia = mockMatchMedia([
 ]);
 
 test('renders open popover', () => {
-  const ref = React.createRef<HTMLDivElement>();
+  const ref = createRef<HTMLDivElement>();
   render(
     <>
       <div ref={ref}>Trigger</div>
@@ -67,7 +67,7 @@ test('renders open popover', () => {
 });
 
 test('popover is per default closed', () => {
-  const ref = React.createRef<HTMLDivElement>();
+  const ref = createRef<HTMLDivElement>();
   render(
     <>
       <div ref={ref}>Trigger</div>
@@ -82,7 +82,7 @@ test('popover is per default closed', () => {
 });
 
 test('popover has children', () => {
-  const ref = React.createRef<HTMLDivElement>();
+  const ref = createRef<HTMLDivElement>();
 
   render(
     <>
@@ -100,7 +100,7 @@ test('popover has children', () => {
 });
 
 test('popover is small screen', () => {
-  const ref = React.createRef<HTMLDivElement>();
+  const ref = createRef<HTMLDivElement>();
 
   window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 

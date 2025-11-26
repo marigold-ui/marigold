@@ -35,7 +35,7 @@ export interface SelectProps<
   /**
    * Children of the select.
    */
-  children?: React.ReactNode | ((item: T) => React.ReactNode);
+  children?: ReactNode | ((item: T) => ReactNode);
   /**
    * Set a label for the select.
    */

@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import React from 'react';
+import { createRef } from 'react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Radio } from './Radio';
@@ -81,7 +81,7 @@ test('set width via prop', () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLLabelElement>();
+  const ref = createRef<HTMLLabelElement>();
   render(
     <ThemeProvider theme={theme}>
       <Radio.Group label="With Label">
@@ -135,7 +135,7 @@ test('radio accepts error message', () => {
 });
 
 test('disabled prop and styles', () => {
-  const ref = React.createRef<HTMLLabelElement>();
+  const ref = createRef<HTMLLabelElement>();
   render(
     <ThemeProvider theme={theme}>
       <Radio.Group label="With Label">
@@ -158,7 +158,7 @@ test('disabled prop and styles', () => {
 });
 
 test('radio group can be horizontal', () => {
-  const ref = React.createRef<HTMLLabelElement>();
+  const ref = createRef<HTMLLabelElement>();
   render(
     <ThemeProvider theme={theme}>
       <Radio.Group label="With Label" orientation="horizontal">

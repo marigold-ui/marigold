@@ -18,9 +18,11 @@ export const Button: ThemeComponent<'Button'> = cva(
           'rounded-surface bg-brand text-brand-foreground shadow-xs hover:bg-brand/90',
         secondary:
           'rounded-surface bg-surface shadow-xs enabled:border border-surface-border hover:bg-hover hover:text-foreground expanded:bg-hover',
+        ghost: 'rounded-surface hover:bg-hover hover:text-foreground',
         destructive:
           'rounded-surface bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
-        ghost: 'rounded-surface hover:bg-hover hover:text-foreground',
+        'destructive-ghost':
+          'rounded-surface text-destructive hover:bg-destructive/10',
         link: 'text-link util-touch-hitbox',
       },
       size: {
@@ -36,26 +38,56 @@ export const Button: ThemeComponent<'Button'> = cva(
     },
     compoundVariants: [
       {
-        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        variant: [
+          'primary',
+          'secondary',
+          'destructive',
+          'ghost',
+          'destructive-ghost',
+        ],
         class: 'items-center justify-center',
       },
       {
-        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        variant: [
+          'primary',
+          'secondary',
+          'destructive',
+          'ghost',
+          'destructive-ghost',
+        ],
         size: 'default',
         class: 'h-button px-4 py-2 [&_svg]:size-4',
       },
       {
-        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        variant: [
+          'primary',
+          'secondary',
+          'destructive',
+          'ghost',
+          'destructive-ghost',
+        ],
         size: 'small',
         class: 'h-button-small px-3 [&_svg]:size-3.5',
       },
       {
-        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        variant: [
+          'primary',
+          'secondary',
+          'destructive',
+          'ghost',
+          'destructive-ghost',
+        ],
         size: 'large',
         class: 'h-button-large px-8 [&_svg]:size-5',
       },
       {
-        variant: ['primary', 'secondary', 'destructive', 'ghost'],
+        variant: [
+          'primary',
+          'secondary',
+          'destructive',
+          'ghost',
+          'destructive-ghost',
+        ],
         size: 'icon',
         class: 'size-button [&_svg]:size-4',
       },

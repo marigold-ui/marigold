@@ -1,5 +1,40 @@
 # @marigold/theme-docs
 
+## 4.0.1
+
+### Patch Changes
+
+- Updated dependencies [77a64e8]
+- Updated dependencies [b90a67e]
+  - @marigold/components@16.0.1
+  - @marigold/system@16.0.1
+
+## 4.0.0
+
+### Major Changes
+
+- f10119a: refa(DST-1109): Remove required indicator from the label's text content
+
+  **BREACKING CHANGE:** We removed the `indicator` styling from `<Label>`. The component is no longer a multi-part component. Rather than styling the required indicator through a dedicated part (previsouly `indicator`), you can now apply it anyway you want, for example by using `'group-required/field:after:content-["*"]'`.
+
+### Patch Changes
+
+- 0040853: fix(docs): Remove old broken Tailwind plugins
+- Updated dependencies [832e3fa]
+- Updated dependencies [845f26c]
+- Updated dependencies [1e98c67]
+- Updated dependencies [9027ce9]
+- Updated dependencies [b947276]
+- Updated dependencies [2ac63f7]
+- Updated dependencies [29494b4]
+- Updated dependencies [98bf929]
+- Updated dependencies [57a2bd3]
+- Updated dependencies [62692a6]
+- Updated dependencies [f10119a]
+- Updated dependencies [4eebff4]
+  - @marigold/components@16.0.0
+  - @marigold/system@16.0.0
+
 ## 3.1.13
 
 ### Patch Changes

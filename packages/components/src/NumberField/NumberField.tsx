@@ -116,6 +116,7 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
           <Input
             ref={ref}
             className={cn('h-full flex-1 outline-none', classNames.input)}
+            onFocus={e => e.currentTarget.select()}
           />
           {showStepper && (
             <StepButton

@@ -1,6 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 import { Stack } from './Stack';
 
 test('default space is "0"', () => {

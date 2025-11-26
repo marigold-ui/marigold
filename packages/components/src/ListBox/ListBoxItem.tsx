@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { ListBoxItem } from 'react-aria-components';
 import { Check } from '../icons/Check';
@@ -10,7 +11,7 @@ export type ListBoxItemProps = Omit<
   /**
    * The children of the component
    */
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const _ListBoxItem = ({ ...props }: ListBoxItemProps) => {

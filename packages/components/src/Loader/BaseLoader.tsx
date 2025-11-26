@@ -2,9 +2,10 @@ import type { ReactNode } from 'react';
 import type { ProgressBarProps } from 'react-aria-components';
 import { Label, ProgressBar } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { LoaderVisualType, ProgressCycleSvg } from '@marigold/components';
 import { useClassNames } from '@marigold/system';
+import { ProgressCircleSvg } from '../ProgressCircle/ProgressCircle';
 import { intlMessages } from '../intl/messages';
+import type { LoaderVisualType } from './Loader';
 
 // Props
 // ---------------
@@ -189,7 +190,7 @@ export const BaseLoader = ({
   size,
   children,
   'aria-label': ariaLabel,
-  loaderType = 'cycle',
+  loaderType = 'circle',
   ...props
 }: BaseLoaderProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
@@ -209,7 +210,7 @@ export const BaseLoader = ({
       {loaderType === 'xloader' ? (
         <XLoaderSvg className={className.loader} />
       ) : (
-        <ProgressCycleSvg variant={variant} size={size!} />
+        <ProgressCircleSvg variant={variant} size={size!} />
       )}
       {children ? <Label className={className.label}>{children}</Label> : null}
     </ProgressBar>

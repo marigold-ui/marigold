@@ -1,6 +1,6 @@
 import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
+import { createRef } from 'react';
 import { vi } from 'vitest';
 import * as stories from './Switch.stories';
 
@@ -115,7 +115,7 @@ test('supports controlled component usage', () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLLabelElement>();
+  const ref = createRef<HTMLLabelElement>();
   render(<Basic ref={ref} label="Label" />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);

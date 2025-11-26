@@ -1,7 +1,8 @@
+import type { ReactNode } from 'react';
 import { cn, useClassNames } from '@marigold/system';
 
 export interface ContextualHelpContentProps {
-  children: React.ReactNode;
+  children: ReactNode;
   variant?: string;
   size?: string;
 }

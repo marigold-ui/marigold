@@ -1,7 +1,10 @@
-import React, {
+import {
+  Children,
   ForwardRefExoticComponent,
+  ReactNode,
   RefAttributes,
   forwardRef,
+  isValidElement,
 } from 'react';
 import {
   Breadcrumb as RACBreadcrumb,
@@ -34,7 +37,7 @@ export interface BreadcrumbsProps
   /**
    * The breadcrumb items to be displayed.
    */
-  children: React.ReactNode | React.ReactNode[];
+  children: ReactNode | ReactNode[];
 }
 
 export interface BreadcrumbsComponent
@@ -57,7 +60,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
       size,
     });
 
-    const items = React.Children.toArray(children);
+    const items = Children.toArray(children);
     const total = items.length;
 
     const shouldCollapse =
@@ -87,7 +90,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
         className={container}
       >
         {displayedItems.map((item, index) => {
-          if (!React.isValidElement<BreadcrumbsItemProps>(item)) return null;
+          if (!isValidElement<BreadcrumbsItemProps>(item)) return null;
 
           const isLast = index === displayedItems.length - 1;
 
@@ -110,7 +113,7 @@ const _Breadcrumbs = forwardRef<HTMLOListElement, BreadcrumbsProps>(
               {!isLast && (
                 <ChevronRight
                   aria-hidden="true"
-                  size={14}
+                  size={16}
                   data-testid="breadcrumb-chevronright"
                 />
               )}
