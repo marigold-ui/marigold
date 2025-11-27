@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { HtmlProps } from '@marigold/types';
-import { cn, ensureCssVar } from '../../utils';
+import { cn } from '../../utils/className.utils';
+import { ensureCssVar } from '../../utils/css-variables.utils';
 
 export interface SVGProps extends Omit<HtmlProps<'svg'>, 'fill' | 'style'> {
   /**

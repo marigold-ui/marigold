@@ -10,9 +10,9 @@ jobs:
     if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.environment_url, 'storybook')
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4.1.0 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v4.2.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
@@ -31,7 +31,7 @@ jobs:
           TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
       - name: Upload Accessibility Report
         id: artifact-upload-step
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: accessibility-report
           path: ./config/storybook/artifacts/accessibilityReport.html
