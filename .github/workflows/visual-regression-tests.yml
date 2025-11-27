@@ -1,7 +1,7 @@
 name: Visual-Regression-Tests
 on:
   # When branches has "ui" in their name
-  push:
+  pull_request:
     branches:
       - 'ui-*'
       - '*-ui'
@@ -16,15 +16,9 @@ on:
 
 jobs:
   chromatic:
+    # Run if it's a PR push, OR a dispatch button, OR a valid comment command
     if: >
-      (
-        github.event_name == 'pull_request' &&
-        (
-          contains(github.head_ref, 'ui-') || 
-          contains(github.head_ref, '-ui') ||
-          contains(github.head_ref, '/ui-')
-        )
-      ) ||
+      github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
       (
         github.event_name == 'issue_comment' &&
