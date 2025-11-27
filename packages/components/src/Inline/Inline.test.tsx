@@ -76,7 +76,7 @@ test('adjusts the button to be aligned with input baseline', () => {
 
   const inline = screen.getByTestId('inline');
   expect(inline.className).toMatchInlineSnapshot(
-    `"flex w-full gap-6 items-end [&:has([slot=description])]:items-end [&:has([slot=description])_>*:not(:has([slot=description]))]:mb-6 [&:has([slot=errorMessage])_>*:not(:has([slot=errorMessage]))]:mb-6"`
+    `"flex gap-6 items-end [&:has([slot=description])]:items-end [&:has([slot=description])_>*:not(:has([slot=description]))]:mb-6 [&:has([slot=errorMessage])_>*:not(:has([slot=errorMessage]))]:mb-6"`
   );
 });
 
