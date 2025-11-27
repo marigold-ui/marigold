@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ReactNode } from 'react';
 import { alignment } from '@marigold/system';
 import { Headline } from '../Headline/Headline';
 import { Text } from '../Text/Text';
 import { Stack } from './Stack';
+import { Block } from './__internal__/Block';
 
 const meta = {
   title: 'Components/Stack',
@@ -42,29 +42,28 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Block = ({ children }: { children: ReactNode }) => (
-  <div className="rounded-xl border border-solid border-gray-200 bg-gray-100 p-3">
-    {children}
-  </div>
-);
-
 export const Basic: Story = {
+  args: {
+    space: 4,
+  },
   render: args => (
-    <Stack space={4} {...args}>
-      <Headline level={2}>Heading</Headline>
-      <Text>
-        Part 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
-        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
-        porttitor massa ex ut quam.
-      </Text>
-      <Text>
-        Part 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras
-        malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a
-        porttitor massa ex ut quam.
-      </Text>
-    </Stack>
+    <div className="rounded-xl bg-linear-to-b from-gray-50 to-white p-8">
+      <Stack {...args}>
+        <Block className="max-w-sm">
+          <Headline level={2}>Getting Started with Stack</Headline>
+        </Block>
+        <Block className="max-w-sm">
+          The Stack component provides a flexible layout system for arranging
+          content vertically or horizontally with consistent spacing. It&apos;s
+          designed to handle responsive layouts without writing custom CSS.
+        </Block>
+        <Block className="max-w-sm">
+          Use the space prop to control the distance between elements. You can
+          also combine Stack with alignment props to create complex layouts that
+          adapt to different screen sizes.
+        </Block>
+      </Stack>
+    </div>
   ),
 };
 
@@ -120,6 +119,10 @@ export const Nested: Story = {
 };
 
 export const Stretch: Story = {
+  args: {
+    space: 8,
+    stretch: true,
+  },
   render: args => (
     <Block>
       <div style={{ height: '300px' }}>
@@ -130,5 +133,14 @@ export const Stretch: Story = {
         </Stack>
       </div>
     </Block>
+  ),
+};
+
+export const AsList: Story = {
+  render: args => (
+    <Stack {...args} asList>
+      <Block>first</Block>
+      <Block>second</Block>
+    </Stack>
   ),
 };
