@@ -12,6 +12,31 @@ import type { CSSProperties } from 'react';
 export const isScale = (value: string) => /^[0-9]+(\.[0-9]+)?$/.test(value);
 
 /**
+ * Represents the numeric values found in the default Tailwind CSS spacing scale.
+ *
+ * Includes:
+ * - Fractional steps: 0.5, 1.5, 2.5, 3.5
+ * - Integer steps: 0–12
+ * - Extended spacing steps: 14, 16, 20... up to 96
+ */
+// prettier-ignore
+export type ScaleValue = 
+  | 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4
+  | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+  | 14 | 16 | 20 | 24 | 28 | 32 | 36 | 40
+  | 44 | 48 | 52 | 56 | 60 | 64 | 72 | 80 | 96;
+
+/**
+ * A strictly typed union of valid Tailwind CSS spacing keys.
+ * Accepts both the raw numbers (e.g., `4`, `2.5`) and their string equivalents (e.g., `"4"`, `"2.5"`).
+ *
+ * @example
+ * const spacing: Scale = 4;      // Valid (matches w-4)
+ * const padding: Scale = "2.5";  // Valid (matches p-2.5)
+ */
+export type Scale = ScaleValue | `${ScaleValue}`;
+
+/**
  * Checks if a given string is a valid CSS custom property name (without the leading `--`).
  *
  * This simplified check ensures:

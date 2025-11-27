@@ -1,3 +1,5 @@
+import type { Scale } from './utils/css-variables.utils';
+
 export const width = {
   auto: 'w-auto',
   full: 'w-full',
@@ -799,4 +801,16 @@ export type HeightProp = {
    * Set the height of the element. You can see allowed tokens [here](https://tailwindcss.com/docs/height).
    */
   height?: keyof typeof height;
+};
+
+/**
+ * Defines spacing properties for managing space between child elements.
+ * @template T - A string type parameter that allows extending the base spacing
+ *               scale with custom values. Defaults to an empty string.
+ */
+export type SpaceProp<T extends string = ''> = {
+  /**
+   * Set the spacing between child elements.
+   */
+  space?: Scale | T;
 };
