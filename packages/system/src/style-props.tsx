@@ -303,8 +303,8 @@ export const gapSpace = {
   80: 'gap-80',
   96: 'gap-96',
   section: 'gap-[var(--spacing-section)]',
-  fieldY: 'gap-[var(--spacing-field-Y)]',
-  fieldX: 'gap-[var(--spacing-field-X)]',
+  fieldY: 'gap-[var(--spacing-fieldY)]',
+  fieldX: 'gap-[var(--spacing-fieldX)]',
   container: 'gap-[var(--spacing-container)]',
   group: 'gap-[var(--spacing-group)]',
 } as const;
