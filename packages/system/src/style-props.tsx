@@ -577,6 +577,7 @@ export const alignment = {
       left: 'items-start',
       center: 'items-center',
       right: 'items-end',
+      stretch: 'items-stretch',
     },
     alignmentY: {
       top: 'justify-start',

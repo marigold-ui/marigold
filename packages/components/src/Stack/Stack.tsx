@@ -1,6 +1,6 @@
 import { Children, ReactNode } from 'react';
 import type { GapSpaceProp } from '@marigold/system';
-import { alignment, cn, gapSpace } from '@marigold/system';
+import { alignment, cn, createSpacingVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 // Props
@@ -19,6 +19,7 @@ export interface StackProps extends GapSpaceProp, AriaRegionProps {
 
   /**
    * Horizontal alignment for the children.
+   * @default 'stretch'
    */
   alignX?: keyof typeof alignment.vertical.alignmentX;
 
@@ -40,7 +41,7 @@ export const Stack = ({
   children,
   space = 0,
   stretch = false,
-  alignX,
+  alignX = 'stretch',
   alignY,
   asList = false,
   ...props
@@ -53,12 +54,12 @@ export const Stack = ({
   return (
     <Component
       className={cn(
-        'flex flex-col',
-        gapSpace[space],
+        'flex flex-col gap-y-(--space)',
         alignX && alignment?.vertical?.alignmentX[alignX],
         alignY && alignment?.vertical?.alignmentY[alignY],
-        stretch && 'h-full w-full'
+        stretch && 'size-full'
       )}
+      style={createSpacingVar('space', `${space}`)}
       {...props}
     >
       {stackChildren}
