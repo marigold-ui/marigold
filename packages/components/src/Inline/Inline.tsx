@@ -43,7 +43,7 @@ export const Inline = ({
   <div
     {...props}
     className={cn(
-      'flex w-full',
+      'flex',
       !noWrap && 'flex-wrap', // flexbox defaults to no-wrap
       gapSpace[space],
       alignX && alignment?.horizontal?.alignmentX[alignX],

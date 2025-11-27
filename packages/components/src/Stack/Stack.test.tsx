@@ -140,7 +140,7 @@ describe('Stack', () => {
       const blocks = screen.getAllByText(/Lirum|Larum|Löffelstiel/);
       const stack = blocks[0].parentElement;
 
-      expect(stack).toHaveClass('h-full');
+      expect(stack).toHaveClass('size-full');
     });
 
     test('renders as list element when asList is enabled', () => {
