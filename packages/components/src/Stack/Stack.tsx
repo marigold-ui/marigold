@@ -19,6 +19,7 @@ export interface StackProps extends GapSpaceProp, AriaRegionProps {
 
   /**
    * Horizontal alignment for the children.
+   * @default 'stretch'
    */
   alignX?: keyof typeof alignment.vertical.alignmentX;
 
@@ -40,7 +41,7 @@ export const Stack = ({
   children,
   space = 0,
   stretch = false,
-  alignX = 'left',
+  alignX = 'stretch',
   alignY,
   asList = false,
   ...props
@@ -53,10 +54,10 @@ export const Stack = ({
   return (
     <Component
       className={cn(
-        'flex w-full flex-col gap-y-(--space)',
+        'flex flex-col gap-y-(--space)',
         alignX && alignment?.vertical?.alignmentX[alignX],
         alignY && alignment?.vertical?.alignmentY[alignY],
-        stretch && 'h-full'
+        stretch && 'size-full'
       )}
       style={createSpacingVar('space', `${space}`)}
       {...props}

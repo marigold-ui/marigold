@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { alignment } from '@marigold/system';
+import { Card } from '../Card/Card';
+import { Container } from '../Container/Container';
 import { Headline } from '../Headline/Headline';
+import { Inline } from '../Inline/Inline';
 import { Text } from '../Text/Text';
+import { Block } from '../__internal__/Block';
 import { Stack } from './Stack';
-import { Block } from './__internal__/Block';
 
 const meta = {
   title: 'Components/Stack',
@@ -141,6 +144,53 @@ export const AsList: Story = {
     <Stack {...args} asList>
       <Block>first</Block>
       <Block>second</Block>
+    </Stack>
+  ),
+};
+
+export const WithInline: Story = {
+  args: {
+    space: 4,
+    alignX: 'center',
+  },
+  render: args => (
+    <Stack {...args}>
+      <Inline space={2}>
+        <Block>Inline is only as large</Block>
+        <Block>as it needs to be.</Block>
+        <Block>
+          So centering the <code>Stack</code> makes it align
+        </Block>
+      </Inline>
+    </Stack>
+  ),
+};
+
+export const WithCards: Story = {
+  args: {
+    space: 8,
+  },
+  render: args => (
+    <Stack {...args}>
+      <Card>
+        <Container>
+          <Headline level={2}>Card Title</Headline>
+          <Text>
+            This is an example of a card component used within a Stack layout.
+            Cards are useful for grouping related information together in a
+            visually distinct container.
+          </Text>
+        </Container>
+      </Card>
+      <Card>
+        <Container>
+          <Headline level={2}>Another Card</Headline>
+          <Text>
+            Stacks make it easy to maintain consistent spacing between cards and
+            other components, ensuring a clean and organized layout.
+          </Text>
+        </Container>
+      </Card>
     </Stack>
   ),
 };
