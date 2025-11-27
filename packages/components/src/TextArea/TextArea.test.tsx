@@ -1,11 +1,9 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import * as stories from './TextArea.stories';
 
 const { Basic } = composeStories(stories);
-const user = userEvent.setup();
 
 test('renders an textarea', () => {
   render(<Basic />);
