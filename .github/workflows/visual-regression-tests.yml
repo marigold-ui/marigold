@@ -1,7 +1,7 @@
 name: Visual-Regression-Tests
 on:
   # When branches has "ui" in their name
-  push:
+  pull_request:
     branches:
       - 'ui-*'
       - '*-ui'
