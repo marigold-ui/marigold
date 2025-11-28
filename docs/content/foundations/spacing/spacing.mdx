@@ -24,7 +24,7 @@ Using a relational system removes that translation step. When you choose a token
   </SectionMessage.Content>
 </SectionMessage>
 
-## Tokens
+## Scale
 
 By naming tokens after the relationship (e.g., related, peer), we embed design logic directly into the code. You don't need to memorize the pixel value of "related". You simply identify that a label and input are related to each other, and the system handles the math.
 
@@ -146,8 +146,23 @@ The grid axis handles the macro-layout skeleton where items flow in both X and Y
 
 ## Application
 
-- you do not need to use a larger spacing scale for the "next" part of an app
-- e.g. a form uses "peer" to separate fields and "group" to further section the form. each part of a multi-part form is in a card and each card uses "group" again because on a "local evel" the card is also a (new) group of elements
+Spacing is contextual, not absolute. It is local and relative, meaning the spatial distribution of elements is determined solely by the immediate container they inhabit, rather than a global page layout.
+
+In this system, spatial relationships are self-contained. A specific spacing token, such as "group", retains its semantic meaning regardless of where it appears in the hierarchy. Whether separating small elements inside a card or separating large cards on a dashboard, the relationship ("these items are grouped together") remains consistent, and thus the spacing token remains the same. This eliminates the need to arbitrarily increase spacing values just because an element is higher up in the page structure.
+
+### No global frame of reference
+
+You do not need to escalate the spacing scale simply because you are moving "up" the hierarchy of the application. The token choice is determined by the local relationship of the elements, regardless of where that relationship lives on the screen.
+
+### Recursion in practice
+
+It is common, and encouraged, for the same spacing token (e.g., group) to be used at multiple levels of nesting.
+
+1. **Form Level:** Inside a form, you might use peer to separate inputs and group to separate the Personal Info fieldset from the Address fieldset.
+2. **Card Level:** That form lives inside a Card. The Card acts as a new "local" universe.
+3. **Page Level:** Several Cards are arranged on a dashboard. You might use group again to separate the Cards from each other.
+
+Even though the Cards are "larger" conceptual objects than the fieldsets, the relationship between two Cards (distinct groups of information) is conceptually similar to the relationship between two fieldsets. Therefore, the same token applies.
 
 ## Layouting with components
 
