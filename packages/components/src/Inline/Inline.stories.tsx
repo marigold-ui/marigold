@@ -59,6 +59,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   tags: ['component-test'],
   args: {
+    space: 2,
     alignX: 'left',
   },
   render: args => (
