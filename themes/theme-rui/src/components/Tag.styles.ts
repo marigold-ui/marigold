@@ -8,13 +8,12 @@ export const Tag: ThemeComponent<'Tag'> = {
   ]),
   tag: cva([
     'relative inline-flex items-center gap-[7px]',
-    'border border-solid border-input rounded-lg',
+    'surface elevation-raised',
     'font-medium text-xs',
     'h-7 px-2 cursor-default',
-    'bg-background',
     'selected:text-white selected:bg-brand',
     'data-disabled:cursor-not-allowed data-disabled:text-disabled-foreground data-disabled:bg-disabled',
-    'focus-visible:util-focus-ring outline-none',
+    'focus-visible:state-focus outline-none transition-all',
   ]),
   closeButton: cva([
     'size-4',
@@ -27,8 +26,8 @@ export const Tag: ThemeComponent<'Tag'> = {
   ]),
   removeAll: cva([
     'inline whitespace-nowrap font-medium transition-[color,box-shadow,transform] rounded-md',
-    'duration-150 active:scale-[0.98] pressed:scale-[0.98]',
-    'focus-visible:util-focus-ring outline-none',
+    'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
+    'focus-visible:state-focus outline-none',
     'cursor-pointer',
     'text-link text-xs util-touch-hitbox',
   ]),
