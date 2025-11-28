@@ -128,6 +128,8 @@ Spacing is applied differently depending on the direction of content flow. Every
 
 The stack axis manages vertical rhythm, addressing how elements pile on top of one another down the page (Y-axis). This flow separates vertical siblings—like a label sitting above an input or paragraphs in an article.
 
+<ComponentDemo file="./spacing-stack.demo.tsx" mode="preview" />
+
 ### Inline (Horizontal flow)
 
 The inline axis governs the horizontal association of elements, managing how peers sit side-by-side (X-axis). This context determines the separation between horizontal siblings, such as buttons in a toolbar or an icon next to text.
@@ -141,6 +143,11 @@ While a standard "square inset" applies equal padding on all sides for cards and
 ### Grid (Two-directional flow)
 
 The grid axis handles the macro-layout skeleton where items flow in both X and Y directions simultaneously. This two-directional structure defines the gutters in complex layouts like dashboard masonry or image galleries, establishing a consistent rhythm across the entire 2-dimensional plane.
+
+## Application
+
+- you do not need to use a larger spacing scale for the "next" part of an app
+- e.g. a form uses "peer" to separate fields and "group" to further section the form. each part of a multi-part form is in a card and each card uses "group" again because on a "local evel" the card is also a (new) group of elements
 
 ## Layouting with components
 
