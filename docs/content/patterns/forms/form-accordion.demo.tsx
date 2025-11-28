@@ -14,7 +14,7 @@ import {
 
 export default () => (
   <Stack space="section">
-    <Stack space="fieldY">
+    <Stack space="peer">
       <Headline level={2}>Event Details</Headline>
       <TextField
         label="Event Name"
@@ -36,7 +36,7 @@ export default () => (
       <Accordion.Item id="advanced-settings">
         <Accordion.Header>Advanced Event Settings</Accordion.Header>
         <Accordion.Content>
-          <Stack space="fieldY">
+          <Stack space="peer">
             <Select
               label="Event Category"
               placeholder="Select category"
@@ -63,7 +63,7 @@ export default () => (
         </Accordion.Content>
       </Accordion.Item>
     </Accordion>
-    <Stack space="fieldY">
+    <Stack space="peer">
       <Headline level={2}>Location & Capacity</Headline>
       <TextField
         label="Venue Name"
@@ -83,7 +83,7 @@ export default () => (
         <Accordion.Item id="location-details">
           <Accordion.Header>Additional Location Details</Accordion.Header>
           <Accordion.Content>
-            <Stack space="fieldY">
+            <Stack space="peer">
               <TextField
                 label="Room Number"
                 description="Specific room or area within venue"
@@ -114,7 +114,7 @@ export default () => (
         <Accordion.Item id="contact-info">
           <Accordion.Header>Contact Information</Accordion.Header>
           <Accordion.Content>
-            <Stack space="fieldY">
+            <Stack space="peer">
               <TextField
                 label="Organizer Name"
                 description="Main contact person"
@@ -138,7 +138,7 @@ export default () => (
         <Accordion.Item id="special-requirements">
           <Accordion.Header>Special Requirements</Accordion.Header>
           <Accordion.Content>
-            <Stack space="fieldY">
+            <Stack space="peer">
               <Checkbox label="Catering required" />
               <Checkbox label="Audio/Visual equipment needed" />
               <Checkbox label="Security required" />
