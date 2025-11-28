@@ -171,8 +171,8 @@
   /* spacing between elements */
   --spacing-container: 50rem; /* e.g. form container */
   --spacing-section: 3.5rem; /* e.g. between form sections */
-  --spacing-field-Y: 2rem; /* e.g. between fields vertically */
-  --spacing-field-X: 1.25rem; /* e.g. between fields horizontally */
+  --spacing-fieldY: 2rem; /* e.g. between fields vertically */
+  --spacing-fieldX: 1.25rem; /* e.g. between fields horizontally */
   --spacing-group: 1rem; /* e.g. between related fields to group them */
 
   /* NEW semantic spacing tokens */
