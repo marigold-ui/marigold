@@ -1,4 +1,4 @@
-import { ClassValue, ConfigSchema } from '../utils';
+import { ClassValue, ConfigSchema } from '../utils/className.utils';
 
 export interface NestedStringObject {
   [key: string]: NestedStringObject | string;

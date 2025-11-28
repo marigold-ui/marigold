@@ -1,5 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import {
+  ComponentProps,
+  ElementRef,
+  MouseEvent,
+  ReactNode,
+  createElement,
+  forwardRef,
+} from 'react';
 import { IntrinsicElement, OwnProps, PolymorphicComponent, PropsOf } from '.';
 
 /**********************************************/
@@ -9,7 +16,7 @@ import { IntrinsicElement, OwnProps, PolymorphicComponent, PropsOf } from '.';
 /**********************************************/
 
 type BoxOwnProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export type BoxProps = PropsOf<typeof Box>;
@@ -20,8 +27,8 @@ export const props: BoxProps = {
   foo: 'bar',
 };
 
-export const Box = React.forwardRef(({ as, children, ...props }, ref) => {
-  return React.createElement(as || 'div', { ...props, ref }, children);
+export const Box = forwardRef(({ as, children, ...props }, ref) => {
+  return createElement(as || 'div', { ...props, ref }, children);
 }) as PolymorphicComponent<'div', BoxOwnProps>;
 
 export const SimpleBox = () => <Box>Hello</Box>;
@@ -44,21 +51,21 @@ type ButtonProps = {
   another?: number;
 };
 
-const Button = React.forwardRef((props, forwardedRef) => {
+const Button = forwardRef((props, forwardedRef) => {
   const { isDisabled, ...buttonProps } = props;
   return <Box as="button" {...buttonProps} ref={forwardedRef} />;
 }) as PolymorphicComponent<'button', OwnProps<typeof Box> & ButtonProps>;
 
-const ExtendedButtonUsingReactUtils = React.forwardRef<
-  React.ElementRef<typeof Button>,
-  React.ComponentProps<typeof Button>
+const ExtendedButtonUsingReactUtils = forwardRef<
+  ElementRef<typeof Button>,
+  ComponentProps<typeof Button>
 >((props, forwardedRef) => {
   return <Button {...props} ref={forwardedRef} />;
 });
 
 // Inline component
 export const ExtendedButtonUsingReactUtilsWithInternalInlineAs = (
-  props: React.ComponentProps<typeof Button>
+  props: ComponentProps<typeof Button>
 ) => {
   /* Should not error with inline `as` component */
   return <Button as={props => <button {...props} />} {...props} />;
@@ -73,7 +80,7 @@ type ExtendedButtonButtonOwnProps = Omit<
   keyof ExtendedButtonProps | 'another'
 >;
 
-const ExtendedButton = React.forwardRef((props, forwardedRef) => {
+const ExtendedButton = forwardRef((props, forwardedRef) => {
   const { isExtended, ...extendedButtonProps } = props;
   return <Button {...extendedButtonProps} ref={forwardedRef} />;
 }) as PolymorphicComponent<
@@ -81,27 +88,25 @@ const ExtendedButton = React.forwardRef((props, forwardedRef) => {
   ExtendedButtonProps & ExtendedButtonButtonOwnProps
 >;
 
-type LinkProps = React.ComponentProps<'a'> & {
+type LinkProps = ComponentProps<'a'> & {
   isPrimary?: boolean;
   onToggle?(open: boolean): void;
 };
 
-export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
-  (props, ref) => {
-    const { children, isPrimary, ...linkProps } = props;
-    return (
-      <a className={isPrimary ? 'primary' : undefined} ref={ref} {...linkProps}>
-        {children}
-      </a>
-    );
-  }
-);
+export const Link = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
+  const { children, isPrimary, ...linkProps } = props;
+  return (
+    <a className={isPrimary ? 'primary' : undefined} ref={ref} {...linkProps}>
+      {children}
+    </a>
+  );
+});
 
 type AnchorProps = {
   requiredProp: boolean;
 };
 
-export const Anchor = React.forwardRef((props, forwardedRef) => {
+export const Anchor = forwardRef((props, forwardedRef) => {
   const { as: Comp = 'a', requiredProp, ...anchorProps } = props;
   /* Does not expect requiredProp */
   return <Comp {...anchorProps} ref={forwardedRef} />;
@@ -159,9 +164,7 @@ export const Test = () => (
     {/* Button as Link accepts onClick prop, but it must be explicitly typed */}
     <Button
       as={Link}
-      onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
-        event.altKey
-      }
+      onClick={(event: MouseEvent<HTMLAnchorElement>) => event.altKey}
     />
 
     {/* ExtendedButton accepts isExtended prop */}

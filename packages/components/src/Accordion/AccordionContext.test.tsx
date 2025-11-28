@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import React from 'react';
+import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AccordionProvider, useAccordionContext } from './AccordionContext';
 
@@ -16,7 +16,7 @@ describe('useAccordionContext', () => {
       stickyHeader: true,
       iconPosition: 'right' as const,
     };
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children: ReactNode }) => (
       <AccordionProvider value={mockContextValue}>{children}</AccordionProvider>
     );
 

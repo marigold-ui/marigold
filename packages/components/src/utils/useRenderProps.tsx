@@ -57,7 +57,7 @@ export function useRenderProps<T>(
   return useMemo(() => {
     let computedClassName: string | undefined;
     let computedStyle: React.CSSProperties | undefined;
-    let computedChildren: React.ReactNode | undefined;
+    let computedChildren: ReactNode | undefined;
 
     if (typeof className === 'function') {
       computedClassName = className({ ...values, defaultClassName });

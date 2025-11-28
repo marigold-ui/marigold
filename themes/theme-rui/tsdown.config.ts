@@ -6,5 +6,6 @@ export default defineConfig({
   tsconfig: './tsconfig.build.json',
   dts: true,
   sourcemap: true,
+  external: ['react', 'react-dom', 'react/jsx-runtime'],
   clean: process.env.NODE_ENV === 'production',
 });

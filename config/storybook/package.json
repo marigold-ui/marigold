@@ -1,7 +1,7 @@
 {
   "name": "@marigold/storybook-config",
   "description": "Marigold's storybook configuration",
-  "version": "3.1.5",
+  "version": "3.1.6",
   "license": "MIT",
   "type": "module",
   "exports": "./main.js",

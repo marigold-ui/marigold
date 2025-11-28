@@ -1,7 +1,7 @@
 name: Visual-Regression-Tests
 on:
   # When branches has "ui" in their name
-  push:
+  pull_request:
     branches:
       - 'ui-*'
       - '*-ui'
@@ -44,9 +44,9 @@ jobs:
             }}
           # Required by Chromatic
           fetch-depth: 0
-      - uses: pnpm/action-setup@v4.1.0 # Uses version from package.json#packageManager
+      - uses: pnpm/action-setup@v4.2.0 # Uses version from package.json#packageManager
       - name: Setup Node (using .node-version)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'

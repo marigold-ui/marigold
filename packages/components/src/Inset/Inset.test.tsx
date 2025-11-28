@@ -1,6 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 import { Inset } from './Inset';
 
 test('does not have a default spacing', () => {

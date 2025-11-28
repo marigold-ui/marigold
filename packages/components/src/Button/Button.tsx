@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Button } from 'react-aria-components';
-import { ProgressCircle } from '@marigold/components';
 import { cn, useClassNames } from '@marigold/system';
+import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 

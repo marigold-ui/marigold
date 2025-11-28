@@ -81,6 +81,7 @@ export type {
   PaddingBottomProp,
   PlaceItemsProp,
   TextAlignProp,
+  SpaceProp,
   WidthProp,
   MaxWidthProp,
   HeightProp,
@@ -95,12 +96,14 @@ export type {
   ConfigVariantsMulti,
   Config,
   Props,
-} from './utils';
+} from './utils/className.utils';
+export { cva, cn } from './utils/className.utils';
+export type { Scale, ScaleValue } from './utils/css-variables.utils';
 export {
-  cva,
-  cn,
   createVar,
-  get,
-  isValidCssCustomPropertyName,
+  createSpacingVar,
   ensureCssVar,
-} from './utils';
+  isScale,
+  isValidCssCustomPropertyName,
+} from './utils/css-variables.utils';
+export { get } from './utils/object.utils';

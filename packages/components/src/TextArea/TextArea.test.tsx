@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import { createRef, useState } from 'react';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { TextArea } from './TextArea';
@@ -235,7 +235,7 @@ test('passes down "rows" attribute', () => {
 
 test('can be controlled', async () => {
   const Controlled = () => {
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = useState('');
     return (
       <>
         <TextArea data-testid="textarea" label="A Label" onChange={setValue} />
@@ -251,7 +251,7 @@ test('can be controlled', async () => {
 });
 
 test('forwards ref', () => {
-  const ref = React.createRef<HTMLTextAreaElement>();
+  const ref = createRef<HTMLTextAreaElement>();
   render(<TextArea data-testid="text-area" label="A Label" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);

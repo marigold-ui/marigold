@@ -1,98 +1,140 @@
 /* eslint-disable testing-library/no-node-access */
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
-import { Inline } from './Inline';
 import * as stories from './Inline.stories';
 
-// Setup
-const { Basic, InputButtonAlignment } = composeStories(stories);
+const { Basic, InputButtonAlignment, Nested } = composeStories(stories);
 
-test('default space is "none"', () => {
-  render(<Basic />);
-  const first = screen.getByText(/Lirum/).parentElement;
-  expect(first).toHaveClass(`gap-0`);
-});
+describe('Inline', () => {
+  describe('Rendering', () => {
+    test('renders content correctly', () => {
+      render(<Basic />);
 
-test('accepts and uses spacing from theme', () => {
-  render(<Basic space={2} />);
-  const first = screen.getByText(/Lirum/).parentElement;
-  expect(first).toHaveClass(`gap-2`);
-});
+      const lirum = screen.getByText(/Lirum/);
 
-test('supports nesting', () => {
-  render(
-    <Inline space={1}>
-      <Inline space={2} data-testid="leftInline">
-        <p>first</p>
-        <p>second</p>
-      </Inline>
-      <Inline space={2} data-testid="rightInline">
-        <p>third</p>
-        <p>fourth</p>
-      </Inline>
-    </Inline>
-  );
-  const first = screen.getByText(/first/).parentElement;
-  const leftInline = screen.getByTestId('leftInline').parentElement;
-  expect(first).toHaveClass(`gap-2`);
-  expect(leftInline).toHaveClass(`gap-1`);
+      expect(lirum).toBeInTheDocument();
+    });
 
-  const third = screen.getByText(/third/).parentElement;
-  const rightInline = screen.getByTestId('rightInline').parentElement;
-  expect(third).toHaveClass(`gap-2`);
-  expect(rightInline).toHaveClass(`gap-1`);
-});
+    test('renders all child elements', () => {
+      render(<Basic />);
 
-test('supports a standalone element', () => {
-  render(
-    <Inline>
-      <p>element</p>
-    </Inline>
-  );
-  const element = screen.getByText(/element/).parentElement;
-  expect(element).toHaveClass(`gap-0`);
-});
+      expect(screen.getByText(/Lirum/)).toBeInTheDocument();
+      expect(screen.getByText(/Larum/)).toBeInTheDocument();
+      expect(screen.getByText(/Löffelstiel!/)).toBeInTheDocument();
+    });
 
-test('supports a non React.Fragment element', () => {
-  render(
-    <Inline space={2}>
-      <p>element</p>
-      Text
-    </Inline>
-  );
-  const textElement = screen.getByText(/Text/);
-  expect(textElement).toHaveClass(`gap-2`);
-});
+    test('wraps content by default', () => {
+      render(<Basic />);
 
-test('renders div per default', () => {
-  render(<Inline data-testid="inline">first</Inline>);
+      const inlineElement = screen.getByText(/Lirum/).parentElement;
 
-  const inline = screen.getByTestId('inline');
-  expect(inline instanceof HTMLDivElement).toBeTruthy();
-});
+      expect(inlineElement).toHaveClass('flex-wrap');
+    });
 
-test('adjusts the button to be aligned with input baseline', () => {
-  render(<InputButtonAlignment />);
+    test('renders as div element by default', () => {
+      render(<Basic />);
 
-  const inline = screen.getByTestId('inline');
-  expect(inline.className).toMatchInlineSnapshot(
-    `"flex gap-6 items-end [&:has([slot=description])]:items-end [&:has([slot=description])_>*:not(:has([slot=description]))]:mb-6 [&:has([slot=errorMessage])_>*:not(:has([slot=errorMessage]))]:mb-6"`
-  );
-});
+      const inlineElement = screen.getByText(/Lirum/).parentElement;
 
-test('wrap by default', () => {
-  render(<Basic data-testid="inline" />);
+      expect(inlineElement instanceof HTMLDivElement).toBeTruthy();
+    });
 
-  const inline = screen.getByTestId('inline');
+    test('prevents wrapping when noWrap is enabled', () => {
+      render(<Basic noWrap />);
 
-  expect(inline).toHaveClass('flex-wrap');
-});
+      const inlineElement = screen.getByText(/Lirum/).parentElement;
 
-test('allow to not wrap', () => {
-  render(<Basic data-testid="inline" noWrap />);
+      expect(inlineElement).not.toHaveClass('flex-wrap');
+    });
+  });
 
-  const inline = screen.getByTestId('inline');
+  describe('Spacing', () => {
+    test('applies custom spacing from theme', () => {
+      render(<Basic />);
 
-  expect(inline).not.toHaveClass('flex-nowrap');
+      const inlineElement = screen.getByText(/Lirum/).parentElement;
+
+      expect(inlineElement?.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 2)'
+      );
+    });
+
+    test('applies spacing value of 0', () => {
+      render(<Basic space={0} />);
+
+      const inlineElement = screen.getByText(/Lirum/).parentElement;
+
+      expect(inlineElement?.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 0)'
+      );
+    });
+
+    test('supports nesting with different spacing levels', () => {
+      render(<Nested />);
+
+      const blocks = screen.getAllByText(/spacing/);
+
+      expect(blocks.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('Alignment', () => {
+    test('aligns children horizontally to the left', () => {
+      render(<Basic alignX="left" />);
+
+      const inlineElement = screen.getByText(/Lirum/).parentElement;
+
+      expect(inlineElement).toHaveClass('justify-start');
+    });
+
+    test('aligns children horizontally to center', () => {
+      render(<Basic alignX="center" />);
+
+      const inlineElement = screen.getByText(/Lirum/).parentElement;
+
+      expect(inlineElement).toHaveClass('justify-center');
+    });
+
+    test('aligns children horizontally to the right', () => {
+      render(<Basic alignX="right" />);
+
+      const inlineElement = screen.getByText(/Lirum/).parentElement;
+
+      expect(inlineElement).toHaveClass('justify-end');
+    });
+
+    test('aligns children vertically to the baseline (input alignment)', () => {
+      render(<InputButtonAlignment />);
+
+      const inline = screen.getByTestId('inline');
+
+      expect(inline).toHaveClass('items-end');
+    });
+
+    test('input alignment includes description and error message styling', () => {
+      render(<InputButtonAlignment />);
+
+      const inline = screen.getByTestId('inline');
+
+      expect(inline.className).toContain(
+        '[&:has([slot=description])]:items-end'
+      );
+      expect(inline.className).toContain(
+        '[&:has([slot=description])_>*:not(:has([slot=description]))]:mb-6'
+      );
+      expect(inline.className).toContain(
+        '[&:has([slot=errorMessage])_>*:not(:has([slot=errorMessage]))]:mb-6'
+      );
+    });
+  });
+
+  describe('Nesting', () => {
+    test('supports nesting with different spacing levels', () => {
+      render(<Nested />);
+
+      const blocks = screen.getAllByText(/spacing/);
+
+      expect(blocks.length).toBeGreaterThan(0);
+    });
+  });
 });

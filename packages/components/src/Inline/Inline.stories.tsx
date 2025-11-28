@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { alignment } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { TextField } from '../TextField/TextField';
+import { Block } from '../__internal__/Block';
 import { Inline } from './Inline';
 
 const meta = {
@@ -55,15 +56,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Block = ({ children }: { children: ReactNode }) => (
-  <div className="rounded-xs border border-solid border-[#364fc7] bg-[#4263eb] px-8 py-3 text-[#edf2ff] shadow-md">
-    {children}
-  </div>
-);
-
 export const Basic: Story = {
   tags: ['component-test'],
   args: {
+    space: 2,
     alignX: 'left',
   },
   render: args => (
@@ -112,4 +108,26 @@ export const InputButtonAlignment: Story = {
       </Stack>
     );
   },
+};
+
+export const Nested: Story = {
+  args: {
+    space: 4,
+  },
+  render: args => (
+    <Inline {...args}>
+      <Inline space={2}>
+        <Block>this</Block>
+        <Block>has</Block>
+        <Block>spacing</Block>
+        <Block>2</Block>
+      </Inline>
+      <Inline space={8}>
+        <Block>this</Block>
+        <Block>has</Block>
+        <Block>spacing</Block>
+        <Block>4</Block>
+      </Inline>
+    </Inline>
+  ),
 };
