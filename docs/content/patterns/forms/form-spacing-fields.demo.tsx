@@ -9,7 +9,7 @@ import {
 } from '@marigold/components';
 
 export default () => (
-  <Stack space="fieldY">
+  <Stack space="peer">
     <Headline level={2}>Personal Information</Headline>
     <TextField label="Name" description="Enter your full name" required />
     <TextField

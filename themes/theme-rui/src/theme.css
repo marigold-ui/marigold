@@ -169,11 +169,21 @@
   --spacing-button-large: 2.5rem;
 
   /* spacing between elements */
-  --spacing-container: 50rem; /* e.g. form container */
-  --spacing-section: 3.5rem; /* e.g. between form sections */
-  --spacing-field-Y: 2rem; /* e.g. between fields vertically */
-  --spacing-field-X: 1.25rem; /* e.g. between fields horizontally */
-  --spacing-group: 1rem; /* e.g. between related fields to group them */
+  /* TODO: find and replace these with new values */
+  /* --spacing-container: 50rem; e.g. form container */
+  /* --spacing-section: 3.5rem; e.g. between form sections */
+  /* --spacing-fieldX: 1.25rem; e.g. between fields horizontally */
+  /* --spacing-group: 1rem; e.g. between related fields to group them */
+
+  /* NEW semantic spacing tokens */
+
+  --spacing-joined: --spacing(0.25);
+  --spacing-tight: --spacing(1);
+  --spacing-related: --spacing(2);
+  --spacing-peer: --spacing(4);
+  --spacing-group: --spacing(8);
+  --spacing-region: --spacing(12);
+  --spacing-section: --spacing(20);
 
   /* ==================== */
   /*       ANIMATION      */

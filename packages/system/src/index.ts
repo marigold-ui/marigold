@@ -34,6 +34,7 @@ export type {
   ThemeComponent,
   ThemeComponentParts,
 } from './types/theme';
+export type { SpacingTokens } from './types/tokens';
 
 // Default Theme
 export { defaultTheme } from './defaultTheme';
@@ -81,6 +82,7 @@ export type {
   PaddingBottomProp,
   PlaceItemsProp,
   TextAlignProp,
+  SpaceProp,
   WidthProp,
   MaxWidthProp,
   HeightProp,
@@ -97,6 +99,7 @@ export type {
   Props,
 } from './utils/className.utils';
 export { cva, cn } from './utils/className.utils';
+export type { Scale, ScaleValue } from './utils/css-variables.utils';
 export {
   createVar,
   createSpacingVar,
