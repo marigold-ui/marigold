@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { alignment, cn, gapSpace } from '@marigold/system';
-import type { GapSpaceProp } from '@marigold/system';
+import { alignment, cn, createSpacingVar } from '@marigold/system';
+import type { SpaceProp } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 const inlineAlignmentY = {
@@ -11,7 +11,9 @@ const inlineAlignmentY = {
 
 // Props
 // ---------------
-export interface InlineProps extends GapSpaceProp, AriaRegionProps {
+export interface InlineProps
+  extends SpaceProp<'section' | 'fieldX' | 'container' | 'group'>,
+    AriaRegionProps {
   /**
    * The children of the component.
    */
@@ -43,12 +45,13 @@ export const Inline = ({
   <div
     {...props}
     className={cn(
-      'flex',
-      !noWrap && 'flex-wrap', // flexbox defaults to no-wrap
-      gapSpace[space],
+      'flex gap-(--space)',
+      // flexbox defaults to no-wrap
+      !noWrap && 'flex-wrap',
       alignX && alignment?.horizontal?.alignmentX[alignX],
       alignY && inlineAlignmentY[alignY]
     )}
+    style={createSpacingVar('space', `${space}`)}
   >
     {children}
   </div>
