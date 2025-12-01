@@ -258,7 +258,7 @@ for await (const file of files) {
   const fileHash = hashContent(fileContent);
   const key = cacheKeyFromFile(file);
   newCache[key] = fileHash;
-
+  console.log(key, newCache[key]);
   const { name } = path.parse(file);
 
   const cachedUnchanged = prevCache[key] && prevCache[key] === fileHash;
