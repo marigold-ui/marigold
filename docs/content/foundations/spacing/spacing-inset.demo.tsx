@@ -2,8 +2,8 @@ import { VisualInset } from '@/ui/VisualSpacing';
 import { Box } from '@/ui/Wireframe';
 
 export default () => (
-  <div className="grid grid-cols-2 items-center justify-items-center gap-4 pt-4 pb-10">
-    <Box className="size-40">
+  <div className="flex items-end justify-center gap-28 pt-4 pb-10">
+    <Box className="size-auto">
       <VisualInset
         spaceX="peer"
         spaceY="peer"
@@ -13,13 +13,13 @@ export default () => (
       </VisualInset>
     </Box>
 
-    <Box>
+    <Box className="size-auto">
       <VisualInset
         spaceX="group"
         spaceY="related"
         className="rounded-[calc(var(--radius-lg)-1px)]"
       >
-        squared
+        squished
       </VisualInset>
     </Box>
   </div>
