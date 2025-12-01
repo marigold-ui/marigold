@@ -48,7 +48,7 @@ export const Inventory = () => (
         <Headline level="4">Shipping Address</Headline>
         <TextField label="Full name" required />
         <TextField label="Street" required />
-        <Inline space="fieldX" noWrap>
+        <Inline space="tight" noWrap>
           <TextField label="ZIP code" required maxLength={5} width="1/4" />
           <TextField label="City" required />
         </Inline>
@@ -108,7 +108,7 @@ export const Inventory = () => (
           label="Delivery Instructions"
           description="Tricky delivery spot? Add a gate code, building access info, or a safe place to leave your package."
         />
-        <Inline alignY="center" space="fieldX">
+        <Inline alignY="center" space="tight">
           <Button variant="primary">Submit</Button>
           <Button>Cancel</Button>
         </Inline>
@@ -164,7 +164,7 @@ export const Inventory = () => (
           <Badge variant="error">on sale</Badge>
           <Badge variant="info">recommended</Badge>
         </Inline>
-        <Inline space="fieldX" noWrap>
+        <Inline space="tight" noWrap>
           <SearchField
             aria-label="Search products"
             placeholder="Search products..."
