@@ -1,3 +1,5 @@
+import type { Scale } from './utils/css-variables.utils';
+
 export const width = {
   auto: 'w-auto',
   full: 'w-full',
@@ -301,8 +303,8 @@ export const gapSpace = {
   80: 'gap-80',
   96: 'gap-96',
   section: 'gap-[var(--spacing-section)]',
-  fieldY: 'gap-[var(--spacing-field-Y)]',
-  fieldX: 'gap-[var(--spacing-field-X)]',
+  fieldY: 'gap-[var(--spacing-fieldY)]',
+  fieldX: 'gap-[var(--spacing-fieldX)]',
   container: 'gap-[var(--spacing-container)]',
   group: 'gap-[var(--spacing-group)]',
 } as const;
@@ -800,4 +802,16 @@ export type HeightProp = {
    * Set the height of the element. You can see allowed tokens [here](https://tailwindcss.com/docs/height).
    */
   height?: keyof typeof height;
+};
+
+/**
+ * Defines spacing properties for managing space between child elements.
+ * @template T - A string type parameter that allows extending the base spacing
+ *               scale with custom values. Defaults to an empty string.
+ */
+export type SpaceProp<T extends string = ''> = {
+  /**
+   * Set the spacing between child elements.
+   */
+  space?: Scale | T;
 };

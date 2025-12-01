@@ -12,7 +12,7 @@
   "dependencies": {
     "@babel/core": "7.28.5",
     "@changesets/changelog-git": "0.2.1",
-    "@changesets/cli": "2.29.7",
+    "@changesets/cli": "2.29.8",
     "@eslint/eslintrc": "3.3.1",
     "@eslint/js": "9.39.1",
     "@manypkg/get-packages": "3.1.0",
@@ -33,7 +33,7 @@
     "concurrently": "9.2.1",
     "eslint": "9.39.1",
     "husky": "9.1.7",
-    "playwright": "1.56.1",
+    "playwright": "1.57.0",
     "postcss-import": "16.1.1",
     "postcss-loader": "8.2.0",
     "prettier": "3.6.2",
