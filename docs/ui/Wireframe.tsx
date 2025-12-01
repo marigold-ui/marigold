@@ -7,15 +7,12 @@ export interface WireframeProps {
 export const Box = ({ className }: WireframeProps) => (
   <div
     className={cn(
-      'border-secondary-900/30 bg-secondary-50/25 size-full rounded-lg border',
+      'z-10',
+      'bg-secondary-50/25 relative size-full bg-clip-padding',
+      'border-secondary-300 rounded-lg border shadow-xs',
+      'before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)]',
+      'before:pointer-events-none before:shadow-[0_1px_--theme(--color-black/12%)]',
       className
     )}
   />
-);
-
-export const Field = ({ className }: WireframeProps) => (
-  <div className={cn('flex w-full flex-col gap-1', className)}>
-    <div className="bg-secondary-900/30 h-3 w-20 rounded" />
-    <Box />
-  </div>
 );

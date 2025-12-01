@@ -185,6 +185,16 @@
   --spacing-region: --spacing(12);
   --spacing-section: --spacing(20);
 
+  /* @utility p-compact  { padding: var(--pad-compact); }
+@utility p-tight    { padding: var(--pad-tight); }
+@utility p-regular  { padding: var(--pad-regular); }
+@utility p-relaxed  { padding: var(--pad-relaxed); }
+@utility p-spacious { padding: var(--pad-spacious); } */
+
+  --spacing-squish-tight: --spacing(0.5) --spacing(2);
+  --spacing-squish-regular: --spacing(2) --spacing(4);
+  --spacing-squish-relaxed: --spacing(2) --spacing(4);
+
   /* ==================== */
   /*       ANIMATION      */
   /* ==================== */

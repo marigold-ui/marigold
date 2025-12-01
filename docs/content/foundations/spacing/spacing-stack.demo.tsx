@@ -4,17 +4,15 @@ import { VisualSpacing } from '@/ui/VisualSpacing';
 import { Box } from '@/ui/Wireframe';
 
 export default () => (
-  <div className="grid place-items-center *:w-1/2">
-    <Stack alignX="left" space="peer">
-      <FadeContainer fade="top">
+  <FadeContainer fade="vertical">
+    <div className="grid place-items-center *:w-1/2">
+      <Stack alignX="left" space="peer">
         <Box className="h-20" />
-      </FadeContainer>
-      <VisualSpacing orientation="vertical" space="peer" />
-      <Box className="h-20" />
-      <VisualSpacing orientation="vertical" space="peer" />
-      <FadeContainer fade="bottom">
+        <VisualSpacing orientation="vertical" space="peer" />
         <Box className="h-20" />
-      </FadeContainer>
-    </Stack>
-  </div>
+        <VisualSpacing orientation="vertical" space="peer" />
+        <Box className="h-20" />
+      </Stack>
+    </div>
+  </FadeContainer>
 );
