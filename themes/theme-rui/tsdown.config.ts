@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsdown';
 
 export default defineConfig({
-  entry: ['src/index.ts', 'src/preset.ts', 'src/tokens.ts'],
+  entry: ['src/index.ts'],
   format: ['esm', 'cjs'],
   tsconfig: './tsconfig.build.json',
   dts: true,

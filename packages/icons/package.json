@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "tsdown": "0.15.9"
+    "tsdown": "0.16.8"
   },
   "scripts": {
     "build": "tsdown src/index.ts",
