@@ -205,7 +205,8 @@ const __dirname = path.dirname(__filename);
 const systemDir = path.resolve(__dirname, '../../packages/system/src');
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
 const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
-const cacheFilePath = path.resolve(__dirname, '../.registry/props.cache.json');
+// Move cache under scripts/cache and make keys machine-independent
+const cacheFilePath = path.resolve(__dirname, 'cache/props.cache.json');
 
 /**
  * Stable hash of a string
@@ -216,6 +217,12 @@ const hashContent = content =>
 
 /** Ensure registry dir exists */
 await fs.ensureDir(path.dirname(outputFilePath));
+/** Ensure cache dir exists */
+await fs.ensureDir(path.dirname(cacheFilePath));
+
+// Repo root to compute stable relative cache keys (start at "packages/...")
+const repoRoot = path.resolve(__dirname, '../..');
+const cacheKeyFromFile = filePath => path.relative(repoRoot, filePath);
 
 // Getting all component files using globby
 const files = await globby([
@@ -249,11 +256,12 @@ const newCache = {};
 for await (const file of files) {
   const fileContent = await fs.readFile(file, 'utf8');
   const fileHash = hashContent(fileContent);
-  newCache[file] = fileHash;
+  const key = cacheKeyFromFile(file);
+  newCache[key] = fileHash;
 
   const { name } = path.parse(file);
 
-  const cachedUnchanged = prevCache[file] && prevCache[file] === fileHash;
+  const cachedUnchanged = prevCache[key] && prevCache[key] === fileHash;
 
   if (cachedUnchanged && prevOutput[name]) {
     // Reuse previous result for unchanged file/component
