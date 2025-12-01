@@ -4,6 +4,7 @@ import docgen from 'react-docgen-typescript';
 import { codeToHtml } from 'shiki';
 import { fileURLToPath } from 'url';
 import { fs, globby, path } from 'zx';
+import crypto from 'node:crypto';
 
 /* eslint-disable no-useless-escape */
 
@@ -204,6 +205,17 @@ const __dirname = path.dirname(__filename);
 const systemDir = path.resolve(__dirname, '../../packages/system/src');
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
 const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
+const cacheFilePath = path.resolve(__dirname, '../.registry/props.cache.json');
+
+/**
+ * Stable hash of a string
+ * @param {string} content
+ */
+const hashContent = content =>
+  crypto.createHash('sha1').update(content).digest('hex');
+
+/** Ensure registry dir exists */
+await fs.ensureDir(path.dirname(outputFilePath));
 
 // Getting all component files using globby
 const files = await globby([
@@ -219,15 +231,41 @@ const files = await globby([
   `!${systemDir}/**/*.ts`,
 ]);
 
+// Load previous artifacts for incremental behavior
+const [prevOutput, prevCache] = await Promise.all([
+  fs
+    .pathExists(outputFilePath)
+    .then(exists => (exists ? fs.readJson(outputFilePath) : {}))
+    .catch(() => ({})),
+  fs
+    .pathExists(cacheFilePath)
+    .then(exists => (exists ? fs.readJson(cacheFilePath) : {}))
+    .catch(() => ({})),
+]);
+
 const output = {};
+const newCache = {};
 
 for await (const file of files) {
+  const fileContent = await fs.readFile(file, 'utf8');
+  const fileHash = hashContent(fileContent);
+  newCache[file] = fileHash;
+
+  const { name } = path.parse(file);
+
+  const cachedUnchanged = prevCache[file] && prevCache[file] === fileHash;
+
+  if (cachedUnchanged && prevOutput[name]) {
+    // Reuse previous result for unchanged file/component
+    output[name] = prevOutput[name];
+    continue;
+  }
+
   const docs = parser.parse(file);
   if (docs.length === 0) {
     continue;
   }
 
-  const { name } = path.parse(file);
   const props = sortPropsByNameAsc(docs[0].props);
 
   output[name] = {};
@@ -247,5 +285,34 @@ for await (const file of files) {
   }
 }
 
-await fs.writeJson(outputFilePath, output);
-console.log(`✅ Successfully generated props table!`);
+// Helper to sort object keys deeply for stable comparison
+const sortObject = obj => {
+  if (Array.isArray(obj)) return obj.map(sortObject);
+  if (obj && typeof obj === 'object') {
+    return Object.keys(obj)
+      .sort()
+      .reduce((acc, k) => {
+        acc[k] = sortObject(obj[k]);
+        return acc;
+      }, {});
+  }
+  return obj;
+};
+
+const stablePrev = sortObject(prevOutput);
+const stableNext = sortObject(output);
+
+const hasChanges = JSON.stringify(stablePrev) !== JSON.stringify(stableNext);
+
+if (!hasChanges) {
+  console.log('ℹ️ No changes in component prop types. Skipping write.');
+} else {
+  await fs.writeJson(outputFilePath, output);
+  console.log(`✅ Successfully generated props table!`);
+}
+
+// Always update cache if file list or hashes changed
+const cacheChanged = JSON.stringify(prevCache) !== JSON.stringify(newCache);
+if (cacheChanged) {
+  await fs.writeJson(cacheFilePath, newCache);
+}
