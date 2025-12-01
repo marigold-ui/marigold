@@ -117,7 +117,7 @@ export const SiteMenu = () => {
 
     document.addEventListener('keydown', onKeydown);
     return () => document.removeEventListener('keydown', onKeydown);
-  }, [pages]);
+  }, [pages, open]);
 
   const classNames = useClassNames({ component: 'Menu', variant: 'command' });
   const onPress = () => {

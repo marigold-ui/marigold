@@ -79,10 +79,7 @@ export interface SearchFieldProps
 }
 
 const _SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
-  (
-    { disabled, required, readOnly, error, action, ...rest }: SearchFieldProps,
-    ref
-  ) => {
+  ({ disabled, required, readOnly, error, ...rest }: SearchFieldProps, ref) => {
     const props: RAC.SearchFieldProps = {
       ...rest,
       isDisabled: disabled,
