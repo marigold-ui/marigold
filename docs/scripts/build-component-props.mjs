@@ -207,6 +207,10 @@ const componentsDir = path.resolve(__dirname, '../../packages/components/src');
 const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
 // Move cache under scripts/cache and make keys machine-independent
 const cacheFilePath = path.resolve(__dirname, 'cache/props.cache.json');
+// Generate props output under scripts/cache first, then copy to registry
+const tempOutputFilePath = path.resolve(__dirname, 'cache/props.json');
+// Machine-readable marker indicating whether props changed this run
+const changeMarkerFilePath = path.resolve(__dirname, 'cache/props.change.json');
 
 /**
  * Stable hash of a string
@@ -239,14 +243,19 @@ const files = await globby([
 ]);
 
 // Load previous artifacts for incremental behavior
-const [prevOutput, prevCache] = await Promise.all([
+// Read previous generated output from the staged cache file to avoid relying on registry
+const [prevOutput, prevCache, prevPublished] = await Promise.all([
   fs
-    .pathExists(outputFilePath)
-    .then(exists => (exists ? fs.readJson(outputFilePath) : {}))
+    .pathExists(tempOutputFilePath)
+    .then(exists => (exists ? fs.readJson(tempOutputFilePath) : {}))
     .catch(() => ({})),
   fs
     .pathExists(cacheFilePath)
     .then(exists => (exists ? fs.readJson(cacheFilePath) : {}))
+    .catch(() => ({})),
+  fs
+    .pathExists(outputFilePath)
+    .then(exists => (exists ? fs.readJson(outputFilePath) : {}))
     .catch(() => ({})),
 ]);
 
@@ -258,7 +267,7 @@ for await (const file of files) {
   const fileHash = hashContent(fileContent);
   const key = cacheKeyFromFile(file);
   newCache[key] = fileHash;
-  console.log(key, newCache[key]);
+
   const { name } = path.parse(file);
 
   const cachedUnchanged = prevCache[key] && prevCache[key] === fileHash;
@@ -293,7 +302,10 @@ for await (const file of files) {
   }
 }
 
-// Helper to sort object keys deeply for stable comparison
+// Always write the freshly generated output to the temp cache file
+await fs.writeJson(tempOutputFilePath, output);
+
+// Determine whether the published props.json changed (for reporting only)
 const sortObject = obj => {
   if (Array.isArray(obj)) return obj.map(sortObject);
   if (obj && typeof obj === 'object') {
@@ -307,17 +319,25 @@ const sortObject = obj => {
   return obj;
 };
 
-const stablePrev = sortObject(prevOutput);
-const stableNext = sortObject(output);
+const propsChanged =
+  JSON.stringify(sortObject(prevPublished)) !==
+  JSON.stringify(sortObject(output));
 
-const hasChanges = JSON.stringify(stablePrev) !== JSON.stringify(stableNext);
-
-if (!hasChanges) {
-  console.log('ℹ️ No changes in component prop types. Skipping write.');
+// Emit a clear log and a machine-readable change marker
+if (propsChanged) {
+  console.log('✳️ props.json changed.');
 } else {
-  await fs.writeJson(outputFilePath, output);
-  console.log(`✅ Successfully generated props table!`);
+  console.log('ℹ️ No changes to props.json.');
 }
+
+await fs.writeJson(changeMarkerFilePath, {
+  changed: propsChanged,
+  changedAtISO: new Date().toISOString(),
+});
+
+// Always copy the staged output to the registry (no comparison)
+await fs.copy(tempOutputFilePath, outputFilePath, { overwrite: true });
+console.log(`✅ Props table generated and published to registry.`);
 
 // Always update cache if file list or hashes changed
 const cacheChanged = JSON.stringify(prevCache) !== JSON.stringify(newCache);
