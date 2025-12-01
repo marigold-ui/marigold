@@ -1,6 +1,7 @@
-import { createVar, cva } from '@marigold/system';
+import type { PropsWithChildren } from 'react';
+import { cn, createVar, cva } from '@marigold/system';
 
-const className = {
+const classNames = {
   container: cva(['relative bg-pink-100'], {
     variants: {
       orientation: {
@@ -9,7 +10,7 @@ const className = {
       },
     },
   }),
-  guide: cva(['border-pink-600', 'before:block before:bg-pink-600'], {
+  icon: cva(['border-pink-600', 'before:block before:bg-pink-600'], {
     variants: {
       orientation: {
         horizontal: [
@@ -27,10 +28,10 @@ const className = {
       },
     },
   }),
-  badge: cva(
+  guide: cva(
     [
       'absolute flex items-center gap-1',
-      'leading-0 text-xs font-semibold text-pink-600',
+      'text-xs/1 font-semibold text-pink-600',
     ],
     {
       variants: {
@@ -50,12 +51,78 @@ export interface VisualSpacingProps {
 
 export const VisualSpacing = ({ space, orientation }: VisualSpacingProps) => (
   <div
-    className={className.container({ orientation })}
+    className={classNames.container({ orientation })}
     style={createVar({ space: `var(--spacing-${space})` })}
   >
-    <div className={className.badge({ orientation })}>
-      <div className={className.guide({ orientation })} />
+    <div className={classNames.guide({ orientation })}>
+      <div className={classNames.icon({ orientation })} />
       {space}
+    </div>
+  </div>
+);
+
+export interface VisualInsetProps {
+  className?: string;
+  spaceX: string;
+  spaceY: string;
+}
+
+export const VisualInset = ({
+  children,
+  className,
+  spaceX,
+  spaceY,
+}: PropsWithChildren<VisualInsetProps>) => (
+  <div
+    className="size-full"
+    style={createVar({
+      'space-y': `var(--spacing-${spaceY})`,
+      'space-x': `var(--spacing-${spaceX})`,
+    })}
+  >
+    <div
+      className={cn(
+        'size-full overflow-hidden bg-pink-100 px-(--space-x) py-(--space-y)',
+        className
+      )}
+    >
+      <div className="text-secondary-700 grid size-full place-items-center bg-white text-xs font-medium">
+        {children}
+      </div>
+    </div>
+    {/* left guide */}
+    <div
+      className={classNames.guide({
+        orientation: 'vertical',
+        className: [
+          'right-full left-auto mr-1.5 ml-0',
+          'top-auto bottom-0 translate-0',
+          'flex-row-reverse',
+        ],
+      })}
+    >
+      <div
+        className={classNames.icon({
+          orientation: 'vertical',
+          className: 'h-(--space-y) before:h-[calc(var(--space-y)-2px)]',
+        })}
+      />
+      {spaceY}
+    </div>
+    {/* bottom guide */}
+    <div
+      className={classNames.guide({
+        orientation: 'horizontal',
+        className: 'items-start',
+      })}
+    >
+      <div
+        className={classNames.icon({
+          orientation: 'horizontal',
+          className: 'w-(--space-x)',
+        })}
+      />
+      {spaceX}
     </div>
   </div>
 );
