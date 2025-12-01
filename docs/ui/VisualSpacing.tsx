@@ -47,17 +47,24 @@ const classNames = {
 export interface VisualSpacingProps {
   space: string;
   orientation: 'horizontal' | 'vertical';
+  hideGuide?: boolean;
 }
 
-export const VisualSpacing = ({ space, orientation }: VisualSpacingProps) => (
+export const VisualSpacing = ({
+  space,
+  orientation,
+  hideGuide,
+}: VisualSpacingProps) => (
   <div
     className={classNames.container({ orientation })}
     style={createVar({ space: `var(--spacing-${space})` })}
   >
-    <div className={classNames.guide({ orientation })}>
-      <div className={classNames.icon({ orientation })} />
-      {space}
-    </div>
+    {!hideGuide ? (
+      <div className={classNames.guide({ orientation })}>
+        <div className={classNames.icon({ orientation })} />
+        {space}
+      </div>
+    ) : null}
   </div>
 );
 
