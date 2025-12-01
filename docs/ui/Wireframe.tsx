@@ -7,7 +7,7 @@ export interface WireframeProps {
 export const Box = ({ className }: WireframeProps) => (
   <div
     className={cn(
-      'border-secondary-900/30 bg-secondary-50/25 h-8 w-full rounded-lg border',
+      'border-secondary-900/30 bg-secondary-50/25 size-full rounded-lg border',
       className
     )}
   />
