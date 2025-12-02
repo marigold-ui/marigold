@@ -350,10 +350,6 @@ await fs.copy(outputFilePath, registryOutputFilePath, { overwrite: true });
 console.log(`✅ Props table generated and published to registry.`);
 
 // Build cache content and only write when it actually changes
-// New minimal schema (legacy-compatible read):
-// {
-//   files: { "packages/...": "<sha1>", ... }
-// }
 const prevUnifiedCache =
   prevCacheRaw && typeof prevCacheRaw === 'object' && prevCacheRaw.files
     ? {
