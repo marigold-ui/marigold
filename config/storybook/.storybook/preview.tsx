@@ -1,10 +1,6 @@
-import { Decorator, Preview } from '@storybook/react';
-import {
-  MarigoldProvider,
-  OverlayContainerProvider,
-} from '@marigold/components';
-import theme from '@marigold/theme-rui';
+import { Preview } from '@storybook/react';
 import './../styles.css';
+import withMarigoldProviders from './decorators';
 
 // Parameters
 // ---------------
@@ -29,12 +25,4 @@ export const parameters: Preview['parameters'] = {
   },
 };
 
-export const decorators: Decorator[] = [
-  Story => (
-    <MarigoldProvider theme={theme} className="min-h-screen p-6">
-      <OverlayContainerProvider container="storybook-root">
-        <Story />
-      </OverlayContainerProvider>
-    </MarigoldProvider>
-  ),
-];
+export const decorators = withMarigoldProviders;
