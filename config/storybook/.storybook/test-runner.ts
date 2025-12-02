@@ -10,9 +10,16 @@ const config: TestRunnerConfig = {
     await injectAxe(page);
   },
   async postVisit(page) {
-    // Wait for DOM to settle and any ongoing accessibility checks to complete
-    // This prevents "Axe is already running" errors from the a11y addon
-    await page.waitForTimeout(200);
+    // Cancel any ongoing Axe checks to prevent conflicts
+    await page.evaluate(() => {
+      if (typeof window.axe !== 'undefined') {
+        // Reset Axe state by removing and re-injecting
+        delete (window as any).axe;
+      }
+    });
+
+    // Re-inject Axe to ensure clean state
+    await injectAxe(page);
 
     await checkA11y(page, '#storybook-root', {}, true, 'html');
   },
