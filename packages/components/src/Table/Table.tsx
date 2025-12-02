@@ -36,7 +36,7 @@ export interface TableProps
   size?: string;
 
   /**
-   * Stretch table to fill the container.
+   * Stretch the table to fill the container.
    * @default false
    */
   stretch?: boolean;
