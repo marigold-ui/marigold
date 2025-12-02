@@ -309,10 +309,7 @@ for await (const file of files) {
   }
 }
 
-// Always write the freshly generated output to the temp cache file
-await fs.writeJson(outputFilePath, output);
-
-// Determine whether the published props.json changed (for reporting only)
+// Helper to deeply sort object keys for stable output and comparisons
 const sortObject = obj => {
   if (Array.isArray(obj)) return obj.map(sortObject);
   if (obj && typeof obj === 'object') {
@@ -326,9 +323,20 @@ const sortObject = obj => {
   return obj;
 };
 
+// Create a stably sorted output to ensure deterministic file content
+const sortedOutput = sortObject(output);
+
+// Only update the staged output file when content actually changed
+const stagedChanged =
+  JSON.stringify(prevOutput) !== JSON.stringify(sortedOutput);
+if (stagedChanged) {
+  // Minified write to keep output small and stable
+  await fs.writeFile(outputFilePath, JSON.stringify(sortedOutput));
+}
+
+// Determine whether the published props.json changed (for reporting only)
 const propsChanged =
-  JSON.stringify(sortObject(prevPublished)) !==
-  JSON.stringify(sortObject(output));
+  JSON.stringify(sortObject(prevPublished)) !== JSON.stringify(sortedOutput);
 
 // Emit a clear log for human consumption
 if (propsChanged) {
@@ -341,4 +349,37 @@ if (propsChanged) {
 await fs.copy(outputFilePath, registryOutputFilePath, { overwrite: true });
 console.log(`✅ Props table generated and published to registry.`);
 
-await fs.writeJson(cacheFilePath, newCache);
+// Build cache content and only write when it actually changes
+// New minimal schema (legacy-compatible read):
+// {
+//   files: { "packages/...": "<sha1>", ... }
+// }
+const prevUnifiedCache =
+  prevCacheRaw && typeof prevCacheRaw === 'object' && prevCacheRaw.files
+    ? {
+        files: prevCache,
+        // detect legacy extra fields so we can migrate to the new minimal schema
+        hadLegacyFields:
+          Object.prototype.hasOwnProperty.call(prevCacheRaw, 'changed') ||
+          Object.prototype.hasOwnProperty.call(prevCacheRaw, 'changedAtISO'),
+      }
+    : { files: prevCache, hadLegacyFields: false };
+
+const nextCache = { files: newCache };
+
+// For change detection, deep-sort keys and compare only the files map.
+// Force a rewrite if we are migrating away from legacy fields.
+const comparablePrevFiles = sortObject(prevUnifiedCache.files || {});
+const comparableNextFiles = sortObject(nextCache.files || {});
+
+const cacheChanged =
+  prevUnifiedCache.hadLegacyFields ||
+  JSON.stringify(comparablePrevFiles) !== JSON.stringify(comparableNextFiles);
+
+if (cacheChanged) {
+  // Minified write for cache file
+  await fs.writeFile(cacheFilePath, JSON.stringify(nextCache));
+  console.log('✳️ props.cache.json updated.');
+} else {
+  console.log('ℹ️ No changes to props.cache.json.');
+}
