@@ -58,7 +58,8 @@ jobs:
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          onlyChanged: false # set to true to enable TurboSnap https://www.chromatic.com/docs/turbosnap/setup/
+          onlyChanged: true # set to true to enable TurboSnap https://www.chromatic.com/docs/turbosnap/setup/
+          untraced: '**/.storybook/decorators.tsx'
           storybookConfigDir: 'config/storybook/.storybook'
           storybookBuildDir: 'storybook-static'
           storybookBaseDir: 'config/storybook'
