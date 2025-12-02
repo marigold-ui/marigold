@@ -4,7 +4,13 @@ import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import * as stories from './ComboBox.stories';
 
-const { Basic } = composeStories(stories);
+const { Basic } = composeStories(stories, {
+  decorators: Story => (
+    <div id="storybook-root">
+      <Story />
+    </div>
+  ),
+});
 
 const user = userEvent.setup();
 

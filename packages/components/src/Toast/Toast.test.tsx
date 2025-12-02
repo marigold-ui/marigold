@@ -4,7 +4,13 @@ import userEvent from '@testing-library/user-event';
 import * as stories from './Toast.stories';
 import { useToast } from './ToastQueue';
 
-const { Basic } = composeStories(stories);
+const { Basic } = composeStories(stories, {
+  decorators: Story => (
+    <div id="storybook-root">
+      <Story />
+    </div>
+  ),
+});
 
 afterEach(() => {
   const { clearToasts } = useToast();
