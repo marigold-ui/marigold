@@ -49,6 +49,7 @@
   },
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",
+    "start-fuma": "pnpm --filter @marigold/docs-fuma dev",
     "sb": "FOLDERS=packages/components/src,packages/system/src pnpm --filter @marigold/storybook-config start",
     "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
     "build:docs": "turbo run --filter @marigold/docs... build",
