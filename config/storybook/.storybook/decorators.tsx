@@ -7,15 +7,9 @@ import theme from '@marigold/theme-rui';
 
 // Storybook decorator that provides Marigold theme and overlay container
 export const withMarigoldProviders: Decorator[] = [
-  // Wrapper to provide an overlay container
-  Story => (
-    <div id="overlay-container">
-      <Story />
-    </div>
-  ),
   Story => (
     <MarigoldProvider theme={theme} className="min-h-screen p-6">
-      <OverlayContainerProvider container="overlay-container">
+      <OverlayContainerProvider container="storybook-root">
         <Story />
       </OverlayContainerProvider>
     </MarigoldProvider>
