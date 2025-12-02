@@ -25,4 +25,4 @@ export const parameters: Preview['parameters'] = {
   },
 };
 
-export const decorators = [withMarigoldProviders];
+export const decorators = withMarigoldProviders;
