@@ -14,6 +14,9 @@ export const parameters: Preview['parameters'] = {
 
   a11y: {
     context: '#storybook-root',
+    // Disable automatic a11y checks to prevent conflicts with test-runner
+    // The test-runner will handle all accessibility testing
+    manual: true,
   },
 
   options: {
