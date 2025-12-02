@@ -10,6 +10,8 @@ const config: TestRunnerConfig = {
     await injectAxe(page);
   },
   async postVisit(page) {
+    // Wait for DOM to settle and any ongoing accessibility checks to complete
+    await page.waitForTimeout(200);
     await checkA11y(page, '#storybook-root', {}, true, 'html');
   },
 };
