@@ -5,7 +5,13 @@ import { SVGProps } from 'react';
 import { vi } from 'vitest';
 import * as stories from './Menu.stories';
 
-const { Basic, BasicActionMenu, MenuSection } = composeStories(stories);
+const { Basic, BasicActionMenu, MenuSection } = composeStories(stories, {
+  decorators: Story => (
+    <div id="storybook-root">
+      <Story />
+    </div>
+  ),
+});
 
 /**
  * We need to mock `matchMedia` because JSOM does not
