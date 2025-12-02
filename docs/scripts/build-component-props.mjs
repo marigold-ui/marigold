@@ -204,13 +204,14 @@ const __dirname = path.dirname(__filename);
 
 const systemDir = path.resolve(__dirname, '../../packages/system/src');
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
-const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
+const registryOutputFilePath = path.resolve(
+  __dirname,
+  '../.registry/props.json'
+);
 // Move cache under scripts/cache and make keys machine-independent
 const cacheFilePath = path.resolve(__dirname, 'cache/props.cache.json');
 // Generate props output under scripts/cache first, then copy to registry
-const tempOutputFilePath = path.resolve(__dirname, 'cache/props.json');
-// Machine-readable marker indicating whether props changed this run
-const changeMarkerFilePath = path.resolve(__dirname, 'cache/props.change.json');
+const outputFilePath = path.resolve(__dirname, 'cache/props.json');
 
 /**
  * Stable hash of a string
@@ -220,7 +221,7 @@ const hashContent = content =>
   crypto.createHash('sha1').update(content).digest('hex');
 
 /** Ensure registry dir exists */
-await fs.ensureDir(path.dirname(outputFilePath));
+await fs.ensureDir(path.dirname(registryOutputFilePath));
 /** Ensure cache dir exists */
 await fs.ensureDir(path.dirname(cacheFilePath));
 
@@ -244,20 +245,26 @@ const files = await globby([
 
 // Load previous artifacts for incremental behavior
 // Read previous generated output from the staged cache file to avoid relying on registry
-const [prevOutput, prevCache, prevPublished] = await Promise.all([
+const [prevOutput, prevCacheRaw, prevPublished] = await Promise.all([
   fs
-    .pathExists(tempOutputFilePath)
-    .then(exists => (exists ? fs.readJson(tempOutputFilePath) : {}))
+    .pathExists(outputFilePath)
+    .then(exists => (exists ? fs.readJson(outputFilePath) : {}))
     .catch(() => ({})),
   fs
     .pathExists(cacheFilePath)
     .then(exists => (exists ? fs.readJson(cacheFilePath) : {}))
     .catch(() => ({})),
   fs
-    .pathExists(outputFilePath)
-    .then(exists => (exists ? fs.readJson(outputFilePath) : {}))
+    .pathExists(registryOutputFilePath)
+    .then(exists => (exists ? fs.readJson(registryOutputFilePath) : {}))
     .catch(() => ({})),
 ]);
+
+// Support both legacy cache shape (plain map) and new unified shape { files: {...}, changed, changedAtISO }
+const prevCache =
+  prevCacheRaw && typeof prevCacheRaw === 'object' && prevCacheRaw.files
+    ? prevCacheRaw.files
+    : prevCacheRaw || {};
 
 const output = {};
 const newCache = {};
@@ -303,7 +310,7 @@ for await (const file of files) {
 }
 
 // Always write the freshly generated output to the temp cache file
-await fs.writeJson(tempOutputFilePath, output);
+await fs.writeJson(outputFilePath, output);
 
 // Determine whether the published props.json changed (for reporting only)
 const sortObject = obj => {
@@ -323,24 +330,15 @@ const propsChanged =
   JSON.stringify(sortObject(prevPublished)) !==
   JSON.stringify(sortObject(output));
 
-// Emit a clear log and a machine-readable change marker
+// Emit a clear log for human consumption
 if (propsChanged) {
   console.log('✳️ props.json changed.');
 } else {
   console.log('ℹ️ No changes to props.json.');
 }
 
-await fs.writeJson(changeMarkerFilePath, {
-  changed: propsChanged,
-  changedAtISO: new Date().toISOString(),
-});
-
 // Always copy the staged output to the registry (no comparison)
-await fs.copy(tempOutputFilePath, outputFilePath, { overwrite: true });
+await fs.copy(outputFilePath, registryOutputFilePath, { overwrite: true });
 console.log(`✅ Props table generated and published to registry.`);
 
-// Always update cache if file list or hashes changed
-const cacheChanged = JSON.stringify(prevCache) !== JSON.stringify(newCache);
-if (cacheChanged) {
-  await fs.writeJson(cacheFilePath, newCache);
-}
+await fs.writeJson(cacheFilePath, newCache);
