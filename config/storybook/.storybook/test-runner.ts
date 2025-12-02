@@ -10,8 +10,17 @@ const config: TestRunnerConfig = {
     await injectAxe(page);
   },
   async postVisit(page) {
-    // Wait for DOM to settle and any ongoing accessibility checks to complete
-    await page.waitForTimeout(200);
+    // Ensure all animations and async operations have completed
+    // Wait for network to be idle (no ongoing requests for 500ms)
+    try {
+      await page.waitForLoadState('networkidle', { timeout: 2000 });
+    } catch {
+      // Continue if timeout - page might not have any network activity
+    }
+
+    // Additional small delay to ensure any transitions/animations complete
+    await page.waitForTimeout(100);
+
     await checkA11y(page, '#storybook-root', {}, true, 'html');
   },
 };
