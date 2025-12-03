@@ -15,6 +15,58 @@ const meta = {
       description: 'The variant of the card',
       options: ['default', 'master', 'admin'],
     },
+    space: {
+      control: {
+        type: 'text',
+      },
+      description:
+        'The space between children elements inside the card, using tailwind spacing tokens.',
+    },
+    p: {
+      control: {
+        type: 'text',
+      },
+      description:
+        'Padding of the card, using tailwind spacing tokens. Applies to all sides unless overridden by more specific props (px, py, pt, pb, pl, pr).',
+    },
+    px: {
+      control: {
+        type: 'text',
+      },
+      description:
+        'Horizontal padding (left and right) of the card, using tailwind spacing tokens.',
+    },
+    py: {
+      control: {
+        type: 'text',
+      },
+      description:
+        'Vertical padding (top and bottom) of the card, using tailwind spacing tokens.',
+    },
+    pt: {
+      control: {
+        type: 'text',
+      },
+      description: 'Top padding of the card, using tailwind spacing tokens.',
+    },
+    pb: {
+      control: {
+        type: 'text',
+      },
+      description: 'Bottom padding of the card, using tailwind spacing tokens.',
+    },
+    pl: {
+      control: {
+        type: 'text',
+      },
+      description: 'Left padding of the card, using tailwind spacing tokens.',
+    },
+    pr: {
+      control: {
+        type: 'text',
+      },
+      description: 'Right padding of the card, using tailwind spacing tokens.',
+    },
   },
 } satisfies Meta<typeof Card>;
 
@@ -26,6 +78,8 @@ export const Basic: Story = {
     <Card {...args}>
       <Container>
         <Headline level="2">Professor Severus Snape</Headline>
+      </Container>
+      <Container contentLength="long">
         <Text>
           <strong>Professor Severus Snape</strong> (9 January, 1960[1] - 2 May,
           1998)[2] was an English half-blood[3] wizard serving as Potions Master
