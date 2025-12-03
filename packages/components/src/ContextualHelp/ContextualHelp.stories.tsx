@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect } from 'storybook/test';
+import { Label } from '../Label/Label';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
+import { TextField } from '../TextField/TextField';
 import { ContextualHelp } from './ContextualHelp';
 import type { ContextualHelpProps } from './ContextualHelp';
 
@@ -43,8 +45,8 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['small', 'medium', 'large'],
-      defaultValue: 'medium',
+      options: ['default', 'large'],
+      defaultValue: 'default',
     },
     width: {
       control: 'select',
@@ -137,6 +139,34 @@ export const LongContent: Story = {
           </Link>
         </ContextualHelp.Content>
       </ContextualHelp>
+    </div>
+  ),
+};
+
+export const WithTextField: Story = {
+  render: args => (
+    <div className="flex h-96 items-center justify-center">
+      <TextField
+        label={
+          <span className="flex items-center gap-1">
+            Email
+            <ContextualHelp offset={2} {...args}>
+              <ContextualHelp.Title>Email Format</ContextualHelp.Title>
+              <ContextualHelp.Content>
+                Please enter a valid email address in the format:
+                user@example.com
+                <br />
+                <Link href="https://www.marigold-ui.io/components/overview?theme=rui">
+                  Learn more
+                </Link>
+              </ContextualHelp.Content>
+            </ContextualHelp>
+          </span>
+        }
+        type="email"
+        description="We'll never share your email"
+        width="fit"
+      />
     </div>
   ),
 };
