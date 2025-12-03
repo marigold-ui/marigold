@@ -49,7 +49,7 @@ export const Inventory = () => (
         <TextField label="Full name" required />
         <TextField label="Street" required />
         <Inline space="tight" noWrap>
-          <TextField label="ZIP code" required maxLength={5} width="1/4" />
+          <TextField label="Zip code" required maxLength={5} width="1/4" />
           <TextField label="City" required />
         </Inline>
         <ComboBox
