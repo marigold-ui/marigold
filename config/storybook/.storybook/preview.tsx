@@ -8,24 +8,19 @@ import withMarigoldProviders from './decorators.js';
 export default definePreview({
   parameters: {
     layout: 'fullscreen',
-
     a11y: {
       context: '#storybook-root',
     },
-
     options: {
       storySort: {
         method: 'alphabetical',
       },
     },
-
     controls: { expanded: true },
-
     docs: {
       codePanel: true,
     },
   },
-
   decorators: withMarigoldProviders,
   addons: [addonA11y(), addonDocs(), storybookAddonTestCodegen],
 });
