@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
 import { ContextualHelp } from './ContextualHelp';
 import type { ContextualHelpProps } from './ContextualHelp';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ContextualHelp',
   argTypes: {
     variant: {
@@ -66,12 +66,9 @@ const meta = {
       action: 'onOpenChange',
     },
   },
-} satisfies Meta<typeof ContextualHelp>;
+});
 
-export default meta;
-type Story = StoryObj<ContextualHelpProps>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
@@ -106,9 +103,9 @@ export const Basic: Story = {
     // Reset
     await userEvent.click(document.body);
   },
-};
+});
 
-export const LongContent: Story = {
+export const LongContent = meta.story({
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
@@ -139,4 +136,4 @@ export const LongContent: Story = {
       </ContextualHelp>
     </div>
   ),
-};
+});

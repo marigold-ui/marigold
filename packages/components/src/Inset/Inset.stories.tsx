@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Text } from '../Text/Text';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Inset',
   argTypes: {
     space: {
@@ -27,12 +27,9 @@ const meta = {
       description: 'set padding on top and bottom side',
     },
   },
-} satisfies Meta<typeof Inset>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Card size="small">
       <Inset space={4} {...args}>
@@ -47,4 +44,4 @@ export const Basic: Story = {
       </Inset>
     </Card>
   ),
-};
+});

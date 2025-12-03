@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, within } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Inline } from '../Inline/Inline';
 import { NumberField } from './NumberField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/NumberField',
   component: NumberField,
   argTypes: {
@@ -101,16 +101,13 @@ const meta = {
     error: false,
     required: false,
   },
-} satisfies Meta<typeof NumberField>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <NumberField {...args} />,
-};
+});
 
-export const WithFormatting: Story = {
+export const WithFormatting = meta.story({
   render: args => (
     <NumberField
       defaultValue={10}
@@ -121,10 +118,10 @@ export const WithFormatting: Story = {
       {...args}
     />
   ),
-};
+});
 
 // https://tc39.es/ecma402/#table-sanctioned-single-unit-identifiers
-export const WithUnit: Story = {
+export const WithUnit = meta.story({
   render: args => (
     <Inline space={4}>
       <NumberField
@@ -149,18 +146,18 @@ export const WithUnit: Story = {
       />
     </Inline>
   ),
-};
+});
 
-export const MinMax: Story = {
+export const MinMax = meta.story({
   render: args => (
     <>
       <NumberField minValue={0} maxValue={100} step={10} {...args} />
       <small>min: 0, max: 100</small>
     </>
   ),
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [value, setValue] = useState(0);
     return (
@@ -173,9 +170,9 @@ export const Controlled: Story = {
       </>
     );
   },
-};
+});
 
-export const SelectOnClick: Story = {
+export const SelectOnClick = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Price',
@@ -200,4 +197,4 @@ export const SelectOnClick: Story = {
     await expect(input.selectionStart).toBe(0);
     await expect(input.selectionEnd).toBe(input.value.length);
   },
-};
+});

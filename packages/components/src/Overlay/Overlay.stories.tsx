@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { forwardRef } from 'react';
 import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
 import { Headline } from '../Headline/Headline';
@@ -8,11 +8,9 @@ import { Text } from '../Text/Text';
 import { Modal } from './Modal';
 import { Popover } from './Popover';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Overlay',
-} satisfies Meta;
-
-export default meta;
+});
 
 // imported from RAC
 const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
@@ -34,12 +32,12 @@ const TestTray = forwardRef<HTMLDivElement, { open: boolean }>(
   }
 );
 
-export const OverlayTray: StoryObj<typeof Popover> = {
+export const OverlayTray = meta.story({
   render: () => {
     return <TestTray open />;
   },
-};
-export const OverlayModal: StoryObj<typeof Modal> = {
+});
+export const OverlayModal = meta.story({
   render: () => (
     <Dialog closeButton open>
       <Headline>This is a headline!</Headline>
@@ -59,4 +57,4 @@ export const OverlayModal: StoryObj<typeof Modal> = {
       </Text>
     </Dialog>
   ),
-};
+});

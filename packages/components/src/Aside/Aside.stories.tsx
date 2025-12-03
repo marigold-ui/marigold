@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Headline } from '../Headline/Headline';
 import { List } from '../List/List';
 import { Text } from '../Text/Text';
 import { Aside } from './Aside';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Aside',
   component: Aside,
   argTypes: {
@@ -57,11 +57,9 @@ const meta = {
     wrap: '50%',
     sideWidth: '150px',
   },
-} satisfies Meta;
+});
 
-export default meta;
-
-export const Basic: StoryObj<typeof Aside> = {
+export const Basic = meta.story({
   render: args => (
     <Aside {...args}>
       <div>
@@ -94,4 +92,4 @@ export const Basic: StoryObj<typeof Aside> = {
       </div>
     </Aside>
   ),
-};
+});

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Divider } from './Divider';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Divider',
   component: Divider,
   argTypes: {
@@ -21,12 +21,9 @@ const meta = {
   args: {
     variant: 'section',
   },
-} satisfies Meta<typeof Divider>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <>
       <p>Above</p>
@@ -34,4 +31,4 @@ export const Basic: Story = {
       <p>Below</p>
     </>
   ),
-};
+});

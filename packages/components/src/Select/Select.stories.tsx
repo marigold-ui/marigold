@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
@@ -9,7 +9,7 @@ import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Select } from './Select';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Select',
   component: Select,
   argTypes: {
@@ -85,11 +85,9 @@ const meta = {
     disabled: false,
     width: 64,
   },
-} satisfies Meta<typeof Select>;
+});
 
-export default meta;
-
-export const Basic: StoryObj<typeof Select> = {
+export const Basic = meta.story({
   render: args => {
     const [selected, setSelected] = useState<any>('');
     return (
@@ -155,9 +153,9 @@ export const Basic: StoryObj<typeof Select> = {
       expect(canvas.getByText('selected: Star Wars')).toBeVisible();
     });
   },
-};
+});
 
-export const Multiple: StoryObj<typeof Select> = {
+export const Multiple = meta.story({
   // No args here, it breaks the types
   render: ({ label }) => {
     const [selected, setSelected] = useState<Key[]>([]);
@@ -201,9 +199,9 @@ export const Multiple: StoryObj<typeof Select> = {
       'selected: ["Star Wars","Firefly"]'
     );
   },
-};
+});
 
-export const LongItems: StoryObj<typeof Select> = {
+export const LongItems = meta.story({
   render: args => {
     return (
       <Inset space={24}>
@@ -250,9 +248,9 @@ export const LongItems: StoryObj<typeof Select> = {
       expect(button).toHaveAttribute('aria-expanded', 'false');
     });
   },
-};
+});
 
-export const LotsOfOptions: StoryObj<typeof Select> = {
+export const LotsOfOptions = meta.story({
   render: args => {
     return (
       <Inset space={24}>
@@ -300,9 +298,9 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
       </Inset>
     );
   },
-};
+});
 
-export const Sections: StoryObj<typeof Select> = {
+export const Sections = meta.story({
   render: args => (
     <Select {...args}>
       <Select.Section header="Fantasy">
@@ -329,9 +327,9 @@ export const Sections: StoryObj<typeof Select> = {
       </Select.Section>
     </Select>
   ),
-};
+});
 
-export const SelectedScroll: StoryObj<typeof Select> = {
+export const SelectedScroll = meta.story({
   render: args => {
     return (
       <Select disabledKeys={['Firefly']} open {...args}>
@@ -382,9 +380,9 @@ export const SelectedScroll: StoryObj<typeof Select> = {
       </Select>
     );
   },
-};
+});
 
-export const WithBadges: StoryObj<typeof Select> = {
+export const WithBadges = meta.story({
   render: args => (
     <Select
       {...args}
@@ -429,7 +427,7 @@ export const WithBadges: StoryObj<typeof Select> = {
       </Select.Option>
     </Select>
   ),
-};
+});
 
 const people = [
   {
@@ -452,7 +450,7 @@ const people = [
   },
 ];
 
-export const WithImages: StoryObj<typeof Select> = {
+export const WithImages = meta.story({
   render: args => (
     <Select
       {...args}
@@ -494,4 +492,4 @@ export const WithImages: StoryObj<typeof Select> = {
       expect(description).toBeInTheDocument();
     });
   },
-};
+});

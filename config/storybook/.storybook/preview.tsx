@@ -1,28 +1,31 @@
-import { Preview } from '@storybook/react-vite';
+import addonA11y from '@storybook/addon-a11y';
+import addonDocs from '@storybook/addon-docs';
+import { definePreview } from '@storybook/react-vite';
+import * as storybookAddonTestCodegen from 'storybook-addon-test-codegen/preview';
 import './../styles.css';
-import withMarigoldProviders from './decorators';
+import withMarigoldProviders from './decorators.js';
 
-// Parameters
-// ---------------
+export default definePreview({
+  parameters: {
+    layout: 'fullscreen',
 
-export const parameters: Preview['parameters'] = {
-  layout: 'fullscreen',
+    a11y: {
+      context: '#storybook-root',
+    },
 
-  a11y: {
-    context: '#storybook-root',
-  },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+      },
+    },
 
-  options: {
-    storySort: {
-      method: 'alphabetical',
+    controls: { expanded: true },
+
+    docs: {
+      codePanel: true,
     },
   },
 
-  controls: { expanded: true },
-
-  docs: {
-    codePanel: true,
-  },
-};
-
-export const decorators = withMarigoldProviders;
+  decorators: withMarigoldProviders,
+  addons: [addonA11y(), addonDocs(), storybookAddonTestCodegen],
+});

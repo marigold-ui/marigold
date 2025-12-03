@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Headline } from '../Headline/Headline';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tiles } from './Tiles';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Tiles',
   argTypes: {
     space: {
@@ -46,11 +46,9 @@ const meta = {
   args: {
     tilesWidth: '300px',
   },
-} satisfies Meta;
+});
 
-export default meta;
-
-export const Basic: StoryObj<typeof Tiles> = {
+export const Basic = meta.story({
   render: args => (
     <Tiles {...args}>
       <div className="border-border-brand border bg-orange-100 p-1">
@@ -106,9 +104,9 @@ export const Basic: StoryObj<typeof Tiles> = {
       </div>
     </Tiles>
   ),
-};
+});
 
-export const DifferentHeights: StoryObj<typeof Tiles> = {
+export const DifferentHeights = meta.story({
   render: args => (
     <Tiles {...args}>
       <div className="border border-slate-300 bg-slate-100">
@@ -144,4 +142,4 @@ export const DifferentHeights: StoryObj<typeof Tiles> = {
       </div>
     </Tiles>
   ),
-};
+});

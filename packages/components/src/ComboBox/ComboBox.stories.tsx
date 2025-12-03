@@ -1,14 +1,14 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
 import { Key } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { ComboBox } from './ComboBox';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ComboBox',
   argTypes: {
     label: {
@@ -123,12 +123,9 @@ const meta = {
     placeholder: undefined,
     label: 'Label',
   },
-} satisfies Meta;
+});
 
-export default meta;
-type Story = StoryObj<typeof ComboBox>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -157,9 +154,9 @@ export const Basic: Story = {
     const emptyState = await canvas.findByText('Kein Ergebnis gefunden');
     expect(emptyState).toBeInTheDocument();
   },
-};
+});
 
-export const Controlled: StoryObj<typeof ComboBox> = {
+export const Controlled = meta.story({
   tags: ['component-test'],
   render: args => {
     const [current, setCurrent] = useState<string | undefined>('');
@@ -210,11 +207,11 @@ export const Controlled: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(combobox).toBeInTheDocument());
     await waitFor(() => expect(combobox).toHaveValue('Dog'));
   },
-};
+});
 
-export const ManualMenuTrigger: Story = {
+export const ManualMenuTrigger = meta.story({
   tags: ['component-test'],
-  ...Basic,
+  ...Basic.input,
   args: {
     menuTrigger: 'manual',
   },
@@ -226,9 +223,9 @@ export const ManualMenuTrigger: Story = {
 
     await expect(result).toBeVisible();
   },
-};
+});
 
-export const AsyncLoading: Story = {
+export const AsyncLoading = meta.story({
   render: args => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
@@ -259,9 +256,9 @@ export const AsyncLoading: Story = {
       </ComboBox>
     );
   },
-};
+});
 
-export const Sections: StoryObj<typeof ComboBox> = {
+export const Sections = meta.story({
   tags: ['component-test'],
   render: args => (
     <ComboBox {...args}>
@@ -300,11 +297,11 @@ export const Sections: StoryObj<typeof ComboBox> = {
     expect(s1).toBeVisible();
     expect(s2).toBeVisible();
   },
-};
+});
 
-export const InputTrigger: StoryObj<typeof ComboBox> = {
+export const InputTrigger = meta.story({
   tags: ['component-test'],
-  ...Basic,
+  ...Basic.input,
   play: async ({ canvas }) => {
     const input = await canvas.findByRole('combobox', { name: 'Label' });
     const result = await canvas.queryByRole('combobox', { name: 'Label' });
@@ -319,11 +316,11 @@ export const InputTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(result).toHaveValue('Aardvark'));
     await waitFor(() => expect(result).toBeVisible());
   },
-};
+});
 
-export const FocusTrigger: StoryObj<typeof ComboBox> = {
+export const FocusTrigger = meta.story({
   tags: ['component-test'],
-  ...Basic,
+  ...Basic.input,
   args: {
     menuTrigger: 'focus',
   },
@@ -342,11 +339,11 @@ export const FocusTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(combobox).toBeInTheDocument());
     await waitFor(() => expect(combobox).toHaveValue('Kangaroo'));
   },
-};
+});
 
-export const ManualTrigger: StoryObj<typeof ComboBox> = {
+export const ManualTrigger = meta.story({
   tags: ['component-test'],
-  ...Basic,
+  ...Basic.input,
   args: {
     menuTrigger: 'manual',
   },
@@ -363,9 +360,9 @@ export const ManualTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(combobox).toBeVisible());
     await waitFor(() => expect(combobox).toHaveValue('Red Panda'));
   },
-};
+});
 
-export const DisabledKeys: StoryObj<typeof ComboBox> = {
+export const DisabledKeys = meta.story({
   tags: ['component-test'],
   render: args => (
     <ComboBox {...args} disabledKeys={['spinach']}>
@@ -389,4 +386,4 @@ export const DisabledKeys: StoryObj<typeof ComboBox> = {
       'true'
     );
   },
-};
+});

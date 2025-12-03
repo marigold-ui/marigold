@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../config/storybook/.storybook/preview';
 import type { FieldBaseProps } from './FieldBase';
 import { FieldBase } from './FieldBase';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/FieldBase',
   component: FieldBase,
   argTypes: {
@@ -75,15 +75,12 @@ const meta = {
     isInvalid: false,
     width: 'full',
   },
-} satisfies Meta<FieldBaseProps<any>>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <FieldBase {...args}>
       <input className="border" />
     </FieldBase>
   ),
-};
+});

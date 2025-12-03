@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Inline } from '../Inline/Inline';
 import { Stack } from '../Stack/Stack';
 import { Split } from './Split';
@@ -10,15 +10,12 @@ const Block = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Split',
   component: Split,
-} satisfies Meta<typeof Split>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const WithInline: Story = {
+export const WithInline = meta.story({
   render: () => (
     <Inline space={4}>
       <Block>First</Block>
@@ -27,9 +24,9 @@ export const WithInline: Story = {
       <Block>Third</Block>
     </Inline>
   ),
-};
+});
 
-export const WithStack: Story = {
+export const WithStack = meta.story({
   render: () => (
     <div className="h-400">
       <Stack space={2} stretch>
@@ -40,4 +37,4 @@ export const WithStack: Story = {
       </Stack>
     </div>
   ),
-};
+});

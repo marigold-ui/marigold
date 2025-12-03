@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Link } from '@marigold/components';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
@@ -18,15 +18,12 @@ import { Switch } from '../Switch/Switch';
 import { TextField } from '../TextField/TextField';
 import { Form, FormProps } from './Form';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Form',
   component: Form,
-} satisfies Meta<FormProps>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => {
     return (
       <Form {...args}>
@@ -48,18 +45,18 @@ export const Basic: Story = {
       </Form>
     );
   },
-};
+});
 
-export const Horizontal: Story = {
+export const Horizontal = meta.story({
   render: () => (
     <Inline space={4} alignY="bottom">
       <TextField label="Name" width={72} />
       <Button variant="primary">Save</Button>
     </Inline>
   ),
-};
+});
 
-export const Selected: Story = {
+export const Selected = meta.story({
   render: args => {
     return (
       <Form {...args}>
@@ -159,4 +156,4 @@ export const Selected: Story = {
       </Form>
     );
   },
-};
+});

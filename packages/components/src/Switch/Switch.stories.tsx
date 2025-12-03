@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Switch } from './Switch';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Switch',
   component: Switch,
   argTypes: {
@@ -61,12 +61,9 @@ const meta = {
     disabled: false,
     defaultSelected: false,
   },
-} satisfies Meta<typeof Switch>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -76,9 +73,9 @@ export const Basic: Story = {
 
     await expect(button).toBeChecked();
   },
-};
+});
 
-export const KeyboardToggle: Story = {
+export const KeyboardToggle = meta.story({
   tags: ['component-test'],
   play: async ({ canvas }) => {
     const input: HTMLInputElement = canvas.getByRole('switch');
@@ -91,9 +88,9 @@ export const KeyboardToggle: Story = {
     await userEvent.keyboard('{enter}');
     await expect(input.checked).toBeFalsy();
   },
-};
+});
 
-export const DefaultSelected: Story = {
+export const DefaultSelected = meta.story({
   tags: ['component-test'],
   args: {
     defaultSelected: true,
@@ -105,4 +102,4 @@ export const DefaultSelected: Story = {
 
     await expect(input.checked).toBeFalsy();
   },
-};
+});

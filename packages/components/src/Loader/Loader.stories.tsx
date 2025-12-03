@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Inline, Stack } from '@marigold/components';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Loader } from './Loader';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Loader',
   component: Loader,
   argTypes: {
@@ -37,23 +37,20 @@ const meta = {
     variant: undefined,
     size: 'default',
   },
-} satisfies Meta<typeof Loader>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <Loader {...args} />,
-};
+});
 
-export const Fullscreen: Story = {
+export const Fullscreen = meta.story({
   args: {
     mode: 'fullscreen',
   },
   render: args => <Loader {...args} />,
-};
+});
 
-export const Section: Story = {
+export const Section = meta.story({
   args: {
     mode: 'section',
   },
@@ -62,9 +59,9 @@ export const Section: Story = {
       <Loader {...args}>Please wait...</Loader>
     </div>
   ),
-};
+});
 
-export const CircleLoader: Story = {
+export const CircleLoader = meta.story({
   args: {
     loaderType: 'circle',
   },
@@ -86,12 +83,12 @@ export const CircleLoader: Story = {
       </Inline>
     </Stack>
   ),
-};
+});
 
-export const FullscreenCircleLoader: Story = {
+export const FullscreenCircleLoader = meta.story({
   args: {
     mode: 'fullscreen',
     loaderType: 'circle',
   },
   render: args => <Loader {...args}>Loading...</Loader>,
-};
+});

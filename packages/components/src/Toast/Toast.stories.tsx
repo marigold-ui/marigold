@@ -1,13 +1,13 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
 import { Toast } from './Toast';
 import { ToastProvider, queue } from './ToastProvider';
 import { useToast } from './ToastQueue';
 
-const meta: Meta = {
+const meta = preview.meta({
   title: 'Components/Toast',
   argTypes: {
     position: {
@@ -55,13 +55,9 @@ const meta: Meta = {
     // Clear the toast queue before each story
     queue.clear();
   },
-};
+});
 
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: ({ position, title, description, variant, timeout }) => {
     const { addToast } = useToast();
@@ -105,9 +101,9 @@ export const Basic: Story = {
       ).not.toBeInTheDocument();
     });
   },
-};
+});
 
-export const ToggleToast: Story = {
+export const ToggleToast = meta.story({
   render: ({ position, title, description, variant, timeout }) => {
     const [toastKey, setToastKey] = useState<string | null>(null);
     const { addToast, removeToast } = useToast();
@@ -156,9 +152,9 @@ export const ToggleToast: Story = {
       ).not.toBeInTheDocument();
     });
   },
-};
+});
 
-export const ToastContentTest: Story = {
+export const ToastContentTest = meta.story({
   args: {
     title: 'Toast für accessibility checks',
     description: 'Dieser Toast dient nur zu Testzwecken.',
@@ -181,9 +177,9 @@ export const ToastContentTest: Story = {
       </div>
     );
   },
-};
+});
 
-export const WithLinks: Story = {
+export const WithLinks = meta.story({
   tags: ['component-test'],
   args: {
     title: 'Update Available',
@@ -223,9 +219,9 @@ export const WithLinks: Story = {
       </>
     );
   },
-};
+});
 
-export const WithAction: Story = {
+export const WithAction = meta.story({
   tags: ['component-test'],
   args: {
     title: 'Update Available',
@@ -282,4 +278,4 @@ export const WithAction: Story = {
       await expect(button).toBeInTheDocument();
     });
   },
-};
+});

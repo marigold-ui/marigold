@@ -1,25 +1,22 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tag } from './Tag';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Tag',
   component: Tag.Group,
   args: {
     label: 'Categories',
   },
-} satisfies Meta<typeof Tag.Group>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   args: {
     onSelectionChange: fn(),
@@ -40,9 +37,9 @@ export const Basic: Story = {
       expect.objectContaining(new Set(['news', 'gaming']))
     );
   },
-};
+});
 
-export const RemovableTags: Story = {
+export const RemovableTags = meta.story({
   tags: ['component-test'],
   render: args => {
     const defaultItems = [
@@ -80,9 +77,9 @@ export const RemovableTags: Story = {
 
     await userEvent.click(canvas.getByText('Reset'));
   },
-};
+});
 
-export const RemovableAllTags: Story = {
+export const RemovableAllTags = meta.story({
   tags: ['component-test'],
   render: args => {
     const defaultItems = [
@@ -139,4 +136,4 @@ export const RemovableAllTags: Story = {
 
     await userEvent.click(canvas.getByText('Reset'));
   },
-};
+});

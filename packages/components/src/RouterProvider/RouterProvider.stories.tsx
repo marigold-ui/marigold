@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { RouterProvider } from './RouterProvider';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/RouterProvider',
   component: RouterProvider,
   argTypes: {
@@ -19,10 +19,7 @@ const meta = {
     },
   },
   args: {},
-} satisfies Meta<typeof RouterProvider>;
-
-export default meta;
-type Story = StoryObj<typeof RouterProvider>;
+});
 
 function CustomTab(props: any) {
   return (
@@ -35,7 +32,7 @@ function CustomTab(props: any) {
   );
 }
 
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => {
     const [url, setUrl] = useState<string>('/FoR');
     return (
@@ -70,4 +67,4 @@ export const Basic: Story = {
       </>
     );
   },
-};
+});

@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Headline } from './Headline';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Headline',
   component: Headline,
   argTypes: {
@@ -50,16 +50,13 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof Headline>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <Headline {...args}>This is a Headline!!</Headline>,
-};
+});
 
-export const Levels: Story = {
+export const Levels = meta.story({
   render: () => (
     <Stack space={4}>
       <Headline level="1">This is a level 1 Headline!!</Headline>
@@ -70,4 +67,4 @@ export const Levels: Story = {
       <Headline level="6">This is a level 6 Headline!!</Headline>
     </Stack>
   ),
-};
+});

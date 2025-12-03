@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../../config/storybook/.storybook/preview';
 import { SVG } from './SVG';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/SVG',
   argTypes: {
     variant: {
@@ -43,27 +43,25 @@ const meta = {
     variant: 'icon',
     color: undefined,
   },
-} satisfies Meta;
+});
 
-export default meta;
-
-export const Basic: StoryObj<typeof SVG> = {
+export const Basic = meta.story({
   render: args => (
     <SVG {...args} viewBox="0 0 24 24">
       <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
     </SVG>
   ),
-};
+});
 
-export const Filled: StoryObj<typeof SVG> = {
+export const Filled = meta.story({
   render: args => (
     <SVG {...args} viewBox="0 0 24 24" className="fill-primary-600">
       <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
     </SVG>
   ),
-};
+});
 
-export const Responsive: StoryObj<typeof SVG> = {
+export const Responsive = meta.story({
   render: args => (
     <SVG
       {...args}
@@ -73,4 +71,4 @@ export const Responsive: StoryObj<typeof SVG> = {
       <path d="M9.9 20.113V13.8415H14.1V20.113H19.35V11.751H22.5L12 2.34375L1.5 11.751H4.65V20.113H9.9Z" />
     </SVG>
   ),
-};
+});

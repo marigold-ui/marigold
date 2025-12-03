@@ -1,14 +1,14 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { Text } from 'react-aria-components';
 import { expect, userEvent } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Center } from '../Center/Center';
 import { Stack } from '../Stack/Stack';
 import { Autocomplete } from './Autocomplete';
 
-const meta: Meta<typeof Autocomplete> = {
+const meta = preview.meta({
   title: 'Components/Autocomplete',
   component: Autocomplete,
   argTypes: {
@@ -67,12 +67,9 @@ const meta: Meta<typeof Autocomplete> = {
     errorMessage: 'Something went wrong',
     placeholder: 'Movie',
   },
-} satisfies Meta<typeof Autocomplete>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
     <Autocomplete {...args}>
@@ -88,28 +85,25 @@ export const Basic: Story = {
       <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
-  play: async ({ canvas }) => {
-    const input = canvas.getByRole('combobox');
-    const description = canvas.getAllByText(
-      'This is a help text description'
-    )[0];
-    const clearButton = screen.getByLabelText(
-      /Clear search|Suche zurücksetzen/i
-    );
+});
 
-    await userEvent.click(input);
-    await userEvent.type(input, 'sp');
-    await userEvent.click(clearButton);
+Basic.test('run Basic story test', async ({ canvas }) => {
+  const input = canvas.getByRole('combobox');
+  const description = canvas.getAllByText('This is a help text description')[0];
+  const clearButton = screen.getByLabelText(/Clear search|Suche zurücksetzen/i);
 
-    await expect(input).toHaveFocus();
-    await expect(input).toBeVisible();
-    await expect(description).toBeInTheDocument();
-    await expect(clearButton).toBeInTheDocument();
-    await expect(input).toHaveValue('');
-  },
-};
+  await userEvent.click(input);
+  await userEvent.type(input, 'sp');
+  await userEvent.click(clearButton);
 
-export const WithSections: Story = {
+  await expect(input).toHaveFocus();
+  await expect(input).toBeVisible();
+  await expect(description).toBeInTheDocument();
+  await expect(clearButton).toBeInTheDocument();
+  await expect(input).toHaveValue('');
+});
+
+export const WithSections = meta.story({
   tags: ['component-test'],
   render: args => (
     <Autocomplete {...args} placeholder="Pick a food">
@@ -140,9 +134,9 @@ export const WithSections: Story = {
     expect(sectionOne).toBeVisible();
     expect(sectionTwo).toBeVisible();
   },
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   tags: ['component-test'],
   render: args => {
     const [submitted, setSubmitted] = useState<string | number | null>('');
@@ -194,9 +188,9 @@ export const Controlled: Story = {
       'harry-potter'
     );
   },
-};
+});
 
-export const Async: Story = {
+export const Async = meta.story({
   render: args => {
     const { items, filterText, setFilterText } = useAsyncList<{ name: string }>(
       {
@@ -241,11 +235,11 @@ export const Async: Story = {
     const result = await canvas.getByTestId('empty-state');
     await expect(result).toBeVisible();
   },
-};
+});
 
-export const InputMenuTrigger: Story = {
+export const InputMenuTrigger = meta.story({
   tags: ['component-test'],
-  ...Basic,
+  ...Basic.input,
   play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
 
@@ -254,11 +248,11 @@ export const InputMenuTrigger: Story = {
 
     await expect(result).toBeVisible();
   },
-};
+});
 
-export const FocusMenuTrigger: Story = {
+export const FocusMenuTrigger = meta.story({
   tags: ['component-test'],
-  ...Basic,
+  ...Basic.input,
   args: {
     menuTrigger: 'focus',
   },
@@ -270,11 +264,11 @@ export const FocusMenuTrigger: Story = {
 
     await expect(result).toBeVisible();
   },
-};
+});
 
-export const ManualMenuTrigger: Story = {
+export const ManualMenuTrigger = meta.story({
   tags: ['component-test'],
-  ...Basic,
+  ...Basic.input,
   args: {
     menuTrigger: 'input',
   },
@@ -286,9 +280,9 @@ export const ManualMenuTrigger: Story = {
 
     await expect(result).toBeVisible();
   },
-};
+});
 
-export const DisabledSuggestions: Story = {
+export const DisabledSuggestions = meta.story({
   render: () => (
     <Autocomplete label="Label" disabledKeys={['spinach']}>
       <Autocomplete.Option id="spinach">Spinach</Autocomplete.Option>
@@ -297,4 +291,4 @@ export const DisabledSuggestions: Story = {
       <Autocomplete.Option id="garlic">Garlic</Autocomplete.Option>
     </Autocomplete>
   ),
-};
+});

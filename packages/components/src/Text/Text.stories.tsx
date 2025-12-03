@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Text } from './Text';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Text',
   component: Text,
   argTypes: {
@@ -56,20 +56,17 @@ const meta = {
       description: 'The cursor for the text',
     },
   },
-} satisfies Meta<typeof Text>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   args: {
     children:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim dapibus elit, vel egestas felis pharetra non. Cras malesuada, massa nec ultricies efficitur, lectus ante consequat magna, a porttitor massa ex ut quam.',
   },
   render: args => <Text {...args} />,
-};
+});
 
-export const Slot: Story = {
+export const Slot = meta.story({
   render: args => (
     <Text slot="description" {...args}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -78,4 +75,4 @@ export const Slot: Story = {
       massa ex ut quam.
     </Text>
   ),
-};
+});

@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
@@ -15,7 +15,7 @@ import { TextArea } from '../TextArea/TextArea';
 import type { Selection } from '../types';
 import { Table } from './Table';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Table',
   argTypes: {
     selectionMode: {
@@ -73,10 +73,7 @@ const meta = {
   args: {
     focusMode: 'row',
   },
-} satisfies Meta<typeof Table>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
+});
 
 // Data
 // ---------------
@@ -164,7 +161,7 @@ const users = [
 ];
 // Stories
 // ---------------
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Table aria-label="label" {...args}>
       <Table.Header>
@@ -202,9 +199,9 @@ export const Basic: Story = {
       </Table.Body>
     </Table>
   ),
-};
+});
 
-export const ControlledTable: Story = {
+export const ControlledTable = meta.story({
   render: args => {
     const columns = [
       { name: 'Name', key: 'name' },
@@ -268,10 +265,10 @@ export const ControlledTable: Story = {
       </Stack>
     );
   },
-};
+});
 
 // https://react-spectrum.adobe.com/react-aria/useTable.html#nested-columns
-export const NestedColumns: Story = {
+export const NestedColumns = meta.story({
   render: args => (
     <Table aria-label="Example table for nested columns" {...args}>
       <Table.Header>
@@ -312,9 +309,9 @@ export const NestedColumns: Story = {
       </Table.Body>
     </Table>
   ),
-};
+});
 
-export const Empty: Story = {
+export const Empty = meta.story({
   render: args => (
     <Table
       aria-label="Example table for nested columns"
@@ -330,9 +327,9 @@ export const Empty: Story = {
       <Table.Body>{[]}</Table.Body>
     </Table>
   ),
-};
+});
 
-export const Sorting: Story = {
+export const Sorting = meta.story({
   render: args => {
     const data = [
       {
@@ -456,9 +453,9 @@ export const Sorting: Story = {
       </>
     );
   },
-};
+});
 
-export const Compact: Story = {
+export const Compact = meta.story({
   render: args => (
     <Table
       aria-label="Table with multiple selection"
@@ -500,9 +497,9 @@ export const Compact: Story = {
       </Table.Body>
     </Table>
   ),
-};
+});
 
-export const Expanded: Story = {
+export const Expanded = meta.story({
   render: args => (
     <Table
       aria-label="Table with multiple selection"
@@ -544,9 +541,9 @@ export const Expanded: Story = {
       </Table.Body>
     </Table>
   ),
-};
+});
 
-export const Static: Story = {
+export const Static = meta.story({
   render: args => (
     <Table
       aria-label="Table without interaction"
@@ -587,7 +584,7 @@ export const Static: Story = {
       </Table.Body>
     </Table>
   ),
-};
+});
 
 const columns = [
   { name: 'Name', key: 'name' },
@@ -637,7 +634,7 @@ const DataTable = ({ editable, ...rest }: { editable: boolean }) => (
   </Table>
 );
 
-export const WithParentProp: Story = {
+export const WithParentProp = meta.story({
   render: args => {
     const [editable, setEditable] = useState(true);
 
@@ -652,9 +649,9 @@ export const WithParentProp: Story = {
       </Stack>
     );
   },
-};
+});
 
-export const WithAlignedColumns: Story = {
+export const WithAlignedColumns = meta.story({
   render: args => (
     <Table aria-label="Table with selection" {...args}>
       <Table.Header>
@@ -696,9 +693,9 @@ export const WithAlignedColumns: Story = {
       </Table.Body>
     </Table>
   ),
-};
+});
 
-export const SelectedTable: Story = {
+export const SelectedTable = meta.story({
   render: args => (
     <Table aria-label="Data Table" {...args}>
       <Table.Header columns={columns}>
@@ -727,9 +724,9 @@ export const SelectedTable: Story = {
       </Table.Body>
     </Table>
   ),
-};
+});
 
-export const ScrollableTable: Story = {
+export const ScrollableTable = meta.story({
   render: args => {
     const [todos, setTodos] = useState<
       { userId: string; id: string; title: string; completed: boolean }[]
@@ -783,9 +780,9 @@ export const ScrollableTable: Story = {
       </>
     );
   },
-};
+});
 
-export const InputTable: Story = {
+export const InputTable = meta.story({
   render: args => {
     const columns = [
       { name: 'Name', key: 'name' },
@@ -874,9 +871,9 @@ export const InputTable: Story = {
       </Stack>
     );
   },
-};
+});
 
-export const DestructiveAction: Story = {
+export const DestructiveAction = meta.story({
   render: args => {
     const users = [
       {
@@ -976,4 +973,4 @@ export const DestructiveAction: Story = {
       </Table>
     );
   },
-};
+});

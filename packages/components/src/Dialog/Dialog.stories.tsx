@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
 import { expect, waitFor } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Menu } from '../Menu/Menu';
 import { Text } from '../Text/Text';
@@ -17,7 +17,7 @@ interface DialogStoryArgs {
   size?: 'xsmall' | 'small' | 'medium';
 }
 
-const meta: Meta<DialogStoryArgs> = {
+const meta = preview.meta({
   title: 'Components/Dialog',
   component: Dialog,
   argTypes: {
@@ -45,12 +45,9 @@ const meta: Meta<DialogStoryArgs> = {
     keyboardDismissable: true,
     size: 'small',
   },
-};
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
@@ -80,9 +77,9 @@ export const Basic: Story = {
       expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
     );
   },
-};
+});
 
-export const Form: Story = {
+export const Form = meta.story({
   render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>
@@ -109,9 +106,9 @@ export const Form: Story = {
       </Dialog.Trigger>
     );
   },
-};
+});
 
-export const OpenFromMenu: Story = {
+export const OpenFromMenu = meta.story({
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setDialogOpen] = useState(false);
@@ -157,9 +154,9 @@ export const OpenFromMenu: Story = {
       </>
     );
   },
-};
+});
 
-export const Confirmation: StoryObj<ConfirmationDialogProps> = {
+export const Confirmation = meta.story({
   render: ({ ...args }) => (
     <ConfirmationDialog.Trigger {...args}>
       <Button>Open</Button>
@@ -168,9 +165,9 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
       </ConfirmationDialog>
     </ConfirmationDialog.Trigger>
   ),
-};
+});
 
-export const VeryLongContent: Story = {
+export const VeryLongContent = meta.story({
   tags: ['component-test'],
   render: args => {
     const { size, ...triggerArgs } = args;
@@ -338,4 +335,4 @@ export const VeryLongContent: Story = {
     dialogContent.scrollTop = dialogContent.scrollHeight;
     expect(dialogContent.scrollTop).toBeGreaterThan(0);
   },
-};
+});

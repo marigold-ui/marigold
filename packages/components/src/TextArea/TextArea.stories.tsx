@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { TextArea } from './TextArea';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/TextArea',
   component: TextArea,
   argTypes: {
@@ -105,16 +105,13 @@ const meta = {
     disabled: false,
     required: false,
   },
-} satisfies Meta<typeof TextArea>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <TextArea {...args} />,
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [value, setValue] = useState('');
     return (
@@ -127,4 +124,4 @@ export const Controlled: Story = {
       </>
     );
   },
-};
+});

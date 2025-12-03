@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Close, ExternalLink } from '@marigold/icons';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Center } from '../Center/Center';
 import { Container } from '../Container/Container';
 import { Inline } from '../Inline/Inline';
@@ -9,7 +9,7 @@ import { Text } from '../Text/Text';
 import { Tiles } from '../Tiles/Tiles';
 import { Card } from './Card';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Card',
   argTypes: {
     variant: {
@@ -69,12 +69,9 @@ const meta = {
       description: 'The left padding of the card',
     },
   },
-} satisfies Meta<typeof Card>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Container>
       <Card {...args}>
@@ -94,9 +91,9 @@ export const Basic: Story = {
       </Card>
     </Container>
   ),
-};
+});
 
-export const CoreCard: Story = {
+export const CoreCard = meta.story({
   render: args => (
     <Tiles tilesWidth="300px" space={5}>
       <Card {...args} p={3}>
@@ -127,9 +124,9 @@ export const CoreCard: Story = {
       </Card>
     </Tiles>
   ),
-};
+});
 
-export const Stretch: Story = {
+export const Stretch = meta.story({
   render: args => (
     <Card {...args}>
       <h2>Professor Severus Snape</h2>
@@ -148,9 +145,9 @@ export const Stretch: Story = {
       </section>
     </Card>
   ),
-};
+});
 
-export const PaddingAndSpace: Story = {
+export const PaddingAndSpace = meta.story({
   render: args => (
     <Card {...args} p={8} space={4}>
       <h2>Professor Severus Snape</h2>
@@ -174,4 +171,4 @@ export const PaddingAndSpace: Story = {
       </p>
     </Card>
   ),
-};
+});

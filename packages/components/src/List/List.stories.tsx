@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { List } from './List';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/List',
   component: List,
   argTypes: {
@@ -28,12 +28,9 @@ const meta = {
     as: 'ul',
     size: 'default',
   },
-} satisfies Meta<typeof List>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <List {...args}>
       <List.Item>Cheese</List.Item>
@@ -41,9 +38,9 @@ export const Basic: Story = {
       <List.Item>Bread</List.Item>
     </List>
   ),
-};
+});
 
-export const Ordered: Story = {
+export const Ordered = meta.story({
   render: args => (
     <List as="ol" {...args}>
       <List.Item>Cheese</List.Item>
@@ -51,9 +48,9 @@ export const Ordered: Story = {
       <List.Item>Bread</List.Item>
     </List>
   ),
-};
+});
 
-export const Nested: Story = {
+export const Nested = meta.story({
   render: args => (
     <div className="p-4">
       <List {...args}>
@@ -82,4 +79,4 @@ export const Nested: Story = {
       </List>
     </div>
   ),
-};
+});

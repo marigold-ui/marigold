@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Form, TextField } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import { Label } from '../Label/Label';
 import { Stack } from '../Stack/Stack';
 import { HelpText } from './HelpText';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/HelpText',
   component: HelpText,
   argTypes: {
@@ -36,16 +36,13 @@ const meta = {
     errorMessage: 'Something went wrong',
     description: 'This is a help text description',
   },
-} satisfies Meta<typeof HelpText>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <HelpText {...args} />,
-};
+});
 
-export const WithinAField: Story = {
+export const WithinAField = meta.story({
   render: () => (
     <>
       <Form onSubmit={e => e.preventDefault()}>
@@ -64,9 +61,9 @@ export const WithinAField: Story = {
       </Form>
     </>
   ),
-};
+});
 
-export const MultipleMessages: Story = {
+export const MultipleMessages = meta.story({
   render: () => {
     const [password, setPassword] = useState('');
     const errors = [];
@@ -99,4 +96,4 @@ export const MultipleMessages: Story = {
       </div>
     );
   },
-};
+});

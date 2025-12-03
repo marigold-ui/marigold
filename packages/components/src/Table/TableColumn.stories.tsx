@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Table } from './Table';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Table',
   argTypes: {
     align: {
@@ -37,13 +37,9 @@ const meta = {
     align: 'right',
     width: 20,
   },
-} satisfies Meta<typeof Table.Column>;
+});
 
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-export const AlignedTableColumn: Story = {
+export const AlignedTableColumn = meta.story({
   render: args => {
     const data = [
       {
@@ -166,4 +162,4 @@ export const AlignedTableColumn: Story = {
       </>
     );
   },
-};
+});

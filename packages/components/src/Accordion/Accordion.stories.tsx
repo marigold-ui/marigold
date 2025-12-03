@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Columns } from '../Columns/Columns';
@@ -13,7 +13,7 @@ import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Accordion } from './Accordion';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Accordion',
   argTypes: {
     defaultExpandedKeys: {
@@ -57,12 +57,9 @@ const meta = {
     variant: 'default',
     iconPosition: 'right',
   },
-} satisfies Meta;
+});
 
-export default meta;
-type Story = StoryObj<typeof Accordion>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">
@@ -100,7 +97,7 @@ export const Basic: Story = {
       canvas.getByText('Some longer Text to see if it looks good').parentElement
     ).toHaveAttribute('aria-hidden', 'false');
   },
-};
+});
 
 let items = [
   {
@@ -172,7 +169,7 @@ let items = [
   },
 ];
 
-export const ComplexSingleSelect: Story = {
+export const ComplexSingleSelect = meta.story({
   render: args => (
     <Accordion {...args}>
       {items.map(item => (
@@ -183,9 +180,9 @@ export const ComplexSingleSelect: Story = {
       ))}
     </Accordion>
   ),
-};
+});
 
-export const DefaultExpended: Story = {
+export const DefaultExpended = meta.story({
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">
@@ -208,9 +205,9 @@ export const DefaultExpended: Story = {
       </Accordion.Item>
     </Accordion>
   ),
-};
+});
 
-export const MultipleExpanded: Story = {
+export const MultipleExpanded = meta.story({
   render: args => (
     <Accordion
       {...args}
@@ -225,9 +222,9 @@ export const MultipleExpanded: Story = {
       ))}
     </Accordion>
   ),
-};
+});
 
-export const CoreExample: Story = {
+export const CoreExample = meta.story({
   render: args => (
     <div className="w-1/2">
       <Accordion {...args}>
@@ -255,8 +252,8 @@ export const CoreExample: Story = {
       </Accordion>
     </div>
   ),
-};
-export const ButtonInHeader: Story = {
+});
+export const ButtonInHeader = meta.story({
   render: args => (
     <Stack space={8}>
       <Accordion {...args}>
@@ -287,9 +284,9 @@ export const ButtonInHeader: Story = {
       </Accordion>
     </Stack>
   ),
-};
+});
 
-export const Disabled: Story = {
+export const Disabled = meta.story({
   render: args => (
     <Accordion {...args} disabled>
       <Accordion.Item id="1">
@@ -298,9 +295,9 @@ export const Disabled: Story = {
       </Accordion.Item>
     </Accordion>
   ),
-};
+});
 
-export const StickyHeader: Story = {
+export const StickyHeader = meta.story({
   parameters: {
     controls: { exclude: ['iconPosition'] },
   },
@@ -911,9 +908,9 @@ export const StickyHeader: Story = {
       </Accordion.Item>
     </Accordion>
   ),
-};
+});
 
-export const IconPositionLeft: Story = {
+export const IconPositionLeft = meta.story({
   parameters: {
     controls: { exclude: ['iconPosition'] },
   },
@@ -939,4 +936,4 @@ export const IconPositionLeft: Story = {
       </Accordion.Item>
     </Accordion>
   ),
-};
+});

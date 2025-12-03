@@ -1,5 +1,5 @@
-import type { StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import {
@@ -8,14 +8,12 @@ import {
 } from './ConfirmationDialog';
 import { useConfirmation } from './useConfirmation';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ConfirmationDialog',
   component: ConfirmationDialog.Trigger,
-};
+});
 
-export default meta;
-
-export const Confirmation: StoryObj<ConfirmationDialogProps> = {
+export const Confirmation = meta.story({
   render: ({ ...args }) => (
     <ConfirmationDialog.Trigger {...args}>
       <Button>Open</Button>
@@ -35,9 +33,9 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
 
     await canvas.getByRole('button', { name: 'Confirm' }).click();
   },
-};
+});
 
-export const UseConfirmation: StoryObj = {
+export const UseConfirmation = meta.story({
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const confirm = useConfirmation();
@@ -69,4 +67,4 @@ export const UseConfirmation: StoryObj = {
       </Stack>
     );
   },
-};
+});

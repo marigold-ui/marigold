@@ -1,10 +1,10 @@
 import { CalendarDate, DateValue } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
 import { I18nProvider } from '@react-aria/i18n';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { DateField, DateFieldProps } from './DateField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/DateField',
   argTypes: {
     label: {
@@ -93,20 +93,17 @@ const meta = {
     disabled: false,
     required: false,
   },
-} satisfies Meta<DateFieldProps>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <I18nProvider locale="de-DE">
       <DateField {...args} />
     </I18nProvider>
   ),
-};
+});
 
-export const ControlledDateField: Story = {
+export const ControlledDateField = meta.story({
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
     return (
@@ -130,12 +127,12 @@ export const ControlledDateField: Story = {
       </I18nProvider>
     );
   },
-};
+});
 
-export const BritishLocal: Story = {
+export const BritishLocal = meta.story({
   render: args => (
     <I18nProvider locale="en-GB">
       <DateField {...args} />
     </I18nProvider>
   ),
-};
+});

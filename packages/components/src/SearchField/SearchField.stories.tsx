@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { SearchField } from './SearchField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/SearchField',
   argTypes: {
     label: {
@@ -63,16 +63,13 @@ const meta = {
     readOnly: false,
     disabled: false,
   },
-} satisfies Meta<typeof SearchField>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <SearchField {...args} required label="search field" />,
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [value, setValue] = useState('');
     return (
@@ -92,4 +89,4 @@ export const Controlled: Story = {
       </>
     );
   },
-};
+});

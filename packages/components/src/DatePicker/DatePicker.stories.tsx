@@ -1,12 +1,12 @@
 import { CalendarDate } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { I18nProvider } from '@react-aria/i18n';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { DatePicker } from './DatePicker';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/DatePicker',
   component: DatePicker,
   argTypes: {
@@ -87,12 +87,9 @@ const meta = {
     required: false,
     error: false,
   },
-} satisfies Meta<typeof DatePicker>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => {
     return (
       <I18nProvider locale="de-DE">
@@ -105,9 +102,9 @@ export const Basic: Story = {
       </I18nProvider>
     );
   },
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [value, setValue] = useState(
       new CalendarDate(2025, 8, 7) as DateValue
@@ -136,9 +133,9 @@ export const Controlled: Story = {
       </I18nProvider>
     );
   },
-};
+});
 
-export const MinMax: Story = {
+export const MinMax = meta.story({
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
@@ -151,9 +148,9 @@ export const MinMax: Story = {
       />
     </I18nProvider>
   ),
-};
+});
 
-export const UnavailableDate: Story = {
+export const UnavailableDate = meta.story({
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
@@ -163,4 +160,4 @@ export const UnavailableDate: Story = {
       />
     </I18nProvider>
   ),
-};
+});
