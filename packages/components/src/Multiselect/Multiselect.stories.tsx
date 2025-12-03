@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent } from 'storybook/test';
 import { Stack } from '../Stack/Stack';

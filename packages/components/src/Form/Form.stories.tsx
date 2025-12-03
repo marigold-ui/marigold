@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Link } from '@marigold/components';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';

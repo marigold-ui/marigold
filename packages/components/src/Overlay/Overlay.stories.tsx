@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { forwardRef } from 'react';
 import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
 import { Button } from '../Button/Button';

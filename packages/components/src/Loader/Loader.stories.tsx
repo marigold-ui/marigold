@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Inline, Stack } from '@marigold/components';
 import { Loader } from './Loader';
 

@@ -30,17 +30,16 @@
     "vite-tsconfig-paths": "5.1.4"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "^10.0.8",
-    "@storybook/addon-docs": "^10.0.8",
-    "@storybook/cli": "^10.0.8",
-    "@storybook/react-vite": "^10.0.8",
-    "@storybook/test-runner": "0.24.1",
-    "@storybook/react": "^10.0.8",
+    "@storybook/addon-a11y": "^10.1.4",
+    "@storybook/addon-docs": "^10.1.4",
+    "@storybook/addon-vitest": "10.1.4",
+    "@storybook/cli": "^10.1.4",
+    "@storybook/react-vite": "^10.1.4",
     "@types/node": "24.9.2",
-    "eslint-plugin-storybook": "10.0.8",
+    "eslint-plugin-storybook": "10.1.4",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "storybook": "^10.0.8",
+    "storybook": "^10.1.4",
     "storybook-addon-test-codegen": "3.0.1",
     "typescript": "5.9.3",
     "vite": "7.1.12"
@@ -53,6 +52,6 @@
   "scripts": {
     "start": "storybook dev -p 6006 -c .storybook/",
     "build": "storybook build --disable-telemetry -c ./.storybook -o ../../storybook-static --stats-json",
-    "test": "npx playwright install --with-deps && pnpm test-storybook --includeTags='component-test'"
+    "test": "vitest --project=storybook"
   }
 }

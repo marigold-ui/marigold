@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { Text } from 'react-aria-components';

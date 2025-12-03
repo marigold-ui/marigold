@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Ticket } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';

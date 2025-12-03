@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Close, ExternalLink } from '@marigold/icons';
 import { Center } from '../Center/Center';
 import { Container } from '../Container/Container';

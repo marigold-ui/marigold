@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
 import { Badge } from '../Badge/Badge';

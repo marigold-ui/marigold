@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Key } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';

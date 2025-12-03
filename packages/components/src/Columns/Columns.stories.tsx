@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
 import { Divider } from '../Divider/Divider';
 import { Headline } from '../Headline/Headline';

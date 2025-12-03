@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Aspect } from '../Aspect/Aspect';
 import { Breakout } from '../Breakout/Breakout';
 import { Text } from '../Text/Text';

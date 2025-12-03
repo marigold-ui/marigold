@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';

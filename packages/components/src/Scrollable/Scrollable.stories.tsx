@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
 import { Card } from '../Card/Card';

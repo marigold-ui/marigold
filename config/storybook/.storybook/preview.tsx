@@ -1,4 +1,4 @@
-import { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react-vite';
 import './../styles.css';
 import withMarigoldProviders from './decorators';
 

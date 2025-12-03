@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, within } from 'storybook/test';
 import { Inline } from '../Inline/Inline';

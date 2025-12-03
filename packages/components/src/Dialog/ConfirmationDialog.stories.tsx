@@ -1,4 +1,4 @@
-import type { StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';

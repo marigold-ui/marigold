@@ -1,5 +1,5 @@
 import { parseTime } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { TimeValue } from 'react-aria-components';
 import { expect, userEvent, within } from 'storybook/test';

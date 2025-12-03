@@ -26,8 +26,8 @@
     "@testing-library/user-event": "14.6.1",
     "@types/node": "24.9.2",
     "@vitejs/plugin-react": "5.0.4",
-    "@vitest/coverage-v8": "4.0.4",
-    "@vitest/ui": "4.0.4",
+    "@vitest/coverage-v8": "4.0.15",
+    "@vitest/ui": "4.0.15",
     "all-contributors-cli": "6.26.1",
     "autoprefixer": "10.4.22",
     "concurrently": "9.2.1",
@@ -44,7 +44,7 @@
     "turbo": "2.5.8",
     "typescript": "5.9.3",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "4.0.4",
+    "vitest": "4.0.15",
     "zx": "8.8.5"
   },
   "scripts": {

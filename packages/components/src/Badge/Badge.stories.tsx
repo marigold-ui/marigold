@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Accessibility } from 'lucide-react';
 import { Stack } from '../Stack/Stack';
 import { Badge } from './Badge';

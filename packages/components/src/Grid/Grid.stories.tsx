@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { alignment, cn } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { waitFor } from '@testing-library/react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';

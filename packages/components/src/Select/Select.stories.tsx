@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';

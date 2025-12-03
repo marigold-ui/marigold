@@ -1,5 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { I18nProvider } from '@react-aria/i18n';
