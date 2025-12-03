@@ -22,5 +22,15 @@ export default () => (
         squished
       </VisualInset>
     </Box>
+
+    <Box className="size-auto">
+      <VisualInset
+        spaceX="related"
+        spaceY="group"
+        className="rounded-[calc(var(--radius-lg)-1px)]"
+      >
+        stretched
+      </VisualInset>
+    </Box>
   </div>
 );

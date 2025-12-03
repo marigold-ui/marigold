@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from 'react';
+import type { SpacingTokens } from '@marigold/system';
 import { cn, createVar, cva } from '@marigold/system';
 
 const classNames = {
@@ -45,7 +46,7 @@ const classNames = {
 };
 
 export interface VisualSpacingProps {
-  space: string;
+  space: SpacingTokens;
   orientation: 'horizontal' | 'vertical';
   hideGuide?: boolean;
 }
@@ -70,8 +71,8 @@ export const VisualSpacing = ({
 
 export interface VisualInsetProps {
   className?: string;
-  spaceX: string;
-  spaceY: string;
+  spaceX: SpacingTokens;
+  spaceY: SpacingTokens;
 }
 
 export const VisualInset = ({
