@@ -126,7 +126,7 @@ export const VisualInset = ({
       <div
         className={classNames.icon({
           orientation: 'horizontal',
-          className: 'w-(--space-x)',
+          className: 'w-(--space-x) before:w-[calc(var(--space-x)-2px)]',
         })}
       />
       {spaceX}
