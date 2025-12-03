@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect } from 'storybook/test';
-import { Label } from '../Label/Label';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
