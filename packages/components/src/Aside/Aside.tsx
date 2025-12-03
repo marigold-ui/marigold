@@ -1,12 +1,16 @@
-import { Children, type ReactElement } from 'react';
-import { GapSpaceProp, cn, createVar, gapSpace } from '@marigold/system';
+import { Children } from 'react';
+import type { ReactElement } from 'react';
+import type { SpaceProp } from '@marigold/system';
+import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps, NonZeroPercentage } from '@marigold/types';
 
-export interface AsideProps extends GapSpaceProp, AriaRegionProps {
+export interface AsideProps
+  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+    AriaRegionProps {
   /**
    * The children of the component.
    */
-  children: [ReactElement<any>, ReactElement<any>];
+  children: [ReactElement, ReactElement];
   /**
    * The side of the aside content.
    * @default left
@@ -45,7 +49,10 @@ export const Aside = ({
   };
 
   return (
-    <div className={cn('flex flex-wrap', gapSpace[space])}>
+    <div
+      className={cn('flex flex-wrap', 'gap-(--space)')}
+      style={createSpacingVar('space', `${space}`)}
+    >
       <div
         className={classNames[side === 'left' ? 'aside' : 'content']}
         style={vars[side === 'left' ? 'aside' : 'content']}
