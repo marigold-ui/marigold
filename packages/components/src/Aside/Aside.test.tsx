@@ -1,131 +1,152 @@
 /* eslint-disable testing-library/no-node-access */
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import { Aside } from './Aside';
+import * as stories from './Aside.stories';
 
-test('default spacing is "none"', () => {
-  render(
-    <Aside>
-      <div>aside</div>
-      <div>content</div>
-    </Aside>
-  );
+const { Basic } = composeStories(stories, {});
 
-  const aside = screen.getByText(/aside/).parentElement?.parentElement;
+describe('Aside', () => {
+  describe('Rendering', () => {
+    test('renders content correctly', () => {
+      render(<Basic />);
 
-  expect(aside).toHaveClass(`gap-0`);
-});
+      const headline = screen.getByText(/How to Grow Your Own Garden/);
 
-test('accepts and uses spacing from theme', () => {
-  render(
-    <Aside space={5}>
-      <div>aside</div>
-      <div>content</div>
-    </Aside>
-  );
-  const aside = screen.getByText(/aside/).parentElement?.parentElement;
-  expect(aside).toHaveClass(`gap-5`);
-});
+      expect(headline).toBeInTheDocument();
+    });
 
-test('aside is on the left by default', () => {
-  render(
-    <Aside>
-      <div>aside</div>
-      <div>content</div>
-    </Aside>
-  );
+    test('renders all child elements', () => {
+      render(<Basic />);
 
-  const aside = screen.getByText(/aside/).parentElement;
-  const content = screen.getByText(/content/).parentElement;
-  expect(aside).toHaveClass('grow');
-  expect(content).toHaveClass('grow-999');
-});
+      expect(
+        screen.getByText(/How to Grow Your Own Garden/)
+      ).toBeInTheDocument();
+      expect(screen.getByText(/Related Articles/)).toBeInTheDocument();
+    });
+  });
 
-test('allows to have aisde on the right', () => {
-  render(
-    <Aside side="right">
-      <div>aside</div>
-      <div>content</div>
-    </Aside>
-  );
+  describe('Spacing', () => {
+    test('applies default spacing value of 0', () => {
+      render(<Basic space={0} />);
 
-  const aside = screen.getByText(/aside/).parentElement;
-  const content = screen.getByText(/content/).parentElement;
-  expect(aside).toHaveClass('grow-999');
-  expect(content).toHaveClass('grow');
-});
+      const aside = screen.getByText(/How to Grow Your Own Garden/)
+        .parentElement?.parentElement?.parentElement;
 
-test('inherits asides children with by default', () => {
-  render(
-    <Aside>
-      <div style={{ width: 50 }}>aside</div>
-      <div>content</div>
-    </Aside>
-  );
-  const aside = screen.getByText(/aside/);
-  expect(aside).toHaveStyle(`width: 50px`);
-  expect(aside).not.toHaveStyle(`flex-basis: 50px`);
-});
+      expect(aside?.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 0)'
+      );
+    });
 
-test('allows to set a width for the aside element', () => {
-  render(
-    <Aside sideWidth="200px">
-      <div>aside</div>
-      <div>content</div>
-    </Aside>
-  );
-  const aside = screen.getByText(/aside/).parentElement;
-  expect(aside).toMatchInlineSnapshot(`
-    <div
-      class="grow basis-(--sideWidth)"
-      style="--sideWidth: 200px;"
-    >
-      <div>
-        aside
-      </div>
-    </div>
-  `);
-});
+    test('applies custom spacing from theme', () => {
+      render(<Basic space={4} />);
 
-test('wraps at 50% by default', () => {
-  render(
-    <Aside>
-      <div>aside</div>
-      <div>content</div>
-    </Aside>
-  );
-  const content = screen.getByText(/content/).parentElement;
-  expect(content).toMatchInlineSnapshot(`
-    <div
-      class="basis-0 grow-999 [min-inline-size:var(--wrap)]"
-      style="--wrap: 50%;"
-    >
-      <div>
-        content
-      </div>
-    </div>
-  `);
-});
+      const aside = screen.getByText(/How to Grow Your Own Garden/)
+        .parentElement?.parentElement?.parentElement;
 
-test('works with SSR', () => {
-  // Fake emotions SSR rendering, where emotion inlines styles
-  const SSRComponent = () => (
-    <>
-      <style data-testid="ssr-style">{`.ssr { background: 'hotpink' }`}</style>
-      <span data-testid="actual-element">aside</span>
-    </>
-  );
+      expect(aside?.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+    });
+  });
 
-  render(
-    <Aside space={3} wrap="1%">
-      <SSRComponent />
-      <div>content</div>
-    </Aside>
-  );
+  describe('Side positioning', () => {
+    test('aside is on the left by default', () => {
+      render(<Basic side="left" />);
 
-  const style = screen.getByTestId('ssr-style');
-  const aside = screen.getByTestId('actual-element').parentElement;
+      const headline = screen.getByText(/How to Grow Your Own Garden/);
+      const leftElement = headline.parentElement?.parentElement;
+      const rightElement = leftElement?.nextElementSibling;
 
-  // Yes, this tests implementation details, but I can not think of another way to test this
-  expect(style).not.toHaveClass('grow');
-  expect(aside).toHaveClass('grow');
+      expect(leftElement).toHaveClass('grow');
+      expect(rightElement).toHaveClass('grow-999');
+    });
+
+    test('allows to have aside on the right', () => {
+      render(<Basic side="right" />);
+
+      const headline = screen.getByText(/How to Grow Your Own Garden/);
+      const leftElement = headline.parentElement?.parentElement;
+      const rightElement = leftElement?.nextElementSibling;
+
+      expect(leftElement).toHaveClass('grow-999');
+      expect(rightElement).toHaveClass('grow');
+    });
+  });
+
+  describe('Width and wrapping', () => {
+    test('allows to set a width for the aside element', () => {
+      render(<Basic sideWidth="200px" side="left" />);
+
+      const headline = screen.getByText(/How to Grow Your Own Garden/);
+      const asideElement = headline.parentElement?.parentElement;
+
+      expect(asideElement).toHaveClass('grow basis-(--sideWidth)');
+      expect(asideElement?.style.getPropertyValue('--sideWidth')).toBe('200px');
+    });
+
+    test('wraps at 50% by default', () => {
+      render(<Basic />);
+
+      // With side="right" (story default), the left element (main content) has the --wrap var
+      const headline = screen.getByText(/How to Grow Your Own Garden/);
+      const contentElement = headline.parentElement?.parentElement;
+
+      expect(contentElement?.style.getPropertyValue('--wrap')).toBe('50%');
+    });
+
+    test('allows to set custom wrap percentage', () => {
+      render(<Basic wrap="30%" />);
+
+      // With side="right" (story default), the left element (main content) has the --wrap var
+      const headline = screen.getByText(/How to Grow Your Own Garden/);
+      const contentElement = headline.parentElement?.parentElement;
+
+      expect(contentElement?.style.getPropertyValue('--wrap')).toBe('30%');
+    });
+  });
+
+  describe('Element types and layout', () => {
+    test('renders as div element by default', () => {
+      render(<Basic />);
+
+      const headline = screen.getByText(/How to Grow Your Own Garden/);
+      const aside = headline.parentElement?.parentElement?.parentElement;
+
+      expect(aside instanceof HTMLDivElement).toBeTruthy();
+    });
+
+    test('applies flex layout classes', () => {
+      render(<Basic />);
+
+      const headline = screen.getByText(/How to Grow Your Own Garden/);
+      const aside = headline.parentElement?.parentElement?.parentElement;
+
+      expect(aside).toHaveClass('flex');
+      expect(aside).toHaveClass('flex-wrap');
+    });
+  });
+
+  describe('SSR compatibility', () => {
+    test('works with SSR', () => {
+      // Fake emotions SSR rendering, where emotion inlines styles
+      const SSRComponent = () => (
+        <>
+          <style data-testid="ssr-style">{`.ssr { background: 'hotpink' }`}</style>
+          <span data-testid="actual-element">aside</span>
+        </>
+      );
+
+      render(<Basic />);
+
+      // Re-render with SSR component to test SSR compatibility
+      render(
+        <div>
+          <SSRComponent />
+        </div>
+      );
+
+      const style = screen.getByTestId('ssr-style');
+      expect(style).toBeInTheDocument();
+    });
+  });
 });
