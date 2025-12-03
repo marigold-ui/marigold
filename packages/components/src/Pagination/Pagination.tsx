@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useClassNames } from '@marigold/system';
 import { ChevronLeft } from '../icons/ChevronLeft';
@@ -61,6 +61,17 @@ const InnerPagination = ({
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages || totalPages === 0;
   const isFirstRender = useRef(true);
+
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      setCurrentPage(newPage);
+      if (onChange) {
+        onChange(newPage);
+      }
+    },
+    [setCurrentPage, onChange]
+  );
+
   useEffect(() => {
     /* avoid setting page 1 on first render, 
     e.g. necessary when using page prop */
@@ -69,14 +80,7 @@ const InnerPagination = ({
       return;
     }
     handlePageChange(1);
-  }, [pageSize]);
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    if (onChange) {
-      onChange(newPage);
-    }
-  };
+  }, [pageSize, handlePageChange]);
 
   const { icon, container } = useClassNames({
     component: 'Pagination',

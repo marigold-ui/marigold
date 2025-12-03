@@ -62,7 +62,7 @@ export const Container = ({
   <div
     {...props}
     className={cn(
-      'grid',
+      'inline-grid',
       placeItems[alignItems],
       gridColsAlign[align],
       gridColumn[align],

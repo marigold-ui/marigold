@@ -10,6 +10,17 @@ const config: TestRunnerConfig = {
     await injectAxe(page);
   },
   async postVisit(page) {
+    // Cancel any ongoing Axe checks to prevent conflicts
+    await page.evaluate(() => {
+      if (typeof window.axe !== 'undefined') {
+        // Reset Axe state by removing and re-injecting
+        delete (window as any).axe;
+      }
+    });
+
+    // Re-inject Axe to ensure clean state
+    await injectAxe(page);
+
     await checkA11y(page, '#storybook-root', {}, true, 'html');
   },
 };

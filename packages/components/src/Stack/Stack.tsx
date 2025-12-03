@@ -39,7 +39,7 @@ export interface StackProps extends SpaceProp<SpacingTokens>, AriaRegionProps {
 // ---------------
 export const Stack = ({
   children,
-  space = 0,
+  space = '0',
   stretch = false,
   alignX = 'stretch',
   alignY,

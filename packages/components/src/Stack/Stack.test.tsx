@@ -3,7 +3,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import * as stories from './Stack.stories';
 
-const { Basic, Nested, Stretch, AsList } = composeStories(stories);
+const { Basic, Nested, Stretch, AsList } = composeStories(stories, {});
 
 describe('Stack', () => {
   describe('Rendering', () => {

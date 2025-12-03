@@ -3,7 +3,13 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as stories from './ContextualHelp.stories';
 
-const { Basic } = composeStories(stories);
+const { Basic } = composeStories(stories, {
+  decorators: Story => (
+    <div id="storybook-root">
+      <Story />
+    </div>
+  ),
+});
 
 /**
  * We need to mock `matchMedia` because JSOM does not
