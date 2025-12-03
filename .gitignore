@@ -9,6 +9,7 @@ node_modules
 coverage
 dist
 build
+**/artifacts/accessibilityReport.html
 
 .cache
 storybook-static
