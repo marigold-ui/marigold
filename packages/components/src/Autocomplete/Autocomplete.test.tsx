@@ -6,7 +6,13 @@ import * as stories from './Autocomplete.stories';
 
 // Setup
 // ---------------
-const { Basic, WithSections } = composeStories(stories);
+const { Basic, WithSections } = composeStories(stories, {
+  decorators: Story => (
+    <div id="storybook-root">
+      <Story />
+    </div>
+  ),
+});
 const user = userEvent.setup();
 
 /**

@@ -16,7 +16,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -32,7 +32,11 @@
       "@marigold/*/styles.css": ["../themes/*/dist/styles.css"],
       "@marigold/*": ["../packages/*/src", "../themes/*/src"],
       "@/registry/*": ["./.registry/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"]
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      // cva does not export types officially; map deep import for TS
+      "class-variance-authority/dist/types": [
+        "../packages/system/node_modules/class-variance-authority/dist/types"
+      ]
     },
     "strict": false,
     "types": ["vitest/globals"]

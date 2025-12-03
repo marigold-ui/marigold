@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, List, Text } from '@marigold/components';
 import { cn } from '@marigold/system';
@@ -19,25 +19,23 @@ type Item = {
 export const Toc = ({ data }: TocProps) => {
   const elements = JSON.parse(data) as Item[];
 
-  const [, setIsMounted] = useState(false);
-
-  const ref = useRef<Element>(undefined);
+  const [portalContainer, setPortalContainer] = useState<Element | null>(null);
 
   const itemId = elements.map(item => item.id);
   const activeItem = useActiveItem(itemId);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      ref.current = document.querySelector('#toc') || undefined;
-      setIsMounted(true);
+      const container = document.querySelector('#toc');
+      queueMicrotask(() => setPortalContainer(container));
     }
   }, []);
 
-  if (!ref.current || elements.length === 0) {
+  if (!portalContainer || elements.length === 0) {
     return null;
   }
 
-  const TocPortal = () => (
+  return createPortal(
     <div className="not-prose w-64">
       <Text weight="semibold" color="secondary-800">
         On This Page
@@ -79,10 +77,9 @@ export const Toc = ({ data }: TocProps) => {
           </Fragment>
         ))}
       </List>
-    </div>
+    </div>,
+    portalContainer
   );
-
-  return createPortal(<TocPortal />, ref.current);
 };
 
 export const TocContainer = () => {

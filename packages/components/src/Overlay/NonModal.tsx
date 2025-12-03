@@ -26,6 +26,10 @@ import { useRenderProps } from '../utils/useRenderProps';
 import type { AriaNonModalProps } from './useNonModal';
 import { useNonModal } from './useNonModal';
 
+/* eslint-disable react-hooks/refs */
+// This component uses React Aria hooks (useEnterAnimation, useExitAnimation) that
+// intentionally access refs during render. This is by design in React Aria.
+
 // Helpers
 // ---------------
 export interface NonModalRenderProps {
