@@ -1,7 +1,7 @@
 ---
 "@marigold/docs": patch
 "@marigold/components": patch
-"@marigold/theme-rui": patch
+"@marigold/theme-rui": major
 ---
 
 style([DST-1143]): Improve ContextualHelp sizes
