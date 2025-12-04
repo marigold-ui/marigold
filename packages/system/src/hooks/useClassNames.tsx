@@ -1,6 +1,6 @@
 import { Context, createContext, useContext } from 'react';
 import { ComponentNames, ThemeComponent } from '../types/theme';
-import { cn } from '../utils';
+import { cn } from '../utils/className.utils';
 import { useTheme } from './useTheme';
 
 interface ComponentContextProps {

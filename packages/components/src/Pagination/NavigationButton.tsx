@@ -20,15 +20,8 @@ export const NavigationButton = (props: PaginationButtonProps) => {
     component: 'Pagination',
   });
   let { buttonProps } = useButton(props, ref);
-  let {
-    children,
-    isSelected,
-    isDisabled,
-    registerRef,
-    controlLabel,
-    position,
-    ...rest
-  } = props;
+  let { children, isSelected, isDisabled, controlLabel, position, ...rest } =
+    props;
 
   return (
     <button

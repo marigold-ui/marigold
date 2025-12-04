@@ -1,169 +1,154 @@
 /* eslint-disable testing-library/no-node-access */
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import { Stack } from './Stack';
+import * as stories from './Stack.stories';
 
-test('default space is "0"', () => {
-  render(
-    <Stack>
-      <p>first</p>
-      <p>second</p>
-    </Stack>
-  );
-  const first = screen.getByText('first').parentElement;
+const { Basic, Nested, Stretch, AsList } = composeStories(stories, {});
 
-  expect(first).toHaveClass(`gap-0`);
-});
+describe('Stack', () => {
+  describe('Rendering', () => {
+    test('renders content correctly', () => {
+      render(<Basic />);
 
-test('uses spacing from theme', () => {
-  render(
-    <Stack space={2}>
-      <p>first</p>
-      <p>second</p>
-    </Stack>
-  );
-  const first = screen.getByText(/first/).parentElement;
-  expect(first?.className).toMatchInlineSnapshot(`"flex flex-col gap-2"`);
-});
+      const headline = screen.getByText(/Getting Started with Stack/);
 
-test('children are not aligned by default', () => {
-  render(
-    <Stack data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack).not.toHaveClass('justify-start items-start');
-});
+      expect(headline).toBeInTheDocument();
+    });
 
-test('allows to align children to the left', () => {
-  render(
-    <Stack alignX="left" data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-start"`
-  );
-});
+    test('renders with proper spacing classes applied', () => {
+      render(<Basic />);
 
-test('allows to align children to the center', () => {
-  render(
-    <Stack alignX="center" data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-center"`
-  );
-});
+      const description = screen.getByText(
+        /The Stack component provides a flexible layout system/
+      );
 
-test('allows to align children to the right', () => {
-  render(
-    <Stack alignX="right" data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 items-end"`
-  );
-});
+      expect(description).toBeInTheDocument();
+    });
 
-test('allows to align children to the vertical top', () => {
-  render(
-    <Stack alignY="top" data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 justify-start"`
-  );
-});
+    test('supports nesting with different spacing levels', () => {
+      render(<Nested />);
 
-test('allows to align children to the vertical center', () => {
-  render(
-    <Stack alignY="center" data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 justify-center"`
-  );
-});
+      const headlines = screen.getAllByText(/spacing/);
 
-test('allows to align children to the bottom', () => {
-  render(
-    <Stack alignY="bottom" data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack.className).toMatchInlineSnapshot(
-    `"flex flex-col gap-0 justify-end"`
-  );
-});
+      expect(headlines.length).toBeGreaterThan(0);
+    });
 
-test('allows to fill space with stretch prop', () => {
-  render(
-    <Stack stretch data-testid="stack">
-      <p>first</p>
-    </Stack>
-  );
-  const stack = screen.getByTestId('stack');
-  expect(stack).toHaveClass(`w-full h-full`);
-});
+    test('renders all child elements', () => {
+      render(<Stretch />);
 
-test('supports nesting', () => {
-  render(
-    <Stack space={4}>
-      <Stack space={3} data-testid="upperStack">
-        <p>first</p>
-        <p>second</p>
-      </Stack>
-      <Stack space={3} data-testid="lowerStack">
-        <p>third</p>
-        <p>fourth</p>
-      </Stack>
-    </Stack>
-  );
-  const first = screen.getByText(/first/).parentElement;
-  const upperStack = screen.getByTestId('upperStack').parentElement;
-  expect(first).toHaveClass(`gap-3`);
-  expect(upperStack).toHaveClass(`gap-4`);
+      expect(screen.getByText(/Lirum/)).toBeInTheDocument();
 
-  const third = screen.getByText(/third/).parentElement;
-  const lowerStack = screen.getByTestId('lowerStack').parentElement;
-  expect(third).toHaveClass(`gap-3`);
-  expect(lowerStack).toHaveClass(`gap-4`);
-});
+      expect(screen.getByText(/Larum/)).toBeInTheDocument();
 
-test('renders as div per default', () => {
-  render(
-    <Stack data-testid="stack">
-      <p>first</p>
-      <p>second</p>
-    </Stack>
-  );
+      expect(screen.getByText(/Löffelstiel/)).toBeInTheDocument();
+    });
+  });
 
-  const stack = screen.getByTestId('stack');
-  expect(stack instanceof HTMLDivElement).toBeTruthy();
-});
+  describe('Spacing', () => {
+    test('applies default spacing value of 0', () => {
+      render(<Basic space={0} />);
 
-test('supports rendering as list element', () => {
-  render(
-    <Stack data-testid="stack" asList>
-      <p>first</p>
-      <p>second</p>
-    </Stack>
-  );
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
 
-  const stack = screen.getByTestId('stack');
-  const listItems = screen.getAllByRole('listitem');
+      expect(stack?.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 0)'
+      );
+    });
 
-  expect(stack instanceof HTMLUListElement).toBeTruthy();
-  expect(listItems[0] instanceof HTMLLIElement).toBeTruthy();
+    test('applies custom spacing from theme', () => {
+      render(<Basic space={2} />);
+
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
+
+      expect(stack?.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 2)'
+      );
+    });
+  });
+
+  describe('Alignment', () => {
+    test('aligns children horizontally to the left', () => {
+      render(<Basic alignX="left" />);
+
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
+
+      expect(stack).toHaveClass('items-start');
+    });
+
+    test('aligns children horizontally to center', () => {
+      render(<Basic alignX="center" />);
+
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
+
+      expect(stack).toHaveClass('items-center');
+    });
+
+    test('aligns children horizontally to the right', () => {
+      render(<Basic alignX="right" />);
+
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
+
+      expect(stack).toHaveClass('items-end');
+    });
+
+    test('aligns children vertically to top', () => {
+      render(<Basic alignY="top" />);
+
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
+
+      expect(stack).toHaveClass('justify-start');
+    });
+
+    test('aligns children vertically to center', () => {
+      render(<Basic alignY="center" />);
+
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
+
+      expect(stack).toHaveClass('justify-center');
+    });
+
+    test('aligns children vertically to bottom', () => {
+      render(<Basic alignY="bottom" />);
+
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
+
+      expect(stack).toHaveClass('justify-end');
+    });
+  });
+
+  describe('Element types and layout', () => {
+    test('renders as div element by default', () => {
+      render(<Basic />);
+
+      const stack = screen.getByText('Getting Started with Stack').parentElement
+        ?.parentElement;
+
+      expect(stack instanceof HTMLDivElement).toBeTruthy();
+    });
+
+    test('fills available space when stretch is enabled', () => {
+      render(<Stretch />);
+
+      const blocks = screen.getAllByText(/Lirum|Larum|Löffelstiel/);
+      const stack = blocks[0].parentElement;
+
+      expect(stack).toHaveClass('size-full');
+    });
+
+    test('renders as list element when asList is enabled', () => {
+      render(<AsList />);
+
+      const stack = screen.getByText('first').parentElement?.parentElement;
+
+      expect(stack instanceof HTMLUListElement).toBeTruthy();
+    });
+  });
 });

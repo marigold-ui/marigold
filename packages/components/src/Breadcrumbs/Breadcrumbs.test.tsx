@@ -4,7 +4,13 @@ import userEvent from '@testing-library/user-event';
 import * as stories from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 
-const { Basic, Collapsed } = composeStories(stories);
+const { Basic, Collapsed } = composeStories(stories, {
+  decorators: Story => (
+    <div id="storybook-root">
+      <Story />
+    </div>
+  ),
+});
 const user = userEvent.setup();
 
 /**

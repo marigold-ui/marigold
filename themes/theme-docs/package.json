@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-docs",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Marigold Docs Theme",
   "license": "MIT",
   "keywords": [
@@ -47,7 +47,7 @@
     "postcss-cli": "11.0.1",
     "postcss-prefix-selector": "2.1.1",
     "tailwindcss": "4.1.17",
-    "tsdown": "0.15.9"
+    "tsdown": "0.16.8"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",

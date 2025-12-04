@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-rui",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Marigold RUI Theme",
   "license": "MIT",
   "keywords": [
@@ -48,7 +48,7 @@
     "cssnano": "7.1.2",
     "postcss-cli": "11.0.1",
     "tailwindcss": "4.1.17",
-    "tsdown": "0.15.9"
+    "tsdown": "0.16.8"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
