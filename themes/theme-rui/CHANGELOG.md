@@ -1,5 +1,18 @@
 # @marigold/theme-rui
 
+## 4.0.2
+
+### Patch Changes
+
+- 89acee4: feat: Add a generic spacing scale that can be used with `createSpacingVar`
+- Updated dependencies [89acee4]
+- Updated dependencies [4ac589b]
+- Updated dependencies [d720c5e]
+- Updated dependencies [0b8ca1e]
+- Updated dependencies [c5bd98b]
+  - @marigold/components@16.1.0
+  - @marigold/system@16.1.0
+
 ## 4.0.1
 
 ### Patch Changes

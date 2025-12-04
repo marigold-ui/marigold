@@ -1,5 +1,3 @@
-// TODO: Types and options should be key value pairs not an array.
-
 export const venueTypes = [
   'Outdoor Venue',
   'Club or Lounge',
