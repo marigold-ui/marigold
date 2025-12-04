@@ -1,14 +1,12 @@
 import { type ThemeComponent, cva } from '@marigold/system';
-import { inputInvalid, inputReadOnly } from './Input.styles';
 
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva([
-    'rounded-lg h-input bg-background',
-    'has-focus-visible:util-focus-ring outline-none',
-    inputInvalid,
-    inputReadOnly,
-    'border border-input text-sm shadow-xs transition-shadow',
-    'data-invalid:data-[focus-within]:border-destructive data-invalid:data-[focus-within]:ring-destructive/20',
+    'surface has-default-state:elevation-raised h-input',
+    'has-invalid:surface-error',
+    'has-disabled:state-disabled',
+    'group-read-only/field:state-readonly',
+    'has-focus:state-focus outline-none',
   ]),
   stepper: cva([
     'w-7 h-full text-center shrink-0',
@@ -16,9 +14,9 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     'border-input! first-of-type:border-r! last-of-type:border-l!',
   ]),
   input: cva([
-    'tabular-nums text-foreground px-3 py-2',
+    'text-foreground px-3 py-2 text-sm',
     'min-w-0 flex-1 bg-transparent',
-    'group-[[data-stepper]]/field:text-center',
+    'group-data-stepper/field:text-center',
     'disabled:text-disabled-foreground disabled:bg-disabled',
   ]),
 };
