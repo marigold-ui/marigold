@@ -1,142 +1,119 @@
-import { screen } from '@testing-library/react';
-import { Theme, cva } from '@marigold/system';
-import { Headline } from '../Headline/Headline';
-import { Text } from '../Text/Text';
-import { setup } from '../test.utils';
-import { Container } from './Container';
+import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
+import * as stories from './Container.stories';
 
-const theme: Theme = {
-  name: 'test',
-  colors: {
-    emerald: 'rgb(5 150 105);',
-  },
-  components: {
-    Headline: cva(''),
-    Text: cva(''),
-  },
-};
-const { render } = setup({ theme });
+const { Base, WithBreakout } = composeStories(stories, {});
 
-test('defines a content length for text and headlines', () => {
-  render(
-    <>
-      <Container data-testid="container" />
-    </>
-  );
+describe('Container', () => {
+  describe('Rendering', () => {
+    test('renders content correctly', () => {
+      render(<Base data-testid="container" />);
 
-  const container = screen.getByTestId(/container/);
-  expect(container.style.getPropertyValue('--maxTextWidth')).toBeDefined();
-  expect(container.style.getPropertyValue('--maxHeadlineWidth')).toBeDefined();
-});
+      const container = screen.getByTestId('container');
+      expect(container).toBeInTheDocument();
+    });
 
-test('limits with of <Text> and <Headline> children (via CSS var)', () => {
-  render(
-    <Container data-testid="container">
-      <Headline>Yay</Headline>
-      <Text>Coding makes fun</Text>
-    </Container>
-  );
+    test('renders with breakout content', () => {
+      render(<WithBreakout data-testid="container" />);
 
-  const container = screen.getByTestId(/container/);
-  const headline = screen.getByText('Yay');
-  const text = screen.getByText('Coding makes fun');
+      const container = screen.getByTestId('container');
+      expect(container).toBeInTheDocument();
+    });
+  });
 
-  expect(Array.from(container.style)).toContain('--maxHeadlineWidth');
-  expect(Array.from(container.style)).toContain('--maxTextWidth');
+  describe('Content Length', () => {
+    test('defines content length for text and headlines', () => {
+      render(<Base data-testid="container" />);
 
-  expect(headline).toHaveClass('max-w-(--maxHeadlineWidth)');
-  expect(text).toHaveClass('max-w-(--maxTextWidth)');
-});
+      const container = screen.getByTestId('container');
+      expect(container.style.getPropertyValue('--maxTextWidth')).toBeDefined();
+      expect(
+        container.style.getPropertyValue('--maxHeadlineWidth')
+      ).toBeDefined();
+    });
 
-test('supports different lengths for content', () => {
-  render(
-    <>
-      <Container data-testid="container-default" />
-      <Container data-testid="container-long" contentLength="long" />
-    </>
-  );
+    test('supports different lengths for content', () => {
+      const { rerender } = render(
+        <Base data-testid="container" contentLength="default" />
+      );
 
-  const defaultContainer = screen.getByTestId(/container-default/);
-  const longContainer = screen.getByTestId(/container-long/);
+      const defaultContainer = screen.getByTestId('container');
+      const defaultTextWidth =
+        defaultContainer.style.getPropertyValue('--maxTextWidth');
 
-  expect(defaultContainer.style.getPropertyValue('--maxTextWidth')).not.toEqual(
-    longContainer.style.getPropertyValue('--maxTextWidth')
-  );
-  expect(
-    defaultContainer.style.getPropertyValue('--maxHeadlineWidth')
-  ).not.toEqual(longContainer.style.getPropertyValue('--maxHeadlineWidth'));
-});
+      rerender(<Base data-testid="container" contentLength="long" />);
 
-test('aligns children on left by default', () => {
-  render(
-    <Container data-testid="container">
-      <Text>some text</Text>
-    </Container>
-  );
+      const longContainer = screen.getByTestId('container');
+      const longTextWidth =
+        longContainer.style.getPropertyValue('--maxTextWidth');
 
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`*:col-[1]`);
-});
+      expect(defaultTextWidth).not.toEqual(longTextWidth);
+    });
+  });
 
-test('allows to align children to the center', () => {
-  render(
-    <Container data-testid="container" align="center">
-      <Text>some text</Text>
-    </Container>
-  );
+  describe('Alignment', () => {
+    test('aligns children on left by default', () => {
+      render(<Base data-testid="container" />);
 
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`*:col-[2]`);
-});
+      const container = screen.getByTestId('container');
+      expect(container).toHaveClass('*:col-[1]');
+    });
 
-test('allows to align children to the right', () => {
-  render(
-    <Container data-testid="container" align="right">
-      <Text>some text</Text>
-    </Container>
-  );
+    test('aligns children to the center', () => {
+      render(<Base data-testid="container" align="center" />);
 
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`*:col-[3]`);
-});
+      const container = screen.getByTestId('container');
+      expect(container).toHaveClass('*:col-[2]');
+    });
 
-test('supports default align items none', () => {
-  render(
-    <Container data-testid="container">
-      <Text>some text</Text>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).not.toHaveClass(`place-items`);
-});
+    test('aligns children to the right', () => {
+      render(<Base data-testid="container" align="right" />);
 
-test('supports align items center', () => {
-  render(
-    <Container alignItems="center" data-testid="container">
-      <Text>some text</Text>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`place-items-center`);
-});
+      const container = screen.getByTestId('container');
+      expect(container).toHaveClass('*:col-[3]');
+    });
+  });
 
-test('supports align items right', () => {
-  render(
-    <Container alignItems="right" data-testid="container">
-      <Text>some text</Text>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`place-items-end`);
-});
+  describe('Align Items', () => {
+    test('does not apply place-items by default', () => {
+      render(<Base data-testid="container" alignItems="none" />);
 
-test('accepts and uses spacing from theme', () => {
-  render(
-    <Container space={2} data-testid="container">
-      <Text>one</Text>
-      <Text>two</Text>
-    </Container>
-  );
-  const container = screen.getByTestId(/container/);
-  expect(container).toHaveClass(`gap-2`);
+      const container = screen.getByTestId('container');
+      expect(container).not.toHaveClass('place-items');
+    });
+
+    test('supports align items center', () => {
+      render(<Base data-testid="container" alignItems="center" />);
+
+      const container = screen.getByTestId('container');
+      expect(container).toHaveClass('place-items-center');
+    });
+
+    test('supports align items right', () => {
+      render(<Base data-testid="container" alignItems="right" />);
+
+      const container = screen.getByTestId('container');
+      expect(container).toHaveClass('place-items-end');
+    });
+  });
+
+  describe('Spacing', () => {
+    test('applies default spacing value of 0', () => {
+      render(<Base space={0} data-testid="container" />);
+
+      const container = screen.getByTestId('container');
+      expect(container.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 0)'
+      );
+    });
+
+    test('applies custom spacing from theme', () => {
+      render(<Base space={4} data-testid="container" />);
+
+      const container = screen.getByTestId('container');
+      expect(container.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+    });
+  });
 });

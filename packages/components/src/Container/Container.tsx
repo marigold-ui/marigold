@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import type { GapSpaceProp, PlaceItemsProp } from '@marigold/system';
-import { cn, createVar, gapSpace, placeItems } from '@marigold/system';
+import type { PlaceItemsProp, SpaceProp } from '@marigold/system';
+import { cn, createSpacingVar, createVar, placeItems } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 // Helpers
@@ -31,7 +31,9 @@ export const gridColumn = {
 
 // Props
 // ---------------
-export interface ContainerProps extends GapSpaceProp, AriaRegionProps {
+export interface ContainerProps
+  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+    AriaRegionProps {
   children?: ReactNode;
   /**
    * Width of the container.
@@ -62,16 +64,18 @@ export const Container = ({
   <div
     {...props}
     className={cn(
-      'grid',
+      'grid gap-(--space)',
       placeItems[alignItems],
       gridColsAlign[align],
-      gridColumn[align],
-      gapSpace[space]
+      gridColumn[align]
     )}
-    style={createVar({
-      maxTextWidth: containerTextLength[contentLength],
-      maxHeadlineWidth: containerHeadlineLength[contentLength],
-    })}
+    style={{
+      ...createVar({
+        maxTextWidth: containerTextLength[contentLength],
+        maxHeadlineWidth: containerHeadlineLength[contentLength],
+      }),
+      ...createSpacingVar('space', `${space}`),
+    }}
   >
     {children}
   </div>
