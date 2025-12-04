@@ -54,7 +54,7 @@ export default () => {
       </Stack>
       <Stack space="related">
         <Headline level="3">Payment Information</Headline>
-        <Card space="peer">
+        <Card space="peer" stretch>
           <TextField label="Cardholder Name" />
           <TextField label="Card Number" maxLength={19} />
           <Inline space="tight" noWrap>
