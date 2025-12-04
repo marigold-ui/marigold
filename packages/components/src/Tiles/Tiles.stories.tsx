@@ -6,27 +6,19 @@ import { Tiles } from './Tiles';
 
 const meta = {
   title: 'Components/Tiles',
+  component: Tiles,
   argTypes: {
     space: {
       control: {
         type: 'text',
       },
-      description: 'Responsive Style Value',
-      table: {
-        defaultValue: {
-          summary: 'none',
-        },
-      },
+      description: 'Space between tiles',
     },
     tilesWidth: {
       control: {
         type: 'text',
       },
-      description: 'Responsive Style Value',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '300px' },
-      },
+      description: 'Minimum width for each tile',
     },
     stretch: {
       control: {
@@ -39,14 +31,16 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      description:
-        'Specifies the size of an implicitly-created grid row track or pattern of tracks.',
+      description: 'Makes all tiles have the same height as the tallest tile',
     },
   },
   args: {
+    space: 4,
     tilesWidth: '300px',
+    stretch: false,
+    equalHeight: false,
   },
-} satisfies Meta;
+} satisfies Meta<typeof Tiles>;
 
 export default meta;
 
