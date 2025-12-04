@@ -78,8 +78,8 @@ export const Card = ({
     <div
       {...props}
       className={cn(
-        stretch ? 'flex' : 'inline-flex',
-        'flex-col items-start gap-y-(--space)',
+        'flex flex-col items-start gap-y-(--space)',
+        stretch ? '' : 'w-fit',
         classNames,
         paddingSpace !== undefined && paddingSpace[p!],
         paddingSpaceX !== undefined && paddingSpaceX[px!],

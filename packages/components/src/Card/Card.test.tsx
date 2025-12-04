@@ -48,7 +48,7 @@ describe('Card', () => {
       expect(card instanceof HTMLDivElement).toBeTruthy();
     });
 
-    test('renders with flex display by default (inline-flex)', () => {
+    test('renders with flex display and w-fit by default', () => {
       render(
         <Basic data-testid="card">
           <div>Content</div>
@@ -57,7 +57,8 @@ describe('Card', () => {
 
       const card = screen.getByTestId('card');
 
-      expect(card).toHaveClass('inline-flex');
+      expect(card).toHaveClass('flex');
+      expect(card).toHaveClass('w-fit');
     });
 
     test('uses flex display when stretch is enabled', () => {
@@ -241,7 +242,7 @@ describe('Card', () => {
 
       const card = screen.getByTestId('card');
 
-      expect(card).toHaveClass('inline-flex');
+      expect(card).toHaveClass('w-fit');
     });
   });
 
