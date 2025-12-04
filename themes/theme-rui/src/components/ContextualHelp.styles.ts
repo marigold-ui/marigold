@@ -17,7 +17,7 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
         },
         size: {
           default: '[&_svg]:size-4 hover:util-focus-ring',
-          large: 'size-9 [&_svg]:size-4',
+          large: 'size-9 [&_svg]:size-4.5',
         },
       },
       defaultVariants: {
