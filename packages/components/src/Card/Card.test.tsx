@@ -85,18 +85,6 @@ describe('Card', () => {
 
       expect(card).toHaveClass('flex-col');
     });
-
-    test('aligns items to the start', () => {
-      render(
-        <Basic data-testid="card">
-          <div>Content</div>
-        </Basic>
-      );
-
-      const card = screen.getByTestId('card');
-
-      expect(card).toHaveClass('items-start');
-    });
   });
 
   describe('Spacing', () => {
