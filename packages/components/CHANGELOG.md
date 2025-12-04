@@ -1,5 +1,22 @@
 # @marigold/components
 
+## 16.1.0
+
+### Minor Changes
+
+- c5bd98b: feat(DST-1136): Make clear that `"stretch"` is the default for `<Stack>`
+
+### Patch Changes
+
+- 89acee4: feat: Add a generic spacing scale that can be used with `createSpacingVar`
+- 4ac589b: refa(DST-1130): Use CSS var instead of map for spacing in `<Stack>`
+- d720c5e: feat(DST-1138): `<Inline>` uses spacing helper instead of style-props
+- 0b8ca1e: feat(DST-1145): Use semantic tokens with `<Aside>`
+- Updated dependencies [89acee4]
+- Updated dependencies [4ac589b]
+- Updated dependencies [c5bd98b]
+  - @marigold/system@16.1.0
+
 ## 16.0.1
 
 ### Patch Changes
