@@ -10,10 +10,10 @@ import {
 
 export default () => {
   return (
-    <Stack space="peer" alignX="left">
+    <Stack space="peer">
       <Stack space="related">
         <Headline level="3">Personal Information</Headline>
-        <Card space="group">
+        <Card space="group" stretch>
           <Stack space="peer">
             <TextField label="Full Name" />
             <TextField label="Email" type="email" />
