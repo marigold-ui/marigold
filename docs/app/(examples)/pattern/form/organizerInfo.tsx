@@ -22,7 +22,7 @@ export const OrganizerInfo = () => (
       </Accordion.Header>
       <Accordion.Content>
         <Stack space="peer">
-          <Inline space="fieldX" noWrap>
+          <Inline space="related" noWrap>
             <TextField label="First Name" width={'1/2'} />
             <TextField label="Last Name" width={'1/2'} />
           </Inline>
@@ -34,7 +34,7 @@ export const OrganizerInfo = () => (
             label="Job Title"
             description="Position within the organization"
           />
-          <Inline space="fieldX" noWrap>
+          <Inline space="related" noWrap>
             <TextField
               label="Email"
               type="email"

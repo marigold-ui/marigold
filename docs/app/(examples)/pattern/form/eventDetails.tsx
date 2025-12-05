@@ -25,7 +25,7 @@ export const EventDetails = () => {
         description="Describe what this event is about"
         rows={4}
       />
-      <Inline space="fieldX">
+      <Inline space="related">
         <DatePicker label="Start Date" width="fit" required />
         <DatePicker label="End Date" width="fit" />
       </Inline>

@@ -27,7 +27,7 @@ export default () => (
         rows={3}
         required
       />
-      <Inline space="fieldX">
+      <Inline space="related">
         <DatePicker label="Start Date" width="fit" required />
         <DatePicker label="End Date" width="fit" />
       </Inline>
@@ -75,7 +75,7 @@ export default () => (
         description="Street address of the venue"
         required
       />
-      <Inline space="fieldX">
+      <Inline space="related">
         <TextField label="City" required />
         <TextField label="Postal Code" width={20} />
       </Inline>
@@ -152,7 +152,7 @@ export default () => (
         </Accordion.Item>
       </Accordion>
     </Stack>
-    <Inline space="fieldX">
+    <Inline space="related">
       <Button variant="primary">Create Event</Button>
       <Button variant="secondary">Save as Draft</Button>
     </Inline>

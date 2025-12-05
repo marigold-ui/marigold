@@ -22,7 +22,7 @@ export default () => (
     <Inset spaceY="group">
       <Stack space="group">
         <TextField label="Street" />
-        <Inline space="fieldX">
+        <Inline space="related">
           <TextField label="Postcode" width={20} />
           <TextField label="City" width={40} />
         </Inline>

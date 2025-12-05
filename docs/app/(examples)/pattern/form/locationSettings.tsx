@@ -29,7 +29,7 @@ export const LocationSettings = () => {
       />
       <Inset spaceY="group">
         <Stack space="group">
-          <Inline alignY="input" space="fieldX" noWrap>
+          <Inline alignY="input" space="related" noWrap>
             <Select label="Venue">
               {venues.map(venue => (
                 <Select.Option key={venue.id} id={venue.id}>
@@ -42,7 +42,7 @@ export const LocationSettings = () => {
           </Inline>
           <TextField label="Name" />
           <TextField label="Street" />
-          <Inline space="fieldX">
+          <Inline space="related">
             <TextField label="Postcode" width={20} />
             <TextField label="City" width={44} />
           </Inline>
