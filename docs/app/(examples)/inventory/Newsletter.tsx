@@ -20,7 +20,7 @@ export const Newsletter = () => (
           inbox. Subscribe to our newsletter for the latest news and promotions!
         </Text>
       </Stack>
-      <Inline noWrap space="fieldX">
+      <Inline noWrap space="related">
         <TextField
           arial-label="Email"
           placeholder="Enter your email"

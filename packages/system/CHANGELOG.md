@@ -1,5 +1,16 @@
 # @marigold/system
 
+## 16.1.0
+
+### Minor Changes
+
+- c5bd98b: feat(DST-1136): Make clear that `"stretch"` is the default for `<Stack>`
+
+### Patch Changes
+
+- 89acee4: feat: Add a generic spacing scale that can be used with `createSpacingVar`
+- 4ac589b: refa(DST-1130): Use CSS var instead of map for spacing in `<Stack>`
+
 ## 16.0.1
 
 ## 16.0.0

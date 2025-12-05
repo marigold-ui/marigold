@@ -8,6 +8,7 @@ import type {
   PaddingSpacePropY,
   PaddingTopProp,
   SpaceProp,
+  SpacingTokens,
 } from '@marigold/system';
 import {
   cn,
@@ -25,7 +26,7 @@ import {
 // Props
 // ---------------
 export interface CardProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends SpaceProp<SpacingTokens>,
     PaddingRightProp,
     PaddingLeftProp,
     PaddingBottomProp,
@@ -78,8 +79,8 @@ export const Card = ({
     <div
       {...props}
       className={cn(
-        stretch ? 'flex' : 'inline-flex',
-        'flex-col items-start gap-y-(--space)',
+        'flex flex-col gap-y-(--space)',
+        stretch ? '' : 'w-fit',
         classNames,
         paddingSpace !== undefined && paddingSpace[p!],
         paddingSpaceX !== undefined && paddingSpaceX[px!],
