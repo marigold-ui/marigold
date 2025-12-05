@@ -29,7 +29,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   }),
   header: cva(
     [
-      'flex w-full items-center justify-between gap-4 px-4 py-2 rounded-md cursor-pointer text-foreground',
+      'flex w-full items-center justify-between gap-4 py-2 rounded-md cursor-pointer text-foreground',
       'text-left text-base font-semibold leading-6 transition-all',
       'hover:no-underline',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
@@ -38,7 +38,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variants: {
         variant: {
           default: 'focus-visible:state-focus outline-none',
-          card: 'outline-none',
+          card: 'px-4 outline-none',
         },
       },
       defaultVariants: {
