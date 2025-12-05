@@ -60,6 +60,19 @@ ContextualHelp is ideal when brief tooltips are insufficient and users might ben
   </Dont>
 </GuidelineTiles>
 
+### With form fields
+
+ContextualHelp can be placed directly next to form field labels to provide additional context or guidance for specific inputs. This is particularly useful when:
+
+- **Explaining format requirements**: Help users understand expected input patterns (e.g., email formats, phone number conventions, or date formats).
+- **Clarifying technical terms**: Provide definitions for industry-specific jargon or unfamiliar concepts without cluttering the label itself.
+- **Offering examples**: Show sample values or scenarios to guide users toward correct input.
+- **Explaining data usage**: Inform users why certain information is needed or how it will be used, especially for sensitive data.
+
+Keep labels concise and use ContextualHelp to elaborate. This keeps your form clean while ensuring users can access detailed guidance when needed. Place the help icon immediately after the label text to maintain a clear visual relationship between the field and its explanation.
+
+<ComponentDemo file="./contextual-help-label.demo.tsx" />
+
 ### Custom placement
 
 The position of the popover can be customized using the placement prop. Available options include `top`, `bottom`, `left`, `right`, and aligned variants like `bottom start`.
