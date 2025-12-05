@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
-import { cn, createVar, gapSpace } from '@marigold/system';
-import type { GapSpaceProp } from '@marigold/system';
+import type { SpaceProp } from '@marigold/system';
+import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface TilesProps extends GapSpaceProp, AriaRegionProps {
+export interface TilesProps
+  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+    AriaRegionProps {
   /**
    * The children of the component.
    */
@@ -50,12 +52,14 @@ export const Tiles = ({
     <div
       {...props}
       className={cn(
-        'grid',
-        gapSpace[space],
+        'grid gap-(--space)',
         'grid-cols-[repeat(auto-fit,var(--column))]',
         equalHeight && 'auto-rows-[1fr]'
       )}
-      style={createVar({ column, tilesWidth })}
+      style={{
+        ...createVar({ column, tilesWidth }),
+        ...createSpacingVar('space', `${space}`),
+      }}
     >
       {children}
     </div>
