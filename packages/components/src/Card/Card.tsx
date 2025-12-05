@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import type {
-  GapSpaceProp,
   PaddingBottomProp,
   PaddingLeftProp,
   PaddingRightProp,
@@ -8,10 +7,11 @@ import type {
   PaddingSpacePropX,
   PaddingSpacePropY,
   PaddingTopProp,
+  SpaceProp,
 } from '@marigold/system';
 import {
   cn,
-  gapSpace,
+  createSpacingVar,
   paddingBottom,
   paddingLeft,
   paddingRight,
@@ -25,17 +25,20 @@ import {
 // Props
 // ---------------
 export interface CardProps
-  extends PaddingRightProp,
+  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+    PaddingRightProp,
     PaddingLeftProp,
     PaddingBottomProp,
     PaddingTopProp {
   children?: ReactNode;
   variant?: string;
-  size?: 'default' | 'full' | (string & {});
+  size?: string;
+
   /**
-   * Gap between children. You can see allowed tokens [here](../../foundations/design-token#spacing).
+   * Stretch to fill space horizontally.
+   * @default false
    */
-  space?: GapSpaceProp['space'];
+  stretch?: boolean;
 
   /**
    * Padding of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
@@ -59,7 +62,8 @@ export const Card = ({
   children,
   variant,
   size,
-  space = 0,
+  space = '0',
+  stretch,
   p,
   px,
   py,
@@ -74,9 +78,9 @@ export const Card = ({
     <div
       {...props}
       className={cn(
-        'flex flex-col',
+        'flex flex-col gap-y-(--space)',
+        stretch ? '' : 'w-fit',
         classNames,
-        gapSpace[space],
         paddingSpace !== undefined && paddingSpace[p!],
         paddingSpaceX !== undefined && paddingSpaceX[px!],
         paddingSpaceY !== undefined && paddingSpaceY[py!],
@@ -85,6 +89,7 @@ export const Card = ({
         paddingBottom !== undefined && paddingBottom[pb!],
         paddingTop !== undefined && paddingTop[pt!]
       )}
+      style={createSpacingVar('space', `${space}`)}
     >
       {children}
     </div>
