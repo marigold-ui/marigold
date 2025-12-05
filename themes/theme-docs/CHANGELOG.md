@@ -1,5 +1,15 @@
 # @marigold/theme-docs
 
+## 4.0.3
+
+### Patch Changes
+
+- Updated dependencies [cc61968]
+- Updated dependencies [6c071f0]
+- Updated dependencies [44d01a6]
+  - @marigold/components@16.2.0
+  - @marigold/system@16.2.0
+
 ## 4.0.2
 
 ### Patch Changes
