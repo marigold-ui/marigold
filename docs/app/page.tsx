@@ -59,18 +59,14 @@ const Page = () => {
               tools that let product teams focus on core challenges while
               creating unified, accessible applications.
             </p>
-            <Center>
-              <Inline data-toggle data-toggle-target="#foobar" space={6}>
-                <Link variant="primary" size="large" href="/getting-started">
-                  <span className="inline-block translate-y-px">
-                    Get started
-                  </span>
-                </Link>
-                <Link variant="secondary" size="large" href="/components">
-                  Explore Components
-                </Link>
-              </Inline>
-            </Center>
+            <Inline space={6} alignX="center">
+              <Link variant="primary" size="large" href="/getting-started">
+                <span className="inline-block translate-y-px">Get started</span>
+              </Link>
+              <Link variant="secondary" size="large" href="/components">
+                Explore Components
+              </Link>
+            </Inline>
           </div>
         </div>
 
