@@ -114,7 +114,7 @@ export const Inventory = () => (
         </Inline>
       </Stack>
       <Stack space={6}>
-        <Card space={6}>
+        <Card space={6} stretch>
           <Inline noWrap space={5}>
             <img
               src={venue.image}
