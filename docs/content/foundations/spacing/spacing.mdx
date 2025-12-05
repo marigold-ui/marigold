@@ -5,25 +5,23 @@ badge: alpha
 order: 99
 ---
 
-Space is the invisible structure of our interface. It isn't just empty pixels to be filled, but active connectivity that dictates the hierarchy and logic of a page. The fundamental principle is that the distance between elements directly signals the strength of their relationship, meaning the stronger the bond (like a label and an input), the closer they must be.
+Space is the invisible structure of our interface, not merely empty pixels, but the active connectivity that dictates hierarchy and logic. It follows a simple principle: distance signals relationship. Stronger bonds (like a label and input) require closer proximity.
 
-To ensure consistency, this system relies on a _relational scale_ of semantic tokens rather than arbitrary pixel values. By decoupling spacing from hard-coded numbers, we allow the interface to adapt gracefully across different contexts and density settings.
+To ensure consistency, we rely on semantic tokens instead of arbitrary values. This decouples intent from mathematics, allowing the interface to adapt across contexts. While a 4px grid provides the underlying rhythm, these raw values are strictly a fallback. Semantic tokens should always be the primary choice to preserve design intent.
 
-## Space communicates relationship
+Effective spacing manages two distinct roles: the _relationship between objects_ (relation) and the _internal density of an object_ (inset).
 
-We utilize a relational scale rather than a purely size-based system. While traditional T-shirt sizing (sm, md, or lg) is useful for general dimensions, a relational approach better captures the cognitive connection between objects.
+## Relation (Space)
 
-The tokens in the spacing scale describe the strength of the bond between elements rather than size references. In traditional systems, spacing involves a translation step: identifying the relationship ("these items should look like a pair") and then recalling the specific pixel value that represents it.
+Relation describes the connection between elements. It defines hierarchy and grouping for margins, flex gaps, and grid gaps. The fundamental rule is: "The tighter the space, the stronger the relationship."
 
-Using a relational system removes that translation step. When you choose a token, you are not asking "How big should this gap be?" You are asking "How closely related are these two elements?"
+When elements are strongly related, the bond is tight, and they pull close together. When they are distinct, the bond relaxes, and they drift apart.
 
-> The fundamental rule: The tighter the space, the stronger the relationship.
+To select the correct token for space, think in terms of _nouns_ (e.g., peer, group) because you are defining the nature of the relationship between neighbors. You are not asking "How large should this space be?" but rather "How closely related are these two elements?"
 
-## Scale
+### Scale
 
-By naming tokens after the relationship (e.g., related, peer), we embed design logic directly into the code. You don't need to memorize the pixel value of "related". You simply identify that a label and input are related to each other, and the system handles the math.
-
-The scale consists of 7 tokens, where each maps to a specific intent. This granular approach ensures that every spacing decision, from the smallest micro interaction border to the largest page level break, follows a consistent vertical and horizontal rhythm.
+The relational scale has 7 tokens, each with a specific purpose. This ensures a consistent rhythm across the interface, covering everything from small details to large page sections.
 
 {/* prettier-ignore-start */}
 
@@ -115,37 +113,127 @@ The scale consists of 7 tokens, where each maps to a specific intent. This granu
 
 {/* prettier-ignore-end */}
 
-## Flow
+### Flow
 
-Spacing is applied differently depending on the direction of content flow. Every interface layout is a composition of elements stacking, sitting inline, or containing other elements. Identifying the Axis of Flow ensures we apply the relational scale in a way that respects the component's internal logic.
+Spacing is applied differently depending on the direction of content flow. Identifying the axis of flow ensures we apply the relational scale in a way that respects the component's internal logic.
 
-### Stack (Vertical flow)
+#### Stack (Vertical flow)
 
-The stack axis manages vertical rhythm, addressing how elements pile on top of one another down the page (Y-axis). This flow separates vertical siblings—like a label sitting above an input or paragraphs in an article.
+The stack axis manages vertical rhythm, addressing how elements pile on top of one another down the page (Y-axis). This flow separates vertical siblings, like a label sitting above an input or paragraphs in an article.
 
 <ComponentDemo file="./spacing-stack.demo.tsx" mode="preview" />
 
-### Inline (Horizontal flow)
+#### Inline (Horizontal flow)
 
 The inline axis governs the horizontal association of elements, managing how peers sit side-by-side (X-axis). This context determines the separation between horizontal siblings, such as buttons in a toolbar or an icon next to text.
 
 <ComponentDemo file="./spacing-inline.demo.tsx" mode="preview" />
 
-### Inset (Internal container flow)
-
-The inset axis controls the internal "breathing room" of a container, pushing inward to frame content rather than pushing outward against neighbors. Unlike the stack or inline axes which manage relationships between siblings, inset defines the relationship between a parent container and its children.
-
-While a standard "square inset" applies equal padding on all sides for cards and panels, specific contexts require optical correction. A "squish inset" reduces vertical padding to balance elements like buttons that would otherwise look awkwardly tall, whereas a "stretch inset" reduces horizontal padding to maximize screen real estate in narrow columns or mobile views.
-
-<ComponentDemo file="./spacing-inset.demo.tsx" mode="preview" />
-
-// TODO: add scale here? (something like in order to make it more convenient to apply inset ...)
-
-### Grid (Two-directional flow)
+#### Grid (Two-directional flow)
 
 The grid axis handles the macro-layout skeleton where items flow in both X and Y directions simultaneously. This two-directional structure defines the gutters in complex layouts like dashboard masonry or image galleries, establishing a consistent rhythm across the entire 2-dimensional plane.
 
 <ComponentDemo file="./spacing-grid.demo.tsx" mode="preview" />
+
+## Inset (Padding)
+
+Inset defines the internal breathing room of a container. It acts as a density dial: low inset (compact) optimizes for scanning data, while high inset (spacious) improves focus and touch interaction. Unlike the stack or inline axes which manage relationships between siblings, inset defines the relationship between a parent container and its children, pushing inward to frame content.
+
+To choose a token, use _adjectives_ instead of nouns. You aren't defining a relationship between neighbors, but the intrinsic quality of the component itself. Is it compact? Is it regular?
+
+This decouples density from context, ensuring components remain portable and predictable. A button preserves its internal structure (its inset) regardless of where it is placed. It could be inside a spacious marketing card, a standard modal, or a narrow sidebar. Instead of the layout parent implicitly shrinking or growing elements, the component declares its own physics.
+
+### Scale
+
+The scale has 5 tokens, each with a specific purpose. This ensures consistent density across the interface, covering everything from small details to large page sections.
+
+{/* prettier-ignore-start */}
+
+<Table aria-label="Token explanation">
+  <Table.Header>
+    <Table.Column>**Token**</Table.Column>
+    <Table.Column>Description</Table.Column>
+    <Table.Column width="1/5">Common Patterns</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>**Compact**</Table.Cell>
+      <Table.Cell>
+        Applies minimal padding to maximize information density. It is used
+        when screen real estate is scarce and scanning speed is critical.
+      </Table.Cell>
+      <Table.Cell>
+        <Text fontStyle='italic' color="text-primary-muted">Data table cells, dense tooltips, micro-tags, ...</Text>
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Tight**</Table.Cell>
+      <Table.Cell>
+        Creates a condensed look for small interactive elements. It fits content
+        tightly to ensure elements can sit comfortably within restricted bars
+        or dense layouts.
+      </Table.Cell>
+      <Table.Cell>
+        <Text fontStyle='italic' color="text-primary-muted">Chips, badges, compact toolbar items, ...</Text>
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Regular**</Table.Cell>
+      <Table.Cell>
+        The default volume for standard interactions. It provides a comfortable
+        touch target and balanced white space for general UI components.
+      </Table.Cell>
+      <Table.Cell>
+        <Text fontStyle='italic' color="text-primary-muted">Buttons, standard cards, input fields, form blocks, ...</Text>
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Relaxed**</Table.Cell>
+      <Table.Cell>
+        Introduces significant breathing room to separate distinct zones. It is
+        used for containers that need to draw attention or stand apart from the
+        main flow.
+      </Table.Cell>
+      <Table.Cell>
+        <Text fontStyle='italic' color="text-primary-muted">Modals, generous cards, alert banners, ...</Text>
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>**Spacious**</Table.Cell>
+      <Table.Cell>
+        A structural inset for major layout blocks. It provides massive internal
+        space to slow down the reading rhythm and frame high-impact content.
+      </Table.Cell>
+      <Table.Cell>
+        <Text fontStyle='italic' color="text-primary-muted">Hero sections, onboarding slides, empty states, ...</Text>
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+{/* prettier-ignore-end */}
+
+### Optical Corrections
+
+While a square inset (equal padding on all sides) is the default, UI elements often require optical correction to look balanced. A button with equal padding often looks oddly tall, and a mobile card with standard padding loses too much horizontal space.
+
+To solve this, we use _squish_ and _stretch_ modifiers. These corrections maintain visual balance by reducing one dimension (either X or Y) to the next smallest step on the geometric scale. For example, a 16px inset steps down to 8px on the compressed axis.
+
+#### Squish (Vertical Compression)
+
+Squish modifiers apply vertical compression to elements like buttons or table rows that need to align horizontally with the grid but maintain a compact vertical profile. By keeping the standard width and reducing the height, we preserve alignment while saving vertical space.
+
+Ideally, the Y-axis padding steps down one level on the scale. For example, a "regular-squish" token combines "regular" horizontal padding with "tight" vertical padding.
+
+#### Stretch (Horizontal Compression)
+
+Stretch modifiers apply horizontal compression, which is essential for mobile layouts or narrow columns (like sidebars) where screen real estate is limited. This approach maintains the vertical rhythm and breathing room so the design doesn't feel cramped, but reduces the horizontal padding to maximize content width.
+
+Here, the X-axis padding steps down one level. A "relaxed-stretch" token, for instance, maintains "relaxed" vertical padding but reduces the horizontal padding to "regular".
+
+<ComponentDemo file="./spacing-inset.demo.tsx" mode="preview" />
+
+---
 
 ## Application
 
