@@ -56,7 +56,7 @@ export const Button: ThemeComponent<'Button'> = cva(
           'destructive-ghost',
         ],
         size: 'default',
-        class: 'h-button px-4 py-2 [&_svg]:size-4',
+        class: 'h-button p-squish-relaxed [&_svg]:size-4',
       },
       {
         variant: [
