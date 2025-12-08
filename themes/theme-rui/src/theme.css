@@ -186,23 +186,23 @@
   --spacing-context: --spacing(32);
 
   /* INLINE SPACING */
-  --inline-square-compact: --spacing(1);
-  --inline-square-tight: --spacing(2);
-  --inline-square-regular: --spacing(3);
-  --inline-square-relaxed: --spacing(4);
-  --inline-square-spacious: --spacing(6);
+  --spacing-square-compact: --spacing(1);
+  --spacing-square-tight: --spacing(2);
+  --spacing-square-regular: --spacing(3);
+  --spacing-square-relaxed: --spacing(4);
+  --spacing-square-spacious: --spacing(6);
 
-  --inline-squish-compact: --spacing(1) --spacing(2);
-  --inline-squish-tight: --spacing(1.5) --spacing(2);
-  --inline-squish-regular: --spacing(2) --spacing(3);
-  --inline-squish-relaxed: --spacing(2) --spacing(4);
-  --inline-squish-spacious: --spacing(4) --spacing(6);
+  --spacing-squish-compact: --spacing(1) --spacing(2);
+  --spacing-squish-tight: --spacing(1.5) --spacing(2);
+  --spacing-squish-regular: --spacing(2) --spacing(3);
+  --spacing-squish-relaxed: --spacing(2) --spacing(4);
+  --spacing-squish-spacious: --spacing(4) --spacing(6);
 
-  --inline-stretch-compact: --spacing(2) --spacing(1);
-  --inline-stretch-tight: --spacing(2) --spacing(1.5);
-  --inline-stretch-regular: --spacing(3) --spacing(2);
-  --inline-stretch-relaxed: --spacing(4) --spacing(2);
-  --inline-stretch-spacious: --spacing(6) --spacing(4);
+  --spacing-stretch-compact: --spacing(2) --spacing(1);
+  --spacing-stretch-tight: --spacing(2) --spacing(1.5);
+  --spacing-stretch-regular: --spacing(3) --spacing(2);
+  --spacing-stretch-relaxed: --spacing(4) --spacing(2);
+  --spacing-stretch-spacious: --spacing(6) --spacing(4);
 
   /* ==================== */
   /*       ANIMATION      */
