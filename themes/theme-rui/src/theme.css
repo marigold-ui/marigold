@@ -185,15 +185,24 @@
   --spacing-section: --spacing(16);
   --spacing-context: --spacing(32);
 
-  /* @utility p-compact  { padding: var(--pad-compact); }
-@utility p-tight    { padding: var(--pad-tight); }
-@utility p-regular  { padding: var(--pad-regular); }
-@utility p-relaxed  { padding: var(--pad-relaxed); }
-@utility p-spacious { padding: var(--pad-spacious); } */
+  /* INLINE SPACING */
+  --inline-square-compact: --spacing(1);
+  --inline-square-tight: --spacing(2);
+  --inline-square-regular: --spacing(3);
+  --inline-square-relaxed: --spacing(4);
+  --inline-square-spacious: --spacing(6);
 
-  --spacing-squish-tight: --spacing(0.5) --spacing(2);
-  --spacing-squish-regular: --spacing(2) --spacing(4);
-  --spacing-squish-relaxed: --spacing(2) --spacing(4);
+  --inline-squish-compact: --spacing(1) --spacing(2);
+  --inline-squish-tight: --spacing(1.5) --spacing(2);
+  --inline-squish-regular: --spacing(2) --spacing(3);
+  --inline-squish-relaxed: --spacing(2) --spacing(4);
+  --inline-squish-spacious: --spacing(4) --spacing(6);
+
+  --inline-stretch-compact: --spacing(2) --spacing(1);
+  --inline-stretch-tight: --spacing(2) --spacing(1.5);
+  --inline-stretch-regular: --spacing(3) --spacing(2);
+  --inline-stretch-relaxed: --spacing(4) --spacing(2);
+  --inline-stretch-spacious: --spacing(6) --spacing(4);
 
   /* ==================== */
   /*       ANIMATION      */
