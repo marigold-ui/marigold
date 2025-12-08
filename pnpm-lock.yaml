@@ -321,7 +321,7 @@ importers:
         version: 1.1.1(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       contentlayer2:
         specifier: 0.5.8
-        version: 0.5.8(esbuild@0.27.0)
+        version: 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -345,7 +345,7 @@ importers:
         version: 7.1.0
       mdx-bundler:
         specifier: 10.1.1
-        version: 10.1.1(esbuild@0.27.0)
+        version: 10.1.1(acorn@8.15.0)(esbuild@0.27.0)
       motion:
         specifier: 12.23.24
         version: 12.23.24(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -354,7 +354,7 @@ importers:
         version: 16.0.4(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       next-contentlayer2:
         specifier: 0.5.8
-        version: 0.5.8(contentlayer2@0.5.8(esbuild@0.27.0))(esbuild@0.27.0)(next@16.0.4(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 0.5.8(acorn@8.15.0)(contentlayer2@0.5.8(acorn@8.15.0)(esbuild@0.27.0))(esbuild@0.27.0)(next@16.0.4(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       nuqs:
         specifier: 2.8.1
         version: 2.8.1(next@16.0.4(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
@@ -485,6 +485,9 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
+      zod:
+        specifier: 4.1.13
+        version: 4.1.13
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1
@@ -11255,9 +11258,9 @@ snapshots:
       human-id: 4.1.1
       prettier: 2.8.8
 
-  '@contentlayer2/cli@0.5.8(esbuild@0.27.0)':
+  '@contentlayer2/cli@0.5.8(acorn@8.15.0)(esbuild@0.27.0)':
     dependencies:
-      '@contentlayer2/core': 0.5.8(esbuild@0.27.0)
+      '@contentlayer2/core': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
       '@contentlayer2/utils': 0.5.8
       clipanion: 3.2.1(typanion@3.14.0)
       typanion: 3.14.0
@@ -11268,9 +11271,9 @@ snapshots:
       - markdown-wasm
       - supports-color
 
-  '@contentlayer2/client@0.5.8(esbuild@0.27.0)':
+  '@contentlayer2/client@0.5.8(acorn@8.15.0)(esbuild@0.27.0)':
     dependencies:
-      '@contentlayer2/core': 0.5.8(esbuild@0.27.0)
+      '@contentlayer2/core': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
       - acorn
@@ -11278,13 +11281,13 @@ snapshots:
       - markdown-wasm
       - supports-color
 
-  '@contentlayer2/core@0.5.8(esbuild@0.27.0)':
+  '@contentlayer2/core@0.5.8(acorn@8.15.0)(esbuild@0.27.0)':
     dependencies:
       '@contentlayer2/utils': 0.5.8
       camel-case: 4.1.2
       comment-json: 4.2.5
       gray-matter: 4.0.3
-      mdx-bundler: 10.1.1(esbuild@0.27.0)
+      mdx-bundler: 10.1.1(acorn@8.15.0)(esbuild@0.27.0)
       rehype-stringify: 10.0.1
       remark-frontmatter: 5.0.0
       remark-parse: 11.0.0
@@ -11299,9 +11302,9 @@ snapshots:
       - acorn
       - supports-color
 
-  '@contentlayer2/source-files@0.5.8(esbuild@0.27.0)':
+  '@contentlayer2/source-files@0.5.8(acorn@8.15.0)(esbuild@0.27.0)':
     dependencies:
-      '@contentlayer2/core': 0.5.8(esbuild@0.27.0)
+      '@contentlayer2/core': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
       '@contentlayer2/utils': 0.5.8
       chokidar: 3.6.0
       fast-glob: 3.3.3
@@ -11319,10 +11322,10 @@ snapshots:
       - markdown-wasm
       - supports-color
 
-  '@contentlayer2/source-remote-files@0.5.8(esbuild@0.27.0)':
+  '@contentlayer2/source-remote-files@0.5.8(acorn@8.15.0)(esbuild@0.27.0)':
     dependencies:
-      '@contentlayer2/core': 0.5.8(esbuild@0.27.0)
-      '@contentlayer2/source-files': 0.5.8(esbuild@0.27.0)
+      '@contentlayer2/core': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
+      '@contentlayer2/source-files': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
       '@contentlayer2/utils': 0.5.8
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
@@ -12169,9 +12172,9 @@ snapshots:
       js-yaml: 4.1.1
       tinyglobby: 0.2.15
 
-  '@mdx-js/esbuild@3.1.0(esbuild@0.27.0)':
+  '@mdx-js/esbuild@3.1.0(acorn@8.15.0)(esbuild@0.27.0)':
     dependencies:
-      '@mdx-js/mdx': 3.1.0
+      '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
       '@types/unist': 3.0.3
       esbuild: 0.27.0
       source-map: 0.7.6
@@ -12181,7 +12184,7 @@ snapshots:
       - acorn
       - supports-color
 
-  '@mdx-js/mdx@3.1.0':
+  '@mdx-js/mdx@3.1.0(acorn@8.15.0)':
     dependencies:
       '@types/estree': 1.0.8
       '@types/estree-jsx': 1.0.5
@@ -15920,13 +15923,13 @@ snapshots:
 
   consola@3.4.2: {}
 
-  contentlayer2@0.5.8(esbuild@0.27.0):
+  contentlayer2@0.5.8(acorn@8.15.0)(esbuild@0.27.0):
     dependencies:
-      '@contentlayer2/cli': 0.5.8(esbuild@0.27.0)
-      '@contentlayer2/client': 0.5.8(esbuild@0.27.0)
-      '@contentlayer2/core': 0.5.8(esbuild@0.27.0)
-      '@contentlayer2/source-files': 0.5.8(esbuild@0.27.0)
-      '@contentlayer2/source-remote-files': 0.5.8(esbuild@0.27.0)
+      '@contentlayer2/cli': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
+      '@contentlayer2/client': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
+      '@contentlayer2/core': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
+      '@contentlayer2/source-files': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
+      '@contentlayer2/source-remote-files': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
       '@contentlayer2/utils': 0.5.8
     transitivePeerDependencies:
       - '@effect-ts/otel-node'
@@ -16514,7 +16517,7 @@ snapshots:
       eslint: 9.39.1(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.32.0)(eslint@9.39.1(jiti@2.6.1))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react-hooks: 7.0.0(eslint@9.39.1(jiti@2.6.1))
@@ -16613,7 +16616,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -16686,6 +16689,35 @@ snapshots:
       - supports-color
 
   eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.1(jiti@2.6.1)):
+    dependencies:
+      '@rtsao/scc': 1.1.0
+      array-includes: 3.1.9
+      array.prototype.findlastindex: 1.2.6
+      array.prototype.flat: 1.3.3
+      array.prototype.flatmap: 1.3.3
+      debug: 3.2.7
+      doctrine: 2.1.0
+      eslint: 9.39.1(jiti@2.6.1)
+      eslint-import-resolver-node: 0.3.9
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.0)(eslint@9.39.1(jiti@2.6.1))
+      hasown: 2.0.2
+      is-core-module: 2.16.1
+      is-glob: 4.0.3
+      minimatch: 3.1.2
+      object.fromentries: 2.0.8
+      object.groupby: 1.0.3
+      object.values: 1.2.1
+      semver: 6.3.1
+      string.prototype.trimend: 1.0.9
+      tsconfig-paths: 3.15.0
+    optionalDependencies:
+      '@typescript-eslint/parser': 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+    transitivePeerDependencies:
+      - eslint-import-resolver-typescript
+      - eslint-import-resolver-webpack
+      - supports-color
+
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -18833,12 +18865,12 @@ snapshots:
 
   mdn-data@2.12.2: {}
 
-  mdx-bundler@10.1.1(esbuild@0.27.0):
+  mdx-bundler@10.1.1(acorn@8.15.0)(esbuild@0.27.0):
     dependencies:
       '@babel/runtime': 7.28.2
       '@esbuild-plugins/node-resolve': 0.2.2(esbuild@0.27.0)
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@mdx-js/esbuild': 3.1.0(esbuild@0.27.0)
+      '@mdx-js/esbuild': 3.1.0(acorn@8.15.0)(esbuild@0.27.0)
       esbuild: 0.27.0
       gray-matter: 4.0.3
       remark-frontmatter: 5.0.0
@@ -19212,11 +19244,11 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-contentlayer2@0.5.8(contentlayer2@0.5.8(esbuild@0.27.0))(esbuild@0.27.0)(next@16.0.4(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+  next-contentlayer2@0.5.8(acorn@8.15.0)(contentlayer2@0.5.8(acorn@8.15.0)(esbuild@0.27.0))(esbuild@0.27.0)(next@16.0.4(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
-      '@contentlayer2/core': 0.5.8(esbuild@0.27.0)
+      '@contentlayer2/core': 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
       '@contentlayer2/utils': 0.5.8
-      contentlayer2: 0.5.8(esbuild@0.27.0)
+      contentlayer2: 0.5.8(acorn@8.15.0)(esbuild@0.27.0)
       next: 16.0.4(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)

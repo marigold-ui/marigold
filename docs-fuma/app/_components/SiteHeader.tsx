@@ -10,6 +10,8 @@ export const SiteHeader = () => {
     slug: page.$id?.split(':')[1],
     title: page.name,
   }));
+
+  console.log('pageTree', source.pageTree);
   return (
     <header className="border-secondary-200 bg-bg-body sticky top-0 z-10 flex h-(--page-header-height) w-full items-center gap-2 border-b px-(--page-padding) md:px-(--page-padding-md) xl:px-(--page-padding-xl)">
       <div className="md:hidden">{/* <MobileNavigation /> */}</div>
@@ -23,6 +25,7 @@ export const SiteHeader = () => {
         </Link>
       </div>
       <div className="flex flex-1 flex-col items-stretch md:block md:flex-initial">
+        search command
         {/* <SiteMenu /> */}
       </div>
     </header>

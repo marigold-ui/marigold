@@ -1,0 +1,14 @@
+{
+  "root": true,
+  "title": "Foundations",
+  "pages": [
+    "overview",
+    "accessibility",
+    "design-tokens",
+    "elevation",
+    "form-fields",
+    "icons",
+    "layouts",
+    "style-props"
+  ]
+}

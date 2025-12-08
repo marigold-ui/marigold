@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "title": "Getting Started",
+  "pages": [
+    "overview",
+    "installation",
+    "get-in-touch",
+    "design-token-guidelines",
+    "design-principles",
+    "governance-process",
+    "governance-principles",
+    "release-phases",
+    "faq"
+  ]
+}

@@ -1,4 +1,5 @@
 'use client';
+import { usePathname } from 'next/navigation';
 import { NavLink } from '@/ui/navigation/NavLink';
 
 interface PageData {
@@ -11,6 +12,8 @@ interface SiteNavigationProps {
 }
 
 export const SiteNavigation = ({ pages }: SiteNavigationProps) => {
+  const pathname = usePathname();
+
   return (
     <div className="flex items-center gap-4">
       {pages.map(({ slug, title }, index) => (
@@ -18,7 +21,7 @@ export const SiteNavigation = ({ pages }: SiteNavigationProps) => {
           variant="main"
           className="text-sm font-medium lg:px-1"
           key={index}
-          // current={pathname.startsWith(`/${slug}`)}
+          current={pathname.startsWith(`/${slug}`)}
           href={`/${slug}`}
         >
           {title}
