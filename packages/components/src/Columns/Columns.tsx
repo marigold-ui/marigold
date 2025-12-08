@@ -1,9 +1,11 @@
 import { Children, ReactNode } from 'react';
-import type { GapSpaceProp } from '@marigold/system';
-import { cn, createVar, gapSpace } from '@marigold/system';
+import type { SpaceProp } from '@marigold/system';
+import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface ColumnsProps extends GapSpaceProp, AriaRegionProps {
+export interface ColumnsProps
+  extends SpaceProp<'section' | 'fieldX' | 'container' | 'group'>,
+    AriaRegionProps {
   /**
    * The children of the component.
    */
@@ -42,17 +44,17 @@ export const Columns = ({
   return (
     <div
       className={cn(
-        'flex flex-wrap items-stretch',
-        stretch && 'h-full',
-        gapSpace[space]
+        'flex flex-wrap items-stretch gap-(--space)',
+        stretch && 'h-full'
       )}
+      style={createSpacingVar('space', `${space}`)}
       {...props}
     >
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
             columns[idx] === 'fit' ? 'flex h-fit w-fit' : 'flex-(--columnSize)',
-            'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
+            'basis-[calc((var(--collapseAt)-100%)*999)]'
           )}
           style={createVar({
             collapseAt,
