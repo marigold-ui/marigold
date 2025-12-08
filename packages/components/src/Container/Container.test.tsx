@@ -10,6 +10,7 @@ describe('Container', () => {
       render(<Base data-testid="container" />);
 
       const container = screen.getByTestId('container');
+
       expect(container).toBeInTheDocument();
     });
 
@@ -17,6 +18,7 @@ describe('Container', () => {
       render(<WithBreakout data-testid="container" />);
 
       const container = screen.getByTestId('container');
+
       expect(container).toBeInTheDocument();
     });
   });
@@ -26,6 +28,7 @@ describe('Container', () => {
       render(<Base data-testid="container" />);
 
       const container = screen.getByTestId('container');
+
       expect(container.style.getPropertyValue('--maxTextWidth')).toBeDefined();
       expect(
         container.style.getPropertyValue('--maxHeadlineWidth')
@@ -56,6 +59,7 @@ describe('Container', () => {
       render(<Base data-testid="container" />);
 
       const container = screen.getByTestId('container');
+
       expect(container).toHaveClass('*:col-[1]');
     });
 
@@ -63,6 +67,7 @@ describe('Container', () => {
       render(<Base data-testid="container" align="center" />);
 
       const container = screen.getByTestId('container');
+
       expect(container).toHaveClass('*:col-[2]');
     });
 
@@ -70,6 +75,7 @@ describe('Container', () => {
       render(<Base data-testid="container" align="right" />);
 
       const container = screen.getByTestId('container');
+
       expect(container).toHaveClass('*:col-[3]');
     });
   });
@@ -79,6 +85,7 @@ describe('Container', () => {
       render(<Base data-testid="container" alignItems="none" />);
 
       const container = screen.getByTestId('container');
+
       expect(container).not.toHaveClass('place-items');
     });
 
@@ -86,6 +93,7 @@ describe('Container', () => {
       render(<Base data-testid="container" alignItems="center" />);
 
       const container = screen.getByTestId('container');
+
       expect(container).toHaveClass('place-items-center');
     });
 
@@ -93,6 +101,7 @@ describe('Container', () => {
       render(<Base data-testid="container" alignItems="right" />);
 
       const container = screen.getByTestId('container');
+
       expect(container).toHaveClass('place-items-end');
     });
   });
@@ -102,6 +111,7 @@ describe('Container', () => {
       render(<Base space={0} data-testid="container" />);
 
       const container = screen.getByTestId('container');
+
       expect(container.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 0)'
       );
@@ -111,6 +121,7 @@ describe('Container', () => {
       render(<Base space={4} data-testid="container" />);
 
       const container = screen.getByTestId('container');
+
       expect(container.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 4)'
       );

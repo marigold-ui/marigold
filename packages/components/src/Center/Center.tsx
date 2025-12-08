@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
-import type { GapSpaceProp } from '@marigold/system';
-import { cn, createVar, gapSpace } from '@marigold/system';
+import type { SpaceProp } from '@marigold/system';
+import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface CenterProps extends GapSpaceProp, AriaRegionProps {
+export interface CenterProps
+  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+    AriaRegionProps {
   children?: ReactNode;
   /**
    * The maximum width of the container.
@@ -22,11 +24,13 @@ export const Center = ({
     <div
       {...props}
       className={cn(
-        'ms-[auto] me-[auto] box-content flex flex-col items-center justify-center',
-        gapSpace[space],
+        'mx-auto box-content flex flex-col items-center justify-center gap-y-(--space)',
         'max-w-(--maxWidth)'
       )}
-      style={createVar({ maxWidth })}
+      style={{
+        ...createVar({ maxWidth }),
+        ...createSpacingVar('space', `${space}`),
+      }}
     >
       {children}
     </div>
