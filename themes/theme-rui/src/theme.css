@@ -168,14 +168,7 @@
   --spacing-button-small: 2rem;
   --spacing-button-large: 2.5rem;
 
-  /* spacing between elements */
-  /* TODO: find and replace these with new values */
-  /* --spacing-container: 50rem; e.g. form container */
-  /* --spacing-section: 3.5rem; e.g. between form sections */
-  /* --spacing-fieldX: 1.25rem; e.g. between fields horizontally */
-  /* --spacing-group: 1rem; e.g. between related fields to group them */
-
-  /* NEW semantic spacing tokens */
+  /* RELATIONAL SPACING */
 
   --spacing-joined: --spacing(0.25);
   --spacing-tight: --spacing(1);
@@ -186,11 +179,12 @@
   --spacing-context: --spacing(32);
 
   /* INSET SPACING */
-  --spacing-square-compact: --spacing(1);
-  --spacing-square-tight: --spacing(2);
-  --spacing-square-regular: --spacing(3);
-  --spacing-square-relaxed: --spacing(4);
-  --spacing-square-spacious: --spacing(6);
+
+  --spacing-compact: --spacing(1);
+  --spacing-tight: --spacing(2);
+  --spacing-regular: --spacing(3);
+  --spacing-relaxed: --spacing(4);
+  --spacing-spacious: --spacing(6);
 
   --spacing-squish-compact: --spacing(1) --spacing(2);
   --spacing-squish-tight: --spacing(1.5) --spacing(2);
