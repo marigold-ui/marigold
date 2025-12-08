@@ -29,7 +29,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
   }),
   header: cva(
     [
-      'flex w-full items-center justify-between gap-4 rounded-md cursor-pointer text-foreground',
+      'flex w-full items-center justify-between gap-peer rounded-md cursor-pointer text-foreground',
       'text-left text-base font-semibold leading-6 transition-all',
       'hover:no-underline',
       'disabled:cursor-not-allowed disabled:text-disabled-foreground',
