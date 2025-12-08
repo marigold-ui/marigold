@@ -4,7 +4,7 @@ import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 export interface ColumnsProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends SpaceProp<'section' | 'fieldX' | 'container' | 'group'>,
     AriaRegionProps {
   /**
    * The children of the component.
