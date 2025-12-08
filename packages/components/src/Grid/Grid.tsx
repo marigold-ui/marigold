@@ -29,7 +29,7 @@ const parseTemplateValue = (values: TemplateValue[]) =>
 // Props
 // ---------------
 export interface GridProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends SpaceProp<'section' | 'fieldX' | 'fieldY' | 'container' | 'group'>,
     HeightProp,
     AriaRegionProps {
   /**
