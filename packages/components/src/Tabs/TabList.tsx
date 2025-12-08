@@ -1,23 +1,21 @@
 import type RAC from 'react-aria-components';
 import { TabList } from 'react-aria-components';
-import { GapSpaceProp, cn, gapSpace } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { useTabContext } from './Context';
 
 // props
 // ----------------------
-export interface TabListProps
-  extends Omit<RAC.TabListProps<object>, 'className' | 'style'>,
-    GapSpaceProp {}
+export type TabListProps = Omit<
+  RAC.TabListProps<object>,
+  'className' | 'style'
+>;
 
 // component
 // ----------------------
-const _TabList = ({ space = 2, ...props }: TabListProps) => {
+const _TabList = (props: TabListProps) => {
   const { classNames } = useTabContext();
   return (
-    <TabList
-      {...props}
-      className={cn('flex', gapSpace[space], classNames.tabsList)}
-    >
+    <TabList {...props} className={cn('flex', classNames.tabsList)}>
       {props.children}
     </TabList>
   );
