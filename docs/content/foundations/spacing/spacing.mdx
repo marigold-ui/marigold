@@ -219,6 +219,8 @@ While a square inset (equal padding on all sides) is the default, UI elements of
 
 To solve this, we use _squish_ and _stretch_ modifiers. These corrections maintain visual balance by reducing one dimension (either X or Y) to the next smallest step on the geometric scale. For example, a 16px inset steps down to 8px on the compressed axis.
 
+<ComponentDemo file="./spacing-inset.demo.tsx" mode="preview" />
+
 #### Squish (Vertical Compression)
 
 Squish modifiers apply vertical compression to elements like buttons or table rows that need to align horizontally with the grid but maintain a compact vertical profile. By keeping the standard width and reducing the height, we preserve alignment while saving vertical space.
@@ -230,8 +232,6 @@ Ideally, the Y-axis padding steps down one level on the scale. For example, a "r
 Stretch modifiers apply horizontal compression, which is essential for mobile layouts or narrow columns (like sidebars) where screen real estate is limited. This approach maintains the vertical rhythm and breathing room so the design doesn't feel cramped, but reduces the horizontal padding to maximize content width.
 
 Here, the X-axis padding steps down one level. A "relaxed-stretch" token, for instance, maintains "relaxed" vertical padding but reduces the horizontal padding to "regular".
-
-<ComponentDemo file="./spacing-inset.demo.tsx" mode="preview" />
 
 ---
 

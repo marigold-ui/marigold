@@ -5,8 +5,9 @@ export default () => (
   <div className="flex items-end justify-center gap-28 pt-4 pb-10">
     <Box className="size-auto">
       <VisualInset
-        spaceX="peer"
-        spaceY="peer"
+        name="regular"
+        spaceX="3"
+        spaceY="3"
         className="rounded-[calc(var(--radius-lg)-1px)]"
       >
         squared
@@ -15,8 +16,9 @@ export default () => (
 
     <Box className="size-auto">
       <VisualInset
-        spaceX="group"
-        spaceY="related"
+        name="regular"
+        spaceX="3"
+        spaceY="2"
         className="rounded-[calc(var(--radius-lg)-1px)]"
       >
         squished
@@ -25,8 +27,9 @@ export default () => (
 
     <Box className="size-auto">
       <VisualInset
-        spaceX="related"
-        spaceY="group"
+        name="regular"
+        spaceX="2"
+        spaceY="3"
         className="rounded-[calc(var(--radius-lg)-1px)]"
       >
         stretched

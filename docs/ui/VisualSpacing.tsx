@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import type { SpacingTokens } from '@marigold/system';
+import type { Scale, SpacingTokens } from '@marigold/system';
 import { cn, createVar, cva } from '@marigold/system';
 
 const classNames = {
@@ -71,21 +71,28 @@ export const VisualSpacing = ({
 
 export interface VisualInsetProps {
   className?: string;
-  spaceX: SpacingTokens;
-  spaceY: SpacingTokens;
+  /**
+   * We need a name here an the tokens (sadly) need to be used hardcoded
+   * since for the demo we need to have a seperateed x/y value.
+   */
+  name: string;
+  spaceX: Scale;
+  spaceY: Scale;
 }
 
 export const VisualInset = ({
   children,
   className,
+  name,
   spaceX,
   spaceY,
 }: PropsWithChildren<VisualInsetProps>) => (
   <div
     className="size-full"
+    data-hello
     style={createVar({
-      'space-y': `var(--spacing-${spaceY})`,
-      'space-x': `var(--spacing-${spaceX})`,
+      'space-y': `calc(var(--spacing)*${spaceY})`,
+      'space-x': `calc(var(--spacing)*${spaceX})`,
     })}
   >
     <div
@@ -115,7 +122,7 @@ export const VisualInset = ({
           className: 'h-(--space-y) before:h-[calc(var(--space-y)-2px)]',
         })}
       />
-      {spaceY}
+      {name}
     </div>
     {/* bottom guide */}
     <div
@@ -130,7 +137,7 @@ export const VisualInset = ({
           className: 'w-(--space-x) before:w-[calc(var(--space-x)-2px)]',
         })}
       />
-      {spaceX}
+      {name}
     </div>
   </div>
 );

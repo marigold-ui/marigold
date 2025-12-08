@@ -185,7 +185,7 @@
   --spacing-section: --spacing(16);
   --spacing-context: --spacing(32);
 
-  /* INLINE SPACING */
+  /* INSET SPACING */
   --spacing-square-compact: --spacing(1);
   --spacing-square-tight: --spacing(2);
   --spacing-square-regular: --spacing(3);
