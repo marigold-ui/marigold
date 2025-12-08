@@ -66,6 +66,7 @@ describe('Tiles', () => {
       render(<Basic stretch tilesWidth="300px" data-testid="tiles" />);
 
       const tiles = screen.getByTestId('tiles');
+
       expect(tiles.style.getPropertyValue('--column')).toBe(
         'minmax(min(300px, 100%), 1fr)'
       );
