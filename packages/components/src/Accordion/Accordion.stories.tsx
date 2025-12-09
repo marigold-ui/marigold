@@ -312,19 +312,17 @@ export const StickyHeader: Story = {
       iconPosition={'left'}
     >
       <Accordion.Item id="1">
-        <Accordion.Header>
-          <Inline space={4} alignY="center" alignX="between">
-            <Headline level="2">Symfonie Abo 2025/2026</Headline>
-            <Inline space={2}>
-              <Button onPress={() => alert('Do NOT click! Come on!')}>
-                Delete
-              </Button>
-              <Button onPress={() => alert('Do NOT click! Come on!')}>
-                Edit
-              </Button>
-            </Inline>
+        <Inline alignX="between">
+          <Accordion.Header>Symfonie Abo 2025/2026</Accordion.Header>
+          <Inline space={2}>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Delete
+            </Button>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Edit
+            </Button>
           </Inline>
-        </Accordion.Header>
+        </Inline>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
@@ -774,19 +772,17 @@ export const StickyHeader: Story = {
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item id="2">
-        <Accordion.Header>
-          <Inline space={4} alignY="center" alignX="between">
-            <Headline level="2">Scroll Me Abo Season 25/26</Headline>
-            <Inline space={2}>
-              <Button onPress={() => alert('Do NOT click! Come on!')}>
-                Delete
-              </Button>
-              <Button onPress={() => alert('Do NOT click! Come on!')}>
-                Edit
-              </Button>
-            </Inline>
+        <Inline alignX="between">
+          <Accordion.Header>Scroll Me Abo Season 25/26</Accordion.Header>
+          <Inline space={2}>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Delete
+            </Button>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Edit
+            </Button>
           </Inline>
-        </Accordion.Header>
+        </Inline>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
