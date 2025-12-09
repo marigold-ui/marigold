@@ -127,7 +127,9 @@ export const PaddingAndSpace: Story = {
   },
   render: args => (
     <Card {...args}>
-      <Headline level="2">Professor Severus Snape</Headline>
+      <Container>
+        <Headline level="2">Professor Severus Snape</Headline>
+      </Container>
       <Text>
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
@@ -139,13 +141,15 @@ export const PaddingAndSpace: Story = {
         rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
         ipsum dolor sit amet.
       </Text>
-      <Text>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-        amet.
-      </Text>
+      <Container>
+        <Text>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+          rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
+          ipsum dolor sit amet.
+        </Text>
+      </Container>
     </Card>
   ),
 };
