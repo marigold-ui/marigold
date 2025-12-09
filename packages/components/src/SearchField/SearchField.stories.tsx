@@ -4,6 +4,7 @@ import { SearchField } from './SearchField';
 
 const meta = preview.meta({
   title: 'Components/SearchField',
+  component: SearchField,
   argTypes: {
     label: {
       control: {

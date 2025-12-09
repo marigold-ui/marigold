@@ -9,7 +9,7 @@ import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
-import { Drawer, DrawerProps } from './Drawer';
+import { Drawer } from './Drawer';
 
 const meta = preview.meta({
   title: 'Components/Drawer',

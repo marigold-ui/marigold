@@ -1,5 +1,5 @@
 import preview from '../../../../config/storybook/.storybook/preview';
-import { LinkButton, LinkButtonProps } from './LinkButton';
+import { LinkButton } from './LinkButton';
 
 const meta = preview.meta({
   title: 'Components/LinkButton',

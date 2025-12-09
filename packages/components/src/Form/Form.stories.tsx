@@ -16,7 +16,7 @@ import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { TextField } from '../TextField/TextField';
-import { Form, FormProps } from './Form';
+import { Form } from './Form';
 
 const meta = preview.meta({
   title: 'Components/Form',

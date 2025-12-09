@@ -156,7 +156,6 @@ export const Error = meta.story({
 });
 
 export const Controlled = meta.story({
-  tags: ['component-test'],
   ...Basic.input,
   args: {
     onChange: fn(),

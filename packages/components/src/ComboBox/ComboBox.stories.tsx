@@ -10,6 +10,7 @@ import { ComboBox } from './ComboBox';
 
 const meta = preview.meta({
   title: 'Components/ComboBox',
+  component: ComboBox,
   argTypes: {
     label: {
       control: {
@@ -210,7 +211,6 @@ export const Controlled = meta.story({
 });
 
 export const ManualMenuTrigger = meta.story({
-  tags: ['component-test'],
   ...Basic.input,
   args: {
     menuTrigger: 'manual',
@@ -300,7 +300,6 @@ export const Sections = meta.story({
 });
 
 export const InputTrigger = meta.story({
-  tags: ['component-test'],
   ...Basic.input,
   play: async ({ canvas }) => {
     const input = await canvas.findByRole('combobox', { name: 'Label' });
@@ -319,7 +318,6 @@ export const InputTrigger = meta.story({
 });
 
 export const FocusTrigger = meta.story({
-  tags: ['component-test'],
   ...Basic.input,
   args: {
     menuTrigger: 'focus',
@@ -342,7 +340,6 @@ export const FocusTrigger = meta.story({
 });
 
 export const ManualTrigger = meta.story({
-  tags: ['component-test'],
   ...Basic.input,
   args: {
     menuTrigger: 'manual',

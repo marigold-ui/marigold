@@ -1,14 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './Inline.stories';
-
-const { Basic, InputButtonAlignment, Nested } = composeStories(stories);
+import { Basic, InputButtonAlignment, Nested } from './Inline.stories';
 
 describe('Inline', () => {
   describe('Rendering', () => {
     test('renders content correctly', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const lirum = screen.getByText(/Lirum/);
 
@@ -16,7 +13,7 @@ describe('Inline', () => {
     });
 
     test('renders all child elements', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       expect(screen.getByText(/Lirum/)).toBeInTheDocument();
       expect(screen.getByText(/Larum/)).toBeInTheDocument();
@@ -24,7 +21,7 @@ describe('Inline', () => {
     });
 
     test('wraps content by default', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
@@ -32,7 +29,7 @@ describe('Inline', () => {
     });
 
     test('renders as div element by default', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
@@ -40,7 +37,7 @@ describe('Inline', () => {
     });
 
     test('prevents wrapping when noWrap is enabled', () => {
-      render(<Basic noWrap />);
+      render(<Basic.Component noWrap />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
@@ -50,7 +47,7 @@ describe('Inline', () => {
 
   describe('Spacing', () => {
     test('applies custom spacing from theme', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
@@ -60,7 +57,7 @@ describe('Inline', () => {
     });
 
     test('applies spacing value of 0', () => {
-      render(<Basic space={0} />);
+      render(<Basic.Component space={0} />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
@@ -70,7 +67,7 @@ describe('Inline', () => {
     });
 
     test('supports nesting with different spacing levels', () => {
-      render(<Nested />);
+      render(<Nested.Component />);
 
       const blocks = screen.getAllByText(/spacing/);
 
@@ -80,7 +77,7 @@ describe('Inline', () => {
 
   describe('Alignment', () => {
     test('aligns children horizontally to the left', () => {
-      render(<Basic alignX="left" />);
+      render(<Basic.Component alignX="left" />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
@@ -88,7 +85,7 @@ describe('Inline', () => {
     });
 
     test('aligns children horizontally to center', () => {
-      render(<Basic alignX="center" />);
+      render(<Basic.Component alignX="center" />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
@@ -96,7 +93,7 @@ describe('Inline', () => {
     });
 
     test('aligns children horizontally to the right', () => {
-      render(<Basic alignX="right" />);
+      render(<Basic.Component alignX="right" />);
 
       const inlineElement = screen.getByText(/Lirum/).parentElement;
 
@@ -104,7 +101,7 @@ describe('Inline', () => {
     });
 
     test('aligns children vertically to the baseline (input alignment)', () => {
-      render(<InputButtonAlignment />);
+      render(<InputButtonAlignment.Component />);
 
       const inline = screen.getByTestId('inline');
 
@@ -112,7 +109,7 @@ describe('Inline', () => {
     });
 
     test('input alignment includes description and error message styling', () => {
-      render(<InputButtonAlignment />);
+      render(<InputButtonAlignment.Component />);
 
       const inline = screen.getByTestId('inline');
 
@@ -130,7 +127,7 @@ describe('Inline', () => {
 
   describe('Nesting', () => {
     test('supports nesting with different spacing levels', () => {
-      render(<Nested />);
+      render(<Nested.Component />);
 
       const blocks = screen.getAllByText(/spacing/);
 

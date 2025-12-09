@@ -6,6 +6,7 @@ import { Input } from './Input';
 
 const meta = preview.meta({
   title: 'Components/Input',
+  component: Input,
   argTypes: {
     type: {
       control: {

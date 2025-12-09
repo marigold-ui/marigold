@@ -6,6 +6,7 @@ import { Tiles } from './Tiles';
 
 const meta = preview.meta({
   title: 'Components/Tiles',
+  component: Tiles,
   argTypes: {
     space: {
       control: {

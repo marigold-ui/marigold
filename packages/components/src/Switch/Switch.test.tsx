@@ -1,10 +1,7 @@
-import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { vi } from 'vitest';
-import * as stories from './Switch.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './Switch.stories';
 
 const getSwitchParts = () => {
   const label: HTMLLabelElement = screen.getByText('Label');
@@ -21,7 +18,7 @@ const getSwitchParts = () => {
 };
 
 test('supports base styling', () => {
-  render(<Basic label="Label" />);
+  render(<Basic.Component label="Label" />);
   const { label, container, track, thumb } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
@@ -37,7 +34,7 @@ test('supports base styling', () => {
 });
 
 test('supports a custom variant', () => {
-  render(<Basic variant="custom" label="Label" />);
+  render(<Basic.Component variant="custom" label="Label" />);
   const { track, thumb } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
@@ -47,14 +44,14 @@ test('supports a custom variant', () => {
 });
 
 test('supports a size', () => {
-  render(<Basic size="medium" label="Label" />);
+  render(<Basic.Component size="medium" label="Label" />);
   const { track } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
 });
 
 test('takes full width by default', () => {
-  render(<Basic label="Label" />);
+  render(<Basic.Component label="Label" />);
 
   const { container } = getSwitchParts();
   expect(container.className).toMatchInlineSnapshot(
@@ -63,7 +60,7 @@ test('takes full width by default', () => {
 });
 
 test('allows to set width via prop', () => {
-  render(<Basic width={10} label="Label" />);
+  render(<Basic.Component width={10} label="Label" />);
   const { label } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
@@ -72,7 +69,7 @@ test('allows to set width via prop', () => {
 });
 
 test('supports disabled prop', () => {
-  render(<Basic disabled label="Label" />);
+  render(<Basic.Component disabled label="Label" />);
   const { input, thumb, track } = getSwitchParts();
 
   expect(input).toBeDisabled();
@@ -83,14 +80,14 @@ test('supports disabled prop', () => {
 });
 
 test('renders hidden <input> element', () => {
-  render(<Basic label="Label" />);
+  render(<Basic.Component label="Label" />);
   const { input } = getSwitchParts();
 
   expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
 test('supports default selected', () => {
-  render(<Basic defaultSelected label="Label" />);
+  render(<Basic.Component defaultSelected label="Label" />);
 
   const { input } = getSwitchParts();
 
@@ -101,7 +98,7 @@ test('supports default selected', () => {
 
 test('supports controlled component usage', () => {
   const onChange = vi.fn();
-  render(<Basic onChange={onChange} label="Label" />);
+  render(<Basic.Component onChange={onChange} label="Label" />);
 
   const { input } = getSwitchParts();
 
@@ -116,7 +113,7 @@ test('supports controlled component usage', () => {
 
 test('forwards ref', () => {
   const ref = createRef<HTMLLabelElement>();
-  render(<Basic ref={ref} label="Label" />);
+  render(<Basic.Component ref={ref} label="Label" />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });

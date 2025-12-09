@@ -5,17 +5,8 @@ import { Button } from '../Button/Button';
 import { Menu } from '../Menu/Menu';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
-import {
-  ConfirmationDialog,
-  type ConfirmationDialogProps,
-} from './ConfirmationDialog';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import { Dialog } from './Dialog';
-
-interface DialogStoryArgs {
-  dismissable?: boolean;
-  keyboardDismissable?: boolean;
-  size?: 'xsmall' | 'small' | 'medium';
-}
 
 const meta = preview.meta({
   title: 'Components/Dialog',

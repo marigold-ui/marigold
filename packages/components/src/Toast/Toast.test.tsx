@@ -1,16 +1,14 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './Toast.stories';
+import { AutocompleteProps } from '@marigold/components';
+import { Basic } from './Toast.stories';
 import { useToast } from './ToastQueue';
 
-const { Basic } = composeStories(stories, {
-  decorators: Story => (
-    <div id="storybook-root">
-      <Story />
-    </div>
-  ),
-});
+const BasicComponent = (props: AutocompleteProps) => (
+  <div id="storybook-root">
+    <Basic.Component {...props} />
+  </div>
+);
 
 afterEach(() => {
   const { clearToasts } = useToast();
@@ -20,7 +18,7 @@ afterEach(() => {
 describe('Toast', () => {
   const { addToast, clearToasts } = useToast();
   test('renders without crashing', async () => {
-    render(<Basic />);
+    render(<BasicComponent />);
     await addToast({ title: 'Dies ist eine Toast-Nachricht!' });
     const toast = screen.getByText('Dies ist eine Toast-Nachricht!');
 
@@ -30,7 +28,7 @@ describe('Toast', () => {
   it.each(['info', 'success', 'error', 'warning'])(
     'renders %s variant',
     async variant => {
-      render(<Basic />);
+      render(<BasicComponent />);
       await addToast({
         title: `${variant} Toast`,
         description: `This is a ${variant} toast.`,
@@ -44,7 +42,7 @@ describe('Toast', () => {
   );
 
   test('clearToasts function works', async () => {
-    render(<Basic />);
+    render(<BasicComponent />);
     const button = screen.getByRole('button', { name: 'Show Toast' });
 
     await userEvent.click(button);
@@ -55,7 +53,7 @@ describe('Toast', () => {
   });
 
   test('renders action when provided', async () => {
-    render(<Basic />);
+    render(<BasicComponent />);
     const actionButton = <button>Undo</button>;
 
     await addToast({

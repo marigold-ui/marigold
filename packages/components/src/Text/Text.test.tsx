@@ -1,11 +1,8 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './Text.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './Text.stories';
 
 test('renders a <div> element by default', () => {
-  render(<Basic>text</Basic>);
+  render(<Basic.Component>text</Basic.Component>);
   const text = screen.getByText(/text/);
 
   expect(text instanceof HTMLDivElement).toBeTruthy();
@@ -14,8 +11,8 @@ test('renders a <div> element by default', () => {
 test('renders a <p>/<span> element', () => {
   render(
     <>
-      <Basic as="p">paragraph</Basic>
-      <Basic as="span">span</Basic>
+      <Basic.Component as="p">paragraph</Basic.Component>
+      <Basic.Component as="span">span</Basic.Component>
     </>
   );
   const paragraph = screen.getByText(/paragraph/);
@@ -26,14 +23,14 @@ test('renders a <p>/<span> element', () => {
 });
 
 test('adheres to the "max text with" rule from container', () => {
-  render(<Basic>text</Basic>);
+  render(<Basic.Component>text</Basic.Component>);
   const text = screen.getByText(/text/);
 
   expect(text).toHaveClass('max-w-(--maxTextWidth)');
 });
 
 test('supports italic font style', () => {
-  render(<Basic fontStyle="italic">italic</Basic>);
+  render(<Basic.Component fontStyle="italic">italic</Basic.Component>);
   const italic = screen.getByText(/italic/);
 
   expect(italic).toHaveClass('italic');
@@ -42,9 +39,9 @@ test('supports italic font style', () => {
 test('supports alignment', () => {
   render(
     <>
-      <Basic align="left">left</Basic>
-      <Basic align="center">center</Basic>
-      <Basic align="right">right</Basic>
+      <Basic.Component align="left">left</Basic.Component>
+      <Basic.Component align="center">center</Basic.Component>
+      <Basic.Component align="right">right</Basic.Component>
     </>
   );
   const left = screen.getByText(/left/);
@@ -59,9 +56,9 @@ test('supports alignment', () => {
 test('supports cursor styles', () => {
   render(
     <>
-      <Basic cursor="pointer">pointer</Basic>
-      <Basic cursor="notAllowed">not-allowed</Basic>
-      <Basic cursor="default">default</Basic>
+      <Basic.Component cursor="pointer">pointer</Basic.Component>
+      <Basic.Component cursor="notAllowed">not-allowed</Basic.Component>
+      <Basic.Component cursor="default">default</Basic.Component>
     </>
   );
   const pointer = screen.getByText(/pointer/);
@@ -76,9 +73,9 @@ test('supports cursor styles', () => {
 test('supports font weights', () => {
   render(
     <>
-      <Basic weight="light">light</Basic>
-      <Basic weight="bold">bold</Basic>
-      <Basic weight="extrabold">extrabold</Basic>
+      <Basic.Component weight="light">light</Basic.Component>
+      <Basic.Component weight="bold">bold</Basic.Component>
+      <Basic.Component weight="extrabold">extrabold</Basic.Component>
     </>
   );
   const light = screen.getByText('light');
@@ -93,9 +90,9 @@ test('supports font weights', () => {
 test('supports custom font sizes', () => {
   render(
     <>
-      <Basic fontSize="xs">xs</Basic>
-      <Basic fontSize="lg">lg</Basic>
-      <Basic fontSize="3xl">3xl</Basic>
+      <Basic.Component fontSize="xs">xs</Basic.Component>
+      <Basic.Component fontSize="lg">lg</Basic.Component>
+      <Basic.Component fontSize="3xl">3xl</Basic.Component>
     </>
   );
   const fs12 = screen.getByText('xs');
@@ -110,10 +107,10 @@ test('supports custom font sizes', () => {
 test('supports wrap prop', () => {
   render(
     <>
-      <Basic wrap="wrap">wrap</Basic>
-      <Basic wrap="noWrap">noWrap</Basic>
-      <Basic wrap="balance">balance</Basic>
-      <Basic wrap="pretty">pretty</Basic>
+      <Basic.Component wrap="wrap">wrap</Basic.Component>
+      <Basic.Component wrap="noWrap">noWrap</Basic.Component>
+      <Basic.Component wrap="balance">balance</Basic.Component>
+      <Basic.Component wrap="pretty">pretty</Basic.Component>
     </>
   );
   const wrap = screen.getByText(/wrap/);
@@ -135,7 +132,7 @@ test.each([
   { prop: 'preWrap', className: 'whitespace-pre-wrap' },
   { prop: 'breakSpaces', className: 'whitespace-break-spaces' },
 ] as const)('supports whiteSpace prop: %s', ({ prop, className }) => {
-  render(<Basic whiteSpace={prop}>{prop}</Basic>);
+  render(<Basic.Component whiteSpace={prop}>{prop}</Basic.Component>);
   const el = screen.getByText(prop);
   expect(el).toHaveClass(className);
 });

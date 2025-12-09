@@ -1,8 +1,9 @@
 import preview from '../../../../config/storybook/.storybook/preview';
-import { Tabs, TabsProps } from './Tabs';
+import { Tabs } from './Tabs';
 
 const meta = preview.meta({
   title: 'Components/Tabs',
+  component: Tabs,
   argTypes: {
     disabled: {
       control: { type: 'boolean' },

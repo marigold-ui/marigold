@@ -9,6 +9,7 @@ import { useToast } from './ToastQueue';
 
 const meta = preview.meta({
   title: 'Components/Toast',
+  component: Toast,
   argTypes: {
     position: {
       control: { type: 'radio' },

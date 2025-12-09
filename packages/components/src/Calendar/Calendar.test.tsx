@@ -1,12 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import * as stories from '../Calendar/Calendar.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './Calendar.stories';
 
 const keyCodes = {
   Enter: 13,
@@ -25,7 +22,7 @@ describe('Calendar', () => {
   const user = userEvent.setup();
 
   test('renders with default value', () => {
-    render(<Basic defaultValue={new CalendarDate(2019, 6, 5)} />);
+    render(<Basic.Component defaultValue={new CalendarDate(2019, 6, 5)} />);
 
     const gridCells = screen
       .getAllByRole('gridcell')
@@ -42,7 +39,7 @@ describe('Calendar', () => {
   });
 
   test('renders with a value', () => {
-    render(<Basic value={new CalendarDate(2019, 6, 5)} />);
+    render(<Basic.Component value={new CalendarDate(2019, 6, 5)} />);
 
     const gridCells = screen
       .getAllByRole('gridcell')
@@ -59,7 +56,7 @@ describe('Calendar', () => {
   });
 
   test('focus the selected date if autofocus is set', () => {
-    render(<Basic value={new CalendarDate(2019, 2, 3)} autoFocus />);
+    render(<Basic.Component value={new CalendarDate(2019, 2, 3)} autoFocus />);
 
     const cell = screen.getByLabelText('selected', { exact: false });
     const grid = screen.getByRole('grid');
@@ -72,7 +69,7 @@ describe('Calendar', () => {
 
   test('constrains the visible region depending on the minValue', () => {
     render(
-      <Basic
+      <Basic.Component
         value={new CalendarDate(2019, 2, 3)}
         minValue={new CalendarDate(2019, 2, 1)}
       />
@@ -85,7 +82,7 @@ describe('Calendar', () => {
   });
 
   test('shows era for BC dates', () => {
-    render(<Basic value={new CalendarDate('BC', 5, 2, 3)} />);
+    render(<Basic.Component value={new CalendarDate('BC', 5, 2, 3)} />);
 
     const cell = screen.getByLabelText('selected', { exact: false });
 
@@ -98,7 +95,7 @@ describe('Calendar', () => {
   test("Doesn't select a date on keydown Enter/Space if readOnly", () => {
     const onChange = vi.fn();
     render(
-      <Basic
+      <Basic.Component
         defaultValue={new CalendarDate(2019, 6, 5)}
         autoFocus
         onChange={onChange}
@@ -132,7 +129,10 @@ describe('Calendar', () => {
   test('selects a date on click (uncontrolled)', async () => {
     const onChange = vi.fn();
     render(
-      <Basic defaultValue={new CalendarDate(2019, 6, 5)} onChange={onChange} />
+      <Basic.Component
+        defaultValue={new CalendarDate(2019, 6, 5)}
+        onChange={onChange}
+      />
     );
     const newDate = screen.getByText('17');
     await user.click(newDate);
@@ -145,7 +145,12 @@ describe('Calendar', () => {
 
   test('selects a date on click (controlled)', async () => {
     const onChange = vi.fn();
-    render(<Basic value={new CalendarDate(2019, 6, 5)} onChange={onChange} />);
+    render(
+      <Basic.Component
+        value={new CalendarDate(2019, 6, 5)}
+        onChange={onChange}
+      />
+    );
 
     const newDate = screen.getByText('17');
     await user.click(newDate);
@@ -157,7 +162,7 @@ describe('Calendar', () => {
   });
 
   test('renders month selection', async () => {
-    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+    render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
     expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
 
@@ -168,7 +173,7 @@ describe('Calendar', () => {
   });
 
   test('select a month', async () => {
-    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+    render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
     const monthSelection = screen.getByRole('button', { name: 'Jan' });
     await user.click(monthSelection);
@@ -184,7 +189,7 @@ describe('Calendar', () => {
     // Mock scrollIntoView to prevent errors in JSDOM
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
-    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+    render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
     expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
 
@@ -198,7 +203,7 @@ describe('Calendar', () => {
     // Mock scrollIntoView to prevent errors in JSDOM
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
-    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+    render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
     expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
 

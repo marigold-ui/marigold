@@ -1,10 +1,8 @@
-import { composeStories } from '@storybook/react';
 import { render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './ConfirmationDialog.stories';
+import { UseConfirmation } from './ConfirmationDialog.stories';
 import { useConfirmation } from './useConfirmation';
 
-const { UseConfirmation } = composeStories(stories);
 const user = userEvent.setup();
 
 test('throw if ConfirmationProvider is missing', () => {
@@ -16,7 +14,7 @@ test('throw if ConfirmationProvider is missing', () => {
 });
 
 test('open confirmation dialog', async () => {
-  render(<UseConfirmation />);
+  render(<UseConfirmation.Component />);
 
   const button = screen.getByRole('button', { name: 'Confirm' });
   await user.click(button);
@@ -33,7 +31,7 @@ test('open confirmation dialog', async () => {
 });
 
 test('can open multiple confirmation dialogs sequentially', async () => {
-  render(<UseConfirmation />);
+  render(<UseConfirmation.Component />);
 
   const button = screen.getByRole('button', { name: 'Confirm' });
   await user.click(button);
@@ -56,7 +54,7 @@ test('can open multiple confirmation dialogs sequentially', async () => {
 test('only one confirmation dialog at a time', async () => {
   const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-  render(<UseConfirmation />);
+  render(<UseConfirmation.Component />);
 
   const button = screen.getByRole('button', { name: 'Confirm' });
   await user.click(button);

@@ -10,6 +10,7 @@ import { Popover } from './Popover';
 
 const meta = preview.meta({
   title: 'Components/Overlay',
+  component: Modal,
 });
 
 // imported from RAC

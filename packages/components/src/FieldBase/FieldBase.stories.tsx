@@ -1,5 +1,4 @@
 import preview from '../../../../config/storybook/.storybook/preview';
-import type { FieldBaseProps } from './FieldBase';
 import { FieldBase } from './FieldBase';
 
 const meta = preview.meta({

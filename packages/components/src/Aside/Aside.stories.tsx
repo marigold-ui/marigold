@@ -1,9 +1,4 @@
-import preview from '../../../../config/storybook/.storybook/preview';
-import { Headline } from '../Headline/Headline';
-import { List } from '../List/List';
-import { Text } from '../Text/Text';
-import { Aside } from './Aside';
-
+/*
 const meta = preview.meta({
   title: 'Components/Aside',
   component: Aside,
@@ -53,13 +48,14 @@ const meta = preview.meta({
   },
   args: {
     side: 'right',
-    space: '4',
+    space: 4,
     wrap: '50%',
     sideWidth: '150px',
   },
 });
+*/
 
-export const Basic = meta.story({
+/*export const Basic = meta.story({
   render: args => (
     <Aside {...args}>
       <div>
@@ -92,4 +88,4 @@ export const Basic = meta.story({
       </div>
     </Aside>
   ),
-});
+});*/

@@ -5,6 +5,7 @@ import { Table } from './Table';
 
 const meta = preview.meta({
   title: 'Components/Table',
+  component: Table,
   argTypes: {
     align: {
       control: {

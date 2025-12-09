@@ -1,8 +1,5 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './TimeField.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './TimeField.stories';
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();
@@ -14,7 +11,7 @@ afterEach(() => {
   onFocusSpy.mockClear();
 });
 test('renders TimeField with default value', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const segments = screen.getAllByRole('spinbutton');
 
@@ -24,7 +21,7 @@ test('renders TimeField with default value', () => {
 });
 
 test('renders readonly state', () => {
-  render(<Basic readOnly />);
+  render(<Basic.Component readOnly />);
 
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-readonly',
@@ -33,7 +30,7 @@ test('renders readonly state', () => {
 });
 
 test('renders disabled state', () => {
-  render(<Basic disabled />);
+  render(<Basic.Component disabled />);
 
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-disabled',
@@ -42,7 +39,7 @@ test('renders disabled state', () => {
 });
 
 test('renders required state', () => {
-  render(<Basic required />);
+  render(<Basic.Component required />);
 
   expect(screen.getAllByRole('spinbutton')[0]).toHaveAttribute(
     'aria-required',
@@ -51,7 +48,7 @@ test('renders required state', () => {
 });
 
 test('renders TimeField with granularity of second', () => {
-  render(<Basic granularity="second" />);
+  render(<Basic.Component granularity="second" />);
 
   const segments = screen.getAllByRole('spinbutton');
 
@@ -60,7 +57,7 @@ test('renders TimeField with granularity of second', () => {
 });
 
 test('renders TimeField in 12-hour format', () => {
-  render(<Basic hourCycle={12} />);
+  render(<Basic.Component hourCycle={12} />);
 
   const segments = screen.getAllByRole('spinbutton');
 

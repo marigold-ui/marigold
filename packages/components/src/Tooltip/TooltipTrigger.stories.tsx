@@ -5,6 +5,7 @@ import { Tooltip } from './Tooltip';
 
 const meta = preview.meta({
   title: 'Components/Tooltip',
+  component: Tooltip.Trigger,
   argTypes: {
     disabled: {
       control: {

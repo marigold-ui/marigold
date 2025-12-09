@@ -3,10 +3,10 @@ import preview from '../../../../config/storybook/.storybook/preview';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
 import { ContextualHelp } from './ContextualHelp';
-import type { ContextualHelpProps } from './ContextualHelp';
 
 const meta = preview.meta({
   title: 'Components/ContextualHelp',
+  component: ContextualHelp,
   argTypes: {
     variant: {
       control: 'select',

@@ -11,6 +11,7 @@ import { Card } from './Card';
 
 const meta = preview.meta({
   title: 'Components/Card',
+  component: Card,
   argTypes: {
     variant: {
       control: {

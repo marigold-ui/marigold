@@ -10,6 +10,7 @@ import { Scrollable } from './Scrollable';
 
 const meta = preview.meta({
   title: 'Components/Scrollable',
+  component: Scrollable,
   argTypes: {
     width: {
       control: {

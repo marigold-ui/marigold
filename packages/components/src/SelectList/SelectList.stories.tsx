@@ -5,6 +5,7 @@ import { SelectList } from './SelectList';
 
 const meta = preview.meta({
   title: 'Components/SelectList',
+  component: SelectList,
   argTypes: {
     selectionMode: {
       control: {

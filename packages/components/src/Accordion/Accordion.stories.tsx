@@ -15,6 +15,7 @@ import { Accordion } from './Accordion';
 
 const meta = preview.meta({
   title: 'Components/Accordion',
+  component: Accordion,
   argTypes: {
     defaultExpandedKeys: {
       description: 'Expanded Keys per default',

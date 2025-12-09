@@ -7,6 +7,7 @@ import { Text } from '../Text/Text';
 
 const meta = preview.meta({
   title: 'Components/Inset',
+  component: Inset,
   argTypes: {
     space: {
       control: {

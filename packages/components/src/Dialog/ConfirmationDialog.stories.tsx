@@ -2,10 +2,7 @@ import { expect } from 'storybook/test';
 import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
-import {
-  ConfirmationDialog,
-  ConfirmationDialogProps,
-} from './ConfirmationDialog';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import { useConfirmation } from './useConfirmation';
 
 const meta = preview.meta({

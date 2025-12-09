@@ -1,6 +1,6 @@
 import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
-import { Tooltip, TooltipProps } from './Tooltip';
+import { Tooltip } from './Tooltip';
 
 const meta = preview.meta({
   title: 'Components/Tooltip',

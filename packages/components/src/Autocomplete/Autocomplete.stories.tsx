@@ -85,22 +85,25 @@ export const Basic = meta.story({
       <Autocomplete.Option id="Firefly">Firefly</Autocomplete.Option>
     </Autocomplete>
   ),
-});
+  play: async ({ canvas }) => {
+    const input = canvas.getByRole('combobox');
+    const description = canvas.getAllByText(
+      'This is a help text description'
+    )[0];
+    const clearButton = screen.getByLabelText(
+      /Clear search|Suche zurücksetzen/i
+    );
 
-Basic.test('run Basic story test', async ({ canvas }) => {
-  const input = canvas.getByRole('combobox');
-  const description = canvas.getAllByText('This is a help text description')[0];
-  const clearButton = screen.getByLabelText(/Clear search|Suche zurücksetzen/i);
+    await userEvent.click(input);
+    await userEvent.type(input, 'sp');
+    await userEvent.click(clearButton);
 
-  await userEvent.click(input);
-  await userEvent.type(input, 'sp');
-  await userEvent.click(clearButton);
-
-  await expect(input).toHaveFocus();
-  await expect(input).toBeVisible();
-  await expect(description).toBeInTheDocument();
-  await expect(clearButton).toBeInTheDocument();
-  await expect(input).toHaveValue('');
+    await expect(input).toHaveFocus();
+    await expect(input).toBeVisible();
+    await expect(description).toBeInTheDocument();
+    await expect(clearButton).toBeInTheDocument();
+    await expect(input).toHaveValue('');
+  },
 });
 
 export const WithSections = meta.story({
@@ -238,7 +241,6 @@ export const Async = meta.story({
 });
 
 export const InputMenuTrigger = meta.story({
-  tags: ['component-test'],
   ...Basic.input,
   play: async ({ canvas }) => {
     const input = canvas.getByRole('combobox');
@@ -251,7 +253,6 @@ export const InputMenuTrigger = meta.story({
 });
 
 export const FocusMenuTrigger = meta.story({
-  tags: ['component-test'],
   ...Basic.input,
   args: {
     menuTrigger: 'focus',
@@ -267,7 +268,6 @@ export const FocusMenuTrigger = meta.story({
 });
 
 export const ManualMenuTrigger = meta.story({
-  tags: ['component-test'],
   ...Basic.input,
   args: {
     menuTrigger: 'input',

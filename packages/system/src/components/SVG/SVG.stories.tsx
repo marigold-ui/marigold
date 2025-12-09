@@ -3,6 +3,7 @@ import { SVG } from './SVG';
 
 const meta = preview.meta({
   title: 'Components/SVG',
+  component: SVG,
   argTypes: {
     variant: {
       control: {

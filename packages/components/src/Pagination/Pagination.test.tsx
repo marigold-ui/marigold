@@ -1,10 +1,7 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MockInstance, vi } from 'vitest';
-import * as stories from './Pagination.stories';
-
-const { Basic, WithButtonLabels } = composeStories(stories);
+import { Basic, WithButtonLabels } from './Pagination.stories';
 
 let warnMock: MockInstance;
 
@@ -18,14 +15,14 @@ afterEach(() => {
 
 describe('Pagination tests', () => {
   test('renders navigation element with correct page information', () => {
-    render(<Basic totalItems={20} pageSize={10} />);
+    render(<Basic.Component totalItems={20} pageSize={10} />);
 
     const nav = screen.getByRole('navigation');
     expect(nav).toHaveAttribute('aria-label', 'Page 1 of 2');
   });
 
   test('renders previous and next buttons', () => {
-    render(<Basic totalItems={20} pageSize={10} />);
+    render(<Basic.Component totalItems={20} pageSize={10} />);
 
     const previousButton = screen.getByLabelText('Page previous');
     const nextButton = screen.getByLabelText('Page next');
@@ -35,7 +32,7 @@ describe('Pagination tests', () => {
   });
 
   test('renders correct number of page buttons', () => {
-    render(<Basic totalItems={50} pageSize={10} />);
+    render(<Basic.Component totalItems={50} pageSize={10} />);
 
     const pageButtons = screen.getAllByRole('button').filter(button => {
       const label = button.getAttribute('aria-label');
@@ -51,14 +48,14 @@ describe('Pagination tests', () => {
   });
 
   test('first page button is selected on initial render', () => {
-    render(<Basic totalItems={20} pageSize={10} />);
+    render(<Basic.Component totalItems={20} pageSize={10} />);
 
     const pageButton1 = screen.getByLabelText('Page 1');
     expect(pageButton1).toHaveAttribute('data-selected', 'true');
   });
 
   test('renders disabled buttons when no data is available', () => {
-    render(<Basic totalItems={0} pageSize={10} />);
+    render(<Basic.Component totalItems={0} pageSize={10} />);
 
     const previousButton = screen.getByLabelText('Page previous');
     const nextButton = screen.getByLabelText('Page next');
@@ -70,7 +67,7 @@ describe('Pagination tests', () => {
   });
 
   test('renders single page button when data fits on one page', () => {
-    render(<Basic totalItems={5} pageSize={10} />);
+    render(<Basic.Component totalItems={5} pageSize={10} />);
 
     const pageButtons = screen.getAllByRole('button').filter(button => {
       const label = button.getAttribute('aria-label');
@@ -85,7 +82,7 @@ describe('Pagination tests', () => {
   });
 
   test('has the correct role', () => {
-    render(<Basic />);
+    render(<Basic.Component />);
 
     const pagination = screen.getByRole('navigation');
 
@@ -102,7 +99,9 @@ describe('Pagination tests', () => {
   ])(
     `should focus %s when using tab and default page is Page %i`,
     async (expected, page) => {
-      render(<Basic totalItems={50} pageSize={10} defaultPage={page} />);
+      render(
+        <Basic.Component totalItems={50} pageSize={10} defaultPage={page} />
+      );
 
       await userEvent.tab();
 
@@ -111,7 +110,7 @@ describe('Pagination tests', () => {
   );
 
   test('use control labels', async () => {
-    render(<WithButtonLabels />);
+    render(<WithButtonLabels.Component />);
 
     const previousButton = screen.getByLabelText('Page previous');
     const nextPageButton = screen.getByLabelText('Page next');
