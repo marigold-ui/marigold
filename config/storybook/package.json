@@ -30,6 +30,7 @@
     "vite-tsconfig-paths": "5.1.4"
   },
   "devDependencies": {
+    "@storybook/test-runner": "0.24.2",
     "@storybook/addon-a11y": "^10.1.4",
     "@storybook/addon-docs": "^10.1.4",
     "@storybook/addon-vitest": "10.1.4",
@@ -52,6 +53,6 @@
   "scripts": {
     "start": "storybook dev -p 6006 -c .storybook/",
     "build": "storybook build --disable-telemetry -c ./.storybook -o ../../storybook-static --stats-json",
-    "test": "vitest --project=storybook"
+    "test": "npx playwright install --with-deps && pnpm test-storybook --includeTags='component-test'"
   }
 }
