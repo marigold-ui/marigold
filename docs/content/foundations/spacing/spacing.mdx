@@ -13,7 +13,9 @@ Effective spacing manages two distinct roles: the _relationship between objects_
 
 ## Relation (Space)
 
-Relation describes the connection between elements. It defines hierarchy and grouping for margins, flex gaps, and grid gaps. The fundamental rule is: "The tighter the space, the stronger the relationship."
+Relation describes the connection between elements. It defines hierarchy and grouping for margins, flex gaps, and grid gaps. The fundamental rule is:
+
+> The tighter the space, the stronger the relationship.
 
 When elements are strongly related, the bond is tight, and they pull close together. When they are distinct, the bond relaxes, and they drift apart.
 
@@ -233,7 +235,24 @@ Stretch modifiers apply horizontal compression, which is essential for mobile la
 
 Here, the X-axis padding steps down one level. A "relaxed-stretch" token, for instance, maintains "relaxed" vertical padding but reduces the horizontal padding to "regular".
 
----
+### Consistent Height
+
+While semantic padding is preferred for most containers, certain interactive elements (like text inputs and buttons) require pixel-perfect height matching across different browsers. Browsers often calculate line-height and padding slightly differently, leading to sub-pixel mismatches.
+
+In these cases, it is more effective to zero out vertical padding and rely on a fixed height token. This ensures the component occupies the exact same vertical space on every platform. By pairing this fixed height with explicit vertical centering (e.g. `align-items: center`), you ensure that text and icons remain perfectly balanced within the container.
+
+<SectionMessage>
+  <SectionMessage.Title>The Regulatory Minimum</SectionMessage.Title>
+  <SectionMessage.Content>
+    Based on WCAG 2.2 Success Criterion 2.5.8 (Level AA), the absolute minimum
+    size for a mouse target is 24 by 24 pixels. This does not require the
+    visible element to be 24px, but the *interactive container* (hit area) must
+    be at least 24px.
+    <br />
+    If the target is smaller than 24px, it must have sufficient spacing so that
+    a 24px diameter circle centered on it does not touch any adjacent target.
+  </SectionMessage.Content>
+</SectionMessage>
 
 ## Application
 
