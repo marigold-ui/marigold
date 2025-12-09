@@ -73,7 +73,8 @@ const meta = preview.meta({
     closeDelay: 500,
     trigger: 'focus',
     defaultOpen: false,
-  },
+    children: undefined,
+  } as const,
 });
 
 export const Trigger = meta.story({

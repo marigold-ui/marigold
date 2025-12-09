@@ -26,4 +26,4 @@ const meta = preview.meta({
   },
 });
 
-export const Basic = meta.story();
+export const Basic: any = meta.story();

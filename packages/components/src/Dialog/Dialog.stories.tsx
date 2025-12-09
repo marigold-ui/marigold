@@ -12,14 +12,6 @@ const meta = preview.meta({
   title: 'Components/Dialog',
   component: Dialog,
   argTypes: {
-    dismissable: {
-      control: { type: 'boolean' },
-      description: 'Set dismissable',
-    },
-    keyboardDismissable: {
-      control: { type: 'boolean' },
-      description: 'Set keyboardDismissable',
-    },
     size: {
       control: {
         type: 'radio',

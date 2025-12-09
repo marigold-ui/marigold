@@ -93,10 +93,10 @@ const meta = preview.meta({
     readOnly: false,
     disabled: false,
     required: false,
-  },
+  } as const,
 });
 
-export const Basic = meta.story({
+export const Basic: any = meta.story({
   render: args => (
     <I18nProvider locale="de-DE">
       <DateField {...args} />
@@ -104,7 +104,7 @@ export const Basic = meta.story({
   ),
 });
 
-export const ControlledDateField = meta.story({
+export const ControlledDateField: any = meta.story({
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
     return (
@@ -130,7 +130,7 @@ export const ControlledDateField = meta.story({
   },
 });
 
-export const BritishLocal = meta.story({
+export const BritishLocal: any = meta.story({
   render: args => (
     <I18nProvider locale="en-GB">
       <DateField {...args} />

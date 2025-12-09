@@ -105,7 +105,7 @@ const meta = preview.meta({
   },
 });
 
-export const Basic = meta.story({
+export const Basic: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <Menu {...args} label="Hogwarts Houses">
@@ -115,7 +115,7 @@ export const Basic = meta.story({
       <Menu.Item id="slytherin">Slytherin</Menu.Item>
     </Menu>
   ),
-  play: async ({ canvas, step }) => {
+  play: async ({ canvas, step }: any) => {
     await step('Open the menu', async () => {
       const button = canvas.getByText('Hogwarts Houses');
 
@@ -145,7 +145,7 @@ export const Basic = meta.story({
   },
 });
 
-export const OnActionMenu = meta.story({
+export const OnActionMenu: any = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -157,7 +157,7 @@ export const OnActionMenu = meta.story({
       </Menu>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
     const button = canvas.getByText('Choose');
@@ -172,7 +172,7 @@ export const OnActionMenu = meta.story({
   },
 });
 
-export const SingleSelection = meta.story({
+export const SingleSelection: any = meta.story({
   render: () => {
     const [selected, setSelected] = useState<Set<'left' | 'center' | 'right'>>(
       new Set(['center'])
@@ -196,7 +196,7 @@ export const SingleSelection = meta.story({
   },
 });
 
-export const MultiSelection = meta.story({
+export const MultiSelection: any = meta.story({
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
     const selected = Array.from(selectedKeys);
@@ -220,7 +220,7 @@ export const MultiSelection = meta.story({
   },
 });
 
-export const MenuSection = meta.story({
+export const MenuSection: any = meta.story({
   render: args => (
     <Menu {...args} label="Menu with sections">
       <Menu.Section title="Food">
@@ -238,7 +238,7 @@ export const MenuSection = meta.story({
   ),
 });
 
-export const DisabledKeys = meta.story({
+export const DisabledKeys: any = meta.story({
   render: args => (
     <Menu
       {...args}
@@ -260,7 +260,7 @@ export const DisabledKeys = meta.story({
   ),
 });
 
-export const LinksMenu = meta.story({
+export const LinksMenu: any = meta.story({
   render: args => (
     <Menu {...args} label="Links">
       <Menu.Item href="https://adobe.com/" target="_blank">
@@ -279,7 +279,7 @@ export const LinksMenu = meta.story({
   ),
 });
 
-export const BasicActionMenu = meta.story({
+export const BasicActionMenu: any = meta.story({
   render: args => {
     return (
       <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
@@ -293,7 +293,7 @@ export const BasicActionMenu = meta.story({
   },
 });
 
-export const OpenMenuRemotely = meta.story({
+export const OpenMenuRemotely: any = meta.story({
   render: () => {
     const [open, setOpen] = useState(false);
     const handleAction = () => {

@@ -46,7 +46,8 @@ const meta = preview.meta({
   },
   args: {
     tilesWidth: '300px',
-  },
+    children: undefined,
+  } as const,
 });
 
 export const Basic = meta.story({

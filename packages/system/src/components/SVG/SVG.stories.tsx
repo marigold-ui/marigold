@@ -5,16 +5,6 @@ const meta = preview.meta({
   title: 'Components/SVG',
   component: SVG,
   argTypes: {
-    variant: {
-      control: {
-        type: 'text',
-      },
-      table: {
-        defaultValue: {
-          summary: 'icon',
-        },
-      },
-    },
     size: {
       control: {
         type: 'range',

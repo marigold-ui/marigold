@@ -2,22 +2,22 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
-import { AutocompleteProps } from '@marigold/components';
+import { MenuProps } from '@marigold/components';
 import { Basic, BasicActionMenu, MenuSection } from './Menu.stories';
 
-const BasicComponent = (props: AutocompleteProps) => (
+const BasicComponent = (props: MenuProps) => (
   <div id="storybook-root">
     <Basic.Component {...props} />
   </div>
 );
 
-const BasicActionMenuComponent = (props: AutocompleteProps) => (
+const BasicActionMenuComponent = (props: MenuProps) => (
   <div id="storybook-root">
     <BasicActionMenu.Component {...props} />
   </div>
 );
 
-const MenuSectionComponent = (props: AutocompleteProps) => (
+const MenuSectionComponent = (props: MenuProps) => (
   <div id="storybook-root">
     <MenuSection.Component {...props} />
   </div>

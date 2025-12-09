@@ -89,7 +89,7 @@ const meta = preview.meta({
   },
 });
 
-export const Basic = meta.story({
+export const Basic: any = meta.story({
   render: args => {
     return (
       <I18nProvider locale="de-DE">
@@ -104,7 +104,7 @@ export const Basic = meta.story({
   },
 });
 
-export const Controlled = meta.story({
+export const Controlled: any = meta.story({
   render: args => {
     const [value, setValue] = useState(
       new CalendarDate(2025, 8, 7) as DateValue
@@ -135,7 +135,7 @@ export const Controlled = meta.story({
   },
 });
 
-export const MinMax = meta.story({
+export const MinMax: any = meta.story({
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker
@@ -150,7 +150,7 @@ export const MinMax = meta.story({
   ),
 });
 
-export const UnavailableDate = meta.story({
+export const UnavailableDate: any = meta.story({
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker

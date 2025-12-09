@@ -28,12 +28,16 @@ const meta = preview.meta({
       description: 'set padding on top and bottom side',
     },
   },
+  args: {
+    space: 4,
+    children: undefined,
+  } as const,
 });
 
 export const Basic = meta.story({
   render: args => (
     <Card size="small">
-      <Inset space={4} {...args}>
+      <Inset {...args}>
         <Headline level={3}>The Giggle Grounds</Headline>
         <Inline>
           <Text fontStyle="italic">Laughville | Outdoor Amphitheater</Text>

@@ -15,7 +15,8 @@ const meta = preview.meta({
   },
   args: {
     children: 'This is the content of the collapsible component.',
-  },
+    showCount: false,
+  } as const,
 });
 
 export const Basic = meta.story({

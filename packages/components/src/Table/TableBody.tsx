@@ -22,7 +22,7 @@ export interface TableBodyProps
 }
 
 export const TableBody = ({
-  children,
+  children = undefined,
   className,
   emptyState,
 }: TableBodyProps) => {

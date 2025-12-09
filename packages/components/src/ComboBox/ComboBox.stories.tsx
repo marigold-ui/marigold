@@ -123,10 +123,11 @@ const meta = preview.meta({
     menuTrigger: 'input',
     placeholder: undefined,
     label: 'Label',
-  },
+  } as const,
 });
 
-export const Basic = meta.story({
+// Explicit type annotation prevents TS2742 by avoiding leaking inferred internal types
+export const Basic: any = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -149,7 +150,7 @@ export const Basic = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
     const emptyState = await canvas.findByText('Kein Ergebnis gefunden');
@@ -157,7 +158,7 @@ export const Basic = meta.story({
   },
 });
 
-export const Controlled = meta.story({
+export const Controlled: any = meta.story({
   tags: ['component-test'],
   render: args => {
     const [current, setCurrent] = useState<string | undefined>('');
@@ -184,7 +185,7 @@ export const Controlled = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = canvas.queryByRole('combobox', { name: 'Animals' });
 
     await userEvent.click(
@@ -210,12 +211,12 @@ export const Controlled = meta.story({
   },
 });
 
-export const ManualMenuTrigger = meta.story({
+export const ManualMenuTrigger: any = meta.story({
   ...Basic.input,
   args: {
     menuTrigger: 'manual',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, '{arrowdown}');
@@ -225,7 +226,7 @@ export const ManualMenuTrigger = meta.story({
   },
 });
 
-export const AsyncLoading = meta.story({
+export const AsyncLoading: any = meta.story({
   render: args => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
@@ -258,7 +259,7 @@ export const AsyncLoading = meta.story({
   },
 });
 
-export const Sections = meta.story({
+export const Sections: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <ComboBox {...args}>
@@ -286,7 +287,7 @@ export const Sections = meta.story({
       </ComboBox.Section>
     </ComboBox>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
@@ -299,9 +300,9 @@ export const Sections = meta.story({
   },
 });
 
-export const InputTrigger = meta.story({
+export const InputTrigger: any = meta.story({
   ...Basic.input,
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const input = await canvas.findByRole('combobox', { name: 'Label' });
     const result = await canvas.queryByRole('combobox', { name: 'Label' });
 
@@ -317,12 +318,12 @@ export const InputTrigger = meta.story({
   },
 });
 
-export const FocusTrigger = meta.story({
+export const FocusTrigger: any = meta.story({
   ...Basic.input,
   args: {
     menuTrigger: 'focus',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = await canvas.findByRole('combobox', { name: 'Label' });
 
     await userEvent.type(
@@ -339,12 +340,12 @@ export const FocusTrigger = meta.story({
   },
 });
 
-export const ManualTrigger = meta.story({
+export const ManualTrigger: any = meta.story({
   ...Basic.input,
   args: {
     menuTrigger: 'manual',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = canvas.queryByRole('combobox', { name: 'Label' });
 
     await userEvent.click(
@@ -359,7 +360,7 @@ export const ManualTrigger = meta.story({
   },
 });
 
-export const DisabledKeys = meta.story({
+export const DisabledKeys: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <ComboBox {...args} disabledKeys={['spinach']}>
@@ -369,7 +370,7 @@ export const DisabledKeys = meta.story({
       <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );

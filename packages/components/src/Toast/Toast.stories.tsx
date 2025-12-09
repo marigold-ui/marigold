@@ -10,48 +10,6 @@ import { useToast } from './ToastQueue';
 const meta = preview.meta({
   title: 'Components/Toast',
   component: Toast,
-  argTypes: {
-    position: {
-      control: { type: 'radio' },
-      options: [
-        'top-left',
-        'top-right',
-        'bottom-left',
-        'bottom-right',
-        'top',
-        'bottom',
-      ],
-      description: 'Position of the toast on the screen',
-      table: {
-        defaultValue: { summary: 'bottom-right' },
-      },
-    },
-    variant: {
-      control: { type: 'select' },
-      options: ['info', 'success', 'error', 'warning', 'default'],
-      description: 'Variant of the toast, affects its appearance',
-    },
-    title: { control: 'text', description: 'Title of the toast' },
-    description: {
-      control: 'text',
-      description: 'Optional description for the toast',
-    },
-    timeout: {
-      control: { type: 'number' },
-      description:
-        'Time in milliseconds after which the toast will automatically close. Use 0 for no timeout.',
-      table: {
-        defaultValue: { summary: '0' },
-      },
-    },
-  },
-  args: {
-    position: 'bottom-right',
-    title: 'Dies ist eine Toast-Nachricht!',
-    description: 'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
-    variant: 'default',
-    timeout: 0,
-  },
   beforeEach: () => {
     // Clear the toast queue before each story
     queue.clear();
@@ -60,13 +18,21 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: ({ position, title, description, variant, timeout }) => {
+  render: () => {
     const { addToast } = useToast();
     return (
       <>
-        <ToastProvider position={position} />
+        <ToastProvider />
         <Button
-          onPress={() => addToast({ title, description, variant, timeout })}
+          onPress={() =>
+            addToast({
+              title: 'Dies ist eine Toast-Nachricht!',
+              description:
+                'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
+              variant: 'info',
+              timeout: 0,
+            })
+          }
         >
           Show Toast
         </Button>
@@ -105,16 +71,24 @@ export const Basic = meta.story({
 });
 
 export const ToggleToast = meta.story({
-  render: ({ position, title, description, variant, timeout }) => {
+  render: () => {
     const [toastKey, setToastKey] = useState<string | null>(null);
     const { addToast, removeToast } = useToast();
     return (
       <>
-        <ToastProvider position={position} />
+        <ToastProvider />
         <Button
           onPress={() => {
             if (!toastKey) {
-              setToastKey(addToast({ title, description, variant, timeout }));
+              setToastKey(
+                addToast({
+                  title: 'Dies ist eine Toast-Nachricht!',
+                  description:
+                    'Hier ist eine kurze Beschreibung der Toast-Nachricht.',
+                  variant: 'info',
+                  timeout: 0,
+                })
+              );
             } else {
               removeToast(toastKey);
               setToastKey(null);
@@ -156,21 +130,15 @@ export const ToggleToast = meta.story({
 });
 
 export const ToastContentTest = meta.story({
-  args: {
-    title: 'Toast für accessibility checks',
-    description: 'Dieser Toast dient nur zu Testzwecken.',
-    variant: 'info',
-    timeout: 0,
-  },
-  render: ({ title, description, variant }) => {
+  render: () => {
     return (
       <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
         <Toast
           toast={{
             content: {
-              title: title,
-              description: description,
-              variant: variant,
+              title: 'Toast für accessibility checks',
+              description: 'Dieser Toast dient nur zu Testzwecken.',
+              variant: 'info',
             },
             key: 'toast-key',
           }}
@@ -182,11 +150,7 @@ export const ToastContentTest = meta.story({
 
 export const WithLinks = meta.story({
   tags: ['component-test'],
-  args: {
-    title: 'Update Available',
-    variant: 'info',
-  },
-  render: ({ title, variant }) => {
+  render: () => {
     const { addToast } = useToast();
     const description = (
       <>
@@ -208,9 +172,9 @@ export const WithLinks = meta.story({
         <Button
           onPress={() =>
             addToast({
-              title,
+              title: 'Update Available',
               description,
-              variant,
+              variant: 'info',
               timeout: 0,
             })
           }
@@ -224,12 +188,7 @@ export const WithLinks = meta.story({
 
 export const WithAction = meta.story({
   tags: ['component-test'],
-  args: {
-    title: 'Update Available',
-    variant: 'info',
-    description: 'A new version is available.',
-  },
-  render: ({ title, variant, description }) => {
+  render: () => {
     const { addToast } = useToast();
 
     return (
@@ -238,9 +197,9 @@ export const WithAction = meta.story({
         <Button
           onPress={() =>
             addToast({
-              title,
-              description,
-              variant,
+              title: 'Update Available',
+              description: 'A new version is available.',
+              variant: 'info',
               timeout: 0,
               action: (
                 <Button size="small" variant="primary">

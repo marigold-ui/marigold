@@ -11,7 +11,6 @@ const meta = preview.meta({
     variant: {
       control: 'select',
       options: ['help', 'info'],
-      defaultValue: 'help',
     },
     placement: {
       control: 'select',
@@ -39,25 +38,20 @@ const meta = preview.meta({
         'end top',
         'end bottom',
       ],
-      defaultValue: 'bottom start',
     },
     size: {
       control: 'select',
       options: ['small', 'medium', 'large'],
-      defaultValue: 'medium',
     },
     width: {
       control: 'select',
       options: ['small', 'medium', 'large'],
-      defaultValue: 'medium',
     },
     offset: {
       control: 'number',
-      defaultValue: 8,
     },
     defaultOpen: {
       control: 'boolean',
-      defaultValue: false,
     },
     open: {
       control: 'boolean',
@@ -66,9 +60,19 @@ const meta = preview.meta({
       action: 'onOpenChange',
     },
   },
+  args: {
+    variant: 'help',
+    placement: 'bottom start',
+    size: 'medium',
+    width: 'medium',
+    offset: 8,
+    defaultOpen: false,
+    children: undefined,
+  } as const,
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>

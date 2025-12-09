@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AutocompleteProps } from '@marigold/components';
+import type { ContextualHelpProps } from './ContextualHelp';
 import { Basic } from './ContextualHelp.stories';
 
-const BasicComponent = (props: AutocompleteProps) => (
+const BasicComponent = (props: Partial<ContextualHelpProps>) => (
   <div id="storybook-root">
     <Basic.Component {...props} />
   </div>

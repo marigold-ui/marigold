@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { AutocompleteProps } from '@marigold/components';
+import { ComboBoxProps } from '@marigold/components';
 import { Basic } from './ComboBox.stories';
 
-const BasicComponent = (props: AutocompleteProps) => (
+const BasicComponent = (props: ComboBoxProps) => (
   <div id="storybook-root">
     <Basic.Component {...props} />
   </div>

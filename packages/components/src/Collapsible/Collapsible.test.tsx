@@ -63,21 +63,21 @@ describe('More', () => {
     render(
       <>
         <I18nProvider locale="en-US">
-          <ShowMore.Component showCount>
+          <ShowMore.Component>
             <p>1</p>
             <p>2</p>
           </ShowMore.Component>
         </I18nProvider>
         <I18nProvider locale="de-DE">
-          <ShowMore.Component showCount>
+          <ShowMore.Component>
             <p>1</p>
             <p>2</p>
           </ShowMore.Component>
         </I18nProvider>
       </>
     );
-    expect(screen.getByText('Show 2 more')).toBeInTheDocument();
-    expect(screen.getByText('2 weitere anzeigen')).toBeInTheDocument();
+    expect(screen.getByText('Show more')).toBeInTheDocument();
+    expect(screen.getByText('Mehr anzeigen')).toBeInTheDocument();
   });
 
   it('is unstyled by default', () => {

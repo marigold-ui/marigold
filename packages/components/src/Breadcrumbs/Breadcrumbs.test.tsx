@@ -1,8 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './Breadcrumbs.stories';
 import { Basic, Collapsed } from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
+
+const CollapsedComponent = (props: any) => (
+  <div id="storybook-root">
+    <Collapsed.Component {...props} />
+  </div>
+);
 
 const user = userEvent.setup();
 
@@ -30,7 +35,7 @@ test('renders breadcrumb items correctly', () => {
 });
 
 test('collapses breadcrumbs for too many items', async () => {
-  render(<stories.Collapsed.Component />);
+  render(<CollapsedComponent />);
 
   const ellipsis = screen.getByText('...');
   const home = screen.getByText('Home');
@@ -66,7 +71,7 @@ test('renders chevron separators', () => {
 });
 
 test('collapses breadcrumbs with links for too many items', () => {
-  render(<Collapsed.Component />);
+  render(<CollapsedComponent />);
 
   // First
   expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
@@ -86,7 +91,7 @@ test('collapses breadcrumbs with links for too many items', () => {
 });
 
 test('expand collapsed items', async () => {
-  render(<Collapsed.Component />);
+  render(<CollapsedComponent />);
 
   const ellipsis = screen.getByRole('button', {
     name: 'These breadcrumbs are hidden',

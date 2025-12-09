@@ -11,8 +11,8 @@ const meta = preview.meta({
 });
 
 export const Confirmation = meta.story({
-  render: ({ ...args }) => (
-    <ConfirmationDialog.Trigger {...args}>
+  render: () => (
+    <ConfirmationDialog.Trigger>
       <Button>Open</Button>
       <ConfirmationDialog title="Confirmation" confirmationLabel="Confirm">
         Are you sure you want to proceed with this action?

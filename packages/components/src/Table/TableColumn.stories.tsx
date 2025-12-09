@@ -5,7 +5,7 @@ import { Table } from './Table';
 
 const meta = preview.meta({
   title: 'Components/Table',
-  component: Table,
+  component: Table.Column,
   argTypes: {
     align: {
       control: {
@@ -37,7 +37,8 @@ const meta = preview.meta({
   args: {
     align: 'right',
     width: 20,
-  },
+    children: undefined,
+  } as const,
 });
 
 export const AlignedTableColumn = meta.story({

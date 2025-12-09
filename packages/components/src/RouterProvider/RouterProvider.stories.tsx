@@ -33,11 +33,11 @@ function CustomTab(props: any) {
 }
 
 export const Basic = meta.story({
-  render: args => {
+  render: () => {
     const [url, setUrl] = useState<string>('/FoR');
     return (
       <>
-        <RouterProvider {...args} navigate={setUrl}>
+        <RouterProvider navigate={setUrl}>
           <Tabs selectedKey={url}>
             <TabList
               aria-label="History of Ancient Rome"
