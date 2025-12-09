@@ -64,7 +64,7 @@ export const Container = ({
   <div
     {...props}
     className={cn(
-      'inline-grid gap-(--space)',
+      'grid gap-(--space)',
       placeItems[alignItems],
       gridColsAlign[align],
       gridColumn[align]
