@@ -11,7 +11,7 @@ describe('Grid', () => {
       render(<Content data-testid="grid" />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid).toBeInTheDocument();
     });
 
@@ -19,7 +19,7 @@ describe('Grid', () => {
       render(<Content data-testid="grid" />);
 
       const label = screen.getByText('Username:');
-      
+
       expect(label).toBeInTheDocument();
     });
   });
@@ -29,7 +29,7 @@ describe('Grid', () => {
       render(<Content space={0} data-testid="grid" />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 0)'
       );
@@ -39,7 +39,7 @@ describe('Grid', () => {
       render(<Content data-testid="grid" />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 2)'
       );
@@ -51,7 +51,7 @@ describe('Grid', () => {
       render(<Content data-testid="grid" />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid).toHaveClass('h-auto');
     });
 
@@ -59,7 +59,7 @@ describe('Grid', () => {
       render(<Content height={96} data-testid="grid" />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid).toHaveClass('h-96');
     });
   });
@@ -69,7 +69,7 @@ describe('Grid', () => {
       render(<Content data-testid="grid" />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid).toHaveStyle({
         'grid-template-areas': '"label value"\n"action description"',
       });
@@ -79,7 +79,7 @@ describe('Grid', () => {
       render(<Content data-testid="grid" />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid).toHaveStyle({
         'grid-template-columns': '150px auto',
       });
@@ -89,7 +89,7 @@ describe('Grid', () => {
       render(<Content data-testid="grid" columns={[1, 2]} rows={[1, 3]} />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid).toHaveStyle({
         'grid-template-columns': '1fr 2fr',
         'grid-template-rows': '1fr 3fr',
@@ -102,7 +102,7 @@ describe('Grid', () => {
       render(<Content data-testid="grid" />);
 
       const grid = screen.getByTestId('grid');
-      
+
       expect(grid).toHaveClass('items-center');
     });
 
@@ -137,7 +137,7 @@ describe('Grid', () => {
         );
 
         const grid = screen.getByTestId('grid');
-        
+
         expect(grid).toHaveClass(expectedX);
         expect(grid).toHaveClass(expectedY);
       }

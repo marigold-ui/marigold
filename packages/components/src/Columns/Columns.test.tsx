@@ -14,7 +14,7 @@ describe('Columns', () => {
       render(<Basic data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).toBeInTheDocument();
     });
 
@@ -22,7 +22,7 @@ describe('Columns', () => {
       render(<ComplexChildren data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).toBeInTheDocument();
     });
 
@@ -30,7 +30,7 @@ describe('Columns', () => {
       render(<FullHeight data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).toBeInTheDocument();
     });
   });
@@ -40,7 +40,7 @@ describe('Columns', () => {
       render(<Basic space={0} data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 0)'
       );
@@ -50,7 +50,7 @@ describe('Columns', () => {
       render(<Basic space={5} data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 5)'
       );
@@ -63,7 +63,7 @@ describe('Columns', () => {
 
       const columns = screen.getByTestId('columns');
       const firstColumn = columns.firstElementChild as HTMLElement;
-      
+
       expect(firstColumn).toHaveStyle('flexBasis: calc((0em - 100%) * 999)');
     });
 
@@ -72,7 +72,7 @@ describe('Columns', () => {
 
       const columns = screen.getByTestId('columns');
       const firstColumn = columns.firstElementChild as HTMLElement;
-      
+
       expect(firstColumn).toHaveStyle('flexBasis: calc((50em - 100%) * 999)');
     });
   });
@@ -100,7 +100,7 @@ describe('Columns', () => {
 
       const switchElement = screen.getByRole('switch');
       const fitColumn = switchElement.closest('.w-fit');
-      
+
       expect(fitColumn).toBeInTheDocument();
       expect(fitColumn).toHaveClass('h-fit');
     });
@@ -111,7 +111,7 @@ describe('Columns', () => {
       render(<FullHeight stretch data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).toHaveClass('h-full');
     });
 
@@ -119,7 +119,7 @@ describe('Columns', () => {
       render(<Basic stretch={false} data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).not.toHaveClass('h-full');
     });
   });
