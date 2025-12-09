@@ -1,85 +1,91 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import { Tiles } from './Tiles';
+import * as stories from './Tiles.stories';
 
-test('set tiles width via prop', () => {
-  render(
-    <Tiles tilesWidth="200px" data-testid="tiles">
-      <div>tiles</div>
-    </Tiles>
-  );
-  const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toMatchInlineSnapshot(`
-    <div
-      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
-      data-testid="tiles"
-      style="--column: min(200px, 100%); --tilesWidth: 200px;"
-    >
-      <div>
-        tiles
-      </div>
-    </div>
-  `);
-});
+const { Basic, DifferentHeights } = composeStories(stories, {});
 
-test('supports setting tiles width with design tokens', () => {
-  render(
-    <Tiles tilesWidth="large" data-testid="tiles">
-      <div>tiles</div>
-    </Tiles>
-  );
-  const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toMatchInlineSnapshot(`
-    <div
-      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
-      data-testid="tiles"
-      style="--column: min(large, 100%); --tilesWidth: large;"
-    >
-      <div>
-        tiles
-      </div>
-    </div>
-  `);
-});
+describe('Tiles', () => {
+  describe('Rendering', () => {
+    test('renders content correctly', () => {
+      render(<Basic data-testid="tiles" />);
 
-test('supports space prop', () => {
-  render(
-    <Tiles tilesWidth="200px" space={7} data-testid="tiles">
-      <div>tiles</div>
-    </Tiles>
-  );
-  const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveClass(`gap-7`);
-});
+      expect(screen.getByText('Glumanda')).toBeInTheDocument();
+      expect(screen.getByText('Glutexo')).toBeInTheDocument();
+      expect(screen.getByText('Glurak')).toBeInTheDocument();
+    });
 
-test('supports responsive grid via stretch prop', () => {
-  render(
-    <Tiles tilesWidth="300px" stretch data-testid="tiles">
-      <div>tiles</div>
-    </Tiles>
-  );
-  const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toMatchInlineSnapshot(`
-    <div
-      class="grid gap-0 grid-cols-[repeat(auto-fit,var(--column))]"
-      data-testid="tiles"
-      style="--column: minmax(min(300px, 100%), 1fr); --tilesWidth: 300px;"
-    >
-      <div>
-        tiles
-      </div>
-    </div>
-  `);
-});
+    test('renders as a grid', () => {
+      render(<Basic data-testid="tiles" />);
 
-test('supports gridAutoRows prop', () => {
-  render(
-    <Tiles tilesWidth="400px" equalHeight data-testid="tiles">
-      <div>tiles</div>
-      <div>tiles</div>
-      <div>tiles</div>
-      <div>tiles</div>
-    </Tiles>
-  );
-  const tiles = screen.getByTestId(/tiles/);
-  expect(tiles).toHaveClass(`auto-rows-[1fr]`);
+      const tiles = screen.getByTestId('tiles');
+      expect(tiles).toHaveClass('grid');
+    });
+  });
+
+  describe('Spacing', () => {
+    test('applies default spacing value of 0', () => {
+      render(<Basic space={0} data-testid="tiles" />);
+
+      const tiles = screen.getByTestId('tiles');
+      expect(tiles).toHaveClass('gap-(--space)');
+      expect(tiles.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 0)'
+      );
+    });
+
+    test('applies custom spacing', () => {
+      render(<Basic space={8} data-testid="tiles" />);
+
+      const tiles = screen.getByTestId('tiles');
+      expect(tiles).toHaveClass('gap-(--space)');
+      expect(tiles.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 8)'
+      );
+    });
+  });
+
+  describe('Tiles width', () => {
+    test('sets tiles width via prop', () => {
+      render(<Basic tilesWidth="200px" data-testid="tiles" />);
+
+      const tiles = screen.getByTestId('tiles');
+      expect(tiles.style.getPropertyValue('--tilesWidth')).toBe('200px');
+      expect(tiles.style.getPropertyValue('--column')).toBe('min(200px, 100%)');
+    });
+
+    test('supports design tokens for tiles width', () => {
+      render(<Basic tilesWidth="large" data-testid="tiles" />);
+
+      const tiles = screen.getByTestId('tiles');
+      expect(tiles.style.getPropertyValue('--tilesWidth')).toBe('large');
+    });
+  });
+
+  describe('Stretch behavior', () => {
+    test('uses minmax for column when stretch is enabled', () => {
+      render(<Basic stretch tilesWidth="300px" data-testid="tiles" />);
+
+      const tiles = screen.getByTestId('tiles');
+
+      expect(tiles.style.getPropertyValue('--column')).toBe(
+        'minmax(min(300px, 100%), 1fr)'
+      );
+    });
+  });
+
+  describe('Equal height', () => {
+    test('applies auto-rows-[1fr] when equalHeight is enabled', () => {
+      render(<DifferentHeights equalHeight data-testid="tiles" />);
+
+      const tiles = screen.getByTestId('tiles');
+      expect(tiles).toHaveClass('auto-rows-[1fr]');
+    });
+
+    test('does not apply auto-rows by default', () => {
+      render(<DifferentHeights equalHeight={false} data-testid="tiles" />);
+
+      const tiles = screen.getByTestId('tiles');
+      expect(tiles).not.toHaveClass('auto-rows-[1fr]');
+    });
+  });
 });
