@@ -108,7 +108,7 @@ export const Bento = meta.story({
         </Grid.Area>
         <Grid.Area name="social-media">
           <Teaser
-            className="object-none object-left-top"
+            className="object-none object-top-left"
             alt="social media"
             src="https://www.reservix.net/app/uploads/resized/2023/12/Marketing-Expertise-collage-V2-1000x750-c-center.png"
           />
