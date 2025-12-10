@@ -1,4 +1,4 @@
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Headline } from '../Headline/Headline';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';

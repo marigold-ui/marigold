@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
 import { List } from '../List/List';

@@ -1,5 +1,5 @@
 import { expect } from 'storybook/test';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
 import { ContextualHelp } from './ContextualHelp';

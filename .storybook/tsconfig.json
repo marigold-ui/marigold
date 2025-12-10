@@ -1,0 +1,10 @@
+{
+  "extends": "@marigold/tsconfig/react.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "paths": {
+      "@marigold/*": ["../packages/*/src", "../themes/*/src"]
+    }
+  }
+}

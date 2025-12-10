@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Divider } from '../Divider/Divider';
 import { Headline } from '../Headline/Headline';
 import { NumberField } from '../NumberField/NumberField';

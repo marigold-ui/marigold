@@ -1,5 +1,5 @@
 import { Inline, Stack } from '@marigold/components';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Loader } from './Loader';
 
 const meta = preview.meta({

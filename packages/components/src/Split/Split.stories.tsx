@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Inline } from '../Inline/Inline';
 import { Stack } from '../Stack/Stack';
 import { Split } from './Split';

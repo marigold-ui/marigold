@@ -1,6 +1,6 @@
 packages:
   - config/*
-  - storybook
+  - .storybook
   - docs
   - packages/*
   - themes/*

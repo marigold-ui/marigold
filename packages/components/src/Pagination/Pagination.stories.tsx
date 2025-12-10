@@ -1,6 +1,6 @@
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Inline } from '../Inline/Inline';
 import { Select } from '../Select/Select';
 import { Split } from '../Split/Split';

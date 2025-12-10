@@ -2,7 +2,7 @@ import { parseTime } from '@internationalized/date';
 import { useState } from 'react';
 import { TimeValue } from 'react-aria-components';
 import { expect, userEvent, within } from 'storybook/test';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { TimeField } from './TimeField';
 
 const meta = preview.meta({

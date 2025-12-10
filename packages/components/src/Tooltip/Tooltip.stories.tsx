@@ -1,4 +1,4 @@
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Tooltip } from './Tooltip';
 

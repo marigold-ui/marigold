@@ -1,8 +1,10 @@
 //@ts-ignore
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
+// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
@@ -47,7 +49,8 @@ export default defineConfig({
       reporter: ['text', 'json', 'html', 'json-summary'], // Optional: Add coverage reports
     },
     globals: true,
-    environment: 'jsdom', // Use jsdom for browser-like tests
-    setupFiles: ['./vitest.setup.ts', './storybook/.storybook/vitest.setup.ts'], // Path to your setup file
+    environment: 'jsdom',
+    // Use jsdom for browser-like tests
+    setupFiles: ['./vitest.setup.ts'], // Path to your setup file
   },
 });

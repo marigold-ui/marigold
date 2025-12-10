@@ -1,6 +1,6 @@
 import { expect, userEvent, within } from 'storybook/test';
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Columns } from '../Columns/Columns';
@@ -81,23 +81,25 @@ export const Basic = meta.story({
       </Accordion.Item>
     </Accordion>
   ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const user = userEvent.setup();
+});
 
-    const item = canvas.getByText('Informations');
-    const itemtwo = canvas.getByText('Personal Settings');
+Basic.test('Basic test', async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const user = userEvent.setup();
 
-    await user.click(item);
-    await user.click(itemtwo);
+  const item = canvas.getByText('Informations');
+  const itemtwo = canvas.getByText('Personal Settings');
 
-    expect(
-      canvas.getByText('Here are some infos').parentElement
-    ).toHaveAttribute('aria-hidden', 'true');
-    expect(
-      canvas.getByText('Some longer Text to see if it looks good').parentElement
-    ).toHaveAttribute('aria-hidden', 'false');
-  },
+  await user.click(item);
+  await user.click(itemtwo);
+
+  expect(canvas.getByText('Here are some infos').parentElement).toHaveAttribute(
+    'aria-hidden',
+    'true'
+  );
+  expect(
+    canvas.getByText('Some longer Text to see if it looks good').parentElement
+  ).toHaveAttribute('aria-hidden', 'false');
 });
 
 let items = [

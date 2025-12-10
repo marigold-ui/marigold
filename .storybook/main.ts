@@ -14,13 +14,14 @@ const projectRoot = path.resolve(__dirname, './../../');
 
 export default defineMain({
   stories: [
-    path.resolve(projectRoot, 'packages/components/src/**/*.stories.tsx'),
-    path.resolve(projectRoot, 'packages/system/src/**/*.stories.tsx'),
+    '../packages/components/src/**/*.stories.tsx',
+    '../packages/system/src/**/*.stories.tsx',
   ],
   addons: [
     getAbsolutePath('@storybook/addon-a11y'),
     getAbsolutePath('@storybook/addon-docs'),
     getAbsolutePath('storybook-addon-test-codegen'),
+    getAbsolutePath('@storybook/addon-vitest'),
   ],
   framework: {
     name: getAbsolutePath('@storybook/react-vite'),

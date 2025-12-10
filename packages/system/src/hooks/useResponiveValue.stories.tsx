@@ -1,5 +1,5 @@
 import { ThemeProvider, useResponsiveValue } from '@marigold/system';
-import preview from '../../../../storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 
 const meta = preview.meta({
   title: 'System/useResponsiveValue',
