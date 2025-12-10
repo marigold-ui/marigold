@@ -7,7 +7,7 @@ order: 99
 
 Space is the invisible structure of our interface, not merely empty pixels, but the active connectivity that dictates hierarchy and logic. It follows a simple principle: distance signals relationship. Stronger bonds (like a label and input) require closer proximity.
 
-To ensure consistency, we rely on semantic tokens instead of arbitrary values. This decouples intent from mathematics, allowing the interface to adapt across contexts. While a 4px grid provides the underlying rhythm, these raw values are strictly a fallback. Semantic tokens should always be the primary choice to preserve design intent.
+To ensure consistency, we rely on semantic tokens instead of arbitrary values. This decouples intent from mathematics, allowing the interface to adapt across contexts. While a [4px grid](https://uxdesign.cc/the-4px-baseline-grid-89485012dea6) provides the underlying rhythm, these raw values are strictly a fallback. Semantic tokens should always be the primary choice to preserve design intent.
 
 Effective spacing manages two distinct roles: the _relationship between objects_ (relation) and the _internal density of an object_ (inset).
 
@@ -127,7 +127,7 @@ The stack axis manages vertical rhythm, addressing how elements pile on top of o
 
 #### Inline (Horizontal flow)
 
-The inline axis governs the horizontal association of elements, managing how peers sit side-by-side (X-axis). This context determines the separation between horizontal siblings, such as buttons in a toolbar or an icon next to text.
+The inline axis governs the horizontal association of elements, managing how neighbors sit side-by-side (X-axis). This context determines the separation between horizontal siblings, such as buttons in a toolbar or an icon next to text.
 
 <ComponentDemo file="./spacing-inline.demo.tsx" mode="preview" />
 
@@ -219,7 +219,7 @@ The scale has 5 tokens, each with a specific purpose. This ensures consistent de
 
 While a square inset (equal padding on all sides) is the default, UI elements often require optical correction to look balanced. A button with equal padding often looks oddly tall, and a mobile card with standard padding loses too much horizontal space.
 
-To solve this, we use _squish_ and _stretch_ modifiers. These corrections maintain visual balance by reducing one dimension (either X or Y) to the next smallest step on the geometric scale. For example, a 16px inset steps down to 8px on the compressed axis.
+To solve this, we use _squish_ and _stretch_ modifiers. These generate a single token containing distinct values for the horizontal and vertical axes. These corrections maintain visual balance by reducing one dimension (either X or Y) to the next smallest step on the scale. For example, a 16px inset steps down to 8px on the compressed axis.
 
 <ComponentDemo file="./spacing-inset.demo.tsx" mode="preview" />
 
@@ -227,13 +227,9 @@ To solve this, we use _squish_ and _stretch_ modifiers. These corrections mainta
 
 Squish modifiers apply vertical compression to elements like buttons or table rows that need to align horizontally with the grid but maintain a compact vertical profile. By keeping the standard width and reducing the height, we preserve alignment while saving vertical space.
 
-Ideally, the Y-axis padding steps down one level on the scale. For example, a "regular-squish" token combines "regular" horizontal padding with "tight" vertical padding.
-
 #### Stretch (Horizontal Compression)
 
 Stretch modifiers apply horizontal compression, which is essential for mobile layouts or narrow columns (like sidebars) where screen real estate is limited. This approach maintains the vertical rhythm and breathing room so the design doesn't feel cramped, but reduces the horizontal padding to maximize content width.
-
-Here, the X-axis padding steps down one level. A "relaxed-stretch" token, for instance, maintains "relaxed" vertical padding but reduces the horizontal padding to "regular".
 
 ### Consistent Height
 
