@@ -1,14 +1,11 @@
 /* eslint-disable testing-library/no-node-access */
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './Stack.stories';
-
-const { Basic, Nested, Stretch, AsList } = composeStories(stories, {});
+import { AsList, Basic, Nested, Stretch } from './Stack.stories';
 
 describe('Stack', () => {
   describe('Rendering', () => {
     test('renders content correctly', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const headline = screen.getByText(/Getting Started with Stack/);
 
@@ -16,7 +13,7 @@ describe('Stack', () => {
     });
 
     test('renders with proper spacing classes applied', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const description = screen.getByText(
         /The Stack component provides a flexible layout system/
@@ -26,7 +23,7 @@ describe('Stack', () => {
     });
 
     test('supports nesting with different spacing levels', () => {
-      render(<Nested />);
+      render(<Nested.Component />);
 
       const headlines = screen.getAllByText(/spacing/);
 
@@ -34,7 +31,7 @@ describe('Stack', () => {
     });
 
     test('renders all child elements', () => {
-      render(<Stretch />);
+      render(<Stretch.Component />);
 
       expect(screen.getByText(/Lirum/)).toBeInTheDocument();
 
@@ -46,7 +43,7 @@ describe('Stack', () => {
 
   describe('Spacing', () => {
     test('applies default spacing value of 0', () => {
-      render(<Basic space={0} />);
+      render(<Basic.Component space={0} />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -57,7 +54,7 @@ describe('Stack', () => {
     });
 
     test('applies custom spacing from theme', () => {
-      render(<Basic space={2} />);
+      render(<Basic.Component space={2} />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -70,7 +67,7 @@ describe('Stack', () => {
 
   describe('Alignment', () => {
     test('aligns children horizontally to the left', () => {
-      render(<Basic alignX="left" />);
+      render(<Basic.Component alignX="left" />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -79,7 +76,7 @@ describe('Stack', () => {
     });
 
     test('aligns children horizontally to center', () => {
-      render(<Basic alignX="center" />);
+      render(<Basic.Component alignX="center" />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -88,7 +85,7 @@ describe('Stack', () => {
     });
 
     test('aligns children horizontally to the right', () => {
-      render(<Basic alignX="right" />);
+      render(<Basic.Component alignX="right" />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -97,7 +94,7 @@ describe('Stack', () => {
     });
 
     test('aligns children vertically to top', () => {
-      render(<Basic alignY="top" />);
+      render(<Basic.Component alignY="top" />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -106,7 +103,7 @@ describe('Stack', () => {
     });
 
     test('aligns children vertically to center', () => {
-      render(<Basic alignY="center" />);
+      render(<Basic.Component alignY="center" />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -115,7 +112,7 @@ describe('Stack', () => {
     });
 
     test('aligns children vertically to bottom', () => {
-      render(<Basic alignY="bottom" />);
+      render(<Basic.Component alignY="bottom" />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -126,7 +123,7 @@ describe('Stack', () => {
 
   describe('Element types and layout', () => {
     test('renders as div element by default', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const stack = screen.getByText('Getting Started with Stack').parentElement
         ?.parentElement;
@@ -135,7 +132,7 @@ describe('Stack', () => {
     });
 
     test('fills available space when stretch is enabled', () => {
-      render(<Stretch />);
+      render(<Stretch.Component />);
 
       const blocks = screen.getAllByText(/Lirum|Larum|Löffelstiel/);
       const stack = blocks[0].parentElement;
@@ -144,7 +141,7 @@ describe('Stack', () => {
     });
 
     test('renders as list element when asList is enabled', () => {
-      render(<AsList />);
+      render(<AsList.Component />);
 
       const stack = screen.getByText('first').parentElement?.parentElement;
 

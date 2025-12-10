@@ -1,17 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Container } from '../Container/Container';
 import { Text } from '../Text/Text';
 import { Breakout } from './Breakout';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Breakout',
   component: Breakout,
-} satisfies Meta<typeof Breakout>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => {
     return (
       <Container align="center">
@@ -49,4 +46,4 @@ export const Basic: Story = {
       </Container>
     );
   },
-};
+});

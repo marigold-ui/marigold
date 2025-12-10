@@ -1,10 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Info } from '../icons/Info';
 import { SelectList } from './SelectList';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/SelectList',
+  component: SelectList,
   argTypes: {
     selectionMode: {
       control: {
@@ -22,12 +23,9 @@ const meta = {
   args: {
     selectionMode: 'single',
   },
-} satisfies Meta<typeof SelectList>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <SelectList
       {...args}
@@ -41,9 +39,9 @@ export const Basic: Story = {
       <SelectList.Item id="four">Four</SelectList.Item>
     </SelectList>
   ),
-};
+});
 
-export const WithSingleSelection: Story = {
+export const WithSingleSelection = meta.story({
   render: args => (
     <SelectList aria-labelledby="SelectList" selectionMode="single" {...args}>
       <SelectList.Item id="one">one</SelectList.Item>
@@ -52,9 +50,9 @@ export const WithSingleSelection: Story = {
       <SelectList.Item id="four">Four</SelectList.Item>
     </SelectList>
   ),
-};
+});
 
-export const WithMultiSelection: Story = {
+export const WithMultiSelection = meta.story({
   render: args => (
     <SelectList aria-labelledby="SelectList" selectionMode="multiple" {...args}>
       <SelectList.Item id="charizard">Charizard</SelectList.Item>
@@ -63,7 +61,7 @@ export const WithMultiSelection: Story = {
       <SelectList.Item id="pikachu">Pikachu</SelectList.Item>
     </SelectList>
   ),
-};
+});
 
 let rows = [
   { id: 1, name: 'Games' },
@@ -71,7 +69,7 @@ let rows = [
   { id: 3, name: 'bootmgr' },
   { id: 4, name: 'log.txt' },
 ];
-export const Action: Story = {
+export const Action = meta.story({
   render: args => (
     <SelectList
       aria-labelledby="SelectList"
@@ -94,4 +92,4 @@ export const Action: Story = {
       )}
     </SelectList>
   ),
-};
+});

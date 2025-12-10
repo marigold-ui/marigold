@@ -1,11 +1,8 @@
 /* eslint-disable testing-library/no-node-access */
-import { composeStories } from '@storybook/react';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './Toast.stories';
+import { Basic } from './Toast.stories';
 import { useToast } from './ToastQueue';
-
-const { Basic } = composeStories(stories);
 
 // Manually adding container for ToastProvider to prevent log errors
 beforeEach(() => {
@@ -28,7 +25,7 @@ afterEach(() => {
 describe('Toast', () => {
   const { addToast, clearToasts } = useToast();
   test('renders without crashing', async () => {
-    render(<Basic />);
+    render(<Basic.Component />);
     await act(async () => {
       await addToast({ title: 'Dies ist eine Toast-Nachricht!' });
     });
@@ -40,7 +37,7 @@ describe('Toast', () => {
   it.each(['info', 'success', 'error', 'warning'])(
     'renders %s variant',
     async variant => {
-      render(<Basic />);
+      render(<Basic.Component />);
       await act(async () => {
         await addToast({
           title: `${variant} Toast`,
@@ -56,7 +53,7 @@ describe('Toast', () => {
   );
 
   test('clearToasts function works', async () => {
-    render(<Basic />);
+    render(<Basic.Component />);
     const button = screen.getByRole('button', { name: 'Show Toast' });
 
     await userEvent.click(button);
@@ -69,7 +66,7 @@ describe('Toast', () => {
   });
 
   test('renders action when provided', async () => {
-    render(<Basic />);
+    render(<Basic.Component />);
     const actionButton = <button>Undo</button>;
 
     await act(async () => {

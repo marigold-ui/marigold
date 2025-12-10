@@ -1,4 +1,3 @@
-import { composeStories } from '@storybook/react';
 import {
   act,
   fireEvent,
@@ -12,11 +11,10 @@ import { vi } from 'vitest';
 import { Theme, cva, useSmallScreen } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Select } from './Select';
-import * as stories from './Select.stories';
+import { Basic } from './Select.stories';
 
 // Setup
 // ---------------
-const { Basic } = composeStories(stories);
 const user = userEvent.setup();
 
 const theme: Theme = {
@@ -102,7 +100,7 @@ test('renders a field (label, helptext, select)', () => {
   ]);
 
   render(
-    <Basic
+    <Basic.Component
       data-testid="select"
       label="Label"
       errorMessage={'ERRR!'}
@@ -123,7 +121,7 @@ test('renders a field (label, helptext, select)', () => {
 });
 
 test('visible label is not a <label> element (for a11y)', () => {
-  render(<Basic label="Label" />);
+  render(<Basic.Component label="Label" />);
 
   const labels = screen.queryAllByText('Label');
 
@@ -131,7 +129,7 @@ test('visible label is not a <label> element (for a11y)', () => {
 });
 
 test('placeholder is rendered', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const button = screen.getByRole('button');
 
@@ -139,7 +137,7 @@ test('placeholder is rendered', () => {
 });
 
 test('allows to disable select', () => {
-  render(<Basic disabled />);
+  render(<Basic.Component disabled />);
   const button = screen.getByRole('button');
 
   expect(button).toBeDisabled();
@@ -293,7 +291,7 @@ test('renders as tray', () => {
 });
 
 test('error is there', () => {
-  render(<Basic label="Label" error />);
+  render(<Basic.Component label="Label" error />);
 
   // We need to query all, since there is also a label in the hidden select
   // eslint-disable-next-line testing-library/no-node-access

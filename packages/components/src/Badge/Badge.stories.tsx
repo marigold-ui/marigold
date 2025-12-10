@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Accessibility } from 'lucide-react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Badge } from './Badge';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Badge',
   component: Badge,
   argTypes: {
@@ -43,14 +43,11 @@ const meta = {
     children: 'Status',
     variant: 'info',
   },
-} satisfies Meta<typeof Badge>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export const Basic = meta.story({ render: args => <Badge {...args} /> });
 
-export const Basic: Story = { render: args => <Badge {...args} /> };
-
-export const All: Story = {
+export const All = meta.story({
   render: args => (
     <Stack space={2} alignX="left">
       <Badge {...args} variant="default" />
@@ -63,9 +60,9 @@ export const All: Story = {
       <Badge {...args} variant="admin" />
     </Stack>
   ),
-};
+});
 
-export const Icon: Story = {
+export const Icon = meta.story({
   parameters: {
     controls: { exclude: ['children'] },
   },
@@ -74,4 +71,4 @@ export const Icon: Story = {
       <Accessibility />
     </Badge>
   ),
-};
+});

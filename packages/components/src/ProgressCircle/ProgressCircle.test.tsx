@@ -1,13 +1,10 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './ProgressCircle.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './ProgressCircle.stories';
 
 // Tests
 // ---------------
 test('renders an progressbar', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const progressCycle = screen.getByRole('progressbar');
 
@@ -15,7 +12,7 @@ test('renders an progressbar', () => {
 });
 
 test('supports different sizes', () => {
-  render(<Basic size="20" />);
+  render(<Basic.Component size="20" />);
 
   const progressCircle = screen.getByRole('progressbar');
 
@@ -26,7 +23,7 @@ test('supports different sizes', () => {
 });
 
 test('supports strokewidth with bigger size', () => {
-  render(<Basic size="40" />);
+  render(<Basic.Component size="40" />);
 
   const progressCircle = screen.getByRole('progressbar');
 
@@ -37,7 +34,7 @@ test('supports strokewidth with bigger size', () => {
 });
 
 test('has aria label', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const progressCircle = screen.getByRole('progressbar');
 

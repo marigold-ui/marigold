@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Container } from '../Container/Container';
 import { Headline } from '../Headline/Headline';
 import { Text } from '../Text/Text';
 import { Card } from './Card';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Card',
   component: Card,
   argTypes: {
@@ -68,12 +68,9 @@ const meta = {
       description: 'Right padding of the card, using tailwind spacing tokens.',
     },
   },
-} satisfies Meta<typeof Card>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Card {...args}>
       <Container>
@@ -93,9 +90,9 @@ export const Basic: Story = {
       </Container>
     </Card>
   ),
-};
+});
 
-export const Stretch: Story = {
+export const Stretch = meta.story({
   args: {
     stretch: true,
   },
@@ -118,9 +115,9 @@ export const Stretch: Story = {
       </Container>
     </Card>
   ),
-};
+});
 
-export const PaddingAndSpace: Story = {
+export const PaddingAndSpace = meta.story({
   args: {
     p: 8,
     space: 4,
@@ -152,4 +149,4 @@ export const PaddingAndSpace: Story = {
       </Container>
     </Card>
   ),
-};
+});

@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react';
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
 import { List } from '../List/List';
@@ -8,8 +8,9 @@ import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import { Scrollable } from './Scrollable';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Scrollable',
+  component: Scrollable,
   argTypes: {
     width: {
       control: {
@@ -35,12 +36,9 @@ const meta = {
     },
   },
   args: {},
-} satisfies Meta<typeof Scrollable>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Vertical: Story = {
+export const Vertical = meta.story({
   render: args => (
     <Scrollable height="200px" width="1/5" {...args}>
       <div>
@@ -59,9 +57,9 @@ export const Vertical: Story = {
       </div>
     </Scrollable>
   ),
-};
+});
 
-export const Horizontal: Story = {
+export const Horizontal = meta.story({
   render: args => (
     <Scrollable {...args}>
       <div className="flex gap-2">
@@ -86,9 +84,9 @@ export const Horizontal: Story = {
       </div>
     </Scrollable>
   ),
-};
+});
 
-export const WithTable: Story = {
+export const WithTable = meta.story({
   render: args => {
     const [todos, setTodos] = useState<
       { userId: string; id: string; title: string; completed: boolean }[]
@@ -138,9 +136,9 @@ export const WithTable: Story = {
       </>
     );
   },
-};
+});
 
-export const ListScrolling: Story = {
+export const ListScrolling = meta.story({
   render: args => (
     <Card p={3}>
       <Scrollable height="200px" {...args}>
@@ -172,4 +170,4 @@ export const ListScrolling: Story = {
       </Scrollable>
     </Card>
   ),
-};
+});

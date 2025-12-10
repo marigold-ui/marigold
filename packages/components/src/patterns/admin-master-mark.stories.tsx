@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Radio } from '../Radio/Radio';
@@ -6,23 +6,20 @@ import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import { TextField } from '../TextField/TextField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Patterns/Master- & Admin-Mark',
-} satisfies Meta<never>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const BadgeVariants: Story = {
+export const BadgeVariants = meta.story({
   render: () => (
     <Stack space={2} alignX="left">
       <Badge variant="admin">Admin</Badge>
       <Badge variant="master">Master</Badge>
     </Stack>
   ),
-};
+});
 
-export const TableRows: Story = {
+export const TableRows = meta.story({
   render: () => (
     <Table aria-label="Settings Table">
       <Table.Header>
@@ -54,9 +51,9 @@ export const TableRows: Story = {
       </Table.Body>
     </Table>
   ),
-};
+});
 
-export const Form: Story = {
+export const Form = meta.story({
   render: () => (
     <div className="max-w-md">
       <Stack space={8}>
@@ -89,4 +86,4 @@ export const Form: Story = {
       </Stack>
     </div>
   ),
-};
+});
