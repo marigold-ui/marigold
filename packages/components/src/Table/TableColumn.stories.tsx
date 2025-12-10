@@ -1,6 +1,6 @@
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { Table } from './Table';
 
 const meta = preview.meta({

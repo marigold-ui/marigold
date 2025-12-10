@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { expect } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { Collapsible } from './Collapsible';
 import { More } from './More';
 

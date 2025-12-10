@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';

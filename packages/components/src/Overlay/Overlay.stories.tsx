@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
 import { Headline } from '../Headline/Headline';

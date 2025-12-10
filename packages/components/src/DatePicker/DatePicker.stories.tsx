@@ -2,7 +2,7 @@ import { CalendarDate } from '@internationalized/date';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { I18nProvider } from '@react-aria/i18n';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { DatePicker } from './DatePicker';
 

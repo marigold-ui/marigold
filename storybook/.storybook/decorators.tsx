@@ -2,8 +2,8 @@ import { Decorator } from '@storybook/react-vite';
 import {
   MarigoldProvider,
   OverlayContainerProvider,
-} from '@marigold/components';
-import theme from '@marigold/theme-rui';
+} from '../../packages/components/src';
+import theme from '../../themes/theme-rui/src';
 
 // Storybook decorator that provides Marigold theme and overlay container
 export const withMarigoldProviders: Decorator[] = [

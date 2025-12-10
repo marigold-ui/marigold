@@ -1,4 +1,4 @@
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { List } from './List';
 
 const meta = preview.meta({

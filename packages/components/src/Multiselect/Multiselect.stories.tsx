@@ -1,6 +1,6 @@
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Multiselect } from './Multiselect';

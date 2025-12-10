@@ -1,7 +1,7 @@
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';

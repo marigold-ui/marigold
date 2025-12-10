@@ -1,5 +1,5 @@
 import { useState } from 'storybook/preview-api';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { SearchField } from './SearchField';
 
 const meta = preview.meta({

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Text } from 'react-aria-components';
 import { expect, userEvent } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../storybook/.storybook/preview';
 import { Center } from '../Center/Center';
 import { Stack } from '../Stack/Stack';
 import { Autocomplete } from './Autocomplete';

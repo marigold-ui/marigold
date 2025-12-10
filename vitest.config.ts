@@ -48,9 +48,6 @@ export default defineConfig({
     },
     globals: true,
     environment: 'jsdom', // Use jsdom for browser-like tests
-    setupFiles: [
-      './vitest.setup.ts',
-      './config/storybook/.storybook/vitest.setup.ts',
-    ], // Path to your setup file
+    setupFiles: ['./vitest.setup.ts', './storybook/.storybook/vitest.setup.ts'], // Path to your setup file
   },
 });
