@@ -9,7 +9,7 @@ Space is the invisible structure of our interface, not merely empty pixels, but 
 
 To ensure consistency, we rely on semantic tokens instead of arbitrary values. This decouples intent from mathematics, allowing the interface to adapt across contexts. While a [4px grid](https://uxdesign.cc/the-4px-baseline-grid-89485012dea6) provides the underlying rhythm, these raw values are strictly a fallback. Semantic tokens should always be the primary choice to preserve design intent.
 
-Effective spacing manages two distinct roles: the _relationship between objects_ (relation) and the _internal density of an object_ (inset).
+Effective spacing manages two distinct roles: the relationship between objects (relation) and the internal density of an object (inset).
 
 ## Relation (Space)
 
@@ -136,6 +136,26 @@ The inline axis governs the horizontal association of elements, managing how nei
 The grid axis handles the macro-layout skeleton where items flow in both X and Y directions simultaneously. This two-directional structure defines the gutters in complex layouts like dashboard masonry or image galleries, establishing a consistent rhythm across the entire 2-dimensional plane.
 
 <ComponentDemo file="./spacing-grid.demo.tsx" mode="preview" />
+
+### Grouping
+
+There are distinct ways to group content to guide the user's eye.
+
+**Explicit grouping** uses visible boundaries like outlines, dividers, and cards to enclose related content. This is particularly effective for defining distinct interactive zones or isolating specific data sets from the surrounding layout.
+
+**Implicit grouping** relies on proximity and open space to establish these relationships without visual lines. By placing related items close together, the eye naturally perceives them as a unit, reducing the need for heavy graphical dividers.
+
+#### Not everything needs a container
+
+A common pitfall in modern UI design is the overuse of explicit grouping where every piece of content is placed inside a box or a card. "Container fatigue" creates visual clutter and adds unnecessary weight to the interface.
+
+Implicit grouping offers a cleaner alternative by leveraging the Relation tokens defined above. By simply placing related items closer together (using `tight` or `related`) and separating groups with larger gaps (using `group` or `section`), you create hierarchy naturally.
+
+**Benefits of Implicit Grouping:**
+
+- Reduced Visual Noise: Removing borders makes the interface lighter.
+- Scannability: Fewer obstacles (lines) allow for faster scanning.
+- Natural Hierarchy: Whitespace signals separation without cognitive load.
 
 ## Inset (Padding)
 
