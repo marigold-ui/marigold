@@ -1,5 +1,4 @@
-// This file has been automatically migrated to valid ESM format by Storybook.
-import type { StorybookConfig } from '@storybook/react-vite';
+import { defineMain } from '@storybook/react-vite/node';
 import { dirname, join } from 'path';
 import { mergeConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
@@ -13,7 +12,7 @@ const require = createRequire(import.meta.url);
 
 const projectRoot = path.resolve(__dirname, '../../../');
 
-const config: StorybookConfig = {
+export default defineMain({
   stories: [
     path.resolve(projectRoot, 'packages/components/src/**/*.stories.tsx'),
     path.resolve(projectRoot, 'packages/system/src/**/*.stories.tsx'),
@@ -30,6 +29,9 @@ const config: StorybookConfig = {
   typescript: {
     check: false,
   },
+  features: {
+    experimentalTestSyntax: true,
+  },
   // needed because without package have incorrect exports...
   async viteFinal(config) {
     return mergeConfig(config, {
@@ -42,8 +44,7 @@ const config: StorybookConfig = {
     });
   },
   staticDirs: ['./assets'],
-};
-export default config;
+});
 
 function getAbsolutePath(value: string): any {
   return dirname(require.resolve(join(value, 'package.json')));

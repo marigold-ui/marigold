@@ -1,11 +1,8 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './CheckboxGroup.stories';
-
-const { Basic, Error, CollapseAt } = composeStories(stories);
+import { Basic, CollapseAt, Error } from './CheckboxGroup.stories';
 
 test('renders label and group of checkboxes', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   expect(screen.getByText('This is a label')).toBeInTheDocument();
   expect(screen.getByText('Ham')).toBeInTheDocument();
@@ -18,14 +15,14 @@ test('renders label and group of checkboxes', () => {
 });
 
 test('label is optional (can use aria-label instead)', () => {
-  render(<Basic aria-label="Aria Label" />);
+  render(<Basic.Component aria-label="Aria Label" />);
 
   expect(screen.queryByText('Group of Checkboxes')).not.toBeInTheDocument();
   expect(screen.getByLabelText('Aria Label')).toBeInTheDocument();
 });
 
 test('applies group styles from theme', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const group = screen.getByRole('group');
 
@@ -35,7 +32,7 @@ test('applies group styles from theme', () => {
 });
 
 test('passes down "disabled" to checkboxes', () => {
-  render(<Basic disabled />);
+  render(<Basic.Component disabled />);
 
   // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toBeDisabled();
@@ -52,7 +49,7 @@ test('passes down "disabled" to checkboxes', () => {
 });
 
 test('passes down "read-only" to checkboxes', () => {
-  render(<Basic readOnly />);
+  render(<Basic.Component readOnly />);
 
   // eslint-disable-next-line testing-library/no-node-access
   expect(screen.getByTestId('one')!.querySelector('input')).toHaveAttribute(
@@ -87,7 +84,7 @@ test('passes down "read-only" to checkboxes', () => {
 });
 
 test('passes down "error" to checkboxes', () => {
-  render(<Basic error />);
+  render(<Basic.Component error />);
 
   // Bug in `react-aria-components` props are spread on input AND label...
   // eslint-disable-next-line testing-library/no-node-access
@@ -123,19 +120,19 @@ test('passes down "error" to checkboxes', () => {
 });
 
 test('accepts description', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   expect(screen.getByText('Choose your Options')).toBeInTheDocument();
 });
 
 test('accepts error message', () => {
-  render(<Error />);
+  render(<Error.Component />);
 
   expect(screen.getByText('This is an error')).toBeInTheDocument();
 });
 
 test('horiziontal orientation style', () => {
-  render(<Basic orientation="horizontal" />);
+  render(<Basic.Component orientation="horizontal" />);
   const presentation = screen
     .getAllByRole('presentation')
     .filter(
@@ -146,7 +143,7 @@ test('horiziontal orientation style', () => {
 });
 
 test('don\'t show "show more" when list is too short', () => {
-  render(<CollapseAt collapseAt={100} />);
+  render(<CollapseAt.Component collapseAt={100} />);
 
   expect(screen.getByTestId('one')).toBeVisible();
   expect(screen.getByTestId('two')).toBeVisible();
@@ -161,7 +158,7 @@ test('don\'t show "show more" when list is too short', () => {
 });
 
 test('works with negative values (hides everything)', () => {
-  render(<CollapseAt collapseAt={-10} />);
+  render(<CollapseAt.Component collapseAt={-10} />);
 
   expect(screen.queryByTestId('one')).not.toBeVisible();
   expect(screen.queryByTestId('two')).not.toBeVisible();
@@ -176,7 +173,7 @@ test('works with negative values (hides everything)', () => {
 });
 
 test('expand if a value would be hidden', () => {
-  render(<CollapseAt collapseAt={3} defaultValue={['olives']} />);
+  render(<CollapseAt.Component collapseAt={3} defaultValue={['olives']} />);
 
   expect(screen.getByTestId('one')).toBeVisible();
   expect(screen.getByTestId('two')).toBeVisible();

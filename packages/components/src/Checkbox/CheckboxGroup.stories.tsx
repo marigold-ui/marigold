@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { waitFor } from '@testing-library/react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/CheckboxGroup',
   component: CheckboxGroup,
   argTypes: {
@@ -101,12 +101,9 @@ const meta = {
     required: false,
     error: false,
   },
-} satisfies Meta<typeof CheckboxGroup>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => {
     const [selected, setSelected] = useState<string[]>([]);
@@ -130,9 +127,9 @@ export const Basic: Story = {
       </>
     );
   },
-};
+});
 
-export const Error: Story = {
+export const Error = meta.story({
   render: args => {
     const [selected, setSelected] = useState<string[]>([]);
     return (
@@ -156,11 +153,10 @@ export const Error: Story = {
       </>
     );
   },
-};
+});
 
-export const Controlled: Story = {
-  tags: ['component-test'],
-  ...Basic,
+export const Controlled = meta.story({
+  ...Basic.input,
   args: {
     onChange: fn(),
   },
@@ -199,9 +195,9 @@ export const Controlled: Story = {
       expect(args.onChange).toHaveBeenCalledTimes(2);
     });
   },
-};
+});
 
-export const CollapseAt: Story = {
+export const CollapseAt = meta.story({
   tags: ['component-test'],
   args: {
     collapseAt: 5,
@@ -249,4 +245,4 @@ export const CollapseAt: Story = {
       expect(canvas.queryByTestId('ten')).not.toBeVisible();
     });
   },
-};
+});

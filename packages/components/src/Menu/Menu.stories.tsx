@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { expect, spyOn, userEvent } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Menu',
   component: Menu,
   argTypes: {
@@ -103,12 +103,9 @@ const meta = {
     variant: undefined,
     size: undefined,
   },
-} satisfies Meta<typeof Menu>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <Menu {...args} label="Hogwarts Houses">
@@ -118,7 +115,7 @@ export const Basic: Story = {
       <Menu.Item id="slytherin">Slytherin</Menu.Item>
     </Menu>
   ),
-  play: async ({ canvas, step }) => {
+  play: async ({ canvas, step }: any) => {
     await step('Open the menu', async () => {
       const button = canvas.getByText('Hogwarts Houses');
 
@@ -146,9 +143,9 @@ export const Basic: Story = {
       expect(gryffindor).not.toBeVisible();
     });
   },
-};
+});
 
-export const OnActionMenu: Story = {
+export const OnActionMenu: any = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -160,7 +157,7 @@ export const OnActionMenu: Story = {
       </Menu>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const alertMock = spyOn(window, 'alert').mockImplementation(() => {});
 
     const button = canvas.getByText('Choose');
@@ -173,9 +170,9 @@ export const OnActionMenu: Story = {
 
     alertMock.mockRestore();
   },
-};
+});
 
-export const SingleSelection: Story = {
+export const SingleSelection: any = meta.story({
   render: () => {
     const [selected, setSelected] = useState<Set<'left' | 'center' | 'right'>>(
       new Set(['center'])
@@ -197,9 +194,9 @@ export const SingleSelection: Story = {
       </>
     );
   },
-};
+});
 
-export const MultiSelection: Story = {
+export const MultiSelection: any = meta.story({
   render: () => {
     const [selectedKeys, setSelected] = useState(new Set());
     const selected = Array.from(selectedKeys);
@@ -221,9 +218,9 @@ export const MultiSelection: Story = {
       </>
     );
   },
-};
+});
 
-export const MenuSection: Story = {
+export const MenuSection: any = meta.story({
   render: args => (
     <Menu {...args} label="Menu with sections">
       <Menu.Section title="Food">
@@ -239,9 +236,9 @@ export const MenuSection: Story = {
       </Menu.Section>
     </Menu>
   ),
-};
+});
 
-export const DisabledKeys: Story = {
+export const DisabledKeys: any = meta.story({
   render: args => (
     <Menu
       {...args}
@@ -261,9 +258,9 @@ export const DisabledKeys: Story = {
       </Menu.Section>
     </Menu>
   ),
-};
+});
 
-export const LinksMenu: Story = {
+export const LinksMenu: any = meta.story({
   render: args => (
     <Menu {...args} label="Links">
       <Menu.Item href="https://adobe.com/" target="_blank">
@@ -280,9 +277,9 @@ export const LinksMenu: Story = {
       </Menu.Item>
     </Menu>
   ),
-};
+});
 
-export const BasicActionMenu: Story = {
+export const BasicActionMenu: any = meta.story({
   render: args => {
     return (
       <ActionMenu onAction={action => alert(`Action: ${action}`)} {...args}>
@@ -294,9 +291,9 @@ export const BasicActionMenu: Story = {
       </ActionMenu>
     );
   },
-};
+});
 
-export const OpenMenuRemotely: Story = {
+export const OpenMenuRemotely: any = meta.story({
   render: () => {
     const [open, setOpen] = useState(false);
     const handleAction = () => {
@@ -319,4 +316,4 @@ export const OpenMenuRemotely: Story = {
       </>
     );
   },
-};
+});

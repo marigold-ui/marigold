@@ -1,11 +1,11 @@
 import { parseTime } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { TimeValue } from 'react-aria-components';
 import { expect, userEvent, within } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { TimeField } from './TimeField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/TimeField',
   component: TimeField,
   argTypes: {
@@ -109,16 +109,13 @@ const meta = {
     granularity: 'minute',
     shouldForceLeadingZeros: false,
   },
-} satisfies Meta<typeof TimeField>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <TimeField defaultValue={parseTime('13:45:30')} {...args} />,
-};
+});
 
-export const FocusEvents: Story = {
+export const FocusEvents = meta.story({
   args: {
     defaultValue: parseTime('13:45'),
   },
@@ -132,9 +129,9 @@ export const FocusEvents: Story = {
       await expect(hour).toHaveFocus();
     });
   },
-};
+});
 
-export const ControlledTimeField: Story = {
+export const ControlledTimeField = meta.story({
   render: args => {
     const ControlledComponent = () => {
       const [value, setValue] = useState<TimeValue>(parseTime('13:45'));
@@ -157,4 +154,4 @@ export const ControlledTimeField: Story = {
 
     return <ControlledComponent />;
   },
-};
+});

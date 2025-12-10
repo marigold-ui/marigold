@@ -1,17 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { expect } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
 import { ContextualHelp } from './ContextualHelp';
-import type { ContextualHelpProps } from './ContextualHelp';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ContextualHelp',
+  component: ContextualHelp,
   argTypes: {
     variant: {
       control: 'select',
       options: ['help', 'info'],
-      defaultValue: 'help',
     },
     placement: {
       control: 'select',
@@ -39,25 +38,20 @@ const meta = {
         'end top',
         'end bottom',
       ],
-      defaultValue: 'bottom start',
     },
     size: {
       control: 'select',
       options: ['small', 'medium', 'large'],
-      defaultValue: 'medium',
     },
     width: {
       control: 'select',
       options: ['small', 'medium', 'large'],
-      defaultValue: 'medium',
     },
     offset: {
       control: 'number',
-      defaultValue: 8,
     },
     defaultOpen: {
       control: 'boolean',
-      defaultValue: false,
     },
     open: {
       control: 'boolean',
@@ -66,12 +60,19 @@ const meta = {
       action: 'onOpenChange',
     },
   },
-} satisfies Meta<typeof ContextualHelp>;
+  args: {
+    variant: 'help',
+    placement: 'bottom start',
+    size: 'medium',
+    width: 'medium',
+    offset: 8,
+    defaultOpen: false,
+    children: undefined,
+  } as const,
+});
 
-export default meta;
-type Story = StoryObj<ContextualHelpProps>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
@@ -106,9 +107,9 @@ export const Basic: Story = {
     // Reset
     await userEvent.click(document.body);
   },
-};
+});
 
-export const LongContent: Story = {
+export const LongContent = meta.story({
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <ContextualHelp {...args}>
@@ -139,4 +140,4 @@ export const LongContent: Story = {
       </ContextualHelp>
     </div>
   ),
-};
+});

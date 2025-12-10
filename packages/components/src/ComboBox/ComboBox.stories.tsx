@@ -1,15 +1,16 @@
-import { Meta, StoryObj } from '@storybook/react';
 import { Key } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { ComboBox } from './ComboBox';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ComboBox',
+  component: ComboBox,
   argTypes: {
     label: {
       control: {
@@ -122,13 +123,11 @@ const meta = {
     menuTrigger: 'input',
     placeholder: undefined,
     label: 'Label',
-  },
-} satisfies Meta;
+  } as const,
+});
 
-export default meta;
-type Story = StoryObj<typeof ComboBox>;
-
-export const Basic: Story = {
+// Explicit type annotation prevents TS2742 by avoiding leaking inferred internal types
+export const Basic: any = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -151,15 +150,15 @@ export const Basic: Story = {
       </I18nProvider>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
     const emptyState = await canvas.findByText('Kein Ergebnis gefunden');
     expect(emptyState).toBeInTheDocument();
   },
-};
+});
 
-export const Controlled: StoryObj<typeof ComboBox> = {
+export const Controlled: any = meta.story({
   tags: ['component-test'],
   render: args => {
     const [current, setCurrent] = useState<string | undefined>('');
@@ -186,7 +185,7 @@ export const Controlled: StoryObj<typeof ComboBox> = {
       </Stack>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = canvas.queryByRole('combobox', { name: 'Animals' });
 
     await userEvent.click(
@@ -210,15 +209,14 @@ export const Controlled: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(combobox).toBeInTheDocument());
     await waitFor(() => expect(combobox).toHaveValue('Dog'));
   },
-};
+});
 
-export const ManualMenuTrigger: Story = {
-  tags: ['component-test'],
-  ...Basic,
+export const ManualMenuTrigger: any = meta.story({
+  ...Basic.input,
   args: {
     menuTrigger: 'manual',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, '{arrowdown}');
@@ -226,9 +224,9 @@ export const ManualMenuTrigger: Story = {
 
     await expect(result).toBeVisible();
   },
-};
+});
 
-export const AsyncLoading: Story = {
+export const AsyncLoading: any = meta.story({
   render: args => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
@@ -259,9 +257,9 @@ export const AsyncLoading: Story = {
       </ComboBox>
     );
   },
-};
+});
 
-export const Sections: StoryObj<typeof ComboBox> = {
+export const Sections: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <ComboBox {...args}>
@@ -289,7 +287,7 @@ export const Sections: StoryObj<typeof ComboBox> = {
       </ComboBox.Section>
     </ComboBox>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
@@ -300,12 +298,11 @@ export const Sections: StoryObj<typeof ComboBox> = {
     expect(s1).toBeVisible();
     expect(s2).toBeVisible();
   },
-};
+});
 
-export const InputTrigger: StoryObj<typeof ComboBox> = {
-  tags: ['component-test'],
-  ...Basic,
-  play: async ({ canvas }) => {
+export const InputTrigger: any = meta.story({
+  ...Basic.input,
+  play: async ({ canvas }: any) => {
     const input = await canvas.findByRole('combobox', { name: 'Label' });
     const result = await canvas.queryByRole('combobox', { name: 'Label' });
 
@@ -319,15 +316,14 @@ export const InputTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(result).toHaveValue('Aardvark'));
     await waitFor(() => expect(result).toBeVisible());
   },
-};
+});
 
-export const FocusTrigger: StoryObj<typeof ComboBox> = {
-  tags: ['component-test'],
-  ...Basic,
+export const FocusTrigger: any = meta.story({
+  ...Basic.input,
   args: {
     menuTrigger: 'focus',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = await canvas.findByRole('combobox', { name: 'Label' });
 
     await userEvent.type(
@@ -342,15 +338,14 @@ export const FocusTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(combobox).toBeInTheDocument());
     await waitFor(() => expect(combobox).toHaveValue('Kangaroo'));
   },
-};
+});
 
-export const ManualTrigger: StoryObj<typeof ComboBox> = {
-  tags: ['component-test'],
-  ...Basic,
+export const ManualTrigger: any = meta.story({
+  ...Basic.input,
   args: {
     menuTrigger: 'manual',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = canvas.queryByRole('combobox', { name: 'Label' });
 
     await userEvent.click(
@@ -363,9 +358,9 @@ export const ManualTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(combobox).toBeVisible());
     await waitFor(() => expect(combobox).toHaveValue('Red Panda'));
   },
-};
+});
 
-export const DisabledKeys: StoryObj<typeof ComboBox> = {
+export const DisabledKeys: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <ComboBox {...args} disabledKeys={['spinach']}>
@@ -375,7 +370,7 @@ export const DisabledKeys: StoryObj<typeof ComboBox> = {
       <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
@@ -389,4 +384,4 @@ export const DisabledKeys: StoryObj<typeof ComboBox> = {
       'true'
     );
   },
-};
+});

@@ -1,15 +1,12 @@
 /* eslint-disable testing-library/no-node-access */
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from '@react-aria/i18n';
 import { makeFile } from './../test.utils';
-import * as stories from './FileField.stories';
-
-const { Basic, MultipleFileUpload } = composeStories(stories);
+import { Basic, MultipleFileUpload } from './FileField.stories';
 
 test('renders default labels (en) for dropzone and button', () => {
-  render(<Basic label="Label" />);
+  render(<Basic.Component label="Label" />);
 
   expect(screen.getByText('Drop files here')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Upload/i })).toBeInTheDocument();
@@ -18,7 +15,7 @@ test('renders default labels (en) for dropzone and button', () => {
 test('renders German labels when locale is de-DE', () => {
   render(
     <I18nProvider locale="de-DE">
-      <MultipleFileUpload label="Label" />
+      <MultipleFileUpload.Component label="Label" />
     </I18nProvider>
   );
 
@@ -30,7 +27,7 @@ test('renders German labels when locale is de-DE', () => {
 
 test('when multiple is false, only first file is kept', async () => {
   const user = userEvent.setup();
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const input = document.querySelector(
     'input[type="file"]'
@@ -49,7 +46,9 @@ test('when multiple is false, only first file is kept', async () => {
 
 test('accepts prop filters files', async () => {
   const user = userEvent.setup();
-  render(<MultipleFileUpload label="Label" accept={['image/*', '.pdf']} />);
+  render(
+    <MultipleFileUpload.Component label="Label" accept={['image/*', '.pdf']} />
+  );
 
   const input = document.querySelector(
     'input[type="file"]'
@@ -68,7 +67,7 @@ test('accepts prop filters files', async () => {
 
 test('remove button removes the corresponding file', async () => {
   const user = userEvent.setup();
-  render(<MultipleFileUpload />);
+  render(<MultipleFileUpload.Component />);
 
   const input = document.querySelector(
     'input[type="file"]'
