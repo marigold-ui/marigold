@@ -10,21 +10,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const require = createRequire(import.meta.url);
 
-const projectRoot = path.resolve(__dirname, './../../');
-
 export default defineMain({
   stories: [
     '../packages/components/src/**/*.stories.tsx',
     '../packages/system/src/**/*.stories.tsx',
   ],
   addons: [
-    getAbsolutePath('@storybook/addon-a11y'),
-    getAbsolutePath('@storybook/addon-docs'),
-    getAbsolutePath('storybook-addon-test-codegen'),
-    getAbsolutePath('@storybook/addon-vitest'),
+    '@storybook/addon-a11y',
+    '@storybook/addon-docs',
+    'storybook-addon-test-codegen',
+    '@storybook/addon-vitest',
   ],
   framework: {
-    name: getAbsolutePath('@storybook/react-vite'),
+    name: '@storybook/react-vite',
     options: {},
   },
   typescript: {
@@ -33,20 +31,5 @@ export default defineMain({
   features: {
     experimentalTestSyntax: true,
   },
-  // needed because without package have incorrect exports...
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      root: __dirname,
-      plugins: [
-        viteTsConfigPaths({
-          root: projectRoot,
-        }),
-      ],
-    });
-  },
   staticDirs: ['./assets'],
 });
-
-function getAbsolutePath(value: string): any {
-  return dirname(require.resolve(join(value, 'package.json')));
-}
