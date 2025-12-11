@@ -1,5 +1,9 @@
 import type { ReactNode } from 'react';
-import type { PlaceItemsProp, SpaceProp } from '@marigold/system';
+import type {
+  PlaceItemsProp,
+  SpaceProp,
+  SpacingTokens,
+} from '@marigold/system';
 import { cn, createSpacingVar, createVar, placeItems } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
@@ -32,7 +36,7 @@ export const gridColumn = {
 // Props
 // ---------------
 export interface ContainerProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends SpaceProp<SpacingTokens>,
     AriaRegionProps {
   children?: ReactNode;
   /**

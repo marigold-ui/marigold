@@ -1,12 +1,10 @@
 import { Children } from 'react';
 import type { ReactElement } from 'react';
-import type { SpaceProp } from '@marigold/system';
+import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps, NonZeroPercentage } from '@marigold/types';
 
-export interface AsideProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
-    AriaRegionProps {
+export interface AsideProps extends SpaceProp<SpacingTokens>, AriaRegionProps {
   /**
    * The children of the component.
    */
