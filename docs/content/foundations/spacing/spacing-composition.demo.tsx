@@ -1,5 +1,5 @@
 import { venues } from '@/lib/data/venues';
-import { Card, Columns, Link, Stack, Text } from '@marigold/components';
+import { Card, Headline, Link, Stack, Tiles } from '@marigold/components';
 
 const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
   const venue = venues.find(venue => venue.id === id)!;
@@ -8,17 +8,17 @@ const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
     <Card p={0} stretch>
       <div className="grid overflow-hidden rounded-[calc(var(--radius-surface)-3px)]">
         <img
-          className="col-start-1 row-start-1 aspect-square w-full object-cover"
+          className="col-start-1 row-start-1 aspect-square w-full scale-150 object-cover"
           src={venue.image}
           alt={venue.name}
         />
-        <div className="p-squish-compact relative col-start-1 row-start-1 mx-2 mb-2 self-end rounded-lg bg-white/75 shadow-lg inset-shadow-xs inset-shadow-white/75">
-          <div className="pointer-events-none absolute inset-0 rounded-lg bg-linear-to-br from-white/60 to-transparent"></div>
+        <div className="p-regular relative col-start-1 row-start-1 mx-2 mb-2 self-end rounded-lg bg-white/40 shadow-lg inset-shadow-xs inset-shadow-white/75 backdrop-blur-sm">
+          <div className="pointer-events-none absolute inset-0 rounded-lg bg-linear-to-br from-white/90 to-transparent"></div>
           <div className="relative z-10">
             <Stack space="related">
-              <Text weight="semibold">{venue.name}</Text>
+              <Headline level="3">{venue.name}</Headline>
               <div className="line-clamp-2 text-sm">{venue.description}</div>
-              <Link variant="secondary" size="small">
+              <Link href="#" variant="secondary" size="small">
                 Learn more
               </Link>
             </Stack>
@@ -31,10 +31,11 @@ const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
 
 export default () => {
   return (
-    <Columns columns={[1, 1, 1]} space="related">
-      <VenueCard id="18" />
-      <VenueCard id="17" />
-      <VenueCard id="3" />
-    </Columns>
+    <Tiles space="related" stretch>
+      <VenueCard id="10" />
+      <VenueCard id="6" />
+      <VenueCard id="13" />
+      <VenueCard id="8" />
+    </Tiles>
   );
 };
