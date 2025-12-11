@@ -36,10 +36,13 @@ export default mergeConfig(
               // This should match your package.json script to run Storybook
               // The --no-open flag will skip the automatic opening of a browser
               storybookScript: 'yarn storybook --no-open',
+              tags: {
+                include: ['component-test'],
+              },
             }),
           ],
           test: {
-            name: 'story-tests',
+            name: 'storybook-tests',
             // Enable browser mode
             browser: {
               enabled: true,
