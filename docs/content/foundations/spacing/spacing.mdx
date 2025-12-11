@@ -276,10 +276,10 @@ Spacing is contextual, not absolute. It is defined by the immediate container an
 
 To maintain a consistent rhythm, we treat every layout container as a self-contained universe. Spacing rules apply relative to that container, not the page root. This allows the same semantic values to be applied at different levels of the hierarchy.
 
-For example, consider the `group` token, which is typically used to separate distinct zones. Inside a single card (micro level), you use `group` to separate the header from the body content. On the dashboard (macro level), you use that same `group` token to separate one card from the next.
+For example, consider the `related` token, which is typically used to separate distinct zones. Inside a single card (micro level), you use `related` to separate the header from the body content. On the dashboard (macro level), you use that same `related` token to separate one card from the next.
+
+<ComponentDemo file="./spacing-composition.demo.tsx" mode="preview" />
 
 It might seem intuitive to make the page-level spacing larger than the card-level spacing. However, because the cards usually have visible boundaries (explicit grouping), that visual weight already handles the heavy lifting of separation.
 
 You don't need to double the whitespace to tell the user "these are two different cards." The border does that job. The spacing token simply ensures they adhere to the system's rhythm. By reusing the same token, you create a fractal-like consistency where the interface feels harmonious from the smallest detail to the widest layout.
-
-<ComponentDemo file="./spacing-composition.demo.tsx" mode="preview" />
