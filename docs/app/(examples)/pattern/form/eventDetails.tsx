@@ -13,7 +13,7 @@ import {
 
 export const EventDetails = () => {
   return (
-    <Stack space="fieldY">
+    <Stack space="peer">
       <Headline level={2}>Event Details</Headline>
       <TextField
         label="Event Name"
@@ -25,7 +25,7 @@ export const EventDetails = () => {
         description="Describe what this event is about"
         rows={4}
       />
-      <Inline space="fieldX">
+      <Inline space="related">
         <DatePicker label="Start Date" width="fit" required />
         <DatePicker label="End Date" width="fit" />
       </Inline>
@@ -46,7 +46,7 @@ export const EventDetails = () => {
         <Accordion.Item id="advanced-event-settings">
           <Accordion.Header>Advanced Event Settings</Accordion.Header>
           <Accordion.Content>
-            <Stack space="fieldY">
+            <Stack space="peer">
               <TextField label="Event Code" description="Optional event code" />
               <Select
                 label="Event Visibility"
