@@ -29,6 +29,7 @@ export default defineConfig({
         'packages/system/src/style-props.tsx',
         'scripts/**',
         'packages/system/src/types/theme.ts',
+        '.storybook/**',
       ],
       thresholds: {
         statements: 90,
