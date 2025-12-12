@@ -49,11 +49,21 @@ const meta = preview.meta({
         },
       },
     },
+    lineHeight: {
+      control: {
+        type: 'select',
+      },
+      options: ['none', 'tight', 'snug', 'normal', 'relaxed', 'loose'],
+      description: 'The line height of the headline',
+    },
   },
 });
 
 export const Basic = meta.story({
-  render: args => <Headline {...args}>This is a Headline!!</Headline>,
+  args: {
+    children: 'This is a Headline!!',
+  },
+  render: ({ children, ...args }) => <Headline {...args}>{children}</Headline>,
 });
 
 export const Levels = meta.story({
