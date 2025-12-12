@@ -1,5 +1,27 @@
 # @marigold/theme-rui
 
+## 5.0.0
+
+### Major Changes
+
+- 44d01a6: feat(DST-1141): Update `<Card>` to use semantic spacing and add `stretch` property
+  - `<Card>` uses semantic spacing
+  - Added `stretch` in favor of `size="full"`
+  - Updated test suite
+  - Fixed that the `<Card>` always take full width
+
+### Patch Changes
+
+- Updated dependencies [96e145a]
+- Updated dependencies [cc61968]
+- Updated dependencies [6c071f0]
+- Updated dependencies [44d01a6]
+- Updated dependencies [f916a20]
+- Updated dependencies [726239d]
+- Updated dependencies [1bd9f27]
+  - @marigold/components@16.2.0
+  - @marigold/system@16.2.0
+
 ## 4.0.2
 
 ### Patch Changes
