@@ -23,6 +23,8 @@ jobs:
         id: findPr
         with:
           state: open
+      - name: Download latest Playwright Browsers
+        run: pnpm exec playwright install
       - name: Run Storybook tests
         run: pnpm test:sb
         env:
