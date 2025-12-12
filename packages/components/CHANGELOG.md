@@ -1,5 +1,25 @@
 # @marigold/components
 
+## 16.2.0
+
+### Minor Changes
+
+- 6c071f0: refa(DST-1146): Migrate `<Center>` to semantic spacing tokens
+- 44d01a6: feat(DST-1141): Update `<Card>` to use semantic spacing and add `stretch` property
+  - `<Card>` uses semantic spacing
+  - Added `stretch` in favor of `size="full"`
+  - Updated test suite
+  - Fixed that the `<Card>` always take full width
+
+### Patch Changes
+
+- 96e145a: fix(Container): Fix a regression which made `<Container>` not correctly work with `<Breakout>` anymore
+- cc61968: refa(DST-1150): Remove `space` prop from `<TabList>`
+- f916a20: fest(DST-1149): Allow to use semantic spacing with `<Grid>`
+- 726239d: feat(DST-1148): Allow to use semantic spacing with `<Container>`.
+- 1bd9f27: feat(DST-1147): Allow to use semantic spacing in `<Columns>`
+  - @marigold/system@16.2.0
+
 ## 16.1.0
 
 ### Minor Changes
