@@ -23,8 +23,6 @@ jobs:
         id: findPr
         with:
           state: open
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
       - name: Run Storybook tests
         run: pnpm test:sb
         env:
