@@ -21,9 +21,6 @@ export default defineConfig({
         'storybook-static/**',
         '**/theme-plugins/**',
         'packages/components/src/_propTableTypes/**',
-        // needed for coverage not to break should be fixed soon
-        'packages/components/src/Accordion/useAccordionItem.ts',
-        'packages/components/src/Accordion/Accordion.tsx',
         '**/**/*.config.*',
         '**/**/index.*',
         'packages/components/src/hooks.ts',
@@ -35,7 +32,7 @@ export default defineConfig({
       ],
       thresholds: {
         statements: 90,
-        branches: 80,
+        branches: 90,
         functions: 90,
         lines: 90,
       },

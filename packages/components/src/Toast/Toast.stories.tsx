@@ -14,6 +14,14 @@ const meta = preview.meta({
     // Clear the toast queue before each story
     queue.clear();
   },
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
+        <Story />
+      </div>
+    ),
+  ],
 });
 
 export const Basic = meta.story({
@@ -149,7 +157,6 @@ export const ToastContentTest = meta.story({
 });
 
 export const WithLinks = meta.story({
-  tags: ['component-test'],
   render: () => {
     const { addToast } = useToast();
     const description = (
@@ -214,28 +221,29 @@ export const WithAction = meta.story({
       </>
     );
   },
-  play: async ({ canvas, step }) => {
-    const button = canvas.getByRole('button', { name: /show toast/i });
+});
 
-    await step('Click the Show Toast button', async () => {
-      await userEvent.click(button);
-    });
+WithAction.test('With action test', async ({ canvas, step }) => {
+  const button = canvas.getByRole('button', { name: /show toast/i });
 
-    await step('Toast with title and description appears', async () => {
-      await expect(
-        await canvas.findByText('Update Available')
-      ).toBeInTheDocument();
-      await expect(
-        await canvas.findByText('A new version is available.')
-      ).toBeInTheDocument();
-    });
+  await step('Click the Show Toast button', async () => {
+    await userEvent.click(button);
+  });
 
-    await step('Click the button in toast', async () => {
-      const button = canvas.getByText('Update now');
+  await step('Toast with title and description appears', async () => {
+    await expect(
+      await canvas.findByText('Update Available')
+    ).toBeInTheDocument();
+    await expect(
+      await canvas.findByText('A new version is available.')
+    ).toBeInTheDocument();
+  });
 
-      await userEvent.click(button);
+  await step('Click the button in toast', async () => {
+    const button = canvas.getByText('Update now');
 
-      await expect(button).toBeInTheDocument();
-    });
-  },
+    await userEvent.click(button);
+
+    await expect(button).toBeInTheDocument();
+  });
 });

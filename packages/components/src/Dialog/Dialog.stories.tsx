@@ -11,6 +11,14 @@ import { Dialog } from './Dialog';
 const meta = preview.meta({
   title: 'Components/Dialog',
   component: Dialog,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     size: {
       control: {

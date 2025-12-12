@@ -10,6 +10,14 @@ import { Menu } from './Menu';
 const meta = preview.meta({
   title: 'Components/Menu',
   component: Menu,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     size: {
       control: {

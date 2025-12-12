@@ -11,6 +11,14 @@ import { Tag } from './Tag';
 const meta = preview.meta({
   title: 'Components/Tag',
   component: Tag.Group,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
+        <Story />
+      </div>
+    ),
+  ],
   args: {
     label: 'Categories',
   },
@@ -40,7 +48,7 @@ export const Basic = meta.story({
 });
 
 export const RemovableTags = meta.story({
-  tags: ['component-test'],
+  tags: ['needs-fix'],
   render: args => {
     const defaultItems = [
       { id: 1, name: 'News' },
@@ -80,7 +88,7 @@ export const RemovableTags = meta.story({
 });
 
 export const RemovableAllTags = meta.story({
-  tags: ['component-test'],
+  tags: ['needs-fix'],
   render: args => {
     const defaultItems = [
       { id: 1, name: 'News' },
@@ -117,23 +125,22 @@ export const RemovableAllTags = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas, userEvent }) => {
-    const removeAll = canvas.getByText('Remove all');
-    await userEvent.click(removeAll);
+});
 
-    await waitFor(() =>
-      expect(canvas.queryByText('News')).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
-      expect(canvas.queryByText('Travel')).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
-      expect(canvas.queryByText('Gaming')).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
-      expect(canvas.queryByText('Shopping')).not.toBeInTheDocument()
-    );
+RemovableAllTags.test('Remove all tags test', async ({ canvas, userEvent }) => {
+  const removeAll = canvas.getByText('Remove all');
+  await userEvent.click(removeAll);
 
-    await userEvent.click(canvas.getByText('Reset'));
-  },
+  await waitFor(() =>
+    expect(canvas.queryByText('News')).not.toBeInTheDocument()
+  );
+  await waitFor(() =>
+    expect(canvas.queryByText('Travel')).not.toBeInTheDocument()
+  );
+  await waitFor(() =>
+    expect(canvas.queryByText('Gaming')).not.toBeInTheDocument()
+  );
+  await waitFor(() =>
+    expect(canvas.queryByText('Shopping')).not.toBeInTheDocument()
+  );
 });

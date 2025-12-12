@@ -7,6 +7,14 @@ import { ContextualHelp } from './ContextualHelp';
 const meta = preview.meta({
   title: 'Components/ContextualHelp',
   component: ContextualHelp,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     variant: {
       control: 'select',

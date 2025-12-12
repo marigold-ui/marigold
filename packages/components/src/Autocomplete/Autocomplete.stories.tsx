@@ -11,6 +11,14 @@ import { Autocomplete } from './Autocomplete';
 const meta = preview.meta({
   title: 'Components/Autocomplete',
   component: Autocomplete,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: {
       control: {

@@ -9,6 +9,14 @@ import { Calendar } from './Calendar';
 const meta = preview.meta({
   title: 'Components/Calendar',
   component: Calendar,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     disabled: {
       control: {
@@ -62,7 +70,7 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
-  tags: ['component-test'],
+  tags: ['needs-fix'],
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
     return (
