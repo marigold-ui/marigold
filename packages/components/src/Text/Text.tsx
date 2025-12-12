@@ -7,6 +7,7 @@ import {
   FontSizeProp,
   FontStyleProp,
   FontWeightProp,
+  LineHeightProp,
   TextAlignProp,
   TextWrapProp,
   WhiteSpaceProps,
@@ -18,6 +19,7 @@ import {
   textSize,
   textStyle,
   textWrap,
+  lineHeight as twLineHeight,
   whiteSpace as twWhiteSpace,
   useClassNames,
 } from '@marigold/system';
@@ -38,6 +40,7 @@ export interface TextProps
     FontSizeProp,
     FontWeightProp,
     FontStyleProp,
+    LineHeightProp,
     CursorProp,
     TextWrapProp,
     WhiteSpaceProps {
@@ -89,6 +92,7 @@ const _Text = ({
   weight,
   fontSize,
   fontStyle,
+  lineHeight,
   wrap,
   whiteSpace,
   children,
@@ -120,6 +124,7 @@ const _Text = ({
         cursor && cursorStyle[cursor],
         weight && fontWeight[weight],
         fontSize && textSize[fontSize],
+        lineHeight && twLineHeight[lineHeight],
         wrap && textWrap[wrap],
         whiteSpace && twWhiteSpace[whiteSpace]
       )}

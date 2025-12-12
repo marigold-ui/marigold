@@ -132,3 +132,20 @@ test('support string as level', () => {
 />
 `);
 });
+
+test.each([
+  { prop: 'none', className: 'leading-none' },
+  { prop: 'tight', className: 'leading-tight' },
+  { prop: 'snug', className: 'leading-snug' },
+  { prop: 'normal', className: 'leading-normal' },
+  { prop: 'relaxed', className: 'leading-relaxed' },
+  { prop: 'loose', className: 'leading-loose' },
+] as const)('supports lineHeight prop: %s', ({ prop, className }) => {
+  render(
+    <ThemeProvider theme={theme}>
+      <Headline data-testid="headline" lineHeight={prop} />
+    </ThemeProvider>
+  );
+  const headline = screen.getByTestId('headline');
+  expect(headline).toHaveClass(className);
+});

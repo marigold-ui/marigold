@@ -55,6 +55,13 @@ const meta = preview.meta({
       },
       description: 'The cursor for the text',
     },
+    lineHeight: {
+      control: {
+        type: 'select',
+      },
+      options: ['none', 'tight', 'snug', 'normal', 'relaxed', 'loose'],
+      description: 'The line height of the text',
+    },
   },
 });
 

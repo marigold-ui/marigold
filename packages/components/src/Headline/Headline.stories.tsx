@@ -49,6 +49,13 @@ const meta = preview.meta({
         },
       },
     },
+    lineHeight: {
+      control: {
+        type: 'select',
+      },
+      options: ['none', 'tight', 'snug', 'normal', 'relaxed', 'loose'],
+      description: 'The line height of the headline',
+    },
   },
 });
 

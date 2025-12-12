@@ -136,3 +136,16 @@ test.each([
   const el = screen.getByText(prop);
   expect(el).toHaveClass(className);
 });
+
+test.each([
+  { prop: 'none', className: 'leading-none' },
+  { prop: 'tight', className: 'leading-tight' },
+  { prop: 'snug', className: 'leading-snug' },
+  { prop: 'normal', className: 'leading-normal' },
+  { prop: 'relaxed', className: 'leading-relaxed' },
+  { prop: 'loose', className: 'leading-loose' },
+] as const)('supports lineHeight prop: %s', ({ prop, className }) => {
+  render(<Basic.Component lineHeight={prop}>{prop}</Basic.Component>);
+  const el = screen.getByText(prop);
+  expect(el).toHaveClass(className);
+});
