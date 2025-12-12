@@ -59,8 +59,8 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           onlyChanged: true # set to true to enable TurboSnap https://www.chromatic.com/docs/turbosnap/setup/
-          untraced: '**/.storybook/decorators.tsx'
-          storybookConfigDir: 'config/storybook/.storybook'
+          untraced: '.storybook/decorators.tsx'
+          storybookConfigDir: '.storybook'
           storybookBuildDir: 'storybook-static'
-          storybookBaseDir: 'config/storybook'
+          storybookBaseDir: '.storybook'
           debug: true
