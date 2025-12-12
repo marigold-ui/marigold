@@ -60,7 +60,10 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  render: args => <Headline {...args}>This is a Headline!!</Headline>,
+  args: {
+    children: 'This is a Headline!!',
+  },
+  render: ({ children, ...args }) => <Headline {...args}>{children}</Headline>,
 });
 
 export const Levels = meta.story({

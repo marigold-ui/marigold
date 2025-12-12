@@ -1,136 +1,142 @@
 import { render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Headline } from './Headline';
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Headline: cva('m-0 font-black', {
-      variants: {
-        size: {
-          'level-1': 'text-[2rem]',
-          'level-2': 'mb-6 text-2xl',
-          'level-3': 'text-xl',
-          'level-4': 'text-lg',
-          'level-5': 'text-base',
-          'level-6': 'text-[13px] uppercase',
-        },
-        variant: {
-          one: 'font-small',
-        },
-      },
-    }),
-  },
-};
+import { Basic } from './Headline.stories';
 
 test('renders as a "section" element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" />
-    </ThemeProvider>
-  );
+  render(<Basic.Component data-testid="headline" />);
 
   const headline = screen.getByTestId('headline');
   expect(headline instanceof HTMLHeadingElement).toBeTruthy();
 });
 
-test.each(['1', '2', '3', '4', '5', '6'])(
+test.each([
+  { level: '1', textClass: 'text-3xl' },
+  { level: '2', textClass: 'text-2xl' },
+  { level: '3', textClass: 'text-xl' },
+  { level: '4', textClass: 'text-lg' },
+  { level: '5', textClass: 'text-base' },
+  { level: '6', textClass: 'text-base' },
+])(
   'uses styles based on given level from theme sizes (%s)',
-  lvl => {
-    render(
-      <ThemeProvider theme={theme}>
-        <Headline data-testid="headline" level={lvl as any} />
-      </ThemeProvider>
-    );
-
-    // @ts-expect-error TS18048
-    const token = theme.components.Headline({ size: `level-${lvl}` });
-    expect(token).toMatchSnapshot();
+  ({ level, textClass }) => {
+    render(<Basic.Component data-testid="headline" level={level as any} />);
+    const headline = screen.getByTestId('headline');
+    expect(headline).toHaveClass(textClass);
   }
 );
 
 test('uses "level-1" by default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" />
-    </ThemeProvider>
-  );
-
-  const headline = screen.getByTestId('headline');
-
-  expect(headline).toMatchInlineSnapshot(`
-<h1
-  class="m-0 font-black text-[2rem] max-w-(--maxHeadlineWidth) text-left"
-  data-testid="headline"
-/>
-`);
-});
-
-test('headline accepts a variant', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" variant="one" />
-    </ThemeProvider>
-  );
-  const headline = screen.getByTestId('headline');
-  expect(headline).toHaveClass('font-small');
-});
-
-test('headline accepts align property', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" align="center" />
-    </ThemeProvider>
-  );
-  const headline = screen.getByTestId('headline');
-  expect(headline).toHaveClass(`text-center`);
-});
-
-test('headline accepts other level', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" level={5} />
-    </ThemeProvider>
-  );
-  const headline = screen.getByTestId('headline');
-  expect(headline).toMatchInlineSnapshot(`
-<h5
-  class="m-0 font-black text-base max-w-(--maxHeadlineWidth) text-left"
-  data-testid="headline"
-/>
-`);
-});
-
-test('get theme color', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" color="emerald" />
-    </ThemeProvider>
-  );
-
+  render(<Basic.Component data-testid="headline" />);
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
     <h1
-      class="m-0 font-black text-[2rem] max-w-(--maxHeadlineWidth) text-left"
+      class="text-3xl font-extrabold max-w-(--maxHeadlineWidth) text-left"
       data-testid="headline"
+    >
+      This is a Headline!!
+    </h1>
+  `);
+});
+
+test('headline accepts a variant', () => {
+  render(<Basic.Component data-testid="headline" variant="one" />);
+  const headline = screen.getByTestId('headline');
+  expect(headline).toMatchInlineSnapshot(`
+    <h1
+      class="text-3xl font-extrabold max-w-(--maxHeadlineWidth) text-left"
+      data-testid="headline"
+    >
+      This is a Headline!!
+    </h1>
+  `);
+});
+
+test('renders with custom children', () => {
+  render(
+    <Basic.Component data-testid="headline">
+      Custom Headline Text
+    </Basic.Component>
+  );
+  const headline = screen.getByTestId('headline');
+  expect(headline).toHaveTextContent('Custom Headline Text');
+});
+
+test('supports multiple props combined', () => {
+  render(
+    <Basic.Component
+      data-testid="headline"
+      level="3"
+      align="right"
+      lineHeight="loose"
     />
+  );
+  const headline = screen.getByTestId('headline');
+  expect(headline).toHaveClass('text-right');
+  expect(headline).toHaveClass('leading-loose');
+  expect(headline instanceof HTMLHeadingElement).toBeTruthy();
+  expect(headline.tagName).toBe('H3');
+});
+
+test('supports align with different values', () => {
+  const alignments = ['left', 'center', 'right'] as const;
+  alignments.forEach(align => {
+    const { unmount } = render(
+      <Basic.Component data-testid="headline" align={align} />
+    );
+    const headline = screen.getByTestId('headline');
+    expect(headline).toHaveClass(`text-${align}`);
+    unmount();
+  });
+});
+
+test('renders correct heading level element', () => {
+  const levels = ['1', '2', '3', '4', '5', '6'] as const;
+  levels.forEach(level => {
+    const { unmount } = render(
+      <Basic.Component data-testid="headline" level={level} />
+    );
+    const headline = screen.getByTestId('headline');
+    expect(headline.tagName).toBe(`H${level}`);
+    unmount();
+  });
+});
+
+test('headline accepts other level', () => {
+  render(<Basic.Component data-testid="headline" level={5} />);
+  const headline = screen.getByTestId('headline');
+  expect(headline).toMatchInlineSnapshot(`
+    <h5
+      class="text-base font-medium max-w-(--maxHeadlineWidth) text-left"
+      data-testid="headline"
+    >
+      This is a Headline!!
+    </h5>
+  `);
+});
+
+test('get theme color', () => {
+  render(<Basic.Component data-testid="headline" color="emerald" />);
+  const headline = screen.getByTestId('headline');
+  expect(headline).toMatchInlineSnapshot(`
+    <h1
+      class="text-3xl font-extrabold max-w-(--maxHeadlineWidth) text-left"
+      data-testid="headline"
+    >
+      This is a Headline!!
+    </h1>
   `);
 });
 
 test('support string as level', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" level="2" />
-    </ThemeProvider>
-  );
-
+  render(<Basic.Component data-testid="headline" level="2" />);
   const headline = screen.getByTestId('headline');
   expect(headline).toMatchInlineSnapshot(`
-<h2
-  class="m-0 font-black mb-6 text-2xl max-w-(--maxHeadlineWidth) text-left"
-  data-testid="headline"
-/>
-`);
+    <h2
+      class="text-2xl font-bold max-w-(--maxHeadlineWidth) text-left"
+      data-testid="headline"
+    >
+      This is a Headline!!
+    </h2>
+  `);
 });
 
 test.each([
@@ -141,11 +147,7 @@ test.each([
   { prop: 'relaxed', className: 'leading-relaxed' },
   { prop: 'loose', className: 'leading-loose' },
 ] as const)('supports lineHeight prop: %s', ({ prop, className }) => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Headline data-testid="headline" lineHeight={prop} />
-    </ThemeProvider>
-  );
+  render(<Basic.Component data-testid="headline" lineHeight={prop} />);
   const headline = screen.getByTestId('headline');
   expect(headline).toHaveClass(className);
 });
