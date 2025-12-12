@@ -7,6 +7,10 @@ jobs:
     name: Component Tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      # Make sure to grab the latest version of the Playwright image
+      # https://playwright.dev/docs/docker#pull-the-image
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
     if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.environment_url, 'storybook')
     steps:
       - uses: actions/checkout@v4
@@ -23,12 +27,10 @@ jobs:
         id: findPr
         with:
           state: open
-      - name: Download latest Playwright Browsers
-        run: pnpm exec playwright install
       - name: Run Storybook tests
         run: pnpm test:sb
         env:
-          TARGET_URL: '${{ github.event.deployment_status.environment_url }}'
+          SB_URL: '${{ github.event.deployment_status.environment_url }}'
       - name: Upload Accessibility Report
         id: artifact-upload-step
         uses: actions/upload-artifact@v5
