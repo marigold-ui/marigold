@@ -69,7 +69,7 @@
     "build:component-props": "pnpm --filter @marigold/docs build:component-props",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:ci": "vitest",
+    "test:ci": "pnpm test:unit",
     "test:unit": "vitest --config vite.config.ts --project=unit-tests",
     "test:sb": "vitest --config vite.config.ts --project=storybook-tests",
     "clean": "rm -rf `find . -type d -name 'node_modules' -o -name 'dist' -o -name '.next' -o -name '.turbo' -o -name 'storybook-static' -o -name 'coverage'`",
