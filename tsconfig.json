@@ -10,9 +10,10 @@
   },
   "exclude": [
     "coverage/*",
-    "vitest.config.ts",
     "**/node_modules/*",
     "**/dist/**/*",
-    "**/scripts/template/*"
+    "**/scripts/template/*",
+    "vitest.config.shared.ts",
+    "vite.config.ts"
   ]
 }

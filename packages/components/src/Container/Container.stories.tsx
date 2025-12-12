@@ -1,4 +1,4 @@
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Aspect } from '../Aspect/Aspect';
 import { Breakout } from '../Breakout/Breakout';
 import { Text } from '../Text/Text';

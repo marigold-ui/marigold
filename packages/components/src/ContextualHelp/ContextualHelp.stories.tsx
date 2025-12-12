@@ -1,5 +1,5 @@
 import { expect } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
 import { ContextualHelp } from './ContextualHelp';
@@ -7,6 +7,13 @@ import { ContextualHelp } from './ContextualHelp';
 const meta = preview.meta({
   title: 'Components/ContextualHelp',
   component: ContextualHelp,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     variant: {
       control: 'select',
