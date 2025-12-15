@@ -3,40 +3,40 @@ import { VisualSpacing } from '@/ui/VisualSpacing';
 import { Box } from '@/ui/Wireframe';
 
 export default () => (
-  <div className="mx-auto mb-8 w-72">
-    <Stack alignX="left" space="group">
+  <div className="mx-auto mb-8 w-54">
+    <Stack alignX="left" space="tight">
       <div className="*:h-12 *:items-stretch">
-        <Inline alignX="left" space="group" noWrap>
+        <Inline alignX="left" space="tight" noWrap>
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" hideGuide />
+          <VisualSpacing orientation="horizontal" space="tight" hideGuide />
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" hideGuide />
+          <VisualSpacing orientation="horizontal" space="tight" hideGuide />
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" hideGuide />
+          <VisualSpacing orientation="horizontal" space="tight" hideGuide />
           <Box className="size-12" />
         </Inline>
       </div>
-      <VisualSpacing orientation="vertical" space="group" />
+      <VisualSpacing orientation="vertical" space="tight" />
       <div className="*:h-12 *:items-stretch">
-        <Inline alignX="left" space="group" noWrap>
+        <Inline alignX="left" space="tight" noWrap>
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" hideGuide />
+          <VisualSpacing orientation="horizontal" space="tight" hideGuide />
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" hideGuide />
+          <VisualSpacing orientation="horizontal" space="tight" hideGuide />
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" hideGuide />
+          <VisualSpacing orientation="horizontal" space="tight" hideGuide />
           <Box className="size-12" />
         </Inline>
       </div>
-      <VisualSpacing orientation="vertical" space="group" />
+      <VisualSpacing orientation="vertical" space="tight" />
       <div className="*:h-12 *:items-stretch">
-        <Inline alignX="left" space="group" noWrap>
+        <Inline alignX="left" space="tight" noWrap>
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" />
+          <VisualSpacing orientation="horizontal" space="tight" />
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" />
+          <VisualSpacing orientation="horizontal" space="tight" />
           <Box className="size-12" />
-          <VisualSpacing orientation="horizontal" space="group" />
+          <VisualSpacing orientation="horizontal" space="tight" />
           <Box className="size-12" />
         </Inline>
       </div>
