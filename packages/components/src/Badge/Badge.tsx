@@ -22,22 +22,14 @@ export interface BadgeProps {
   size?: string;
 }
 
-// Icons
-// ---------------
-const icons = {
-  master: Lock,
-  admin: Lock,
-} as const;
-
 // Component
 // ---------------
 export const Badge = ({ variant, size, children, ...props }: BadgeProps) => {
   const classNames = useClassNames({ component: 'Badge', variant, size });
-  const Icon = icons[variant as keyof typeof icons];
 
   return (
     <div className={classNames} {...props}>
-      {Icon && <Icon size={16} />}
+      {['master', 'admin'].includes(variant ?? '') && <Lock size={16} />}
       {children}
     </div>
   );
