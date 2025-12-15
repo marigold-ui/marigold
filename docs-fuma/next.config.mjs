@@ -28,11 +28,11 @@ const config = {
         destination: '/foundations/overview',
         permanent: true,
       },
-      {
-        source: '/releases',
-        destination: '/releases/overview',
-        permanent: true,
-      },
+      // {
+      //   source: '/releases',
+      //   destination: '/releases/overview',
+      //   permanent: true,
+      // },
       {
         source: '/patterns',
         destination: '/patterns/overview',

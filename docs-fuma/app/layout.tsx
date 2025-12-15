@@ -1,7 +1,9 @@
 import { theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
+import { RootProvider } from 'fumadocs-ui/provider';
 import { ReactNode, Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
+import { Nav } from './Nav';
 import { Analytics } from './_components/Analytics';
 import { SiteHeader } from './_components/SiteHeader';
 // import { Analytics } from './_components/Analytics';
@@ -34,11 +36,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
     >
       <body className={`${fontSans.className} min-h-screen`}>
         <Suspense>
-          <MarigoldProvider theme={theme} className="bg-bg-body min-h-screen">
-            <SiteHeader />
-            {children}
-          </MarigoldProvider>
-          <div id="portalContainer" data-theme="rui" className="not-prose" />
+          <RootProvider>
+            <MarigoldProvider
+              theme={theme}
+              className="bg-bg-body flex min-h-screen flex-col"
+            >
+              {children}
+            </MarigoldProvider>
+            <div id="portalContainer" data-theme="rui" className="not-prose" />
+          </RootProvider>
         </Suspense>
         <Analytics />
       </body>

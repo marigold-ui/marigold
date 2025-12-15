@@ -1,0 +1,17 @@
+{
+  "root": true,
+  "title": "Patterns",
+  "pages": [
+    "---Patterns---",
+    "overview",
+    "forms",
+    "form-implementation",
+    "admin-master-mark",
+    "async-data-loading",
+    "feedback-messages",
+    "filter",
+    "loading-states",
+    "multiple-selection",
+    "navigation"
+  ]
+}

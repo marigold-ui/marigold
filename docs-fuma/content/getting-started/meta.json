@@ -2,6 +2,7 @@
   "root": true,
   "title": "Getting Started",
   "pages": [
+    "---Getting Started---",
     "overview",
     "installation",
     "get-in-touch",

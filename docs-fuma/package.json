@@ -18,6 +18,7 @@
     "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
     "@vercel/analytics": "1.5.0",
+    "class-variance-authority": "0.7.1",
     "fumadocs-core": "16.1.0",
     "fumadocs-mdx": "14.0.3",
     "fumadocs-ui": "16.1.0",

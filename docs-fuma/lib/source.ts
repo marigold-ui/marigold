@@ -6,7 +6,6 @@ import { docs } from 'fumadocs-mdx:collections/server';
 export const source = loader({
   baseUrl: '/',
   source: docs.toFumadocsSource(),
-  plugins: [lucideIconsPlugin()],
 });
 
 export function getPageImage(page: InferPageType<typeof source>) {
@@ -24,4 +23,21 @@ export async function getLLMText(page: InferPageType<typeof source>) {
   return `# ${page.data.title}
 
 ${processed}`;
+}
+
+/**
+ * Extract badges from pages for client-side use
+ * Called once during server-side rendering
+ */
+export function getBadgeMap(): Record<string, string> {
+  const badgeMap: Record<string, string> = {};
+  const pages = source.getPages();
+
+  for (const page of pages) {
+    if (page.data.badge) {
+      badgeMap[page.url] = page.data.badge;
+    }
+  }
+
+  return badgeMap;
 }
