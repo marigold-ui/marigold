@@ -30,7 +30,7 @@
     "dayjs": "1.11.19",
     "dotenv": "17.2.3",
     "eslint": "9.39.1",
-    "eslint-config-next": "16.0.4",
+    "eslint-config-next": "16.0.10",
     "github-slugger": "2.0.0",
     "lucide-react": "0.555.0",
     "mdast-util-toc": "7.1.0",
