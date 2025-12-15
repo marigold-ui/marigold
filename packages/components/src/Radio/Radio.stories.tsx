@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Radio } from './Radio';
 import { RadioGroup } from './RadioGroup';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Radio',
   component: RadioGroup,
   argTypes: {
@@ -71,12 +71,9 @@ const meta = {
   args: {
     label: 'Label',
   },
-} satisfies Meta<typeof RadioGroup>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Radio.Group
       {...args}
@@ -91,9 +88,9 @@ export const Basic: Story = {
       <Radio value="4">Option 4</Radio>
     </Radio.Group>
   ),
-};
+});
 
-export const Error: Story = {
+export const Error = meta.story({
   render: args => (
     <Radio.Group errorMessage="Das ist ein Error" error {...args}>
       <Radio value="1">Option 1</Radio>
@@ -104,9 +101,9 @@ export const Error: Story = {
       <Radio value="4">Option 4</Radio>
     </Radio.Group>
   ),
-};
+});
 
-export const DefaultSelected: Story = {
+export const DefaultSelected = meta.story({
   render: args => (
     <Radio.Group {...args} defaultValue="2">
       <Radio value="1">Option 1</Radio>
@@ -117,9 +114,9 @@ export const DefaultSelected: Story = {
       <Radio value="4">Option 4</Radio>
     </Radio.Group>
   ),
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [value, setValue] = useState('2');
     return (
@@ -143,9 +140,9 @@ export const Controlled: Story = {
       </Stack>
     );
   },
-};
+});
 
-export const CollapseAt: Story = {
+export const CollapseAt = meta.story({
   tags: ['component-test'],
   args: {
     collapseAt: 3,
@@ -196,4 +193,4 @@ export const CollapseAt: Story = {
       expect(canvas.queryByTestId('seven')).not.toBeVisible();
     });
   },
-};
+});

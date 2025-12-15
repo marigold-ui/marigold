@@ -1,21 +1,19 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from 'react-aria-components';
 import { describe, expect, it } from 'vitest';
-import * as stories from './Collapsible.stories';
+import { Basic, ShowMore } from './Collapsible.stories';
 
-const { Basic, ShowMore } = composeStories(stories);
 const user = userEvent.setup();
 
 describe('Collapsible', () => {
   it('always renders children even when collapsed', () => {
-    render(<Basic>Test Content</Basic>);
+    render(<Basic.Component>Test Content</Basic.Component>);
     expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 
   it('can render without breaking layout', async () => {
-    render(<Basic unstyled>Test Content</Basic>);
+    render(<Basic.Component unstyled>Test Content</Basic.Component>);
 
     await user.click(screen.getByText('Click me'));
 
@@ -31,10 +29,10 @@ describe('More', () => {
     render(
       <>
         <I18nProvider locale="en-US">
-          <ShowMore />
+          <ShowMore.Component />
         </I18nProvider>
         <I18nProvider locale="de-DE">
-          <ShowMore />
+          <ShowMore.Component />
         </I18nProvider>
       </>
     );
@@ -46,10 +44,10 @@ describe('More', () => {
     render(
       <>
         <I18nProvider locale="en-US">
-          <ShowMore />
+          <ShowMore.Component />
         </I18nProvider>
         <I18nProvider locale="de-DE">
-          <ShowMore />
+          <ShowMore.Component />
         </I18nProvider>
       </>
     );
@@ -65,25 +63,25 @@ describe('More', () => {
     render(
       <>
         <I18nProvider locale="en-US">
-          <ShowMore showCount>
+          <ShowMore.Component>
             <p>1</p>
             <p>2</p>
-          </ShowMore>
+          </ShowMore.Component>
         </I18nProvider>
         <I18nProvider locale="de-DE">
-          <ShowMore showCount>
+          <ShowMore.Component>
             <p>1</p>
             <p>2</p>
-          </ShowMore>
+          </ShowMore.Component>
         </I18nProvider>
       </>
     );
-    expect(screen.getByText('Show 2 more')).toBeInTheDocument();
-    expect(screen.getByText('2 weitere anzeigen')).toBeInTheDocument();
+    expect(screen.getByText('Show more')).toBeInTheDocument();
+    expect(screen.getByText('Mehr anzeigen')).toBeInTheDocument();
   });
 
   it('is unstyled by default', () => {
-    render(<ShowMore>Test Content</ShowMore>);
+    render(<ShowMore.Component>Test Content</ShowMore.Component>);
 
     // eslint-disable-next-line testing-library/no-node-access
     expect(screen.getByText('Test Content').parentElement).toHaveClass(
@@ -92,7 +90,9 @@ describe('More', () => {
   });
 
   it('can render styled', () => {
-    render(<ShowMore unstyled={false}>Test Content</ShowMore>);
+    render(
+      <ShowMore.Component unstyled={false}>Test Content</ShowMore.Component>
+    );
 
     // eslint-disable-next-line testing-library/no-node-access
     expect(screen.getByText('Test Content').parentElement).not.toHaveClass(

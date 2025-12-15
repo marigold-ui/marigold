@@ -1,12 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Text } from '../Text/Text';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Inset',
+  component: Inset,
   argTypes: {
     space: {
       control: {
@@ -27,15 +28,16 @@ const meta = {
       description: 'set padding on top and bottom side',
     },
   },
-} satisfies Meta<typeof Inset>;
+  args: {
+    space: 4,
+    children: undefined,
+  } as const,
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Card size="small">
-      <Inset space={4} {...args}>
+      <Inset {...args}>
         <Headline level={3}>The Giggle Grounds</Headline>
         <Inline>
           <Text fontStyle="italic">Laughville | Outdoor Amphitheater</Text>
@@ -47,4 +49,4 @@ export const Basic: Story = {
       </Inset>
     </Card>
   ),
-};
+});

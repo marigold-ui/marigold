@@ -1,56 +1,57 @@
 /* eslint-disable testing-library/no-node-access */
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import { Columns } from './Columns';
-import * as stories from './Columns.stories';
-
-const { Basic, ComplexChildren, FullHeight, WithTwoComponentsAndFixedItem } =
-  composeStories(stories, {});
+import {
+  Basic,
+  ComplexChildren,
+  FullHeight,
+  WithTwoComponentsAndFixedItem,
+} from './Columns.stories';
 
 describe('Columns', () => {
   describe('Rendering', () => {
     test('renders content correctly', () => {
-      render(<Basic data-testid="columns" />);
+      render(<Basic.Component data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).toBeInTheDocument();
     });
 
     test('renders complex children', () => {
-      render(<ComplexChildren data-testid="columns" />);
+      render(<ComplexChildren.Component data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).toBeInTheDocument();
     });
 
     test('renders with full height', () => {
-      render(<FullHeight data-testid="columns" />);
+      render(<FullHeight.Component data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).toBeInTheDocument();
     });
   });
 
   describe('Spacing', () => {
     test('applies default spacing value of 0', () => {
-      render(<Basic space={0} data-testid="columns" />);
+      render(<Basic.Component space={0} data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 0)'
       );
     });
 
     test('applies custom spacing from theme', () => {
-      render(<Basic space={5} data-testid="columns" />);
+      render(<Basic.Component space={5} data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns.style.getPropertyValue('--space')).toBe(
         'calc(var(--spacing) * 5)'
       );
@@ -59,27 +60,27 @@ describe('Columns', () => {
 
   describe('Collapse behavior', () => {
     test('applies default collapseAt value', () => {
-      render(<Basic collapseAt="0em" data-testid="columns" />);
+      render(<Basic.Component collapseAt="0em" data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
       const firstColumn = columns.firstElementChild as HTMLElement;
-      
+
       expect(firstColumn).toHaveStyle('flexBasis: calc((0em - 100%) * 999)');
     });
 
     test('applies custom collapseAt value', () => {
-      render(<Basic collapseAt="50em" data-testid="columns" />);
+      render(<Basic.Component collapseAt="50em" data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
       const firstColumn = columns.firstElementChild as HTMLElement;
-      
+
       expect(firstColumn).toHaveStyle('flexBasis: calc((50em - 100%) * 999)');
     });
   });
 
   describe('Column sizing', () => {
     test('applies column sizes from columns prop', () => {
-      render(<Basic columns={[2, 8, 2]} data-testid="columns" />);
+      render(<Basic.Component columns={[2, 8, 2]} data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
       const children = columns.children;
@@ -96,11 +97,11 @@ describe('Columns', () => {
     });
 
     test('supports fit value for columns', () => {
-      render(<WithTwoComponentsAndFixedItem />);
+      render(<WithTwoComponentsAndFixedItem.Component />);
 
       const switchElement = screen.getByRole('switch');
       const fitColumn = switchElement.closest('.w-fit');
-      
+
       expect(fitColumn).toBeInTheDocument();
       expect(fitColumn).toHaveClass('h-fit');
     });
@@ -108,18 +109,18 @@ describe('Columns', () => {
 
   describe('Stretch behavior', () => {
     test('fills available space when stretch is enabled', () => {
-      render(<FullHeight stretch data-testid="columns" />);
+      render(<FullHeight.Component stretch data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).toHaveClass('h-full');
     });
 
     test('does not stretch by default', () => {
-      render(<Basic stretch={false} data-testid="columns" />);
+      render(<Basic.Component stretch={false} data-testid="columns" />);
 
       const columns = screen.getByTestId('columns');
-      
+
       expect(columns).not.toHaveClass('h-full');
     });
   });

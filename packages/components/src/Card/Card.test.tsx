@@ -1,13 +1,10 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './Card.stories';
-
-const { Basic, Stretch, PaddingAndSpace } = composeStories(stories);
+import { Basic, PaddingAndSpace, Stretch } from './Card.stories';
 
 describe('Card', () => {
   describe('Rendering', () => {
     test('renders content correctly', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const headline = screen.getByRole('heading', {
         name: /Professor Severus Snape/,
@@ -17,7 +14,7 @@ describe('Card', () => {
     });
 
     test('renders with proper structure', () => {
-      render(<Basic />);
+      render(<Basic.Component />);
 
       const text = screen.getByText(/was an English/);
 
@@ -25,7 +22,7 @@ describe('Card', () => {
     });
 
     test('renders all child elements', () => {
-      render(<PaddingAndSpace />);
+      render(<PaddingAndSpace.Component />);
 
       const headlines = screen.getAllByRole('heading', {
         name: /Professor Severus Snape/,
@@ -38,9 +35,9 @@ describe('Card', () => {
   describe('Element types and layout', () => {
     test('renders as div element by default', () => {
       render(
-        <Basic data-testid="card">
+        <Basic.Component data-testid="card">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -50,9 +47,9 @@ describe('Card', () => {
 
     test('renders with flex display and w-fit by default', () => {
       render(
-        <Basic data-testid="card">
+        <Basic.Component data-testid="card">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -63,9 +60,9 @@ describe('Card', () => {
 
     test('uses flex display when stretch is enabled', () => {
       render(
-        <Stretch data-testid="card">
+        <Stretch.Component data-testid="card">
           <div>Content</div>
-        </Stretch>
+        </Stretch.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -76,9 +73,9 @@ describe('Card', () => {
 
     test('arranges children in a column', () => {
       render(
-        <Basic data-testid="card">
+        <Basic.Component data-testid="card">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -90,9 +87,9 @@ describe('Card', () => {
   describe('Spacing', () => {
     test('applies default spacing value of 0', () => {
       render(
-        <Basic data-testid="card">
+        <Basic.Component data-testid="card">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -104,9 +101,9 @@ describe('Card', () => {
 
     test('applies custom spacing between children', () => {
       render(
-        <PaddingAndSpace data-testid="card">
+        <PaddingAndSpace.Component data-testid="card">
           <div>Content</div>
-        </PaddingAndSpace>
+        </PaddingAndSpace.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -118,9 +115,9 @@ describe('Card', () => {
 
     test('has gap class applied based on spacing', () => {
       render(
-        <PaddingAndSpace data-testid="card">
+        <PaddingAndSpace.Component data-testid="card">
           <div>Content</div>
-        </PaddingAndSpace>
+        </PaddingAndSpace.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -132,9 +129,9 @@ describe('Card', () => {
   describe('Padding props', () => {
     test('supports uniform padding prop (p)', () => {
       render(
-        <PaddingAndSpace data-testid="card-p">
+        <PaddingAndSpace.Component data-testid="card-p">
           <div>Content</div>
-        </PaddingAndSpace>
+        </PaddingAndSpace.Component>
       );
 
       const card = screen.getByTestId('card-p');
@@ -144,9 +141,9 @@ describe('Card', () => {
 
     test('supports horizontal padding prop (px)', () => {
       render(
-        <Basic px={4} data-testid="card-px">
+        <Basic.Component px={4} data-testid="card-px">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card-px');
@@ -156,9 +153,9 @@ describe('Card', () => {
 
     test('supports vertical padding prop (py)', () => {
       render(
-        <Basic py={2} data-testid="card-py">
+        <Basic.Component py={2} data-testid="card-py">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card-py');
@@ -168,9 +165,15 @@ describe('Card', () => {
 
     test('supports individual padding props (pt, pb, pl, pr)', () => {
       render(
-        <Basic pt={3} pb={2} pl={1} pr={4} data-testid="card-individual">
+        <Basic.Component
+          pt={3}
+          pb={2}
+          pl={1}
+          pr={4}
+          data-testid="card-individual"
+        >
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card-individual');
@@ -185,9 +188,9 @@ describe('Card', () => {
   describe('Variants and sizes', () => {
     test('accepts a variant prop', () => {
       render(
-        <Basic variant="master" data-testid="card-variant">
+        <Basic.Component variant="master" data-testid="card-variant">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card-variant');
@@ -197,9 +200,9 @@ describe('Card', () => {
 
     test('accepts a size prop', () => {
       render(
-        <Basic size="medium" data-testid="card-size">
+        <Basic.Component size="medium" data-testid="card-size">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card-size');
@@ -211,9 +214,9 @@ describe('Card', () => {
   describe('Stretch behavior', () => {
     test('fills available space when stretch is enabled', () => {
       render(
-        <Stretch data-testid="card">
+        <Stretch.Component data-testid="card">
           <div>Content</div>
-        </Stretch>
+        </Stretch.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -223,9 +226,9 @@ describe('Card', () => {
 
     test('does not fill space by default', () => {
       render(
-        <Basic data-testid="card">
+        <Basic.Component data-testid="card">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card');
@@ -237,9 +240,9 @@ describe('Card', () => {
   describe('Space prop with semantic tokens', () => {
     test('accepts semantic spacing tokens', () => {
       render(
-        <Basic space="section" data-testid="card-space">
+        <Basic.Component space="section" data-testid="card-space">
           <div>Content</div>
-        </Basic>
+        </Basic.Component>
       );
 
       const card = screen.getByTestId('card-space');

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { ProgressCircle } from './ProgressCircle';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/LoadingSpinner',
   component: ProgressCircle,
   argTypes: {
@@ -19,15 +19,12 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof ProgressCircle>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <div className="flex size-96 items-center justify-center bg-gray-500 p-4">
       <ProgressCircle {...args} />
     </div>
   ),
-};
+});
