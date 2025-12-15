@@ -41,7 +41,6 @@ const meta = preview.meta({
       ],
     },
     size: {
-      control: 'select',
       options: ['default', 'large'],
       defaultValue: 'default',
     },
@@ -142,9 +141,9 @@ export const LongContent = meta.story({
       </ContextualHelp>
     </div>
   ),
-};
+});
 
-export const WithTextField: Story = {
+export const WithTextField = meta.story({
   render: args => (
     <div className="flex h-96 items-center justify-center">
       <TextField
@@ -170,4 +169,4 @@ export const WithTextField: Story = {
       />
     </div>
   ),
-};
+});
