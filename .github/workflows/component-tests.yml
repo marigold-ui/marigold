@@ -31,6 +31,10 @@ jobs:
         run: pnpm test:sb
         env:
           SB_URL: '${{ github.event.deployment_status.environment_url }}'
+      - name: Run Storybook tests 2nd time
+        run: pnpm test:sb
+        env:
+          SB_URL: '${{ github.event.deployment_status.environment_url }}'
       - name: Upload Accessibility Report
         id: artifact-upload-step
         uses: actions/upload-artifact@v5
