@@ -324,9 +324,7 @@ In these cases, it is more effective to zero out vertical padding and rely on a 
 
 ## Composition
 
-Spacing is contextual, not absolute. It is defined by the immediate container an element inhabits, rather than the global page layout.
-
-To maintain a consistent rhythm, we treat every layout container as a self-contained universe. Spacing rules apply relative to that container, not the page root. This allows the same semantic values to be applied at different levels of the hierarchy.
+Spacing is contextual rather than absolute, defined by the immediate container an element inhabits rather than the global page layout. To maintain a consistent rhythm, we treat every layout container as a self-contained universe where rules apply relative to that specific context, allowing the same semantic values to scale seamlessly across the hierarchy.
 
 For example, consider the `related` token, which is typically used to separate distinct zones. Inside a single card (micro level), you use `related` to separate the header from the body content. On the dashboard (macro level), you use that same `related` token to separate one card from the next.
 
