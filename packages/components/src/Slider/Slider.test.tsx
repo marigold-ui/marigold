@@ -1,14 +1,12 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
-import * as stories from './Slider.stories';
+import { Basic } from './Slider.stories';
 
-const { Basic } = composeStories(stories);
 const user = userEvent.setup();
 
 test('supports keyboard move up and down', async () => {
-  render(<Basic label="Example" />);
+  render(<Basic.Component label="Example" />);
   const slider = screen.getByRole('slider');
 
   await user.click(screen.getByText(/Example/));
@@ -21,7 +19,7 @@ test('supports keyboard move up and down', async () => {
 });
 
 test('supports keyboard move right and left', async () => {
-  render(<Basic label="Example" />);
+  render(<Basic.Component label="Example" />);
 
   const slider = screen.getByRole('slider');
   await user.click(screen.getByText(/Example/));
@@ -34,7 +32,7 @@ test('supports keyboard move right and left', async () => {
 });
 
 test('supports disabled prop', () => {
-  render(<Basic disabled label="Example" />);
+  render(<Basic.Component disabled label="Example" />);
 
   const inputElement = screen.getByRole('slider');
 
@@ -42,21 +40,21 @@ test('supports disabled prop', () => {
 });
 
 test('supports defaultValue (uncontrolled)', () => {
-  render(<Basic defaultValue={[25]} label="Example" />);
+  render(<Basic.Component defaultValue={[25]} label="Example" />);
   const slider = screen.getByRole('slider');
   expect(slider).toHaveValue('25');
 });
 
 test('forwards ref', () => {
   const ref = createRef<HTMLDivElement>();
-  render(<Basic ref={ref as any} label="Percent" />);
+  render(<Basic.Component ref={ref as any} label="Percent" />);
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
 
 test('multiple thumbs', () => {
   render(
-    <Basic
+    <Basic.Component
       defaultValue={[30, 60]}
       thumbLabels={['start', 'end']}
       label="Range"

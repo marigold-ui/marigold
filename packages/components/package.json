@@ -67,8 +67,8 @@
     "@marigold/tsconfig": "workspace:*",
     "@types/react": "19.2.2",
     "lucide-react": "0.555.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
     "tsdown": "0.16.8"
   },
   "scripts": {

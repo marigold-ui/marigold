@@ -1,12 +1,9 @@
-import type { StoryObj } from '@storybook/react';
 import { ThemeProvider, useResponsiveValue } from '@marigold/system';
+import preview from '../../../../config/storybook/.storybook/preview';
 
-const meta = {
+const meta = preview.meta({
   title: 'System/useResponsiveValue',
-};
-
-export default meta;
-type Story = StoryObj<typeof meta>;
+});
 
 const theme = {
   name: 'test',
@@ -28,7 +25,7 @@ const Component = () => {
   return <strong>{value}</strong>;
 };
 
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => {
     return (
       <ThemeProvider theme={theme}>
@@ -41,4 +38,4 @@ export const Basic: Story = {
       </ThemeProvider>
     );
   },
-};
+});

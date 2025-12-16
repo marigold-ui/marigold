@@ -1,10 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Tooltip } from './Tooltip';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Tooltip',
+  component: Tooltip.Trigger,
   argTypes: {
     disabled: {
       control: {
@@ -72,13 +73,11 @@ const meta = {
     closeDelay: 500,
     trigger: 'focus',
     defaultOpen: false,
-  },
-} satisfies Meta<typeof Tooltip.Trigger>;
+    children: undefined,
+  } as const,
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Trigger: Story = {
+export const Trigger = meta.story({
   render: args => {
     return (
       <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
@@ -96,9 +95,9 @@ export const Trigger: Story = {
       </div>
     );
   },
-};
+});
 
-export const ControlledTooltipTrigger: Story = {
+export const ControlledTooltipTrigger = meta.story({
   render: args => {
     const [open, setOpen] = useState(false);
     return (
@@ -114,4 +113,4 @@ export const ControlledTooltipTrigger: Story = {
       </div>
     );
   },
-};
+});

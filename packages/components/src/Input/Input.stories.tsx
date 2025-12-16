@@ -1,11 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Delete, Search } from '@marigold/icons';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Input } from './Input';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Input',
+  component: Input,
   argTypes: {
     type: {
       control: {
@@ -75,12 +76,9 @@ const meta = {
     type: 'text',
     placeholder: 'Placeholder...',
   },
-} satisfies Meta<typeof Input>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => <Input {...args} data-testid="input" />,
   play: async ({ canvasElement }) => {
@@ -92,13 +90,13 @@ export const Basic: Story = {
     await userEvent.clear(canvas.getByTestId('input'));
     await expect(canvas.getByTestId('input')).toHaveValue('');
   },
-};
+});
 
-export const WithLeadingIcons: Story = {
+export const WithLeadingIcons = meta.story({
   render: args => <Input icon={<Search />} {...args} />,
-};
+});
 
-export const WithAction: Story = {
+export const WithAction = meta.story({
   render: args => (
     <Input
       action={
@@ -109,9 +107,9 @@ export const WithAction: Story = {
       {...args}
     />
   ),
-};
+});
 
-export const WithIcons: Story = {
+export const WithIcons = meta.story({
   render: args => (
     <Input
       icon={<Search />}
@@ -123,12 +121,12 @@ export const WithIcons: Story = {
       {...args}
     />
   ),
-};
+});
 
-export const FileInput: Story = {
+export const FileInput = meta.story({
   render: args => <Input {...args} type="file" />,
-};
+});
 
-export const ColorPicker: Story = {
+export const ColorPicker = meta.story({
   render: args => <Input {...args} type="color" />,
-};
+});

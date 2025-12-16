@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Aspect } from '../Aspect/Aspect';
 import { Breakout } from '../Breakout/Breakout';
 import { Text } from '../Text/Text';
 import { Container } from './Container';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Container',
   component: Container,
   argTypes: {
@@ -43,12 +43,9 @@ const meta = {
   args: {
     space: 4,
   },
-} satisfies Meta<typeof Container>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Base: Story = {
+export const Base = meta.story({
   render: args => (
     <Container {...args}>
       <Text>
@@ -69,9 +66,9 @@ export const Base: Story = {
       </Aspect>
     </Container>
   ),
-};
+});
 
-export const WithBreakout: Story = {
+export const WithBreakout = meta.story({
   render: args => (
     <Container {...args}>
       <Breakout>
@@ -94,4 +91,4 @@ export const WithBreakout: Story = {
       </Text>
     </Container>
   ),
-};
+});

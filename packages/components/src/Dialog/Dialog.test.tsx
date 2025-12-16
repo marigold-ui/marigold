@@ -1,5 +1,4 @@
 /* eslint-disable testing-library/no-node-access */
-import { composeStories } from '@storybook/react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
@@ -8,7 +7,7 @@ import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { setup } from '../test.utils';
 import { Dialog } from './Dialog';
-import * as stories from './Dialog.stories';
+import { VeryLongContent } from './Dialog.stories';
 
 const theme: Theme = {
   name: 'test',
@@ -553,9 +552,7 @@ test('cancel button closes dialog', async () => {
 });
 
 test('VeryLongContent story renders with proper structure', async () => {
-  const { VeryLongContent } = composeStories(stories);
-
-  render(<VeryLongContent />);
+  render(<VeryLongContent.Component />);
 
   const button = screen.getByText('Open Dialog with Long Content');
 

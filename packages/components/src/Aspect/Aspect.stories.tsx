@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Aspect } from './Aspect';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Aspect',
   component: Aspect,
   argTypes: {
@@ -30,12 +30,9 @@ const meta = {
     maxWidth: '300px',
     ratio: 'square',
   },
-} satisfies Meta<typeof Aspect>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Aspect {...args}>
       <img
@@ -45,4 +42,4 @@ export const Basic: Story = {
       />
     </Aspect>
   ),
-};
+});

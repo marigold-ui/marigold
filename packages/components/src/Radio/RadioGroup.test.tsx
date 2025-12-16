@@ -1,33 +1,30 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './Radio.stories';
-
-const { Basic, CollapseAt } = composeStories(stories);
+import { Basic, CollapseAt } from './Radio.stories';
 
 // Tests
 // ---------------
 test('label is optional (can use aria-label instead)', () => {
-  render(<Basic aria-label="With Label" />);
+  render(<Basic.Component aria-label="With Label" />);
 
   expect(screen.queryByText('With Label')).not.toBeInTheDocument();
 });
 
 test('support vertical orientation by default', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const group = screen.getByRole('radiogroup');
   expect(group).toHaveAttribute('aria-orientation', 'vertical');
 });
 
 test('support horizontal orientation', () => {
-  render(<Basic orientation="horizontal" />);
+  render(<Basic.Component orientation="horizontal" />);
 
   const group = screen.getByTestId('group');
   expect(group).toHaveAttribute('data-orientation', 'horizontal');
 });
 
 test('don\'t show "show more" when list is too short', () => {
-  render(<CollapseAt collapseAt={100} />);
+  render(<CollapseAt.Component collapseAt={100} />);
 
   expect(screen.getByTestId('one')).toBeVisible();
   expect(screen.getByTestId('two')).toBeVisible();
@@ -39,7 +36,7 @@ test('don\'t show "show more" when list is too short', () => {
 });
 
 test('works with negative values (hides everything)', () => {
-  render(<CollapseAt collapseAt={-10} defaultValue={null} />);
+  render(<CollapseAt.Component collapseAt={-10} defaultValue={null} />);
 
   expect(screen.queryByTestId('one')).not.toBeVisible();
   expect(screen.queryByTestId('two')).not.toBeVisible();
@@ -51,7 +48,7 @@ test('works with negative values (hides everything)', () => {
 });
 
 test('expand if a value would be hidden', () => {
-  render(<CollapseAt collapseAt={4} defaultValue="onions" />);
+  render(<CollapseAt.Component collapseAt={4} defaultValue="onions" />);
 
   expect(screen.getByTestId('one')).toBeVisible();
   expect(screen.getByTestId('two')).toBeVisible();

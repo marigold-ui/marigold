@@ -1,17 +1,27 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
-import * as stories from './Menu.stories';
+import { MenuProps } from '@marigold/components';
+import { Basic, BasicActionMenu, MenuSection } from './Menu.stories';
 
-const { Basic, BasicActionMenu, MenuSection } = composeStories(stories, {
-  decorators: Story => (
-    <div id="storybook-root">
-      <Story />
-    </div>
-  ),
-});
+const BasicComponent = (props: MenuProps) => (
+  <div id="storybook-root">
+    <Basic.Component {...props} />
+  </div>
+);
+
+const BasicActionMenuComponent = (props: MenuProps) => (
+  <div id="storybook-root">
+    <BasicActionMenu.Component {...props} />
+  </div>
+);
+
+const MenuSectionComponent = (props: MenuProps) => (
+  <div id="storybook-root">
+    <MenuSection.Component {...props} />
+  </div>
+);
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -28,7 +38,7 @@ window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 const user = userEvent.setup();
 
 test('renders the button but no menu by default', () => {
-  render(<Basic />);
+  render(<BasicComponent />);
   const button = screen.queryByText('Hogwarts Houses');
   const gryffindor = screen.queryByText('Gryffindor');
   const hufflepuff = screen.queryByText('Hufflepuff');
@@ -43,7 +53,7 @@ test('renders the button but no menu by default', () => {
 });
 
 test('renders action menu', async () => {
-  render(<BasicActionMenu />);
+  render(<BasicActionMenuComponent />);
   const button = screen.getByRole('button');
 
   expect(button).toBeInTheDocument();
@@ -55,14 +65,16 @@ test('renders action menu', async () => {
 
 test('supports onOpenChange property', async () => {
   const onOpenChange = vi.fn();
-  render(<Basic data-testid="menu" onOpenChange={() => onOpenChange()} />);
+  render(
+    <BasicComponent data-testid="menu" onOpenChange={() => onOpenChange()} />
+  );
   expect(onOpenChange).toBeCalledTimes(0);
   await user.click(screen.getByRole('button'));
   expect(onOpenChange).toBeCalledTimes(1);
 });
 
 test('supports Menu with sections', async () => {
-  render(<MenuSection aria-label="Menu with sections" />);
+  render(<MenuSectionComponent aria-label="Menu with sections" />);
 
   const button = screen.getByRole('button');
   await user.click(button);
@@ -79,7 +91,7 @@ test('pass "aria-label" to button (when you use a menu with only an icon)', () =
   );
 
   render(
-    <Basic
+    <BasicComponent
       data-testid="menu"
       aria-label="Descriptive label for the button"
       label={<Icon />}
