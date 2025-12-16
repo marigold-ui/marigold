@@ -27,7 +27,7 @@ The relational scale has 7 tokens, each with a specific purpose. This ensures a 
 
 {/* prettier-ignore-start */}
 
-<Table aria-label="Token explanation">
+<Table aria-label="Relational scale explanation">
   <Table.Header>
     <Table.Column>Token</Table.Column>
     <Table.Column>Description</Table.Column>
@@ -137,6 +137,27 @@ The grid axis handles the macro-layout skeleton where items flow in both X and Y
 
 <ComponentDemo file="./spacing-grid.demo.tsx" mode="preview" />
 
+#### CSS Tokens
+
+You can construct relational CSS variables using the syntax shown below. By inserting a specific scale value (like `peer` or `group`), you can apply these tokens to gap or margin classes.
+
+{/* prettier-ignore-start */}
+
+<Table aria-label="Relational token types" stretch>
+  <Table.Header>
+    <Table.Column>**Token Typ**</Table.Column>
+    <Table.Column>**CSS Variable**</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Relational</Table.Cell>
+      <Table.Cell><div className="*:text-xs!">`--spacing-<relational scale>`</div></Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+{/* prettier-ignore-end */}
+
 ### Grouping
 
 There are distinct ways to group content to guide the user's eye.
@@ -173,7 +194,7 @@ The scale has 5 tokens, each with a specific purpose. This ensures consistent de
 
 {/* prettier-ignore-start */}
 
-<Table aria-label="Token explanation">
+<Table aria-label="Inset scale explanation">
   <Table.Header>
     <Table.Column>**Token**</Table.Column>
     <Table.Column>Description</Table.Column>
@@ -252,6 +273,35 @@ Squish modifiers apply vertical compression to elements like buttons or table ro
 #### Stretch (Horizontal Compression)
 
 Stretch modifiers apply horizontal compression, which is essential for mobile layouts or narrow columns (like sidebars) where screen real estate is limited. This approach maintains the vertical rhythm and breathing room so the design doesn't feel cramped, but reduces the horizontal padding to maximize content width.
+
+#### CSS Tokens
+
+You can construct inset CSS variables using the syntax shown below. By inserting a specific scale value (like `snug` or `relaxed`) and adding a geometry prefix (`square`, `squish`, or `stretch`), you can apply these tokens to padding properties.
+
+{/* prettier-ignore-start */}
+
+<Table aria-label="Inset token types" stretch>
+  <Table.Header>
+    <Table.Column>**Token Typ**</Table.Column>
+    <Table.Column>**CSS Variable**</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Square</Table.Cell>
+      <Table.Cell><div className="*:text-xs!">`--spacing-square-<inset scale>`</div></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Squish</Table.Cell>
+      <Table.Cell><div className="*:text-xs!">`--spacing-squish-<inset scale>`</div></Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>Stretch</Table.Cell>
+      <Table.Cell><div className="*:text-xs!">`--spacing-stretch-<inset scale>`</div></Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+{/* prettier-ignore-end */}
 
 ### Consistent Height
 

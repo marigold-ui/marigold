@@ -180,11 +180,11 @@
 
   /* INSET SPACING */
 
-  --spacing-tight: --spacing(1);
-  --spacing-snug: --spacing(2);
-  --spacing-regular: --spacing(3);
-  --spacing-relaxed: --spacing(4);
-  --spacing-loose: --spacing(6);
+  --spacing-square-tight: --spacing(1);
+  --spacing-square-snug: --spacing(2);
+  --spacing-square-regular: --spacing(3);
+  --spacing-square-relaxed: --spacing(4);
+  --spacing-square-loose: --spacing(6);
 
   --spacing-squish-tight: --spacing(1) --spacing(2);
   --spacing-squish-snug: --spacing(1.5) --spacing(2);
