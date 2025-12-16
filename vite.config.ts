@@ -48,11 +48,7 @@ export default mergeConfig(
             browser: {
               enabled: true,
               // Make sure to install Playwright
-              provider: playwright({
-                launchOptions: {
-                  channel: 'chrome',
-                },
-              }),
+              provider: playwright(),
               headless: true,
               instances: [{ browser: 'chromium' }],
             },
