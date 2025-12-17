@@ -6,4 +6,4 @@
 
 style([DST-1143]): Improve ContextualHelp sizes
 
-**Breaking Change**: Sizes have changed, the former `medium` default size will now be `large`. Default size has changed.
+**Breaking Change**: Sizes have been removed, the default has a new style. 
