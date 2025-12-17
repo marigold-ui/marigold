@@ -13,6 +13,7 @@ import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextArea } from '../TextArea/TextArea';
 import type { Selection } from '../types';
+import { CopyableWrapper } from './CopyWrapper';
 import { Table } from './Table';
 
 const meta = preview.meta({
@@ -183,7 +184,9 @@ export const Basic = meta.story({
                 </Text>
               </Stack>
             </Table.Cell>
-            <Table.Cell>{user.email}</Table.Cell>
+            <Table.Cell>
+              <CopyableWrapper>{user.email}</CopyableWrapper>
+            </Table.Cell>
             <Table.Cell>{user.location}</Table.Cell>
             <Table.Cell>
               <Badge>{user.status}</Badge>
