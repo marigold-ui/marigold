@@ -41,7 +41,7 @@ const meta = preview.meta({
       ],
     },
     size: {
-      options: ['default', 'large'],
+      options: ['default'],
       defaultValue: 'default',
     },
     width: {
