@@ -215,6 +215,16 @@ export type { SwitchProps } from './Switch/Switch';
 export { Table } from './Table/Table';
 export type { TableProps } from './Table/Table';
 
+export { TableView } from './TableView/TableView';
+export type {
+  TableViewProps,
+  TableViewHeaderProps,
+  TableViewColumnProps,
+  TableViewBodyProps,
+  TableViewRowProps,
+  TableViewCellProps,
+} from './TableView/TableView';
+
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';
 
