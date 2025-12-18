@@ -59,7 +59,15 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['none', 'tight', 'snug', 'normal', 'relaxed', 'loose'],
+      options: [
+        'inherit',
+        'none',
+        'tight',
+        'snug',
+        'normal',
+        'relaxed',
+        'loose',
+      ],
       description: 'The line height of the text',
     },
   },

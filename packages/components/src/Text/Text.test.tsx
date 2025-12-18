@@ -3,6 +3,7 @@ import { Basic } from './Text.stories';
 
 test('renders a <div> element by default', () => {
   render(<Basic.Component>text</Basic.Component>);
+
   const text = screen.getByText(/text/);
 
   expect(text instanceof HTMLDivElement).toBeTruthy();
@@ -15,6 +16,7 @@ test('renders a <p>/<span> element', () => {
       <Basic.Component as="span">span</Basic.Component>
     </>
   );
+
   const paragraph = screen.getByText(/paragraph/);
   const span = screen.getByText(/span/);
 
@@ -24,6 +26,7 @@ test('renders a <p>/<span> element', () => {
 
 test('adheres to the "max text with" rule from container', () => {
   render(<Basic.Component>text</Basic.Component>);
+
   const text = screen.getByText(/text/);
 
   expect(text).toHaveClass('max-w-(--maxTextWidth)');
@@ -31,6 +34,7 @@ test('adheres to the "max text with" rule from container', () => {
 
 test('supports italic font style', () => {
   render(<Basic.Component fontStyle="italic">italic</Basic.Component>);
+
   const italic = screen.getByText(/italic/);
 
   expect(italic).toHaveClass('italic');
@@ -44,6 +48,7 @@ test('supports alignment', () => {
       <Basic.Component align="right">right</Basic.Component>
     </>
   );
+
   const left = screen.getByText(/left/);
   const center = screen.getByText(/center/);
   const right = screen.getByText(/right/);
@@ -61,6 +66,7 @@ test('supports cursor styles', () => {
       <Basic.Component cursor="default">default</Basic.Component>
     </>
   );
+
   const pointer = screen.getByText(/pointer/);
   const notAllowed = screen.getByText(/not-allowed/);
   const defaultCursor = screen.getByText(/default/);
@@ -78,6 +84,7 @@ test('supports font weights', () => {
       <Basic.Component weight="extrabold">extrabold</Basic.Component>
     </>
   );
+
   const light = screen.getByText('light');
   const bold = screen.getByText('bold');
   const extrabold = screen.getByText('extrabold');
@@ -95,6 +102,7 @@ test('supports custom font sizes', () => {
       <Basic.Component fontSize="3xl">3xl</Basic.Component>
     </>
   );
+
   const fs12 = screen.getByText('xs');
   const fs24 = screen.getByText('lg');
   const fs48 = screen.getByText('3xl');
@@ -113,6 +121,7 @@ test('supports wrap prop', () => {
       <Basic.Component wrap="pretty">pretty</Basic.Component>
     </>
   );
+
   const wrap = screen.getByText(/wrap/);
   const noWrap = screen.getByText(/noWrap/);
   const balance = screen.getByText(/balance/);
@@ -133,7 +142,9 @@ test.each([
   { prop: 'breakSpaces', className: 'whitespace-break-spaces' },
 ] as const)('supports whiteSpace prop: %s', ({ prop, className }) => {
   render(<Basic.Component whiteSpace={prop}>{prop}</Basic.Component>);
+
   const el = screen.getByText(prop);
+
   expect(el).toHaveClass(className);
 });
 
@@ -146,6 +157,8 @@ test.each([
   { prop: 'loose', className: 'leading-loose' },
 ] as const)('supports lineHeight prop: %s', ({ prop, className }) => {
   render(<Basic.Component lineHeight={prop}>{prop}</Basic.Component>);
+
   const el = screen.getByText(prop);
+
   expect(el).toHaveClass(className);
 });
