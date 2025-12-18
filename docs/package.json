@@ -59,10 +59,10 @@
     "zx": "8.8.5"
   },
   "devDependencies": {
-    "@internationalized/date": "3.10.0",
+    "@internationalized/date": "3.10.1",
     "@types/node": "24.9.2",
     "@types/react": "19.2.7",
-    "@types/react-dom": "19.2.2",
+    "@types/react-dom": "19.2.3",
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.9.3",
     "unist-builder": "4.0.0",

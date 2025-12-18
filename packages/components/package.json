@@ -33,7 +33,7 @@
     "directory": "packages/components"
   },
   "dependencies": {
-    "@internationalized/date": "^3.10.0",
+    "@internationalized/date": "^3.10.1",
     "@marigold/system": "workspace:*",
     "@marigold/types": "workspace:*",
     "@react-aria/button": "^3.14.3",
