@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { NavLink } from '@/ui/navigation/NavLink';
 import { useHasMounted } from '@/ui/useHasMounted';
 import { SiteLogo } from './_components/SiteLogo';
-import { SiteNavigation } from './_components/SiteNavigation';
 
 interface HotKeyProps {
   letter: string;

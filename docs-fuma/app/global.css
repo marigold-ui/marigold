@@ -1,7 +1,7 @@
 @import 'tailwindcss';
-
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+
 /* own theme */
 @import './../../themes/theme-docs/dist/theme.css';
 /* rui theme */
@@ -46,6 +46,7 @@
     --page-padding-xl: 3rem;
 
     --page-header-height: 56px;
+    --fd-nav-height: calc(var(--page-header-height) + 16px);
 
     --page-sub-nav-absolute-width: 252px;
     --page-sub-nav-width: calc(
@@ -63,7 +64,3 @@
     --pre-padding-x: 1rem;
   }
 }
-/* :root {
-  --fd-page-width: 100%;
-  --fd-nav-height: calc(var(--spacing) * 14);
-} */

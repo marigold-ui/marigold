@@ -55,19 +55,22 @@ export const Hotkey = ({ letter, className }: HotKeyProps) => {
 };
 
 export function DocsLayout({ tree, children, badgeMap = {} }: DocsLayoutProps) {
-  const pathname = usePathname();
   return (
     <TreeContextProvider tree={tree}>
       <BadgeContext value={badgeMap}>
         <SidebarProvider>
           <Nav pages={tree.children} />
+          <Sidebar />
           <main
             id="nd-docs-layout"
-            className="flex flex-1 flex-row [--fd-nav-height:56px]"
+            className={[
+              'pt-(--page-main-padding) xl:pt-(--page-main-padding-xl)',
+              'px-(--page-padding) md:px-(--page-padding-md) xl:pr-(--page-padding-xl)',
+              'md:pl-[calc(var(--page-sub-nav-width)+var(--page-main-padding))] xl:pl-[calc(var(--page-sub-nav-width-xl)+var(--page-main-padding-xl))]',
+            ].join(' ')}
           >
-            <Sidebar />
             {/* this is the content */}
-            <div className="p-4">{children}</div>
+            {children}
           </main>
         </SidebarProvider>
       </BadgeContext>
@@ -110,8 +113,6 @@ function NavbarSidebarTrigger(props: ComponentProps<'button'>) {
 function Sidebar() {
   const { root } = useTreeContext();
   const { open } = use(SidebarContext)!;
-  console.log('root.children', root.children);
-  console.log('root', root);
   const children = useMemo(() => {
     function renderItems(items: PageTree.Node[]) {
       return items.map(item => (
@@ -127,7 +128,7 @@ function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed top-14 z-20 flex shrink-0 flex-col py-10 pl-12 text-sm md:sticky md:h-[calc(100dvh-56px)] md:w-[300px]',
+        'fixed top-(--page-header-height) z-20 flex shrink-0 flex-col py-10 pl-12 text-sm md:h-[calc(100dvh-56px)] md:w-[300px]',
         'overflow-hidden hover:overflow-y-auto',
         '[&>a]:border-l-secondary-300',
         'max-md:bg-fd-background max-md:inset-x-0 max-md:bottom-0',
@@ -140,18 +141,6 @@ function Sidebar() {
     </aside>
   );
 }
-
-const linkVariants = cva(
-  'flex items-center gap-2 w-full py-1.5 rounded-lg text-fd-foreground/80 [&_svg]:size-4',
-  {
-    variants: {
-      active: {
-        true: 'text-fd-primary font-medium',
-        false: 'hover:text-fd-accent-foreground',
-      },
-    },
-  }
-);
 
 function SidebarItem({
   item,

@@ -1,4 +1,4 @@
-import componentProps from '@/registry/props.json';
+import componentProps from '@/.registry/props.json';
 import { Inline, Inset, Stack, Text } from '@/ui';
 import { BlankCanvas } from './icons';
 import { Markdown } from './mdx';

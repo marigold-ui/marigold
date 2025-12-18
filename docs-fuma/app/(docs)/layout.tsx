@@ -1,8 +1,6 @@
-import { DocsLayout } from '@/components/layout/docs/index';
-import { baseOptions } from '@/lib/layout.shared';
+// import { DocsLayout } from '@/components/layout/docs/index';
+import { DocsLayout } from '@/components/layout/docs';
 import { getBadgeMap, source } from '@/lib/source';
-// import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import { Nav } from '../Nav';
 
 export default function Layout({ children }: LayoutProps<'/docs'>) {
   const badgeMap = getBadgeMap();
