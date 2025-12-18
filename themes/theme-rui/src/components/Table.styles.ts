@@ -54,7 +54,7 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
-  body: cva('[&_tr:last-child]:border-0'),
+  body: cva('[&_tr:last-child]:border-0 bg-background'),
   row: cva(
     [
       'border-b border-border transition-colors',

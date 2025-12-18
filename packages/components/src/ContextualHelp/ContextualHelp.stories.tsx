@@ -2,6 +2,7 @@ import { expect } from 'storybook/test';
 import preview from '../../../../config/storybook/.storybook/preview';
 import { Link } from '../Link/Link';
 import { Text } from '../Text/Text';
+import { TextField } from '../TextField/TextField';
 import { ContextualHelp } from './ContextualHelp';
 
 const meta = preview.meta({
@@ -40,8 +41,8 @@ const meta = preview.meta({
       ],
     },
     size: {
-      control: 'select',
-      options: ['small', 'medium', 'large'],
+      options: ['default'],
+      defaultValue: 'default',
     },
     width: {
       control: 'select',
@@ -138,6 +139,34 @@ export const LongContent = meta.story({
           </Link>
         </ContextualHelp.Content>
       </ContextualHelp>
+    </div>
+  ),
+});
+
+export const WithTextField = meta.story({
+  render: args => (
+    <div className="flex h-96 items-center justify-center">
+      <TextField
+        label={
+          <span className="flex items-center gap-1">
+            Email
+            <ContextualHelp offset={2} {...args}>
+              <ContextualHelp.Title>Email Format</ContextualHelp.Title>
+              <ContextualHelp.Content>
+                Please enter a valid email address in the format:
+                user@example.com
+                <br />
+                <Link href="https://www.marigold-ui.io/components/overview?theme=rui">
+                  Learn more
+                </Link>
+              </ContextualHelp.Content>
+            </ContextualHelp>
+          </span>
+        }
+        type="email"
+        description="We'll never share your email"
+        width="fit"
+      />
     </div>
   ),
 });
