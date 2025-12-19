@@ -7,7 +7,9 @@ import {
   Row,
   useTableOptions,
 } from 'react-aria-components';
+import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { useTableViewContext } from './Context';
 
 type RemovedProps = 'className' | 'style';
 
@@ -23,9 +25,10 @@ const TableViewRow = <T extends object>({
   ...otherProps
 }: TableViewRowProps<T>) => {
   let { selectionBehavior, allowsDragging } = useTableOptions();
+  const { classNames } = useTableViewContext();
 
   return (
-    <Row id={id} {...otherProps}>
+    <Row id={id} className={cn(classNames?.row)} {...otherProps}>
       {allowsDragging && (
         <Cell>
           <Button slot="drag">

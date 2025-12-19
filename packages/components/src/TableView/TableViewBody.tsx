@@ -1,5 +1,7 @@
 import type RAC from 'react-aria-components';
 import { TableBody } from 'react-aria-components';
+import { cn } from '@marigold/system';
+import { useTableViewContext } from './Context';
 
 type RemovedProps = 'className' | 'style';
 
@@ -11,7 +13,8 @@ export type TableViewBodyProps<T extends object = object> = Omit<
 const TableViewBody = <T extends object = object>(
   props: TableViewBodyProps<T>
 ) => {
-  return <TableBody {...props} />;
+  const { classNames } = useTableViewContext();
+  return <TableBody className={cn(classNames?.body)} {...props} />;
 };
 
 export { TableViewBody };

@@ -5,7 +5,9 @@ import {
   TableHeader,
   useTableOptions,
 } from 'react-aria-components';
+import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { useTableViewContext } from './Context';
 
 type RemovedProps = 'className' | 'style';
 
@@ -19,10 +21,12 @@ const TableViewHeader = <T extends object>({
   children,
   ...otherProps
 }: TableViewHeaderProps<T>) => {
-  let { selectionBehavior, selectionMode, allowsDragging } = useTableOptions();
+  const { selectionBehavior, selectionMode, allowsDragging } =
+    useTableOptions();
+  const { classNames } = useTableViewContext();
 
   return (
-    <TableHeader {...otherProps}>
+    <TableHeader className={cn(classNames?.thead)} {...otherProps}>
       {/* Add extra columns for drag and drop and selection. */}
       {allowsDragging && (
         <Column

@@ -1,5 +1,7 @@
 import type RAC from 'react-aria-components';
 import { Table } from 'react-aria-components';
+import { cn, useClassNames } from '@marigold/system';
+import { TableViewContext } from './Context';
 import { TableViewBody } from './TableViewBody';
 import { TableViewCell } from './TableViewCell';
 import { TableViewColumn } from './TableViewColumn';
@@ -9,16 +11,26 @@ import { TableViewRow } from './TableViewRow';
 // Remove props that we want to customize
 type RemovedProps = 'className' | 'style';
 
-// TODO: Add variant and size props when implementing styling
-// variant?: 'default' | 'bordered' | 'striped' | (string & {});
-// size?: 'small' | 'medium' | 'large' | (string & {});
-export type TableViewProps = Omit<RAC.TableProps, RemovedProps>;
+export interface TableViewProps extends Omit<RAC.TableProps, RemovedProps> {
+  variant?: 'grid' | 'default' | 'muted' | (string & {});
+  size?: string;
+}
 
-const _TableView = (props: TableViewProps) => {
-  return <Table {...props} />;
-};
+function BaseTableView({ variant, size, ...props }: TableViewProps) {
+  const classNames = useClassNames({
+    component: 'Table',
+    variant,
+    size,
+  });
 
-const TableView = Object.assign(_TableView, {
+  return (
+    <TableViewContext.Provider value={{ classNames, variant, size }}>
+      <Table className={cn('group/table', classNames.table)} {...props} />
+    </TableViewContext.Provider>
+  );
+}
+
+const TableView = Object.assign(BaseTableView, {
   Header: TableViewHeader,
   Column: TableViewColumn,
   Body: TableViewBody,
