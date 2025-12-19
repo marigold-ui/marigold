@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from 'storybook/test';
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Columns } from '../Columns/Columns';
@@ -13,8 +13,9 @@ import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Accordion } from './Accordion';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Accordion',
+  component: Accordion,
   argTypes: {
     defaultExpandedKeys: {
       description: 'Expanded Keys per default',
@@ -57,12 +58,9 @@ const meta = {
     variant: 'default',
     iconPosition: 'right',
   },
-} satisfies Meta;
+});
 
-export default meta;
-type Story = StoryObj<typeof Accordion>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">
@@ -100,7 +98,7 @@ export const Basic: Story = {
       canvas.getByText('Some longer Text to see if it looks good').parentElement
     ).toHaveAttribute('aria-hidden', 'false');
   },
-};
+});
 
 let items = [
   {
@@ -172,7 +170,7 @@ let items = [
   },
 ];
 
-export const ComplexSingleSelect: Story = {
+export const ComplexSingleSelect = meta.story({
   render: args => (
     <Accordion {...args}>
       {items.map(item => (
@@ -183,9 +181,9 @@ export const ComplexSingleSelect: Story = {
       ))}
     </Accordion>
   ),
-};
+});
 
-export const DefaultExpended: Story = {
+export const DefaultExpended = meta.story({
   render: args => (
     <Accordion {...args}>
       <Accordion.Item id="1">
@@ -208,9 +206,9 @@ export const DefaultExpended: Story = {
       </Accordion.Item>
     </Accordion>
   ),
-};
+});
 
-export const MultipleExpanded: Story = {
+export const MultipleExpanded = meta.story({
   render: args => (
     <Accordion
       {...args}
@@ -225,9 +223,9 @@ export const MultipleExpanded: Story = {
       ))}
     </Accordion>
   ),
-};
+});
 
-export const CoreExample: Story = {
+export const CoreExample = meta.story({
   render: args => (
     <div className="w-1/2">
       <Accordion {...args}>
@@ -255,8 +253,8 @@ export const CoreExample: Story = {
       </Accordion>
     </div>
   ),
-};
-export const ButtonInHeader: Story = {
+});
+export const ButtonInHeader = meta.story({
   render: args => (
     <Stack space={8}>
       <Accordion {...args}>
@@ -287,9 +285,9 @@ export const ButtonInHeader: Story = {
       </Accordion>
     </Stack>
   ),
-};
+});
 
-export const Disabled: Story = {
+export const Disabled = meta.story({
   render: args => (
     <Accordion {...args} disabled>
       <Accordion.Item id="1">
@@ -298,9 +296,9 @@ export const Disabled: Story = {
       </Accordion.Item>
     </Accordion>
   ),
-};
+});
 
-export const StickyHeader: Story = {
+export const StickyHeader = meta.story({
   parameters: {
     controls: { exclude: ['iconPosition'] },
   },
@@ -312,19 +310,17 @@ export const StickyHeader: Story = {
       iconPosition={'left'}
     >
       <Accordion.Item id="1">
-        <Accordion.Header>
-          <Inline space={4} alignY="center" alignX="between">
-            <Headline level="2">Symfonie Abo 2025/2026</Headline>
-            <Inline space={2}>
-              <Button onPress={() => alert('Do NOT click! Come on!')}>
-                Delete
-              </Button>
-              <Button onPress={() => alert('Do NOT click! Come on!')}>
-                Edit
-              </Button>
-            </Inline>
+        <Inline alignX="between">
+          <Accordion.Header>Symfonie Abo 2025/2026</Accordion.Header>
+          <Inline space={2}>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Delete
+            </Button>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Edit
+            </Button>
           </Inline>
-        </Accordion.Header>
+        </Inline>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
@@ -774,19 +770,17 @@ export const StickyHeader: Story = {
         </Accordion.Content>
       </Accordion.Item>
       <Accordion.Item id="2">
-        <Accordion.Header>
-          <Inline space={4} alignY="center" alignX="between">
-            <Headline level="2">Scroll Me Abo Season 25/26</Headline>
-            <Inline space={2}>
-              <Button onPress={() => alert('Do NOT click! Come on!')}>
-                Delete
-              </Button>
-              <Button onPress={() => alert('Do NOT click! Come on!')}>
-                Edit
-              </Button>
-            </Inline>
+        <Inline alignX="between">
+          <Accordion.Header>Scroll Me Abo Season 25/26</Accordion.Header>
+          <Inline space={2}>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Delete
+            </Button>
+            <Button onPress={() => alert('Do NOT click! Come on!')}>
+              Edit
+            </Button>
           </Inline>
-        </Accordion.Header>
+        </Inline>
         <Accordion.Content>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
@@ -911,9 +905,9 @@ export const StickyHeader: Story = {
       </Accordion.Item>
     </Accordion>
   ),
-};
+});
 
-export const IconPositionLeft: Story = {
+export const IconPositionLeft = meta.story({
   parameters: {
     controls: { exclude: ['iconPosition'] },
   },
@@ -939,4 +933,4 @@ export const IconPositionLeft: Story = {
       </Accordion.Item>
     </Accordion>
   ),
-};
+});

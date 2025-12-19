@@ -1,12 +1,9 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import { I18nProvider } from 'react-aria-components';
-import * as stories from './Loader.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './Loader.stories';
 
 test('renders loader', () => {
-  render(<Basic aria-label="loading" />);
+  render(<Basic.Component aria-label="loading" />);
 
   const loader = screen.getByRole('progressbar');
 
@@ -14,7 +11,9 @@ test('renders loader', () => {
 });
 
 test('renders loader with different size', () => {
-  render(<Basic loaderType="xloader" aria-label="loading" size="large" />);
+  render(
+    <Basic.Component loaderType="xloader" aria-label="loading" size="large" />
+  );
 
   const loader = screen.getByRole('progressbar');
   // eslint-disable-next-line testing-library/no-node-access
@@ -25,7 +24,7 @@ test('renders loader with different size', () => {
 });
 
 test('render custom label', () => {
-  render(<Basic>Loading...</Basic>);
+  render(<Basic.Component>Loading...</Basic.Component>);
 
   const label = screen.getByText('Loading...');
 
@@ -33,7 +32,7 @@ test('render custom label', () => {
 });
 
 test('inline uses "inverted" variant', () => {
-  render(<Basic mode="section">Loading...</Basic>);
+  render(<Basic.Component mode="section">Loading...</Basic.Component>);
 
   const loader = screen.getByRole('progressbar');
 
@@ -43,7 +42,7 @@ test('inline uses "inverted" variant', () => {
 test('translate loading message to English', () => {
   render(
     <I18nProvider locale="en-US">
-      <Basic />
+      <Basic.Component />
     </I18nProvider>
   );
 
@@ -57,7 +56,7 @@ test('translate loading message to English', () => {
 test('translate loading message to German', () => {
   render(
     <I18nProvider locale="de-DE">
-      <Basic />
+      <Basic.Component />
     </I18nProvider>
   );
 
@@ -67,7 +66,7 @@ test('translate loading message to German', () => {
 });
 
 test('renders loader with loaderType circle', () => {
-  render(<Basic loaderType="circle" />);
+  render(<Basic.Component loaderType="circle" />);
 
   const loader = screen.getByRole('progressbar');
   // eslint-disable-next-line testing-library/no-node-access

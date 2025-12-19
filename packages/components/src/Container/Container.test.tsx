@@ -1,13 +1,10 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './Container.stories';
-
-const { Base, WithBreakout } = composeStories(stories, {});
+import { Base, WithBreakout } from './Container.stories';
 
 describe('Container', () => {
   describe('Rendering', () => {
     test('renders content correctly', () => {
-      render(<Base data-testid="container" />);
+      render(<Base.Component data-testid="container" />);
 
       const container = screen.getByTestId('container');
 
@@ -15,7 +12,7 @@ describe('Container', () => {
     });
 
     test('renders with breakout content', () => {
-      render(<WithBreakout data-testid="container" />);
+      render(<WithBreakout.Component data-testid="container" />);
 
       const container = screen.getByTestId('container');
 
@@ -25,7 +22,7 @@ describe('Container', () => {
 
   describe('Content Length', () => {
     test('defines content length for text and headlines', () => {
-      render(<Base data-testid="container" />);
+      render(<Base.Component data-testid="container" />);
 
       const container = screen.getByTestId('container');
 
@@ -37,14 +34,14 @@ describe('Container', () => {
 
     test('supports different lengths for content', () => {
       const { rerender } = render(
-        <Base data-testid="container" contentLength="default" />
+        <Base.Component data-testid="container" contentLength="default" />
       );
 
       const defaultContainer = screen.getByTestId('container');
       const defaultTextWidth =
         defaultContainer.style.getPropertyValue('--maxTextWidth');
 
-      rerender(<Base data-testid="container" contentLength="long" />);
+      rerender(<Base.Component data-testid="container" contentLength="long" />);
 
       const longContainer = screen.getByTestId('container');
       const longTextWidth =
@@ -56,7 +53,7 @@ describe('Container', () => {
 
   describe('Alignment', () => {
     test('aligns children on left by default', () => {
-      render(<Base data-testid="container" />);
+      render(<Base.Component data-testid="container" />);
 
       const container = screen.getByTestId('container');
 
@@ -64,7 +61,7 @@ describe('Container', () => {
     });
 
     test('aligns children to the center', () => {
-      render(<Base data-testid="container" align="center" />);
+      render(<Base.Component data-testid="container" align="center" />);
 
       const container = screen.getByTestId('container');
 
@@ -72,7 +69,7 @@ describe('Container', () => {
     });
 
     test('aligns children to the right', () => {
-      render(<Base data-testid="container" align="right" />);
+      render(<Base.Component data-testid="container" align="right" />);
 
       const container = screen.getByTestId('container');
 
@@ -82,7 +79,7 @@ describe('Container', () => {
 
   describe('Align Items', () => {
     test('does not apply place-items by default', () => {
-      render(<Base data-testid="container" alignItems="none" />);
+      render(<Base.Component data-testid="container" alignItems="none" />);
 
       const container = screen.getByTestId('container');
 
@@ -90,7 +87,7 @@ describe('Container', () => {
     });
 
     test('supports align items center', () => {
-      render(<Base data-testid="container" alignItems="center" />);
+      render(<Base.Component data-testid="container" alignItems="center" />);
 
       const container = screen.getByTestId('container');
 
@@ -98,7 +95,7 @@ describe('Container', () => {
     });
 
     test('supports align items right', () => {
-      render(<Base data-testid="container" alignItems="right" />);
+      render(<Base.Component data-testid="container" alignItems="right" />);
 
       const container = screen.getByTestId('container');
 
@@ -108,7 +105,7 @@ describe('Container', () => {
 
   describe('Spacing', () => {
     test('applies default spacing value of 0', () => {
-      render(<Base space={0} data-testid="container" />);
+      render(<Base.Component space={0} data-testid="container" />);
 
       const container = screen.getByTestId('container');
 
@@ -118,7 +115,7 @@ describe('Container', () => {
     });
 
     test('applies custom spacing from theme', () => {
-      render(<Base space={4} data-testid="container" />);
+      render(<Base.Component space={4} data-testid="container" />);
 
       const container = screen.getByTestId('container');
 

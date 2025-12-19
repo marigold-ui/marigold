@@ -1,18 +1,15 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './Multiselect.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './Multiselect.stories';
 
 test('renders input and label', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   expect(screen.getByLabelText(/Ticket Categories/i)).toBeInTheDocument();
   expect(screen.getByText('Ticket Categories')).toBeInTheDocument();
 });
 
 test('supports disabled state', () => {
-  render(<Basic disabled />);
+  render(<Basic.Component disabled />);
 
   const input = screen.getByLabelText(/Ticket Categories/i);
   expect(input).toBeInTheDocument();
@@ -21,7 +18,7 @@ test('supports disabled state', () => {
 
 test('shows selected options as tags', async () => {
   render(
-    <Basic
+    <Basic.Component
       defaultSelectedItems={[
         { value: 'general', label: 'General Admission' },
         { value: 'vip', label: 'VIP Experience' },
@@ -34,13 +31,13 @@ test('shows selected options as tags', async () => {
 });
 
 test('shows error message when error is present', () => {
-  render(<Basic error errorMessage="Invalid selection" />);
+  render(<Basic.Component error errorMessage="Invalid selection" />);
 
   expect(screen.getByText('Invalid selection')).toBeInTheDocument();
 });
 
 test('renders close button in selected tags', async () => {
-  render(<Basic defaultSelectedItems={['General Admission']} />);
+  render(<Basic.Component defaultSelectedItems={['General Admission']} />);
 
   const removeButton = await screen.findByRole('button', {
     name: /remove/i,
@@ -51,7 +48,7 @@ test('renders close button in selected tags', async () => {
 });
 
 test('Allow styling container & input via theme', () => {
-  render(<Basic defaultValue="General Admission" />);
+  render(<Basic.Component defaultValue="General Admission" />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const field = screen.getByText('Ticket Categories').parentElement;

@@ -1,12 +1,12 @@
 import { CalendarDate } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react';
 import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Calendar } from './Calendar';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Calendar',
   component: Calendar,
   argTypes: {
@@ -55,16 +55,13 @@ const meta = {
   args: {
     defaultValue: new CalendarDate(2025, 8, 7),
   },
-} satisfies Meta<typeof Calendar>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <Calendar {...args} data-testid="selectedDate" />,
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   tags: ['component-test'],
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
@@ -89,10 +86,10 @@ export const Controlled: Story = {
       expect(result).toHaveTextContent('Day:4 Month:6 Year:2019');
     });
   },
-};
+});
 
-export const Uncontrolled: Story = {
-  ...Basic,
+export const Uncontrolled = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     defaultValue: new CalendarDate(2019, 6, 5),
@@ -111,10 +108,10 @@ export const Uncontrolled: Story = {
     await expect(canvas.getByTestId('month')).toHaveTextContent('Feb');
     await expect(args.onChange).toHaveBeenCalledOnce();
   },
-};
+});
 
-export const Disabled: Story = {
-  ...Basic,
+export const Disabled = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     disabled: true,
@@ -134,10 +131,10 @@ export const Disabled: Story = {
     await expect(monthButton).toHaveAttribute('disabled');
     await expect(yearButton).toHaveAttribute('disabled');
   },
-};
+});
 
-export const ReadOnly: Story = {
-  ...Basic,
+export const ReadOnly = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     readOnly: true,
@@ -151,10 +148,10 @@ export const ReadOnly: Story = {
 
     await expect(args.onChange).not.toHaveBeenCalled();
   },
-};
+});
 
-export const OnlyOneMonthAndYear: Story = {
-  ...Basic,
+export const OnlyOneMonthAndYear = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 5, 5),
@@ -174,10 +171,10 @@ export const OnlyOneMonthAndYear: Story = {
     expect(canvas.queryByRole('dialog')).toBeNull();
     expect(canvas.queryByRole('listbox')).toBeNull();
   },
-};
+});
 
-export const OnlyOneMonthAndYearAriaLabel: Story = {
-  ...Basic,
+export const OnlyOneMonthAndYearAriaLabel = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 5, 5),
@@ -198,10 +195,10 @@ export const OnlyOneMonthAndYearAriaLabel: Story = {
       '2020 not selectable'
     );
   },
-};
+});
 
-export const MonthOptionsAccessibility: Story = {
-  ...Basic,
+export const MonthOptionsAccessibility = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 1, 15),
@@ -234,10 +231,10 @@ export const MonthOptionsAccessibility: Story = {
       }
     }
   },
-};
+});
 
-export const SelectedMonthAriaSelected: Story = {
-  ...Basic,
+export const SelectedMonthAriaSelected = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 1, 15),
@@ -253,10 +250,10 @@ export const SelectedMonthAriaSelected: Story = {
     const janOption = monthOptions.find(opt => opt.textContent === 'Jan');
     await expect(janOption).toHaveAttribute('aria-selected', 'true');
   },
-};
+});
 
-export const MonthSelectionMinMax: Story = {
-  ...Basic,
+export const MonthSelectionMinMax = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 1, 15),
@@ -281,10 +278,10 @@ export const MonthSelectionMinMax: Story = {
       canvas.getByRole('button', { name: 'Feb' })
     ).toBeInTheDocument();
   },
-};
+});
 
-export const YearSelectionMinMax: Story = {
-  ...Basic,
+export const YearSelectionMinMax = meta.story({
+  ...Basic.input,
   tags: ['component-test'],
   args: {
     minValue: new CalendarDate(2020, 1, 15),
@@ -309,4 +306,4 @@ export const YearSelectionMinMax: Story = {
       canvas.getByRole('button', { name: '2021' })
     ).toBeInTheDocument();
   },
-};
+});

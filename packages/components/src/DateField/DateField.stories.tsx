@@ -1,11 +1,12 @@
 import { CalendarDate, DateValue } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { I18nProvider } from '@react-aria/i18n';
-import { DateField, DateFieldProps } from './DateField';
+import preview from '../../../../config/storybook/.storybook/preview';
+import { DateField } from './DateField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/DateField',
+  component: DateField,
   argTypes: {
     label: {
       control: {
@@ -92,21 +93,18 @@ const meta = {
     readOnly: false,
     disabled: false,
     required: false,
-  },
-} satisfies Meta<DateFieldProps>;
+  } as const,
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic: any = meta.story({
   render: args => (
     <I18nProvider locale="de-DE">
       <DateField {...args} />
     </I18nProvider>
   ),
-};
+});
 
-export const ControlledDateField: Story = {
+export const ControlledDateField: any = meta.story({
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
     return (
@@ -130,12 +128,12 @@ export const ControlledDateField: Story = {
       </I18nProvider>
     );
   },
-};
+});
 
-export const BritishLocal: Story = {
+export const BritishLocal: any = meta.story({
   render: args => (
     <I18nProvider locale="en-GB">
       <DateField {...args} />
     </I18nProvider>
   ),
-};
+});

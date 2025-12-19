@@ -1,23 +1,18 @@
-import type { StoryObj } from '@storybook/react';
 import { expect } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
-import {
-  ConfirmationDialog,
-  ConfirmationDialogProps,
-} from './ConfirmationDialog';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import { useConfirmation } from './useConfirmation';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ConfirmationDialog',
   component: ConfirmationDialog.Trigger,
-};
+});
 
-export default meta;
-
-export const Confirmation: StoryObj<ConfirmationDialogProps> = {
-  render: ({ ...args }) => (
-    <ConfirmationDialog.Trigger {...args}>
+export const Confirmation = meta.story({
+  render: () => (
+    <ConfirmationDialog.Trigger>
       <Button>Open</Button>
       <ConfirmationDialog title="Confirmation" confirmationLabel="Confirm">
         Are you sure you want to proceed with this action?
@@ -35,9 +30,9 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
 
     await canvas.getByRole('button', { name: 'Confirm' }).click();
   },
-};
+});
 
-export const UseConfirmation: StoryObj = {
+export const UseConfirmation = meta.story({
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const confirm = useConfirmation();
@@ -69,4 +64,4 @@ export const UseConfirmation: StoryObj = {
       </Stack>
     );
   },
-};
+});

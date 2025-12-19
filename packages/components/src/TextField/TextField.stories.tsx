@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { TextField } from './TextField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/TextField',
   component: TextField,
   argTypes: {
@@ -113,20 +113,17 @@ const meta = {
     required: false,
     error: false,
   },
-} satisfies Meta<typeof TextField>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <TextField {...args} label="My label is great." />,
-};
+});
 
-export const WithError: Story = {
+export const WithError = meta.story({
   render: args => <TextField {...args} label="My label is great." error />,
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [value, setValue] = useState('');
     return (
@@ -144,4 +141,4 @@ export const Controlled: Story = {
       </>
     );
   },
-};
+});

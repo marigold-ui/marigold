@@ -1,11 +1,8 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import * as stories from './List.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './List.stories';
 
 test('renders an "ul" with "li"s by default', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const list = screen.getByRole('list');
   const item = screen.getAllByRole('listitem');
@@ -15,7 +12,7 @@ test('renders an "ul" with "li"s by default', () => {
 });
 
 test('renders an "ol" with "li"s', () => {
-  render(<Basic as="ol" />);
+  render(<Basic.Component as="ol" />);
 
   const list = screen.getByRole('list');
   const item = screen.getAllByRole('listitem')[0];
@@ -25,7 +22,7 @@ test('renders an "ol" with "li"s', () => {
 });
 
 test('renders all children', async () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const items = await screen.findAllByRole('listitem');
 
@@ -33,7 +30,7 @@ test('renders all children', async () => {
 });
 
 test('use base styling from "List" in theme', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const list = screen.getByRole('list');
 

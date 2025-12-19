@@ -1,12 +1,9 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import * as stories from './Button.stories';
-
-const { Basic, WithIcon } = composeStories(stories);
+import { Basic, WithIcon } from './Button.stories';
 
 test('renders <button> element', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const button = screen.getByText(/Button/);
 
@@ -14,7 +11,7 @@ test('renders <button> element', () => {
 });
 
 test('add icon in button works as expected', () => {
-  render(<WithIcon>iconbutton</WithIcon>);
+  render(<WithIcon.Component>iconbutton</WithIcon.Component>);
 
   const button = screen.getByText(/iconbutton/);
   const icon = screen.getByTestId(/facebook/);
@@ -26,13 +23,13 @@ test('add icon in button works as expected', () => {
 
 test('forwards ref', () => {
   const ref = createRef<HTMLButtonElement>();
-  render(<Basic ref={ref} />);
+  render(<Basic.Component ref={ref} />);
 
   expect(ref.current instanceof HTMLButtonElement).toBeTruthy();
 });
 
 test('supports disabled prop', () => {
-  render(<Basic disabled />);
+  render(<Basic.Component disabled />);
 
   const button = screen.getByText(/Button/);
 
@@ -40,7 +37,7 @@ test('supports disabled prop', () => {
 });
 
 test('allows to take full width', () => {
-  render(<Basic fullWidth />);
+  render(<Basic.Component fullWidth />);
 
   const button = screen.getByText(/Button/);
 
@@ -48,7 +45,7 @@ test('allows to take full width', () => {
 });
 
 test('loading state', () => {
-  render(<Basic loading={true} />);
+  render(<Basic.Component loading={true} />);
 
   const button = screen.getByRole('button');
   const svg = screen.getByRole('progressbar');

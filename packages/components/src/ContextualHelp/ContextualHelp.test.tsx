@@ -1,15 +1,13 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './ContextualHelp.stories';
+import type { ContextualHelpProps } from './ContextualHelp';
+import { Basic } from './ContextualHelp.stories';
 
-const { Basic } = composeStories(stories, {
-  decorators: Story => (
-    <div id="storybook-root">
-      <Story />
-    </div>
-  ),
-});
+const BasicComponent = (props: Partial<ContextualHelpProps>) => (
+  <div id="storybook-root">
+    <Basic.Component {...props} />
+  </div>
+);
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -33,13 +31,13 @@ afterEach(() => {
 });
 
 test('does not render popover by default', () => {
-  render(<Basic />);
+  render(<BasicComponent />);
 
   expect(screen.queryByText(/This feature explains/)).toBeNull();
 });
 
 test('shows popover on click', async () => {
-  render(<Basic />);
+  render(<BasicComponent />);
 
   const button = screen.getByRole('button');
 
@@ -49,7 +47,7 @@ test('shows popover on click', async () => {
 });
 
 test('closes popover on outside click', async () => {
-  render(<Basic defaultOpen={true} />);
+  render(<BasicComponent defaultOpen={true} />);
 
   await userEvent.click(document.body);
 
@@ -57,7 +55,7 @@ test('closes popover on outside click', async () => {
 });
 
 test('closes popover on Escape key', async () => {
-  render(<Basic defaultOpen={true} />);
+  render(<BasicComponent defaultOpen={true} />);
 
   await userEvent.keyboard('{Escape}');
 

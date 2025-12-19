@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Form } from '../Form/Form';
@@ -9,9 +9,9 @@ import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
-import { Drawer, DrawerProps } from './Drawer';
+import { Drawer } from './Drawer';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Drawer',
   component: Drawer,
   argTypes: {
@@ -31,12 +31,9 @@ const meta = {
     },
   },
   args: {},
-} satisfies Meta<DrawerProps>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Stack space={8} alignX="left">
       <Drawer.Trigger>
@@ -101,9 +98,9 @@ export const Basic: Story = {
 
     await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
   },
-};
+});
 
-export const LeftPlacement: Story = {
+export const LeftPlacement = meta.story({
   args: {
     placement: 'left',
   },
@@ -130,9 +127,9 @@ export const LeftPlacement: Story = {
       </Drawer>
     </Drawer.Trigger>
   ),
-};
+});
 
-export const WithForms: Story = {
+export const WithForms = meta.story({
   render: args => (
     <Drawer.Trigger>
       <Button>Configure Filter</Button>
@@ -176,9 +173,9 @@ export const WithForms: Story = {
       </Drawer>
     </Drawer.Trigger>
   ),
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
@@ -202,4 +199,4 @@ export const Controlled: Story = {
       </Stack>
     );
   },
-};
+});

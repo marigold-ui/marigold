@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { expect } from 'storybook/test';
 import { I18nProvider } from '@react-aria/i18n';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { makeFile } from './../test.utils';
 import { FileField } from './FileField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/FileField',
   component: FileField,
   argTypes: {
@@ -49,13 +49,9 @@ const meta = {
     multiple: false,
     accept: [],
   },
-} satisfies Meta<typeof FileField>;
+});
 
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -81,9 +77,9 @@ export const Basic: Story = {
       canvas.queryByRole('button', { name: 'Upload' })
     ).toHaveTextContent('Upload');
   },
-};
+});
 
-export const UploadFile: Story = {
+export const UploadFile = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Single Upload',
@@ -103,9 +99,9 @@ export const UploadFile: Story = {
 
     await expect(canvas.queryByText('a.pdf', { exact: true })).toBeVisible();
   },
-};
+});
 
-export const MultipleFileUpload: Story = {
+export const MultipleFileUpload = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Multifile Upload',
@@ -129,9 +125,9 @@ export const MultipleFileUpload: Story = {
     await expect(canvas.getByText('5.00 MB')).toBeInTheDocument();
     await expect(canvas.getByText('0.50 MB')).toBeInTheDocument();
   },
-};
+});
 
-export const Disabled: Story = {
+export const Disabled = meta.story({
   args: {
     label: 'Disabled',
     disabled: true,
@@ -150,4 +146,4 @@ export const Disabled: Story = {
     );
   },
   */
-};
+});

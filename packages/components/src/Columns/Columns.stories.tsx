@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { ReactNode } from 'react';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Divider } from '../Divider/Divider';
 import { Headline } from '../Headline/Headline';
 import { NumberField } from '../NumberField/NumberField';
@@ -8,7 +8,7 @@ import { Switch } from '../Switch/Switch';
 import { TextField } from '../TextField/TextField';
 import { Columns } from './Columns';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Columns',
   component: Columns,
   argTypes: {
@@ -63,12 +63,9 @@ const meta = {
     columns: [2, 8, 2],
     stretch: false,
   },
-} satisfies Meta<typeof Columns>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Columns {...args}>
       <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
@@ -76,9 +73,9 @@ export const Basic: Story = {
       <div className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
     </Columns>
   ),
-};
+});
 
-export const ComplexChildren: Story = {
+export const ComplexChildren = meta.story({
   render: args => (
     <Columns {...args}>
       <main className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
@@ -89,7 +86,7 @@ export const ComplexChildren: Story = {
       <aside className="h-[150px] border border-[#ced4da] bg-[#e9ecef]" />
     </Columns>
   ),
-};
+});
 
 const Block = ({
   children,
@@ -106,7 +103,7 @@ const Block = ({
   </div>
 );
 
-export const MultiRow = () => (
+export const MultiRow = meta.story(() => (
   <Block>
     <Stack space={4}>
       <Block height={500}>
@@ -122,9 +119,9 @@ export const MultiRow = () => (
       </Columns>
     </Stack>
   </Block>
-);
+));
 
-export const FullHeight: Story = {
+export const FullHeight = meta.story({
   render: args => (
     <div className="h-[300px] bg-[#adb5bd]">
       <Columns {...args}>
@@ -137,9 +134,9 @@ export const FullHeight: Story = {
       </Columns>
     </div>
   ),
-};
+});
 
-export const WithTwoComponentsAndFixedItem: Story = {
+export const WithTwoComponentsAndFixedItem = meta.story({
   render: () => (
     <div className="bg-bg-surface-sunken flex flex-col gap-2 p-1">
       <span>fit is on the switch element</span>
@@ -152,7 +149,7 @@ export const WithTwoComponentsAndFixedItem: Story = {
       </Columns>
     </div>
   ),
-};
+});
 
 const data = [
   {
@@ -171,7 +168,7 @@ const data = [
     fee: 6.0,
   },
 ];
-export const TableLike: Story = {
+export const TableLike = meta.story({
   render: () => (
     <div className="w-5/12 p-4">
       <Columns columns={[1, 1, 1]} space={2}>
@@ -213,4 +210,4 @@ export const TableLike: Story = {
       </Columns>
     </div>
   ),
-};
+});
