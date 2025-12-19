@@ -14,11 +14,6 @@
     "source.fixAll.eslint": "explicit"
   },
   "npm.packageManager": "pnpm",
-  "tailwindCSS.experimental.classRegex": [
-    ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-    ["cn\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-  ],
-  "tailwindCSS.experimental.configFile": "./themes/theme-rui/src/styles.css",
-  "tailwindCSS.classFunctions": ["cva", "cx", "cn"]
+  "tailwindCSS.classFunctions": ["cva", "cx", "cn"],
+  "tailwindCSS.experimental.configFile": "./themes/theme-rui/src/styles.css"
 }
