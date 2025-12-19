@@ -21,8 +21,8 @@ export const ContactForm = () => (
       </Text>
     </Stack>
     <Form maxWidth="container">
-      <Stack space="fieldY">
-        <Inline space="fieldX" noWrap>
+      <Stack space="peer">
+        <Inline space="related" noWrap>
           <TextField label="First name" />
           <TextField label="Last name" />
         </Inline>
