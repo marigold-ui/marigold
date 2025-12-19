@@ -5,7 +5,7 @@ const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
   const venue = venues.find(venue => venue.id === id)!;
 
   return (
-    <Stack space="tight">
+    <Stack space="related">
       <div className="grid grid-cols-1 grid-rows-1">
         <img
           className="col-start-1 row-start-1 aspect-video w-full rounded-lg object-cover"
@@ -19,7 +19,9 @@ const VenueCard = ({ id }: { id: (typeof venues)[number]['id'] }) => {
       <Text variant="muted" fontSize="xs">
         {venue.city}, {venue.country}
       </Text>
-      <Headline level="3">{venue.name}</Headline>
+      <Headline level="3" lineHeight="none">
+        {venue.name}
+      </Headline>
       <div className="line-clamp-2 text-sm">{venue.description}</div>
     </Stack>
   );
