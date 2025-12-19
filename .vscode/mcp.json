@@ -1,5 +1,5 @@
 {
-  "mcpServers": {
+  "servers": {
     "React Aria": {
       "command": "npx",
       "args": ["@react-aria/mcp@latest"]
