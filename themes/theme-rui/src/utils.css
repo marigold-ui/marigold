@@ -7,99 +7,111 @@
  * components, and other consistent UI patterns.
  */
 
-/*
- * Applies a consistent visual style for keyboard focus states across components.
- * This utility sets a colored focus ring and border based on the given theme color,
- * while removing the default outline.
- *
- * Use this as a default for all components (that don't have their own border).
- */
-@utility util-focus-* {
-  border-color: --value(--color-*);
+/* ========================= */
+/*    Surface & Elevation    */
+/* ========================= */
 
-  --tw-ring-color: --alpha(--value(--color-*) / 50%);
-  --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+/*
+ * The "surface" utitlities define visual surfaces with distinct background colors. Apply 
+ * elevation levels to them when needed.
+ */
+@utility surface {
+  @apply relative;
+  @apply bg-surface bg-clip-padding;
+  @apply border-surface-border rounded-surface border;
+  @apply transition-[box-shadow,border];
+
+  /* ::before */
+  @apply before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
 }
 
 /*
- * Applies a consistent visual style for keyboard focus states across components.
- * This utility sets a colored focus ring based on the given theme color,
- * while removing the default outline.
- *
- * Use this when the component has its own border and you need to keep it.
+ * Ensures input elements have consistent padding, text styles, and full-width behavior when used 
+ * as surfaces.Since input elements cannot use ::before, wrap them with an additional element and 
+ * apply this utility to the input itself for proper styling.
  */
-@utility util-focus-borderless-* {
-  --tw-ring-color: --alpha(--value(--color-*) / 50%);
-  --tw-ring-shadow: 0 0 0 3px var(--tw-ring-color, currentcolor);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+@utility surface-input {
+  @apply w-full min-w-0;
+  @apply px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)];
+  @apply text-foreground placeholder:text-placeholder text-sm;
+  @apply outline-none;
 }
 
 /*
- * Defines a consistent visual and behavioral style for disabled UI elements.
- */
-@utility util-disabled {
-  background-color: var(--color-disabled);
-  color: var(--color-disabled-foreground);
-
-  cursor: not-allowed;
-
-  --tw-border-style: none;
-  border-style: none;
-
-  --tw-shadow: 0 0 #0000;
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-}
-
-/*
- * These utility classes define visual surfaces with distinct background colors and 
- * elevation levels. Elevation is conveyed through shadows and borders, helping establish 
+ * The "elevation" utilities define elevation levels.
+ * Elevation is conveyed through shadows and borders, helping establish 
  * depth, hierarchy, and separation between interface layers. Use them to apply 
  * consistent surface styling across components.
  */
-@utility util-surface-sunken {
-  background: var(--surface-sunken);
 
-  --tw-shadow: var(--surface-sunken-shadow);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+/*
+ * Use this utility when you want to visually lift an element above the base level,
+ * such as for cards, or interactive components that require emphasis. This is the 
+ * lowest elevation level.
+ */
+@utility elevation-raised {
+  @apply shadow-elevation-raised;
 }
 
-@utility util-surface-body {
-  background: var(--surface-body);
-
-  --tw-shadow: var(--surface-body-shadow);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+/*
+ * Use this utility when you want to visually lift an element above the raised level,
+ * such as for dialogs, or popups. This is the highest elevation level.
+ */
+@utility elevation-overlay {
+  @apply shadow-elevation-overlay;
 }
 
-@utility util-surface-raised {
-  background: var(--surface-raised);
-  border: 1px var(--tw-border-style) var(--surface-raised-border);
+/* ========================= */
+/*           State           */
+/* ========================= */
 
-  --tw-shadow: var(--surface-raised-shadow);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+/*
+ * Applies a consistent visual style for invalid elements.
+ */
+@utility surface-error {
+  @apply border-destructive focus:border-destructive focus:ring-destructive/20;
 }
 
-@utility util-surface-overlay {
-  background: var(--surface-overlay);
-  border: 1px var(--tw-border-style) var(--surface-overlay-border);
-
-  --tw-shadow: var(--surface-overlay-shadow);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+/*
+ * Applies a consistent visual style when an element has an invalid child element.
+ */
+@utility surface-has-error {
+  @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
 }
+
+/*
+ * Applies a consistent visual style for disabled elements.
+ */
+@utility state-disabled {
+  @apply text-disabled-foreground bg-disabled cursor-not-allowed;
+}
+
+/*
+ * Applies a consistent visual style for readonly elements.
+ */
+@utility state-readonly {
+  @apply bg-muted;
+}
+
+/*
+ * Applies a consistent visual style used for keyboard focus states across components.
+ * Used this when the border of the component can be changed.
+ */
+@utility state-focus {
+  @apply ring-ring/50 border-ring ring-[3px];
+}
+
+/*
+ * Applies a consistent visual style used for keyboard focus states across components.
+ * Used this when the border of the component should not be changed.
+ */
+@utility state-focus-borderless {
+  @apply ring-ring/50 ring-[3px];
+}
+
+/* ========================= */
+/*            Misc           */
+/* ========================= */
 
 /*
  * Applies a touch-friendly hitbox to elements, ensuring they are easily tappable on touch devices. 
@@ -152,4 +164,50 @@
   &::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-scrollbar-hover);
   }
+}
+
+/* ==========================================================  */
+
+/* ========================= */
+/*    Surface & Elevation    */
+/* ========================= */
+
+/* Go over these when doing DST-878 */
+
+@utility util-surface-sunken {
+  background: var(--surface-sunken);
+
+  --tw-shadow: var(--surface-sunken-shadow);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility util-surface-body {
+  background: var(--surface-body);
+
+  --tw-shadow: var(--surface-body-shadow);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility util-surface-raised {
+  background: var(--surface-raised);
+  border: 1px var(--tw-border-style) var(--surface-raised-border);
+
+  --tw-shadow: var(--surface-raised-shadow);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+@utility util-surface-overlay {
+  background: var(--surface-overlay);
+  border: 1px var(--tw-border-style) var(--surface-overlay-border);
+
+  --tw-shadow: var(--surface-overlay-shadow);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+    var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
 }
