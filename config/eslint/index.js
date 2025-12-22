@@ -50,10 +50,7 @@ export default [
         ecmaVersion: 2024,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
-        project: [
-          './../../tsconfig.json',
-          './../storybook/.storybook/tsconfig.json',
-        ],
+        project: ['./../../tsconfig.json'],
         tsconfigRootDir: __dirname,
       },
     },
@@ -90,7 +87,8 @@ export default [
       '*.min.js',
       '*.css',
       '*.md',
-      'vitest.config.ts',
+      'vitest.config.shared.ts',
+      'vite.config.ts',
     ],
   },
 ];

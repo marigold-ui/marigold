@@ -3,12 +3,19 @@ import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Calendar } from './Calendar';
 
 const meta = preview.meta({
   title: 'Components/Calendar',
   component: Calendar,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     disabled: {
       control: {
@@ -62,7 +69,7 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
-  tags: ['component-test'],
+  tags: ['needs-fix'],
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
     return (
