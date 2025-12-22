@@ -3,6 +3,7 @@
 
 # generated content
 .source
+/lib/registry/demos.tsx
 
 # test & build
 /coverage
