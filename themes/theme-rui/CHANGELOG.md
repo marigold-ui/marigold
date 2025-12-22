@@ -1,5 +1,35 @@
 # @marigold/theme-rui
 
+## 5.0.0
+
+### Major Changes
+
+- 44d01a6: feat(DST-1141): Update `<Card>` to use semantic spacing and add `stretch` property
+  - `<Card>` uses semantic spacing
+  - Added `stretch` in favor of `size="full"`
+  - Updated test suite
+  - Fixed that the `<Card>` always take full width
+
+- 63f1603: style([DST-1143]): Improve ContextualHelp sizes
+
+  **Breaking Change**: Sizes have been removed, the default has a new style.
+
+### Patch Changes
+
+- 34c785a: style([DST-1154]): Update Admin/Master Badge Styling
+- a0564dc: style(DST-1158): Set table background color to white.
+- Updated dependencies [34c785a]
+- Updated dependencies [96e145a]
+- Updated dependencies [cc61968]
+- Updated dependencies [6c071f0]
+- Updated dependencies [44d01a6]
+- Updated dependencies [63f1603]
+- Updated dependencies [f916a20]
+- Updated dependencies [726239d]
+- Updated dependencies [1bd9f27]
+  - @marigold/components@16.2.0
+  - @marigold/system@16.2.0
+
 ## 4.0.2
 
 ### Patch Changes
