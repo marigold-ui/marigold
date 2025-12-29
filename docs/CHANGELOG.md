@@ -1,5 +1,29 @@
 # @marigold/docs
 
+## 16.2.0
+
+### Patch Changes
+
+- 63f1603: style([DST-1143]): Improve ContextualHelp sizes
+
+  **Breaking Change**: Sizes have been removed, the default has a new style.
+
+- Updated dependencies [34c785a]
+- Updated dependencies [96e145a]
+- Updated dependencies [cc61968]
+- Updated dependencies [6c071f0]
+- Updated dependencies [44d01a6]
+- Updated dependencies [63f1603]
+- Updated dependencies [a0564dc]
+- Updated dependencies [f916a20]
+- Updated dependencies [726239d]
+- Updated dependencies [1bd9f27]
+  - @marigold/components@16.2.0
+  - @marigold/theme-rui@5.0.0
+  - @marigold/theme-docs@4.0.3
+  - @marigold/system@16.2.0
+  - @marigold/icons@1.3.31
+
 ## 16.1.0
 
 ### Patch Changes
