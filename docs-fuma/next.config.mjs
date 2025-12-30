@@ -1,4 +1,8 @@
 import { createMDX } from 'fumadocs-mdx/next';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json');
 
 const withMDX = createMDX();
 
@@ -11,6 +15,9 @@ const config = {
     '@marigold/theme-docs',
     '@marigold/theme-rui',
   ],
+  env: {
+    version: pkg.version,
+  },
   async redirects() {
     return [
       {

@@ -5,15 +5,32 @@ import {
   DocsTitle,
 } from '@/components/layout/docs/page';
 import {
+  Do,
+  DoDescription,
+  DoFigure,
+  Dont,
+  DontDescription,
+  DontFigure,
+  GuidelineTiles,
+  Image,
+  MDXComponentPreview,
   MDXHeadline2,
   MDXHeadline3,
   MDXHeadline4,
   MDXHeadline5,
   MDXHeadline6,
+  MDXPropsTable,
+  MDXStorybookHintMessage,
   MDXText,
   SectionMessage,
   SectionMessageContent,
   SectionMessageTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
   TeaserList,
 } from '@/components/mdx-wrapper-components';
 import { getPageImage, source } from '@/lib/source';
@@ -33,6 +50,7 @@ export default async function Page(props: PageProps) {
   if (!page) notFound();
 
   const MDX = page.data.body;
+
   return (
     <DocsPage toc={page.data.toc}>
       <div className="col-span-full">
@@ -49,18 +67,44 @@ export default async function Page(props: PageProps) {
             ...getMDXComponents({
               // this allows you to link to other pages with relative file paths
               a: createRelativeLink(source, page),
-              // h2: (props) => <h2 className='*:no-underline scroll-m-20 text-5xl font-extrabold tracking-tight lg:text-6xl max-w-(--maxHeadlineWidth) text-left' {...props} />,
               p: MDXText,
               h2: MDXHeadline2,
               h3: MDXHeadline3,
               h4: MDXHeadline4,
               h5: MDXHeadline5,
               h6: MDXHeadline6,
-              TeaserList,
-              SectionMessage,
-              SectionMessageTitle,
-              SectionMessageContent,
+              ComponentPreview: MDXComponentPreview,
+              TeaserList: TeaserList,
+              SectionMessage: Object.assign(SectionMessage, {
+                Title: SectionMessageTitle,
+                Content: SectionMessageContent,
+              }),
+              Do: Object.assign(Do, {
+                Figure: DoFigure,
+                Description: DoDescription,
+              }),
+              Dont: Object.assign(Dont, {
+                Figure: DontFigure,
+                Description: DontDescription,
+              }),
+              GuidelineTiles,
+              Image,
+              PropsTable: props => (
+                <MDXPropsTable {...props} component={page.data.title} />
+              ),
+              StorybookHintMessage: (props: any) => (
+                <MDXStorybookHintMessage
+                  {...props}
+                  component={page.data.title}
+                />
+              ),
             }),
+            Table,
+            TableHeader,
+            TableBody,
+            TableRow,
+            TableCell,
+            TableColumn,
           }}
         />
       </DocsBody>

@@ -1,8 +1,7 @@
 'use client';
-import { type RegistryKey, registry } from '@/lib/registry/demos';
+import { type RegistryKey, registry } from '@/lib/.registry/demos';
 import { ruiTheme, theme } from '@/theme';
 import { track } from '@vercel/analytics/react';
-import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { type ComponentType, Key, type ReactNode } from 'react';
 import {
   Card,
@@ -10,34 +9,15 @@ import {
   OverlayContainerProvider,
   Tabs,
 } from '@marigold/components';
+import { CopyButton } from '@/ui/CopyButton';
+import { FullsizeView } from '@/ui/FullsizeViewDemo';
 
 type ComponentPreviewProps = {
-  /**
-   * Name of the demo from the registry (optional)
-   * When provided, the component will be loaded from the registry
-   */
   name?: RegistryKey;
-  /**
-   * @deprecated - kept for backwards compatibility
-   */
   component?: string;
-  /**
-   * @deprecated - kept for backwards compatibility
-   */
   collection?: string;
-  /**
-   * Code to display in the code tab
-   * If not provided and name is specified, will try to read from registry
-   */
   code?: string;
-  /**
-   * Title for the preview (optional)
-   */
   title?: string;
-  /**
-   * Children to render in the preview tab
-   * If name is provided, this will be ignored and the registry demo will be used
-   */
   children?: ReactNode;
 };
 
@@ -68,21 +48,39 @@ const Preview = ({
       </Card>
     );
   }
+  return (
+    <Card variant="content" p={0}>
+      <div
+        data-theme={ruiTheme.name}
+        className="flex size-full min-h-[150px] flex-col [&>*:first-child]:flex [&>*:first-child]:flex-1 [&>*:first-child]:place-items-center [&>*:first-child]:rounded-xl"
+      >
+        <OverlayContainerProvider container="portalContainer">
+          <MarigoldProvider theme={ruiTheme}>
+            <div className="not-prose size-full overflow-x-auto p-4">
+              {children}
+            </div>
+          </MarigoldProvider>
+        </OverlayContainerProvider>
+      </div>
+    </Card>
+  );
 };
 
-export const ComponentPreview = ({
-  name,
-  code,
-  title,
-  children,
-}: ComponentPreviewProps) => {
+export const ComponentPreview = ({ name, code }: ComponentPreviewProps) => {
   const onSelectionChange = (key: Key) => {
     track('Demo Tab', { tab: key as string });
   };
 
-  // If no code is provided but we have a registry entry, we could fetch it
-  // For now, code must be provided manually or via MDX processing
-  const hasCode = !!code;
+  // Prefer inlined source from the registry (added at build time). This avoids
+  // runtime file reads and keeps the docs self-contained. Fall back to the
+  // explicit `code` prop when provided.
+  const entry = name ? registry[name] : undefined;
+  const codeString = code ?? entry?.source ?? '';
+  const highlightedCode = entry?.highlighted;
+  const hasCode = !!codeString;
+  const lines = codeString
+    .replace(/\r\n|\r|\n$/, '')
+    .split(/\r\n|\r|\n/).length;
 
   return (
     <MarigoldProvider theme={theme}>
@@ -100,7 +98,26 @@ export const ComponentPreview = ({
         </Tabs.TabPanel>
         {hasCode && (
           <Tabs.TabPanel id="code">
-            <DynamicCodeBlock code={code} lang="tsx" />
+            <div className="relative [&_figure]:border-0! [&_figure]:border-none! [&_pre]:border-0! [&_pre]:border-none!">
+              <div className="absolute top-4 right-3 z-10 flex justify-end gap-3">
+                {lines >= 5 && (
+                  <FullsizeView
+                    code={
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: highlightedCode || '',
+                        }}
+                      />
+                    }
+                    codeString={codeString}
+                  />
+                )}
+                <CopyButton codeString={codeString} />
+              </div>
+              <div
+                dangerouslySetInnerHTML={{ __html: highlightedCode || '' }}
+              />
+            </div>
           </Tabs.TabPanel>
         )}
       </Tabs>

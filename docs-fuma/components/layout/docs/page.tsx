@@ -20,7 +20,7 @@ export interface DocsPageProps {
 
 export function DocsPage({ toc = [], ...props }: DocsPageProps) {
   return (
-    <AnchorProvider toc={toc}>
+    <AnchorProvider toc={toc} single={true}>
       <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
         {props.children}
         {/* <Footer /> */}
@@ -73,7 +73,7 @@ export function DocsTitle(props: ComponentProps<'h1'>) {
 
 function TocItem({ item }: { item: TOCItemType }) {
   const isActive = useActiveAnchors().includes(item.url.slice(1));
-
+  console.log('isActive', isActive);
   return (
     <div
       className={cn(

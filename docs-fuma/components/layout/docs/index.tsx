@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react';
 import { cn } from '@marigold/system';
+import { Footer } from '@/ui/layout/Footer';
 import { NavLink } from '@/ui/navigation/NavLink';
 import { useHasMounted } from '@/ui/useHasMounted';
 
@@ -71,6 +72,7 @@ export function DocsLayout({ tree, children, badgeMap = {} }: DocsLayoutProps) {
           >
             {/* this is the content */}
             {children}
+            <Footer />
           </main>
         </SidebarProvider>
       </BadgeContext>
@@ -130,7 +132,6 @@ function Sidebar() {
       className={cn(
         'fixed top-(--page-header-height) z-20 flex shrink-0 flex-col py-10 pl-12 text-sm md:h-[calc(100dvh-56px)] md:w-[300px]',
         'overflow-hidden hover:overflow-y-auto',
-        '[&>a]:border-l-secondary-300',
         'max-md:bg-fd-background max-md:inset-x-0 max-md:bottom-0',
         'border-secondary-200 border-r',
         'scrollbar-thin scrollbar-thumb-secondary-400 scrollbar-thumb-rounded-full scrollbar-track-transparent',

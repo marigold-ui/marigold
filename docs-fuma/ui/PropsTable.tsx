@@ -1,7 +1,8 @@
-import componentProps from '@/.registry/props.json';
+import componentProps from '@/lib/.registry/props.json';
 import { Inline, Inset, Stack, Text } from '@/ui';
+import Md from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { BlankCanvas } from './icons';
-import { Markdown } from './mdx';
 
 // Helper
 // ---------------
@@ -49,26 +50,32 @@ export const PropsTable = ({ component }: PropsTableProps) => {
           // eslint-disable-next-line react/prop-types
           props.map(prop => (
             <div
-              className="text-text-primary-muted flex flex-col gap-2 px-3 py-3.5 text-sm"
+              className="text-text-primary-muted flex flex-col px-3 py-3.5 text-sm"
               key={prop.name}
             >
-              <Inline space={2} alignY="center">
-                <code className="before:content-none after:content-none">
+              <div className="flex flex-wrap items-baseline">
+                <code className="border-none bg-transparent text-sm font-semibold before:content-none after:content-none">
                   {prop.name}
                   {prop.required ? '' : '?'}
                 </code>
                 <div
                   dangerouslySetInnerHTML={{ __html: prop.type.value }}
-                  className="*:m-0 *:bg-transparent! *:p-0 *:text-xs"
+                  className="text-secondary-600 *:m-0 *:bg-transparent! *:p-0 *:text-xs"
                 />
-              </Inline>
+              </div>
 
               <Stack space={1}>
-                <Markdown
-                  // Reset <code> for now
-                  className="text-xs text-pretty *:bg-transparent *:p-0 *:text-xs [&_ul]:pl-4"
-                  contents={prop.description}
-                />
+                {prop.description ? (
+                  <div className="text-xs text-pretty *:bg-transparent *:p-0 *:text-xs [&_ul]:pl-4">
+                    <Md
+                      remarkPlugins={[remarkGfm]}
+                      disallowedElements={['p']}
+                      unwrapDisallowed
+                    >
+                      {prop.description}
+                    </Md>
+                  </div>
+                ) : null}
                 {prop.defaultValue ? (
                   <Inline space={2} alignY="center">
                     <span className="text-xs">Defaults to: </span>

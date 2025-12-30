@@ -2,6 +2,7 @@
 // Registry of demos - based on https://github.com/shadcn/ui
 import fs from 'fs';
 import path from 'path';
+import { codeToHtml } from 'shiki';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,7 +28,7 @@ function findDemoFiles(dir, fileList = []) {
   return fileList;
 }
 
-function buildRegistry() {
+async function buildRegistry() {
   const contentDir = path.join(rootDir, 'content');
 
   if (!fs.existsSync(contentDir)) {
@@ -50,11 +51,33 @@ export const registry = {`;
     const name = path.basename(item, '.demo.tsx');
     const importPath = item.replace(/\\/g, '/').replace('.tsx', '');
 
+    // Read file contents and inline as source string (useful for code tabs)
+    const fullPath = path.join(rootDir, item);
+    let fileContent = '';
+    try {
+      fileContent = fs.readFileSync(fullPath, 'utf8');
+    } catch (err) {
+      console.warn(`⚠️ Could not read file content for ${fullPath}: ${err}`);
+    }
+
+    // Pre-highlight the code
+    let highlightedCode = '';
+    try {
+      highlightedCode = await codeToHtml(fileContent, {
+        lang: 'tsx',
+        theme: 'material-theme-palenight',
+      });
+    } catch (err) {
+      console.warn(`⚠️ Could not highlight code for ${fullPath}: ${err}`);
+    }
+
     index += `
   '${name}': {
     name: '${name}',
     demo: dynamic(() => import('@/${importPath}')),
     file: '${item.replace(/\\/g, '/')}',
+    source: ${JSON.stringify(fileContent)},
+    highlighted: ${JSON.stringify(highlightedCode)},
   },`;
   }
 
@@ -77,4 +100,7 @@ export type RegistryKey = keyof typeof registry;
   console.log(`📝 Registry file: ${registryFile}\n`);
 }
 
-buildRegistry();
+buildRegistry().catch(err => {
+  console.error('❌ Error building registry:', err);
+  process.exit(1);
+});

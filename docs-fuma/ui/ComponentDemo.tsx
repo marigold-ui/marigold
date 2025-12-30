@@ -1,4 +1,4 @@
-import { registry } from '@/registry/demos';
+import { registry } from '@/lib/.registry/demos';
 import { ruiTheme } from '@/theme';
 import { Card, MarigoldProvider, OverlayContainerProvider, Tabs } from '@/ui';
 import { track } from '@vercel/analytics/react';
