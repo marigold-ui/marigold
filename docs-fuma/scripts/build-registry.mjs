@@ -87,7 +87,7 @@ export const registry = {`;
 export type RegistryKey = keyof typeof registry;
 `;
 
-  const registryDir = path.join(rootDir, 'lib', 'registry');
+  const registryDir = path.join(rootDir, 'lib', '.registry');
   const registryFile = path.join(registryDir, 'demos.tsx');
 
   // Ensure directory exists

@@ -28,7 +28,7 @@ export interface TeaserListProps {
 }
 
 export const TeaserList = ({ items }: TeaserListProps) => (
-  <Tiles tilesWidth="340px" space={5} equalHeight>
+  <Tiles tilesWidth="300px" space={5} stretch equalHeight>
     {items.map(props => (
       // eslint-disable-next-line react/prop-types
       <TeaserCard key={props.href} {...props} />

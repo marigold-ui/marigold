@@ -1,0 +1,208 @@
+---
+title: Link
+description: Interactive component to help users navigate to new pages.
+---
+
+The `<Link>` component is an interactive element that redirects users to different pages or sections within a website or application. It can also be used to enable file downloads, open the user's default email client to compose a new message, or show a specified address in a map application.
+
+## Anatomy
+
+A link consists of text that indicates what the link will direct the user to. To distinguish a link from regular text, it is usually underlined.
+
+<Image
+  src="/link/link-anatomy.jpg"
+  alt="Anatomy of a link"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Usage
+
+Links serve as essential navigational tools in web design, enabling users to move seamlessly within an application, visit different websites or jump to specific elements on the same page. They can even be used to directly open apps to compose an email or make a call.
+
+Using descriptive and meaningful labels for links is crucial to clearly indicate their destination. Generic phrases can leave users confused and helpless. Overusing links, especially inline, can overwhelm users and obscure their next steps. Use them sparingly to avoid clutter.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/link/link-label-do.jpg"
+        alt="Provide a meaningful descriptive label to the link that clearly indicates the link's destination."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Provide a meaningful descriptive label to the link that clearly indicates
+      the link's destination.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/link/link-label-dont.jpg"
+        alt='Dont use generic phrases like "click here" or "go to" on links.'
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use generic phrases like "click here" or "go to" on links.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Opening in new windows or tabs
+
+Avoid opening links in new windows or tabs as it can be disorienting for users. It’s acceptable to do so only when necessary, such as when the link leads to an external site, or when there’s a risk of users losing their current place or task.
+
+To support accessibility, ensure that such links include a warning for screen readers to alert users of the new window or tab. For more details on this practice, see the [W3C guidelines](https://www.w3.org/TR/WCAG20-TECHS/G200.html).
+
+### Buttons or links
+
+For actions that will change data, alter a state, or trigger a high-emphasis action, use a button instead of a link.
+
+You can find more details on this [on the button component page](/components/actions/button#button-or-link).
+
+### Phone numbers and emails
+
+When using links with phone numbers (`tel:`) or emails (`mailto:`), it’s important to ensure they serve a clear navigational purpose while triggering specific actions. For example, a phone number link should automatically initiate a call when clicked, and an email link should open the user's email client.
+
+Make sure that the link text and any accompanying icons clearly indicate the action that will be triggered and the intended destination.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/link/link-contact-do.jpg"
+        alt="Clearly indicate the action that will be triggered."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Clearly indicate the action that will be triggered.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/link/link-contact-dont.jpg"
+        alt="Don\’t use vague labels without specifying how to reach out."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don’t use vague labels without specifying how to reach out.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Download links
+
+Using the `download` attribute on an anchor element causes the browser to treat the linked URL as a download and allows setting a filename for the download.
+
+Always indicate if a link triggers a download, and make the linked text clear about what will be downloaded, including the file type and size.
+
+<ComponentPreview name="link-download" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/link/link-download-do.jpg"
+        alt="Clearly indicate what will be downloaded, including the file type and size."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Clearly indicate what will be downloaded, including the file type and
+      size.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/link/link-download-dont.jpg"
+        alt="Don’t use download links without indicating they trigger a download."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don’t use download links without indicating they trigger a download.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Integrating with a router
+
+The `<Link>` component can be seamlessly integrated with your app's router (like Tanstack Router, Next.js or React Router) to retain all the accessibility features and functionality of the `<Link>` component.
+
+For more details, you can read about this integration on the ["RouterProvider" page](/components/application/routerprovider).
+
+## Props
+
+<StorybookHintMessage />
+
+<PropsTable />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Button',
+      href: '/components/actions/button',
+      caption: 'For triggering actions instead of navigating.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <path d="M21 11V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h6" />
+          <path d="M12 12l4 10 1.7-4.3L22 16z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'RouterProvider',
+      href: '/components/application/routerprovider',
+      caption: 'Integrating Marigold components in a router',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-6"
+        >
+          <rect width={20} height={8} x={2} y={14} rx={2} />
+          <path d="M6.01 18H6M10.01 18H10M15 10v4M17.84 7.17a4 4 0 00-5.66 0M20.66 4.34a8 8 0 00-11.31 0" />
+        </svg>
+      ),
+    },
+  ]}
+/>
