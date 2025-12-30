@@ -4,6 +4,7 @@ import {
   frontmatterSchema,
   metaSchema,
 } from 'fumadocs-mdx/config';
+import lastModified from 'fumadocs-mdx/plugins/last-modified';
 import { z } from 'zod';
 
 const customFrontmatterSchema = frontmatterSchema.extend({
@@ -30,4 +31,5 @@ export default defineConfig({
   mdxOptions: {
     remarkPlugins: [],
   },
+  plugins: [lastModified()],
 });

@@ -38,6 +38,7 @@ import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { RelativeTime } from '@/ui/RelativeTime';
 
 interface PageProps {
   params: Promise<{ slug: string[] }>;
@@ -107,6 +108,13 @@ export default async function Page(props: PageProps) {
             TableColumn,
           }}
         />
+        {(page.data.lastModified &&
+          console.log('page.data.lastModified', page.data.lastModified)) || (
+          <div className="text-text-primary-muted pt-8 text-xs italic">
+            Last update:{' '}
+            <RelativeTime date={new Date(page.data.lastModified)} />
+          </div>
+        )}
       </DocsBody>
     </DocsPage>
   );
