@@ -1,3 +1,4 @@
+import { source } from '@/lib/source';
 import { theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
 import { RootProvider } from 'fumadocs-ui/provider';
@@ -41,6 +42,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
               theme={theme}
               className="bg-bg-body flex min-h-screen flex-col"
             >
+              <Nav pages={source.getPageTree().children} />
+
               {children}
             </MarigoldProvider>
             <div id="portalContainer" data-theme="rui" className="not-prose" />

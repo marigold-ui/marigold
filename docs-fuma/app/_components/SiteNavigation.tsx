@@ -15,15 +15,15 @@ export const SiteNavigation = ({ pages }: SiteNavigationProps) => {
   const pathname = usePathname();
   return (
     <div className="flex items-center gap-4">
-      {pages.children.map(({ $id: id, name }) => (
+      {pages.map(({ slug, title }) => (
         <NavLink
           variant="main"
           className="text-sm font-medium lg:px-1"
-          key={id}
-          current={pathname.startsWith(`/${id.split(':')[1]}`)}
-          href={`/${id.split(':')[1]}`}
+          key={slug}
+          current={pathname.startsWith(`/${slug}`)}
+          href={`/${slug}`}
         >
-          {name}
+          {title}
         </NavLink>
       ))}
     </div>

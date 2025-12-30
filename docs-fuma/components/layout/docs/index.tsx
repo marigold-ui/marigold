@@ -1,5 +1,4 @@
 'use client';
-import { Nav } from '@/app/Nav';
 import { SiteLogo } from '@/app/_components/SiteLogo';
 import { SiteNavigation } from '@/app/_components/SiteNavigation';
 import { Badge, Button, Link } from '@/ui';
@@ -60,7 +59,6 @@ export function DocsLayout({ tree, children, badgeMap = {} }: DocsLayoutProps) {
     <TreeContextProvider tree={tree}>
       <BadgeContext value={badgeMap}>
         <SidebarProvider>
-          <Nav pages={tree.children} />
           <Sidebar />
           <main
             id="nd-docs-layout"
