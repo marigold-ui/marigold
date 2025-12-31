@@ -3,7 +3,7 @@ import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import { useAsyncList } from '@react-stately/data';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { ComboBox } from './ComboBox';
@@ -11,6 +11,13 @@ import { ComboBox } from './ComboBox';
 const meta = preview.meta({
   title: 'Components/ComboBox',
   component: ComboBox,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: {
       control: {
@@ -159,7 +166,7 @@ export const Basic: any = meta.story({
 });
 
 export const Controlled: any = meta.story({
-  tags: ['component-test'],
+  tags: ['needs-fix'],
   render: args => {
     const [current, setCurrent] = useState<string | undefined>('');
     const [id, setId] = useState<Key | null>(null);

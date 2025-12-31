@@ -1,6 +1,6 @@
 import { useState } from 'storybook/preview-api';
 import { expect, waitFor } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Menu } from '../Menu/Menu';
 import { Text } from '../Text/Text';
@@ -11,6 +11,13 @@ import { Dialog } from './Dialog';
 const meta = preview.meta({
   title: 'Components/Dialog',
   component: Dialog,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     size: {
       control: {

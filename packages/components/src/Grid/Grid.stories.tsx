@@ -1,5 +1,5 @@
 import { alignment, cn } from '@marigold/system';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
 import { Grid } from './Grid';
