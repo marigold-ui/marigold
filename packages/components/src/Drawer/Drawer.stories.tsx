@@ -182,7 +182,6 @@ export const Controlled: Story = {
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
-      console.log('open', open);
       setOpen(open);
     };
     return (

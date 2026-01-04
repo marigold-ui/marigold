@@ -1,11 +1,7 @@
 'use client';
-import { SiteLogo } from '@/app/_components/SiteLogo';
-import { SiteNavigation } from '@/app/_components/SiteNavigation';
-import { Badge, Button, Link } from '@/ui';
-import { cva } from 'class-variance-authority';
+import { Badge } from '@/ui';
 import { usePathname } from 'fumadocs-core/framework';
 import type * as PageTree from 'fumadocs-core/page-tree';
-import { useSearchContext } from 'fumadocs-ui/contexts/search';
 import { TreeContextProvider, useTreeContext } from 'fumadocs-ui/contexts/tree';
 import {
   type ComponentProps,

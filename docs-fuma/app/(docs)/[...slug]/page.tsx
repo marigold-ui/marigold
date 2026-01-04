@@ -108,8 +108,7 @@ export default async function Page(props: PageProps) {
             TableColumn,
           }}
         />
-        {(page.data.lastModified &&
-          console.log('page.data.lastModified', page.data.lastModified)) || (
+        {page.data.lastModified && (
           <div className="text-text-primary-muted pt-8 text-xs italic">
             Last update:{' '}
             <RelativeTime date={new Date(page.data.lastModified)} />

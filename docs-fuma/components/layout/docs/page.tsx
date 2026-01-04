@@ -73,7 +73,6 @@ export function DocsTitle(props: ComponentProps<'h1'>) {
 
 function TocItem({ item }: { item: TOCItemType }) {
   const isActive = useActiveAnchors().includes(item.url.slice(1));
-  console.log('isActive', isActive);
   return (
     <div
       className={cn(

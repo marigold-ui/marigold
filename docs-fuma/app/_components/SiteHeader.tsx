@@ -1,8 +1,6 @@
 import { source } from '@/lib/source';
 import { Link } from '@/ui';
-import { MobileNavigation } from './MobileNavigation';
 import { SiteLogo } from './SiteLogo';
-import { SiteMenu } from './SiteMenu';
 import { SiteNavigation } from './SiteNavigation';
 
 export const SiteHeader = () => {
@@ -11,7 +9,6 @@ export const SiteHeader = () => {
     title: page.name,
   }));
 
-  console.log('pageTree', source.pageTree);
   return (
     <header className="border-secondary-200 bg-bg-body sticky top-0 z-10 flex h-(--page-header-height) w-full items-center gap-2 border-b px-(--page-padding) md:px-(--page-padding-md) xl:px-(--page-padding-xl)">
       <div className="md:hidden">{/* <MobileNavigation /> */}</div>

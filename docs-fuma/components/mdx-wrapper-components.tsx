@@ -35,25 +35,40 @@ export function MDXHeadline2(props: HTMLAttributes<HTMLHeadingElement>) {
 }
 
 export function MDXHeadline3(props: HTMLAttributes<HTMLHeadingElement>) {
-  return <Headline level={3} {...props} />;
+  return (
+    <Headline level={3} {...props}>
+      <Link href={`#${props.id}`}>{props.children}</Link>
+    </Headline>
+  );
 }
 
 export function MDXHeadline4(props: HTMLAttributes<HTMLHeadingElement>) {
-  return <Headline level={4} {...props} />;
+  return (
+    <Headline level={4} {...props}>
+      <Link href={`#${props.id}`}>{props.children}</Link>
+    </Headline>
+  );
 }
 
 export function MDXHeadline5(props: HTMLAttributes<HTMLHeadingElement>) {
-  return <Headline level={5} {...props} />;
+  return (
+    <Headline level={5} {...props}>
+      <Link href={`#${props.id}`}>{props.children}</Link>
+    </Headline>
+  );
 }
 
 export function MDXHeadline6(props: HTMLAttributes<HTMLHeadingElement>) {
-  return <Headline level={6} {...props} />;
+  return (
+    <Headline level={6} {...props}>
+      <Link href={`#${props.id}`}>{props.children}</Link>
+    </Headline>
+  );
 }
 
 export function MDXStorybookHintMessage(
   props: HTMLAttributes<HTMLDivElement> & { component: string }
 ) {
-  console.log('propsprops', props);
   return <StorybookHintMessage {...props} />;
 }
 
@@ -64,11 +79,6 @@ export const MDXComponentPreview = (props: any) => (
 export function MDXFigure(
   props: HTMLAttributes<HTMLElement> & { raw: string }
 ) {
-  // We only care about `rehype-pretty-code` figure elements.
-  // if (!('data-rehype-pretty-code-figure' in props)) {
-  //   return <figure {...props} />;
-  // }
-
   const { children, className, raw, ...rest } = props;
   const lines = raw.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
   return (
