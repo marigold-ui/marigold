@@ -12,14 +12,11 @@ import {
   Tabs as MarigoldTabs,
   Text,
 } from '@marigold/components';
-import { cn } from '@marigold/system';
-import { CopyButton } from '@/ui/CopyButton';
 import {
   Do as MarigoldDo,
   Dont as MarigoldDont,
   GuidelineTiles as MarigoldGuidelineTiles,
 } from '@/ui/DosAndDonts';
-import { FullsizeView } from '@/ui/FullsizeViewDemo';
 import { IconList as MarigoldIconList } from '@/ui/IconList';
 import { Image as MarigoldImage } from '@/ui/Image';
 import { PropsTable } from '@/ui/PropsTable';
@@ -83,49 +80,6 @@ export const MDXComponentPreview = (props: any) => (
 
 export const Badge = (props: any) => <MarigoldBadge {...props} />;
 
-export function MDXFigure(
-  props: HTMLAttributes<HTMLElement> & { raw: string }
-) {
-  const { children, className, raw, ...rest } = props;
-  const lines = raw.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
-  return (
-    <figure className={cn('relative mt-0', className)} {...rest}>
-      <div
-        className={cn(
-          'absolute right-3 flex justify-end gap-3',
-          // vertical center if only one line
-          lines > 1 ? 'top-4' : 'top-1/2 -translate-y-1/2'
-        )}
-      >
-        {lines >= 5 ? (
-          <FullsizeView code={props.children} codeString={raw} />
-        ) : null}
-        <CopyButton codeString={raw} />
-      </div>
-      {children}
-    </figure>
-  );
-}
-
-export function MDXPre({
-  className,
-  ...props
-}: HTMLAttributes<HTMLPreElement>) {
-  return (
-    <pre
-      className={cn(
-        'not-prose *:bg-transparent *:p-0 data-line:**:leading-[22px]',
-        'max-h-[650px] rounded-lg px-(--pre-padding-x) py-4',
-        'scrollbar-thin scrollbar-thumb-code-500 scrollbar-track-transparent scrollbar-thumb-rounded-full overflow-x-auto',
-        className
-      )}
-      {...props}
-    >
-      {props.children}
-    </pre>
-  );
-}
-
 export const IconList = (props: any) => {
   return <MarigoldIconList {...props} />;
 };
@@ -163,6 +117,7 @@ export const GuidelineTiles = (props: any) => {
   return <MarigoldGuidelineTiles {...props} />;
 };
 
+// Export Table as a namespace with its sub-components (for MDX dot-notation)
 export const Table = (props: any) => {
   return <MarigoldTable {...props} />;
 };

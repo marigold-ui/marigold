@@ -71,9 +71,6 @@ export const ComponentPreview = ({ name, code }: ComponentPreviewProps) => {
     track('Demo Tab', { tab: key as string });
   };
 
-  // Prefer inlined source from the registry (added at build time). This avoids
-  // runtime file reads and keeps the docs self-contained. Fall back to the
-  // explicit `code` prop when provided.
   const entry = name ? registry[name] : undefined;
   const codeString = code ?? entry?.source ?? '';
   const highlightedCode = entry?.highlighted;
