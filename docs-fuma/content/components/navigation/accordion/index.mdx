@@ -1,0 +1,69 @@
+---
+title: Accordion
+description: Component to show and hide related content from the main page.
+---
+
+An `<Accordion>` is a component that allows you to organizing content into collapsible sections. Accordions are commonly used in website and application designs to present information in a compact and organized way, allowing users to focus on the specific information they are interested in without being overwhelmed by excessive content.
+
+## Anatomy
+
+<Image
+  src="/accordion/accordion-anatomy.jpg"
+  alt="Anatomy of accordion"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Usage
+
+An `<Accordion>` is a UI component that allows users to expand and collapse sections of content. It helps in organizing information efficiently, improving navigation, and reducing visual clutter. Common use cases include FAQs, structured data presentation, and collapsible navigation menus.
+While accordions are a great tool for managing content, they are not always the best solution. In cases where users need frequent access to key information, hiding it behind an interaction can create unnecessary friction. Similarly, for long or complex content, expanding a section may lead to overwhelming amounts of text rather than improving readability. Navigation menus with only a few items may not benefit from collapsible sections, as this adds clicks rather than streamlining access. Finally, for processes requiring users to follow a specific sequence, a step-by-step layout is often more effective than collapsible sections.
+
+### Content Organization
+
+Accordions help structure content by breaking it into collapsible sections, making navigation easier while preventing cognitive overload. They are particularly useful when dealing with large amounts of information that do not need to be viewed all at once.
+
+<ComponentPreview name="accordion-content" />
+
+### Using Forms
+
+For complex forms, accordions can group related fields into sections, reducing visual clutter and making the completion process more intuitive. This is particularly beneficial for multi-step or conditional forms where not all fields need to be shown at once.
+
+<ComponentPreview name="accordion-form" />
+
+### Multiple expanded
+
+With the multiple expanded mode, you can collapse and hide items as needed while keeping several sections open at the same time. You can also set one or more `defaultExpandedKeys`. Use a multiple expanded accordion when users need to view several sections simultaneously, such as comparing information or accessing related FAQs. It works best when the content is concise and users benefit from having multiple sections open at once without losing context.
+
+<ComponentPreview name="multi-select-accordion" />
+
+### Controlled Accordion
+
+A controlled `Accordion` can be expanded and collapsed using expandedKeys and onExpandedChange. The expandedKeys must match the id on the `Accordion.Item` component(s) that you wish to expand.
+
+<ComponentPreview name="accordion-controlled-expanded" />
+
+### Long-form content
+
+For Accordions with a lot of content inside it is handy to use the prop `stickyHeader` to provide context. While scrolling through the content the headline stays fixed at the top of the viewport.
+The `stickyHeader`applies to the entire Accordion: `<Accordion stickyHeader={true}>...</Accordion>`.
+
+### Icon position
+
+The icon or chevron in the Header of the `Accordion` can be positioned `right` and `left`. Especially when you use action in the header the position should be on the `left` side.
+The icon position also applied to the whole Accordion: `<Accordion iconPositon={'left'}>...</Accordion>`.
+
+<ComponentPreview name="accordion-icon-position" />
+
+## Props
+
+<StorybookHintMessage />
+
+### Accordion
+
+<PropsTable component="Accordion" />
+
+### Accordion.Item
+
+<PropsTable component="AccordionItem" />

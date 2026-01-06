@@ -1,0 +1,248 @@
+---
+title: TextField
+description: Component for input forms.
+---
+
+The `<TextField>` is a form component which allows user to enter text with a keyboard. It creates interactive controls for web-based forms in order to accept data from the user.
+It is also one of the most powerful and complex elements in all of HTML due to the sheer number of combinations of input types and attributes.
+
+## Anatomy
+
+Text fields consist of an input element, which is a container in which the user enters data, and a label which informs the user about the content they need to enter in the field.
+`<TextField>` automatically manages the relationship between these two elements. It also supports optional description
+and error message elements, which can be used to provide more
+context about the field, and any validation messages.
+
+<Image
+  src="/textfield/textfield-anatomy.jpg"
+  alt="Anatomy of table"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+control.
+
+Avoid using `<TextField>` if a user can only enter an option from a predefined list then avoid using a free-form
+text
+input as it is likely to result in an error. Consider using a selection control such as a dropdown, select, or
+radio
+button group instead.
+
+### Label
+
+In general label should be short and precise about what is expected from the user. Avoid unnecessary instructional
+verbs (doing words) in your labels and hints because it’s already implied by the input field.
+Avoid placeholder text in most cases, as there’s no need for it (more about it in the next section).
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/textfield/textfield-do-short-label.jpg"
+        alt="Do: Use short labels"
+      />
+    </Do.Figure>
+    <Do.Description>Use short labels.</Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/textfield/textfield-dont-long-label.jpg"
+        alt="Don’t use unnecessary instructional verbs"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don’t use unnecessary instructional verbs.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Placeholder
+
+Placeholder text is a short hint displayed inside an input field before
+a user enters a value. To save space, placeholder text is often used instead of a label, as shown in the first
+example.
+This is problematic for the following reasons:
+
+- Placeholder text disappears once a person starts filling in an input field, causing some to forget what the
+  field
+  was for
+- Some might miss or skip fields with placeholder text, as it can look like the field has already been pre-filled.
+- Placeholder text colour contrast is almost always inaccessible, as it’s very light by design. This means many
+  will
+  struggle to read the label.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/textfield/textfield-do-placeholder.jpg"
+        alt="Do: Use label instead of a placeholder"
+      />
+    </Do.Figure>
+    <Do.Description>Use label instead of a placeholder.</Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/textfield/textfield-dont-placeholder.jpg"
+        alt="Don’t use placeholder text instead of a label"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don’t use placeholder text instead of a label.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Additional description
+
+Sometimes the label isn't enough for the user. In this case, to gather additional support for the user we can use
+the
+help text. With this we can add helpful hints for the user below the input field. Beside that the help text is
+placed
+in close proximity to the associated input field.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/textfield/textfield-do-helptext-email.jpg"
+        alt="Do: Use help text to show an example what's expected"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use help text to show an example what's expected.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/textfield/textfield-do-helptext-explanation.jpg"
+        alt="Do: Explain why certain information is needed"
+      />
+    </Do.Figure>
+    <Do.Description>Explain why certain information is needed.</Do.Description>
+  </Do>
+</GuidelineTiles>
+
+### Textfield with an error
+
+Error messages should let people know that a problem occurred, why it happened, and provide a solution to fix it
+and move forward.
+
+<GuidelineTiles>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/textfield/textfield-dont-blame-user.jpg"
+        alt="Don't: Never blame the user"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Never blame the user. Always be positive and helpful.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/textfield/textfield-dont-use-unnecessary-words.jpg"
+        alt="Don't: Be concise and avoid unnecessary words"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Be concise and avoid unnecessary words like “please”, “sorry” and “oops”
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+<Do>
+  <Do.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/textfield/textfield-do-clear-error-message.jpg"
+      alt="Do: Use detailed messages instead of global messages"
+    />
+  </Do.Figure>
+  <Do.Description>
+    Use detailed messages instead of global messages.
+  </Do.Description>
+</Do>
+
+The `error` prop toggles the error state of a field. The `errorMessage` prop can then be used to provide feedback to
+the user about the error. The message disappears automatically when all requirements are met.
+
+{' '}
+
+<ComponentPreview name="textfield-error" />
+
+{' '}
+
+<SectionMessage>
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    Press `Enter`, after typing your text, to trigger the validation.
+  </SectionMessage.Content>
+</SectionMessage>
+
+## Props
+
+<StorybookHintMessage />
+
+<PropsTable component="Textfield" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form developement guide',
+      href: '../../patterns/form-implementation',
+      caption:
+        'This page should introduce you on how to build forms with Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

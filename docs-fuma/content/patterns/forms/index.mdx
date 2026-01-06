@@ -1,0 +1,279 @@
+---
+title: Forms
+description: Guidelines for building a consistent form structure
+order: 1
+badge: new
+---
+
+Forms are the backbone of data submission, making their design critical to the user experience. Our Form Design Guidelines ensure every form in your application is consistent, usable, and accessible.
+
+This comprehensive guide covers the visual and structural aspects of form design, from overall layout principles and spacing strategies to organizing content with sections and fields. You'll learn how to create intuitive user flows, apply consistent spacing using our design tokens, and leverage components like accordions to manage complex forms effectively.
+
+These design patterns focus on the user experience and visual hierarchy of forms. For technical implementation details, state management, and validation patterns, refer to our [Form Implementation](/patterns/form-implementation) guide.
+
+## Layout & Structure
+
+The foundation of effective form design lies in thoughtful layout and structure. How you arrange elements on the page, use whitespace, and organize content directly impacts user comprehension and completion rates. A well-structured form creates a clear visual hierarchy and logical flow that guides users through the data entry process efficiently.
+
+### Overall form layout
+
+Forms should be left-aligned to follow natural reading flow and maintain consistency across your application. To ensure optimal readability across all devices, limit form width to a maximum of 800px using the `container` spacing token from.
+
+Whitespace plays a crucial role in form usability—it prevents visual clutter, enhances focus, and creates clear separation between sections and fields. Strategic use of whitespace makes forms easier to scan and complete, ultimately improving the user experience. We provide comprehensive [spacing tokens](#spacing-tokens-alpha) to help you apply consistent spacing throughout your forms.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      <ul>
+        <li>
+          Align form content to the left for better scanning and organization.
+        </li>
+        <li>
+          Use a maximum width of 800px (spacing token `container`) for forms to
+          ensure readability across devices.
+        </li>
+        <li>
+          Ensure sufficient whitespace around and within the form for a clear
+          visual hierarchy.
+        </li>
+        <li>
+          Group related fields together to provide more context and make the UI
+          easier to scan.
+        </li>
+      </ul>
+    </Do.Description>
+  </Do>
+</GuidelineTiles>
+
+### Available components
+
+We have various components suitable for forms. You can find a detailed guide on the [Form Fields](../../foundations/form-fields) page.
+
+Besides that we have some other components which you may need to build well-structured forms:
+
+- **Layout components**: [`<Stack>`](../../components/layout/stack/), [`<Inline>`](../../components/layout/inline/), and [`<Inset>`](../../components/layout/inset/) to organize fields and sections.
+- **Accordion**: Group fields with an [accordion](../../components/navigation/accordion/) for lengthy forms or optional fields. Use accordions for sections that can be collapsed to save space and reduce cognitive load.
+- **Buttons**: Use primary [buttons](../../components/actions/button/) for form submission, secondary for additional actions like "View PDF".
+- **Links**: Use [links](../../components/navigation/link/) for navigation to privacy policies or terms of service, not for form actions.
+- **Feedback components**: You can use feedback components like [`<SectionMessage>`](../../components/content/section-message/) and [`<Toast>`](../../components/overlay/toast/) to provide additional information or context.
+
+## Content Organization
+
+### Sections
+
+Sections help organize related fields together, making forms easier to scan and understand. By providing visual separation and context, they allow users to process information in manageable chunks while transforming overwhelming forms into intuitive experiences.
+
+This organizational approach is particularly effective when your form serves multiple purposes or collects diverse types of data. Sections create logical groupings that match how users naturally think about information, reducing cognitive load and improving completion rates.
+
+Use sections when your form has multiple purposes or collects different types of information. They work especially well for:
+
+- **Complex forms**: When your form has more than 6-8 fields, sections reduce cognitive load and prevent form abandonment by breaking information into manageable chunks.
+
+- **Different data types**: When collecting different categories of information (e.g., personal info, billing details, preferences), sections provide clear context switching and help users mentally prepare for each type of data.
+
+- **Progressive disclosure**: When some fields are conditional based on previous selections, sections help users understand the relationship between their choices and additional requirements.
+
+<ComponentPreview name="form-section" />
+
+#### Spacing between sections
+
+Forms with multiple sections should maintain spacing between sections using `<Stack space='section'>`.
+
+<Image
+  src="/forms/section-spacing.png"
+  alt="Section spacing"
+  width={305}
+  height={322}
+  className="mx-auto block"
+/>
+
+### Fields
+
+Individual fields are the building blocks of your form. Their arrangement, sizing, and presentation directly impact how users navigate and complete the form. Proper field organization reduces cognitive load and creates a logical flow that guides users through the data entry process.
+
+Following a predictable field order helps users build mental models and reduces the time spent deciding what to fill out next. Prioritizing required fields ensures critical information is collected first, while positioning dependent fields near their triggers maintains context and prevents confusion. Field widths that match expected content length provide visual cues about the type and amount of information needed, making forms more intuitive and efficient to complete.
+
+<ComponentPreview name="form-spacing-fields" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      <ul>
+        <li>Follow a predictable order of fields when creating forms.</li>
+        <li>Place required fields before optional ones within each section.</li>
+        <li>Position dependent fields immediately after their parent field.</li>
+        <li>
+          Fields should have a maximum width based on their expected content
+          length.
+        </li>
+      </ul>
+    </Do.Description>
+  </Do>
+</GuidelineTiles>
+
+#### Spacing between fields
+
+Proper spacing between fields creates a clear visual hierarchy and improves form readability. Use the token `fieldY` for vertical spacing between individual fields within a section, and the token `fieldX` for horizontal spacing between fields that are positioned on the same line.
+
+<Image
+  src="/forms/field-spacing.png"
+  alt="Fields spacing"
+  width={394}
+  height={512}
+  className="mx-auto block"
+/>
+
+When grouping related field, such as address components or date and time fields, you can create visual associations that make the form easier to understand. Use a `<Stack>` component to organize related fields and apply the `group` spacing token to maintain consistent spacing within the group.
+
+Grouping fields together provides additional context and makes the interface easier to scan:
+
+- **Related information**: When fields share a common context or purpose (e.g. address fields, date and time)
+- **Conditional fields**: When certain fields are only relevant based on previous answers
+
+For a complete reference of all available spacing options, see our [spacing tokens](#spacing-tokens-alpha) section.
+
+### Using accordions
+
+Accordions can be used effectively in two ways within forms:
+
+- **As sections themselves**: Use accordions to create collapsible sections that contain multiple related fields. This is particularly useful for optional information or advanced settings that don't need to be visible by default.
+- **Within sections**: Use accordions to group content within an existing section, allowing users to focus on the most important fields while keeping additional options easily accessible.
+
+When using accordions, ensure that required fields remain visible and are not hidden within collapsed sections to maintain accessibility and usability.
+
+<ComponentPreview name="form-accordion" />
+
+### Required vs. optional fields
+
+These fields must be filled out for the form to be submitted. They are clearly indicated with an asterisk (\*) next to the label. Optional fields do not have this indicator, allowing users to skip them if they choose.
+
+## Spacing tokens <Badge>alpha</Badge>
+
+We provide a set of spacing tokens to help you apply consistent spacing throughout your forms. These tokens are designed to cover spacing needs for form layouts, including spacing between sections, fields, and groups of related fields.
+
+<Table aria-label="spacing tokens">
+  <TableHeader>
+    <TableColumn>Token</TableColumn>
+    <TableColumn>Value</TableColumn>
+    <TableColumn>Description</TableColumn>
+    <TableColumn>Relevant components</TableColumn>
+  </TableHeader>
+  <TableBody>
+    <Table.Row key={0}>
+      <TableCell>`container`</TableCell>
+      <TableCell>50rem (800px)</TableCell>
+      <TableCell>Used width or max-width for the form container.</TableCell>
+      <TableCell>`<div>`, `<Form>`</TableCell>
+    </Table.Row>
+    <Table.Row key={1}>
+      <TableCell>`section`</TableCell>
+      <TableCell>3.5rem (56px)</TableCell>
+      <TableCell>Used for creating space between different form sections.</TableCell>
+      <TableCell>`<Stack>`</TableCell>
+    </Table.Row>
+    <Table.Row key={2}>
+      <TableCell>`fieldY`</TableCell>
+      <TableCell>2rem (32px)</TableCell>
+      <TableCell>Used for creating vertical space between individual form fields in a section.</TableCell>
+      <TableCell>`<Stack>`</TableCell>
+    </Table.Row>
+    <Table.Row key={3}>
+      <TableCell>`fieldX`</TableCell>
+      <TableCell>1.25rem (20px)</TableCell>
+      <TableCell>Used for creating horizontal space between individual form fields in a section.</TableCell>
+      <TableCell>`<Inline>`</TableCell>
+    </Table.Row>
+      <Table.Row key={4}>
+      <TableCell>`group`</TableCell>
+      <TableCell>1rem (16px)</TableCell>
+      <TableCell>Used for grouping related fields (address components, date/time fields) or multiple accordion sections together.</TableCell>
+      <TableCell>`<Stack>`, `<Inset>`</TableCell>
+    </Table.Row>
+  </TableBody>
+</Table>
+
+## Actions
+
+Form actions guide users through completion and submission. Every form requires a primary submit action, but many forms benefit from additional secondary actions that provide alternative paths or supplementary functionality.
+
+### Using additional actions in forms
+
+Additional actions can enhance the user experience by providing options like "view PDF", "Reset", or "Save as Draft". These actions should be clearly differentiated from the primary submit action to avoid confusion.
+
+Place the action near the related field where the action is for with that context is given. Links should be placed usually next or below the related field.
+
+<ComponentPreview file="form-link" mode="preview" />
+
+### Submit placement
+
+The submit button should be positioned at the bottom of the form, aligned to the left to follow the natural reading flow. Place the primary action first, followed by secondary actions with appropriate spacing.
+
+<ComponentPreview file="form-action" mode="preview" />
+
+## Admin- and Mastermark
+
+Some forms may require special fields that are only accessible to users with administrator or master user roles. These fields should be clearly marked and separated from regular fields to avoid confusion.
+
+You can find a complete usage guide on the [Admin- and Mastermark](/patterns/admin-master-mark) page.
+
+## Full demo
+
+Here is a full example of a well-structured form with sections using the guidelines mentioned above. This is a fictional event registration form that includes various field types, sections, and actions.
+
+<Stack space={2}>
+  <Center>[View Demo](/pattern/form)</Center>
+  <Center>
+    [View
+    Code](https://github.com/marigold-ui/marigold/tree/main/docs/app/(examples)/pattern)
+  </Center>
+</Stack>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form Fields',
+      href: '../../foundations/form-fields',
+      caption:
+        'Here you can find a comprehensive guide for working with form fields.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 8.25V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18V8.25m-18 0V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6ZM7.5 6h.008v.008H7.5V6Zm2.25 0h.008v.008H9.75V6Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form Implementation Guide',
+      href: '../../patterns/form-implementation',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>

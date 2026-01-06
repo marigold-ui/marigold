@@ -1,0 +1,68 @@
+---
+title: ComboBox
+description: A text-field that allows the user to select values from a provided items array.
+---
+
+The `<ComboBox>` component combines a text input with a listbox, allowing users to filter a list of options to items matching a query or adding a new value.
+
+Its purpose is to make interaction with software more intuitive by presenting options in a concise, readable manner instead of requiring users to remember cryptic commands or navigate through complex hierarchies
+
+## Usage
+
+### Controlled Usage with custom Filter
+
+If you want to listen or act while the user is typing into the `ComboBox` field, you can switch to controlled mode by adding an `onChange` handler and setting the `value` manually.
+
+This is especially helpful if you need to customize the filtering. For example, you may only want to show suggestions when the user has typed at least two characters. Furthermore, you can improve the matching, as shown in the example below. In the demo, the user would not receive a suggestion if they typed "ssp" without the custom filter.
+
+<ComponentPreview name="combobox-controlled" />
+
+### With sections
+
+When related options are present, organizing them into sections enhances clarity and usability. Grouping options provides additional context and helps users navigate choices more easily. This approach reduces complexity and allows for additional guidance when needed, ensuring a more intuitive experience.
+
+This can be achieved by wrapping the options in the `<ComboBox.Section>` component. A header is required for each section, which is set using the `header` prop. It's important to note that headers are not part of the accessibility tree. As a result, they will not be considered when filtering the option list.
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>When `textValue` is required</SectionMessage.Title>
+  <SectionMessage.Content>
+    Use the `textValue` prop when children contain non-text elements (e.g.,
+    icons, badges, or other decorative components) - this ensures search
+    functions revieve plain text equivalents, as non-text elements can create
+    mismatches between visual and semantic content.
+  </SectionMessage.Content>
+</SectionMessage>
+
+<ComponentPreview name="combobox-section" />
+
+### Working with asynchronous Data
+
+The ComboBox component supports working with asynchronous data. In the example below, the [`useAsyncList`](/hooks/useAsyncList) hook is used to handle the loading and filtering of data from the server.
+
+<ComponentPreview name="combobox-async" />
+
+### Displaying Suggestions
+
+Opening the suggestion popover can be triggered through various interactions. This behavior can be adjusted by the `menuTrigger` prop:
+
+- `input` (default): Open when the user edits the input text.
+- `focus`: Open when the user focuses the `<ComboBox>` input.
+- `manual`: Open when the user presses the trigger button or uses the arrow keys.
+
+The below examples will display the suggestions when the input field is focused.
+
+<ComponentPreview name="combobox-menu-trigger" />
+
+## Props
+
+### ComboBox
+
+<PropsTable component="Combobox" />
+
+### ComboBox.Option
+
+<PropsTable component="ListBoxItem" />
+
+### ComboBox.Section
+
+<PropsTable component="ListBoxSection" />

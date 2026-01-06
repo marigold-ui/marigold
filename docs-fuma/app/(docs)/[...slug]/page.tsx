@@ -12,6 +12,7 @@ import {
   DontDescription,
   DontFigure,
   GuidelineTiles,
+  IconList,
   Image,
   MDXComponentPreview,
   MDXHeadline2,
@@ -22,15 +23,21 @@ import {
   MDXPropsTable,
   MDXStorybookHintMessage,
   MDXText,
+  Scrollable,
   SectionMessage,
   SectionMessageContent,
   SectionMessageTitle,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
+  Tabs,
+  TabsItem,
+  TabsList,
+  TabsTabPanel,
   TeaserList,
 } from '@/components/mdx-wrapper-components';
 import { getPageImage, source } from '@/lib/source';
@@ -38,7 +45,16 @@ import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { ColorTokenTable } from '@/ui/ColorTokens';
 import { RelativeTime } from '@/ui/RelativeTime';
+import { AlignmentsX, AlignmentsY, BorderRadius, Spacing } from '@/ui/Token';
+import {
+  FontSizes,
+  FontStyle,
+  FontWeights,
+  Headlines,
+  TextAlign,
+} from '@/ui/Typography';
 
 interface PageProps {
   params: Promise<{ slug: string[] }>;
@@ -74,6 +90,8 @@ export default async function Page(props: PageProps) {
               h4: MDXHeadline4,
               h5: MDXHeadline5,
               h6: MDXHeadline6,
+              IconList,
+              TextAlign,
               ComponentPreview: MDXComponentPreview,
               TeaserList: TeaserList,
               SectionMessage: Object.assign(SectionMessage, {
@@ -90,9 +108,7 @@ export default async function Page(props: PageProps) {
               }),
               GuidelineTiles,
               Image,
-              PropsTable: props => (
-                <MDXPropsTable {...props} component={page.data.title} />
-              ),
+              PropsTable: props => <MDXPropsTable {...props} />,
               StorybookHintMessage: (props: any) => (
                 <MDXStorybookHintMessage
                   {...props}
@@ -101,11 +117,26 @@ export default async function Page(props: PageProps) {
               ),
             }),
             Table,
+            Tabs,
+            TabsItem: TabsItem,
+            TabsList: TabsList,
+            TabsTabPanel: TabsTabPanel,
+            Stack,
+            Scrollable,
             TableHeader,
             TableBody,
             TableRow,
             TableCell,
             TableColumn,
+            AlignmentsX,
+            AlignmentsY,
+            BorderRadius,
+            ColorTokenTable,
+            FontSizes,
+            FontStyle,
+            FontWeights,
+            Headlines,
+            Spacing,
           }}
         />
         {page.data.lastModified && (

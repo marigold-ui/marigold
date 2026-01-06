@@ -1,0 +1,83 @@
+---
+title: Split
+description: Component that creates spacing between two flex elements.
+---
+
+The `<Split>` is an addition to the [`<Inline>`](/components/inline/) and [`<Stack>`](/component/stack/) components. Basically it creates an empty div between two elements with the [CSS Flexbox grow class](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow). With that it allows you to split the contents of two elements inside a flex context.
+
+## Usage
+
+Use the `<Split>` together with a `<Stack>` or `<Inline>`. It can also serve as an alternative to nested stacks or inlines, because it can also provide enough space between the items.
+
+Of course you can also apply the split in any other flexbox context. But we recommend to use it with our given components.
+
+### With inline
+
+You can see below how to use the `<Split>` within the `<Inline>`.
+To use the split with the inline correctly you have to set the inline as parent and add the split between the two elements you want to seperate.
+With that you can provide as much space as given between the two children.
+
+This can be helpful if you need to group related content together but also have other content in the same line.
+
+<ComponentPreview name="split-inline" />
+
+### With stack
+
+What applies to the inline is also possible with the stack component. You have to set the `<Split>` as child inside of the `<Stack>` between two other children to provide maximal space.
+
+<ComponentPreview name="split-stack" />
+
+## Props
+
+<StorybookHintMessage />
+
+<PropsTable component="Split" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Stack',
+      href: '../layout/stack',
+      caption: 'Align elements vertically.',
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25 12 21m0 0-3.75-3.75M12 21V3" />
+</svg>
+      ),
+    },
+    {
+      title: 'Inline',
+      href: '../layout/inline',
+      caption: 'Align elements in a horizontally in a row.',
+      icon: (
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+</svg>
+      ),
+    },
+
+]}
+/>

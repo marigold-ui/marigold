@@ -1,0 +1,321 @@
+---
+title: Feedback Messages
+description: Learn when to use which message.
+---
+
+Messages are feedback mechanisms that inform users about important events, actions, conditions, or information within the application.
+
+Appropriate communication of system status is critical to building trust with users, and is Jakob Nielsen’s [first usability heuristic for user interface design](https://www.nngroup.com/articles/ten-usability-heuristics/#toc-1-visibility-of-system-status-1). Too many messages, however, can dilute their usefulness and lead to alert fatigue. Therefore, it’s important to know exactly when and how to use them.
+
+## Key Principles
+
+Messages should be:
+
+- **Relevant.** Messages should only be sent when the information significantly impacts the user’s overall experience or current task.
+- **Timely.** Messages should be shown at the moment they’re needed and dismissed once they’re no longer relevant.
+- **Actionable.** Messages should always indicate the way forward, including links or other actions when helpful.
+- **Concise.** Messages should express the most essential information in the fewest words possible.
+
+## When to use
+
+Use messages to provide timely and important updates about events, actions, conditions or information that impact a user’s experience or their successful task completion. Messages can be either task-generated or system-generated.
+
+### Task-generated Messages
+
+Task-generated messages respond to specific user actions during a specific task. They provide immediate feedback about the effects of a user’s action.
+
+For example, you may want to send a task-generated message when:
+
+- A change was successfully saved
+- A file couldn’t be opened
+- The user is approaching the maximum number of items they can add to a dataset
+
+### System-generated Messages
+
+System-generated messages communicate relevant updates about system status that aren’t triggered by a user’s current task, but may impact their experience or require their attention.
+
+You might send a system-generated message when:
+
+- Scheduled maintenance will impact system performance for a period of time
+- The user’s account will be suspended unless a new payment method is added
+- Connection with the server has been lost
+
+## When not to use
+
+Don’t use messages when the information does not have a significant impact on the user’s current task or overall experience, or when the same information can be communicated in a less obtrusive way. For example:
+
+- To draw attention to a new element or piece of content, you can use a [badge](/components/content/badge).
+- To draw attention to the status of just one UI element, you can use an [icon](/foundations/icon) with a [tooltip](/components/overlay/tooltip) for short, non-essential supporting information. (Tooltips have lower accessibility and usability across device types than messages, so do not use them for critical information.)
+- Messages that describe permanent, non-resolvable aspects or features of a page may be better communicated through headings, description text, or information architecture.
+
+## Message Statuses
+
+- **Informational**: Provides relevant information about the system’s features or content that could be worth knowing to the user.
+- **Success**: Confirms that an action was successful.
+- **Warning**: Alerts users to significant issues or changes that may require attention.
+- **Error**: Notifies users of failure states that require immediate action, or that will impede their progress until resolved.
+
+## Message Components
+
+<SectionMessage>
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    The following information only reflects the current state of Marigold, but
+    future improvements are planned to expand the number of covered use cases,
+    as well as to add new components that expand the list of possible message
+    types. If there’s a specific use case that you need covered, you can let us
+    know through our [Support
+    Form](https://reservix.atlassian.net/servicedesk/customer/portal/77).
+  </SectionMessage.Content>
+</SectionMessage>
+
+Marigold currently includes three different components for offering feedback messages: Dialogs, input field validation and section messages.
+
+<Scrollable>
+  <Table aria-label="messages">
+    <TableHeader>
+      <TableColumn>Component</TableColumn>
+      <TableColumn>Relevant use case(s)</TableColumn>
+      <TableColumn>Disruption level</TableColumn>
+      <TableColumn>Persistence</TableColumn>
+      <TableColumn>Dismissable by the user?</TableColumn>
+      <TableColumn>Display</TableColumn>
+      <TableColumn>Position</TableColumn>
+    </TableHeader>
+    <TableBody>
+      <Table.Row key={1}>
+        <TableCell>Dialog</TableCell>
+        <TableCell>
+          Interrupt the user to inform them of task-critical information
+        </TableCell>
+        <TableCell>High</TableCell>
+        <TableCell>Permanent</TableCell>
+        <TableCell>Yes (optional)</TableCell>
+        <TableCell>Block</TableCell>
+        <TableCell>
+          Fixed as an overlay on top of the page, typically in the center of the
+          viewport
+        </TableCell>
+      </Table.Row>
+      <Table.Row key={2}>
+        <TableCell>Input field validation</TableCell>
+        <TableCell>Inform users of the status of form field inputs</TableCell>
+        <TableCell>Medium</TableCell>
+        <TableCell>Permanent</TableCell>
+        <TableCell>No</TableCell>
+        <TableCell>Inline</TableCell>
+        <TableCell>Directly beneath the affected input field</TableCell>
+      </Table.Row>
+      <Table.Row key={3}>
+        <TableCell>Section message</TableCell>
+        <TableCell>
+          Inform users of relevant information in one section/area of the screen
+        </TableCell>
+        <TableCell>Low</TableCell>
+        <TableCell>Permanent</TableCell>
+        <TableCell>Yes (optional)</TableCell>
+        <TableCell>Block</TableCell>
+        <TableCell>
+          Visually near the affected content, typically directly above
+        </TableCell>
+      </Table.Row>
+    </TableBody>
+  </Table>
+</Scrollable>
+
+### Dialog
+
+A [dialog](/components/overlay/dialog) is an overlay component that can be used to convey messages to users. As they are very disruptive, dialogs should only be used to convey messages in high-urgency situations, where the content of the message is critical to the user’s task flow. These dialogs typically take the form of a confirmation dialog, which ask for confirmation that a taken action was intended by the user. In this case, user interaction is required to proceed.
+
+<ComponentPreview name="confirmation-dialog" />
+
+#### Permanent Dismissal
+
+Confirmation dialogs also carry the optional feature of permanent dismissal, that is, a checkbox can be added to ensure the message is never shown again. This can be useful in cases where the user is certain they want to take a potentially dangerous action and is confident they will not need the message again in the future. Use this cautiously.
+
+#### Browser-native Dialogs
+
+If a user takes a browser-level action that will result in data loss, like closing a browser tab, the only way to inform the user of the event and prevent data loss is by showing a browser-native confirmation dialog. These dialogs are generated by the browser itself and cannot be customized or dismissed. Show browser-native dialogs whenever users take browser-level actions that will result in data loss, including:
+
+- Reloading the browser tab.
+- Closing the browser tab.
+- Quitting the browser application.
+- Navigating to another page via the browser history.
+- Changing the URL in the browser address bar.
+
+<Image
+  src="/browser-dialog.png"
+  alt="browser native dialog"
+  caption="A example of a browser-native confirmation dialog in Google Chrome"
+  width="300"
+  height="400"
+/>
+
+### Input Field Validation
+
+Input field validation is not its own component, but instead a part of input field components like [TextField](/components/form/textfiled) or [DatePicker](/component/form/datepicker); a full list of components can be found [here](/patterns/form-implementation).
+
+It is used to provide feedback about a user’s input, typically as part of a form. It is most often used to convey error messages, but can convey other states as well. The user generally cannot proceed with their desired action until they provide a valid input.
+
+<ComponentPreview name="inputfield-validation" />
+
+A custom-written validation message is not always required. Browsers come with their own default validation error messages that can be used in place of a customized one. See more on the [Validation](/foundations/validation) page.
+
+### Section Message
+
+A [section message](/components/section-message) is a block-level component that is used to alert users to something in a specific section of the screen. It is placed near the affected content in a way that clearly communicates its relationship. This is often directly above the affected section or content, but use your best judgement and place it where it makes the most sense in context.
+
+<ComponentPreview name="sectionmessage-info" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/sectionmessage/sectionmessage-do-placement.png"
+        alt="Place section messages near the affected content."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Place section message near the affected content.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/sectionmessage/sectionmessage-dont-placement.png"
+        alt="Don't place section messages in unaffected sections."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't place section messages in unaffected sections.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+## Placement and Appearance
+
+**Positioning**: Place messages in ways that match their urgency, communicate their relationship to the affected content, and are easy to notice.
+
+**Stacking order**: Avoid showing multiple simultaneous messages whenever possible. If multiple messages of the same type must be shown simultaneously or in sequence, stack them in descending order of urgency: Error, Warning, Success, Information.
+
+**Consistency**: Ensure that the color and icon you have chosen match the message you want to convey.
+
+**Responsiveness**: Ensure messages adapt well to different screen sizes.
+
+## User Interaction
+
+**Actions**: If appropriate, include ways for users to take action, like dismissing, retrying, or navigating to more details.
+
+**Persistence**: Decide if messages should auto-dismiss after a set time, auto-dismiss after resolution, or remain until dismissed by the user.
+
+<SectionMessage>
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    Auto-dismiss is not currently implemented in any Marigold components, but
+    will be added in an upcoming release. If your team has built auto-dismissal
+    into a component, consider contributing it to the design system. [Send us a
+    Slack message(internal
+    only)](https://reservix.slack.com/archives/C02727BNZ3J)
+  </SectionMessage.Content>
+</SectionMessage>
+
+## Content Guidelines
+
+**Conciseness**: Ensure messages are brief and easy to scan.
+
+**Clarity**: Use human-centered language to explain things, not system jargon.
+
+<Image
+  width="900"
+  height="500"
+  src="/dosAndDonts_clarity.png"
+  alt="Do and donts clarity"
+/>
+
+**Helpfulness**: Always communicate how the problem can be resolved and what the user should do next to move forward in their experience. Take responsibility and avoid blaming the user.
+
+**Tone**: Be professional and polite. Match the tone of the message to its purpose.
+
+**Punctuation**: Don’t use end-punctuation in headings. Never use exclamation points.
+
+## References
+
+- [10 Usability Heuristics for User Interface Design](https://www.nngroup.com/articles/ten-usability-heuristics/#toc-1-visibility-of-system-status-1)
+- Understanding and fighting alert fatigue ([English](https://www.atlassian.com/incident-management/on-call/alert-fatigue#The%20-psychology-of-alert-fatigue), [German](https://www.atlassian.com/de/incident-management/on-call/alert-fatigue#What-is-alert-fatigue?))
+- [Web Content Accessililty Guidelines (WCAG) 2.0](https://www.w3.org/TR/WCAG20/#minimize-error)
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Dialog',
+      href: '../../components/overlay/dialog',
+      caption: 'Component for displaying dialogs.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Section Message',
+      href: '../../components/content/section-message',
+      caption: 'Display a short message with important informations.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.068.157 2.148.279 3.238.364.466.037.893.281 1.153.671L12 21l2.652-3.978c.26-.39.687-.634 1.153-.67 1.09-.086 2.17-.208 3.238-.365 1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Validation',
+      href: '../../foundations/validation',
+      caption: 'Learn about how to use form validation with Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

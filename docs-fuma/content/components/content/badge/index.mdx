@@ -1,0 +1,124 @@
+---
+title: Badge
+description: Component for short notes with one color as status messages
+---
+
+A `<Badge>` is a content component. This component can be used to reflect status messages via a short note and a color.
+
+## Anatomy
+
+It consists of a container and the content can either be a text or an icon.
+
+<Image
+  src="/badge/badge-anatomy.jpg"
+  alt="Anatomy of badge component"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Usage
+
+A `<Badge>` is a component used to provide information on new updates and notifications. It is used with other components and cannot be used alone. The content of a badge can be arbitrary, but it is preferred to use a string and/or a icon.
+
+### Text Label Length
+
+The Badge is a simple and compact component for use in a limited space in the context of more complex components. When it includes a text label, make sure it fits into the dedicated space.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/badge/badge-do-label-length.jpg"
+        alt="Do: Use short and precise text labels."
+      />
+    </Do.Figure>
+    <Do.Description>Use short and precise text labels.</Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/badge/badge-dont-label-length.jpg"
+        alt="Don't: Use long descriptions for labels."
+      />
+    </Dont.Figure>
+    <Dont.Description>Don't use long descriptions for labels.</Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Color
+
+As the Badge is used as an indicator, its color must be precise and relevant to the message that the badge conveys.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/badge/badge-do-color.jpg"
+        alt="Do: Use the colors wisely and according to the meaning that the Badge implies."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use the colors wisely and according to the meaning that the Badge implies.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/badge/badge-dont-color.jpg"
+        alt="Don't: Avoid using arbitrary colors that would not match the message that the Badge conveys."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid using arbitrary colors that would not match the message that the
+      Badge conveys.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+## Props
+
+<StorybookHintMessage />
+
+<PropsTable component="Badge" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Admin- & master mark',
+      href: '/patterns/admin-master-mark',
+      caption: 'Used for marking internal-only features.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M9 11l-6 6v3h9l3-3" />
+          <path d="M22 12l-4.6 4.6a2 2 0 01-2.8 0l-5.2-5.2a2 2 0 010-2.8L14 4" />
+        </svg>
+      ),
+    },
+  ]}
+/>

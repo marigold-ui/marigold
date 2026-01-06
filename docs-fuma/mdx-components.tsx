@@ -1,3 +1,4 @@
+import { Badge } from '@/components/mdx-wrapper-components';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
@@ -5,6 +6,7 @@ import type { MDXComponents } from 'mdx/types';
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...defaultMdxComponents,
+    Badge,
     ...components,
     pre: props => (
       <CodeBlock>

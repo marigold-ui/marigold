@@ -1,0 +1,317 @@
+---
+title: NumberField
+description: Component for entering numbers.
+---
+
+The `<NumberField>` component used for capturing numerical input from the user in a form or similar input context. This allows users to input numbers including integers, decimals, and as well as percentages.
+The component also offers steppers which provides lower interaction costs.
+
+## Anatomy
+
+It consists of a label, an input field and a help text. Optional you can also show a help text and stepper buttons for increasing/decreasing values.
+
+<Image
+  src="/number-field/number-field-anatomy.jpg"
+  alt="Anatomy of number field"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Usage
+
+`<NumberField>` is an input field that accepts <strong>only</strong> numeric input.
+
+### Use Steppers
+
+The stepper buttons make it easier and faster for people to make small numeric changes. It allows people to increase or decrease a number with a single button press, or by typing the number in the field.
+
+<SectionMessage>
+  <SectionMessage.Title>Hide steppers</SectionMessage.Title>
+  <SectionMessage.Content>
+    If you don't want the step buttons to appear, you can easily remove these
+    with the `hideStepper` property.
+  </SectionMessage.Content>
+</SectionMessage>
+
+Also keep in mind using the `width` property is essential to provide a good user experience. So each input field shouldn't be larger than the expected content. For example
+when using stepper buttons it is better to have shorter fields, so that the user can easier reach these buttons (lower interaction costs).
+
+<ComponentPreview name="number-field-stepper" />
+
+<Do>
+  <Do.Description>
+    Use steppers to make small numeric changes, else the interaction cost would
+    be high.
+  </Do.Description>
+</Do>
+
+### Use Format Options
+
+With `<NumberField>` you can use `Intl.NumberFormatOptions` which comes in handy to format the numbers in a certain format, e.g. `percent`,`unit`, `decimal` and `currency`.
+
+For a full list of supported options, see corresponding [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat). A full list of suported units can be seen [here](https://tc39.es/ecma402/#table-sanctioned-single-unit-identifiers).
+
+<ComponentPreview name="number-field-format" />
+
+<Do>
+  <Do.Description>
+    In addition, use units to support the label and make it clear what the user
+    is entering in a particular number field.
+  </Do.Description>
+</Do>
+
+### Label
+
+In general label should be short and precise about what is expected from the user. Avoid unnecessary instructional
+verbs (doing words) in your labels and hints because it’s already implied by the input field.
+Avoid placeholder text in most cases, as there’s no need for it (more about it in the next section).
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/number-field/number-field-do-short-label.jpg"
+        alt="Do: Use short labels"
+      />
+    </Do.Figure>
+    <Do.Description>Use short labels.</Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/number-field/number-field-dont-long-label.jpg"
+        alt="Don’t use unnecessary instructional verbs"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don’t use unnecessary instructional verbs.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Placeholder
+
+Placeholder text is a short hint displayed inside an input field before
+a user enters a value. To save space, placeholder text is often used instead of a label, as shown in the first
+example.
+This is problematic for the following reasons:
+
+- Placeholder text disappears once a person starts filling in an input field, causing some to forget what the
+  field
+  was for
+- Some might miss or skip fields with placeholder text, as it can look like the field has already been pre-filled.
+- Placeholder text colour contrast is almost always inaccessible, as it’s very light by design. This means many
+  will
+  struggle to read the label.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/number-field/number-field-do-placeholder.jpg"
+        alt="Do: Use label instead of a placeholder"
+      />
+    </Do.Figure>
+    <Do.Description>Use label instead of a placeholder.</Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/number-field/number-field-dont-placeholder.jpg"
+        alt="Don’t use placeholder text instead of a label"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don’t use placeholder text instead of a label.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Additional Description
+
+Sometimes the label isn't enough for the user. In this case, to gather additional support for the user we can use
+the help text. With this we can add helpful hints for the user below the input field. Beside that the help text is
+placed in close proximity to the associated input field.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/number-field/number-field-do-helptext-email.jpg"
+        alt="Do: Use help text to show an example what's expected"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use help text to show an example what's expected.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/number-field/number-field-do-helptext-explanation.jpg"
+        alt="Do: Explain why certain information is needed"
+      />
+    </Do.Figure>
+    <Do.Description>Explain why certain information is needed.</Do.Description>
+  </Do>
+</GuidelineTiles>
+
+### NumberField With An Error
+
+Error messages should let people know that a problem occurred, why it happened, and provide a solution to fix it
+and move forward.
+
+<GuidelineTiles>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/number-field/number-field-dont-blame-user.jpg"
+        alt="Don't: Never blame the user"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Never blame the user. Always be positive and helpful.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/number-field/number-field-dont-use-unnecessary-words.jpg"
+        alt="Don't: Be concise and avoid unnecessary words"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Be concise and avoid unnecessary words like “please”, “sorry” and “oops”
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+<Do>
+  <Do.Figure>
+    <Image
+      width={700}
+      height={700}
+      unoptimized
+      src="/number-field/number-field-do-clear-error-message.jpg"
+      alt="Do: Use detailed messages instead of global messages"
+    />
+  </Do.Figure>
+  <Do.Description>
+    Use detailed messages instead of global messages.
+  </Do.Description>
+</Do>
+
+The `error` prop toggles the error state of a field. The `errorMessage` prop can then be used to provide feedback to
+the user about the error. The message disappears automatically when all requirements are met.
+
+<ComponentPreview name="number-field-error" />
+
+<SectionMessage>
+  <SectionMessage.Title>Note</SectionMessage.Title>
+  <SectionMessage.Content>
+    Press `Enter`, after typing your text, to trigger the validation.
+  </SectionMessage.Content>
+</SectionMessage>
+
+## Props
+
+<StorybookHintMessage />
+
+<PropsTable component="Number-field" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form developement guide',
+      href: '../../patterns/form-implementation',
+      caption:
+        'This page should introduce you on how to build forms with Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Intl.NumberFormat',
+      href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat',
+      caption: 'Enables language-sensitive number formatting.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'NumericFormat',
+      href: '../formatters/numericformat',
+      caption:
+        'Helper component for formatting numeric based on the current language and locale-specific conventions.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

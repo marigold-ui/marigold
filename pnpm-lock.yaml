@@ -440,6 +440,9 @@ importers:
 
   docs-fuma:
     dependencies:
+      '@internationalized/date':
+        specifier: 3.10.0
+        version: 3.10.0
       '@marigold/components':
         specifier: workspace:*
         version: link:../packages/components
@@ -458,6 +461,12 @@ importers:
       '@marigold/theme-rui':
         specifier: workspace:*
         version: link:../themes/theme-rui
+      '@react-aria/i18n':
+        specifier: 3.12.13
+        version: 3.12.13(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@tanstack/react-query':
+        specifier: 5.90.11
+        version: 5.90.11(react@19.2.0)
       '@vercel/analytics':
         specifier: 1.5.0
         version: 1.5.0(next@16.0.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
@@ -497,9 +506,15 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
+      react-hook-form:
+        specifier: 7.66.1
+        version: 7.66.1(react@19.2.0)
       react-markdown:
         specifier: 10.1.0
         version: 10.1.0(@types/react@19.2.2)(react@19.2.0)
+      react-use:
+        specifier: 17.6.0
+        version: 17.6.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react-use-clipboard:
         specifier: 1.0.9
         version: 1.0.9(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -512,6 +527,9 @@ importers:
       zod:
         specifier: 4.1.13
         version: 4.1.13
+      zod-form-data:
+        specifier: 3.0.1
+        version: 3.0.1(zod@4.1.13)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1

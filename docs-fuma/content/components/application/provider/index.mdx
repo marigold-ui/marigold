@@ -1,0 +1,55 @@
+---
+title: MarigoldProvider
+description: Container for apps using Marigold.
+---
+
+The `<MarigoldProvider>` component serves as the wrapper for any application that integrates with Marigold. It is responsible for managing and distributing critical application-level settings, including providing theming to all child components.
+
+By wrapping an app in `<MarigoldProvider>`, developers can ensure that a consistent theme and other globally relevant configurations are propagated throughout the app's component tree.
+
+```tsx
+import { PropsWithChildren } from 'react';
+import { MarigoldProvider } from '@marigold/components';
+import theme from '@marigold/theme-rui';
+
+export const App = ({ children }: PropsWithChildren) => (
+  <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
+);
+```
+
+### Overriding root styles
+
+The `<MarigoldProvider>` supports overriding root styles by passing custom class names to it. This feature is useful when you need to adjust or customize the root styles, depending on the context in which your app is used.
+
+<ComponentPreview name="provider-root-styles" />
+
+### Nesting Providers
+
+The `<MarigoldProvider>` supports nesting themes, allowing you to apply a different theme within a nested provider. This enables sections of your app to have distinct themes, providing flexibility in styling different parts of the application.
+
+Note that in these scenarios, it often makes sense to adjust the root styles using the aforementioned `className` prop.
+
+```tsx
+import { Card, MarigoldProvider, Stack } from '@marigold/components';
+import ruiTheme from '@marigold/theme-rui';
+import customTheme from './custom-theme';
+
+export default () => (
+  <MarigoldProvider theme={rui}>
+    <Card p={4}>
+      <Stack space={4}>
+        This area is still using the <strong>rui theme</strong>.
+        <MarigoldProvider theme={ruiTheme} className="bg-transparent">
+          This area is still using the <strong>rui theme</strong>.
+        </MarigoldProvider>
+      </Stack>
+    </Card>
+  </MarigoldProvider>
+);
+```
+
+## Props
+
+<StorybookHintMessage />
+
+<PropsTable component="MarigoldProvider" />

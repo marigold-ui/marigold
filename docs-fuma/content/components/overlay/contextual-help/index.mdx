@@ -1,0 +1,74 @@
+---
+title: ContextualHelp
+description: Displays contextual help via popover on button click
+---
+
+The `<ContextualHelp>` component provides inline assistance to help users understand specific parts of your interface. It displays a small button with an icon that, when clicked, opens a popover with explanatory content. This content can be rich and interactive, unlike tooltips which are intended for brief, passive messages.
+
+Use `<ContextualHelp>` when users might need deeper guidance or context, especially for complex settings, form inputs, or unfamiliar actions.
+
+## Anatomy
+
+<Image
+  src="/contextualhelp/contextualhelp-anatomy.jpg"
+  alt="Anatomy of tooltip"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Trigger button:** A small icon button that activates the help popover.
+- **Popover:** A floating container for detailed help content.
+- **Dialog content:** Custom content area that may contain headings, paragraphs, or even interactive elements.
+
+## Usage
+
+`<ContextualHelp>` is ideal for providing additional information without cluttering the interface. Use it to explain complex features, provide helpful tips, or guide users through unfamiliar processes.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        alt="Use contextual help for fields that users frequently misunderstand."
+        src="/contextualhelp/contextualhelp-do.jpg"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use contextual help for fields that users frequently misunderstand.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        alt="Don't use contextual help for obvious or self-explanatory features."
+        src="/contextualhelp/contextualhelp-dont.jpg"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use contextual help for obvious or self-explanatory features.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Custom placement
+
+The position of the popover can be customized using the placement prop. Available options include `top`, `bottom`, `left`, `right`, and aligned variants like `bottom start`.
+
+<ComponentPreview name="contextual-help-placement" />
+
+### Interactive content
+
+Unlike tooltips, ContextualHelp supports complex and interactive content inside the popover—such as links, buttons, or structured text.
+
+<ComponentPreview name="contextual-help-interactive" />
+
+## Props
+
+<StorybookHintMessage />
+<PropsTable component="Contextual-help" />

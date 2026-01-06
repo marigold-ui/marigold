@@ -1,0 +1,77 @@
+---
+title: Aspect
+description: Keep media elements at a certain apsect ratio.
+---
+
+The `<Aspect>` component keeps media elements like images or videos in their correct aspect ratio, preventing them from looking stretched or squished on different screens. It is particularly useful for creating responsive layouts where consistent media dimensions are important.
+
+## Usage
+
+When using the `<Aspect>` component to maintain the aspect ratio of media elements, choose an appropriate predefined ratio to ensure a consistent and visually appealing layout. The available aspect ratios include:
+
+- **square**: For media that should have equal width and height.
+- **landscape**: Suitable for wider-than-tall elements, commonly used for photos and videos.
+- **portrait**: Ideal for media taller than they are wide, like profile pictures.
+- **widescreen**: Useful for standard video content with a 16:9 ratio.
+- **ultrawide**: Best for extra-wide content, such as panoramic media.
+- **golden**: Reflects the golden ratio, providing a balanced and aesthetically pleasing aspect.
+
+Select a ratio based on the type of media and the context in which it is displayed to achieve the best visual effect.
+
+<ComponentPreview name="aspect-ratio" />
+
+### Image
+
+When using the `<Aspect>` component with the `<Image>` component, it's recommended to use the `fit` and `position` of the `<Image>`  component properties to achieve the best results. The `fit` option ensures that the image is properly resized to fill the aspect container without distortion, while the `position` option controls how the image is aligned within the container, allowing for better visual balance.
+
+<ComponentPreview name="aspect-image" />
+
+### Iframe
+
+When using the `<Aspect>` component with an `<iframe>`, it can help to maintain the aspect ratio of embedded content, such as videos or maps, ensuring they appear correctly across different screen sizes.
+
+To get the best results, combine the aspect component with appropriate `width` and `height` settings on the iframe to avoid any stretching or scaling issues.
+
+<ComponentPreview name="aspect-iframe" />
+
+### Max Width
+
+Setting a max width is useful when you want to prevent a media element from growing too large, especially on wider screens. It helps maintain a balanced layout by ensuring the media stays within a reasonable size.
+
+The max width can be controlled using the `maxWidth` prop, allowing you to easily set a limit that fits your layout needs.
+
+<ComponentPreview name="aspect-max-width" />
+
+## Props
+
+<StorybookHintMessage />
+
+<PropsTable component="Aspect" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '/foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

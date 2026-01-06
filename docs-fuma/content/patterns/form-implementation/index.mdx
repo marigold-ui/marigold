@@ -1,0 +1,156 @@
+---
+title: Form Implementation
+description: This page should introduce you on how to develop form logic with Marigold.
+order: 2
+badge: updated
+---
+
+This guide provides comprehensive instructions for implementing form functionality with Marigold components. Beyond basic form structure and design patterns, building effective forms requires understanding state management, validation, error handling, and user interaction patterns.
+
+Whether you're creating simple contact forms or complex multi-step data collection interfaces, this guide covers the technical implementation details you need. You'll learn how to choose between controlled and uncontrolled components, implement real-time validation, handle form submissions, and integrate with popular form libraries like React Hook Form and validation schemas with Zod.
+
+The examples and patterns shown here complement the design guidelines found in our [Forms](/patterns/forms) documentation, focusing specifically on the development aspects of creating robust, user-friendly forms with Marigold's component library.
+
+## Controlled or uncontrolled Components?
+
+In React, there are two main types of form components: controlled and uncontrolled.
+Controlled components are controlled via React state (e.g. `useState`). Any changes to the value will update the state variable. This happens when the user interacts with a component and an event handler is called, `onChange` for example.
+Uncontrolled components don't use any state to update. You can use props like `defaultValue` or `defaultChecked` to set their initial value.
+
+When the state or props change, React will automatically re-render the component with its new data. This is called [data-binding](https://www.joshwcomeau.com/react/data-binding/). Components recive data from its parents component and update their output in response to changes in that data by using state and props, this allows to have a dynamic and reactive user interface.
+
+## Interactive forms
+
+Interactive forms can have several features like error handling, [validation](/foundations/validation), real-time feedback (password-strength indicator), logic (hide fields if a several field is checked etc.) or autocomplete.
+All these features help to make interactive fields more user friendly and more efficient.
+
+### Error Handling
+
+Marigold's form components comes with the `error` prop. You can use it to show or hide the error message (`errorMessage`). If no error is present the field will display a help text (`description`), if given, instead.
+
+In this example below you can have an example on how to check if the E-Mail adress is correctly filled.
+Try out and type something!
+
+<ComponentPreview name="error-handling" />
+
+### Logical Interaction
+
+You can have interactive forms which contains logical aspects. In this example you can interact with the `<Select>` and a new component `<Checkbox>` will appear. You can try out and switch the value of the select field.
+
+<ComponentPreview name="logical-interaction" />
+
+## Forms and submitting Data
+
+In HTML, forms are build using the `<form>` element, which wraps a set of input fields to gather and submit user data. By default, HTML forms trigger a full-page refresh upon submission. To gain control over the process, you can use preventDefault during the onSubmit event, enabling you to make a custom API call to submit the data according to your preferences.
+
+The simplest way to get data from a form is using the browser's [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API during the `onSubmit` event. This can be passed directly to `fetch`, or converted into a regular JavaScript object using `Object.fromEntries`.
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Names are important!</SectionMessage.Title>
+  <SectionMessage.Content>
+    Make sure to include the name attribute in each field, as it uniquely
+    identifies each form element, facilitating server-side processing and
+    ensuring a key-value pair for data submission.
+  </SectionMessage.Content>
+</SectionMessage>
+
+Below is a basic example of extracting data from an [uncontrolled](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) form. Submitting a promo code won't trigger a regular form submission; instead, it will display the provided data.
+
+<ComponentPreview name="building-forms-submit" />
+
+## Handling complex forms and form state
+
+You can simplify form handling in your React components and avoid repetitive tasks such as manually updating the form state, validating user inputs, and handling form submissions.
+We decided to use `react-form-hook` for this because its reducing re-renders caused by state updates, you don't have much to configure and supports integrating UI libraries.
+For the later we use the `<Controller>` component from `react-hook-form`, which must be wrapped around each Marigold component that should submits data.
+
+In the formular we have used `<TextField>`, `<Select>` and `<Checkbox>` components. These components are wrapped around with the `<Controller>` component from `react-hook-form`. The `<Controller>` component acts as a bridge between the form element and the `react-hook-form` state management. It updates the `react-hook-form` state whenever the value of the form element changes.
+
+<ComponentPreview name="building-forms-hook-form" />
+
+### How to do Validation and Error Signaling
+
+Some fields are required and throw error messages if you don't fill them out.
+For this to work, `react-hook-form` has a property `formState`, which contains the boolean `isValid`. This prop is set to `true` if the form doesn't have errors. `isValid` will always observe the entire form to validate.
+
+We don't explicit need to use a `onChange` event, instead of using useState and set a value we used directly `defaultValue`. With that the component is a uncontrolled component, it never gets undefined or null.
+
+There are `rules` that can be applied on the components to trigger the validation, e.g. `required: true`. Our Marigold form components already have error properties and error messages build in. Now it should be combined. In the `handleSubmit` function we check if the recived data is valid, if that isn't the case we give the error value to the component and display the error message.
+
+### Third party libraries
+
+#### Zod
+
+Zod is a TypeScript-first schema declaration and validation library. The term "schema" to broadly refer to any data type, from a simple string to a complex nested object.
+
+It's designed to be as developer-friendly as possible. The goal is to eliminate duplicative type declarations. With Zod, you declare a validator once and Zod will automatically infer the static TypeScript type. It's easy to compose simpler types into complex data structures.
+
+In the following example you can see how a form with all its fields can be submitted. The submitted data will be displayed in an alert message.
+
+For validating the form we are using [`zod`](https://zod.dev/). It is a library for building schemas, which can be used to validate inputs. It is especially useful when you have more complex validation rules.
+
+<ComponentPreview name="building-forms-zod" />
+
+#### react-hook-form
+
+React Hook Form is a library for managing form state and validation in React applications using hooks. It allows you to create forms with minimal boilerplate and provides a simple and efficient way to handle form validation, submission, and error handling.
+
+With React Hook Form, you can easily manage form state without the need for controlled components, making your code cleaner and more concise. It also offers performance benefits by reducing unnecessary re-renders.
+
+For some examples have a look at [Form developement guide](/patterns/form-implementation#handling-complex-forms-and-form-state) section.
+
+### Async forms and useActionState hook
+
+In React 19, you can handle async form submissions using Actions. With the `useActionState` hook, there's no need to manually manage an `isPending` state, React takes care of it automatically. Additionally, you can return a state directly from the action, eliminating the need for `useState`. This makes handling form state more streamlined and efficient.
+
+<ComponentPreview name="building-forms-async" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form Fields',
+      href: '../../foundations/form-fields',
+      caption:
+        'Here you can find a comprehensive guide for working with form fields.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 8.25V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18V8.25m-18 0V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6ZM7.5 6h.008v.008H7.5V6Zm2.25 0h.008v.008H9.75V6Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Forms',
+      href: '../../patterns/forms',
+      caption: 'Here you can find a comprehensive guide for structuring forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

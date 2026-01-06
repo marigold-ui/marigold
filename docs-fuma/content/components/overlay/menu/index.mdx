@@ -1,0 +1,111 @@
+---
+title: Menu
+description: Flexible component for constructing dynamic and customizable menus.
+---
+
+The `<Menu>` component allows you to define a menu element. It's useful when you want a list with options or actions.
+
+It is structured in two parts `<Menu>` and `<Menu.Item>`. The `<Menu>` contains the trigger and the button per default. You also can use the `<Menu.Section>` which you can use to separate the menu items from each other.
+
+There is also a companion component called `<ActionMenu>` which you can use if you want to take some actions. You can have a look on how it works in the examples. It works quiet similar to the normal `<Menu>` component. All you have to add are the `<Menu.Item>`s.
+
+## Anatomy
+
+<Image
+  src="/menu/menu-anatomy.jpg"
+  alt="Anatomy of menu"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Menu trigger:** The element, such as a button or icon, that opens or activates the menu.
+- **Section:** Menus are made up of a section or multiple sections.
+- **Section header:** Contains a heading to name a section of a group of similar menu items.
+- **Menu item:** Represent an individual option or action within a Menu component.
+
+## Usage
+
+In general, Menus are used to hide less frequently used or advanced options until users specifically need them. This keeps the interface clean and focused on essential elements.
+Menus are ideal for interactive UI elements, it is distincit from `<Select>`, which is meant for form inputs and value selection.
+
+Menus can speed up interactions for advanced users who are already familiar with the application. These users often rely on shortcuts and context-specific actions to work more efficiently.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Write menu label that is clear, concise (max. 24 characters) and avoid
+      unnecessary verbs.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Organise your menu items based on priority, and put the most used items at
+      the start of the menu.
+    </Do.Description>
+  </Do>
+</GuidelineTiles>
+
+### Simple menu with action
+
+In this example you can see a simple `<Menu>` with some items to select. it is used when you need a to provide users with a set of of options that will result in a specific action being performed.
+
+<ComponentPreview name="menu-action" />
+
+### Menu with sections
+
+When you have mutliple menu items that can be categorized under different headings. This is particularly useful in complext menus with many options, you can use `<Menu.Section>` and pass `title` for the group name.
+
+<ComponentPreview name="menu-section" />
+
+### Disabled menu items
+
+In this example the `<Menu>` has set its prop `disabeldKeys`. So you can't interact with the `<Menu.Item>` anymore. Keep in mind, that you have to set an id to the `<Menu.Item>`.
+
+<ComponentPreview name="menu-disabled" />
+
+### ActionMenu
+
+The `<ActionMenu>` is typically used to provide quick, context-specific actions related to an item or interface element. It is particularly useful in scenarios where speed and efficiency in selecting an action are crucial.
+
+In this example, the `<ActionMenu>` is used within a table to allow users to perform actions like viewing details of a ticket or deleting a ticket. When "View Details" is selected, a dialog displays key information about the selected ticket, including its ID, event name, and status. The "Delete" option removes the ticket from the list.
+
+The example shows that the `<ActionMenu>` is very similar to the standard `<Menu>` component, offering flexibility and ease of use in various contexts.
+
+<ComponentPreview name="menu-action-table" />
+
+### Menu item opens dialog
+
+This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu.Item>`. It is useful when a menu action requires additional user input or confirmation. Selecting the item opens a `Dialog` where users can provide the necessary information or confirm their choice, making the interaction smooth and efficient.
+
+<ComponentPreview name="menu-open-dialog" />
+
+### Menu selection mode
+
+Use `multiple` selection mode when you want to allow users to select multiple options at once, providing flexibility in situations where multiple choices are valid and necessary.
+
+Here you can see how the `selectionMode` from `<Menu>` works. In this example the `selectionMode` is set to `multiple`. If you open the items you can see a selected item.
+
+<ComponentPreview name="menu-selection" />
+
+### Destructive actions
+
+For actions that result in irreversible data loss, such as deleting an item or removing a user account, use the `"destructive"` variant on menu items to warn the user of the consequences. Always safeguard these actions with a confirmation dialog that clearly explains the outcome and requires an explicit second step to complete the process.
+
+<ComponentPreview name="menu-destructive" />
+
+## Props
+
+<StorybookHintMessage />
+
+### Menu
+
+<PropsTable component="Menu" />
+
+### Menu.Item
+
+<PropsTable component="MenuItem" />
+
+### Menu.Section
+
+<PropsTable component="MenuSection" />

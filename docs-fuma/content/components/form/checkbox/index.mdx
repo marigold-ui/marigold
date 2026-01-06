@@ -1,0 +1,238 @@
+---
+title: Checkbox
+description: Component to select one or more options.
+---
+
+The `<Checkbox>` component is a form element that allows users to make a binary choice, either selecting or deselecting an option. Multiple checkboxes can be grouped together using `<Checkbox.Group>` to enable the selection of zero, one or any number of options.
+
+It is commonly used in forms, settings, and anywhere users need to make multiple selections or toggle individual options. A `<Checkbox>` can also display an indeterminate state to represent a partially selected group.
+
+## Anatomy
+
+A checkbox consists of a clickable box and a label. The box has three states: unchecked, checked, or indeterminate. The label, positioned next to the checkbox, describes the option or action associated with it. Users interact with the checkbox by clicking the box or label to toggle between states.
+
+A checkbox group consists of multiple checkboxes, each with its own label, allowing users to select one or more options within a related set.
+
+<Image
+  src="/checkbox/checkbox-anatomy.jpg"
+  alt="Anatomy of a checkbox"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Usage
+
+Checkboxes are used when there are multiple items to select in a list. Each checkbox works independently from other checkboxes in the list, therefore checking an additional box does not affect any other selections. Users can select zero, one, or any number of items. Checkboxes are commonly used in forms where users need to make multiple selections from a set of options.
+Particularly checkboxes are useful in settings where users need to make non-exclusive selections. They provide a clear and straightforward way to toggle options on or off. When used in a group, they can help simplify complex decision-making processes. Additionally, checkboxes can be combined with other form elements.
+
+### Labeling
+
+We recommend checkbox labels being fewer than three words because shorter checkbox labels improve readability and reduce cognitive load, making it easier for users to quickly understand and select options. This enhances the overall user experience, especially on small screens.
+
+If you are tight on space, consider rewording the label. Do not truncate checkbox label text with an ellipsis. Long labels may wrap to a second line, and this is preferable to truncation.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-do-multipleline.jpg"
+        alt="If the label is long, wrap to a second line."
+      />
+    </Do.Figure>
+    <Do.Description>
+      If the label is long, wrap to a second line.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-dont-multipleline.jpg"
+        alt="Do not truncate checkbox label text with an ellipsis."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Do not truncate checkbox label text with an ellipsis.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Number of options
+
+Use checkboxes when there are no more than 10 to 15 options, as too many of them can overwhelm users and clutter the interface. For larger sets of options, refer to the [Multiple Selection Pattern](/patterns/multiple-selection) for a better user experience.
+
+If a user can select only one option from a list, [radio buttons](/components/form/radio) should be used instead, as checkboxes suggest that multiple options can be chosen.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/checkbox/checkbox-number-of-options.jpg"
+        alt="Use checkboxes when you have up to 15 options, and multiple options can be chosen."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use checkboxes when you have up to 15 options, and multiple options can be
+      chosen.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/checkbox/checkbox-dont-select.jpg"
+        alt="Don't use checkboxes when only one item can be selected."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use checkboxes when only one item can be selected.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+When a checkbox list is long enough to create clutter, overload, or excessive scrolling, keep it compact while allowing access to all options. Show only the most relevant five to eight items initially, with the rest hidden until revealed, and use this approach sparingly when all items can be scanned easily. Use this method sparingly, avoiding its use when the total number of items can be quickly scanned without frustration.
+
+<ComponentPreview name="checkbox-more" />
+
+<SectionMessage>
+  <SectionMessage.Title>Auto-Expand on Selection</SectionMessage.Title>
+  <SectionMessage.Content>
+    If the selected value is within the collapsed section, the component renders
+    in its expanded state by default.
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Ordering of Options
+
+Options should be arranged by relevance to help users find what they need quickly. Prioritizing by factors such as frequency of use, overall popularity, or recency of interaction ensures the most useful items appear first. Alphabetical order should be considered only when no meaningful ranking criteria are available, as it may not align with user priorities or usage patterns.
+
+### Checkbox or switch
+
+Use a checkbox when its effect will only occur after the user submits or confirms the selection. Checkboxes are ideal for allowing users to choose options that need to be finalized through submission, such as in a form.
+
+In contrast, use a [switch](/components/form/switch) for actions that take effect immediately upon toggling, without requiring further confirmation or submission, making switches more suitable for instant settings changes.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-do-submit.jpg"
+        alt="Use checkboxes in forms where the selection will only take effect upon submission."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use checkboxes in forms where the selection will only take effect upon
+      submission.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={400}
+        height={400}
+        unoptimized
+        src="/checkbox/checkbox-dont-submit.jpg"
+        alt="Don't use a checkbox to toggle a state with immediate effect."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use a checkbox to toggle a state with immediate effect.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Indeterminate
+
+The indeterminate state of a checkbox is used when a group of related checkboxes is partially selected, meaning some but not all options are chosen. This state visually indicates that the selection is incomplete or mixed.
+
+It’s commonly used in "Select All" scenarios, where selecting only some of the available options triggers the parent checkbox to show an indeterminate state, helping users understand that not all choices have been selected.
+
+<ComponentPreview name="checkbox-indeterminate" />
+
+### Description
+
+Adding a description to a checkbox is helpful when the label alone isn't enough to explain its function. Use a description to clarify complex or ambiguous actions, such as when the checkbox triggers a permanent change or has significant consequences. It's also useful for explaining technical terms or jargon that might be unfamiliar to the user. Finally, include a description to provide important context or warnings, like legal disclaimers or potential costs, ensuring the user fully understands what they're agreeing to.
+
+<ComponentPreview name="checkbox-description" />
+
+## Props
+
+<StorybookHintMessage />
+
+### Checkbox
+
+<PropsTable component="Checkbox" />
+
+### Checkbox.Group
+
+<PropsTable component="CheckboxGroup" />
+
+## Alternative components
+
+Choosing the right alternative to checkbox is important for providing an optimal user experience, especially when different types of selections are required. Depending on the nature of the choices and the desired interaction, the following components can serve as an alternative to checkboxes:
+
+- [Switch](/components/form/swich): When there is only on option that should have an immediate effect.
+- [Radio](/components/form/radio): When only one option can be selected from a set, a radio group is an alternative to a checkbox group, as radio buttons restrict the selection to a single option.
+- [SelectList](/components/collection/selectlist): When you need more than just a text label to represent options, a `<SelectList>` can be used instead.
+- [TagGroup](/components/collection/tag): When you want to visually highlight selected options as individual tags or want a horizontal list of options, use the `<Tag>` component.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form developement guide',
+      href: '../../patterns/form-implementation',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Multiple Selection',
+      href: '/patterns/multiple-selection',
+      caption: 'represents different ways and guideline for muliple selection.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M2.625 6.75a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0A.75.75 0 0 1 8.25 6h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75ZM2.625 12a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0ZM7.5 12a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12A.75.75 0 0 1 7.5 12Zm-4.875 5.25a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm4.875 0a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5h-12a.75.75 0 0 1-.75-.75Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

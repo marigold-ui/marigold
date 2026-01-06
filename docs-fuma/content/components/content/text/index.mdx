@@ -1,0 +1,69 @@
+---
+title: Text
+description: Component for displaying text paragraphs
+---
+
+The `<Text>` component is a fundamental part of Marigold's content components. It is designed to display text in a structured and visually appealing way, making it easy to read and understand.
+
+## Anatomy
+
+The `<Text>` consists of a single element that can be rendered as a `<div>`, `<p>`, or `<span>`. It supports various text properties such as alignment, size, weight, and color.
+
+## Usage
+
+The `<Text>` component is intended for all non-heading text, such as main content, detailed descriptions, and text within other components. Use it whenever you need to display standard paragraph text.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/text/text-do.jpg"
+        alt="Use text component for paragraphs"
+      />
+    </Do.Figure>
+    <Do.Description>
+     Use `<Text>` component for paragraphs or other body text.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/text/text-dont.jpg"
+        alt="Dont use text component for headlines or titles"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't use the `<Text>` component for headings or titles. Use the `<Heading>` component instead.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Rendering as other HTML elements
+
+The `<Text>` component can be rendered as different HTML elements by using the `as` prop. This allows you to change the underlying element without losing the styling and behavior of the `<Text>` component.
+
+- Use a `<p>` tag for paragraphs of text.
+- Use a `<span>` for inline text inside a sentence or heading.
+- Use a `<div>` for block-level layout elements without paragraph semantics.
+
+### Customizing text
+
+Sometimes you want to highlight text or make it stand out from the rest of the content. The `<Text>` component supports a `color` prop that allows you to change the text color. Also you can set the `weight` and `size` of the text to make it more prominent.
+
+<ComponentPreview name="text-color" />
+
+## Props
+
+<StorybookHintMessage />
+
+<PropsTable component="Text" />
+
+## Alternative Component
+
+- **Headline**: Use the `<Headline>` component for titles and headings. It provides a more semantic structure for text that serves as a title or heading, ensuring better accessibility and SEO.

@@ -6,6 +6,7 @@ import {
 } from 'fumadocs-mdx/config';
 import lastModified from 'fumadocs-mdx/plugins/last-modified';
 import { z } from 'zod';
+import inlineBadgeInHeadings from './lib/remark/inline-badge-in-headings';
 
 const customFrontmatterSchema = frontmatterSchema.extend({
   caption: z.string().optional(),
@@ -29,7 +30,7 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    remarkPlugins: [],
+    remarkPlugins: v => [inlineBadgeInHeadings, ...v],
   },
   plugins: [lastModified()],
 });
