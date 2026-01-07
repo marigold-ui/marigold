@@ -3,6 +3,9 @@ title: SelectList
 description: A component for displaying a list of interactive items, with support for keyboard navigation, single or multiple selection, and row actions.
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `SelectList` can be used to select multiple items from a list simultaneously. It provides a familiar interface where users can select multiple items.
 
 ## Anatomy
@@ -16,6 +19,12 @@ A `SelectList` consists of a container element, with rows of data inside. The ro
   height={550}
   className="mx-auto block"
 />
+
+## Appearance
+
+<AppearanceDemo component={'SelectList'} />
+
+<AppearanceTable component={'SelectList'} />
 
 ## Usage
 

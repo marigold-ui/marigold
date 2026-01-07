@@ -3,6 +3,9 @@ title: TextArea
 description: Component for entering multiline text input.
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `<TextArea>` is a form component that allows users to enter and edit multiline text content with a keyboard. It consists of a textarea input field, a label, and optional help text that can also display error messages for validation feedback.
 
 It behaves similarly to the [`<TextField>`](/components/form/textfield) component but is designed specifically for longer, multiline text input. The properties have identical behavior to those in [`<TextField>`](/components/form/textfield).
@@ -12,6 +15,12 @@ You can also add all usual properties from the HTML textarea element.
 ## Anatomy
 
 A textarea consists of an input area that accepts multiline text, and a label which informs the user about the content they need to enter. `<TextArea>` automatically manages the relationship between these elements and supports optional description and error message elements for providing context and validation feedback.
+
+## Appearance
+
+<AppearanceDemo component={'Textarea'} />
+
+<AppearanceTable component={'Textarea'} />
 
 ## Usage
 

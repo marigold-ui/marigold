@@ -3,6 +3,9 @@ title: Radio
 description: Component which allows to select only one option from a list.
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `<Radio>` and `<Radio.Group>` components allow users to select one option from a set of options. They are useful for presenting a list of options to users and collecting their responses.
 
 The `<Radio.Group>` not only groups the radio buttons but also manages their state. This means you can easily control which option is selected by default and dynamically update the selection based on user interactions.
@@ -22,6 +25,12 @@ The radio button component is comprised of a set of clickable circles (the input
 - **Group label:** Describes the group of options or provides guidance for making a selection.
 - **Radio button input:** Indicates the state of a radio button. By default, no option will be preselected.
 - **Radio button label:** Describes the information you want to select or unselect.
+
+## Appearance
+
+<AppearanceDemo component={'Radio'} />
+
+<AppearanceTable component={'Radio'} />
 
 ## Usage
 

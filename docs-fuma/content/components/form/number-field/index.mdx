@@ -3,6 +3,9 @@ title: NumberField
 description: Component for entering numbers.
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `<NumberField>` component used for capturing numerical input from the user in a form or similar input context. This allows users to input numbers including integers, decimals, and as well as percentages.
 The component also offers steppers which provides lower interaction costs.
 
@@ -17,6 +20,12 @@ It consists of a label, an input field and a help text. Optional you can also sh
   height={550}
   className="mx-auto block"
 />
+
+## Appearance
+
+<AppearanceDemo component={'NumberField'} />
+
+<AppearanceTable component={'NumberField'} />
 
 ## Usage
 

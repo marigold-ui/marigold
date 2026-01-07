@@ -3,6 +3,9 @@ title: TextField
 description: Component for input forms.
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `<TextField>` is a form component which allows user to enter text with a keyboard. It creates interactive controls for web-based forms in order to accept data from the user.
 It is also one of the most powerful and complex elements in all of HTML due to the sheer number of combinations of input types and attributes.
 
@@ -21,13 +24,17 @@ context about the field, and any validation messages.
   className="mx-auto block"
 />
 
-control.
+## Appearance
 
-Avoid using `<TextField>` if a user can only enter an option from a predefined list then avoid using a free-form
-text
-input as it is likely to result in an error. Consider using a selection control such as a dropdown, select, or
-radio
-button group instead.
+<AppearanceDemo component={'TextField'} />
+
+<AppearanceTable component={'TextField'} />
+
+## Usage
+
+Use a `<TextField>` if a user needs to input unique information that cannot be predicted with a preset of options (e.g. Radio, Select etc.) and also a user needs to input memorable data that can be entered more quickly in a free-hand format versus a more complex control.
+
+Avoid using `<TextField>` if a user can only enter an option from a predefined list then avoid using a free-form text input as it is likely to result in an error. Consider using a selection control such as a dropdown, select, or radio button group instead.
 
 ### Label
 

@@ -3,6 +3,9 @@ title: Checkbox
 description: Component to select one or more options.
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `<Checkbox>` component is a form element that allows users to make a binary choice, either selecting or deselecting an option. Multiple checkboxes can be grouped together using `<Checkbox.Group>` to enable the selection of zero, one or any number of options.
 
 It is commonly used in forms, settings, and anywhere users need to make multiple selections or toggle individual options. A `<Checkbox>` can also display an indeterminate state to represent a partially selected group.
@@ -20,6 +23,12 @@ A checkbox group consists of multiple checkboxes, each with its own label, allow
   height={550}
   className="mx-auto block"
 />
+
+## Appearance
+
+<AppearanceDemo component={'Checkbox'} />
+
+<AppearanceTable component={'Checkbox'} />
 
 ## Usage
 

@@ -4,6 +4,9 @@ description: Component used to pick date value.
 badge: updated
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `<DatePicker>` component is a user interface element that allows users to select a date from a calendar.
 
 The typical practice is to provide a date picker and when you click on calendar button it pops up a calendar below the date field, allowing the user to populate the field with an appropriate date.
@@ -19,6 +22,12 @@ The Label defines the purpose of the Date Field, where users can enter a date di
   height={550}
   className="mx-auto block"
 />
+
+## Appearance
+
+<AppearanceDemo component={'DatePicker'} />
+
+<AppearanceTable component={'DatePicker'} />
 
 ## Usage
 
@@ -77,7 +86,7 @@ Invalid dates or unrecognized formats are ignored, ensuring data integrity.
 
 <StorybookHintMessage />
 
-<PropsTable component="Datepicker" />
+<PropsTable component="DatePicker" />
 
 ## Alternative components
 

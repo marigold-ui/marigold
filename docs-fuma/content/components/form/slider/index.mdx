@@ -3,6 +3,9 @@ title: Slider
 description: Allows to make selections from a range of values.
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `<Slider>` is a form component that allows users to quickly select a value within a range. They should be used when the upper and lower bounds of the range are known and static.
 Sliders provide a visual indication of adjustable content, where the user can increase or decrease the value by moving the handle along a horizontal track.
 
@@ -19,6 +22,12 @@ The thumbs can be dragged to allow a user to change their value. In addition, th
   height={550}
   className="mx-auto block"
 />
+
+## Appearance
+
+<AppearanceDemo component={'Slider'} />
+
+<AppearanceTable component={'Slider'} />
 
 ## Usage
 

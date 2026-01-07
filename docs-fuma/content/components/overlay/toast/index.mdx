@@ -4,6 +4,9 @@ description: Toasts are used to display brief messages or notifications that app
 badge: beta
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 A Toast is a small, temporary notification that appears on the screen to inform users about the outcome of an action or to provide brief feedback. Toasts are commonly used in applications to deliver messages such as success notifications, error alerts, or informational updates without interrupting the user's workflow.
 
 ## Anatomy
@@ -15,9 +18,18 @@ A Toast is a small, temporary notification that appears on the screen to inform 
   height={550}
   className="mx-auto block"
 />
+## Appearance
+
+<AppearanceDemo component={'Toast'} />
+
+<AppearanceTable component={'Toast'} />
+
 ## Usage
+
 The `<ToastProvider>` Component should be in the root of your application, so it can be used anywhere in your app. You can use the `addToast` function to add a Toast to the Toaster. The Toast will appear at the bottom right of the screen by default. with the position prop you can change the position of all Toasts.
+
 ### Simple toast
+
 A Toast should be used when you want to give users quick, non-intrusive feedback after an action, such as saving, deleting, or uploading data. It appears on the edge of the screen and should remain visible for at least 5 seconds or until the user manually dismisses it. Because it doesn’t interrupt the user’s workflow, a Toast is ideal for success messages, notifications, or error alerts that don’t need immediate interaction. The message should be clear, concise, and easy to read.
 
 <ComponentPreview name="toast-simple" />

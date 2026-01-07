@@ -1,9 +1,12 @@
+// Next.js & External
+// Layout Components
 import {
   DocsBody,
   DocsDescription,
   DocsPage,
   DocsTitle,
 } from '@/components/layout/docs/page';
+// MDX Wrapper Components
 import {
   Do,
   DoDescription,
@@ -38,11 +41,13 @@ import {
   TabsTabPanel,
   TeaserList,
 } from '@/components/mdx-wrapper-components';
+// Lib
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+// Marigold Components
 import { Center, Columns, Stack } from '@marigold/components';
 import { ColorTokenTable } from '@/ui/ColorTokens';
 import { RelativeTime } from '@/ui/RelativeTime';
@@ -54,6 +59,7 @@ import {
   Headlines,
   TextAlign,
 } from '@/ui/Typography';
+// UI Components
 import { LatestPost } from '@/ui/blog/LatestPost';
 import { PostList } from '@/ui/blog/PostList';
 
@@ -79,74 +85,9 @@ export default async function Page(props: PageProps) {
           {page.data.description}
         </DocsDescription>
       </div>
+
       <DocsBody id="docs-body" className="pt-4 pb-10">
-        <MDX
-          components={{
-            ...getMDXComponents({
-              // this allows you to link to other pages with relative file paths
-              a: createRelativeLink(source, page),
-              p: MDXText,
-              h2: MDXHeadline2,
-              h3: MDXHeadline3,
-              h4: MDXHeadline4,
-              h5: MDXHeadline5,
-              h6: MDXHeadline6,
-              LatestPost,
-              PostList,
-              IconList,
-              TextAlign,
-              ComponentPreview: MDXComponentPreview,
-              TeaserList: TeaserList,
-              SectionMessage: Object.assign(SectionMessage, {
-                Title: SectionMessageTitle,
-                Content: SectionMessageContent,
-              }),
-              Do: Object.assign(Do, {
-                Figure: DoFigure,
-                Description: DoDescription,
-              }),
-              Dont: Object.assign(Dont, {
-                Figure: DontFigure,
-                Description: DontDescription,
-              }),
-              GuidelineTiles,
-              Image,
-              PropsTable: props => <MDXPropsTable {...props} />,
-              StorybookHintMessage: (props: any) => (
-                <MDXStorybookHintMessage
-                  {...props}
-                  component={page.data.title}
-                />
-              ),
-            }),
-            Tabs: Object.assign(Tabs, {
-              List: TabsList,
-              Item: TabsItem,
-              TabPanel: TabsTabPanel,
-            }),
-            TabsItem: TabsItem,
-            TabsList: TabsList,
-            TabsTabPanel: TabsTabPanel,
-            Stack,
-            Center,
-            Scrollable,
-            TableHeader,
-            TableBody,
-            TableRow,
-            TableCell,
-            TableColumn,
-            AlignmentsX,
-            AlignmentsY,
-            BorderRadius,
-            ColorTokenTable,
-            FontSizes,
-            Columns,
-            FontStyle,
-            FontWeights,
-            Headlines,
-            Spacing,
-          }}
-        />
+        <MDX components={getMdxComponentsConfig(page)} />
         {page.data.lastModified && (
           <div className="text-text-primary-muted pt-8 text-xs italic">
             Last update:{' '}
@@ -156,6 +97,84 @@ export default async function Page(props: PageProps) {
       </DocsBody>
     </DocsPage>
   );
+}
+
+function getMdxComponentsConfig(page: any) {
+  return {
+    ...getMDXComponents({
+      // Relative linking
+      a: createRelativeLink(source, page),
+
+      // Text & Headings
+      p: MDXText,
+      h2: MDXHeadline2,
+      h3: MDXHeadline3,
+      h4: MDXHeadline4,
+      h5: MDXHeadline5,
+      h6: MDXHeadline6,
+
+      // Blog Components
+      LatestPost,
+      PostList,
+
+      // Custom MDX Components
+      ComponentPreview: MDXComponentPreview,
+      IconList,
+      Image,
+      PropsTable: (props: any) => <MDXPropsTable {...props} />,
+      StorybookHintMessage: (props: any) => (
+        <MDXStorybookHintMessage {...props} component={page.data.title} />
+      ),
+      TeaserList,
+
+      // Compound Components
+      SectionMessage: Object.assign(SectionMessage, {
+        Title: SectionMessageTitle,
+        Content: SectionMessageContent,
+      }),
+      Do: Object.assign(Do, {
+        Figure: DoFigure,
+        Description: DoDescription,
+      }),
+      Dont: Object.assign(Dont, {
+        Figure: DontFigure,
+        Description: DontDescription,
+      }),
+      Tabs: Object.assign(Tabs, {
+        List: TabsList,
+        Item: TabsItem,
+        TabPanel: TabsTabPanel,
+      }),
+      GuidelineTiles,
+    }),
+
+    // Layout Components
+    Center,
+    Columns,
+    Scrollable,
+    Stack,
+
+    // Table Components
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+
+    // Token Components
+    AlignmentsX,
+    AlignmentsY,
+    BorderRadius,
+    ColorTokenTable,
+    Spacing,
+
+    // Typography Components
+    FontSizes,
+    FontStyle,
+    FontWeights,
+    Headlines,
+    TextAlign,
+  };
 }
 
 export async function generateStaticParams() {

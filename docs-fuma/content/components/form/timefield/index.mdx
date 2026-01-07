@@ -3,6 +3,9 @@ title: TimeField
 description: Component for entering time in forms.
 ---
 
+import { AppearanceDemo } from '@/ui/AppearanceDemo';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+
 The `<TimeField>` allows users to enter and edit time values using the keyboard. Each part of the time value—such as hour, minute, and optionally AM/PM—is displayed in an individually editable segment. These segments are focusable and can be incremented or decremented using the arrow keys, or edited by typing. This segmented approach ensures correct formatting and parsing of time values across different locales and hour cycles, and provides a reliable, keyboard-friendly way to input time.
 
 ## Anatomy
@@ -16,6 +19,12 @@ A `<TimeField>` consists of a label and a group of segments representing each un
   height={550}
   className="mx-auto block"
 />
+
+## Appearance
+
+<AppearanceDemo component={'TimeField'} />
+
+<AppearanceTable component={'TimeField'} />
 
 ## Usage
 
