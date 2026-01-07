@@ -37,7 +37,7 @@
     "@storybook/react-vite": "^10.1.4",
     "@storybook/test-runner": "0.24.2",
     "@types/node": "24.9.2",
-    "eslint-plugin-storybook": "10.1.4",
+    "eslint-plugin-storybook": "10.1.10",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "storybook": "^10.1.4",
