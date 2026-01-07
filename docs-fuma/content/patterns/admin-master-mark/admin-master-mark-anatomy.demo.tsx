@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge, Inline } from '@marigold/components';
 
 export default () => (

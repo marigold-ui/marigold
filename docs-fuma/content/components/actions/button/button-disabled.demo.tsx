@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Stack, Text } from '@marigold/components';
 
 export default () => (

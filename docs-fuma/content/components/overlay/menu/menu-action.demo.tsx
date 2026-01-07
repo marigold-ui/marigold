@@ -1,3 +1,5 @@
+'use client';
+
 import { Menu } from '@marigold/components';
 
 export default () => {

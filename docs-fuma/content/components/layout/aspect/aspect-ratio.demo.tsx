@@ -1,3 +1,5 @@
+'use client';
+
 import { Aspect } from '@marigold/components';
 
 export default () => (

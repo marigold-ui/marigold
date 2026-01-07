@@ -1,3 +1,5 @@
+'use client';
+
 import { DateFormat, NumericFormat } from '@/ui';
 import { useState } from 'react';
 import type { Selection } from '@marigold/components';

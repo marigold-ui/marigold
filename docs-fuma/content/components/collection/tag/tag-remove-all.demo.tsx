@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Tag, Text } from '@marigold/components';
 

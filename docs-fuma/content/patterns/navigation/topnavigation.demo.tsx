@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Inline, Split, Tabs } from '@marigold/components';
 import { Logout } from '@marigold/icons';
 import { Logo } from './Logo';

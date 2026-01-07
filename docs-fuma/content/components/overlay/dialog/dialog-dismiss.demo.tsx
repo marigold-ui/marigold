@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Dialog } from '@marigold/components';
 
 export default () => (

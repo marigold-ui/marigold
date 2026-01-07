@@ -1,3 +1,5 @@
+'use client';
+
 import type { FormEvent } from 'react';
 import { Button, Form, Slider, Stack } from '@marigold/components';
 

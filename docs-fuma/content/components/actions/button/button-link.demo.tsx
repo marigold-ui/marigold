@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Inline, LinkButton } from '@marigold/components';
 
 export default () => (

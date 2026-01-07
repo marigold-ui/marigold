@@ -1,3 +1,5 @@
+'use client';
+
 import { DateFormat, Inline, Tag } from '@marigold/components';
 
 export default () => (

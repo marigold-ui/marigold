@@ -1,3 +1,5 @@
+'use client';
+
 import { registry } from '@/lib/.registry/demos';
 import { getAppearance } from '@/lib/utils';
 import { ruiTheme } from '@/theme';

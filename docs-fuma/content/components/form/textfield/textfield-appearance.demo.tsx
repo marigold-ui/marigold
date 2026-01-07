@@ -1,3 +1,5 @@
+'use client';
+
 import { TextField, TextFieldProps } from '@marigold/components';
 
 export default (props: TextFieldProps) => (

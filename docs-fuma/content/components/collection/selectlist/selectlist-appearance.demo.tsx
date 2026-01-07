@@ -1,3 +1,5 @@
+'use client';
+
 import { SelectList, SelectListProps, Text } from '@marigold/components';
 
 export default (props: SelectListProps) => (

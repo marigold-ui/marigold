@@ -1,3 +1,5 @@
+'use client';
+
 import { ComboBox, useAsyncList } from '@marigold/components';
 
 export default () => {

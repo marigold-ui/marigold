@@ -1,3 +1,5 @@
+'use client';
+
 import { Autocomplete } from '@marigold/components';
 
 export default () => (

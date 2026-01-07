@@ -524,6 +524,9 @@ importers:
       shiki:
         specifier: 3.15.0
         version: 3.15.0
+      unist-util-visit:
+        specifier: 5.0.0
+        version: 5.0.0
       zod:
         specifier: 4.1.13
         version: 4.1.13

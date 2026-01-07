@@ -1,3 +1,5 @@
+'use client';
+
 import { venueTypes, venues } from '@/lib/data/venues';
 import { Card, Headline, Inline, Inset, Text } from '@marigold/components';
 

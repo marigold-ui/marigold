@@ -1,3 +1,5 @@
+'use client';
+
 import type { Venue } from '@/lib/data/venues';
 import {
   QueryClient,

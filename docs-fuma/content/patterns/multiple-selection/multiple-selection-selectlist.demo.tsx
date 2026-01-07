@@ -1,3 +1,5 @@
+'use client';
+
 import { SelectList } from '@marigold/components';
 
 const paymentMethods = [

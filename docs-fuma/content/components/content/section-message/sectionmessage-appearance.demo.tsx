@@ -1,3 +1,5 @@
+'use client';
+
 import { SectionMessage, SectionMessageProps } from '@marigold/components';
 
 export default (props: SectionMessageProps) => (

@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, MarigoldProvider } from '@marigold/components';
 import { cva, extendTheme, useTheme } from '@marigold/system';
 

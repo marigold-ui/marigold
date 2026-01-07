@@ -1,3 +1,5 @@
+'use client';
+
 import { DateFormat } from '@/ui';
 import { Badge, I18nProvider, Table } from '@marigold/components';
 

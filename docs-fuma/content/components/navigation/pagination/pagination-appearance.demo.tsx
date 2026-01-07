@@ -1,3 +1,5 @@
+'use client';
+
 import { Pagination, PaginationProps } from '@marigold/components';
 
 export default (props: PaginationProps) => (

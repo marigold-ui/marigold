@@ -1,3 +1,5 @@
+'use client';
+
 import { Divider, Stack, Text } from '@marigold/components';
 
 export default () => (

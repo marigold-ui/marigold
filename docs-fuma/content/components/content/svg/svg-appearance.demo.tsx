@@ -1,3 +1,5 @@
+'use client';
+
 import { SVG, SVGProps } from '@marigold/system';
 
 export default (props: SVGProps) => (

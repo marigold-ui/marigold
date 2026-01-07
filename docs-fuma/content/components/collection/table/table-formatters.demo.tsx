@@ -1,3 +1,5 @@
+'use client';
+
 import { I18nProvider } from '@react-aria/i18n';
 import { Table } from '@marigold/components';
 import { DateFormat, NumericFormat } from '@marigold/system';

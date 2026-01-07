@@ -1,3 +1,5 @@
+'use client';
+
 import { SelectProps } from '@marigold/components';
 import { Select } from '@marigold/components';
 

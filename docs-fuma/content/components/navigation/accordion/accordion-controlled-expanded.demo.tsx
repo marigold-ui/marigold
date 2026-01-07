@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Key } from '@react-types/shared';
 import { Accordion, TextField } from '@marigold/components';

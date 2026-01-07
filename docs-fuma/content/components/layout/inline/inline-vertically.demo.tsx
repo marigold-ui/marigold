@@ -1,3 +1,5 @@
+'use client';
+
 import { Center, Inline, Stack } from '@marigold/components';
 import { Divider } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';

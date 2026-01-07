@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Stack, VisuallyHidden } from '@marigold/components';
 import { Delete } from '@marigold/icons';
 

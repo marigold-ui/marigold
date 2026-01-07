@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, Inset, MarigoldProvider } from '@marigold/components';
 import theme from '@marigold/theme-rui';
 

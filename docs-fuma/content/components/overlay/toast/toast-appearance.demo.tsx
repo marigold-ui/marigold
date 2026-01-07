@@ -1,3 +1,5 @@
+'use client';
+
 import type { ToastContentProps } from '@marigold/components';
 import { Toast } from '@marigold/components';
 

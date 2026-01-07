@@ -1,3 +1,5 @@
+'use client';
+
 import { Center, Inline } from '@marigold/components';
 import { SVG } from '@marigold/system';
 

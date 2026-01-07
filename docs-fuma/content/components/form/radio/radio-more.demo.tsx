@@ -1,3 +1,5 @@
+'use client';
+
 import { Radio } from '@marigold/components';
 
 export default () => (

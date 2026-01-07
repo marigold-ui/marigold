@@ -1,3 +1,5 @@
+'use client';
+
 import { Table, useAsyncList } from '@marigold/components';
 
 export interface asyncData {

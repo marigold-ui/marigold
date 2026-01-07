@@ -1,3 +1,5 @@
+'use client';
+
 import type { DialogProps } from '@marigold/components';
 import {
   Button,

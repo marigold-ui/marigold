@@ -1,3 +1,5 @@
+'use client';
+
 import { parseAbsoluteToLocal, parseDateTime } from '@internationalized/date';
 import { DateField, Stack } from '@marigold/components';
 

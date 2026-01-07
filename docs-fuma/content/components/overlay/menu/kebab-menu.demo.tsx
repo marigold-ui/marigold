@@ -1,3 +1,5 @@
+'use client';
+
 import { ActionMenu } from '@marigold/components';
 
 export default () => (

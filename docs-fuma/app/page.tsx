@@ -3,8 +3,7 @@ import type { PropsWithChildren } from 'react';
 import Image from 'next/image';
 import { BlurFade } from '@/ui/BlurFade';
 import { AnimatedShinyText } from '@/ui/ShinyText';
-// import { getLatestPost } from '@/ui/blog/LatestPost';
-import { SiteHeader } from './_components/SiteHeader';
+import { getLatestPost } from '@/ui/blog/LatestPost';
 import { AccessibiltySection } from './_components/landingpage/AccessibiltySection';
 import { CollaborationSection } from './_components/landingpage/CollaborationSection';
 import { LayoutSection } from './_components/landingpage/LayoutSection';
@@ -36,18 +35,18 @@ const SectionLink = ({
 // Page
 // ---------------
 const Page = () => {
-  // const latestPost = getLatestPost();
+  const latestPost = getLatestPost();
   return (
     <main className="grid justify-center px-(--page-padding-md) xl:px-(--page-padding-xl)">
       {/* Hero */}
       <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-(--breakpoint-lg) place-items-center text-center">
         <div className="-mx-(--page-padding-md) md:mx-0">
           <Center>
-            {/* <Link href={`/${latestPost.slug}`} variant="shiny" size="xsmall">
-                <AnimatedShinyText className="transition ease-out">
-                  🚀✨ View latest updates!
-                </AnimatedShinyText>
-              </Link> */}
+            <Link href={latestPost.url} variant="shiny" size="xsmall">
+              <AnimatedShinyText className="transition ease-out">
+                🚀✨ View latest updates!
+              </AnimatedShinyText>
+            </Link>
           </Center>
           <h1 className="pt-0.5 text-6xl font-extrabold text-balance lg:text-8xl">
             Cultivate beautiful user interfaces

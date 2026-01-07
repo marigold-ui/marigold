@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Dialog, Headline, Inline } from '@marigold/components';
 import { Exclamation } from '@marigold/icons';
 

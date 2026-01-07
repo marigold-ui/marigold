@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Card, Stack, Switch, Tiles } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';

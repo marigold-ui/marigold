@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Scrollable, Stack, Table } from '@marigold/components';
 

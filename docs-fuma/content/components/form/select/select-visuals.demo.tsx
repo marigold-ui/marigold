@@ -1,3 +1,5 @@
+'use client';
+
 import { people } from '@/lib/data/people';
 import { Inline, Select, Text } from '@marigold/components';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { useActionState } from 'react';
 import { Button, Form, Headline, Stack, TextField } from '@marigold/components';
 

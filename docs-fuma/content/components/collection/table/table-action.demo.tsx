@@ -1,3 +1,5 @@
+'use client';
+
 import { venues } from '@/lib/data/venues';
 import { Button, Table } from '@marigold/components';
 

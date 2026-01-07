@@ -1,3 +1,5 @@
+'use client';
+
 import { List } from '@marigold/components';
 import { ThemeProvider, useTheme } from '@marigold/system';
 

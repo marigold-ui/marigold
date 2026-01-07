@@ -1,3 +1,5 @@
+'use client';
+
 import { Aside } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
 

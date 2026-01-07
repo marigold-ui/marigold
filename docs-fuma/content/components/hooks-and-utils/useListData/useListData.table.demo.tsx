@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack, Table, TextArea, useListData } from '@marigold/components';
 
 export default () => {

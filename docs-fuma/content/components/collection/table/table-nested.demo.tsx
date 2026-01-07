@@ -1,3 +1,5 @@
+'use client';
+
 import { Table } from '@marigold/components';
 
 export default () => (

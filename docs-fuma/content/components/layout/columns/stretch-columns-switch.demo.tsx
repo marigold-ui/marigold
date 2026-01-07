@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Columns, Stack, Switch } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';

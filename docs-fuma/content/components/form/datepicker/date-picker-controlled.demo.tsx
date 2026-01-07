@@ -1,3 +1,5 @@
+'use client';
+
 import type { DateValue } from '@internationalized/date';
 import { parseDate } from '@internationalized/date';
 import { useState } from 'react';

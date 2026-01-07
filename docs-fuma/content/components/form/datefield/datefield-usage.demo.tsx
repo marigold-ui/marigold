@@ -1,3 +1,5 @@
+'use client';
+
 import { DateField, Inline } from '@marigold/components';
 
 export default () => (

@@ -1,3 +1,5 @@
+'use client';
+
 import { DatePicker, Stack, Text } from '@marigold/components';
 
 export default function () {

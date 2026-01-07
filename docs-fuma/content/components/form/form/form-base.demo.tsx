@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Form, Inset, Stack, TextField } from '@marigold/components';
 
 export default () => {

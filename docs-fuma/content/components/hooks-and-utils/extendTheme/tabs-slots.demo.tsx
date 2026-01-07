@@ -1,3 +1,5 @@
+'use client';
+
 import { MarigoldProvider, Tabs } from '@marigold/components';
 import { cva, extendTheme, useTheme } from '@marigold/system';
 

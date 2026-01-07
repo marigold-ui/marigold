@@ -1,3 +1,5 @@
+'use client';
+
 import { Link } from '@marigold/components';
 
 export default () => {

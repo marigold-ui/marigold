@@ -1,3 +1,5 @@
+'use client';
+
 import { Columns, Container, Headline, Text } from '@marigold/components';
 
 export default () => (

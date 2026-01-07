@@ -1,3 +1,5 @@
+'use client';
+
 import { Link, SectionMessage, Stack, Text } from '@marigold/components';
 
 export default () => (

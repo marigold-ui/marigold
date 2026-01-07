@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { TextField } from '@marigold/components';
 

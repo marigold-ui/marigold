@@ -1,3 +1,5 @@
+'use client';
+
 import { Headline, HeadlineProps } from '@marigold/components';
 
 export default (props: HeadlineProps) => (

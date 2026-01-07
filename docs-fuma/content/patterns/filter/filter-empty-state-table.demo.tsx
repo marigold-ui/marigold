@@ -1,3 +1,5 @@
+'use client';
+
 import { HeartCrack } from 'lucide-react';
 import { Button, Inset, Stack, Table, Text } from '@marigold/components';
 

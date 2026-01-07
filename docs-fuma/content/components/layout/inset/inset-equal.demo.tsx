@@ -1,3 +1,5 @@
+'use client';
+
 import { Inset } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
 

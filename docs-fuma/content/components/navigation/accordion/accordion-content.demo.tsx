@@ -1,3 +1,5 @@
+'use client';
+
 import { Accordion } from '@marigold/components';
 
 export default () => {

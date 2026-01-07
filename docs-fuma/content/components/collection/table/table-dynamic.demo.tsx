@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Table } from '@marigold/components';
 
