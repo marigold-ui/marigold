@@ -5,6 +5,15 @@ order: 1
 badge: new
 ---
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from '@marigold/components';
+import { SpacingTokensTable } from './spacing-tokens';
+
 Forms are the backbone of data submission, making their design critical to the user experience. Our Form Design Guidelines ensure every form in your application is consistent, usable, and accessible.
 
 This comprehensive guide covers the visual and structural aspects of form design, from overall layout principles and spacing strategies to organizing content with sections and fields. You'll learn how to create intuitive user flows, apply consistent spacing using our design tokens, and leverage components like accordions to manage complex forms effectively.
@@ -151,46 +160,7 @@ These fields must be filled out for the form to be submitted. They are clearly i
 
 We provide a set of spacing tokens to help you apply consistent spacing throughout your forms. These tokens are designed to cover spacing needs for form layouts, including spacing between sections, fields, and groups of related fields.
 
-<Table aria-label="spacing tokens">
-  <TableHeader>
-    <TableColumn>Token</TableColumn>
-    <TableColumn>Value</TableColumn>
-    <TableColumn>Description</TableColumn>
-    <TableColumn>Relevant components</TableColumn>
-  </TableHeader>
-  <TableBody>
-    <Table.Row key={0}>
-      <TableCell>`container`</TableCell>
-      <TableCell>50rem (800px)</TableCell>
-      <TableCell>Used width or max-width for the form container.</TableCell>
-      <TableCell>`<div>`, `<Form>`</TableCell>
-    </Table.Row>
-    <Table.Row key={1}>
-      <TableCell>`section`</TableCell>
-      <TableCell>3.5rem (56px)</TableCell>
-      <TableCell>Used for creating space between different form sections.</TableCell>
-      <TableCell>`<Stack>`</TableCell>
-    </Table.Row>
-    <Table.Row key={2}>
-      <TableCell>`fieldY`</TableCell>
-      <TableCell>2rem (32px)</TableCell>
-      <TableCell>Used for creating vertical space between individual form fields in a section.</TableCell>
-      <TableCell>`<Stack>`</TableCell>
-    </Table.Row>
-    <Table.Row key={3}>
-      <TableCell>`fieldX`</TableCell>
-      <TableCell>1.25rem (20px)</TableCell>
-      <TableCell>Used for creating horizontal space between individual form fields in a section.</TableCell>
-      <TableCell>`<Inline>`</TableCell>
-    </Table.Row>
-      <Table.Row key={4}>
-      <TableCell>`group`</TableCell>
-      <TableCell>1rem (16px)</TableCell>
-      <TableCell>Used for grouping related fields (address components, date/time fields) or multiple accordion sections together.</TableCell>
-      <TableCell>`<Stack>`, `<Inset>`</TableCell>
-    </Table.Row>
-  </TableBody>
-</Table>
+<SpacingTokensTable />
 
 ## Actions
 
@@ -202,13 +172,13 @@ Additional actions can enhance the user experience by providing options like "vi
 
 Place the action near the related field where the action is for with that context is given. Links should be placed usually next or below the related field.
 
-<ComponentPreview file="form-link" mode="preview" />
+<ComponentPreview name="form-link" mode="preview" />
 
 ### Submit placement
 
 The submit button should be positioned at the bottom of the form, aligned to the left to follow the natural reading flow. Place the primary action first, followed by secondary actions with appropriate spacing.
 
-<ComponentPreview file="form-action" mode="preview" />
+<ComponentPreview name="form-action" />
 
 ## Admin- and Mastermark
 

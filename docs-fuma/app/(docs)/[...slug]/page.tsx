@@ -27,8 +27,6 @@ import {
   SectionMessage,
   SectionMessageContent,
   SectionMessageTitle,
-  Stack,
-  Table,
   TableBody,
   TableCell,
   TableColumn,
@@ -45,6 +43,7 @@ import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Center, Stack } from '@marigold/components';
 import { ColorTokenTable } from '@/ui/ColorTokens';
 import { RelativeTime } from '@/ui/RelativeTime';
 import { AlignmentsX, AlignmentsY, BorderRadius, Spacing } from '@/ui/Token';
@@ -55,6 +54,8 @@ import {
   Headlines,
   TextAlign,
 } from '@/ui/Typography';
+import { LatestPost } from '@/ui/blog/LatestPost';
+import { PostList } from '@/ui/blog/PostList';
 
 interface PageProps {
   params: Promise<{ slug: string[] }>;
@@ -69,7 +70,7 @@ export default async function Page(props: PageProps) {
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc}>
+    <DocsPage toc={page.data.toc === false ? [] : page.data.toc}>
       <div className="col-span-full">
         <DocsTitle className="max-w-(--maxHeadlineWidth) scroll-m-20 text-left text-5xl font-extrabold tracking-tight *:no-underline lg:text-6xl">
           {page.data.title}
@@ -90,6 +91,8 @@ export default async function Page(props: PageProps) {
               h4: MDXHeadline4,
               h5: MDXHeadline5,
               h6: MDXHeadline6,
+              LatestPost,
+              PostList,
               IconList,
               TextAlign,
               ComponentPreview: MDXComponentPreview,
@@ -116,12 +119,16 @@ export default async function Page(props: PageProps) {
                 />
               ),
             }),
-            Table,
-            Tabs,
+            Tabs: Object.assign(Tabs, {
+              List: TabsList,
+              Item: TabsItem,
+              TabPanel: TabsTabPanel,
+            }),
             TabsItem: TabsItem,
             TabsList: TabsList,
             TabsTabPanel: TabsTabPanel,
             Stack,
+            Center,
             Scrollable,
             TableHeader,
             TableBody,

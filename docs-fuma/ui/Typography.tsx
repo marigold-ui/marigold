@@ -1,3 +1,5 @@
+'use client';
+
 import { ruiTheme } from '@/theme';
 import {
   Headline,

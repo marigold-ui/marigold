@@ -19,6 +19,7 @@ type ComponentPreviewProps = {
   code?: string;
   title?: string;
   children?: ReactNode;
+  mode?: 'preview' | 'code' | 'both';
 };
 
 // Preview wrapper component
@@ -66,7 +67,11 @@ const Preview = ({
   );
 };
 
-export const ComponentPreview = ({ name, code }: ComponentPreviewProps) => {
+export const ComponentPreview = ({
+  name,
+  code,
+  mode = 'both',
+}: ComponentPreviewProps) => {
   const onSelectionChange = (key: Key) => {
     track('Demo Tab', { tab: key as string });
   };
@@ -79,6 +84,42 @@ export const ComponentPreview = ({ name, code }: ComponentPreviewProps) => {
     .replace(/\r\n|\r|\n$/, '')
     .split(/\r\n|\r|\n/).length;
 
+  // If mode is 'preview', show only the preview without tabs
+  if (mode === 'preview') {
+    return (
+      <MarigoldProvider theme={theme}>
+        <Preview name={name} />
+      </MarigoldProvider>
+    );
+  }
+
+  // If mode is 'code', show only the code without tabs
+  if (mode === 'code' && hasCode) {
+    return (
+      <MarigoldProvider theme={theme}>
+        <div className="relative [&_figure]:border-0! [&_figure]:border-none! [&_pre]:border-0! [&_pre]:border-none!">
+          <div className="absolute top-4 right-3 z-10 flex justify-end gap-3">
+            {lines >= 5 && (
+              <FullsizeView
+                code={
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: highlightedCode || '',
+                    }}
+                  />
+                }
+                codeString={codeString}
+              />
+            )}
+            <CopyButton codeString={codeString} />
+          </div>
+          <div dangerouslySetInnerHTML={{ __html: highlightedCode || '' }} />
+        </div>
+      </MarigoldProvider>
+    );
+  }
+
+  // Default mode is 'both' - show tabs with preview and code
   return (
     <MarigoldProvider theme={theme}>
       <Tabs

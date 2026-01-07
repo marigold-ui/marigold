@@ -15,6 +15,12 @@ const customFrontmatterSchema = frontmatterSchema.extend({
   toc: z.boolean().optional(),
 });
 
+const blogFrontmatterSchema = frontmatterSchema.extend({
+  date: z.string().or(z.date()),
+  type: z.string().optional(),
+  changed: z.array(z.string()).optional(),
+});
+
 export const docs = defineDocs({
   dir: 'content',
   docs: {
@@ -25,6 +31,13 @@ export const docs = defineDocs({
   },
   meta: {
     schema: metaSchema,
+  },
+});
+
+export const blog = defineDocs({
+  dir: 'content/releases/blog',
+  docs: {
+    schema: blogFrontmatterSchema,
   },
 });
 

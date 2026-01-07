@@ -1,11 +1,15 @@
 import { type InferPageType, loader } from 'fumadocs-core/source';
-import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
-import { docs } from 'fumadocs-mdx:collections/server';
+import { blog, docs } from 'fumadocs-mdx:collections/server';
 
 // See https://fumadocs.dev/docs/headless/source-api for more info
 export const source = loader({
   baseUrl: '/',
   source: docs.toFumadocsSource(),
+});
+
+export const blogSource = loader({
+  baseUrl: '/releases/blog',
+  source: blog.toFumadocsSource(),
 });
 
 export function getPageImage(page: InferPageType<typeof source>) {
@@ -26,8 +30,8 @@ ${processed}`;
 }
 
 /**
- * Extract badges from pages for client-side use
- * Called once during server-side rendering
+ * extract badges from pages for client sside use
+ * called once during server-side rendering
  */
 export function getBadgeMap(): Record<string, string> {
   const badgeMap: Record<string, string> = {};

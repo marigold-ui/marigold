@@ -1,15 +1,13 @@
-import { DateFormat, Headline, Link, Stack } from '@/ui';
-import { allBlogs } from 'contentlayer/generated';
-import { Markdown } from '../mdx';
+import { blogSource } from '@/lib/source';
+import { DateFormat, Headline, Link } from '@/ui';
 
 export const getLatestPost = () => {
-  // matches everything till the second line break
-  const regex = /[\s\S]*?\n[\s\S]*?\n/;
+  const allBlogs = blogSource.getPages();
+
   const posts = allBlogs.map(post => ({
-    title: post.title,
-    date: new Date(post.date),
-    slug: post.slug,
-    introduction: post.body.raw.match(regex)?.[0] || '',
+    title: post.data.title,
+    date: new Date(post.data.date),
+    url: post.url,
   }));
 
   const sortedPosts = posts.sort((a, b) => b.date.getTime() - a.date.getTime());
@@ -31,15 +29,12 @@ export const LatestPost = () => {
         LATEST RELEASE
       </div>
       <Headline level={2}>
-        <Link href={`/${latestPost.slug}`}>
+        <Link href={latestPost.url}>
           {`${latestPost.title} - `}
           <DateFormat value={latestPost.date} dateStyle="medium" />
         </Link>
       </Headline>
-      <Stack space={2} alignX="left">
-        <Markdown contents={latestPost.introduction}></Markdown>
-        <Link href={`/${latestPost.slug}`}>▶︎ Read more</Link>
-      </Stack>
+      <Link href={latestPost.url}>▶︎ Read more</Link>
     </div>
   );
 };

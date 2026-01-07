@@ -3,14 +3,15 @@
   "version": "16.0.3",
   "private": true,
   "scripts": {
-    "build": "npm run registry:build && next build",
+    "build": "npm run changelog:build && npm run registry:build && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && tsc --noEmit",
     "postinstall": "fumadocs-mdx && npm run registry:build",
     "lint": "eslint",
     "registry:build": "node scripts/build-registry.mjs",
-    "build:component-props": "zx ./scripts/build-component-props.mjs"
+    "build:component-props": "zx ./scripts/build-component-props.mjs",
+    "changelog:build": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
     "@internationalized/date": "3.10.0",
@@ -46,15 +47,19 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
+    "@octokit/core": "7.0.6",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/mdx": "^2.0.13",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "dotenv": "17.2.3",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.1",
+    "globby": "16.1.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "zx": "8.8.5"
   }
 }

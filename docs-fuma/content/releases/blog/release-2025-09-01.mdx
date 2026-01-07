@@ -11,3 +11,210 @@ changed:
   - components/form/combobox
   - patterns/async-data-loading
 ---
+
+While many are taking a summer break, Marigold never rests! v15.0.0 arrives with hot new features and improvements to keep your projects blooming all season long. Check out what’s fresh below! 🍉
+
+## Breaking Changes
+
+### Removed components
+
+The `<Header>`, `<Body>`, and `<Footer>` components have been removed. These were originally intended as reusable building blocks for components like `<Dialog>` and `<Card>`, but we found that dedicated compound components (such as `<Dialog.Content>`) offer a better developer experience. Subcomponents are more discoverable and easier to style based on their specific usage.
+
+The `<Image>` component has been removed. It didn’t provide significant benefits beyond offering shortcuts for Tailwind classes, which can easily be applied directly to native `<img>` elements as needed.
+
+| Prop type    | Prop value    | Tailwind class        |
+| ------------ | ------------- | --------------------- |
+| **fit**      | `contain`     | `object-contain`      |
+|              | `cover`       | `object-cover`        |
+|              | `fill`        | `object-fill`         |
+|              | `none`        | `unset`               |
+|              | `scaleDown`   | `object-scale-down`   |
+| **position** | `none`        | — (no class)          |
+|              | `bottom`      | `object-bottom`       |
+|              | `center`      | `object-center`       |
+|              | `left`        | `object-left`         |
+|              | `leftBottom`  | `object-left-bottom`  |
+|              | `leftTop`     | `object-left-top`     |
+|              | `right`       | `object-right`        |
+|              | `rightBottom` | `object-right-bottom` |
+|              | `rightTop`    | `object-right-top`    |
+|              | `top`         | `object-top`          |
+
+### Multiselect
+
+To ensure consistency, use the `emptyState` prop instead of the deprecated `noOptionsMessage` prop in the `<Multiselect>` component.
+
+```tsx
+<Multiselect emptyState={() => 'No results found.'}>{/* ... */}</Multiselect>
+```
+
+### Menu
+
+Renamed `"secondary"` to `"default"` variant. If you used `<Menu variant="secondary">` remove the variant prop to enable the previous appearance.
+
+### Slider
+
+Separate `aria-label` and `name` for slider's thumbs. The aria label (`thumbLabels`) and `name` attributes for slider thumbs are now separate. Update implementations to set both explicitly if needed.
+
+## Components
+
+Components now follow a clear release process with three phases: **Alpha** for early feedback, **Beta** for broader testing, and **Stable** for production-ready confidence. This approach helps teams understand the maturity of each component and when it’s best to use them. Read more about it [here](/getting-started/release-phases).
+
+### Improve Variant Type Safety
+
+The variant prop is now typed for all components that support it. This provides better autocompletion and type safety when using variants in our projects. TypeScript will now show errors if you try to use an invalid variant, helping catch mistakes earlier in development.
+
+### Breadcrumbs (beta)
+
+The `<Breadcrumbs>` component provides users with a clear path of navigation, helping them understand their current location and easily move back to previous sections. It’s ideal for sites and apps with hierarchical structures.
+
+Learn more in the [Breadcrumbs documentation](/components/navigation/breadcrumbs).
+
+**Example:**
+
+```tsx
+<Breadcrumbs>
+  <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+  <Breadcrumbs.Item href="/products">Products</Breadcrumbs.Item>
+  <Breadcrumbs.Item href="/products/123">Product Details</Breadcrumbs.Item>
+</Breadcrumbs>
+```
+
+### Checkbox
+
+Checkbox groups can now be collapsed when they contain many options using the new `collapseAt` prop. This automatically hides options beyond the specified count, making long lists more manageable and improving usability for forms with extensive choices.
+
+```tsx
+<Checkbox.Group collapseAt={5}>{/* ... */}</Checkbox.Group>
+```
+
+### Formatters
+
+`<DateFormat>` now supports formatting and localizing date ranges by accepting a tuple of dates. This makes it easy to display periods like "Jan 1, 2025 – Dec 31, 2025" in a way that adapts to the user's locale.
+
+```tsx
+<DateFormat value={[new Date(2025, 0, 1), new Date(2025, 11, 31)]} />
+```
+
+### Inline
+
+Make it convenient to align inputs with buttons by using the new `alignY="input"` value.
+
+```tsx
+<Inline alignY="input">
+  <TextField>
+  <Button>Click me</Button>
+</Inline>
+```
+
+Fix alignment of buttons and inputs in `<Inline>` component.
+
+### Menu
+
+Add item and section as child component of `ActionMenu`
+
+You can now easily access `ActionMenu.Item` and `ActionMenu.Section` directly, without needing to use the `Menu` component when working with `ActionMenu` alone. Learn more in the [Menu documentation](/components/overlay/menu#actionmenu).
+
+**Before 15.0.0:**
+
+```tsx
+<ActionMenu>
+  <Menu.Section title="Section 1">
+    <Menu.Item>Item 1</Menu.Item>
+    <Menu.Item>Item 2</Menu.Item>
+  </Menu.Section>
+</ActionMenu>
+```
+
+**With 15.0.0:**
+
+```tsx
+<ActionMenu>
+  <ActionMenu.Section title="Section 1">
+    <ActionMenu.Item>Item 1</ActionMenu.Item>
+    <ActionMenu.Item>Item 2</ActionMenu.Item>
+  </ActionMenu.Section>
+</ActionMenu>
+```
+
+### Radio
+
+Radio groups can now be collapsed when they contain many options using the new `collapseAt` prop. This automatically hides options beyond the specified count, making long lists more manageable and improving usability for forms with extensive choices.
+
+```tsx
+<Radio.Group collapseAt={5}>{/* ... */}</Radio.Group>
+```
+
+### Tag
+
+`<Tag.Group>` does not provide a "remove all" action. The remove all option is only available when the `onRemove` prop is also provided. The removal of tags needs to be handled in the `onRemove` handler.
+
+```tsx
+<Tag.Group onRemove={removeFilter} removeAll>
+  {/* ... */}
+</Tag.Group>
+```
+
+### Toast (beta)
+
+The `<Toast>` component lets you display brief, auto-dismissing notifications to inform users about important events or actions. Toasts appear temporarily and do not interrupt the user’s workflow, making them ideal for confirmations, warnings, or status updates.
+
+Learn more in the [Toast documentation](/components/overlay/toast).
+
+**Example:**
+
+```tsx
+const { addToast } = useToast();
+
+<ToastProvider position="bottom-right" />
+<Button
+  onPress={() => addToast({ title: 'Simple Toast', variant: 'success' })}
+>
+  Show Toast
+</Button>
+```
+
+## Design
+
+- Icons inside `<Menu.Item>` and `<ActionMenu.Item>` are now styled consistently with the rest of the menu content. This ensures better alignment and visual clarity for menus that include icons alongside text, making your menus look more polished out of the box.
+- Prevent page bounce when `<Scrollable>` is used inside a page.
+- Added a small button animation when a button is clicked.
+- Added a new variant `link` to `<Button>`
+
+## Documentation
+
+We've added comprehensive async data loading pattern documentation that provides clear guidelines for implementing components that fetch data from remote sources. These patterns ensure consistent user experience across `<ComboBox>`, `<Autocomplete>`, and other interactive components that work with dynamic data. The documentation covers two main approaches: **useAsyncList** for built-in filtering and loading states (recommended for most scenarios), and **React Query** for advanced caching with automatic request deduplication when you need sophisticated caching strategies.
+
+You can read more about it [here](/patterns/async-data-loading).
+
+**Example:**
+
+```tsx
+const list = useAsyncList({
+  async load({ signal, filterText }) {
+    const res = await fetch(`/api/search?q=${filterText}`, { signal });
+    const json = await res.json();
+    return { items: json.results };
+  },
+});
+
+<Autocomplete items={list.items} onInputChange={list.setFilterText}>
+  {/* Autocomplete content */}
+</Autocomplete>;
+```
+
+- The release process for components is now fully documented. Learn more in the [Release Phases guide](/getting-started/release-phases).
+- Removed the "recipe" section in favor of more complete patterns. Relevant information can now be found in the "patterns" section (e.g. the preliminary navigation).
+- The row actions guidelines for tables have been updated and improved. See details in the [Table documentation](/components/collection/table#row-actions).
+- The `<DateField>` documentation now includes examples for enabling time input alongside the calendar date, making it easier to support use cases that require both date and time selection.
+- The `<TextArea>` page was revised - so check out the ✨ [documentation](/components/form/textarea).
+- We are working on a [filter pattern (alpha)](/patterns/filter) which is ready to get tested from certain teams and also feedback is welcome. This pattern aims in the first place to get used in the core system but will also be handy for our product teams. If you are interested in trying it out, please [get in touch](/getting-started/get-in-touch) with us.
+
+## Bug fixes
+
+- Fixed `<Drawer>` on small screens
+- Fixed incorrect class names in `<Pagination>` and `<Slider>`
+- Fixed `<Inline>` alignment using inputs with buttons
+- Fixed broken Link from `<Split>` to `<Stack>` page
+- Property table shows now the correct properties in `<Toast>` documentation
+- In the `<Calendar>` component the month and year dropdown buttons are automatically disabled when only one option is available, and the dropdowns themselves correctly disable non-selectable months or years based on min/max values. Additionally, the dropdown can be closed again even when minValue and maxValue are set to the same year or month.
