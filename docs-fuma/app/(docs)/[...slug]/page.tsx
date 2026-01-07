@@ -44,6 +44,7 @@ import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Center, Stack } from '@marigold/components';
+import { Columns } from '@marigold/components';
 import { ColorTokenTable } from '@/ui/ColorTokens';
 import { RelativeTime } from '@/ui/RelativeTime';
 import { AlignmentsX, AlignmentsY, BorderRadius, Spacing } from '@/ui/Token';
@@ -140,6 +141,7 @@ export default async function Page(props: PageProps) {
             BorderRadius,
             ColorTokenTable,
             FontSizes,
+            Columns,
             FontStyle,
             FontWeights,
             Headlines,
