@@ -17,7 +17,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         primary:
           'rounded-surface bg-brand text-brand-foreground shadow-xs hover:bg-brand/90',
         secondary:
-          'rounded-surface bg-surface shadow-xs enabled:border border-surface-border hover:bg-hover hover:text-foreground expanded:bg-hover',
+          'rounded-surface bg-surface shadow-xs not-[[disabled]]:border border-surface-border hover:bg-hover hover:text-foreground expanded:bg-hover',
         ghost: 'rounded-surface hover:bg-hover hover:text-foreground',
         destructive:
           'rounded-surface bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
@@ -56,7 +56,7 @@ export const Button: ThemeComponent<'Button'> = cva(
           'destructive-ghost',
         ],
         size: 'default',
-        class: 'h-button px-4 py-2 [&_svg]:size-4',
+        class: 'h-button p-squish-relaxed [&_svg]:size-4',
       },
       {
         variant: [

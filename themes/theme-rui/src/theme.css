@@ -168,12 +168,35 @@
   --spacing-button-small: 2rem;
   --spacing-button-large: 2.5rem;
 
-  /* spacing between elements */
-  --spacing-container: 50rem; /* e.g. form container */
-  --spacing-section: 3.5rem; /* e.g. between form sections */
-  --spacing-fieldY: 2rem; /* e.g. between fields vertically */
-  --spacing-fieldX: 1.25rem; /* e.g. between fields horizontally */
-  --spacing-group: 1rem; /* e.g. between related fields to group them */
+  /* RELATIONAL SPACING */
+
+  --spacing-joined: --spacing(0.25);
+  --spacing-tight: --spacing(1);
+  --spacing-related: --spacing(2);
+  --spacing-peer: --spacing(4);
+  --spacing-group: --spacing(8);
+  --spacing-section: --spacing(16);
+  --spacing-context: --spacing(32);
+
+  /* INSET SPACING */
+
+  --spacing-square-tight: --spacing(1);
+  --spacing-square-snug: --spacing(2);
+  --spacing-square-regular: --spacing(3);
+  --spacing-square-relaxed: --spacing(4);
+  --spacing-square-loose: --spacing(6);
+
+  --spacing-squish-tight: --spacing(1) --spacing(2);
+  --spacing-squish-snug: --spacing(1.5) --spacing(2);
+  --spacing-squish-regular: --spacing(2) --spacing(3);
+  --spacing-squish-relaxed: --spacing(2) --spacing(4);
+  --spacing-squish-loose: --spacing(4) --spacing(6);
+
+  --spacing-stretch-tight: --spacing(2) --spacing(1);
+  --spacing-stretch-snug: --spacing(2) --spacing(1.5);
+  --spacing-stretch-regular: --spacing(3) --spacing(2);
+  --spacing-stretch-relaxed: --spacing(4) --spacing(2);
+  --spacing-stretch-loose: --spacing(6) --spacing(4);
 
   /* ==================== */
   /*       ANIMATION      */
