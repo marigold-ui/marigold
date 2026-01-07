@@ -17,7 +17,7 @@ export default () => {
     { id: 4, label: 'Setting: Outdoor' },
   ]);
 
-  const removeFilter = (keys: Set<number>) => {
+  const removeFilter = (keys: Set<string | number>) => {
     setFilters(prev => prev.filter(filter => !keys.has(filter.id)));
   };
 

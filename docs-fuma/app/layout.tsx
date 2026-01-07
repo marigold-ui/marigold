@@ -6,8 +6,6 @@ import { ReactNode, Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
 import { Nav } from './Nav';
 import { Analytics } from './_components/Analytics';
-import { SiteHeader } from './_components/SiteHeader';
-// import { Analytics } from './_components/Analytics';
 import './global.css';
 
 // Metadata

@@ -1,5 +1,6 @@
 'use client';
 import { Button, Link, cn } from '@/ui';
+import type { Node } from 'fumadocs-core/page-tree';
 import { useSearchContext } from 'fumadocs-ui/provider';
 import { ComponentProps } from 'react';
 import { usePathname } from 'next/navigation';
@@ -30,15 +31,32 @@ function SearchToggle(props: ComponentProps<'button'>) {
   if (!enabled) return;
 
   return (
-    <Button variant="sunken" size="small" onPress={setOpenSearch}>
+    <Button variant="sunken" size="small" onPress={() => setOpenSearch(true)}>
       Search...
       <Hotkey letter="K" />
     </Button>
   );
 }
 
-export const Nav = ({ pages }) => {
+interface NavPage {
+  name: string;
+  $id?: string;
+}
+
+export const Nav = ({ pages }: { pages: Node[] }) => {
   const pathname = usePathname();
+
+  // Filter and map nodes to NavPage format
+  const navPages: NavPage[] = pages
+    .filter(
+      (node): node is Extract<Node, { type: 'page' | 'folder' }> =>
+        'name' in node && typeof node.name === 'string'
+    )
+    .map(node => ({
+      name: node.name as string,
+      $id: node.$id,
+    }));
+
   return (
     <header className="border-secondary-200 bg-bg-body sticky top-0 z-10 flex h-(--page-header-height) w-full items-center gap-2 border-b px-(--page-padding) md:px-(--page-padding-md) xl:px-(--page-padding-xl)">
       <div className="md:hidden">{/* <MobileNavigation /> */}</div>
@@ -47,7 +65,7 @@ export const Nav = ({ pages }) => {
       <div className="hidden gap-6 md:flex md:flex-1">
         <SiteLogo />
         <div className="flex items-center gap-4">
-          {pages.map(({ name, $id }) => {
+          {navPages.map(({ name, $id }) => {
             const slug = $id ? $id.split(':')[1] : '/';
             return (
               <NavLink

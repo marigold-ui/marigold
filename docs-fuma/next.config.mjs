@@ -18,6 +18,36 @@ const config = {
   env: {
     version: pkg.version,
   },
+
+  productionBrowserSourceMaps: false,
+
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
+  },
+
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? {
+            exclude: ['error', 'warn'],
+          }
+        : false,
+  },
+
+  experimental: {
+    optimizePackageImports: [
+      '@marigold/components',
+      '@marigold/icons',
+      'fumadocs-ui',
+      'lucide-react',
+      'react-use',
+      'react-hook-form',
+      '@tanstack/react-query',
+      '@react-aria/i18n',
+    ],
+  },
+
   async redirects() {
     return [
       {
