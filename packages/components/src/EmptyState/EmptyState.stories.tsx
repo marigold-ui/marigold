@@ -1,6 +1,8 @@
 import { useState } from 'storybook/preview-api';
 import preview from '../../../../config/storybook/.storybook/preview';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
+import { Button } from '../Button/Button';
+import { Inline } from '../Inline/Inline';
 import { EmptyState } from './EmptyState';
 
 const meta = preview.meta({
@@ -27,6 +29,16 @@ const meta = preview.meta({
         type: { summary: 'ReactNode' },
       },
     },
+    action: {
+      control: {
+        disable: true,
+      },
+      description:
+        'Optional action element (e.g., a button) to help users resolve the empty state.',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
     variant: {
       control: {
         type: 'text',
@@ -47,6 +59,26 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   render: args => <EmptyState {...args} />,
+});
+
+export const WithAction = meta.story({
+  render: args => (
+    <EmptyState
+      {...args}
+      title="No products in your cart"
+      description="Start adding items to your cart to see them here."
+      action={
+        <Inline space="2">
+          <Button variant="primary" size="small">
+            Browse Products
+          </Button>
+          <Button variant="secondary" size="small">
+            View Wishlist
+          </Button>
+        </Inline>
+      }
+    />
+  ),
 });
 
 export const WithAutocompleteAndData = meta.story({

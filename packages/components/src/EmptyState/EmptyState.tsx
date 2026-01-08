@@ -28,6 +28,10 @@ export interface EmptyStateProps {
    * Should explain concisely how this could be solved by the user, if possible.
    */
   description?: ReactNode;
+  /**
+   * Optional action element (e.g., a button) to help users resolve the empty state.
+   */
+  action?: ReactNode;
   variant?: string;
   size?: string;
 }
@@ -37,6 +41,7 @@ export interface EmptyStateProps {
 export const EmptyState = ({
   title,
   description,
+  action,
   variant,
   size,
   ...props
@@ -99,6 +104,7 @@ export const EmptyState = ({
       {description && (
         <div className="text-muted-foreground text-sm">{description}</div>
       )}
+      {action && <div className="mt-4">{action}</div>}
     </div>
   );
 };
