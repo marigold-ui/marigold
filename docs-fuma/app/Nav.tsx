@@ -1,11 +1,13 @@
 'use client';
 import { Button, Link, cn } from '@/ui';
 import type { Node } from 'fumadocs-core/page-tree';
+import type * as PageTree from 'fumadocs-core/page-tree';
 import { useSearchContext } from 'fumadocs-ui/provider';
 import { ComponentProps } from 'react';
 import { usePathname } from 'next/navigation';
 import { NavLink } from '@/ui/navigation/NavLink';
 import { useHasMounted } from '@/ui/useHasMounted';
+import { MobileNavigation } from './_components/MobileNavigation';
 import { SiteLogo } from './_components/SiteLogo';
 
 interface HotKeyProps {
@@ -43,7 +45,13 @@ interface NavPage {
   $id?: string;
 }
 
-export const Nav = ({ pages }: { pages: Node[] }) => {
+interface NavProps {
+  pages: Node[];
+  tree: PageTree.Root;
+  badgeMap?: Record<string, string>;
+}
+
+export const Nav = ({ pages, tree, badgeMap = {} }: NavProps) => {
   const pathname = usePathname();
 
   // Filter and map nodes to NavPage format
@@ -59,7 +67,10 @@ export const Nav = ({ pages }: { pages: Node[] }) => {
 
   return (
     <header className="border-secondary-200 bg-bg-body sticky top-0 z-10 flex h-(--page-header-height) w-full items-center gap-2 border-b px-(--page-padding) md:px-(--page-padding-md) xl:px-(--page-padding-xl)">
-      <div className="md:hidden">{/* <MobileNavigation /> */}</div>
+      {/* Mobile Navigation */}
+      <div className="md:hidden">
+        <MobileNavigation tree={tree} badgeMap={badgeMap} />
+      </div>
 
       {/* Nav */}
       <div className="hidden gap-6 md:flex md:flex-1">

@@ -1,3 +1,4 @@
+import { RehypeCodeOptions, rehypeCode } from 'fumadocs-core/mdx-plugins';
 import {
   defineConfig,
   defineDocs,
@@ -21,6 +22,13 @@ const blogFrontmatterSchema = frontmatterSchema.extend({
   changed: z.array(z.string()).optional(),
 });
 
+const rehypeCodeOptions: RehypeCodeOptions = {
+  themes: {
+    light: 'material-theme-palenight',
+    dark: 'material-theme-palenight',
+  },
+};
+
 export const docs = defineDocs({
   dir: 'content',
   docs: {
@@ -43,6 +51,7 @@ export const blog = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
+    rehypePlugins: [[rehypeCode, rehypeCodeOptions]],
     remarkPlugins: v => [inlineBadgeInHeadings, ...v],
   },
   plugins: [lastModified()],

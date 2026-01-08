@@ -1,4 +1,4 @@
-import { source } from '@/lib/source';
+import { getBadgeMap, source } from '@/lib/source';
 import { theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
 import { RootProvider } from 'fumadocs-ui/provider';
@@ -28,6 +28,9 @@ export const metadata = {
 // Layout
 // ---------------
 const Layout = ({ children }: { children: ReactNode }) => {
+  const tree = source.getPageTree();
+  const badgeMap = getBadgeMap();
+
   return (
     <html
       lang="en"
@@ -40,7 +43,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
               theme={theme}
               className="bg-bg-body flex min-h-screen flex-col"
             >
-              <Nav pages={source.getPageTree().children} />
+              {/* TODO: just pass the tree  */}
+              <Nav pages={tree.children} tree={tree} badgeMap={badgeMap} />
 
               {children}
             </MarigoldProvider>
