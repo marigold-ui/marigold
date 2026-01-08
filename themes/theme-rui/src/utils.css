@@ -14,21 +14,28 @@
 /*
  * The "surface" utitlities define visual surfaces with distinct background colors. Apply 
  * elevation levels to them when needed.
+ * Uses background-clip with layered backgrounds to create a gradient border effect without 
+ * requiring a ::before pseudo-element.
  */
 @utility surface {
   @apply relative;
-  @apply bg-surface bg-clip-padding;
-  @apply border-surface-border rounded-surface border;
-  @apply transition-[box-shadow,border];
-
-  /* ::before */
-  @apply before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
+  @apply rounded-surface;
+  @apply transition-[background,border];
+  background:
+    linear-gradient(to bottom, var(--color-surface), var(--color-surface))
+      padding-box,
+    linear-gradient(
+        to bottom,
+        var(--color-surface-border),
+        var(--color-surface-border)
+      )
+      border-box;
+  border: 1px solid transparent;
 }
 
 /*
  * Ensures input elements have consistent padding, text styles, and full-width behavior when used 
- * as surfaces.Since input elements cannot use ::before, wrap them with an additional element and 
- * apply this utility to the input itself for proper styling.
+ * as surfaces. Apply this utility to the input element itself for proper text styling.
  */
 @utility surface-input {
   @apply w-full min-w-0;
@@ -69,14 +76,32 @@
  * Applies a consistent visual style for invalid elements.
  */
 @utility surface-error {
-  @apply border-destructive focus:border-destructive focus:ring-destructive/20;
+  @apply focus:ring-destructive/20 focus:border-destructive;
+  background:
+    linear-gradient(to bottom, var(--color-surface), var(--color-surface))
+      padding-box,
+    linear-gradient(
+        to bottom,
+        var(--color-destructive),
+        var(--color-destructive)
+      )
+      border-box;
 }
 
 /*
  * Applies a consistent visual style when an element has an invalid child element.
  */
 @utility surface-has-error {
-  @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
+  @apply has-focus:ring-destructive/20 has-focus:border-destructive;
+  background:
+    linear-gradient(to bottom, var(--color-surface), var(--color-surface))
+      padding-box,
+    linear-gradient(
+        to bottom,
+        var(--color-destructive),
+        var(--color-destructive)
+      )
+      border-box;
 }
 
 /*
