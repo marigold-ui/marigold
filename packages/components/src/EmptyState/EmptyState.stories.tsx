@@ -1,4 +1,6 @@
+import { screen } from '@testing-library/react';
 import { useState } from 'storybook/preview-api';
+import { expect, userEvent } from 'storybook/test';
 import preview from '../../../../config/storybook/.storybook/preview';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
@@ -82,6 +84,7 @@ export const WithAction = meta.story({
 });
 
 export const WithAutocompleteAndData = meta.story({
+  tags: ['component-test'],
   render: () => {
     const [inputValue, setInputValue] = useState('');
 
@@ -114,5 +117,18 @@ export const WithAutocompleteAndData = meta.story({
         )}
       </Autocomplete>
     );
+  },
+  play: async ({ canvas }: any) => {
+    const input = canvas.getByRole('combobox');
+
+    await userEvent.type(input, 'darth vader');
+
+    const emptyStateTitle = await screen.findByText('No results found');
+    const emptyStateDescription = screen.getByText(
+      'Try adjusting your search terms'
+    );
+
+    await expect(emptyStateTitle).toBeVisible();
+    await expect(emptyStateDescription).toBeVisible();
   },
 });

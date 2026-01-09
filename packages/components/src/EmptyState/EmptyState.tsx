@@ -57,6 +57,8 @@ export const EmptyState = ({
         viewBox="0 0 151 84"
         fill="none"
         className="mb-6"
+        role="img"
+        aria-hidden="true"
       >
         <ellipse cx="75.5" cy="70.8003" rx="75.5" ry="13.1577" fill="#EDECEC" />
         <path
