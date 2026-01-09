@@ -46,17 +46,17 @@ export const EmptyState = ({
   size,
   ...props
 }: EmptyStateProps) => {
-  //   const classNames = useClassNames({ component: 'EmptyState', variant, size });
+  const classNames = useClassNames({ component: 'EmptyState', variant, size });
 
   return (
-    <div className="mx-auto flex max-w-sm flex-col items-center p-6">
+    <div className={classNames.container} {...props}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="151"
         height="84"
         viewBox="0 0 151 84"
         fill="none"
-        className="mb-4"
+        className="mb-6"
       >
         <ellipse cx="75.5" cy="70.8003" rx="75.5" ry="13.1577" fill="#EDECEC" />
         <path
@@ -100,11 +100,11 @@ export const EmptyState = ({
           fill="#C8C8C8"
         />
       </svg>
-      {title && <div className="text-lg">{title}</div>}
+      {title && <div className={classNames.title}>{title}</div>}
       {description && (
-        <div className="text-muted-foreground text-sm">{description}</div>
+        <div className={classNames.description}>{description}</div>
       )}
-      {action && <div className="mt-4">{action}</div>}
+      {action && <div className={classNames.action}>{action}</div>}
     </div>
   );
 };
