@@ -1,31 +1,16 @@
 import type { ReactNode } from 'react';
 import { useClassNames } from '@marigold/system';
 
-// Usage
-// ---------------
-// Use EmptyState when no data is shown, but it's correct so users don't assume something is wrong.
-//
-// Best Practices:
-// - Say why no information is shown and – if possible - how this could be solved by the user
-// - The illustration should appear in a decent way. Ideal scale is 150px width
-// - Pair graphics with concise, friendly text that explains why the space is empty and what users can do next
-//
-// Don'ts:
-// - Don't use colors or change the appearance of the illustration
-// - Avoid usages that lead to a large amount of illustrations on the same screen
-// - Don't show the illustration on large scale
-
 // Props
 // ---------------
 export interface EmptyStateProps {
   /**
    * Title of the empty state.
-   * Use clear microcopy to explain why no information is shown.
    */
   title: ReactNode;
   /**
    * Description text for the empty state.
-   * Should explain concisely how this could be solved by the user, if possible.
+   * Use clear microcopy to explain why no information is shown, how this could be solved by the user, if possible.
    */
   description?: ReactNode;
   /**
