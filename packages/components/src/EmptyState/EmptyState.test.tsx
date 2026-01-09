@@ -4,7 +4,8 @@ import { Basic, WithAction } from './EmptyState.stories';
 
 // Setup
 // ---------------
-const BasicComponent = (props: EmptyStateProps) => (
+
+const BasicComponent = (props?: Partial<EmptyStateProps>) => (
   <div id="storybook-root">
     <Basic.Component {...props} />
   </div>
