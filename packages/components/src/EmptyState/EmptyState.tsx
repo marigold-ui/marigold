@@ -22,7 +22,7 @@ export interface EmptyStateProps {
    * Title of the empty state.
    * Use clear microcopy to explain why no information is shown.
    */
-  title?: ReactNode;
+  title: ReactNode;
   /**
    * Description text for the empty state.
    * Should explain concisely how this could be solved by the user, if possible.
@@ -102,7 +102,7 @@ export const EmptyState = ({
           fill="#C8C8C8"
         />
       </svg>
-      {title && <div className={classNames.title}>{title}</div>}
+      <div className={classNames.title}>{title}</div>
       {description && (
         <div className={classNames.description}>{description}</div>
       )}
