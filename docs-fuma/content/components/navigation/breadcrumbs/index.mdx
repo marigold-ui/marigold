@@ -30,13 +30,13 @@ The `<Breadcrumbs>` component consists of breadcrumb items and separators, such 
 
 `<Breadcrumbs>` are typically used to display a navigational hierarchy, showing the path from the homepage to the current page. Each `Breadcrumbs.Item` represents a step in this path and must include an `href` to define its destination. All items are rendered as links, allowing users to quickly navigate back to previous levels, reducing the number of clicks needed and improving the overall user experience.
 
-<ComponentPreview name="breadcrumbs-appearance" />
+<ComponentDemo name="breadcrumbs-appearance" />
 
 ### Collapsing Breadcrumbs
 
 When the breadcrumb list exceeds the maximum number of visible items, it can collapse to show an ellipsis ("..."). This feature is helpful when dealing with deep navigation structures that may overwhelm the user.
 
-<ComponentPreview name="breadcrumbs-collapsing" />
+<ComponentDemo name="breadcrumbs-collapsing" />
 
 ### As Navigation
 
@@ -46,7 +46,7 @@ Using breadcrumbs as navigation
 
 When breadcrumbs represent the primary or secondary navigation for a page, place them in a `<nav>` element with an appropriate `aria-label` (e.g. `aria-label="Breadcrumbs"`). This creates a navigation landmark that helps assistive technologies identify key sections of the page. To support a clearer page structure, keep the number of landmarks minimal and avoid using them for breadcrumbs in contexts like table rows or popovers.
 
-<ComponentPreview name="breadcrumbs-navigation" />
+<ComponentDemo name="breadcrumbs-navigation" />
 
 ## Props
 

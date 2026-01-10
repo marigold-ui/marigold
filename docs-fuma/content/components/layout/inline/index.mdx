@@ -12,7 +12,7 @@ Use the inline component in combination with other layout components to easily [
 If you have more than two elements you can use the `<Inline>` component to arrange elements horizontally according to the space required.
 For adding the space between the elements you need to use the `space` property and set it to a supported [space value](../../foundations/design-tokens#spacing).
 
-<ComponentPreview name="inline-elements" />
+<ComponentDemo name="inline-elements" />
 
 Together with a [`<Split>`](../layout/split) you can use the `<Inline>` to create as much space as given between two elements while staying in the inline layout.
 
@@ -21,23 +21,23 @@ Together with a [`<Split>`](../layout/split) you can use the `<Inline>` to creat
 The child elements can be positioned differently on their x and y axis.
 Items of various height can be vertically aligned using the `alignY` prop. In the following example you can see it.
 
-<ComponentPreview name="inline-vertically" />
+<ComponentDemo name="inline-vertically" />
 
 For horizontally alignment you can use the `alignX` prop.
 
-<ComponentPreview name="inline-horizontally" />
+<ComponentDemo name="inline-horizontally" />
 
 ### Form input alignment
 
 When aligning form inputs with buttons , use `alignY={input}` to mantain vertically alignment with the input field rectangle. This automatically adjusts when descriptions or error messages appear.
 
-<ComponentPreview name="inline-input-button" />
+<ComponentDemo name="inline-input-button" />
 
 ### Prevent line breaks
 
 By default, inline elements will wrap to the next line when there isn't enough horizontal space. In some use cases, such as when using `<Inline>` inside a table cell, this automatic wrapping can be problematic because tables force content to break or wrap to fit within their columns. To prevent unwanted line breaks and keep all items on a single line, use the `noWrap` prop.
 
-<ComponentPreview name="inline-nowrap" />
+<ComponentDemo name="inline-nowrap" />
 
 ## Props
 

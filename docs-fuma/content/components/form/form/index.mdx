@@ -29,19 +29,19 @@ import { Form } from '@marigold/components';
 
 This is a simple setup how to use a `<Form>`.
 
-<ComponentPreview name="form-base" />
+<ComponentDemo name="form-base" />
 
 ### Handling submission
 
 The `onSubmit` event is useful for custom form actions, such as calling a REST API, instead of relying on the native form submission. It triggeres when a user submits the form using the Enter key or clicks the submit button. The `onReset` event is triggered when a user presses a reset button (`[type=reset]`).
 
-<ComponentPreview name="form-submission" />
+<ComponentDemo name="form-submission" />
 
 ### Server Errors
 
 The `<Form>` component handles passed errors, typically received from a server after form submission. To display validation errors, set the `validationErrors` prop as an object mapping each field's name prop to a string or array of strings representing errors. These errors appear to the user as soon as the `validationErrors` prop is set and are cleared when the user modifies the corresponding field's value.
 
-<ComponentPreview name="form-validation-errors" />
+<ComponentDemo name="form-validation-errors" />
 
 For more information about form validation, see the [Validation](/foundations/validation) guide.
 
@@ -49,7 +49,7 @@ For more information about form validation, see the [Validation](/foundations/va
 
 As you can see in the previous server errors example, when a user submits a form with validation errors, the first invalid field is automatically focused. This behavior can be customized using `e.preventDefault` during the `onInvalid` event and manage the focus manually.
 
-<ComponentPreview name="form-focus-management" />
+<ComponentDemo name="form-focus-management" />
 
 <p />
 

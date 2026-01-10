@@ -17,7 +17,6 @@ import {
   GuidelineTiles,
   IconList,
   Image,
-  MDXComponentPreview,
   MDXHeadline2,
   MDXHeadline3,
   MDXHeadline4,
@@ -30,6 +29,7 @@ import {
   SectionMessage,
   SectionMessageContent,
   SectionMessageTitle,
+  Table,
   TableBody,
   TableCell,
   TableColumn,
@@ -40,6 +40,7 @@ import {
   TabsList,
   TabsTabPanel,
   TeaserList,
+  componentDemo,
 } from '@/components/mdx-wrapper-components';
 // Lib
 import { getPageImage, source } from '@/lib/source';
@@ -49,6 +50,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 // Marigold Components
 import { Center, Columns, Stack } from '@marigold/components';
+import { AppearanceTable } from '@/ui/AppearanceTable';
 import { ColorTokenTable } from '@/ui/ColorTokens';
 import { RelativeTime } from '@/ui/RelativeTime';
 import { AlignmentsX, AlignmentsY, BorderRadius, Spacing } from '@/ui/Token';
@@ -117,8 +119,9 @@ function getMdxComponentsConfig(page: any) {
       LatestPost,
       PostList,
 
+      AppearanceTable,
       // Custom MDX Components
-      ComponentPreview: MDXComponentPreview,
+      ComponentDemo: componentDemo,
       IconList,
       Image,
       PropsTable: (props: any) => <MDXPropsTable {...props} />,
@@ -126,7 +129,6 @@ function getMdxComponentsConfig(page: any) {
         <MDXStorybookHintMessage {...props} component={page.data.title} />
       ),
       TeaserList,
-
       // Compound Components
       SectionMessage: Object.assign(SectionMessage, {
         Title: SectionMessageTitle,

@@ -59,19 +59,19 @@ Menus can speed up interactions for advanced users who are already familiar with
 
 In this example you can see a simple `<Menu>` with some items to select. it is used when you need a to provide users with a set of of options that will result in a specific action being performed.
 
-<ComponentPreview name="menu-action" />
+<ComponentDemo name="menu-action" />
 
 ### Menu with sections
 
 When you have mutliple menu items that can be categorized under different headings. This is particularly useful in complext menus with many options, you can use `<Menu.Section>` and pass `title` for the group name.
 
-<ComponentPreview name="menu-section" />
+<ComponentDemo name="menu-section" />
 
 ### Disabled menu items
 
 In this example the `<Menu>` has set its prop `disabeldKeys`. So you can't interact with the `<Menu.Item>` anymore. Keep in mind, that you have to set an id to the `<Menu.Item>`.
 
-<ComponentPreview name="menu-disabled" />
+<ComponentDemo name="menu-disabled" />
 
 ### ActionMenu
 
@@ -81,13 +81,13 @@ In this example, the `<ActionMenu>` is used within a table to allow users to per
 
 The example shows that the `<ActionMenu>` is very similar to the standard `<Menu>` component, offering flexibility and ease of use in various contexts.
 
-<ComponentPreview name="menu-action-table" />
+<ComponentDemo name="menu-action-table" />
 
 ### Menu item opens dialog
 
 This Example shows how to open a [`<Dialog>`](/components/dialog/) from a `<Menu.Item>`. It is useful when a menu action requires additional user input or confirmation. Selecting the item opens a `Dialog` where users can provide the necessary information or confirm their choice, making the interaction smooth and efficient.
 
-<ComponentPreview name="menu-open-dialog" />
+<ComponentDemo name="menu-open-dialog" />
 
 ### Menu selection mode
 
@@ -95,13 +95,13 @@ Use `multiple` selection mode when you want to allow users to select multiple op
 
 Here you can see how the `selectionMode` from `<Menu>` works. In this example the `selectionMode` is set to `multiple`. If you open the items you can see a selected item.
 
-<ComponentPreview name="menu-selection" />
+<ComponentDemo name="menu-selection" />
 
 ### Destructive actions
 
 For actions that result in irreversible data loss, such as deleting an item or removing a user account, use the `"destructive"` variant on menu items to warn the user of the consequences. Always safeguard these actions with a confirmation dialog that clearly explains the outcome and requires an explicit second step to complete the process.
 
-<ComponentPreview name="menu-destructive" />
+<ComponentDemo name="menu-destructive" />
 
 ## Props
 

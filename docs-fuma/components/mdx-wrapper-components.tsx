@@ -22,7 +22,7 @@ import { Image as MarigoldImage } from '@/ui/Image';
 import { PropsTable } from '@/ui/PropsTable';
 import { StorybookHintMessage } from '@/ui/StorybookHintMessage';
 import { TeaserList as MarigoldTeaserList } from '@/ui/TeaserCard';
-import { ComponentPreview } from './preview';
+import { ComponentDemo } from './preview';
 
 export function MDXText(props: HTMLAttributes<HTMLParagraphElement>) {
   return <Text {...props} as="p" />;
@@ -74,9 +74,7 @@ export function MDXStorybookHintMessage(
   return <StorybookHintMessage {...props} />;
 }
 
-export const MDXComponentPreview = (props: any) => (
-  <ComponentPreview {...props} />
-);
+export const componentDemo = (props: any) => <ComponentDemo {...props} />;
 
 export const Badge = (props: any) => <MarigoldBadge {...props} />;
 

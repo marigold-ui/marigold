@@ -13,7 +13,7 @@ The `parseFormData` utility is designed to convert all the data from an HTML for
 
 When a user clicks the submit button, the `onSubmit` event captures the state of all form fields at that exact moment. By creating a `new FormData(event.currentTarget)` and passing it to `parseFormData`, you get a single object containing a complete snapshot of the user's input, which is perfect for immediate validation or for sending to an API.
 
-<ComponentPreview name="parseFormData-basic" />
+<ComponentDemo name="parseFormData-basic" />
 
 ### Handling Multiple Values
 
@@ -21,4 +21,4 @@ HTML forms can produce multiple values for a single field name, most commonly wi
 
 `parseFormData` automatically handles this scenario. It checks if any field name has more than one value associated with it. If it does, the utility will create an array containing all of those values under a single key in the final object. If a field name has only one value, it will be stored as a single string or file object. This ensures the output is always predictable and easy to work with.
 
-<ComponentPreview name="parseFormData-multiple" />
+<ComponentDemo name="parseFormData-multiple" />

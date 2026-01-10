@@ -39,7 +39,7 @@ Use the range feature of a slider when users need to select both a minimum and m
 
 When multiple thumbs are rendered, each thumb should have an `aria-label`, which is provided via the `thumbLabels` prop.
 
-<ComponentPreview name="slider-range" />
+<ComponentDemo name="slider-range" />
 
 ### Scale and Granularity
 
@@ -47,7 +47,7 @@ Choose a scale that aligns with the way users think about the values they are ad
 
 If the user needs to work with very large value spans or make fine-tuned adjustments, a slider is not the best choice. In those cases, prefer using a different input method such as a [number field](/components/form/numberfield).
 
-<ComponentPreview name="slider-granularity" />
+<ComponentDemo name="slider-granularity" />
 
 <GuidelineTiles>
   <Do>
@@ -68,7 +68,7 @@ Always format the slider value using an appropriate number format to improve cla
 
 You can define the format using the `formatOptions` prop. It supports all options available through [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat), and will automatically localize the number format based on the user's system settings.
 
-<ComponentPreview name="slider-format" />
+<ComponentDemo name="slider-format" />
 
 ### Min and Max Values
 
@@ -76,13 +76,13 @@ Set meaningful and realistic minimum and maximum values that reflect the task th
 
 By default, the slider values reflect percentages between 0 and 100. A different scale can be used by using the `minValue` and `maxValue` props.
 
-<ComponentPreview name="slider-min-max" />
+<ComponentDemo name="slider-min-max" />
 
 ### Usage in Forms
 
 The `name` attribute determines how the slider’s value is submitted with the form. For a single-thumb slider, name accepts a string and will submit a single numeric value. For a two-thumb slider, name accepts a string tuple, allowing both the minimum and maximum values to be submitted as separate fields. This ensures that the form captures the full range selection without additional processing.
 
-<ComponentPreview name="slider-form" />
+<ComponentDemo name="slider-form" />
 
 ## Props
 

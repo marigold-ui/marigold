@@ -67,7 +67,7 @@ For short, straightforward messages, you can combine the title and the message t
 
 Keep dialogs simple by limiting the number of interactions. Remove any content or elements that aren't essential to completing the task. For instance, if the dialog is for editing a user's profile information, only include the necessary fields like name and email, rather than unrelated options like notification settings.
 
-<ComponentPreview name="dialog-content" />
+<ComponentDemo name="dialog-content" />
 
 It's also best to avoid multi-step processes or requiring users to navigate within the dialog, as this can complicate the experience. If a task is too complex, consider using a dedicated page instead.
 
@@ -84,7 +84,7 @@ When a dialog is open, users cannot interact with the rest of the page until the
 
 To prevent the dialog from closing when the underlay is (accidentally) clicked, you can set the `dismissable` prop on the `<Dialog.Trigger>` component to `false`. This disables closing the dialog by clicking on the background, ensuring that the dialog remains open until the user interacts with the provided buttons or other close mechanisms.
 
-<ComponentPreview name="dialog-dismiss" />
+<ComponentDemo name="dialog-dismiss" />
 
 <SectionMessage>
   <SectionMessage.Title>Dedicated close button</SectionMessage.Title>
@@ -107,7 +107,7 @@ For an effective dialog, be specific in your prompt. For example, ask "Permanent
 
 Use the `useConfirmation` hook for this use case. This hook provides a simple API to trigger confirmation dialogs programmatically, making it easy to prompt users for confirmation before performing critical actions. It returns a function that opens the dialog and resolves with the user's response, allowing you to handle confirmation logic directly in your code.
 
-<ComponentPreview name="dialog-from-menu" />
+<ComponentDemo name="dialog-from-menu" />
 
 <SectionMessage>
   <SectionMessage.Title>

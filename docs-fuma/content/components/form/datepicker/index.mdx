@@ -37,19 +37,19 @@ The Label defines the purpose of the Date Field, where users can enter a date di
 
 This example shows a regular `<DatePicker>` without any special props.
 
-<ComponentPreview name="date-picker-basic" />
+<ComponentDemo name="date-picker-basic" />
 
 ### Min/Max Values
 
 The `minValue` and `maxValue` props are used to perform built-in validation. This prevents the user from selecting dates outside the valid range in the calendar .
 
-<ComponentPreview name="date-picker-min-max" />
+<ComponentDemo name="date-picker-min-max" />
 
 ### Controlled
 
 The `value` and `onChange` props can be used to control the `DatePicker`.
 
-<ComponentPreview name="date-picker-controlled" />
+<ComponentDemo name="date-picker-controlled" />
 
 ### Using a Date Object
 
@@ -66,7 +66,7 @@ When using a datepicker, relying on the standard JavaScript `Date` object for it
 The simplest way to parse a Date for the datepicker is by using `parseAbsoluteToLocal`. This function converts an absolute date and time into the current user's local time zone.
 If you're already using a date library like [date-fns](https://date-fns.org/), you can also utilizing `parseDate`. Ensure that you only pass the date part to `parseDate`, excluding the time and timezone information.
 
-<ComponentPreview name="date-picker-with-date" />
+<ComponentDemo name="date-picker-with-date" />
 
 ### Paste Support
 
@@ -80,7 +80,7 @@ The `<DatePicker>` supports pasting date values from the clipboard. Users can co
 
 Invalid dates or unrecognized formats are ignored, ensuring data integrity.
 
-<ComponentPreview name="datepicker-paste" />
+<ComponentDemo name="datepicker-paste" />
 
 ## Props
 

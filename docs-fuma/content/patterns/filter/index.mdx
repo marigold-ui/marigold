@@ -85,7 +85,7 @@ Organize filters in a logical order, such as by most-used, so they are intuitive
 
 When a filter offers many possible options, showing them all at once can overwhelm users and make scanning difficult. A better approach is to display only the most relevant or frequently used options first, with a "show more" button to reveal the full list when needed. This keeps the panel compact, easier to read, and still allows full access when required.
 
-<ComponentPreview name="filter-many-options-more" />
+<ComponentDemo name="filter-many-options-more" />
 
 Another helpful method is adding a filter filter, which is a small search field within the filter panel. This allows users to quickly locate specific options without scrolling through long lists. Using these techniques together makes it faster and easier to find the right criteria, reducing effort and improving the overall experience.
 
@@ -137,11 +137,11 @@ Batch filtering allows multiple selections to be made across different parameter
 
 Empty states occur when no items match the applied filters, often because the criteria are too narrow, the filters conflict with each other, or the data set lacks matching values. This situation should be clearly communicated through the data set area itself, for example by displaying a clear message or visual placeholder where results would normally appear. Doing so helps users quickly understand why no results are shown and guides them toward resolving the issue. Supportive actions can include suggesting broader parameters, offering related content, or providing an easy-to-access "clear filters" control to reset the view and start fresh.
 
-<ComponentPreview name="filter-empty-state-table" />
+<ComponentDemo name="filter-empty-state-table" />
 
 An empty state can also occur in the applied filters area when no filters are currently active. Displaying this state helps users understand that no filtering criteria are in place and that all available results are being shown.
 
-<ComponentPreview name="filter-empty-state-applied-filter" />
+<ComponentDemo name="filter-empty-state-applied-filter" />
 
 ### Applied Filter Labels
 
@@ -151,7 +151,7 @@ For absolute values, pair the filter name with its exact value, for example "Sta
 
 When an applied filter contains a large number of values, avoid grouping them all into a single tag, as this makes scanning and reading difficult and disrupts consistent sizing. Instead, display only the first two or three values, then indicate the number of remaining ones with a clear count, for example “(+7 more)”.
 
-<ComponentPreview name="filter-applied-filter-label" />
+<ComponentDemo name="filter-applied-filter-label" />
 
 ```js
 // TODO: should we make a helps to create these labels? this could also do i18n
@@ -168,7 +168,7 @@ Two recommendations are:
 
 Offering both options provides flexibility. Users can make precise adjustments by removing specific filters or start fresh by clearing them all.
 
-<ComponentPreview name="filter-revert" />
+<ComponentDemo name="filter-revert" />
 
 <SectionMessage>
   <SectionMessage.Title>"Remove all" Visibility</SectionMessage.Title>

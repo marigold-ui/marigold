@@ -96,7 +96,7 @@ Help Text should be used to provide additional clarification or instructions whe
     label, not replace it.
   </Dont.Description>
 </Dont>
-<ComponentPreview name="form-fields-helper-text" />
+<ComponentDemo name="form-fields-helper-text" />
 
 ### Field States
 
@@ -106,25 +106,25 @@ Form components often exist in various states to indicate how they should behave
 
 Disabled input fields are non-interactive and signal that they are temporarily unavailable. They are typically used when the input is irrelevant based on prior user choices or when a prerequisite action is required. To avoid confusion, it's important to provide clear context or messaging explaining why the field is disabled, ensuring users understand when and how the input will become available.
 
-<ComponentPreview name="form-fields-disabled-state" />
+<ComponentDemo name="form-fields-disabled-state" />
 
 #### Required State
 
 Required fields must be completed before form submission.
 
-<ComponentPreview name="form-fields-required-state" />
+<ComponentDemo name="form-fields-required-state" />
 
 #### Error State
 
 Fields in an error state indicate that the entered value is invalid or incorrect. Error messages and visual feedback.
 
-<ComponentPreview name="form-fields-error-state" />
+<ComponentDemo name="form-fields-error-state" />
 
 #### ReadOnly State
 
 Read-only fields display data that users can view but not modify. They are commonly used for displaying information that is fixed or derived from other inputs. It's important to provide context or a clear explanation for why a field is read-only, so users understand its purpose and why it cannot be changed.
 
-<ComponentPreview name="form-fields-readonly-state" />
+<ComponentDemo name="form-fields-readonly-state" />
 
 ### Validation
 
@@ -142,7 +142,7 @@ Marigold's form components utilize the same API as native HTML forms. Yet, the b
 
 Here is an email subscription form. If you submit it without entering an email address or if the entered email address is invalid, an error will be displayed:
 
-<ComponentPreview name="validation-base" />
+<ComponentDemo name="validation-base" />
 
 #### Custom message
 
@@ -150,7 +150,7 @@ While browser-provided error messages are helpful, they might not be very descri
 
 The example below customizes the default error messages for an unfilled required field. It's important to note that you only need to override the messages you want to; any unmodified aspects will fallback to the browser-provided messages.
 
-<ComponentPreview name="validation-custom-message" />
+<ComponentDemo name="validation-custom-message" />
 
 #### Custom validation
 
@@ -158,7 +158,7 @@ When the native validation options are insufficient or not ideal, it's also poss
 
 The below example demonstrates a more sophisticated method for validating email addresses. The validation will always display the custom error messages. There is no separate message if the field is left empty.
 
-<ComponentPreview name="validation-custom-validation" />
+<ComponentDemo name="validation-custom-validation" />
 
 #### Real-time Validation
 
@@ -168,7 +168,7 @@ In specific situations though, choosing real-time validation proves beneficial, 
 
 Here's an example where real-time validation is employed to check password requirements, immediately informing the user when a criteria is met.
 
-<ComponentPreview name="validation-realtime" />
+<ComponentDemo name="validation-realtime" />
 
 #### Handling Server Errors
 
@@ -178,7 +178,7 @@ Marigold supports displaying server validation errors via the `validationErrors`
 
 The subscription example now involves sending and receiving the provided email to and from the server. While most email subscriptions will be successful, attempting to use `support@reservix.de` serves as a negative example, triggering an error response from the server.
 
-<ComponentPreview name="validation-server-error" />
+<ComponentDemo name="validation-server-error" />
 
 ## Related
 

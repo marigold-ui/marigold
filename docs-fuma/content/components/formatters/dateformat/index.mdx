@@ -19,13 +19,13 @@ You can customize how dates and times are displayed by passing any [Intl.DateTim
 
 You can mix and match these options to match your needs. For a full list of available options, see the [Intl.DateTimeFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat).
 
-<ComponentPreview name="dateformat-common-format" />
+<ComponentDemo name="dateformat-common-format" />
 
 ### Formatting ranges
 
 The `<DateFormat>` component can also format a pair of dates as a localized range. By passing an array of two dates to the `value` prop, you can automatically display them with the correct range separator and formatting for the current locale.
 
-<ComponentPreview name="dateformat-range-format" />
+<ComponentDemo name="dateformat-range-format" />
 
 For accessibility, screen readers will treat the formatted range as one continuous string (for example, “Jan 1, 2025 – Dec 31, 2025”). This works well in most cases, but if your interface needs to convey the start and end dates as distinct pieces of information, you can render them as two separate `<DateFormat>` components and supply explicit ARIA labels. This ensures that assistive technologies announce each value in context.
 
@@ -44,7 +44,7 @@ For accessibility, screen readers will treat the formatted range as one continuo
 
 Use the `tabular` prop to align dates in columns or tables. When enabled, each digit has the same width, keeping rows straight. This is ideal for data tables, reports, or any layout where vertical alignment helps. To disable it, set `tabular={false}`.
 
-<ComponentPreview name="dateformat-tabular-format" />
+<ComponentDemo name="dateformat-tabular-format" />
 
 ## Props
 

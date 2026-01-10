@@ -31,13 +31,13 @@ Marigold's form components comes with the `error` prop. You can use it to show o
 In this example below you can have an example on how to check if the E-Mail adress is correctly filled.
 Try out and type something!
 
-<ComponentPreview name="error-handling" />
+<ComponentDemo name="error-handling" />
 
 ### Logical Interaction
 
 You can have interactive forms which contains logical aspects. In this example you can interact with the `<Select>` and a new component `<Checkbox>` will appear. You can try out and switch the value of the select field.
 
-<ComponentPreview name="logical-interaction" />
+<ComponentDemo name="logical-interaction" />
 
 ## Forms and submitting Data
 
@@ -56,7 +56,7 @@ The simplest way to get data from a form is using the browser's [FormData](https
 
 Below is a basic example of extracting data from an [uncontrolled](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components) form. Submitting a promo code won't trigger a regular form submission; instead, it will display the provided data.
 
-<ComponentPreview name="building-forms-submit" />
+<ComponentDemo name="building-forms-submit" />
 
 ## Handling complex forms and form state
 
@@ -66,7 +66,7 @@ For the later we use the `<Controller>` component from `react-hook-form`, which 
 
 In the formular we have used `<TextField>`, `<Select>` and `<Checkbox>` components. These components are wrapped around with the `<Controller>` component from `react-hook-form`. The `<Controller>` component acts as a bridge between the form element and the `react-hook-form` state management. It updates the `react-hook-form` state whenever the value of the form element changes.
 
-<ComponentPreview name="building-forms-hook-form" />
+<ComponentDemo name="building-forms-hook-form" />
 
 ### How to do Validation and Error Signaling
 
@@ -89,7 +89,7 @@ In the following example you can see how a form with all its fields can be submi
 
 For validating the form we are using [`zod`](https://zod.dev/). It is a library for building schemas, which can be used to validate inputs. It is especially useful when you have more complex validation rules.
 
-<ComponentPreview name="building-forms-zod" />
+<ComponentDemo name="building-forms-zod" />
 
 #### react-hook-form
 
@@ -103,7 +103,7 @@ For some examples have a look at [Form developement guide](/patterns/form-implem
 
 In React 19, you can handle async form submissions using Actions. With the `useActionState` hook, there's no need to manually manage an `isPending` state, React takes care of it automatically. Additionally, you can return a state directly from the action, eliminating the need for `useState`. This makes handling form state more streamlined and efficient.
 
-<ComponentPreview name="building-forms-async" />
+<ComponentDemo name="building-forms-async" />
 
 ## Related
 

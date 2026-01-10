@@ -4,9 +4,7 @@ description: Buttons allow users to trigger actions.
 badge: updated
 ---
 
-import { Table } from '@marigold/components';
 import { AppearanceDemo } from '@/ui/AppearanceDemo';
-import { AppearanceTable } from '@/ui/AppearanceTable';
 
 The `<Button>` component is a crucial components of any user interface, allowing users to initiate actions such as submitting forms, adding items to a cart, or opening dialogs. The label on a button indicates the action that will be taken when the user presses it.
 
@@ -101,7 +99,7 @@ Depending on where buttons are used, it is advisable to place them appropriately
     </SectionMessage.Content>
 </SectionMessage>
 
-<ComponentPreview name="button-placement-order" />
+<ComponentDemo name="button-placement-order" />
 
 ### Icons and labels
 
@@ -111,7 +109,7 @@ Accompany labels with icons only when they have a strong association with the te
 
 Icon-only buttons should only be used when the icon is universally recognized and its function is clear without additional text, like a pencil for editing. These buttons are particularly useful in compact spaces or mobile interfaces where screen real estate is limited.
 
-<ComponentPreview name="button-icon" />
+<ComponentDemo name="button-icon" />
 
 <SectionMessage variant="info">
   <SectionMessage.Title>Keep it accessible</SectionMessage.Title>
@@ -159,7 +157,7 @@ Destructive buttons are reserved for actions that carry significant and often ir
 
 In Marigold, we offer two dedicated visual variants for implementing destructive actions:
 
-<ComponentPreview name="button-destructive" />
+<ComponentDemo name="button-destructive" />
 
 ### Avoid disabled buttons
 
@@ -201,7 +199,7 @@ Disabled buttons are problematic as they offer no feedback on why an action is u
 
 In general, it's best to avoid using disabled buttons. However, if they are necessary, take steps to make them more inclusive. Ensure users don't get stuck by providing additional information. Place a message near the disabled button that explains why it is unavailable and what actions are needed to enable it.
 
-<ComponentPreview name="button-disabled" />
+<ComponentDemo name="button-disabled" />
 
 <SectionMessage variant="warning">
   <SectionMessage.Title>
@@ -226,13 +224,13 @@ When the loading state is activated, the label becomes hidden. To ensure accessi
 
 The `loading` property must be added manually to a Button, and is intended for processes that typically last more than 1 second.
 
-<ComponentPreview name="button-loading" />
+<ComponentDemo name="button-loading" />
 
 ### Full-width
 
 Full-width buttons are especially useful for emphasizing primary actions like submitting a form or completing a purchase, as they attract attention and create a strong visual hierarchy. They also enhance usability on mobile devices or in narrow layouts by providing a larger, easier-to-tap target.
 
-<ComponentPreview name="button-full-width" />
+<ComponentDemo name="button-full-width" />
 
 ### Button or link
 
@@ -242,7 +240,7 @@ Understanding this distinction is crucial: anchors handle navigation, while butt
 
 To visually imitate a button element that navigates (e.g., a "Cancel" action that redirects users to the previous page), use the [`<ButtonLink>`](/components/actions/button-link) component with the corresponding `variant`, usually the default `secondary`. This way, the action is clear and prominent while keeping its navigation function.
 
-<ComponentPreview name="button-link" />
+<ComponentDemo name="button-link" />
 
 <GuidelineTiles>
   <Do>
@@ -263,7 +261,7 @@ The `<Button>` component supports user interactions via mouse, keyboard, and tou
 
 Each handler receives a `PressEvent`, providing details about the target and the type of event that triggered the interaction, like the pointer (mouse, keyboard or touch) that was used.
 
-<ComponentPreview name="button-press" />
+<ComponentDemo name="button-press" />
 
 ## Props
 

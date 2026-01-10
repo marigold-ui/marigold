@@ -12,7 +12,7 @@ import {
 import { CopyButton } from '@/ui/CopyButton';
 import { FullsizeView } from '@/ui/FullsizeViewDemo';
 
-type ComponentPreviewProps = {
+type ComponentDemoProps = {
   name?: RegistryKey;
   component?: string;
   collection?: string;
@@ -67,11 +67,11 @@ const Preview = ({
   );
 };
 
-export const ComponentPreview = ({
+export const ComponentDemo = ({
   name,
   code,
   mode = 'both',
-}: ComponentPreviewProps) => {
+}: ComponentDemoProps) => {
   const onSelectionChange = (key: Key) => {
     track('Demo Tab', { tab: key as string });
   };
@@ -135,6 +135,7 @@ export const ComponentPreview = ({
           <Preview name={name} />
         </Tabs.TabPanel>
         {hasCode && (
+          // TODO: use rehypeComponentDemo
           <Tabs.TabPanel id="code">
             <div className="relative [&_figure]:border-0! [&_figure]:border-none! [&_pre]:border-0! [&_pre]:border-none!">
               <div className="absolute top-4 right-3 z-10 flex justify-end gap-3">
