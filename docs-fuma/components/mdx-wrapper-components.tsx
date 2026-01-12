@@ -147,25 +147,13 @@ export const Scrollable = (props: ScrollableProps) => {
 };
 
 // Export Tabs as a namespace with its sub-components (for MDX dot-notation)
-export const Tabs = Object.assign(
-  (props: TabsProps) => <MarigoldTabs {...props} />,
-  {
-    List: MarigoldTabs.List,
-    Item: MarigoldTabs.Item,
-    TabPanel: MarigoldTabs.TabPanel,
-  }
-);
-
+export const Tabs = (props: TabsProps) => {
+  return <MarigoldTabs {...props} />;
+};
 // Also export aliases to match MDX tags used like <TabsList />, <TabsItem />, <TabsTabPanel />
 export const TabsList = MarigoldTabs.List;
 export const TabsItem = MarigoldTabs.Item;
 export const TabsTabPanel = MarigoldTabs.TabPanel;
-
-export const TableRow = MarigoldTable.Row;
-export const TableHeader = MarigoldTable.Header;
-export const TableBody = MarigoldTable.Body;
-export const TableCell = MarigoldTable.Cell;
-export const TableColumn = MarigoldTable.Column;
 
 // Also export the sub-components separately for explicit MDX mapping
 export const SectionMessageTitle = MarigoldSectionMessage.Title;

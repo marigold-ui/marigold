@@ -1,12 +1,9 @@
-// Next.js & External
-// Layout Components
 import {
   DocsBody,
   DocsDescription,
   DocsPage,
   DocsTitle,
 } from '@/components/layout/docs/page';
-// MDX Wrapper Components
 import {
   Do,
   DoDescription,
@@ -36,13 +33,11 @@ import {
   Text,
   componentDemo,
 } from '@/components/mdx-wrapper-components';
-// Lib
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-// Marigold Components
 import { Center, Columns, Stack } from '@marigold/components';
 import { AppearanceTable } from '@/ui/AppearanceTable';
 import { ColorTokenTable } from '@/ui/ColorTokens';
@@ -55,7 +50,6 @@ import {
   Headlines,
   TextAlign,
 } from '@/ui/Typography';
-// UI Components
 import { LatestPost } from '@/ui/blog/LatestPost';
 import { PostList } from '@/ui/blog/PostList';
 
