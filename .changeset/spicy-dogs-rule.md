@@ -5,4 +5,4 @@
 "@marigold/theme-rui": patch
 ---
 
-feat([DSTSUP-222]): Introduce Empty State Component
+feat([DSTSUP-222]): Introduce Empty State Component as beta
