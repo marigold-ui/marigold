@@ -1,0 +1,40 @@
+---
+title: EmptyState
+caption: Inform users when there is no content to display.
+badge: beta
+---
+
+The `EmptyState` component is used to communicate that a container, list, or page currently has no data to display. It provides visual confirmation that the lack of data is a valid system state, ensuring users do not mistake the empty space for a loading error or a bug.
+
+It serves as a bridge between an empty screen and a populated one, offering context and guidance.
+
+## Anatomy
+
+The `EmptyState` component typically consists of the following elements:
+
+## Appearance
+
+## Usage
+
+The `EmptyState` component is ideal for scenarios where a user might expect to see content, but the data set is empty (0 items) despite a successful page load.
+
+Use this component to confirm that the lack of data is a valid state in the following situations:
+
+- Initial States: When a user visits a feature or dashboard for the first time and has no data due to a lack of activity.
+- User-Cleared States: When a user has successfully resolved, deleted, or triaged all items in a list.
+- No Results (Search & Filter): When a list or table is empty because no items match the current search query or applied filters.
+
+### Content Strategy
+
+Effective `EmptyState` content serves as a conversation with the user, bridging the gap between a blank screen and their first successful interaction. Because an empty screen can look like a system error, the primary goal of the copy is to provide immediate reassurance. The text must confirm that the application is working correctly and that the lack of data is a valid state.
+
+The Title should be a short, scannable statement of fact (e.g., "No invoices found"). The Description then follows up by explaining the specific context—telling the user why the space is empty and, most importantly, how to fill it. This turns a dead end into an actionable step.
+
+// TODO: do and dont with title phrases
+// The tone should remain concise, human, and friendly; avoid robotic phrasing or technical jargon that might suggest the user made a mistake. By combining a clear explanation of the status with a direct path forward, the EmptyState becomes a helpful guide rather than a barrier.
+
+## Props
+
+<PropsTable component={title} />
+
+## Related
