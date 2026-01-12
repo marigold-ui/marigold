@@ -1,5 +1,3 @@
-'use client';
-
 import { List, ListProps } from '@marigold/components';
 
 export default (props: ListProps) => (

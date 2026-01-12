@@ -1,5 +1,3 @@
-'use client';
-
 import { TextProps } from '@marigold/components';
 import { Text } from '@marigold/components';
 

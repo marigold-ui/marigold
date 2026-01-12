@@ -1,5 +1,3 @@
-'use client';
-
 import type { ContextualHelpProps } from '@marigold/components';
 import { ContextualHelp, Link, Stack, Text } from '@marigold/components';
 

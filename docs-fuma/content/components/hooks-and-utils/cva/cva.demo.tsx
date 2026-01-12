@@ -1,5 +1,3 @@
-'use client';
-
 import { cva } from '@marigold/system';
 
 export default () => {

@@ -1,5 +1,3 @@
-'use client';
-
 import { Card, Inline, Stack, Text } from '@marigold/components';
 
 export default () => (

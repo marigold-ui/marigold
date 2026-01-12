@@ -1,5 +1,3 @@
-'use client';
-
 import { Accordion, AccordionProps } from '@marigold/components';
 
 export default (props: AccordionProps) => (

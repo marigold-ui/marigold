@@ -1,5 +1,3 @@
-'use client';
-
 import { Breadcrumbs, BreadcrumbsProps } from '@marigold/components';
 
 export default (props: BreadcrumbsProps) => (

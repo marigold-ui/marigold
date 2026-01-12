@@ -1,5 +1,3 @@
-'use client';
-
 import { Checkbox } from '@marigold/components';
 
 export default () => (

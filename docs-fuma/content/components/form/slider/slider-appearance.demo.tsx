@@ -1,5 +1,3 @@
-'use client';
-
 import type { SliderProps } from '@marigold/components';
 import { Slider } from '@marigold/components';
 

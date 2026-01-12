@@ -1,5 +1,3 @@
-'use client';
-
 import { Button, Drawer, Link, Stack, Text } from '@marigold/components';
 
 export default function () {

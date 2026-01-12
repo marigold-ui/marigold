@@ -1,5 +1,3 @@
-'use client';
-
 import { I18nProvider, Table } from '@marigold/components';
 import { DateFormat, NumericFormat } from '@marigold/system';
 

@@ -1,5 +1,3 @@
-'use client';
-
 import { NumericFormat, Stack } from '@marigold/components';
 
 export default () => (

@@ -1,5 +1,3 @@
-'use client';
-
 import { Headline, Tabs, TabsProps } from '@marigold/components';
 
 export default (props: TabsProps) => (

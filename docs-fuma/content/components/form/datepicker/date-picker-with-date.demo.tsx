@@ -1,5 +1,3 @@
-'use client';
-
 import type { DateValue } from '@internationalized/date';
 import { parseAbsoluteToLocal } from '@internationalized/date';
 import { useState } from 'react';

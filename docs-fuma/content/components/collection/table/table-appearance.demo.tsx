@@ -1,5 +1,3 @@
-'use client';
-
 import { DateFormat } from '@/ui';
 import { I18nProvider, TableProps } from '@marigold/components';
 import { Table } from '@marigold/components';

@@ -1,5 +1,3 @@
-'use client';
-
 import { Inline, Select } from '@marigold/components';
 
 const nextTenYears = Array.from(

@@ -1,5 +1,3 @@
-'use client';
-
 import { List } from '@marigold/components';
 
 export default () => (

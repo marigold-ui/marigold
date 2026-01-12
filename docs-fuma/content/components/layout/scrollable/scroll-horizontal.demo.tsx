@@ -1,5 +1,3 @@
-'use client';
-
 import { Scrollable } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
 

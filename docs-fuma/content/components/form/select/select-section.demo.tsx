@@ -1,5 +1,3 @@
-'use client';
-
 import { Select } from '@marigold/components';
 
 export default () => (

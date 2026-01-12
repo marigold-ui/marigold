@@ -1,5 +1,3 @@
-'use client';
-
 import { Button, Inline } from '@marigold/components';
 
 export default () => (

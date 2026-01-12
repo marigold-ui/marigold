@@ -1,5 +1,3 @@
-'use client';
-
 import { ComboBox, Text } from '@marigold/components';
 
 export default () => (

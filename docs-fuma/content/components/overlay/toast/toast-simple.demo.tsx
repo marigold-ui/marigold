@@ -1,5 +1,3 @@
-'use client';
-
 import { Button, ToastProvider, useToast } from '@marigold/components';
 
 export default () => {

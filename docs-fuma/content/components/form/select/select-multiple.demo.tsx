@@ -1,5 +1,3 @@
-'use client';
-
 import { amenitiesOptions } from '@/lib/data/venues';
 import { Select } from '@marigold/components';
 

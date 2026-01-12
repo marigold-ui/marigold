@@ -1,5 +1,3 @@
-'use client';
-
 import { useResponsiveValue } from '@marigold/system';
 
 export default () => {

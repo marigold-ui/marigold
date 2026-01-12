@@ -1,5 +1,3 @@
-'use client';
-
 import { Switch, SwitchProps } from '@marigold/components';
 
 export default (props: SwitchProps) => (

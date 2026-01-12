@@ -1,5 +1,3 @@
-'use client';
-
 import { Stack, Table, Text } from '@marigold/components';
 
 export default () => {

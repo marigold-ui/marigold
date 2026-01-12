@@ -7,6 +7,7 @@ import {
 import { blogSource } from '@/lib/source';
 import { DateFormat } from '@/ui';
 import { notFound } from 'next/navigation';
+import { PostList } from '@/ui/blog/PostList';
 
 interface BlogPostProps {
   params: Promise<{ slug: string[] }>;
@@ -31,7 +32,7 @@ export default async function BlogPost(props: BlogPostProps) {
         </DocsDescription>
       </div>
       <DocsBody id="docs-body" className="pt-4 pb-10">
-        <MDX />
+        <MDX components={{ PostList }} />
       </DocsBody>
     </DocsPage>
   );

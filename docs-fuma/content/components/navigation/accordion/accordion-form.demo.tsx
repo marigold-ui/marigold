@@ -1,5 +1,3 @@
-'use client';
-
 import { Accordion, TextField } from '@marigold/components';
 
 export default function FormAccordion() {

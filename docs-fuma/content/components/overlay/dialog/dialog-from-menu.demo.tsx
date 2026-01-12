@@ -1,5 +1,3 @@
-'use client';
-
 import { Menu, useConfirmation } from '@marigold/components';
 
 export default () => {

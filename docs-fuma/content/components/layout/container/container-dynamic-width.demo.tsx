@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { Container, Headline, Select, Stack, Text } from '@marigold/components';
 

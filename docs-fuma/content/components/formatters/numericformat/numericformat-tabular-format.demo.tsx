@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { NumericFormat, Stack, Switch, Table } from '@marigold/components';
 

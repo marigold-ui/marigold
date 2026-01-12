@@ -1,5 +1,3 @@
-'use client';
-
 import type { RadioGroupProps } from '@marigold/components';
 import { Radio } from '@marigold/components';
 

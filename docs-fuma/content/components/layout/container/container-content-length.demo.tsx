@@ -1,5 +1,3 @@
-'use client';
-
 import { Container, Text } from '@marigold/components';
 
 export default () => (

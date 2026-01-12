@@ -1,5 +1,3 @@
-'use client';
-
 import { Grid } from '@marigold/components';
 import { cn } from '@marigold/system';
 

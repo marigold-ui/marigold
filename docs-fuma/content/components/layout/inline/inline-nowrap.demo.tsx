@@ -1,5 +1,3 @@
-'use client';
-
 import { venues } from '@/lib/data/venues';
 import { Badge, Inline, Stack, Table, Text } from '@marigold/components';
 

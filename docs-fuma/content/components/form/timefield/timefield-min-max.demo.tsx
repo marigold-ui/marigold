@@ -1,5 +1,3 @@
-'use client';
-
 import { parseTime } from '@internationalized/date';
 import { TimeField, TimeFieldProps } from '@marigold/components';
 

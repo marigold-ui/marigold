@@ -1,5 +1,3 @@
-'use client';
-
 import { MessageCircleHeart, User } from 'lucide-react';
 import { useState } from 'react';
 import { Button, Dialog, Menu, TextArea } from '@marigold/components';

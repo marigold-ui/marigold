@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { Button, Loader } from '@marigold/components';
 

@@ -1,5 +1,3 @@
-'use client';
-
 import { Inline, Split } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
 

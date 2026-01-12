@@ -1,5 +1,3 @@
-'use client';
-
 import { NumberField, Stack } from '@marigold/components';
 
 export default () => (

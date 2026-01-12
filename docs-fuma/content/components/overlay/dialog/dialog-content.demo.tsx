@@ -1,5 +1,3 @@
-'use client';
-
 import { Button, Dialog, Stack, Text, TextField } from '@marigold/components';
 import { User } from '@marigold/icons';
 

@@ -1,5 +1,3 @@
-'use client';
-
 import { Key, useState } from 'react';
 import {
   Autocomplete,

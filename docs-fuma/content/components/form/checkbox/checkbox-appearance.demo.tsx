@@ -1,5 +1,3 @@
-'use client';
-
 import type { CheckboxProps } from '@marigold/components';
 import { Checkbox } from '@marigold/components';
 

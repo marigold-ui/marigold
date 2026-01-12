@@ -1,5 +1,3 @@
-'use client';
-
 import { Multiselect } from '@marigold/components';
 
 const ticketCategories = [

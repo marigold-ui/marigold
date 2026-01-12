@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { NumberField } from '@marigold/components';
 

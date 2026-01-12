@@ -1,5 +1,3 @@
-'use client';
-
 import { Link, LinkProps } from '@marigold/components';
 
 export default (props: LinkProps) => (

@@ -19,6 +19,7 @@
     "config/eslint/release",
     "config/prettier/release",
     "config/storybook/release",
-    "config/tsconfig/release"
+    "config/tsconfig/release",
+    "blog"
   ]
 }

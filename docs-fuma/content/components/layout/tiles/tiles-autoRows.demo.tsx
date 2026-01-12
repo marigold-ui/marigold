@@ -1,5 +1,3 @@
-'use client';
-
 import { Card, Tiles } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';
 

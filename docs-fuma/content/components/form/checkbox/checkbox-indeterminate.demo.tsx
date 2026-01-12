@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { Checkbox, Inset, Stack } from '@marigold/components';
 

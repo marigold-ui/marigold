@@ -1,5 +1,3 @@
-'use client';
-
 import { DateFormat } from '@marigold/components';
 
 export default () => (

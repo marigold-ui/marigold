@@ -1,5 +1,3 @@
-'use client';
-
 import { Button, Tooltip } from '@marigold/components';
 import { DesignTicket } from '@marigold/icons';
 

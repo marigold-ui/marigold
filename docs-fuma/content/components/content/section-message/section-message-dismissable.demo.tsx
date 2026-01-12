@@ -1,5 +1,3 @@
-'use client';
-
 import { SectionMessage } from '@marigold/components';
 
 export default () => (
