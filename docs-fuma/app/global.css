@@ -64,3 +64,23 @@
     --pre-padding-x: 1rem;
   }
 }
+
+:is(article, .prose) :is(table, .table) thead th {
+  background-color: transparent;
+  padding: 0.75rem 0.75rem 0.5rem;
+  text-align: start;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: 1px var(--color-secondary-200);
+}
+
+:is(article, .prose) :is(table, .table) tbody :is(th, td) {
+  color: var(--color-text-primary);
+  padding: 0.875rem 0.75rem;
+  font-size: 0.75rem;
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid var(--color-secondary-200);
+  border-bottom: none;
+}

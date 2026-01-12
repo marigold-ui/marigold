@@ -10,6 +10,7 @@ import {
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
+import { CustomCodeBlock } from './app/_components/CodeBlock';
 
 // Create Table with dot-notation support
 const Table = Object.assign(TableComponent, {
@@ -32,14 +33,14 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     TableColumn,
     ...components,
     pre: props => (
-      <CodeBlock keepBackground {...props} allowCopy={false}>
+      <CustomCodeBlock keepBackground {...props}>
         <Pre {...props}>{props.children}</Pre>
-      </CodeBlock>
+      </CustomCodeBlock>
     ),
     figure: props => (
-      <CodeBlock {...props}>
+      <CustomCodeBlock {...props}>
         <figure {...props}>{props.children}</figure>
-      </CodeBlock>
+      </CustomCodeBlock>
     ),
   };
 }

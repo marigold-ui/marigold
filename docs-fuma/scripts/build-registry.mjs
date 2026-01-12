@@ -60,24 +60,12 @@ export const registry = {`;
       console.warn(`⚠️ Could not read file content for ${fullPath}: ${err}`);
     }
 
-    // Pre-highlight the code
-    let highlightedCode = '';
-    try {
-      highlightedCode = await codeToHtml(fileContent, {
-        lang: 'tsx',
-        theme: 'material-theme-palenight',
-      });
-    } catch (err) {
-      console.warn(`⚠️ Could not highlight code for ${fullPath}: ${err}`);
-    }
-
     index += `
   '${name}': {
     name: '${name}',
     demo: dynamic(() => import('@/${importPath}')),
     file: '${item.replace(/\\/g, '/')}',
     source: ${JSON.stringify(fileContent)},
-    highlighted: ${JSON.stringify(highlightedCode)},
   },`;
   }
 

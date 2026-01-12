@@ -7,7 +7,7 @@ import {
 } from 'fumadocs-mdx/config';
 import lastModified from 'fumadocs-mdx/plugins/last-modified';
 import { z } from 'zod';
-import inlineBadgeInHeadings from './lib/remark/inline-badge-in-headings';
+import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 
 const customFrontmatterSchema = frontmatterSchema.extend({
   caption: z.string().optional(),
@@ -51,8 +51,8 @@ export const blog = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    rehypePlugins: [[rehypeCode, rehypeCodeOptions]],
-    remarkPlugins: v => [inlineBadgeInHeadings, ...v],
+    rehypePlugins: v => [...v, [rehypeCode, rehypeCodeOptions]],
+    remarkPlugins: v => [...v],
   },
   plugins: [lastModified()],
 });

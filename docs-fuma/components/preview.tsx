@@ -1,8 +1,16 @@
 'use client';
+
 import { type RegistryKey, registry } from '@/lib/.registry/demos';
 import { ruiTheme, theme } from '@/theme';
 import { track } from '@vercel/analytics/react';
-import { type ComponentType, Key, type ReactNode } from 'react';
+import {
+  type ComponentType,
+  Key,
+  type ReactNode,
+  useEffect,
+  useState,
+} from 'react';
+import { codeToHtml } from 'shiki';
 import {
   Card,
   MarigoldProvider,
@@ -49,6 +57,7 @@ const Preview = ({
       </Card>
     );
   }
+
   return (
     <Card variant="content" p={0}>
       <div
@@ -78,13 +87,33 @@ export const ComponentDemo = ({
 
   const entry = name ? registry[name] : undefined;
   const codeString = code ?? entry?.source ?? '';
-  const highlightedCode = entry?.highlighted;
+
+  const [highlightedCode, setHighlightedCode] = useState<string>('');
+
+  useEffect(() => {
+    async function highlight() {
+      if (!codeString) {
+        setHighlightedCode('');
+        return;
+      }
+
+      const html = await codeToHtml(codeString, {
+        theme: 'material-theme-palenight',
+        lang: 'tsx',
+      });
+
+      setHighlightedCode(html);
+    }
+
+    highlight();
+  }, [codeString]);
+
   const hasCode = !!codeString;
   const lines = codeString
     .replace(/\r\n|\r|\n$/, '')
     .split(/\r\n|\r|\n/).length;
 
-  // If mode is 'preview', show only the preview without tabs
+  // Preview only
   if (mode === 'preview') {
     return (
       <MarigoldProvider theme={theme}>
@@ -93,58 +122,60 @@ export const ComponentDemo = ({
     );
   }
 
-  // If mode is 'code', show only the code without tabs
+  // Code only
   if (mode === 'code' && hasCode) {
     return (
       <MarigoldProvider theme={theme}>
-        <div className="relative [&_figure]:border-0! [&_figure]:border-none! [&_pre]:border-0! [&_pre]:border-none!">
-          <div className="absolute top-4 right-3 z-10 flex justify-end gap-3">
+        <div className="relative [&_figure]:border-0! [&_pre]:border-0!">
+          <div className="absolute top-4 right-3 z-10 flex gap-3">
             {lines >= 5 && (
               <FullsizeView
                 code={
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: highlightedCode || '',
-                    }}
-                  />
+                  <div dangerouslySetInnerHTML={{ __html: highlightedCode }} />
                 }
                 codeString={codeString}
               />
             )}
             <CopyButton codeString={codeString} />
           </div>
-          <div dangerouslySetInnerHTML={{ __html: highlightedCode || '' }} />
+
+          {highlightedCode ? (
+            <div dangerouslySetInnerHTML={{ __html: highlightedCode }} />
+          ) : (
+            <div className="p-4 text-sm opacity-60">Loading code…</div>
+          )}
         </div>
       </MarigoldProvider>
     );
   }
 
-  // Default mode is 'both' - show tabs with preview and code
+  // Preview + Code tabs
   return (
     <MarigoldProvider theme={theme}>
       <Tabs
         variant="demo"
-        defaultSelectedKey={'preview'}
+        defaultSelectedKey="preview"
         onSelectionChange={onSelectionChange}
       >
         <Tabs.List>
           <Tabs.Item id="preview">Preview</Tabs.Item>
           {hasCode && <Tabs.Item id="code">Code</Tabs.Item>}
         </Tabs.List>
+
         <Tabs.TabPanel id="preview">
           <Preview name={name} />
         </Tabs.TabPanel>
+
         {hasCode && (
-          // TODO: use rehypeComponentDemo
           <Tabs.TabPanel id="code">
-            <div className="relative [&_figure]:border-0! [&_figure]:border-none! [&_pre]:border-0! [&_pre]:border-none!">
-              <div className="absolute top-4 right-3 z-10 flex justify-end gap-3">
+            <div className="relative [&_figure]:border-0! [&_pre]:border-0!">
+              <div className="absolute top-4 right-3 z-10 flex gap-3">
                 {lines >= 5 && (
                   <FullsizeView
                     code={
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: highlightedCode || '',
+                          __html: highlightedCode,
                         }}
                       />
                     }
@@ -153,9 +184,12 @@ export const ComponentDemo = ({
                 )}
                 <CopyButton codeString={codeString} />
               </div>
-              <div
-                dangerouslySetInnerHTML={{ __html: highlightedCode || '' }}
-              />
+
+              {highlightedCode ? (
+                <div dangerouslySetInnerHTML={{ __html: highlightedCode }} />
+              ) : (
+                <div className="p-4 text-sm opacity-60">Loading code…</div>
+              )}
             </div>
           </Tabs.TabPanel>
         )}
