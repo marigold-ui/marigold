@@ -2,9 +2,8 @@
 
 import { CodeBlockProps } from 'fumadocs-ui/components/codeblock';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
-import { ComponentProps, RefObject, useMemo, useRef } from 'react';
+import { ComponentProps, RefObject, useRef } from 'react';
 import { cn } from '@marigold/system';
-import { FullsizeView } from '@/ui/FullsizeViewDemo';
 
 const CopyButton = ({
   className,
@@ -60,23 +59,6 @@ export const CustomCodeBlock = ({
 }: CodeBlockProps) => {
   const areaRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * Extract html, text, and line count
-   * (EXACT same logic as preview)
-   */
-  const fullsizeData = useMemo(() => {
-    const pre = areaRef.current?.querySelector('pre');
-    const text = pre?.textContent ?? '';
-
-    const lines = text.replace(/\r\n|\r|\n$/, '').split(/\r\n|\r|\n/).length;
-
-    return {
-      html: pre?.outerHTML ?? '',
-      text,
-      lines,
-    };
-  }, [children]);
-
   return (
     <figure
       ref={ref}
@@ -89,26 +71,9 @@ export const CustomCodeBlock = ({
         props.className
       )}
     >
-      {/* Actions (Copy + Fullsize) */}
       {Actions({
         className: 'absolute top-4 right-2 flex items-center gap-2 z-10',
-        children: (
-          <>
-            {fullsizeData.lines >= 5 && fullsizeData.html && (
-              <FullsizeView
-                code={
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: fullsizeData.html,
-                    }}
-                  />
-                }
-                codeString={fullsizeData.text}
-              />
-            )}
-            {allowCopy && <CopyButton containerRef={areaRef} />}
-          </>
-        ),
+        children: <>{allowCopy && <CopyButton containerRef={areaRef} />}</>,
       })}
 
       <div
