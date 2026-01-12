@@ -12,7 +12,18 @@ It serves as a bridge between an empty screen and a populated one, offering cont
 
 The `EmptyState` component typically consists of the following elements:
 
+<Image
+  src="/emptystate/emptystate-anatomy.jpg"
+  alt="Anatomy of an EmptyState"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
 ## Appearance
+
+<AppearanceDemo component={title} />
+<AppearanceTable component={title} />
 
 ## Usage
 
@@ -20,21 +31,87 @@ The `EmptyState` component is ideal for scenarios where a user might expect to s
 
 Use this component to confirm that the lack of data is a valid state in the following situations:
 
-- Initial States: When a user visits a feature or dashboard for the first time and has no data due to a lack of activity.
-- User-Cleared States: When a user has successfully resolved, deleted, or triaged all items in a list.
-- No Results (Search & Filter): When a list or table is empty because no items match the current search query or applied filters.
+- **Initial States**: When a user visits a feature or dashboard for the first time and has no data due to a lack of activity.
+- **User-Cleared States**: When a user has successfully resolved, deleted, or triaged all items in a list.
+- **No Results (Search & Filter)**: When a list or table is empty because no items match the current search query or applied filters.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Reserve empty states for the primary content area of a page or view.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Avoid displaying multiple illustrated empty states on the same screen.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+<ComponentDemo file="./empty-state-table.demo.tsx" />
+
+### Common Pitfalls
+
+Avoid the "Flash of Empty Content" - a jarring flicker where the empty state briefly appears while data is still loading. To prevent this, always show loading states (Skeletons or Spinners) first, and only display the empty state after data retrieval is complete and confirmed to be zero.
+
+It's also important to distinguish between "empty" and "broken." For system failures or errors, use a toast component instead, reserving the empty state strictly for valid, successful loads that happen to have no data.
 
 ### Content Strategy
 
 Effective `EmptyState` content serves as a conversation with the user, bridging the gap between a blank screen and their first successful interaction. Because an empty screen can look like a system error, the primary goal of the copy is to provide immediate reassurance. The text must confirm that the application is working correctly and that the lack of data is a valid state.
 
-The Title should be a short, scannable statement of fact (e.g., "No invoices found"). The Description then follows up by explaining the specific context—telling the user why the space is empty and, most importantly, how to fill it. This turns a dead end into an actionable step.
+The title should be a short, scannable statement of fact (e.g., "No invoices found"). The description then follows up by explaining the specific context, telling the user why the space is empty and, most importantly, how to fill it. This turns a dead end into an actionable step.
 
-// TODO: do and dont with title phrases
-// The tone should remain concise, human, and friendly; avoid robotic phrasing or technical jargon that might suggest the user made a mistake. By combining a clear explanation of the status with a direct path forward, the EmptyState becomes a helpful guide rather than a barrier.
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      <ul>
+        <li>
+          Use a clear title and description to explain the empty state and guide
+          users on next steps.
+        </li>
+        <li>
+          Keep the tone concise, human, and friendly to reassure users the
+          system is working correctly.
+        </li>
+      </ul>
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      <ul>
+        <li>
+          Avoid vague titles and lack of descriptions that leave users confused
+          about the empty state.
+        </li>
+        <li>
+          Avoid robotic phrasing or technical jargon that might suggest the user
+          made a mistake.
+        </li>
+      </ul>
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Accessibility
+
+The `EmptyState` component is accessible by default through its required title, which provides screen readers with clear context about the empty state. The decorative illustration is marked with `aria-hidden="true"`, ensuring assistive technologies correctly ignore it and focus on the meaningful text content.
 
 ## Props
 
 <PropsTable component={title} />
 
-## Related
+## Alternative components
+
+<ul>
+  <li>
+    [Loader](/components/content/loader): Use for loading states before data is
+    fetched. Unlike `EmptyState`, loaders indicate that content is actively
+    being retrieved and will appear shortly.
+  </li>
+  <li>
+    [Toast](/components/overlay/toast): Use for error states or system failures.
+    When something goes wrong during data retrieval, a Toast provides immediate
+    feedback without replacing the main content area.
+  </li>
+</ul>
