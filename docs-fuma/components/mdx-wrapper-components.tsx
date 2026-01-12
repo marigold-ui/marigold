@@ -1,7 +1,8 @@
 'use client';
 
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, PropsWithChildren, ReactNode } from 'react';
 import {
+  BadgeProps,
   Headline,
   Link,
   Badge as MarigoldBadge,
@@ -10,6 +11,11 @@ import {
   Stack as MarigoldStack,
   Table as MarigoldTable,
   Tabs as MarigoldTabs,
+  ScrollableProps,
+  SectionMessageProps,
+  StackProps,
+  TableProps,
+  TabsProps,
   Text,
 } from '@marigold/components';
 import {
@@ -17,123 +23,138 @@ import {
   Dont as MarigoldDont,
   GuidelineTiles as MarigoldGuidelineTiles,
 } from '@/ui/DosAndDonts';
-import { IconList as MarigoldIconList } from '@/ui/IconList';
-import { Image as MarigoldImage } from '@/ui/Image';
-import { PropsTable } from '@/ui/PropsTable';
+import { IconListProps, IconList as MarigoldIconList } from '@/ui/IconList';
+import { ImageProps, Image as MarigoldImage } from '@/ui/Image';
+import { PropsTable, PropsTableProps } from '@/ui/PropsTable';
 import { StorybookHintMessage } from '@/ui/StorybookHintMessage';
-import { TeaserList as MarigoldTeaserList } from '@/ui/TeaserCard';
+import {
+  TeaserList as MarigoldTeaserList,
+  TeaserListProps,
+} from '@/ui/TeaserCard';
 import { ComponentDemo } from './preview';
 
-export function MDXText(props: HTMLAttributes<HTMLParagraphElement>) {
+export const MDXText = (props: HTMLAttributes<HTMLParagraphElement>) => {
   return <Text {...props} as="p" />;
-}
+};
+export { Text } from '@marigold/components';
 
-export function MDXHeadline2(props: HTMLAttributes<HTMLHeadingElement>) {
+export const MDXHeadline2 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={2} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
     </Headline>
   );
-}
+};
 
-export function MDXHeadline3(props: HTMLAttributes<HTMLHeadingElement>) {
+export const MDXHeadline3 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={3} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
     </Headline>
   );
-}
+};
 
-export function MDXHeadline4(props: HTMLAttributes<HTMLHeadingElement>) {
+export const MDXHeadline4 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={4} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
     </Headline>
   );
-}
+};
 
-export function MDXHeadline5(props: HTMLAttributes<HTMLHeadingElement>) {
+export const MDXHeadline5 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={5} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
     </Headline>
   );
-}
+};
 
-export function MDXHeadline6(props: HTMLAttributes<HTMLHeadingElement>) {
+export const MDXHeadline6 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={6} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
     </Headline>
   );
-}
+};
 
-export function MDXStorybookHintMessage(
+export const MDXStorybookHintMessage = (
   props: HTMLAttributes<HTMLDivElement> & { component: string }
-) {
+) => {
   return <StorybookHintMessage {...props} />;
-}
+};
 
-export const componentDemo = (props: any) => <ComponentDemo {...props} />;
+export const componentDemo = (
+  props: React.ComponentProps<typeof ComponentDemo>
+) => <ComponentDemo {...props} />;
 
-export const Badge = (props: any) => <MarigoldBadge {...props} />;
+export const Badge = (props: BadgeProps) => <MarigoldBadge {...props} />;
 
-export const IconList = (props: any) => {
+export const IconList = (props: IconListProps) => {
   return <MarigoldIconList {...props} />;
 };
 
 // Export SectionMessage as a namespace with its sub-components
 export const SectionMessage = Object.assign(
-  (props: any) => <MarigoldSectionMessage {...props} />,
+  (props: SectionMessageProps) => <MarigoldSectionMessage {...props} />,
   {
     Title: MarigoldSectionMessage.Title,
     Content: MarigoldSectionMessage.Content,
   }
 );
 
-export const TeaserList = (props: any) => {
+export const TeaserList = (props: TeaserListProps) => {
   return <MarigoldTeaserList {...props} />;
 };
 
-export const MDXPropsTable = (props: any) => {
+export const MDXPropsTable = (props: PropsTableProps) => {
   console.log('propsTable', props);
   return <PropsTable {...props} />;
 };
 
 // Export Do and Dont with their sub-components
-export const Do = Object.assign((props: any) => <MarigoldDo {...props} />, {
-  Figure: MarigoldDo.Figure,
-  Description: MarigoldDo.Description,
-});
+export const Do = Object.assign(
+  (props: PropsWithChildren) => <MarigoldDo {...props} />,
+  {
+    Figure: MarigoldDo.Figure,
+    Description: MarigoldDo.Description,
+  }
+);
 
-export const Dont = Object.assign((props: any) => <MarigoldDont {...props} />, {
-  Figure: MarigoldDont.Figure,
-  Description: MarigoldDont.Description,
-});
+export const Dont = Object.assign(
+  (props: PropsWithChildren) => <MarigoldDont {...props} />,
+  {
+    Figure: MarigoldDont.Figure,
+    Description: MarigoldDont.Description,
+  }
+);
 
-export const GuidelineTiles = (props: any) => {
+export const GuidelineTiles = (props: PropsWithChildren) => {
   return <MarigoldGuidelineTiles {...props} />;
 };
 
 // Export Table as a namespace with its sub-components (for MDX dot-notation)
-export const Table = (props: any) => {
+export const Table = (props: TableProps) => {
   return <MarigoldTable {...props} />;
 };
 
-export const Stack = (props: any) => {
+export const Stack = (props: StackProps) => {
   return <MarigoldStack {...props} />;
 };
 
-export const Scrollable = (props: any) => {
+export const Scrollable = (props: ScrollableProps) => {
   return <MarigoldScrollable {...props} />;
 };
 
 // Export Tabs as a namespace with its sub-components (for MDX dot-notation)
-export const Tabs = Object.assign((props: any) => <MarigoldTabs {...props} />, {
-  List: MarigoldTabs.List,
-  Item: MarigoldTabs.Item,
-  TabPanel: MarigoldTabs.TabPanel,
-});
+export const Tabs = Object.assign(
+  (props: TabsProps) => <MarigoldTabs {...props} />,
+  {
+    List: MarigoldTabs.List,
+    Item: MarigoldTabs.Item,
+    TabPanel: MarigoldTabs.TabPanel,
+  }
+);
 
 // Also export aliases to match MDX tags used like <TabsList />, <TabsItem />, <TabsTabPanel />
 export const TabsList = MarigoldTabs.List;

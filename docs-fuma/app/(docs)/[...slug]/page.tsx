@@ -24,22 +24,16 @@ import {
   MDXHeadline6,
   MDXPropsTable,
   MDXStorybookHintMessage,
-  MDXText,
   Scrollable,
   SectionMessage,
   SectionMessageContent,
   SectionMessageTitle,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
   Tabs,
   TabsItem,
   TabsList,
   TabsTabPanel,
   TeaserList,
+  Text,
   componentDemo,
 } from '@/components/mdx-wrapper-components';
 // Lib
@@ -108,7 +102,7 @@ function getMdxComponentsConfig(page: any) {
       a: createRelativeLink(source, page),
 
       // Text & Headings
-      p: MDXText,
+      p: (props: any) => <Text {...props} as="p" />,
       h2: MDXHeadline2,
       h3: MDXHeadline3,
       h4: MDXHeadline4,
@@ -155,13 +149,6 @@ function getMdxComponentsConfig(page: any) {
     Columns,
     Scrollable,
     Stack,
-
-    // Table Components
-    TableBody,
-    TableCell,
-    TableColumn,
-    TableHeader,
-    TableRow,
 
     // Token Components
     AlignmentsX,
