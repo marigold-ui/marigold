@@ -14,21 +14,39 @@
 /*
  * The "surface" utitlities define visual surfaces with distinct background colors. Apply 
  * elevation levels to them when needed.
+ * 
+ * This utility now uses background-clip and background-origin with gradient borders
+ * instead of pseudo-elements, allowing it to work on any element including <input>.
+ * The gradient border transitions from --color-stone-200 (top) to a darker stone color (bottom),
+ * with layered box-shadows for subtle depth.
  */
 @utility surface {
-  @apply relative;
-  @apply bg-surface bg-clip-padding;
-  @apply border-surface-border rounded-surface border;
-  @apply transition-[box-shadow,border];
+  @apply rounded-surface relative transition-[box-shadow,background];
 
-  /* ::before */
-  @apply before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
+  /* Gradient border using background-clip and background-origin */
+  background:
+    linear-gradient(
+        to bottom,
+        oklch(from var(--color-surface-border) calc(l + 0.1) c h),
+        oklch(from var(--color-surface-border) calc(l - 0.1) c h)
+      )
+      border-box,
+    linear-gradient(to bottom, var(--color-surface), var(--color-surface))
+      padding-box;
+  background-clip: padding-box, border-box;
+  background-origin: border-box, padding-box;
+
+  border: 1px solid transparent;
+
+  /* Layered box-shadow for subtle depth (Josh Comeau's approach) */
+  @apply shadow-surface;
 }
 
 /*
- * Ensures input elements have consistent padding, text styles, and full-width behavior when used 
- * as surfaces.Since input elements cannot use ::before, wrap them with an additional element and 
- * apply this utility to the input itself for proper styling.
+ * Ensures input elements and form controls have consistent padding and text styles.
+ * Note: This utility is deprecated as a separate class. Padding should be applied
+ * directly to elements alongside the .surface class. Kept here for transition period.
+ * @deprecated Use .surface directly on form controls instead
  */
 @utility surface-input {
   @apply w-full min-w-0;
