@@ -13,5 +13,5 @@
 
 'type:docs':
   - changed-files:
-      - any-glob-to-any-file: docs/*
-      - any-glob-to-any-file: docs/**/*
+      - any-glob-to-any-file: docs-fuma/*
+      - any-glob-to-any-file: docs-fuma/**/*
