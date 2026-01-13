@@ -19,7 +19,6 @@ export function DocsPage({ toc = [], ...props }: DocsPageProps) {
     <AnchorProvider toc={toc} single={true}>
       <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
         {props.children}
-        {/* <Footer /> */}
         {toc.length > 0 && (
           <div className="sticky top-(--fd-nav-height) h-[calc(100dvh-var(--fd-nav-height))] w-[286px] shrink-0 overflow-auto pt-12 pb-2 max-xl:hidden">
             <Text weight="semibold" color="secondary-800">

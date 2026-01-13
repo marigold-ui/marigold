@@ -69,8 +69,14 @@ export default async function Page(props: PageProps) {
   const data = page.data as DocsPageData;
   const MDX = data.body;
 
+  // Filter TOC to only show headings from level 1 to 3
+  const filteredToc =
+    data.toc === false
+      ? []
+      : data.toc.filter((item: any) => item.depth >= 1 && item.depth <= 3);
+
   return (
-    <DocsPage toc={data.toc === false ? [] : data.toc}>
+    <DocsPage toc={filteredToc}>
       <div className="col-span-full">
         <DocsTitle className="max-w-(--maxHeadlineWidth) scroll-m-20 text-left text-5xl font-extrabold tracking-tight *:no-underline lg:text-6xl">
           {data.title}
