@@ -3,6 +3,8 @@ title: Feedback Messages
 description: Learn when to use which message.
 ---
 
+import { MessageComponentsTable } from './MessageComponentsTable';
+
 Messages are feedback mechanisms that inform users about important events, actions, conditions, or information within the application.
 
 Appropriate communication of system status is critical to building trust with users, and is Jakob Nielsen’s [first usability heuristic for user interface design](https://www.nngroup.com/articles/ten-usability-heuristics/#toc-1-visibility-of-system-status-1). Too many messages, however, can dilute their usefulness and lead to alert fatigue. Therefore, it’s important to know exactly when and how to use them.
@@ -71,57 +73,7 @@ Don’t use messages when the information does not have a significant impact on 
 
 Marigold currently includes three different components for offering feedback messages: Dialogs, input field validation and section messages.
 
-<Scrollable>
-  <Table aria-label="messages">
-    <TableHeader>
-      <TableColumn>Component</TableColumn>
-      <TableColumn>Relevant use case(s)</TableColumn>
-      <TableColumn>Disruption level</TableColumn>
-      <TableColumn>Persistence</TableColumn>
-      <TableColumn>Dismissable by the user?</TableColumn>
-      <TableColumn>Display</TableColumn>
-      <TableColumn>Position</TableColumn>
-    </TableHeader>
-    <TableBody>
-      <Table.Row key={1}>
-        <TableCell>Dialog</TableCell>
-        <TableCell>
-          Interrupt the user to inform them of task-critical information
-        </TableCell>
-        <TableCell>High</TableCell>
-        <TableCell>Permanent</TableCell>
-        <TableCell>Yes (optional)</TableCell>
-        <TableCell>Block</TableCell>
-        <TableCell>
-          Fixed as an overlay on top of the page, typically in the center of the
-          viewport
-        </TableCell>
-      </Table.Row>
-      <Table.Row key={2}>
-        <TableCell>Input field validation</TableCell>
-        <TableCell>Inform users of the status of form field inputs</TableCell>
-        <TableCell>Medium</TableCell>
-        <TableCell>Permanent</TableCell>
-        <TableCell>No</TableCell>
-        <TableCell>Inline</TableCell>
-        <TableCell>Directly beneath the affected input field</TableCell>
-      </Table.Row>
-      <Table.Row key={3}>
-        <TableCell>Section message</TableCell>
-        <TableCell>
-          Inform users of relevant information in one section/area of the screen
-        </TableCell>
-        <TableCell>Low</TableCell>
-        <TableCell>Permanent</TableCell>
-        <TableCell>Yes (optional)</TableCell>
-        <TableCell>Block</TableCell>
-        <TableCell>
-          Visually near the affected content, typically directly above
-        </TableCell>
-      </Table.Row>
-    </TableBody>
-  </Table>
-</Scrollable>
+<MessageComponentsTable />
 
 ### Dialog
 

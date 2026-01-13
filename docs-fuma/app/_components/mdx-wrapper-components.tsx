@@ -8,15 +8,10 @@ import {
   Badge as MarigoldBadge,
   Scrollable as MarigoldScrollable,
   SectionMessage as MarigoldSectionMessage,
-  Stack as MarigoldStack,
-  Table as MarigoldTable,
   Tabs as MarigoldTabs,
   ScrollableProps,
   SectionMessageProps,
-  StackProps,
-  TableProps,
   TabsProps,
-  Text,
 } from '@marigold/components';
 import {
   Do as MarigoldDo,
@@ -32,11 +27,6 @@ import {
   TeaserListProps,
 } from '@/ui/TeaserCard';
 import { ComponentDemo } from './preview';
-
-export const MDXText = (props: HTMLAttributes<HTMLParagraphElement>) => {
-  return <Text {...props} as="p" />;
-};
-export { Text } from '@marigold/components';
 
 export const MDXHeadline2 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
@@ -94,13 +84,8 @@ export const IconList = (props: IconListProps) => {
   return <MarigoldIconList {...props} />;
 };
 
-// Export SectionMessage as a namespace with its sub-components
-export const SectionMessage = Object.assign(
-  (props: SectionMessageProps) => <MarigoldSectionMessage {...props} />,
-  {
-    Title: MarigoldSectionMessage.Title,
-    Content: MarigoldSectionMessage.Content,
-  }
+export const SectionMessage = (props: SectionMessageProps) => (
+  <MarigoldSectionMessage {...props} />
 );
 
 export const TeaserList = (props: TeaserListProps) => {
@@ -112,50 +97,24 @@ export const MDXPropsTable = (props: PropsTableProps) => {
   return <PropsTable {...props} />;
 };
 
-// Export Do and Dont with their sub-components
-export const Do = Object.assign(
-  (props: PropsWithChildren) => <MarigoldDo {...props} />,
-  {
-    Figure: MarigoldDo.Figure,
-    Description: MarigoldDo.Description,
-  }
-);
-
-export const Dont = Object.assign(
-  (props: PropsWithChildren) => <MarigoldDont {...props} />,
-  {
-    Figure: MarigoldDont.Figure,
-    Description: MarigoldDont.Description,
-  }
-);
+export const Do = (props: PropsWithChildren) => <MarigoldDo {...props} />;
+export const Dont = (props: PropsWithChildren) => <MarigoldDont {...props} />;
 
 export const GuidelineTiles = (props: PropsWithChildren) => {
   return <MarigoldGuidelineTiles {...props} />;
-};
-
-// Export Table as a namespace with its sub-components (for MDX dot-notation)
-export const Table = (props: TableProps) => {
-  return <MarigoldTable {...props} />;
-};
-
-export const Stack = (props: StackProps) => {
-  return <MarigoldStack {...props} />;
 };
 
 export const Scrollable = (props: ScrollableProps) => {
   return <MarigoldScrollable {...props} />;
 };
 
-// Export Tabs as a namespace with its sub-components (for MDX dot-notation)
 export const Tabs = (props: TabsProps) => {
   return <MarigoldTabs {...props} />;
 };
-// Also export aliases to match MDX tags used like <TabsList />, <TabsItem />, <TabsTabPanel />
 export const TabsList = MarigoldTabs.List;
 export const TabsItem = MarigoldTabs.Item;
 export const TabsTabPanel = MarigoldTabs.TabPanel;
 
-// Also export the sub-components separately for explicit MDX mapping
 export const SectionMessageTitle = MarigoldSectionMessage.Title;
 export const SectionMessageContent = MarigoldSectionMessage.Content;
 
@@ -169,9 +128,4 @@ export const Image = (props: any) => {
   return <MarigoldImage {...props} />;
 };
 
-// Export Table sub-components for MDX
-export const TableRow = MarigoldTable.Row;
-export const TableHeader = MarigoldTable.Header;
-export const TableBody = MarigoldTable.Body;
-export const TableCell = MarigoldTable.Cell;
-export const TableColumn = MarigoldTable.Column;
+export { Text, Center, Stack, Columns } from '@marigold/components';

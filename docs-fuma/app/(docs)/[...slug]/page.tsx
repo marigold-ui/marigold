@@ -5,6 +5,8 @@ import {
   DocsTitle,
 } from '@/app/_components/layout/docs/page';
 import {
+  Center,
+  Columns,
   Do,
   DoDescription,
   DoFigure,
@@ -25,6 +27,7 @@ import {
   SectionMessage,
   SectionMessageContent,
   SectionMessageTitle,
+  Stack,
   Tabs,
   TabsItem,
   TabsList,
@@ -39,7 +42,6 @@ import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Center, Columns, Stack } from '@marigold/components';
 import { AppearanceTable } from '@/ui/AppearanceTable';
 import { ColorTokenTable } from '@/ui/ColorTokens';
 import { RelativeTime } from '@/ui/RelativeTime';

@@ -1,36 +1,13 @@
-import {
-  Badge,
-  TableBody,
-  TableCell,
-  TableColumn,
-  Table as TableComponent,
-  TableHeader,
-  TableRow,
-} from '@/app/_components/mdx-wrapper-components';
+import { Badge } from '@/app/_components/mdx-wrapper-components';
 import { Pre } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
 import { CustomCodeBlock } from './app/_components/CodeBlock';
 
-// Create Table with dot-notation support
-const Table = Object.assign(TableComponent, {
-  Row: TableRow,
-  Header: TableHeader,
-  Body: TableBody,
-  Cell: TableCell,
-  Column: TableColumn,
-});
-
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...defaultMdxComponents,
     Badge,
-    Table,
-    TableRow,
-    TableHeader,
-    TableBody,
-    TableCell,
-    TableColumn,
     ...components,
     pre: props => (
       <CustomCodeBlock keepBackground {...props}>
