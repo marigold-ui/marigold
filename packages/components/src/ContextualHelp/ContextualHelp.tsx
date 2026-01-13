@@ -65,7 +65,7 @@ type Placement =
  */
 export interface ContextualHelpProps {
   /** Size of the button and popover. */
-  size?: 'small' | 'medium' | 'large';
+  size?: string;
 
   /** Content rendered inside the popover. */
   children: ReactNode;

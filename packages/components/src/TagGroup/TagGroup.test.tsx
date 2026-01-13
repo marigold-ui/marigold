@@ -1,14 +1,11 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Form } from '../Form/Form';
-import * as stories from './TagGroup.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './TagGroup.stories';
 
 test('render tag group', () => {
-  render(<Basic aria-label="static tag group items" />);
+  render(<Basic.Component aria-label="static tag group items" />);
 
   const element = screen.getByLabelText('static tag group items');
   expect(element).toBeInTheDocument();
@@ -23,7 +20,7 @@ test.each`
 `('Remove tag $name', async ({ props }) => {
   let onRemoveSpy = vi.fn();
   const user = userEvent.setup();
-  render(<Basic aria-label="tag group" onRemove={onRemoveSpy} />);
+  render(<Basic.Component aria-label="tag group" onRemove={onRemoveSpy} />);
 
   const gaming = screen.getByText('Gaming');
 
@@ -34,7 +31,7 @@ test.each`
 
 test('should navigate with keyboard keys through items', async () => {
   const user = userEvent.setup();
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const tags = screen.getAllByRole('row');
   await user.tab();
@@ -56,7 +53,7 @@ test('should navigate with keyboard keys through items', async () => {
 });
 
 test('renders label', () => {
-  render(<Basic aria-label="tag group" label="Categories" />);
+  render(<Basic.Component aria-label="tag group" label="Categories" />);
 
   const label = screen.queryByLabelText(/Categories/i);
   expect(label).toBeInTheDocument();
@@ -72,7 +69,11 @@ test('can be used like a native form element', async () => {
 
   render(
     <Form onSubmit={submit}>
-      <Basic label="Categories" name="categories" selectionMode="multiple" />
+      <Basic.Component
+        label="Categories"
+        name="categories"
+        selectionMode="multiple"
+      />
       <button type="submit">Submit</button>
     </Form>
   );

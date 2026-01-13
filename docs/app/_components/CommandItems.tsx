@@ -3,14 +3,7 @@ import { iterateTokens } from '@/lib/utils';
 import { ruiTheme } from '@/theme';
 import { Icons, cn } from '@/ui';
 import { Command, CommandGroup, useCommandState } from 'cmdk';
-import {
-  Dispatch,
-  ReactNode,
-  RefObject,
-  SetStateAction,
-  useRef,
-  useState,
-} from 'react';
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useCopyToClipboard, useDebounce } from 'react-use';
 import { useRouter } from 'next/navigation';
@@ -122,16 +115,15 @@ export const TokenItem = ({ classNames }: CommandItemProps) => {
 };
 
 export const IconItem = ({ classNames }: CommandItemProps) => {
-  const ref = useRef<SVGSVGElement>(undefined);
-  const getIcon = (icon: keyof typeof Icons, ref: RefObject<SVGSVGElement>) => {
+  const getIcon = (icon: keyof typeof Icons) => {
     const Component = Icons[icon];
-    const iconElement = <Component ref={ref} />;
-    const svg = ReactDOMServer.renderToString(<Component ref={ref} />);
-    return { iconElement, ref, icon, svg };
+    const iconElement = <Component />;
+    const svg = ReactDOMServer.renderToString(<Component />);
+    return { iconElement, icon, svg };
   };
 
   const iconElements = Object.keys(Icons).map((icon: keyof typeof Icons) => {
-    return getIcon(icon, ref as any);
+    return getIcon(icon);
   });
   return (
     <CommandGroup heading="Icons" key="icons" className={classNames.section}>

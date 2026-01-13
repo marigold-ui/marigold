@@ -1,46 +1,25 @@
-import { Decorator, Preview } from '@storybook/react';
-import {
-  MarigoldProvider,
-  OverlayContainerProvider,
-} from '@marigold/components';
-import theme from '@marigold/theme-rui';
+import addonA11y from '@storybook/addon-a11y';
+import addonDocs from '@storybook/addon-docs';
+import { definePreview } from '@storybook/react-vite';
 import './../styles.css';
+import withMarigoldProviders from './decorators.js';
 
-// Parameters
-// ---------------
-
-export const parameters: Preview['parameters'] = {
-  layout: 'fullscreen',
-
-  a11y: {
-    context: '#storybook-root',
-  },
-
-  options: {
-    storySort: {
-      method: 'alphabetical',
+export default definePreview({
+  addons: [addonA11y(), addonDocs()],
+  parameters: {
+    layout: 'fullscreen',
+    a11y: {
+      context: '#storybook-root',
+    },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+      },
+    },
+    controls: { expanded: true },
+    docs: {
+      codePanel: true,
     },
   },
-
-  controls: { expanded: true },
-
-  docs: {
-    codePanel: true,
-  },
-};
-
-export const decorators: Decorator[] = [
-  // Wrapper to provide an overlay container
-  Story => (
-    <div id="overlay-container">
-      <Story />
-    </div>
-  ),
-  Story => (
-    <MarigoldProvider theme={theme} className="min-h-screen p-6">
-      <OverlayContainerProvider container="overlay-container">
-        <Story />
-      </OverlayContainerProvider>
-    </MarigoldProvider>
-  ),
-];
+  decorators: withMarigoldProviders,
+});

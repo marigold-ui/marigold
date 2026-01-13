@@ -1,10 +1,14 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './Breadcrumbs.stories';
+import { Basic, Collapsed } from './Breadcrumbs.stories';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 
-const { Basic, Collapsed } = composeStories(stories);
+const CollapsedComponent = (props: any) => (
+  <div id="storybook-root">
+    <Collapsed.Component {...props} />
+  </div>
+);
+
 const user = userEvent.setup();
 
 /**
@@ -19,7 +23,7 @@ const mockMatchMedia = (matches: string[]) =>
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
 test('renders breadcrumb items correctly', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const home = screen.getByText('Home');
   const breadcrumb1 = screen.getByText('Breadcrumb1');
@@ -31,7 +35,7 @@ test('renders breadcrumb items correctly', () => {
 });
 
 test('collapses breadcrumbs for too many items', async () => {
-  render(<Collapsed />);
+  render(<CollapsedComponent />);
 
   const ellipsis = screen.getByText('...');
   const home = screen.getByText('Home');
@@ -48,7 +52,7 @@ test('collapses breadcrumbs for too many items', async () => {
 });
 
 test('handles breadcrumbs links correctly', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const link = screen.getByText('Home');
   const linkItems = screen.getAllByRole('link');
@@ -59,7 +63,7 @@ test('handles breadcrumbs links correctly', () => {
 });
 
 test('renders chevron separators', () => {
-  render(<Basic />);
+  render(<Basic.Component />);
 
   const chevrons = screen.queryAllByTestId('breadcrumb-chevronright');
 
@@ -67,7 +71,7 @@ test('renders chevron separators', () => {
 });
 
 test('collapses breadcrumbs with links for too many items', () => {
-  render(<Collapsed />);
+  render(<CollapsedComponent />);
 
   // First
   expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument();
@@ -87,7 +91,7 @@ test('collapses breadcrumbs with links for too many items', () => {
 });
 
 test('expand collapsed items', async () => {
-  render(<Collapsed />);
+  render(<CollapsedComponent />);
 
   const ellipsis = screen.getByRole('button', {
     name: 'These breadcrumbs are hidden',

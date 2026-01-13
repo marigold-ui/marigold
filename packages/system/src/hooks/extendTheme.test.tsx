@@ -106,7 +106,7 @@ test('Not supporting adding styles for a new component', () => {
 });
 
 test('Throw an error when the variant is dupplicated', () => {
-  try {
+  expect(() =>
     extendTheme(
       {
         Button: cva('p-3', {
@@ -118,10 +118,8 @@ test('Throw an error when the variant is dupplicated', () => {
         }),
       },
       theme
-    );
-  } catch (err) {
-    expect((err as Error).message).toEqual('tertiary already exists!');
-  }
+    )
+  ).toThrow('tertiary already exists!');
 });
 
 test('Should support new variant and existing size', () => {

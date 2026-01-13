@@ -1,5 +1,8 @@
 'use client';
 
+/* eslint-disable react-hooks/static-components */
+// useMDXComponent from next-contentlayer2 creates components during render by design.
+// This is the intended API and cannot be refactored without breaking functionality.
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { HTMLAttributes } from 'react';
 import Md from 'react-markdown';

@@ -1,10 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'storybook/preview-api';
 import { SortDescriptor } from '@react-types/shared';
+import preview from '../../../../config/storybook/.storybook/preview';
 import { Table } from './Table';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Table',
+  component: Table.Column,
   argTypes: {
     align: {
       control: {
@@ -36,14 +37,11 @@ const meta = {
   args: {
     align: 'right',
     width: 20,
-  },
-} satisfies Meta<typeof Table.Column>;
+    children: undefined,
+  } as const,
+});
 
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-export const AlignedTableColumn: Story = {
+export const AlignedTableColumn = meta.story({
   render: args => {
     const data = [
       {
@@ -166,4 +164,4 @@ export const AlignedTableColumn: Story = {
       </>
     );
   },
-};
+});

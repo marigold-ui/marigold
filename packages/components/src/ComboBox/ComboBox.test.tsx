@@ -1,10 +1,14 @@
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import * as stories from './ComboBox.stories';
+import { ComboBoxProps } from '@marigold/components';
+import { Basic } from './ComboBox.stories';
 
-const { Basic } = composeStories(stories);
+const BasicComponent = (props: ComboBoxProps) => (
+  <div id="storybook-root">
+    <Basic.Component {...props} />
+  </div>
+);
 
 const user = userEvent.setup();
 
@@ -21,7 +25,7 @@ const mockMatchMedia = (matches: string[]) =>
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
 test('renders an input', () => {
-  render(<Basic />);
+  render(<BasicComponent />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -31,7 +35,7 @@ test('renders an input', () => {
 });
 
 test('check classname slots', () => {
-  render(<Basic />);
+  render(<BasicComponent />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
@@ -50,7 +54,7 @@ test('check classname slots', () => {
 });
 
 test('supports disabled', () => {
-  render(<Basic disabled />);
+  render(<BasicComponent disabled />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -58,7 +62,7 @@ test('supports disabled', () => {
 });
 
 test('supports required', () => {
-  render(<Basic required />);
+  render(<BasicComponent required />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -66,7 +70,7 @@ test('supports required', () => {
 });
 
 test('supports readonly', () => {
-  render(<Basic readOnly />);
+  render(<BasicComponent readOnly />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -75,7 +79,7 @@ test('supports readonly', () => {
 
 test('uses field structure', () => {
   render(
-    <Basic
+    <BasicComponent
       label="Label"
       description="Some helpful text"
       errorMessage="Whoopsie"
@@ -92,7 +96,7 @@ test('uses field structure', () => {
 });
 
 test('supporst showing a help text', () => {
-  render(<Basic description="This is a description" />);
+  render(<BasicComponent description="This is a description" />);
 
   const description = screen.getAllByText('This is a description')[0];
 
@@ -100,13 +104,13 @@ test('supporst showing a help text', () => {
 });
 
 test('supporst showing an error', () => {
-  render(<Basic error errorMessage="Error!" />);
+  render(<BasicComponent error errorMessage="Error!" />);
 
   expect(screen.getByText('Error!')).toBeInTheDocument();
 });
 
 test('supports default value', () => {
-  render(<Basic defaultValue="garlic" />);
+  render(<BasicComponent defaultValue="garlic" />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -114,7 +118,7 @@ test('supports default value', () => {
 });
 
 test('supports autocompletion', async () => {
-  render(<Basic label="Label" />);
+  render(<BasicComponent label="Label" />);
 
   const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'do');
@@ -126,18 +130,18 @@ test('supports autocompletion', async () => {
 });
 
 test('supports loading state', () => {
-  render(<Basic label="Label" loading />);
+  render(<BasicComponent label="Label" loading />);
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
 
 test('hides loading state when loading is false', () => {
-  render(<Basic label="Label" loading={false} />);
+  render(<BasicComponent label="Label" loading={false} />);
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
 
 test('supports specific empty state text', async () => {
   render(
-    <Basic
+    <BasicComponent
       label="Label"
       allowsEmptyCollection
       emptyState="No vegetables found"
