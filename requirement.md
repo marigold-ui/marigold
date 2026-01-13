@@ -21,3 +21,4 @@
 - find all components (`packages/components/src`) that use the `.surface` class and adjust them to work with with the refactored result
 - important note about the `<Input>` component: this component supports a prefix/suffix placement of icons and actions. so the `<div>` around the `react-aria-components` `<input>` is the visible input (styles using `classNames.container`)
 - do not add additional css tokens if not necessary. e.g. for the button gradient, darken the currently used border token via `oklch` (for example `oklch(from var(--primary) calc(l - 0.2) c h)`)
+- for the box shadow, try the method used here to create a small subtle but visible shadow: https://www.joshwcomeau.com/css/designing-shadows/
