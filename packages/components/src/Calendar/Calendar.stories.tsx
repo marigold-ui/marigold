@@ -97,7 +97,6 @@ export const Controlled = meta.story({
 
 export const Uncontrolled = meta.story({
   ...Basic.input,
-  tags: ['component-test'],
   args: {
     defaultValue: new CalendarDate(2019, 6, 5),
     onChange: fn(),
@@ -142,7 +141,6 @@ export const Disabled = meta.story({
 
 export const ReadOnly = meta.story({
   ...Basic.input,
-  tags: ['component-test'],
   args: {
     readOnly: true,
     onChange: fn(),

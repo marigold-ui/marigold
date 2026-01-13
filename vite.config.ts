@@ -50,7 +50,7 @@ export default mergeConfig(
               // Make sure to install Playwright
               provider: playwright(),
               headless: true,
-              instances: [{ browser: 'chromium' }],
+              instances: [{ browser: 'firefox' }],
             },
           },
         },
