@@ -1,3 +1,5 @@
+'use client';
+
 import { ValidationError, post } from '@/lib/fetch';
 import {
   QueryClient,

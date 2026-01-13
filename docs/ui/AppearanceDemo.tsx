@@ -1,5 +1,7 @@
+'use client';
+
+import { registry } from '@/lib/.registry/demos';
 import { getAppearance } from '@/lib/utils';
-import { registry } from '@/registry/demos';
 import { ruiTheme } from '@/theme';
 import type { Theme } from '@/ui';
 import { Card, MarigoldProvider, OverlayContainerProvider, Select } from '@/ui';

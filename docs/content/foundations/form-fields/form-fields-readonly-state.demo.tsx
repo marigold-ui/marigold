@@ -1,3 +1,5 @@
+'use client';
+
 import { Headline, Stack, Switch } from '@marigold/components';
 
 export default () => {

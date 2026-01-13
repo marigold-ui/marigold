@@ -1,6 +1,5 @@
 packages:
   - config/*
   - docs
-  - docs-fuma
   - packages/*
   - themes/*

@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Center, ComboBox, useAsyncList } from '@marigold/components';
 
@@ -24,7 +26,7 @@ export default function Example() {
       const timer = setTimeout(() => setShowLoading(true), 500);
       return () => clearTimeout(timer);
     } else {
-      queueMicrotask(() => setShowLoading(false));
+      setShowLoading(false);
     }
   }, [list.isLoading]);
 

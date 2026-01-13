@@ -1,5 +1,3 @@
-'use client';
-
 import { ContextualHelp } from '@marigold/components';
 
 export default () => (

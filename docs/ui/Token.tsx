@@ -112,7 +112,7 @@ export const Breakpoints = () => {
       ).getPropertyValue(`--breakpoint-${key}`);
     });
 
-    queueMicrotask(() => setBreakpoints(breakpointValues));
+    setBreakpoints(breakpointValues);
   }, []);
 
   return (

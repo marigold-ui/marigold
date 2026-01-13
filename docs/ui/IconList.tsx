@@ -45,7 +45,7 @@ const IconListItem = ({ icon }: IconListItemProps) => {
     <div className="mt-2 [&>button]:h-auto [&>button]:w-full [&>button]:p-0">
       <Button onPress={handleClick}>
         <Card p={3} variant="hovering">
-          <div className="relative grid h-24 w-full place-items-center">
+          <div className="relative grid h-24 place-items-center">
             <div
               className={cn(
                 isCopied ? 'opacity-100' : 'opacity-0',

@@ -1,9 +1,12 @@
+import { getBadgeMap, source } from '@/lib/source';
 import { theme } from '@/theme';
 import { MarigoldProvider } from '@/ui';
+import { RootProvider } from 'fumadocs-ui/provider';
 import { ReactNode, Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
+import { Nav } from './Nav';
 import { Analytics } from './_components/Analytics';
-import './globals.css';
+import './global.css';
 
 // Metadata
 // ---------------
@@ -25,6 +28,9 @@ export const metadata = {
 // Layout
 // ---------------
 const Layout = ({ children }: { children: ReactNode }) => {
+  const tree = source.getPageTree();
+  const badgeMap = getBadgeMap();
+
   return (
     <html
       lang="en"
@@ -32,10 +38,18 @@ const Layout = ({ children }: { children: ReactNode }) => {
     >
       <body className={`${fontSans.className} min-h-screen`}>
         <Suspense>
-          <MarigoldProvider theme={theme} className="bg-bg-body min-h-screen">
-            {children}
-          </MarigoldProvider>
-          <div id="portalContainer" data-theme="rui" className="not-prose" />
+          <RootProvider>
+            <MarigoldProvider
+              theme={theme}
+              className="bg-bg-body flex min-h-screen flex-col"
+            >
+              {/* TODO: just pass the tree  */}
+              <Nav pages={tree.children} tree={tree} badgeMap={badgeMap} />
+
+              {children}
+            </MarigoldProvider>
+            <div id="portalContainer" data-theme="rui" className="not-prose" />
+          </RootProvider>
         </Suspense>
         <Analytics />
       </body>

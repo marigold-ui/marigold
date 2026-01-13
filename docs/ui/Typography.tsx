@@ -1,3 +1,5 @@
+'use client';
+
 import { ruiTheme } from '@/theme';
 import {
   Headline,
@@ -11,7 +13,7 @@ import {
 } from '@/ui';
 
 export const Headlines = () => {
-  const headline = ruiTheme.components.Headline?.variants;
+  const headline = ruiTheme.components?.Headline?.variants;
 
   if (!headline) {
     return null;

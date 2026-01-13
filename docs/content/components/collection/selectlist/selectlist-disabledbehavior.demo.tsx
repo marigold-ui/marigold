@@ -23,7 +23,7 @@ export default () => {
       onChange={setSelectedTickets}
       disabledBehavior="selection"
     >
-      {(item: { id: string; name: string; price: number }) => (
+      {(item: any) => (
         <SelectList.Item id={item.id} disabled={item.id === 'child'}>
           <div>
             <Text

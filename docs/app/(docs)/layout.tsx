@@ -1,12 +1,13 @@
-import { SiteHeader } from '../_components/SiteHeader';
+import { getBadgeMap, source } from '@/lib/source';
+import type { ReactNode } from 'react';
+import { DocsLayout } from '@/ui/layout/docs';
 
-// Layout
-// ---------------
-const Layout = ({ children }: { children: React.ReactNode }) => (
-  <>
-    <SiteHeader />
-    {children}
-  </>
-);
+export default function Layout({ children }: { children: ReactNode }) {
+  const badgeMap = getBadgeMap();
 
-export default Layout;
+  return (
+    <DocsLayout tree={source.pageTree} badgeMap={badgeMap}>
+      {children}
+    </DocsLayout>
+  );
+}

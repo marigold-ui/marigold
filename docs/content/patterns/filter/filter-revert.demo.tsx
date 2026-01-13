@@ -1,3 +1,5 @@
+'use client';
+
 import type { Key } from 'react';
 import { useState } from 'react';
 import { Button, Stack, Tag, Text } from '@marigold/components';

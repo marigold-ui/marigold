@@ -11,8 +11,6 @@ export default defineConfig([
       '**/storybook-static',
       'docs/**',
       'old-docs/**',
-      '**/docs-fuma/.source/**',
-      '**/docs-fuma/lib/.registry/**',
       '**/coverage',
       'packages/types/src/**',
       '**/.cache',
@@ -36,13 +34,13 @@ export default defineConfig([
   },
   // end overriding specific config/rules for marigold
   {
-    files: ['docs-fuma/**/*.{ts,tsx}'],
+    files: ['docs/**/*.{ts,tsx}'],
     rules: {
       'react-hooks/set-state-in-effect': 'off', // Intentional setState in effects for mounting/data loading
     },
   },
   {
-    files: ['config/**/*.js', 'docs-fuma/scripts/**/*.mjs', 'themes/**/*.js'],
+    files: ['config/**/*.js', 'docs/scripts/**/*.mjs', 'themes/**/*.js'],
     rules: {
       'no-empty': 'off',
       'no-redeclare': 'off',

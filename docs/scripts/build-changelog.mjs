@@ -98,7 +98,8 @@ const addFrontmatter = (sourceText, releases) => {
       frontmatter += `badge: new\n`;
     }
     frontmatter += 'toc: false\n';
-    frontmatter += '---';
+    frontmatter += '---\n\n';
+    frontmatter += `import { DateFormat } from '@/ui';\n`;
 
     return sourceText.replace(regex, frontmatter);
   }

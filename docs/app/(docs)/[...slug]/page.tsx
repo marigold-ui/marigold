@@ -1,81 +1,188 @@
-import { baseUrl } from '@/lib/config';
-import { Headline } from '@/ui';
-import { allContentPages } from 'contentlayer/generated';
-import { Metadata } from 'next';
+import {
+  Center,
+  Columns,
+  Do,
+  DoDescription,
+  DoFigure,
+  Dont,
+  DontDescription,
+  DontFigure,
+  GuidelineTiles,
+  Headline2,
+  Headline3,
+  Headline4,
+  Headline5,
+  Headline6,
+  IconList,
+  Image,
+  MDXPropsTable,
+  MDXStorybookHintMessage,
+  Scrollable,
+  SectionMessage,
+  SectionMessageContent,
+  SectionMessageTitle,
+  Stack,
+  Tabs,
+  TabsItem,
+  TabsList,
+  TabsTabPanel,
+  TeaserList,
+  Text,
+  componentDemo,
+} from '@/app/_components/mdx-wrapper-components';
+import { getPageImage, source } from '@/lib/source';
+import type { DocsPageData } from '@/lib/source';
+import { getMDXComponents } from '@/mdx-components';
+import { createRelativeLink } from 'fumadocs-ui/mdx';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { AppearanceTable } from '@/ui/AppearanceTable';
+import { ColorTokenTable } from '@/ui/ColorTokens';
 import { RelativeTime } from '@/ui/RelativeTime';
-import { TocContainer } from '@/ui/Toc';
-import { Mdx } from '@/ui/mdx';
+import { AlignmentsX, AlignmentsY, BorderRadius, Spacing } from '@/ui/Token';
+import {
+  FontSizes,
+  FontStyle,
+  FontWeights,
+  Headlines,
+  TextAlign,
+} from '@/ui/Typography';
+import { LatestPost } from '@/ui/blog/LatestPost';
+import { PostList } from '@/ui/blog/PostList';
+import {
+  DocsBody,
+  DocsDescription,
+  DocsPage,
+  DocsTitle,
+} from '@/ui/layout/docs/page';
 
-interface ContentPageProps {
+interface PageProps {
   params: Promise<{ slug: string[] }>;
 }
 
-async function getPageFromParams(params: ContentPageProps['params']) {
-  const slug = (await params)?.slug?.join('/');
-  const page = allContentPages.find(page => page.slug === slug);
+export default async function Page(props: PageProps) {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
 
-  return page || null;
-}
+  if (!page) notFound();
 
-export async function generateMetadata({
-  params,
-}: ContentPageProps): Promise<Metadata> {
-  const page = await getPageFromParams(params);
+  const data = page.data as DocsPageData;
+  const MDX = data.body;
 
-  return page
-    ? {
-        title: page.title,
-        description: page.caption,
-        applicationName: 'Marigold Design System',
-        appleWebApp: {
-          title: 'Marigold Design System',
-        },
-        metadataBase: new URL(baseUrl),
-        openGraph: {
-          siteName: 'Marigold Design System',
-          title: page.title,
-          description: page.caption,
-          images: `${baseUrl}/api/og.png?title=${encodeURIComponent(page.title)}`,
-          type: 'website',
-        },
-        twitter: {
-          card: 'summary_large_image',
-          creator: '@reservix',
-        },
-      }
-    : {};
-}
-
-export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
-  return allContentPages.map(page => ({
-    slug: page.slug.split('/'),
-  }));
-}
-
-export default async function ContentPage({ params }: ContentPageProps) {
-  const page = await getPageFromParams(params);
-  if (!page) {
-    notFound();
-  }
+  // Filter TOC to only show headings from level 1 to 3
+  const filteredToc =
+    data.toc === false
+      ? []
+      : data.toc.filter((item: any) => item.depth >= 1 && item.depth <= 3);
 
   return (
-    <article className="grid grid-cols-1 gap-x-24 gap-y-14 min-[1400px]:grid-cols-[minmax(min-content,70ch)_1fr]">
+    <DocsPage toc={filteredToc}>
       <div className="col-span-full">
-        <Headline level={1}>{page.title}</Headline>
-        <div className="text-secondary-400 pt-1">{page.caption}</div>
+        <DocsTitle className="max-w-(--maxHeadlineWidth) scroll-m-20 text-left text-5xl font-extrabold tracking-tight *:no-underline lg:text-6xl">
+          {data.title}
+        </DocsTitle>
+        <DocsDescription className="text-secondary-400 pt-1">
+          {data.description}
+        </DocsDescription>
       </div>
-      <div className="prose max-w-[70ch]">
-        <Mdx title={page.title} code={page.body.code} />
-        <div className="text-text-primary-muted pt-8 text-xs italic">
-          Last update: <RelativeTime date={new Date(page.modified)} />
-        </div>
-      </div>
-      {page.toc === false ? null : (
-        <div className="col-start-2 hidden min-[1400px]:block">
-          <TocContainer />
-        </div>
-      )}
-    </article>
+
+      <DocsBody id="docs-body" className="pt-4 pb-10">
+        <MDX components={getMdxComponentsConfig(page)} />
+        {data.lastModified && (
+          <div className="text-text-primary-muted pt-8 text-xs italic">
+            Last update: <RelativeTime date={new Date(data.lastModified)} />
+          </div>
+        )}
+      </DocsBody>
+    </DocsPage>
   );
+}
+
+function getMdxComponentsConfig(page: any) {
+  return {
+    ...getMDXComponents({
+      // Relative linking
+      a: createRelativeLink(source, page) as any,
+
+      // Text & Headings
+      p: (props: any) => <Text {...props} as="p" />,
+      h2: Headline2,
+      h3: Headline3,
+      h4: Headline4,
+      h5: Headline5,
+      h6: Headline6,
+
+      // Blog Components
+      LatestPost,
+      PostList,
+
+      AppearanceTable,
+      // Custom MDX Components
+      ComponentDemo: componentDemo,
+      IconList,
+      Image,
+      PropsTable: (props: any) => <MDXPropsTable {...props} />,
+      StorybookHintMessage: (props: any) => (
+        <MDXStorybookHintMessage {...props} component={page.data.title} />
+      ),
+      TeaserList,
+      // Compound Components
+      SectionMessage: Object.assign(SectionMessage, {
+        Title: SectionMessageTitle,
+        Content: SectionMessageContent,
+      }),
+      Do: Object.assign(Do, {
+        Figure: DoFigure,
+        Description: DoDescription,
+      }),
+      Dont: Object.assign(Dont, {
+        Figure: DontFigure,
+        Description: DontDescription,
+      }),
+      Tabs: Object.assign(Tabs, {
+        List: TabsList,
+        Item: TabsItem,
+        TabPanel: TabsTabPanel,
+      }),
+      GuidelineTiles,
+    }),
+
+    // Layout Components
+    Center,
+    Columns,
+    Scrollable,
+    Stack,
+
+    // Token Components
+    AlignmentsX,
+    AlignmentsY,
+    BorderRadius,
+    ColorTokenTable,
+    Spacing,
+
+    // Typography Components
+    FontSizes,
+    FontStyle,
+    FontWeights,
+    Headlines,
+    TextAlign,
+  };
+}
+
+export async function generateStaticParams() {
+  return source.generateParams();
+}
+
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
+
+  return {
+    title: page.data.title,
+    description: page.data.description,
+    openGraph: {
+      images: getPageImage(page).url,
+    },
+  };
 }

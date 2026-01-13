@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactNode } from 'react';
 import { Columns, Stack, Text, Tiles } from '@marigold/components';
 import { Rectangle } from '@/ui/Rectangle';

@@ -1,3 +1,5 @@
+'use client';
+
 import { Tag, Text } from '@marigold/components';
 
 export default () => (

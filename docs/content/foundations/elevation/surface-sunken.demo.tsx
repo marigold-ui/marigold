@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, Headline, Link } from '@marigold/components';
 
 export default () => {
