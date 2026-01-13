@@ -1,6 +1,7 @@
 import { type ReactNode, useContext } from 'react';
 import { ToggleButton } from 'react-aria-components';
 import type RAC from 'react-aria-components';
+import { useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
 
 type RemovedProps =
@@ -31,12 +32,24 @@ export interface ToggleButtonProps
 export const _ToggleButton = ({
   children,
   selected,
+  variant,
+  size,
   ...props
 }: ToggleButtonProps) => {
-  const classNames = useContext(ToggleButtonContext).classNames;
+  const context = useContext(ToggleButtonContext);
+
+  const classNames = useClassNames({
+    component: 'ToggleButton',
+    variant: variant ?? context.variant,
+    size: size ?? context.size,
+  });
 
   return (
-    <ToggleButton isSelected={selected} className={classNames} {...props}>
+    <ToggleButton
+      isSelected={selected}
+      className={classNames.button}
+      {...props}
+    >
       {children}
     </ToggleButton>
   );

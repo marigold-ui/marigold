@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
 
-type RemovedProps = 'className' | 'style' | 'isDisabled';
+type RemovedProps = 'className' | 'style' | 'isDisabled' | 'orientation';
 
 export interface ToggleButtonGroupProps
   extends Omit<RAC.ToggleButtonGroupProps, RemovedProps> {
@@ -29,7 +29,7 @@ export const _ToggleButtonGroup = ({
   });
 
   return (
-    <ToggleButtonContext.Provider value={{ classNames: classNames.button }}>
+    <ToggleButtonContext.Provider value={{ variant, size }}>
       <ToggleButtonGroup
         className={classNames.group}
         isDisabled={disabled}
