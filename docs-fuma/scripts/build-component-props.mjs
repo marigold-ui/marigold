@@ -203,7 +203,7 @@ const __dirname = path.dirname(__filename);
 
 const systemDir = path.resolve(__dirname, '../../packages/system/src');
 const componentsDir = path.resolve(__dirname, '../../packages/components/src');
-const outputFilePath = path.resolve(__dirname, '../.registry/props.json');
+const outputFilePath = path.resolve(__dirname, '../lib/.registry/props.json');
 
 // Getting all component files using globby
 const files = await globby([

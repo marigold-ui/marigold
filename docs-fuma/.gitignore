@@ -3,7 +3,8 @@
 
 # generated content
 .source
-/lib/registry/demos.tsx
+/lib/.registry/demos.tsx
+/lib/.registry/props.json
 
 # test & build
 /coverage

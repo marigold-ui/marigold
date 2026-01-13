@@ -3,11 +3,11 @@
   "version": "16.0.3",
   "private": true,
   "scripts": {
-    "build": "npm run changelog:build && npm run registry:build && next build",
+    "build": "npm run changelog:build && npm run registry:build && npm run build:component-props && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && tsc --noEmit",
-    "postinstall": "fumadocs-mdx && npm run registry:build",
+    "postinstall": "fumadocs-mdx && npm run registry:build && npm run build:component-props",
     "lint": "eslint",
     "registry:build": "node scripts/build-registry.mjs",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
