@@ -54,19 +54,18 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  args: {},
   render: args => <ToggleButton {...args} />,
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button');
 
-    await userEvent.click(button);
-
-    await expect(args.onChange).toHaveBeenCalledWith(true);
+    expect(button).not.toHaveAttribute('data-selected');
 
     await userEvent.click(button);
+    expect(button).toHaveAttribute('data-selected', 'true');
 
-    await expect(args.onChange).toHaveBeenCalledWith(false);
+    await userEvent.click(button);
+    expect(button).not.toHaveAttribute('data-selected');
   },
 });
 
