@@ -1,8 +1,8 @@
 import { createContext } from 'react';
 
-export interface ToggleButtonContextValue {
+export interface ToggleButtonContext {
   variant?: string;
   size?: string;
 }
 
-export const ToggleButtonContext = createContext<ToggleButtonContextValue>({});
+export const ToggleButtonContext = createContext<ToggleButtonContext>({});

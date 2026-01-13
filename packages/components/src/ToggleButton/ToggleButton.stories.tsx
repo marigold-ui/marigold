@@ -1,6 +1,6 @@
 import { Star } from 'lucide-react';
 import { useState } from 'storybook/internal/preview-api';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 import preview from '../../../../config/storybook/.storybook/preview';
 import { ToggleButton } from './ToggleButton';
 
@@ -54,9 +54,7 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  args: {
-    onChange: fn(),
-  },
+  args: {},
   render: args => <ToggleButton {...args} />,
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
