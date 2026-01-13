@@ -6,7 +6,6 @@ import { ComponentProps, RefObject, useRef } from 'react';
 import { cn } from '@marigold/system';
 
 const CopyButton = ({
-  className,
   containerRef,
   ...props
 }: ComponentProps<'button'> & {

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/app/_components/mdx-wrapper-components';
-import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
+import { Pre } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
 import { CustomCodeBlock } from './app/_components/CodeBlock';

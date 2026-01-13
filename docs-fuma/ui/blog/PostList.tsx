@@ -31,7 +31,7 @@ export const PostList = async () => {
           url: post.url,
           introduction,
         };
-      } catch (error) {
+      } catch (_error) {
         return {
           title: post.data.title,
           date: new Date(post.data.date),

@@ -2,12 +2,10 @@
 
 import { Button, Dialog } from '@/ui';
 import { Badge } from '@/ui';
-import type { Node } from 'fumadocs-core/page-tree';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { TreeContextProvider, useTreeContext } from 'fumadocs-ui/contexts/tree';
 import { type ReactNode, createContext, use, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
-import { cn } from '@marigold/system';
 import { NavLink } from '@/ui/navigation/NavLink';
 import { SiteLogo } from './SiteLogo';
 

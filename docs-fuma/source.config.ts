@@ -7,7 +7,6 @@ import {
 } from 'fumadocs-mdx/config';
 import lastModified from 'fumadocs-mdx/plugins/last-modified';
 import { z } from 'zod';
-import { rehypeComponentDemo } from './lib/mdx/rehype-component-demo';
 
 const customFrontmatterSchema = frontmatterSchema.extend({
   caption: z.string().optional(),

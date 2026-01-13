@@ -9,9 +9,10 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "paths": {
-      "@/registry/*": ["./docs-fuma/.registry/*"],
+      "contentlayer/generated": ["./docs/.contentlayer/generated"],
+      "@/registry/*": ["./docs/.registry/*"],
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
-      "@/*": ["./docs-fuma/*"],
+      "@/*": ["./docs/*"],
       // cva does not export the types officially
       "class-variance-authority/dist/types": [
         "./packages/system/node_modules/class-variance-authority/dist/types"

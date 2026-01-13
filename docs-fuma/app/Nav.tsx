@@ -28,7 +28,7 @@ export const Hotkey = ({ letter, className }: HotKeyProps) => {
   );
 };
 
-function SearchToggle(props: ComponentProps<'button'>) {
+function SearchToggle(_props: ComponentProps<'button'>) {
   const { enabled, setOpenSearch } = useSearchContext();
   if (!enabled) return;
 

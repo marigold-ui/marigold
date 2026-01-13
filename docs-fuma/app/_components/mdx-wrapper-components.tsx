@@ -1,6 +1,6 @@
 'use client';
 
-import { HTMLAttributes, PropsWithChildren, ReactNode } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 import {
   BadgeProps,
   Headline,
@@ -24,7 +24,7 @@ import {
   GuidelineTiles as MarigoldGuidelineTiles,
 } from '@/ui/DosAndDonts';
 import { IconListProps, IconList as MarigoldIconList } from '@/ui/IconList';
-import { ImageProps, Image as MarigoldImage } from '@/ui/Image';
+import { Image as MarigoldImage } from '@/ui/Image';
 import { PropsTable, PropsTableProps } from '@/ui/PropsTable';
 import { StorybookHintMessage } from '@/ui/StorybookHintMessage';
 import {
