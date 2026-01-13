@@ -32,6 +32,7 @@ export interface ToggleButtonProps
 export const _ToggleButton = ({
   children,
   selected,
+  disabled,
   variant,
   size,
   ...props
@@ -47,6 +48,7 @@ export const _ToggleButton = ({
   return (
     <ToggleButton
       isSelected={selected}
+      isDisabled={disabled}
       className={classNames.button}
       {...props}
     >
