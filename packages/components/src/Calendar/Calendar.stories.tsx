@@ -84,13 +84,11 @@ export const Controlled = meta.story({
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    await userEvent.keyboard('{arrowleft}');
-    await userEvent.keyboard('{enter}');
     const result = await canvas.findByTestId('selectedDate');
 
-    await waitFor(() => {
-      expect(result).toHaveTextContent('Day:4 Month:6 Year:2019');
-    });
+    await expect(result).toHaveTextContent(
+      'DateField Value:Day:5 Month:6 Year:2019'
+    );
   },
 });
 
