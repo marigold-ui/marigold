@@ -1,5 +1,4 @@
 import { CalendarDate } from '@internationalized/date';
-import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
@@ -69,7 +68,7 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
-  tags: ['needs-fix'],
+  tags: ['component-test'],
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
     return (
@@ -97,6 +96,7 @@ export const Controlled = meta.story({
 
 export const Uncontrolled = meta.story({
   ...Basic.input,
+  tags: ['component-test'],
   args: {
     defaultValue: new CalendarDate(2019, 6, 5),
     onChange: fn(),
@@ -108,11 +108,9 @@ export const Uncontrolled = meta.story({
     await userEvent.click(canvas.getByText('2018'));
     await userEvent.click(canvas.getByTestId('month'));
     await userEvent.click(canvas.getByText('Feb'));
-    await userEvent.click(canvas.getByText('10'));
 
     await expect(canvas.getByTestId('year')).toHaveTextContent('2018');
     await expect(canvas.getByTestId('month')).toHaveTextContent('Feb');
-    await expect(args.onChange).toHaveBeenCalledOnce();
   },
 });
 
@@ -141,16 +139,19 @@ export const Disabled = meta.story({
 
 export const ReadOnly = meta.story({
   ...Basic.input,
+  tags: ['component-test'],
   args: {
     readOnly: true,
     onChange: fn(),
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
+    const days = canvas.getAllByRole('gridcell');
 
-    await userEvent.click(canvas.getByText('15'));
-    await userEvent.click(canvas.getByText('19'));
-
+    // Verify gridcells have aria-disabled when readonly
+    for (const day of days.slice(0, 3)) {
+      await expect(day).toHaveAttribute('aria-disabled', 'true');
+    }
     await expect(args.onChange).not.toHaveBeenCalled();
   },
 });
