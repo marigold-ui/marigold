@@ -1,7 +1,7 @@
 import { Bold, Italic, Underline } from 'lucide-react';
 import { Key } from 'react-aria-components';
 import { useState } from 'storybook/internal/preview-api';
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import preview from '../../../../config/storybook/.storybook/preview';
 import { EllipsisVertical } from '../icons/EllipsisVertical';
 import { ToggleButton } from './ToggleButton';
@@ -53,15 +53,15 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  args: {},
   render: args => {
-    const [selectedKeys, setSelectedKeys] = useState(new Set<Key>([]));
+    const [selectedKeys, setSelectedKeys] = useState(new Set<Key>(['files']));
 
     return (
       <>
         <ToggleButtonGroup
           selectedKeys={selectedKeys}
-          defaultSelectedKeys={['files']}
-          onSelectionChange={id => setSelectedKeys(id)}
+          onSelectionChange={keys => setSelectedKeys(keys)}
           {...args}
         >
           <ToggleButton id="files">Files</ToggleButton>
@@ -70,16 +70,42 @@ export const Basic = meta.story({
             <EllipsisVertical />
           </ToggleButton>
         </ToggleButtonGroup>
-        <div>Selected: {Array.from(selectedKeys).join(', ')}</div>
+        <div data-testid="selected-keys">
+          Selected: {Array.from(selectedKeys).join(', ')}
+        </div>
       </>
     );
   },
-  play: async ({ args, canvas }) => {
-    const filesButton = canvas.getByText('Files');
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
 
-    await userEvent.click(filesButton);
+    await step('Initial state - files is selected', async () => {
+      expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+        'Selected: files'
+      );
+    });
 
-    await expect(args.onSelectionChange).toHaveBeenCalled();
+    await step('Click media button', async () => {
+      await userEvent.click(canvas.getByText('Media'));
+
+      await waitFor(() => {
+        expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+          'Selected: media'
+        );
+      });
+    });
+
+    await step('Click files button again', async () => {
+      const filesButton = canvas.getByText('Files');
+
+      await userEvent.click(filesButton);
+
+      await waitFor(() => {
+        expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+          'Selected: files'
+        );
+      });
+    });
   },
 });
 
