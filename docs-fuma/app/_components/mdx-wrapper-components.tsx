@@ -1,6 +1,5 @@
 'use client';
 
-import { HTMLAttributes, PropsWithChildren } from 'react';
 import {
   BadgeProps,
   Headline,
@@ -12,7 +11,8 @@ import {
   ScrollableProps,
   SectionMessageProps,
   TabsProps,
-} from '@marigold/components';
+} from '@/ui';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 import {
   Do as MarigoldDo,
   Dont as MarigoldDont,
@@ -28,7 +28,7 @@ import {
 } from '@/ui/TeaserCard';
 import { ComponentDemo } from './preview';
 
-export const MDXHeadline2 = (props: HTMLAttributes<HTMLHeadingElement>) => {
+export const Headline2 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={2} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
@@ -36,7 +36,7 @@ export const MDXHeadline2 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   );
 };
 
-export const MDXHeadline3 = (props: HTMLAttributes<HTMLHeadingElement>) => {
+export const Headline3 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={3} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
@@ -44,7 +44,7 @@ export const MDXHeadline3 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   );
 };
 
-export const MDXHeadline4 = (props: HTMLAttributes<HTMLHeadingElement>) => {
+export const Headline4 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={4} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
@@ -52,7 +52,7 @@ export const MDXHeadline4 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   );
 };
 
-export const MDXHeadline5 = (props: HTMLAttributes<HTMLHeadingElement>) => {
+export const Headline5 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={5} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
@@ -60,7 +60,7 @@ export const MDXHeadline5 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   );
 };
 
-export const MDXHeadline6 = (props: HTMLAttributes<HTMLHeadingElement>) => {
+export const Headline6 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <Headline level={6} {...props}>
       <Link href={`#${props.id}`}>{props.children}</Link>
@@ -128,4 +128,4 @@ export const Image = (props: any) => {
   return <MarigoldImage {...props} />;
 };
 
-export { Text, Center, Stack, Columns } from '@marigold/components';
+export { Text, Center, Stack, Columns } from '@/ui';
