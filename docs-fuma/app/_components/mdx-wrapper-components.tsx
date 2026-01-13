@@ -168,3 +168,10 @@ export const DontDescription = MarigoldDont.Description;
 export const Image = (props: any) => {
   return <MarigoldImage {...props} />;
 };
+
+// Export Table sub-components for MDX
+export const TableRow = MarigoldTable.Row;
+export const TableHeader = MarigoldTable.Header;
+export const TableBody = MarigoldTable.Body;
+export const TableCell = MarigoldTable.Cell;
+export const TableColumn = MarigoldTable.Column;

@@ -3,7 +3,7 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from '@/components/layout/docs/page';
+} from '@/app/_components/layout/docs/page';
 import { blogSource } from '@/lib/source';
 import { DateFormat } from '@/ui';
 import { notFound } from 'next/navigation';

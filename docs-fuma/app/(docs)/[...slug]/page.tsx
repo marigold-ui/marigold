@@ -3,7 +3,7 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from '@/components/layout/docs/page';
+} from '@/app/_components/layout/docs/page';
 import {
   Do,
   DoDescription,
@@ -32,7 +32,7 @@ import {
   TeaserList,
   Text,
   componentDemo,
-} from '@/components/mdx-wrapper-components';
+} from '@/app/_components/mdx-wrapper-components';
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';

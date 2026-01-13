@@ -1,14 +1,10 @@
 'use client';
-
-import { usePathname } from 'fumadocs-core/framework';
-import type * as PageTree from 'fumadocs-core/page-tree';
 import {
   AnchorProvider,
   type TOCItemType,
   useActiveAnchors,
 } from 'fumadocs-core/toc';
-import { useTreeContext } from 'fumadocs-ui/contexts/tree';
-import { type ComponentProps, type ReactNode, useMemo } from 'react';
+import { type ComponentProps, type ReactNode } from 'react';
 import { Link, List, Text } from '@marigold/components';
 import { cn } from '@marigold/system';
 
