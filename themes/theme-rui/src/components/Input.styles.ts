@@ -11,7 +11,11 @@ export const Input: ThemeComponent<'Input'> = {
     'has-focus:state-focus',
   ]),
   input: cva([
-    'surface-input rounded-[inherit]',
+    'w-full min-w-0',
+    'bg-transparent',
+    'outline-none',
+    'text-foreground placeholder:text-placeholder text-sm',
+    'rounded-[inherit]',
     'group-read-only/field:cursor-default',
     'group-data-icon/input:pl-8',
     'group-data-action/input:pr-7',

@@ -10,7 +10,11 @@ export const TextArea: ThemeComponent<'TextArea'> = {
     'has-focus:state-focus',
   ]),
   textarea: cva([
-    'surface-input rounded-[inherit]',
+    'w-full min-w-0',
+    'bg-transparent',
+    'outline-none',
+    'text-foreground placeholder:text-placeholder text-sm',
+    'rounded-[inherit]',
     'group-read-only/field:cursor-default',
   ]),
 };

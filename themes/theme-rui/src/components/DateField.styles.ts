@@ -9,7 +9,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'has-invalid:surface-has-error',
     'has-focus:state-focus outline-none',
   ]),
-  input: cva(['surface-input rounded-[inherit] h-input']),
+  input: cva(['w-full min-w-0 bg-transparent outline-none text-foreground placeholder:text-placeholder text-sm rounded-[inherit] h-input']),
   segment: cva([
     'inline rounded p-0.5 text-foreground caret-transparent outline-0 type-literal:px-0 data-focused:data-placeholder:text-foreground data-focused:text-foreground  type-literal:text-placeholder',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',

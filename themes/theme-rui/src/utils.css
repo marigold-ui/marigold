@@ -22,37 +22,33 @@
  */
 @utility surface {
   @apply rounded-surface relative transition-[box-shadow,background];
+  @apply w-full min-w-0;
+  @apply px-3 py-2;
+  @apply text-foreground placeholder:text-placeholder text-sm;
+  @apply outline-none;
 
   /* Gradient border using background-clip and background-origin */
   background:
+    linear-gradient(to bottom, #fff, #fff),
     linear-gradient(
-        to bottom,
-        oklch(from var(--color-surface-border) calc(l + 0.1) c h),
-        oklch(from var(--color-surface-border) calc(l - 0.1) c h)
-      )
-      border-box,
-    linear-gradient(to bottom, var(--color-surface), var(--color-surface))
-      padding-box;
+      to bottom,
+      var(--color-surface-border),
+      oklch(from var(--color-surface-border) calc(l - 0.1) c h)
+    );
   background-clip: padding-box, border-box;
-  background-origin: border-box, padding-box;
+  background-origin: padding-box, border-box;
 
   border: 1px solid transparent;
 
+  /* Ensures form input elements appear transparent over the gradient border background */
+  & input,
+  & textarea,
+  & select {
+    @apply bg-transparent;
+  }
+
   /* Layered box-shadow for subtle depth (Josh Comeau's approach) */
   @apply shadow-surface;
-}
-
-/*
- * Ensures input elements and form controls have consistent padding and text styles.
- * Note: This utility is deprecated as a separate class. Padding should be applied
- * directly to elements alongside the .surface class. Kept here for transition period.
- * @deprecated Use .surface directly on form controls instead
- */
-@utility surface-input {
-  @apply w-full min-w-0;
-  @apply px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)];
-  @apply text-foreground placeholder:text-placeholder text-sm;
-  @apply outline-none;
 }
 
 /*
