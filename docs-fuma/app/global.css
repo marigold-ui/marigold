@@ -1,11 +1,31 @@
 @import 'tailwindcss';
-@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/default.css';
 @import 'fumadocs-ui/css/preset.css';
 
 /* own theme */
 @import './../../themes/theme-docs/dist/theme.css';
 /* rui theme */
 @import './../../themes/theme-rui/dist/styles.css';
+
+/* Marigold theme colors for Fumadocs */
+@theme {
+  --color-fd-background: var(--color-bg-body);
+  --color-fd-foreground: var(--color-text-primary);
+  --color-fd-muted: var(--color-bg-surface);
+  --color-fd-muted-foreground: var(--color-text-secondary);
+  --color-fd-border: var(--color-secondary-200);
+  --color-fd-accent: var(--color-bg-surface-sunken);
+  --color-fd-accent-foreground: var(--color-text-primary);
+  --color-fd-card: var(--color-bg-surface);
+  --color-fd-card-foreground: var(--color-text-primary);
+  --color-fd-popover: var(--color-bg-surface);
+  --color-fd-popover-foreground: var(--color-text-primary);
+  --color-fd-primary: var(--color-primary-500);
+  --color-fd-primary-foreground: white;
+  --color-fd-secondary: var(--color-secondary-100);
+  --color-fd-secondary-foreground: var(--color-text-primary);
+  --color-fd-ring: var(--color-primary-300);
+}
 
 @source './../../themes/theme-docs/src/**/*.ts';
 
