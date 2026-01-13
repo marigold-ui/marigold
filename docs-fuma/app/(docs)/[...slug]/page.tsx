@@ -1,10 +1,4 @@
 import {
-  DocsBody,
-  DocsDescription,
-  DocsPage,
-  DocsTitle,
-} from '@/app/_components/layout/docs/page';
-import {
   Center,
   Columns,
   Do,
@@ -55,6 +49,12 @@ import {
 } from '@/ui/Typography';
 import { LatestPost } from '@/ui/blog/LatestPost';
 import { PostList } from '@/ui/blog/PostList';
+import {
+  DocsBody,
+  DocsDescription,
+  DocsPage,
+  DocsTitle,
+} from '@/ui/layout/docs/page';
 
 interface PageProps {
   params: Promise<{ slug: string[] }>;

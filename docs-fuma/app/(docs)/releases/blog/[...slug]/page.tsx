@@ -1,13 +1,13 @@
+import { type BlogPageData, blogSource } from '@/lib/source';
+import { DateFormat } from '@/ui';
+import { notFound } from 'next/navigation';
+import { PostList } from '@/ui/blog/PostList';
 import {
   DocsBody,
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from '@/app/_components/layout/docs/page';
-import { type BlogPageData, blogSource } from '@/lib/source';
-import { DateFormat } from '@/ui';
-import { notFound } from 'next/navigation';
-import { PostList } from '@/ui/blog/PostList';
+} from '@/ui/layout/docs/page';
 
 interface BlogPostProps {
   params: Promise<{ slug: string[] }>;
