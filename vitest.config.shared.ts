@@ -11,6 +11,7 @@ export default defineConfig({
     ],
     testTimeout: 30000,
     coverage: {
+      provider: 'istanbul',
       exclude: [
         '**/config/**',
         '**/docs*/**',
