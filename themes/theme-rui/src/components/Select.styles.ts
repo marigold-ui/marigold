@@ -4,6 +4,7 @@ export const Select: ThemeComponent<'Select'> = {
   icon: cva('text-muted-foreground/80'),
   select: cva([
     'w-full min-w-0',
+    'px-3 py-2',
     'bg-transparent',
     'outline-none',
     'text-foreground placeholder:text-placeholder text-sm',

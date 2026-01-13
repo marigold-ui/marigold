@@ -22,10 +22,6 @@
  */
 @utility surface {
   @apply rounded-surface relative transition-[box-shadow,background];
-  @apply w-full min-w-0;
-  @apply px-3 py-2;
-  @apply text-foreground placeholder:text-placeholder text-sm;
-  @apply outline-none;
 
   /* Gradient border using background-clip and background-origin */
   background:
@@ -39,13 +35,6 @@
   background-origin: padding-box, border-box;
 
   border: 1px solid transparent;
-
-  /* Ensures form input elements appear transparent over the gradient border background */
-  & input,
-  & textarea,
-  & select {
-    @apply bg-transparent;
-  }
 
   /* Layered box-shadow for subtle depth (Josh Comeau's approach) */
   @apply shadow-surface;

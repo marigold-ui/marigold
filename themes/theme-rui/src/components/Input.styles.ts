@@ -12,6 +12,7 @@ export const Input: ThemeComponent<'Input'> = {
   ]),
   input: cva([
     'w-full min-w-0',
+    'px-3 py-2',
     'bg-transparent',
     'outline-none',
     'text-foreground placeholder:text-placeholder text-sm',
