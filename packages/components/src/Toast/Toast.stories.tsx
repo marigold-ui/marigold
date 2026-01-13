@@ -242,6 +242,8 @@ WithAction.test('With action test', async ({ canvas, step }) => {
     const button = canvas.getByText('Update now');
 
     await userEvent.click(button);
+    // Wait briefly to allow any transitions to complete
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     await expect(button).toBeInTheDocument();
   });
