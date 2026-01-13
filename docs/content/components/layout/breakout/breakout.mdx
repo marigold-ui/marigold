@@ -1,0 +1,56 @@
+---
+title: Breakout
+caption: When you need to break out of a grid layout.
+---
+
+The `<Breakout>` component is designed to help elements break out of their current container layout, creating visual interest and giving content the space it needs to stand out. Combine `<Breakout>` with the `<Container>` component to maintain a cohesive design while effectively drawing attention to important elements.
+
+## Usage
+
+Use the `<Breakout>` component when you need elements to break out of their current container layout, adding visual interest and giving content the space it needs to stand out.
+
+It is particularly useful for situations where extra emphasis is needed or when you want to create a more dynamic and engaging reading experience. `<Breakout>` is ideal for highlighting media elements or other key content.
+
+<ComponentDemo file="./breakout-appearance.demo.tsx" />
+
+### Complex layouts
+
+You can create more complex layouts within the `<Breakout>` component by combining it with other layout components. By nesting `<Inline>`, `<Stack>`, or `<Columns>` inside `<Breakout>`, you can design advanced, responsive structures that go beyond simple content.
+
+Note that the `<Text>` component will still adhere to the content length defined by the `<Container>`.
+
+<ComponentDemo file="./breakout-complex.demo.tsx" />
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

@@ -8,11 +8,11 @@
     "baseUrl": ".",
     "module": "nodenext",
     "moduleResolution": "nodenext",
+    "skipLibCheck": true,
     "paths": {
-      "contentlayer/generated": ["./docs/.contentlayer/generated"],
-      "@/registry/*": ["./docs/.registry/*"],
+      "@/registry/*": ["./docs-fuma/lib/.registry/*"],
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
-      "@/*": ["./docs/*"],
+      "@/*": ["./docs-fuma/*"],
       // cva does not export the types officially
       "class-variance-authority/dist/types": [
         "./packages/system/node_modules/class-variance-authority/dist/types"
@@ -24,6 +24,7 @@
     "coverage/*",
     "vitest.config.js",
     "**/dist/*",
-    "**/node_modules/*"
+    "**/node_modules/*",
+    "docs/**/*"
   ]
 }

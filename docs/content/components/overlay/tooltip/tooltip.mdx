@@ -1,0 +1,81 @@
+---
+title: Tooltip
+caption: Component for displaying short information.
+---
+
+The `<Tooltip>` component offers users short, contextual hints when they hover or focus on specific UI elements. It displays a hint alongside the referenced element, working together to unobtrusively clarify elements in the interface. It’s ideal for brief, passive help that doesn’t require interaction or persistent visibility.
+
+## Anatomy
+
+<Image
+  src="/tooltip/tooltip-anatomy.jpg"
+  alt="Anatomy of tooltip"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+- **Trigger:** Indicator that can be activated on hover or focus.
+- **Caret tip:** Closely associates the tooltip to term to be defined.
+- **Tooltip:** Holds the informative text or message.
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+Tooltips are best used to provide concise, supportive information for UI elements that may need clarification. They should be brief, non-essential, and avoid disrupting the flow of interaction. Use them to explain unfamiliar icons, edge cases, or provide hints that help users without cluttering the interface.
+
+Icons without visible labels can be unclear, especially for less familiar actions. A tooltip offers quick, contextual clarification by revealing the icon’s purpose on hover or focus. For example, a tooltip might clarify that an icon represents "Download as PDF" when the label is not visible.
+
+<ComponentDemo file="./tooltip-usage.demo.tsx" />
+
+Avoid using tooltips for critical information, long explanations, or interactive content. If users need persistent guidance, longer descriptions, or help while interacting with a task, consider components like [contextual help](/components/overlay/contextual-help), the [help text](/foundations/form-fields#help-text) of a form fields, or a [message displayed inline](/components/content/section-message). These patterns are better suited for complex or essential information that should not disappear when the user moves their cursor.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use tooltips to explain icons without a label or to describe uncommon
+      behavior.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use tooltips if the information is essential to complete a task.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Show on focus
+
+Tooltips can also appear when an element receives keyboard focus, not just on hover. This ensures that users who navigate via keyboard or assistive technologies receive the same helpful information as mouse users.
+
+Use focus-triggered tooltips to improve accessibility, especially for icon-only buttons, form controls, or compact layouts where context is not visually obvious. It’s particularly helpful when the tooltip content clarifies the purpose of an element that lacks a label or descriptive text.
+
+To enable this behavior, set the `trigger` prop on `<Tooltip.Trigger>` to `"focus"`.
+
+<ComponentDemo file="./tooltip-focus.demo.tsx" />
+
+### Accessibility
+
+You do not need to set aria-describedby manually because the `<Tooltip>` component sets it for you. However, if the button contains only an image or icon such as an SVG, make sure to provide an `aria-label` on the button for screen readers, and consider setting `aria-hidden="true"` on the image to avoid redundant announcements.
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+### Tooltip
+
+<PropsTable component={title} />
+
+### Tooltip.Trigger
+
+<PropsTable component="TooltipTrigger" />
+
+## Alternative components
+
+- [ContextualHelp](<(/components/overlay/contextual-help)>): Use when users need more detailed, persistent guidance near a specific element or task.
+- [SectionMessage](/components/content/section-message): Use to highlight important information inline that should remain visible as users read or interact with the page.

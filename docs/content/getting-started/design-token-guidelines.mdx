@@ -1,0 +1,213 @@
+---
+title: Tokens Guidelines
+caption: Learn about the structure and application of our design tokens
+order: 4
+---
+
+On this page, you'll discover detailed specifications for design tokens — the foundational elements that unify the visual language of your brand or products. Explore how design tokens are constructed and find information on where each token is applied within the design ecosystem.
+
+## Benefits of design tokens
+
+- **Consistency:** Ensure uniform styling across all components and applications
+- **Maintainability:** Centralized values make updates and changes easier to manage
+- **Scalability:** Support multiple themes and design variations
+- **Developer Experience:** Clear naming conventions make tokens intuitive to use
+
+## Token structure
+
+Our RUI theme uses a semantic naming convention that directly reflects the purpose and context of each token. Instead of descriptive names, we use functional names that describe what the token does, not what it looks like.
+
+### Naming convention
+
+Tokens use semantic names that describe their purpose:
+
+- **brand** - Primary brand color
+- **destructive** - Error and destructive action colors
+- **success** - Success state colors
+- **warning** - Warning state colors
+- **info** - Informational colors
+- **muted** - Subdued colors for secondary content
+- **disabled** - Disabled state colors
+
+The property prefix (bg-, text-, border-) is added when using tokens in Tailwind classes:
+
+- `bg-brand` uses the brand token as background
+- `text-destructive` uses the destructive color for text
+- `border-input` uses the input color for borders
+
+## Color tokens
+
+A carefully curated set of semantic colors ensures our product maintains a consistent and recognizable palette. Our color tokens are organized by their semantic meaning and intended use case.
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Icon Color</SectionMessage.Title>
+  <SectionMessage.Content>
+    Text color tokens can also be employed to colorize icons since they all have
+    the `currentColor` CSS rule applied.
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Background and foreground system
+
+Our color system follows a semantic approach where colors are defined by their purpose rather than their appearance.
+
+#### Background and foreground pairing
+
+Every background color token has a corresponding foreground token to ensure proper contrast ratios and accessibility. This pairing system guarantees that text remains readable when placed on colored backgrounds.
+
+**How it works:**
+
+- `bg-brand` pairs with `text-brand-foreground`
+- `bg-destructive` pairs with `text-destructive-foreground`
+- `bg-success-muted` pairs with `text-success-muted-foreground`
+
+This approach eliminates guesswork and ensures consistent, accessible color combinations across your entire application.
+
+### Base colors
+
+Base colors form the foundation of our design system and are used for primary interface elements.
+
+**Available tokens:**
+
+- `background` / `foreground` - Primary background and text colors
+- `brand` / `brand-foreground` - Primary brand colors and their contrasting text
+- `secondary` / `secondary-foreground` - Secondary colors for less prominent elements
+- `hover` / `hover-foreground` - Colors for interactive hover states
+- `muted` / `muted-foreground` - Subdued colors for secondary information
+- `disabled` / `disabled-foreground` - Colors for disabled states
+
+### Feedback colors
+
+Feedback colors communicate different states and provide user feedback through color semantics.
+
+**Available tokens:**
+
+- `destructive` / `destructive-foreground` - For errors, warnings, and destructive actions
+- `success` / `success-foreground` - For successful actions and positive feedback
+- `warning` / `warning-foreground` - For warnings and caution states
+- `info` / `info-foreground` - For informational content and neutral feedback
+
+Each feedback color also includes muted variants for subtle backgrounds:
+
+- `destructive-muted` / `destructive-muted-foreground` / `destructive-muted-accent`
+- `success-muted` / `success-muted-foreground` / `success-muted-accent`
+- `warning-muted` / `warning-muted-foreground` / `warning-muted-accent`
+- `info-muted` / `info-muted-foreground` / `info-muted-accent`
+
+### Component-specific colors
+
+These tokens are designed for specific component needs and interface elements.
+
+**Available tokens:**
+
+- `input` - Border color for form inputs
+- `ring` - Focus ring color for accessibility
+- `placeholder` - Placeholder text color in form fields
+
+### Outline
+
+**Property Name:** `outline`
+
+Outline tokens are used to apply specific colors for the outline of an element. They are equivalent to the `outline-color` CSS rule or the [outline utilities](https://tailwindcss.com/docs/outline-color) in TailwindCSS.
+
+#### Intents
+
+Outline tokens have a special use case and should be used sparingly. Their usage is reserved for indicating keyboard navigation:
+
+- **focus:** Apply when an element is focused, particularly with keyboard navigation
+
+There are no modifiers for outline tokens.
+
+## Effect tokens
+
+Effects serve various purposes, both aesthetic and functional. They can indicate interactivity, such as making a button appear clickable with a shadow. Additionally, effects encompass background filters like blur and animations.
+
+### Shadow
+
+**Property Name:** `shadow`
+
+Shadow tokens are used to apply specific shadow to an element. They are equivalent to the `box-shadow` CSS rule or the [shadow utilities](https://tailwindcss.com/docs/box-shadow) in TailwindCSS.
+
+#### Intents
+
+Shadow tokens have the following intents:
+
+- **surface:** Functions as the background for a particular surface level
+
+#### Modifiers
+
+The "surface" intent is used to create visual hierachy. The following modifiers can be used with it:
+
+- **body:** Used for the main content area
+- **raised:** Used for elevated surfaces, such as cards
+- **overlay:** Applied to surfaces with significant height, like popovers
+- **sunken:** Applied to surface that creates a backdrop
+
+## Number tokens
+
+Number tokens encompass properties represented by numerical values, contributing to the management of elements such as white space and typography sizes. They play a crucial role in creating hierarchy and vertical rhythm.
+
+### Height
+
+**Property Name:** `h`
+
+Height tokens are used to apply specific height to an element. They are equivalent to the `height` CSS rule or the [height utilities](https://tailwindcss.com/docs/height) in TailwindCSS.
+
+There are no semantic values assigned to these tokens, as their usage does not necessitate them. This is because the primary focus of these tokens is on visual styling rather than conveying specific semantic meaning. Additionally, the tokens often serve as a direct representation of their intended visual outcome, eliminating the need for additional semantic values.
+
+Height tokens follow a 4-pixel grid convention, implying that their values are adjusted in increments of 4 pixels. Each token represents a multiplier of that grid. For example, a value of 2 would equate to 8 pixels.
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Not mandatory</SectionMessage.Title>
+  <SectionMessage.Content>
+    The relevance of height is limited to specific components. In numerous
+    cases, a component's size must align with its contents. Therefore, the use
+    of tokens is not obligatory in every instance.
+  </SectionMessage.Content>
+</SectionMessage>
+
+#### Intents
+
+Intents for height tokens encompass attributes that foster consistency across various elements. There are the following intents:
+
+- **button**: Used for button components with `h-button`
+- **input**: Used for input components with `h-input`
+
+#### Modifiers
+
+The following modifiers can be used:
+
+- **sm:** Applied to display a small components.
+- **lg:** Applied to display a large components.
+
+### Width
+
+**Property Name:** `w`
+
+Width tokens are used to apply specific width to an element. They are equivalent to the `width` CSS rule or the [width utilities](https://tailwindcss.com/docs/width) in TailwindCSS.
+
+There are no semantic values assigned to these tokens, as their usage does not necessitate them. This is because the primary focus of these tokens is on visual styling rather than conveying specific semantic meaning. Additionally, the tokens often serve as a direct representation of their intended visual outcome, eliminating the need for additional semantic values.
+
+Width tokens follow a 4-pixel grid convention, implying that their values are adjusted in increments of 4 pixels. Each token represents a multiplier of that grid. For example, a value of 2 would equate to 8 pixels.
+
+### Spacing
+
+**Property Name:** `gap`
+
+Spacing tokens are used to apply specific width to an element. They are equivalent to the `gap` CSS rule or the [gap utilities](https://tailwindcss.com/docs/gap) in TailwindCSS.
+
+There are no semantic values assigned to these tokens, as their usage does not necessitate them. This is because the primary focus of these tokens is on visual styling rather than conveying specific semantic meaning. Additionally, the tokens often serve as a direct representation of their intended visual outcome, eliminating the need for additional semantic values.
+
+Width tokens follow a 4-pixel grid convention, implying that their values are adjusted in increments of 4 pixels. Each token represents a multiplier of that grid. For example, a value of 2 would equate to 8 pixels.
+
+You can explore all the available [spacing options](/foundations/design-tokens#spacing) on the design tokens page.
+
+### Radius
+
+**Property Name:** `rounded`
+
+Radius tokens are used to apply specific radius to an element. They are equivalent to the `border-radius` CSS rule or the [border radius utilities](https://tailwindcss.com/docs/border-radius) in TailwindCSS.
+
+There are no semantic values assigned to these tokens, as their usage does not necessitate them. This is because the primary focus of these tokens is on visual styling rather than conveying specific semantic meaning. Additionally, the tokens often serve as a direct representation of their intended visual outcome, eliminating the need for additional semantic values.
+
+Radius tokens adhere to T-shirt size conventions, with designations such as lg (large), md (medium), and so on. You can explore them on the [design tokens page](/foundations/design-tokens#radius).

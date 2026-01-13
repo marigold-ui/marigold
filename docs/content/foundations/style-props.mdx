@@ -1,0 +1,22 @@
+---
+title: Style Props
+caption: Style props are a set of properties that can be used to apply custom styling to a component.
+---
+
+Style props are a concept used in component to enable easy and consistent styling of components in React applications. They provide a convenient way to apply CSS styling directly to components using JSX syntax. Instead of writing traditional CSS classes or inline styles, you can use these "style props" to define the appearance and layout of your components.
+
+This approach simplifies the styling process, promotes consistency, and makes it easier to manage the appearance of your components, especially when working with design systems or complex UIs.
+
+For example `space` style prop which is used for `gap`. `space='4'` is equivalent to `gap: 16px` , [ you can check the values for `space` property](/foundations/design-tokens#spacing).
+
+Here's an example using style props for `Stack` component :
+
+```tsx
+const Demo = () => (
+  <Stack space={4} stretch alignY="bottom">
+    <Text>Lirum</Text>
+    <Text>Larum</Text>
+    <Text>Löffelstiel!</Text>
+  </Stack>
+);
+```

@@ -1,0 +1,101 @@
+---
+title: List
+caption: Used to display an unordered or ordered list.
+---
+
+The `<List>` component is a content component used to display a list of items. It is versatile and can be used for both unordered and ordered lists, making it suitable for various content presentation needs.
+
+The list is divided into two parts: `<List>` and `<List.Item>`.
+By default, the application displays an unordered `(ul)` list. However, this list can also be displayed as an ordered `(ol)` list.
+
+## Anatomy
+
+The `<List>` component consists of the following parts:
+
+<Image
+  src="/list/list-anatomy.jpg"
+  alt="Anatomy of a list"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Apperance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+The `List` component is used to display a group of related items in a consistent and accessible way. It supports both unordered (bulleted) and ordered (numbered) formats and can be customized through nesting. List components are ideal for organizing content such as tasks, steps, features, or grouped data while maintaining design consistency and readability across the application.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/list/list-amount-do.jpg"
+        alt="Use two or more items in a list"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Use two or more items in a list to provide meaningful content.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/list/list-amount-dont.jpg"
+        alt="Dont use less than two items in a list"
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid using a list with only one item, as it does not provide meaningful
+      grouping or context.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Unordered list
+
+Per default, the `<List>` component renders an unordered list. Unordered lists are best used for grouping items that do not require a specific order, such as features, options, or general information. They help users quickly scan and understand related items without implying a sequence.
+
+### Ordered list
+
+Ordered lists are best used when the sequence of items matters, such as for step-by-step instructions, processes, timelines, or ranked priorities. They help users follow a specific flow and improve accessibility by clearly communicating order to screen readers. Use them for actions that must be completed in order or when numbering adds meaning, avoid them when the item order is irrelevant.
+
+You can use the `as` prop to change the list type from unordered to ordered.
+
+<ComponentDemo file="./list-ordered.demo.tsx" />
+
+### Nested Unordered List
+
+Nested lists allow you to represent hierarchical relationships or group related items under a common parent. Each level of nesting is typically indented to visually communicate its position in the structure. This helps users understand which items are primary and which are subordinate.
+
+<ComponentDemo file="./list-unorded-stacked.demo.tsx" />
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+### List
+
+<PropsTable component={title} />
+
+### List.Item
+
+<PropsTable component="ListItem" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Stack](../layout/stack): Lists should be used for content and not for layout purposes. If you need accessible lists for layout, consider using the `<Stack>` component with `asList` property instead.
+  </li>
+</ul>

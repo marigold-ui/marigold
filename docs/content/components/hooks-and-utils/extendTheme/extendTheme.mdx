@@ -1,0 +1,40 @@
+---
+title: extendTheme
+caption: Function used to customize theme components styles.
+---
+
+With `extendTheme` you can add more variants and sizes to these components. It takes in the current theme you pass and returns an updated theme with added styles and configurations.
+
+<SectionMessage variant="warning">
+  <SectionMessage.Title>Adding new variant</SectionMessage.Title>
+  <SectionMessage.Content>
+    You can **only** add a new variant to the theme, and you **should not**
+    override variant in the current theme.
+  </SectionMessage.Content>
+</SectionMessage>
+
+## Import
+
+```tsx
+import { extendTheme } from '@marigold/system';
+```
+
+## Examples
+
+### Customzing the base styles of a component
+
+Here in this example we will customize the background of `Card` component using `extendTheme` function
+
+<ComponentDemo file="./card-bg.demo.tsx" />
+
+### Customzing component with multiple slots
+
+In this example we will style component with slots like `Tabs` component which contains slots such as `container, tab, tabpanel and tabList` .
+
+<ComponentDemo file="./tabs-slots.demo.tsx" />
+
+### Adding new variants and sizes to a component
+
+In this example we are adding a new size `medium` and variant `tertiary` to a component
+
+<ComponentDemo file="./button-variant.demo.tsx" />

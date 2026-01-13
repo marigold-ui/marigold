@@ -1,4 +1,4 @@
-import { blogSource } from '@/lib/source';
+import { type BlogPageData, blogSource } from '@/lib/source';
 import { DateFormat, Headline, Link, Stack } from '@/ui';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
@@ -10,6 +10,7 @@ export const PostList = async () => {
 
   const posts = await Promise.all(
     allBlogs.map(async post => {
+      const data = post.data as BlogPageData;
       try {
         // Read the raw MDX file to extract introduction
         const filePath = join(
@@ -26,15 +27,15 @@ export const PostList = async () => {
         const introduction = match ? match[1].trim() : '';
 
         return {
-          title: post.data.title,
-          date: new Date(post.data.date),
+          title: data.title,
+          date: new Date(data.date),
           url: post.url,
           introduction,
         };
       } catch (_error) {
         return {
-          title: post.data.title,
-          date: new Date(post.data.date),
+          title: data.title,
+          date: new Date(data.date),
           url: post.url,
           introduction: '',
         };

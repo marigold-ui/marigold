@@ -1,0 +1,28 @@
+---
+title: useListData
+caption: Manages state for an immutable list data structure, and provides convenience methods to update the data over time.
+---
+
+We use the `useListData` hook from [`react-spectrum stately package`](https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/data/src/useListData.ts).
+
+The hook helps manage an immutable list data structure, with helper methods to update the data in an efficient way. Since the data is stored in React state, calling these methods to update the data automatically causes the component to re-render accordingly.
+
+More information can be found in the [react-spectrum documentation](https://react-spectrum.adobe.com/react-stately/useListData.html).
+
+## Usage
+
+## Import
+
+To import the hook you just have to use this code below.
+
+```tsx
+import { useListData } from '@marigold/components';
+```
+
+## Examples
+
+### Table with input field
+
+This example show how to update data inside a table.
+
+<ComponentDemo file="./useListData.table.demo.tsx" />

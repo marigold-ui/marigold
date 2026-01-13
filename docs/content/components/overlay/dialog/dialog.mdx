@@ -1,0 +1,149 @@
+---
+title: Dialog
+caption: Component for displaying dialogs.
+---
+
+The `<Dialog>` component is a versatile UI element used to display important content that requires user interaction, typically in a modal or popup window. It is designed to temporarily interrupt the user's workflow to present critical information, request confirmation, or facilitate a task without navigating away from the current page.
+
+Key features of the `<Dialog>` component include customizable content, support for multiple dialog sizes, focus trapping for accessibility, and optional overlay to dim the background. It can be used for alerts, forms, confirmations, or any interactive modal interface.
+
+## Anatomy
+
+A dialog consists of an optional title, content, actions, an optional close button, and an underlay. The title provides context for the user, while the content holds the main message or interactive elements like forms. The actions section contains controls such as buttons for confirming or canceling. The underlay dims the background to focus attention on the dialog and prevent interaction with other elements on the page. The close button offers way to dismiss the dialog.
+
+<Image
+  src="/dialog/dialog-anatomy.jpg"
+  alt="Anatomy of a dialog"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+A dialog is used to capture the user’s attention for tasks that require focus, such as confirming actions, filling out forms, or providing important information. Common use cases include confirmation prompts, data entry, and notifications.
+
+When using a dialog, it’s important to ensure it doesn’t unnecessarily interrupt the user’s workflow and that it provides a clear way to close or complete the interaction. Dialogs should be concise, focused on a single task and while they are highly versatile, dialogs aren’t suitable for every situation. They can be intrusive and should be used sparingly.
+
+<Do>
+  <Do.Description>
+    Use a dialog when
+    {/* prettier-ignore */}
+    <ul>
+      <li>an immediate response is needed to continue a user-initiated process,</li>
+      <li>to notify the user of urgent information related to their task, or</li>
+      <li>to confirm a user decision.</li>
+    </ul>
+  </Do.Description>
+</Do>
+
+### Labeling
+
+To correctly label a dialog, always include a title (`<Dialog.Title>`) or an `aria-label` so users understand its purpose. The title should be concise and descriptive, using a verb-noun combination (e.g., "Edit Profile" or "Confirm Purchase"). If no visible title is used, ensure that the dialog is properly labeled with an `aria-label` for accessibility.
+
+For short, straightforward messages, you can combine the title and the message to make things clearer and avoid repeating information in both the title and content. If you do this, there should be no additional text in the content of the dialog.
+
+```tsx
+<Dialog aria-label="delete event">
+  <Dialog.Title>Are you sure you want to delete this event?</Dialog.Title>
+  <Dialog.Actions>
+    <Button variant="secondary" slot="close">
+      Cancel
+    </Button>
+    <Button variant="destructive">Delete</Button>
+  </Dialog.Actions>
+</Dialog>
+```
+
+### Content
+
+Keep dialogs simple by limiting the number of interactions. Remove any content or elements that aren't essential to completing the task. For instance, if the dialog is for editing a user's profile information, only include the necessary fields like name and email, rather than unrelated options like notification settings.
+
+<ComponentDemo file="./dialog-content.demo.tsx" />
+
+It's also best to avoid multi-step processes or requiring users to navigate within the dialog, as this can complicate the experience. If a task is too complex, consider using a dedicated page instead.
+
+Lastly, avoid asking users to make decisions that require information not accessible in the dialog, such as needing to check a different page or document to proceed—since this can frustrate users and disrupt their workflow.
+
+### Dismissal
+
+When a dialog is open, users cannot interact with the rest of the page until the dialog is closed. To accommodate both mouse and keyboard users, the `<Dialog>` provides multiple ways to close it:
+
+- pressing the close button (`slot="close"`) inside `<Dialog.Actions>`,
+- using the close button (indicated by an "x"),
+- pressing the "Esc" key, or
+- clicking on the underlay (the dimmed background).
+
+To prevent the dialog from closing when the underlay is (accidentally) clicked, you can set the `dismissable` prop on the `<Dialog.Trigger>` component to `false`. This disables closing the dialog by clicking on the background, ensuring that the dialog remains open until the user interacts with the provided buttons or other close mechanisms.
+
+<ComponentDemo file="./dialog-dismiss.demo.tsx" />
+
+<SectionMessage>
+  <SectionMessage.Title>Dedicated close button</SectionMessage.Title>
+  <SectionMessage.Content>
+    To conveniently create a close button for a dialog, set the `slot` prop to `"close"` on any `<Button>` within `<Dialog.Actions>` component. Pressing the button will then close the dialog.
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Role
+
+When a dialog requires the user's immediate attention, such as for an error or warning, set `role="alertdialog"`. This role ensures that assistive technologies, like screen readers, treat the dialog as high-priority, immediately notifying users of its content.
+
+It is essential for situations where the user must address an issue before continuing, such as critical system errors or warnings about destructive actions. Proper use of `role="alertdialog"` improves accessibility and ensures important messages are not missed.
+
+### Confirmation
+
+A confirmation dialog asks a user to verify an action, preventing accidental and destructive outcomes. Use it for irreversible actions with significant consequences, such as permanently deleting a file or discarding unsaved changes.
+
+For an effective dialog, be specific in your prompt. For example, ask "Permanently delete this account?" instead of a generic "Are you sure?". Action buttons should have clear, unambiguous labels like "Delete" and "Cancel". To avoid user fatigue, reserve confirmation dialogs only for actions that truly warrant a second thought, not for minor tasks.
+
+Use the `useConfirmation` hook for this use case. This hook provides a simple API to trigger confirmation dialogs programmatically, making it easy to prompt users for confirmation before performing critical actions. It returns a function that opens the dialog and resolves with the user's response, allowing you to handle confirmation logic directly in your code.
+
+<ComponentDemo file="./dialog-from-menu.demo.tsx" />
+
+<SectionMessage>
+  <SectionMessage.Title>
+    Styling for Negative Consequences
+  </SectionMessage.Title>
+  <SectionMessage.Content>
+    For actions with potentially negative consequences, such as deleting an item, apply the `"destructive"` variant to the `<ConfirmationDialog>`. This will automatically style the dialog and its primary action button to visually communicate a serious or irreversible operation
+  </SectionMessage.Content>
+</SectionMessage>
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+### Dialog
+
+<PropsTable component={title} />
+
+### Dialog.Trigger
+
+<PropsTable component="DialogTrigger" />
+
+### Dialog.Title
+
+<PropsTable component="DialogTitle" />
+
+### Dialog.Content
+
+<PropsTable component="DialogContent" />
+
+### Dialog.Actions
+
+<PropsTable component="DialogActions" />
+
+### ConfirmationDialog
+
+<PropsTable component="ConfirmationDialog" />
+
+### ConfirmationDialog.Trigger
+
+<PropsTable component="DialogTrigger" />

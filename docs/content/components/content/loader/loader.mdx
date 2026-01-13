@@ -1,0 +1,66 @@
+---
+title: Loader
+caption: Used to indicate the progress of the task.
+---
+
+The `<Loader>` component indicates a task in progress, serving as a placeholder during loading or blocking interactions during processes like data fetching or form submission, keeping users informed and reducing confusion.
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+The `<Loader>` should be used to inform users that a process is currently in progress, particularly when it takes more than a second. They are useful for situations like data fetching, form submissions, or page loads, where visual feedback reassures users that their action is being processed. However, avoid showing a loading indicator for very brief tasks, as it can feel disruptive.
+
+### Fullscreen
+
+A fullscreen loader blocks all interactions with the underlying content, preventing users from interacting with any part of the page until the operation is finished. This can be useful in scenarios such as waiting for critical data to load during the initial app startup, processing a sensitive transaction, or handling an essential authentication step.
+
+However, overuse of fullscreen loaders can lead to a frustrating user experience, so they should be reserved for situations where it's necessary to ensure users can't proceed until the task is fully complete.
+
+<ComponentDemo file="./loader-fullscreen.demo.tsx" />
+
+### Section
+
+A section loader is used to indicate that a specific section of the page is currently processing or loading data. Unlike a fullscreen loader, it only blocks interaction with that section, allowing users to continue interacting with other parts of the page.
+
+Use section loaders for non-blocking tasks, like loading a list of items. They should ideally not cause layout shifts, ensuring the rest of the page remains stable while the content is being loaded, providing a seamless experience for the user.
+
+<ComponentDemo file="./loader-section.demo.tsx" />
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Loading States',
+      href: '/patterns/loading-states',
+      caption: 'Learn when to use which loading state.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

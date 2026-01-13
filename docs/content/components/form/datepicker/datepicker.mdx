@@ -1,0 +1,144 @@
+---
+title: DatePicker
+caption: Component used to pick date value.
+badge: updated
+---
+
+The `<DatePicker>` component is a user interface element that allows users to select a date from a calendar.
+
+The typical practice is to provide a date picker and when you click on calendar button it pops up a calendar below the date field, allowing the user to populate the field with an appropriate date.
+
+## Anatomy
+
+The Label defines the purpose of the Date Field, where users can enter a date directly. Tapping the Calendar Button opens a calendar view with a Header for selecting the month and year, and Next/Previous Buttons for easy month navigation.
+
+<Image
+  src="/datepicker/datepicker-anatomy.jpg"
+  alt="Anatomy of datepicker"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+`<DatePicker>` is used when you need users to select a date accurately, like for booking events, scheduling appointments, or setting deadlines. It’s ideal when date formats might vary, as it standardizes input and reduces mistakes because its visual clarity, format consistency and accuracy. DatePickers are also helpful when users might need guidance on valid date ranges, like selecting only future dates for reservations. Avoid using it for casual date entries where a simple text field would suffice.
+
+### Basic Usage (uncontrolled)
+
+This example shows a regular `<DatePicker>` without any special props.
+
+<ComponentDemo file="./date-picker-basic.demo.tsx" />
+
+### Min/Max Values
+
+The `minValue` and `maxValue` props are used to perform built-in validation. This prevents the user from selecting dates outside the valid range in the calendar .
+
+<ComponentDemo file="./date-picker-min-max.demo.tsx" />
+
+### Controlled
+
+The `value` and `onChange` props can be used to control the `DatePicker`.
+
+<ComponentDemo file="./date-picker-controlled.demo.tsx" />
+
+### Using a Date Object
+
+When using a datepicker, relying on the standard JavaScript `Date` object for its value can result in timezone inconsistencies and incorrect date display. That's why the datepicker uses a specific `DateValue` type from [@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) instead. This library handles correct international date manipulation across calendars, time zones, and other localization concerns.
+
+<SectionMessage type="info">
+  <SectionMessage.Title>@internationalized/date</SectionMessage.Title>
+  <SectionMessage.Content>
+    `@internationalized/date` is a peer dependency. If it's not already in your
+    project, you'll need to install it.
+  </SectionMessage.Content>
+</SectionMessage>
+
+The simplest way to parse a Date for the datepicker is by using `parseAbsoluteToLocal`. This function converts an absolute date and time into the current user's local time zone.
+If you're already using a date library like [date-fns](https://date-fns.org/), you can also utilizing `parseDate`. Ensure that you only pass the date part to `parseDate`, excluding the time and timezone information.
+
+<ComponentDemo file="./date-picker-with-date.demo.tsx" />
+
+### Paste Support
+
+The `<DatePicker>` supports pasting date values from the clipboard. Users can copy dates in common formats and paste them directly into the date picker field. The component automatically parses and validates the pasted content.
+
+**Supported date formats:**
+
+- ISO format: `2023-12-25`
+- European format: `25.12.2023` or `25/12/2023`
+- US format: `12/25/2023` or `12-25-2023`
+
+Invalid dates or unrecognized formats are ignored, ensuring data integrity.
+
+<ComponentDemo file="./datepicker-paste.demo.tsx" />
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />
+
+## Alternative components
+
+<ul>
+  <li>
+    [DateField](/components/form/datefield): Allows users to input a date
+    directly.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form developement guide',
+      href: '../../patterns/form-implementation',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form Fields',
+      href: '../../foundations/form-fields',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>

@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "react/style-prop-object": "off"
+  }
+}

@@ -1,0 +1,160 @@
+---
+title: SectionMessage
+caption: Display important informations in a section of a screen.
+---
+
+The `<SectionMessage>` component is a block-level element designed to alert users about specific content in a designated section on the page. It is positioned close to the relevant content to clearly indicate its connection. Section messages provide contextual feedback within a section of the page and are persistent, non-modal elements.
+
+## Anatomy
+
+The section message consists of a container which includes an optional icon to support the message and a title. The actual content of section messages is located under the title.
+
+Optionally, you can add a button to dismiss the message.
+
+<Image
+  src="/sectionmessage/sectionmessage-anatomy.jpg"
+  alt="Anatomy of a SectionMessage"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+Section messages are ideal for displaying important feedback related to a specific section of the page.
+
+Unlike modal dialogs, which interrupt the user's workflow, section messages remain visible without blocking interaction with other parts of the interface.
+
+<Do>
+  <Do.Description>
+    {/* prettier-ignore */}
+    <ul>
+      <li>The section message title should make the topic or purpose of the
+        message clear.</li>
+      <li>The content provides a brief description of the event that has occurred
+        on the page.</li>
+    </ul>
+  </Do.Description>
+</Do>
+
+### Position
+
+They should be positioned close to the relevant content, typically directly above, to ensure users can easily identify the relationship between the message and the affected area.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/sectionmessage/sectionmessage-do-placement.png"
+        alt="Place section messages near the affected content."
+      />
+    </Do.Figure>
+    <Do.Description>
+      Place section message near the affected content.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/sectionmessage/sectionmessage-dont-placement.png"
+        alt="Don't place section messages in unaffected sections."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Don't place section messages in unaffected sections.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Dismissable message
+
+Dismissable messages are used to provide temporary feedback or notifications that the user can manually close or dismiss when they no longer need the information. They are generally used when feedback is helpful but doesn't need to stay on screen permanently.
+
+To provide this, you have to use the `closeButton` property on the `<SectionMessage>`.
+
+<ComponentDemo file="./section-message-dismissable.demo.tsx" />
+
+You can also control the dismissable message by using the `close` and `onClose` property.
+
+### Actions
+
+Actions, such as buttons or links, should be placed near the message content to make the next steps intuitive for users. Clear, accessible options help users easily respond to the feedback provided, allowing them to address the issue without disrupting their workflow.
+
+<ComponentDemo file="section-message-action.demo.tsx" />
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use section messages for providing non-disruptive feedback or
+      notifications, allowing users to address the message when convenient.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use the section message if you need to interact with it to procced
+      with a task or a flow.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+### SectionMessage
+
+<PropsTable component={title} />
+
+### SectionMessage.Title
+
+<PropsTable component="SectionMessageTitle" />
+
+### SectionMessage.Content
+
+<PropsTable component="SectionMessageContent" />
+
+## Alternative components
+
+- **[Dialog](/components/overlay/dialog)**: If you need to interact with messages to procced with a task or a flow you should use a dialog.
+
+- **[Form components](/patterns/form-implementation)**: When you need to inform the users of a status from a form field, you can use the help text/ validation message which comes with our form components.
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Feedback Messages',
+      href: '/patterns/feedback-messages',
+      caption: 'Learn when to use which message.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

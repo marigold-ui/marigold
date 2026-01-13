@@ -1,0 +1,69 @@
+---
+title: SelectList
+caption: A component for displaying a list of interactive items, with support for keyboard navigation, single or multiple selection, and row actions.
+---
+
+The `SelectList` can be used to select multiple items from a list simultaneously. It provides a familiar interface where users can select multiple items.
+
+## Anatomy
+
+A `SelectList` consists of a container element, with rows of data inside. The rows within a list may contain focusable elements or plain text content. If the list supports row selection, each row includes a selection indicator.
+
+<Image
+  src="/selectlist/selectlist-anatomy.jpg"
+  alt="Anatomy of selectlist"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+The `SelectList` component is used to display a list of items that can be selected by the user. It supports both single and multiple selection modes, allowing users to choose one or more items from the list.
+
+Built with accessibility in mind, it supports full keyboard navigation, making it easy to interact with using only the keyboard.
+
+### SelectList with multiple selection mode
+
+If you want to allow users to select multiple items, you can set the `selectionMode` prop to `multiple`. This enables checkboxes for each item, allowing users to select or deselect multiple items at once.
+
+You can also provide interactive actions for each item by using `<SelectList.Action>`, such as buttons or links, to perform specific actions on the selected items.
+
+<ComponentDemo
+  disableLabelWidth
+  file="./selectlist-multiple-selection.demo.tsx"
+/>
+
+### Disabled behavior
+
+The `<SelectList>` lets you disable certain items, which is helpful if you don’t want users to select them. You can use the `disabledBehavior` prop to control what happens with those disabled items. In the example below, we use `disabledBehavior="selection"`. This means the disabled items can’t be selected and won’t show a selection indicator — but you can still use their actions (like buttons or links inside them).
+
+<ComponentDemo
+  disableLabelWidth
+  file="./selectlist-disabledbehavior.demo.tsx"
+/>
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+### SelectList
+
+<PropsTable component={title} />
+
+### SelectList.Item
+
+<PropsTable component="SelectListItem" />
+
+## Alternative components
+
+The `SelectList` is a versatile component that can be used in various scenarios where users need to select multiple items from a list. But there are alternative components that might be more suitable depending on your specific use case:
+
+- **Table**: If you need to display tabular data with multiple selection capabilities, consider using the `<Table>` component. It provides a structured layout for displaying data in rows and columns, along with selection features.
+- **Stack**: If you need to display a list of items with a more compact layout, consider using the `<Stack>` component. It allows you to create a vertical stack of items, which can be useful for displaying lists with less emphasis on selection.

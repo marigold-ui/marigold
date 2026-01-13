@@ -1,0 +1,88 @@
+---
+title: TextArea
+caption: Component for entering multiline text input.
+---
+
+The `<TextArea>` is a form component that allows users to enter and edit multiline text content with a keyboard. It consists of a textarea input field, a label, and optional help text that can also display error messages for validation feedback.
+
+It behaves similarly to the [`<TextField>`](/components/form/textfield) component but is designed specifically for longer, multiline text input. The properties have identical behavior to those in [`<TextField>`](/components/form/textfield).
+
+You can also add all usual properties from the HTML textarea element.
+
+## Anatomy
+
+A textarea consists of an input area that accepts multiline text, and a label which informs the user about the content they need to enter. `<TextArea>` automatically manages the relationship between these elements and supports optional description and error message elements for providing context and validation feedback.
+
+## Appearance
+
+<AppearanceDemo component={title} />
+
+<AppearanceTable component={title} />
+
+## Usage
+
+Use a `<TextArea>` when users need to input longer text content that spans multiple lines, such as comments, descriptions, feedback, or any free-form text that cannot be effectively captured in a single-line text field.
+
+The `<TextArea>` is ideal for content like product descriptions, user reviews, messages, notes, or any scenario where users might need to write several sentences or paragraphs. It provides enough space for users to compose and review their text before submission.
+
+### When to use TextArea vs TextField
+
+Choose `<TextArea>` over `<TextField>` when you expect users to enter more than a few words or when the content naturally spans multiple lines. Use `<TextField>` for single-line inputs like names, emails, or short responses.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use TextArea for longer text content like comments, descriptions, or
+      feedback that spans multiple lines.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use TextArea for short, single-line inputs like names or email
+      addresses.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Labels and placeholders
+
+Keep labels short and descriptive. The label should clearly indicate what type of content is expected. Avoid using placeholder text as a replacement for labels, as it disappears when users start typing and can cause accessibility issues.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use clear, concise labels that describe the expected content.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't rely on placeholder text as the primary way to indicate what content
+      is expected.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Sizing and rows
+
+Set an appropriate initial height using the `rows` prop to give users a visual hint about how much content is expected. For short responses, 3-4 rows is usually sufficient. For longer content like detailed feedback or descriptions, consider 6-8 rows or more.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Set an appropriate number of rows that matches the expected content
+      length.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use too few rows for content that typically requires more space, as
+      it creates a poor user experience.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+## Props
+
+<StorybookHintMessage component={title} />
+
+<PropsTable component={title} />

@@ -34,6 +34,7 @@ import {
   componentDemo,
 } from '@/app/_components/mdx-wrapper-components';
 import { getPageImage, source } from '@/lib/source';
+import type { DocsPageData } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
@@ -63,25 +64,25 @@ export default async function Page(props: PageProps) {
 
   if (!page) notFound();
 
-  const MDX = page.data.body;
+  const data = page.data as DocsPageData;
+  const MDX = data.body;
 
   return (
-    <DocsPage toc={page.data.toc === false ? [] : page.data.toc}>
+    <DocsPage toc={data.toc === false ? [] : data.toc}>
       <div className="col-span-full">
         <DocsTitle className="max-w-(--maxHeadlineWidth) scroll-m-20 text-left text-5xl font-extrabold tracking-tight *:no-underline lg:text-6xl">
-          {page.data.title}
+          {data.title}
         </DocsTitle>
         <DocsDescription className="text-secondary-400 pt-1">
-          {page.data.description}
+          {data.description}
         </DocsDescription>
       </div>
 
       <DocsBody id="docs-body" className="pt-4 pb-10">
         <MDX components={getMdxComponentsConfig(page)} />
-        {page.data.lastModified && (
+        {data.lastModified && (
           <div className="text-text-primary-muted pt-8 text-xs italic">
-            Last update:{' '}
-            <RelativeTime date={new Date(page.data.lastModified)} />
+            Last update: <RelativeTime date={new Date(data.lastModified)} />
           </div>
         )}
       </DocsBody>
@@ -93,7 +94,7 @@ function getMdxComponentsConfig(page: any) {
   return {
     ...getMDXComponents({
       // Relative linking
-      a: createRelativeLink(source, page),
+      a: createRelativeLink(source, page) as any,
 
       // Text & Headings
       p: (props: any) => <Text {...props} as="p" />,

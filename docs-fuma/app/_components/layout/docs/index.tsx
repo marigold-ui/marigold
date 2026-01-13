@@ -3,14 +3,7 @@ import { Badge } from '@/ui';
 import { usePathname } from 'fumadocs-core/framework';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { TreeContextProvider, useTreeContext } from 'fumadocs-ui/contexts/tree';
-import {
-  type ComponentProps,
-  type ReactNode,
-  createContext,
-  use,
-  useMemo,
-  useState,
-} from 'react';
+import { type ReactNode, createContext, use, useMemo, useState } from 'react';
 import { cn } from '@marigold/system';
 import { Footer } from '@/ui/layout/Footer';
 import { NavLink } from '@/ui/navigation/NavLink';
@@ -89,20 +82,6 @@ function SidebarProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </SidebarContext>
-  );
-}
-
-function NavbarSidebarTrigger(props: ComponentProps<'button'>) {
-  const { open, setOpen } = use(SidebarContext)!;
-
-  return (
-    <button
-      {...props}
-      className={cn('text-sm', props.className)}
-      onClick={() => setOpen(!open)}
-    >
-      Sidebar
-    </button>
   );
 }
 

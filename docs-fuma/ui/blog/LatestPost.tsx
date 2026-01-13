@@ -1,14 +1,17 @@
-import { blogSource } from '@/lib/source';
+import { type BlogPageData, blogSource } from '@/lib/source';
 import { DateFormat, Headline, Link } from '@/ui';
 
 export const getLatestPost = () => {
   const allBlogs = blogSource.getPages();
 
-  const posts = allBlogs.map(post => ({
-    title: post.data.title,
-    date: new Date(post.data.date),
-    url: post.url,
-  }));
+  const posts = allBlogs.map(post => {
+    const data = post.data as BlogPageData;
+    return {
+      title: data.title,
+      date: new Date(data.date),
+      url: post.url,
+    };
+  });
 
   const sortedPosts = posts.sort((a, b) => b.date.getTime() - a.date.getTime());
   const latestPost = sortedPosts[0];
