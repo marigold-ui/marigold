@@ -200,6 +200,10 @@ export type Theme = {
       | 'itemDescription',
       ComponentStyleFunction<string, string>
     >;
+    ToggleButton?: Record<
+      'group' | 'button',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 
