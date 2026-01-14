@@ -3,18 +3,21 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const Input: ThemeComponent<'Input'> = {
   container: cva([
-    'inline-flex w-full h-input',
-    'surface has-default-state:elevation-raised',
+    'relative flex items-center w-full h-input',
     'disabled:state-disabled',
     'group-read-only/field:state-readonly',
-    'has-invalid:surface-has-error',
-    'has-focus:state-focus',
   ]),
   input: cva([
-    'surface-input rounded-[inherit]',
+    'surface has-default-state:elevation-raised rounded-[inherit]',
+    'w-full min-w-0',
+    'px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)]',
+    'text-foreground placeholder:text-placeholder text-sm',
+    'outline-none',
     'group-read-only/field:cursor-default',
     'group-data-icon/input:pl-8',
     'group-data-action/input:pr-7',
+    'has-invalid:surface-has-error',
+    'has-focus:state-focus',
 
     // [type=file] styles
     '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:h-[calc(var(--spacing-input)-2px)] [&[type=file]]:pl-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',

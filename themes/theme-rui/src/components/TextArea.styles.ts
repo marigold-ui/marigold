@@ -2,15 +2,18 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const TextArea: ThemeComponent<'TextArea'> = {
   container: cva([
-    'inline-flex w-full',
-    'surface has-default-state:elevation-raised',
+    'relative flex w-full',
     'disabled:state-disabled',
     'group-read-only/field:state-readonly',
-    'has-invalid:surface-has-error',
-    'has-focus:state-focus',
   ]),
   textarea: cva([
-    'surface-input rounded-[inherit]',
+    'surface has-default-state:elevation-raised rounded-[inherit]',
+    'w-full min-w-0',
+    'px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)]',
+    'text-foreground placeholder:text-placeholder text-sm',
+    'outline-none',
     'group-read-only/field:cursor-default',
+    'has-invalid:surface-has-error',
+    'has-focus:state-focus',
   ]),
 };

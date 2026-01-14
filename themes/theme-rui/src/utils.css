@@ -14,21 +14,38 @@
 /*
  * The "surface" utitlities define visual surfaces with distinct background colors. Apply 
  * elevation levels to them when needed.
+ * 
+ * Uses gradient borders and layered shadows for single-element styling.
+ * Works on both container and input elements without requiring ::before pseudo-element.
  */
 @utility surface {
   @apply relative;
-  @apply bg-surface bg-clip-padding;
-  @apply border-surface-border rounded-surface border;
+  @apply rounded-surface;
   @apply transition-[box-shadow,border];
-
-  /* ::before */
-  @apply before:shadow-surface before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-surface)-1px)];
+  
+  /* Gradient border using background layers */
+  background: 
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(
+      to bottom,
+      var(--color-surface-border),
+      oklch(from var(--color-surface-border) calc(l - 0.15) c h)
+    ) border-box;
+  border: 1px solid transparent;
+  
+  /* Layered shadows for depth (Josh Comeau approach) */
+  box-shadow:
+    0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075),
+    0 4px 4px hsl(0deg 0% 0% / 0.075),
+    0 8px 8px hsl(0deg 0% 0% / 0.075);
 }
 
 /*
- * Ensures input elements have consistent padding, text styles, and full-width behavior when used 
- * as surfaces.Since input elements cannot use ::before, wrap them with an additional element and 
- * apply this utility to the input itself for proper styling.
+ * @deprecated Use .surface directly instead. This class is no longer needed
+ * as the .surface class now works on input elements directly.
+ * 
+ * Note: The padding and text styling should now be applied separately in component styles.
  */
 @utility surface-input {
   @apply w-full min-w-0;
@@ -48,17 +65,29 @@
  * Use this utility when you want to visually lift an element above the base level,
  * such as for cards, or interactive components that require emphasis. This is the 
  * lowest elevation level.
+ * 
+ * Uses lighter layered shadows than the base surface.
  */
 @utility elevation-raised {
-  @apply shadow-elevation-raised;
+  box-shadow:
+    0 1px 2px hsl(0deg 0% 0% / 0.06),
+    0 2px 4px hsl(0deg 0% 0% / 0.06),
+    0 4px 8px hsl(0deg 0% 0% / 0.06),
+    0 8px 16px hsl(0deg 0% 0% / 0.06);
 }
 
 /*
  * Use this utility when you want to visually lift an element above the raised level,
  * such as for dialogs, or popups. This is the highest elevation level.
+ * 
+ * Uses heavier layered shadows for maximum depth.
  */
 @utility elevation-overlay {
-  @apply shadow-elevation-overlay;
+  box-shadow:
+    0 2px 4px hsl(0deg 0% 0% / 0.1),
+    0 4px 8px hsl(0deg 0% 0% / 0.1),
+    0 8px 16px hsl(0deg 0% 0% / 0.1),
+    0 16px 32px hsl(0deg 0% 0% / 0.1);
 }
 
 /* ========================= */
@@ -67,16 +96,32 @@
 
 /*
  * Applies a consistent visual style for invalid elements.
+ * Works with gradient border approach by changing border color.
  */
 @utility surface-error {
-  @apply border-destructive focus:border-destructive focus:ring-destructive/20;
+  background: 
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(
+      to bottom,
+      var(--color-destructive),
+      oklch(from var(--color-destructive) calc(l - 0.15) c h)
+    ) border-box;
+  border: 1px solid transparent;
 }
 
 /*
  * Applies a consistent visual style when an element has an invalid child element.
+ * Works with gradient border approach by changing border color.
  */
 @utility surface-has-error {
-  @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20;
+  background: 
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(
+      to bottom,
+      var(--color-destructive),
+      oklch(from var(--color-destructive) calc(l - 0.15) c h)
+    ) border-box;
+  border: 1px solid transparent;
 }
 
 /*
@@ -96,9 +141,18 @@
 /*
  * Applies a consistent visual style used for keyboard focus states across components.
  * Used this when the border of the component can be changed.
+ * Enhanced with layered shadow for depth.
  */
 @utility state-focus {
-  @apply ring-ring/50 border-ring ring-[3px];
+  background: 
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(
+      to bottom,
+      var(--color-ring),
+      oklch(from var(--color-ring) calc(l - 0.15) c h)
+    ) border-box;
+  border: 1px solid transparent;
+  @apply ring-ring/50 ring-[3px];
 }
 
 /*
