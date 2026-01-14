@@ -1,5 +1,5 @@
 import { useState } from 'storybook/preview-api';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { TextArea } from './TextArea';
 
 const meta = preview.meta({
