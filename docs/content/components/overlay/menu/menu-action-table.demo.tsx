@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { ActionMenu, Menu, Table } from '@marigold/components';
 
-const rows = [
+interface Ticket {
+  ticketId: string;
+  eventName: string;
+  status: 'Cancelled' | 'Pending' | 'Confirmed';
+}
+
+const rows: Ticket[] = [
   {
     ticketId: 'TCK-001',
     eventName: 'Champions League Final',
@@ -18,12 +24,6 @@ const rows = [
     status: 'Cancelled',
   },
 ];
-
-interface Ticket {
-  ticketId: string;
-  eventName: string;
-  status: 'Cancelled' | 'Pending' | 'Confirmed';
-}
 
 export default () => {
   const [tickets, setTickets] = useState(rows);

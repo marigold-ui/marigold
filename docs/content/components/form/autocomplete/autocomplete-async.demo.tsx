@@ -7,8 +7,22 @@ import {
   useAsyncList,
 } from '@marigold/components';
 
+interface Character {
+  name: string;
+  gender: string;
+  skin_color: string;
+  height: string;
+  mass: string;
+  [key: string]: string;
+}
+
+interface Column {
+  name: string;
+  key: string;
+}
+
 export default () => {
-  const columns = [
+  const columns: Column[] = [
     { name: 'Name', key: 'name' },
     { name: 'Gender', key: 'gender' },
     { name: 'Skin Color', key: 'skin_color' },
@@ -16,10 +30,8 @@ export default () => {
     { name: 'Weight', key: 'mass' },
   ];
 
-  const [result, setResult] = useState<{ [key: string]: string }[] | null>(
-    null
-  );
-  const list = useAsyncList<{ [key: string]: string }>({
+  const [result, setResult] = useState<Character[] | null>(null);
+  const list = useAsyncList<Character>({
     async load({ signal, filterText }) {
       const res = await fetch(
         `https://swapi.py4e.com/api/people/?search=${filterText}`,
@@ -52,19 +64,26 @@ export default () => {
         onChange={list.setFilterText}
         onSubmit={handleSubmit}
       >
-        {(item: any) => (
-          <Autocomplete.Option id={item.name}>{item.name}</Autocomplete.Option>
-        )}
+        {obj => {
+          const item = obj as unknown as Character;
+          return (
+            <Autocomplete.Option id={item.name}>
+              {item.name}
+            </Autocomplete.Option>
+          );
+        }}
       </Autocomplete>
       {result === null ? null : result.length > 0 ? (
         <Table aria-label="Character results" selectionMode="none" stretch>
           <Table.Header columns={columns}>
-            {column => <Table.Column>{(column as any).name}</Table.Column>}
+            {column => <Table.Column>{(column as Column).name}</Table.Column>}
           </Table.Header>
           <Table.Body items={result}>
             {item => (
-              <Table.Row key={(item as any).name}>
-                {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+              <Table.Row key={item.name}>
+                {columnKey => (
+                  <Table.Cell>{item[columnKey as keyof Character]}</Table.Cell>
+                )}
               </Table.Row>
             )}
           </Table.Body>

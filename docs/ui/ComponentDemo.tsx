@@ -2,7 +2,7 @@ import { registry } from '@/lib/.registry/demos';
 import { ruiTheme } from '@/theme';
 import { Card, MarigoldProvider, OverlayContainerProvider, Tabs } from '@/ui';
 import { track } from '@vercel/analytics/react';
-import type { ComponentType, ReactNode } from 'react';
+import type { ComponentType, Key, ReactNode } from 'react';
 
 // Helpers
 // ---------------
@@ -62,8 +62,8 @@ export const ComponentDemo = ({
     return <Preview name={name} />;
   }
 
-  const onSelectionChange = (key: string) => {
-    track('Demo Tab', { tab: key });
+  const onSelectionChange = (key: Key) => {
+    track('Demo Tab', { tab: String(key) });
   };
 
   return (

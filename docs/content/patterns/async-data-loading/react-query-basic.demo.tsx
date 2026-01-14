@@ -8,6 +8,11 @@ import {
 import { useDeferredValue, useState } from 'react';
 import { Autocomplete, Center } from '@marigold/components';
 
+interface TicketItem {
+  id: string;
+  name: string;
+}
+
 const useTickets = (searchTerm: string) => {
   return useQuery({
     queryKey: ['tickets', searchTerm],
@@ -21,10 +26,10 @@ const useTickets = (searchTerm: string) => {
         if (typeof data === 'string') {
           throw new Error('Unexpected response format');
         }
-        return data;
+        return data as TicketItem[];
       } catch (error) {
         console.error('Error fetching tickets:', error);
-        return [];
+        return [] as TicketItem[];
       }
     },
   });
@@ -44,7 +49,8 @@ const ReactQueryAutocomplete = () => {
       emptyState={<Center>no tickets found</Center>}
       loading={isLoading}
     >
-      {(item: any) => {
+      {obj => {
+        const item = obj as unknown as TicketItem;
         return (
           <Autocomplete.Option
             key={item.id}

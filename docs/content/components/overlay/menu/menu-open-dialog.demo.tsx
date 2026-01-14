@@ -5,7 +5,8 @@ import { Button, Dialog, Menu, TextArea } from '@marigold/components';
 export default () => {
   const [open, setDialogOpen] = useState(false);
 
-  const handleAction = (action: 'profile' | 'feedback') => {
+  const handleAction = (key: React.Key) => {
+    const action = key as 'profile' | 'feedback';
     switch (action) {
       case 'profile':
         alert('Profile opened!');

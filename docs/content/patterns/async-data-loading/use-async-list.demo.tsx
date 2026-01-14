@@ -38,9 +38,10 @@ export default function Example() {
       allowsEmptyCollection
       emptyState={<Center>No results found</Center>}
     >
-      {(item: any) => (
-        <ComboBox.Option id={item.name}>{item.name}</ComboBox.Option>
-      )}
+      {obj => {
+        const item = obj as unknown as { name: string };
+        return <ComboBox.Option id={item.name}>{item.name}</ComboBox.Option>;
+      }}
     </ComboBox>
   );
 }
