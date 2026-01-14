@@ -4,19 +4,10 @@ import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
 
-type RemovedProps =
-  | 'className'
-  | 'style'
-  | 'children'
-  | 'isSelected'
-  | 'isDisabled';
+type RemovedProps = 'className' | 'style' | 'isSelected' | 'isDisabled';
 
 export interface ToggleButtonProps
   extends Omit<RAC.ToggleButtonProps, RemovedProps> {
-  /**
-   * Children of the component
-   */
-  children?: ReactNode;
   /**
    * Whether the toggle button is selected.
    */
