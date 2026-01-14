@@ -15,6 +15,7 @@ import {
   Headline6,
   IconList,
   Image,
+  Link,
   MDXPropsTable,
   MDXStorybookHintMessage,
   Scrollable,
@@ -150,6 +151,7 @@ function getMdxComponentsConfig(page: any) {
     // Layout Components
     Center,
     Columns,
+    Link: (props: any) => <Link {...props} />,
     Scrollable,
     Stack,
 

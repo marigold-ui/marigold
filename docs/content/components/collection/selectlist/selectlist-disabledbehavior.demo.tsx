@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { ActionMenu, Menu, SelectList, Text } from '@marigold/components';
 
-let tickets = [
+interface Ticket {
+  id: string;
+  name: string;
+  price: number;
+}
+
+let tickets: Ticket[] = [
   {
     id: 'standard',
     name: 'Standard Ticket',
@@ -23,39 +29,42 @@ export default () => {
       onChange={setSelectedTickets}
       disabledBehavior="selection"
     >
-      {(item: any) => (
-        <SelectList.Item id={item.id} disabled={item.id === 'child'}>
-          <div>
-            <Text
-              weight="bold"
-              color={`${item.id === 'child' ? 'disabled' : 'foreground'}`}
-            >
-              {item.name}
-            </Text>
-            <Text
-              fontSize="sm"
-              color={`${item.id === 'child' ? 'disabled' : 'foreground-muted'}`}
-            >
-              €{item.price}
-            </Text>
-          </div>
-          <SelectList.Action>
-            <ActionMenu variant="ghost">
-              <Menu.Item
-                onAction={() => alert(`Show details for ${item.name}`)}
+      {obj => {
+        const item = obj as Ticket;
+        return (
+          <SelectList.Item id={item.id} disabled={item.id === 'child'}>
+            <div>
+              <Text
+                weight="bold"
+                color={`${item.id === 'child' ? 'disabled' : 'foreground'}`}
               >
-                Details
-              </Menu.Item>
-              <Menu.Item onAction={() => alert(`Refund ${item.name}`)}>
-                Refund
-              </Menu.Item>
-              <Menu.Item onAction={() => alert(`Transfer ${item.name}`)}>
-                Transfer
-              </Menu.Item>
-            </ActionMenu>
-          </SelectList.Action>
-        </SelectList.Item>
-      )}
+                {item.name}
+              </Text>
+              <Text
+                fontSize="sm"
+                color={`${item.id === 'child' ? 'disabled' : 'foreground-muted'}`}
+              >
+                €{item.price}
+              </Text>
+            </div>
+            <SelectList.Action>
+              <ActionMenu variant="ghost">
+                <Menu.Item
+                  onAction={() => alert(`Show details for ${item.name}`)}
+                >
+                  Details
+                </Menu.Item>
+                <Menu.Item onAction={() => alert(`Refund ${item.name}`)}>
+                  Refund
+                </Menu.Item>
+                <Menu.Item onAction={() => alert(`Transfer ${item.name}`)}>
+                  Transfer
+                </Menu.Item>
+              </ActionMenu>
+            </SelectList.Action>
+          </SelectList.Item>
+        );
+      }}
     </SelectList>
   );
 };

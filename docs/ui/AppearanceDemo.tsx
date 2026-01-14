@@ -110,8 +110,8 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
             size="small"
             width={getSelectWidth(appearance.variant)}
             selectedKey={selected.variant}
-            onChange={(val: string) =>
-              setSelected({ variant: val, size: selected.size })
+            onChange={val =>
+              setSelected({ variant: val as string, size: selected.size })
             }
             disabled={appearance.variant.length === 0 ? true : false}
           >
@@ -130,8 +130,8 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
             size="small"
             width={getSelectWidth(appearance.size)}
             selectedKey={selected.size}
-            onChange={(val: string) =>
-              setSelected({ variant: selected.variant, size: val })
+            onChange={val =>
+              setSelected({ variant: selected.variant, size: val as string })
             }
             disabled={appearance.size.length === 0 ? true : false}
           >

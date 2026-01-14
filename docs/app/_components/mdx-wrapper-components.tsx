@@ -128,4 +128,4 @@ export const Image = (props: any) => {
   return <MarigoldImage {...props} />;
 };
 
-export { Text, Center, Stack, Columns } from '@/ui';
+export { Text, Center, Stack, Columns, Link } from '@/ui';

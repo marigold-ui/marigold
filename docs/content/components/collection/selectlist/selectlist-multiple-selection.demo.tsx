@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { ActionMenu, Menu, SelectList, Text } from '@marigold/components';
 
-let tickets = [
+interface Ticket {
+  id: string;
+  name: string;
+  price: number;
+}
+
+let tickets: Ticket[] = [
   {
     id: 'standard',
     name: 'Standard Ticket',
@@ -22,31 +28,34 @@ export default () => {
       selectedKeys={selectedTickets}
       onChange={setSelectedTickets}
     >
-      {(item: { id: string; name: string; price: number }) => (
-        <SelectList.Item id={item.id}>
-          <div>
-            <Text weight="bold">{item.name}</Text>
-            <Text fontSize="sm" color="foreground-muted">
-              €{item.price}
-            </Text>
-          </div>
-          <SelectList.Action>
-            <ActionMenu variant="ghost">
-              <Menu.Item
-                onAction={() => alert(`Show details for ${item.name}`)}
-              >
-                Details
-              </Menu.Item>
-              <Menu.Item onAction={() => alert(`Refund ${item.name}`)}>
-                Refund
-              </Menu.Item>
-              <Menu.Item onAction={() => alert(`Transfer ${item.name}`)}>
-                Transfer
-              </Menu.Item>
-            </ActionMenu>
-          </SelectList.Action>
-        </SelectList.Item>
-      )}
+      {obj => {
+        const item = obj as Ticket;
+        return (
+          <SelectList.Item id={item.id}>
+            <div>
+              <Text weight="bold">{item.name}</Text>
+              <Text fontSize="sm" color="foreground-muted">
+                €{item.price}
+              </Text>
+            </div>
+            <SelectList.Action>
+              <ActionMenu variant="ghost">
+                <Menu.Item
+                  onAction={() => alert(`Show details for ${item.name}`)}
+                >
+                  Details
+                </Menu.Item>
+                <Menu.Item onAction={() => alert(`Refund ${item.name}`)}>
+                  Refund
+                </Menu.Item>
+                <Menu.Item onAction={() => alert(`Transfer ${item.name}`)}>
+                  Transfer
+                </Menu.Item>
+              </ActionMenu>
+            </SelectList.Action>
+          </SelectList.Item>
+        );
+      }}
     </SelectList>
   );
 };
