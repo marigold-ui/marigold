@@ -47,14 +47,6 @@ export function getPageImage(page: InferPageType<typeof source>) {
   };
 }
 
-export async function getLLMText(page: InferPageType<typeof source>) {
-  const processed = await (page.data as DocsPageData).getText('processed');
-
-  return `# ${page.data.title}
-
-${processed}`;
-}
-
 /**
  * extract badges from pages for client sside use
  * called once during server-side rendering
