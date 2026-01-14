@@ -8,6 +8,9 @@ on:
 jobs:
   generate-and-upload-sbom:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
 
     steps:
       - uses: actions/checkout@v4
@@ -22,18 +25,37 @@ jobs:
         run: |
           pnpm install -g @cyclonedx/cdxgen
 
-      - name: Generate & upload SBOM to Dependency-Track
-        env:
-          DEPENDENCY_TRACK_API_KEY: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}
-          DEPENDENCY_TRACK_SERVER: ${{ secrets.DEPENDENCY_TRACK_SERVER }}
-          DEPENDENCY_TRACK_PROJECT_NAME: ${{ secrets.DEPENDENCY_TRACK_PROJECT_NAME }}
-          DEPENDENCY_TRACK_PARENT_PROJECT_ID: ${{ secrets.DEPENDENCY_TRACK_PARENT_PROJECT_ID }}
-          DEPENDENCY_TRACK_PROJECT_VERSION: ${{ secrets.DEPENDENCY_TRACK_PROJECT_VERSION }}
-          DEPENDENCY_TRACK_FILE: ${{ secrets.DEPENDENCY_TRACK_FILE }}
+      - name: Generate SBOM
         run: |
-          cdxgen -r -o $DEPENDENCY_TRACK_FILE \
-            --server-url $DEPENDENCY_TRACK_SERVER \
-            --api-key $DEPENDENCY_TRACK_API_KEY \
-            --project-name $DEPENDENCY_TRACK_PROJECT_NAME \
-            --project-version $DEPENDENCY_TRACK_PROJECT_VERSION \
-            --parent-project-id $DEPENDENCY_TRACK_PARENT_PROJECT_ID
+          cdxgen -r -o sbom.json
+      
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        id: upload-artifact
+        with:
+          name: sbom
+          path: sbom.json
+      
+      - name: Get artifact download URL
+        id: artifact-url
+        run: |
+          sleep 5
+          
+          URL=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts")
+          
+          ARTIFACT_ID=$(echo "$URL" | jq -r '.artifacts[] | select(.name=="sbom") | .id')
+          
+          echo "artifact_id=${ARTIFACT_ID}" >> $GITHUB_OUTPUT
+          echo "Artifact ID: ${ARTIFACT_ID}"
+      
+      - name: Trigger GitLab Pipeline                                     # https://git.reservix.io/design-system-team/marigold-sboms
+        run: |
+          curl -X POST \
+            -F token=${{ secrets.GITLAB_TRIGGER_TOKEN }} \
+            -F ref=main \
+            -F "variables[OWNER]=${{ github.repository_owner }}" \
+            -F "variables[REPO]=${{ github.event.repository.name }}" \
+            -F "variables[ARTIFACT_ID]=${{ steps.artifact-url.outputs.artifact_id }}" \
+            -F "variables[ARCHIVE_FORMAT]=zip" \
+            "https://git.reservix.io/api/v4/projects/1956/trigger/pipeline"
