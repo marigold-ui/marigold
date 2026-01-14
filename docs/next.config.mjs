@@ -1,6 +1,7 @@
 import { createMDX } from 'fumadocs-mdx/next';
 import { createRequire } from 'module';
 
+// Next.js configuration for Fumadocs documentation site
 const require = createRequire(import.meta.url);
 const pkg = require('./package.json');
 
