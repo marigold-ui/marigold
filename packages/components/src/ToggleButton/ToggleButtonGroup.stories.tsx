@@ -55,7 +55,7 @@ export const Basic = meta.story({
   tags: ['component-test'],
   args: {},
   render: args => {
-    const [selectedKeys, setSelectedKeys] = useState(new Set<Key>(['files']));
+    const [selectedKeys, setSelectedKeys] = useState(new Set<Key>(['sum']));
 
     return (
       <>
@@ -64,11 +64,9 @@ export const Basic = meta.story({
           onSelectionChange={keys => setSelectedKeys(keys)}
           {...args}
         >
-          <ToggleButton id="files">Files</ToggleButton>
-          <ToggleButton id="media">Media</ToggleButton>
-          <ToggleButton id="more">
-            <EllipsisVertical />
-          </ToggleButton>
+          <ToggleButton id="sum">Sum</ToggleButton>
+          <ToggleButton id="median">Median</ToggleButton>
+          <ToggleButton id="average">Average</ToggleButton>
         </ToggleButtonGroup>
         <div data-testid="selected-keys">
           Selected: {Array.from(selectedKeys).join(', ')}
@@ -79,30 +77,30 @@ export const Basic = meta.story({
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
-    await step('Initial state - files is selected', async () => {
+    await step('Initial state - sum is selected', async () => {
       expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-        'Selected: files'
+        'Selected: sum'
       );
     });
 
-    await step('Click media button', async () => {
-      await userEvent.click(canvas.getByText('Media'));
+    await step('Click median button', async () => {
+      await userEvent.click(canvas.getByText('Median'));
 
       await waitFor(() => {
         expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-          'Selected: media'
+          'Selected: median'
         );
       });
     });
 
-    await step('Click files button again', async () => {
-      const filesButton = canvas.getByText('Files');
+    await step('Click sum button again', async () => {
+      const sumButton = canvas.getByText('Sum');
 
-      await userEvent.click(filesButton);
+      await userEvent.click(sumButton);
 
       await waitFor(() => {
         expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-          'Selected: files'
+          'Selected: sum'
         );
       });
     });
