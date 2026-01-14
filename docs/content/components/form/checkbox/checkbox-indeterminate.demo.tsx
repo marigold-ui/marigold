@@ -35,7 +35,7 @@ export default () => {
         <Checkbox.Group
           aria-label="Favorite genres"
           value={selected}
-          onChange={(keys: Genres[]) => setSelected(keys)}
+          onChange={(keys: string[]) => setSelected(keys as Genres[])}
         >
           {Object.entries(genres).map(([value, label]) => (
             <Checkbox key={value} value={value} label={label} />

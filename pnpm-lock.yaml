@@ -125,6 +125,9 @@ importers:
       '@babel/core':
         specifier: 7.28.5
         version: 7.28.5
+      '@babel/eslint-parser':
+        specifier: ^7.28.4
+        version: 7.28.5(@babel/core@7.28.5)(eslint@9.39.2(jiti@2.6.1))
       '@babel/plugin-syntax-flow':
         specifier: ^7.24.7
         version: 7.27.1(@babel/core@7.28.5)

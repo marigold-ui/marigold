@@ -33,6 +33,7 @@ export const PostList = async () => {
           introduction,
         };
       } catch (_error) {
+        console.log(_error);
         return {
           title: data.title,
           date: new Date(data.date),

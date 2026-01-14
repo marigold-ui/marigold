@@ -32,7 +32,7 @@ export default () => {
       };
     },
   });
-  const handleSubmit = (key: Key | null, value: string | null) => {
+  const handleSubmit = (value: string | number | null, key: Key | null) => {
     if (key) {
       const result = list.items.find(c => c.name === key);
       setResult(result ? [result] : null);

@@ -81,15 +81,9 @@ export const CustomCodeBlock = ({
         role="region"
         tabIndex={0}
         className={cn(
-          'text-md fd-scroll-container focus-visible:ring-fd-ring max-h-[600px] overflow-auto py-3.5 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset',
+          'text-md fd-scroll-container focus-visible:ring-fd-ring max-h-150 overflow-auto py-3.5 focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset',
           viewportProps.className
         )}
-        style={{
-          counterSet: props['data-line-numbers']
-            ? `line ${Number(props['data-line-numbers-start'] ?? 1) - 1}`
-            : undefined,
-          ...viewportProps.style,
-        }}
       >
         {children}
       </div>

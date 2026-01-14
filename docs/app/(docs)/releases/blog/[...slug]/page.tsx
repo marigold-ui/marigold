@@ -1,7 +1,7 @@
 import { type BlogPageData, blogSource } from '@/lib/source';
 import { DateFormat } from '@/ui';
 import { notFound } from 'next/navigation';
-import { PostList } from '@/ui/blog/PostList';
+import { PostListWrapper } from '@/ui/blog/PostListWrapper';
 import {
   DocsBody,
   DocsDescription,
@@ -33,7 +33,7 @@ export default async function BlogPost(props: BlogPostProps) {
         </DocsDescription>
       </div>
       <DocsBody id="docs-body" className="pt-4 pb-10">
-        <MDX components={{ PostList }} />
+        <MDX components={{ PostList: PostListWrapper }} />
       </DocsBody>
     </DocsPage>
   );

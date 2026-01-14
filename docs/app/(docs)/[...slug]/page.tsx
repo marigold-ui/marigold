@@ -48,7 +48,7 @@ import {
   TextAlign,
 } from '@/ui/Typography';
 import { LatestPost } from '@/ui/blog/LatestPost';
-import { PostList } from '@/ui/blog/PostList';
+import { PostListWrapper } from '@/ui/blog/PostListWrapper';
 import {
   DocsBody,
   DocsDescription,
@@ -114,7 +114,7 @@ function getMdxComponentsConfig(page: any) {
 
       // Blog Components
       LatestPost,
-      PostList,
+      PostList: PostListWrapper,
 
       AppearanceTable,
       // Custom MDX Components
