@@ -127,4 +127,54 @@ export const MultipleSelection = meta.story({
   ),
 });
 
+export const DisabledButton = meta.story({
+  tags: ['component-test'],
+  render: args => {
+    const [selectedKeys, setSelectedKeys] = useState(new Set<Key>());
+
+    return (
+      <ToggleButtonGroup
+        {...args}
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+      >
+        <ToggleButton id="option1">Option 1</ToggleButton>
+        <ToggleButton id="option2" disabled>
+          Option 2
+        </ToggleButton>
+        <ToggleButton id="option3">Option 3</ToggleButton>
+      </ToggleButtonGroup>
+    );
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step('Option 2 is disabled', async () => {
+      const option1 = canvas.getByText('Option 1');
+      const option2 = canvas.getByText('Option 2');
+      const option3 = canvas.getByText('Option 3');
+
+      expect(option2).toBeDisabled();
+      expect(option1).not.toBeDisabled();
+      expect(option3).not.toBeDisabled();
+    });
+
+    await step('Clicking disabled button does nothing', async () => {
+      const option2 = canvas.getByText('Option 2');
+
+      await userEvent.click(option2);
+
+      expect(option2).not.toHaveAttribute('data-selected');
+    });
+
+    await step('Other buttons still work', async () => {
+      const option1 = canvas.getByText('Option 1');
+
+      await userEvent.click(option1);
+
+      expect(option1).toHaveAttribute('data-selected', 'true');
+    });
+  },
+});
+
 export default meta;

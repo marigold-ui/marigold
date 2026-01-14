@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ReactNode } from 'react';
-import { ToggleButton } from './ToggleButton';
 import { ToggleButtonGroupProps } from './ToggleButtonGroup';
 import { Basic } from './ToggleButtonGroup.stories';
 
@@ -28,24 +27,39 @@ test('renders correctly with children', () => {
 test('provides size context to child buttons', () => {
   const { rerender } = render(<BasicComponent size="small" />);
 
-  let buttons = screen.getAllByRole('button');
-  expect(buttons).toHaveLength(3);
+  let sumButton = screen.getByText('Sum');
+  let medianButton = screen.getByText('Median');
+  let averageButton = screen.getByText('Average');
 
-  // Rerender with icon size
+  expect(sumButton).toBeInTheDocument();
+  expect(medianButton).toBeInTheDocument();
+  expect(averageButton).toBeInTheDocument();
+
   rerender(<BasicComponent size="icon" />);
-  buttons = screen.getAllByRole('button');
-  expect(buttons).toHaveLength(3);
-  buttons.forEach(button => expect(button).toBeInTheDocument());
+
+  sumButton = screen.getByText('Sum');
+  medianButton = screen.getByText('Median');
+  averageButton = screen.getByText('Average');
+
+  expect(sumButton).toBeInTheDocument();
+  expect(medianButton).toBeInTheDocument();
+  expect(averageButton).toBeInTheDocument();
 });
 
 test('respects disabled state', async () => {
   const user = userEvent.setup();
   const onSelectionChange = vi.fn();
   render(<BasicComponent disabled onSelectionChange={onSelectionChange} />);
-  const buttons = screen.getAllByRole('button');
 
-  buttons.forEach(button => expect(button).toBeDisabled());
-  await user.click(buttons[0]);
+  const sumButton = screen.getByText('Sum');
+  const medianButton = screen.getByText('Median');
+  const averageButton = screen.getByText('Average');
+
+  expect(sumButton).toBeDisabled();
+  expect(medianButton).toBeDisabled();
+  expect(averageButton).toBeDisabled();
+
+  await user.click(sumButton);
 
   expect(onSelectionChange).not.toHaveBeenCalled();
 });
@@ -76,34 +90,4 @@ test('works in controlled mode with selectedKeys', async () => {
 
   await user.click(option2);
   expect(onSelectionChange).toHaveBeenCalled();
-});
-
-test('allows individual buttons to be disabled', async () => {
-  const user = userEvent.setup();
-  const onSelectionChange = vi.fn();
-
-  render(
-    <BasicComponent onSelectionChange={onSelectionChange}>
-      <ToggleButton id="option1">Option 1</ToggleButton>
-      <ToggleButton id="option2" disabled>
-        Option 2
-      </ToggleButton>
-      <ToggleButton id="option3">Option 3</ToggleButton>
-    </BasicComponent>
-  );
-
-  const option1 = screen.getByText('Option 1');
-  const option2 = screen.getByText('Option 2');
-  const option3 = screen.getByText('Option 3');
-
-  expect(option2).toBeDisabled();
-  expect(option1).not.toBeDisabled();
-  expect(option3).not.toBeDisabled();
-
-  await user.click(option2);
-  expect(onSelectionChange).not.toHaveBeenCalled();
-
-  await user.click(option1);
-  expect(onSelectionChange).toHaveBeenCalled();
-  expect(option1).toHaveAttribute('data-selected', 'true');
 });
