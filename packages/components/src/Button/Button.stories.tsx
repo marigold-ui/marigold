@@ -1,7 +1,7 @@
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent } from 'storybook/test';
 import { Facebook } from '@marigold/icons';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
 
