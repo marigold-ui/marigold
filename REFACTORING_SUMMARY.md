@@ -9,6 +9,7 @@ Successfully refactored the `.surface` CSS class to use a single-element approac
 ### 1. Core CSS Utilities ([themes/theme-rui/src/utils.css](themes/theme-rui/src/utils.css))
 
 #### `.surface` Class
+
 - **Before**: Used `::before` pseudo-element with `box-shadow`, requiring wrapper elements for `<input>` elements
 - **After**: Single-element implementation using:
   - Gradient borders via `background-clip: padding-box` and `background-origin: border-box`
@@ -23,16 +24,19 @@ Successfully refactored the `.surface` CSS class to use a single-element approac
     ```
 
 #### `.surface-input` Class
+
 - **Status**: Deprecated (marked with `@deprecated` comment)
 - Padding and text styles now applied directly in component styles
 
 #### State Classes
+
 - **`.surface-error`**: Updated to use gradient border with destructive colors
 - **`.surface-has-error`**: Updated to use gradient border with destructive colors
 - **`.state-focus`**: Enhanced with gradient border using ring colors
 - **`.state-focus-borderless`**: Unchanged
 
 #### Elevation Classes
+
 - **`.elevation-raised`**: Lighter layered shadows (opacity 0.06)
   ```css
   box-shadow:
@@ -53,6 +57,7 @@ Successfully refactored the `.surface` CSS class to use a single-element approac
 ### 2. Component Style Updates
 
 #### Form Input Components
+
 All form input components updated to apply `.surface` directly to the input element with padding and text styles:
 
 - **[Input.styles.ts](themes/theme-rui/src/components/Input.styles.ts)**
@@ -77,7 +82,9 @@ All form input components updated to apply `.surface` directly to the input elem
   - Added padding and text styles to input
 
 #### Container Components
+
 These components continue to use `.surface` for container styling (no changes needed):
+
 - Toast
 - Dialog
 - Calendar
@@ -102,11 +109,12 @@ These components continue to use `.surface` for container styling (no changes ne
 
 ✅ All packages build successfully  
 ✅ No compilation errors  
-✅ Theme-rui builds correctly with all changes  
+✅ Theme-rui builds correctly with all changes
 
 ## Migration Notes
 
 For any custom components using `.surface` and `.surface-input`:
+
 1. Apply `.surface` directly to the input/textarea element
 2. Add padding styles: `px-[calc(--spacing(3)-1px)] py-[calc(--spacing(2)-1px)]`
 3. Add text styles: `text-foreground placeholder:text-placeholder text-sm outline-none`
