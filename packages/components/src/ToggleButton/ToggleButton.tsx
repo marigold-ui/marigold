@@ -3,6 +3,7 @@ import { ToggleButton } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { ToggleButtonContext } from './Context';
+import { ToggleButtonGroup } from './ToggleButtonGroup';
 
 type RemovedProps = 'className' | 'style' | 'isSelected' | 'isDisabled';
 
@@ -47,5 +48,7 @@ export const _ToggleButton = ({
     </ToggleButton>
   );
 };
+
+_ToggleButton.Group = ToggleButtonGroup;
 
 export { _ToggleButton as ToggleButton };

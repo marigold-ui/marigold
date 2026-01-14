@@ -58,7 +58,7 @@ export const Basic = meta.story({
 
     return (
       <>
-        <ToggleButtonGroup
+        <ToggleButton.Group
           selectedKeys={selectedKeys}
           onSelectionChange={keys => setSelectedKeys(keys)}
           {...args}
@@ -66,7 +66,7 @@ export const Basic = meta.story({
           <ToggleButton id="sum">Sum</ToggleButton>
           <ToggleButton id="median">Median</ToggleButton>
           <ToggleButton id="average">Average</ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButton.Group>
         <div data-testid="selected-keys">
           Selected: {Array.from(selectedKeys).join(', ')}
         </div>
@@ -108,7 +108,7 @@ export const Basic = meta.story({
 
 export const MultipleSelection = meta.story({
   render: args => (
-    <ToggleButtonGroup
+    <ToggleButton.Group
       {...args}
       selectionMode="multiple"
       size="icon"
@@ -123,7 +123,7 @@ export const MultipleSelection = meta.story({
       <ToggleButton key="underline">
         <Underline />
       </ToggleButton>
-    </ToggleButtonGroup>
+    </ToggleButton.Group>
   ),
 });
 
@@ -133,7 +133,7 @@ export const DisabledButton = meta.story({
     const [selectedKeys, setSelectedKeys] = useState(new Set<Key>());
 
     return (
-      <ToggleButtonGroup
+      <ToggleButton.Group
         {...args}
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
@@ -143,7 +143,7 @@ export const DisabledButton = meta.story({
           Option 2
         </ToggleButton>
         <ToggleButton id="option3">Option 3</ToggleButton>
-      </ToggleButtonGroup>
+      </ToggleButton.Group>
     );
   },
   play: async ({ canvasElement, step }) => {
