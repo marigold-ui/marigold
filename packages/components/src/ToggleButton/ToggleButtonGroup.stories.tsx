@@ -1,9 +1,8 @@
 import { Bold, Italic, Underline } from 'lucide-react';
 import { Key } from 'react-aria-components';
 import { useState } from 'storybook/internal/preview-api';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '../../../../config/storybook/.storybook/preview';
-import { EllipsisVertical } from '../icons/EllipsisVertical';
 import { ToggleButton } from './ToggleButton';
 import { ToggleButtonGroup } from './ToggleButtonGroup';
 
