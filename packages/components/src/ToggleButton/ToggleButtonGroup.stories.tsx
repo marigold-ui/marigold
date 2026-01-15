@@ -1,6 +1,6 @@
 import { Bold, Italic, Underline } from 'lucide-react';
+import { useState } from 'react';
 import { Key } from 'react-aria-components';
-import { useState } from 'storybook/internal/preview-api';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '../../../../.storybook/preview';
 import { ToggleButton } from './ToggleButton';

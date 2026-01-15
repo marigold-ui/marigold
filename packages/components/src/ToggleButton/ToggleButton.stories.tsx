@@ -1,5 +1,5 @@
 import { Star } from 'lucide-react';
-import { useState } from 'storybook/internal/preview-api';
+import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import preview from '../../../../.storybook/preview';
 import { ToggleButton } from './ToggleButton';
