@@ -8,7 +8,7 @@ export const Select: ThemeComponent<'Select'> = {
     'bg-transparent',
     'outline-none',
     'text-foreground placeholder:text-placeholder text-sm',
-    'surface group-not-data-[invalid=true]/field:not-data-[focus-visible=true]:enabled:elevation-raised h-input',
+    'surface shadow-elevation-base group-not-data-[invalid=true]/field:not-data-[focus-visible=true]:enabled:elevation-raised h-input',
     'group-invalid/field:surface-error',
     'disabled:state-disabled',
     'focus-visible:state-focus outline-none',

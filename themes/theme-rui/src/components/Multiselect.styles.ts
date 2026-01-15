@@ -34,7 +34,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'size-4 cursor-pointer border-none bg-transparent p-0 leading-normal outline-0'
   ),
   icon: cva('left-1'),
-  listContainer: cva(['surface elevation-overlay mt-0.5 outline-0']),
+  listContainer: cva(['surface shadow-elevation-overlay mt-0.5 outline-0']),
   list: cva('pointer-events-auto space-y-1 p-1'),
   option: cva([
     'text-sm text-foreground',

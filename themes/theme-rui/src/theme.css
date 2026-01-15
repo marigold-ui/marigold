@@ -135,33 +135,20 @@
   --color-surface: var(--color-white);
   --color-surface-border: var(--color-stone-300);
   --radius-surface: var(--radius-lg);
-  --shadow-surface:
-    0 1px 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.06),
-    0 4px 4px rgba(0, 0, 0, 0.04);
+
+  /* ==================== */
+  /*       ELEVATION      */
+  /* ==================== */
+  --shadow-elevation-base:
+    0 0.5px 1px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
 
   --shadow-elevation-raised:
-    0 2px 2px rgba(0, 0, 0, 0.08), 0 4px 4px rgba(0, 0, 0, 0.06),
-    0 8px 8px rgba(0, 0, 0, 0.04);
+    0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06),
+    0 4px 8px rgba(0, 0, 0, 0.04);
 
   --shadow-elevation-overlay:
-    0 4px 4px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.08),
-    0 16px 16px rgba(0, 0, 0, 0.06), 0 32px 32px rgba(0, 0, 0, 0.04);
-
-  /* ---- */
-
-  --surface-sunken: var(--color-muted);
-  --surface-sunken-shadow: 0 0 #0000;
-
-  --surface-body: var(--color-background);
-  --surface-body-shadow: 0 0 #0000;
-
-  --surface-raised: var(--color-background);
-  --surface-raised-shadow: var(--shadow-xs);
-  --surface-raised-border: var(--color-input);
-
-  --surface-overlay: var(--color-background);
-  --surface-overlay-shadow: var(--shadow-lg);
-  --surface-overlay-border: var(--color-input);
+    0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.06), 0 16px 24px rgba(0, 0, 0, 0.04);
 
   /* ==================== */
   /*        SPACING       */

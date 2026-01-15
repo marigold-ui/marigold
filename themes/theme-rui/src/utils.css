@@ -35,33 +35,6 @@
   background-origin: padding-box, border-box;
 
   border: 1px solid transparent;
-
-  /* Layered box-shadow for subtle depth (Josh Comeau's approach) */
-  @apply shadow-surface;
-}
-
-/*
- * The "elevation" utilities define elevation levels.
- * Elevation is conveyed through shadows and borders, helping establish 
- * depth, hierarchy, and separation between interface layers. Use them to apply 
- * consistent surface styling across components.
- */
-
-/*
- * Use this utility when you want to visually lift an element above the base level,
- * such as for cards, or interactive components that require emphasis. This is the 
- * lowest elevation level.
- */
-@utility elevation-raised {
-  @apply shadow-elevation-raised;
-}
-
-/*
- * Use this utility when you want to visually lift an element above the raised level,
- * such as for dialogs, or popups. This is the highest elevation level.
- */
-@utility elevation-overlay {
-  @apply shadow-elevation-overlay;
 }
 
 /* ========================= */

@@ -8,7 +8,7 @@ export const Tag: ThemeComponent<'Tag'> = {
   ]),
   tag: cva([
     'relative inline-flex items-center gap-[7px]',
-    'surface elevation-raised',
+    'surface shadow-elevation-raised',
     'font-medium text-xs',
     'h-7 px-2 cursor-default',
     'selected:text-white selected:bg-brand',
