@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Form } from '../Form/Form';
