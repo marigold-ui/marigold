@@ -24,10 +24,9 @@ export default () => {
     new Set(venues.map(venue => venue.country))
   );
 
-  const handleVenueChange = (venueId: React.Key | null) => {
-    const id = venueId as string;
-    setSelectedVenueId(id);
-    const venue = venues.find(v => v.id === id);
+  const handleVenueChange = (venueId: string) => {
+    setSelectedVenueId(venueId);
+    const venue = venues.find(v => v.id === venueId);
     if (venue) {
       setName(venue.name);
       setStreet(venue.street);

@@ -2,8 +2,7 @@ import { Menu, useConfirmation } from '@marigold/components';
 
 export default () => {
   const confirm = useConfirmation();
-  const handleAction = async (key: React.Key) => {
-    const action = key as 'save' | 'delete';
+  const handleAction = async (action: 'save' | 'delete') => {
     switch (action) {
       case 'save':
         alert('saved!');

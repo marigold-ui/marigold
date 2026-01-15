@@ -15,9 +15,7 @@ export default () => (
       label="Ticket Categories"
       items={ticketCategories}
       placeholder="Select categories..."
-      isOptionDisabled={(item: unknown) =>
-        (item as { value: string }).value === 'backstage'
-      }
+      isOptionDisabled={(item: { value: string }) => item.value === 'backstage'}
     />
   </div>
 );

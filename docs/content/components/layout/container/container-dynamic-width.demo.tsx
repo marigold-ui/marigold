@@ -11,7 +11,7 @@ export default () => {
       <Select
         label="Font size"
         selectedKey={fontSize}
-        onChange={val => setFontSize(val as FontSizes)}
+        onChange={(val: FontSizes) => setFontSize(val)}
         width={52}
       >
         <Select.Option id="sm">Small</Select.Option>

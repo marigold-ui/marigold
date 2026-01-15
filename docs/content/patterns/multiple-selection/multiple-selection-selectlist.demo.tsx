@@ -16,10 +16,8 @@ export default () => (
     aria-label="Payment Methods"
     items={paymentMethods}
   >
-    {(item: object) => (
-      <SelectList.Item id={(item as { id: string; name: string }).id}>
-        {(item as { id: string; name: string }).name}
-      </SelectList.Item>
+    {(item: { id: string; name: string }) => (
+      <SelectList.Item id={item.id}>{item.name}</SelectList.Item>
     )}
   </SelectList>
 );
