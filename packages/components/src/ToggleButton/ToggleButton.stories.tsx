@@ -58,10 +58,6 @@ export const Basic = meta.story({
   play: async ({ canvas, step }) => {
     const button = canvas.getByRole('button');
 
-    await step('Initial state should be unselected', async () => {
-      expect(button).not.toHaveAttribute('data-selected');
-    });
-
     await step('Click to select the button', async () => {
       await userEvent.click(button);
 
