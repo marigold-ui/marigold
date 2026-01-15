@@ -88,20 +88,23 @@ const addFrontmatter = (sourceText, releases) => {
   if (!matches) return sourceText;
 
   if (matches) {
-    let frontmatter = '';
     const packageName = matches[1];
-    frontmatter += '---\n';
+    const hasBadge = releases.some(release => release.badge);
+
+    // Build frontmatter (YAML)
+    let frontmatter = '---\n';
     frontmatter += `title: '${packageName}'\n`;
     frontmatter += `caption: 'Have a look on the latest changes regarding ${packageName}'\n`;
-    const hasBadge = releases.some(release => release.badge);
     if (hasBadge) {
       frontmatter += `badge: new\n`;
     }
     frontmatter += 'toc: false\n';
     frontmatter += '---\n\n';
-    frontmatter += `import { DateFormat } from '@/ui';\n`;
 
-    return sourceText.replace(regex, frontmatter);
+    // MDX content (imports)
+    const imports = `import { DateFormat } from '@/ui';\n`;
+
+    return sourceText.replace(regex, frontmatter + imports);
   }
 };
 
