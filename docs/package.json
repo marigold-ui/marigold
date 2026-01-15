@@ -14,7 +14,7 @@
     "changelog:build": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
-    "@internationalized/date": "3.10.0",
+    "@internationalized/date": "3.10.1",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
     "@marigold/icons": "workspace:*",

@@ -1,8 +1,8 @@
-import componentProps from '@/lib/.registry/props.json';
 import { Inline, Inset, Stack, Text } from '@/ui';
 import Md from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { BlankCanvas } from './icons';
+import componentProps from '.registry/props.json';
 
 // Helper
 // ---------------
