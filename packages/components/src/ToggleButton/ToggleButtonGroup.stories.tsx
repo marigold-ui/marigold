@@ -59,9 +59,9 @@ export const Basic = meta.story({
     return (
       <>
         <ToggleButton.Group
+          {...args}
           selectedKeys={selectedKeys}
           onSelectionChange={keys => setSelectedKeys(keys)}
-          {...args}
         >
           <ToggleButton id="sum">Sum</ToggleButton>
           <ToggleButton id="median">Median</ToggleButton>
@@ -73,9 +73,7 @@ export const Basic = meta.story({
       </>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step('Initial state - sum is selected', async () => {
       expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
         'Selected: sum'
@@ -107,12 +105,13 @@ export const Basic = meta.story({
 });
 
 export const MultipleSelection = meta.story({
+  tags: ['component-test'],
   render: args => (
     <ToggleButton.Group
       {...args}
       selectionMode="multiple"
       size="icon"
-      defaultSelectedKeys={['bold', 'italic']}
+      defaultSelectedKeys={['bold']}
     >
       <ToggleButton key="bold">
         <Bold />
@@ -125,6 +124,31 @@ export const MultipleSelection = meta.story({
       </ToggleButton>
     </ToggleButton.Group>
   ),
+  play: async ({ canvas, step }) => {
+    await step('Initial state - bold is selected', async () => {
+      const boldButton = canvas.getByRole('button', { name: 'bold' });
+
+      expect(boldButton).toHaveAttribute('data-selected', 'true');
+    });
+
+    await step('Click italic button to select it too', async () => {
+      const italicButton = canvas.getByRole('button', { name: 'italic' });
+
+      await userEvent.click(italicButton);
+
+      await waitFor(() => {
+        expect(italicButton).toHaveAttribute('data-selected', 'true');
+      });
+    });
+
+    await step('Both bold and italic are selected', async () => {
+      const boldButton = canvas.getByRole('button', { name: 'bold' });
+      const italicButton = canvas.getByRole('button', { name: 'italic' });
+
+      expect(boldButton).toHaveAttribute('data-selected', 'true');
+      expect(italicButton).toHaveAttribute('data-selected', 'true');
+    });
+  },
 });
 
 export const DisabledButton = meta.story({
@@ -146,9 +170,7 @@ export const DisabledButton = meta.story({
       </ToggleButton.Group>
     );
   },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-
+  play: async ({ canvas, step }) => {
     await step('Option 2 is disabled', async () => {
       const option1 = canvas.getByText('Option 1');
       const option2 = canvas.getByText('Option 2');

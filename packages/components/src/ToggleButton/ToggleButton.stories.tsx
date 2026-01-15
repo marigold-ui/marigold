@@ -1,6 +1,6 @@
 import { Star } from 'lucide-react';
 import { useState } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import preview from '../../../../.storybook/preview';
 import { ToggleButton } from './ToggleButton';
 
@@ -55,17 +55,24 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   render: args => <ToggleButton {...args} />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async ({ canvas, step }) => {
     const button = canvas.getByRole('button');
 
-    expect(button).not.toHaveAttribute('data-selected');
+    await step('Initial state should be unselected', async () => {
+      expect(button).not.toHaveAttribute('data-selected');
+    });
 
-    await userEvent.click(button);
-    expect(button).toHaveAttribute('data-selected', 'true');
+    await step('Click to select the button', async () => {
+      await userEvent.click(button);
 
-    await userEvent.click(button);
-    expect(button).not.toHaveAttribute('data-selected');
+      expect(button).toHaveAttribute('data-selected', 'true');
+    });
+
+    await step('Click again to deselect the button', async () => {
+      await userEvent.click(button);
+
+      expect(button).not.toHaveAttribute('data-selected');
+    });
   },
 });
 
