@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
 import { Inline } from '../Inline/Inline';
