@@ -1,7 +1,7 @@
 import { Bold, Italic, Underline } from 'lucide-react';
 import { useState } from 'react';
 import { Key } from 'react-aria-components';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '../../../../.storybook/preview';
 import { ToggleButton } from './ToggleButton';
 import { ToggleButtonGroup } from './ToggleButtonGroup';
@@ -106,33 +106,33 @@ export const Basic = meta.story({
 
 export const MultipleSelection = meta.story({
   tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+    defaultSelectedKeys: ['bold'],
+    size: 'icon',
+  },
   render: args => (
-    <ToggleButton.Group
-      {...args}
-      selectionMode="multiple"
-      size="icon"
-      defaultSelectedKeys={['bold']}
-    >
-      <ToggleButton key="bold">
+    <ToggleButton.Group {...args}>
+      <ToggleButton id="bold" aria-label="Bold">
         <Bold />
       </ToggleButton>
-      <ToggleButton key="italic">
+      <ToggleButton id="italic" aria-label="Italic">
         <Italic />
       </ToggleButton>
-      <ToggleButton key="underline">
+      <ToggleButton id="underline" aria-label="Underline">
         <Underline />
       </ToggleButton>
     </ToggleButton.Group>
   ),
   play: async ({ canvas, step }) => {
     await step('Initial state - bold is selected', async () => {
-      const boldButton = canvas.getByRole('button', { name: 'bold' });
+      const boldButton = canvas.getByLabelText('Bold');
 
       expect(boldButton).toHaveAttribute('data-selected', 'true');
     });
 
     await step('Click italic button to select it too', async () => {
-      const italicButton = canvas.getByRole('button', { name: 'italic' });
+      const italicButton = canvas.getByLabelText('Italic');
 
       await userEvent.click(italicButton);
 
@@ -142,8 +142,8 @@ export const MultipleSelection = meta.story({
     });
 
     await step('Both bold and italic are selected', async () => {
-      const boldButton = canvas.getByRole('button', { name: 'bold' });
-      const italicButton = canvas.getByRole('button', { name: 'italic' });
+      const boldButton = canvas.getByLabelText('Bold');
+      const italicButton = canvas.getByLabelText('Italic');
 
       expect(boldButton).toHaveAttribute('data-selected', 'true');
       expect(italicButton).toHaveAttribute('data-selected', 'true');
