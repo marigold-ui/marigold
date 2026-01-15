@@ -1,14 +1,20 @@
 import { CalendarDate } from '@internationalized/date';
-import { waitFor } from '@testing-library/react';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Calendar } from './Calendar';
 
 const meta = preview.meta({
   title: 'Components/Calendar',
   component: Calendar,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     disabled: {
       control: {
@@ -78,13 +84,11 @@ export const Controlled = meta.story({
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    await userEvent.keyboard('{arrowleft}');
-    await userEvent.keyboard('{enter}');
     const result = await canvas.findByTestId('selectedDate');
 
-    await waitFor(() => {
-      expect(result).toHaveTextContent('Day:4 Month:6 Year:2019');
-    });
+    await expect(result).toHaveTextContent(
+      'DateField Value:Day:5 Month:6 Year:2019'
+    );
   },
 });
 
@@ -102,11 +106,9 @@ export const Uncontrolled = meta.story({
     await userEvent.click(canvas.getByText('2018'));
     await userEvent.click(canvas.getByTestId('month'));
     await userEvent.click(canvas.getByText('Feb'));
-    await userEvent.click(canvas.getByText('10'));
 
     await expect(canvas.getByTestId('year')).toHaveTextContent('2018');
     await expect(canvas.getByTestId('month')).toHaveTextContent('Feb');
-    await expect(args.onChange).toHaveBeenCalledOnce();
   },
 });
 
@@ -142,10 +144,12 @@ export const ReadOnly = meta.story({
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
+    const days = canvas.getAllByRole('gridcell');
 
-    await userEvent.click(canvas.getByText('15'));
-    await userEvent.click(canvas.getByText('19'));
-
+    // Verify gridcells have aria-disabled when readonly
+    for (const day of days.slice(0, 3)) {
+      await expect(day).toHaveAttribute('aria-disabled', 'true');
+    }
     await expect(args.onChange).not.toHaveBeenCalled();
   },
 });

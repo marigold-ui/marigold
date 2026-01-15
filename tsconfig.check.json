@@ -22,7 +22,8 @@
   },
   "exclude": [
     "coverage/*",
-    "vitest.config.js",
+    "vitest.config.shared.ts",
+    "vite.config.ts",
     "**/dist/*",
     "**/node_modules/*",
     "docs/**/*"

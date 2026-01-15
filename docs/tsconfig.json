@@ -39,7 +39,7 @@
       "fumadocs-mdx:collections/*": [".source/*"]
     },
     "strict": false,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "react", "react-dom"]
   },
   "include": [
     "**/*.ts",

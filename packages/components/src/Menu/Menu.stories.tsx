@@ -2,7 +2,7 @@ import { useState } from 'storybook/preview-api';
 import { expect, spyOn, userEvent } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import { Delete } from '@marigold/icons';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { ActionMenu } from './ActionMenu';
 import { Menu } from './Menu';
@@ -10,6 +10,13 @@ import { Menu } from './Menu';
 const meta = preview.meta({
   title: 'Components/Menu',
   component: Menu,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     size: {
       control: {
