@@ -4,7 +4,7 @@ import { MarigoldProvider } from '@/ui';
 import { RootProvider } from 'fumadocs-ui/provider';
 import { ReactNode, Suspense } from 'react';
 import { fontSans } from '@/theme/fonts';
-import { Nav } from './Nav';
+import { Nav } from '@/ui/navigation/Nav';
 import { Analytics } from './_components/Analytics';
 import './global.css';
 

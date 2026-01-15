@@ -1,4 +1,5 @@
 'use client';
+import { SiteLogo } from '@/app/_components/SiteLogo';
 import { Button, Link, cn } from '@/ui';
 import type { Node } from 'fumadocs-core/page-tree';
 import type * as PageTree from 'fumadocs-core/page-tree';
@@ -7,8 +8,7 @@ import { ComponentProps } from 'react';
 import { usePathname } from 'next/navigation';
 import { NavLink } from '@/ui/navigation/NavLink';
 import { useHasMounted } from '@/ui/useHasMounted';
-import { MobileNavigation } from './_components/MobileNavigation';
-import { SiteLogo } from './_components/SiteLogo';
+import { MobileNavigation } from './MobileNavigation';
 
 interface HotKeyProps {
   letter: string;

@@ -7,7 +7,7 @@ import { TreeContextProvider, useTreeContext } from 'fumadocs-ui/contexts/tree';
 import { type ReactNode, createContext, use, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { NavLink } from '@/ui/navigation/NavLink';
-import { SiteLogo } from './SiteLogo';
+import { SiteLogo } from '../../app/_components/SiteLogo';
 
 // Helpers
 // ---------------
