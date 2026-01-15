@@ -9,7 +9,6 @@ import lastModified from 'fumadocs-mdx/plugins/last-modified';
 import { z } from 'zod';
 
 const customFrontmatterSchema = frontmatterSchema.extend({
-  caption: z.string().optional(),
   order: z.number().optional(),
   badge: z.string().optional(),
   toc: z.boolean().optional(),
