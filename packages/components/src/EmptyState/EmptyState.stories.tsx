@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
 import preview from '../../../../.storybook/preview';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
@@ -10,6 +10,13 @@ import { EmptyState } from './EmptyState';
 const meta = preview.meta({
   title: 'Components/EmptyState',
   component: EmptyState,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     title: {
       control: {
