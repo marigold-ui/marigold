@@ -19,7 +19,7 @@ export default async function BlogPost(props: BlogPostProps) {
 
   if (!post) notFound();
 
-  const { toc, title, date } = post.data;
+  const { toc, title, date, body: MDX } = post.data;
 
   return (
     <DocsPage toc={toc}>

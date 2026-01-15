@@ -32,6 +32,7 @@
     "lucide-react": "^0.552.0",
     "motion": "12.23.24",
     "next": "16.1.2",
+    "nuqs": "2.8.6",
     "picocolors": "1.1.1",
     "react": "^19.2.0",
     "react-docgen-typescript": "2.4.0",
