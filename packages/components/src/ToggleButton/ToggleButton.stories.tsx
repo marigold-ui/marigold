@@ -1,7 +1,7 @@
 import { Star } from 'lucide-react';
 import { useState } from 'storybook/internal/preview-api';
 import { expect, userEvent, within } from 'storybook/test';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { ToggleButton } from './ToggleButton';
 
 const meta = preview.meta({
