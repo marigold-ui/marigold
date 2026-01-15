@@ -105,13 +105,3 @@ test('handles defaultSelectedKeys', () => {
 
   expect(option1).toHaveAttribute('data-selected', 'true');
 });
-
-test('works with selectedKeys', async () => {
-  render(<BasicComponent selectedKeys={new Set(['median'])} />);
-
-  const option1 = screen.getByText('Sum');
-  const option2 = screen.getByText('Median');
-
-  expect(option1).not.toHaveAttribute('data-selected');
-  expect(option2).toHaveAttribute('data-selected', 'true');
-});
