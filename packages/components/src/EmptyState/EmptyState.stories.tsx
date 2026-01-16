@@ -100,17 +100,22 @@ export const WithAutocompleteAndData = meta.story({
       </Autocomplete>
     );
   },
-  play: async ({ canvas }: any) => {
+});
+
+WithAutocompleteAndData.test(
+  'EmptyState is shown when Autocomplete has no matching items',
+  async ({ canvas, args }: any) => {
+    args.description = 'Try adjusting your search terms';
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, 'darth vader');
 
-    const emptyStateTitle = await screen.findByText('No results found');
+    const emptyStateTitle = await screen.findByText('No items found');
     const emptyStateDescription = screen.getByText(
       'Try adjusting your search terms'
     );
 
     await expect(emptyStateTitle).toBeVisible();
     await expect(emptyStateDescription).toBeVisible();
-  },
-});
+  }
+);
