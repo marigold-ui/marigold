@@ -10,30 +10,33 @@
 /* ========================= */
 
 /*
- * The "ui-surface" utility defines visual surfaces with distinct background colors. Apply 
- * elevation levels to them when needed.
+ * The "ui-surface" utility defines visual surfaces with distinct background colors.
+ * Apply elevation levels to them when needed (uses base as default).
  * 
- * This utility uses background-clip and background-origin with gradient borders
- * instead of pseudo-elements, allowing it to work on any element including <input>.
+ * This utility uses background-clip and background-origin with gradient borders.
  * The gradient border transitions from top (lighter) to bottom (darker).
  */
 @utility ui-surface {
-  &:where(*) {
-    @apply rounded-surface relative transition-[box-shadow,background];
+  @apply rounded-surface relative transition-[box-shadow,background];
 
-    /* Gradient border using background-clip and background-origin */
-    background:
-      linear-gradient(to bottom, #fff, #fff),
+  /* prettier-ignore */
+  background:
       linear-gradient(
         to bottom,
-        var(--color-surface-border),
-        oklch(from var(--color-surface-border) calc(l - 0.1) c h)
+        var(--ui-background-color, #fff),
+        var(--ui-background-color, #fff)
+      ),
+      linear-gradient(
+        to bottom,
+        var(--ui-border-color, var(--color-surface-border)),
+        oklch(from var(--ui-border-color, var(--color-surface-border)) calc(l - 0.1) c h)
       );
-    background-clip: padding-box, border-box;
-    background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
 
-    border: 1px solid transparent;
-  }
+  border: 1px solid transparent;
+
+  @apply shadow-(--ui-box-shadow,var(--shadow-elevation-base));
 }
 
 /*
