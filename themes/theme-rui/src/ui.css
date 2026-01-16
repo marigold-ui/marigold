@@ -93,7 +93,7 @@
 /*
  * Applies a consistent visual style when an element has an invalid child element.
  */
-@utility ui-surface-has-error {
+@utility ui-state-has-error {
   @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20 shadow-destructive/10;
 }
 

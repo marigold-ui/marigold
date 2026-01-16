@@ -6,7 +6,7 @@ export const DateField: ThemeComponent<'DateField'> = {
     'flex items-center',
     'disabled:ui-state-disabled',
     'group-read-only/field:ui-state-readonly',
-    'has-invalid:ui-surface-has-error',
+    'has-invalid:ui-state-has-error',
     'has-focus:ui-state-focus outline-none',
   ]),
   input: cva([
