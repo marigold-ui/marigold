@@ -1,34 +1,15 @@
 'use client';
 import { SiteLogo } from '@/app/_components/SiteLogo';
-import { Button, Link, cn } from '@/ui';
+import { Button, Link } from '@/ui';
 import type { Node } from 'fumadocs-core/page-tree';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { useSearchContext } from 'fumadocs-ui/provider';
-import { ComponentProps } from 'react';
 import { usePathname } from 'next/navigation';
 import { NavLink } from '@/ui/navigation/NavLink';
-import { useHasMounted } from '@/ui/useHasMounted';
+import { Hotkey } from '../layout/docs';
 import { MobileNavigation } from './MobileNavigation';
 
-interface HotKeyProps {
-  letter: string;
-  className?: string;
-}
-export const Hotkey = ({ letter, className }: HotKeyProps) => {
-  const mounted = useHasMounted();
-  if (!mounted) {
-    return null;
-  }
-  const isMacOS = window.navigator.userAgent.includes('Mac OS');
-  return (
-    <span className={cn('opacity-50', className)} aria-hidden="true">
-      ({isMacOS ? '⌘' : 'Ctrl+'}
-      {letter})
-    </span>
-  );
-};
-
-function SearchToggle(_props: ComponentProps<'button'>) {
+function SearchToggle() {
   const { enabled, setOpenSearch } = useSearchContext();
   if (!enabled) return;
 
@@ -39,7 +20,6 @@ function SearchToggle(_props: ComponentProps<'button'>) {
     </Button>
   );
 }
-
 interface NavPage {
   name: string;
   $id?: string;
