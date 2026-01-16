@@ -44,7 +44,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
               className="bg-bg-body flex min-h-screen flex-col"
             >
               {/* TODO: just pass the tree  */}
-              <Nav pages={tree.children} tree={tree} badgeMap={badgeMap} />
+              <Nav tree={tree} badgeMap={badgeMap} />
 
               {children}
             </MarigoldProvider>

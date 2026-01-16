@@ -26,16 +26,15 @@ interface NavPage {
 }
 
 interface NavProps {
-  pages: Node[];
   tree: PageTree.Root;
   badgeMap?: Record<string, string>;
 }
 
-export const Nav = ({ pages, tree, badgeMap = {} }: NavProps) => {
+export const Nav = ({ tree, badgeMap = {} }: NavProps) => {
   const pathname = usePathname();
 
   // Filter and map nodes to NavPage format
-  const navPages: NavPage[] = pages
+  const navPages: NavPage[] = tree.children
     .filter(
       (node): node is Extract<Node, { type: 'page' | 'folder' }> =>
         'name' in node && typeof node.name === 'string'
