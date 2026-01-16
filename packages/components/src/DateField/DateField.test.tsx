@@ -351,3 +351,76 @@ test('does not call onChange when pasting invalid date format', async () => {
 
   expect(onChangeSpy).not.toHaveBeenCalled();
 });
+
+test.each([
+  {
+    year: 2024,
+    description: 'leap year divisible by 4',
+    input: '29.02.2024',
+    expected: new CalendarDate(2024, 2, 29),
+  },
+  {
+    year: 2000,
+    description: 'leap year divisible by 400',
+    input: '29.02.2000',
+    expected: new CalendarDate(2000, 2, 29),
+  },
+  {
+    year: 1600,
+    description: 'leap year divisible by 400',
+    input: '29.02.1600',
+    expected: new CalendarDate(1600, 2, 29),
+  },
+])(
+  'accepts February 29th for $description ($year)',
+  async ({ input, expected }) => {
+    const user = userEvent.setup();
+    const onChangeSpy = vi.fn();
+
+    render(<Basic.Component label="date field" onChange={onChangeSpy} />);
+
+    const group = screen.getAllByRole('group')[0];
+    await user.click(group);
+    await user.paste(input);
+
+    expect(onChangeSpy).toHaveBeenCalledWith(expected);
+  }
+);
+
+test.each([
+  { year: 2023, description: 'non-leap year', input: '29.02.2023' },
+  {
+    year: 1900,
+    description: 'century year not divisible by 400',
+    input: '29.02.1900',
+  },
+  {
+    year: 2100,
+    description: 'century year not divisible by 400',
+    input: '29.02.2100',
+  },
+])('rejects February 29th for $description ($year)', async ({ input }) => {
+  const user = userEvent.setup();
+  const onChangeSpy = vi.fn();
+
+  render(<Basic.Component label="date field" onChange={onChangeSpy} />);
+
+  const group = screen.getAllByRole('group')[0];
+  await user.click(group);
+  await user.paste(input);
+
+  expect(onChangeSpy).not.toHaveBeenCalled();
+});
+
+test('show console warning when pasting fails', async () => {
+  const user = userEvent.setup();
+  const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+  render(<Basic.Component label="date field" />);
+
+  const group = screen.getAllByRole('group')[0];
+  await user.click(group);
+
+  await expect(user.paste(undefined)).resolves.not.toThrow();
+  expect(consoleWarnSpy).not.toHaveBeenCalled();
+});
