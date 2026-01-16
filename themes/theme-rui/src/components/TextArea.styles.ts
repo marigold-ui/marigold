@@ -7,6 +7,6 @@ export const TextArea: ThemeComponent<'TextArea'> = cva([
   'text-foreground placeholder:text-placeholder text-sm',
   'disabled:ui-state-disabled',
   'group-read-only/field:ui-state-readonly',
-  'invalid:ui-surface-error',
+  'invalid:ui-state-error',
   'focus:ui-state-focus outline-none',
 ]);

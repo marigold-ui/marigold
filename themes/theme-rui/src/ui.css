@@ -86,7 +86,7 @@
 /*
  * Applies a consistent visual style for invalid elements.
  */
-@utility ui-surface-error {
+@utility ui-state-error {
   @apply border-destructive focus:border-destructive focus:ring-destructive/20 shadow-destructive/10;
 }
 

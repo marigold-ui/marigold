@@ -9,7 +9,7 @@ export const Select: ThemeComponent<'Select'> = {
     'outline-none',
     'text-foreground placeholder:text-placeholder text-sm',
     'ui-surface h-input',
-    'group-invalid/field:ui-surface-error',
+    'group-invalid/field:ui-state-error',
     'disabled:ui-state-disabled',
     'focus-visible:ui-state-focus outline-none',
     '*:data-placeholder:text-placeholder',

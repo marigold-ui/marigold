@@ -9,7 +9,7 @@ export const Input: ThemeComponent<'Input'> = {
     'ui-surface',
     'disabled:ui-state-disabled',
     'group-read-only/field:ui-state-readonly',
-    'invalid:ui-surface-error',
+    'invalid:ui-state-error',
     'focus:ui-state-focus outline-none',
     'text-foreground placeholder:text-placeholder text-sm',
     'group-read-only/field:cursor-default',
