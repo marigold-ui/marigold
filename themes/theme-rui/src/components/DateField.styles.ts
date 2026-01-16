@@ -2,12 +2,12 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const DateField: ThemeComponent<'DateField'> = {
   field: cva([
-    'surface shadow-elevation-base h-input',
+    'ui-surface shadow-elevation-base h-input',
     'flex items-center',
-    'disabled:state-disabled',
-    'group-read-only/field:state-readonly',
-    'has-invalid:surface-has-error',
-    'has-focus:state-focus outline-none',
+    'disabled:ui-state-disabled',
+    'group-read-only/field:ui-state-readonly',
+    'has-invalid:ui-surface-has-error',
+    'has-focus:ui-state-focus outline-none',
   ]),
   input: cva([
     'w-full min-w-0 px-3 py-2 bg-transparent outline-none text-foreground placeholder:text-placeholder text-sm rounded-[inherit] h-input',

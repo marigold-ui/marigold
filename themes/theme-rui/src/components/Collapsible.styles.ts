@@ -7,7 +7,7 @@ export const Collapsible: ThemeComponent<'Collapsible'> = {
       'inline-flex gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
       'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-      'focus-visible:state-focus outline-none disabled:state-disabled',
+      'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
       'cursor-pointer',
     ],
     {

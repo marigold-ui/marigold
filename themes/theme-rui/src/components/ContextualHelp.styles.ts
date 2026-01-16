@@ -6,7 +6,7 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
       'inline-flex items-center justify-center rounded-full transition-[color,box-shadow]',
       'hover:util-focus-ring hover:text-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-      'focus-visible:state-focus outline-none',
+      'focus-visible:ui-state-focus outline-none',
       'cursor-pointer util-touch-hitbox',
     ],
     {
@@ -26,7 +26,7 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
   ),
   container: cva([
     'outline-none',
-    'surface shadow-elevation-overlay util-scrollbar',
+    'ui-surface shadow-elevation-overlay util-scrollbar',
     'p-5',
     'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
   ]),

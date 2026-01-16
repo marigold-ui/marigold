@@ -2,11 +2,11 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const NumberField: ThemeComponent<'NumberField'> = {
   group: cva([
-    'surface shadow-elevation-base h-input',
-    'has-invalid:surface-error',
-    'has-disabled:state-disabled',
-    'group-read-only/field:state-readonly',
-    'has-focus:state-focus outline-none',
+    'ui-surface shadow-elevation-base h-input',
+    'has-invalid:ui-surface-error',
+    'has-disabled:ui-state-disabled',
+    'group-read-only/field:ui-state-readonly',
+    'has-focus:ui-state-focus outline-none',
   ]),
   stepper: cva([
     'w-8 h-full text-center shrink-0 grid palce-items-center',

@@ -4,11 +4,11 @@ import type { ThemeComponent } from '@marigold/system';
 export const Input: ThemeComponent<'Input'> = {
   container: cva([
     'inline-flex w-full h-input',
-    'surface shadow-elevation-base',
-    'disabled:state-disabled',
-    'group-read-only/field:state-readonly',
-    'has-invalid:surface-has-error',
-    'has-focus:state-focus',
+    'ui-surface shadow-elevation-base',
+    'disabled:ui-state-disabled',
+    'group-read-only/field:ui-state-readonly',
+    'has-invalid:ui-surface-has-error',
+    'has-focus:ui-state-focus',
   ]),
   input: cva([
     'w-full min-w-0',

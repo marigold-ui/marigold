@@ -8,10 +8,10 @@ export const Select: ThemeComponent<'Select'> = {
     'bg-transparent',
     'outline-none',
     'text-foreground placeholder:text-placeholder text-sm',
-    'surface shadow-elevation-base h-input',
-    'group-invalid/field:surface-error',
-    'disabled:state-disabled',
-    'focus-visible:state-focus outline-none',
+    'ui-surface shadow-elevation-base h-input',
+    'group-invalid/field:ui-surface-error',
+    'disabled:ui-state-disabled',
+    'focus-visible:ui-state-focus outline-none',
     '*:data-placeholder:text-placeholder',
     /**
      * Removes the spacing from the field when there is no

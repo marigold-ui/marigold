@@ -7,7 +7,7 @@ export const Button: ThemeComponent<'Button'> = cva(
     'whitespace-nowrap font-medium transition-[color,box-shadow,transform]',
     'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-    'focus-visible:state-focus outline-none disabled:state-disabled',
+    'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
     'cursor-pointer',
   ],
@@ -17,7 +17,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         primary:
           'rounded-surface bg-brand text-brand-foreground shadow-elevation-base hover:bg-brand/90',
         secondary:
-          'surface shadow-elevation-base not-[[disabled]]:border hover:bg-hover hover:text-foreground expanded:bg-hover',
+          'ui-surface shadow-elevation-base not-[[disabled]]:border hover:bg-hover hover:text-foreground expanded:bg-hover',
         ghost: 'rounded-surface hover:bg-hover hover:text-foreground',
         destructive:
           'rounded-surface bg-destructive text-destructive-foreground shadow-elevation-base hover:bg-destructive/90',

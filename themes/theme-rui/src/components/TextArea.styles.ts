@@ -3,11 +3,11 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const TextArea: ThemeComponent<'TextArea'> = {
   container: cva([
     'inline-flex w-full',
-    'surface shadow-elevation-base',
-    'disabled:state-disabled',
-    'group-read-only/field:state-readonly',
-    'has-invalid:surface-has-error',
-    'has-focus:state-focus',
+    'ui-surface shadow-elevation-base',
+    'disabled:ui-state-disabled',
+    'group-read-only/field:ui-state-readonly',
+    'has-invalid:ui-surface-has-error',
+    'has-focus:ui-state-focus',
   ]),
   textarea: cva([
     'w-full min-w-0',
