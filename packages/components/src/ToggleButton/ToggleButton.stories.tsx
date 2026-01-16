@@ -55,7 +55,11 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   render: args => <ToggleButton {...args} />,
-  play: async ({ canvas, step }) => {
+});
+
+Basic.test(
+  'Clicking the toggle button updates selection',
+  async ({ canvas, step }) => {
     const button = canvas.getByRole('button');
 
     await step('Click to select the button', async () => {
@@ -69,8 +73,8 @@ export const Basic = meta.story({
 
       expect(button).not.toHaveAttribute('data-selected');
     });
-  },
-});
+  }
+);
 
 export const Controlled = meta.story({
   render: args => {

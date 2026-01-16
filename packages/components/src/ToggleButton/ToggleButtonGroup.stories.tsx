@@ -73,35 +73,36 @@ export const Basic = meta.story({
       </>
     );
   },
-  play: async ({ canvas, step }) => {
-    await step('Initial state - sum is selected', async () => {
+});
+
+Basic.test('Clicking buttons updates selection', async ({ canvas, step }) => {
+  await step('Initial state - sum is selected', async () => {
+    expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+      'Selected: sum'
+    );
+  });
+
+  await step('Click median button', async () => {
+    await userEvent.click(canvas.getByText('Median'));
+
+    await waitFor(() => {
+      expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
+        'Selected: median'
+      );
+    });
+  });
+
+  await step('Click sum button again', async () => {
+    const sumButton = canvas.getByText('Sum');
+
+    await userEvent.click(sumButton);
+
+    await waitFor(() => {
       expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
         'Selected: sum'
       );
     });
-
-    await step('Click median button', async () => {
-      await userEvent.click(canvas.getByText('Median'));
-
-      await waitFor(() => {
-        expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-          'Selected: median'
-        );
-      });
-    });
-
-    await step('Click sum button again', async () => {
-      const sumButton = canvas.getByText('Sum');
-
-      await userEvent.click(sumButton);
-
-      await waitFor(() => {
-        expect(canvas.getByTestId('selected-keys')).toHaveTextContent(
-          'Selected: sum'
-        );
-      });
-    });
-  },
+  });
 });
 
 export const MultipleSelection = meta.story({
@@ -124,31 +125,32 @@ export const MultipleSelection = meta.story({
       </ToggleButton>
     </ToggleButton.Group>
   ),
-  play: async ({ canvas, step }) => {
-    await step('Initial state - bold is selected', async () => {
-      const boldButton = canvas.getByLabelText('Bold');
+});
 
-      expect(boldButton).toHaveAttribute('data-selected', 'true');
-    });
+MultipleSelection.test('Select multiple buttons', async ({ canvas, step }) => {
+  await step('Initial state - bold is selected', async () => {
+    const boldButton = canvas.getByLabelText('Bold');
 
-    await step('Click italic button to select it too', async () => {
-      const italicButton = canvas.getByLabelText('Italic');
+    expect(boldButton).toHaveAttribute('data-selected', 'true');
+  });
 
-      await userEvent.click(italicButton);
+  await step('Click italic button to select it too', async () => {
+    const italicButton = canvas.getByLabelText('Italic');
 
-      await waitFor(() => {
-        expect(italicButton).toHaveAttribute('data-selected', 'true');
-      });
-    });
+    await userEvent.click(italicButton);
 
-    await step('Both bold and italic are selected', async () => {
-      const boldButton = canvas.getByLabelText('Bold');
-      const italicButton = canvas.getByLabelText('Italic');
-
-      expect(boldButton).toHaveAttribute('data-selected', 'true');
+    await waitFor(() => {
       expect(italicButton).toHaveAttribute('data-selected', 'true');
     });
-  },
+  });
+
+  await step('Both bold and italic are selected', async () => {
+    const boldButton = canvas.getByLabelText('Bold');
+    const italicButton = canvas.getByLabelText('Italic');
+
+    expect(boldButton).toHaveAttribute('data-selected', 'true');
+    expect(italicButton).toHaveAttribute('data-selected', 'true');
+  });
 });
 
 export const DisabledButton = meta.story({
@@ -170,7 +172,11 @@ export const DisabledButton = meta.story({
       </ToggleButton.Group>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+DisabledButton.test(
+  'Disabled button does not respond to clicks',
+  async ({ canvas, step }) => {
     await step('Option 2 is disabled', async () => {
       const option1 = canvas.getByText('Option 1');
       const option2 = canvas.getByText('Option 2');
@@ -196,7 +202,7 @@ export const DisabledButton = meta.story({
 
       expect(option1).toHaveAttribute('data-selected', 'true');
     });
-  },
-});
+  }
+);
 
 export default meta;
