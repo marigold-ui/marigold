@@ -1,6 +1,7 @@
 import {
   Center,
   Columns,
+  DateFormat,
   Do,
   DoDescription,
   DoFigure,
@@ -90,6 +91,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
       TabPanel: TabsTabPanel,
     }),
     GuidelineTiles,
+
+    DateFormat,
 
     // Layout Components
     Center,
