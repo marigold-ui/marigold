@@ -33,7 +33,7 @@ export const Surface = meta.story({
         <Base className="ui-surface ui-state-readonly">readonly</Base>
       </Inline>
       <Inline>
-        <input className="ui-surface ui-state-error focus:ui-state-focus p-squish-relaxed" />
+        <input className="ui-surface invalid:ui-state-error focus:ui-state-focus p-squish-relaxed" required />
       </Inline>
     </Stack>
   ),
