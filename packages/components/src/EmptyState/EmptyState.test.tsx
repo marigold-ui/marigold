@@ -43,7 +43,7 @@ test('renders with action buttons', () => {
 
 test('renders SVG illustration', () => {
   render(<BasicComponent />);
-  const svg = screen.getByRole('img', { hidden: true });
+  const svg = screen.getByTestId('empty-state-illustration');
 
   expect(svg).toBeInTheDocument();
   expect(svg).toHaveAttribute('width', '151');
