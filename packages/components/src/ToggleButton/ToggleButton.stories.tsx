@@ -31,12 +31,6 @@ const meta = preview.meta({
         defaultValue: { summary: 'false' },
       },
     },
-    onChange: {
-      description: 'Handler called when the selection state changes',
-      table: {
-        type: { summary: '(isSelected: boolean) => void' },
-      },
-    },
     size: {
       control: { type: 'radio' },
       description: 'Size of the toggle button',
