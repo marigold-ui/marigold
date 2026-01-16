@@ -38,27 +38,6 @@ const meta = preview.meta({
         type: { summary: 'ReactNode' },
       },
     },
-    action: {
-      control: {
-        disable: true,
-      },
-      description:
-        'Optional action element (e.g., a button) to help users resolve the empty state.',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    variant: {
-      control: {
-        type: 'text',
-      },
-      description: 'The variant of the empty state',
-    },
-    size: {
-      table: {
-        disable: true,
-      },
-    },
   },
   args: {
     title: 'No items found',
@@ -73,8 +52,6 @@ export const Basic = meta.story({
 export const WithAction = meta.story({
   render: args => (
     <EmptyState
-      {...args}
-      title="No products in your cart"
       description="Start adding items to your cart to see them here."
       action={
         <Inline space="2">
@@ -86,13 +63,14 @@ export const WithAction = meta.story({
           </Button>
         </Inline>
       }
+      {...args}
     />
   ),
 });
 
 export const WithAutocompleteAndData = meta.story({
   tags: ['component-test'],
-  render: () => {
+  render: args => {
     const [inputValue, setInputValue] = useState('');
 
     const items = [
@@ -113,10 +91,7 @@ export const WithAutocompleteAndData = meta.story({
         onChange={setInputValue}
         allowsEmptyCollection
         emptyState={
-          <EmptyState
-            title="No results found"
-            description="Try adjusting your search terms"
-          />
+          <EmptyState description="Try adjusting your search terms" {...args} />
         }
       >
         {(item: any) => (
