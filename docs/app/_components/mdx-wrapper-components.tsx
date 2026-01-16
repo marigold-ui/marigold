@@ -18,15 +18,12 @@ import {
   Dont as MarigoldDont,
   GuidelineTiles as MarigoldGuidelineTiles,
 } from '@/ui/DosAndDonts';
-import { IconListProps, IconList as MarigoldIconList } from '@/ui/IconList';
 import { Image as MarigoldImage } from '@/ui/Image';
 import { PropsTable, PropsTableProps } from '@/ui/PropsTable';
-import { StorybookHintMessage } from '@/ui/StorybookHintMessage';
 import {
   TeaserList as MarigoldTeaserList,
   TeaserListProps,
 } from '@/ui/TeaserCard';
-import { ComponentDemo } from './preview';
 
 export const Headline2 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   return (
@@ -68,21 +65,7 @@ export const Headline6 = (props: HTMLAttributes<HTMLHeadingElement>) => {
   );
 };
 
-export const MDXStorybookHintMessage = (
-  props: HTMLAttributes<HTMLDivElement> & { component: string }
-) => {
-  return <StorybookHintMessage {...props} />;
-};
-
-export const componentDemo = (
-  props: React.ComponentProps<typeof ComponentDemo>
-) => <ComponentDemo {...props} />;
-
 export const Badge = (props: BadgeProps) => <MarigoldBadge {...props} />;
-
-export const IconList = (props: IconListProps) => {
-  return <MarigoldIconList {...props} />;
-};
 
 export const SectionMessage = (props: SectionMessageProps) => (
   <MarigoldSectionMessage {...props} />
@@ -129,3 +112,7 @@ export const Image = (props: any) => {
 };
 
 export { Text, Center, Stack, Columns, Link, DateFormat } from '@/ui';
+export { AppearanceDemo } from '@/ui/AppearanceDemo';
+export { ComponentDemo } from './preview';
+export { IconList } from '@/ui/IconList';
+export { StorybookHintMessage } from '@/ui/StorybookHintMessage';

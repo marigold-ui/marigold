@@ -1,4 +1,4 @@
-import { MDXStorybookHintMessage } from '@/app/_components/mdx-wrapper-components';
+import { StorybookHintMessage } from '@/app/_components/mdx-wrapper-components';
 import { getPageImage, source } from '@/lib/source';
 import type { DocsPageData } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
@@ -62,7 +62,7 @@ function getMdxComponentsConfig(page: any) {
 
     // Page-specific component that needs access to page data
     StorybookHintMessage: (props: any) => (
-      <MDXStorybookHintMessage {...props} component={page.data.title} />
+      <StorybookHintMessage {...props} component={page.data.title} />
     ),
   });
 }

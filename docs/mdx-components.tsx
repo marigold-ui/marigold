@@ -1,6 +1,8 @@
 import {
+  AppearanceDemo,
   Center,
   Columns,
+  ComponentDemo,
   DateFormat,
   Do,
   DoDescription,
@@ -29,7 +31,6 @@ import {
   TabsTabPanel,
   TeaserList,
   Text,
-  componentDemo,
 } from '@/app/_components/mdx-wrapper-components';
 import { Pre } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
@@ -66,7 +67,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
 
     // Custom MDX Components
     AppearanceTable,
-    ComponentDemo: componentDemo,
+    ComponentDemo,
+    AppearanceDemo,
     IconList,
     Image,
     PropsTable: (props: any) => <MDXPropsTable {...props} />,
