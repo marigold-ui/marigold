@@ -18,23 +18,22 @@
  * The gradient border transitions from top (lighter) to bottom (darker).
  */
 @utility ui-surface {
-  @apply rounded-surface relative transition-[box-shadow,background];
+  &:where(*) {
+    @apply rounded-surface relative transition-[box-shadow,background];
 
-  /* Gradient border using background-clip and background-origin */
-  background:
-    linear-gradient(to bottom, #fff, #fff),
-    linear-gradient(
-      to bottom,
-      var(--color-surface-border),
-      oklch(from var(--color-surface-border) calc(l - 0.1) c h)
-    );
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
+    /* Gradient border using background-clip and background-origin */
+    background:
+      linear-gradient(to bottom, #fff, #fff),
+      linear-gradient(
+        to bottom,
+        var(--color-surface-border),
+        oklch(from var(--color-surface-border) calc(l - 0.1) c h)
+      );
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
 
-  border: 1px solid transparent;
-
-  /* Layered box-shadow for subtle depth (Josh Comeau's approach) */
-  @apply shadow-surface;
+    border: 1px solid transparent;
+  }
 }
 
 /*
@@ -59,12 +58,28 @@
  * These allow for consistent elevation levels across components.
  */
 @utility ui-elevation-base {
-  box-shadow: var(--shadow-elevation-base);
+  @apply shadow-elevation-base;
 }
 
 /* ========================= */
 /*           State           */
 /* ========================= */
+
+/*
+ * Applies a consistent visual style used for keyboard focus states across components.
+ * Used this when the border of the component can be changed.
+ */
+@utility ui-state-focus {
+  @apply ring-ring/50 border-ring ring-[3px];
+}
+
+/*
+ * Applies a consistent visual style used for keyboard focus states across components.
+ * Used this when the border of the component should not be changed.
+ */
+@utility ui-state-focus-borderless {
+  @apply ring-ring/50 ring-[3px];
+}
 
 /*
  * Applies a consistent visual style for invalid elements.
@@ -92,20 +107,4 @@
  */
 @utility ui-state-readonly {
   @apply bg-muted;
-}
-
-/*
- * Applies a consistent visual style used for keyboard focus states across components.
- * Used this when the border of the component can be changed.
- */
-@utility ui-state-focus {
-  @apply ring-ring/50 border-ring ring-[3px];
-}
-
-/*
- * Applies a consistent visual style used for keyboard focus states across components.
- * Used this when the border of the component should not be changed.
- */
-@utility ui-state-focus-borderless {
-  @apply ring-ring/50 ring-[3px];
 }
