@@ -17,7 +17,7 @@
  * The gradient border transitions from top (lighter) to bottom (darker).
  */
 @utility ui-surface {
-  @apply rounded-surface relative transition-[box-shadow,background];
+  @apply rounded-surface relative transition-[background,border,box-shadow];
 
   /* prettier-ignore */
   background:
@@ -64,15 +64,18 @@
  * Used this when the border of the component can be changed.
  */
 @utility ui-state-focus {
-  @apply ring-ring/50 ring-[3px];
+  @apply ring-ring/50 ring-[3px] outline-none;
   --ui-border-color: var(--color-ring);
 }
 
 /*
- * Applies a consistent visual style for invalid elements.
- */
+* Applies a consistent visual style for invalid elements.
+*/
 @utility ui-state-error {
-  @apply border-destructive focus:border-destructive focus:ring-destructive/20 shadow-destructive/10;
+  --shadow-elevation-color: var(--color-destructive);
+  /* Overrides the transparent border! */
+  @apply border-destructive;
+  @apply focus:border-destructive focus:ring-destructive/20;
 }
 
 /*

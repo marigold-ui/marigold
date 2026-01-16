@@ -27,8 +27,13 @@ export const Surface = meta.story({
       <Inline space="peer">
         <Base className="ui-surface ui-state-focus">focus</Base>
         <Base className="ui-surface ui-state-disabled">disabled</Base>
-        <Base className="ui-surface ui-state-error">error</Base>
+        <Base className="ui-surface ui-state-error ui-elevation-overlay">
+          error
+        </Base>
         <Base className="ui-surface ui-state-readonly">readonly</Base>
+      </Inline>
+      <Inline>
+        <input className="ui-surface ui-state-error focus:ui-state-focus p-squish-relaxed" />
       </Inline>
     </Stack>
   ),
