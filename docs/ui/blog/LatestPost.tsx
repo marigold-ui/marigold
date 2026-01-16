@@ -1,5 +1,7 @@
 import { type BlogPageData, blogSource } from '@/lib/source';
-import { DateFormat, Headline, Link } from '@/ui';
+import { DateFormat, Headline, Link, Stack } from '@/ui';
+import Md from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export const getLatestPost = () => {
   const allBlogs = blogSource.getPages();
@@ -10,6 +12,7 @@ export const getLatestPost = () => {
       title: data.title,
       date: new Date(data.date),
       url: post.url,
+      introduction: data.introduction || '',
     };
   });
 
@@ -25,7 +28,6 @@ export const LatestPost = () => {
   if (!latestPost) {
     return null;
   }
-
   return (
     <div key={latestPost.title}>
       <div className="text-secondary-400 -mb-14 font-semibold">
@@ -37,7 +39,10 @@ export const LatestPost = () => {
           <DateFormat value={latestPost.date} dateStyle="medium" />
         </Link>
       </Headline>
-      <Link href={latestPost.url}>▶︎ Read more</Link>
+      <Stack space={2} alignX="left">
+        <Md remarkPlugins={[remarkGfm]}>{latestPost.introduction}</Md>
+        <Link href={latestPost.url}>▶︎ Read more</Link>
+      </Stack>
     </div>
   );
 };

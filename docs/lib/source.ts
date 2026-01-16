@@ -22,6 +22,7 @@ export interface BlogPageData {
   date: string | Date;
   type?: string;
   changed?: string[];
+  introduction?: string;
   body: MDXContent;
   toc?: any;
   getText: (mode: 'processed' | 'raw') => Promise<string>;
