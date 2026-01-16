@@ -1,4 +1,6 @@
+import { CalendarDate } from '@internationalized/date';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Basic } from './DateField.stories';
 
@@ -258,4 +260,94 @@ test('renders action as react element', () => {
 </div>
 `);
   expect(action).toBeInTheDocument();
+});
+
+test('calls onChange when pasting a valid date', async () => {
+  const user = userEvent.setup();
+  const onChangeSpy = vi.fn();
+
+  render(<Basic.Component label="date field" onChange={onChangeSpy} />);
+
+  const group = screen.getAllByRole('group')[0];
+  await user.click(group);
+  await user.paste('2024-12-25');
+
+  expect(onChangeSpy).toHaveBeenCalledWith(new CalendarDate(2024, 12, 25));
+});
+
+test('updates field state when pasting without onChange callback', async () => {
+  const user = userEvent.setup();
+
+  render(<Basic.Component label="date field" />);
+
+  const group = screen.getAllByRole('group')[0];
+  await user.click(group);
+  await user.paste('2024-12-25');
+
+  const segments = screen.getAllByRole('spinbutton');
+  const [daySegment, monthSegment, yearSegment] = segments;
+
+  expect(daySegment).toHaveTextContent('25');
+  expect(monthSegment).toHaveTextContent('12');
+  expect(yearSegment).toHaveTextContent('2024');
+});
+
+test.each([
+  {
+    format: 'ISO format (YYYY-MM-DD)',
+    input: '2024-12-25',
+    expected: new CalendarDate(2024, 12, 25),
+  },
+  {
+    format: 'European format (DD.MM.YYYY)',
+    input: '25.12.2024',
+    expected: new CalendarDate(2024, 12, 25),
+  },
+  {
+    format: 'European format with slash (DD/MM/YYYY)',
+    input: '25/12/2024',
+    expected: new CalendarDate(2024, 12, 25),
+  },
+  {
+    format: 'US format (MM/DD/YYYY)',
+    input: '12/25/2024',
+    expected: new CalendarDate(2024, 12, 25),
+  },
+])('supports pasting dates in $format', async ({ input, expected }) => {
+  const user = userEvent.setup();
+  const onChangeSpy = vi.fn();
+
+  render(<Basic.Component label="date field" onChange={onChangeSpy} />);
+
+  const group = screen.getAllByRole('group')[0];
+  await user.click(group);
+  await user.paste(input);
+
+  expect(onChangeSpy).toHaveBeenCalledWith(expected);
+});
+
+test('does not call onChange when pasting invalid date', async () => {
+  const user = userEvent.setup();
+  const onChangeSpy = vi.fn();
+
+  render(<Basic.Component label="date field" onChange={onChangeSpy} />);
+
+  const group = screen.getAllByRole('group')[0];
+  await user.click(group);
+  await user.paste('not a date');
+
+  expect(onChangeSpy).not.toHaveBeenCalled();
+});
+
+test('does not call onChange when pasting invalid date format', async () => {
+  const user = userEvent.setup();
+  const onChangeSpy = vi.fn();
+
+  render(<Basic.Component label="date field" onChange={onChangeSpy} />);
+
+  const group = screen.getAllByRole('group')[0];
+  await user.click(group);
+  await user.paste('32/13/2024'); // Invalid day and month
+
+  expect(onChangeSpy).not.toHaveBeenCalled();
 });
