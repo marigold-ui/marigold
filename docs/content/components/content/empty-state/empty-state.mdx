@@ -4,7 +4,7 @@ caption: Inform users when there is no content to display.
 badge: beta
 ---
 
-The `EmptyState` component is used to communicate that a container, list, or page currently has no data to display. It provides visual confirmation that the lack of data is a valid system state, ensuring users do not mistake the empty space for a loading error or a bug.
+The `<EmptyState>` component is used to communicate that a container, list, or page currently has no data to display. It provides visual confirmation that the lack of data is a valid system state, ensuring users do not mistake the empty space for a loading error or a bug.
 
 It serves as a bridge between an empty screen and a populated one, offering context and guidance.
 
@@ -27,7 +27,7 @@ The `EmptyState` component typically consists of the following elements:
 
 ## Usage
 
-The `EmptyState` component is ideal for scenarios where a user might expect to see content, but the data set is empty (0 items) despite a successful page load.
+The `<EmptyState>` component is ideal for scenarios where a user might expect to see content, but the data set is empty despite a successful page load.
 
 Use this component to confirm that the lack of data is a valid state in the following situations:
 
@@ -50,17 +50,15 @@ Use this component to confirm that the lack of data is a valid state in the foll
 
 <ComponentDemo file="./empty-state-table.demo.tsx" />
 
-### Common Pitfalls
+### Best Practices
 
-Avoid the "Flash of Empty Content" - a jarring flicker where the empty state briefly appears while data is still loading. To prevent this, always show loading states (Skeletons or Spinners) first, and only display the empty state after data retrieval is complete and confirmed to be zero.
+Timing is critical when displaying empty states. Always show a loading indicator (Skeleton or Spinner) while data is being fetched, and only reveal the empty state after the request completes and confirms no results exist. This prevents the "Flash of Empty Content" - a jarring flicker that can confuse users and make the interface feel unstable.
 
-It's also important to distinguish between "empty" and "broken." For system failures or errors, use a toast component instead, reserving the empty state strictly for valid, successful loads that happen to have no data.
+It's equally important to distinguish between empty and error states. Use the `<EmptyState>` component exclusively for successful operations that return no data. For system failures, network errors, or other exceptions, use a `<Toast>` notification instead. This clear separation helps users understand whether they need to take action or simply recognize that no content exists yet.
 
 ### Content Strategy
 
-Effective `EmptyState` content serves as a conversation with the user, bridging the gap between a blank screen and their first successful interaction. Because an empty screen can look like a system error, the primary goal of the copy is to provide immediate reassurance. The text must confirm that the application is working correctly and that the lack of data is a valid state.
-
-The title should be a short, scannable statement of fact (e.g., "No invoices found"). The description then follows up by explaining the specific context, telling the user why the space is empty and, most importantly, how to fill it. This turns a dead end into an actionable step.
+Effective `<EmptyState>` content serves as a conversation with the user, bridging the gap between a blank screen and their first successful interaction. Because an empty screen can look like a system error, the primary goal of the copy is to provide immediate reassurance. The text must confirm that the application is working correctly and that the lack of data is a valid state.
 
 <GuidelineTiles>
   <Do>
