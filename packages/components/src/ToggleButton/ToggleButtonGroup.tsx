@@ -5,14 +5,16 @@ import { ToggleButtonContext } from './Context';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled' | 'orientation';
 
-export interface ToggleButtonGroupProps
-  extends Omit<RAC.ToggleButtonGroupProps, RemovedProps> {
+export interface ToggleButtonGroupProps extends Omit<
+  RAC.ToggleButtonGroupProps,
+  RemovedProps
+> {
   /**
    * Whether the toggle button group is disabled.
    */
   disabled?: RAC.ToggleButtonGroupProps['isDisabled'];
   variant?: string;
-  size?: string;
+  size?: 'small' | 'default' | 'icon' | (string & {});
 }
 
 export const _ToggleButtonGroup = ({

@@ -7,8 +7,10 @@ import { ToggleButtonGroup } from './ToggleButtonGroup';
 
 type RemovedProps = 'className' | 'style' | 'isSelected' | 'isDisabled';
 
-export interface ToggleButtonProps
-  extends Omit<RAC.ToggleButtonProps, RemovedProps> {
+export interface ToggleButtonProps extends Omit<
+  RAC.ToggleButtonProps,
+  RemovedProps
+> {
   /**
    * Whether the toggle button is selected.
    */
@@ -18,7 +20,7 @@ export interface ToggleButtonProps
    */
   disabled?: RAC.ToggleButtonProps['isDisabled'];
   variant?: string;
-  size?: string;
+  size?: 'small' | 'default' | 'icon' | (string & {});
 }
 
 export const _ToggleButton = ({

@@ -10,6 +10,9 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
         icon: '',
       },
     },
+    defaultVariants: {
+      size: 'default',
+    },
   }),
   button: cva(
     [
