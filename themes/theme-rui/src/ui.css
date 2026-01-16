@@ -11,7 +11,7 @@
 
 /*
  * The "ui-surface" utility defines visual surfaces with distinct background colors.
- * Apply elevation levels to them when needed (uses base as default).
+ * Apply elevation levels to them when needed (uses raised as default).
  * 
  * This utility uses background-clip and background-origin with gradient borders.
  * The gradient border transitions from top (lighter) to bottom (darker).
@@ -33,10 +33,9 @@
       );
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
-
   border: 1px solid transparent;
 
-  @apply shadow-(--ui-box-shadow,var(--shadow-elevation-base));
+  @apply shadow-(--ui-box-shadow,var(--shadow-elevation-raised));
 }
 
 /*
