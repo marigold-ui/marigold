@@ -273,6 +273,7 @@ test('calls onChange when pasting a valid date', async () => {
   await user.paste('2024-12-25');
 
   expect(onChangeSpy).toHaveBeenCalledWith(new CalendarDate(2024, 12, 25));
+  expect(onChangeSpy).toHaveBeenCalledTimes(1);
 });
 
 test('updates field state when pasting without onChange callback', async () => {

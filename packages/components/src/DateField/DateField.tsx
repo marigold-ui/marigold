@@ -94,7 +94,7 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
         ref={ref}
         {...props}
       >
-        <DateInputWithPasteWrapper onChange={onChange} action={action} />
+        <DateInputWithPasteWrapper action={action} />
       </FieldBase>
     );
   }
@@ -108,15 +108,11 @@ interface DateInputWithPasteWrapperProps {
 }
 
 const DateInputWithPasteWrapper = ({
-  onChange,
   ...props
 }: DateInputWithPasteWrapperProps) => {
   const ctx = useContext(DateFieldStateContext);
 
   const onPaste = (date: CalendarDate) => {
-    if (onChange) {
-      onChange(date);
-    }
     ctx?.setValue(date);
   };
 
