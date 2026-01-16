@@ -57,10 +57,8 @@ export default async function Page(props: PageProps) {
 
 function getMdxComponentsConfig(page: any) {
   return getMDXComponents({
-    // Relative linking
     a: createRelativeLink(source, page) as any,
 
-    // Page-specific component that needs access to page data
     StorybookHintMessage: (props: any) => (
       <StorybookHintMessage {...props} component={page.data.title} />
     ),
