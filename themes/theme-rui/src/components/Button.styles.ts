@@ -15,12 +15,12 @@ export const Button: ThemeComponent<'Button'> = cva(
     variants: {
       variant: {
         primary:
-          'rounded-surface bg-brand text-brand-foreground shadow-elevation-base hover:bg-brand/90',
+          'rounded-surface bg-brand text-brand-foreground hover:bg-brand/90',
         secondary:
-          'ui-surface shadow-elevation-base not-[[disabled]]:border hover:bg-hover hover:text-foreground expanded:bg-hover',
+          'ui-surface not-[[disabled]]:border hover:bg-hover hover:text-foreground expanded:bg-hover',
         ghost: 'rounded-surface hover:bg-hover hover:text-foreground',
         destructive:
-          'rounded-surface bg-destructive text-destructive-foreground shadow-elevation-base hover:bg-destructive/90',
+          'rounded-surface bg-destructive text-destructive-foreground hover:bg-destructive/90',
         'destructive-ghost':
           'rounded-surface text-destructive hover:bg-destructive/10',
         link: 'text-link util-touch-hitbox',

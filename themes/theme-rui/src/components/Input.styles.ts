@@ -6,7 +6,7 @@ export const Input: ThemeComponent<'Input'> = {
   input: cva([
     'w-full min-w-0',
     'px-3 py-2',
-    'ui-surface shadow-elevation-base',
+    'ui-surface',
     'disabled:ui-state-disabled',
     'group-read-only/field:ui-state-readonly',
     'invalid:ui-surface-error',

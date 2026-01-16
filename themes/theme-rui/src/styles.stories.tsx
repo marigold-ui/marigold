@@ -1,4 +1,4 @@
-import { Inline } from '@marigold/components';
+import { Inline, Stack } from '@marigold/components';
 import preview from '../../../.storybook/preview';
 
 const meta = preview.meta({
@@ -7,10 +7,15 @@ const meta = preview.meta({
 
 export const Surface = meta.story({
   render: () => (
-    <Inline space="peer">
-      <div className="surface shadow-elevation-base size-72"></div>
-      <div className="surface shadow-elevation-raised size-72"></div>
-      <div className="surface shadow-elevation-overlay size-72"></div>
-    </Inline>
+    <Stack space="group">
+      <Inline space="peer">
+        <div className="ui-surface aspect-video h-32"></div>
+        <div className="ui-surface ui-elevation-overlay aspect-video h-32"></div>
+      </Inline>
+      <Inline space="peer">
+        <div className="ui-surface ui-state-disabled aspect-video h-32"></div>
+        <div className="ui-surface ui-state-error aspect-video h-32"></div>
+      </Inline>
+    </Stack>
   ),
 });

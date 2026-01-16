@@ -36,7 +36,7 @@ export const Menu: ThemeComponent<'Menu'> = {
     {
       variants: {
         variant: {
-          default: 'ui-surface shadow-elevation-base expanded:bg-hover',
+          default: 'ui-surface expanded:bg-hover',
           ghost:
             'hover:bg-hover hover:text-foreground expanded:bg-hover rounded-surface',
         },
