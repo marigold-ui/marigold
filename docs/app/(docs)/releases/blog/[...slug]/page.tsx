@@ -1,4 +1,5 @@
 import { blogSource } from '@/lib/source';
+import { DateFormat } from '@/ui';
 import { notFound } from 'next/navigation';
 import { PostListWrapper } from '@/ui/blog/PostListWrapper';
 import {
@@ -20,11 +21,6 @@ export default async function BlogPost(props: BlogPostProps) {
 
   const { toc, title, date, body: MDX } = post.data;
 
-  // Format the date on the server to avoid hydration issues
-  const formattedDate = new Intl.DateTimeFormat('en-US', {
-    dateStyle: 'medium',
-  }).format(new Date(date));
-
   return (
     <DocsPage toc={toc}>
       <div className="col-span-full">
@@ -32,7 +28,7 @@ export default async function BlogPost(props: BlogPostProps) {
           {title}
         </DocsTitle>
         <DocsDescription className="text-secondary-400 pt-1">
-          {formattedDate}
+          date: <DateFormat value={new Date(date)} dateStyle="medium" />
         </DocsDescription>
       </div>
       <DocsBody id="docs-body" className="pt-4 pb-10">
