@@ -33,7 +33,7 @@ out
 
 # docs generated content
 docs/.source
-docs/lib/.registry/
+docs/.registry/
 
 # yarn/pnpm
 .pnp

@@ -1,6 +1,6 @@
 'use client';
 
-import { type RegistryKey, registry } from '@/lib/.registry/demos';
+import { type RegistryKey, registry } from '@/.registry/demos';
 import { ruiTheme, theme } from '@/theme';
 import { track } from '@vercel/analytics/react';
 import {

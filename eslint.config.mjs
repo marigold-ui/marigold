@@ -33,7 +33,7 @@ export default defineConfig([
       '**/out',
       '**/docs/.source/**',
       '**/storybook-static',
-      '**/docs/lib/.registry/**',
+      '**/docs/.registry/**',
       '**/docs/content/.eslintrc.js',
       '**/coverage',
       'packages/types/src/**',

@@ -10,7 +10,7 @@
     "moduleResolution": "nodenext",
     "skipLibCheck": true,
     "paths": {
-      "@/registry/*": ["./docs/lib/.registry/*"],
+      "@/.registry/*": ["./docs/.registry/*"],
       "@marigold/*": ["./packages/*/src", "./themes/*/src"],
       "@/*": ["./docs/*"],
       // cva does not export the types officially

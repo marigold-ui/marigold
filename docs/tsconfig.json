@@ -31,7 +31,7 @@
       "@/*": ["./*"],
       "@marigold/*/styles.css": ["../themes/*/dist/styles.css"],
       "@marigold/*": ["../packages/*/src", "../themes/*/src"],
-      "@/registry/*": ["./lib/.registry/*"],
+      "@/.registry/*": ["./.registry/*"],
       // cva does not export types officially; map deep import for TS
       "class-variance-authority/dist/types": [
         "../packages/system/node_modules/class-variance-authority/dist/types"
