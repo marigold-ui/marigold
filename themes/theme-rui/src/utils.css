@@ -5,10 +5,6 @@
  * encapsulate common design decisions across the theme.
  */
 
-/* ========================= */
-/*            Misc           */
-/* ========================= */
-
 /*
  * Applies a touch-friendly hitbox to elements, ensuring they are easily tappable on touch devices. 
  * This is important for accessibility, as it helps meet WCAG guidelines for minimum touch target size 
