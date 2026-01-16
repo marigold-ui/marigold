@@ -21,7 +21,8 @@ type RemovedProps =
   | 'style';
 
 export interface DateFieldProps
-  extends Omit<RAC.DateFieldProps<DateValue>, RemovedProps>,
+  extends
+    Omit<RAC.DateFieldProps<DateValue>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
@@ -82,6 +83,7 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
       isReadOnly: readOnly,
       isInvalid: error,
       isRequired: required,
+      onChange,
       ...rest,
     };
     return (

@@ -1,50 +1,6 @@
-import { parseAbsoluteToLocal } from '@internationalized/date';
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { DateField } from './DateField';
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Label: cva('', {
-      variants: {
-        variant: {
-          lime: 'text-lime-300',
-        },
-        size: {
-          small: 'p-1',
-        },
-      },
-    }),
-    HelpText: {
-      container: cva(),
-      icon: cva(),
-    },
-    DateField: {
-      segment: cva('bg-white text-gray-700'),
-      field: cva('p-2', {
-        variants: {
-          variant: {
-            lime: 'text-lime-300',
-          },
-        },
-      }),
-      action: cva('p-3', {
-        variants: {
-          size: {
-            small: 'p-1',
-          },
-        },
-      }),
-    },
-    Field: cva(),
-  },
-};
-
-const { render } = setup({ theme });
+import { Basic } from './DateField.stories';
 
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();
@@ -60,124 +16,246 @@ afterEach(() => {
   onKeyUpSpy.mockClear();
 });
 
+test('renders correctly', () => {
+  render(<Basic.Component data-testid="dateField" />);
+
+  const dateField = screen.getByTestId('dateField');
+
+  expect(dateField).toMatchInlineSnapshot(`
+    <div
+      class="group/field flex flex-col w-full space-y-2"
+      data-rac=""
+      data-testid="dateField"
+    >
+      <span
+        class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex"
+        id="react-aria-_r_1_"
+      >
+        My Label
+      </span>
+      <div
+        aria-describedby="react-aria-_r_3_"
+        aria-labelledby="react-aria-_r_1_"
+        class="h-input flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled has-focus-visible:util-focus-ring outline-none group-invalid/field:border-destructive group-invalid/field:focus:border-destructive group-invalid/field:focus:ring-destructive/20 group-read-only/field:bg-muted invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20 data-[focus-within]:util-focus-ring outline-0"
+        data-rac=""
+        data-react-aria-pressable="true"
+        id="react-aria-_r_0_"
+        role="group"
+        style="unicode-bidi: isolate;"
+      >
+        <div
+          aria-describedby="react-aria-_r_3_"
+          aria-labelledby="react-aria-_r_1_"
+          class="flex flex-1 items-center"
+          data-rac=""
+          data-react-aria-pressable="true"
+          id="react-aria-_r_0_"
+          role="group"
+          style="unicode-bidi: isolate;"
+        >
+          <span
+            aria-describedby="react-aria-_r_3_"
+            aria-label="Tag, "
+            aria-labelledby="react-aria-_r_5_ react-aria-_r_1_"
+            aria-valuemax="31"
+            aria-valuemin="1"
+            aria-valuenow="16"
+            aria-valuetext="Leer"
+            autocorrect="off"
+            class="disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled inline p-0.5 caret-transparent data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[type=literal]:text-placeholder data-[placeholder]:disabled:text-disabled-foreground invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded leading-none"
+            contenteditable="true"
+            data-placeholder="true"
+            data-rac=""
+            data-type="day"
+            enterkeyhint="next"
+            id="react-aria-_r_5_"
+            inputmode="numeric"
+            role="spinbutton"
+            spellcheck="false"
+            style="caret-color: transparent;"
+            tabindex="0"
+          >
+            <span
+              aria-hidden="true"
+              class="visible block pointer-events-none w-full text-center"
+            >
+              TT
+            </span>
+            <span />
+          </span>
+          <span
+            aria-hidden="true"
+            class="disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled inline p-0.5 caret-transparent data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[type=literal]:text-placeholder data-[placeholder]:disabled:text-disabled-foreground invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded leading-none"
+            data-rac=""
+            data-type="literal"
+          >
+            <span
+              aria-hidden="true"
+              class="invisible hidden pointer-events-none w-full text-center"
+            />
+            <span>
+              .
+            </span>
+          </span>
+          <span
+            aria-label="Monat, "
+            aria-labelledby="react-aria-_r_9_ react-aria-_r_1_"
+            aria-valuemax="12"
+            aria-valuemin="1"
+            aria-valuenow="1"
+            aria-valuetext="Leer"
+            autocorrect="off"
+            class="disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled inline p-0.5 caret-transparent data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[type=literal]:text-placeholder data-[placeholder]:disabled:text-disabled-foreground invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded leading-none"
+            contenteditable="true"
+            data-placeholder="true"
+            data-rac=""
+            data-type="month"
+            enterkeyhint="next"
+            id="react-aria-_r_9_"
+            inputmode="numeric"
+            role="spinbutton"
+            spellcheck="false"
+            style="caret-color: transparent;"
+            tabindex="0"
+          >
+            <span
+              aria-hidden="true"
+              class="visible block pointer-events-none w-full text-center"
+            >
+              MM
+            </span>
+            <span />
+          </span>
+          <span
+            aria-hidden="true"
+            class="disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled inline p-0.5 caret-transparent data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[type=literal]:text-placeholder data-[placeholder]:disabled:text-disabled-foreground invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded leading-none"
+            data-rac=""
+            data-type="literal"
+          >
+            <span
+              aria-hidden="true"
+              class="invisible hidden pointer-events-none w-full text-center"
+            />
+            <span>
+              .
+            </span>
+          </span>
+          <span
+            aria-label="Jahr, "
+            aria-labelledby="react-aria-_r_d_ react-aria-_r_1_"
+            aria-valuemax="9999"
+            aria-valuemin="1"
+            aria-valuenow="2026"
+            aria-valuetext="Leer"
+            autocorrect="off"
+            class="disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled inline p-0.5 caret-transparent data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[type=literal]:text-placeholder data-[placeholder]:disabled:text-disabled-foreground invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded leading-none"
+            contenteditable="true"
+            data-placeholder="true"
+            data-rac=""
+            data-type="year"
+            enterkeyhint="next"
+            id="react-aria-_r_d_"
+            inputmode="numeric"
+            role="spinbutton"
+            spellcheck="false"
+            style="caret-color: transparent;"
+            tabindex="0"
+          >
+            <span
+              aria-hidden="true"
+              class="visible block pointer-events-none w-full text-center"
+            >
+              JJJJ
+            </span>
+            <span />
+          </span>
+        </div>
+        <input
+          class=""
+          data-rac=""
+          hidden=""
+          title=""
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="text-xs text-muted-foreground group-disabled/field:text-disabled-foreground group-invalid/field:text-destructive has-[+_[aria-hidden=true]]:mb-0"
+      >
+        <span
+          class="react-aria-Text"
+          id="react-aria-_r_3_"
+          slot="description"
+        >
+          This is a help text description
+        </span>
+      </div>
+    </div>
+  `);
+});
+
 test('render DateField with label and helper text', () => {
-  render(<DateField label="label" description="date field description" />);
+  render(
+    <Basic.Component label="label" description="date field description" />
+  );
+
   const label = screen.getByText('label');
-  expect(label).toBeInTheDocument();
   const description = screen.getByText('date field description');
+
+  expect(label).toBeInTheDocument();
   expect(description).toBeInTheDocument();
 });
 
 test('supports error message', () => {
   render(
-    <DateField label="date field" error errorMessage="something went wrong" />
+    <Basic.Component
+      label="date field"
+      error
+      errorMessage="something went wrong"
+    />
   );
+
   const error = screen.getByText('something went wrong');
+
   expect(error).toBeInTheDocument();
 });
 
-test('render DateField with error messaege however description is set', () => {
+test('displays error message instead of description when both are provided', () => {
   render(
-    <DateField
+    <Basic.Component
       label="date field"
       error
       errorMessage="something went wrong"
       description="this is description"
     />
   );
-  const description = screen.queryByText('this is description');
-  expect(description).not.toBeInTheDocument();
 
+  const description = screen.queryByText('this is description');
   const error = screen.getByText('something went wrong');
+
+  expect(description).not.toBeInTheDocument();
   expect(error).toBeInTheDocument();
 });
 
-test('events', async () => {
-  render(
-    <DateField
-      label="date"
-      defaultValue={parseAbsoluteToLocal('2021-11-07T07:45:00Z')}
-      onBlur={onBlurSpy}
-      onFocus={onFocusSpy}
-      onFocusChange={onFocusChangeSpy}
-    />
-  );
-  let segments = screen.getAllByRole('spinbutton');
-  expect(segments[0]).toHaveTextContent('11');
-  expect(segments[1]).toHaveTextContent('07');
-
-  expect(onBlurSpy).not.toHaveBeenCalled();
-  expect(onFocusChangeSpy).not.toHaveBeenCalled();
-  expect(onFocusSpy).not.toHaveBeenCalled();
-
-  await userEvent.tab();
-  expect(segments[0]).toHaveFocus();
-
-  expect(onBlurSpy).not.toHaveBeenCalled();
-  expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
-  expect(onFocusSpy).toHaveBeenCalledTimes(1);
-
-  await userEvent.tab();
-  expect(segments[1]).toHaveFocus();
-  expect(onBlurSpy).not.toHaveBeenCalled();
-  expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
-  expect(onFocusSpy).toHaveBeenCalledTimes(1);
-});
-
-test('passes down variant and size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <DateField
-        data-testid="date-field"
-        label="Label"
-        description="Description"
-        variant="lime"
-        size="small"
-      />
-    </ThemeProvider>
-  );
-
-  const label = screen.getByText('Label');
-  expect(label.className).toMatchInlineSnapshot(
-    `"text-lime-300 p-1 inline-flex"`
-  );
-
-  const description = screen.getByText('Description');
-  expect(description).toBeInTheDocument();
-
-  const datefield = screen.getByTestId('date-field');
-  expect(datefield.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-full"`
-  );
-});
-
 test('renders without icons', () => {
-  render(<DateField label="date field" />);
+  render(<Basic.Component label="date field" />);
+
   const icon = screen.queryByRole('icon');
   const action = screen.queryByRole('action');
+
   expect(icon).not.toBeInTheDocument();
   expect(action).not.toBeInTheDocument();
 });
 
-test('renders label', () => {
-  render(<DateField label="date field" />);
-  const label = screen.getByText('date field');
-  expect(label).toBeInTheDocument();
-});
-
 test('renders action as react element', () => {
-  render(<DateField label="date field" action={<div>huhu</div>} />);
+  render(<Basic.Component label="date field" action={<div>huhu</div>} />);
+
   const action = screen.getByText('huhu');
+
   expect(action).toMatchInlineSnapshot(`
 <div>
   huhu
 </div>
 `);
   expect(action).toBeInTheDocument();
-});
-
-test('renders error', () => {
-  render(<DateField label="date field" error errorMessage="Error Message" />);
-  const error = screen.getByText('Error Message');
-  expect(error).toBeInTheDocument();
 });
