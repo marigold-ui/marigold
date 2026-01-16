@@ -25,7 +25,7 @@ export default async function BlogPost(props: BlogPostProps) {
     <DocsPage toc={toc}>
       <div className="col-span-full">
         <DocsTitle className="max-w-(--maxHeadlineWidth) scroll-m-20 text-left text-5xl font-extrabold tracking-tight *:no-underline lg:text-6xl">
-          {title}
+          date: {title}
         </DocsTitle>
         <DocsDescription className="text-secondary-400 pt-1">
           date: <DateFormat value={new Date(date)} dateStyle="medium" />
