@@ -153,7 +153,7 @@ function SidebarItem({
 
   if (item.type === 'separator') {
     return (
-      <p className="text-secondary-600 my-4 text-sm font-semibold">
+      <p className="text-secondary-600 my-2 text-base font-semibold">
         {item.icon}
         {item.name}
       </p>

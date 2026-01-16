@@ -71,22 +71,15 @@ export const MobileNavigation = ({
 function MobileSidebar({ onNavigate }: { onNavigate: () => void }) {
   const { root } = useTreeContext();
   const children = useMemo(() => {
-    function renderItems(items: PageTree.Node[], depth: number = 0) {
+    function renderItems(items: PageTree.Node[]) {
       return items.map(item => (
-        <MobileSidebarItem
-          key={item.$id}
-          item={item}
-          onNavigate={onNavigate}
-          depth={depth}
-        >
-          {item.type === 'folder'
-            ? renderItems(item.children, depth + 1)
-            : null}
+        <MobileSidebarItem key={item.$id} item={item} onNavigate={onNavigate}>
+          {item.type === 'folder' ? renderItems(item.children) : null}
         </MobileSidebarItem>
       ));
     }
 
-    return renderItems(root.children, 0);
+    return renderItems(root.children);
   }, [root, onNavigate]);
 
   return <nav className="mb-12 flex flex-col pt-8 pr-11 pl-4">{children}</nav>;
@@ -96,12 +89,10 @@ function MobileSidebarItem({
   item,
   children,
   onNavigate,
-  depth = 0,
 }: {
   item: PageTree.Node;
   children: ReactNode;
   onNavigate: () => void;
-  depth?: number;
 }) {
   const pathname = usePathname();
   const badgeMap = use(BadgeContext);
@@ -124,39 +115,39 @@ function MobileSidebarItem({
 
   if (item.type === 'separator') {
     return (
-      <p className="text-secondary-600 pt-4 pb-2 text-sm font-semibold">
+      <p className="text-secondary-600 pt-4 pb-2 text-base font-semibold">
         {item.icon}
         {item.name}
       </p>
     );
   }
 
+  // For folders: skip rendering folder header if first child is a separator
+  // (the separator will serve as the section header)
+  const firstChildIsSeparator = item.children?.[0]?.type === 'separator';
   const indexBadge = item.index ? badgeMap[item.index.url] : undefined;
-  // Only add large bottom padding at depth 0 (top-level sections)
-  const spacingClass = depth === 0 ? 'pb-4' : 'pb-2';
 
   return (
-    <div className={`flex flex-col gap-2.5 ${spacingClass}`}>
-      {item.index ? (
-        <NavLink
-          className="flex items-center gap-4"
-          current={pathname === item.index.url}
-          href={item.index.url}
-          onClick={onNavigate}
-        >
-          {item.index.icon}
-          {item.index.name}
-          {indexBadge && <Badge variant="dark">{indexBadge}</Badge>}
-        </NavLink>
-      ) : (
-        <p className="text-secondary-600 text-sm font-semibold">
-          {item.icon}
-          {item.name}
-        </p>
-      )}
-      <div className="border-secondary-300 ml-0.5 flex flex-col border-l">
-        {children}
-      </div>
+    <div className="flex flex-col">
+      {!firstChildIsSeparator &&
+        (item.index ? (
+          <NavLink
+            className="flex items-center gap-4"
+            current={pathname === item.index.url}
+            href={item.index.url}
+            onClick={onNavigate}
+          >
+            {item.index.icon}
+            {item.index.name}
+            {indexBadge && <Badge variant="dark">{indexBadge}</Badge>}
+          </NavLink>
+        ) : (
+          <p className="text-secondary-600 pt-4 pb-2 text-sm font-semibold">
+            {item.icon}
+            {item.name}
+          </p>
+        ))}
+      <div className="border-secondary-300 flex flex-col">{children}</div>
     </div>
   );
 }
