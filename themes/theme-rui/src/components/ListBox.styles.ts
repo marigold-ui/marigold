@@ -4,9 +4,9 @@ export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
     'flex surface',
     // Standalone
-    'not-group-data-trigger/popover:elevation-raised',
+    'not-group-data-trigger/popover:shadow-elevation-base',
     // In a Popover
-    'group-data-trigger/popover:elevation-overlay',
+    'group-data-trigger/popover:shadow-elevation-overlay',
     'group-data-trigger/popover:w-full',
     'group-data-trigger/popover:overflow-hidden',
   ]),

@@ -4,7 +4,7 @@ import type { ThemeComponent } from '@marigold/system';
 export const Input: ThemeComponent<'Input'> = {
   container: cva([
     'inline-flex w-full h-input',
-    'surface shadow-elevation-base has-default-state:elevation-raised',
+    'surface shadow-elevation-base',
     'disabled:state-disabled',
     'group-read-only/field:state-readonly',
     'has-invalid:surface-has-error',

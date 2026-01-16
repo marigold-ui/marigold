@@ -17,7 +17,7 @@ export const Button: ThemeComponent<'Button'> = cva(
         primary:
           'rounded-surface bg-brand text-brand-foreground shadow-elevation-base hover:bg-brand/90',
         secondary:
-          'rounded-surface bg-surface shadow-elevation-base not-[[disabled]]:border border-surface-border hover:bg-hover hover:text-foreground expanded:bg-hover',
+          'surface shadow-elevation-base not-[[disabled]]:border hover:bg-hover hover:text-foreground expanded:bg-hover',
         ghost: 'rounded-surface hover:bg-hover hover:text-foreground',
         destructive:
           'rounded-surface bg-destructive text-destructive-foreground shadow-elevation-base hover:bg-destructive/90',
