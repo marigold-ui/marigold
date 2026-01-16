@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from 'react';
 import { Inline, Stack } from '@marigold/components';
 import preview from '../../../.storybook/preview';
 
@@ -5,16 +6,29 @@ const meta = preview.meta({
   title: 'Styles/RUI',
 });
 
+const Base = ({
+  children,
+  className,
+}: PropsWithChildren<{ className?: string }>) => (
+  <div
+    className={`grid aspect-video h-32 place-items-center text-sm ${className}`}
+  >
+    {children}
+  </div>
+);
+
 export const Surface = meta.story({
   render: () => (
     <Stack space="group">
       <Inline space="peer">
-        <div className="ui-surface aspect-video h-32"></div>
-        <div className="ui-surface ui-elevation-overlay aspect-video h-32"></div>
+        <Base className="ui-surface">raised</Base>
+        <Base className="ui-surface ui-elevation-overlay">overlay</Base>
       </Inline>
       <Inline space="peer">
-        <div className="ui-surface ui-state-disabled aspect-video h-32"></div>
-        <div className="ui-surface ui-state-error aspect-video h-32"></div>
+        <Base className="ui-surface ui-state-focus">focus</Base>
+        <Base className="ui-surface ui-state-disabled">disabled</Base>
+        <Base className="ui-surface ui-state-error">error</Base>
+        <Base className="ui-surface ui-state-readonly">readonly</Base>
       </Inline>
     </Stack>
   ),

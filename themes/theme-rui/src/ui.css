@@ -44,7 +44,7 @@
  * lowest elevation level.
  */
 @utility ui-elevation-raised {
-  @apply shadow-elevation-raised;
+  --ui-box-shadow: var(--shadow-elevation-raised);
 }
 
 /*
@@ -52,15 +52,7 @@
  * such as for dialogs, or popups. This is the highest elevation level.
  */
 @utility ui-elevation-overlay {
-  @apply shadow-elevation-overlay;
-}
-
-/*
- * UI elevation utilities that apply box-shadow using CSS variables.
- * These allow for consistent elevation levels across components.
- */
-@utility ui-elevation-base {
-  @apply shadow-elevation-base;
+  --ui-box-shadow: var(--shadow-elevation-overlay);
 }
 
 /* ========================= */
@@ -72,15 +64,8 @@
  * Used this when the border of the component can be changed.
  */
 @utility ui-state-focus {
-  @apply ring-ring/50 border-ring ring-[3px];
-}
-
-/*
- * Applies a consistent visual style used for keyboard focus states across components.
- * Used this when the border of the component should not be changed.
- */
-@utility ui-state-focus-borderless {
   @apply ring-ring/50 ring-[3px];
+  --ui-border-color: var(--color-ring);
 }
 
 /*

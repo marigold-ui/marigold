@@ -11,7 +11,7 @@ export const Slider: ThemeComponent<'Slider'> = {
   ]),
   thumb: cva([
     'block h-5 w-5 rounded-full border-2 border-primary bg-background transition-colors',
-    'focus-visible:ui-state-focus-borderless outline-none',
+    'focus-visible:ui-state-focus outline-none',
     'disabled:cursor-not-allowed',
   ]),
   output: cva('text-foreground text-sm'),
