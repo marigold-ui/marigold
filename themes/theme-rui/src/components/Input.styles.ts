@@ -2,21 +2,16 @@ import { cva } from '@marigold/system';
 import type { ThemeComponent } from '@marigold/system';
 
 export const Input: ThemeComponent<'Input'> = {
-  container: cva([
-    'inline-flex w-full h-input',
-    'ui-surface shadow-elevation-base',
-    'disabled:ui-state-disabled',
-    'group-read-only/field:ui-state-readonly',
-    'has-invalid:ui-surface-has-error',
-    'has-focus:ui-state-focus',
-  ]),
+  container: cva(['inline-flex w-full h-input']),
   input: cva([
     'w-full min-w-0',
     'px-3 py-2',
-    'bg-transparent',
-    'outline-none',
+    'ui-surface shadow-elevation-base',
+    'disabled:ui-state-disabled',
+    'group-read-only/field:ui-state-readonly',
+    'invalid:ui-surface-error',
+    'focus:ui-state-focus outline-none',
     'text-foreground placeholder:text-placeholder text-sm',
-    'rounded-[inherit]',
     'group-read-only/field:cursor-default',
     'group-data-icon/input:pl-8',
     'group-data-action/input:pr-7',

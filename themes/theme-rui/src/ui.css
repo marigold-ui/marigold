@@ -106,5 +106,5 @@
  * Applies a consistent visual style for readonly elements.
  */
 @utility ui-state-readonly {
-  @apply bg-muted;
+  @apply bg-muted cursor-default;
 }
