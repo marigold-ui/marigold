@@ -6,7 +6,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     // Standalone
     'not-group-data-trigger/popover:',
     // In a Popover
-    'group-data-trigger/popover:shadow-elevation-overlay',
+    'group-data-trigger/popover:ui-elevation-overlay',
   ]),
   calendarCell: cva([
     'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg justify-self-center',
