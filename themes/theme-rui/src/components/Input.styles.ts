@@ -2,7 +2,6 @@ import { cva } from '@marigold/system';
 import type { ThemeComponent } from '@marigold/system';
 
 export const Input: ThemeComponent<'Input'> = {
-  container: cva(['inline-flex w-full h-input']),
   input: cva([
     'ui-surface ui-input',
     'disabled:ui-state-disabled',

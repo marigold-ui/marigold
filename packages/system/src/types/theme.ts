@@ -86,7 +86,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Input?: Record<
-      'container' | 'input' | 'icon' | 'action',
+      'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Label?: ComponentStyleFunction<string, string>;

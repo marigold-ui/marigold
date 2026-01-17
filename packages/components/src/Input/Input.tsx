@@ -51,10 +51,7 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div
-        className={cn(
-          'group/input relative flex items-center',
-          classNames.container
-        )}
+        className="group/input relative flex items-center"
         data-icon={icon && ''}
         data-action={action && ''}
       >
