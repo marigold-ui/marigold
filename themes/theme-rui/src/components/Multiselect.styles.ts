@@ -40,9 +40,9 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'text-sm text-foreground',
     'flex flex-col',
     'cursor-pointer p-2 outline-hidden',
-    '[&.isFocused:not([aria-disabled=true])]:!text-foreground [&.isFocused[aria-disabled=true]]:bg-transparent',
+    '[&.isFocused:not([aria-disabled=true])]:text-foreground! [&.isFocused[aria-disabled=true]]:bg-transparent',
     'aria-disabled:text-disabled-foreground aria-disabled:cursor-not-allowed',
-    '[&.isFocused:not([aria-disabled=true])]:!bg-hover',
+    '[&.isFocused:not([aria-disabled=true])]:bg-hover!',
   ]),
   valueContainer: cva('gap-2'),
 };
