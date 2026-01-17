@@ -6,11 +6,13 @@ export const DateField: ThemeComponent<'DateField'> = {
     'flex items-center',
     'disabled:ui-state-disabled',
     'group-read-only/field:ui-state-readonly',
-    'has-invalid:ui-state-has-error',
-    'has-focus:ui-state-focus outline-none',
+    'has-focus:ui-state-focus',
+    // Need to set error ring manually to override focus ring
+    'has-invalid:ui-state-error has-focus:has-focus:ring-destructive/20',
   ]),
   input: cva([
     'w-full min-w-0 px-3 py-2 bg-transparent outline-none text-foreground placeholder:text-placeholder text-sm rounded-[inherit] h-input',
+    'cursor-text',
   ]),
   segment: cva([
     'inline rounded p-0.5 text-foreground caret-transparent outline-0 type-literal:px-0 data-focused:data-placeholder:text-foreground data-focused:text-foreground  type-literal:text-placeholder',

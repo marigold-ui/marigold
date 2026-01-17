@@ -96,13 +96,6 @@
 }
 
 /*
- * Applies a consistent visual style when an element has an invalid child element.
- */
-@utility ui-state-has-error {
-  @apply border-destructive has-focus:border-destructive has-focus:ring-destructive/20 shadow-destructive/10;
-}
-
-/*
  * Applies a consistent visual style for disabled elements.
  */
 @utility ui-state-disabled {
