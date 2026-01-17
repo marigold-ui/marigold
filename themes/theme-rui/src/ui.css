@@ -114,6 +114,4 @@
  */
 @utility ui-state-readonly {
   --ui-background-color: var(--color-muted);
-  --ui-border-color: var(--color-surface-border);
-  @apply focus:ring-0;
 }
