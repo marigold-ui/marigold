@@ -14,8 +14,8 @@ export const NumberField: ThemeComponent<'NumberField'> = {
     'border-input! first-of-type:border-r! last-of-type:border-l!',
   ]),
   input: cva([
-    'text-foreground px-3 py-2 text-sm',
-    'min-w-0 flex-1 bg-transparent',
+    'ui-input',
+    'flex-1',
     'group-data-stepper/field:text-center',
     'disabled:text-disabled-foreground disabled:bg-disabled',
   ]),
