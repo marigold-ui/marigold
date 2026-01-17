@@ -52,8 +52,8 @@
 
 @utility ui-shadow-raised {
   --shadow-elevation-raised:
-    0 0.5px 1px oklch(from var(--shadow-elevation-color, #000) l c h / 1),
-    0 1px 2px oklch(from var(--shadow-elevation-color, #000) l c h / 0.06);
+    0 0.5px 1px oklch(from var(--tw-shadow-color, #000) l c h / 1),
+    0 1px 2px oklch(from var(--tw-shadow-color, #000) l c h / 0.06);
 }
 
 /*
@@ -66,9 +66,9 @@
 }
 @utility ui-shadow-overlay {
   --shadow-elevation-overlay:
-    0 1px 2px oklch(from var(--shadow-elevation-color, #000) l c h / 0.12),
-    0 2px 4px oklch(from var(--shadow-elevation-color, #000) l c h / 0.8),
-    0 4px 8px oklch(from var(--shadow-elevation-color, #000) l c h / 0.08);
+    0 1px 2px oklch(from var(--tw-shadow-color, #000) l c h / 0.12),
+    0 2px 4px oklch(from var(--tw-shadow-color, #000) l c h / 0.8),
+    0 4px 8px oklch(from var(--tw-shadow-color, #000) l c h / 0.08);
 }
 
 /* ========================= */
@@ -88,7 +88,7 @@
 * Applies a consistent visual style for invalid elements.
 */
 @utility ui-state-error {
-  --shadow-elevation-color: var(--color-destructive);
+  --tw-shadow-color: var(--color-destructive);
 
   /* Overrides the transparent border. Gradient would get too dark. */
   @apply border-destructive;
@@ -113,5 +113,7 @@
  * Applies a consistent visual style for readonly elements.
  */
 @utility ui-state-readonly {
-  @apply bg-muted cursor-default;
+  --ui-background-color: var(--color-muted);
+  --ui-border-color: var(--color-surface-border);
+  @apply focus:ring-0;
 }
