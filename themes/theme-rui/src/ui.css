@@ -35,6 +35,8 @@
   background-origin: padding-box, border-box;
   border: 1px solid transparent;
 
+  /* Make the shadow a local variable so it is tracking the color. */
+  @apply ui-shadow-raised;
   @apply shadow-(--ui-box-shadow,var(--shadow-elevation-raised));
 }
 
@@ -44,7 +46,14 @@
  * lowest elevation level.
  */
 @utility ui-elevation-raised {
+  @apply ui-shadow-raised;
   --ui-box-shadow: var(--shadow-elevation-raised);
+}
+
+@utility ui-shadow-raised {
+  --shadow-elevation-raised:
+    0 0.5px 1px oklch(from var(--shadow-elevation-color, #000) l c h / 1),
+    0 1px 2px oklch(from var(--shadow-elevation-color, #000) l c h / 0.06);
 }
 
 /*
@@ -52,7 +61,14 @@
  * such as for dialogs, or popups. This is the highest elevation level.
  */
 @utility ui-elevation-overlay {
+  @apply ui-shadow-overlay;
   --ui-box-shadow: var(--shadow-elevation-overlay);
+}
+@utility ui-shadow-overlay {
+  --shadow-elevation-overlay:
+    0 1px 2px oklch(from var(--shadow-elevation-color, #000) l c h / 0.12),
+    0 2px 4px oklch(from var(--shadow-elevation-color, #000) l c h / 0.8),
+    0 4px 8px oklch(from var(--shadow-elevation-color, #000) l c h / 0.08);
 }
 
 /* ========================= */
@@ -73,7 +89,8 @@
 */
 @utility ui-state-error {
   --shadow-elevation-color: var(--color-destructive);
-  /* Overrides the transparent border! */
+
+  /* Overrides the transparent border. Gradient would get too dark. */
   @apply border-destructive;
   @apply focus:border-destructive focus:ring-destructive/20;
 }
