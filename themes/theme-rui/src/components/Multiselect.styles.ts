@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   field: cva('space-y-2'),
   container: cva([
-    'bg-background shadow-xs border',
+    'ui-surface',
     'px-3 text-sm text-foreground transition-shadow',
     'border border-input rounded-lg outline-hidden',
     'aria-disabled:bg-disabled aria-disabled:text-disabled-foreground aria-disabled:hover:border-input aria-disabled:border-input aria-disabled:cursor-not-allowed',
@@ -34,7 +34,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
     'size-4 cursor-pointer border-none bg-transparent p-0 leading-normal outline-0'
   ),
   icon: cva('left-1'),
-  listContainer: cva(['surface ui-elevation-overlay mt-0.5 outline-0']),
+  listContainer: cva(['ui-surface ui-elevation-overlay mt-0.5 outline-0']),
   list: cva('pointer-events-auto space-y-1 p-1'),
   option: cva([
     'text-sm text-foreground',
