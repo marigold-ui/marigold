@@ -31,10 +31,10 @@ export const Surface = meta.story({
       <Headline level="3">With Tailwind Classes</Headline>
       <Inline space="peer">
         <Base className="ui-surface ui-elevation-overlay shadow-fuchsia-600">
-          overlay / tw color
+          overlay / tw shadow color
         </Base>
         <Base className="ui-surface ui-elevation-overlay inset-shadow-sm/50 inset-shadow-fuchsia-600">
-          overlay / tw shadow
+          overlay / tw (inset) shadow
         </Base>
       </Inline>
       <Headline level="3">States</Headline>
