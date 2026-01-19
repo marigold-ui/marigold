@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import { Table } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
@@ -16,21 +17,26 @@ export interface TableViewProps extends Omit<RAC.TableProps, RemovedProps> {
   size?: string;
 }
 
-function BaseTableView({ variant, size, ...props }: TableViewProps) {
+const _TableView = ({ variant, size, ...props }: TableViewProps) => {
   const classNames = useClassNames({
     component: 'Table',
     variant,
     size,
   });
 
+  const ctx = useMemo(
+    () => ({ classNames, variant, size }),
+    [classNames, variant, size]
+  );
+
   return (
-    <TableViewContext.Provider value={{ classNames, variant, size }}>
+    <TableViewContext.Provider value={ctx}>
       <Table className={cn('group/table', classNames.table)} {...props} />
     </TableViewContext.Provider>
   );
-}
+};
 
-const TableView = Object.assign(BaseTableView, {
+const TableView = Object.assign(_TableView, {
   Header: TableViewHeader,
   Column: TableViewColumn,
   Body: TableViewBody,
