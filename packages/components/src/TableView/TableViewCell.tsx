@@ -11,29 +11,11 @@ export interface TableViewCellProps extends Omit<RAC.CellProps, RemovedProps> {
   children?: ReactNode;
 }
 
-const Inner = ({
-  columnId,
-  children,
-}: {
-  columnId?: RAC.Key;
-  children?: ReactNode;
-}) => {
-  const ctx = useContext(TableStateContext);
-
-  console.log(
-    columnId,
-    ctx?.collection.columns,
-    ctx?.collection.columns.find(col => col.key === columnId)
-  );
-
-  return <span>{children}</span>;
-};
-
 const TableViewCell = ({ children, ...props }: TableViewCellProps) => {
   const { classNames } = useTableViewContext();
   return (
     <Cell className={cn(classNames?.cell)} {...props}>
-      {({ id }) => <Inner columnId={id}>{children}</Inner>}
+      {children}
     </Cell>
   );
 };

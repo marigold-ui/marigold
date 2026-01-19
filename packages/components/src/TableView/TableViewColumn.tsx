@@ -8,15 +8,17 @@ import { useTableViewContext } from './Context';
 
 type RemovedProps = 'className' | 'style' | 'children';
 
-export interface TableViewColumnProps
-  extends Omit<RAC.ColumnProps, RemovedProps> {
+export interface TableViewColumnProps extends Omit<
+  RAC.ColumnProps,
+  RemovedProps
+> {
   children?: ReactNode;
   allowsResizing?: boolean;
 }
 
 const TableViewColumn = (props: TableViewColumnProps) => {
   const { classNames } = useTableViewContext();
-  console.log(props);
+
   return (
     <Column className={cn(classNames?.header)} {...props}>
       {({ allowsSorting, sortDirection }) => (
