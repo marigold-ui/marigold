@@ -32,6 +32,7 @@ import {
   TeaserList,
   Text,
 } from '@/app/_components/mdx-wrapper-components';
+import { Select } from '@/ui';
 import { Pre } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
@@ -75,6 +76,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     TeaserList,
 
     // Compound Components
+    Select: Object.assign(Select, {
+      Option: Select.Option,
+    }),
     SectionMessage: Object.assign(SectionMessage, {
       Title: SectionMessageTitle,
       Content: SectionMessageContent,
