@@ -1,6 +1,6 @@
 import { expect } from 'storybook/test';
 import { I18nProvider } from '@react-aria/i18n';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { makeFile } from './../test.utils';
 import { FileField } from './FileField';
 
@@ -132,18 +132,4 @@ export const Disabled = meta.story({
     label: 'Disabled',
     disabled: true,
   },
-  /*
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.queryByRole('button', { name: 'Hochladen' })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.queryByRole('button', { name: 'Hochladen' })
-    ).toBeDisabled();
-    await expect(canvas.queryByTestId('dropzone')).toHaveAttribute(
-      'data-disabled',
-      'true'
-    );
-  },
-  */
 });

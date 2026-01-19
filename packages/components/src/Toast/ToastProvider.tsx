@@ -12,9 +12,12 @@ export const queue = new ToastQueue<ToastContentProps>({
   // Wrap state updates in a CSS view transition.
   wrapUpdate(fn) {
     if ('startViewTransition' in document) {
-      document.startViewTransition(() => {
+      const transition = document.startViewTransition(() => {
         flushSync(fn);
       });
+      // Catch and suppress ViewTransition errors (e.g., when another transition is already running)
+      transition.ready.catch(() => {});
+      transition.finished.catch(() => {});
     } else {
       fn();
     }

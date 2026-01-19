@@ -1,10 +1,6 @@
-//@ts-ignore
-import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
   test: {
     exclude: [
       '**/node_modules/**',
@@ -14,8 +10,8 @@ export default defineConfig({
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
     ],
     testTimeout: 30000,
-    // @ts-ignore
     coverage: {
+      provider: 'istanbul',
       exclude: [
         '**/config/**',
         '**/docs*/**',
@@ -26,9 +22,6 @@ export default defineConfig({
         'storybook-static/**',
         '**/theme-plugins/**',
         'packages/components/src/_propTableTypes/**',
-        // needed for coverage not to break should be fixed soon
-        'packages/components/src/Accordion/useAccordionItem.ts',
-        'packages/components/src/Accordion/Accordion.tsx',
         '**/**/*.config.*',
         '**/**/index.*',
         'packages/components/src/hooks.ts',
@@ -37,20 +30,15 @@ export default defineConfig({
         'packages/system/src/style-props.tsx',
         'scripts/**',
         'packages/system/src/types/theme.ts',
+        '.storybook/**',
       ],
       thresholds: {
         statements: 90,
-        branches: 80,
+        branches: 85,
         functions: 90,
         lines: 90,
       },
       reporter: ['text', 'json', 'html', 'json-summary'], // Optional: Add coverage reports
     },
-    globals: true,
-    environment: 'jsdom', // Use jsdom for browser-like tests
-    setupFiles: [
-      './vitest.setup.ts',
-      './config/storybook/.storybook/vitest.setup.ts',
-    ], // Path to your setup file
   },
 });

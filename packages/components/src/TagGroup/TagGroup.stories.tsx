@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -11,6 +11,13 @@ import { Tag } from './Tag';
 const meta = preview.meta({
   title: 'Components/Tag',
   component: Tag.Group,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   args: {
     label: 'Categories',
   },
@@ -117,23 +124,22 @@ export const RemovableAllTags = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvas, userEvent }) => {
-    const removeAll = canvas.getByText('Remove all');
-    await userEvent.click(removeAll);
+});
 
-    await waitFor(() =>
-      expect(canvas.queryByText('News')).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
-      expect(canvas.queryByText('Travel')).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
-      expect(canvas.queryByText('Gaming')).not.toBeInTheDocument()
-    );
-    await waitFor(() =>
-      expect(canvas.queryByText('Shopping')).not.toBeInTheDocument()
-    );
+RemovableAllTags.test('Remove all tags test', async ({ canvas, userEvent }) => {
+  const removeAll = canvas.getByText('Remove all');
+  await userEvent.click(removeAll);
 
-    await userEvent.click(canvas.getByText('Reset'));
-  },
+  await waitFor(() =>
+    expect(canvas.queryByText('News')).not.toBeInTheDocument()
+  );
+  await waitFor(() =>
+    expect(canvas.queryByText('Travel')).not.toBeInTheDocument()
+  );
+  await waitFor(() =>
+    expect(canvas.queryByText('Gaming')).not.toBeInTheDocument()
+  );
+  await waitFor(() =>
+    expect(canvas.queryByText('Shopping')).not.toBeInTheDocument()
+  );
 });

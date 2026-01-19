@@ -1,7 +1,8 @@
 import { CalendarDate, DateValue } from '@internationalized/date';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
+import { expect } from 'storybook/test';
 import { I18nProvider } from '@react-aria/i18n';
-import preview from '../../../../config/storybook/.storybook/preview';
+import preview from '../../../../.storybook/preview';
 import { DateField } from './DateField';
 
 const meta = preview.meta({
@@ -105,6 +106,7 @@ export const Basic: any = meta.story({
 });
 
 export const ControlledDateField: any = meta.story({
+  tags: ['component-test'],
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(1970, 1, 1));
     return (
@@ -115,7 +117,7 @@ export const ControlledDateField: any = meta.story({
           onChange={newValue => setValue(newValue!)}
           {...args}
         />
-        <pre>
+        <pre data-testid="datefield-value" style={{ marginTop: '1rem' }}>
           <strong>DateField Value: </strong>
           {value &&
             'day:' +
@@ -126,6 +128,22 @@ export const ControlledDateField: any = meta.story({
               value?.year}
         </pre>
       </I18nProvider>
+    );
+  },
+  play: async ({ canvas, userEvent }) => {
+    const input = canvas.getAllByRole('spinbutton');
+    const result = canvas.getByTestId('datefield-value');
+
+    await userEvent.tab();
+    await userEvent.type(input[0], '16');
+    await userEvent.tab();
+    await userEvent.type(input[1], '02');
+    await userEvent.tab();
+    await userEvent.type(input[2], '1990');
+
+    await expect(input[2]).toHaveFocus();
+    await expect(result).toHaveTextContent(
+      'DateField Value: day:16 month: 2 year:1990'
     );
   },
 });
