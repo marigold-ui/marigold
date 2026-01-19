@@ -1,9 +1,8 @@
 import { StorybookHintMessage } from '@/app/_components/mdx-wrapper-components';
-import { getPageImage, source } from '@/lib/source';
+import { source } from '@/lib/source';
 import type { DocsPageData } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
-import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { RelativeTime } from '@/ui/RelativeTime';
 import {
