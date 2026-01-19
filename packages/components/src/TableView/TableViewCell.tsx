@@ -19,7 +19,7 @@ const TableViewCell = ({
   const { classNames } = useTableViewContext();
 
   return (
-    <Cell className={cn(classNames?.cell, textAlign[align])} {...props}>
+    <Cell className={cn(classNames.cell, textAlign[align])} {...props}>
       {children}
     </Cell>
   );

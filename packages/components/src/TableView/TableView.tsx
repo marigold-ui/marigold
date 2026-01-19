@@ -19,7 +19,7 @@ export interface TableViewProps extends Omit<RAC.TableProps, RemovedProps> {
 
 const _TableView = ({ variant, size, ...props }: TableViewProps) => {
   const classNames = useClassNames({
-    component: 'Table',
+    component: 'TableView',
     variant,
     size,
   });

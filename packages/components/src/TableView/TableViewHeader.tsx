@@ -26,23 +26,11 @@ const TableViewHeader = <T extends object>({
   const { classNames } = useTableViewContext();
 
   return (
-    <TableHeader className={cn(classNames?.thead)} {...otherProps}>
+    <TableHeader className={cn(classNames.head)} {...otherProps}>
       {/* Add extra columns for drag and drop and selection. */}
-      {allowsDragging && (
-        <Column
-          width={20}
-          minWidth={20}
-          style={{ width: 20 }}
-          className="TODO STYLING"
-        />
-      )}
+      {allowsDragging && <Column className={classNames.column} />}
       {selectionBehavior === 'toggle' && (
-        <Column
-          width={32}
-          minWidth={32}
-          style={{ width: 32 }}
-          className="TODO STYLING"
-        >
+        <Column className={classNames.column}>
           {selectionMode === 'multiple' && <Checkbox slot="selection" />}
         </Column>
       )}

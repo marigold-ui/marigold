@@ -20,7 +20,7 @@ const TableViewBody = <T extends object = object>({
   return (
     <TableBody
       {...props}
-      className={cn(classNames?.body)}
+      className={cn(classNames.body)}
       renderEmptyState={emptyState}
     />
   );

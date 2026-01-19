@@ -24,7 +24,7 @@ const TableViewColumn = ({
   const { classNames } = useTableViewContext();
 
   return (
-    <Column className={cn(classNames?.header, textAlign[align])} {...props}>
+    <Column className={cn(classNames.column, textAlign[align])} {...props}>
       {({ allowsSorting, sortDirection }) => (
         <div className="TODO">
           <Group role="presentation" tabIndex={-1}>

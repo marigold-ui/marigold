@@ -143,6 +143,10 @@ export type Theme = {
       'table' | 'headerRow' | 'header' | 'thead' | 'body' | 'row' | 'cell',
       ComponentStyleFunction<string, string>
     >;
+    TableView?: Record<
+      'table' | 'head' | 'column' | 'body' | 'row' | 'cell',
+      ComponentStyleFunction<string, string>
+    >;
     Tag?: Record<
       'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
       ComponentStyleFunction<string, string>
