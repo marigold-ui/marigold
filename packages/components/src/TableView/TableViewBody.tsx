@@ -3,18 +3,27 @@ import { TableBody } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { useTableViewContext } from './Context';
 
-type RemovedProps = 'className' | 'style';
+type RemovedProps = 'className' | 'style' | 'renderEmptyState';
 
-export type TableViewBodyProps<T extends object = object> = Omit<
+export interface TableViewBodyProps<T extends object = object> extends Omit<
   RAC.TableBodyProps<T>,
   RemovedProps
->;
+> {
+  emptyState?: RAC.TableBodyProps<T>['renderEmptyState'];
+}
 
-const TableViewBody = <T extends object = object>(
-  props: TableViewBodyProps<T>
-) => {
+const TableViewBody = <T extends object = object>({
+  emptyState,
+  ...props
+}: TableViewBodyProps<T>) => {
   const { classNames } = useTableViewContext();
-  return <TableBody className={cn(classNames?.body)} {...props} />;
+  return (
+    <TableBody
+      {...props}
+      className={cn(classNames?.body)}
+      renderEmptyState={emptyState}
+    />
+  );
 };
 
 export { TableViewBody };

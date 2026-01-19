@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useState } from 'storybook/preview-api';
+import { useEffect, useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
 import preview from '../../../../.storybook/preview';
@@ -211,6 +210,7 @@ export const ControlledTable = meta.story({
     ];
     const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
     const selected = Array.from(selectedKeys);
+
     return (
       <Stack space={3}>
         <TableView
@@ -238,7 +238,6 @@ export const ControlledTable = meta.story({
   },
 });
 
-// https://react-spectrum.adobe.com/react-aria/useTable.html#nested-columns
 export const NestedColumns = meta.story({
   render: args => (
     <TableView aria-label="Example table for nested columns" {...args}>
@@ -247,7 +246,7 @@ export const NestedColumns = meta.story({
           <TableView.Column isRowHeader>First Name</TableView.Column>
           <TableView.Column isRowHeader>Last Name</TableView.Column>
         </TableView.Column>
-        <TableView.Column title="Information">
+        <TableView.Column title="Details">
           <TableView.Column>Age</TableView.Column>
           <TableView.Column>Birthday</TableView.Column>
         </TableView.Column>
@@ -284,18 +283,16 @@ export const NestedColumns = meta.story({
 
 export const Empty = meta.story({
   render: args => (
-    <TableView
-      aria-label="Example table for nested columns"
-      emptyState={() => 'No results found.'}
-      {...args}
-    >
+    <TableView aria-label="Example table for nested columns" {...args}>
       <TableView.Header>
         <TableView.Column>First Name</TableView.Column>
         <TableView.Column>Last Name</TableView.Column>
         <TableView.Column>Age</TableView.Column>
         <TableView.Column>Birthday</TableView.Column>
       </TableView.Header>
-      <TableView.Body>{[]}</TableView.Body>
+      <TableView.Body emptyState={() => 'No results found.'}>
+        {[]}
+      </TableView.Body>
     </TableView>
   ),
 });
