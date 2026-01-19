@@ -20,9 +20,6 @@ slack-notification.json
 
 # debug logs
 *.pnpm-debug.log*
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # next.js
 .next
@@ -35,9 +32,6 @@ out
 docs/.source
 docs/.registry/
 
-# yarn/pnpm
-.pnp
-.pnp.js
 
 ## env
 docs/.env
