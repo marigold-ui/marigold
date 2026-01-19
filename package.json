@@ -19,7 +19,7 @@
     "@marigold/eslint-config": "workspace:*",
     "@marigold/prettier-config": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@parcel/watcher": "2.5.1",
+    "@parcel/watcher": "2.5.4",
     "@storybook/addon-a11y": "^10.1.11",
     "@storybook/addon-docs": "^10.1.11",
     "@storybook/addon-vitest": "10.1.11",
