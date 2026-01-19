@@ -1,11 +1,8 @@
 import { baseUrl } from '@/lib/config';
-import { getPageImage, source } from '@/lib/source';
 import type { ReactNode } from 'react';
-import { notFound } from 'next/navigation';
 import { ImageResponse } from 'next/og';
+import type { NextRequest } from 'next/server';
 import { Logo } from '@/ui/Logo';
-
-export const revalidate = false;
 
 // Helper
 // ---------------
@@ -68,15 +65,9 @@ const Flower = ({
 
 // Handler
 // ---------------
-export async function GET(
-  _req: Request,
-  { params }: { params: Promise<{ slug: string[] }> }
-) {
-  const { slug } = await params;
-  const page = source.getPage(slug.slice(0, -1));
-  if (!page) notFound();
-
-  const title = page.data.title;
+export const GET = async (req: NextRequest) => {
+  const url = new URL(req.url);
+  const title = url.searchParams.get('title') || '';
 
   // Load Inter font
   const fontData = await fetch(new URL('/fonts/Inter-Black.ttf', baseUrl)).then(
@@ -166,11 +157,4 @@ export async function GET(
       },
     ],
   });
-}
-
-export function generateStaticParams() {
-  return source.getPages().map(page => ({
-    lang: page.locale,
-    slug: getPageImage(page).segments,
-  }));
-}
+};
