@@ -3,7 +3,7 @@
   "version": "16.1.0",
   "private": true,
   "scripts": {
-    "build": "pnpm changelog:build && pnpm registry:build && pnpm build:component-props && next build",
+    "build": "pnpm build:changelog && pnpm registry:build && pnpm build:component-props && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && tsc --noEmit",
@@ -11,7 +11,7 @@
     "lint": "eslint",
     "registry:build": "node scripts/build-registry.mjs",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
-    "changelog:build": "zx ./scripts/build-changelog.mjs"
+    "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
     "@internationalized/date": "3.10.1",
