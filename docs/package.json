@@ -3,7 +3,7 @@
   "version": "16.1.0",
   "private": true,
   "scripts": {
-    "build": "pnpm run changelog:build && pnpm run registry:build && pnpm run build:component-props && next build",
+    "build": "pnpm changelog:build && pnpm registry:build && pnpm build:component-props && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && tsc --noEmit",
