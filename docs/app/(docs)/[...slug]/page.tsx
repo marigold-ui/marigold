@@ -68,17 +68,3 @@ function getMdxComponentsConfig(page: any) {
 export async function generateStaticParams() {
   return source.generateParams();
 }
-
-export async function generateMetadata(props: PageProps): Promise<Metadata> {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
-  if (!page) notFound();
-
-  return {
-    title: page.data.title,
-    description: page.data.description,
-    openGraph: {
-      images: getPageImage(page).url,
-    },
-  };
-}
