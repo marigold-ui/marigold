@@ -29,7 +29,7 @@ test('supports base styling', () => {
   );
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:state-focus-borderless outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 
@@ -39,7 +39,7 @@ test('supports a custom variant', () => {
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:state-focus-borderless outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 
@@ -75,7 +75,7 @@ test('supports disabled prop', () => {
   expect(input).toBeDisabled();
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:state-focus-borderless outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 
