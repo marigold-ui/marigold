@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
-import { useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { Cell, TableStateContext } from 'react-aria-components';
+import { Cell } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { useTableViewContext } from './Context';
 
