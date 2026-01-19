@@ -32,7 +32,8 @@ export const gridColumn = {
 // Props
 // ---------------
 export interface ContainerProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends
+    SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
     AriaRegionProps {
   children?: ReactNode;
   /**

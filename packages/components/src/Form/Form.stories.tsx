@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
+import preview from '.storybook/preview';
 import { Link } from '@marigold/components';
-import preview from '../../../../.storybook/preview';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';

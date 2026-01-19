@@ -1,5 +1,5 @@
 import { useState } from 'storybook/preview-api';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';

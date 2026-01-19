@@ -1,8 +1,8 @@
 import { CalendarDate, DateValue } from '@internationalized/date';
 import { useState } from 'react';
 import { expect } from 'storybook/test';
+import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
-import preview from '../../../../.storybook/preview';
 import { DateField } from './DateField';
 
 const meta = preview.meta({

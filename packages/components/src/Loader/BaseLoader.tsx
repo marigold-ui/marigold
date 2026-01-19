@@ -9,15 +9,10 @@ import type { LoaderVisualType } from './Loader';
 
 // Props
 // ---------------
-export interface BaseLoaderProps
-  extends Pick<
-    ProgressBarProps,
-    | 'id'
-    | 'aria-label'
-    | 'aria-labelledby'
-    | 'aria-describedby'
-    | 'aria-details'
-  > {
+export interface BaseLoaderProps extends Pick<
+  ProgressBarProps,
+  'id' | 'aria-label' | 'aria-labelledby' | 'aria-describedby' | 'aria-details'
+> {
   /**
    * Children of the component that will make up the label.
    */

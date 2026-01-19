@@ -18,7 +18,8 @@ type RemovedProps =
   | 'defaultValue';
 
 export interface TextAreaProps
-  extends Omit<RAC.TextFieldProps, RemovedProps>,
+  extends
+    Omit<RAC.TextFieldProps, RemovedProps>,
     Pick<RAC.TextAreaProps, 'rows'>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;

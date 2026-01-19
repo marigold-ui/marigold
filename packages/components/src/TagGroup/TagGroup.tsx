@@ -10,7 +10,8 @@ import { TagGroupRemoveAll } from './TagGroupRemoveAll';
 type RemovedProps = 'className' | 'style' | 'children' | 'isRequired';
 
 export interface TagGroupProps
-  extends Omit<RAC.TagGroupProps, RemovedProps>,
+  extends
+    Omit<RAC.TagGroupProps, RemovedProps>,
     Pick<TagListProps<object>, 'items' | 'children'>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description'> {
   variant?: string;

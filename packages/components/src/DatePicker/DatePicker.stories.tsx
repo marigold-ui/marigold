@@ -1,8 +1,8 @@
 import { CalendarDate } from '@internationalized/date';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
+import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
-import preview from '../../../../.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { DatePicker } from './DatePicker';
 

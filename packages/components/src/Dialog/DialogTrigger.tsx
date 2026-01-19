@@ -14,7 +14,8 @@ type RemovedProps =
   | 'isKeyboardDismissDisabled';
 
 export interface DialogTriggerProps
-  extends Omit<RAC.DialogTriggerProps, 'isOpen'>,
+  extends
+    Omit<RAC.DialogTriggerProps, 'isOpen'>,
     Omit<DialogContextProps, RemovedProps> {
   /** Whether the overlay is open by default (controlled). */
   open?: boolean;

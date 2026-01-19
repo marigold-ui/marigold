@@ -20,7 +20,8 @@ type RemovedProps =
   | 'slot';
 
 export interface TextFieldProps
-  extends Omit<RAC.TextFieldProps, RemovedProps>,
+  extends
+    Omit<RAC.TextFieldProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;

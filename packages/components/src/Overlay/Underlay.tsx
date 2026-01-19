@@ -3,11 +3,10 @@ import { cn, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
-export interface UnderlayProps
-  extends Omit<
-    RAC.ModalOverlayProps,
-    'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
-  > {
+export interface UnderlayProps extends Omit<
+  RAC.ModalOverlayProps,
+  'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
+> {
   variant?: string;
   size?: string;
   open?: boolean;
