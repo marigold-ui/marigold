@@ -132,18 +132,4 @@ export const Disabled = meta.story({
     label: 'Disabled',
     disabled: true,
   },
-  /*
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.queryByRole('button', { name: 'Hochladen' })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.queryByRole('button', { name: 'Hochladen' })
-    ).toBeDisabled();
-    await expect(canvas.queryByTestId('dropzone')).toHaveAttribute(
-      'data-disabled',
-      'true'
-    );
-  },
-  */
 });

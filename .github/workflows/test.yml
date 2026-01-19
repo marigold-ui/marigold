@@ -36,7 +36,7 @@ jobs:
       - name: Download latest Playwright Browsers
         run: pnpm exec playwright install
       - name: Run Test Coverage
-        run: pnpm test:ci --coverage --no-cache
+        run: pnpm test:coverage
 
       - name: 'Report Coverage'
         uses: davelosert/vitest-coverage-report-action@v2
