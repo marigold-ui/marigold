@@ -4,7 +4,8 @@ import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 export interface CenterProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends
+    SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
     AriaRegionProps {
   children?: ReactNode;
   /**

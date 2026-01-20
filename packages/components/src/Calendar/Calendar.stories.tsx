@@ -2,7 +2,7 @@ import { CalendarDate } from '@internationalized/date';
 import { DateValue } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Calendar } from './Calendar';
 
 const meta = preview.meta({

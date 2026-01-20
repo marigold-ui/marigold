@@ -44,8 +44,10 @@ type RemovedProps =
   | 'isRequired'
   | 'isSelected';
 
-export interface RadioGroupProps
-  extends Omit<RAC.RadioGroupProps, RemovedProps> {
+export interface RadioGroupProps extends Omit<
+  RAC.RadioGroupProps,
+  RemovedProps
+> {
   variant?: string;
   size?: string;
 

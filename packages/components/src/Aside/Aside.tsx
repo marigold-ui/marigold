@@ -5,7 +5,8 @@ import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps, NonZeroPercentage } from '@marigold/types';
 
 export interface AsideProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends
+    SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
     AriaRegionProps {
   /**
    * The children of the component.

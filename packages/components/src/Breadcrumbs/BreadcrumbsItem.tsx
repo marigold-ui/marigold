@@ -3,8 +3,10 @@ import type RAC from 'react-aria-components';
 
 type RemovedProps = 'className' | 'style';
 
-export interface BreadcrumbsItemProps
-  extends Omit<RAC.BreadcrumbProps, RemovedProps> {
+export interface BreadcrumbsItemProps extends Omit<
+  RAC.BreadcrumbProps,
+  RemovedProps
+> {
   variant?: 'default' | (string & {});
   size?: 'small' | 'default' | 'large' | (string & {});
 

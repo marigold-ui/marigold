@@ -17,8 +17,7 @@ const fixedForwardRef = forwardRef as FixedForwardRef;
 // Props
 // ---------------
 export interface FieldBaseProps<T extends ElementType>
-  extends WidthProp,
-    Pick<HelpTextProps, 'description' | 'errorMessage'> {
+  extends WidthProp, Pick<HelpTextProps, 'description' | 'errorMessage'> {
   as?: T;
   /**
    * Specifies the label of the field.

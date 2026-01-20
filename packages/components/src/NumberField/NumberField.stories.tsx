@@ -1,6 +1,6 @@
 import { useState } from 'storybook/preview-api';
 import { expect, userEvent, within } from 'storybook/test';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Inline } from '../Inline/Inline';
 import { NumberField } from './NumberField';
 

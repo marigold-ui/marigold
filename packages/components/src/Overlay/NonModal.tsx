@@ -51,7 +51,8 @@ export interface NonModalRenderProps {
 }
 
 interface NonModalInnerProps
-  extends AriaNonModalProps,
+  extends
+    AriaNonModalProps,
     AriaLabelingProps,
     SlotProps,
     RenderProps<NonModalRenderProps> {
@@ -113,7 +114,8 @@ const NonModalInner = ({ state, isExiting, ...props }: NonModalInnerProps) => {
 // Props
 // ---------------
 export interface NonModalProps
-  extends Omit<OverlayTriggerProps, 'isOpen'>,
+  extends
+    Omit<OverlayTriggerProps, 'isOpen'>,
     AriaLabelingProps,
     SlotProps,
     Pick<NonModalInnerProps, 'style' | 'className' | 'children'> {

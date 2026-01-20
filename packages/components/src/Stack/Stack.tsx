@@ -6,7 +6,8 @@ import type { AriaRegionProps } from '@marigold/types';
 // Props
 // ---------------
 export interface StackProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends
+    SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
     AriaRegionProps {
   /**
    * Children of the component.

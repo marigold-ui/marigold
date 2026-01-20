@@ -1,5 +1,5 @@
+import preview from '.storybook/preview';
 import { Ticket } from '@marigold/icons';
-import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';
 import { Stack } from '../Stack/Stack';
