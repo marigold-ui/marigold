@@ -13,6 +13,9 @@
 .npmrc
 .nvmrc
 .prettierignore
+.cursorrules
+.claude
+.aiassistant
 
 coverage
 dist
