@@ -5,10 +5,10 @@ import preview from '../../../../.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
-import { Checkbox } from '../Checkbox/Checkbox';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextArea } from '../TextArea/TextArea';
 import type { Selection } from '../types';
@@ -302,9 +302,9 @@ export const WidthsAndOverflow = meta.story({
           Column widths: ID 80px, Name min 200px, Status 100px, Location 1fr,
           Balance 120px.
         </p>
-        <Checkbox
+        <Switch
           label="Truncate cell content"
-          checked={overflow === 'truncate'}
+          selected={overflow === 'truncate'}
           onChange={checked => setOverflow(checked ? 'truncate' : 'wrap')}
         />
       </Stack>
