@@ -176,13 +176,13 @@ export const Basic = meta.story({
 export const ControlledTable = meta.story({
   render: args => {
     const columns = [
-      { name: 'Name', key: 'name' },
-      { name: 'Firstname', key: 'firstname' },
-      { name: 'House', key: 'house' },
-      { name: 'Year of birth', key: 'year' },
-    ];
+      { name: 'Name', id: 'name', isRowHeader: true },
+      { name: 'Firstname', id: 'firstname', isRowHeader: false },
+      { name: 'House', id: 'house', isRowHeader: false },
+      { name: 'Year of birth', id: 'year', isRowHeader: false },
+    ] as const;
 
-    const rows: { [key: string]: string }[] = [
+    const rows = [
       {
         id: '1',
         name: 'Potter',
@@ -211,7 +211,8 @@ export const ControlledTable = meta.story({
         house: 'Ravenclaw',
         year: '1981',
       },
-    ];
+    ] as const;
+
     const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
     const selected = Array.from(selectedKeys);
 
@@ -224,14 +225,16 @@ export const ControlledTable = meta.story({
           onSelectionChange={setSelectedKeys}
         >
           <TableView.Header columns={columns}>
-            {column => <TableView.Column>{column.name}</TableView.Column>}
+            {column => (
+              <TableView.Column isRowHeader={column.isRowHeader} id={column.id}>
+                {column.name}
+              </TableView.Column>
+            )}
           </TableView.Header>
           <TableView.Body items={rows}>
             {item => (
-              <TableView.Row>
-                {columnKey => (
-                  <TableView.Cell>{item[columnKey]}</TableView.Cell>
-                )}
+              <TableView.Row columns={columns}>
+                {column => <TableView.Cell>{item[column.id]}</TableView.Cell>}
               </TableView.Row>
             )}
           </TableView.Body>
@@ -240,49 +243,6 @@ export const ControlledTable = meta.story({
       </Stack>
     );
   },
-});
-
-export const NestedColumns = meta.story({
-  render: args => (
-    <TableView aria-label="Example table for nested columns" {...args}>
-      <TableView.Header>
-        <TableView.Column title="Name">
-          <TableView.Column isRowHeader>First Name</TableView.Column>
-          <TableView.Column isRowHeader>Last Name</TableView.Column>
-        </TableView.Column>
-        <TableView.Column title="Details">
-          <TableView.Column>Age</TableView.Column>
-          <TableView.Column>Birthday</TableView.Column>
-        </TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
-        <TableView.Row>
-          <TableView.Cell>Sam</TableView.Cell>
-          <TableView.Cell>Smith</TableView.Cell>
-          <TableView.Cell>36</TableView.Cell>
-          <TableView.Cell>May 3</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row>
-          <TableView.Cell>Julia</TableView.Cell>
-          <TableView.Cell>Jones</TableView.Cell>
-          <TableView.Cell>24</TableView.Cell>
-          <TableView.Cell>February 10</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row>
-          <TableView.Cell>Peter</TableView.Cell>
-          <TableView.Cell>Parker</TableView.Cell>
-          <TableView.Cell>28</TableView.Cell>
-          <TableView.Cell>September 7</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row>
-          <TableView.Cell>Bruce</TableView.Cell>
-          <TableView.Cell>Wayne</TableView.Cell>
-          <TableView.Cell>32</TableView.Cell>
-          <TableView.Cell>December 18</TableView.Cell>
-        </TableView.Row>
-      </TableView.Body>
-    </TableView>
-  ),
 });
 
 export const Empty = meta.story({

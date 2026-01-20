@@ -28,3 +28,8 @@ Test styling
 ## Not Doing: Virtualization
 
 As long as we keep at 50 lines and use pagination we should be fine
+
+## Breaking
+
+- dynamic tables work slightly differently (dynamic Rows get have the whole column in their callback function, not only their id)
+- emptyState is no on the body not longer on the table itself
