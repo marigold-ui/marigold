@@ -36,12 +36,13 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['compact', 'expanded'],
-      description: 'size for the table: for example: compact',
+      options: ['default', 'compact', 'spacious'],
+      description: 'size for the table',
     },
   },
   args: {
     variant: 'default',
+    size: 'default',
     selectionMode: 'none',
     stretch: false,
   },
@@ -388,94 +389,6 @@ export const Sorting = meta.story({
       </>
     );
   },
-});
-
-export const Compact = meta.story({
-  render: args => (
-    <TableView
-      aria-label="Table with multiple selection"
-      selectionMode="multiple"
-      size="compact"
-      {...args}
-    >
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-        <TableView.Column>Firstname</TableView.Column>
-        <TableView.Column>House</TableView.Column>
-        <TableView.Column>Year of birth</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
-        <TableView.Row key={1}>
-          <TableView.Cell>Potter</TableView.Cell>
-          <TableView.Cell>Harry</TableView.Cell>
-          <TableView.Cell>Gryffindor</TableView.Cell>
-          <TableView.Cell>1980</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row key={2}>
-          <TableView.Cell>Malfoy</TableView.Cell>
-          <TableView.Cell>Draco</TableView.Cell>
-          <TableView.Cell>Slytherin</TableView.Cell>
-          <TableView.Cell>1980</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row key={3}>
-          <TableView.Cell>Diggory</TableView.Cell>
-          <TableView.Cell>Cedric</TableView.Cell>
-          <TableView.Cell>Hufflepuff</TableView.Cell>
-          <TableView.Cell>1977</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row key={4}>
-          <TableView.Cell>Lovegood</TableView.Cell>
-          <TableView.Cell>Luna</TableView.Cell>
-          <TableView.Cell>Ravenclaw</TableView.Cell>
-          <TableView.Cell>1981</TableView.Cell>
-        </TableView.Row>
-      </TableView.Body>
-    </TableView>
-  ),
-});
-
-export const Expanded = meta.story({
-  render: args => (
-    <TableView
-      aria-label="Table with multiple selection"
-      selectionMode="multiple"
-      size="expanded"
-      {...args}
-    >
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-        <TableView.Column>Firstname</TableView.Column>
-        <TableView.Column>House</TableView.Column>
-        <TableView.Column>Year of birth</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
-        <TableView.Row key={1}>
-          <TableView.Cell>Potter</TableView.Cell>
-          <TableView.Cell>Harry</TableView.Cell>
-          <TableView.Cell>Gryffindor</TableView.Cell>
-          <TableView.Cell>1980</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row key={2}>
-          <TableView.Cell>Malfoy</TableView.Cell>
-          <TableView.Cell>Draco</TableView.Cell>
-          <TableView.Cell>Slytherin</TableView.Cell>
-          <TableView.Cell>1980</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row key={3}>
-          <TableView.Cell>Diggory</TableView.Cell>
-          <TableView.Cell>Cedric</TableView.Cell>
-          <TableView.Cell>Hufflepuff</TableView.Cell>
-          <TableView.Cell>1977</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row key={4}>
-          <TableView.Cell>Lovegood</TableView.Cell>
-          <TableView.Cell>Luna</TableView.Cell>
-          <TableView.Cell>Ravenclaw</TableView.Cell>
-          <TableView.Cell>1981</TableView.Cell>
-        </TableView.Row>
-      </TableView.Body>
-    </TableView>
-  ),
 });
 
 export const Static = meta.story({
