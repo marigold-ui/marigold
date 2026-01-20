@@ -111,8 +111,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
     >
       <IconButton
         className={cn(
-          // need to overwrite w-full from inputContainer
-          'flex w-(--field-width)! items-center justify-between gap-1 overflow-hidden',
+          'flex max-w-(--field-width) items-center justify-between gap-1 overflow-hidden',
           classNames.select
         )}
       >

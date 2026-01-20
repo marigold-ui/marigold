@@ -8,13 +8,16 @@ import { Checkbox } from '../Checkbox/Checkbox';
 import { Columns } from '../Columns/Columns';
 import { ComboBox } from '../ComboBox/ComboBox';
 import { DateField } from '../DateField/DateField';
+import { Grid } from '../Grid/Grid';
 import { Inline } from '../Inline/Inline';
+import { NumberField } from '../NumberField/NumberField';
 import { Radio } from '../Radio/Radio';
 import { Select } from '../Select/Select';
 import { SelectList } from '../SelectList/SelectList';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
+import { TextArea } from '../TextArea/TextArea';
 import { TextField } from '../TextField/TextField';
 import { Form } from './Form';
 
@@ -156,4 +159,73 @@ export const Selected = meta.story({
       </Form>
     );
   },
+});
+
+export const LayoutVariations = meta.story({
+  render: () => (
+    <Stack space={10}>
+      {/* Inline/Stack Layout */}
+      <Stack space={5}>
+        <h3>Inline/Stack Layout</h3>
+        <Inline space={4} alignY="bottom" noWrap>
+          <TextField label="Name" width={64} />
+          <Select label="Country" width={40}>
+            <Select.Option id="us">United States</Select.Option>
+            <Select.Option id="uk">United Kingdom</Select.Option>
+            <Select.Option id="de">Germany</Select.Option>
+          </Select>
+          <NumberField label="Age" width={20} hideStepper />
+          <DateField label="Birth Date" width={'fit'} />
+        </Inline>
+        <TextArea label="Comments" width={'1/2'} />
+      </Stack>
+
+      {/* Grid Layout */}
+      <Stack space={5}>
+        <h3>Grid Layout</h3>
+        <Grid
+          areas={['name country', 'age birthdate', 'comments comments']}
+          columns={[1, 1]}
+          rows={['auto', 'auto', 'auto']}
+          space={4}
+        >
+          <Grid.Area name="name">
+            <TextField label="Name" />
+          </Grid.Area>
+          <Grid.Area name="country">
+            <Select label="Country">
+              <Select.Option id="us">United States</Select.Option>
+              <Select.Option id="uk">United Kingdom</Select.Option>
+              <Select.Option id="de">Germany</Select.Option>
+            </Select>
+          </Grid.Area>
+          <Grid.Area name="age">
+            <NumberField label="Age" />
+          </Grid.Area>
+          <Grid.Area name="birthdate">
+            <DateField label="Birth Date" />
+          </Grid.Area>
+          <Grid.Area name="comments">
+            <TextArea label="Comments" />
+          </Grid.Area>
+        </Grid>
+      </Stack>
+
+      {/* Plain div with display block */}
+      <Stack space={5}>
+        <h3>Plain Div with Display Block</h3>
+        <div style={{ display: 'block' }}>
+          <TextField label="Name" />
+          <Select label="Country">
+            <Select.Option id="us">United States</Select.Option>
+            <Select.Option id="uk">United Kingdom</Select.Option>
+            <Select.Option id="de">Germany</Select.Option>
+          </Select>
+          <NumberField label="Age" />
+          <DateField label="Birth Date" />
+          <TextArea label="Comments" />
+        </div>
+      </Stack>
+    </Stack>
+  ),
 });

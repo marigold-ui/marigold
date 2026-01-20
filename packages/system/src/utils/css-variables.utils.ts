@@ -127,6 +127,6 @@ export const createWidthVar = (name: string, value: string) => {
     [`--${name}`]:
       widthKeywords[value] ||
       (isScale(value) && `calc(var(--spacing) * ${value})`) ||
-      (isFraction(value) && `calc(${value.split('/').join(' / ')} * 100%)`),
+      (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`),
   } as CSSProperties;
 };

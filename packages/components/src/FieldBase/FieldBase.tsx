@@ -64,8 +64,9 @@ const _FieldBase = <T extends ElementType>(
       ref={ref}
       className={cn(
         'group/field flex flex-col',
-        // to prevent layout shifts
-        width ? 'w-fit' : 'w-full',
+        // to prevent layout shifts but then fraction widths do not work well
+        //width ? 'w-fit' : 'w-full',
+        'w-full',
         classNames,
         className
       )}
