@@ -22,8 +22,10 @@ const intlMessages = {
 
 // Props
 // ---------------
-export interface SearchInputProps
-  extends Omit<InputProps, 'icon' | 'className'> {
+export interface SearchInputProps extends Omit<
+  InputProps,
+  'icon' | 'className'
+> {
   loading?: boolean;
   className?: {
     input?: string;
@@ -46,7 +48,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           className?.input
         )}
         ref={ref}
-        icon={<Search size="16" />}
+        icon={<Search aria-hidden="true" size="16" />}
         action={
           loading ? (
             <ProgressCircle />

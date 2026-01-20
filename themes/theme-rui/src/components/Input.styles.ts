@@ -24,7 +24,7 @@ export const Input: ThemeComponent<'Input'> = {
     '[&::-webkit-color-swatch]:border-0 [&::-moz-color-swatch]:border-0',
   ]),
   icon: cva([
-    'pointer-events-none left-2',
+    'pointer-events-none left-2.5',
     'text-muted-foreground disabled:text-disabled-foreground',
     'disabled:text-gray-50',
   ]),
