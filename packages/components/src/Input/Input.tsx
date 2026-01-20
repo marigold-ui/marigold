@@ -2,7 +2,6 @@ import { ReactElement, cloneElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Input } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { width as twWidth } from '@marigold/system';
 
 // Props
 // ---------------
@@ -62,7 +61,7 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
         <Input
           {...props}
           className={cn(
-            'w-full flex-1',
+            'flex-1',
             'disabled:cursor-not-allowed',
             '[&[type=file]]:border-none [&[type=file]]:p-0',
             '[&[type=color]]:ml-0 [&[type=color]]:border-none [&[type=color]]:bg-transparent [&[type=color]]:p-0',

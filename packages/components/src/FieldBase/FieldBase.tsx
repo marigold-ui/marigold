@@ -59,7 +59,6 @@ const _FieldBase = <T extends ElementType>(
     size,
   });
 
-  console.log('field width:', width);
   return (
     <Component
       ref={ref}

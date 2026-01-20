@@ -17,7 +17,7 @@ export const NumberField: ThemeComponent<'NumberField'> = {
   ]),
   input: cva([
     'tabular-nums text-foreground px-3 py-2',
-    'min-w-0 flex-1 bg-transparent',
+    'w-full flex-1 bg-transparent',
     'group-[[data-stepper]]/field:text-center',
     'disabled:text-disabled-foreground disabled:bg-disabled',
   ]),
