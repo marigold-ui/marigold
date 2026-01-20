@@ -1,16 +1,36 @@
-# AI Agent Guidelines
+---
+name: system-instructions
+description: |
+  Use this agent to ensure that guidelines are adhered to during implementation.  Examples:
 
-## 1. Project Context
+    <example>
+    Context: User needs to build a new UI component
+    user: "Create a reservation card component"
+    assistant: "I'll implement the reservation card following design system patterns."
+    </example>
+
+    <example>
+    Context: User needs to fix frontend styling or behavior
+    user: "The modal isn't closing properly on mobile"
+    assistant: "I'll investigate and fix the modal behavior, testing with Playwright to verify."
+    </example>
+model: inherit
+color: cyan
+tools: [ "Read", "Write", "MultiEdit"]
+skills: git, testing-codequality-check, typescript-codequality-check
+---
+# AI Agent Guidelines
+## Project Context
 
 **Summary**: A monorepo for the Marigold Design System - a React component library built on react-aria and Tailwind CSS.
 
 **Architecture**:
 
-- **Frontend**: React 19.x with TypeScript 5.9.x
+- **Frontend**: React with TypeScript
 - **Components**: React Aria Components (accessible React components)
-- **Styling**: Tailwind CSS 4.x (utility-first CSS framework)
+- **Styling**: Tailwind CSS (utility-first CSS framework)
 - **Testing**: Vitest with Testing Library and Playwright for Storybook tests
-- **Documentation**: Next.js 16.x with App Router
+- **Documentation**: Next.js with App Router
 - **Monorepo Management**: pnpm workspaces with Turbo
 - **Build Tools**: tsdown for component builds, Vite for testing
 
@@ -25,7 +45,7 @@
 - `docs` - Next.js documentation site
 - `.storybook` - Storybook configuration
 
-## 2. Core Directives (The "Golden Rules")
+## Core Directives (The "Golden Rules")
 
 - **Brevity**: Provide complete, functional code. Explain only when explicitly asked.
 - **Language**: TypeScript only. Strict typing is required - no `any` types.
@@ -35,61 +55,11 @@
 - **Error Handling**: Early returns preferred. Always handle edge cases explicitly.
 - **Testing**: Write tests using Vitest and Testing Library. Reference Storybook stories in tests.
 
-## 3. Tech Stack & Versions
+## Tech Stack & Versions
 
-- **Node**: 22.x
-- **Package Manager**: pnpm 10.x
-- **React**: 19.x
-- **TypeScript**: 5.x
-- **React Aria Components**: 1.x
-- **Tailwind CSS**: 4.x
-- **Next.js**: 16.x (for docs)
-- **Vitest**: 4.x
-- **Storybook**: 10.x
+**Important**: This project uses **pnpm workspaces**, not npm or yarn. Always use `pnpm` commands. ALWAYS check `package.json` for exact versions.
 
-**Important**: This project uses **pnpm workspaces**, not npm or yarn. Always use `pnpm` commands.
-
-## 4. Commands
-
-*Always use these specific commands to run/test:*
-
-**Development**:
-
-- Start documentation: `pnpm start` (or `pnpm --filter @marigold/docs dev`)
-- Start Storybook: `pnpm sb`
-- Watch component builds: `pnpm --filter @marigold/components watch`
-
-**Building**:
-
-- Build components & themes: `pnpm build`
-- Build docs: `pnpm build:docs`
-- Build Storybook: `pnpm build:sb`
-- Build themes only: `pnpm build:themes`
-- Build component props: `pnpm build:component-props`
-
-**Testing**:
-
-- Run all tests: `pnpm test`
-- Run unit tests: `pnpm test:unit`
-- Run Storybook tests: `pnpm test:sb`
-- Run with coverage: `pnpm test:coverage`
-
-**Code Quality**:
-
-- Lint: `pnpm lint`
-- Format: `pnpm format`
-- Format & fix: `pnpm format:fix`
-- Type check: `pnpm typecheck`
-- Type check only: `pnpm typecheck:only`
-
-**Utilities**:
-
-- Clean all: `pnpm clean`
-- Clean builds: `pnpm clean:build`
-- Generate registry: `pnpm registry`
-- Changesets: `pnpm changeset`
-
-## 5. Coding Standards (Do's and Don'ts)
+## Coding Standards (Do's and Don'ts)
 
 ### DO:
 
@@ -102,7 +72,7 @@
 - Define component interfaces with removed props using: `Omit<RAC.ComponentProps, 'isDisabled' | 'className'>`.
 - Import types with `import type` for better tree-shaking.
 - Use Tailwind utility classes through the theming system (never inline `className`).
-- Write tests that reference Storybook stories (e.g., `import { Basic } from './Button.stories'`).
+- **Important**:Write tests that reference Storybook stories (e.g., `import { Basic } from './Button.stories'`) and follow the pattern Arrange, Act, Assert.
 - Add `data-testid` for test selectors when needed.
 - Export components with named exports.
 - Use React Context for component composition (see `AccordionContext`, `DrawerContext` patterns).
@@ -120,7 +90,7 @@
 - Do NOT skip accessibility considerations.
 - Do NOT bypass the theming system with custom CSS.
 
-## 6. Component Architecture Patterns
+## Component Architecture Patterns
 
 ### Component Structure:
 
@@ -185,7 +155,7 @@ test('renders component', () => {
 });
 ```
 
-## 7. File Organization
+## File Organization
 
 **Component Directory Structure**:
 
@@ -207,7 +177,7 @@ themes/theme-rui/src/components/ComponentName/
 packages/system/src/types/theme.ts # Theme interface
 ```
 
-## 8. Monorepo Workflow
+## Monorepo Workflow
 
 - Changes to `@marigold/components` require rebuilding: `pnpm --filter @marigold/components build`
 - Changes to themes require: `pnpm build:themes`
@@ -215,7 +185,7 @@ packages/system/src/types/theme.ts # Theme interface
 - Use workspace protocol for internal dependencies: `workspace:*`
 - Turbo handles caching and parallel builds
 
-## 9. Accessibility Requirements
+## Accessibility Requirements
 
 - All interactive components must be keyboard accessible
 - Use semantic HTML and ARIA attributes from react-aria
@@ -223,19 +193,22 @@ packages/system/src/types/theme.ts # Theme interface
 - Ensure proper focus management
 - Test with Storybook a11y addon
 
-## 10. Common Gotchas
+## Critical Guardrails
+
+Before implementing any UI changes, you MUST verify:
+
+1. **Design system first**: Check if Marigold/RUI provides the necessary component/ CSS tokens before custom implementation
+2. **Accessibility required**: All changes must meet WCAG 2.1 AA - no exceptions
+3. **Verify with Playwright**: Use browser automation to confirm changes work before marking complete
+4. **CSS build required**: After CSS changes, run `docker exec core-react pnpm css:build`
+5. **Code quality required**: Run `typescript-codequality-check` skill after TypeScript changes
+
+## Common Gotchas
 
 - **Build before test**: Components must be built before running docs locally
 - **pnpm only**: Do NOT use npm or yarn commands
 - **React 19**: This project uses React 19 patterns (newer than many examples online)
 - **Workspace dependencies**: Changes to system/icons require rebuilding dependent packages
 - **Strict TypeScript**: The project enforces strict type checking
-
-## 11. Version Control & Releases
-
-- Use conventional commits
-- Changes tracked via `@changesets/cli`: run `pnpm changeset` for versioning
-- Main branch: `main`
-- Follow GitHub Flow for PRs
-- Add tests for new features
-- Update documentation for API changes
+- **Code quality required**: Run `typescript-codequality-check` skill after TypeScript changes
+- **Testing required**: Run `testing-codequality-check` skill after TypeScript changes
