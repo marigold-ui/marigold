@@ -9,6 +9,7 @@ import { Checkbox } from '../Checkbox/Checkbox';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextArea } from '../TextArea/TextArea';
 import type { Selection } from '../types';
@@ -250,9 +251,6 @@ export const DynamicData = meta.story({
 });
 
 export const WidthsAndOverflow = meta.story({
-  args: {
-    stretch: true,
-  },
   render: args => {
     const [overflow, setOverflow] = useState<'truncate' | 'wrap'>('wrap');
 
@@ -265,13 +263,11 @@ export const WidthsAndOverflow = meta.story({
             overflow={overflow}
           >
             <TableView.Header>
-              <TableView.Column minWidth={40} defaultWidth={40}>
-                ID
-              </TableView.Column>
-              <TableView.Column minWidth={200}>Name</TableView.Column>
-              <TableView.Column minWidth={100}>Status</TableView.Column>
-              <TableView.Column>Location</TableView.Column>
-              <TableView.Column defaultWidth={120} align="right">
+              <TableView.Column width={40}>ID</TableView.Column>
+              <TableView.Column minWidth={100}>Name</TableView.Column>
+              <TableView.Column width={100}>Status</TableView.Column>
+              <TableView.Column minWidth={100}>Location</TableView.Column>
+              <TableView.Column minWidth={80} align="right">
                 Balance
               </TableView.Column>
             </TableView.Header>
@@ -301,13 +297,13 @@ export const WidthsAndOverflow = meta.story({
           </TableView>
         </div>
         <p className="text-muted-foreground block text-xs">
-          Column widths: ID 80px, Name min 200px, Status 100px, Location 1fr,
-          Balance 120px.
+          Column widths: ID 40px, Name min 100px, Status 100px, Location min
+          100px, Balance min 80px.
         </p>
-        <Checkbox
+        <Switch
           label="Truncate cell content"
-          checked={overflow === 'truncate'}
-          onChange={checked => setOverflow(checked ? 'truncate' : 'wrap')}
+          selected={overflow === 'truncate'}
+          onChange={selected => setOverflow(selected ? 'truncate' : 'wrap')}
         />
       </Stack>
     );
