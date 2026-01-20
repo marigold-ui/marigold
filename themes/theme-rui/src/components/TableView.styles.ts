@@ -9,12 +9,21 @@ export const TableView: ThemeComponent<'TableView'> = {
         muted: '',
       },
       size: {
-        compact:
-          '[--cell-y-padding:calc(var(--spacing)*1)] [--cell-x-padding:calc(var(--spacing)*2)]',
-        default:
-          '[--cell-y-padding:calc(var(--spacing)*2.5)] [--cell-x-padding:calc(var(--spacing)*2.5)]',
-        spacious:
-          '[--cell-y-padding:calc(var(--spacing)*4)] [--cell-x-padding:calc(var(--spacing)*4)]',
+        compact: [
+          '[--cell-y-padding:calc(var(--spacing)*1)]',
+          '[--cell-x-padding:calc(var(--spacing)*2)]',
+          '[--header-height:calc(var(--spacing)*8)]',
+        ],
+        default: [
+          '[--cell-y-padding:calc(var(--spacing)*2.5)]',
+          '[--cell-x-padding:calc(var(--spacing)*2.5)]',
+          '[--header-height:calc(var(--spacing)*10)]',
+        ],
+        spacious: [
+          '[--cell-y-padding:calc(var(--spacing)*4)]',
+          '[--cell-x-padding:calc(var(--spacing)*4)]',
+          '[--header-height:calc(var(--spacing)*12)]',
+        ],
       },
     },
     defaultVariants: {
@@ -54,7 +63,7 @@ export const TableView: ThemeComponent<'TableView'> = {
   ]),
   column: cva(
     [
-      'h-10 px-(--cell-x-padding) align-middle',
+      'h-(--header-height) px-(--cell-x-padding) align-middle',
       'font-medium text-muted-foreground',
       'has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-ring',
     ],
