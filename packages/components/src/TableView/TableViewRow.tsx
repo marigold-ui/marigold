@@ -7,7 +7,6 @@ import {
   Row,
   useTableOptions,
 } from 'react-aria-components';
-import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { useTableViewContext } from './Context';
 
@@ -28,16 +27,16 @@ const TableViewRow = <T extends object>({
   const { classNames } = useTableViewContext();
 
   return (
-    <Row id={id} className={cn(classNames.row)} {...otherProps}>
+    <Row id={id} className={classNames.row} {...otherProps}>
       {allowsDragging && (
-        <Cell>
+        <Cell className={classNames.cell}>
           <Button slot="drag">
             <GripVertical />
           </Button>
         </Cell>
       )}
       {selectionBehavior === 'toggle' && (
-        <Cell>
+        <Cell className={classNames.cell}>
           <Checkbox slot="selection" />
         </Cell>
       )}

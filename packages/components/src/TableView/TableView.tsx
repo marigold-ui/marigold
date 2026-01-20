@@ -10,7 +10,7 @@ import { TableViewHeader } from './TableViewHeader';
 import { TableViewRow } from './TableViewRow';
 
 // Remove props that we want to customize
-type RemovedProps = 'className' | 'style';
+type RemovedProps = 'className' | 'style' | 'selectionBehavior';
 
 export interface TableViewProps extends Omit<RAC.TableProps, RemovedProps> {
   variant?: 'grid' | 'default' | 'muted' | (string & {});
@@ -31,7 +31,11 @@ const _TableView = ({ variant, size, ...props }: TableViewProps) => {
 
   return (
     <TableViewContext.Provider value={ctx}>
-      <Table className={cn('group/table', classNames.table)} {...props} />
+      <Table
+        className={cn('group/table', classNames.table)}
+        selectionBehavior="toggle"
+        {...props}
+      />
     </TableViewContext.Provider>
   );
 };
