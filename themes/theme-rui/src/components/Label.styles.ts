@@ -1,7 +1,7 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 export const Label: ThemeComponent<'Label'> = cva([
-  'flex items-center gap-1',
+  'flex items-center gap-1 whitespace-nowrap',
   'text-sm font-medium leading-none text-foreground',
   'group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground',
 

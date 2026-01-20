@@ -6,7 +6,7 @@ import type {
 } from 'react';
 import { forwardRef } from 'react';
 import { createWidthVar } from '@marigold/system';
-import { type WidthProp, createSpacingVar } from '@marigold/system';
+import { type WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
@@ -47,7 +47,7 @@ const _FieldBase = <T extends ElementType>(
     label,
     size,
     variant,
-    width = 'full',
+    width,
     description,
     errorMessage,
     className,
@@ -59,12 +59,17 @@ const _FieldBase = <T extends ElementType>(
     size,
   });
 
-  console.log('control width:', createSpacingVar('width', `${width}`));
-
+  console.log('field width:', width);
   return (
     <Component
       ref={ref}
-      className={cn('group/field flex flex-col', classNames, className)}
+      className={cn(
+        'group/field flex flex-col',
+        // to prevent layout shifts
+        width ? 'w-fit' : 'w-full',
+        classNames,
+        className
+      )}
       style={
         {
           ...createWidthVar('field-width', `${width}`),
