@@ -104,6 +104,7 @@ export type { Scale, ScaleValue } from './utils/css-variables.utils';
 export {
   createVar,
   createSpacingVar,
+  createWidthVar,
   ensureCssVar,
   isScale,
   isValidCssCustomPropertyName,

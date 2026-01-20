@@ -5,8 +5,9 @@ import type {
   ReactNode,
 } from 'react';
 import { forwardRef } from 'react';
-import type { WidthProp } from '@marigold/system';
-import { cn, width as twWidth, useClassNames } from '@marigold/system';
+import { createWidthVar } from '@marigold/system';
+import { type WidthProp, createSpacingVar } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
 import { HelpText } from '../HelpText/HelpText';
@@ -17,8 +18,7 @@ const fixedForwardRef = forwardRef as FixedForwardRef;
 // Props
 // ---------------
 export interface FieldBaseProps<T extends ElementType>
-  extends WidthProp,
-    Pick<HelpTextProps, 'description' | 'errorMessage'> {
+  extends WidthProp, Pick<HelpTextProps, 'description' | 'errorMessage'> {
   as?: T;
   /**
    * Specifies the label of the field.
@@ -59,16 +59,17 @@ const _FieldBase = <T extends ElementType>(
     size,
   });
 
+  console.log('control width:', createSpacingVar('width', `${width}`));
+
   return (
     <Component
       ref={ref}
-      className={cn(
-        'group/field',
-        'flex flex-col',
-        twWidth[width],
-        classNames,
-        className
-      )}
+      className={cn('group/field flex w-full flex-col', classNames, className)}
+      style={
+        {
+          ...createWidthVar('field-width', `${width}`),
+        } as React.CSSProperties
+      }
       data-required={props.isRequired ? true : undefined}
       data-error={props.isInvalid ? true : undefined}
       {...rest}
