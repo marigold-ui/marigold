@@ -64,7 +64,7 @@ const _FieldBase = <T extends ElementType>(
   return (
     <Component
       ref={ref}
-      className={cn('group/field flex w-full flex-col', classNames, className)}
+      className={cn('group/field flex flex-col', classNames, className)}
       style={
         {
           ...createWidthVar('field-width', `${width}`),
