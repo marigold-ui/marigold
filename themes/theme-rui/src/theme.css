@@ -137,6 +137,22 @@
   --color-surface-border: var(--color-stone-300);
   --radius-surface: var(--radius-lg);
 
+  /* ---- OLD (to be removed when updating docs) --- */
+
+  --surface-sunken: var(--color-muted);
+  --surface-sunken-shadow: 0 0 #0000;
+
+  --surface-body: var(--color-background);
+  --surface-body-shadow: 0 0 #0000;
+
+  --surface-raised: var(--color-background);
+  --surface-raised-shadow: var(--shadow-xs);
+  --surface-raised-border: var(--color-input);
+
+  --surface-overlay: var(--color-background);
+  --surface-overlay-shadow: var(--shadow-lg);
+  --surface-overlay-border: var(--color-input);
+
   /* ==================== */
   /*        SPACING       */
   /* ==================== */
