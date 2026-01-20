@@ -16,8 +16,11 @@ export const TableView: ThemeComponent<'TableView'> = {
   row: cva(
     [
       'border-border not-last:border-b',
+      'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
       'disabled:cursor-not-allowed',
+
+      'data-selection-mode:cursor-pointer data-selection-mode:hover:bg-muted',
     ],
     {
       variants: {

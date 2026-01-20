@@ -174,6 +174,9 @@ export const Basic = meta.story({
 });
 
 export const ControlledTable = meta.story({
+  args: {
+    selectionMode: 'single',
+  },
   render: args => {
     const columns = [
       { name: 'Name', id: 'name', isRowHeader: true },
@@ -213,8 +216,7 @@ export const ControlledTable = meta.story({
       },
     ] as const;
 
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
-    const selected = Array.from(selectedKeys);
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['2']));
 
     return (
       <Stack space={3}>
@@ -222,6 +224,7 @@ export const ControlledTable = meta.story({
           aria-label="Example dynamic collection table"
           selectionMode="multiple"
           {...args}
+          selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
         >
           <TableView.Header columns={columns}>
@@ -239,7 +242,7 @@ export const ControlledTable = meta.story({
             )}
           </TableView.Body>
         </TableView>
-        <div>Selected rows: {selected.join(', ')}</div>
+        <div>Selected rows: {selectedKeys}</div>
       </Stack>
     );
   },
