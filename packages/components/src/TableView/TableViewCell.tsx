@@ -23,7 +23,7 @@ const TableViewCell = ({
       className={cn(
         classNames.cell,
         textAlign[align],
-        overflow === 'truncate' ? 'max-w-0 truncate' : 'break-words'
+        overflow === 'truncate' ? 'max-w-0 truncate' : 'wrap-break-word'
       )}
       {...props}
     >
