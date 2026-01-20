@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import type { TimeValue } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { DateInput, DateSegment, TimeField } from 'react-aria-components';
-import { WidthProp } from '@marigold/system';
+import { WidthProp, cn } from '@marigold/system';
 import { useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 
@@ -19,7 +19,8 @@ type RemovedProps =
   | 'slot';
 
 export interface TimeFieldProps
-  extends Omit<RAC.TimeFieldProps<TimeValue>, RemovedProps>,
+  extends
+    Omit<RAC.TimeFieldProps<TimeValue>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
@@ -108,7 +109,7 @@ const _TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(
         {...props}
         ref={ref}
       >
-        <DateInput className={classNames.field}>
+        <DateInput className={cn('max-w-(--field-width)', classNames.field)}>
           {segment => (
             <DateSegment className={classNames.segment} segment={segment} />
           )}
