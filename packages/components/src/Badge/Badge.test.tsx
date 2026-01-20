@@ -1,58 +1,46 @@
 import { render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Badge } from './Badge';
+import { Basic } from './Badge.stories';
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Badge: cva('p-2', {
-      variants: {
-        variant: {
-          one: ['rounded-xs'],
-          two: ['rounded-md'],
-        },
-      },
-    }),
-  },
-};
-
-test('renders as a "div" element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Badge data-testid="badge" />
-    </ThemeProvider>
-  );
+test('renders correctly', () => {
+  render(<Basic.Component data-testid="badge" />);
 
   const badge = screen.getByTestId('badge');
-  expect(badge instanceof HTMLDivElement).toBeTruthy();
+
+  expect(badge).toMatchInlineSnapshot(`
+    <div
+      class="inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 bg-info-muted text-info-muted-foreground"
+      data-testid="badge"
+    >
+      Status
+    </div>
+  `);
 });
 
-test('uses base styling classes form "Badge" in theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Badge data-testid="badge" />
-    </ThemeProvider>
-  );
-  const badge = screen.getByTestId('badge');
-  expect(badge).toHaveClass('p-2');
-});
+test.each`
+  variant      | props
+  ${null}      | ${{ css: 'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 bg-muted text-foreground border border-border' }}
+  ${'info'}    | ${{ css: 'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 bg-info-muted text-info-muted-foreground' }}
+  ${'primary'} | ${{ css: 'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 bg-brand text-brand-foreground' }}
+  ${'success'} | ${{ css: 'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 bg-success-muted text-success-muted-foreground' }}
+  ${'warning'} | ${{ css: 'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 bg-warning-muted text-warning-muted-foreground' }}
+  ${'error'}   | ${{ css: 'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 bg-destructive-muted text-destructive-muted-foreground' }}
+  ${'master'}  | ${{ css: 'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 text-access-master-foreground border border-access-master-foreground bg-background' }}
+  ${'admin'}   | ${{ css: 'inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:util-focus-ring outline-none has-[svg]:gap-1 text-access-admin-foreground border border-access-admin-foreground bg-background' }}
+`(
+  'applies the correct CSS class for variant $variant',
+  ({ variant, props }) => {
+    render(<Basic.Component data-testid="badge" variant={variant} />);
 
-test('supports "Badge" variants from theme', () => {
-  const { rerender } = render(
-    <ThemeProvider theme={theme}>
-      <Badge variant="one" data-testid="badge" />
-    </ThemeProvider>
-  );
+    const badge = screen.getByTestId('badge');
 
-  let badge = screen.getByTestId('badge');
-  expect(badge).toHaveClass('rounded-xs');
+    expect(badge).toHaveClass(props.css);
+  }
+);
 
-  rerender(
-    <ThemeProvider theme={theme}>
-      <Badge variant="two" data-testid="badge" />
-    </ThemeProvider>
-  );
+test('shows the lock svg', () => {
+  render(<Basic.Component data-testid="badge" variant="master" />);
 
-  badge = screen.getByTestId('badge');
-  expect(badge).toHaveClass('rounded-md');
+  const svgs = screen.getAllByTestId('lock-icon');
+
+  expect(svgs.length).toBe(1);
 });

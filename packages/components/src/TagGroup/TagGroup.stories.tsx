@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
 import { expect, fn, waitFor, within } from 'storybook/test';
 import { Key } from '@react-types/shared';
 import preview from '../../../../.storybook/preview';
@@ -47,7 +47,7 @@ export const Basic = meta.story({
 });
 
 export const RemovableTags = meta.story({
-  tags: ['needs-fix'],
+  tags: ['component-test'],
   render: args => {
     const defaultItems = [
       { id: 1, name: 'News' },
@@ -87,7 +87,7 @@ export const RemovableTags = meta.story({
 });
 
 export const RemovableAllTags = meta.story({
-  tags: ['needs-fix'],
+  tags: ['component-test'],
   render: args => {
     const defaultItems = [
       { id: 1, name: 'News' },
