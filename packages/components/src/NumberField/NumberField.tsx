@@ -18,7 +18,8 @@ type RemovedProps =
   | 'size';
 
 export interface NumberFieldProps
-  extends Omit<RAC.NumberFieldProps, RemovedProps>,
+  extends
+    Omit<RAC.NumberFieldProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
@@ -105,7 +106,12 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
         data-readonly={readOnly ? 'true' : undefined}
         data-stepper={showStepper ? 'true' : undefined}
       >
-        <Group className={cn('flex items-stretch', classNames.group)}>
+        <Group
+          className={cn(
+            'flex max-w-(--field-width) items-stretch',
+            classNames.group
+          )}
+        >
           {showStepper && (
             <StepButton
               className={classNames.stepper}

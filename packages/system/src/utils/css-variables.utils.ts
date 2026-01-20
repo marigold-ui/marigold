@@ -106,16 +106,27 @@ export const createSpacingVar = (name: string, value: string) => {
  * Supports:
  * - Numeric scale (e.g., "4", "2.5"): Uses `--spacing` scale with calc() → `w-4`, `w-2.5`
  * - Fractions (e.g., "1/2", "2/3"): Converts to percentage → `w-1/2`, `w-2/3`
+ * - CSS keywords (e.g., "fit", "min", "max"): Uses corresponding CSS values → `w-fit`, `w-min`, `w-max`
  *
  * @param name - The custom property name for width.
- * @param value - Width value as a string (number or fraction).
+ * @param value - Width value as a string (number, fraction, or keyword).
  * @returns Object with the CSS custom property for width.
  *
  */
 export const createWidthVar = (name: string, value: string) => {
+  const widthKeywords: Record<string, string> = {
+    fit: 'fit-content',
+    min: 'min-content',
+    max: 'max-content',
+    full: '100%',
+    screen: '100vw',
+    auto: 'auto',
+  };
+
   return {
-    [`--${name}`]: isScale(value)
-      ? `calc(var(--spacing) * ${value})`
-      : isFraction(value) && `calc(${value.split('/').join(' / ')} * 100%)`,
+    [`--${name}`]:
+      widthKeywords[value] ||
+      (isScale(value) && `calc(var(--spacing) * ${value})`) ||
+      (isFraction(value) && `calc(${value.split('/').join(' / ')} * 100%)`),
   } as CSSProperties;
 };

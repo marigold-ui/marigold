@@ -2,6 +2,7 @@ import { ReactElement, cloneElement, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Input } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { width as twWidth } from '@marigold/system';
 
 // Props
 // ---------------
@@ -51,7 +52,9 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div
-        className="group/input relative flex items-center"
+        className={cn(
+          'group/input relative flex max-w-(--field-width) items-center'
+        )}
         data-icon={icon && ''}
         data-action={action && ''}
       >
