@@ -15,9 +15,19 @@ type RemovedProps = 'className' | 'style' | 'selectionBehavior';
 export interface TableViewProps extends Omit<RAC.TableProps, RemovedProps> {
   variant?: 'grid' | 'default' | 'muted' | (string & {});
   size?: string;
+  /**
+   * If true, the table will stretch to fill the full width of its container.
+   * @default false
+   */
+  stretch?: boolean;
 }
 
-const _TableView = ({ variant, size, ...props }: TableViewProps) => {
+const _TableView = ({
+  variant,
+  size,
+  stretch = false,
+  ...props
+}: TableViewProps) => {
   const classNames = useClassNames({
     component: 'TableView',
     variant,
@@ -32,7 +42,7 @@ const _TableView = ({ variant, size, ...props }: TableViewProps) => {
   return (
     <TableViewContext.Provider value={ctx}>
       <Table
-        className={cn('group/table', classNames.table)}
+        className={cn('group/table', classNames.table, stretch && 'w-full')}
         selectionBehavior="toggle"
         {...props}
       />

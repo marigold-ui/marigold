@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const TableView: ThemeComponent<'TableView'> = {
-  table: cva(['text-sm w-full'], {
+  table: cva(['text-sm'], {
     variants: {
       variant: {
         default: '',
@@ -37,19 +37,20 @@ export const TableView: ThemeComponent<'TableView'> = {
   // <thead>
   head: cva([
     // for sticky header
-    'bg-background/90 top-0 z-1 backdrop-blur-xs',
+    'bg-background/90 top-0 z-1',
     'border-border border-b',
   ]),
   column: cva(
     [
-      'h-12 px-2.5 align-middle font-medium text-muted-foreground',
+      'h-12 px-2.5 align-middle',
+      'font-medium text-muted-foreground',
       'has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-ring',
     ],
     {
       variants: {
         variant: {
           default: '',
-          grid: 'border-r border-border',
+          grid: 'not-last:border-r border-border',
           muted: 'bg-muted border-t border-border',
         },
       },

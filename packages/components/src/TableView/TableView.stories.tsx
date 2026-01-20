@@ -29,7 +29,7 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['default', 'master', 'muted', 'muted', 'admin', 'grid'],
+      options: ['default', 'muted', 'grid'],
       description: 'variant for the table',
     },
     size: {
@@ -40,7 +40,11 @@ const meta = preview.meta({
       description: 'size for the table: for example: compact',
     },
   },
-  args: {},
+  args: {
+    variant: 'default',
+    selectionMode: 'none',
+    stretch: false,
+  },
 });
 
 // Data
@@ -155,7 +159,7 @@ export const Basic = meta.story({
             <TableView.Cell>
               <Badge>{user.status}</Badge>
             </TableView.Cell>
-            <TableView.Cell>
+            <TableView.Cell align="right">
               <NumericFormat
                 style="currency"
                 currency="EUR"
