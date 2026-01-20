@@ -265,10 +265,12 @@ export const WidthsAndOverflow = meta.story({
             overflow={overflow}
           >
             <TableView.Header>
-              <TableView.Column defaultWidth={80}>ID</TableView.Column>
+              <TableView.Column minWidth={40} defaultWidth={40}>
+                ID
+              </TableView.Column>
               <TableView.Column minWidth={200}>Name</TableView.Column>
-              <TableView.Column defaultWidth={100}>Status</TableView.Column>
-              <TableView.Column defaultWidth="1fr">Location</TableView.Column>
+              <TableView.Column minWidth={100}>Status</TableView.Column>
+              <TableView.Column>Location</TableView.Column>
               <TableView.Column defaultWidth={120} align="right">
                 Balance
               </TableView.Column>

@@ -27,10 +27,9 @@ const TableViewHeader = <T extends object>({
 
   return (
     <TableHeader className={cn(classNames.head)} {...otherProps}>
-      {/* Add extra columns for drag and drop and selection. */}
-      {allowsDragging && <Column className={classNames.column} />}
+      {allowsDragging && <Column />}
       {selectionBehavior === 'toggle' && (
-        <Column className={classNames.column}>
+        <Column minWidth={36} width={36}>
           {selectionMode === 'multiple' && <Checkbox slot="selection" />}
         </Column>
       )}

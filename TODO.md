@@ -29,6 +29,11 @@ Test styling
 
 As long as we keep at 50 lines and use pagination we should be fine
 
+## Width and resizing
+
+- width of the selection (checkbox column) need to be hardcoded
+- Column `defaultWidth`, `minWidth`, `maxWidth`, and `width` mirror React Aria behavior: values can be pixels (number), percentages ("50%"), or fractional units ("1fr"). `defaultWidth` sets initial width, `minWidth`/`maxWidth` bound resizing, and `width` locks to an exact value. Truncation works best when columns have explicit width/minWidth values.
+
 ## Breaking
 
 - dynamic tables work slightly differently (dynamic Rows get have the whole column in their callback function, not only their id)
