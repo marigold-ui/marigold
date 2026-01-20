@@ -174,7 +174,7 @@ export const Basic = meta.story({
   ),
 });
 
-export const ControlledTable = meta.story({
+export const DynamicData = meta.story({
   args: {
     selectionMode: 'single',
   },
