@@ -19,7 +19,12 @@ afterEach(() => {
 });
 
 test('renders correctly', () => {
-  render(<Basic.Component data-testid="dateField" />);
+  render(
+    <Basic.Component
+      data-testid="dateField"
+      defaultValue={new CalendarDate(2026, 1, 1)}
+    />
+  );
 
   const dateField = screen.getByTestId('dateField');
 
@@ -36,7 +41,7 @@ test('renders correctly', () => {
         My Label
       </span>
       <div
-        aria-describedby="react-aria-_r_3_"
+        aria-describedby="react-aria-description-0 react-aria-_r_3_"
         aria-labelledby="react-aria-_r_1_"
         class="h-input flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled has-focus-visible:util-focus-ring outline-none group-invalid/field:border-destructive group-invalid/field:focus:border-destructive group-invalid/field:focus:ring-destructive/20 group-read-only/field:bg-muted invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20 data-[focus-within]:util-focus-ring outline-0"
         data-rac=""
@@ -46,7 +51,7 @@ test('renders correctly', () => {
         style="unicode-bidi: isolate;"
       >
         <div
-          aria-describedby="react-aria-_r_3_"
+          aria-describedby="react-aria-description-0 react-aria-_r_3_"
           aria-labelledby="react-aria-_r_1_"
           class="flex flex-1 items-center"
           data-rac=""
@@ -56,17 +61,16 @@ test('renders correctly', () => {
           style="unicode-bidi: isolate;"
         >
           <span
-            aria-describedby="react-aria-_r_3_"
+            aria-describedby="react-aria-description-0 react-aria-_r_3_"
             aria-label="Tag, "
             aria-labelledby="react-aria-_r_5_ react-aria-_r_1_"
             aria-valuemax="31"
             aria-valuemin="1"
-            aria-valuenow="16"
-            aria-valuetext="Leer"
+            aria-valuenow="1"
+            aria-valuetext="1"
             autocorrect="off"
             class="disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled inline p-0.5 caret-transparent data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[type=literal]:text-placeholder data-[placeholder]:disabled:text-disabled-foreground invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded leading-none"
             contenteditable="true"
-            data-placeholder="true"
             data-rac=""
             data-type="day"
             enterkeyhint="next"
@@ -79,11 +83,11 @@ test('renders correctly', () => {
           >
             <span
               aria-hidden="true"
-              class="visible block pointer-events-none w-full text-center"
-            >
-              TT
+              class="invisible hidden pointer-events-none w-full text-center"
+            />
+            <span>
+              01
             </span>
-            <span />
           </span>
           <span
             aria-hidden="true"
@@ -105,11 +109,10 @@ test('renders correctly', () => {
             aria-valuemax="12"
             aria-valuemin="1"
             aria-valuenow="1"
-            aria-valuetext="Leer"
+            aria-valuetext="1 – Januar"
             autocorrect="off"
             class="disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled inline p-0.5 caret-transparent data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[type=literal]:text-placeholder data-[placeholder]:disabled:text-disabled-foreground invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded leading-none"
             contenteditable="true"
-            data-placeholder="true"
             data-rac=""
             data-type="month"
             enterkeyhint="next"
@@ -122,11 +125,11 @@ test('renders correctly', () => {
           >
             <span
               aria-hidden="true"
-              class="visible block pointer-events-none w-full text-center"
-            >
-              MM
+              class="invisible hidden pointer-events-none w-full text-center"
+            />
+            <span>
+              01
             </span>
-            <span />
           </span>
           <span
             aria-hidden="true"
@@ -148,11 +151,10 @@ test('renders correctly', () => {
             aria-valuemax="9999"
             aria-valuemin="1"
             aria-valuenow="2026"
-            aria-valuetext="Leer"
+            aria-valuetext="2026"
             autocorrect="off"
             class="disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled inline p-0.5 caret-transparent data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[type=literal]:text-placeholder data-[placeholder]:disabled:text-disabled-foreground invalid:data-[focused]:bg-destructive invalid:data-[focused]:data-[placeholder]:text-destructive-foreground invalid:data-[focused]:text-destructive-foreground invalid:placeholder:text-destructive invalid:text-destructive group/segment outline-0 whitespace-pre data-[placeholder]:text-placeholder text-foreground data-[focused]:bg-focus data-[focused]:text-foreground rounded leading-none"
             contenteditable="true"
-            data-placeholder="true"
             data-rac=""
             data-type="year"
             enterkeyhint="next"
@@ -165,11 +167,11 @@ test('renders correctly', () => {
           >
             <span
               aria-hidden="true"
-              class="visible block pointer-events-none w-full text-center"
-            >
-              JJJJ
+              class="invisible hidden pointer-events-none w-full text-center"
+            />
+            <span>
+              2026
             </span>
-            <span />
           </span>
         </div>
         <input
@@ -178,7 +180,7 @@ test('renders correctly', () => {
           hidden=""
           title=""
           type="text"
-          value=""
+          value="2026-01-01"
         />
       </div>
       <div
