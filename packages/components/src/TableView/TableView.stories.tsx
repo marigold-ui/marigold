@@ -249,54 +249,67 @@ export const DynamicData = meta.story({
   },
 });
 
-export const ColumnWidths = meta.story({
+export const WidthsAndOverflow = meta.story({
   args: {
     stretch: true,
   },
-  render: args => (
-    <>
-      <div className="max-w-2xl resize-x overflow-x-auto border border-stone-800">
-        <TableView {...args} aria-label="Table with custom column widths">
-          <TableView.Header>
-            <TableView.Column defaultWidth={80}>ID</TableView.Column>
-            <TableView.Column minWidth={200}>Name</TableView.Column>
-            <TableView.Column defaultWidth={100}>Status</TableView.Column>
-            <TableView.Column defaultWidth="1fr">Location</TableView.Column>
-            <TableView.Column defaultWidth={120} align="right">
-              Balance
-            </TableView.Column>
-          </TableView.Header>
-          <TableView.Body>
-            {users.slice(0, 5).map((user, index) => (
-              <TableView.Row key={user.email}>
-                <TableView.Cell>{index + 1}</TableView.Cell>
-                <TableView.Cell>{user.name}</TableView.Cell>
-                <TableView.Cell>
-                  <Badge
-                    variant={user.status === 'active' ? 'success' : 'warning'}
-                  >
-                    {user.status}
-                  </Badge>
-                </TableView.Cell>
-                <TableView.Cell>{user.location}</TableView.Cell>
-                <TableView.Cell align="right">
-                  <NumericFormat
-                    value={user.balance}
-                    style="currency"
-                    currency="EUR"
-                  />
-                </TableView.Cell>
-              </TableView.Row>
-            ))}
-          </TableView.Body>
-        </TableView>
-      </div>
-      <p className="text-muted-foreground mt-2 block text-xs">
-        Column widths: ID 80px, Name min 200px, Status 100px, Location 1fr,
-        Balance 120px.
-      </p>
-    </>
-  ),
+  render: args => {
+    const [overflow, setOverflow] = useState<'truncate' | 'wrap'>('wrap');
+
+    return (
+      <Stack space={3}>
+        <div className="max-w-2xl resize-x overflow-x-auto border border-stone-800">
+          <TableView
+            {...args}
+            aria-label="Table with custom column widths"
+            overflow={overflow}
+          >
+            <TableView.Header>
+              <TableView.Column defaultWidth={80}>ID</TableView.Column>
+              <TableView.Column minWidth={200}>Name</TableView.Column>
+              <TableView.Column defaultWidth={100}>Status</TableView.Column>
+              <TableView.Column defaultWidth="1fr">Location</TableView.Column>
+              <TableView.Column defaultWidth={120} align="right">
+                Balance
+              </TableView.Column>
+            </TableView.Header>
+            <TableView.Body>
+              {users.slice(0, 5).map((user, index) => (
+                <TableView.Row key={user.email}>
+                  <TableView.Cell>{index + 1}</TableView.Cell>
+                  <TableView.Cell>{user.name}</TableView.Cell>
+                  <TableView.Cell>
+                    <Badge
+                      variant={user.status === 'active' ? 'success' : 'warning'}
+                    >
+                      {user.status}
+                    </Badge>
+                  </TableView.Cell>
+                  <TableView.Cell>{user.location}</TableView.Cell>
+                  <TableView.Cell align="right">
+                    <NumericFormat
+                      value={user.balance}
+                      style="currency"
+                      currency="EUR"
+                    />
+                  </TableView.Cell>
+                </TableView.Row>
+              ))}
+            </TableView.Body>
+          </TableView>
+        </div>
+        <p className="text-muted-foreground block text-xs">
+          Column widths: ID 80px, Name min 200px, Status 100px, Location 1fr,
+          Balance 120px.
+        </p>
+        <Checkbox
+          label="Truncate cell content"
+          checked={overflow === 'truncate'}
+          onChange={checked => setOverflow(checked ? 'truncate' : 'wrap')}
+        />
+      </Stack>
+    );
+  },
 });
 
 export const Empty = meta.story({

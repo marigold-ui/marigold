@@ -16,10 +16,17 @@ const TableViewCell = ({
   align = 'left',
   ...props
 }: TableViewCellProps) => {
-  const { classNames } = useTableViewContext();
+  const { classNames, overflow = 'wrap' } = useTableViewContext();
 
   return (
-    <Cell className={cn(classNames.cell, textAlign[align])} {...props}>
+    <Cell
+      className={cn(
+        classNames.cell,
+        textAlign[align],
+        overflow === 'truncate' ? 'max-w-0 truncate' : 'break-words'
+      )}
+      {...props}
+    >
       {children}
     </Cell>
   );

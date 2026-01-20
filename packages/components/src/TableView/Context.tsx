@@ -5,6 +5,7 @@ export interface TableViewContextProps {
   classNames: ComponentClassNames<'TableView'>;
   variant?: string;
   size?: string;
+  overflow?: 'truncate' | 'wrap';
 }
 
 export const TableViewContext = createContext<TableViewContextProps | null>(

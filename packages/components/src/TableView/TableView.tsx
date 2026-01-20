@@ -20,12 +20,18 @@ export interface TableViewProps extends Omit<RAC.TableProps, RemovedProps> {
    * @default false
    */
   stretch?: boolean;
+  /**
+   * Controls how cell content overflows. Works best when columns have defined width props.
+   * @default 'wrap'
+   */
+  overflow?: 'truncate' | 'wrap';
 }
 
 const _TableView = ({
   variant,
   size,
   stretch = false,
+  overflow = 'wrap',
   ...props
 }: TableViewProps) => {
   const classNames = useClassNames({
@@ -35,8 +41,8 @@ const _TableView = ({
   });
 
   const ctx = useMemo(
-    () => ({ classNames, variant, size }),
-    [classNames, variant, size]
+    () => ({ classNames, variant, size, overflow }),
+    [classNames, variant, size, overflow]
   );
 
   return (
