@@ -10,7 +10,7 @@ export const TableView: ThemeComponent<'TableView'> = {
       },
       size: {
         compact: [
-          '[--cell-y-padding:calc(var(--spacing)*1)]',
+          '[--cell-y-padding:calc(var(--spacing)*1.5)]',
           '[--cell-x-padding:calc(var(--spacing)*2)]',
           '[--header-height:calc(var(--spacing)*8)]',
         ],
@@ -66,6 +66,7 @@ export const TableView: ThemeComponent<'TableView'> = {
       'h-(--header-height) px-(--cell-x-padding) align-middle',
       'font-medium text-muted-foreground',
       'has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-ring',
+      'aria-[sort]:hover:bg-muted aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
     ],
     {
       variants: {
