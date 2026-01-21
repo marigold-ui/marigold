@@ -76,7 +76,7 @@
     "lint": "eslint . --no-warn-ignored",
     "format": "prettier --write \"**/*\"",
     "format:fix": "prettier --write \"**/*\" --fix",
-    "typecheck": "pnpm --filter @marigold/docs build && tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
+    "typecheck": "pnpm --filter @marigold/docs build && pnpm --filter fumadocs exec fumadocs-mdx && pnpm --filter fumadocs exec next typegen && tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "typecheck:only": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "contributor": "all-contributors",
     "changeset": "changeset",
