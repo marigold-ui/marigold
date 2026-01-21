@@ -21,7 +21,9 @@ export const Button: ThemeComponent<'Button'> = cva(
       variant: {
         primary: 'bg-brand text-brand-foreground hover:bg-brand/90',
         secondary: [
-          'ui-surface not-[[disabled]]:border hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
+          'ui-surface',
+          'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
+          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
           'expanded:[--ui-background-color:var(--color-hover)]',
         ],
         ghost: 'hover:bg-hover hover:text-foreground',
