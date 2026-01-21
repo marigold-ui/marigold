@@ -21,12 +21,13 @@
     },
     "types": ["vitest/globals"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "fumadocs/.next/types/**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
     "coverage/*",
     "vitest.config.shared.ts",
     "vite.config.ts",
     "**/dist/*",
-    "**/node_modules/*"
+    "**/node_modules/*",
+    "fumadocs/**/*"
   ]
 }

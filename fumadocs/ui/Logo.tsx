@@ -1,6 +1,4 @@
-import { type SVGProps } from 'react';
-
-export const Logo = (props: SVGProps<any>) => (
+export const Logo = (props: React.ComponentPropsWithoutRef<'svg'>) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" {...props}>
     <path
       fill="#46505a"

@@ -77,7 +77,7 @@
     "format": "prettier --write \"**/*\"",
     "format:fix": "prettier --write \"**/*\" --fix",
     "typecheck": "pnpm --filter @marigold/docs build && pnpm --filter fumadocs exec fumadocs-mdx && pnpm --filter fumadocs exec next typegen && tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
-    "typecheck:only": "tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
+    "typecheck:only": "pnpm --filter fumadocs types:check && tsc --noEmit --resolveJsonModule --project tsconfig.check.json",
     "contributor": "all-contributors",
     "changeset": "changeset",
     "release:notification": "zx scripts/create-slack-notification.mjs",
