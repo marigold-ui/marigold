@@ -4,7 +4,8 @@ import { useClassNames } from '@marigold/system';
 import { CollapsibleContext } from './Context';
 
 export interface CollapsibleProps
-  extends Omit<ButtonProps, 'className' | 'style'>,
+  extends
+    Omit<ButtonProps, 'className' | 'style'>,
     Pick<HeadingProps, 'level'> {
   variant?: 'default' | 'link' | (string & {});
   size?: 'default' | (string & {});

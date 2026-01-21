@@ -3,8 +3,10 @@ import { DialogTrigger } from 'react-aria-components';
 
 // Props
 // ---------------
-export interface DrawerTriggerProps
-  extends Omit<RAC.DialogTriggerProps, 'isOpen'> {
+export interface DrawerTriggerProps extends Omit<
+  RAC.DialogTriggerProps,
+  'isOpen'
+> {
   /**
    * Whether the overlay is open by default (controlled).
    * @default false

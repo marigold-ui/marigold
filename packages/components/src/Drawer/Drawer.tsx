@@ -15,8 +15,10 @@ import { DrawerTrigger } from './DrawerTrigger';
 
 // Props
 // ---------------
-export interface DrawerProps
-  extends Omit<DialogProps, 'className' | 'style' | 'isOpen' | 'role'> {
+export interface DrawerProps extends Omit<
+  DialogProps,
+  'className' | 'style' | 'isOpen' | 'role'
+> {
   size?: 'xsmall' | 'small' | 'medium' | (string & {});
   variant?: string;
   /**

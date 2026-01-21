@@ -1,6 +1,6 @@
 import { expect } from 'storybook/test';
+import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
-import preview from '../../../../.storybook/preview';
 import { makeFile } from './../test.utils';
 import { FileField } from './FileField';
 

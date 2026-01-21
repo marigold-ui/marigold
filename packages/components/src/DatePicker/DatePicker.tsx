@@ -26,7 +26,8 @@ type RemovedProps =
   | 'isOpen';
 
 export interface DatePickerProps
-  extends Omit<RAC.DatePickerProps<DateValue>, RemovedProps>,
+  extends
+    Omit<RAC.DatePickerProps<DateValue>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
    * Callback that is called for each date of the calendar. If it returns true, then the date is unavailable.

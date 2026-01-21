@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Link } from '../Link/Link';
 import { Toast } from './Toast';

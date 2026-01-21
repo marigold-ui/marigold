@@ -3,8 +3,10 @@ import { TooltipTrigger } from 'react-aria-components';
 import type RAC from 'react-aria-components';
 
 type RemovedProps = 'isDisabled' | 'isOpen' | 'children';
-export interface TooltipTriggerProps
-  extends Omit<RAC.TooltipTriggerComponentProps, RemovedProps> {
+export interface TooltipTriggerProps extends Omit<
+  RAC.TooltipTriggerComponentProps,
+  RemovedProps
+> {
   /**
    * The children of the component.
    */

@@ -28,28 +28,28 @@ jobs:
       - name: Generate SBOM
         run: |
           cdxgen -r -o sbom.json
-      
+
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
         id: upload-artifact
         with:
           name: sbom
           path: sbom.json
-      
+
       - name: Get artifact download URL
         id: artifact-url
         run: |
           sleep 5
-          
+
           URL=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts")
-          
+
           ARTIFACT_ID=$(echo "$URL" | jq -r '.artifacts[] | select(.name=="sbom") | .id')
-          
+
           echo "artifact_id=${ARTIFACT_ID}" >> $GITHUB_OUTPUT
           echo "Artifact ID: ${ARTIFACT_ID}"
-      
-      - name: Trigger GitLab Pipeline                                     # https://git.reservix.io/design-system-team/marigold-sboms
+
+      - name: Trigger GitLab Pipeline # https://git.reservix.io/design-system-team/marigold-sboms
         run: |
           curl -X POST \
             -F token=${{ secrets.GITLAB_TRIGGER_TOKEN }} \

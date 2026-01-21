@@ -4,8 +4,10 @@ import { Upload } from '../icons/Upload';
 
 type RemovedProps = 'className' | 'style';
 
-export interface FileTriggerProps
-  extends Omit<RAC.FileTriggerProps, RemovedProps> {
+export interface FileTriggerProps extends Omit<
+  RAC.FileTriggerProps,
+  RemovedProps
+> {
   allowsMultiple?: RAC.FileTriggerProps['allowsMultiple'];
   acceptedFileType?: RAC.FileTriggerProps['acceptedFileTypes'];
   acceptDirectory?: RAC.FileTriggerProps['acceptDirectory'];
