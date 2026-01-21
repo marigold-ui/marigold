@@ -165,6 +165,8 @@
   --spacing-button-small: 2rem;
   --spacing-button-large: 2.5rem;
 
+  --spacing-container: 50rem;
+
   /* RELATIONAL SPACING */
 
   --spacing-joined: --spacing(0.25);
