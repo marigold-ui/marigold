@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Column, ColumnResizer, Group } from 'react-aria-components';
+import { Column, Group } from 'react-aria-components';
 import { cn, textAlign } from '@marigold/system';
 import { SortAscending } from '../icons/SortAscending';
 import { SortDescending } from '../icons/SortDescending';
@@ -29,7 +29,6 @@ export interface TableViewColumnProps extends Omit<
   RemovedProps
 > {
   children?: ReactNode;
-  allowsResizing?: boolean;
   /* Text alignment of the column's content. */
   align?: keyof typeof textAlign;
   /** The width of the column. */
@@ -74,7 +73,6 @@ const TableViewColumn = ({
           <Group role="presentation" tabIndex={-1}>
             {props.children}
           </Group>
-          {props.allowsResizing && <ColumnResizer />}
         </div>
       )}
     </Column>

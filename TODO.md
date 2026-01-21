@@ -25,9 +25,10 @@ Test styling
 
 - master and admin mark in row
 
-## Not Doing: Virtualization
+## Not Doing
 
-As long as we keep at 50 lines and use pagination we should be fine
+- Virtualization: As long as we keep at 50 lines and use pagination we should be fine
+- Resizing: do we really currently need this?
 
 ## Width and resizing
 
