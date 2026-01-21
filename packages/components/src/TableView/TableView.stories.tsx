@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
 import preview from '../../../../.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
-import { Checkbox } from '../Checkbox/Checkbox';
+import { ActionMenu } from '../Menu/ActionMenu';
+import { NumberField } from '../NumberField/NumberField';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
@@ -328,10 +329,15 @@ export const Empty = meta.story({
 export const Sorting = meta.story({
   render: args => {
     const columns = [
-      { name: 'Name', id: 'name', isRowHeader: true },
-      { name: 'Height', id: 'height', isRowHeader: false },
-      { name: 'Mass', id: 'mass', isRowHeader: false },
-      { name: 'Birth Year', id: 'birth_year', isRowHeader: false },
+      { name: 'Name', id: 'name', align: 'left', isRowHeader: true },
+      { name: 'Height', id: 'height', align: 'right', isRowHeader: false },
+      { name: 'Mass', id: 'mass', align: 'right', isRowHeader: false },
+      {
+        name: 'Birth Year',
+        id: 'birth_year',
+        align: 'left',
+        isRowHeader: false,
+      },
     ] as const;
 
     const data = [
@@ -440,6 +446,7 @@ export const Sorting = meta.story({
               <TableView.Column
                 isRowHeader={column.isRowHeader}
                 id={column.id}
+                align={column.align}
                 allowsSorting
               >
                 {column.name}
@@ -449,7 +456,11 @@ export const Sorting = meta.story({
           <TableView.Body items={list}>
             {item => (
               <TableView.Row columns={columns}>
-                {column => <TableView.Cell>{item[column.id]}</TableView.Cell>}
+                {column => (
+                  <TableView.Cell align={column.align}>
+                    {item[column.id]}
+                  </TableView.Cell>
+                )}
               </TableView.Row>
             )}
           </TableView.Body>
@@ -463,253 +474,163 @@ export const Sorting = meta.story({
   },
 });
 
-export const ScrollableTable = meta.story({
+export const EditableFields = meta.story({
   render: args => {
-    const [todos, setTodos] = useState<
-      { userId: string; id: string; title: string; completed: boolean }[]
-    >([]);
-    useEffect(() => {
-      fetch('https://jsonplaceholder.typicode.com/todos')
-        .then(res => res.json())
-        .then(data => setTodos(data));
-    }, []);
-    const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
-    return (
-      <>
-        {tableHeaders.length ? (
-          <Stack space={4}>
-            <Scrollable height="400px">
-              <TableView
-                aria-label="Todos Table"
-                selectionMode="multiple"
-                stickyHeader
-                {...args}
-              >
-                <TableView.Header>
-                  {tableHeaders.map((header, index) => (
-                    <TableView.Column
-                      width={
-                        index === tableHeaders.length - 1 ? 'full' : 'auto'
-                      }
-                      key={index}
-                    >
-                      {header}
-                    </TableView.Column>
-                  ))}
-                </TableView.Header>
-                <TableView.Body>
-                  {todos.map(todo => (
-                    <TableView.Row key={`${todo.title}-${todo.id}`}>
-                      <TableView.Cell>{todo.id}</TableView.Cell>
-                      <TableView.Cell>{todo.userId}</TableView.Cell>
-                      <TableView.Cell>{todo.title}</TableView.Cell>
-                      <TableView.Cell>
-                        {JSON.stringify(todo.completed)}
-                      </TableView.Cell>
-                    </TableView.Row>
-                  ))}
-                </TableView.Body>
-              </TableView>
-            </Scrollable>
-            <Center>Some content below the table</Center>
-          </Stack>
-        ) : (
-          'Loading data ⬇️ ...... '
-        )}
-      </>
-    );
-  },
-});
+    const [data, setData] = useState(users);
 
-export const InputTable = meta.story({
-  render: args => {
-    const columns = [
-      { name: 'Name', key: 'name' },
-      { name: 'Firstname', key: 'firstname' },
-      { name: 'House', key: 'house' },
-      { name: 'Year of birth', key: 'year' },
-    ];
-
-    const rowData: { [key: string]: string }[] = [
-      {
-        id: '1',
-        name: 'Potter',
-        firstname: 'Harry',
-        house: 'Gryffindor',
-        year: '1980',
-      },
-      {
-        id: '2',
-        name: 'Malfoy',
-        firstname: 'Draco',
-        house: 'Slytherin',
-        year: '1980',
-      },
-      {
-        id: '3',
-        name: 'Diggory',
-        firstname: 'Cedric',
-        house: 'Hufflepuff',
-        year: '1977',
-      },
-      {
-        id: '4',
-        name: 'Lovegood',
-        firstname: 'Luna',
-        house: 'Ravenclaw',
-        year: '1981',
-      },
-    ];
-    const [data, setData] = useState(rowData);
-
-    function handleChange(id: string, newValue: string, key: string): void {
-      const changedData = data.map(item => {
-        if (item.id === id) {
-          return { ...item, [key]: newValue };
-        }
-        return { ...item };
-      });
-      setData(changedData);
-    }
+    const update = <K extends keyof (typeof users)[0]>(
+      email: string,
+      field: K,
+      value: (typeof users)[0][K]
+    ) => {
+      setData(prevData =>
+        prevData.map(user =>
+          user.email === email ? { ...user, [field]: value } : user
+        )
+      );
+    };
 
     return (
-      <Stack space={3}>
-        <TableView
-          aria-label="Example dynamic collection table"
-          disableKeyboardNavigation
-          alignY="top"
-          {...args}
-        >
-          <TableView.Header columns={columns}>
-            {column => <TableView.Column>{column.name}</TableView.Column>}
-          </TableView.Header>
-          <TableView.Body items={data}>
-            {item => (
-              <TableView.Row key={item.id}>
-                {columnKey =>
-                  columnKey !== 'house' ? (
-                    <TableView.Cell>{item[columnKey]}</TableView.Cell>
-                  ) : (
-                    <TableView.Cell>
-                      <TextArea
-                        value={item.house}
-                        disabled={false}
-                        onChange={(value: string) =>
-                          handleChange(item.id, value, 'house')
-                        }
-                        rows={3}
-                        aria-label={'house'}
-                      />
-                    </TableView.Cell>
-                  )
-                }
-              </TableView.Row>
-            )}
-          </TableView.Body>
-        </TableView>
-      </Stack>
-    );
-  },
-});
-
-export const DestructiveAction = meta.story({
-  render: args => {
-    const users = [
-      {
-        id: '1',
-        name: 'Jane Doe',
-        email: 'jane.doe@example.com',
-        status: 'active',
-      },
-      {
-        id: '2',
-        name: 'John Smith',
-        email: 'john.smith@example.com',
-        status: 'inactive',
-      },
-      {
-        id: '3',
-        name: 'Emily Johnson',
-        email: 'emily.johnson@example.com',
-        status: 'suspended',
-      },
-      {
-        id: '4',
-        name: 'Michael Brown',
-        email: 'michael.brown@example.com',
-        status: 'active',
-      },
-      {
-        id: '5',
-        name: 'Olivia Wilson',
-        email: 'olivia.wilson@example.com',
-        status: 'inactive',
-      },
-      {
-        id: '6',
-        name: 'William Lee',
-        email: 'william.lee@example.com',
-        status: 'active',
-      },
-      {
-        id: '7',
-        name: 'Sophia Martinez',
-        email: 'sophia.martinez@example.com',
-        status: 'suspended',
-      },
-      {
-        id: '8',
-        name: 'James Anderson',
-        email: 'james.anderson@example.com',
-        status: 'inactive',
-      },
-      {
-        id: '9',
-        name: 'Charlotte Thomas',
-        email: 'charlotte.thomas@example.com',
-        status: 'active',
-      },
-      {
-        id: '10',
-        name: 'Benjamin Harris',
-        email: 'benjamin.harris@example.com',
-        status: 'suspended',
-      },
-    ];
-
-    return (
-      <TableView
-        aria-label="User Management Table"
-        selectionMode="multiple"
-        size="expanded"
-        {...args}
-      >
+      <TableView aria-label="Editable table with form fields" {...args}>
         <TableView.Header>
           <TableView.Column>Name</TableView.Column>
           <TableView.Column>Email</TableView.Column>
-          <TableView.Column>Status</TableView.Column>
-          <TableView.Column align="right">Actions</TableView.Column>
+          <TableView.Column>Location</TableView.Column>
+          <TableView.Column minWidth={150}>Status</TableView.Column>
+          <TableView.Column minWidth={160}>Balance</TableView.Column>
+          <TableView.Column width={72} align="right">
+            Actions
+          </TableView.Column>
         </TableView.Header>
         <TableView.Body>
-          {users.map(user => (
-            <TableView.Row key={user.id}>
-              <TableView.Cell>{user.name}</TableView.Cell>
-              <TableView.Cell>{user.email}</TableView.Cell>
+          {data.map(user => (
+            <TableView.Row key={user.email}>
               <TableView.Cell>
-                <Badge>{user.status}</Badge>
+                <Stack space="0.5">
+                  <Text weight="medium">{user.name}</Text>
+                  <Text size="xs" color="muted-foreground">
+                    {user.handle}
+                  </Text>
+                </Stack>
               </TableView.Cell>
+              <TableView.Cell>{user.email}</TableView.Cell>
+              <TableView.Cell>{user.location}</TableView.Cell>
               <TableView.Cell>
-                <Button variant="secondary" size="small">
-                  Edit
-                </Button>{' '}
-                <Button variant="destructive-ghost" size="small">
-                  Delete
-                </Button>
+                <Select
+                  aria-label="Status"
+                  value={user.status}
+                  onChange={value =>
+                    update(user.email, 'status', value as string)
+                  }
+                >
+                  <Select.Option id="active">Active</Select.Option>
+                  <Select.Option id="inactive">Inactive</Select.Option>
+                  <Select.Option id="suspended">Suspended</Select.Option>
+                </Select>
+              </TableView.Cell>
+              <TableView.Cell align="right">
+                <NumberField
+                  aria-label="Balance"
+                  defaultValue={user.balance}
+                  onChange={value => update(user.email, 'balance', value ?? 0)}
+                  step={10}
+                  formatOptions={{
+                    style: 'currency',
+                    currency: 'EUR',
+                    maximumFractionDigits: 0,
+                  }}
+                />
+              </TableView.Cell>
+              <TableView.Cell align="right">
+                <ActionMenu aria-label="Actions">
+                  <ActionMenu.Item key="view">View</ActionMenu.Item>
+                  <ActionMenu.Item key="edit">Edit</ActionMenu.Item>
+                  <ActionMenu.Item key="delete" variant="destructive">
+                    Delete
+                  </ActionMenu.Item>
+                </ActionMenu>
               </TableView.Cell>
             </TableView.Row>
           ))}
         </TableView.Body>
       </TableView>
+    );
+  },
+});
+
+export const WithinScrollable = meta.story({
+  render: args => {
+    type Todo = {
+      userId: number;
+      id: number;
+      title: string;
+      completed: boolean;
+    };
+
+    type Result = {
+      todos: Todo[];
+      error: boolean;
+      status: 'success' | 'error';
+    };
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { todos, error, status } = use(
+      (async (): Promise<Result> => {
+        try {
+          const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+          if (!res.ok) {
+            return {
+              todos: [],
+              error: true,
+              status: 'error',
+            };
+          }
+          const data = await res.json();
+          return {
+            todos: data,
+            error: false,
+            status: 'success',
+          };
+        } catch (err) {
+          console.error('Failed to fetch todos:', err);
+          return {
+            todos: [],
+            error: true,
+            status: 'error',
+          };
+        }
+      })()
+    );
+
+    if (error) {
+      return (
+        <pre>
+          <code>Error loading todos (status: {status})</code>
+        </pre>
+      );
+    }
+
+    return (
+      <Scrollable height="400px">
+        <TableView aria-label="Todos Table" selectionMode="multiple" {...args}>
+          <TableView.Header sticky>
+            <TableView.Column>ID</TableView.Column>
+            <TableView.Column>Title</TableView.Column>
+            <TableView.Column>User</TableView.Column>
+            <TableView.Column>Completed</TableView.Column>
+          </TableView.Header>
+          <TableView.Body>
+            {todos.map(todo => (
+              <TableView.Row key={todo.id}>
+                <TableView.Cell>{todo.id}</TableView.Cell>
+                <TableView.Cell>{todo.title}</TableView.Cell>
+                <TableView.Cell>{todo.userId}</TableView.Cell>
+                <TableView.Cell>{todo.completed ? 'Yes' : 'No'}</TableView.Cell>
+              </TableView.Row>
+            ))}
+          </TableView.Body>
+        </TableView>
+      </Scrollable>
     );
   },
 });

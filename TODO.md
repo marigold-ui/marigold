@@ -39,3 +39,4 @@ Test styling
 
 - dynamic tables work slightly differently (dynamic Rows get have the whole column in their callback function, not only their id)
 - emptyState is no on the body not longer on the table itself
+- to have a sticky header add `sticky` to the `TableView.Header` not the root component anymore
