@@ -1,5 +1,5 @@
 import { expect } from 'storybook/test';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { ConfirmationDialog } from './ConfirmationDialog';

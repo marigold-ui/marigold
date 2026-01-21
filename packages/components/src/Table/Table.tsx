@@ -25,7 +25,8 @@ import { TableSelectAllCell } from './TableSelectAllCell';
 // Props
 // ---------------
 export interface TableProps
-  extends Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
+  extends
+    Pick<AriaTableProps, 'focusMode' | 'onRowAction' | 'onCellAction'>,
     Omit<
       TableStateProps<object>,
       | 'showSelectionCheckboxes'
@@ -200,8 +201,7 @@ export interface RowProps extends ReactAriaRowProps<any> {
 
 // overriding the column width with WidthProps width
 export interface ColumnProps
-  extends Omit<ColumnBaseProps<any>, 'width'>,
-    WidthProp {
+  extends Omit<ColumnBaseProps<any>, 'width'>, WidthProp {
   /**
    * Control the alignment of Column.
    * @default left

@@ -3,8 +3,10 @@ import { useTableRowGroup } from '@react-aria/table';
 import { TableBodyProps as BodyProps } from '@react-stately/table';
 import { useTableContext } from './Context';
 
-export interface TableBodyProps
-  extends Omit<BodyProps<object>, 'children' | 'loadingState' | 'items'> {
+export interface TableBodyProps extends Omit<
+  BodyProps<object>,
+  'children' | 'loadingState' | 'items'
+> {
   /**
    * The children of the component.
    */

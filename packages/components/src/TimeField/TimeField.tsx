@@ -24,7 +24,8 @@ type RemovedProps =
   | 'slot';
 
 export interface TimeFieldProps
-  extends Omit<RAC.TimeFieldProps<TimeValue>, RemovedProps>,
+  extends
+    Omit<RAC.TimeFieldProps<TimeValue>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;

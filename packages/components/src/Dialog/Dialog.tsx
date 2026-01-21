@@ -71,7 +71,8 @@ const InnerDialog = forwardRef(
 // Props
 // ---------------
 export interface DialogProps
-  extends Omit<RAC.DialogProps, 'className' | 'style'>,
+  extends
+    Omit<RAC.DialogProps, 'className' | 'style'>,
     Pick<ModalProps, 'open' | 'onOpenChange'> {
   variant?: string;
   size?: 'xsmall' | 'small' | 'medium' | (string & {});
@@ -81,10 +82,9 @@ export interface DialogProps
   closeButton?: boolean;
 }
 
-interface DialogComponent
-  extends ForwardRefExoticComponent<
-    DialogProps & RefAttributes<HTMLInputElement>
-  > {
+interface DialogComponent extends ForwardRefExoticComponent<
+  DialogProps & RefAttributes<HTMLInputElement>
+> {
   Trigger: typeof DialogTrigger;
   Title: typeof DialogTitle;
   Content: typeof DialogContent;

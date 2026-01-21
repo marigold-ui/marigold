@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
 import { expect, fn, waitFor, within } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
-import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';

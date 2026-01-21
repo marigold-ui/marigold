@@ -1,6 +1,6 @@
 import { expect, userEvent, within } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Delete, Search } from '@marigold/icons';
-import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Input } from './Input';
 

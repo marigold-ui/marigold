@@ -14,6 +14,11 @@ export default mergeConfig(
   configShared,
   defineConfig({
     plugins: [react(), tailwindcss()],
+    resolve: {
+      alias: {
+        '.storybook': path.resolve(dirname, '.storybook'),
+      },
+    },
     test: {
       projects: [
         {

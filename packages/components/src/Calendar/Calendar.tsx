@@ -31,8 +31,10 @@ type RemovedProps =
   | 'className'
   | 'style';
 
-export interface CalendarProps
-  extends Omit<RAC.CalendarProps<DateValue>, RemovedProps> {
+export interface CalendarProps extends Omit<
+  RAC.CalendarProps<DateValue>,
+  RemovedProps
+> {
   /**
    * Disables the Calendar.
    * @default false

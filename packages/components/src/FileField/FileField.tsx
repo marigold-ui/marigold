@@ -16,7 +16,8 @@ type RemovedProps =
   | 'isRequired';
 
 export interface FileFieldProps
-  extends Omit<RAC.DropZoneProps, RemovedProps>,
+  extends
+    Omit<RAC.DropZoneProps, RemovedProps>,
     Pick<FieldBaseProps<'input'>, 'label'> {
   variant?: string;
   size?: string;

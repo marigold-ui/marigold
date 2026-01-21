@@ -99,7 +99,8 @@ type RemovedProps =
   | 'slot';
 
 export interface AutocompleteProps
-  extends Omit<RAC.ComboBoxProps<object>, RemovedProps>,
+  extends
+    Omit<RAC.ComboBoxProps<object>, RemovedProps>,
     Pick<
       FieldBaseProps<'label'>,
       'width' | 'label' | 'description' | 'errorMessage'
@@ -179,10 +180,9 @@ export interface AutocompleteProps
   onSubmit?: (value: string | number | null, key: Key | null) => void;
 }
 
-interface AutocompleteComponent
-  extends ForwardRefExoticComponent<
-    AutocompleteProps & RefAttributes<HTMLInputElement>
-  > {
+interface AutocompleteComponent extends ForwardRefExoticComponent<
+  AutocompleteProps & RefAttributes<HTMLInputElement>
+> {
   /**
    * Options for the Combobox.
    */

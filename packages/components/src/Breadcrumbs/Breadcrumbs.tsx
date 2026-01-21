@@ -18,8 +18,10 @@ import { BreadcrumbsItem, BreadcrumbsItemProps } from './BreadcrumbsItem';
 
 type RemovedProps = 'className' | 'style' | 'children' | 'isDisabled';
 
-export interface BreadcrumbsProps
-  extends Omit<RACBreadcrumbsProps<object>, RemovedProps> {
+export interface BreadcrumbsProps extends Omit<
+  RACBreadcrumbsProps<object>,
+  RemovedProps
+> {
   variant?: 'default' | (string & {});
   size?: 'small' | 'default' | 'large' | (string & {});
 
@@ -40,10 +42,9 @@ export interface BreadcrumbsProps
   children: ReactNode | ReactNode[];
 }
 
-export interface BreadcrumbsComponent
-  extends ForwardRefExoticComponent<
-    BreadcrumbsProps & RefAttributes<HTMLOListElement>
-  > {
+export interface BreadcrumbsComponent extends ForwardRefExoticComponent<
+  BreadcrumbsProps & RefAttributes<HTMLOListElement>
+> {
   Item: typeof BreadcrumbsItem;
 }
 

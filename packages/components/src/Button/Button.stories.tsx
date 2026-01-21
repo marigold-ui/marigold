@@ -1,9 +1,9 @@
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 import { Facebook } from '@marigold/icons';
-import preview from '../../../../.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
+import preview from '.storybook/preview';
 
 const meta = preview.meta({
   title: 'Components/Button',

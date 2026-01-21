@@ -36,8 +36,7 @@ export const gridColumn = {
 // Props
 // ---------------
 export interface ContainerProps
-  extends SpaceProp<SpacingTokens>,
-    AriaRegionProps {
+  extends SpaceProp<SpacingTokens>, AriaRegionProps {
   children?: ReactNode;
   /**
    * Width of the container.

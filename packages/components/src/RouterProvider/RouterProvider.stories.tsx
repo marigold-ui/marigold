@@ -1,6 +1,6 @@
 import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { RouterProvider } from './RouterProvider';
 
 const meta = preview.meta({
