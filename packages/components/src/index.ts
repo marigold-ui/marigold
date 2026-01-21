@@ -257,5 +257,11 @@ export { VisuallyHidden } from './VisuallyHidden/VisuallyHidden';
 export { Loader } from './Loader/Loader';
 export type { LoaderProps, LoaderVisualType } from './Loader/Loader';
 
+export { ToggleButton } from './ToggleButton/ToggleButton';
+export type { ToggleButtonProps } from './ToggleButton/ToggleButton';
+
+export { ToggleButtonGroup } from './ToggleButton/ToggleButtonGroup';
+export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
+
 // Utility exports
 export * from './utils/form.utils';
