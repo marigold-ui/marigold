@@ -1,10 +1,12 @@
 import { Copy } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
+import { Headline, Scrollable } from '@marigold/components';
 import { Delete, Edit } from '@marigold/icons';
 import preview from '../../../../.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
+import type { Selection } from '../types';
 import { ActionBar } from './ActionBar';
 
 const meta = preview.meta({
@@ -32,7 +34,6 @@ const meta = preview.meta({
     },
   },
   args: {
-    selectedItemCount: 3,
     isEmphasized: false,
     onClearSelection: fn(),
   },
@@ -41,7 +42,7 @@ const meta = preview.meta({
 export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
-    <ActionBar {...args}>
+    <ActionBar {...args} selectedItemCount={3}>
       <ActionBar.Button onPress={() => alert('Edit action')}>
         <Edit />
         <span>Edit</span>
@@ -152,7 +153,7 @@ export const WithTable = meta.story({
     controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
   },
   render: () => {
-    const [selectedKeys, setSelectedKeys] = useState(new Set<string>(['2']));
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['2']));
 
     const rows = [
       { id: '1', name: 'Charizard', type: 'Fire, Flying', level: '67' },
@@ -168,7 +169,6 @@ export const WithTable = meta.story({
             aria-label="Table with action bar"
             selectionMode="multiple"
             stretch={true}
-            variant="muted"
             selectedKeys={selectedKeys}
             onSelectionChange={keys =>
               setSelectedKeys(
@@ -185,7 +185,7 @@ export const WithTable = meta.story({
             </Table.Header>
             <Table.Body items={rows}>
               {item => (
-                <Table.Row id={item.id}>
+                <Table.Row key={item.id}>
                   <Table.Cell>{item.name}</Table.Cell>
                   <Table.Cell>{item.type}</Table.Cell>
                   <Table.Cell>{item.level}</Table.Cell>
@@ -194,7 +194,9 @@ export const WithTable = meta.story({
             </Table.Body>
           </Table>
           <ActionBar
-            selectedItemCount={selectedKeys.size}
+            selectedItemCount={
+              selectedKeys === 'all' ? 'all' : selectedKeys.size
+            }
             onClearSelection={() => setSelectedKeys(new Set())}
           >
             <ActionBar.Button onPress={() => alert('Edit selected items')}>
@@ -214,4 +216,107 @@ export const WithTable = meta.story({
       </div>
     );
   },
+});
+
+export const WithScrollableContent = meta.story({
+  render: args => {
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      new Set(['delectus aut autem-1'])
+    );
+    const [todos, setTodos] = useState<
+      { userId: string; id: string; title: string; completed: boolean }[]
+    >([]);
+    useEffect(() => {
+      fetch('https://jsonplaceholder.typicode.com/todos')
+        .then(res => res.json())
+        .then(data => setTodos(data));
+    }, []);
+    const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
+    return (
+      <>
+        <Headline level={3}>My Headline</Headline>
+        {tableHeaders.length ? (
+          <Stack space={4} alignX="center">
+            <Scrollable height="200px" {...args}>
+              <Table
+                aria-label="Todos Table"
+                selectionMode="multiple"
+                selectedKeys={selectedKeys}
+                onSelectionChange={keys =>
+                  setSelectedKeys(
+                    keys === 'all'
+                      ? new Set(todos.map(r => `${r.title}-${r.id}`))
+                      : keys
+                  )
+                }
+              >
+                <Table.Header>
+                  {tableHeaders.map((header, index) => (
+                    <Table.Column
+                      width={
+                        index === tableHeaders.length - 1 ? 'full' : 'auto'
+                      }
+                      key={index}
+                    >
+                      {header}
+                    </Table.Column>
+                  ))}
+                </Table.Header>
+                <Table.Body items={todos}>
+                  {todo => (
+                    <Table.Row key={`${todo.title}-${todo.id}`}>
+                      <Table.Cell>{todo.id}</Table.Cell>
+                      <Table.Cell>{todo.userId}</Table.Cell>
+                      <Table.Cell>{todo.title}</Table.Cell>
+                      <Table.Cell>{JSON.stringify(todo.completed)}</Table.Cell>
+                    </Table.Row>
+                  )}
+                </Table.Body>
+              </Table>
+            </Scrollable>
+            <ActionBar
+              selectedItemCount={
+                selectedKeys === 'all' ? 'all' : selectedKeys.size
+              }
+              onClearSelection={() => setSelectedKeys(new Set())}
+            >
+              <ActionBar.Button onPress={() => alert('Edit selected items')}>
+                <Edit />
+                <span>Edit</span>
+              </ActionBar.Button>
+              <ActionBar.Button onPress={() => alert('Copy selected items')}>
+                <Copy />
+                <span>Copy</span>
+              </ActionBar.Button>
+              <ActionBar.Button onPress={() => alert('Delete selected items')}>
+                <Delete />
+                <span>Delete</span>
+              </ActionBar.Button>
+            </ActionBar>
+          </Stack>
+        ) : (
+          'Loading data ⬇️ ...... '
+        )}
+      </>
+    );
+  },
+});
+
+export const NoSelection = meta.story({
+  render: args => (
+    <div>
+      <p>No items selected no action bar will show up</p>
+      <ActionBar {...args}>
+        <ActionBar.Button aria-label="Edit">
+          <Edit />
+        </ActionBar.Button>
+        <ActionBar.Button aria-label="Copy">
+          <Copy />
+        </ActionBar.Button>
+        <ActionBar.Button aria-label="Delete">
+          <Delete />
+        </ActionBar.Button>
+      </ActionBar>
+    </div>
+  ),
 });

@@ -9,8 +9,13 @@ export interface ActionButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
    * Children of the component (icon and/or text)
    */
   children?: ReactNode;
+  onPress?: RAC.ButtonProps['onPress'];
 }
 
-export const ActionButton = ({ children }: ActionButtonProps) => {
-  return <Button variant="ghost">{children}</Button>;
+export const ActionButton = ({ onPress, children }: ActionButtonProps) => {
+  return (
+    <Button onPress={onPress} variant="ghost">
+      {children}
+    </Button>
+  );
 };

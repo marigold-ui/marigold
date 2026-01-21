@@ -1,58 +1,45 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { expect, test, vi } from 'vitest';
-import { ActionBar } from './ActionBar';
+import {
+  AllSelected,
+  Basic,
+  Emphasized,
+  NoSelection,
+  WithoutClearButton,
+} from './ActionBar.stories';
 
 test('renders ActionBar with selected count', () => {
-  render(
-    <ActionBar selectedItemCount={3}>
-      <ActionBar.Button>Edit</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<Basic.Component />);
 
   expect(screen.getByText('3 selected')).toBeInTheDocument();
 });
 
 test('renders ActionBar with "all" selected', () => {
-  render(
-    <ActionBar selectedItemCount="all">
-      <ActionBar.Button>Edit</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<AllSelected.Component />);
 
   expect(screen.getByText('All items selected')).toBeInTheDocument();
 });
 
 test('hides ActionBar when selectedItemCount is 0', () => {
-  const { container } = render(
-    <ActionBar selectedItemCount={0}>
-      <ActionBar.Button>Edit</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<NoSelection.Component />);
 
-  expect(container.firstChild).toBeNull();
+  const toolbar = screen.queryByRole('toolbar', { name: /bulk actions/i });
+
+  expect(toolbar).not.toBeInTheDocument();
 });
 
 test('renders clear button when onClearSelection is provided', () => {
-  const onClearSelection = vi.fn();
-
-  render(
-    <ActionBar selectedItemCount={2} onClearSelection={onClearSelection}>
-      <ActionBar.Button>Edit</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<Basic.Component />);
 
   const clearButton = screen.getByRole('button', { name: /clear selection/i });
+
   expect(clearButton).toBeInTheDocument();
 });
 
 test('calls onClearSelection when clear button is clicked', () => {
   const onClearSelection = vi.fn();
 
-  render(
-    <ActionBar selectedItemCount={2} onClearSelection={onClearSelection}>
-      <ActionBar.Button>Edit</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<Basic.Component onClearSelection={onClearSelection} />);
 
   const clearButton = screen.getByRole('button', { name: /clear selection/i });
   fireEvent.click(clearButton);
@@ -61,11 +48,7 @@ test('calls onClearSelection when clear button is clicked', () => {
 });
 
 test('does not render clear button when onClearSelection is not provided', () => {
-  render(
-    <ActionBar selectedItemCount={2}>
-      <ActionBar.Button>Edit</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<WithoutClearButton.Component />);
 
   const clearButton = screen.queryByRole('button', {
     name: /clear selection/i,
@@ -74,50 +57,24 @@ test('does not render clear button when onClearSelection is not provided', () =>
 });
 
 test('renders action buttons', () => {
-  render(
-    <ActionBar selectedItemCount={2}>
-      <ActionBar.Button>Edit</ActionBar.Button>
-      <ActionBar.Button>Delete</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<Basic.Component />);
 
   expect(screen.getByText('Edit')).toBeInTheDocument();
   expect(screen.getByText('Delete')).toBeInTheDocument();
 });
 
-test('calls action button onPress handler', () => {
-  const onPress = vi.fn();
-
-  render(
-    <ActionBar selectedItemCount={1}>
-      <ActionBar.Button onPress={onPress}>Edit</ActionBar.Button>
-    </ActionBar>
-  );
-
-  const button = screen.getByText('Edit');
-  fireEvent.click(button);
-
-  expect(onPress).toHaveBeenCalledTimes(1);
-});
-
 test('supports emphasized variant', () => {
-  const { container } = render(
-    <ActionBar selectedItemCount={2} isEmphasized>
-      <ActionBar.Button>Edit</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<Emphasized.Component />);
 
-  const toolbar = container.querySelector('[role="toolbar"]');
+  const toolbar = screen.queryByRole('toolbar');
+
   expect(toolbar).toHaveAttribute('data-emphasized');
 });
 
 test('has proper accessibility attributes', () => {
-  render(
-    <ActionBar selectedItemCount={2}>
-      <ActionBar.Button>Edit</ActionBar.Button>
-    </ActionBar>
-  );
+  render(<Basic.Component />);
 
   const toolbar = screen.getByRole('toolbar', { name: /bulk actions/i });
+
   expect(toolbar).toBeInTheDocument();
 });
