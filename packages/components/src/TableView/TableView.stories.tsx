@@ -633,3 +633,53 @@ export const ScrollableAndSticky = meta.story({
     );
   },
 });
+
+export const Links = meta.story({
+  args: {
+    selectionMode: 'multiple',
+  },
+  render: args => {
+    const websites = [
+      {
+        name: 'Marigold',
+        url: 'https://marigold-ui.io',
+        description: 'Design System & Component Library',
+      },
+      {
+        name: 'Reservix',
+        url: 'https://reservix.net',
+        description: 'Ticketing Platform',
+      },
+      {
+        name: 'ADticket',
+        url: 'https://www.adticket.de/',
+        description: 'Event Ticketing Service',
+      },
+    ];
+
+    return (
+      <TableView aria-label="Table with links" {...args}>
+        <TableView.Header>
+          <TableView.Column>Name</TableView.Column>
+          <TableView.Column>Description</TableView.Column>
+          <TableView.Column>URL</TableView.Column>
+        </TableView.Header>
+        <TableView.Body>
+          {websites.map(site => (
+            <TableView.Row key={site.name} href={site.url}>
+              <TableView.Cell>
+                <Text weight="medium">{site.name}</Text>
+              </TableView.Cell>
+              <TableView.Cell>{site.description}</TableView.Cell>
+              <TableView.Cell>
+                <Text size="sm" color="muted-foreground">
+                  {site.url}
+                </Text>
+              </TableView.Cell>
+            </TableView.Row>
+          ))}
+        </TableView.Body>
+      </TableView>
+    );
+  },
+});

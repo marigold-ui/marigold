@@ -40,7 +40,7 @@ const TableViewHeader = <T extends object>({
     >
       {allowsDragging && <Column />}
       {selectionBehavior === 'toggle' && (
-        <Column minWidth={36} width={36}>
+        <Column minWidth={36} width={36} className={classNames.column}>
           {selectionMode === 'multiple' && <Checkbox slot="selection" />}
         </Column>
       )}
