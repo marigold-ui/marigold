@@ -1,6 +1,6 @@
 ---
 name: testing-codequality-check
-description: Guidance on how to ensure code quality after implementing changes in Typescript files (*.test.tsx, *.stories.tsx). Use this skill after changing Typescript files, to ensure that your code is well tested and follows the best practices.
+description: Testing code changes to ensure code quality after implementing changes in Typescript files (*.test.tsx, *.stories.tsx). Use this skill after changing Typescript files, to ensure that your code is well tested and follows the best practices.
 allowed-tools: Read, Bash(pnpm test:*)
 ---
 
