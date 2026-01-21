@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Column, Group } from 'react-aria-components';
-import { cn, textAlign } from '@marigold/system';
+import { alignment, cn, textAlign } from '@marigold/system';
 import { SortAscending } from '../icons/SortAscending';
 import { SortDescending } from '../icons/SortDescending';
 import { useTableViewContext } from './Context';
@@ -53,14 +53,19 @@ const TableViewColumn = ({
 
   return (
     <Column
-      className={cn(classNames.column, textAlign[align])}
+      className={classNames.column}
       width={width}
       // Enforces width to be applied if its static (non-fraction)
       minWidth={ensureWidth(width, minWidth)}
       {...props}
     >
       {({ allowsSorting, sortDirection }) => (
-        <div className="flex items-center gap-1">
+        <div
+          className={cn(
+            'flex items-center gap-1',
+            alignment.horizontal.alignmentX[align]
+          )}
+        >
           {allowsSorting && sortDirection != null && (
             <span aria-hidden="true">
               {sortDirection === 'ascending' ? (
