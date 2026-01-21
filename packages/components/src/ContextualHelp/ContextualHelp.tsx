@@ -24,10 +24,9 @@ const icons = {
   info: Info,
 };
 
-interface ContextualHelpComponent
-  extends ForwardRefExoticComponent<
-    ContextualHelpProps & RefAttributes<HTMLInputElement>
-  > {
+interface ContextualHelpComponent extends ForwardRefExoticComponent<
+  ContextualHelpProps & RefAttributes<HTMLInputElement>
+> {
   /**
    * Options for the Combobox.
    */
@@ -38,8 +37,10 @@ interface ContextualHelpComponent
 }
 
 type RemovedProps = 'isOpen';
-interface DialogTriggerProps
-  extends Omit<ComponentProps<typeof RACDialogTrigger>, RemovedProps> {
+interface DialogTriggerProps extends Omit<
+  ComponentProps<typeof RACDialogTrigger>,
+  RemovedProps
+> {
   open?: boolean;
 }
 

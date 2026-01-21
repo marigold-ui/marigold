@@ -17,7 +17,8 @@ import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { Label } from '../Label/Label';
 
 export interface SliderProps<T>
-  extends Omit<RAC.SliderProps<T>, 'children' | 'isDisabled' | 'orientation'>,
+  extends
+    Omit<RAC.SliderProps<T>, 'children' | 'isDisabled' | 'orientation'>,
     Pick<FieldBaseProps<'label'>, 'description'> {
   variant?: string;
   size?: string;

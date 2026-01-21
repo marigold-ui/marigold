@@ -34,7 +34,8 @@ type RemovedProps =
   | keyof JSX.IntrinsicElements['p'];
 
 export interface TextProps
-  extends AriaLabelingProps,
+  extends
+    AriaLabelingProps,
     Omit<RAC.TextProps, RemovedProps>,
     TextAlignProp,
     FontSizeProp,

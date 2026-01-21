@@ -6,8 +6,10 @@ import { useClassNames } from '@marigold/system';
 // Props
 // ---------------
 type RemovedProps = 'className' | 'style' | 'children';
-export interface MenuSectionProps
-  extends Omit<RAC.SectionProps<object>, RemovedProps> {
+export interface MenuSectionProps extends Omit<
+  RAC.SectionProps<object>,
+  RemovedProps
+> {
   title?: string;
   children: ReactNode;
 }

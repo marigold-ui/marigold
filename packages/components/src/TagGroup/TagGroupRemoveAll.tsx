@@ -4,8 +4,10 @@ import type { TagGroupProps } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { intlMessages } from '../intl/messages';
 
-export interface TagGroupRemoveAllProps
-  extends Pick<TagGroupProps, 'onRemove'> {
+export interface TagGroupRemoveAllProps extends Pick<
+  TagGroupProps,
+  'onRemove'
+> {
   className?: string;
 }
 

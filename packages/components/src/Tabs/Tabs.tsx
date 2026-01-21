@@ -8,11 +8,10 @@ import { TabPanel } from './TabPanel';
 
 // props
 // ----------------------
-export interface TabsProps
-  extends Omit<
-    RAC.TabsProps,
-    'className' | 'style' | 'isDisabled' | 'orientation' | 'slot'
-  > {
+export interface TabsProps extends Omit<
+  RAC.TabsProps,
+  'className' | 'style' | 'isDisabled' | 'orientation' | 'slot'
+> {
   /**
    * Set All TabPanel disabled
    * @default false

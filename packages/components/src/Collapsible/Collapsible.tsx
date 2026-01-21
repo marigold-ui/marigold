@@ -5,8 +5,10 @@ import { CollapsibleContent } from './CollapsibleContent';
 import { CollapsibleTrigger } from './CollapsibleTrigger';
 import { CollapsibleProvider } from './Context';
 
-export interface CollapsibleProps
-  extends Omit<DisclosureProps, 'className' | 'style'> {
+export interface CollapsibleProps extends Omit<
+  DisclosureProps,
+  'className' | 'style'
+> {
   variant?: 'default' | 'link' | (string & {});
   size?: 'default' | (string & {});
 
