@@ -66,14 +66,23 @@ const _FieldBase = <T extends ElementType>(
       ref={ref}
       className={cn(
         'group/field flex flex-col',
-        // to prevent layout shifts
-        width && !isFractionWidth ? 'w-fit' : 'w-auto',
+        /**
+         * Width handling strategy:
+         * - For fixed widths (numeric scale values): Use `w-auto` to prevent layout shifts
+         *   while the CSS variable defines the actual width via the spacing scale
+         * - For fraction widths (e.g., "1/2", "2/3"): Use the corresponding Tailwind class
+         *   (e.g., `w-1/2`) which allows the field to properly respond to its container's width
+         */
+        width && !isFractionWidth ? 'w-auto' : `w-${width}`,
         classNames,
         className
       )}
       style={
         {
-          ...createWidthVar('field-width', `${width}`),
+          ...createWidthVar(
+            'field-width',
+            width && !isFractionWidth ? `${width}` : 'full'
+          ),
         } as React.CSSProperties
       }
       data-required={props.isRequired ? true : undefined}

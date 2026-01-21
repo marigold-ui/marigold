@@ -164,10 +164,13 @@ export const Selected = meta.story({
 export const LayoutVariations = meta.story({
   render: () => (
     <Stack space={32}>
-      <div className="flex">
-        <TextField label="Name" width={'1/3'} />
-        <TextField label="Name" width={'1/3'} />
-      </div>
+      <Stack space={2}>
+        <Headline level={3}>Fraction Values</Headline>
+        <Inline space={4} alignY="bottom" noWrap>
+          <TextField label="2/3" width={'2/3'} />
+          <TextField label="1/3" width={'1/3'} />
+        </Inline>
+      </Stack>
 
       <Stack space={2}>
         <Headline level={3}>Plain Components</Headline>
@@ -185,7 +188,7 @@ export const LayoutVariations = meta.story({
       <Stack space={5}>
         <Headline level={3}>Inline/Stack Layout</Headline>
         <Inline space={4} alignY="bottom" noWrap>
-          <TextField label="Name" width={'1/3'} />
+          <TextField label="Name" width={64} />
           <Select label="Country" width={40}>
             <Select.Option id="us">United States</Select.Option>
             <Select.Option id="uk">United Kingdom</Select.Option>
@@ -209,7 +212,7 @@ export const LayoutVariations = meta.story({
           space={4}
         >
           <Grid.Area name="name">
-            <TextField label="Name" width={'1/3'} />
+            <TextField label="Name" width={64} />
           </Grid.Area>
           <Grid.Area name="country">
             <Select label="Country" width={40}>
