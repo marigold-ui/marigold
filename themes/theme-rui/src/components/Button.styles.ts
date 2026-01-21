@@ -4,33 +4,32 @@ import { cva } from '@marigold/system';
 // Shared base styles for Button and ToggleButton
 export const buttonBase = [
   'inline-flex items-center justify-center gap-2',
-  'whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
+  'whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform]',
   '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-  'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+  'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
   'cursor-pointer',
 ] as const;
 
 export const Button: ThemeComponent<'Button'> = cva(
   [
-    'inline-flex items-center justify-center gap-2',
-    'whitespace-nowrap font-medium transition-[color,box-shadow,transform]',
+    ...buttonBase,
     'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
-    '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-    'focus-visible:state-focus outline-none disabled:state-disabled',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
   ],
   {
     variants: {
       variant: {
-        primary:
-          'rounded-surface bg-brand text-brand-foreground shadow-xs hover:bg-brand/90',
-        secondary:
-          'rounded-surface bg-surface shadow-xs not-[[disabled]]:border border-surface-border hover:bg-hover hover:text-foreground expanded:bg-hover',
-        ghost: 'rounded-surface hover:bg-hover hover:text-foreground',
+        primary: 'bg-brand text-brand-foreground hover:bg-brand/90',
+        secondary: [
+          'ui-surface',
+          'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
+          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
+          'expanded:[--ui-background-color:var(--color-hover)]',
+        ],
+        ghost: 'hover:bg-hover hover:text-foreground',
         destructive:
-          'rounded-surface bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
-        'destructive-ghost':
-          'rounded-surface text-destructive hover:bg-destructive/10',
+          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        'destructive-ghost': 'text-destructive hover:bg-destructive/10',
         link: 'text-link util-touch-hitbox',
       },
       size: {

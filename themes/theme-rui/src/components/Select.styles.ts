@@ -3,10 +3,11 @@ import { type ThemeComponent, cva } from '@marigold/system';
 export const Select: ThemeComponent<'Select'> = {
   icon: cva('text-muted-foreground/80'),
   select: cva([
-    'surface surface-input group-not-data-[invalid=true]/field:not-data-[focus-visible=true]:enabled:elevation-raised h-input',
-    'group-invalid/field:surface-error',
-    'disabled:state-disabled',
-    'focus-visible:state-focus outline-none',
+    'ui-surface ui-input h-input ',
+    'cursor-pointer',
+    'group-invalid/field:ui-state-error',
+    'disabled:ui-state-disabled',
+    'focus-visible:ui-state-focus outline-none',
     '*:data-placeholder:text-placeholder',
     /**
      * Removes the spacing from the field when there is no

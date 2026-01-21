@@ -2,11 +2,11 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
-    'flex surface',
+    'flex ui-surface',
     // Standalone
-    'not-group-data-trigger/popover:elevation-raised',
+    'not-group-data-trigger/popover:',
     // In a Popover
-    'group-data-trigger/popover:elevation-overlay',
+    'group-data-trigger/popover:ui-elevation-overlay',
     'group-data-trigger/popover:w-full',
     'group-data-trigger/popover:overflow-hidden',
   ]),
@@ -17,7 +17,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
     'hover:bg-hover hover:text-hover-foreground',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-    'focus-visible:state-focus outline-none focus-visible:z-1 transition-[border,color]',
+    'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
     'cursor-default data-selection-mode:cursor-pointer',
     '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-muted-foreground',
   ]),

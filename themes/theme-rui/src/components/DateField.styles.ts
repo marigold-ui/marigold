@@ -2,14 +2,15 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const DateField: ThemeComponent<'DateField'> = {
   field: cva([
-    'surface has-default-state:elevation-raised h-input',
+    'ui-surface h-input',
     'flex items-center',
-    'disabled:state-disabled',
-    'group-read-only/field:state-readonly',
-    'has-invalid:surface-has-error',
-    'has-focus:state-focus outline-none',
+    'disabled:ui-state-disabled',
+    'group-read-only/field:ui-state-readonly',
+    'has-focus:ui-state-focus',
+    // Need to set error ring manually to override focus ring
+    'has-invalid:ui-state-error has-focus:has-invalid:ring-destructive/20',
   ]),
-  input: cva(['surface-input rounded-[inherit] h-input']),
+  input: cva(['ui-input', 'cursor-text']),
   segment: cva([
     'inline rounded p-0.5 text-foreground caret-transparent outline-0 type-literal:px-0 data-focused:data-placeholder:text-foreground data-focused:text-foreground  type-literal:text-placeholder',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled',

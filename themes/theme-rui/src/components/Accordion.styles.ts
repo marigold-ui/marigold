@@ -12,14 +12,14 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variant: 'default',
     },
   }),
-  item: cva('bg-background border-b last:border-b-0 border-border', {
+  item: cva('', {
     variants: {
       variant: {
-        default: '',
+        default: ['bg-background border-b last:border-b-0 border-border'],
         card: [
-          'surface elevation-raised py-1 outline-none last:border-b',
+          'ui-surface py-1 outline-none',
           // Show focus border when the trigger is focused
-          'has-[[slot=trigger]:focus-visible]:state-focus outline-none',
+          'has-[[slot=trigger]:focus-visible]:ui-state-focus outline-none',
         ],
       },
     },
@@ -37,7 +37,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
     {
       variants: {
         variant: {
-          default: 'focus-visible:state-focus outline-none',
+          default: 'focus-visible:ui-state-focus outline-none',
           card: 'px-4 outline-none',
         },
       },

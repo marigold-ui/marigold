@@ -1,0 +1,130 @@
+/*
+ * UI Component Utilities
+ *
+ * This file contains utilities to style UI components consistently,
+ * including input and surface styling, state variations, and elevation levels.
+ */
+
+/* ========================= */
+/*           Input           */
+/* ========================= */
+
+/*
+ * Provides spacing and text styling for input elements.
+ * Visual affordances (borders, backgrounds, shadows) are handled by "ui-surface".
+ * Combine both utilities for complete input styling.
+ */
+@utility ui-input {
+  @apply w-full min-w-0;
+  @apply px-3 py-2;
+  @apply text-foreground placeholder:text-placeholder text-sm;
+}
+
+/* ========================= */
+/*          Surface          */
+/* ========================= */
+
+/*
+ * The "ui-surface" utility defines visual surfaces with distinct background colors.
+ * Apply elevation levels to them when needed (uses raised as default).
+ * 
+ * This utility uses background-clip and background-origin with gradient borders.
+ * The gradient border transitions from top (lighter) to bottom (darker).
+ */
+@utility ui-surface {
+  @apply rounded-surface relative transition-[background,border,box-shadow];
+
+  /* prettier-ignore */
+  background:
+      linear-gradient(
+        to bottom,
+        var(--ui-background-color, #fff),
+        var(--ui-background-color, #fff)
+      ),
+      linear-gradient(
+        to bottom,
+        var(--ui-border-color, var(--color-surface-border)),
+        oklch(from var(--ui-border-color, var(--color-surface-border)) calc(l - 0.1) c h)
+      );
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  border: 1px solid transparent;
+
+  /* Make the shadow a local variable so it is tracking the color. */
+  @apply ui-shadow-raised;
+  @apply shadow-(--ui-box-shadow,var(--shadow-elevation-raised));
+}
+
+/* ========================= */
+/*         Elevation         */
+/* ========================= */
+
+/*
+ * Use this utility when you want to visually lift an element above the base level,
+ * such as for cards, or interactive components that require emphasis. This is the 
+ * lowest elevation level.
+ */
+@utility ui-elevation-raised {
+  @apply ui-shadow-raised;
+  --ui-box-shadow: var(--shadow-elevation-raised);
+}
+
+@utility ui-shadow-raised {
+  --shadow-elevation-raised:
+    0 0.5px 1px oklch(from var(--tw-shadow-color, #000) l c h / 0.08),
+    0 1px 2px oklch(from var(--tw-shadow-color, #000) l c h / 0.06);
+}
+
+/*
+ * Use this utility when you want to visually lift an element above the raised level,
+ * such as for dialogs, or popups. This is the highest elevation level.
+ */
+@utility ui-elevation-overlay {
+  @apply ui-shadow-overlay;
+  --ui-box-shadow: var(--shadow-elevation-overlay);
+}
+
+@utility ui-shadow-overlay {
+  --shadow-elevation-overlay:
+    0 1px 2px oklch(from var(--tw-shadow-color, #000) l c h / 0.12),
+    0 2px 4px oklch(from var(--tw-shadow-color, #000) l c h / 0.1),
+    0 4px 8px oklch(from var(--tw-shadow-color, #000) l c h / 0.08);
+}
+
+/* ========================= */
+/*           State           */
+/* ========================= */
+
+/*
+ * Applies a consistent visual style used for keyboard focus states across components.
+ * Used this when the border of the component can be changed.
+ */
+@utility ui-state-focus {
+  @apply ring-ring/50 ring-[3px] outline-none;
+  --ui-border-color: var(--color-ring);
+}
+
+/*
+* Applies a consistent visual style for invalid elements.
+*/
+@utility ui-state-error {
+  --tw-shadow-color: var(--color-destructive);
+
+  /* Overrides the transparent border. Gradient would get too dark. */
+  @apply border-destructive;
+  @apply focus:border-destructive focus:ring-destructive/20;
+}
+
+/*
+ * Applies a consistent visual style for disabled elements.
+ */
+@utility ui-state-disabled {
+  @apply text-disabled-foreground bg-disabled cursor-not-allowed;
+}
+
+/*
+ * Applies a consistent visual style for readonly elements.
+ */
+@utility ui-state-readonly {
+  --ui-background-color: var(--color-muted);
+}

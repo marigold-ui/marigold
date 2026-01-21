@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva([
-    'surface elevation-overlay w-full',
+    'ui-surface ui-elevation-overlay w-full',
     'text-foreground z-50 overflow-hidden p-1 outline-none',
   ]),
   item: cva(
@@ -29,17 +29,16 @@ export const Menu: ThemeComponent<'Menu'> = {
   button: cva(
     [
       'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium',
-      'surface elevation-raised',
-      'focus-visible:state-focus outline-none disabled:state-disabled',
+      'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
       'cursor-pointer',
       '[&_svg]:shrink-0 [&_svg]:pointer-events-none',
     ],
     {
       variants: {
         variant: {
-          default:
-            'border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
-          ghost: 'hover:bg-hover hover:text-foreground expanded:bg-hover',
+          default: 'ui-surface expanded:bg-hover',
+          ghost:
+            'hover:bg-hover hover:text-foreground expanded:bg-hover rounded-surface',
         },
         size: {
           default: 'h-button px-4 py-2 [&_svg]:size-4',

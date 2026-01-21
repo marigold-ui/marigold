@@ -86,7 +86,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Input?: Record<
-      'container' | 'input' | 'icon' | 'action',
+      'input' | 'icon' | 'action',
       ComponentStyleFunction<string, string>
     >;
     Label?: ComponentStyleFunction<string, string>;
@@ -148,10 +148,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
-    TextArea?: Record<
-      'container' | 'textarea',
-      ComponentStyleFunction<string, string>
-    >;
+    TextArea?: ComponentStyleFunction<string, string>;
     Tooltip?: Record<
       'container' | 'arrow',
       ComponentStyleFunction<string, string>

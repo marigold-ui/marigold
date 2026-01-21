@@ -2,7 +2,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Toast: ThemeComponent<'Toast'> = {
   toast: cva([
-    'surface elevation-overlay',
+    'surface ui-elevation-overlay',
     'z-50',
     'max-w-sm w-full pointer-events-auto overflow-hidden text-foreground',
     'grid grid-cols-[auto_1fr_auto_auto] grid-rows-[auto_auto] gap-x-1 gap-y-0',
@@ -23,7 +23,7 @@ export const Toast: ThemeComponent<'Toast'> = {
     'ml-2',
     'flex items-center justify-center',
     'size-5 rounded transition-[color,box-shadow] outline-none',
-    'focus-visible:state-focus-borderless outline-none text-muted-foreground hover:text-hover-foreground',
+    'focus-visible:ui-state-focus outline-none text-muted-foreground hover:text-hover-foreground',
   ]),
   icon: cva(
     [
