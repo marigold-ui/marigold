@@ -1,4 +1,5 @@
-import { use, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
@@ -555,7 +556,7 @@ export const EditableFields = meta.story({
   },
 });
 
-export const WithinScrollable = meta.story({
+export const ScrollableAndSticky = meta.story({
   render: args => {
     type Todo = {
       userId: number;
@@ -564,70 +565,71 @@ export const WithinScrollable = meta.story({
       completed: boolean;
     };
 
-    type Result = {
-      todos: Todo[];
-      error: boolean;
-      status: 'success' | 'error';
-    };
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { todos, error, status } = use(
-      (async (): Promise<Result> => {
-        try {
-          const res = await fetch('https://jsonplaceholder.typicode.com/todos');
-          if (!res.ok) {
-            return {
-              todos: [],
-              error: true,
-              status: 'error',
-            };
-          }
-          const data = await res.json();
-          return {
-            todos: data,
-            error: false,
-            status: 'success',
-          };
-        } catch (err) {
-          console.error('Failed to fetch todos:', err);
-          return {
-            todos: [],
-            error: true,
-            status: 'error',
-          };
+    const {
+      data: todos = [],
+      isLoading,
+      error,
+    } = useQuery<Todo[]>({
+      queryKey: ['todos'],
+      queryFn: async () => {
+        const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
-      })()
-    );
+        return res.json();
+      },
+    });
+
+    if (isLoading) {
+      return (
+        <pre>
+          <code>Loading todos...</code>
+        </pre>
+      );
+    }
 
     if (error) {
       return (
         <pre>
-          <code>Error loading todos (status: {status})</code>
+          <code>
+            Error loading todos:{' '}
+            {error instanceof Error ? error.message : 'Unknown error'}
+          </code>
         </pre>
       );
     }
 
     return (
-      <Scrollable height="400px">
-        <TableView aria-label="Todos Table" selectionMode="multiple" {...args}>
-          <TableView.Header sticky>
-            <TableView.Column>ID</TableView.Column>
-            <TableView.Column>Title</TableView.Column>
-            <TableView.Column>User</TableView.Column>
-            <TableView.Column>Completed</TableView.Column>
-          </TableView.Header>
-          <TableView.Body>
-            {todos.map(todo => (
-              <TableView.Row key={todo.id}>
-                <TableView.Cell>{todo.id}</TableView.Cell>
-                <TableView.Cell>{todo.title}</TableView.Cell>
-                <TableView.Cell>{todo.userId}</TableView.Cell>
-                <TableView.Cell>{todo.completed ? 'Yes' : 'No'}</TableView.Cell>
-              </TableView.Row>
-            ))}
-          </TableView.Body>
-        </TableView>
-      </Scrollable>
+      <Stack>
+        <Scrollable height="400px">
+          <TableView
+            aria-label="Todos Table"
+            selectionMode="multiple"
+            {...args}
+          >
+            <TableView.Header sticky>
+              <TableView.Column>ID</TableView.Column>
+              <TableView.Column>Title</TableView.Column>
+              <TableView.Column>User</TableView.Column>
+              <TableView.Column>Completed</TableView.Column>
+            </TableView.Header>
+            <TableView.Body>
+              {todos.map(todo => (
+                <TableView.Row key={todo.id}>
+                  <TableView.Cell>{todo.id}</TableView.Cell>
+                  <TableView.Cell>{todo.title}</TableView.Cell>
+                  <TableView.Cell>{todo.userId}</TableView.Cell>
+                  <TableView.Cell>
+                    {todo.completed ? 'Yes' : 'No'}
+                  </TableView.Cell>
+                </TableView.Row>
+              ))}
+            </TableView.Body>
+          </TableView>
+        </Scrollable>
+        <div className="h-px w-full bg-black" />
+        <div>Content below the scrollable area.</div>
+      </Stack>
     );
   },
 });
