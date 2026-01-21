@@ -41,7 +41,7 @@ export default defineConfig([
       'public/**',
       '.storybook/main.ts',
       '.storybook/vitest.setup.ts',
-      'fumadocs/**',
+      'fumadocs/.source/**',
     ],
   },
 ]);

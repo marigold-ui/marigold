@@ -16,11 +16,6 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
   if (!page) notFound();
 
   const MDX = page.data.body;
-  const gitConfig = {
-    user: 'username',
-    repo: 'repo',
-    branch: 'main',
-  };
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
