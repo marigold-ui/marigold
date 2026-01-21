@@ -1,10 +1,8 @@
-import { use, useEffect, useState } from 'react';
+import { use, useState } from 'react';
+import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
-import preview from '../../../../.storybook/preview';
 import { Badge } from '../Badge/Badge';
-import { Button } from '../Button/Button';
-import { Center } from '../Center/Center';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { NumberField } from '../NumberField/NumberField';
 import { Scrollable } from '../Scrollable/Scrollable';
@@ -12,7 +10,6 @@ import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
-import { TextArea } from '../TextArea/TextArea';
 import type { Selection } from '../types';
 import { TableView } from './TableView';
 
