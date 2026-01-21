@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import preview from '.storybook/preview';
-import { Link } from '@marigold/components';
+import { Headline, Link } from '@marigold/components';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
@@ -163,68 +163,71 @@ export const Selected = meta.story({
 
 export const LayoutVariations = meta.story({
   render: () => (
-    <Stack space={10}>
-      {/* Inline/Stack Layout */}
+    <Stack space={32}>
+      <div className="flex">
+        <TextField label="Name" width={'1/3'} />
+        <TextField label="Name" width={'1/3'} />
+      </div>
+
+      <Stack space={2}>
+        <Headline level={3}>Plain Components</Headline>
+        <TextField label="Name" width={64} />
+        <Select label="Country" width={40}>
+          <Select.Option id="us">United States</Select.Option>
+          <Select.Option id="uk">United Kingdom</Select.Option>
+          <Select.Option id="de">Germany</Select.Option>
+        </Select>
+        <DateField label="Birth Date" width={'fit'} />
+        <NumberField label="Age" width={20} hideStepper />
+        <TextArea label="Comments" width={'2/3'} />
+      </Stack>
+
       <Stack space={5}>
-        <h3>Inline/Stack Layout</h3>
+        <Headline level={3}>Inline/Stack Layout</Headline>
         <Inline space={4} alignY="bottom" noWrap>
-          <TextField label="Name" width={64} />
+          <TextField label="Name" width={'1/3'} />
           <Select label="Country" width={40}>
             <Select.Option id="us">United States</Select.Option>
             <Select.Option id="uk">United Kingdom</Select.Option>
             <Select.Option id="de">Germany</Select.Option>
           </Select>
-          <NumberField label="Age" width={20} hideStepper />
           <DateField label="Birth Date" width={'fit'} />
+          <NumberField label="Age" width={20} hideStepper />
         </Inline>
-        <TextArea label="Comments" width={'1/2'} />
+        <TextArea label="Comments" width={'2/3'} />
       </Stack>
 
-      {/* Grid Layout */}
       <Stack space={5}>
-        <h3>Grid Layout</h3>
+        <Headline level={3}>Grid Layout</Headline>
         <Grid
-          areas={['name country', 'age birthdate', 'comments comments']}
-          columns={[1, 1]}
-          rows={['auto', 'auto', 'auto']}
+          areas={[
+            'name country birthdate age',
+            'comments comments comments comments',
+          ]}
+          columns={[1, 1, 1, 1]}
+          rows={['auto', 'auto']}
           space={4}
         >
           <Grid.Area name="name">
-            <TextField label="Name" />
+            <TextField label="Name" width={'1/3'} />
           </Grid.Area>
           <Grid.Area name="country">
-            <Select label="Country">
+            <Select label="Country" width={40}>
               <Select.Option id="us">United States</Select.Option>
               <Select.Option id="uk">United Kingdom</Select.Option>
               <Select.Option id="de">Germany</Select.Option>
             </Select>
           </Grid.Area>
-          <Grid.Area name="age">
-            <NumberField label="Age" />
-          </Grid.Area>
           <Grid.Area name="birthdate">
-            <DateField label="Birth Date" />
+            <DateField label="Birth Date" width={'fit'} />
+          </Grid.Area>
+          <Grid.Area name="age">
+            <NumberField label="Age" width={20} hideStepper />
           </Grid.Area>
           <Grid.Area name="comments">
-            <TextArea label="Comments" />
+            <TextArea label="Comments" width={'2/3'} />
           </Grid.Area>
         </Grid>
-      </Stack>
-
-      {/* Plain div with display block */}
-      <Stack space={5}>
-        <h3>Plain Div with Display Block</h3>
-        <div style={{ display: 'block' }}>
-          <TextField label="Name" />
-          <Select label="Country">
-            <Select.Option id="us">United States</Select.Option>
-            <Select.Option id="uk">United Kingdom</Select.Option>
-            <Select.Option id="de">Germany</Select.Option>
-          </Select>
-          <NumberField label="Age" />
-          <DateField label="Birth Date" />
-          <TextArea label="Comments" />
-        </div>
       </Stack>
     </Stack>
   ),

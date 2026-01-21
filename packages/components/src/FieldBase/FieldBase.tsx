@@ -5,7 +5,7 @@ import type {
   ReactNode,
 } from 'react';
 import { forwardRef } from 'react';
-import { createWidthVar } from '@marigold/system';
+import { createWidthVar, isFraction } from '@marigold/system';
 import { type WidthProp } from '@marigold/system';
 import { cn, useClassNames } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
@@ -59,14 +59,15 @@ const _FieldBase = <T extends ElementType>(
     size,
   });
 
+  const isFractionWidth = width ? isFraction(`${width}`) : false;
+
   return (
     <Component
       ref={ref}
       className={cn(
         'group/field flex flex-col',
-        // to prevent layout shifts but then fraction widths do not work well
-        //width ? 'w-fit' : 'w-full',
-        'w-full',
+        // to prevent layout shifts
+        width && !isFractionWidth ? 'w-fit' : 'w-auto',
         classNames,
         className
       )}

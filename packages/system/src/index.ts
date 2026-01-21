@@ -106,6 +106,7 @@ export {
   createSpacingVar,
   createWidthVar,
   ensureCssVar,
+  isFraction,
   isScale,
   isValidCssCustomPropertyName,
 } from './utils/css-variables.utils';
