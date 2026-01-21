@@ -173,31 +173,40 @@ export const LayoutVariations = meta.story({
       </Stack>
 
       <Stack space={2}>
-        <Headline level={3}>Plain Components</Headline>
-        <TextField label="Name" width={64} />
-        <Select label="Country" width={40}>
-          <Select.Option id="us">United States</Select.Option>
-          <Select.Option id="uk">United Kingdom</Select.Option>
-          <Select.Option id="de">Germany</Select.Option>
-        </Select>
-        <DateField label="Birth Date" width={'fit'} />
-        <NumberField label="Age" width={20} hideStepper />
-        <TextArea label="Comments" width={'2/3'} />
+        <Headline level={3}>Fixed Values</Headline>
+        <Inline alignX="left">
+          <TextField label="96" width={96} />
+          <Select label="96" width={96}>
+            <Select.Option id="us">United States</Select.Option>
+            <Select.Option id="uk">United Kingdom</Select.Option>
+            <Select.Option id="de">Germany</Select.Option>
+          </Select>
+          <TextArea label="96" width={96} />
+        </Inline>
+        <Stack>
+          <TextField label="96" width={96} />
+          <Select label="96" width={96}>
+            <Select.Option id="us">United States</Select.Option>
+            <Select.Option id="uk">United Kingdom</Select.Option>
+            <Select.Option id="de">Germany</Select.Option>
+          </Select>
+          <TextArea label="96" width={96} />
+        </Stack>
       </Stack>
 
       <Stack space={5}>
         <Headline level={3}>Inline/Stack Layout</Headline>
         <Inline space={4} alignY="bottom" noWrap>
-          <TextField label="Name" width={64} />
-          <Select label="Country" width={40}>
+          <TextField label="Enter your Name" width={64} />
+          <Select label="Enter your Country" width={40}>
             <Select.Option id="us">United States</Select.Option>
             <Select.Option id="uk">United Kingdom</Select.Option>
             <Select.Option id="de">Germany</Select.Option>
           </Select>
-          <DateField label="Birth Date" width={'fit'} />
-          <NumberField label="Age" width={20} hideStepper />
+          <DateField label="Enter your Birth Date" width={'fit'} />
+          <NumberField label="Enter your Age" width={20} hideStepper />
         </Inline>
-        <TextArea label="Comments" width={'2/3'} />
+        <TextArea label="Enter your Comments" width={'2/3'} />
       </Stack>
 
       <Stack space={5}>
@@ -212,23 +221,23 @@ export const LayoutVariations = meta.story({
           space={4}
         >
           <Grid.Area name="name">
-            <TextField label="Name" width={64} />
+            <TextField label="Enter your Name" width={64} />
           </Grid.Area>
           <Grid.Area name="country">
-            <Select label="Country" width={40}>
+            <Select label="Enter your Country" width={40}>
               <Select.Option id="us">United States</Select.Option>
               <Select.Option id="uk">United Kingdom</Select.Option>
               <Select.Option id="de">Germany</Select.Option>
             </Select>
           </Grid.Area>
           <Grid.Area name="birthdate">
-            <DateField label="Birth Date" width={'fit'} />
+            <DateField label="Enter your Birth Date" width={'fit'} />
           </Grid.Area>
           <Grid.Area name="age">
-            <NumberField label="Age" width={20} hideStepper />
+            <NumberField label="Enter your Age" width={20} hideStepper />
           </Grid.Area>
           <Grid.Area name="comments">
-            <TextArea label="Comments" width={'2/3'} />
+            <TextArea label="Enter your Comments" width={'2/3'} />
           </Grid.Area>
         </Grid>
       </Stack>
