@@ -25,6 +25,7 @@
     "vitest.config.shared.ts",
     "vite.config.ts",
     "**/dist/*",
-    "**/node_modules/*"
+    "**/node_modules/*",
+    "fumadocs/*"
   ]
 }
