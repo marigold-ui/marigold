@@ -20,8 +20,7 @@ import { mapCheckboxProps } from './utils';
 // Props
 // ---------------
 export interface TableSelectAllCell
-  extends WidthProp,
-    Pick<JSX.IntrinsicElements['td'], 'align'> {
+  extends WidthProp, Pick<JSX.IntrinsicElements['td'], 'align'> {
   column: GridNode<object>;
 }
 

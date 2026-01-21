@@ -3,8 +3,11 @@
 
 /* from tailwind.config.ts */
 @source './**/*.*.ts';
-@source inline("{bg,text,border,shadow}-{amber,blue,lime,neutral,red,secondary,primary,code}-{50,{100..900..100},950}");
-@source inline("{bg,text,border,shadow}-{text-primary,text-primary-muted,text-disabled,text-info,text-warning,bg-body,bg-inverted,bg-hover,bg-muted,bg-disabled,bg-underlay,bg-surface,bg-surface-raised,bg-surface-lowered,bg-surface-overlay,bg-success,bg-warning,bg-error,bg-info,bg-border,bg-border-primary,bg-border-success,bg-border-error}");
+/* prettier-ignore */
+@source inline('{bg,text,border,shadow}-{amber,blue,lime,neutral,red,secondary,primary,code}-{50,{100..900..100},950}');
+/* prettier-ignore */
+@source inline('{bg,text,border,shadow}-{text-primary,text-primary-muted,text-disabled,text-info,text-warning,bg-body,bg-inverted,bg-hover,bg-muted,bg-disabled,bg-underlay,bg-surface,bg-surface-raised,bg-surface-lowered,bg-surface-overlay,bg-success,bg-warning,bg-error,bg-info,bg-border,bg-border-primary,bg-border-success,bg-border-error}');
+
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still

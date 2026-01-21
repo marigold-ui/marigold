@@ -25,9 +25,7 @@ export interface RenderProps<T> extends StyleRenderProps<T> {
 }
 
 interface RenderPropsHookOptions<T>
-  extends RenderProps<T>,
-    SharedDOMProps,
-    AriaLabelingProps {
+  extends RenderProps<T>, SharedDOMProps, AriaLabelingProps {
   values: T;
   defaultChildren?: ReactNode;
   defaultClassName?: string;

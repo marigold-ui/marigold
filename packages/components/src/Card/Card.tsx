@@ -25,7 +25,8 @@ import {
 // Props
 // ---------------
 export interface CardProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+  extends
+    SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
     PaddingRightProp,
     PaddingLeftProp,
     PaddingBottomProp,

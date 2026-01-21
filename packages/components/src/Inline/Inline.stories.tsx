@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
-import preview from '../../../../.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';

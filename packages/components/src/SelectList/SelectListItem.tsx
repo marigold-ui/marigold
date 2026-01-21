@@ -8,8 +8,10 @@ import { useSelectListContext } from './Context';
 
 type RemovedProps = 'className' | 'style' | 'isDisabled';
 
-export interface SelectListItemProps
-  extends Omit<RAC.GridListItemProps<object>, RemovedProps> {
+export interface SelectListItemProps extends Omit<
+  RAC.GridListItemProps<object>,
+  RemovedProps
+> {
   children?: ReactNode;
   /**
    * Whether the item is disabled.

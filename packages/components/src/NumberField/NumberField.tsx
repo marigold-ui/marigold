@@ -18,7 +18,8 @@ type RemovedProps =
   | 'size';
 
 export interface NumberFieldProps
-  extends Omit<RAC.NumberFieldProps, RemovedProps>,
+  extends
+    Omit<RAC.NumberFieldProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;

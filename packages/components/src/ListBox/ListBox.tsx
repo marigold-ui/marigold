@@ -11,16 +11,17 @@ import { ListBoxContext } from './Context';
 import { ListBoxItem } from './ListBoxItem';
 import { Section } from './ListBoxSection';
 
-export interface ListBoxProps
-  extends Omit<RAC.ListBoxProps<object>, 'className' | 'style'> {
+export interface ListBoxProps extends Omit<
+  RAC.ListBoxProps<object>,
+  'className' | 'style'
+> {
   variant?: string;
   size?: string;
 }
 
-interface ListBoxComponent
-  extends ForwardRefExoticComponent<
-    ListBoxProps & RefAttributes<HTMLUListElement>
-  > {
+interface ListBoxComponent extends ForwardRefExoticComponent<
+  ListBoxProps & RefAttributes<HTMLUListElement>
+> {
   Item: typeof ListBoxItem;
   Section: typeof Section;
 }

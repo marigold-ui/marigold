@@ -204,6 +204,10 @@ export type Theme = {
       'container' | 'title' | 'description' | 'action',
       ComponentStyleFunction<string, string>
     >;
+    ToggleButton?: Record<
+      'group' | 'button',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 

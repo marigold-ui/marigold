@@ -47,3 +47,4 @@ export { Underlay } from './Underlay.styles';
 export { Loader } from './Loader.styles';
 export { Breadcrumbs } from './Breadcrumbs.styles';
 export { FileField } from './FileField.styles';
+export { ToggleButton } from './ToggleButton.styles';

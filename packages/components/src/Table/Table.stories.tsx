@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useState } from 'storybook/preview-api';
+import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
-import preview from '../../../../.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
