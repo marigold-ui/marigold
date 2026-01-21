@@ -1,5 +1,5 @@
 import { baseUrl } from '@/lib/config';
-import { getPageImage, source } from '@/lib/source';
+import { source } from '@/lib/source';
 import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { ImageResponse } from 'next/og';
@@ -149,11 +149,4 @@ export const GET = async (
       },
     ],
   });
-};
-
-export const generateStaticParams = () => {
-  return source.getPages().map(page => ({
-    lang: page.locale,
-    slug: getPageImage(page).segments,
-  }));
 };
