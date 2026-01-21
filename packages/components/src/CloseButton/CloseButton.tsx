@@ -4,11 +4,10 @@ import { useClassNames } from '@marigold/system';
 import { ButtonProps } from '../Button/Button';
 import { X } from '../icons/X';
 
-interface CloseButtonProps
-  extends Pick<
-    ButtonProps,
-    'onPress' | 'size' | 'variant' | 'slot' | 'aria-label'
-  > {
+interface CloseButtonProps extends Pick<
+  ButtonProps,
+  'onPress' | 'size' | 'variant' | 'slot' | 'aria-label'
+> {
   className?: string;
   style?: CSSProperties;
 }

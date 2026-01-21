@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react';
 import { I18nProvider } from 'react-aria-components';
 import { useState } from 'storybook/preview-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Checkbox } from './Checkbox';
 import { CheckboxGroup } from './CheckboxGroup';
 

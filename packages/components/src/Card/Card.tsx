@@ -26,7 +26,8 @@ import {
 // Props
 // ---------------
 export interface CardProps
-  extends SpaceProp<SpacingTokens>,
+  extends
+    SpaceProp<SpacingTokens>,
     PaddingRightProp,
     PaddingLeftProp,
     PaddingBottomProp,

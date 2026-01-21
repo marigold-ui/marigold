@@ -47,6 +47,8 @@ const getSharedAppearance = (name: string, theme: Theme) => {
   switch (name) {
     case 'LinkButton':
       return theme.components.Button;
+    case 'ToggleButtonGroup':
+      return theme.components.ToggleButton;
     default:
       return null;
   }

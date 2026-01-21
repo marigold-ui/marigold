@@ -1,6 +1,15 @@
 import type { ThemeComponent } from '@marigold/system';
 import { cva } from '@marigold/system';
 
+// Shared base styles for Button and ToggleButton
+export const buttonBase = [
+  'inline-flex items-center justify-center gap-2',
+  'whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
+  '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+  'cursor-pointer',
+] as const;
+
 export const Button: ThemeComponent<'Button'> = cva(
   [
     'inline-flex items-center justify-center gap-2',
@@ -9,7 +18,6 @@ export const Button: ThemeComponent<'Button'> = cva(
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     'focus-visible:state-focus outline-none disabled:state-disabled',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
-    'cursor-pointer',
   ],
   {
     variants: {

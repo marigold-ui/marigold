@@ -24,8 +24,10 @@ export const queue = new ToastQueue<ToastContentProps>({
   },
 });
 
-export interface ToastProviderProps
-  extends Omit<RAC.ToastRegionProps<object>, RemovedProps> {
+export interface ToastProviderProps extends Omit<
+  RAC.ToastRegionProps<object>,
+  RemovedProps
+> {
   position?: ToastPosition;
 }
 

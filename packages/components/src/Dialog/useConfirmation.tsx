@@ -6,15 +6,10 @@ import type { ConfirmationDialogProps } from './ConfirmationDialog';
 // Types
 // ---------------
 export type ConfirmationResult = 'confirmed' | 'cancelled';
-export interface ConfirmationConfig
-  extends Pick<
-    ConfirmationDialogProps,
-    | 'variant'
-    | 'title'
-    | 'confirmationLabel'
-    | 'cancelLabel'
-    | 'autoFocusButton'
-  > {
+export interface ConfirmationConfig extends Pick<
+  ConfirmationDialogProps,
+  'variant' | 'title' | 'confirmationLabel' | 'cancelLabel' | 'autoFocusButton'
+> {
   content?: ReactNode;
 }
 

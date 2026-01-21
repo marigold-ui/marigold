@@ -1,6 +1,6 @@
 import { expect, userEvent, within } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Accessible, Parking, SettingDots } from '@marigold/icons';
-import preview from '../../../../.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Columns } from '../Columns/Columns';

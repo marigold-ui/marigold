@@ -19,7 +19,8 @@ type RemovedProps =
   | 'defaultValue';
 
 export interface SearchFieldProps
-  extends Omit<RAC.SearchFieldProps, RemovedProps>,
+  extends
+    Omit<RAC.SearchFieldProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
    * Action element to display in the search field.

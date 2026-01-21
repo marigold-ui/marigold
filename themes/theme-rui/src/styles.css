@@ -2,9 +2,15 @@
 @import './theme.css' theme(inline);
 @import './global.css' theme(inline);
 @source inline('{bg}-{stone}-{50,{100..900..100},950}');
-@source inline('{p,px,py,pt,pr,pb,pl}-{compact,tight,regular,relaxed,spacious}');
-@source inline('{p,px,py,pt,pr,pb,pl}-squish-{compact,tight,regular,relaxed,spacious}');
-@source inline('{p,px,py,pt,pr,pb,pl}-stretch-{compact,tight,regular,relaxed,spacious}');
+@source inline(
+  '{p,px,py,pt,pr,pb,pl}-{compact,tight,regular,relaxed,spacious}'
+);
+@source inline(
+  '{p,px,py,pt,pr,pb,pl}-squish-{compact,tight,regular,relaxed,spacious}'
+);
+@source inline(
+  '{p,px,py,pt,pr,pb,pl}-stretch-{compact,tight,regular,relaxed,spacious}'
+);
 
 /* from tailwind.config.ts */
 @source 'src/**/*.*.ts';

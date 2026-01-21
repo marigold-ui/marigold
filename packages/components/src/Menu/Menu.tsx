@@ -10,7 +10,8 @@ import { MenuSection } from './MenuSection';
 type RemovedProps = 'isOpen' | 'className' | 'style' | 'children';
 
 export interface MenuProps
-  extends Omit<RAC.MenuTriggerProps, RemovedProps>,
+  extends
+    Omit<RAC.MenuTriggerProps, RemovedProps>,
     Omit<RAC.MenuProps<object>, RemovedProps> {
   /**
    * Whether the menu is open.

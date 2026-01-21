@@ -3,8 +3,10 @@ import { DisclosurePanel } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 import { CollapsibleContext } from './Context';
 
-export interface CollapsibleContentProps
-  extends Omit<DisclosurePanelProps, 'className' | 'style'> {
+export interface CollapsibleContentProps extends Omit<
+  DisclosurePanelProps,
+  'className' | 'style'
+> {
   variant?: string;
   size?: string;
 }

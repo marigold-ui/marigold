@@ -22,8 +22,10 @@ const intlMessages = {
 
 // Props
 // ---------------
-export interface SearchInputProps
-  extends Omit<InputProps, 'icon' | 'className'> {
+export interface SearchInputProps extends Omit<
+  InputProps,
+  'icon' | 'className'
+> {
   loading?: boolean;
   className?: {
     input?: string;

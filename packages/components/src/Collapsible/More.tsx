@@ -5,8 +5,10 @@ import { intlMessages } from '../intl/messages';
 import type { CollapsibleProps } from './Collapsible';
 import { Collapsible } from './Collapsible';
 
-export interface MoreProps
-  extends Pick<CollapsibleProps, 'unstyled' | 'defaultExpanded'> {
+export interface MoreProps extends Pick<
+  CollapsibleProps,
+  'unstyled' | 'defaultExpanded'
+> {
   /**
    * The children of the component
    */
