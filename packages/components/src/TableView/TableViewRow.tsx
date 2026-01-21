@@ -29,8 +29,8 @@ const TableViewRow = <T extends object>({
   return (
     <Row id={id} className={classNames.row} {...otherProps}>
       {allowsDragging && (
-        <Cell className={classNames.cell}>
-          <Button slot="drag">
+        <Cell className={classNames.dragHandle}>
+          <Button slot="drag" className="grid size-full place-items-center">
             <GripVertical />
           </Button>
         </Cell>

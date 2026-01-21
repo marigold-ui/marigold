@@ -33,12 +33,15 @@ export const TableView: ThemeComponent<'TableView'> = {
   }),
   row: cva(
     [
+      'bg-background',
       'border-border not-last:border-b',
       'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
       'disabled:cursor-not-allowed',
 
       'data-selection-mode:cursor-pointer data-selection-mode:hover:bg-muted',
+
+      'dragging:opacity-50 dragging:transform-gpu',
     ],
     {
       variants: {
@@ -88,4 +91,8 @@ export const TableView: ThemeComponent<'TableView'> = {
     'px-(--cell-x-padding) py-(--cell-y-padding)',
     'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
   ]),
+
+  // Drag and drop
+  dragHandle: cva(['text-muted-foreground cursor-grab', '[&_svg]:size-4']),
+  dropIndicator: cva(['outline-1 outline-stone-800']),
 };

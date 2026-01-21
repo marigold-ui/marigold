@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useDragAndDrop } from 'react-aria-components';
+import { useListData } from 'react-stately';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
@@ -678,6 +680,66 @@ export const Links = meta.story({
               </TableView.Cell>
             </TableView.Row>
           ))}
+        </TableView.Body>
+      </TableView>
+    );
+  },
+});
+
+export const DragAndDrop = meta.story({
+  args: {
+    selectionMode: 'multiple',
+  },
+  render: args => {
+    const list = useListData({
+      initialItems: users.slice(0, 5).map((user, index) => ({
+        id: index + 1,
+        name: user.name,
+        email: user.email,
+        location: user.location,
+      })),
+    });
+
+    const { dragAndDropHooks } = useDragAndDrop({
+      renderDropIndicator: target => (
+        <TableView.DropIndicator target={target} />
+      ),
+      getItems: keys =>
+        [...keys].map(key => ({
+          'text/plain': list.getItem(key)!.name,
+        })),
+      onReorder(e) {
+        if (e.target.dropPosition === 'before') {
+          list.moveBefore(e.target.key, e.keys);
+          return;
+        }
+        if (e.target.dropPosition === 'after') {
+          list.moveAfter(e.target.key, e.keys);
+          return;
+        }
+      },
+    });
+
+    return (
+      <TableView
+        aria-label="Reorderable files"
+        selectionMode="multiple"
+        dragAndDropHooks={dragAndDropHooks}
+        {...args}
+      >
+        <TableView.Header>
+          <TableView.Column isRowHeader>Name</TableView.Column>
+          <TableView.Column>Email</TableView.Column>
+          <TableView.Column>Location</TableView.Column>
+        </TableView.Header>
+        <TableView.Body items={list.items}>
+          {item => (
+            <TableView.Row>
+              <TableView.Cell>{item.name}</TableView.Cell>
+              <TableView.Cell>{item.email}</TableView.Cell>
+              <TableView.Cell>{item.location}</TableView.Cell>
+            </TableView.Row>
+          )}
         </TableView.Body>
       </TableView>
     );

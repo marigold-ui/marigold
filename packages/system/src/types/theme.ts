@@ -144,7 +144,14 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     TableView?: Record<
-      'table' | 'head' | 'column' | 'body' | 'row' | 'cell',
+      | 'table'
+      | 'head'
+      | 'column'
+      | 'body'
+      | 'row'
+      | 'cell'
+      | 'dragHandle'
+      | 'dropIndicator',
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<
