@@ -139,10 +139,9 @@ export interface CheckboxProps extends Omit<RAC.CheckboxProps, RemovedProps> {
   description?: ReactNode;
 }
 
-export interface CheckboxComponent
-  extends ForwardRefExoticComponent<
-    CheckboxProps & RefAttributes<HTMLLabelElement>
-  > {
+export interface CheckboxComponent extends ForwardRefExoticComponent<
+  CheckboxProps & RefAttributes<HTMLLabelElement>
+> {
   /**
    * Group for checkboxes.
    */

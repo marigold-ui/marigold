@@ -6,11 +6,10 @@ import { Underlay } from './Underlay';
 
 // Props
 // ---------------
-export interface PopoverProps
-  extends Omit<
-    RAC.PopoverProps,
-    'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className' | 'children'
-  > {
+export interface PopoverProps extends Omit<
+  RAC.PopoverProps,
+  'isOpen' | 'isKeyboardDismissDisabled' | 'style' | 'className' | 'children'
+> {
   keyboardDismissDisabled?: boolean;
   open?: boolean;
   children: ReactNode;

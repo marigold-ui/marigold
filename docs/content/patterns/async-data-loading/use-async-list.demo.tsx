@@ -8,7 +8,9 @@ export default function Example() {
     async load({ signal, filterText }) {
       const res = await fetch(
         `https://swapi.py4e.com/api/people/?search=${filterText}`,
-        { signal }
+        {
+          signal,
+        }
       );
       const json = await res.json();
 

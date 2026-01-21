@@ -4,7 +4,8 @@ import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 export interface ColumnsProps
-  extends SpaceProp<'section' | 'fieldX' | 'container' | 'group'>,
+  extends
+    SpaceProp<'section' | 'fieldX' | 'container' | 'group'>,
     AriaRegionProps {
   /**
    * The children of the component.
@@ -35,9 +36,7 @@ export const Columns = ({
 }: ColumnsProps) => {
   if (Children.count(children) !== columns.length) {
     throw new Error(
-      `Columns: expected ${columns.length} children, got ${Children.count(
-        children
-      )}`
+      `Columns: expected ${columns.length} children, got ${Children.count(children)}`
     );
   }
 

@@ -12,9 +12,7 @@ import {
 import type { AriaLabelingProps } from '@marigold/types';
 
 export interface HeadlineProps
-  extends AriaLabelingProps,
-    TextAlignProp,
-    LineHeightProp {
+  extends AriaLabelingProps, TextAlignProp, LineHeightProp {
   /**
    * Set the color of the headline.
    */

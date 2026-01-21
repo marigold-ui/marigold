@@ -10,8 +10,10 @@ import { AccordionPanel } from './AccordionPanel';
 // ---------------
 type RemovedProps = 'isDisabled';
 
-export interface AccordionProps
-  extends Omit<RAC.DisclosureGroupProps, RemovedProps> {
+export interface AccordionProps extends Omit<
+  RAC.DisclosureGroupProps,
+  RemovedProps
+> {
   variant?: 'default' | 'card' | (string & {});
   size?: string;
   /** Whether all items are disabled. */

@@ -15,8 +15,10 @@ import { SelectListItem } from './SelectListItem';
 
 type RemoveProps = 'style' | 'className' | 'onSelectionChange';
 
-export interface SelectListProps
-  extends Omit<RAC.GridListProps<object>, RemoveProps> {
+export interface SelectListProps extends Omit<
+  RAC.GridListProps<object>,
+  RemoveProps
+> {
   /**
    * Handler that is called when the selection change.
    */
@@ -25,10 +27,9 @@ export interface SelectListProps
     | Dispatch<SetStateAction<any>>;
 }
 
-interface SelectListComponent
-  extends ForwardRefExoticComponent<
-    SelectListProps & RefAttributes<HTMLUListElement>
-  > {
+interface SelectListComponent extends ForwardRefExoticComponent<
+  SelectListProps & RefAttributes<HTMLUListElement>
+> {
   /**
    * Items of the SelectList.
    */

@@ -51,7 +51,8 @@ type RemovedProps =
   | 'isReadOnly';
 
 export interface CheckboxGroupProps
-  extends Omit<RAC.CheckboxGroupProps, RemovedProps>,
+  extends
+    Omit<RAC.CheckboxGroupProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
    * The children of the component

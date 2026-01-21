@@ -4,8 +4,7 @@ import { cn, maxWidth as twMaxWidth } from '@marigold/system';
 import type { MaxWidthProp } from '@marigold/system';
 
 export interface FormProps
-  extends Omit<RAC.FormProps, 'className' | 'style'>,
-    MaxWidthProp {
+  extends Omit<RAC.FormProps, 'className' | 'style'>, MaxWidthProp {
   /**
    * Removes the form's visual container so that it does not impact the layout,
    * letting child elements render naturally.

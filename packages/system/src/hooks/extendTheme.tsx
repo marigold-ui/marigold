@@ -69,7 +69,9 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
       // @ts-expect-error any any
       mergedStyles[component] = cva(
         [mergedComponentStyles(), componentStyles()],
-        { variants }
+        {
+          variants,
+        }
       );
     }
   });

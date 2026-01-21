@@ -1,4 +1,4 @@
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Radio } from '../Radio/Radio';

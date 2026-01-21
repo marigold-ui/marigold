@@ -12,7 +12,8 @@ const inlineAlignmentY = {
 // Props
 // ---------------
 export interface InlineProps
-  extends SpaceProp<'section' | 'fieldX' | 'container' | 'group'>,
+  extends
+    SpaceProp<'section' | 'fieldX' | 'container' | 'group'>,
     AriaRegionProps {
   /**
    * The children of the component.

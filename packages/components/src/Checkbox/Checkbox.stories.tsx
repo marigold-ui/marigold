@@ -1,5 +1,5 @@
 import { expect, fn, userEvent, within } from 'storybook/test';
-import preview from '../../../../.storybook/preview';
+import preview from '.storybook/preview';
 import { Checkbox } from './Checkbox';
 
 const meta = preview.meta({

@@ -4,8 +4,10 @@ import { Header, ListBoxSection } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { useListBoxContext } from './Context';
 
-export interface SectionProps
-  extends Omit<RAC.SectionProps<object>, 'className' | 'style' | 'children'> {
+export interface SectionProps extends Omit<
+  RAC.SectionProps<object>,
+  'className' | 'style' | 'children'
+> {
   /**
    * Section header to display.
    */

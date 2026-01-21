@@ -94,9 +94,8 @@ _Radio.Group = RadioGroup;
  * We need this so that TypeScripts allows us to add
  * additional properties to the component (function).
  */
-export interface RadioComponent
-  extends ForwardRefExoticComponent<
-    RadioProps & RefAttributes<HTMLLabelElement>
-  > {
+export interface RadioComponent extends ForwardRefExoticComponent<
+  RadioProps & RefAttributes<HTMLLabelElement>
+> {
   Group: typeof RadioGroup;
 }

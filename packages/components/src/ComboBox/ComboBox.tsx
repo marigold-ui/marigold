@@ -33,7 +33,8 @@ type RemovedProps =
   | 'onInputChange';
 
 export interface ComboBoxProps
-  extends Omit<RAC.ComboBoxProps<any>, RemovedProps>,
+  extends
+    Omit<RAC.ComboBoxProps<any>, RemovedProps>,
     Pick<
       FieldBaseProps<'label'>,
       'width' | 'label' | 'description' | 'errorMessage'
@@ -102,10 +103,9 @@ export interface ComboBoxProps
   loading?: boolean;
 }
 
-interface ComboBoxComponent
-  extends ForwardRefExoticComponent<
-    ComboBoxProps & RefAttributes<HTMLInputElement>
-  > {
+interface ComboBoxComponent extends ForwardRefExoticComponent<
+  ComboBoxProps & RefAttributes<HTMLInputElement>
+> {
   /**
    * Options for the Combobox.
    */

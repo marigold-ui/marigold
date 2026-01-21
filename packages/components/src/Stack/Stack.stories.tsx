@@ -1,5 +1,5 @@
+import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
-import preview from '../../../../.storybook/preview';
 import { Card } from '../Card/Card';
 import { Container } from '../Container/Container';
 import { Headline } from '../Headline/Headline';
