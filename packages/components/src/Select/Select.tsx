@@ -111,8 +111,8 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
     >
       <IconButton
         className={cn(
-          'flex max-w-(--field-width) items-center justify-between gap-1 overflow-hidden',
-          classNames.select
+          classNames.select,
+          'flex w-(--field-width) max-w-full min-w-0 items-center justify-between gap-1 overflow-hidden'
         )}
       >
         <SelectValue className="truncate text-nowrap [&_[slot=description]]:hidden" />
