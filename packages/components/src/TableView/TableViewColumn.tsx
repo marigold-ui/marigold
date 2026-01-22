@@ -75,7 +75,7 @@ const TableViewColumn = ({
               )}
             </span>
           )}
-          <Group role="presentation" tabIndex={-1}>
+          <Group className="outline-none" role="presentation" tabIndex={-1}>
             {props.children}
           </Group>
         </div>

@@ -67,7 +67,8 @@ export const TableView: ThemeComponent<'TableView'> = {
     [
       'h-(--header-height) px-(--cell-x-padding) align-middle',
       'font-medium text-muted-foreground',
-      'has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-ring',
+      'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring',
+      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring', // This one is for the empty dragging header column
       'aria-[sort]:hover:bg-muted aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
     ],
     {
@@ -108,6 +109,8 @@ export const TableView: ThemeComponent<'TableView'> = {
   ]),
   dropIndicator: cva([
     'relative',
-    'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-stone-800',
+    'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-stone-300',
+
+    'drop-target:before:z-10 drop-target:before:bg-stone-800',
   ]),
 };
