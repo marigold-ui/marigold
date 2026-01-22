@@ -60,6 +60,7 @@
   },
   "scripts": {
     "start": "pnpm --filter @marigold/docs dev",
+    "start-fumadocs": "pnpm --filter fumadocs dev",
     "sb": "FOLDERS=packages/components/src,packages/system/src storybook dev -p 6006 -c ./.storybook",
     "build": "turbo run --filter \"@marigold/components...\" --filter \"@marigold/theme*...\" build",
     "build:docs": "turbo run --filter @marigold/docs... build",
