@@ -13,6 +13,7 @@ export const intlMessages = {
     moreInfo: 'Mehr Informationen',
     help: 'Hilfe',
     hiddenBreadcrumbs: 'Diese Breadcrumbs sind ausgeblendet',
+    items: 'Elemente',
   },
   'en-US': {
     cancel: 'Cancel',
@@ -28,5 +29,6 @@ export const intlMessages = {
     moreInfo: 'More information',
     help: 'Help',
     hiddenBreadcrumbs: 'These breadcrumbs are hidden',
+    items: 'Items',
   },
 };

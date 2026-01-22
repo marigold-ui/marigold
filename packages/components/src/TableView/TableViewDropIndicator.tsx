@@ -1,5 +1,8 @@
 import { DropIndicator } from 'react-aria-components';
-import type { DropIndicatorProps } from 'react-aria-components';
+import type {
+  DragAndDropOptions,
+  DropIndicatorProps,
+} from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
 // Props
@@ -31,3 +34,8 @@ export const TableViewDropIndicator = ({
     />
   );
 };
+
+// Hook Handler
+// ---------------
+export const renderDropIndicator: DragAndDropOptions['renderDropIndicator'] =
+  target => <TableViewDropIndicator target={target} />;

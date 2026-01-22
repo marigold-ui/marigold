@@ -6,7 +6,14 @@ import { TableViewContext } from './Context';
 import { TableViewBody } from './TableViewBody';
 import { TableViewCell } from './TableViewCell';
 import { TableViewColumn } from './TableViewColumn';
-import { TableViewDropIndicator } from './TableViewDropIndicator';
+import {
+  TableViewDragPreview,
+  renderDragPreview,
+} from './TableViewDragPreview';
+import {
+  TableViewDropIndicator,
+  renderDropIndicator,
+} from './TableViewDropIndicator';
 import { TableViewHeader } from './TableViewHeader';
 import { TableViewRow } from './TableViewRow';
 
@@ -59,7 +66,12 @@ const TableView = Object.assign(_TableView, {
   Body: TableViewBody,
   Row: TableViewRow,
   Cell: TableViewCell,
+
+  // Drag and Drop
   DropIndicator: TableViewDropIndicator,
+  DragPreview: TableViewDragPreview,
+  renderDropIndicator: renderDropIndicator,
+  renderDragPreview: renderDragPreview,
 });
 
 export { TableView };
@@ -72,3 +84,4 @@ export type { TableViewBodyProps } from './TableViewBody';
 export type { TableViewRowProps } from './TableViewRow';
 export type { TableViewCellProps } from './TableViewCell';
 export type { TableViewDropIndicatorProps } from './TableViewDropIndicator';
+export type { TableViewDragPreviewProps } from './TableViewDragPreview';

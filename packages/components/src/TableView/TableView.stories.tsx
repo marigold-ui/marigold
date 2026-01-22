@@ -701,9 +701,8 @@ export const DragAndDrop = meta.story({
     });
 
     const { dragAndDropHooks } = useDragAndDrop({
-      renderDropIndicator: target => (
-        <TableView.DropIndicator target={target} />
-      ),
+      renderDropIndicator: TableView.renderDropIndicator,
+      renderDragPreview: TableView.renderDragPreview,
       getItems: keys =>
         [...keys].map(key => ({
           'text/plain': list.getItem(key)!.name,
@@ -723,7 +722,6 @@ export const DragAndDrop = meta.story({
     return (
       <TableView
         aria-label="Reorderable files"
-        selectionMode="multiple"
         dragAndDropHooks={dragAndDropHooks}
         {...args}
       >

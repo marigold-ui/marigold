@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const TableView: ThemeComponent<'TableView'> = {
-  table: cva(['text-sm'], {
+  table: cva(['text-sm bg-background'], {
     variants: {
       variant: {
         default: '',
@@ -33,7 +33,6 @@ export const TableView: ThemeComponent<'TableView'> = {
   }),
   row: cva(
     [
-      'bg-background',
       'border-border not-last:border-b',
       'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
@@ -94,5 +93,17 @@ export const TableView: ThemeComponent<'TableView'> = {
 
   // Drag and drop
   dragHandle: cva(['text-muted-foreground cursor-grab', '[&_svg]:size-4']),
-  dropIndicator: cva(['outline-1 outline-stone-800']),
+  dragPreview: cva([
+    'relative px-3 py-2 bg-background shadow-xs',
+    'border border-border rounded-lg',
+  ]),
+  dragPreviewCounter: cva([
+    'flex items-center justify-center rounded-full',
+    'bg-brand px-2',
+    'text-xs font-medium leading-normal text-brand-foreground',
+  ]),
+  dropIndicator: cva([
+    'relative',
+    'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-stone-800',
+  ]),
 };

@@ -151,6 +151,8 @@ export type Theme = {
       | 'row'
       | 'cell'
       | 'dragHandle'
+      | 'dragPreview'
+      | 'dragPreviewCounter'
       | 'dropIndicator',
       ComponentStyleFunction<string, string>
     >;
