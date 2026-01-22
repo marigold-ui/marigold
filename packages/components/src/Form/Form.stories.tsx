@@ -188,7 +188,7 @@ export const LayoutVariations = meta.story({
               <Select.Option id="uk">United Kingdom</Select.Option>
               <Select.Option id="de">Germany</Select.Option>
             </Select>
-            <TextArea label="Width 32" width={80} />
+            <TextArea label="Width 32" width={32} />
           </Inline>
           <Stack space={4}>
             <TextField label="Width 96" width={96} />

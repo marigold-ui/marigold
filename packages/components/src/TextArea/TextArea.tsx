@@ -109,7 +109,7 @@ const _TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <FieldBase as={TextField} {...props} variant={variant} size={size}>
         <TextArea
-          className={cn('w-(--field-width) max-w-full min-w-0', classNames)}
+          className={cn(classNames, 'w-(--field-width) max-w-full min-w-0')}
           ref={ref}
           rows={rows}
         />
