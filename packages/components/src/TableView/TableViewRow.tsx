@@ -7,6 +7,7 @@ import {
   Row,
   useTableOptions,
 } from 'react-aria-components';
+import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { useTableViewContext } from './Context';
 
@@ -29,8 +30,14 @@ const TableViewRow = <T extends object>({
   return (
     <Row id={id} className={classNames.row} {...otherProps}>
       {allowsDragging && (
-        <Cell className={classNames.dragHandle}>
-          <Button slot="drag" className="grid size-full place-items-center">
+        <Cell>
+          <Button
+            slot="drag"
+            className={cn(
+              'grid size-full place-items-center',
+              classNames.dragHandle
+            )}
+          >
             <GripVertical />
           </Button>
         </Cell>

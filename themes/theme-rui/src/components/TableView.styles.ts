@@ -92,7 +92,11 @@ export const TableView: ThemeComponent<'TableView'> = {
   ]),
 
   // Drag and drop
-  dragHandle: cva(['text-muted-foreground cursor-grab', '[&_svg]:size-4']),
+  dragHandle: cva([
+    'text-muted-foreground rounded size-4',
+    '[&_svg]:size-4',
+    'focus-visible:util-focus-ring outline-none',
+  ]),
   dragPreview: cva([
     'px-4 py-3 bg-brand rounded-lg shadow-lg',
     'text-sm text-brand-foreground',
