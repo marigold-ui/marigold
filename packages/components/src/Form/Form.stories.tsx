@@ -164,33 +164,37 @@ export const Selected = meta.story({
 export const LayoutVariations = meta.story({
   render: () => (
     <Stack space={32}>
-      <Stack space={2}>
+      <Stack space={20}>
         <Headline level={3}>Fraction Values</Headline>
         <Inline space={4} alignY="bottom" noWrap>
-          <TextField label="2/3" width={'2/3'} />
-          <TextField label="1/3" width={'1/3'} />
+          <TextField label="Width 1/3" width={'1/3'} />
+          <TextField label="Width 2/3" width={'2/3'} />
         </Inline>
+        <Stack space={4}>
+          <TextField label="Width 1/3" width={'1/3'} />
+          <TextField label="Width 2/3" width={'2/3'} />
+        </Stack>
       </Stack>
 
       <Stack space={2}>
         <Headline level={3}>Fixed Values</Headline>
-        <Inline alignX="left">
-          <TextField label="96" width={96} />
-          <Select label="96" width={96}>
+        <Inline alignX="left" space={4} noWrap>
+          <TextField label="Width 96" width={96} />
+          <Select label="Width 80" width={80}>
             <Select.Option id="us">United States</Select.Option>
             <Select.Option id="uk">United Kingdom</Select.Option>
             <Select.Option id="de">Germany</Select.Option>
           </Select>
-          <TextArea label="96" width={96} />
+          <TextArea label="Width 32" width={32} />
         </Inline>
-        <Stack>
-          <TextField label="96" width={96} />
-          <Select label="96" width={96}>
+        <Stack space={4}>
+          <TextField label="Width 96" width={96} />
+          <Select label="Width 80" width={80}>
             <Select.Option id="us">United States</Select.Option>
             <Select.Option id="uk">United Kingdom</Select.Option>
             <Select.Option id="de">Germany</Select.Option>
           </Select>
-          <TextArea label="96" width={96} />
+          <TextArea label="Width 32" width={32} />
         </Stack>
       </Stack>
 
