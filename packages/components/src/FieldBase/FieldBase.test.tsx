@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { TextField } from 'react-aria-components';
 import { Theme, cva } from '@marigold/system';
+import { Input } from '../Input/Input';
 import { setup } from '../test.utils';
 import { FieldBase } from './FieldBase';
 
@@ -168,6 +169,43 @@ test('takes full width by default', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement!;
   expect(container.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-full"`
+    `"group/field flex w-full min-w-0 flex-col w-(--container-width)"`
   );
+});
+
+test('applies width variables for numeric width', () => {
+  render(
+    <FieldBase as={TextField} label="Label" width={80}>
+      <input type="text" />
+    </FieldBase>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement!;
+
+  expect(container.className).toContain('w-auto');
+  expect(container.style.getPropertyValue('--container-width')).toBe(
+    'calc(var(--spacing) * 80)'
+  );
+  expect(container.style.getPropertyValue('--field-width')).toBe(
+    'calc(var(--spacing) * 80)'
+  );
+});
+
+test('applies width variables for fraction width', () => {
+  render(
+    <FieldBase as={TextField} label="Label" width="1/2">
+      <input type="text" />
+    </FieldBase>
+  );
+
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('Label').parentElement!;
+
+  expect(container.className).toContain('w-(--container-width)');
+  expect(container.className).not.toContain('w-auto');
+  expect(container.style.getPropertyValue('--container-width')).toBe(
+    'calc((1 / 2) * 100%)'
+  );
+  expect(container.style.getPropertyValue('--field-width')).toBe('100%');
 });

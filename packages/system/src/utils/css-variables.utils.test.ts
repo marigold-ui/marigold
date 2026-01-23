@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   createSpacingVar,
   createVar,
+  createWidthVar,
   ensureCssVar,
+  isFraction,
   isScale,
   isValidCssCustomPropertyName,
 } from './css-variables.utils';
@@ -48,6 +50,51 @@ describe('isScale', () => {
     expect(isScale('1.')).toBe(false);
     expect(isScale('.5')).toBe(false);
     expect(isScale('1..5')).toBe(false);
+  });
+});
+
+describe('isFraction', () => {
+  it('should return true for valid fractions', () => {
+    expect(isFraction('1/2')).toBe(true);
+    expect(isFraction('2/3')).toBe(true);
+    expect(isFraction('3/4')).toBe(true);
+    expect(isFraction('10/20')).toBe(true);
+  });
+
+  it('should return true for fractions with larger numbers', () => {
+    expect(isFraction('100/200')).toBe(true);
+    expect(isFraction('999/1000')).toBe(true);
+  });
+
+  it('should return false for non-fraction numeric strings', () => {
+    expect(isFraction('1')).toBe(false);
+    expect(isFraction('1.5')).toBe(false);
+    expect(isFraction('42')).toBe(false);
+  });
+
+  it('should return false for strings with multiple slashes', () => {
+    expect(isFraction('1/2/3')).toBe(false);
+    expect(isFraction('1//2')).toBe(false);
+  });
+
+  it('should return false for empty strings', () => {
+    expect(isFraction('')).toBe(false);
+  });
+
+  it('should return false for strings with spaces', () => {
+    expect(isFraction('1 / 2')).toBe(false);
+    expect(isFraction(' 1/2')).toBe(false);
+    expect(isFraction('1/2 ')).toBe(false);
+  });
+
+  it('should return false for non-numeric fractions', () => {
+    expect(isFraction('a/b')).toBe(false);
+    expect(isFraction('one/two')).toBe(false);
+  });
+
+  it('should return false for incomplete fractions', () => {
+    expect(isFraction('1/')).toBe(false);
+    expect(isFraction('/2')).toBe(false);
   });
 });
 
@@ -215,6 +262,72 @@ describe('createSpacingVar', () => {
       expect(result).toEqual({
         '--space': `var(--spacing-${token})`,
       });
+    });
+  });
+});
+
+describe('createWidthVar', () => {
+  it('should return a CSS custom property with a number value using calc', () => {
+    const result = createWidthVar('width', '4');
+
+    expect(result).toEqual({
+      '--width': 'calc(var(--spacing) * 4)',
+    });
+  });
+
+  it('should return a CSS custom property with a decimal value', () => {
+    const result = createWidthVar('width', '2.5');
+
+    expect(result).toEqual({
+      '--width': 'calc(var(--spacing) * 2.5)',
+    });
+  });
+
+  it('should convert fractions to percentage', () => {
+    expect(createWidthVar('width', '1/2')).toEqual({
+      '--width': 'calc((1 / 2) * 100%)',
+    });
+
+    expect(createWidthVar('width', '2/3')).toEqual({
+      '--width': 'calc((2 / 3) * 100%)',
+    });
+
+    expect(createWidthVar('width', '3/4')).toEqual({
+      '--width': 'calc((3 / 4) * 100%)',
+    });
+  });
+
+  it('should handle keyword values', () => {
+    expect(createWidthVar('width', 'fit')).toEqual({
+      '--width': 'fit-content',
+    });
+
+    expect(createWidthVar('width', 'min')).toEqual({
+      '--width': 'min-content',
+    });
+
+    expect(createWidthVar('width', 'max')).toEqual({
+      '--width': 'max-content',
+    });
+
+    expect(createWidthVar('width', 'full')).toEqual({
+      '--width': '100%',
+    });
+
+    expect(createWidthVar('width', 'screen')).toEqual({
+      '--width': '100vw',
+    });
+
+    expect(createWidthVar('width', 'auto')).toEqual({
+      '--width': 'auto',
+    });
+  });
+
+  it('should handle custom property names', () => {
+    const result = createWidthVar('custom-width-name', '8');
+
+    expect(result).toEqual({
+      '--custom-width-name': 'calc(var(--spacing) * 8)',
     });
   });
 });

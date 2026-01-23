@@ -51,7 +51,9 @@ test('renders an textarea', () => {
 test('textarea can be styled via "TextArea" styles', () => {
   render(<TextArea label="Label" data-testid="text-area" />);
   const textArea = screen.getByRole('textbox');
-  expect(textArea.className).toMatchInlineSnapshot(`"text-blue-500"`);
+  expect(textArea.className).toMatchInlineSnapshot(
+    `"text-blue-500 w-(--field-width) max-w-full min-w-0"`
+  );
 });
 
 test('passes down variant and size', () => {
@@ -66,7 +68,9 @@ test('passes down variant and size', () => {
   );
 
   const textArea = screen.getByRole('textbox');
-  expect(textArea.className).toMatchInlineSnapshot(`"text-lime-500 text-sm"`);
+  expect(textArea.className).toMatchInlineSnapshot(
+    `"text-lime-500 text-sm w-(--field-width) max-w-full min-w-0"`
+  );
 
   const label = screen.getByText('Label');
   expect(label.className).toMatchInlineSnapshot(

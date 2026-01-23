@@ -243,7 +243,7 @@ test('set width via props', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Label')[0].parentElement;
   expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-1/2"`
+    `"group/field flex min-w-0 flex-col w-(--container-width)"`
   );
 });
 

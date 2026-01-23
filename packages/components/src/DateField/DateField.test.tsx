@@ -30,9 +30,10 @@ test('renders correctly', () => {
 
   expect(dateField).toMatchInlineSnapshot(`
     <div
-      class="group/field flex flex-col w-full space-y-2"
+      class="group/field flex min-w-0 flex-col w-(--container-width) space-y-2"
       data-rac=""
       data-testid="dateField"
+      style="--container-width: 100%; --field-width: 100%;"
     >
       <span
         class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex"
@@ -43,7 +44,7 @@ test('renders correctly', () => {
       <div
         aria-describedby="react-aria-description-0 react-aria-_r_3_"
         aria-labelledby="react-aria-_r_1_"
-        class="h-input flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled has-focus-visible:util-focus-ring outline-none group-invalid/field:border-destructive group-invalid/field:focus:border-destructive group-invalid/field:focus:ring-destructive/20 group-read-only/field:bg-muted invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20 data-[focus-within]:util-focus-ring outline-0"
+        class="h-input flex px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled has-focus-visible:util-focus-ring outline-none group-invalid/field:border-destructive group-invalid/field:focus:border-destructive group-invalid/field:focus:ring-destructive/20 group-read-only/field:bg-muted invalid:focus-within:border-destructive invalid:focus-within:ring-destructive/20 data-[focus-within]:util-focus-ring outline-0 w-(--field-width) max-w-full min-w-0 overflow-hidden"
         data-rac=""
         data-react-aria-pressable="true"
         id="react-aria-_r_0_"

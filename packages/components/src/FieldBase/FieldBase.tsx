@@ -65,7 +65,7 @@ const _FieldBase = <T extends ElementType>(
     <Component
       ref={ref}
       className={cn(
-        'group/field flex w-full min-w-0 flex-col',
+        'group/field flex min-w-0 flex-col',
         /**
          * Width handling strategy:
          * - For fixed widths (numeric scale values): Use `w-auto` to prevent layout shifts
