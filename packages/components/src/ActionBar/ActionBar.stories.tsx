@@ -21,20 +21,11 @@ const meta = preview.meta({
         defaultValue: { summary: '0' },
       },
     },
-    isEmphasized: {
-      control: { type: 'boolean' },
-      description: 'Display with emphasized styling',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
     onClearSelection: {
       description: 'Handler for clear button press',
     },
   },
   args: {
-    isEmphasized: false,
     onClearSelection: fn(),
   },
 });
@@ -82,48 +73,6 @@ export const AllSelected = meta.story({
       <ActionBar.Button>
         <Delete />
         <span>Delete</span>
-      </ActionBar.Button>
-    </ActionBar>
-  ),
-});
-
-export const Emphasized = meta.story({
-  args: {
-    selectedItemCount: 5,
-    isEmphasized: true,
-  },
-  render: args => (
-    <ActionBar {...args}>
-      <ActionBar.Button>
-        <Edit />
-        <span>Edit</span>
-      </ActionBar.Button>
-      <ActionBar.Button>
-        <Copy />
-        <span>Copy</span>
-      </ActionBar.Button>
-      <ActionBar.Button>
-        <Delete />
-        <span>Delete</span>
-      </ActionBar.Button>
-    </ActionBar>
-  ),
-});
-
-export const IconOnly = meta.story({
-  args: {
-    selectedItemCount: 2,
-  },
-  render: args => (
-    <ActionBar {...args}>
-      <ActionBar.Button aria-label="Edit">
-        <Edit />
-      </ActionBar.Button>
-      <ActionBar.Button aria-label="Copy">
-        <Copy />
-      </ActionBar.Button>
-      <ActionBar.Button aria-label="Delete">
-        <Delete />
       </ActionBar.Button>
     </ActionBar>
   ),

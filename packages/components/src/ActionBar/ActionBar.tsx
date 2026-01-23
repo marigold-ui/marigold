@@ -16,12 +16,6 @@ export interface ActionBarProps {
   id?: string;
 
   /**
-   * Whether the ActionBar should be displayed with an emphasized style.
-   * @default false
-   */
-  isEmphasized?: boolean;
-
-  /**
    * Handler that is called when the ActionBar clear button is pressed.
    */
   onClearSelection?: () => void;
@@ -57,9 +51,7 @@ export interface ActionBarProps {
 export const ActionBar = ({
   children,
   id,
-  isEmphasized,
   onClearSelection,
-  scrollRef,
   selectedItemCount = 0,
   slot,
   variant,
@@ -87,7 +79,6 @@ export const ActionBar = ({
     <div
       id={id}
       slot={slot ?? undefined}
-      data-emphasized={isEmphasized || undefined}
       className={classNames.container}
       role="toolbar"
       aria-label="Bulk actions"

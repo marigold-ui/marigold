@@ -3,7 +3,6 @@ import { expect, test, vi } from 'vitest';
 import {
   AllSelected,
   Basic,
-  Emphasized,
   NoSelection,
   WithoutClearButton,
 } from './ActionBar.stories';
@@ -61,14 +60,6 @@ test('renders action buttons', () => {
 
   expect(screen.getByText('Edit')).toBeInTheDocument();
   expect(screen.getByText('Delete')).toBeInTheDocument();
-});
-
-test('supports emphasized variant', () => {
-  render(<Emphasized.Component />);
-
-  const toolbar = screen.queryByRole('toolbar');
-
-  expect(toolbar).toHaveAttribute('data-emphasized');
 });
 
 test('has proper accessibility attributes', () => {
