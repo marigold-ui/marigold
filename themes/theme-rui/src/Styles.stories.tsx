@@ -24,7 +24,7 @@ export const Surface = meta.story({
       <Inline space="peer">
         <Base className="ui-surface">raised</Base>
         <Base className="ui-surface ui-elevation-overlay">overlay</Base>
-        <Base className="ui-surface ui-elevation-overlay [--shadow-elevation-color:red]">
+        <Base className="ui-surface ui-elevation-overlay ui-state-errorpm">
           overlay / error
         </Base>
       </Inline>
