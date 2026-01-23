@@ -1,4 +1,4 @@
-import type { ReactNode, RefObject } from 'react';
+import type { ReactNode } from 'react';
 import { useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Text } from '../Text/Text';
@@ -21,21 +21,11 @@ export interface ActionBarProps {
   onClearSelection?: () => void;
 
   /**
-   * A ref to the scrollable element the ActionBar appears above.
-   */
-  scrollRef?: RefObject<HTMLElement | null>;
-
-  /**
    * The number of selected items that the ActionBar is currently linked to.
    * If 0, the ActionBar is hidden.
    * @default 0
    */
   selectedItemCount?: number | 'all';
-
-  /**
-   * A slot name for the component.
-   */
-  slot?: string | null;
 
   /**
    * Variant of the ActionBar.
@@ -53,7 +43,6 @@ export const ActionBar = ({
   id,
   onClearSelection,
   selectedItemCount = 0,
-  slot,
   variant,
   size,
 }: ActionBarProps) => {
@@ -78,7 +67,6 @@ export const ActionBar = ({
   return (
     <div
       id={id}
-      slot={slot ?? undefined}
       className={classNames.container}
       role="toolbar"
       aria-label="Bulk actions"
