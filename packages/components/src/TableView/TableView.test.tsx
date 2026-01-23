@@ -1,106 +1,129 @@
 import { render, screen } from '@testing-library/react';
-import { TableView } from './TableView';
+import {
+  Basic,
+  DragAndDrop,
+  DynamicData,
+  EditableFields,
+  Empty,
+  Links,
+  ScrollableAndSticky,
+  Sorting,
+  WidthsAndOverflow,
+} from './TableView.stories';
 
-test('renders table element', () => {
-  render(
-    <TableView aria-label="Test table">
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-        <TableView.Column>Type</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
-        <TableView.Row>
-          <TableView.Cell>Item 1</TableView.Cell>
-          <TableView.Cell>Type A</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row>
-          <TableView.Cell>Item 2</TableView.Cell>
-          <TableView.Cell>Type B</TableView.Cell>
-        </TableView.Row>
-      </TableView.Body>
-    </TableView>
-  );
+describe('Basic Rendering', () => {
+  test('renders table element with proper structure', () => {
+    render(<Basic.Component />);
 
-  const table = screen.getByRole('grid');
-  expect(table instanceof HTMLTableElement).toBeTruthy();
+    const table = screen.getByRole('table');
+    expect(table instanceof HTMLTableElement).toBeTruthy();
+  });
+
+  test('renders column headers', () => {
+    render(<Basic.Component />);
+
+    expect(
+      screen.getByRole('columnheader', { name: 'Name' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Email' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Location' })
+    ).toBeInTheDocument();
+  });
+
+  test('renders table rows with data', () => {
+    render(<Basic.Component />);
+
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    expect(screen.getByText('Fritz Schneider')).toBeInTheDocument();
+  });
+
+  test('applies colspans to cells', () => {
+    render(<WidthsAndOverflow.Component />);
+
+    const totalCell = screen.getByText('Total');
+    expect(totalCell).toBeInTheDocument();
+    expect(totalCell).toHaveAttribute('colspan', '4');
+  });
 });
 
-test('renders column headers', () => {
-  render(
-    <TableView aria-label="Test table">
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-        <TableView.Column>Type</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
-        <TableView.Row>
-          <TableView.Cell>Item 1</TableView.Cell>
-          <TableView.Cell>Type A</TableView.Cell>
-        </TableView.Row>
-      </TableView.Body>
-    </TableView>
-  );
+describe('Data Handling', () => {
+  test('supports dynamic data with selection mode', () => {
+    render(<DynamicData.Component />);
 
-  expect(
-    screen.getByRole('columnheader', { name: 'Name' })
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole('columnheader', { name: 'Type' })
-  ).toBeInTheDocument();
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes.length).toBeGreaterThan(0);
+
+    expect(screen.getByText('Harry')).toBeInTheDocument();
+    expect(screen.getByText('Draco')).toBeInTheDocument();
+  });
+
+  test('displays empty state when no data', () => {
+    render(<Empty.Component />);
+
+    expect(screen.getByText('No results found.')).toBeInTheDocument();
+  });
 });
 
-test('renders table rows and cells', () => {
-  render(
-    <TableView aria-label="Test table">
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
-        <TableView.Row>
-          <TableView.Cell>Item 1</TableView.Cell>
-        </TableView.Row>
-        <TableView.Row>
-          <TableView.Cell>Item 2</TableView.Cell>
-        </TableView.Row>
-      </TableView.Body>
-    </TableView>
-  );
+describe('Column Configuration', () => {
+  test('renders table with custom column widths', () => {
+    render(<WidthsAndOverflow.Component />);
 
-  expect(screen.getByRole('row', { name: 'Item 1' })).toBeInTheDocument();
-  expect(screen.getByRole('row', { name: 'Item 2' })).toBeInTheDocument();
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'ID' })
+    ).toBeInTheDocument();
+  });
 });
 
-test('has table element with proper role', () => {
-  render(
-    <TableView aria-label="Test table">
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
-        <TableView.Row>
-          <TableView.Cell>Item 1</TableView.Cell>
-        </TableView.Row>
-      </TableView.Body>
-    </TableView>
-  );
+describe('Interactions', () => {
+  test('supports sorting with sortable columns', () => {
+    render(<Sorting.Component />);
 
-  expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+    const sortableHeaders = screen
+      .getAllByRole('button')
+      .filter(
+        btn =>
+          btn.className.includes('sortable') ||
+          btn.getAttribute('aria-sort') !== null
+      );
+    expect(sortableHeaders.length).toBeGreaterThan(0);
+  });
+
+  test('renders table with drag and drop support', () => {
+    render(<DragAndDrop.Component />);
+
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes.length).toBeGreaterThan(0);
+  });
 });
 
-test('supports selection mode', () => {
-  render(
-    <TableView aria-label="Test table" selectionMode="multiple">
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
-        <TableView.Row>
-          <TableView.Cell>Item 1</TableView.Cell>
-        </TableView.Row>
-      </TableView.Body>
-    </TableView>
-  );
+describe('Content', () => {
+  test('renders editable form fields in cells', () => {
+    render(<EditableFields.Component />);
 
-  const checkboxes = screen.getAllByRole('checkbox');
-  expect(checkboxes.length).toBeGreaterThan(0);
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    const selects = screen.getAllByRole('combobox');
+    expect(selects.length).toBeGreaterThan(0);
+  });
+
+  test('renders table with clickable row links', () => {
+    render(<Links.Component />);
+
+    expect(screen.getByText('Marigold')).toBeInTheDocument();
+    expect(screen.getByText('Reservix')).toBeInTheDocument();
+  });
+});
+
+describe('Advanced Features', () => {
+  test('renders scrollable table with sticky header', () => {
+    render(<ScrollableAndSticky.Component />);
+
+    const table = screen.getByRole('table');
+    expect(table).toBeInTheDocument();
+  });
 });

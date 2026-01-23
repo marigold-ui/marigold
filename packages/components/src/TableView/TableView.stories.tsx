@@ -293,6 +293,18 @@ export const WidthsAndOverflow = meta.story({
                   </TableView.Cell>
                 </TableView.Row>
               ))}
+              <TableView.Row>
+                <TableView.Cell colSpan={4}>Total</TableView.Cell>
+                <TableView.Cell align="right">
+                  <NumericFormat
+                    value={users
+                      .slice(0, 5)
+                      .reduce((sum, user) => sum + user.balance, 0)}
+                    style="currency"
+                    currency="EUR"
+                  />
+                </TableView.Cell>
+              </TableView.Row>
             </TableView.Body>
           </TableView>
         </div>
