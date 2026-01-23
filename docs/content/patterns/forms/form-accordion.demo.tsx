@@ -75,7 +75,7 @@ export default () => (
         description="Street address of the venue"
         required
       />
-      <Inline space="fieldX" noWrap>
+      <Inline space="fieldX" alignY="input" noWrap>
         <TextField label="Postal Code" width={20} />
         <TextField label="City" required />
       </Inline>
