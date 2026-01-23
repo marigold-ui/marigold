@@ -21,7 +21,7 @@ export const LocationSettings = () => {
     new Set(venues.map(venue => venue.country))
   );
   return (
-    <Stack space="peer">
+    <Stack space="group">
       <Headline level={2}>Location & Capacity</Headline>
       <TextField
         label="Location Description"
