@@ -65,20 +65,22 @@ const _FieldBase = <T extends ElementType>(
     <Component
       ref={ref}
       className={cn(
-        'group/field flex w-max min-w-0 flex-col',
+        'group/field flex w-full min-w-0 flex-col',
         /**
          * Width handling strategy:
          * - For fixed widths (numeric scale values): Use `w-auto` to prevent layout shifts
-         *   while the CSS variable defines the actual width via the spacing scale
+         *   while the CSS variable defines the actual input width via the spacing scale
          * - For fraction widths (e.g., "1/2", "2/3"): Use the corresponding Tailwind class
          *   (e.g., `w-1/2`) which allows the field to properly respond to its container's width
          */
-        width && !isFractionWidth ? 'w-auto' : `w-${width}`,
+        width && !isFractionWidth ? 'w-auto' : `w-(--container-width)`,
         classNames,
         className
       )}
       style={
         {
+          /* Setting CSS variables for width, fallback when no width is provided */
+          ...createWidthVar('container-width', width ? `${width}` : 'full'),
           ...createWidthVar(
             'field-width',
             width && !isFractionWidth ? `${width}` : 'full'

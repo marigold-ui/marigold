@@ -107,7 +107,10 @@ const _DateInput = ({
 
   return (
     <Group
-      className={cn(classNames.field, 'w-max-full w-(--field-width) min-w-0')}
+      className={cn(
+        classNames.field,
+        'w-(--field-width) max-w-full min-w-0 overflow-hidden'
+      )}
       onPaste={handlePaste}
     >
       <DateInput className="flex flex-1 items-center" {...props}>

@@ -182,7 +182,7 @@ export const LayoutVariations = meta.story({
         <Headline level={3}>Fixed Values</Headline>
         <Stack space={20}>
           <Inline alignX="left" space={4} noWrap alignY="input">
-            <TextField label="Width 96" width={96} description="Hallo" />
+            <TextField label="Width 96" width={96} />
             <Select label="Width 80" width={80}>
               <Select.Option id="us">United States</Select.Option>
               <Select.Option id="uk">United Kingdom</Select.Option>
@@ -198,6 +198,30 @@ export const LayoutVariations = meta.story({
               <Select.Option id="de">Germany</Select.Option>
             </Select>
             <TextArea label="Width 32" width={32} />
+          </Stack>
+        </Stack>
+      </Stack>
+
+      <Stack space={2}>
+        <Headline level={3}>Keywords</Headline>
+        <Stack space={20}>
+          <Inline alignX="left" space={4} noWrap alignY="input">
+            <TextField label="Width full" />
+            <Select label="Width fit" width={'fit'}>
+              <Select.Option id="us">United States</Select.Option>
+              <Select.Option id="uk">United Kingdom</Select.Option>
+              <Select.Option id="de">Germany</Select.Option>
+            </Select>
+            <TextArea label="Width full" />
+          </Inline>
+          <Stack space={4}>
+            <TextField label="Width full" width={'full'} />
+            <Select label="Width fit" width={'fit'}>
+              <Select.Option id="us">United States</Select.Option>
+              <Select.Option id="uk">United Kingdom</Select.Option>
+              <Select.Option id="de">Germany</Select.Option>
+            </Select>
+            <TextArea label="Width full" width={'full'} />
           </Stack>
         </Stack>
       </Stack>
