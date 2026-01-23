@@ -7,13 +7,13 @@ export const Tag: ThemeComponent<'Tag'> = {
     'min-h-7',
   ]),
   tag: cva([
-    'relative inline-flex items-center gap-[7px]',
+    'relative inline-flex items-center gap-1.75',
     'ui-surface',
     'font-medium text-xs',
-    'h-7 px-2 cursor-default',
-    'selected:text-white selected:bg-brand',
+    'h-6 px-2 cursor-default',
+    'selected:text-white selected:[--ui-background-color:var(--color-brand)]',
     'data-disabled:cursor-not-allowed data-disabled:text-disabled-foreground data-disabled:bg-disabled',
-    'focus-visible:ui-state-focus outline-none transition-all',
+    'focus-visible:ui-state-focus outline-none',
   ]),
   closeButton: cva([
     'size-4',
