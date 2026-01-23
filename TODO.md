@@ -13,10 +13,6 @@ tabIndex={-1}>
 
 -> test how this behaves with keyboard navigation or hinders a11y stuff
 
-## Focus
-
-What to do about focus stuff?
-
 ## disabled
 
 Test styling

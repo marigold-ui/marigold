@@ -1,9 +1,13 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Cell } from 'react-aria-components';
+import { Cell, useTableOptions } from 'react-aria-components';
 import { cn, textAlign } from '@marigold/system';
 import { useTableViewContext } from './Context';
+import { TableView } from './TableView';
+import { TableViewSelectableCell } from './TableViewSelectableCell';
 
+// Props
+// ---------------
 type RemovedProps = 'className' | 'style' | 'children';
 
 export interface TableViewCellProps extends Omit<RAC.CellProps, RemovedProps> {
@@ -11,12 +15,15 @@ export interface TableViewCellProps extends Omit<RAC.CellProps, RemovedProps> {
   align?: keyof typeof textAlign;
 }
 
+// Component
+// ---------------
 const TableViewCell = ({
   children,
   align = 'left',
   ...props
 }: TableViewCellProps) => {
   const { classNames, overflow = 'wrap' } = useTableViewContext();
+  const { selectionMode } = useTableOptions();
 
   return (
     <Cell
@@ -27,7 +34,11 @@ const TableViewCell = ({
       )}
       {...props}
     >
-      {children}
+      {selectionMode !== 'none' ? (
+        <TableViewSelectableCell>{children}</TableViewSelectableCell>
+      ) : (
+        children
+      )}
     </Cell>
   );
 };
