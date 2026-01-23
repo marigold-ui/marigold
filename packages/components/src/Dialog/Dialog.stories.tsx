@@ -2,7 +2,9 @@ import { useState } from 'storybook/preview-api';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { Form } from '../Form/Form';
 import { Menu } from '../Menu/Menu';
+import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { ConfirmationDialog } from './ConfirmationDialog';
@@ -69,7 +71,7 @@ export const Basic = meta.story({
   },
 });
 
-export const Form = meta.story({
+export const WithForm = meta.story({
   render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>
@@ -94,6 +96,51 @@ export const Form = meta.story({
           </Dialog.Actions>
         </Dialog>
       </Dialog.Trigger>
+    );
+  },
+});
+
+export const WithFormValidation = meta.story({
+  render: ({ size, ...args }) => {
+    const [code, setCode] = useState('');
+
+    return (
+      <Stack alignX="left" space={8}>
+        <Dialog.Trigger {...args} dismissable={false}>
+          <Button variant="primary">Open</Button>
+          <Dialog size={size}>
+            {({ close }) => (
+              <>
+                <Dialog.Title>Please enter validation code</Dialog.Title>
+                <Dialog.Content>
+                  <Form
+                    id="code-form"
+                    onSubmit={e => {
+                      e.preventDefault();
+                      const formData = new FormData(e.currentTarget);
+                      setCode(formData.get('code') as string);
+                      close();
+                    }}
+                  >
+                    <TextField label="Code" name="code" required />
+                  </Form>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button slot="close" variant="secondary">
+                    Cancel
+                  </Button>
+                  <Button variant="primary" type="submit" form="code-form">
+                    Submit
+                  </Button>
+                </Dialog.Actions>
+              </>
+            )}
+          </Dialog>
+        </Dialog.Trigger>
+        <pre>
+          <code>Entered code: {code}</code>
+        </pre>
+      </Stack>
     );
   },
 });
