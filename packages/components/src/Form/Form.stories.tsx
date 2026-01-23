@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import preview from '.storybook/preview';
-import { Headline, Link } from '@marigold/components';
+import { Link } from '@marigold/components';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
@@ -8,16 +8,13 @@ import { Checkbox } from '../Checkbox/Checkbox';
 import { Columns } from '../Columns/Columns';
 import { ComboBox } from '../ComboBox/ComboBox';
 import { DateField } from '../DateField/DateField';
-import { Grid } from '../Grid/Grid';
 import { Inline } from '../Inline/Inline';
-import { NumberField } from '../NumberField/NumberField';
 import { Radio } from '../Radio/Radio';
 import { Select } from '../Select/Select';
 import { SelectList } from '../SelectList/SelectList';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
-import { TextArea } from '../TextArea/TextArea';
 import { TextField } from '../TextField/TextField';
 import { Form } from './Form';
 
@@ -159,120 +156,4 @@ export const Selected = meta.story({
       </Form>
     );
   },
-});
-
-export const LayoutVariations = meta.story({
-  render: () => (
-    <Stack space={32}>
-      <Stack space={2}>
-        <Headline level={3}>Fraction Values</Headline>
-        <Stack space={20}>
-          <Inline space={4} alignY="bottom" noWrap>
-            <TextField label="Width 1/3" width={'1/3'} />
-            <TextField label="Width 2/3" width={'2/3'} />
-          </Inline>
-          <Stack space={4}>
-            <TextField label="Width 1/3" width={'1/3'} />
-            <TextField label="Width 2/3" width={'2/3'} />
-          </Stack>
-        </Stack>
-      </Stack>
-
-      <Stack space={2}>
-        <Headline level={3}>Fixed Values</Headline>
-        <Stack space={20}>
-          <Inline alignX="left" space={4} noWrap alignY="input">
-            <TextField label="Width 96" width={96} />
-            <Select label="Width 80" width={80}>
-              <Select.Option id="us">United States</Select.Option>
-              <Select.Option id="uk">United Kingdom</Select.Option>
-              <Select.Option id="de">Germany</Select.Option>
-            </Select>
-            <TextArea label="Width 32" width={32} />
-          </Inline>
-          <Stack space={4}>
-            <TextField label="Width 96" width={96} />
-            <Select label="Width 80" width={80}>
-              <Select.Option id="us">United States</Select.Option>
-              <Select.Option id="uk">United Kingdom</Select.Option>
-              <Select.Option id="de">Germany</Select.Option>
-            </Select>
-            <TextArea label="Width 32" width={32} />
-          </Stack>
-        </Stack>
-      </Stack>
-
-      <Stack space={2}>
-        <Headline level={3}>Keywords</Headline>
-        <Stack space={20}>
-          <Inline alignX="left" space={4} noWrap alignY="input">
-            <TextField label="Width full" />
-            <Select label="Width fit" width={'fit'}>
-              <Select.Option id="us">United States</Select.Option>
-              <Select.Option id="uk">United Kingdom</Select.Option>
-              <Select.Option id="de">Germany</Select.Option>
-            </Select>
-            <TextArea label="Width full" />
-          </Inline>
-          <Stack space={4}>
-            <TextField label="Width full" width={'full'} />
-            <Select label="Width fit" width={'fit'}>
-              <Select.Option id="us">United States</Select.Option>
-              <Select.Option id="uk">United Kingdom</Select.Option>
-              <Select.Option id="de">Germany</Select.Option>
-            </Select>
-            <TextArea label="Width full" width={'full'} />
-          </Stack>
-        </Stack>
-      </Stack>
-
-      <Stack space={5}>
-        <Headline level={3}>Inline/Stack Layout</Headline>
-        <Inline space={4} alignY="bottom" noWrap>
-          <TextField label="Enter your Name" width={64} />
-          <Select label="Enter your Country" width={40}>
-            <Select.Option id="us">United States</Select.Option>
-            <Select.Option id="uk">United Kingdom</Select.Option>
-            <Select.Option id="de">Germany</Select.Option>
-          </Select>
-          <DateField label="Enter your Birth Date" width={'fit'} />
-          <NumberField label="Enter your Age" width={20} hideStepper />
-        </Inline>
-        <TextArea label="Enter your Comments" width={'2/3'} />
-      </Stack>
-
-      <Stack space={5}>
-        <Headline level={3}>Grid Layout</Headline>
-        <Grid
-          areas={[
-            'name country birthdate age',
-            'comments comments comments comments',
-          ]}
-          columns={[1, 1, 1, 1]}
-          rows={['auto', 'auto']}
-          space={4}
-        >
-          <Grid.Area name="name">
-            <TextField label="Enter your Name" width={64} />
-          </Grid.Area>
-          <Grid.Area name="country">
-            <Select label="Enter your Country" width={40}>
-              <Select.Option id="us">United States</Select.Option>
-              <Select.Option id="uk">United Kingdom</Select.Option>
-              <Select.Option id="de">Germany</Select.Option>
-            </Select>
-          </Grid.Area>
-          <Grid.Area name="birthdate">
-            <DateField label="Enter your Birth Date" width={'fit'} />
-          </Grid.Area>
-          <Grid.Area name="age">
-            <NumberField label="Enter your Age" width={20} hideStepper />
-          </Grid.Area>
-          <Grid.Area name="comments">
-            <TextArea label="Enter your Comments" width={'2/3'} />
-          </Grid.Area>
-        </Grid>
-      </Stack>
-    </Stack>
-  ),
 });
