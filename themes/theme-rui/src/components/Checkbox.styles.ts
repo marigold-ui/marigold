@@ -3,7 +3,6 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Checkbox: ThemeComponent<'Checkbox'> = {
   checkbox: cva([
     'grid size-4 shrink-0 place-content-center rounded',
-    // TODO: replace this with surface, currently does not work since the default classes on the implementation override it (get rid of default classes?)
     'border border-input shadow-xs',
     'group-focus-visible/checkbox:state-focus outline-none',
     'group-disabled/checkbox:group-selected/checkbox:bg-disabled group-disabled/checkbox:border-disabled! group-disabled/checkbox:text-disabled-foreground group-disabled/checkbox:cursor-not-allowed',

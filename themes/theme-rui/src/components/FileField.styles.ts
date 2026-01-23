@@ -19,6 +19,6 @@ export const FileField: ThemeComponent<'FileField'> = {
     'ui-surface',
   ]),
   itemLabel: cva(['truncate text-[13px] font-medium']),
-  itemDescription: cva([' text-muted-foreground text-xs']),
+  itemDescription: cva(['text-muted-foreground text-xs']),
   itemRemove: cva(['flex items-center']),
 };

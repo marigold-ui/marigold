@@ -164,7 +164,7 @@ export const Inventory = () => (
           <Badge variant="error">on sale</Badge>
           <Badge variant="info">recommended</Badge>
         </Inline>
-        <Inline space="tight" noWrap>
+        <Inline space="related" noWrap>
           <SearchField
             aria-label="Search products"
             placeholder="Search products..."
