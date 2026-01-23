@@ -1,6 +1,5 @@
 import { CalendarDate } from '@internationalized/date';
 import preview from '.storybook/preview';
-import { Link } from '@marigold/components';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
@@ -9,6 +8,7 @@ import { Columns } from '../Columns/Columns';
 import { ComboBox } from '../ComboBox/ComboBox';
 import { DateField } from '../DateField/DateField';
 import { Inline } from '../Inline/Inline';
+import { Link } from '../Link/Link';
 import { Radio } from '../Radio/Radio';
 import { Select } from '../Select/Select';
 import { SelectList } from '../SelectList/SelectList';
