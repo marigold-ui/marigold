@@ -169,7 +169,7 @@ test('takes full width by default', () => {
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement!;
   expect(container.className).toMatchInlineSnapshot(
-    `"group/field flex w-full min-w-0 flex-col w-(--container-width)"`
+    `"group/field flex min-w-0 flex-col w-(--container-width)"`
   );
 });
 
