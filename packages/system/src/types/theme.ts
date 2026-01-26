@@ -32,6 +32,10 @@ export type Theme = {
       'container' | 'item' | 'header' | 'panel' | 'content' | 'icon',
       ComponentStyleFunction<string, string>
     >;
+    ActionBar?: Record<
+      'container' | 'count' | 'actions' | 'clearButton',
+      ComponentStyleFunction<string, string>
+    >;
     Badge?: ComponentStyleFunction<string, string>;
 
     Breadcrumbs?: Record<

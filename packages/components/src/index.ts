@@ -8,6 +8,11 @@ export type { AccordionProps } from './Accordion/Accordion';
 export { AccordionItem } from './Accordion/AccordionItem';
 export type { DisclosureProps } from './Accordion/AccordionItem';
 
+export { ActionBar } from './ActionBar/ActionBar';
+export type { ActionBarProps } from './ActionBar/ActionBar';
+export { ActionButton } from './ActionBar/ActionButton';
+export type { ActionButtonProps } from './ActionBar/ActionButton';
+
 export { Aside } from './Aside/Aside';
 export type { AsideProps } from './Aside/Aside';
 

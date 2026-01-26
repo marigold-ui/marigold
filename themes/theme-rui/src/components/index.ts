@@ -1,4 +1,5 @@
 export { Accordion } from './Accordion.styles';
+export { ActionBar } from './ActionBar.styles';
 export { Badge } from './Badge.styles';
 
 export { Button } from './Button.styles';
