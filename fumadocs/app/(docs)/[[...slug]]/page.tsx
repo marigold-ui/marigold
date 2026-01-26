@@ -1,11 +1,6 @@
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
-import {
-  Badge,
-  SectionMessage,
-  SectionMessageContent,
-  SectionMessageTitle,
-} from '@/ui';
+import { Badge } from '@/ui';
 import { Columns, Stack } from '@/ui';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import {
@@ -43,9 +38,6 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
-            SectionMessage,
-            SectionMessageTitle,
-            SectionMessageContent,
             TeaserCard,
             TeaserList,
             Badge,

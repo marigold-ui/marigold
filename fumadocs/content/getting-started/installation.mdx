@@ -7,13 +7,10 @@ To integrate Marigold into your React app, follow the steps outlined below. Mari
 
 Please bear in mind that certain steps may vary depending on your specific setup. You can find examples for the most common setups down below.
 
-<SectionMessage variant="info">
-  <SectionMessageTitle> Good to know!</SectionMessageTitle>
-  <SectionMessageContent>
-    Experience Marigold right away by trying it out in our [interactive
-    playground](https://play.marigold-ui.io/)!
-  </SectionMessageContent>
-</SectionMessage>
+<Callout title="Good to know!">
+  Experience Marigold right away by trying it out in our [interactive
+  playground](https://play.marigold-ui.io/)!
+</Callout>
 
 ## Installation
 
@@ -99,14 +96,11 @@ module.exports = {
 };
 ```
 
-<SectionMessage variant="info">
-  <SectionMessageTitle>TypeScript Configuration</SectionMessageTitle>
-  <SectionMessageContent>
-    If you are using TypeScript, make sure to set the [module
-    resolution](https://www.typescriptlang.org/tsconfig#moduleResolution) to
-    `'nodenext'` since the theme packages are using ESM.
-  </SectionMessageContent>
-</SectionMessage>
+<Callout title="TypeScript Configuration">
+  If you are using TypeScript, make sure to set the [module
+  resolution](https://www.typescriptlang.org/tsconfig#moduleResolution) to
+  `'nodenext'` since the theme packages are using ESM.
+</Callout>
 
 After configuring Tailwind CSS, wrap your app with the MarigoldProvider. Unlike before, you no longer have to import the CSS file of the selected theme separately you only need to import your own created CSS file in the project.
 
