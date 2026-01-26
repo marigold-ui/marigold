@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import {
   Basic,
   DragAndDrop,
@@ -11,11 +12,20 @@ import {
   WidthsAndOverflow,
 } from './TableView.stories';
 
+// Setup
+// ---------------
+const mockMatchMedia = (matches: string[]) =>
+  vi.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+
+window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+
 describe('Basic Rendering', () => {
   test('renders table element with proper structure', () => {
     render(<Basic.Component />);
 
-    const table = screen.getByRole('table');
+    const table = screen.getByRole('grid');
     expect(table instanceof HTMLTableElement).toBeTruthy();
   });
 
@@ -43,7 +53,7 @@ describe('Basic Rendering', () => {
   test('applies colspans to cells', () => {
     render(<WidthsAndOverflow.Component />);
 
-    const totalCell = screen.getByText('Total');
+    const totalCell = screen.getByRole('gridcell', { name: 'Total' });
     expect(totalCell).toBeInTheDocument();
     expect(totalCell).toHaveAttribute('colspan', '4');
   });
@@ -84,12 +94,8 @@ describe('Interactions', () => {
 
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     const sortableHeaders = screen
-      .getAllByRole('button')
-      .filter(
-        btn =>
-          btn.className.includes('sortable') ||
-          btn.getAttribute('aria-sort') !== null
-      );
+      .getAllByRole('columnheader')
+      .filter(header => header.getAttribute('aria-sort') !== null);
     expect(sortableHeaders.length).toBeGreaterThan(0);
   });
 
@@ -107,8 +113,9 @@ describe('Content', () => {
     render(<EditableFields.Component />);
 
     expect(screen.getByText('Hans Müller')).toBeInTheDocument();
-    const selects = screen.getAllByRole('combobox');
-    expect(selects.length).toBeGreaterThan(0);
+    // Check for Select components - they render as buttons with popovers
+    const selectButtons = screen.getAllByRole('button', { name: /Status/i });
+    expect(selectButtons.length).toBeGreaterThan(0);
   });
 
   test('renders table with clickable row links', () => {
@@ -120,10 +127,11 @@ describe('Content', () => {
 });
 
 describe('Advanced Features', () => {
-  test('renders scrollable table with sticky header', () => {
+  test('renders scrollable table with sticky header', async () => {
     render(<ScrollableAndSticky.Component />);
 
-    const table = screen.getByRole('table');
+    // Wait for the async data to load
+    const table = await screen.findByRole('grid');
     expect(table).toBeInTheDocument();
   });
 });
