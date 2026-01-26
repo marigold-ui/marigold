@@ -14,6 +14,8 @@ export const intlMessages = {
     showMore: 'Mehr anzeigen',
     showMoreCount: '{count} weitere anzeigen',
     uploadLabel: 'Hochladen',
+    bulkActionsAriaLabel: 'Massenaktionen',
+    clearSelectionAriaLabel: 'Auswahl löschen',
   },
   'en-US': {
     cancel: 'Cancel',
@@ -30,5 +32,7 @@ export const intlMessages = {
     showMore: 'Show more',
     showMoreCount: 'Show {count} more',
     uploadLabel: 'Upload',
+    bulkActionsAriaLabel: 'Bulk Actions',
+    clearSelectionAriaLabel: 'Clear selection',
   },
 };
