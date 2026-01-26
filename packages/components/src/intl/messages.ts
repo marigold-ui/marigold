@@ -13,6 +13,8 @@ export const intlMessages = {
     moreInfo: 'Mehr Informationen',
     help: 'Hilfe',
     hiddenBreadcrumbs: 'Diese Breadcrumbs sind ausgeblendet',
+    bulkActionsAriaLabel: 'Massenaktionen',
+    clearSelectionAriaLabel: 'Auswahl löschen',
   },
   'en-US': {
     cancel: 'Cancel',
@@ -28,5 +30,7 @@ export const intlMessages = {
     moreInfo: 'More information',
     help: 'Help',
     hiddenBreadcrumbs: 'These breadcrumbs are hidden',
+    bulkActionsAriaLabel: 'Bulk Actions',
+    clearSelectionAriaLabel: 'Clear selection',
   },
 };
