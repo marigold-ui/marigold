@@ -1,5 +1,8 @@
+'use client';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Inter } from 'next/font/google';
+import { MarigoldProvider } from '@marigold/components';
+import { theme } from '@marigold/theme-docs';
 import './global.css';
 
 const inter = Inter({
@@ -10,7 +13,9 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
-        <RootProvider>{children}</RootProvider>
+        <MarigoldProvider theme={theme}>
+          <RootProvider>{children}</RootProvider>
+        </MarigoldProvider>
       </body>
     </html>
   );

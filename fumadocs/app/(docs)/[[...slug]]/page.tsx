@@ -1,6 +1,14 @@
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
+  Badge,
+  SectionMessage,
+  SectionMessageContent,
+  SectionMessageTitle,
+} from '@/ui';
+import { Columns, Stack } from '@/ui';
+import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
+import {
   DocsBody,
   DocsDescription,
   DocsPage,
@@ -9,6 +17,7 @@ import {
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { TeaserCard, TeaserList } from '@/ui/TeaserCard';
 
 const Page = async (props: PageProps<'/[[...slug]]'>) => {
   const params = await props.params;
@@ -18,7 +27,13 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage
+      tableOfContent={{
+        single: true,
+      }}
+      toc={page.data.toc}
+      full={page.data.full}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">
         {page.data.description}
@@ -28,6 +43,16 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
+            SectionMessage,
+            SectionMessageTitle,
+            SectionMessageContent,
+            TeaserCard,
+            TeaserList,
+            Badge,
+            Columns,
+            Stack,
+            ImageZoom,
+            img: ImageZoom,
           })}
         />
       </DocsBody>
