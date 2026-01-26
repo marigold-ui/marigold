@@ -68,8 +68,7 @@ const _FieldBase = <T extends ElementType>(
         'group/field flex min-w-0 flex-col',
         /**
          * Width handling strategy:
-         * - For fixed widths (numeric scale values): Use `w-auto` to prevent layout shifts
-         *   while the CSS variable defines the actual input width via the spacing scale
+         * - For fixed widths (numeric scale values) and keyword widths (fit, full): Use `w-auto` to prevent layout shifts
          * - For fraction widths (e.g., "1/2", "2/3"): Use the corresponding Tailwind class
          *   (e.g., `w-1/2`) which allows the field to properly respond to its container's width
          */
@@ -79,7 +78,7 @@ const _FieldBase = <T extends ElementType>(
       )}
       style={
         {
-          /* Setting CSS variables for width, fallback when no width is provided */
+          /* Setting CSS variables for container-width, fallback when no width is provided */
           ...createWidthVar('container-width', width ? `${width}` : 'full'),
           ...createWidthVar(
             'field-width',
