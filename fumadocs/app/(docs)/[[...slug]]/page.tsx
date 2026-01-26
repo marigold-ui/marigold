@@ -1,5 +1,7 @@
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
+import { Columns, Stack } from '@/ui';
+import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import {
   DocsBody,
   DocsDescription,
@@ -18,7 +20,13 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage
+      tableOfContent={{
+        single: true,
+      }}
+      toc={page.data.toc}
+      full={page.data.full}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">
         {page.data.description}
@@ -28,6 +36,10 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
+            Columns,
+            Stack,
+            ImageZoom,
+            img: ImageZoom,
           })}
         />
       </DocsBody>

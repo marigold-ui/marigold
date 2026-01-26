@@ -404,6 +404,24 @@ importers:
 
   fumadocs:
     dependencies:
+      '@marigold/components':
+        specifier: workspace:*
+        version: link:../packages/components
+      '@marigold/eslint-config':
+        specifier: workspace:*
+        version: link:../config/eslint
+      '@marigold/icons':
+        specifier: workspace:*
+        version: link:../packages/icons
+      '@marigold/system':
+        specifier: workspace:*
+        version: link:../packages/system
+      '@marigold/theme-docs':
+        specifier: workspace:*
+        version: link:../themes/theme-docs
+      '@marigold/theme-rui':
+        specifier: workspace:*
+        version: link:../themes/theme-rui
       fumadocs-core:
         specifier: 16.4.7
         version: 16.4.7(@types/react@19.2.9)(lucide-react@0.562.0(react@19.2.3))(next@16.1.4(@babel/core@7.28.6)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(zod@4.3.5)
