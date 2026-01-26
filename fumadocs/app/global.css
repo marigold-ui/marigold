@@ -3,9 +3,9 @@
 @import 'fumadocs-ui/css/preset.css';
 
 /* own theme */
-@import './../../themes/theme-docs/dist/theme.css';
+@import '@marigold/theme-docs/theme.css';
 /* rui theme */
-@import './../../themes/theme-rui/dist/styles.css';
+@import '@marigold/theme-rui/styles.css';
 
 @source './../../themes/theme-docs/src/**/*.ts';
 
