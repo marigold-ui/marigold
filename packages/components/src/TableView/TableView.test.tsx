@@ -135,3 +135,103 @@ describe('Advanced Features', () => {
     expect(table).toBeInTheDocument();
   });
 });
+
+describe('Props and Variants', () => {
+  test('applies variant class to table', () => {
+    render(<Basic.Component />);
+
+    const table = screen.getByRole('grid');
+
+    expect(table).toHaveClass('group/table');
+  });
+
+  test('applies overflow prop to cells', () => {
+    // WidthsAndOverflow story has a switch to toggle between wrap and truncate
+    render(<WidthsAndOverflow.Component />);
+
+    const cells = screen.getAllByRole('gridcell');
+    // Story defaults to wrap mode
+    expect(cells[0]).toHaveClass('wrap-break-word');
+  });
+
+  test('defaults to wrap overflow', () => {
+    render(<Basic.Component />);
+
+    const cell = screen.getAllByRole('gridcell')[0];
+    expect(cell).toHaveClass('wrap-break-word');
+  });
+});
+
+describe('Accessibility', () => {
+  test('applies aria-label to table', () => {
+    render(<Basic.Component />);
+
+    const table = screen.getByRole('grid', { name: 'label' });
+    expect(table).toBeInTheDocument();
+  });
+
+  test('renders with selection mode multiple', () => {
+    // DynamicData story has selectionMode="multiple"
+    render(<DynamicData.Component />);
+
+    // Should render checkboxes for selection
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes.length).toBeGreaterThan(0);
+  });
+
+  test('uses grid role for table', () => {
+    render(<Basic.Component />);
+
+    const grid = screen.getByRole('grid');
+    expect(grid).toBeInstanceOf(HTMLTableElement);
+  });
+});
+
+describe('Cell Alignment', () => {
+  test('aligns cell content to the right', () => {
+    // Basic story has Balance column with align="right"
+    render(<Basic.Component />);
+
+    const balanceCells = screen
+      .getAllByRole('gridcell')
+      .filter(cell => cell.textContent?.includes('€'));
+    expect(balanceCells[0]).toHaveClass('text-right');
+  });
+
+  test('defaults to left alignment', () => {
+    render(<Basic.Component />);
+
+    // First cell (Name column) should have left alignment
+    const cells = screen.getAllByRole('gridcell');
+    const nameCell = cells[0];
+    expect(nameCell).toHaveClass('text-left');
+  });
+});
+
+describe('Sticky Header', () => {
+  test('applies sticky class to header', async () => {
+    // ScrollableAndSticky story has sticky header
+    render(<ScrollableAndSticky.Component />);
+
+    // Wait for async data to load
+    await screen.findByRole('grid');
+
+    // Get a column header and check its parent rowgroup (thead)
+    const columnHeader = screen.getByRole('columnheader', { name: 'ID' });
+    // eslint-disable-next-line testing-library/no-node-access
+    const header = columnHeader.closest('thead');
+    expect(header).toHaveClass('sticky');
+    expect(header).toHaveClass('top-0');
+  });
+
+  test('header without sticky prop does not have sticky class', () => {
+    // Basic story does not have sticky header
+    render(<Basic.Component />);
+
+    // Get a column header and check its parent rowgroup (thead)
+    const columnHeader = screen.getByRole('columnheader', { name: 'Name' });
+    // eslint-disable-next-line testing-library/no-node-access
+    const header = columnHeader.closest('thead');
+    expect(header).not.toHaveClass('sticky');
+  });
+});
