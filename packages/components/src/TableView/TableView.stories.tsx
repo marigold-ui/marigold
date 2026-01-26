@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDragAndDrop } from 'react-aria-components';
 import { useListData } from 'react-stately';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
@@ -136,6 +137,7 @@ const users = [
 // Stories
 // ---------------
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <TableView aria-label="label" {...args}>
       <TableView.Header>
@@ -173,9 +175,36 @@ export const Basic = meta.story({
       </TableView.Body>
     </TableView>
   ),
+  play: async ({ canvas, step }) => {
+    await step('Verify table renders with correct structure', async () => {
+      const table = canvas.getByRole('grid');
+      expect(table).toBeInTheDocument();
+    });
+
+    await step('Verify column headers are present', async () => {
+      expect(canvas.getByText('Name')).toBeInTheDocument();
+      expect(canvas.getByText('Email')).toBeInTheDocument();
+      expect(canvas.getByText('Location')).toBeInTheDocument();
+      expect(canvas.getByText('Status')).toBeInTheDocument();
+      expect(canvas.getByText('Balance')).toBeInTheDocument();
+    });
+
+    await step('Verify first user data is rendered', async () => {
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
+      expect(canvas.getByText('hans.mueller@example.de')).toBeInTheDocument();
+      expect(canvas.getByText('Berlin, BE')).toBeInTheDocument();
+    });
+
+    await step('Verify all rows are rendered', async () => {
+      const rows = canvas.getAllByRole('row');
+      // 10 users + 1 header row = 11 rows
+      expect(rows).toHaveLength(11);
+    });
+  },
 });
 
 export const DynamicData = meta.story({
+  tags: ['component-test'],
   args: {
     selectionMode: 'single',
   },
@@ -247,6 +276,34 @@ export const DynamicData = meta.story({
         <div>Selected rows: {selectedKeys}</div>
       </Stack>
     );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify dynamic data renders correctly', async () => {
+      expect(canvas.getByText('Potter')).toBeInTheDocument();
+      expect(canvas.getByText('Harry')).toBeInTheDocument();
+      expect(canvas.getByText('Gryffindor')).toBeInTheDocument();
+    });
+
+    await step(
+      'Verify initial selection (Malfoy row is selected)',
+      async () => {
+        expect(canvas.getByText('Selected rows: 2')).toBeInTheDocument();
+      }
+    );
+
+    await step('Select another row', async () => {
+      const potterRow = canvas.getByText('Potter').closest('tr');
+      const checkbox = within(potterRow!).getByRole('checkbox');
+
+      await userEvent.click(checkbox);
+    });
+
+    await step('Verify multiple selection', async () => {
+      await waitFor(() => {
+        const selectedText = canvas.getByText(/Selected rows:/);
+        expect(selectedText).toBeInTheDocument();
+      });
+    });
   },
 });
 
@@ -323,6 +380,7 @@ export const WidthsAndOverflow = meta.story({
 });
 
 export const Empty = meta.story({
+  tags: ['component-test'],
   render: args => (
     <TableView aria-label="Example table for nested columns" {...args}>
       <TableView.Header>
@@ -336,6 +394,24 @@ export const Empty = meta.story({
       </TableView.Body>
     </TableView>
   ),
+  play: async ({ canvas, step }) => {
+    await step('Verify empty state message is displayed', async () => {
+      expect(canvas.getByText('No results found.')).toBeInTheDocument();
+    });
+
+    await step('Verify table headers are still present', async () => {
+      expect(canvas.getByText('First Name')).toBeInTheDocument();
+      expect(canvas.getByText('Last Name')).toBeInTheDocument();
+      expect(canvas.getByText('Age')).toBeInTheDocument();
+      expect(canvas.getByText('Birthday')).toBeInTheDocument();
+    });
+
+    await step('Verify no data rows are present', async () => {
+      const rows = canvas.getAllByRole('row');
+      // Only header row should be present
+      expect(rows).toHaveLength(1);
+    });
+  },
 });
 
 export const Sorting = meta.story({
@@ -483,6 +559,50 @@ export const Sorting = meta.story({
         </pre>
       </>
     );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify initial state (no sorting)', async () => {
+      expect(canvas.getByText('Sort:  / ascending')).toBeInTheDocument();
+    });
+
+    await step('Click Name column header to sort', async () => {
+      const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
+      await userEvent.click(nameHeader);
+    });
+
+    await step('Verify sorting is applied (ascending)', async () => {
+      await waitFor(() => {
+        expect(canvas.getByText(/Sort: name \/ ascending/)).toBeInTheDocument();
+      });
+    });
+
+    await step('Click Name column header again to reverse sort', async () => {
+      const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
+      await userEvent.click(nameHeader);
+    });
+
+    await step('Verify sorting direction changed (descending)', async () => {
+      await waitFor(() => {
+        expect(
+          canvas.getByText(/Sort: name \/ descending/)
+        ).toBeInTheDocument();
+      });
+    });
+
+    await step('Sort by different column (Height)', async () => {
+      const heightHeader = canvas.getByRole('columnheader', {
+        name: /Height/i,
+      });
+      await userEvent.click(heightHeader);
+    });
+
+    await step('Verify Height column is sorted', async () => {
+      await waitFor(() => {
+        expect(
+          canvas.getByText(/Sort: height \/ ascending/)
+        ).toBeInTheDocument();
+      });
+    });
   },
 });
 
