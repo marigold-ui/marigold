@@ -12,7 +12,6 @@ import {
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { TeaserCard, TeaserList } from '@/ui/TeaserCard';
 
 const Page = async (props: PageProps<'/[[...slug]]'>) => {
   const params = await props.params;
@@ -38,8 +37,6 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
-            TeaserCard,
-            TeaserList,
             Badge,
             Columns,
             Stack,
