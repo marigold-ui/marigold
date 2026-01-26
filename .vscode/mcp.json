@@ -3,10 +3,6 @@
     "React Aria": {
       "command": "npx",
       "args": ["@react-aria/mcp@latest"]
-    },
-    "Playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
     }
   }
 }
