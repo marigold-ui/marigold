@@ -52,6 +52,7 @@ test('does not render clear button when onClearSelection is not provided', () =>
   const clearButton = screen.queryByRole('button', {
     name: /clear selection/i,
   });
+
   expect(clearButton).not.toBeInTheDocument();
 });
 

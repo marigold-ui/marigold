@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import type RAC from 'react-aria-components';
-import { Button } from '../Button/Button';
+import RAC, { Button } from 'react-aria-components';
+import { useClassNames } from '@marigold/system';
 
 type RemovedProps = 'isDisabled' | 'className' | 'style';
 
@@ -13,8 +13,14 @@ export interface ActionButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
 }
 
 export const ActionButton = ({ onPress, children }: ActionButtonProps) => {
+  const classNames = useClassNames({
+    component: 'Button',
+    variant: 'ghost',
+    size: 'default',
+  });
+
   return (
-    <Button onPress={onPress} variant="ghost">
+    <Button onPress={onPress} className={classNames}>
       {children}
     </Button>
   );

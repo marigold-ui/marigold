@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Text } from '../Text/Text';
+import { intlMessages } from '../intl/messages';
 import { ActionButton } from './ActionButton';
 
 export interface ActionBarProps {
@@ -51,6 +53,7 @@ export const ActionBar = ({
     variant,
     size,
   });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   // Hide ActionBar when no items are selected
   const isHidden = selectedItemCount === 0;
@@ -69,7 +72,7 @@ export const ActionBar = ({
       id={id}
       className={classNames.container}
       role="toolbar"
-      aria-label="Bulk actions"
+      aria-label={stringFormatter.format('bulkActionsAriaLabel')}
     >
       <div className={classNames.count}>
         <Text>{countText}</Text>
@@ -79,7 +82,7 @@ export const ActionBar = ({
 
       {onClearSelection && (
         <CloseButton
-          aria-label="Clear selection"
+          aria-label={stringFormatter.format('clearSelectionAriaLabel')}
           onPress={onClearSelection}
           className={classNames.clearButton}
         />

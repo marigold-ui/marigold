@@ -19,10 +19,24 @@ const meta = preview.meta({
       table: {
         type: { summary: 'number | "all"' },
         defaultValue: { summary: '0' },
+        disable: true,
       },
     },
     onClearSelection: {
       description: 'Handler for clear button press',
+      table: {
+        disable: true,
+      },
+    },
+    children: {
+      table: {
+        disable: true,
+      },
+    },
+    id: {
+      table: {
+        disable: true,
+      },
     },
   },
   args: {
@@ -56,6 +70,7 @@ export const Basic = meta.story({
       name: /clear selection/i,
     });
     await userEvent.click(clearButton);
+
     await expect(args.onClearSelection).toHaveBeenCalled();
   },
 });
@@ -181,6 +196,7 @@ export const WithScrollableContent = meta.story({
         .then(data => setTodos(data));
     }, []);
     const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
+
     return (
       <>
         <Headline level={3}>My Headline</Headline>
