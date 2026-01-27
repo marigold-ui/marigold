@@ -1,6 +1,20 @@
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
-import { Columns, Stack } from '@/ui';
+import {
+  AlignmentsX,
+  AlignmentsY,
+  BorderRadius,
+  ColorPalettes,
+  ColorTokenTable,
+  Columns,
+  FontSizes,
+  FontStyle,
+  FontWeights,
+  Headlines,
+  Spacing,
+  Stack,
+  TextAlign,
+} from '@/ui';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import {
   DocsBody,
@@ -37,9 +51,23 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
             Columns,
+
             Stack,
             ImageZoom,
+            ColorTokenTable,
+            ColorPalettes,
             img: ImageZoom,
+
+            Headlines,
+            FontWeights,
+            FontSizes,
+            FontStyle,
+            TextAlign,
+
+            Spacing,
+            BorderRadius,
+            AlignmentsX,
+            AlignmentsY,
           })}
         />
       </DocsBody>
