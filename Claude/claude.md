@@ -52,6 +52,7 @@ See @README.md for project overview and @package.json for available pnpm command
 ## Common Gotchas
 
 - Components depend on `@marigold/system` - rebuild system package if making system changes
+- Docs depend on `@marigold/theme-rui` - rebuild theme package for changes to be visible in docs
 - Storybook uses source folders directly (not dist) - no build needed for stories
 - Git hooks run lint-staged on commit via Husky
 - Node.js 22.x required (check `.node-version`)
