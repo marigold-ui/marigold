@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",
+    "dayjs": "^1.11.13",
     "react-use": "^17.6.0",
     "fumadocs-core": "16.4.7",
     "fumadocs-mdx": "14.2.6",

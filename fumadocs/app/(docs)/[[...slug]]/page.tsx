@@ -19,6 +19,7 @@ import {
   GuidelineTiles,
   Headlines,
   IconList,
+  RelativeTime,
   Spacing,
   Stack,
   TextAlign,
@@ -40,6 +41,7 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
   if (!page) notFound();
 
   const MDX = page.data.body;
+  const lastModified = page.data.lastModified;
 
   return (
     <DocsPage
@@ -88,6 +90,11 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             GuidelineTiles,
           })}
         />
+        {lastModified && (
+          <div className="text-fd-muted-foreground pt-8 text-xs italic">
+            Last update: <RelativeTime date={lastModified} />
+          </div>
+        )}
       </DocsBody>
     </DocsPage>
   );
