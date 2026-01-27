@@ -69,7 +69,6 @@ export const Tray = ({
     return <>{children}</>;
   }
 
-  console.log(dismissable, keyboardDismissable);
   return (
     <TrayModal
       open={openState}

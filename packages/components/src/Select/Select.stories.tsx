@@ -493,3 +493,54 @@ export const WithImages = meta.story({
     });
   },
 });
+
+export const Mobile = meta.story({
+  globals: {
+    viewport: { value: 'mobile1' },
+  },
+  render: args => {
+    return (
+      <Select
+        {...args}
+        label="Favorite character"
+        placeholder="Select your character"
+      >
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+        <Select.Option>Luigi</Select.Option>
+        <Select.Option>Toad</Select.Option>
+        <Select.Option>Yoshi</Select.Option>
+        <Select.Option>Bowser</Select.Option>
+        <Select.Option>Peach</Select.Option>
+      </Select>
+    );
+  },
+});

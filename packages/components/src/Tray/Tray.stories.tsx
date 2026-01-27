@@ -10,6 +10,9 @@ import { Tray } from './Tray';
 const meta = preview.meta({
   title: 'Components/Tray',
   component: Tray,
+  globals: {
+    viewport: { value: 'mobile1' },
+  },
   argTypes: {
     dismissable: {
       control: {
@@ -69,7 +72,6 @@ export const Controlled = meta.story({
   render: args => {
     const [open, setOpen] = useState(false);
     const onOpenChange = (open: boolean) => {
-      console.log('open', open);
       setOpen(open);
     };
     return (
