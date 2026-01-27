@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { FocusScope } from '@react-aria/focus';
 import { cn, useClassNames } from '@marigold/system';
 
 // Props
@@ -19,8 +20,10 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
   });
 
   return (
-    <div className={cn('[grid-area:content]', classNames.content, className)}>
-      {children}
-    </div>
+    <FocusScope autoFocus restoreFocus>
+      <div className={cn('[grid-area:content]', classNames.content, className)}>
+        {children}
+      </div>
+    </FocusScope>
   );
 };
