@@ -1,18 +1,12 @@
 import { type ReactNode, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  Dialog,
-  ListStateContext,
-  Modal,
-  ModalOverlay,
-  OverlayTriggerStateContext,
-  SelectStateContext,
-} from 'react-aria-components';
+import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { useIsHidden } from '@react-aria/collections';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { TrayActions } from './TrayActions';
 import { TrayContent } from './TrayContent';
+import { TrayModal } from './TrayModal';
 import { TrayTitle } from './TrayTitle';
 import { TrayTrigger } from './TrayTrigger';
 
@@ -46,12 +40,6 @@ export interface TrayProps extends Omit<
   keyboardDismissable?: boolean;
 
   /**
-   * Show the close button.
-   * @default false
-   */
-  closeButton?: boolean;
-
-  /**
    * Children of the tray.
    */
   children?: ReactNode;
@@ -64,7 +52,6 @@ export const Tray = ({
   onOpenChange,
   dismissable = true,
   keyboardDismissable = true,
-  closeButton,
   children,
   ...props
 }: TrayProps) => {
@@ -82,49 +69,31 @@ export const Tray = ({
     return <>{children}</>;
   }
 
+  console.log(dismissable, keyboardDismissable);
   return (
-    <ModalOverlay
-      isOpen={openState}
-      isDismissable={dismissable}
-      onOpenChange={onOpenChange ?? state?.setOpen}
-      isKeyboardDismissDisabled={!keyboardDismissable}
-      className={({ isEntering, isExiting }) =>
-        cn(
-          'fixed inset-0 z-40 flex items-end justify-center',
-          isEntering ? 'animate-in fade-in duration-300 ease-out' : '',
-          isExiting ? 'animate-out fade-out duration-200 ease-in' : '',
-          classNames.overlay
-        )
-      }
+    <TrayModal
+      open={openState}
+      dismissable={dismissable}
+      onOpenChange={onOpenChange}
+      keyboardDismissable={keyboardDismissable}
     >
-      <Modal
-        className={({ isEntering, isExiting }) =>
-          cn(
-            'w-full',
-            isEntering ? 'animate-in slide-in-from-bottom duration-300' : '',
-            isExiting ? 'animate-out slide-out-to-bottom duration-200' : '',
-            classNames.modal
-          )
-        }
+      <Dialog
+        {...props}
+        className={cn(
+          'outline-hidden',
+          "grid [grid-template-areas:'title'_'content'_'actions']",
+          classNames.container
+        )}
       >
-        <Dialog
-          {...props}
-          className={cn(
-            'outline-hidden',
-            "grid [grid-template-areas:'title'_'content'_'actions']",
-            classNames.container
-          )}
-        >
-          {closeButton && (
-            <CloseButton
-              aria-label="dismiss tray"
-              className={classNames.closeButton}
-            />
-          )}
-          {children}
-        </Dialog>
-      </Modal>
-    </ModalOverlay>
+        <CloseButton
+          aria-label="dismiss tray"
+          className={classNames.closeButton}
+          onPress={state?.close}
+        />
+
+        {children}
+      </Dialog>
+    </TrayModal>
   );
 };
 

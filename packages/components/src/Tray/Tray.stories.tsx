@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tray } from './Tray';
@@ -22,12 +23,6 @@ const meta = preview.meta({
       },
       description: 'Whether pressing the escape key closes the tray.',
     },
-    closeButton: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Show the close button.',
-    },
   },
   args: {},
 });
@@ -39,7 +34,7 @@ export const Basic = meta.story({
       <Tray {...args}>
         <Tray.Title>Tray Title</Tray.Title>
         <Tray.Content>
-          <Stack space={4}>
+          <Inset space={4}>
             <Text>
               This is a tray component that slides in from the bottom of the
               screen. It's useful for mobile-friendly interactions and quick
@@ -49,7 +44,7 @@ export const Basic = meta.story({
               Trays are commonly used for filters, settings, or contextual menus
               on mobile devices.
             </Text>
-          </Stack>
+          </Inset>
         </Tray.Content>
         <Tray.Actions>
           <Button slot="close">Close</Button>
@@ -68,30 +63,6 @@ export const Basic = meta.story({
 
     await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
   },
-});
-
-export const WithCloseButton = meta.story({
-  args: {
-    closeButton: true,
-  },
-  render: args => (
-    <Tray.Trigger>
-      <Button>Open Tray with Close Button</Button>
-      <Tray {...args}>
-        <Tray.Title>Settings</Tray.Title>
-        <Tray.Content>
-          <Text>
-            This tray has a close button in the corner for easy dismissal.
-          </Text>
-        </Tray.Content>
-        <Tray.Actions>
-          <Button slot="close" variant="primary">
-            Save
-          </Button>
-        </Tray.Actions>
-      </Tray>
-    </Tray.Trigger>
-  ),
 });
 
 export const Controlled = meta.story({
