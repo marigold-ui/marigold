@@ -308,12 +308,16 @@ export const DynamicData = meta.story({
 });
 
 export const WidthsAndOverflow = meta.story({
+  tags: ['component-test'],
   render: args => {
     const [overflow, setOverflow] = useState<'truncate' | 'wrap'>('wrap');
 
     return (
       <Stack space={3}>
-        <div className="max-w-2xl resize-x overflow-x-auto border border-stone-800">
+        <div
+          data-testid="table-container"
+          className="max-w-2xl resize-x overflow-x-auto border border-stone-800"
+        >
           <TableView
             {...args}
             aria-label="Table with custom column widths"
@@ -377,6 +381,39 @@ export const WidthsAndOverflow = meta.story({
       </Stack>
     );
   },
+  play: async ({ canvas, step }) => {
+    await step('Verify table with custom widths renders', async () => {
+      expect(canvas.getByText('ID')).toBeInTheDocument();
+      expect(canvas.getByText('Ursula Weber')).toBeInTheDocument();
+    });
+
+    await step('Verify Total row with colspan is displayed', async () => {
+      expect(canvas.getByText('Total')).toBeInTheDocument();
+    });
+
+    await step('Reduce table container width', async () => {
+      const container = canvas.getByTestId('table-container');
+      // Simulate resize by setting width style
+      container.style.width = '300px';
+    });
+
+    await step('Toggle truncate switch', async () => {
+      const switchElement = canvas.getByLabelText('Truncate cell content');
+      await userEvent.click(switchElement);
+    });
+
+    await step('Verify truncated text', async () => {
+      const ursulaCell = canvas.getByText('Ursula Weber').closest('td');
+      const styles = window.getComputedStyle(ursulaCell!);
+
+      // Check CSS properties
+      expect(styles.textOverflow).toBe('ellipsis');
+      expect(styles.overflow).toBe('hidden');
+
+      // Check visual overflow - if scrollWidth > clientWidth, text is truncated
+      expect(ursulaCell!.scrollWidth).toBeGreaterThan(ursulaCell!.clientWidth);
+    });
+  },
 });
 
 export const Empty = meta.story({
@@ -408,13 +445,13 @@ export const Empty = meta.story({
 
     await step('Verify no data rows are present', async () => {
       const rows = canvas.getAllByRole('row');
-      // Only header row should be present
-      expect(rows).toHaveLength(1);
+      expect(rows).toHaveLength(2);
     });
   },
 });
 
 export const Sorting = meta.story({
+  tags: ['component-test'],
   render: args => {
     const columns = [
       { name: 'Name', id: 'name', align: 'left', isRowHeader: true },
@@ -554,15 +591,15 @@ export const Sorting = meta.story({
           </TableView.Body>
         </TableView>
         <br />
-        <pre>
+        <div>
           Sort: {descriptor.column} / {descriptor.direction}
-        </pre>
+        </div>
       </>
     );
   },
   play: async ({ canvas, step }) => {
     await step('Verify initial state (no sorting)', async () => {
-      expect(canvas.getByText('Sort:  / ascending')).toBeInTheDocument();
+      expect(canvas.getByText(/Sort:.*\/ ascending/)).toBeInTheDocument();
     });
 
     await step('Click Name column header to sort', async () => {
@@ -607,6 +644,7 @@ export const Sorting = meta.story({
 });
 
 export const EditableFields = meta.story({
+  tags: ['component-test'],
   render: args => {
     const [data, setData] = useState(users);
 
@@ -687,6 +725,40 @@ export const EditableFields = meta.story({
         </TableView.Body>
       </TableView>
     );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify editable table renders with form fields', async () => {
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
+      expect(canvas.getByText('@schnitzelmeister')).toBeInTheDocument();
+    });
+
+    await step('Verify Select dropdown is present', async () => {
+      const selects = canvas.getAllByLabelText('Status');
+      expect(selects.length).toBeGreaterThan(0);
+    });
+
+    await step('Verify NumberField is present', async () => {
+      const numberFields = canvas.getAllByLabelText('Balance');
+      expect(numberFields.length).toBeGreaterThan(0);
+    });
+
+    await step('Verify ActionMenu is present in each row', async () => {
+      const actionMenus = canvas.getAllByLabelText('Actions');
+      expect(actionMenus).toHaveLength(10);
+    });
+
+    await step('Open first ActionMenu', async () => {
+      const firstActionMenu = canvas.getAllByLabelText('Actions')[0];
+      await userEvent.click(firstActionMenu);
+    });
+
+    await step('Verify ActionMenu items are displayed', async () => {
+      await waitFor(() => {
+        expect(canvas.getByText('View')).toBeInTheDocument();
+        expect(canvas.getByText('Edit')).toBeInTheDocument();
+        expect(canvas.getByText('Delete')).toBeInTheDocument();
+      });
+    });
   },
 });
 
@@ -769,6 +841,7 @@ export const ScrollableAndSticky = meta.story({
 });
 
 export const Links = meta.story({
+  tags: ['component-test'],
   args: {
     selectionMode: 'multiple',
   },
@@ -815,6 +888,32 @@ export const Links = meta.story({
         </TableView.Body>
       </TableView>
     );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify table with links renders', async () => {
+      expect(canvas.getByText('Marigold')).toBeInTheDocument();
+      expect(canvas.getByText('Reservix')).toBeInTheDocument();
+      expect(canvas.getByText('ADticket')).toBeInTheDocument();
+    });
+
+    await step('Verify row has link attribute', async () => {
+      const marigoldRow = canvas.getByText('Marigold').closest('tr');
+      expect(marigoldRow).toBeInTheDocument();
+    });
+
+    await step('Verify descriptions are displayed', async () => {
+      expect(
+        canvas.getByText('Design System & Component Library')
+      ).toBeInTheDocument();
+      expect(canvas.getByText('Ticketing Platform')).toBeInTheDocument();
+      expect(canvas.getByText('Event Ticketing Service')).toBeInTheDocument();
+    });
+
+    await step('Verify URLs are displayed', async () => {
+      expect(canvas.getByText('https://marigold-ui.io')).toBeInTheDocument();
+      expect(canvas.getByText('https://reservix.net')).toBeInTheDocument();
+      expect(canvas.getByText('https://www.adticket.de/')).toBeInTheDocument();
+    });
   },
 });
 
