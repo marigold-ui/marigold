@@ -1,12 +1,9 @@
 import { ReactNode } from 'react';
-import type { SpaceProp } from '@marigold/system';
+import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface CenterProps
-  extends
-    SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
-    AriaRegionProps {
+export interface CenterProps extends SpaceProp<SpacingTokens>, AriaRegionProps {
   children?: ReactNode;
   /**
    * The maximum width of the container.

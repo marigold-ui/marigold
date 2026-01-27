@@ -1,32 +1,32 @@
 import { cva } from '@marigold/system';
 import type { ThemeComponent } from '@marigold/system';
 
-export const inputContainer =
-  'flex w-full px-3 py-2 rounded-lg shadow-xs border border-input bg-background text-sm text-foreground transition-shadow group-read-only/field:bg-muted';
-export const inputDisabled =
-  'disabled:cursor-not-allowed disabled:text-disabled-foreground disabled:bg-disabled';
-export const inputInvalid =
-  'group-invalid/field:border-destructive group-invalid/field:focus:border-destructive group-invalid/field:focus:ring-destructive/20';
-
-export const inputReadOnly = 'group-read-only/field:bg-muted';
-
 export const Input: ThemeComponent<'Input'> = {
   input: cva([
-    inputContainer,
-    inputDisabled,
-    inputInvalid,
-    'focus:util-focus-ring outline-none',
-    inputReadOnly,
-    'h-input',
-    'placeholder:text-placeholder',
-    '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:p-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',
+    'ui-surface ui-input',
+    'disabled:ui-state-disabled',
+    'group-read-only/field:ui-state-readonly',
+    'invalid:ui-state-error',
+    'focus:ui-state-focus outline-none',
+    'group-read-only/field:cursor-default',
+    'group-data-icon/input:pl-8',
+    'group-data-action/input:pr-7',
+
+    // [type=file] styles
+    '[&[type=file]]:cursor-pointer [&[type=file]]:border-solid [&[type=file]]:bg-background [&[type=file]]:h-[calc(var(--spacing-input)-2px)] [&[type=file]]:pl-0 [&[type=file]]:pr-3 [&[type=file]]:italic [&[type=file]]:text-muted-foreground/70',
     'file:cursor-pointer file:me-3 file:h-full file:border-0 file:border-r file:border-solid file:border-input file:bg-transparent file:px-3 file:text-sm file:font-medium file:not-italic file:text-foreground',
-    'group-[[data-icon]]/input:pl-8',
-    'group-[[data-action]]/input:pr-7',
+
+    // [type-color] styles
+    '[&[type=color]]:h-input',
+    '[&::-webkit-color-swatch-wrapper]:p-0',
+    '[&::-webkit-color-swatch]:p-2 [&::-moz-color-swatch]:p-2',
+    '[&::-webkit-color-swatch]:rounded-[inherit] [&::-moz-color-swatch]:rounded-[inherit]',
+    '[&::-webkit-color-swatch]:border-0 [&::-moz-color-swatch]:border-0',
   ]),
   icon: cva([
-    'pointer-events-none left-2',
+    'pointer-events-none left-2.5',
     'text-muted-foreground disabled:text-disabled-foreground',
+    'disabled:text-gray-50',
   ]),
   action: cva(['text-muted-foreground pr-1']),
 };

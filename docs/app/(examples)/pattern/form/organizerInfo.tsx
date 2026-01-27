@@ -21,8 +21,8 @@ export const OrganizerInfo = () => (
         <Headline level={3}>Organizer Information</Headline>
       </Accordion.Header>
       <Accordion.Content>
-        <Stack space="fieldY">
-          <Inline space="fieldX" noWrap>
+        <Stack space="group">
+          <Inline space="related" noWrap>
             <TextField label="First Name" width={'1/2'} />
             <TextField label="Last Name" width={'1/2'} />
           </Inline>
@@ -34,7 +34,7 @@ export const OrganizerInfo = () => (
             label="Job Title"
             description="Position within the organization"
           />
-          <Inline space="fieldX" noWrap>
+          <Inline space="related" noWrap>
             <TextField
               label="Email"
               type="email"
@@ -54,8 +54,8 @@ export const OrganizerInfo = () => (
             rows={3}
           />
           <Checkbox label="Display organizer information publicly" />
-          <Card variant="master">
-            <Stack space="fieldY" alignX="left">
+          <Card variant="master" stretch>
+            <Stack space="group" alignX="left">
               <Inline space={2}>
                 <Headline level={3}>Co-Organizer</Headline>
                 <Badge variant="master">Master</Badge>
@@ -70,11 +70,11 @@ export const OrganizerInfo = () => (
               <Button variant="secondary">Add another co-organizer</Button>
             </Stack>
           </Card>
-          <Stack space="fieldY">
+          <Stack space="group">
             <Headline level={3}>Contact Preferences</Headline>
             <Checkbox label="Allow attendees to contact organizer directly" />
             <Checkbox label="Include organizer contact in confirmation emails" />
-            <Card variant="admin">
+            <Card variant="admin" stretch>
               <Select
                 label={
                   <Inline space={2} alignY="center">

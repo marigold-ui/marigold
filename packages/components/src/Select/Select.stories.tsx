@@ -18,10 +18,6 @@ const meta = preview.meta({
         type: 'text',
       },
       description: 'Set the select label',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Select for favorite:' },
-      },
     },
     placeholder: {
       control: {
@@ -40,30 +36,18 @@ const meta = preview.meta({
         type: 'boolean',
       },
       description: 'Disable the select',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     required: {
       control: {
         type: 'boolean',
       },
       description: 'Require the select',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Set error state',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     errorMessage: {
       control: {
@@ -81,6 +65,7 @@ const meta = preview.meta({
   args: {
     label: 'Favorite',
     error: false,
+    errorMessage: 'Whoops.',
     required: false,
     disabled: false,
     width: 64,
