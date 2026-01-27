@@ -2,16 +2,24 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
-    'overflow-hidden rounded-md border border-input group-data-trigger/popover:border-0 group-[[role=dialog]]/tray:border-0',
+    'flex ui-surface',
+    // Standalone
+    'not-group-data-trigger/popover:',
+    // In a Popover
+    'group-data-trigger/popover:ui-elevation-overlay',
+    'group-data-trigger/popover:w-full',
+    'group-data-trigger/popover:overflow-hidden',
+    // In a Tray
+    'group-[[role=dialog]]/tray:border-0',
   ]),
-  list: cva(['bg-background p-1 text-sm outline-0 space-y-px']),
+  list: cva(['p-1 text-sm outline-0 space-y-px overflow-y-auto w-full']),
   item: cva([
     'relative grid grid-cols-[auto_1fr] items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-foreground',
     '[&_.selection-indicator>svg]:invisible [&_.selection-indicator>svg]:block',
     'selected:bg-selected selected:[&_.selection-indicator>svg]:visible',
     'hover:bg-hover hover:text-hover-foreground',
     'disabled:cursor-not-allowed disabled:text-disabled-foreground',
-    'focus-visible:util-focus-ring outline-none focus-visible:z-1',
+    'focus-visible:ui-state-focus outline-none focus-visible:z-1 transition-[border,color]',
     'cursor-default data-selection-mode:cursor-pointer',
     '[&_[slot=description]]:col-start-2 [&_[slot=description]]:row-start-2 [&_[slot=description]]:text-xs [&_[slot=description]]:text-muted-foreground',
   ]),

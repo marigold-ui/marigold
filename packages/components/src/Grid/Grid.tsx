@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { HeightProp, SpaceProp } from '@marigold/system';
+import type { HeightProp, SpaceProp, SpacingTokens } from '@marigold/system';
 import {
   alignment,
   cn,
@@ -29,10 +29,7 @@ const parseTemplateValue = (values: TemplateValue[]) =>
 // Props
 // ---------------
 export interface GridProps
-  extends
-    SpaceProp<'section' | 'fieldX' | 'fieldY' | 'container' | 'group'>,
-    HeightProp,
-    AriaRegionProps {
+  extends SpaceProp<SpacingTokens>, HeightProp, AriaRegionProps {
   /**
    * Specifies the named grid areas, much like `grid-template-areas`.
    */
