@@ -89,7 +89,7 @@ export const TableView: ThemeComponent<'TableView'> = {
   body: cva(['bg-background']),
   cell: cva([
     'px-(--cell-x-padding) py-(--cell-y-padding)',
-    'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring outline-none',
+    'focus:outline-2 focus:-outline-offset-2 focus:outline-ring',
   ]),
 
   // Drag and drop
