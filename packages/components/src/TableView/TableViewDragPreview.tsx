@@ -9,9 +9,7 @@ export interface TableViewDragPreviewProps {
   variant?: string;
   size?: string;
   /* Dragged items */
-  items: {
-    [type: string]: string;
-  }[];
+  items: Record<string, string>[];
 }
 
 // Component
