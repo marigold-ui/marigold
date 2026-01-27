@@ -1,6 +1,6 @@
 # Marigold Design System - Development Guide
 
-See @README.md for project overview and @package.json for available npm commands.
+See @README.md for project overview and @package.json for available pnpm commands.
 
 ## Build System
 
@@ -39,7 +39,7 @@ See @README.md for project overview and @package.json for available npm commands
 
 - `packages/components` - Core React components
 - `packages/system` - Design system utilities
-- `packages/icons` - Icon components  
+- `packages/icons` - Icon components
 - `packages/types` - Shared TypeScript types
 - `themes/*` - Theme packages
 - `docs` - Documentation site (Next.js)
