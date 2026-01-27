@@ -10,7 +10,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     'group-data-trigger/popover:w-full',
     'group-data-trigger/popover:overflow-hidden',
     // In a Tray
-    'group-[[role=dialog]]/tray:border-0',
+    'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
   ]),
   list: cva(['p-1 text-sm outline-0 space-y-px overflow-y-auto w-full']),
   item: cva([
