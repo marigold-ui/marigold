@@ -251,7 +251,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
             </Button>
             <Tray>
               <Tray.Title>{rest.label}</Tray.Title>
-              <Tray.Content>
+              <Tray.Content className={'flex flex-col gap-2'}>
                 <AutocompleteInput
                   loading={loading}
                   onSubmit={onSubmit}
