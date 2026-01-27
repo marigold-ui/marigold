@@ -2,6 +2,11 @@
 
 See @README.md for project overview and @package.json for available pnpm commands.
 
+## Quick Start
+
+- **Documentation**: `pnpm start` → [localhost:3000](http://localhost:3000)
+- **Storybook**: `pnpm sb` → [localhost:6006](http://localhost:6006)
+
 ## Build System
 
 - This is a **pnpm workspace monorepo** managed by Turbo
@@ -29,7 +34,7 @@ See @README.md for project overview and @package.json for available pnpm command
 
 ## Workflow
 
-- **Typecheck**: Run `pnpm typecheck` after code changes
+- **Typecheck**: Run `pnpm typecheck:only` after code changes
 - **Lint**: Run `pnpm lint` to check code style
 - **Branch from**: `main` (use GitHub Flow)
 - **Changesets**: Use `pnpm changeset` for version management
