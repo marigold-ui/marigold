@@ -7,12 +7,13 @@ import {
   type DateValue,
   Dialog,
 } from 'react-aria-components';
-import { WidthProp, useClassNames } from '@marigold/system';
+import { WidthProp, useClassNames, useSmallScreen } from '@marigold/system';
 import { Calendar } from '../Calendar/Calendar';
 import { DateInput } from '../DateField/DateInput';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
 import { Popover } from '../Overlay/Popover';
+import { Tray } from '../Tray/Tray';
 import { Calendar as CalendarIcon } from '../icons/Calendar';
 
 type RemovedProps =
@@ -108,6 +109,8 @@ const _DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       variant,
     });
 
+    const isSmallScreen = useSmallScreen();
+
     return (
       <FieldBase
         as={DatePicker}
@@ -124,12 +127,20 @@ const _DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             </IconButton>
           }
         />
-
-        <Popover>
-          <Dialog>
-            <Calendar disabled={disabled} />
-          </Dialog>
-        </Popover>
+        {isSmallScreen ? (
+          <Tray>
+            <Tray.Title>{rest.label}</Tray.Title>
+            <Tray.Content>
+              <Calendar disabled={disabled} />
+            </Tray.Content>
+          </Tray>
+        ) : (
+          <Popover>
+            <Dialog>
+              <Calendar disabled={disabled} />
+            </Dialog>
+          </Popover>
+        )}
       </FieldBase>
     );
   }
