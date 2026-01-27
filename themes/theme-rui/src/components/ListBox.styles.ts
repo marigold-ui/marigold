@@ -2,7 +2,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const ListBox: ThemeComponent<'ListBox'> = {
   container: cva([
-    'overflow-hidden rounded-md border border-input group-[[data-trigger]]/popover:border-0',
+    'overflow-hidden rounded-md border border-input group-data-trigger/popover:border-0 group-[[role=dialog]]/tray:border-0',
   ]),
   list: cva(['bg-background p-1 text-sm outline-0 space-y-px']),
   item: cva([

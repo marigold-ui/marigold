@@ -75,7 +75,6 @@ export type Theme = {
     >;
     Tray?: Record<
       | 'overlay'
-      | 'modal'
       | 'closeButton'
       | 'container'
       | 'header'
