@@ -1,8 +1,7 @@
 import { ReactNode, forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { Popover } from 'react-aria-components';
-import { cn, useClassNames, useSmallScreen } from '@marigold/system';
-import { Underlay } from './Underlay';
+import { useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
@@ -32,34 +31,16 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
       className: 'min-w-(--trigger-width)',
     });
 
-    const isSmallScreen = useSmallScreen();
-
     return (
-      <>
-        {isSmallScreen ? (
-          <Popover
-            ref={ref}
-            {...props}
-            className={cn(
-              'fixed! top-auto! bottom-0! left-0! max-h-fit! w-full',
-              classNames
-            )}
-          >
-            {children}
-            <Underlay open={open} />
-          </Popover>
-        ) : (
-          <Popover
-            ref={ref}
-            {...props}
-            className={classNames}
-            placement={placement}
-            offset={0}
-          >
-            {children}
-          </Popover>
-        )}
-      </>
+      <Popover
+        ref={ref}
+        {...props}
+        className={classNames}
+        placement={placement}
+        offset={0}
+      >
+        {children}
+      </Popover>
     );
   }
 );

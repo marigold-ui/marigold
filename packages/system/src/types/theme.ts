@@ -73,6 +73,17 @@ export type Theme = {
       | 'actions',
       ComponentStyleFunction<string, string>
     >;
+    Tray?: Record<
+      | 'overlay'
+      | 'modal'
+      | 'closeButton'
+      | 'container'
+      | 'header'
+      | 'title'
+      | 'content'
+      | 'actions',
+      ComponentStyleFunction<string, string>
+    >;
     Field?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;

@@ -3,11 +3,12 @@ import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { Select as ReactAriaSelect, SelectValue } from 'react-aria-components';
 import { forwardRefType } from '@react-types/shared';
-import { WidthProp, cn, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
+import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 
 export type SelectionMode = 'single' | 'multiple';
@@ -87,6 +88,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
     size,
     error,
     open,
+    label,
     children,
     ...rest
   }: SelectProps<T, M>,
@@ -100,6 +102,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
     ...rest,
   };
   const classNames = useClassNames({ component: 'Select', variant, size });
+  const isSmallScreen = useSmallScreen();
 
   return (
     <FieldBase
@@ -107,20 +110,43 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
       ref={ref as any}
       variant={variant}
       size={size}
+      label={label}
       {...props}
     >
-      <IconButton
-        className={cn(
-          'flex w-full items-center justify-between gap-1 overflow-hidden',
-          classNames.select
-        )}
-      >
-        <SelectValue className="truncate text-nowrap [&_[slot=description]]:hidden" />
-        <ChevronsVertical size="16" className={classNames.icon} />
-      </IconButton>
-      <Popover>
-        <ListBox items={items}>{children}</ListBox>
-      </Popover>
+      {isSmallScreen ? (
+        <Tray.Trigger>
+          <IconButton
+            className={cn(
+              'flex w-full items-center justify-between gap-1 overflow-hidden',
+              classNames.select
+            )}
+          >
+            <SelectValue className="truncate text-nowrap [&_[slot=description]]:hidden" />
+            <ChevronsVertical size="16" className={classNames.icon} />
+          </IconButton>
+          <Tray>
+            <Tray.Title>{label}</Tray.Title>
+            <Tray.Content>
+              <ListBox items={items}>{children}</ListBox>
+            </Tray.Content>
+          </Tray>
+        </Tray.Trigger>
+      ) : (
+        <>
+          <IconButton
+            className={cn(
+              'flex w-full items-center justify-between gap-1 overflow-hidden',
+              classNames.select
+            )}
+          >
+            <SelectValue className="truncate text-nowrap [&_[slot=description]]:hidden" />
+            <ChevronsVertical size="16" className={classNames.icon} />
+          </IconButton>
+          <Popover>
+            <ListBox items={items}>{children}</ListBox>
+          </Popover>
+        </>
+      )}
     </FieldBase>
   );
 });
