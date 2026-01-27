@@ -9,6 +9,17 @@ const BasicComponent = (props: Partial<ContextualHelpProps>) => (
   </div>
 );
 
+/**
+ * We need to mock `matchMedia` because JSOM does not
+ * implements it.
+ */
+const mockMatchMedia = (matches: string[]) =>
+  vi.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
+
+window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+
 let onBlurSpy = vi.fn();
 let onFocusChangeSpy = vi.fn();
 let onFocusSpy = vi.fn();

@@ -55,7 +55,6 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
         data-icon={icon && ''}
         data-action={action && ''}
       >
-        {inputIcon}
         <Input
           {...props}
           className={cn(
@@ -69,6 +68,7 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           type={type}
         />
+        {inputIcon}
         {inputAction}
       </div>
     );

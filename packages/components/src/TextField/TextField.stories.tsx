@@ -119,6 +119,10 @@ export const Basic = meta.story({
   render: args => <TextField {...args} label="My label is great." />,
 });
 
+export const WithError = meta.story({
+  render: args => <TextField {...args} label="My label is great." error />,
+});
+
 export const Controlled = meta.story({
   render: args => {
     const [value, setValue] = useState('');

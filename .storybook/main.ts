@@ -4,6 +4,7 @@ export default defineMain({
   stories: [
     '../packages/components/src/**/*.stories.tsx',
     '../packages/system/src/**/*.stories.tsx',
+    '../themes/**/*.stories.tsx',
   ],
   addons: [
     '@storybook/addon-a11y',

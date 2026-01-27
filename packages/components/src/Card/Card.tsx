@@ -8,6 +8,7 @@ import type {
   PaddingSpacePropY,
   PaddingTopProp,
   SpaceProp,
+  SpacingTokens,
 } from '@marigold/system';
 import {
   cn,
@@ -26,7 +27,7 @@ import {
 // ---------------
 export interface CardProps
   extends
-    SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
+    SpaceProp<SpacingTokens>,
     PaddingRightProp,
     PaddingLeftProp,
     PaddingBottomProp,
