@@ -7,3 +7,4 @@ export * from './ColorTokens';
 export * from './ColorTable';
 export * from './Typography';
 export * from './Token';
+export * from './IconList';

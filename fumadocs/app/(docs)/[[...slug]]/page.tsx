@@ -11,6 +11,7 @@ import {
   FontStyle,
   FontWeights,
   Headlines,
+  IconList,
   Spacing,
   Stack,
   TextAlign,
@@ -68,6 +69,8 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             BorderRadius,
             AlignmentsX,
             AlignmentsY,
+
+            IconList,
           })}
         />
       </DocsBody>
