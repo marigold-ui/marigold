@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "pnpm run registry:build && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
-    "postinstall": "fumadocs-mdx",
-    "lint": "eslint"
+    "postinstall": "fumadocs-mdx && pnpm run registry:build",
+    "lint": "eslint",
+    "registry:build": "node scripts/build-registry.mjs"
   },
   "dependencies": {
     "fumadocs-core": "16.4.7",
