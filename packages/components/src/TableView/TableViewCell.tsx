@@ -3,7 +3,6 @@ import type RAC from 'react-aria-components';
 import { Cell, useTableOptions } from 'react-aria-components';
 import { cn, textAlign } from '@marigold/system';
 import { useTableViewContext } from './Context';
-import { TableView } from './TableView';
 import { TableViewSelectableCell } from './TableViewSelectableCell';
 
 // Props
@@ -22,7 +21,11 @@ const TableViewCell = ({
   align = 'left',
   ...props
 }: TableViewCellProps) => {
-  const { classNames, overflow = 'wrap' } = useTableViewContext();
+  const {
+    classNames,
+    overflow = 'wrap',
+    allowTextSelection = false,
+  } = useTableViewContext();
   const { selectionMode } = useTableOptions();
 
   return (
@@ -34,7 +37,7 @@ const TableViewCell = ({
       )}
       {...props}
     >
-      {selectionMode !== 'none' ? (
+      {allowTextSelection && selectionMode !== 'none' ? (
         <TableViewSelectableCell>{children}</TableViewSelectableCell>
       ) : (
         children

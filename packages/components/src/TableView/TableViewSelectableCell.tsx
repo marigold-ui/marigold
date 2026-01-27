@@ -21,7 +21,11 @@ export type TableViewSelectableCellProps = PropsWithChildren;
 export const TableViewSelectableCell = ({
   children,
 }: TableViewSelectableCellProps) => (
-  <div className="cursor-text" tabIndex={-1} {...stopProgragationProps}>
+  <div
+    className="cursor-text outline-none"
+    tabIndex={-1}
+    {...stopProgragationProps}
+  >
     {children}
   </div>
 );

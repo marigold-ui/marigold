@@ -6,6 +6,7 @@ export interface TableViewContextProps {
   variant?: string;
   size?: string;
   overflow?: 'truncate' | 'wrap';
+  allowTextSelection?: boolean;
 }
 
 export const TableViewContext = createContext<TableViewContextProps | null>(

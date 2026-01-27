@@ -974,3 +974,78 @@ export const DragAndDrop = meta.story({
     );
   },
 });
+
+export const AllowTextSelection = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+  },
+  render: args => {
+    const [allowTextSelection, setAllowTextSelection] = useState(false);
+
+    return (
+      <Stack space={3}>
+        <Switch
+          label="Allow Text Selection"
+          selected={allowTextSelection}
+          onChange={setAllowTextSelection}
+        />
+
+        <TableView
+          aria-label="Table demonstrating allowTextSelection prop"
+          {...args}
+          allowTextSelection={allowTextSelection}
+        >
+          <TableView.Header>
+            <TableView.Column>Name</TableView.Column>
+            <TableView.Column>Email</TableView.Column>
+            <TableView.Column>Location</TableView.Column>
+            <TableView.Column>Status</TableView.Column>
+          </TableView.Header>
+          <TableView.Body>
+            {users.slice(0, 3).map(user => (
+              <TableView.Row key={user.email}>
+                <TableView.Cell>{user.name}</TableView.Cell>
+                <TableView.Cell>{user.email}</TableView.Cell>
+                <TableView.Cell>{user.location}</TableView.Cell>
+                <TableView.Cell>
+                  <Badge>{user.status}</Badge>
+                </TableView.Cell>
+              </TableView.Row>
+            ))}
+          </TableView.Body>
+        </TableView>
+      </Stack>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    const cell = canvas.getByText('Hans Müller');
+
+    await step(
+      'Verify that clicking on cell text, when allowTextSelection is false, does select the row instead',
+      async () => {
+        await userEvent.click(cell);
+
+        const selection = window.getSelection();
+        expect(selection?.toString()).toBe('');
+
+        // Verify the row is selected by checking the checkbox in Hans Müller's row
+        const hansRow = cell.closest('tr');
+        const checkbox = hansRow?.querySelector('input[type="checkbox"]');
+        expect(checkbox).toBeChecked();
+      }
+    );
+
+    await step('Enable text selection via toggle', async () => {
+      const switchElement = canvas.getByLabelText('Allow Text Selection');
+      await userEvent.click(switchElement);
+    });
+
+    await step('Try to select text in a cell', async () => {
+      await userEvent.tripleClick(cell);
+
+      const selection = window.getSelection();
+      expect(selection?.toString()).toBe('Hans Müller');
+    });
+  },
+});

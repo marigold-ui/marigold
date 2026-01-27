@@ -28,12 +28,18 @@ export interface TableViewProps extends Omit<RAC.TableProps, RemovedProps> {
    * @default 'wrap'
    */
   overflow?: 'truncate' | 'wrap';
+  /**
+   * Controls whether text selection is allowed in cells.
+   * @default false
+   */
+  allowTextSelection?: boolean;
 }
 
 const _TableView = ({
   variant,
   size,
   overflow = 'wrap',
+  allowTextSelection = false,
   ...props
 }: TableViewProps) => {
   const classNames = useClassNames({
@@ -43,8 +49,8 @@ const _TableView = ({
   });
 
   const ctx = useMemo(
-    () => ({ classNames, variant, size, overflow }),
-    [classNames, variant, size, overflow]
+    () => ({ classNames, variant, size, overflow, allowTextSelection }),
+    [classNames, variant, size, overflow, allowTextSelection]
   );
 
   return (
