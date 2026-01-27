@@ -7,9 +7,16 @@ import {
   ColorPalettes,
   ColorTokenTable,
   Columns,
+  Do,
+  DoDescription,
+  DoFigure,
+  Dont,
+  DontDescription,
+  DontFigure,
   FontSizes,
   FontStyle,
   FontWeights,
+  GuidelineTiles,
   Headlines,
   IconList,
   Spacing,
@@ -71,6 +78,14 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             AlignmentsY,
 
             IconList,
+
+            Do,
+            DoFigure,
+            DoDescription,
+            Dont,
+            DontFigure,
+            DontDescription,
+            GuidelineTiles,
           })}
         />
       </DocsBody>

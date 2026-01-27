@@ -12,6 +12,8 @@
     "registry:build": "node scripts/build-registry.mjs"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.62.0",
+    "react-use": "^17.6.0",
     "fumadocs-core": "16.4.7",
     "fumadocs-mdx": "14.2.6",
     "fumadocs-ui": "16.4.7",
