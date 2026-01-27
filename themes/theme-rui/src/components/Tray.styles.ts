@@ -3,8 +3,8 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Tray: ThemeComponent<'Tray'> = {
   overlay: cva('bg-black/50 fixed inset-0 z-40 flex items-end justify-center'),
   container: cva([
-    'relative grid-rows-[auto_1fr_auto] min-h-[85vh] max-h-[95vh] rounded-t-xl',
-    'util-surface-overlay rounded-t-xl',
+    'relative grid-rows-[auto_1fr_auto] min-h-[85vh] max-h-[95vh] rounded-b-none',
+    'ui-surface ui-elevation-overlay',
     'group/tray',
   ]),
   closeButton: cva(['absolute top-3.5 right-3 z-50', 'size-7']),
