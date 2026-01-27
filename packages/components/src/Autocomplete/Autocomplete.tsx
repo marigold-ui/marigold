@@ -7,14 +7,20 @@ import {
   useContext,
 } from 'react';
 import type RAC from 'react-aria-components';
-import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
+import {
+  Button,
+  ComboBox,
+  ComboBoxStateContext,
+  Key,
+} from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, useClassNames } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
+import { Tray } from '../Tray/Tray';
 import { intlMessages } from '../intl/messages';
 
 // Search Input (we can't use our SearchField because of FieldBase)
@@ -229,26 +235,64 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     };
 
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
+    const isSmallScreen = useSmallScreen();
 
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
-        <AutocompleteInput
-          loading={loading}
-          onSubmit={onSubmit}
-          onClear={onClear}
-          ref={ref}
-        />
-        <Popover>
-          <ListBox
-            renderEmptyState={() =>
-              emptyState ?? (
-                <Center>{stringFormatter.format('noResultsFound')}</Center>
-              )
-            }
-          >
-            {children}
-          </ListBox>
-        </Popover>
+        {isSmallScreen ? (
+          <Tray.Trigger>
+            <Button>
+              <AutocompleteInput
+                loading={loading}
+                onSubmit={onSubmit}
+                onClear={onClear}
+                ref={ref}
+              />
+            </Button>
+            <Tray>
+              <Tray.Title>{rest.label}</Tray.Title>
+              <Tray.Content>
+                <AutocompleteInput
+                  loading={loading}
+                  onSubmit={onSubmit}
+                  onClear={onClear}
+                  ref={ref}
+                />
+                <ListBox
+                  renderEmptyState={() =>
+                    emptyState ?? (
+                      <Center>
+                        {stringFormatter.format('noResultsFound')}
+                      </Center>
+                    )
+                  }
+                >
+                  {children}
+                </ListBox>
+              </Tray.Content>
+            </Tray>
+          </Tray.Trigger>
+        ) : (
+          <>
+            <AutocompleteInput
+              loading={loading}
+              onSubmit={onSubmit}
+              onClear={onClear}
+              ref={ref}
+            />
+            <Popover>
+              <ListBox
+                renderEmptyState={() =>
+                  emptyState ?? (
+                    <Center>{stringFormatter.format('noResultsFound')}</Center>
+                  )
+                }
+              >
+                {children}
+              </ListBox>
+            </Popover>
+          </>
+        )}
       </FieldBase>
     );
   }
