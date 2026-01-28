@@ -1,4 +1,4 @@
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { Table } from './Table';

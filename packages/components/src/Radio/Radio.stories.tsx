@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Stack } from '../Stack/Stack';
