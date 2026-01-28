@@ -5,8 +5,14 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
     "strictFunctionTypes": false,
+    "strictPropertyInitialization": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "useUnknownInCatchVariables": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -18,7 +24,12 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "fumadocs-mdx:collections/*": [".source/*"]
+      "fumadocs-mdx:collections/*": [".source/*"],
+      "@marigold/*/styles.css": ["../themes/*/dist/styles.css"],
+      "@marigold/*": ["../packages/*/src", "../themes/*/src"],
+      "class-variance-authority/dist/types": [
+        "../packages/system/node_modules/class-variance-authority/dist/types"
+      ]
     },
     "plugins": [
       {
