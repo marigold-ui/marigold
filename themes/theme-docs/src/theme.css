@@ -172,6 +172,6 @@
 }
 
 @plugin 'tailwindcss-react-aria-components';
-/* @plugin '@tailwindcss/typography'; - removed: fumadocs already includes typography with dark mode support */
+@plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
 @plugin 'tailwind-scrollbar';
