@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
+import preview from '.storybook/preview';
 import { Headline, Inline, Stack } from '@marigold/components';
-import preview from '../../../.storybook/preview';
 
 const meta = preview.meta({
   title: 'Styles/RUI',
@@ -24,7 +24,7 @@ export const Surface = meta.story({
       <Inline space="peer">
         <Base className="ui-surface">raised</Base>
         <Base className="ui-surface ui-elevation-overlay">overlay</Base>
-        <Base className="ui-surface ui-elevation-overlay ui-state-errorpm">
+        <Base className="ui-surface ui-elevation-overlay ui-state-error">
           overlay / error
         </Base>
       </Inline>
