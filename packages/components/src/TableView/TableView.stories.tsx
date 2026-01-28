@@ -326,6 +326,7 @@ export const WidthsAndOverflow = meta.story({
           className="max-w-2xl resize-x overflow-x-auto border border-stone-800"
         >
           <TableView
+            key={overflow}
             {...args}
             aria-label="Table with custom column widths"
             overflow={overflow}
@@ -992,6 +993,7 @@ export const AllowTextSelection = meta.story({
         />
 
         <TableView
+          key={String(allowTextSelection)}
           aria-label="Table demonstrating allowTextSelection prop"
           {...args}
           allowTextSelection={allowTextSelection}
