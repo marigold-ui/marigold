@@ -48,52 +48,6 @@ See @README.md for project overview and @package.json for available pnpm command
 - Create components without TypeScript interfaces
 - Bypass the theming system with custom CSS
 
-## Component Pattern
-
-```typescript
-import type RAC from 'react-aria-components';
-import { ComponentName } from 'react-aria-components';
-import { useClassNames } from '@marigold/system';
-
-type RemovedProps = 'isDisabled' | 'className' | 'style';
-
-export interface ComponentProps extends Omit<RAC.ComponentProps, RemovedProps> {
-  variant?: 'default' | 'primary' | (string & {});
-  size?: 'small' | 'default' | 'large' | (string & {});
-  disabled?: RAC.ComponentProps['isDisabled'];
-}
-
-export const Component = ({
-  variant,
-  size,
-  disabled,
-  children,
-  ...props
-}: ComponentProps) => {
-  const classNames = useClassNames({ component: 'Component', variant, size });
-
-  return (
-    <ComponentName {...props} isDisabled={disabled} className={classNames.container}>
-      {children}
-    </ComponentName>
-  );
-};
-```
-
-## File Organization
-
-```
-packages/components/src/ComponentName/
-├── ComponentName.tsx          # Main component
-├── ComponentName.test.tsx     # Unit tests
-├── ComponentName.stories.tsx  # Storybook stories
-├── ComponentChild.tsx         # Sub-components (if needed)
-└── Context.tsx                # Context (if needed)
-
-themes/theme-rui/src/components/ComponentName/
-└── ComponentName.styles.ts    # Theme styles
-```
-
 ## Testing
 
 - **Test runner**: Vitest (not Jest)
@@ -119,14 +73,6 @@ test('renders component', () => {
 });
 ```
 
-## Accessibility
-
-- All interactive components must be keyboard accessible
-- Use semantic HTML and ARIA attributes from react-aria
-- Support screen readers with proper labels and descriptions
-- Ensure proper focus management
-- Test with Storybook a11y addon
-
 ## Workflow
 
 - **Typecheck**: Run `pnpm typecheck:only` after code changes
@@ -145,6 +91,11 @@ test('renders component', () => {
 - `themes/*` - Theme packages (theme-docs, theme-rui)
 - `docs` - Documentation site (Next.js)
 - `.storybook` - Storybook configuration
+
+## Specialized Agents
+
+- **component-scaffold**: Creates new components with all required files (component, tests, stories, theme styles)
+- **a11y-audit**: Audits components for WCAG 2.1 AA accessibility compliance
 
 ## Common Gotchas
 

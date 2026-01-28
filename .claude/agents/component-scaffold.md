@@ -84,20 +84,11 @@ export const ComponentName = ({
 import { screen } from '@testing-library/react';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
-import { ComponentName } from './ComponentName';
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    ComponentName: cva(),
-  },
-};
-
-const { render } = setup({ theme });
+import { Basic } from './ComponentName.stories';
 
 describe('ComponentName', () => {
   test('renders correctly', () => {
-    render(<ComponentName>Content</ComponentName>);
+    render(<Basic.Component>Content</Basic.Component>);
 
     const element = screen.getByText('Content');
 
@@ -105,7 +96,7 @@ describe('ComponentName', () => {
   });
 
   test('supports disabled state', () => {
-    render(<ComponentName disabled>Disabled</ComponentName>);
+    render(<Basic.Component disabled>Disabled</Basic.Component>);
 
     const element = screen.getByText('Disabled');
 
@@ -120,7 +111,7 @@ describe('ComponentName', () => {
 import type { Meta, StoryObj } from '@storybook/react';
 import { ComponentName } from './ComponentName';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ComponentName',
   component: ComponentName,
   argTypes: {
@@ -136,23 +127,25 @@ const meta = {
       control: { type: 'boolean' },
     },
   },
-} satisfies Meta<typeof ComponentName>;
+  args: {
+    variant: 'default',
+    size: 'default',
+    disabled: boolean,
+  },
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   args: {
     children: 'ComponentName Content',
   },
-};
+});
 
-export const Disabled: Story = {
+export const Disabled = meta.story({
   args: {
     children: 'Disabled ComponentName',
     disabled: true,
   },
-};
+});
 ```
 
 ### Theme Styles (`ComponentName.styles.ts`)

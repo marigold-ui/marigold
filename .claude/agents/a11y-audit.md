@@ -39,9 +39,6 @@ From system-instructions: **"Accessibility required: All changes must meet WCAG 
 - [ ] Focus order follows logical reading order
 - [ ] No keyboard traps (user can always navigate away)
 - [ ] Custom keyboard shortcuts don't conflict with assistive technology
-- [ ] Enter/Space activates buttons and links
-- [ ] Arrow keys work for navigation components (menus, tabs, lists)
-- [ ] Escape closes modal dialogs and overlays
 
 **Patterns to search for:**
 ```
@@ -222,9 +219,6 @@ When reporting findings, use this format:
 
 After code review, recommend running:
 1. **Storybook a11y addon**: `pnpm sb` then check Accessibility tab
-2. **axe DevTools**: Browser extension for runtime checks
-3. **Keyboard testing**: Manual Tab/Enter/Escape navigation
-4. **Screen reader testing**: VoiceOver (Mac) or NVDA (Windows)
 
 ## Files to Audit
 
