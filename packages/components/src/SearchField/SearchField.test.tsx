@@ -1,8 +1,11 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { SearchField } from './SearchField';
+
+const user = userEvent.setup();
 
 const theme: Theme = {
   name: 'test',
@@ -109,7 +112,7 @@ describe('Search', () => {
     expect(input).toHaveAttribute('tabIndex', '-1');
   });
 
-  test('Should not handle change when field is disalbed', () => {
+  test('Should not handle change when field is disalbed', async () => {
     render(
       <SearchField
         onChange={onChange}
@@ -117,8 +120,9 @@ describe('Search', () => {
         data-testid="test-id"
       />
     );
-    const input = screen.queryByTestId('test-id');
-    fireEvent.keyDown(input as any, { key: 'Enter', code: 13, charCode: 13 });
+    const input = screen.getByRole('searchbox');
+    await user.click(input);
+    await user.keyboard('{Enter}');
     expect(onChange).toBeCalledTimes(0);
   });
 });

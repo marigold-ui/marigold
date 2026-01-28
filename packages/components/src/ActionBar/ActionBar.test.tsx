@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { expect, test, vi } from 'vitest';
 import {
   AllSelected,
@@ -6,6 +7,8 @@ import {
   NoSelection,
   WithoutClearButton,
 } from './ActionBar.stories';
+
+const user = userEvent.setup();
 
 test('renders ActionBar with selected count', () => {
   render(<Basic.Component />);
@@ -35,13 +38,13 @@ test('renders clear button when onClearSelection is provided', () => {
   expect(clearButton).toBeInTheDocument();
 });
 
-test('calls onClearSelection when clear button is clicked', () => {
+test('calls onClearSelection when clear button is clicked', async () => {
   const onClearSelection = vi.fn();
 
   render(<Basic.Component onClearSelection={onClearSelection} />);
 
   const clearButton = screen.getByRole('button', { name: /clear selection/i });
-  fireEvent.click(clearButton);
+  await user.click(clearButton);
 
   expect(onClearSelection).toHaveBeenCalledTimes(1);
 });

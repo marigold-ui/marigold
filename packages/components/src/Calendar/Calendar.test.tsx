@@ -1,22 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { Basic } from './Calendar.stories';
-
-const keyCodes = {
-  Enter: 13,
-  ' ': 32,
-  PageUp: 33,
-  PageDown: 34,
-  End: 35,
-  Home: 36,
-  ArrowLeft: 37,
-  ArrowUp: 38,
-  ArrowRight: 39,
-  ArrowDown: 40,
-};
 
 describe('Calendar', () => {
   const user = userEvent.setup();
@@ -92,7 +79,7 @@ describe('Calendar', () => {
     );
   });
 
-  test("Doesn't select a date on keydown Enter/Space if readOnly", () => {
+  test("Doesn't select a date on keydown Enter/Space if readOnly", async () => {
     const onChange = vi.fn();
     render(
       <Basic.Component
@@ -105,22 +92,15 @@ describe('Calendar', () => {
 
     let selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
-    const activeElement = document.activeElement as Element;
 
-    fireEvent.keyDown(activeElement, {
-      key: 'ArrowLeft',
-      keyCode: keyCodes.ArrowLeft,
-    });
-    fireEvent.keyDown(activeElement, { key: 'Enter', keyCode: keyCodes.Enter });
+    await user.keyboard('{ArrowLeft}');
+    await user.keyboard('{Enter}');
     selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).not.toHaveBeenCalled();
 
-    fireEvent.keyDown(activeElement, {
-      key: 'ArrowLeft',
-      keyCode: keyCodes.ArrowLeft,
-    });
-    fireEvent.keyDown(activeElement, { key: ' ', keyCode: keyCodes[' '] });
+    await user.keyboard('{ArrowLeft}');
+    await user.keyboard('{ }');
     selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).not.toHaveBeenCalled();

@@ -360,8 +360,7 @@ describe('DatePicker', () => {
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
 
-      fireEvent.keyDown(document.activeElement as Element, { key: 'Escape' });
-      fireEvent.keyUp(document.activeElement as Element, { key: 'Escape' });
+      await user.keyboard('{Escape}');
       await waitFor(() => {
         expect(popover).not.toBeInTheDocument();
       });
@@ -390,10 +389,7 @@ describe('DatePicker', () => {
       expect(onKeyDownSpy).not.toHaveBeenCalled();
       expect(onKeyUpSpy).toHaveBeenCalledTimes(1);
 
-      fireEvent.keyDown(document.activeElement as Element, {
-        key: 'ArrowRight',
-      });
-      fireEvent.keyUp(document.activeElement as Element, { key: 'ArrowRight' });
+      await user.keyboard('{ArrowRight}');
       expect(segments[1]).toHaveFocus();
       expect(onKeyDownSpy).toHaveBeenCalledTimes(1);
       expect(onKeyUpSpy).toHaveBeenCalledTimes(2);
@@ -426,10 +422,7 @@ describe('DatePicker', () => {
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
 
-      fireEvent.keyDown(document.activeElement as Element, {
-        key: 'ArrowRight',
-      });
-      fireEvent.keyUp(document.activeElement as Element, { key: 'ArrowRight' });
+      await user.keyboard('{ArrowRight}');
       expect(onKeyDownSpy).toHaveBeenCalledTimes(0);
       expect(onKeyUpSpy).toHaveBeenCalledTimes(0);
       expect(onBlurSpy).not.toHaveBeenCalled();

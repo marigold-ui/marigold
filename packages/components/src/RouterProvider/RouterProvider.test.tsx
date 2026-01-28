@@ -1,9 +1,12 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
 import { RouterProvider } from './RouterProvider';
 
-test('change the routes', () => {
+const user = userEvent.setup();
+
+test('change the routes', async () => {
   const RouterProviderTest = () => {
     const [url, setUrl] = useState('/FoR');
     return (
@@ -40,7 +43,7 @@ test('change the routes', () => {
   expect(first).toHaveAttribute('data-selected', 'true');
   expect(third).not.toHaveAttribute('data-selected', 'true');
 
-  fireEvent.click(third);
+  await user.click(third);
   expect(first).not.toHaveAttribute('data-selected', 'true');
   expect(third).toHaveAttribute('data-selected', 'true');
 });

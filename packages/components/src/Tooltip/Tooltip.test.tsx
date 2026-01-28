@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -34,11 +34,10 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-beforeEach(() => {
+beforeEach(async () => {
   // by firing an event at the beginning of each test, we can put ourselves into
   // keyboard modality for the test
-  fireEvent.keyDown(document.body, { key: 'Tab' });
-  fireEvent.keyUp(document.body, { key: 'Tab' });
+  await user.keyboard('{Tab}');
 });
 
 test('does not render tooltip by default', () => {
@@ -52,7 +51,7 @@ test('does not render tooltip by default', () => {
   expect(screen.queryByText('Look at this tooltip!')).toBeNull();
 });
 
-test('shows tooltip on focus', () => {
+test('shows tooltip on focus', async () => {
   render(
     <Tooltip.Trigger>
       <Button>Button!</Button>
@@ -60,21 +59,22 @@ test('shows tooltip on focus', () => {
     </Tooltip.Trigger>
   );
 
-  const button = screen.getByText('Button!');
-  fireEvent.focus(button);
+  // Use tab to focus, which properly triggers keyboard modality
+  await user.tab();
 
-  // TODO: split into two tests
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => {
+  await waitFor(() => {
     expect(screen.queryByTestId('tooltip')).toBeVisible();
   });
 
-  fireEvent.blur(button);
+  // Tab away to blur
+  await user.tab();
 
-  expect(screen.queryByText('Look at this tooltip!')).toBeNull();
+  await waitFor(() => {
+    expect(screen.queryByText('Look at this tooltip!')).toBeNull();
+  });
 });
 
-test('shows tooltip on hover', () => {
+test('shows tooltip on hover', async () => {
   render(
     <Tooltip.Trigger delay={0}>
       <Button>Button!</Button>
@@ -82,22 +82,20 @@ test('shows tooltip on hover', () => {
     </Tooltip.Trigger>
   );
   // Switch to "mouse mode"
-  fireEvent.mouseDown(document.body);
-  fireEvent.mouseUp(document.body);
+  await user.click(document.body);
 
   const button = screen.getByText('Button!');
 
-  fireEvent.mouseEnter(button);
-  fireEvent.mouseMove(button);
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible());
+  await user.hover(button);
+  await waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible());
 
-  fireEvent.mouseLeave(button);
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(screen.queryByText('Look at this tooltip!')).toBeNull());
+  await user.unhover(button);
+  await waitFor(() =>
+    expect(screen.queryByText('Look at this tooltip!')).toBeNull()
+  );
 });
 
-test('can be disabled', () => {
+test('can be disabled', async () => {
   render(
     <Tooltip.Trigger disabled>
       <Button>Button!</Button>
@@ -105,8 +103,8 @@ test('can be disabled', () => {
     </Tooltip.Trigger>
   );
 
-  const button = screen.getByText('Button!');
-  fireEvent.focus(button);
+  // Tab to the button to focus it
+  await user.tab();
 
   expect(screen.queryByText('Look at this tooltip!')).toBeNull();
 });
@@ -172,7 +170,7 @@ test('accepts variant and size', () => {
   );
 });
 
-test('sets placement as data attribute for styling', () => {
+test('sets placement as data attribute for styling', async () => {
   render(
     <ThemeProvider theme={theme}>
       <Tooltip.Trigger open>
@@ -183,6 +181,7 @@ test('sets placement as data attribute for styling', () => {
   );
 
   const tooltip = screen.getByRole('tooltip');
-  // eslint-disable-next-line testing-library/await-async-utils
-  waitFor(() => expect(tooltip).toHaveAttribute('data-placement', 'left'));
+  await waitFor(() =>
+    expect(tooltip).toHaveAttribute('data-placement', 'left')
+  );
 });

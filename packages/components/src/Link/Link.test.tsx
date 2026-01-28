@@ -1,9 +1,12 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { MockInstance, vi } from 'vitest';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Link } from './Link';
+
+const user = userEvent.setup();
 
 const theme: Theme = {
   name: 'test',
@@ -98,11 +101,11 @@ test('renders span element when no href', () => {
   expect(ref.current).toBeInstanceOf(HTMLSpanElement);
 });
 
-test('supports "onPress"', () => {
+test('supports "onPress"', async () => {
   render(<Link onPress={() => {}}>Link</Link>);
 
   const link = screen.getByText('Link');
-  fireEvent.click(link);
+  await user.click(link);
 
   expect(warnMock).not.toHaveBeenCalled();
 });

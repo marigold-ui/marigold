@@ -1,9 +1,12 @@
-import { fireEvent, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Table } from './Table';
+
+const user = userEvent.setup();
 
 // Setup
 // ---------------
@@ -109,7 +112,7 @@ test('renders no empty state when collection has items', async () => {
   await expect(screen.findByText('Empty')).rejects.toThrow();
 });
 
-test('supports theme with parts', () => {
+test('supports theme with parts', async () => {
   render(
     <Table aria-label="Example table" selectionMode="single">
       <Table.Header columns={columns}>
@@ -139,14 +142,14 @@ test('supports theme with parts', () => {
   expect(tableBody).toHaveClass('bg-white');
 
   const tableRows = screen.getAllByRole('row');
-  fireEvent.click(tableRows[1]);
+  await user.click(tableRows[1]);
   expect(tableRows[1]).toHaveClass('bg-blue-700');
 
   const tableCells = screen.getAllByRole('gridcell');
   expect(tableCells[0]).toHaveClass('p-10');
 });
 
-test('supports selectionMode single', () => {
+test('supports selectionMode single', async () => {
   render(
     <Table aria-label="Example table" selectionMode="single">
       <Table.Header columns={columns}>
@@ -162,12 +165,12 @@ test('supports selectionMode single', () => {
     </Table>
   );
   const firstRow = screen.getAllByRole('row')[1];
-  fireEvent.click(firstRow);
+  await user.click(firstRow);
   expect(firstRow).toHaveAttribute('aria-selected', 'true');
   expect(firstRow).toHaveClass(`bg-blue-700`);
 });
 
-test('supports selectionMode multiple', () => {
+test('supports selectionMode multiple', async () => {
   render(
     <Table aria-label="Example table" selectionMode="multiple">
       <Table.Header columns={columns}>
@@ -185,13 +188,13 @@ test('supports selectionMode multiple', () => {
 
   // select two rows
   const tableRows = screen.getAllByRole('row');
-  fireEvent.click(tableRows[1]);
+  await user.click(tableRows[1]);
   expect(tableRows[1]).toHaveAttribute('aria-selected', 'true');
-  fireEvent.click(tableRows[2]);
+  await user.click(tableRows[2]);
   expect(tableRows[2]).toHaveAttribute('aria-selected', 'true');
 
   // unselect one row
-  fireEvent.click(tableRows[1]);
+  await user.click(tableRows[1]);
   expect(tableRows[1]).toHaveAttribute('aria-selected', 'false');
 });
 
@@ -226,7 +229,7 @@ test('supports colspans', () => {
   expect(informationHeader).toHaveAttribute('colspan', '2');
 });
 
-test('sorting', () => {
+test('sorting', async () => {
   const SortingTable = () => {
     const data = [
       {
@@ -291,9 +294,9 @@ test('sorting', () => {
 
   // Sort by name
   // eslint-disable-next-line testing-library/no-node-access
-  fireEvent.click(rows[0].firstChild!);
+  await user.click(rows[0].firstChild! as Element);
   // eslint-disable-next-line testing-library/no-node-access
-  fireEvent.click(rows[0].firstChild!);
+  await user.click(rows[0].firstChild! as Element);
 
   // eslint-disable-next-line testing-library/no-node-access
   const header = rows[0].querySelector('[aria-sort]');
@@ -404,7 +407,7 @@ test('cursor indicates interactivity', async () => {
   expect(rows[2]).toHaveClass('cursor-default');
 });
 
-test('Table cell mouse down will not be selectable', () => {
+test('Table cell mouse down will not be selectable', async () => {
   render(
     <Table aria-label="table" selectionMode="none">
       <Table.Header>
@@ -422,13 +425,13 @@ test('Table cell mouse down will not be selectable', () => {
   );
 
   const cell = screen.getByText('Alice');
-  fireEvent.mouseDown(cell);
+  await user.pointer({ target: cell, keys: '[MouseLeft>]' });
 
   const row = screen.getAllByRole('row');
   expect(row[0]).not.toHaveAttribute('aria-selected');
 });
 
-test('Table cell pointer down will not be selectable', () => {
+test('Table cell pointer down will not be selectable', async () => {
   render(
     <Table aria-label="table" selectionMode="none">
       <Table.Header>
@@ -446,7 +449,7 @@ test('Table cell pointer down will not be selectable', () => {
   );
 
   const cell = screen.getByText('Alice');
-  fireEvent.pointerDown(cell);
+  await user.pointer({ target: cell, keys: '[MouseLeft>]' });
 
   const row = screen.getAllByRole('row');
   expect(row[0]).not.toHaveAttribute('aria-selected');
