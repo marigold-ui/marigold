@@ -330,4 +330,22 @@ describe('createWidthVar', () => {
       '--custom-width-name': 'calc(var(--spacing) * 8)',
     });
   });
+
+  it('should fall back to raw value when not a keyword, scale, or fraction', () => {
+    expect(createWidthVar('width', '200px')).toEqual({
+      '--width': '200px',
+    });
+
+    expect(createWidthVar('width', '50%')).toEqual({
+      '--width': '50%',
+    });
+
+    expect(createWidthVar('width', 'var(--custom-width)')).toEqual({
+      '--width': 'var(--custom-width)',
+    });
+
+    expect(createWidthVar('width', 'test')).toEqual({
+      '--width': 'test',
+    });
+  });
 });

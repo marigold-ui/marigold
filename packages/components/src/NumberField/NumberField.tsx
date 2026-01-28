@@ -108,7 +108,7 @@ const _NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
       >
         <Group
           className={cn(
-            'flex max-w-(--field-width) items-stretch',
+            'flex w-(--field-width) max-w-full min-w-0 items-stretch',
             classNames.group
           )}
         >

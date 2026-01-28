@@ -114,7 +114,12 @@ const _TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(
         {...props}
         ref={ref}
       >
-        <Group className={cn('max-w-(--field-width)', classNames.field)}>
+        <Group
+          className={cn(
+            'w-(--field-width) max-w-full min-w-0',
+            classNames.field
+          )}
+        >
           <DateInput
             className={cn('flex flex-1 items-center', classNames.input)}
           >

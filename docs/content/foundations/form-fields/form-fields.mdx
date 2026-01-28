@@ -98,6 +98,14 @@ Help Text should be used to provide additional clarification or instructions whe
 </Dont>
 <ComponentDemo file="./form-fields-helper-text.demo.tsx" />
 
+### Width
+
+The width of form fields can be adjusted based on the context and design requirements. Marigold's form components support a `width` prop that allows you to set the width of the field using keywords (`fit`, `full`, `auto`), scales (`32`, `64`, `96`), or fraction values (`1/2`, `2/3`, etc.).
+
+When using width the `label` and `description` won't be included in the width calculation and won't adapt to the width of the field. The text will not shrink if the field is too small to fit the text.
+
+For fraction values, the field will take up the specified fraction of the width of its parent container. This is particularly useful for creating responsive layouts where fields need to adjust based on the available space.
+
 ### Field States
 
 Form components often exist in various states to indicate how they should behave or be interacted with. These states provide important context for users and ensure proper handling of inputs in different senarios. Below are the common field states used in forms.
