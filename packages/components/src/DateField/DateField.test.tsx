@@ -44,7 +44,7 @@ test('renders correctly', () => {
       <div
         aria-describedby="react-aria-description-0 react-aria-_r_3_"
         aria-labelledby="react-aria-_r_1_"
-        class="ui-surface h-input flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:ring-destructive/20"
+        class="ui-surface h-input flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:ring-destructive/20 w-(--field-width) max-w-full min-w-0 overflow-hidden"
         data-rac=""
         data-react-aria-pressable="true"
         id="react-aria-_r_0_"
