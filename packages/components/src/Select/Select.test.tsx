@@ -1,14 +1,8 @@
-import {
-  act,
-  renderHook,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { vi } from 'vitest';
-import { Theme, cva, useSmallScreen } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Select } from './Select';
 import { Basic } from './Select.stories';
@@ -71,15 +65,6 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: () => {
@@ -93,12 +78,6 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 test('renders a field (label, helptext, select)', () => {
-  window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
-    'screen and (min-width: 64em)',
-  ]);
-
   render(
     <Basic.Component
       data-testid="select"
@@ -259,41 +238,6 @@ test('forwards ref', () => {
   );
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
-});
-
-// Skip: This test relies on matchMedia mocking which doesn't work reliably with
-// async userEvent. Tray behavior on small screens should be tested in browser-based
-// tests (storybook component tests) instead.
-test.skip('renders as tray', async () => {
-  const ref = createRef<HTMLButtonElement>();
-
-  let resize: () => void;
-  window.addEventListener = vi.fn().mockImplementation((event, cb) => {
-    if (event === 'resize') resize = cb;
-  });
-
-  const { result } = renderHook(() => useSmallScreen());
-  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-  act(() => resize());
-
-  expect(result.current).toBeTruthy();
-
-  render(
-    <Select label="Label" data-testid="select" ref={ref as any}>
-      <Select.Section header="Section 1">
-        <Select.Option id="one">one</Select.Option>
-        <Select.Option id="two">two</Select.Option>
-      </Select.Section>
-    </Select>
-  );
-
-  const button = screen.getByRole('button');
-  await user.click(button);
-
-  await waitFor(() => {
-    const tray = screen.getByTestId('underlay-id');
-    expect(tray).toBeInTheDocument();
-  });
 });
 
 test('error is there', () => {
