@@ -49,6 +49,9 @@ export default mergeConfig(
           ],
           test: {
             name: 'storybook-tests',
+            // Exclude themes from storybook browser tests - they don't have
+            // component-tests and cause node:module import errors in browser
+            exclude: ['**/themes/**'],
             // Enable browser mode
             browser: {
               enabled: true,
