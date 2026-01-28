@@ -4,6 +4,7 @@ import {
   AlignmentsX,
   AlignmentsY,
   BorderRadius,
+  Center,
   ColorPalettes,
   ColorTokenTable,
   Columns,
@@ -21,6 +22,7 @@ import {
   IconList,
   RelativeTime,
   Spacing,
+  SpacingTokens,
   Stack,
   TeaserList,
   TextAlign,
@@ -61,9 +63,11 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
-            Columns,
 
+            Columns,
             Stack,
+            Center,
+
             ImageZoom,
             ColorTokenTable,
             ColorPalettes,
@@ -74,6 +78,7 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             FontSizes,
             FontStyle,
             TextAlign,
+            SpacingTokens,
 
             Spacing,
             BorderRadius,

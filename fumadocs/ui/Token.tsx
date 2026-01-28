@@ -169,3 +169,85 @@ export const Spacing = () => {
     </Table>
   );
 };
+
+export const SpacingTokens = () => {
+  return (
+    <Table aria-label="spacing tokens">
+      <Table.Header>
+        <Table.Column>Token</Table.Column>
+        <Table.Column>Value</Table.Column>
+        <Table.Column>Description</Table.Column>
+        <Table.Column>Relevant components</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row key={0}>
+          <Table.Cell>
+            <code className="before:content-none after:content-none">
+              container
+            </code>
+          </Table.Cell>
+          <Table.Cell>50rem (800px)</Table.Cell>
+          <Table.Cell>
+            Used width or max-width for the form container.
+          </Table.Cell>
+          <Table.Cell>
+            {'<div>'}, {'<Form>'}
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row key={1}>
+          <Table.Cell>
+            <code className="before:content-none after:content-none">
+              section
+            </code>
+          </Table.Cell>
+          <Table.Cell>3.5rem (56px)</Table.Cell>
+          <Table.Cell>
+            Used for creating space between different form sections.
+          </Table.Cell>
+          <Table.Cell>{'<Stack>'}</Table.Cell>
+        </Table.Row>
+        <Table.Row key={2}>
+          <Table.Cell>
+            <code className="before:content-none after:content-none">
+              fieldY
+            </code>
+          </Table.Cell>
+          <Table.Cell>2rem (32px)</Table.Cell>
+          <Table.Cell>
+            Used for creating vertical space between individual form fields in a
+            section.
+          </Table.Cell>
+          <Table.Cell>{'<Stack>'}</Table.Cell>
+        </Table.Row>
+        <Table.Row key={3}>
+          <Table.Cell>
+            <code className="before:content-none after:content-none">
+              fieldX
+            </code>
+          </Table.Cell>
+          <Table.Cell>1.25rem (20px)</Table.Cell>
+          <Table.Cell>
+            Used for creating horizontal space between individual form fields in
+            a section.
+          </Table.Cell>
+          <Table.Cell>{'<Inline>'}</Table.Cell>
+        </Table.Row>
+        <Table.Row key={4}>
+          <Table.Cell>
+            <code className="before:content-none after:content-none">
+              group
+            </code>
+          </Table.Cell>
+          <Table.Cell>1rem (16px)</Table.Cell>
+          <Table.Cell>
+            Used for grouping related fields (address components, date/time
+            fields) or multiple accordion sections together.
+          </Table.Cell>
+          <Table.Cell>
+            {'<Stack>'}, {'<Inset>'}
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+};
