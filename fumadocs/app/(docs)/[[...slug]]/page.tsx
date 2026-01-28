@@ -23,7 +23,7 @@ import {
   IconList,
   RelativeTime,
   Spacing,
-  SpacingTokens,
+  SpacingTokensTable,
   Stack,
   TeaserList,
   TextAlign,
@@ -79,7 +79,7 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             FontSizes,
             FontStyle,
             TextAlign,
-            SpacingTokens,
+            SpacingTokens: SpacingTokensTable,
 
             Spacing,
             BorderRadius,

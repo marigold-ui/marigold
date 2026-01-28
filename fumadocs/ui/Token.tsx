@@ -170,7 +170,7 @@ export const Spacing = () => {
   );
 };
 
-export const SpacingTokens = () => {
+export const SpacingTokensTable = () => {
   return (
     <Table aria-label="spacing tokens">
       <Table.Header>
