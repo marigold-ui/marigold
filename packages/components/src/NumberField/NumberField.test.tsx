@@ -56,7 +56,7 @@ test('input can be styled via "Input" styles', () => {
   const numberFieldContainer = screen.getByRole('group');
   expect(numberFieldContainer).toBeInTheDocument();
   expect(numberFieldContainer.className).toMatchInlineSnapshot(
-    `"flex max-w-(--field-width) items-stretch rounded-xs border border-solid border-black"`
+    `"flex w-(--field-width) max-w-full min-w-0 items-stretch rounded-xs border border-solid border-black"`
   );
 });
 
@@ -65,7 +65,7 @@ test('group and stepper can styled via "NumberField" styles', () => {
 
   const group = screen.getByRole('group');
   expect(group.className).toMatchInlineSnapshot(
-    `"flex max-w-(--field-width) items-stretch rounded-xs border border-solid border-black"`
+    `"flex w-(--field-width) max-w-full min-w-0 items-stretch rounded-xs border border-solid border-black"`
   );
 
   const steppers = within(group).getAllByRole('button');

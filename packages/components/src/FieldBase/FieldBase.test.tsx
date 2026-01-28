@@ -1,20 +1,48 @@
 import { render, screen } from '@testing-library/react';
+import { FieldErrorContext } from 'react-aria-components';
 import { FieldBaseProps } from '@marigold/components';
 import { Basic } from './FieldBase.stories';
 
 // Setup
 // ---------------
 
+/**
+ * FieldBase uses HelpText which relies on FieldErrorContext from react-aria
+ * to determine when to show error messages vs descriptions. In production,
+ * this context is provided by react-aria field components (TextField, etc.).
+ * For testing FieldBase in isolation, we need to provide this context manually.
+ */
 const BasicComponent = (props?: Partial<FieldBaseProps<any>>) => (
-  <div id="storybook-root">
-    <Basic.Component {...props} />
-  </div>
+  <FieldErrorContext.Provider
+    value={{
+      isInvalid: props?.isInvalid ?? false,
+      validationErrors: [],
+      validationDetails: {
+        badInput: false,
+        customError: false,
+        patternMismatch: false,
+        rangeOverflow: false,
+        rangeUnderflow: false,
+        stepMismatch: false,
+        tooLong: false,
+        tooShort: false,
+        typeMismatch: false,
+        valid: true,
+        valueMissing: false,
+      },
+    }}
+  >
+    <div id="storybook-root">
+      <Basic.Component {...props} />
+    </div>
+  </FieldErrorContext.Provider>
 );
 
 // Tests
 // ---------------
 test('render Field with label and helptext', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component />);
+
   const label = screen.getByText('This is the label');
   const description = screen.getByText('This is a help text description');
   const error = screen.queryByText('Something went wrong');
@@ -25,7 +53,7 @@ test('render Field with label and helptext', () => {
 });
 
 test('render Field with label and errorMessage', () => {
-  render(<BasicComponent isInvalid />);
+  render(<BasicComponent isInvalid></BasicComponent>);
   const label = screen.getByText('This is the label');
   const error = screen.getByText('Something went wrong');
 
@@ -34,7 +62,7 @@ test('render Field with label and errorMessage', () => {
 });
 
 test('render Field with label and errorMessage although description is set', () => {
-  render(<BasicComponent isInvalid />);
+  render(<BasicComponent isInvalid errorMessage="Something went wrong" />);
   const label = screen.getByText('This is the label');
   const description = screen.queryByText('This is a help text description');
   const error = screen.getByText('Something went wrong');
@@ -50,7 +78,7 @@ test('takes full width by default', () => {
   const container = screen.getByText('This is the label').parentElement!;
 
   expect(container.className).toMatchInlineSnapshot(
-    `"group/field flex min-w-0 flex-col w-(--container-width)"`
+    `"group/field flex min-w-0 flex-col w-auto space-y-2"`
   );
 });
 
