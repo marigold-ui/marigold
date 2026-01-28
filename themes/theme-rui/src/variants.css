@@ -1,0 +1,5 @@
+/*
+* Target elements that are in their "default" interactive state.
+* Meaning they are not disabled, not focused, and not marked as invalid.
+*/
+@custom-variant default-state (&:where(:not(:disabled, :focus-visible, :read-only, [aria-invalid="true"], [data-rac][data-invalid="true"], [aria-readonly="true"])));

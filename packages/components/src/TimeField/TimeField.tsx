@@ -1,7 +1,12 @@
 import { forwardRef } from 'react';
 import type { TimeValue } from 'react-aria-components';
 import type RAC from 'react-aria-components';
-import { DateInput, DateSegment, TimeField } from 'react-aria-components';
+import {
+  DateInput,
+  DateSegment,
+  Group,
+  TimeField,
+} from 'react-aria-components';
 import { WidthProp, cn } from '@marigold/system';
 import { useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -109,11 +114,15 @@ const _TimeField = forwardRef<HTMLInputElement, TimeFieldProps>(
         {...props}
         ref={ref}
       >
-        <DateInput className={cn('max-w-(--field-width)', classNames.field)}>
-          {segment => (
-            <DateSegment className={classNames.segment} segment={segment} />
-          )}
-        </DateInput>
+        <Group className={cn('max-w-(--field-width)', classNames.field)}>
+          <DateInput
+            className={cn('flex flex-1 items-center', classNames.input)}
+          >
+            {segment => (
+              <DateSegment className={classNames.segment} segment={segment} />
+            )}
+          </DateInput>
+        </Group>
       </FieldBase>
     );
   }

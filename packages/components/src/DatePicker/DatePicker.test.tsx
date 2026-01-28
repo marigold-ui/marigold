@@ -27,6 +27,7 @@ const theme: Theme = {
   components: {
     DatePicker: cva(''),
     DateField: {
+      input: cva(''),
       action: cva(''),
       field: cva(''),
       segment: cva(''),

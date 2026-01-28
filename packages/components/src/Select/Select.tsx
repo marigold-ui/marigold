@@ -1,11 +1,14 @@
 import { forwardRef } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
-import { Select as ReactAriaSelect, SelectValue } from 'react-aria-components';
+import {
+  Button,
+  Select as ReactAriaSelect,
+  SelectValue,
+} from 'react-aria-components';
 import { forwardRefType } from '@react-types/shared';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
-import { IconButton } from '../IconButton/IconButton';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
@@ -109,15 +112,15 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
       size={size}
       {...props}
     >
-      <IconButton
+      <Button
         className={cn(
           classNames.select,
-          'flex w-(--field-width) max-w-full min-w-0 items-center justify-between gap-1 overflow-hidden'
+          'flex w-(--field-width) max-w-full min-w-0 items-center justify-between gap-1'
         )}
       >
         <SelectValue className="truncate text-nowrap [&_[slot=description]]:hidden" />
         <ChevronsVertical size="16" className={classNames.icon} />
-      </IconButton>
+      </Button>
       <Popover>
         <ListBox items={items}>{children}</ListBox>
       </Popover>

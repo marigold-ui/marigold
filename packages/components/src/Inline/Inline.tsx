@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { alignment, cn, createSpacingVar } from '@marigold/system';
-import type { SpaceProp } from '@marigold/system';
+import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 const inlineAlignmentY = {
@@ -11,10 +11,7 @@ const inlineAlignmentY = {
 
 // Props
 // ---------------
-export interface InlineProps
-  extends
-    SpaceProp<'section' | 'fieldX' | 'container' | 'group'>,
-    AriaRegionProps {
+export interface InlineProps extends SpaceProp<SpacingTokens>, AriaRegionProps {
   /**
    * The children of the component.
    */
