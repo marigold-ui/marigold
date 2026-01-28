@@ -22,6 +22,7 @@ import {
   RelativeTime,
   Spacing,
   Stack,
+  TeaserList,
   TextAlign,
 } from '@/ui';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
@@ -88,6 +89,8 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             DontFigure,
             DontDescription,
             GuidelineTiles,
+
+            TeaserList,
           })}
         />
         {lastModified && (
