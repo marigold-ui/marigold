@@ -125,7 +125,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap [&_[slot=description]]:hidden" />
+            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
             <ChevronsVertical size="16" className={classNames.icon} />
           </IconButton>
           <Tray>
@@ -143,7 +143,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
               classNames.select
             )}
           >
-            <SelectValue className="truncate text-nowrap [&_[slot=description]]:hidden" />
+            <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
             <ChevronsVertical size="16" className={classNames.icon} />
           </Button>
           <Popover>

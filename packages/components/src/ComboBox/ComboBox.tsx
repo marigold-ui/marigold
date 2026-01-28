@@ -118,18 +118,15 @@ interface ComboBoxComponent extends ForwardRefExoticComponent<
   Section: typeof ListBox.Section;
 }
 
-// Trigger Display (for Tray mode - displays selected value using plain HTML input)
-// This avoids sharing the same id with the RAC Input inside Tray.Content
+// Trigger Display (for Tray mode)
+// Uses a styled div instead of Input to avoid duplicate ids with the Input in Tray.Content
 // ---------------
 interface ComboBoxTriggerProps {
   loading?: boolean;
   placeholder?: string;
-  disabled?: boolean;
-  required?: boolean;
-  readOnly?: boolean;
 }
 
-const ComboBoxTrigger = ({ loading, ...props }: ComboBoxTriggerProps) => {
+const ComboBoxTrigger = ({ loading, placeholder }: ComboBoxTriggerProps) => {
   const state = useContext(ComboBoxStateContext);
   const inputClassNames = useClassNames({ component: 'Input' });
   const comboBoxClassNames = useClassNames({ component: 'ComboBox' });
@@ -137,17 +134,18 @@ const ComboBoxTrigger = ({ loading, ...props }: ComboBoxTriggerProps) => {
 
   return (
     <div className="group/input relative flex items-center">
-      <input
-        type="text"
-        value={displayText}
-        {...props}
+      <span
         className={cn(
-          'w-full flex-1',
-          'cursor-pointer',
-          'disabled:cursor-not-allowed',
+          'w-full flex-1 text-left',
+          // Error state: targets when parent FieldBase has data-error attribute
+          'group-data-error/field:ui-state-error',
           inputClassNames.input
         )}
-      />
+      >
+        {displayText || (
+          <span className="text-muted-foreground">{placeholder}</span>
+        )}
+      </span>
       <span
         className={cn(
           'absolute right-0 cursor-pointer',
@@ -202,7 +200,10 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
         {isSmallScreen ? (
           <Tray.Trigger>
             <Button>
-              <ComboBoxTrigger {...props} />
+              <ComboBoxTrigger
+                loading={loading}
+                placeholder={rest.placeholder}
+              />
             </Button>
             <Tray>
               <Tray.Title>{rest.label}</Tray.Title>
