@@ -20,7 +20,10 @@ import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
+import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { Tray } from '../Tray/Tray';
+import { Search } from '../icons/Search';
+import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 
 // Search Input (we can't use our SearchField because of FieldBase)
@@ -85,6 +88,55 @@ const AutocompleteInput = ({
         onClear?.();
       }}
     />
+  );
+};
+
+// Trigger Display (for Tray mode)
+// Uses a styled div instead of SearchInput to avoid duplicate ids with the Input in Tray.Content
+// ---------------
+interface AutocompleteTriggerProps {
+  loading?: boolean;
+  placeholder?: string;
+}
+
+const AutocompleteTrigger = ({
+  loading,
+  placeholder,
+}: AutocompleteTriggerProps) => {
+  const state = useContext(ComboBoxStateContext);
+  const inputClassNames = useClassNames({ component: 'Input' });
+  const displayText = state?.selectedItem?.textValue || '';
+
+  return (
+    <div className="group/input relative flex items-center" data-icon="">
+      <Search
+        aria-hidden="true"
+        size="16"
+        className={cn(
+          'pointer-events-none absolute z-10',
+          inputClassNames.icon
+        )}
+      />
+      <span
+        className={cn(
+          'w-full flex-1 text-left',
+          'group-data-error/field:ui-state-error',
+          inputClassNames.input
+        )}
+      >
+        {displayText || (
+          <span className="text-muted-foreground">{placeholder}</span>
+        )}
+      </span>
+      <span
+        className={cn(
+          'absolute right-0 z-10 cursor-pointer',
+          inputClassNames.action
+        )}
+      >
+        {loading ? <ProgressCircle /> : <X size="16" className="invisible" />}
+      </span>
+    </div>
   );
 };
 
@@ -169,7 +221,6 @@ export interface AutocompleteProps
    * @default false
    */
   loading?: boolean;
-
   variant?: string;
   size?: string;
   placeholder?: string;
@@ -242,11 +293,9 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
         {isSmallScreen ? (
           <Tray.Trigger>
             <Button>
-              <AutocompleteInput
+              <AutocompleteTrigger
                 loading={loading}
-                onSubmit={onSubmit}
-                onClear={onClear}
-                ref={ref}
+                placeholder={rest.placeholder}
               />
             </Button>
             <Tray>
