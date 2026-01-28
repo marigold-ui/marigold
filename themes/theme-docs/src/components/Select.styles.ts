@@ -29,7 +29,7 @@ export const Select: ThemeComponent<'Select'> = {
         default: 'gap-2',
         floating: [
           'shadow-xs',
-          'col-span-full row-start-1 grid grid-cols-subgrid grid-rows-subgrid',
+          'col-span-full row-start-1 grid! grid-flow-col grid-cols-[1fr_3fr] grid-rows-subgrid ',
           // selected value and caret get moved to 2nd col
           '*:row-star-1 *:col-start-2 *:text-left',
           // So the button gap is not used to separate label from selected value
