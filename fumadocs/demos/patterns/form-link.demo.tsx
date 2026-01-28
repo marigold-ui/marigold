@@ -1,5 +1,6 @@
 import { venues } from '@/lib/data/venues';
 import { useState } from 'react';
+import { Key } from 'react';
 import {
   Button,
   Inline,
@@ -22,9 +23,10 @@ export default () => {
     new Set(venues.map(venue => venue.country))
   );
 
-  const handleVenueChange = (venueId: string) => {
-    setSelectedVenueId(venueId);
-    const venue = venues.find(v => v.id === venueId);
+  const handleVenueChange = (value: Key | null) => {
+    if (!value) return;
+    setSelectedVenueId(String(value));
+    const venue = venues.find(v => v.id === value);
     if (venue) {
       setName(venue.name);
       setStreet(venue.street);
