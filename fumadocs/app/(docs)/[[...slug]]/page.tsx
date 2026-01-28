@@ -72,7 +72,6 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             ImageZoom,
             ColorTokenTable,
             ColorPalettes,
-            img: ImageZoom,
 
             Headlines,
             FontWeights,
