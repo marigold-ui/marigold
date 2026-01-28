@@ -1,2 +1,6 @@
-export { useAsyncList, useListData } from '@react-stately/data';
+export {
+  useAsyncList,
+  useListData,
+  useDragAndDrop,
+} from 'react-aria-components';
 export { DateFormat, NumericFormat } from '@marigold/system';

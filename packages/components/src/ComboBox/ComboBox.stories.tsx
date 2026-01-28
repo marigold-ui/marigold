@@ -1,6 +1,5 @@
-import { Key } from 'react';
+import { Key, useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
 import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';

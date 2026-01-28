@@ -1,9 +1,12 @@
 export const intlMessages = {
   'de-DE': {
+    bulkActionsAriaLabel: 'Massenaktionen',
     cancel: 'Abbrechen',
+    clearSelectionAriaLabel: 'Auswahl löschen',
     dropZoneLabel: 'Dateien hierher ziehen',
     help: 'Hilfe',
     hiddenBreadcrumbs: 'Diese Breadcrumbs sind ausgeblendet',
+    items: 'Elemente',
     loadingMessage: 'Lade...',
     moreInfo: 'Mehr Informationen',
     noResultsFound: 'Kein Ergebnis gefunden',
@@ -14,14 +17,15 @@ export const intlMessages = {
     showMore: 'Mehr anzeigen',
     showMoreCount: '{count} weitere anzeigen',
     uploadLabel: 'Hochladen',
-    bulkActionsAriaLabel: 'Massenaktionen',
-    clearSelectionAriaLabel: 'Auswahl löschen',
   },
   'en-US': {
+    bulkActionsAriaLabel: 'Bulk Actions',
     cancel: 'Cancel',
+    clearSelectionAriaLabel: 'Clear selection',
     dropZoneLabel: 'Drop files here',
     help: 'Help',
     hiddenBreadcrumbs: 'These breadcrumbs are hidden',
+    items: 'Items',
     loadingMessage: 'Loading...',
     moreInfo: 'More information',
     noResultsFound: 'No result found',
@@ -32,7 +36,5 @@ export const intlMessages = {
     showMore: 'Show more',
     showMoreCount: 'Show {count} more',
     uploadLabel: 'Upload',
-    bulkActionsAriaLabel: 'Bulk Actions',
-    clearSelectionAriaLabel: 'Clear selection',
   },
 };

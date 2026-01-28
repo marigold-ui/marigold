@@ -624,7 +624,6 @@ export const placeItems = {
 } as const;
 
 export const textAlign = {
-  none: undefined,
   left: 'text-left',
   center: 'text-center',
   right: 'text-right',
