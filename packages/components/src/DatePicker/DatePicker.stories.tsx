@@ -161,3 +161,12 @@ export const UnavailableDate: any = meta.story({
     </I18nProvider>
   ),
 });
+
+export const Mobile: any = meta.story({
+  globals: { viewport: 'mobile1' },
+  render: args => (
+    <I18nProvider locale="de-DE">
+      <DatePicker label="Pick a date" {...args} />
+    </I18nProvider>
+  ),
+});
