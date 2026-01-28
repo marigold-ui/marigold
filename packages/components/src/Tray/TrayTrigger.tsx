@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { DialogTrigger } from 'react-aria-components';
 
@@ -5,13 +6,17 @@ import { DialogTrigger } from 'react-aria-components';
 // ---------------
 export interface TrayTriggerProps extends Omit<
   RAC.DialogTriggerProps,
-  'isOpen'
+  'isOpen' | 'children'
 > {
   /**
    * Whether the overlay is open by default (controlled).
    * @default false
    */
   open?: boolean;
+  /**
+   * Children of the trigger.
+   */
+  children: ReactNode;
 }
 
 // Component

@@ -3,11 +3,11 @@ import type {
   ReactNode,
   RefAttributes,
 } from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import type RAC from 'react-aria-components';
-import { Button, ComboBox } from 'react-aria-components';
+import { Button, ComboBox, ComboBoxStateContext } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useClassNames, useSmallScreen } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
@@ -118,6 +118,49 @@ interface ComboBoxComponent extends ForwardRefExoticComponent<
   Section: typeof ListBox.Section;
 }
 
+// Trigger Display (for Tray mode - displays selected value using plain HTML input)
+// This avoids sharing the same id with the RAC Input inside Tray.Content
+// ---------------
+interface ComboBoxTriggerProps {
+  loading?: boolean;
+  placeholder?: string;
+  disabled?: boolean;
+  required?: boolean;
+  readOnly?: boolean;
+}
+
+const ComboBoxTrigger = ({ loading, ...props }: ComboBoxTriggerProps) => {
+  const state = useContext(ComboBoxStateContext);
+  const inputClassNames = useClassNames({ component: 'Input' });
+  const comboBoxClassNames = useClassNames({ component: 'ComboBox' });
+  const displayText = state?.selectedItem?.textValue || '';
+
+  return (
+    <div className="group/input relative flex items-center">
+      <input
+        type="text"
+        value={displayText}
+        {...props}
+        className={cn(
+          'w-full flex-1',
+          'cursor-pointer',
+          'disabled:cursor-not-allowed',
+          inputClassNames.input
+        )}
+      />
+      <span
+        className={cn(
+          'absolute right-0 cursor-pointer',
+          inputClassNames.action,
+          comboBoxClassNames
+        )}
+      >
+        {loading ? <ProgressCircle /> : <ChevronsVertical size="16" />}
+      </span>
+    </div>
+  );
+};
+
 // Component
 // ---------------
 const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
@@ -159,17 +202,7 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
         {isSmallScreen ? (
           <Tray.Trigger>
             <Button>
-              <Input
-                action={
-                  <IconButton className={classNames}>
-                    {loading ? (
-                      <ProgressCircle />
-                    ) : (
-                      <ChevronsVertical size="16" />
-                    )}
-                  </IconButton>
-                }
-              />
+              <ComboBoxTrigger {...props} />
             </Button>
             <Tray>
               <Tray.Title>{rest.label}</Tray.Title>
