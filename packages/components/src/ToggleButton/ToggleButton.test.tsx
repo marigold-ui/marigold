@@ -22,7 +22,7 @@ test('renders correctly', () => {
   expect(label).toMatchInlineSnapshot(`
     <button
       aria-pressed="false"
-      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:util-focus-ring outline-none disabled:util-disabled cursor-pointer border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground selected:bg-input/50 selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-l-0 in-[.group]:first:rounded-l-md in-[.group]:first:border-l in-[.group]:last:rounded-r-md text-sm h-button px-4 py-2 [&_svg]:size-4"
+      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 text-sm h-button px-4 py-2 [&_svg]:size-4"
       data-rac=""
       data-react-aria-pressable="true"
       tabindex="0"
@@ -66,7 +66,7 @@ test('supports different sizes', () => {
   expect(button).toMatchInlineSnapshot(`
     <button
       aria-pressed="false"
-      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:util-focus-ring outline-none disabled:util-disabled cursor-pointer border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground selected:bg-input/50 selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-l-0 in-[.group]:first:rounded-l-md in-[.group]:first:border-l in-[.group]:last:rounded-r-md text-xs h-button-small px-3 [&_svg]:size-3.5"
+      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 text-xs h-button-small px-3 [&_svg]:size-3.5"
       data-rac=""
       data-react-aria-pressable="true"
       tabindex="0"
@@ -80,7 +80,7 @@ test('supports different sizes', () => {
   expect(screen.getByRole('button')).toMatchInlineSnapshot(`
     <button
       aria-pressed="false"
-      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:util-focus-ring outline-none disabled:util-disabled cursor-pointer border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground selected:bg-input/50 selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-l-0 in-[.group]:first:rounded-l-md in-[.group]:first:border-l in-[.group]:last:rounded-r-md size-button [&_svg]:size-4"
+      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 size-button [&_svg]:size-4"
       data-rac=""
       data-react-aria-pressable="true"
       tabindex="0"

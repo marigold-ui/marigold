@@ -11,7 +11,9 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   container: cva(
     [
       'w-full relative grid-rows-[auto_1fr_auto]',
-      'util-surface-overlay',
+      // TODO: if we keep placement we need direction aware shadows
+      'bg-surface border-surface-border ui-elevation-overlay util-scrollbar',
+      'placement-right:border-l placement-left:border-r placement-top:border-b placement-bottom:border-t',
       'placement-top:w-full placement-bottom:w-full',
     ],
     {

@@ -1,12 +1,9 @@
 import { ReactNode } from 'react';
-import type { SpaceProp } from '@marigold/system';
+import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface TilesProps
-  extends
-    SpaceProp<'section' | 'fieldX' | 'fieldY' | 'container' | 'group'>,
-    AriaRegionProps {
+export interface TilesProps extends SpaceProp<SpacingTokens>, AriaRegionProps {
   /**
    * The children of the component.
    */
