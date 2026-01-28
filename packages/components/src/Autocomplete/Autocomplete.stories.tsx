@@ -300,3 +300,27 @@ export const DisabledSuggestions: any = meta.story({
     </Autocomplete>
   ),
 });
+
+export const Mobile: any = meta.story({
+  globals: { viewport: 'mobile1' },
+  render: args => (
+    <Autocomplete {...args}>
+      <Autocomplete.Option id="inception">Inception</Autocomplete.Option>
+      <Autocomplete.Option id="interstellar">Interstellar</Autocomplete.Option>
+      <Autocomplete.Option id="the-dark-knight">
+        The Dark Knight
+      </Autocomplete.Option>
+      <Autocomplete.Option id="pulp-fiction">Pulp Fiction</Autocomplete.Option>
+      <Autocomplete.Option id="forrest-gump">Forrest Gump</Autocomplete.Option>
+      <Autocomplete.Option id="the-matrix">The Matrix</Autocomplete.Option>
+      <Autocomplete.Option id="fight-club">Fight Club</Autocomplete.Option>
+      <Autocomplete.Option id="goodfellas">Goodfellas</Autocomplete.Option>
+      <Autocomplete.Option id="the-shawshank-redemption">
+        The Shawshank Redemption
+      </Autocomplete.Option>
+      <Autocomplete.Option id="the-godfather">
+        The Godfather
+      </Autocomplete.Option>
+    </Autocomplete>
+  ),
+});

@@ -369,3 +369,29 @@ export const DisabledKeys: any = meta.story({
     );
   },
 });
+
+export const Mobile: any = meta.story({
+  globals: {
+    viewport: { value: 'mobile1' },
+  },
+  render: args => (
+    <ComboBox {...args}>
+      <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+      <ComboBox.Option id="cat">Cat</ComboBox.Option>
+      <ComboBox.Option id="dog">Dog</ComboBox.Option>
+      <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+      <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+      <ComboBox.Option id="snake">Snake</ComboBox.Option>
+      <ComboBox.Option id="elephant">Elephant</ComboBox.Option>
+      <ComboBox.Option id="giraffe">Giraffe</ComboBox.Option>
+      <ComboBox.Option id="penguin">Penguin</ComboBox.Option>
+      <ComboBox.Option id="dolphin">Dolphin</ComboBox.Option>
+      <ComboBox.Option id="koala">Koala</ComboBox.Option>
+      <ComboBox.Option id="tiger">Tiger</ComboBox.Option>
+      <ComboBox.Option id="lion">Lion</ComboBox.Option>
+      <ComboBox.Option id="zebra">Zebra</ComboBox.Option>
+      <ComboBox.Option id="owl">Owl</ComboBox.Option>
+      <ComboBox.Option id="fox">Fox</ComboBox.Option>
+    </ComboBox>
+  ),
+});
