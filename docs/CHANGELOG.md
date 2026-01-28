@@ -1,5 +1,41 @@
 # @marigold/docs
 
+## 16.2.0
+
+### Minor Changes
+
+- 0c00d1d: refa(DST-1001): Added a set of relational spacing tokens for future use. Provided documentation explaining the semantic spacing system.
+
+### Patch Changes
+
+- 01e6bdb: [DST-1157]: introduce new `<ActionBar>` alpha component
+- 63f1603: style([DST-1143]): Improve ContextualHelp sizes
+
+  **Breaking Change**: Sizes have been removed, the default has a new style.
+
+- 8dd0455: feat([DSTSUP-222]): Introduce `<EmptyState>` Component as beta
+- Updated dependencies [34c785a]
+- Updated dependencies [96e145a]
+- Updated dependencies [cc61968]
+- Updated dependencies [01e6bdb]
+- Updated dependencies [6c071f0]
+- Updated dependencies [44d01a6]
+- Updated dependencies [63f1603]
+- Updated dependencies [a0564dc]
+- Updated dependencies [282b330]
+- Updated dependencies [5a90757]
+- Updated dependencies [0c00d1d]
+- Updated dependencies [0c00d1d]
+- Updated dependencies [8dd0455]
+- Updated dependencies [f916a20]
+- Updated dependencies [726239d]
+- Updated dependencies [1bd9f27]
+  - @marigold/components@16.2.0
+  - @marigold/theme-rui@5.0.0
+  - @marigold/system@16.2.0
+  - @marigold/theme-docs@4.1.0
+  - @marigold/icons@1.3.31
+
 ## 16.1.0
 
 ### Patch Changes
