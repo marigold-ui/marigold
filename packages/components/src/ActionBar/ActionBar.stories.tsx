@@ -1,9 +1,10 @@
 import { Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
-import { Headline, Scrollable } from '@marigold/components';
+import preview from '.storybook/preview';
 import { Delete, Edit } from '@marigold/icons';
-import preview from '../../../../.storybook/preview';
+import { Headline } from '../Headline/Headline';
+import { Scrollable } from '../Scrollable/Scrollable';
 import { Stack } from '../Stack/Stack';
 import { Table } from '../Table/Table';
 import type { Selection } from '../types';
