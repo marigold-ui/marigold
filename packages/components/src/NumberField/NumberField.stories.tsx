@@ -1,4 +1,4 @@
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Inline } from '../Inline/Inline';
