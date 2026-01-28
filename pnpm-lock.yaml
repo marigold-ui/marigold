@@ -449,12 +449,18 @@ importers:
       react-dom:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
+      react-hook-form:
+        specifier: 7.68.0
+        version: 7.68.0(react@19.2.3)
       react-use:
         specifier: ^17.6.0
         version: 17.6.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
+      zod-form-data:
+        specifier: 3.0.1
+        version: 3.0.1(zod@4.3.5)
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.18
@@ -19715,6 +19721,11 @@ snapshots:
     dependencies:
       '@rvf/set-get': 7.0.1
       zod: 4.1.13
+
+  zod-form-data@3.0.1(zod@4.3.5):
+    dependencies:
+      '@rvf/set-get': 7.0.1
+      zod: 4.3.5
 
   zod-validation-error@4.0.2(zod@4.3.5):
     dependencies:

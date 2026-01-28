@@ -11,3 +11,4 @@ export * from './IconList';
 export * from './DosAndDonts';
 export * from './RelativeTime';
 export * from './TeaserCard';
+export * from './FeedbackComponentsTable';

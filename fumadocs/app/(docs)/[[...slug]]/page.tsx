@@ -14,6 +14,7 @@ import {
   Dont,
   DontDescription,
   DontFigure,
+  FeedbackComponentsTable,
   FontSizes,
   FontStyle,
   FontWeights,
@@ -96,6 +97,8 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             GuidelineTiles,
 
             TeaserList,
+
+            FeedbackComponentsTable,
           })}
         />
         {lastModified && (
