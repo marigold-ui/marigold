@@ -85,7 +85,7 @@ export default () => (
           <Accordion.Content>
             <Stack space="fieldY">
               <TextField
-                label="Room Number"
+                label="Room Number "
                 description="Specific room or area within venue"
               />
               <TextField
