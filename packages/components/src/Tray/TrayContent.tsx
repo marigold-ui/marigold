@@ -9,6 +9,10 @@ export interface TrayContentProps {
    * Children of the component.
    */
   children?: ReactNode;
+  /**
+   * Additional class names to apply to the content container
+   * useful when component specific styles are needed
+   */
   className?: string;
 }
 

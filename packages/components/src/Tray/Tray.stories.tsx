@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, waitFor } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Inset } from '../Inset/Inset';
@@ -10,6 +10,13 @@ import { Tray } from './Tray';
 const meta = preview.meta({
   title: 'Components/Tray',
   component: Tray,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   globals: {
     viewport: { value: 'mobile1' },
   },
@@ -58,14 +65,53 @@ export const Basic = meta.story({
       </Tray>
     </Tray.Trigger>
   ),
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Open Tray' }));
+});
+
+Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
+  await step('Opens when trigger is clicked', async () => {
+    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+    await userEvent.click(openButton);
+
     await waitFor(() =>
       expect(canvas.getByText('Tray Title')).toBeInTheDocument()
     );
+  });
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
-  },
+  await step('Closes when close button is clicked', async () => {
+    const closeButton = canvas.getByRole('button', { name: 'Close' });
+    await userEvent.click(closeButton);
+
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
+
+  await step('Closes via dismiss button', async () => {
+    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+    await userEvent.click(openButton);
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    const dismissBtn = canvas.getByLabelText('dismiss tray');
+    await userEvent.click(dismissBtn);
+
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
+
+  await step('Can be closed with escape key', async () => {
+    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+    await userEvent.click(openButton);
+
+    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
+
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
 });
 
 export const Controlled = meta.story({
@@ -94,5 +140,31 @@ export const Controlled = meta.story({
         <pre>Tray is {open ? 'open' : 'closed'}</pre>
       </Stack>
     );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Shows closed state initially', async () => {
+      expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
+      expect(canvas.queryByText('Controlled Tray')).not.toBeInTheDocument();
+    });
+
+    await step('Opens via controlled state', async () => {
+      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+      await userEvent.click(openButton);
+
+      await waitFor(() =>
+        expect(canvas.getByText('Controlled Tray')).toBeInTheDocument()
+      );
+      expect(canvas.getByText('Tray is open')).toBeInTheDocument();
+    });
+
+    await step('Closes via controlled state', async () => {
+      const closeButton = canvas.getByRole('button', { name: 'Close' });
+      await userEvent.click(closeButton);
+
+      await waitFor(() =>
+        expect(canvas.queryByText('Controlled Tray')).not.toBeInTheDocument()
+      );
+      expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
+    });
   },
 });
