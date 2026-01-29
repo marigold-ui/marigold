@@ -12,20 +12,6 @@ const isVitest =
   // @ts-expect-error - vite injects env during build/test
   Boolean(import.meta.env && (import.meta.env as any).MODE === 'test');
 
-// Patch releasePointerCapture to handle invalid pointer IDs gracefully during tests.
-// This is needed because react-aria's press handling uses pointer capture,
-// which doesn't work properly in Firefox test environments.
-if (isVitest && typeof Element !== 'undefined') {
-  const originalReleasePointerCapture = Element.prototype.releasePointerCapture;
-  Element.prototype.releasePointerCapture = function (pointerId: number) {
-    try {
-      originalReleasePointerCapture.call(this, pointerId);
-    } catch {
-      // Ignore "Invalid pointer id" errors in tests
-    }
-  };
-}
-
 export default definePreview({
   addons: [addonA11y(), addonDocs()],
   parameters: {
