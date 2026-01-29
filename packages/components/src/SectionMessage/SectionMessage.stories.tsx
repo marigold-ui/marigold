@@ -1,4 +1,4 @@
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
