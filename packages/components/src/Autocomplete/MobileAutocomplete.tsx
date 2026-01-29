@@ -47,7 +47,10 @@ const MobileAutocompleteTrigger = ({
       <span
         className={cn(
           'w-full flex-1 text-left',
+          // Error state: targets when parent FieldBase has data-error attribute
           'group-data-error/field:ui-state-error',
+          // Focus state: targets when parent Button has data-focus-visible attribute
+          'group-data-focus-visible/trigger:ui-state-focus',
           inputClassNames.input
         )}
       >
@@ -72,7 +75,7 @@ const MobileAutocomplete = ({
 
   return (
     <Tray.Trigger>
-      <Button>
+      <Button className="group/trigger outline-none">
         <MobileAutocompleteTrigger placeholder={placeholder} />
       </Button>
       <Tray>
