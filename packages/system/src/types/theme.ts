@@ -213,6 +213,20 @@ export type Theme = {
       'group' | 'button',
       ComponentStyleFunction<string, string>
     >;
+    Sidebar?: Record<
+      | 'root'
+      | 'closeButton'
+      | 'header'
+      | 'content'
+      | 'footer'
+      | 'toggle'
+      | 'group'
+      | 'groupLabel'
+      | 'menu'
+      | 'menuItem'
+      | 'menuButton',
+      ComponentStyleFunction<string, string>
+    >;
   };
 };
 

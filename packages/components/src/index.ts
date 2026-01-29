@@ -223,6 +223,9 @@ export type { SwitchProps } from './Switch/Switch';
 export { Table } from './Table/Table';
 export type { TableProps } from './Table/Table';
 
+export { Sidebar } from './Sidebar/Sidebar';
+export type { SidebarProps } from './Sidebar/Sidebar';
+
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';
 
