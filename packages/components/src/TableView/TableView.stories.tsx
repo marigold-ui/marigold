@@ -14,6 +14,7 @@ import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
+import { TextField } from '../TextField/TextField';
 import type { Selection } from '../types';
 import { TableView } from './TableView';
 
@@ -688,7 +689,12 @@ export const EditableFields = meta.story({
                   </Text>
                 </Stack>
               </TableView.Cell>
-              <TableView.Cell>{user.email}</TableView.Cell>
+              <TableView.Cell>
+                <TextField
+                  value={user.email}
+                  onChange={value => update(user.email, 'email', value)}
+                />
+              </TableView.Cell>
               <TableView.Cell>{user.location}</TableView.Cell>
               <TableView.Cell>
                 <Select
