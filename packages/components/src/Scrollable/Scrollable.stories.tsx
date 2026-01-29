@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useState } from 'storybook/preview-api';
+import { useEffect, useState } from 'react';
 import preview from '.storybook/preview';
 import { Card } from '../Card/Card';
 import { Headline } from '../Headline/Headline';
