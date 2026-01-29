@@ -651,6 +651,9 @@ export const Sorting = meta.story({
 
 export const EditableFields = meta.story({
   tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+  },
   render: args => {
     const [data, setData] = useState(users);
 
