@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import RAC, { DropZone } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -43,6 +43,11 @@ export interface FileFieldProps
    * Whether multiple files can be selected.
    */
   multiple?: RAC.FileTriggerProps['allowsMultiple'];
+
+  /**
+   * The name of the field for form submission.
+   */
+  name?: string;
 }
 
 // Component
@@ -53,16 +58,31 @@ export const FileField = ({
   multiple = false,
   width,
   label,
+  name,
   ...props
 }: FileFieldProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const dropZoneLabel = stringFormatter.format('dropZoneLabel');
   const buttonLabel = stringFormatter.format('uploadLabel');
 
+  const syncHiddenInput = (newFiles: File[] | null) => {
+    if (!hiddenInputRef.current || !name) return;
+    try {
+      const dt = new DataTransfer();
+      newFiles?.forEach(f => dt.items.add(f));
+      hiddenInputRef.current.files = dt.files;
+    } catch {
+      // DataTransfer may not be available in some test environments
+    }
+  };
+
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
     const list = files ? Array.from(files) : [];
-    setFiles(normalizeAndLimitFiles(list, { accept, multiple }));
+    const normalized = normalizeAndLimitFiles(list, { accept, multiple });
+    setFiles(normalized);
+    syncHiddenInput(normalized);
   };
 
   const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
@@ -72,8 +92,9 @@ export const FileField = ({
         .map(item => (item as any).getFile());
       const raw = await Promise.all(filePromises);
       const files = raw.filter(Boolean) as File[];
-
-      setFiles(normalizeAndLimitFiles(files, { accept, multiple }));
+      const normalized = normalizeAndLimitFiles(files, { accept, multiple });
+      setFiles(normalized);
+      syncHiddenInput(normalized);
     } catch {
       // swallow errors from reading dropped items
     }
@@ -118,9 +139,11 @@ export const FileField = ({
       {files?.map((file, index) => (
         <FileField.Item
           key={index}
-          onRemove={() =>
-            setFiles(prev => (prev ?? []).filter((_, i) => i !== index))
-          }
+          onRemove={() => {
+            const updated = (files ?? []).filter((_, i) => i !== index);
+            setFiles(updated);
+            syncHiddenInput(updated);
+          }}
         >
           <div className={cn('[grid-area:label]', classNames.itemLabel)}>
             {file.name}
@@ -135,6 +158,15 @@ export const FileField = ({
           </div>
         </FileField.Item>
       ))}
+      {name && (
+        <input
+          type="file"
+          ref={hiddenInputRef}
+          name={name}
+          hidden
+          multiple={multiple}
+        />
+      )}
     </FieldBase>
   );
 };

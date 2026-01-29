@@ -86,3 +86,80 @@ test('remove button removes the corresponding file', async () => {
   expect(screen.queryByText('a.txt')).not.toBeInTheDocument();
   expect(screen.getByText('b.txt')).toBeInTheDocument();
 });
+
+test('does not render hidden input when name is not set', () => {
+  render(<Basic.Component label="Label" />);
+
+  const hiddenInput = document.querySelector('input[type="file"][hidden]');
+  expect(hiddenInput).not.toBeInTheDocument();
+});
+
+test('renders hidden input when name is set', () => {
+  render(<Basic.Component label="Label" name="attachment" />);
+
+  const hiddenInput = document.querySelector(
+    'input[type="file"][name="attachment"]'
+  ) as HTMLInputElement;
+  expect(hiddenInput).toBeInTheDocument();
+  expect(hiddenInput).not.toHaveAttribute('multiple');
+});
+
+test('hidden input has multiple attribute when multiple is true', () => {
+  render(
+    <MultipleFileUpload.Component label="Label" name="attachment" multiple />
+  );
+
+  const hiddenInput = document.querySelector(
+    'input[type="file"][name="attachment"]'
+  ) as HTMLInputElement;
+  expect(hiddenInput).toHaveAttribute('multiple');
+});
+
+test('hidden input persists after file selection', async () => {
+  const user = userEvent.setup();
+  render(<MultipleFileUpload.Component label="Label" name="docs" multiple />);
+
+  const triggerInput = document.querySelector(
+    'input[type="file"]:not([hidden])'
+  ) as HTMLInputElement;
+
+  const fileA = makeFile('a.pdf', 'application/pdf');
+  const fileB = makeFile('b.pdf', 'application/pdf');
+  await user.upload(triggerInput, [fileA, fileB]);
+
+  // Hidden input should still be present after selection
+  const hiddenInput = document.querySelector(
+    'input[type="file"][name="docs"]'
+  ) as HTMLInputElement;
+  expect(hiddenInput).toBeInTheDocument();
+
+  // File items should be rendered
+  expect(screen.getByText('a.pdf')).toBeInTheDocument();
+  expect(screen.getByText('b.pdf')).toBeInTheDocument();
+});
+
+test('hidden input persists after file removal', async () => {
+  const user = userEvent.setup();
+  render(<MultipleFileUpload.Component label="Label" name="docs" multiple />);
+
+  const triggerInput = document.querySelector(
+    'input[type="file"]:not([hidden])'
+  ) as HTMLInputElement;
+
+  const fileA = makeFile('a.pdf', 'application/pdf');
+  const fileB = makeFile('b.pdf', 'application/pdf');
+  await user.upload(triggerInput, [fileA, fileB]);
+
+  const removeButtons = screen.getAllByRole('button', { name: 'Remove file' });
+  await user.click(removeButtons[0]);
+
+  // Hidden input should still be present
+  const hiddenInput = document.querySelector(
+    'input[type="file"][name="docs"]'
+  ) as HTMLInputElement;
+  expect(hiddenInput).toBeInTheDocument();
+
+  // Only b.pdf should remain
+  expect(screen.queryByText('a.pdf')).not.toBeInTheDocument();
+  expect(screen.getByText('b.pdf')).toBeInTheDocument();
+});
