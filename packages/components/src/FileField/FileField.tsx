@@ -89,7 +89,7 @@ export const FileField = ({
     try {
       const filePromises = e.items
         .filter(isFileDropItem)
-        .map(item => (item as any).getFile());
+        .map(item => (item as RAC.FileDropItem).getFile());
       const raw = await Promise.all(filePromises);
       const files = raw.filter(Boolean) as File[];
       const normalized = normalizeAndLimitFiles(files, { accept, multiple });
