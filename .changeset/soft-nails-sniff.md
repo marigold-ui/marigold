@@ -1,5 +1,4 @@
 ---
-"@marigold/storybook-config": minor
 "@marigold/components": minor
 "@marigold/system": minor
 "@marigold/theme-docs": minor

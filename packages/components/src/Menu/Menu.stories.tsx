@@ -1,4 +1,4 @@
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import { expect, spyOn, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
