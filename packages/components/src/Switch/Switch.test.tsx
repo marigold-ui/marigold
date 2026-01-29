@@ -1,7 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { vi } from 'vitest';
 import { Basic } from './Switch.stories';
+
+const user = userEvent.setup();
 
 const getSwitchParts = () => {
   const label: HTMLLabelElement = screen.getByText('Label');
@@ -86,27 +89,27 @@ test('renders hidden <input> element', () => {
   expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('supports default selected', () => {
+test('supports default selected', async () => {
   render(<Basic.Component defaultSelected label="Label" />);
 
   const { input } = getSwitchParts();
 
   expect(input.checked).toBeTruthy();
-  fireEvent.click(input);
+  await user.click(input);
   expect(input.checked).toBeFalsy();
 });
 
-test('supports controlled component usage', () => {
+test('supports controlled component usage', async () => {
   const onChange = vi.fn();
   render(<Basic.Component onChange={onChange} label="Label" />);
 
   const { input } = getSwitchParts();
 
-  fireEvent.click(input);
+  await user.click(input);
   expect(onChange).toHaveBeenCalledWith(true);
   expect(input.checked).toBeTruthy();
 
-  fireEvent.click(input);
+  await user.click(input);
   expect(onChange).toHaveBeenCalledWith(false);
   expect(input.checked).toBeFalsy();
 });
