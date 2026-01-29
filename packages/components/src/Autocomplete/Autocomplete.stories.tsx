@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { useState } from 'react';
 import { Text } from 'react-aria-components';
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Center } from '../Center/Center';
@@ -302,7 +302,10 @@ export const DisabledSuggestions: any = meta.story({
 });
 
 export const Mobile: any = meta.story({
-  globals: { viewport: 'mobile1' },
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'mobile1' },
+  },
   render: args => (
     <Autocomplete {...args}>
       <Autocomplete.Option id="inception">Inception</Autocomplete.Option>
@@ -324,3 +327,84 @@ export const Mobile: any = meta.story({
     </Autocomplete>
   ),
 });
+
+Mobile.test(
+  'Mobile Autocomplete interaction',
+  async ({ canvas, step }: any) => {
+    const trigger = canvas.getByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+    });
+
+    await step('Verify tray content is visible', async () => {
+      const input = await canvas.findByRole('combobox');
+
+      expect(input).toBeVisible();
+    });
+
+    await step('Select option from list', async () => {
+      const option = await canvas.findByText('Inception');
+
+      await userEvent.click(option);
+    });
+
+    await step('Close select with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() => {
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    await step('Verify selection is displayed in trigger', async () => {
+      await waitFor(() => expect(trigger).toHaveTextContent('Inception'));
+    });
+  }
+);
+
+Mobile.test(
+  'Mobile Autocomplete keyboard navigation',
+  async ({ canvas, step }: any) => {
+    const trigger = canvas.getByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Verify combobox input receives focus', async () => {
+      const input = await canvas.findByRole('combobox');
+
+      await waitFor(() => expect(input).toHaveFocus());
+    });
+
+    await step('Filter options by typing', async () => {
+      await userEvent.keyboard('matrix');
+
+      await waitFor(() => expect(canvas.getByText('The Matrix')).toBeVisible());
+    });
+
+    await step('Navigate to option with arrow keys and select', async () => {
+      await userEvent.keyboard('{ArrowDown}');
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Close tray with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Verify selection is displayed in trigger', async () => {
+      await waitFor(() => expect(trigger).toHaveTextContent('The Matrix'));
+    });
+  }
+);
