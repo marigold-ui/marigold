@@ -83,22 +83,14 @@ const normalizeDateString = (input: string): string => {
 describe('DatePicker', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
-      value: vi.fn(() => {
-        return {
-          matches: true,
-          addListener: vi.fn(),
-          removeListener: vi.fn(),
-        };
+      writable: true,
+      value: () => ({
+        matches: false,
+        addListener: () => {},
+        removeListener: () => {},
       }),
     });
   });
-
-  const mockMatchMedia = (matches: string[]) =>
-    vi.fn().mockImplementation(query => ({
-      matches: matches.includes(query),
-    }));
-
-  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
   describe('basics', () => {
     test('renders date picker with specified date', () => {

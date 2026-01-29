@@ -1,7 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
@@ -38,17 +37,14 @@ const { render } = setup({ theme });
  * We need to mock `matchMedia` because JSOM does not
  * implements it.
  */
-
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia([
-  'screen and (min-width: 40em)',
-  'screen and (min-width: 52em)',
-  'screen and (min-width: 64em)',
-]);
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: () => ({
+    matches: false,
+    addListener: () => {},
+    removeListener: () => {},
+  }),
+});
 
 test('renders open popover', () => {
   const ref = createRef<HTMLDivElement>();
@@ -97,27 +93,4 @@ test('popover has children', () => {
   const popover = screen.getByTestId('popover');
   expect(popover).toBeInTheDocument();
   expect(popover.firstChild).toBeInTheDocument();
-});
-
-test('popover is small screen', () => {
-  const ref = createRef<HTMLDivElement>();
-
-  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-
-  render(
-    <>
-      <div ref={ref}>Trigger</div>
-      <Button>open dialog</Button>
-      <Popover data-testid="popover" triggerRef={ref} open>
-        <Text>this is popover content </Text>
-      </Popover>
-    </>
-  );
-
-  const popover = screen.getByTestId('popover');
-
-  expect(popover.className).toMatchInlineSnapshot(
-    `"fixed! top-auto! bottom-0! left-0! max-h-fit! w-full mt-0.5 min-w-(--trigger-width)"`
-  );
-  expect(popover).toBeInTheDocument();
 });

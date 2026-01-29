@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
 import { ComboBoxProps } from '@marigold/components';
 import { Basic } from './ComboBox.stories';
 
@@ -16,13 +15,14 @@ const user = userEvent.setup();
  * We need to mock `matchMedia` because JSOM does not
  * implements it.
  */
-
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: () => ({
+    matches: false,
+    addListener: () => {},
+    removeListener: () => {},
+  }),
+});
 
 test('renders an input', () => {
   render(<BasicComponent />);
