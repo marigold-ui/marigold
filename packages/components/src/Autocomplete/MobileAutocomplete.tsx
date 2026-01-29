@@ -24,8 +24,7 @@ interface MobileAutocompleteProps {
   input: ReactNode;
 }
 
-// Trigger Display (for Tray mode)
-// Uses a styled div instead of SearchInput to avoid duplicate ids with the Input in Tray.Content
+// Trigger Display (for Mobile mode)
 // ---------------
 const MobileAutocompleteTrigger = ({
   placeholder,

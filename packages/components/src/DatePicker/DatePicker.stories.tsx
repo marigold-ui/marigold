@@ -1,6 +1,7 @@
 import { CalendarDate } from '@internationalized/date';
 import { useState } from 'react';
 import { DateValue } from 'react-aria-components';
+import { expect, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
 import { Stack } from '../Stack/Stack';
@@ -163,10 +164,91 @@ export const UnavailableDate: any = meta.story({
 });
 
 export const Mobile: any = meta.story({
-  globals: { viewport: 'mobile1' },
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'mobile1' },
+  },
   render: args => (
     <I18nProvider locale="de-DE">
       <DatePicker label="Pick a date" {...args} />
     </I18nProvider>
   ),
 });
+
+Mobile.test('Mobile DatePicker interaction', async ({ canvas, step }: any) => {
+  const trigger = canvas.getByRole('button');
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
+
+  await step('Verify tray content is visible', async () => {
+    const dialog = await canvas.findByRole('dialog');
+
+    expect(dialog).toBeVisible();
+  });
+
+  await step('Verify calendar is visible', async () => {
+    const calendar = await canvas.findByRole('grid');
+
+    expect(calendar).toBeVisible();
+  });
+
+  await step('Select a date from calendar', async () => {
+    const dateButton = await canvas.findByRole('button', { name: /15/i });
+
+    await userEvent.click(dateButton);
+  });
+
+  await step('Close tray with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
+  await step('Verify date is displayed in input', async () => {
+    const input = canvas.getByRole('group');
+
+    await waitFor(() => expect(input).toHaveTextContent('15'));
+  });
+});
+
+Mobile.test(
+  'Mobile DatePicker keyboard navigation',
+  async ({ canvas, step }: any) => {
+    const trigger = canvas.getByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Verify calendar grid is visible', async () => {
+      const calendar = await canvas.findByRole('grid');
+
+      expect(calendar).toBeVisible();
+    });
+
+    await step('Navigate calendar with arrow keys', async () => {
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{ArrowDown}');
+    });
+
+    await step('Select date with Enter key', async () => {
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Close tray with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+  }
+);

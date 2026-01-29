@@ -23,8 +23,7 @@ interface MobileComboBoxProps {
   children?: ReactNode | ((item: any) => ReactNode);
 }
 
-// Trigger Display (for Tray mode)
-// Uses a styled div instead of Input to avoid duplicate ids with the Input in Tray.Content
+// Trigger Display (for Mobile mode)
 // ---------------
 const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
   const state = useContext(ComboBoxStateContext);
