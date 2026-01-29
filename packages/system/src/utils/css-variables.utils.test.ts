@@ -331,21 +331,21 @@ describe('createWidthVar', () => {
     });
   });
 
-  it('should fall back to raw value when not a keyword, scale, or fraction', () => {
-    expect(createWidthVar('width', '200px')).toEqual({
-      '--width': '200px',
-    });
-
-    expect(createWidthVar('width', '50%')).toEqual({
-      '--width': '50%',
-    });
-
-    expect(createWidthVar('width', 'var(--custom-width)')).toEqual({
-      '--width': 'var(--custom-width)',
-    });
-
-    expect(createWidthVar('width', 'test')).toEqual({
-      '--width': 'test',
-    });
+  it('should throw an error for unsupported values', () => {
+    expect(() =>
+      createWidthVar('width', 'invalid')
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Unsupported width value: "invalid". Expected a keyword (fit, min, max, full, screen, auto), a scale number, or a fraction (e.g., "1/2").]`
+    );
+    expect(() =>
+      createWidthVar('width', 'px')
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Unsupported width value: "px". Expected a keyword (fit, min, max, full, screen, auto), a scale number, or a fraction (e.g., "1/2").]`
+    );
+    expect(() =>
+      createWidthVar('width', '10px')
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Unsupported width value: "10px". Expected a keyword (fit, min, max, full, screen, auto), a scale number, or a fraction (e.g., "1/2").]`
+    );
   });
 });

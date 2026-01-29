@@ -123,11 +123,16 @@ export const createWidthVar = (name: string, value: string) => {
     auto: 'auto',
   };
 
-  return {
-    [`--${name}`]:
-      widthKeywords[value] ||
-      (isScale(value) && `calc(var(--spacing) * ${value})`) ||
-      (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`) ||
-      value,
-  } as CSSProperties;
+  const resolvedValue =
+    widthKeywords[value] ||
+    (isScale(value) && `calc(var(--spacing) * ${value})`) ||
+    (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
+
+  if (!resolvedValue) {
+    throw new Error(
+      `Unsupported width value: "${value}". Expected a keyword (${Object.keys(widthKeywords).join(', ')}), a scale number, or a fraction (e.g., "1/2").`
+    );
+  }
+
+  return { [`--${name}`]: resolvedValue } as CSSProperties;
 };
