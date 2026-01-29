@@ -370,6 +370,7 @@ export const DisabledKeys: any = meta.story({
 });
 
 export const Mobile: any = meta.story({
+  tags: ['component-test'],
   globals: {
     viewport: { value: 'mobile1' },
   },
@@ -394,3 +395,81 @@ export const Mobile: any = meta.story({
     </ComboBox>
   ),
 });
+
+Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
+  const trigger = canvas.getByRole('button');
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
+
+  await step('Verify tray content is visible', async () => {
+    const input = await canvas.findByRole('combobox');
+
+    expect(input).toBeVisible();
+  });
+
+  await step('Select option from list', async () => {
+    const option = await canvas.findByText('Dog');
+
+    await userEvent.click(option);
+  });
+
+  await step('Close select with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  await step('Verify selection is displayed in trigger', async () => {
+    await waitFor(() => expect(trigger).toHaveTextContent('Dog'));
+  });
+});
+
+Mobile.test(
+  'Mobile ComboBox keyboard navigation',
+  async ({ canvas, step }: any) => {
+    const trigger = canvas.getByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Verify combobox input receives focus', async () => {
+      const input = await canvas.findByRole('combobox');
+
+      await waitFor(() => expect(input).toHaveFocus());
+    });
+
+    await step('Filter options by typing', async () => {
+      await userEvent.keyboard('cat');
+
+      await waitFor(() => expect(canvas.getByText('Cat')).toBeVisible());
+    });
+
+    await step('Navigate to option with arrow keys and select', async () => {
+      await userEvent.keyboard('{ArrowDown}');
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Close tray with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Verify selection is displayed in trigger', async () => {
+      await waitFor(() => expect(trigger).toHaveTextContent('Cat'));
+    });
+  }
+);

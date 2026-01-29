@@ -3,11 +3,11 @@ import type {
   ReactNode,
   RefAttributes,
 } from 'react';
-import { forwardRef, useContext } from 'react';
+import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
-import { Button, ComboBox, ComboBoxStateContext } from 'react-aria-components';
+import { ComboBox } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, useClassNames, useSmallScreen } from '@marigold/system';
+import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
@@ -15,9 +15,9 @@ import { Input } from '../Input/Input';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
-import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
+import { MobileComboBox } from './MobileCombobox';
 
 // Props
 // ---------------
@@ -118,47 +118,6 @@ interface ComboBoxComponent extends ForwardRefExoticComponent<
   Section: typeof ListBox.Section;
 }
 
-// Trigger Display (for Tray mode)
-// Uses a styled div instead of Input to avoid duplicate ids with the Input in Tray.Content
-// ---------------
-interface ComboBoxTriggerProps {
-  loading?: boolean;
-  placeholder?: string;
-}
-
-const ComboBoxTrigger = ({ loading, placeholder }: ComboBoxTriggerProps) => {
-  const state = useContext(ComboBoxStateContext);
-  const inputClassNames = useClassNames({ component: 'Input' });
-  const comboBoxClassNames = useClassNames({ component: 'ComboBox' });
-  const displayText = state?.selectedItem?.textValue || '';
-
-  return (
-    <div className="group/input relative flex items-center">
-      <span
-        className={cn(
-          'w-full flex-1 text-left',
-          // Error state: targets when parent FieldBase has data-error attribute
-          'group-data-error/field:ui-state-error',
-          inputClassNames.input
-        )}
-      >
-        {displayText || (
-          <span className="text-muted-foreground">{placeholder}</span>
-        )}
-      </span>
-      <span
-        className={cn(
-          'absolute right-0 cursor-pointer',
-          inputClassNames.action,
-          comboBoxClassNames
-        )}
-      >
-        {loading ? <ProgressCircle /> : <ChevronsVertical size="16" />}
-      </span>
-    </div>
-  );
-};
-
 // Component
 // ---------------
 const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
@@ -198,31 +157,13 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
         {isSmallScreen ? (
-          <Tray.Trigger>
-            <Button>
-              <ComboBoxTrigger
-                loading={loading}
-                placeholder={rest.placeholder}
-              />
-            </Button>
-            <Tray>
-              <Tray.Title>{rest.label}</Tray.Title>
-              <Tray.Content className={'flex flex-col gap-2'}>
-                <Input />
-                <ListBox
-                  renderEmptyState={() =>
-                    emptyState ?? (
-                      <Center>
-                        {stringFormatter.format('noResultsFound')}
-                      </Center>
-                    )
-                  }
-                >
-                  {children}
-                </ListBox>
-              </Tray.Content>
-            </Tray>
-          </Tray.Trigger>
+          <MobileComboBox
+            placeholder={rest.placeholder}
+            label={rest.label}
+            emptyState={emptyState}
+          >
+            {children}
+          </MobileComboBox>
         ) : (
           <>
             <Input
