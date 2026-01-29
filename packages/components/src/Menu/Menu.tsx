@@ -1,9 +1,10 @@
 import { Key, ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Button, Menu, MenuTrigger } from 'react-aria-components';
-import { useClassNames } from '@marigold/system';
+import { useClassNames, useSmallScreen } from '@marigold/system';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
+import { Tray } from '../Tray/Tray';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
 
@@ -61,6 +62,7 @@ const _Menu = ({
   ...props
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
+  const isSmallScreen = useSmallScreen();
 
   return (
     <MenuTrigger {...props}>
@@ -71,11 +73,22 @@ const _Menu = ({
       >
         {label}
       </Button>
-      <Popover open={open} placement={placement}>
-        <Menu {...props} className={classNames.container}>
-          {children}
-        </Menu>
-      </Popover>
+      {isSmallScreen ? (
+        <Tray>
+          <Tray.Title>{label}</Tray.Title>
+          <Tray.Content>
+            <Menu {...props} className={classNames.container}>
+              {children}
+            </Menu>
+          </Tray.Content>
+        </Tray>
+      ) : (
+        <Popover open={open} placement={placement}>
+          <Menu {...props} className={classNames.container}>
+            {children}
+          </Menu>
+        </Popover>
+      )}
     </MenuTrigger>
   );
 };
