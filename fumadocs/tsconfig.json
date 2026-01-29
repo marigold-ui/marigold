@@ -24,28 +24,20 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "fumadocs-mdx:collections/*": [".source/*"],
-      "@marigold/*/styles.css": ["../themes/*/dist/styles.css"],
-      "@marigold/*": ["../packages/*/src", "../themes/*/src"],
-      "class-variance-authority/dist/types": [
-        "../packages/system/node_modules/class-variance-authority/dist/types"
-      ]
+      "fumadocs-mdx:collections/*": [".source/*"]
     },
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "types": ["react", "react-dom"]
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "../packages/**/*.ts",
-    "../packages/**/*.tsx"
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
