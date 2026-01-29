@@ -7,12 +7,7 @@ import {
   useContext,
 } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  Button,
-  ComboBox,
-  ComboBoxStateContext,
-  Key,
-} from 'react-aria-components';
+import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
@@ -20,11 +15,8 @@ import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
-import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
-import { Tray } from '../Tray/Tray';
-import { Search } from '../icons/Search';
-import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
+import { MobileAutocomplete } from './MobileAutocomplete';
 
 // Search Input (we can't use our SearchField because of FieldBase)
 //----------------
@@ -88,55 +80,6 @@ const AutocompleteInput = ({
         onClear?.();
       }}
     />
-  );
-};
-
-// Trigger Display (for Tray mode)
-// Uses a styled div instead of SearchInput to avoid duplicate ids with the Input in Tray.Content
-// ---------------
-interface AutocompleteTriggerProps {
-  loading?: boolean;
-  placeholder?: string;
-}
-
-const AutocompleteTrigger = ({
-  loading,
-  placeholder,
-}: AutocompleteTriggerProps) => {
-  const state = useContext(ComboBoxStateContext);
-  const inputClassNames = useClassNames({ component: 'Input' });
-  const displayText = state?.selectedItem?.textValue || '';
-
-  return (
-    <div className="group/input relative flex items-center" data-icon="">
-      <Search
-        aria-hidden="true"
-        size="16"
-        className={cn(
-          'pointer-events-none absolute z-10',
-          inputClassNames.icon
-        )}
-      />
-      <span
-        className={cn(
-          'w-full flex-1 text-left',
-          'group-data-error/field:ui-state-error',
-          inputClassNames.input
-        )}
-      >
-        {displayText || (
-          <span className="text-muted-foreground">{placeholder}</span>
-        )}
-      </span>
-      <span
-        className={cn(
-          'absolute right-0 z-10 cursor-pointer',
-          inputClassNames.action
-        )}
-      >
-        {loading ? <ProgressCircle /> : <X size="16" className="invisible" />}
-      </span>
-    </div>
   );
 };
 
@@ -291,36 +234,21 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
         {isSmallScreen ? (
-          <Tray.Trigger>
-            <Button>
-              <AutocompleteTrigger
+          <MobileAutocomplete
+            placeholder={rest.placeholder}
+            label={rest.label}
+            emptyState={emptyState}
+            input={
+              <AutocompleteInput
                 loading={loading}
-                placeholder={rest.placeholder}
+                onSubmit={onSubmit}
+                onClear={onClear}
+                ref={ref}
               />
-            </Button>
-            <Tray>
-              <Tray.Title>{rest.label}</Tray.Title>
-              <Tray.Content className={'flex flex-col gap-2'}>
-                <AutocompleteInput
-                  loading={loading}
-                  onSubmit={onSubmit}
-                  onClear={onClear}
-                  ref={ref}
-                />
-                <ListBox
-                  renderEmptyState={() =>
-                    emptyState ?? (
-                      <Center>
-                        {stringFormatter.format('noResultsFound')}
-                      </Center>
-                    )
-                  }
-                >
-                  {children}
-                </ListBox>
-              </Tray.Content>
-            </Tray>
-          </Tray.Trigger>
+            }
+          >
+            {children}
+          </MobileAutocomplete>
         ) : (
           <>
             <AutocompleteInput
