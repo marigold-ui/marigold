@@ -352,7 +352,7 @@ Mobile.test('Mobile Menu interaction', async ({ canvas, step }: any) => {
   await step('Verify tray content is visible', async () => {
     const dialog = await canvas.findByRole('dialog');
 
-    expect(dialog).toBeVisible();
+    await waitFor(() => expect(dialog).toBeVisible());
   });
 
   await step('Verify menu items are visible', async () => {
