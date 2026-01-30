@@ -25,8 +25,8 @@ export const TrayModal = ({ children, ...props }: TrayModalProps) => {
       isDismissable={props.dismissable}
       className={({ isEntering, isExiting }) =>
         cn(
-          isEntering ? 'animate-in fade-in duration-300 ease-out' : '',
-          isExiting ? 'animate-out fade-out duration-200 ease-in' : '',
+          isEntering ? 'animate-in fade-in duration-400 ease-out' : '',
+          isExiting ? 'animate-out fade-out duration-300 ease-in' : '',
           classNames.overlay
         )
       }
@@ -34,9 +34,12 @@ export const TrayModal = ({ children, ...props }: TrayModalProps) => {
       <Modal
         className={({ isEntering, isExiting }) =>
           cn(
-            'group/tray w-full',
-            isEntering ? 'animate-in slide-in-from-bottom duration-300' : '',
-            isExiting ? 'animate-out slide-out-to-bottom duration-200' : ''
+            isEntering
+              ? 'animate-in slide-in-from-bottom duration-400 ease-out'
+              : '',
+            isExiting
+              ? 'animate-out slide-out-to-bottom duration-300 ease-in'
+              : ''
           )
         }
       >
