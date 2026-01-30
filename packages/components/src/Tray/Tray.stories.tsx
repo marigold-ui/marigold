@@ -92,7 +92,7 @@ Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
 
     await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
 
-    const dismissBtn = canvas.getByLabelText('dismiss tray');
+    const dismissBtn = canvas.getByLabelText('Close Tray');
     await userEvent.click(dismissBtn);
 
     await waitFor(() =>
@@ -196,7 +196,7 @@ DismissControlsWithCallbacks.test(
         expect(canvas.getByRole('dialog')).toBeInTheDocument()
       );
 
-      const dismissBtn = canvas.getByLabelText('Close');
+      const dismissBtn = canvas.getByLabelText('Close Tray');
 
       await userEvent.click(dismissBtn);
 

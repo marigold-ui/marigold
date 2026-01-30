@@ -16,7 +16,7 @@ export const intlMessages = {
     uploadLabel: 'Hochladen',
     bulkActionsAriaLabel: 'Massenaktionen',
     clearSelectionAriaLabel: 'Auswahl löschen',
-    close: 'Schließen',
+    close: 'Leiste schließen',
   },
   'en-US': {
     cancel: 'Cancel',
@@ -35,6 +35,6 @@ export const intlMessages = {
     uploadLabel: 'Upload',
     bulkActionsAriaLabel: 'Bulk Actions',
     clearSelectionAriaLabel: 'Clear selection',
-    close: 'Close',
+    close: 'Close Tray',
   },
 };
