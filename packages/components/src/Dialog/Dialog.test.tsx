@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { MockInstance, vi } from 'vitest';
@@ -56,7 +56,7 @@ afterEach(() => {
   errorMock.mockRestore();
 });
 
-test('renders children correctly', () => {
+test('renders children correctly', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -69,7 +69,7 @@ test('renders children correctly', () => {
   const button = screen.getByText('Open');
   expect(button).toBeInTheDocument();
 
-  fireEvent.click(button);
+  await user.click(button);
 
   const headline = screen.getByText('Headline');
   expect(headline).toBeInTheDocument();
@@ -78,7 +78,7 @@ test('renders children correctly', () => {
   expect(dialog).toBeInTheDocument();
 });
 
-test('supports children as function', () => {
+test('supports children as function', async () => {
   const spy = vi.fn().mockReturnValue(<div>I am a spy!</div>);
   render(
     <Dialog.Trigger>
@@ -87,12 +87,12 @@ test('supports children as function', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   expect(spy).toHaveBeenCalled();
 });
 
-test('dialog can be opened by button', () => {
+test('dialog can be opened by button', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -103,13 +103,13 @@ test('dialog can be opened by button', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByText('Content');
   expect(dialog).toBeVisible();
 });
 
-test('optionally renders a close button', () => {
+test('optionally renders a close button', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -121,14 +121,14 @@ test('optionally renders a close button', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
   const dialog = screen.getByText('Content');
   expect(dialog).toBeVisible();
 
   const closeButton = dialog.firstChild?.lastChild as HTMLButtonElement;
   expect(closeButton).toBeInTheDocument();
 
-  fireEvent.click(closeButton);
+  await user.click(closeButton);
   expect(dialog).not.toBeVisible();
 });
 
@@ -144,7 +144,7 @@ test('supports closing the dialog with escape key', async () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByText('Content');
   await user.type(dialog, '{esc}');
@@ -153,7 +153,7 @@ test('supports closing the dialog with escape key', async () => {
   });
 });
 
-test('close Dialog by clicking on the Underlay', () => {
+test('close Dialog by clicking on the Underlay', async () => {
   render(
     <Dialog.Trigger dismissable>
       <Button>Open</Button>
@@ -164,17 +164,16 @@ test('close Dialog by clicking on the Underlay', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
 
-  fireEvent.mouseDown(document.body);
-  fireEvent.mouseUp(document.body);
+  await user.click(document.body);
 
   expect(dialog).not.toBeVisible();
 });
 
-test('close controlled Dialog by clicking on the Underlay', () => {
+test('close controlled Dialog by clicking on the Underlay', async () => {
   const Component = () => {
     const [open, setOpen] = useState(false);
 
@@ -191,17 +190,16 @@ test('close controlled Dialog by clicking on the Underlay', () => {
 
   render(<Component />);
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
 
-  fireEvent.mouseDown(document.body);
-  fireEvent.mouseUp(document.body);
+  await user.click(document.body);
 
   expect(dialog).not.toBeVisible();
 });
 
-test('child function is passed a close function', () => {
+test('child function is passed a close function', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -211,16 +209,16 @@ test('child function is passed a close function', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
   const closeButton = screen.getByText('Custom Close');
-  fireEvent.click(closeButton);
+  await user.click(closeButton);
 
   expect(dialog).not.toBeVisible();
 });
 
-test('supports title for accessibility reasons', () => {
+test('supports title for accessibility reasons', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -232,7 +230,7 @@ test('supports title for accessibility reasons', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
   expect(dialog).toHaveAttribute('aria-labelledby');
@@ -243,7 +241,7 @@ test('supports title for accessibility reasons', () => {
   expect(headline.id).toBe(dialog.getAttribute('aria-labelledby'));
 });
 
-test('supports dialog contents', () => {
+test('supports dialog contents', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -254,7 +252,7 @@ test('supports dialog contents', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
   expect(dialog).toHaveAttribute('aria-labelledby');
@@ -262,7 +260,7 @@ test('supports dialog contents', () => {
   expect(dialogContent).toBeInTheDocument();
 });
 
-test('supports dialog actions', () => {
+test('supports dialog actions', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -276,7 +274,7 @@ test('supports dialog actions', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const cancelButton = screen.getByText('Cancel');
   expect(cancelButton).toBeInTheDocument();
@@ -285,7 +283,7 @@ test('supports dialog actions', () => {
   expect(loginButton).toBeInTheDocument();
 });
 
-test('child function is passed an id for the dialog title (a11y)', () => {
+test('child function is passed an id for the dialog title (a11y)', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -295,7 +293,7 @@ test('child function is passed an id for the dialog title (a11y)', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
   const headline = screen.getByText('Custom Headline');
@@ -327,7 +325,7 @@ test('supports focus and open dialog with keyboard', async () => {
   });
 });
 
-test('dialog has base classnames', () => {
+test('dialog has base classnames', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -339,7 +337,7 @@ test('dialog has base classnames', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
@@ -351,7 +349,7 @@ test('dialog has base classnames', () => {
   expect(dialog).toHaveClass(`p-5`);
 });
 
-test('dialog has variant classnames', () => {
+test('dialog has variant classnames', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -363,7 +361,7 @@ test('dialog has variant classnames', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
@@ -374,7 +372,7 @@ test('dialog has variant classnames', () => {
   expect(dialog.className).toMatch('bg-green-400');
 });
 
-test('dialog supports size', () => {
+test('dialog supports size', async () => {
   render(
     <Dialog.Trigger>
       <Button>Open</Button>
@@ -386,7 +384,7 @@ test('dialog supports size', () => {
     </Dialog.Trigger>
   );
   const button = screen.getByText('Open');
-  fireEvent.click(button);
+  await user.click(button);
 
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
