@@ -1,5 +1,5 @@
 import { RenderOptions, render } from '@testing-library/react';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Theme, ThemeProvider, ThemeProviderProps } from '@marigold/system';
 
 export type SetupProps<T extends Theme> = Omit<
@@ -21,6 +21,28 @@ export const setup: Function = <T extends Theme>({ theme }: SetupProps<T>) => {
         ...options,
       }),
   };
+};
+
+/**
+ * Ensures the overlay container exists for story-based tests.
+ * Stories expect "storybook-root" container for overlay portals (Select, Dialog, etc.).
+ * Call this before rendering overlay components from stories.
+ */
+export const ensureOverlayContainer = () => {
+  if (!document.getElementById('storybook-root')) {
+    const container = document.createElement('div');
+    container.id = 'storybook-root';
+    document.body.appendChild(container);
+  }
+};
+
+/**
+ * Render helper for overlay components when using stories.
+ * Creates the required portal container and renders the component.
+ */
+export const renderWithOverlay = (ui: ReactNode) => {
+  ensureOverlayContainer();
+  return render(ui as ReactElement);
 };
 
 export const makeFile = (name: string, type: string, size = 1024) =>

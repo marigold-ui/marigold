@@ -1,27 +1,25 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef, useState } from 'react';
-import { Theme, cva } from '@marigold/system';
-import { Button } from '../Button/Button';
-import { Form } from '../Form/Form';
-import { setup } from '../test.utils';
-import { TextField } from './TextField';
-import { Basic } from './TextField.stories';
+import { createRef } from 'react';
+import {
+  Basic,
+  Controlled,
+  WithCustomValidation,
+  WithFormValidation,
+} from './TextField.stories';
 
 const user = userEvent.setup();
 
-// Minimal theme for tests that need to render components directly
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Field: cva(),
-    Label: cva(),
-    HelpText: { container: cva(), icon: cva() },
-    Input: { input: cva(), icon: cva(), action: cva() },
-    Button: cva(),
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: () => {
+    return {
+      matches: false,
+      addListener: () => {},
+      removeListener: () => {},
+    };
   },
-};
-const { render: renderWithTheme } = setup({ theme });
+});
 
 test('renders an text input', () => {
   render(<Basic.Component data-testid="text-field" />);
@@ -80,8 +78,8 @@ test('supports readonly', () => {
 });
 
 test('supports field structure', () => {
-  renderWithTheme(
-    <TextField
+  render(
+    <Basic.Component
       label="A Label"
       description="Some helpful text"
       errorMessage="Whoopsie"
@@ -99,8 +97,8 @@ test('supports field structure', () => {
 });
 
 test('supports field structure (with error)', () => {
-  renderWithTheme(
-    <TextField
+  render(
+    <Basic.Component
       label="A Label"
       description="Some helpful text"
       error={true}
@@ -119,8 +117,8 @@ test('supports field structure (with error)', () => {
 });
 
 test('correctly sets up aria attributes', () => {
-  renderWithTheme(
-    <TextField
+  render(
+    <Basic.Component
       data-testid="text-field"
       label="A Label"
       description="Some helpful text"
@@ -150,8 +148,8 @@ test('correctly sets up aria attributes', () => {
 });
 
 test('correctly sets up aria attributes (with error)', () => {
-  renderWithTheme(
-    <TextField
+  render(
+    <Basic.Component
       data-testid="text-field"
       label="A Label"
       description="Some helpful text"
@@ -189,41 +187,26 @@ test('can have default value', () => {
 });
 
 test('can be controlled', async () => {
-  const Controlled = () => {
-    const [value, setValue] = useState('');
-
-    return (
-      <>
-        <TextField
-          data-testid="text-field"
-          label="A Label"
-          value={value}
-          onChange={setValue}
-        />
-        <span data-testid="output">{value}</span>
-      </>
-    );
-  };
-
-  renderWithTheme(<Controlled />);
+  render(<Controlled.Component label="A Label" />);
 
   await user.type(screen.getByRole('textbox'), 'Hello there!');
 
-  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
+  // Controlled story displays value in a pre element
+  expect(screen.getByText('Hello there!')).toBeInTheDocument();
 });
 
 test('forwards ref', () => {
   const ref = createRef<HTMLInputElement>();
-  renderWithTheme(
-    <TextField data-testid="text-field" label="A Label" ref={ref} />
+  render(
+    <Basic.Component data-testid="text-field" label="A Label" ref={ref} />
   );
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });
 
 test('render multiple error messages', () => {
-  renderWithTheme(
-    <TextField
+  render(
+    <Basic.Component
       data-testid="text-field"
       label="A Label"
       errorMessage={['One error ', 'two errors ', 'third error']}
@@ -237,60 +220,29 @@ test('render multiple error messages', () => {
 });
 
 test('render error message from custom validation', async () => {
-  renderWithTheme(
-    <TextField
-      data-testid="text-field"
-      label="Email Address"
-      name="email"
-      type="email"
-      placeholder="Enter your email address"
-      required
-      validate={val =>
-        val.length && /^\S+@\S+\.\S+$/.test(val)
-          ? ''
-          : 'Please enter a valid email address!'
-      }
-    />
-  );
+  render(<WithCustomValidation.Component />);
 
   const input = screen.getByRole('textbox');
   await user.click(input);
   await user.type(input, 'invalid_email');
   await user.tab();
 
-  const textFieldElement = screen.getByTestId('text-field');
-
-  expect(textFieldElement).toHaveTextContent(
-    'Please enter a valid email address!'
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId('text-field')).toHaveTextContent(
+      'Please enter a valid email address!'
+    );
+  });
 });
 
 test('render custom validation error message', async () => {
-  renderWithTheme(
-    <Form>
-      <TextField
-        data-testid="text-field"
-        label="Email Address"
-        name="email"
-        type="email"
-        placeholder="Enter your email address"
-        required
-        errorMessage={({ validationDetails }) =>
-          validationDetails.valueMissing
-            ? 'Please enter your email address!'
-            : ''
-        }
-      />
-      <Button variant="primary" type="submit" data-testid="button">
-        Subscribe
-      </Button>
-    </Form>
-  );
+  render(<WithFormValidation.Component />);
 
   const button = screen.getByTestId('button');
   await user.click(button);
 
-  expect(screen.getByTestId('text-field')).toHaveTextContent(
-    'Please enter your email address!'
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId('text-field')).toHaveTextContent(
+      'Please enter your email address!'
+    );
+  });
 });

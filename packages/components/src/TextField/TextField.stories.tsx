@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
+import { Form } from '../Form/Form';
 import { TextField } from './TextField';
 
 const meta = preview.meta({
@@ -116,11 +118,18 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
-  render: args => <TextField {...args} label="My label is great." />,
+  args: {
+    label: 'My label is great.',
+  },
+  render: args => <TextField {...args} />,
 });
 
 export const WithError = meta.story({
-  render: args => <TextField {...args} label="My label is great." error />,
+  args: {
+    label: 'My label is great.',
+    error: true,
+  },
+  render: args => <TextField {...args} />,
 });
 
 export const Controlled = meta.story({
@@ -141,4 +150,57 @@ export const Controlled = meta.story({
       </>
     );
   },
+});
+
+export const WithCustomValidation = meta.story({
+  args: {
+    label: 'Email Address',
+    description: '',
+    error: undefined,
+    errorMessage: undefined,
+  },
+  render: args => (
+    <TextField
+      {...args}
+      data-testid="text-field"
+      name="email"
+      type="email"
+      placeholder="Enter your email address"
+      required
+      validate={(val: string) =>
+        val.length && /^\S+@\S+\.\S+$/.test(val)
+          ? ''
+          : 'Please enter a valid email address!'
+      }
+    />
+  ),
+});
+
+export const WithFormValidation = meta.story({
+  args: {
+    label: 'Email Address',
+    description: '',
+    error: undefined,
+    errorMessage: undefined,
+  },
+  render: args => (
+    <Form>
+      <TextField
+        {...args}
+        data-testid="text-field"
+        name="email"
+        type="email"
+        placeholder="Enter your email address"
+        required
+        errorMessage={({ validationDetails }) =>
+          validationDetails.valueMissing
+            ? 'Please enter your email address!'
+            : ''
+        }
+      />
+      <Button variant="primary" type="submit" data-testid="button">
+        Subscribe
+      </Button>
+    </Form>
+  ),
 });
