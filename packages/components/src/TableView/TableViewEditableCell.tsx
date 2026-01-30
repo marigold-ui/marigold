@@ -1,17 +1,19 @@
-import type { FormEvent, ReactNode } from 'react';
-import { useRef, useState } from 'react';
+import type { FormEvent, FormHTMLAttributes, ReactNode } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import {
   Cell,
-  Button as RACButton,
+  Popover as RACPopover,
   useTableOptions,
 } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, textAlign, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
-import { Popover } from '../Overlay/Popover';
+import { Form } from '../Form/Form';
 import { Check } from '../icons/Check';
 import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
+import { intlMessages } from '../intl/messages';
 import { useTableViewContext } from './Context';
 import { TableViewSelectableCell } from './TableViewSelectableCell';
 
@@ -46,6 +48,10 @@ export interface TableViewEditableCellProps {
    */
   disabled?: boolean;
   /**
+   * The action to submit the form to. Supports React 19 form actions.
+   */
+  action?: string | FormHTMLAttributes<HTMLFormElement>['action'];
+  /**
    * Horizontal text alignment of the cell content.
    * @default 'left'
    */
@@ -61,6 +67,7 @@ export const TableViewEditableCell = ({
   onSubmit,
   onCancel,
   disabled = false,
+  action,
   align = 'left',
 }: TableViewEditableCellProps) => {
   const {
@@ -70,10 +77,29 @@ export const TableViewEditableCell = ({
   } = useTableViewContext();
   const { selectionMode } = useTableOptions();
   const isSmallScreen = useSmallScreen();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const cellRef = useRef<HTMLTableCellElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  const [triggerWidth, setTriggerWidth] = useState(0);
+  const [verticalOffset, setVerticalOffset] = useState(0);
+
+  // Compute popover positioning based on cell dimensions
+  useLayoutEffect(() => {
+    if (!open || !cellRef.current) {
+      return;
+    }
+    const cell = cellRef.current;
+    const rect = cell.getBoundingClientRect();
+    const rowRect = cell.parentElement?.getBoundingClientRect();
+    const offset = (rowRect?.top ?? 0) - (rowRect?.bottom ?? 0);
+
+    setTriggerWidth(rect.width);
+    setVerticalOffset(offset);
+  }, [open]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,9 +117,7 @@ export const TableViewEditableCell = ({
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen && !submittedRef.current) {
       // Closed by outside click — treat as submit
-      const form = document.querySelector(
-        '[data-editable-cell-form]'
-      ) as HTMLFormElement | null;
+      const form = cellRef.current?.querySelector('form');
       if (form) {
         form.requestSubmit();
         return;
@@ -104,39 +128,38 @@ export const TableViewEditableCell = ({
   };
 
   const formContent = (
-    <form
-      data-editable-cell-form=""
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-2 p-2"
-    >
-      <div>{renderEditing()}</div>
-      <div className="flex justify-end gap-1">
-        <Button
-          variant="ghost"
-          size="small"
-          type="button"
-          onPress={handleCancel}
-          aria-label="Cancel"
-        >
-          <X size={16} />
-          {isSmallScreen && 'Cancel'}
-        </Button>
-        <Button
-          variant="primary"
-          size="small"
-          type="submit"
-          loading={saving}
-          aria-label="Save"
-        >
-          <Check size={16} />
-          {isSmallScreen && 'Save'}
-        </Button>
+    <Form unstyled action={action} onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-2 p-2">
+        <div>{renderEditing()}</div>
+        <div className="flex justify-end gap-1">
+          <Button
+            variant="ghost"
+            size="small"
+            type="button"
+            onPress={handleCancel}
+            aria-label="Cancel"
+          >
+            <X size={16} />
+            {isSmallScreen && 'Cancel'}
+          </Button>
+          <Button
+            variant="primary"
+            size="small"
+            type="submit"
+            loading={saving}
+            aria-label="Save"
+          >
+            <Check size={16} />
+            {isSmallScreen && 'Save'}
+          </Button>
+        </div>
       </div>
-    </form>
+    </Form>
   );
 
   return (
     <Cell
+      ref={cellRef}
       className={cn(
         classNames.cell,
         textAlign[align],
@@ -152,29 +175,37 @@ export const TableViewEditableCell = ({
           )}
         </div>
         {!disabled && (
-          <RACButton
-            ref={triggerRef}
-            className="hover:bg-secondary flex size-6 shrink-0 cursor-pointer items-center justify-center rounded opacity-0 group-focus-within/editable-cell:opacity-100 group-hover/editable-cell:opacity-100"
-            aria-label="Edit"
-            onPress={() => setOpen(true)}
-          >
-            <Pencil size={14} />
-          </RACButton>
+          <div className="shrink-0 opacity-0 group-focus-within/editable-cell:opacity-100 group-hover/editable-cell:opacity-100">
+            <Button
+              variant="ghost"
+              size="small"
+              aria-label={stringFormatter.format('edit')}
+              onPress={() => setOpen(true)}
+            >
+              <Pencil />
+            </Button>
+          </div>
         )}
       </div>
       {isSmallScreen ? (
-        <Dialog open={open} onOpenChange={handleOpenChange} closeButton>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
           {formContent}
         </Dialog>
       ) : (
-        <Popover
-          triggerRef={triggerRef}
-          open={open}
+        <RACPopover
+          ref={popoverRef}
+          isOpen={open}
           onOpenChange={handleOpenChange}
+          triggerRef={cellRef}
+          offset={verticalOffset}
           placement="bottom start"
+          style={{
+            minWidth: triggerWidth,
+          }}
+          className="bg-background rounded-lg border shadow-md"
         >
           {formContent}
-        </Popover>
+        </RACPopover>
       )}
     </Cell>
   );

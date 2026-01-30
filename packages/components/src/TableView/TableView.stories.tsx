@@ -1106,7 +1106,7 @@ export const EditableCell = meta.story({
               <TableView.EditableCell
                 renderEditing={() => (
                   <TextField
-                    label="Name"
+                    aria-label="Name"
                     name="name"
                     defaultValue={user.name}
                     autoFocus
@@ -1119,7 +1119,7 @@ export const EditableCell = meta.story({
               <TableView.EditableCell
                 renderEditing={() => (
                   <TextField
-                    label="Email"
+                    aria-label="Email"
                     name="email"
                     defaultValue={user.email}
                     autoFocus
