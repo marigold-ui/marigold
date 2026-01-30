@@ -529,7 +529,7 @@ export const Mobile = meta.story({
     );
   },
   play: async ({ canvas, step }) => {
-    const button = canvas.getByLabelText(/Favorite character/i);
+    const button = await canvas.findByLabelText(/Favorite character/i);
 
     await step('Open the select dropdown', async () => {
       await userEvent.click(button);
