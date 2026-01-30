@@ -194,7 +194,7 @@ export const TableViewEditableCell = ({
     >
       <div className="group/editable-cell flex items-center gap-1">
         <div className="min-w-0 flex-1">
-          {allowTextSelection && selectionMode !== 'none' ? (
+          {allowTextSelection ? (
             <TableViewSelectableCell>{children}</TableViewSelectableCell>
           ) : (
             children
