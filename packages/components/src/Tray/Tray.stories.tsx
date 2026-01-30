@@ -114,57 +114,111 @@ Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
   });
 });
 
-export const Controlled = meta.story({
+export const DismissControlsWithCallbacks = meta.story({
   render: args => {
     const [open, setOpen] = useState(false);
-    const onOpenChange = (open: boolean) => {
-      setOpen(open);
+    const [log, setLog] = useState<string[]>([]);
+
+    const onOpenChange = (isOpen: boolean) => {
+      setOpen(isOpen);
+      setLog(prev => [...prev, isOpen ? 'Tray opened' : 'Tray closed']);
     };
+
     return (
-      <Stack space={8} alignX="left">
+      <Stack space={4} alignX="left">
         <Tray.Trigger open={open} onOpenChange={onOpenChange}>
           <Button>Open Tray</Button>
-          <Tray {...args}>
-            <Tray.Title>Controlled Tray</Tray.Title>
+          <Tray {...args} dismissable keyboardDismissable>
+            <Tray.Title>Dismiss Controls</Tray.Title>
             <Tray.Content>
-              <Text>This tray's open state is controlled externally.</Text>
+              <Inset space={4}>
+                <Text>
+                  This tray demonstrates all dismiss methods with callback
+                  hooks. Try closing it via the X button, the close button,
+                  pressing Escape, or clicking the backdrop.
+                </Text>
+              </Inset>
             </Tray.Content>
             <Tray.Actions>
-              <Button slot="close">Close</Button>
+              <Button slot="close">Cancel</Button>
               <Button slot="close" variant="primary">
-                Apply
+                Save
               </Button>
             </Tray.Actions>
           </Tray>
         </Tray.Trigger>
         <pre>Tray is {open ? 'open' : 'closed'}</pre>
+        <pre style={{ fontSize: 12, maxHeight: 120, overflow: 'auto' }}>
+          {log.length ? log.join('\n') : 'No events yet'}
+        </pre>
       </Stack>
     );
   },
-  play: async ({ canvas, step }) => {
+});
+
+DismissControlsWithCallbacks.test(
+  'Dismiss controls and callback hooks',
+  async ({ canvas, step }) => {
     await step('Shows closed state initially', async () => {
       expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
-      expect(canvas.queryByText('Controlled Tray')).not.toBeInTheDocument();
     });
 
-    await step('Opens via controlled state', async () => {
+    await step('Opens tray and verifies callback fires', async () => {
       const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+
       await userEvent.click(openButton);
 
       await waitFor(() =>
-        expect(canvas.getByText('Controlled Tray')).toBeInTheDocument()
+        expect(canvas.getByText('Dismiss Controls')).toBeInTheDocument()
       );
       expect(canvas.getByText('Tray is open')).toBeInTheDocument();
+      expect(canvas.getByText(/Tray opened/)).toBeInTheDocument();
     });
 
-    await step('Closes via controlled state', async () => {
-      const closeButton = canvas.getByRole('button', { name: 'Close' });
-      await userEvent.click(closeButton);
+    await step('Closes via close button and logs event', async () => {
+      const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+
+      await userEvent.click(cancelButton);
 
       await waitFor(() =>
-        expect(canvas.queryByText('Controlled Tray')).not.toBeInTheDocument()
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
       );
       expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
+      expect(canvas.getByText(/Tray closed/)).toBeInTheDocument();
     });
-  },
-});
+
+    await step('Closes via dismiss button and logs event', async () => {
+      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+
+      await userEvent.click(openButton);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+
+      const dismissBtn = canvas.getByLabelText('Close');
+
+      await userEvent.click(dismissBtn);
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Closes via escape key and logs event', async () => {
+      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
+
+      await userEvent.click(openButton);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+  }
+);
