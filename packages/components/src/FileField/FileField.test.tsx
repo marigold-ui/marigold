@@ -127,13 +127,11 @@ test('hidden input persists after file selection', async () => {
   const fileB = makeFile('b.pdf', 'application/pdf');
   await user.upload(triggerInput, [fileA, fileB]);
 
-  // Hidden input should still be present after selection
   const hiddenInput = document.querySelector(
     'input[type="file"][name="docs"]'
   ) as HTMLInputElement;
   expect(hiddenInput).toBeInTheDocument();
 
-  // File items should be rendered
   expect(screen.getByText('a.pdf')).toBeInTheDocument();
   expect(screen.getByText('b.pdf')).toBeInTheDocument();
 });
@@ -153,13 +151,11 @@ test('hidden input persists after file removal', async () => {
   const removeButtons = screen.getAllByRole('button', { name: 'Remove file' });
   await user.click(removeButtons[0]);
 
-  // Hidden input should still be present
   const hiddenInput = document.querySelector(
     'input[type="file"][name="docs"]'
   ) as HTMLInputElement;
   expect(hiddenInput).toBeInTheDocument();
 
-  // Only b.pdf should remain
   expect(screen.queryByText('a.pdf')).not.toBeInTheDocument();
   expect(screen.getByText('b.pdf')).toBeInTheDocument();
 });

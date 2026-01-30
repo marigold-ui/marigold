@@ -68,14 +68,11 @@ export const FileField = ({
   const buttonLabel = stringFormatter.format('uploadLabel');
 
   const syncHiddenInput = (newFiles: File[] | null) => {
-    if (!hiddenInputRef.current || !name) return;
-    try {
-      const dt = new DataTransfer();
-      newFiles?.forEach(f => dt.items.add(f));
-      hiddenInputRef.current.files = dt.files;
-    } catch {
-      // DataTransfer may not be available in some test environments
-    }
+    if (!hiddenInputRef.current || !name || typeof DataTransfer === 'undefined')
+      return;
+    const dt = new DataTransfer();
+    newFiles?.forEach(f => dt.items.add(f));
+    hiddenInputRef.current.files = dt.files;
   };
 
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
@@ -96,7 +93,8 @@ export const FileField = ({
       setFiles(normalized);
       syncHiddenInput(normalized);
     } catch {
-      // swallow errors from reading dropped items
+      // Intentionally ignore - dropped files that can't be read are skipped.
+      // User sees no file appear, which is acceptable UX for invalid drops.
     }
   };
 
@@ -111,8 +109,7 @@ export const FileField = ({
   });
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    /* @ts-expect-error */
+    /* @ts-expect-error type intrinsic elements ("div") are not working correctly */
     <FieldBase
       as="div"
       width={width}

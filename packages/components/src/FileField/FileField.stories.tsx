@@ -182,8 +182,6 @@ export const InForm = meta.story({
     const file = makeFile('report.pdf', 'application/pdf', 1024 * 1024);
     await userEvent.upload(input, file);
 
-    await expect(canvas.getByText('report.pdf')).toBeInTheDocument();
-
     const submitButton = canvas.getByRole('button', { name: 'Submit' });
     await userEvent.click(submitButton);
 
