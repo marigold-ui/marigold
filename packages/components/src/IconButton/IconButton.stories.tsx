@@ -1,5 +1,5 @@
 import preview from '.storybook/preview';
-import { ChevronDown } from '@marigold/icons';
+import { Search } from '@marigold/icons';
 import { IconButton } from './IconButton';
 
 const meta = preview.meta({
@@ -24,7 +24,7 @@ const meta = preview.meta({
 export const Basic = meta.story({
   render: args => (
     <IconButton {...args}>
-      <ChevronDown />
+      <Search />
     </IconButton>
   ),
 });

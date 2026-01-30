@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import preview from '.storybook/preview';
+import { Stack } from '@marigold/components';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
 import { TextField } from './TextField';
@@ -185,22 +186,24 @@ export const WithFormValidation = meta.story({
   },
   render: args => (
     <Form>
-      <TextField
-        {...args}
-        data-testid="text-field"
-        name="email"
-        type="email"
-        placeholder="Enter your email address"
-        required
-        errorMessage={({ validationDetails }) =>
-          validationDetails.valueMissing
-            ? 'Please enter your email address!'
-            : ''
-        }
-      />
-      <Button variant="primary" type="submit" data-testid="button">
-        Subscribe
-      </Button>
+      <Stack space={2}>
+        <TextField
+          {...args}
+          data-testid="text-field"
+          name="email"
+          type="email"
+          placeholder="Enter your email address"
+          required
+          errorMessage={({ validationDetails }) =>
+            validationDetails.valueMissing
+              ? 'Please enter your email address!'
+              : ''
+          }
+        />
+        <Button variant="primary" type="submit" data-testid="button">
+          Subscribe
+        </Button>
+      </Stack>
     </Form>
   ),
 });
