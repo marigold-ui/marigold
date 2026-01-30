@@ -3,7 +3,7 @@ import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { useIsHidden } from '@react-aria/collections';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, useClassNames } from '@marigold/system';
+import { useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
 import { TrayActions } from './TrayActions';
