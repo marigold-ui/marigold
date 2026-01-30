@@ -1,10 +1,6 @@
 import type { FormEvent, FormHTMLAttributes, ReactNode } from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
-import {
-  Cell,
-  Popover as RACPopover,
-  useTableOptions,
-} from 'react-aria-components';
+import { Cell, Popover, useTableOptions } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, textAlign, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -192,7 +188,7 @@ export const TableViewEditableCell = ({
           {formContent}
         </Dialog>
       ) : (
-        <RACPopover
+        <Popover
           ref={popoverRef}
           isOpen={open}
           onOpenChange={handleOpenChange}
@@ -205,7 +201,7 @@ export const TableViewEditableCell = ({
           className="bg-background rounded-lg border shadow-md"
         >
           {formContent}
-        </RACPopover>
+        </Popover>
       )}
     </Cell>
   );
