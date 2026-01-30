@@ -439,10 +439,16 @@ export const Mobile: any = meta.story({
 });
 
 Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
-  const trigger = await canvas.findByRole('button');
+  let trigger: HTMLElement;
 
   await step('Open tray by clicking trigger', async () => {
-    await userEvent.click(trigger);
+    await waitFor(async () => {
+      trigger = canvas.getByRole('button');
+
+      await userEvent.click(trigger);
+
+      expect(canvas.getByRole('dialog')).toBeInTheDocument();
+    });
   });
 
   await step('Verify tray content is visible', async () => {
@@ -475,14 +481,16 @@ Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
 Mobile.test(
   'Mobile ComboBox keyboard navigation',
   async ({ canvas, step }: any) => {
-    const trigger = await canvas.findByRole('button');
+    let trigger: HTMLElement;
 
     await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
+      await waitFor(async () => {
+        trigger = canvas.getByRole('button');
 
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
-      );
+        await userEvent.click(trigger);
+
+        expect(canvas.getByRole('dialog')).toBeInTheDocument();
+      });
     });
 
     await step('Verify combobox input receives focus', async () => {

@@ -529,16 +529,17 @@ export const Mobile = meta.story({
     );
   },
   play: async ({ canvas, step }) => {
-    const button = await canvas.findByLabelText(/Favorite character/i);
+    await step('Open the tray', async () => {
+      await waitFor(async () => {
+        const button = canvas.getByLabelText(/Favorite character/i);
 
-    await step('Open the select dropdown', async () => {
-      await userEvent.click(button);
+        await userEvent.click(button);
 
-      expect(button).toHaveAttribute('aria-expanded', 'true');
+        expect(canvas.getByRole('dialog')).toBeInTheDocument();
+      });
     });
 
     await step('Verify dialog is visible', async () => {
-      await waitFor(() => canvas.getByRole('dialog'));
       const dialog = canvas.getByRole('dialog');
 
       await waitFor(() => expect(dialog).toBeVisible());
@@ -554,6 +555,10 @@ export const Mobile = meta.story({
     });
 
     await step('Close select with Escape key', async () => {
+      const button = canvas.getByRole('button', {
+        name: /Favorite character/i,
+      });
+
       await userEvent.keyboard('{Escape}');
       await waitFor(() => {
         expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
