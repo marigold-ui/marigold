@@ -2,12 +2,6 @@ import { DateFormat } from '@/ui';
 import { Badge, I18nProvider, TableView } from '@marigold/components';
 
 export default () => {
-  const columns = [
-    { name: 'Id', key: 'id' },
-    { name: 'Event', key: 'event' },
-    { name: 'Date', key: 'date' },
-    { name: 'Status', key: 'status' },
-  ];
   const rowData: { [key: string]: string }[] = [
     {
       id: '16382462873',
