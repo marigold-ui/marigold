@@ -5,12 +5,12 @@ import {
   DragAndDrop,
   DynamicData,
   EditableCell,
-  EditableFields,
   Empty,
   Links,
   ScrollableAndSticky,
   Sorting,
   WidthsAndOverflow,
+  WithActions,
 } from './TableView.stories';
 
 // Setup
@@ -75,6 +75,9 @@ describe('Data Handling', () => {
     render(<Empty.Component />);
 
     expect(screen.getByText('No results found.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Try adjusting your search or filters.')
+    ).toBeInTheDocument();
   });
 });
 
@@ -110,13 +113,12 @@ describe('Interactions', () => {
 });
 
 describe('Content', () => {
-  test('renders editable form fields in cells', () => {
-    render(<EditableFields.Component />);
+  test('renders table with action menus', () => {
+    render(<WithActions.Component />);
 
     expect(screen.getByText('Hans Müller')).toBeInTheDocument();
-    // Check for Select components - they render as buttons with popovers
-    const selectButtons = screen.getAllByRole('button', { name: /Status/i });
-    expect(selectButtons.length).toBeGreaterThan(0);
+    const actionMenus = screen.getAllByRole('button', { name: /Actions/i });
+    expect(actionMenus.length).toBeGreaterThan(0);
   });
 
   test('renders table with clickable row links', () => {

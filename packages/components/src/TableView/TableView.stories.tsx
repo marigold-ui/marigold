@@ -7,10 +7,9 @@ import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
+import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
-import { NumberField } from '../NumberField/NumberField';
 import { Scrollable } from '../Scrollable/Scrollable';
-import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
@@ -432,7 +431,14 @@ export const Empty = meta.story({
         <TableView.Column>Age</TableView.Column>
         <TableView.Column>Birthday</TableView.Column>
       </TableView.Header>
-      <TableView.Body emptyState={() => 'No results found.'}>
+      <TableView.Body
+        emptyState={() => (
+          <EmptyState
+            title="No results found."
+            description="Try adjusting your search or filters."
+          />
+        )}
+      >
         {[]}
       </TableView.Body>
     </TableView>
@@ -440,6 +446,9 @@ export const Empty = meta.story({
   play: async ({ canvas, step }) => {
     await step('Verify empty state message is displayed', async () => {
       expect(canvas.getByText('No results found.')).toBeInTheDocument();
+      expect(
+        canvas.getByText('Try adjusting your search or filters.')
+      ).toBeInTheDocument();
     });
 
     await step('Verify table headers are still present', async () => {
@@ -649,111 +658,64 @@ export const Sorting = meta.story({
   },
 });
 
-export const EditableFields = meta.story({
+export const WithActions = meta.story({
   tags: ['component-test'],
   args: {
     selectionMode: 'multiple',
   },
-  render: args => {
-    const [data, setData] = useState(users);
-
-    const update = <K extends keyof (typeof users)[0]>(
-      email: string,
-      field: K,
-      value: (typeof users)[0][K]
-    ) => {
-      setData(prevData =>
-        prevData.map(user =>
-          user.email === email ? { ...user, [field]: value } : user
-        )
-      );
-    };
-
-    return (
-      <TableView aria-label="Editable table with form fields" {...args}>
-        <TableView.Header>
-          <TableView.Column>Name</TableView.Column>
-          <TableView.Column>Email</TableView.Column>
-          <TableView.Column>Location</TableView.Column>
-          <TableView.Column minWidth={150}>Status</TableView.Column>
-          <TableView.Column minWidth={160}>Balance</TableView.Column>
-          <TableView.Column width={72} align="right">
-            Actions
-          </TableView.Column>
-        </TableView.Header>
-        <TableView.Body>
-          {data.map(user => (
-            <TableView.Row key={user.email}>
-              <TableView.Cell>
-                <Stack space="0.5">
-                  <Text weight="medium">{user.name}</Text>
-                  <Text size="xs" color="muted-foreground">
-                    {user.handle}
-                  </Text>
-                </Stack>
-              </TableView.Cell>
-              <TableView.Cell>
-                <TextField
-                  value={user.email}
-                  onChange={value => update(user.email, 'email', value)}
-                />
-              </TableView.Cell>
-              <TableView.Cell>{user.location}</TableView.Cell>
-              <TableView.Cell>
-                <Select
-                  aria-label="Status"
-                  value={user.status}
-                  onChange={value =>
-                    update(user.email, 'status', value as string)
-                  }
-                >
-                  <Select.Option id="active">Active</Select.Option>
-                  <Select.Option id="inactive">Inactive</Select.Option>
-                  <Select.Option id="suspended">Suspended</Select.Option>
-                </Select>
-              </TableView.Cell>
-              <TableView.Cell align="right">
-                <NumberField
-                  aria-label="Balance"
-                  defaultValue={user.balance}
-                  onChange={value => update(user.email, 'balance', value ?? 0)}
-                  step={10}
-                  formatOptions={{
-                    style: 'currency',
-                    currency: 'EUR',
-                    maximumFractionDigits: 0,
-                  }}
-                />
-              </TableView.Cell>
-              <TableView.Cell align="right">
-                <ActionMenu aria-label="Actions">
-                  <ActionMenu.Item key="view">View</ActionMenu.Item>
-                  <ActionMenu.Item key="edit">Edit</ActionMenu.Item>
-                  <ActionMenu.Item key="delete" variant="destructive">
-                    Delete
-                  </ActionMenu.Item>
-                </ActionMenu>
-              </TableView.Cell>
-            </TableView.Row>
-          ))}
-        </TableView.Body>
-      </TableView>
-    );
-  },
+  render: args => (
+    <TableView aria-label="Table with actions" {...args}>
+      <TableView.Header>
+        <TableView.Column>Name</TableView.Column>
+        <TableView.Column>Email</TableView.Column>
+        <TableView.Column>Location</TableView.Column>
+        <TableView.Column>Status</TableView.Column>
+        <TableView.Column align="right">Balance</TableView.Column>
+        <TableView.Column width={72} align="right">
+          Actions
+        </TableView.Column>
+      </TableView.Header>
+      <TableView.Body>
+        {users.map(user => (
+          <TableView.Row key={user.email}>
+            <TableView.Cell>
+              <Stack space="0.5">
+                <Text weight="medium">{user.name}</Text>
+                <Text size="xs" color="muted-foreground">
+                  {user.handle}
+                </Text>
+              </Stack>
+            </TableView.Cell>
+            <TableView.Cell>{user.email}</TableView.Cell>
+            <TableView.Cell>{user.location}</TableView.Cell>
+            <TableView.Cell>
+              <Badge>{user.status}</Badge>
+            </TableView.Cell>
+            <TableView.Cell align="right">
+              <NumericFormat
+                style="currency"
+                currency="EUR"
+                value={user.balance}
+              />
+            </TableView.Cell>
+            <TableView.Cell align="right">
+              <ActionMenu aria-label="Actions">
+                <ActionMenu.Item key="view">View</ActionMenu.Item>
+                <ActionMenu.Item key="edit">Edit</ActionMenu.Item>
+                <ActionMenu.Item key="delete" variant="destructive">
+                  Delete
+                </ActionMenu.Item>
+              </ActionMenu>
+            </TableView.Cell>
+          </TableView.Row>
+        ))}
+      </TableView.Body>
+    </TableView>
+  ),
   play: async ({ canvas, step }) => {
-    await step('Verify editable table renders with form fields', async () => {
+    await step('Verify table renders with data', async () => {
       expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
       expect(canvas.getByText('@schnitzelmeister')).toBeInTheDocument();
-    });
-
-    await step('Verify Select dropdown is present', async () => {
-      const selects = canvas.getAllByLabelText('Status');
-      expect(selects.length).toBeGreaterThan(0);
-    });
-
-    await step('Verify NumberField is present', async () => {
-      const numberFields = canvas.getAllByLabelText('Balance');
-      expect(numberFields.length).toBeGreaterThan(0);
     });
 
     await step('Verify ActionMenu is present in each row', async () => {
@@ -768,6 +730,14 @@ export const EditableFields = meta.story({
       expect(canvas.getByText('View')).toBeVisible();
       expect(canvas.getByText('Edit')).toBeVisible();
       expect(canvas.getByText('Delete')).toBeVisible();
+    });
+
+    await step('Use ActionMenu', async () => {
+      await userEvent.click(canvas.getByText('Edit'));
+
+      expect(canvas.queryByText('View')).not.toBeInTheDocument();
+      expect(canvas.queryByText('Edit')).not.toBeInTheDocument();
+      expect(canvas.queryByText('Delete')).not.toBeInTheDocument();
     });
   },
 });
