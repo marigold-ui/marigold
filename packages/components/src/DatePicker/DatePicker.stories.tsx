@@ -1,8 +1,7 @@
 import { CalendarDate } from '@internationalized/date';
 import { useState } from 'react';
 import { DateValue } from 'react-aria-components';
-import { expect, waitFor } from 'storybook/test';
-import { vi } from 'vitest';
+import { expect, spyOn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
 import { Stack } from '../Stack/Stack';
@@ -187,9 +186,10 @@ Mobile.test(
   'Mobile DatePicker interaction',
   async ({ canvas, step, userEvent }: any) => {
     // Mock releasePointerCapture to handle invalid pointer IDs in Firefox tests
-    vi.spyOn(Element.prototype, 'releasePointerCapture').mockImplementation(
-      () => {}
-    );
+    const releasePointerCaptureMock = spyOn(
+      Element.prototype,
+      'releasePointerCapture'
+    ).mockImplementation(() => {});
 
     const trigger = canvas.getByRole('button');
 
@@ -229,7 +229,7 @@ Mobile.test(
       await waitFor(() => expect(input).toHaveTextContent('15'));
     });
 
-    vi.restoreAllMocks();
+    releasePointerCaptureMock.mockRestore();
   }
 );
 
