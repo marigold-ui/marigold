@@ -4,6 +4,7 @@ import {
   Basic,
   DragAndDrop,
   DynamicData,
+  EditableCell,
   EditableFields,
   Empty,
   Links,
@@ -233,5 +234,20 @@ describe('Sticky Header', () => {
     // eslint-disable-next-line testing-library/no-node-access
     const header = columnHeader.closest('thead');
     expect(header).not.toHaveClass('sticky');
+  });
+});
+
+describe('EditableCell', () => {
+  test('renders editable cell with edit button', () => {
+    render(<EditableCell.Component />);
+
+    const editButtons = screen.getAllByLabelText('Edit');
+    expect(editButtons.length).toBeGreaterThan(0);
+  });
+
+  test('renders cell content', () => {
+    render(<EditableCell.Component />);
+
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
   });
 });

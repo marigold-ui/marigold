@@ -1071,3 +1071,72 @@ export const AllowTextSelection = meta.story({
     });
   },
 });
+
+export const EditableCell = meta.story({
+  render: args => {
+    const [data, setData] = useState(users.slice(0, 5).map(u => ({ ...u })));
+
+    const handleSubmit = (
+      index: number,
+      e: React.FormEvent<HTMLFormElement>
+    ) => {
+      const formData = new FormData(e.currentTarget);
+      setData(prev => {
+        const next = [...prev];
+        next[index] = {
+          ...next[index],
+          name: (formData.get('name') as string) || next[index].name,
+          email: (formData.get('email') as string) || next[index].email,
+        };
+        return next;
+      });
+    };
+
+    return (
+      <TableView aria-label="Editable table" {...args}>
+        <TableView.Header>
+          <TableView.Column>Name</TableView.Column>
+          <TableView.Column>Email</TableView.Column>
+          <TableView.Column>Location</TableView.Column>
+          <TableView.Column>Status</TableView.Column>
+        </TableView.Header>
+        <TableView.Body>
+          {data.map((user, i) => (
+            <TableView.Row key={user.email}>
+              <TableView.EditableCell
+                renderEditing={() => (
+                  <TextField
+                    label="Name"
+                    name="name"
+                    defaultValue={user.name}
+                    autoFocus
+                  />
+                )}
+                onSubmit={e => handleSubmit(i, e)}
+              >
+                {user.name}
+              </TableView.EditableCell>
+              <TableView.EditableCell
+                renderEditing={() => (
+                  <TextField
+                    label="Email"
+                    name="email"
+                    defaultValue={user.email}
+                    autoFocus
+                  />
+                )}
+                onSubmit={e => handleSubmit(i, e)}
+              >
+                {user.email}
+              </TableView.EditableCell>
+              <TableView.Cell>{user.location}</TableView.Cell>
+              <TableView.Cell>
+                <Badge>{user.status}</Badge>
+              </TableView.Cell>
+            </TableView.Row>
+          ))}
+        </TableView.Body>
+      </TableView>
+    );
+  },
+});

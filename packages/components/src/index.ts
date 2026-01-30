@@ -231,6 +231,7 @@ export type {
   TableViewBodyProps,
   TableViewRowProps,
   TableViewCellProps,
+  EditableTableViewCellProps,
 } from './TableView/TableView';
 
 export { Tabs } from './Tabs/Tabs';
