@@ -1,4 +1,9 @@
-import type { FormEvent, FormHTMLAttributes, ReactNode } from 'react';
+import type {
+  FormEvent,
+  FormHTMLAttributes,
+  ReactNode,
+  RefObject,
+} from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Cell, Popover, useTableOptions } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
@@ -54,6 +59,60 @@ export interface TableViewEditableCellProps {
   align?: keyof typeof textAlign;
 }
 
+// EditableCellPopover
+// ---------------
+interface EditableCellPopoverProps {
+  cellRef: RefObject<HTMLTableCellElement | null>;
+  open: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  children: ReactNode;
+}
+
+const EditableCellPopover = ({
+  cellRef,
+  open,
+  onOpenChange,
+  children,
+}: EditableCellPopoverProps) => {
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const [triggerWidth, setTriggerWidth] = useState(0);
+  const [tableWidth, setTableWidth] = useState(0);
+  const [verticalOffset, setVerticalOffset] = useState(0);
+
+  // Position the popover correctly on top of the cell and matching its width
+  useLayoutEffect(() => {
+    if (!open || !cellRef.current) {
+      return;
+    }
+    const cell = cellRef.current;
+    const rect = cell.getBoundingClientRect();
+    const rowRect = cell.parentElement?.getBoundingClientRect();
+    const offset = (rowRect?.top ?? 0) - (rowRect?.bottom ?? 0);
+
+    setTriggerWidth(rect.width);
+    setVerticalOffset(offset);
+    setTableWidth(cell.closest('[role="grid"]')?.clientWidth ?? 0);
+  }, [cellRef, open]);
+
+  return (
+    <Popover
+      ref={popoverRef}
+      isOpen={open}
+      onOpenChange={onOpenChange}
+      triggerRef={cellRef}
+      offset={verticalOffset}
+      placement="bottom start"
+      style={{
+        minWidth: `min(${triggerWidth}px, ${tableWidth}px)`,
+        maxWidth: tableWidth,
+      }}
+      className="bg-background rounded-lg border shadow-md"
+    >
+      {children}
+    </Popover>
+  );
+};
+
 // Component
 // ---------------
 export const TableViewEditableCell = ({
@@ -78,26 +137,6 @@ export const TableViewEditableCell = ({
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
   const cellRef = useRef<HTMLTableCellElement>(null);
-  const popoverRef = useRef<HTMLDivElement>(null);
-
-  const [triggerWidth, setTriggerWidth] = useState(0);
-  const [tableWidth, setTableWidth] = useState(0);
-  const [verticalOffset, setVerticalOffset] = useState(0);
-
-  // Compute popover positioning based on cell dimensions
-  useLayoutEffect(() => {
-    if (!open || !cellRef.current) {
-      return;
-    }
-    const cell = cellRef.current;
-    const rect = cell.getBoundingClientRect();
-    const rowRect = cell.parentElement?.getBoundingClientRect();
-    const offset = (rowRect?.top ?? 0) - (rowRect?.bottom ?? 0);
-
-    setTriggerWidth(rect.width);
-    setVerticalOffset(offset);
-    setTableWidth(cell.closest('[role="grid"]')?.clientWidth ?? 0);
-  }, [open]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -114,12 +153,8 @@ export const TableViewEditableCell = ({
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen && !submittedRef.current) {
-      // Closed by outside click — treat as submit
-      const form = cellRef.current?.querySelector('form');
-      if (form) {
-        form.requestSubmit();
-        return;
-      }
+      // Closed by outside click, treat as cancel
+      onCancel?.();
     }
     submittedRef.current = false;
     setOpen(isOpen);
@@ -193,21 +228,13 @@ export const TableViewEditableCell = ({
           {formContent}
         </Dialog>
       ) : (
-        <Popover
-          ref={popoverRef}
-          isOpen={open}
+        <EditableCellPopover
+          cellRef={cellRef}
+          open={open}
           onOpenChange={handleOpenChange}
-          triggerRef={cellRef}
-          offset={verticalOffset}
-          placement="bottom start"
-          style={{
-            minWidth: `min(${triggerWidth}px, ${tableWidth}px)`,
-            maxWidth: tableWidth,
-          }}
-          className="bg-background rounded-lg border shadow-md"
         >
           {formContent}
-        </Popover>
+        </EditableCellPopover>
       )}
     </Cell>
   );
