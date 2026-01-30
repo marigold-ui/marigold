@@ -541,7 +541,7 @@ export const Mobile = meta.story({
       await waitFor(() => canvas.getByRole('dialog'));
       const dialog = canvas.getByRole('dialog');
 
-      expect(dialog).toBeVisible();
+      await waitFor(() => expect(dialog).toBeVisible());
     });
 
     await step('Select an option', async () => {

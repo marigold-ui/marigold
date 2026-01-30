@@ -200,13 +200,13 @@ Mobile.test(
     await step('Verify tray content is visible', async () => {
       const dialog = await canvas.findByRole('dialog');
 
-      expect(dialog).toBeVisible();
+      await waitFor(() => expect(dialog).toBeVisible());
     });
 
     await step('Verify calendar is visible', async () => {
       const calendar = await canvas.findByRole('grid');
 
-      expect(calendar).toBeVisible();
+      await waitFor(() => expect(calendar).toBeVisible());
     });
 
     await step('Select a date from calendar', async () => {
@@ -249,7 +249,7 @@ Mobile.test(
     await step('Verify calendar grid is visible', async () => {
       const calendar = await canvas.findByRole('grid');
 
-      expect(calendar).toBeVisible();
+      await waitFor(() => expect(calendar).toBeVisible());
     });
 
     await step('Navigate calendar with arrow keys', async () => {

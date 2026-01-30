@@ -340,7 +340,7 @@ Mobile.test(
     await step('Verify tray content is visible', async () => {
       const input = await canvas.findByRole('combobox');
 
-      expect(input).toBeVisible();
+      await waitFor(() => expect(input).toBeVisible());
     });
 
     await step('Select option from list', async () => {
