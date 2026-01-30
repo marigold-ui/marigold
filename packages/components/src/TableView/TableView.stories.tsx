@@ -7,6 +7,8 @@ import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
+import { Button } from '../Button/Button';
+import { Checkbox } from '../Checkbox/Checkbox';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Scrollable } from '../Scrollable/Scrollable';
@@ -1108,5 +1110,162 @@ export const EditableCell = meta.story({
         </TableView.Body>
       </TableView>
     );
+  },
+});
+
+export const DynamicColumnsAndRows = meta.story({
+  tags: ['component-test'],
+  render: args => {
+    const columns = [
+      { name: 'Name', id: 'name', isRowHeader: true },
+      { name: 'Email', id: 'email', isRowHeader: false },
+      { name: 'Handle', id: 'handle', isRowHeader: false },
+      { name: 'Location', id: 'location', isRowHeader: false },
+      { name: 'Status', id: 'status', isRowHeader: false },
+    ] as const;
+
+    const [showColumns, setShowColumns] = useState([
+      'name',
+      'email',
+      'handle',
+      'location',
+      'status',
+    ]);
+    const visibleColumns = columns.filter(column =>
+      showColumns.includes(column.id)
+    );
+
+    const [rows, setRows] = useState(
+      users.slice(0, 3).map((user, index) => ({ ...user, id: index + 1 }))
+    );
+    const [nextId, setNextId] = useState(4);
+
+    const addRow = () => {
+      const randomUser = users[Math.floor(Math.random() * users.length)];
+      setRows(rows => [...rows, { ...randomUser, id: nextId }]);
+      setNextId(id => id + 1);
+    };
+
+    return (
+      <Stack space={3}>
+        <Checkbox.Group
+          label="Show columns"
+          value={showColumns}
+          onChange={setShowColumns}
+          orientation="horizontal"
+        >
+          <Checkbox value="location" label="Location" />
+          <Checkbox value="handle" label="Handle" />
+        </Checkbox.Group>
+
+        <TableView aria-label="Users" {...args}>
+          <TableView.Header columns={visibleColumns}>
+            {column => (
+              <TableView.Column isRowHeader={column.isRowHeader} id={column.id}>
+                {column.name}
+              </TableView.Column>
+            )}
+          </TableView.Header>
+          <TableView.Body items={rows} dependencies={[visibleColumns]}>
+            {item => (
+              <TableView.Row id={item.id} columns={visibleColumns}>
+                {column => (
+                  <TableView.Cell>
+                    {column.id === 'status' ? (
+                      <Badge>{item[column.id]}</Badge>
+                    ) : (
+                      item[column.id]
+                    )}
+                  </TableView.Cell>
+                )}
+              </TableView.Row>
+            )}
+          </TableView.Body>
+        </TableView>
+
+        <div>
+          <Button variant="primary" onPress={addRow}>
+            Add row
+          </Button>
+        </div>
+      </Stack>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify initial columns are visible', async () => {
+      expect(canvas.getByText('Name')).toBeInTheDocument();
+      expect(canvas.getByText('Email')).toBeInTheDocument();
+      expect(canvas.getByText('Handle')).toBeInTheDocument();
+      expect(canvas.getByText('Location')).toBeInTheDocument();
+      expect(canvas.getByText('Status')).toBeInTheDocument();
+    });
+
+    await step('Verify initial rows are rendered', async () => {
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
+      expect(canvas.getByText('Fritz Schneider')).toBeInTheDocument();
+      expect(canvas.getByText('Klaus Becker')).toBeInTheDocument();
+    });
+
+    await step('Toggle Location column off', async () => {
+      const locationCheckbox = canvas.getByLabelText('Location');
+      await userEvent.click(locationCheckbox);
+    });
+
+    await step('Verify Location column is hidden', async () => {
+      await waitFor(() => {
+        const headers = canvas.getAllByRole('columnheader');
+        expect(headers).toHaveLength(4);
+        expect(canvas.queryByText('Location')).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Toggle Location column back on', async () => {
+      const locationCheckbox = canvas.getByLabelText('Location');
+      await userEvent.click(locationCheckbox);
+    });
+
+    await step('Verify Location column is visible again', async () => {
+      await waitFor(() => {
+        expect(canvas.getByText('Location')).toBeInTheDocument();
+      });
+    });
+
+    await step('Toggle Handle column off', async () => {
+      const handleCheckbox = canvas.getByLabelText('Handle');
+      await userEvent.click(handleCheckbox);
+    });
+
+    await step('Verify Handle column is hidden', async () => {
+      await waitFor(() => {
+        const headers = canvas.getAllByRole('columnheader');
+        expect(headers).toHaveLength(4);
+        expect(canvas.queryByText('Handle')).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Add a new row', async () => {
+      const addButton = canvas.getByRole('button', { name: 'Add row' });
+      await userEvent.click(addButton);
+    });
+
+    await step('Verify new row is added', async () => {
+      await waitFor(() => {
+        const rows = canvas.getAllByRole('row');
+        // 3 initial users + 1 header row + 1 new user = 5 rows
+        expect(rows).toHaveLength(5);
+      });
+    });
+
+    await step('Add another row', async () => {
+      const addButton = canvas.getByRole('button', { name: 'Add row' });
+      await userEvent.click(addButton);
+    });
+
+    await step('Verify second new row is added', async () => {
+      await waitFor(() => {
+        const rows = canvas.getAllByRole('row');
+        expect(rows).toHaveLength(6);
+      });
+    });
   },
 });
