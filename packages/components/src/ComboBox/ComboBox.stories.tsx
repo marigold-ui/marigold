@@ -439,7 +439,7 @@ export const Mobile: any = meta.story({
 });
 
 Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
-  const trigger = canvas.getByRole('button');
+  const trigger = await canvas.findByRole('button');
 
   await step('Open tray by clicking trigger', async () => {
     await userEvent.click(trigger);
@@ -475,7 +475,7 @@ Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
 Mobile.test(
   'Mobile ComboBox keyboard navigation',
   async ({ canvas, step }: any) => {
-    const trigger = canvas.getByRole('button');
+    const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
       await userEvent.click(trigger);

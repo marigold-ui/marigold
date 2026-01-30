@@ -331,7 +331,7 @@ export const Mobile: any = meta.story({
 Mobile.test(
   'Mobile Autocomplete interaction',
   async ({ canvas, step }: any) => {
-    const trigger = canvas.getByRole('button');
+    const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
       await userEvent.click(trigger);
@@ -368,7 +368,7 @@ Mobile.test(
 Mobile.test(
   'Mobile Autocomplete keyboard navigation',
   async ({ canvas, step }: any) => {
-    const trigger = canvas.getByRole('button');
+    const trigger = await canvas.findByRole('button');
 
     await step('Open tray by clicking trigger', async () => {
       await userEvent.click(trigger);
