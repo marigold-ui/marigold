@@ -12,6 +12,7 @@ import { Checkbox } from '../Checkbox/Checkbox';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Scrollable } from '../Scrollable/Scrollable';
+import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
@@ -1059,6 +1060,7 @@ export const EditableCell = meta.story({
           ...next[index],
           name: (formData.get('name') as string) || next[index].name,
           email: (formData.get('email') as string) || next[index].email,
+          status: (formData.get('status') as string) || next[index].status,
         };
         return next;
       });
@@ -1102,9 +1104,23 @@ export const EditableCell = meta.story({
                 {user.email}
               </TableView.EditableCell>
               <TableView.Cell>{user.location}</TableView.Cell>
-              <TableView.Cell>
+              <TableView.EditableCell
+                renderEditing={() => (
+                  <Select
+                    aria-label="Status"
+                    name="status"
+                    defaultSelectedKey={user.status}
+                    autoFocus
+                  >
+                    <Select.Option id="active">active</Select.Option>
+                    <Select.Option id="inactive">inactive</Select.Option>
+                    <Select.Option id="suspended">suspended</Select.Option>
+                  </Select>
+                )}
+                onSubmit={e => handleSubmit(i, e)}
+              >
                 <Badge>{user.status}</Badge>
-              </TableView.Cell>
+              </TableView.EditableCell>
             </TableView.Row>
           ))}
         </TableView.Body>
