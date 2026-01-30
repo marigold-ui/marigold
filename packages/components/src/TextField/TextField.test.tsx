@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef, useState } from 'react';
 import { Theme, cva } from '@marigold/system';
@@ -328,7 +328,7 @@ test('render custom validation error message', async () => {
   );
 
   const button = screen.getByTestId('button');
-  fireEvent.click(button);
+  await user.click(button);
 
   expect(screen.getByTestId('text-field')).toHaveTextContent(
     'Please enter your email address!'

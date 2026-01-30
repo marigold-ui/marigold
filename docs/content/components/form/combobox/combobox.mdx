@@ -59,6 +59,19 @@ The below examples will display the suggestions when the input field is focused.
 
 <ComponentDemo file="./combobox-menu-trigger.demo.tsx" />
 
+### Item Actions
+
+The `<ComboBox.Option>` component supports an `onAction` prop that triggers a callback when the user performs an action on an item. This is useful for triggering side effects such as navigating to a detail view or opening an edit modal.
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>`onAction` vs `onSelectionChange`</SectionMessage.Title>
+  <SectionMessage.Content>
+    The `onAction` prop on individual options differs from the `onSelectionChange` prop on the `<ComboBox>` itself. Use `onSelectionChange` when you need to track and manage the selected value. Use `onAction` when you need to perform a side effect when an item is activated, regardless of selection state. Note that `onAction` should not replace the primary selection behavior - it is intended for supplementary actions.
+  </SectionMessage.Content>
+</SectionMessage>
+
+<ComponentDemo file="./combobox-action.demo.tsx" />
+
 ## Props
 
 ### ComboBox

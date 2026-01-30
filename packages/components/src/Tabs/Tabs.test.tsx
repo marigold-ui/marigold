@@ -1,7 +1,10 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Tabs } from './Tabs';
+
+const user = userEvent.setup();
 
 const theme: Theme = {
   name: 'tabs test',
@@ -64,7 +67,7 @@ test('Supporting default size', () => {
   );
 });
 
-test('supports disabled prop', () => {
+test('supports disabled prop', async () => {
   render(
     <Tabs disabledKeys={['2']}>
       <Tabs.List>
@@ -77,7 +80,7 @@ test('supports disabled prop', () => {
   );
   const tab = screen.getByText('tab2');
   expect(tab).toHaveAttribute('aria-disabled');
-  fireEvent.click(tab);
+  await user.click(tab);
   expect(screen.getByText('tab-1 content')).toBeVisible();
 });
 
@@ -95,7 +98,7 @@ test('set defaultValue via props in tabs', () => {
   expect(screen.getByText('tab-2 content')).toBeVisible();
 });
 
-test('open tabpanel when its tab controller is clicked', () => {
+test('open tabpanel when its tab controller is clicked', async () => {
   render(
     <Tabs>
       <Tabs.List>
@@ -107,7 +110,7 @@ test('open tabpanel when its tab controller is clicked', () => {
     </Tabs>
   );
   const tab = screen.getByText('tab2');
-  fireEvent.click(tab);
+  await user.click(tab);
   expect(tab.className).toMatchInlineSnapshot(
     `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed selected:border-red-500 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
   );
