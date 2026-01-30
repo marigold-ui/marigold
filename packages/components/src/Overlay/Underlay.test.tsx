@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { Theme, ThemeProvider, cva } from '@marigold/system';
 import { Underlay } from './Underlay';
 
+// Note: Underlay is an internal component that renders into a portal.
+// It requires ThemeProvider directly due to portal rendering behavior.
+// Its functionality is also tested through Dialog and Drawer components.
+
 const theme: Theme = {
   name: 'test',
   components: {
