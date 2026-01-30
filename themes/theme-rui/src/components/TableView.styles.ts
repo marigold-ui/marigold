@@ -113,4 +113,9 @@ export const TableView: ThemeComponent<'TableView'> = {
 
     'drop-target:before:z-10 drop-target:before:bg-stone-800',
   ]),
+  // Editable cell
+  editablePopover: cva([
+    'ui-surface ui-elevation-overlay',
+    'flex items-start gap-2',
+  ]),
 };

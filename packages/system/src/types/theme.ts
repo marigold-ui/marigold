@@ -157,7 +157,8 @@ export type Theme = {
       | 'dragHandle'
       | 'dragPreview'
       | 'dragPreviewCounter'
-      | 'dropIndicator',
+      | 'dropIndicator'
+      | 'editablePopover',
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<

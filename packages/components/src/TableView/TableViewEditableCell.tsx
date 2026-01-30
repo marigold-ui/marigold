@@ -65,6 +65,7 @@ interface EditableCellPopoverProps {
   cellRef: RefObject<HTMLTableCellElement | null>;
   open: boolean;
   onOpenChange: (isOpen: boolean) => void;
+  className?: string;
   children: ReactNode;
 }
 
@@ -72,6 +73,7 @@ const EditableCellPopover = ({
   cellRef,
   open,
   onOpenChange,
+  className,
   children,
 }: EditableCellPopoverProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -106,7 +108,7 @@ const EditableCellPopover = ({
         minWidth: `min(${triggerWidth}px, ${tableWidth}px)`,
         maxWidth: tableWidth,
       }}
-      className="bg-background rounded-lg border shadow-md"
+      className={className}
     >
       {children}
     </Popover>
@@ -160,37 +162,25 @@ export const TableViewEditableCell = ({
     setOpen(isOpen);
   };
 
-  const formContent = (
-    <Form unstyled action={action} onSubmit={handleSubmit}>
-      <div className="flex gap-2 px-2 py-1">
-        <div className="flex-1">{renderEditing()}</div>
-        <div className="flex justify-end gap-1">
-          <Button
-            variant="ghost"
-            onPress={handleCancel}
-            aria-label={
-              isSmallScreen ? undefined : stringFormatter.format('cancel')
-            }
-          >
-            {isSmallScreen ? stringFormatter.format('cancel') : <X size={16} />}
-          </Button>
-          <Button
-            variant="ghost"
-            type="submit"
-            loading={saving}
-            aria-label={
-              isSmallScreen ? undefined : stringFormatter.format('save')
-            }
-          >
-            {isSmallScreen ? (
-              stringFormatter.format('save')
-            ) : (
-              <Check size={16} />
-            )}
-          </Button>
-        </div>
-      </div>
-    </Form>
+  const cancelButton = (
+    <Button
+      variant="ghost"
+      onPress={handleCancel}
+      aria-label={isSmallScreen ? undefined : stringFormatter.format('cancel')}
+    >
+      {isSmallScreen ? stringFormatter.format('cancel') : <X size={16} />}
+    </Button>
+  );
+
+  const saveButton = (
+    <Button
+      variant="ghost"
+      type="submit"
+      loading={saving}
+      aria-label={isSmallScreen ? undefined : stringFormatter.format('save')}
+    >
+      {isSmallScreen ? stringFormatter.format('save') : <Check size={16} />}
+    </Button>
   );
 
   return (
@@ -225,15 +215,26 @@ export const TableViewEditableCell = ({
       </div>
       {isSmallScreen ? (
         <Dialog open={open} onOpenChange={handleOpenChange}>
-          {formContent}
+          <Form unstyled action={action} onSubmit={handleSubmit}>
+            <Dialog.Content>{renderEditing()}</Dialog.Content>
+            <Dialog.Actions>
+              {cancelButton}
+              {saveButton}
+            </Dialog.Actions>
+          </Form>
         </Dialog>
       ) : (
         <EditableCellPopover
           cellRef={cellRef}
           open={open}
           onOpenChange={handleOpenChange}
+          className={classNames.editablePopover}
         >
-          {formContent}
+          <Form unstyled action={action} onSubmit={handleSubmit}>
+            <div className="flex-1">{renderEditing()}</div>
+            {cancelButton}
+            {saveButton}
+          </Form>
         </EditableCellPopover>
       )}
     </Cell>
