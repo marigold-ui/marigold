@@ -177,7 +177,11 @@ export const Mobile: any = meta.story({
   },
   render: args => (
     <I18nProvider locale="de-DE">
-      <DatePicker label="Pick a date" {...args} />
+      <DatePicker
+        label="Pick a date"
+        defaultValue={new CalendarDate(2025, 8, 1)}
+        {...args}
+      />
     </I18nProvider>
   ),
 });
