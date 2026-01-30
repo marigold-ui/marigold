@@ -2,8 +2,10 @@ import { type ReactNode, useContext } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { useIsHidden } from '@react-aria/collections';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
+import { intlMessages } from '../intl/messages';
 import { TrayActions } from './TrayActions';
 import { TrayContent } from './TrayContent';
 import { TrayModal } from './TrayModal';
@@ -62,6 +64,7 @@ export const Tray = ({
   });
 
   const openState = open ?? state?.isOpen;
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   // If we are in a hidden tree, we still need to preserve our children.
   // This is important for components like Select that need to maintain state context.
@@ -76,16 +79,9 @@ export const Tray = ({
       onOpenChange={onOpenChange}
       keyboardDismissable={keyboardDismissable}
     >
-      <Dialog
-        {...props}
-        className={cn(
-          'outline-hidden',
-          "grid [grid-template-areas:'title'_'content'_'actions']",
-          classNames.container
-        )}
-      >
+      <Dialog {...props} className={classNames.container}>
         <CloseButton
-          aria-label="dismiss tray"
+          aria-label={stringFormatter.format('close')}
           className={classNames.closeButton}
           onPress={state?.close}
         />

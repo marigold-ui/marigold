@@ -5,7 +5,7 @@ export const Tray: ThemeComponent<'Tray'> = {
   container: cva([
     'relative grid-rows-[auto_1fr_auto] min-h-[85vh] max-h-[95vh] rounded-b-none',
     'ui-surface ui-elevation-overlay',
-    'group/tray',
+    "group/tray outline-hidden grid [grid-template-areas:'title'_'content'_'actions']",
   ]),
   closeButton: cva(['absolute top-3.5 right-3 z-50', 'size-7']),
   header: cva('border-border border-b px-6 py-4'),

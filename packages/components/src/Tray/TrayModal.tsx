@@ -34,6 +34,7 @@ export const TrayModal = ({ children, ...props }: TrayModalProps) => {
       <Modal
         className={({ isEntering, isExiting }) =>
           cn(
+            'group/tray w-full',
             isEntering
               ? 'animate-in slide-in-from-bottom duration-400 ease-out'
               : '',
