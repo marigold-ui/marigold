@@ -1,6 +1,6 @@
 import { Key, useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack/Stack';
@@ -366,5 +366,47 @@ export const DisabledKeys: any = meta.story({
       'aria-disabled',
       'true'
     );
+  },
+});
+
+const onActionMock = fn();
+
+export const OnAction: any = meta.story({
+  tags: ['component-test'],
+  beforeEach: () => {
+    onActionMock.mockClear();
+  },
+  render: args => {
+    return (
+      <ComboBox {...args} label="Actions" menuTrigger="focus">
+        <ComboBox.Option id="save" onAction={onActionMock}>
+          Save
+        </ComboBox.Option>
+        <ComboBox.Option id="delete" onAction={onActionMock}>
+          Delete
+        </ComboBox.Option>
+        <ComboBox.Option id="archive" onAction={onActionMock}>
+          Archive
+        </ComboBox.Option>
+      </ComboBox>
+    );
+  },
+  play: async ({ canvas }) => {
+    const combobox = await canvas.findByRole('combobox', { name: 'Actions' });
+
+    await userEvent.click(combobox);
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+
+    await userEvent.click(combobox);
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+
+    await userEvent.click(combobox);
+    await userEvent.type(combobox, 'arch');
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+
+    await waitFor(() => expect(onActionMock).toHaveBeenCalledTimes(3));
   },
 });
