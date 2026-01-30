@@ -8,6 +8,9 @@ import { setup } from '../test.utils';
 import type { DrawerProps } from './Drawer';
 import { Drawer } from './Drawer';
 
+// Note: Drawer is an overlay component that renders into a portal.
+// It requires ThemeProvider directly due to portal rendering behavior.
+
 let isSmallScreen = false;
 const mockMatchMedia = () =>
   vi.fn().mockImplementation(() => {

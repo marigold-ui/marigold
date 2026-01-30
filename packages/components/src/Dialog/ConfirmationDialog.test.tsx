@@ -7,6 +7,9 @@ import { Button } from '../Button/Button';
 import { setup } from '../test.utils';
 import { ConfirmationDialog } from './ConfirmationDialog';
 
+// Note: ConfirmationDialog is an overlay component that renders into a portal.
+// It requires ThemeProvider directly due to portal rendering behavior.
+
 const theme: Theme = {
   name: 'test',
   components: {

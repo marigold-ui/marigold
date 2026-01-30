@@ -5,6 +5,9 @@ import { Button } from '../Button/Button';
 import { setup } from '../test.utils';
 import { Tooltip } from './Tooltip';
 
+// Note: Tooltip is an overlay component that renders into a portal.
+// It requires ThemeProvider directly due to portal rendering behavior.
+
 const user = userEvent.setup();
 const theme: Theme = {
   name: 'test',
