@@ -71,6 +71,7 @@ describe('DatePicker', () => {
     test('supports autoFocus', () => {
       render(<Basic.Component autoFocus />);
 
+      // eslint-disable-next-line testing-library/no-node-access
       expect(document.activeElement).toBe(screen.getAllByRole('spinbutton')[0]);
     });
 
@@ -358,6 +359,7 @@ test('DatePicker supports data unavailable property', async () => {
   await waitFor(() => {
     expect(screen.getByRole('application')).toBeVisible();
   });
+  // eslint-disable-next-line testing-library/no-node-access
   expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
 

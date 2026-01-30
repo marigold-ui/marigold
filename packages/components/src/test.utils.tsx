@@ -1,4 +1,4 @@
-import { RenderOptions, render } from '@testing-library/react';
+import { RenderOptions, RenderResult, render } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
 import { Theme, ThemeProvider, ThemeProviderProps } from '@marigold/system';
 
@@ -40,7 +40,7 @@ export const ensureOverlayContainer = () => {
  * Render helper for overlay components when using stories.
  * Creates the required portal container and renders the component.
  */
-export const renderWithOverlay = (ui: ReactNode) => {
+export const renderWithOverlay = (ui: ReactNode): RenderResult => {
   ensureOverlayContainer();
   return render(ui as ReactElement);
 };

@@ -31,6 +31,7 @@ test('supports variant and size props', () => {
 
 test('renders with leading icon', () => {
   render(<WithLeadingIcons.Component />);
+  // eslint-disable-next-line testing-library/no-node-access
   const icon = document.querySelector('svg');
 
   expect(icon).toBeInTheDocument();
