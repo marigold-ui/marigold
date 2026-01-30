@@ -56,7 +56,7 @@ const Preview = ({ name }: { name: RegistryKey }) => {
       <OverlayContainerProvider container="portalContainer">
         <MarigoldProvider theme={ruiTheme} className="bg-background">
           <div className="not-prose overflow-x-auto p-4">
-            <Demo />x
+            <Demo />
           </div>
         </MarigoldProvider>
       </OverlayContainerProvider>
