@@ -81,7 +81,7 @@ export const Tray = ({
     >
       <Dialog {...props} className={classNames.container}>
         <CloseButton
-          aria-label={stringFormatter.format('close')}
+          aria-label={stringFormatter.format('closeTray')}
           className={classNames.closeButton}
           onPress={state?.close}
         />
