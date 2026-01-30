@@ -5,7 +5,7 @@ import type {
   RefObject,
 } from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Cell, Popover, useTableOptions } from 'react-aria-components';
+import { Cell, Popover } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, textAlign, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
@@ -132,7 +132,6 @@ export const TableViewEditableCell = ({
     overflow = 'wrap',
     allowTextSelection = false,
   } = useTableViewContext();
-  const { selectionMode } = useTableOptions();
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
