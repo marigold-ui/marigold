@@ -37,9 +37,7 @@ export const TableView: ThemeComponent<'TableView'> = {
       'transition-[background-color]',
       'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
       'disabled:cursor-not-allowed',
-
       'data-selection-mode:cursor-pointer data-selection-mode:hover:bg-muted',
-
       'dragging:opacity-50 dragging:transform-gpu',
     ],
     {
@@ -110,9 +108,9 @@ export const TableView: ThemeComponent<'TableView'> = {
   dropIndicator: cva([
     'relative',
     'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-stone-300',
-
     'drop-target:before:z-10 drop-target:before:bg-stone-800',
   ]),
+
   // Editable cell
   editablePopover: cva([
     'ui-surface ui-elevation-overlay',

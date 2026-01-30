@@ -201,7 +201,7 @@ export const TableViewEditableCell = ({
           )}
         </div>
         {!disabled && (
-          <div className="shrink-0 opacity-0 group-focus-within/editable-cell:opacity-100 group-hover/editable-cell:opacity-100">
+          <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 group-focus-within/editable-cell:opacity-100 group-hover/editable-cell:opacity-100">
             <Button
               variant="ghost"
               size="small"

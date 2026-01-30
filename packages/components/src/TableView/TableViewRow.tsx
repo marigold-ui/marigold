@@ -28,7 +28,7 @@ const TableViewRow = <T extends object>({
   const { classNames } = useTableViewContext();
 
   return (
-    <Row id={id} className={classNames.row} {...otherProps}>
+    <Row id={id} className={cn('group/row', classNames.row)} {...otherProps}>
       {allowsDragging && (
         <Cell>
           <Button
