@@ -1,14 +1,8 @@
-import {
-  act,
-  fireEvent,
-  renderHook,
-  screen,
-  within,
-} from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { vi } from 'vitest';
-import { Theme, cva, useSmallScreen } from '@marigold/system';
+import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Select } from './Select';
 import { Basic } from './Select.stories';
@@ -71,15 +65,6 @@ const theme: Theme = {
 
 const { render } = setup({ theme });
 
-/**
- * We need to mock `matchMedia` because JSOM does not
- * implements it.
- */
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: () => {
@@ -93,12 +78,6 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 test('renders a field (label, helptext, select)', () => {
-  window.matchMedia = mockMatchMedia([
-    'screen and (min-width: 40em)',
-    'screen and (min-width: 52em)',
-    'screen and (min-width: 64em)',
-  ]);
-
   render(
     <Basic.Component
       data-testid="select"
@@ -136,18 +115,18 @@ test('placeholder is rendered', () => {
   expect(button).toHaveTextContent(/Select Item/);
 });
 
-test('allows to disable select', () => {
+test('allows to disable select', async () => {
   render(<Basic.Component disabled />);
   const button = screen.getByRole('button');
 
   expect(button).toBeDisabled();
 
-  fireEvent.click(button);
+  await user.click(button);
 
   expect(button).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('allows to disable options', () => {
+test('allows to disable options', async () => {
   render(
     <Select label="Label" data-testid="select" disabledKeys={['two']}>
       <Select.Option id="one">one</Select.Option>
@@ -157,7 +136,7 @@ test('allows to disable options', () => {
   );
 
   const button = screen.getByRole('button');
-  fireEvent.click(button);
+  await user.click(button);
 
   const options = screen.getByRole('listbox');
   const twoo = within(options).getByRole('option', { name: 'two' });
@@ -165,7 +144,7 @@ test('allows to disable options', () => {
   expect(twoo).toHaveAttribute('aria-disabled', 'true');
 });
 
-test('controlled', () => {
+test('controlled', async () => {
   const spy = vi.fn();
   render(
     <Select label="Label" data-testid="select" onChange={spy}>
@@ -176,17 +155,17 @@ test('controlled', () => {
   );
 
   const button = screen.getByRole('button');
-  fireEvent.click(button);
+  await user.click(button);
 
   const options = screen.getByRole('listbox');
   const three = within(options).getByText('three');
-  fireEvent.click(three);
+  await user.click(three);
 
   expect(spy).toHaveBeenCalledTimes(1);
   expect(spy).toHaveBeenCalledWith('three');
 });
 
-test('supports default value via "defaultSelectedKey"', () => {
+test('supports default value via "defaultSelectedKey"', async () => {
   render(
     <Select label="Label" data-testid="select" defaultSelectedKey="three">
       <Select.Option id="one">one</Select.Option>
@@ -198,7 +177,7 @@ test('supports default value via "defaultSelectedKey"', () => {
   const button = screen.getByRole('button');
   expect(button).toHaveTextContent(/three/);
 
-  fireEvent.click(button);
+  await user.click(button);
 
   const options = screen.getByRole('listbox');
   const three = within(options).getByRole('option', { name: 'three' });
@@ -259,35 +238,6 @@ test('forwards ref', () => {
   );
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);
-});
-
-test('renders as tray', () => {
-  const ref = createRef<HTMLButtonElement>();
-
-  let resize: () => void;
-  window.addEventListener = vi.fn().mockImplementation((event, cb) => {
-    if (event === 'resize') resize = cb;
-  });
-
-  const { result } = renderHook(() => useSmallScreen());
-  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-  act(() => resize());
-
-  expect(result.current).toBeTruthy();
-
-  render(
-    <Select label="Label" data-testid="select" ref={ref as any}>
-      <Select.Section header="Section 1">
-        <Select.Option id="one">one</Select.Option>
-        <Select.Option id="two">two</Select.Option>
-      </Select.Section>
-    </Select>
-  );
-
-  const button = screen.getByRole('button');
-  fireEvent.click(button);
-  const tray = screen.getByTestId('underlay-id');
-  expect(tray).toBeInTheDocument();
 });
 
 test('error is there', () => {

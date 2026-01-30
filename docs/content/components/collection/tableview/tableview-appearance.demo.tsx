@@ -2,12 +2,6 @@ import { DateFormat } from '@/ui';
 import { I18nProvider, TableView } from '@marigold/components';
 import type { TableViewProps } from '@marigold/components';
 
-const columns = [
-  { name: 'Id', key: 'id' },
-  { name: 'Event', key: 'event' },
-  { name: 'Date', key: 'date' },
-];
-
 const items: { [key: string]: string }[] = [
   { id: '1234', event: 'Concert', date: '2024-01-10' },
   { id: '82374', event: 'Open Air Festival', date: '2024-07-09' },
