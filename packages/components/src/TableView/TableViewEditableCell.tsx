@@ -81,6 +81,7 @@ export const TableViewEditableCell = ({
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const [triggerWidth, setTriggerWidth] = useState(0);
+  const [tableWidth, setTableWidth] = useState(0);
   const [verticalOffset, setVerticalOffset] = useState(0);
 
   // Compute popover positioning based on cell dimensions
@@ -95,6 +96,7 @@ export const TableViewEditableCell = ({
 
     setTriggerWidth(rect.width);
     setVerticalOffset(offset);
+    setTableWidth(cell.closest('[role="grid"]')?.clientWidth ?? 0);
   }, [open]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -125,28 +127,31 @@ export const TableViewEditableCell = ({
 
   const formContent = (
     <Form unstyled action={action} onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-2 p-2">
-        <div>{renderEditing()}</div>
+      <div className="flex gap-2 px-2 py-1">
+        <div className="flex-1">{renderEditing()}</div>
         <div className="flex justify-end gap-1">
           <Button
             variant="ghost"
-            size="small"
-            type="button"
             onPress={handleCancel}
-            aria-label="Cancel"
+            aria-label={
+              isSmallScreen ? undefined : stringFormatter.format('cancel')
+            }
           >
-            <X size={16} />
-            {isSmallScreen && 'Cancel'}
+            {isSmallScreen ? stringFormatter.format('cancel') : <X size={16} />}
           </Button>
           <Button
-            variant="primary"
-            size="small"
+            variant="ghost"
             type="submit"
             loading={saving}
-            aria-label="Save"
+            aria-label={
+              isSmallScreen ? undefined : stringFormatter.format('save')
+            }
           >
-            <Check size={16} />
-            {isSmallScreen && 'Save'}
+            {isSmallScreen ? (
+              stringFormatter.format('save')
+            ) : (
+              <Check size={16} />
+            )}
           </Button>
         </div>
       </div>
@@ -196,7 +201,8 @@ export const TableViewEditableCell = ({
           offset={verticalOffset}
           placement="bottom start"
           style={{
-            minWidth: triggerWidth,
+            minWidth: `min(${triggerWidth}px, ${tableWidth}px)`,
+            maxWidth: tableWidth,
           }}
           className="bg-background rounded-lg border shadow-md"
         >
