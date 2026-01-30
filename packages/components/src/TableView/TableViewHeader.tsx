@@ -17,7 +17,9 @@ export interface TableViewHeaderProps<T extends object = object> extends Omit<
   RAC.TableHeaderProps<T>,
   RemovedProps
 > {
-  /* Makes the header stick to the viewport. */
+  /**
+   * Makes the header stick to the top of the viewport when scrolling.
+   */
   sticky?: boolean;
 }
 

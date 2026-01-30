@@ -17,19 +17,44 @@ import { TableViewSelectableCell } from './TableViewSelectableCell';
 
 // Props
 // ---------------
-export interface EditableTableViewCellProps {
+export interface TableViewEditableCellProps {
+  /**
+   * Display content shown when the cell is not being edited.
+   */
   children: ReactNode;
+  /**
+   * Render function that returns the editing UI (e.g. TextField, Picker).
+   * Called when the edit popover/dialog opens.
+   */
   renderEditing: () => ReactNode;
+  /**
+   * Whether the cell is currently saving. Shows a loading indicator on the save button.
+   * @default false
+   */
   saving?: boolean;
+  /**
+   * Called when the editing form is submitted, either via the save button or outside click.
+   */
   onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
+  /**
+   * Called when the user cancels editing via the cancel button.
+   */
   onCancel?: () => void;
+  /**
+   * Whether editing is disabled. Hides the edit trigger button.
+   * @default false
+   */
   disabled?: boolean;
+  /**
+   * Horizontal text alignment of the cell content.
+   * @default 'left'
+   */
   align?: keyof typeof textAlign;
 }
 
 // Component
 // ---------------
-export const EditableTableViewCell = ({
+export const TableViewEditableCell = ({
   children,
   renderEditing,
   saving = false,
@@ -37,7 +62,7 @@ export const EditableTableViewCell = ({
   onCancel,
   disabled = false,
   align = 'left',
-}: EditableTableViewCellProps) => {
+}: TableViewEditableCellProps) => {
   const {
     classNames,
     overflow = 'wrap',

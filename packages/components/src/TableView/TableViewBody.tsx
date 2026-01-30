@@ -9,6 +9,9 @@ export interface TableViewBodyProps<T extends object = object> extends Omit<
   RAC.TableBodyProps<T>,
   RemovedProps
 > {
+  /**
+   * Render function called when the table body has no items to display.
+   */
   emptyState?: RAC.TableBodyProps<T>['renderEmptyState'];
 }
 

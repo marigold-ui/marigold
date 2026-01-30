@@ -28,8 +28,14 @@ export interface TableViewColumnProps extends Omit<
   RAC.ColumnProps,
   RemovedProps
 > {
+  /**
+   * The column header label.
+   */
   children?: ReactNode;
-  /* Text alignment of the column's content. */
+  /**
+   * Horizontal text alignment of the column's content.
+   * @default 'left'
+   */
   align?: keyof typeof textAlign;
   /** The width of the column. */
   width?: RAC.ColumnProps['width'];

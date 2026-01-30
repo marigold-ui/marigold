@@ -3,7 +3,6 @@ import type RAC from 'react-aria-components';
 import { ResizableTableContainer, Table } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { TableViewContext } from './Context';
-import { EditableTableViewCell } from './EditableTableViewCell';
 import { TableViewBody } from './TableViewBody';
 import { TableViewCell } from './TableViewCell';
 import { TableViewColumn } from './TableViewColumn';
@@ -15,6 +14,7 @@ import {
   TableViewDropIndicator,
   renderDropIndicator,
 } from './TableViewDropIndicator';
+import { TableViewEditableCell } from './TableViewEditableCell';
 import { TableViewHeader } from './TableViewHeader';
 import { TableViewRow } from './TableViewRow';
 
@@ -73,7 +73,7 @@ const TableView = Object.assign(_TableView, {
   Body: TableViewBody,
   Row: TableViewRow,
   Cell: TableViewCell,
-  EditableCell: EditableTableViewCell,
+  EditableCell: TableViewEditableCell,
 
   // Drag and Drop
   DropIndicator: TableViewDropIndicator,
@@ -93,4 +93,4 @@ export type { TableViewRowProps } from './TableViewRow';
 export type { TableViewCellProps } from './TableViewCell';
 export type { TableViewDropIndicatorProps } from './TableViewDropIndicator';
 export type { TableViewDragPreviewProps } from './TableViewDragPreview';
-export type { EditableTableViewCellProps } from './EditableTableViewCell';
+export type { TableViewEditableCellProps } from './TableViewEditableCell';

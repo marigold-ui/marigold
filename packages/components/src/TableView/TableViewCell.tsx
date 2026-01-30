@@ -10,7 +10,14 @@ import { TableViewSelectableCell } from './TableViewSelectableCell';
 type RemovedProps = 'className' | 'style' | 'children';
 
 export interface TableViewCellProps extends Omit<RAC.CellProps, RemovedProps> {
+  /**
+   * The content of the cell.
+   */
   children?: ReactNode;
+  /**
+   * Horizontal text alignment of the cell content.
+   * @default 'left'
+   */
   align?: keyof typeof textAlign;
 }
 
