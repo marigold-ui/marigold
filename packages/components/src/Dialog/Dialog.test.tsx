@@ -9,6 +9,10 @@ import { setup } from '../test.utils';
 import { Dialog } from './Dialog';
 import { VeryLongContent } from './Dialog.stories';
 
+// Note: Dialog is an overlay component that renders into a portal.
+// It requires ThemeProvider directly due to portal rendering behavior.
+// This test file keeps the setup({ theme }) pattern for this reason.
+
 const theme: Theme = {
   name: 'test',
   components: {

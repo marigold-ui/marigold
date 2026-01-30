@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { vi } from 'vitest';
@@ -11,46 +11,16 @@ import { Basic } from './Select.stories';
 // ---------------
 const user = userEvent.setup();
 
+// Minimal theme for tests that need to render components directly
 const theme: Theme = {
   name: 'test',
   components: {
-    Field: cva(''),
-    Label: cva('', {
-      variants: {
-        variant: { lime: 'text-lime-500' },
-        size: { small: 'text-sm' },
-      },
-    }),
+    Field: cva(),
+    Label: cva(),
     Text: cva(),
-    Popover: cva(['mt-0.5'], {
-      variants: {
-        variant: {
-          top: ['mb-0.5'],
-        },
-      },
-    }),
-    HelpText: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'text-sm',
-          },
-        },
-      }),
-      icon: cva(''),
-    },
-    Select: {
-      select: cva('text-blue-500', {
-        variants: {
-          variant: { violet: 'text-violet-500' },
-          size: { small: 'text-sm' },
-        },
-      }),
-      icon: cva('text-zinc-600'),
-    },
+    Popover: cva(),
+    HelpText: { container: cva(), icon: cva() },
+    Select: { select: cva(), icon: cva() },
     Underlay: cva(),
     ListBox: {
       container: cva(),
@@ -59,11 +29,10 @@ const theme: Theme = {
       section: cva(),
       header: cva(),
     },
-    IconButton: cva(''),
+    IconButton: cva(),
   },
 };
-
-const { render } = setup({ theme });
+const { render: renderWithTheme } = setup({ theme });
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -127,7 +96,7 @@ test('allows to disable select', async () => {
 });
 
 test('allows to disable options', async () => {
-  render(
+  renderWithTheme(
     <Select label="Label" data-testid="select" disabledKeys={['two']}>
       <Select.Option id="one">one</Select.Option>
       <Select.Option id="two">two</Select.Option>
@@ -146,7 +115,7 @@ test('allows to disable options', async () => {
 
 test('controlled', async () => {
   const spy = vi.fn();
-  render(
+  renderWithTheme(
     <Select label="Label" data-testid="select" onChange={spy}>
       <Select.Option id="one">one</Select.Option>
       <Select.Option id="two">two</Select.Option>
@@ -166,7 +135,7 @@ test('controlled', async () => {
 });
 
 test('supports default value via "defaultSelectedKey"', async () => {
-  render(
+  renderWithTheme(
     <Select label="Label" data-testid="select" defaultSelectedKey="three">
       <Select.Option id="one">one</Select.Option>
       <Select.Option id="two">two</Select.Option>
@@ -186,7 +155,7 @@ test('supports default value via "defaultSelectedKey"', async () => {
 });
 
 test('supports sections', async () => {
-  render(
+  renderWithTheme(
     <Select label="Label" data-testid="select">
       <Select.Section header="Section 1">
         <Select.Option id="one">one</Select.Option>
@@ -211,7 +180,7 @@ test('supports sections', async () => {
 });
 
 test('set width via props', () => {
-  render(
+  renderWithTheme(
     <Select label="Label" data-testid="select" width="1/2">
       <Select.Option id="one">one</Select.Option>
       <Select.Option id="two">two</Select.Option>
@@ -221,14 +190,12 @@ test('set width via props', () => {
   // We need to query all, since there is also a label in the hidden select
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Label')[0].parentElement;
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-1/2"`
-  );
+  expect(container).toHaveClass('w-1/2');
 });
 
 test('forwards ref', () => {
   const ref = createRef<HTMLButtonElement>();
-  render(
+  renderWithTheme(
     <Select label="Label" data-testid="select" ref={ref as any}>
       <Select.Section header="Section 1">
         <Select.Option id="one">one</Select.Option>

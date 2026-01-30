@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef, useState } from 'react';
 import { Theme, cva } from '@marigold/system';
@@ -6,59 +6,25 @@ import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
 import { setup } from '../test.utils';
 import { TextField } from './TextField';
+import { Basic } from './TextField.stories';
 
+const user = userEvent.setup();
+
+// Minimal theme for tests that need to render components directly
 const theme: Theme = {
   name: 'test',
   components: {
     Field: cva(),
-    Label: cva('', {
-      variants: {
-        variant: {
-          lime: 'text-lime-600',
-        },
-        size: {
-          small: 'p-1',
-        },
-      },
-    }),
-    HelpText: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'p-2',
-          },
-        },
-      }),
-      icon: cva(''),
-    },
-    Input: {
-      input: cva('border-blue-700'),
-      icon: cva(),
-      action: cva(),
-    },
-    Button: cva('align-center flex disabled:bg-gray-600', {
-      variants: {
-        variant: {
-          primary: 'text-primary-500',
-          secondary: 'text-secondary-800',
-        },
-        size: {
-          small: 'size-10',
-          large: 'w-50 h-50',
-        },
-      },
-    }),
+    Label: cva(),
+    HelpText: { container: cva(), icon: cva() },
+    Input: { input: cva(), icon: cva(), action: cva() },
+    Button: cva(),
   },
 };
-
-const user = userEvent.setup();
-const { render } = setup({ theme });
+const { render: renderWithTheme } = setup({ theme });
 
 test('renders an text input', () => {
-  render(<TextField label="Label" data-testid="text-field" />);
+  render(<Basic.Component data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
 
@@ -68,7 +34,7 @@ test('renders an text input', () => {
 });
 
 test('allows to change the input type', () => {
-  render(<TextField label="Label" type="email" data-testid="text-field" />);
+  render(<Basic.Component type="email" data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
 
@@ -76,32 +42,30 @@ test('allows to change the input type', () => {
 });
 
 test('takes full width by default', () => {
-  render(<TextField label="Label" />);
+  render(<Basic.Component />);
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('width: full');
+  const container = screen.getByText('My label is great.').parentElement;
+  expect(container).toHaveClass('w-full');
 });
 
 test('allows to set custom width', () => {
-  render(<TextField label="Label" width="1/2" />);
+  render(<Basic.Component width="1/2" />);
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-1/2"`
-  );
+  const container = screen.getByText('My label is great.').parentElement;
+  expect(container).toHaveClass('w-1/2');
 });
 
 test('supports disabled', () => {
-  render(<TextField label="A Label" disabled data-testid="text-field" />);
+  render(<Basic.Component disabled data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
   expect(textField).toBeDisabled();
 });
 
 test('supports required', () => {
-  render(<TextField label="A Label" required data-testid="text-field" />);
+  render(<Basic.Component required data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
   /** Note that the required attribute is not passed down! */
@@ -109,14 +73,14 @@ test('supports required', () => {
 });
 
 test('supports readonly', () => {
-  render(<TextField label="A Label" readOnly data-testid="text-field" />);
+  render(<Basic.Component readOnly data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
   expect(textField).toHaveAttribute('readonly');
 });
 
 test('supports field structure', () => {
-  render(
+  renderWithTheme(
     <TextField
       label="A Label"
       description="Some helpful text"
@@ -135,7 +99,7 @@ test('supports field structure', () => {
 });
 
 test('supports field structure (with error)', () => {
-  render(
+  renderWithTheme(
     <TextField
       label="A Label"
       description="Some helpful text"
@@ -155,7 +119,7 @@ test('supports field structure (with error)', () => {
 });
 
 test('correctly sets up aria attributes', () => {
-  render(
+  renderWithTheme(
     <TextField
       data-testid="text-field"
       label="A Label"
@@ -186,7 +150,7 @@ test('correctly sets up aria attributes', () => {
 });
 
 test('correctly sets up aria attributes (with error)', () => {
-  render(
+  renderWithTheme(
     <TextField
       data-testid="text-field"
       label="A Label"
@@ -218,13 +182,7 @@ test('correctly sets up aria attributes (with error)', () => {
 });
 
 test('can have default value', () => {
-  render(
-    <TextField
-      data-testid="text-field"
-      label="A Label"
-      defaultValue="Default Value"
-    />
-  );
+  render(<Basic.Component defaultValue="Default Value" />);
 
   const input = screen.getByRole('textbox');
   expect(input).toHaveValue('Default Value');
@@ -247,7 +205,7 @@ test('can be controlled', async () => {
     );
   };
 
-  render(<Controlled />);
+  renderWithTheme(<Controlled />);
 
   await user.type(screen.getByRole('textbox'), 'Hello there!');
 
@@ -256,13 +214,15 @@ test('can be controlled', async () => {
 
 test('forwards ref', () => {
   const ref = createRef<HTMLInputElement>();
-  render(<TextField data-testid="text-field" label="A Label" ref={ref} />);
+  renderWithTheme(
+    <TextField data-testid="text-field" label="A Label" ref={ref} />
+  );
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });
 
 test('render multiple error messages', () => {
-  render(
+  renderWithTheme(
     <TextField
       data-testid="text-field"
       label="A Label"
@@ -277,7 +237,7 @@ test('render multiple error messages', () => {
 });
 
 test('render error message from custom validation', async () => {
-  render(
+  renderWithTheme(
     <TextField
       data-testid="text-field"
       label="Email Address"
@@ -306,7 +266,7 @@ test('render error message from custom validation', async () => {
 });
 
 test('render custom validation error message', async () => {
-  render(
+  renderWithTheme(
     <Form>
       <TextField
         data-testid="text-field"

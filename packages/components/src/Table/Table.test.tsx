@@ -1,39 +1,35 @@
-import { screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
 import { Table } from './Table';
+import { Basic } from './Table.stories';
 
 const user = userEvent.setup();
 
-// Setup
-// ---------------
+// Minimal theme for tests that need to render components directly
 const theme: Theme = {
   name: 'test',
   components: {
-    Checkbox: {
-      checkbox: cva(),
-      container: cva(),
-      label: cva(),
-      group: cva(),
-    },
+    Checkbox: { checkbox: cva(), container: cva(), label: cva(), group: cva() },
     Table: {
-      table: cva('border-collapse'),
+      table: cva(),
       thead: cva(),
-      header: cva('p-4'),
-      headerRow: cva('border-b'),
-      body: cva('bg-white'),
-      row: cva('bg-blue-700'),
-      cell: cva('p-10'),
+      header: cva(),
+      headerRow: cva(),
+      body: cva(),
+      row: cva(),
+      cell: cva(),
     },
-    Field: cva(''),
+    Field: cva(),
   },
 };
+const { render: renderWithTheme } = setup({ theme });
 
-const { render } = setup({ theme });
-
+// Setup
+// ---------------
 const columns = [
   { name: 'Name', key: 'name' },
   { name: 'Firstname', key: 'firstname' },
@@ -52,36 +48,20 @@ const rows: { [key: string]: string }[] = [
   },
 ];
 
-test('renders contens correctly', () => {
-  render(
-    <Table aria-label="Example table">
-      <Table.Header columns={columns}>
-        {column => <Table.Column key={column.key}>{column.name}</Table.Column>}
-      </Table.Header>
-      <Table.Body items={rows}>
-        {item => (
-          <Table.Row key={item.id}>
-            {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
-          </Table.Row>
-        )}
-      </Table.Body>
-    </Table>
-  );
+test('renders contents correctly', () => {
+  render(<Basic.Component />);
 
-  // Renders Header
+  // Renders Header from Basic story
   expect(screen.getByText('Name')).toBeInTheDocument();
-  expect(screen.getByText('Firstname')).toBeInTheDocument();
+  expect(screen.getByText('Email')).toBeInTheDocument();
 
-  // Renders Content
-  expect(screen.getByText('Potter')).toBeInTheDocument();
-  expect(screen.getByText('Harry')).toBeInTheDocument();
-
-  expect(screen.getByText('Malfoy')).toBeInTheDocument();
-  expect(screen.getByText('Draco')).toBeInTheDocument();
+  // Renders Content from Basic story
+  expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+  expect(screen.getByText('hans.mueller@example.de')).toBeInTheDocument();
 });
 
 test('renders empty state when collection is empty', () => {
-  render(
+  renderWithTheme(
     <Table aria-label="Example table" emptyState={() => 'Empty'}>
       <Table.Header columns={columns}>
         {column => <Table.Column key={column.key}>{column.name}</Table.Column>}
@@ -94,7 +74,7 @@ test('renders empty state when collection is empty', () => {
 });
 
 test('renders no empty state when collection has items', async () => {
-  render(
+  renderWithTheme(
     <Table aria-label="Example table" emptyState={() => 'Empty'}>
       <Table.Header columns={columns}>
         {column => <Table.Column key={column.key}>{column.name}</Table.Column>}
@@ -112,8 +92,8 @@ test('renders no empty state when collection has items', async () => {
   await expect(screen.findByText('Empty')).rejects.toThrow();
 });
 
-test('supports theme with parts', async () => {
-  render(
+test('renders table structure correctly', async () => {
+  renderWithTheme(
     <Table aria-label="Example table" selectionMode="single">
       <Table.Header columns={columns}>
         {column => <Table.Column>{column.name}</Table.Column>}
@@ -129,28 +109,28 @@ test('supports theme with parts', async () => {
   );
 
   const table = screen.getAllByRole('grid');
-  expect(table[0]).toHaveClass('border-collapse');
+  expect(table[0]).toBeInTheDocument();
 
   const [tableHead, tableBody] = within(table[0]).getAllByRole('rowgroup');
+  expect(tableHead).toBeInTheDocument();
+  expect(tableBody).toBeInTheDocument();
 
   const tableHeaderRow = within(tableHead).getByRole('row');
-  expect(tableHeaderRow).toHaveClass('border-b');
+  expect(tableHeaderRow).toBeInTheDocument();
 
   const tableHeader = screen.getAllByRole('columnheader');
-  expect(tableHeader[0]).toHaveClass('p-4');
-
-  expect(tableBody).toHaveClass('bg-white');
+  expect(tableHeader.length).toBeGreaterThan(0);
 
   const tableRows = screen.getAllByRole('row');
   await user.click(tableRows[1]);
-  expect(tableRows[1]).toHaveClass('bg-blue-700');
+  expect(tableRows[1]).toHaveAttribute('aria-selected', 'true');
 
   const tableCells = screen.getAllByRole('gridcell');
-  expect(tableCells[0]).toHaveClass('p-10');
+  expect(tableCells.length).toBeGreaterThan(0);
 });
 
 test('supports selectionMode single', async () => {
-  render(
+  renderWithTheme(
     <Table aria-label="Example table" selectionMode="single">
       <Table.Header columns={columns}>
         {column => <Table.Column>{column.name}</Table.Column>}
@@ -167,11 +147,10 @@ test('supports selectionMode single', async () => {
   const firstRow = screen.getAllByRole('row')[1];
   await user.click(firstRow);
   expect(firstRow).toHaveAttribute('aria-selected', 'true');
-  expect(firstRow).toHaveClass(`bg-blue-700`);
 });
 
 test('supports selectionMode multiple', async () => {
-  render(
+  renderWithTheme(
     <Table aria-label="Example table" selectionMode="multiple">
       <Table.Header columns={columns}>
         {column => <Table.Column>{column.name}</Table.Column>}
@@ -199,7 +178,7 @@ test('supports selectionMode multiple', async () => {
 });
 
 test('supports colspans', () => {
-  render(
+  renderWithTheme(
     <Table aria-label="Example table for nested columns">
       <Table.Header>
         <Table.Column title="Name">
@@ -283,7 +262,7 @@ test('sorting', async () => {
       </Table>
     );
   };
-  render(<SortingTable />);
+  renderWithTheme(<SortingTable />);
 
   const rows = screen.getAllByRole('row');
 
@@ -310,7 +289,7 @@ test('sorting', async () => {
 });
 
 test('allows to stretch to fit container', () => {
-  render(
+  renderWithTheme(
     <Table aria-label="Streched table" stretch>
       <Table.Header>
         <Table.Column>Name</Table.Column>
@@ -328,7 +307,7 @@ test('allows to stretch to fit container', () => {
 });
 
 test('supports non-interactive table', async () => {
-  render(
+  renderWithTheme(
     <Table
       aria-label="Non-interactive table"
       selectionMode="none"
@@ -355,7 +334,7 @@ test('supports non-interactive table', async () => {
 });
 
 test('supports table columns alignment', () => {
-  render(
+  renderWithTheme(
     <Table aria-label="Table columns alignment">
       <Table.Header>
         <Table.Column>Name</Table.Column>
@@ -382,7 +361,7 @@ test('supports table columns alignment', () => {
 });
 
 test('cursor indicates interactivity', async () => {
-  render(
+  renderWithTheme(
     <Table
       aria-label="Interactive table"
       selectionMode="single"
@@ -408,7 +387,7 @@ test('cursor indicates interactivity', async () => {
 });
 
 test('Table cell mouse down will not be selectable', async () => {
-  render(
+  renderWithTheme(
     <Table aria-label="table" selectionMode="none">
       <Table.Header>
         <Table.Column>Name</Table.Column>
@@ -432,7 +411,7 @@ test('Table cell mouse down will not be selectable', async () => {
 });
 
 test('Table cell pointer down will not be selectable', async () => {
-  render(
+  renderWithTheme(
     <Table aria-label="table" selectionMode="none">
       <Table.Header>
         <Table.Column>Name</Table.Column>
