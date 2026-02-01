@@ -1,12 +1,45 @@
 ---
 title: FileField
-caption: Upload files with charm.
-badge: alpha
+caption: A form component for uploading files with drag and drop support.
+badge: new
 ---
 
-The `<FileField>` component...
+The `<FileField>` component allows users to upload files to your application. It provides both a drag and drop area and a traditional file browser button, making it easy for users to select files in the way that works best for them.
+
+File uploads are commonly used in forms where users need to attach documents, images, or other files such as resumes for job applications, profile pictures for accounts, or supporting materials for requests.
 
 ## Anatomy
+
+A FileField consists of a label, a drop zone where users can drag files, a zone label providing instructions, and an upload button for browsing files. Once files are selected, they appear as file items in a list, each showing the file name, size, and a remove button.
+
+<Image
+  src="/file-field/file-field-anatomy.svg"
+  alt="Anatomy of FileField component"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+<ul>
+  <li>
+    <b>Label:</b> Identifies what the file upload field is for.
+  </li>
+  <li>
+    <b>Drop zone:</b> The area where users can drag and drop files.
+  </li>
+  <li>
+    <b>Zone label:</b> Instructional text guiding users to drag files.
+  </li>
+  <li>
+    <b>Upload button:</b> Triggers the native file browser for selecting files.
+  </li>
+  <li>
+    <b>File item:</b> Displays information about an uploaded file.
+  </li>
+  <li>
+    <b>Remove button:</b> Allows users to remove a file from the list.
+  </li>
+</ul>
 
 ## Appearance
 
@@ -16,10 +49,68 @@ The `<FileField>` component...
 
 ## Usage
 
+The `<FileField>` is useful whenever users need to attach files to a form or upload content to your application. It supports both drag and drop interaction and traditional file browsing, providing flexibility for different user preferences and device capabilities.
+
+### Uploading files
+
+When users need to attach a single file, such as a profile picture or a document, use the basic FileField. Users can either drag a file into the drop zone or click the upload button to browse their files.
+
+<ComponentDemo file="./file-field-basic.demo.tsx" />
+
+### Uploading multiple files
+
+When users need to upload several files at once, such as multiple photos for a gallery or supporting documents for an application, set the `multiple` prop to allow selecting and uploading multiple files.
+
+<ComponentDemo file="./file-field-multiple.demo.tsx" />
+
+This allows users to select multiple files in the file browser or drag several files into the drop zone at once.
+
+### Restricting file types
+
+For specific use cases where only certain file types are appropriate, such as accepting only PDFs for document uploads or only images for profile pictures, use the `accept` prop to specify allowed file types. This helps prevent errors and guides users toward selecting appropriate files.
+
+<ComponentDemo file="./file-field-restrict.demo.tsx" />
+
+The `accept` prop accepts an array of MIME types (like `'application/pdf'` or `'image/*'`) or file extensions (like `'.pdf'` or `'.jpg'`). Users will only be able to select files that match these criteria, and dropped files that don't match will be filtered out automatically.
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Keep it accessible</SectionMessage.Title>
+  <SectionMessage.Content>
+    The FileField automatically handles keyboard navigation. Users can tab to
+    the upload button and press Enter or Space to open the file browser. The
+    drop zone is keyboard accessible through the upload button, ensuring all
+    users can interact with the component regardless of input method.
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Labeling
+
+Labels for file upload fields should clearly indicate what type of file is expected and its purpose. Keep labels concise while being descriptive about what the user should upload.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use specific labels that describe the file purpose, such as "Upload
+      resume" or "Profile picture".
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't use vague labels like "Upload file" without context about what file
+      is needed.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+If there are specific requirements for the file (such as file type or size limits), consider including this information in the label or adding a description field to provide guidance before users attempt to upload.
+
 ## Props
 
 <StorybookHintMessage component={title} />
 
 <PropsTable component={title} />
 
-## Related
+## Alternative components
+
+- [TextField](/components/form/textfield): For text input rather than file uploads.
+- [Button](/components/actions/button): For triggering actions, can be used with custom file upload implementations.
