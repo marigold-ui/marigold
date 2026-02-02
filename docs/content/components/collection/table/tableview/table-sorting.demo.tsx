@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SortDescriptor } from '@react-types/shared';
-import { TableView } from '@marigold/components';
+import { Table } from '@marigold/components';
 
 export default () => {
   const columns = [
@@ -65,29 +65,29 @@ export default () => {
   };
 
   return (
-    <TableView
+    <Table
       aria-label="Example table with sorting"
       sortDescriptor={descriptor}
       onSortChange={sort}
     >
-      <TableView.Header columns={columns}>
+      <Table.Header columns={columns}>
         {column => (
-          <TableView.Column
+          <Table.Column
             isRowHeader={column.isRowHeader}
             id={column.id}
             allowsSorting
           >
             {column.name}
-          </TableView.Column>
+          </Table.Column>
         )}
-      </TableView.Header>
-      <TableView.Body items={list}>
+      </Table.Header>
+      <Table.Body items={list}>
         {item => (
-          <TableView.Row columns={columns}>
-            {column => <TableView.Cell>{item[column.id]}</TableView.Cell>}
-          </TableView.Row>
+          <Table.Row columns={columns}>
+            {column => <Table.Cell>{item[column.id]}</Table.Cell>}
+          </Table.Row>
         )}
-      </TableView.Body>
-    </TableView>
+      </Table.Body>
+    </Table>
   );
 };

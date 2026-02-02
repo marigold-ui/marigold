@@ -2,18 +2,18 @@ import type RAC from 'react-aria-components';
 import {
   Collection,
   Column,
-  TableHeader,
+  TableHeader as RACTableHeader,
   useTableOptions,
 } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
-import { useTableViewContext } from './Context';
+import { useTableContext } from './Context';
 
 // Props
 // ---------------
 type RemovedProps = 'className' | 'style';
 
-export interface TableViewHeaderProps<T extends object = object> extends Omit<
+export interface TableHeaderProps<T extends object = object> extends Omit<
   RAC.TableHeaderProps<T>,
   RemovedProps
 > {
@@ -25,18 +25,18 @@ export interface TableViewHeaderProps<T extends object = object> extends Omit<
 
 // Component
 // ---------------
-const TableViewHeader = <T extends object>({
+const TableHeader = <T extends object>({
   sticky,
   columns,
   children,
   ...props
-}: TableViewHeaderProps<T>) => {
+}: TableHeaderProps<T>) => {
   const { selectionBehavior, selectionMode, allowsDragging } =
     useTableOptions();
-  const { classNames } = useTableViewContext();
+  const { classNames } = useTableContext();
 
   return (
-    <TableHeader
+    <RACTableHeader
       className={cn(classNames.head, sticky && 'sticky top-0')}
       {...props}
     >
@@ -49,8 +49,8 @@ const TableViewHeader = <T extends object>({
         </Column>
       )}
       <Collection items={columns}>{children}</Collection>
-    </TableHeader>
+    </RACTableHeader>
   );
 };
 
-export { TableViewHeader };
+export { TableHeader };

@@ -1,6 +1,6 @@
-# TableView Features
+# Table Features
 
-This document provides a comprehensive list of features available in the `<TableView>` component.
+This document provides a comprehensive list of features available in the `<Table>` component.
 
 ## Foundation
 
@@ -38,7 +38,7 @@ This document provides a comprehensive list of features available in the `<Table
 ## Cell Features
 
 - **Cell Alignment**: Individual cell text alignment via `align` prop
-- **Editable Cells**: Inline editing with `<TableView.EditableCell>`
+- **Editable Cells**: Inline editing with `<Table.EditableCell>`
   - Popover editing on desktop
   - Dialog editing on mobile/small screens
   - Form submission with `onSubmit` callback
@@ -58,7 +58,7 @@ This document provides a comprehensive list of features available in the `<Table
   - `grid`: Vertical borders between columns for better separation
   - `admin`/`master`: Internal-only feature markers
 - **Size Variants**: `default`, `compact`, `spacious` for different density needs
-- **Sticky Header**: Pin header to top during scroll via `sticky` prop on `<TableView.Header>`
+- **Sticky Header**: Pin header to top during scroll via `sticky` prop on `<Table.Header>`
 - **Scrollable Container**: Works with `<Scrollable>` component for fixed-height tables
 - **Responsive**: Adapts behavior for small screens (e.g., editable cells use dialogs)
 
@@ -66,7 +66,7 @@ This document provides a comprehensive list of features available in the `<Table
 
 - **Static Content**: Direct JSX children for simple tables
 - **Dynamic Collections**: Use `items` prop with render functions for data-driven tables
-- **Empty State**: Custom empty state component via `emptyState` prop on `<TableView.Body>`
+- **Empty State**: Custom empty state component via `emptyState` prop on `<Table.Body>`
 - **Dependencies Tracking**: Re-render optimization via `dependencies` prop
 
 ## Interactive Features
@@ -75,7 +75,7 @@ This document provides a comprehensive list of features available in the `<Table
   - Embed buttons in cells for row-specific actions
   - Support for `<ActionMenu>` to group multiple actions
   - Destructive action variants
-- **Clickable Rows**: Navigate via `href` prop on `<TableView.Row>`
+- **Clickable Rows**: Navigate via `href` prop on `<Table.Row>`
 - **Editable Cells**:
   - Edit button appears on hover
   - Supports any form input (TextField, Select, etc.)
@@ -86,8 +86,8 @@ This document provides a comprehensive list of features available in the `<Table
 ## Drag and Drop
 
 - **Row Reordering**: Drag and drop to reorder rows
-- **Drag Preview**: Custom drag preview component via `<TableView.DragPreview>`
-- **Drop Indicators**: Visual feedback during drag via `<TableView.DropIndicator>`
+- **Drag Preview**: Custom drag preview component via `<Table.DragPreview>`
+- **Drop Indicators**: Visual feedback during drag via `<Table.DropIndicator>`
 - **Drag Hooks**: Integration with `useDragAndDrop` from react-aria-components
 - **Custom Handlers**: `onReorder` callback for implementing reorder logic
 
@@ -121,7 +121,7 @@ This document provides a comprehensive list of features available in the `<Table
 ## Developer Experience
 
 - **TypeScript Support**: Full type definitions for all components and props
-- **Compound Components**: Clean API with `TableView.Header`, `TableView.Column`, etc.
+- **Compound Components**: Clean API with `Table.Header`, `Table.Column`, etc.
 - **React 19 Compatible**: Supports latest React patterns including form actions
 - **Storybook Integration**: Comprehensive stories demonstrating all features
 - **Test Coverage**: Unit and component tests for all major features

@@ -4,7 +4,7 @@ import { Column, Group } from 'react-aria-components';
 import { alignment, cn, textAlign } from '@marigold/system';
 import { SortAscending } from '../icons/SortAscending';
 import { SortDescending } from '../icons/SortDescending';
-import { useTableViewContext } from './Context';
+import { useTableContext } from './Context';
 
 // Helper
 // ---------------
@@ -24,10 +24,7 @@ const ensureWidth = (
 // ---------------
 type RemovedProps = 'className' | 'style' | 'children';
 
-export interface TableViewColumnProps extends Omit<
-  RAC.ColumnProps,
-  RemovedProps
-> {
+export interface TableColumnProps extends Omit<RAC.ColumnProps, RemovedProps> {
   /**
    * The column header label.
    */
@@ -49,13 +46,13 @@ export interface TableViewColumnProps extends Omit<
 
 // Component
 // ---------------
-const TableViewColumn = ({
+const TableColumn = ({
   align = 'left',
   width,
   minWidth,
   ...props
-}: TableViewColumnProps) => {
-  const { classNames } = useTableViewContext();
+}: TableColumnProps) => {
+  const { classNames } = useTableContext();
 
   return (
     <Column
@@ -90,4 +87,4 @@ const TableViewColumn = ({
   );
 };
 
-export { TableViewColumn };
+export { TableColumn };

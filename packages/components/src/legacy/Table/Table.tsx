@@ -103,7 +103,7 @@ export const Table: Table = ({
 
   const { gridProps } = useTable(props, state, tableRef);
   const classNames = useClassNames({
-    component: 'Table',
+    component: 'LegacyTable',
     variant,
     size,
   });

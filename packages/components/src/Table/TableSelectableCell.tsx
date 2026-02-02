@@ -14,13 +14,11 @@ const stopProgragationProps = {
 
 // Props
 // ---------------
-export type TableViewSelectableCellProps = PropsWithChildren;
+export type TableSelectableCellProps = PropsWithChildren;
 
 // Componen
 // ---------------
-export const TableViewSelectableCell = ({
-  children,
-}: TableViewSelectableCellProps) => (
+export const TableSelectableCell = ({ children }: TableSelectableCellProps) => (
   <div
     className="cursor-text outline-none"
     tabIndex={-1}

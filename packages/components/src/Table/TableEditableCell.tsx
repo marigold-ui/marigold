@@ -15,12 +15,12 @@ import { Check } from '../icons/Check';
 import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
-import { useTableViewContext } from './Context';
-import { TableViewSelectableCell } from './TableViewSelectableCell';
+import { useTableContext } from './Context';
+import { TableSelectableCell } from './TableSelectableCell';
 
 // Props
 // ---------------
-export interface TableViewEditableCellProps {
+export interface TableEditableCellProps {
   /**
    * Display content shown when the cell is not being edited.
    */
@@ -117,7 +117,7 @@ const EditableCellPopover = ({
 
 // Component
 // ---------------
-export const TableViewEditableCell = ({
+export const TableEditableCell = ({
   children,
   renderEditing,
   saving = false,
@@ -126,12 +126,12 @@ export const TableViewEditableCell = ({
   disabled = false,
   action,
   align = 'left',
-}: TableViewEditableCellProps) => {
+}: TableEditableCellProps) => {
   const {
     classNames,
     overflow = 'wrap',
     allowTextSelection = false,
-  } = useTableViewContext();
+  } = useTableContext();
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -194,7 +194,7 @@ export const TableViewEditableCell = ({
       <div className="group/editable-cell flex items-center gap-1">
         <div className="min-w-0 flex-1">
           {allowTextSelection ? (
-            <TableViewSelectableCell>{children}</TableViewSelectableCell>
+            <TableSelectableCell>{children}</TableSelectableCell>
           ) : (
             children
           )}

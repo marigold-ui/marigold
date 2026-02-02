@@ -4,28 +4,28 @@ import {
   ActionMenu,
   Button,
   Inline,
-  TableView,
+  Table,
   Tooltip,
 } from '@marigold/components';
 import { Edit, Star } from '@marigold/icons';
 
 export default () => (
-  <TableView aria-label="Venue List">
-    <TableView.Header>
-      <TableView.Column>Venue</TableView.Column>
-      <TableView.Column>Address</TableView.Column>
-      <TableView.Column align="right">Rating</TableView.Column>
-      <TableView.Column>Action</TableView.Column>
-    </TableView.Header>
-    <TableView.Body>
+  <Table aria-label="Venue List">
+    <Table.Header>
+      <Table.Column>Venue</Table.Column>
+      <Table.Column>Address</Table.Column>
+      <Table.Column align="right">Rating</Table.Column>
+      <Table.Column>Action</Table.Column>
+    </Table.Header>
+    <Table.Body>
       {venues.slice(0, 3).map(item => (
-        <TableView.Row key={item.id}>
-          <TableView.Cell>{item.name}</TableView.Cell>
-          <TableView.Cell>
+        <Table.Row key={item.id}>
+          <Table.Cell>{item.name}</Table.Cell>
+          <Table.Cell>
             {item.street}, {item.city}
-          </TableView.Cell>
-          <TableView.Cell>{item.rating}</TableView.Cell>
-          <TableView.Cell>
+          </Table.Cell>
+          <Table.Cell>{item.rating}</Table.Cell>
+          <Table.Cell>
             <Inline space={1} alignX="center" noWrap>
               <Tooltip.Trigger>
                 <Button size="small">
@@ -52,9 +52,9 @@ export default () => (
                 </ActionMenu.Item>
               </ActionMenu>
             </Inline>
-          </TableView.Cell>
-        </TableView.Row>
+          </Table.Cell>
+        </Table.Row>
       ))}
-    </TableView.Body>
-  </TableView>
+    </Table.Body>
+  </Table>
 );

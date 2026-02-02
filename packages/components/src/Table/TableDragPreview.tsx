@@ -5,7 +5,7 @@ import { intlMessages } from '../intl/messages';
 
 // Props
 // ---------------
-export interface TableViewDragPreviewProps {
+export interface TableDragPreviewProps {
   variant?: string;
   size?: string;
   /* Dragged items */
@@ -14,14 +14,14 @@ export interface TableViewDragPreviewProps {
 
 // Component
 // ---------------
-export const TableViewDragPreview = ({
+export const TableDragPreview = ({
   items,
   variant,
   size,
-}: TableViewDragPreviewProps) => {
+}: TableDragPreviewProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
-    component: 'TableView',
+    component: 'Table',
     variant,
     size,
   });
@@ -43,7 +43,7 @@ export const TableViewDragPreview = ({
 // ---------------
 export const renderDragPreview: DragAndDropOptions['renderDragPreview'] =
   items => {
-    if (items.length > 1) return <TableViewDragPreview items={items} />;
+    if (items.length > 1) return <TableDragPreview items={items} />;
 
     // For single items we use the default preview, types are not correct here.
     // "undefined" will make react-aria use its default rendering.

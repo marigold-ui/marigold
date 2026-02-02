@@ -1,5 +1,5 @@
 import { DateFormat } from '@/ui';
-import { Badge, I18nProvider, TableView } from '@marigold/components';
+import { Badge, I18nProvider, Table } from '@marigold/components';
 
 export default () => {
   const rowData: { [key: string]: string }[] = [
@@ -41,29 +41,29 @@ export default () => {
     },
   ];
   return (
-    <TableView aria-label="Events with badges" size="compact">
-      <TableView.Header>
-        <TableView.Column>Id</TableView.Column>
-        <TableView.Column>Event</TableView.Column>
-        <TableView.Column>Date</TableView.Column>
-        <TableView.Column>Status</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
+    <Table aria-label="Events with badges" size="compact">
+      <Table.Header>
+        <Table.Column>Id</Table.Column>
+        <Table.Column>Event</Table.Column>
+        <Table.Column>Date</Table.Column>
+        <Table.Column>Status</Table.Column>
+      </Table.Header>
+      <Table.Body>
         {rowData.map(item => (
-          <TableView.Row key={item.id}>
-            <TableView.Cell>{item.id}</TableView.Cell>
-            <TableView.Cell>{item.event}</TableView.Cell>
-            <TableView.Cell>
+          <Table.Row key={item.id}>
+            <Table.Cell>{item.id}</Table.Cell>
+            <Table.Cell>{item.event}</Table.Cell>
+            <Table.Cell>
               <I18nProvider locale="de-DE">
                 <DateFormat dateStyle="full" value={new Date(`${item.date}`)} />
               </I18nProvider>
-            </TableView.Cell>
-            <TableView.Cell>
+            </Table.Cell>
+            <Table.Cell>
               {item.status !== '' ? <Badge>{item.status}</Badge> : '-'}
-            </TableView.Cell>
-          </TableView.Row>
+            </Table.Cell>
+          </Table.Row>
         ))}
-      </TableView.Body>
-    </TableView>
+      </Table.Body>
+    </Table>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Badge, Stack, Switch, TableView } from '@marigold/components';
+import { Badge, Stack, Switch, Table } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';
 
 const users = [
@@ -46,44 +46,44 @@ export default () => {
   return (
     <Stack space={3}>
       <div className="max-w-2xl resize-x overflow-x-auto border border-stone-800">
-        <TableView
+        <Table
           key={overflow}
           aria-label="Table with custom column widths"
           overflow={overflow}
         >
-          <TableView.Header>
-            <TableView.Column width={40}>ID</TableView.Column>
-            <TableView.Column minWidth={100}>Name</TableView.Column>
-            <TableView.Column width={100}>Status</TableView.Column>
-            <TableView.Column minWidth={100}>Location</TableView.Column>
-            <TableView.Column minWidth={80} align="right">
+          <Table.Header>
+            <Table.Column width={40}>ID</Table.Column>
+            <Table.Column minWidth={100}>Name</Table.Column>
+            <Table.Column width={100}>Status</Table.Column>
+            <Table.Column minWidth={100}>Location</Table.Column>
+            <Table.Column minWidth={80} align="right">
               Balance
-            </TableView.Column>
-          </TableView.Header>
-          <TableView.Body>
+            </Table.Column>
+          </Table.Header>
+          <Table.Body>
             {users.map((user, index) => (
-              <TableView.Row key={user.email}>
-                <TableView.Cell>{index + 1}</TableView.Cell>
-                <TableView.Cell>{user.name}</TableView.Cell>
-                <TableView.Cell>
+              <Table.Row key={user.email}>
+                <Table.Cell>{index + 1}</Table.Cell>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>
                   <Badge
                     variant={user.status === 'active' ? 'success' : 'warning'}
                   >
                     {user.status}
                   </Badge>
-                </TableView.Cell>
-                <TableView.Cell>{user.location}</TableView.Cell>
-                <TableView.Cell align="right">
+                </Table.Cell>
+                <Table.Cell>{user.location}</Table.Cell>
+                <Table.Cell align="right">
                   <NumericFormat
                     value={user.balance}
                     style="currency"
                     currency="EUR"
                   />
-                </TableView.Cell>
-              </TableView.Row>
+                </Table.Cell>
+              </Table.Row>
             ))}
-          </TableView.Body>
-        </TableView>
+          </Table.Body>
+        </Table>
       </div>
       <Switch
         label="Truncate cell content"

@@ -2,14 +2,14 @@ import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Cell, useTableOptions } from 'react-aria-components';
 import { cn, textAlign } from '@marigold/system';
-import { useTableViewContext } from './Context';
-import { TableViewSelectableCell } from './TableViewSelectableCell';
+import { useTableContext } from './Context';
+import { TableSelectableCell } from './TableSelectableCell';
 
 // Props
 // ---------------
 type RemovedProps = 'className' | 'style' | 'children';
 
-export interface TableViewCellProps extends Omit<RAC.CellProps, RemovedProps> {
+export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
   /**
    * The content of the cell.
    */
@@ -23,16 +23,12 @@ export interface TableViewCellProps extends Omit<RAC.CellProps, RemovedProps> {
 
 // Component
 // ---------------
-const TableViewCell = ({
-  children,
-  align = 'left',
-  ...props
-}: TableViewCellProps) => {
+const TableCell = ({ children, align = 'left', ...props }: TableCellProps) => {
   const {
     classNames,
     overflow = 'wrap',
     allowTextSelection = false,
-  } = useTableViewContext();
+  } = useTableContext();
   const { selectionMode } = useTableOptions();
 
   return (
@@ -45,7 +41,7 @@ const TableViewCell = ({
       {...props}
     >
       {allowTextSelection && selectionMode !== 'none' ? (
-        <TableViewSelectableCell>{children}</TableViewSelectableCell>
+        <TableSelectableCell>{children}</TableSelectableCell>
       ) : (
         children
       )}
@@ -53,4 +49,4 @@ const TableViewCell = ({
   );
 };
 
-export { TableViewCell };
+export { TableCell };

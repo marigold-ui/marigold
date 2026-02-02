@@ -1,4 +1,4 @@
-import { I18nProvider, TableView } from '@marigold/components';
+import { I18nProvider, Table } from '@marigold/components';
 import { DateFormat, NumericFormat } from '@marigold/system';
 
 const rows = [
@@ -40,23 +40,23 @@ const rows = [
 ] as const;
 
 export default () => (
-  <TableView aria-label="Data Table" selectionMode="multiple" size="compact">
-    <TableView.Header>
-      <TableView.Column>Event</TableView.Column>
-      <TableView.Column>Date</TableView.Column>
-      <TableView.Column align="right">Price</TableView.Column>
-      <TableView.Column align="right">Ticket Number</TableView.Column>
-    </TableView.Header>
-    <TableView.Body>
+  <Table aria-label="Data Table" selectionMode="multiple" size="compact">
+    <Table.Header>
+      <Table.Column>Event</Table.Column>
+      <Table.Column>Date</Table.Column>
+      <Table.Column align="right">Price</Table.Column>
+      <Table.Column align="right">Ticket Number</Table.Column>
+    </Table.Header>
+    <Table.Body>
       {rows.map(item => (
-        <TableView.Row key={item.id}>
-          <TableView.Cell>{item.event}</TableView.Cell>
-          <TableView.Cell>
+        <Table.Row key={item.id}>
+          <Table.Cell>{item.event}</Table.Cell>
+          <Table.Cell>
             <I18nProvider locale="de-DE">
               <DateFormat dateStyle="full" value={new Date(`${item.date}`)} />
             </I18nProvider>
-          </TableView.Cell>
-          <TableView.Cell>
+          </Table.Cell>
+          <Table.Cell>
             <I18nProvider locale="en-US">
               <NumericFormat
                 style="currency"
@@ -64,10 +64,10 @@ export default () => (
                 currency="USD"
               />
             </I18nProvider>
-          </TableView.Cell>
-          <TableView.Cell>{item.ticketnr}</TableView.Cell>
-        </TableView.Row>
+          </Table.Cell>
+          <Table.Cell>{item.ticketnr}</Table.Cell>
+        </Table.Row>
       ))}
-    </TableView.Body>
-  </TableView>
+    </Table.Body>
+  </Table>
 );

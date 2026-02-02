@@ -11,7 +11,7 @@ import {
   Sorting,
   WidthsAndOverflow,
   WithActions,
-} from './TableView.stories';
+} from './Table.stories';
 
 // Setup
 // ---------------

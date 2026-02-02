@@ -9,23 +9,23 @@ import {
 } from 'react-aria-components';
 import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
-import { useTableViewContext } from './Context';
+import { useTableContext } from './Context';
 
 type RemovedProps = 'className' | 'style';
 
-export type TableViewRowProps<T extends object = object> = Omit<
+export type TableRowProps<T extends object = object> = Omit<
   RAC.RowProps<T>,
   RemovedProps
 >;
 
-const TableViewRow = <T extends object>({
+const TableRow = <T extends object>({
   id,
   columns,
   children,
   ...otherProps
-}: TableViewRowProps<T>) => {
+}: TableRowProps<T>) => {
   let { selectionBehavior, allowsDragging } = useTableOptions();
-  const { classNames } = useTableViewContext();
+  const { classNames } = useTableContext();
 
   return (
     <Row id={id} className={cn('group/row', classNames.row)} {...otherProps}>
@@ -52,4 +52,4 @@ const TableViewRow = <T extends object>({
   );
 };
 
-export { TableViewRow };
+export { TableRow };

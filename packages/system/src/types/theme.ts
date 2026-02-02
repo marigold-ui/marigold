@@ -144,10 +144,6 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<
-      'table' | 'headerRow' | 'header' | 'thead' | 'body' | 'row' | 'cell',
-      ComponentStyleFunction<string, string>
-    >;
-    TableView?: Record<
       | 'table'
       | 'head'
       | 'column'
@@ -159,6 +155,10 @@ export type Theme = {
       | 'dragPreviewCounter'
       | 'dropIndicator'
       | 'editablePopover',
+      ComponentStyleFunction<string, string>
+    >;
+    LegacyTable?: Record<
+      'table' | 'headerRow' | 'header' | 'thead' | 'body' | 'row' | 'cell',
       ComponentStyleFunction<string, string>
     >;
     Tag?: Record<

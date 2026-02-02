@@ -7,7 +7,7 @@ import { cn, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
-export interface TableViewDropIndicatorProps extends Pick<
+export interface TableDropIndicatorProps extends Pick<
   DropIndicatorProps,
   'target'
 > {
@@ -17,13 +17,13 @@ export interface TableViewDropIndicatorProps extends Pick<
 
 // Component
 // ---------------
-export const TableViewDropIndicator = ({
+export const TableDropIndicator = ({
   size,
   variant,
   ...props
-}: TableViewDropIndicatorProps) => {
+}: TableDropIndicatorProps) => {
   const classNames = useClassNames({
-    component: 'TableView',
+    component: 'Table',
     variant,
     size,
   });
@@ -38,4 +38,4 @@ export const TableViewDropIndicator = ({
 // Hook Handler
 // ---------------
 export const renderDropIndicator: DragAndDropOptions['renderDropIndicator'] =
-  target => <TableViewDropIndicator target={target} />;
+  target => <TableDropIndicator target={target} />;

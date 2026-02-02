@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Badge, Stack, Switch, TableView } from '@marigold/components';
+import { Badge, Stack, Switch, Table } from '@marigold/components';
 
 const users = [
   {
@@ -32,31 +32,31 @@ export default () => {
         selected={allowTextSelection}
         onChange={setAllowTextSelection}
       />
-      <TableView
+      <Table
         key={String(allowTextSelection)}
         aria-label="Table demonstrating allowTextSelection prop"
         selectionMode="multiple"
         allowTextSelection={allowTextSelection}
       >
-        <TableView.Header>
-          <TableView.Column>Name</TableView.Column>
-          <TableView.Column>Email</TableView.Column>
-          <TableView.Column>Location</TableView.Column>
-          <TableView.Column>Status</TableView.Column>
-        </TableView.Header>
-        <TableView.Body>
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Location</Table.Column>
+          <Table.Column>Status</Table.Column>
+        </Table.Header>
+        <Table.Body>
           {users.map(user => (
-            <TableView.Row key={user.email}>
-              <TableView.Cell>{user.name}</TableView.Cell>
-              <TableView.Cell>{user.email}</TableView.Cell>
-              <TableView.Cell>{user.location}</TableView.Cell>
-              <TableView.Cell>
+            <Table.Row key={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.location}</Table.Cell>
+              <Table.Cell>
                 <Badge>{user.status}</Badge>
-              </TableView.Cell>
-            </TableView.Row>
+              </Table.Cell>
+            </Table.Row>
           ))}
-        </TableView.Body>
-      </TableView>
+        </Table.Body>
+      </Table>
     </Stack>
   );
 };

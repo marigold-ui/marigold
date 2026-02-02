@@ -1,9 +1,9 @@
 ---
-title: TableView
+title: Table
 caption: Organize and display large amount of data in table format.
 ---
 
-The `<TableView>` is a structured component used to organize and display tabular data in rows and columns. Built on [React Aria Components](https://react-spectrum.adobe.com/react-aria/Table.html), it enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, and helps with accessibility by enabling keyboard navigation.
+The `<Table>` is a structured component used to organize and display tabular data in rows and columns. Built on [React Aria Components](https://react-spectrum.adobe.com/react-aria/Table.html), it enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, and helps with accessibility by enabling keyboard navigation.
 
 <SectionMessage>
   <SectionMessage.Title>What is tabular data?</SectionMessage.Title>
@@ -13,7 +13,7 @@ The `<TableView>` is a structured component used to organize and display tabular
   </SectionMessage.Content>
 </SectionMessage>
 
-The `<TableView>` allows selecting one or multiple rows, includes support for row actions, and supports sorting columns. Additionally, it features a sticky header, resizable columns, column alignment, nested columns, fixed column widths, drag and drop reordering, and control over cell content overflow.
+The `<Table>` allows selecting one or multiple rows, includes support for row actions, and supports sorting columns. Additionally, it features a sticky header, resizable columns, column alignment, nested columns, fixed column widths, drag and drop reordering, and control over cell content overflow.
 
 These features will be explained in more detail in the usage section further down the page.
 
@@ -37,7 +37,7 @@ A table view is composed of a container element that organizes data into rows an
 
 ## Usage
 
-Use a `<TableView>` if you need to organize and display large amounts of data.
+Use a `<Table>` if you need to organize and display large amounts of data.
 Grouping information provides a structured and organized way to display data, making it easier to understand and analyze.
 Tables allow you to group related information in a clear and concise manner, which enhances data readability and comprehension.
 
@@ -109,9 +109,9 @@ Also with the support of single or multiple row actions, they make it convenient
 
 <ul>
   <li>
-    **Default:** You should use the default variant of the TableView component
-    when you want a clean, standard table appearance. It's ideal for most use
-    cases where you want to display tabular data clearly and simply. The default
+    **Default:** You should use the default variant of the Table component when
+    you want a clean, standard table appearance. It's ideal for most use cases
+    where you want to display tabular data clearly and simply. The default
     variant is a good starting point for most tables.
   </li>
   <li>
@@ -173,13 +173,13 @@ Secondary data in a cell is needed when additional context or details are necess
 
 ### Sticky header
 
-If you have large data tables, setting the header to sticky can provide context when scrolling. To do this, set the `sticky` property on `<TableView.Header>` and wrap it in the [Scrollable](../layout/scrollable) component with a specified height, as shown in the example below.
+If you have large data tables, setting the header to sticky can provide context when scrolling. To do this, set the `sticky` property on `<Table.Header>` and wrap it in the [Scrollable](../layout/scrollable) component with a specified height, as shown in the example below.
 
 <ComponentDemo file="./tableview-fixed-header.demo.tsx" />
 
 ### Highlight data
 
-This is an example of how you can use the [`<Badge>`](../content/badge) within the `<TableView>`. Badges can be used in a table to highlight or categorize certain data, making it easier for users to quickly identify key information. This is a common use case if you need to add status indicators, categorizations, labels or tags within the table.
+This is an example of how you can use the [`<Badge>`](../content/badge) within the `<Table>`. Badges can be used in a table to highlight or categorize certain data, making it easier for users to quickly identify key information. This is a common use case if you need to add status indicators, categorizations, labels or tags within the table.
 
 <ComponentDemo file="./tableview-badge.demo.tsx" />
 
@@ -202,7 +202,7 @@ This is an example of how you can use the [`<Badge>`](../content/badge) within t
 
 Enable the sorting function to help users organize and find data efficiently. This is especially useful since different user tasks may require different sorting orders.
 
-The `<TableView>` is sortable through `allowsSorting` prop on its columns. Sorting controls, indicated by an arrow icon, are located in the column headers and allow for ascending or descending order. For this purpose the properties `onSortChange` which handles the direction when changing and `sortDescriptor`, containing the current column and direction must be specified.
+The `<Table>` is sortable through `allowsSorting` prop on its columns. Sorting controls, indicated by an arrow icon, are located in the column headers and allow for ascending or descending order. For this purpose the properties `onSortChange` which handles the direction when changing and `sortDescriptor`, containing the current column and direction must be specified.
 
 <ComponentDemo file="./tableview-sorting.demo.tsx" />
 
@@ -225,7 +225,7 @@ Also you see how to use the `align` property on the columns. With that you can s
 
 ### Column widths and overflow
 
-The `<TableView>` supports setting `width` and `minWidth` on columns to control the layout. Combined with the `overflow` prop on the table, you can control how cell content behaves when it doesn't fit. Set `overflow="truncate"` to clip content with an ellipsis, or use the default `"wrap"` to let text wrap to multiple lines.
+The `<Table>` supports setting `width` and `minWidth` on columns to control the layout. Combined with the `overflow` prop on the table, you can control how cell content behaves when it doesn't fit. Set `overflow="truncate"` to clip content with an ellipsis, or use the default `"wrap"` to let text wrap to multiple lines.
 
 <ComponentDemo file="./tableview-overflow.demo.tsx" />
 
@@ -249,7 +249,7 @@ Inline links for actions can sometimes be mistaken for regular content and may a
 
 ### Text selection
 
-By default, clicking on cell text in a `<TableView>` with selection enabled will select the row instead of the text. If you need users to be able to copy text from cells, set the `allowTextSelection` prop.
+By default, clicking on cell text in a `<Table>` with selection enabled will select the row instead of the text. If you need users to be able to copy text from cells, set the `allowTextSelection` prop.
 
 <ComponentDemo file="./tableview-text-selection.demo.tsx" />
 
@@ -266,29 +266,29 @@ By default, clicking on cell text in a `<TableView>` with selection enabled will
 
 <StorybookHintMessage component={title} />
 
-### TableView
+### Table
 
 <PropsTable component={title} />
 
-### TableView.Header
+### Table.Header
 
-<PropsTable component="TableView.Header" />
+<PropsTable component="Table.Header" />
 
-### TableView.Column
+### Table.Column
 
-<PropsTable component="TableView.Column" />
+<PropsTable component="Table.Column" />
 
-### TableView.Body
+### Table.Body
 
-<PropsTable component="TableView.Body" />
+<PropsTable component="Table.Body" />
 
-### TableView.Row
+### Table.Row
 
-<PropsTable component="TableView.Row" />
+<PropsTable component="Table.Row" />
 
-### TableView.Cell
+### Table.Cell
 
-<PropsTable component="TableView.Cell" />
+<PropsTable component="Table.Cell" />
 
 ## Alternative components
 

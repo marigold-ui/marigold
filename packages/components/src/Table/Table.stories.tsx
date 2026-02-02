@@ -18,10 +18,10 @@ import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import type { Selection } from '../types';
-import { TableView } from './TableView';
+import { Table } from './Table';
 
 const meta = preview.meta({
-  title: 'Components/TableView',
+  title: 'Components/Table',
   decorators: [
     Story => (
       <div id="storybook-root">
@@ -29,7 +29,7 @@ const meta = preview.meta({
       </div>
     ),
   ],
-  component: TableView,
+  component: Table,
   argTypes: {
     selectionMode: {
       control: {
@@ -149,41 +149,41 @@ const users = [
 export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
-    <TableView aria-label="label" {...args}>
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-        <TableView.Column>Email</TableView.Column>
-        <TableView.Column>Location</TableView.Column>
-        <TableView.Column>Status</TableView.Column>
-        <TableView.Column align="right">Balance</TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
+    <Table aria-label="label" {...args}>
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column>Email</Table.Column>
+        <Table.Column>Location</Table.Column>
+        <Table.Column>Status</Table.Column>
+        <Table.Column align="right">Balance</Table.Column>
+      </Table.Header>
+      <Table.Body>
         {users.map(user => (
-          <TableView.Row key={user.email}>
-            <TableView.Cell>
+          <Table.Row key={user.email}>
+            <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
                 <Text size="xs" color="muted-foreground">
                   {user.handle}
                 </Text>
               </Stack>
-            </TableView.Cell>
-            <TableView.Cell>{user.email}</TableView.Cell>
-            <TableView.Cell>{user.location}</TableView.Cell>
-            <TableView.Cell>
+            </Table.Cell>
+            <Table.Cell>{user.email}</Table.Cell>
+            <Table.Cell>{user.location}</Table.Cell>
+            <Table.Cell>
               <Badge>{user.status}</Badge>
-            </TableView.Cell>
-            <TableView.Cell align="right">
+            </Table.Cell>
+            <Table.Cell align="right">
               <NumericFormat
                 style="currency"
                 currency="EUR"
                 value={user.balance}
               />
-            </TableView.Cell>
-          </TableView.Row>
+            </Table.Cell>
+          </Table.Row>
         ))}
-      </TableView.Body>
-    </TableView>
+      </Table.Body>
+    </Table>
   ),
   play: async ({ canvas, step }) => {
     await step('Verify table renders with correct structure', async () => {
@@ -261,28 +261,28 @@ export const DynamicData = meta.story({
 
     return (
       <Stack space={3}>
-        <TableView
+        <Table
           aria-label="Example dynamic collection table"
           selectionMode="multiple"
           {...args}
           selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
         >
-          <TableView.Header columns={columns}>
+          <Table.Header columns={columns}>
             {column => (
-              <TableView.Column isRowHeader={column.isRowHeader} id={column.id}>
+              <Table.Column isRowHeader={column.isRowHeader} id={column.id}>
                 {column.name}
-              </TableView.Column>
+              </Table.Column>
             )}
-          </TableView.Header>
-          <TableView.Body items={rows}>
+          </Table.Header>
+          <Table.Body items={rows}>
             {item => (
-              <TableView.Row columns={columns}>
-                {column => <TableView.Cell>{item[column.id]}</TableView.Cell>}
-              </TableView.Row>
+              <Table.Row columns={columns}>
+                {column => <Table.Cell>{item[column.id]}</Table.Cell>}
+              </Table.Row>
             )}
-          </TableView.Body>
-        </TableView>
+          </Table.Body>
+        </Table>
         <div>Selected rows: {selectedKeys}</div>
       </Stack>
     );
@@ -328,46 +328,46 @@ export const WidthsAndOverflow = meta.story({
           data-testid="table-container"
           className="max-w-2xl resize-x overflow-x-auto border border-stone-800"
         >
-          <TableView
+          <Table
             key={overflow}
             {...args}
             aria-label="Table with custom column widths"
             overflow={overflow}
           >
-            <TableView.Header>
-              <TableView.Column width={40}>ID</TableView.Column>
-              <TableView.Column minWidth={100}>Name</TableView.Column>
-              <TableView.Column width={100}>Status</TableView.Column>
-              <TableView.Column minWidth={100}>Location</TableView.Column>
-              <TableView.Column minWidth={80} align="right">
+            <Table.Header>
+              <Table.Column width={40}>ID</Table.Column>
+              <Table.Column minWidth={100}>Name</Table.Column>
+              <Table.Column width={100}>Status</Table.Column>
+              <Table.Column minWidth={100}>Location</Table.Column>
+              <Table.Column minWidth={80} align="right">
                 Balance
-              </TableView.Column>
-            </TableView.Header>
-            <TableView.Body>
+              </Table.Column>
+            </Table.Header>
+            <Table.Body>
               {users.slice(0, 5).map((user, index) => (
-                <TableView.Row key={user.email}>
-                  <TableView.Cell>{index + 1}</TableView.Cell>
-                  <TableView.Cell>{user.name}</TableView.Cell>
-                  <TableView.Cell>
+                <Table.Row key={user.email}>
+                  <Table.Cell>{index + 1}</Table.Cell>
+                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell>
                     <Badge
                       variant={user.status === 'active' ? 'success' : 'warning'}
                     >
                       {user.status}
                     </Badge>
-                  </TableView.Cell>
-                  <TableView.Cell>{user.location}</TableView.Cell>
-                  <TableView.Cell align="right">
+                  </Table.Cell>
+                  <Table.Cell>{user.location}</Table.Cell>
+                  <Table.Cell align="right">
                     <NumericFormat
                       value={user.balance}
                       style="currency"
                       currency="EUR"
                     />
-                  </TableView.Cell>
-                </TableView.Row>
+                  </Table.Cell>
+                </Table.Row>
               ))}
-              <TableView.Row>
-                <TableView.Cell colSpan={4}>Total</TableView.Cell>
-                <TableView.Cell align="right">
+              <Table.Row>
+                <Table.Cell colSpan={4}>Total</Table.Cell>
+                <Table.Cell align="right">
                   <NumericFormat
                     value={users
                       .slice(0, 5)
@@ -375,10 +375,10 @@ export const WidthsAndOverflow = meta.story({
                     style="currency"
                     currency="EUR"
                   />
-                </TableView.Cell>
-              </TableView.Row>
-            </TableView.Body>
-          </TableView>
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
         </div>
         <p className="text-muted-foreground block text-xs">
           Column widths: ID 40px, Name min 100px, Status 100px, Location min
@@ -427,14 +427,14 @@ export const WidthsAndOverflow = meta.story({
 export const Empty = meta.story({
   tags: ['component-test'],
   render: args => (
-    <TableView aria-label="Example table for nested columns" {...args}>
-      <TableView.Header>
-        <TableView.Column>First Name</TableView.Column>
-        <TableView.Column>Last Name</TableView.Column>
-        <TableView.Column>Age</TableView.Column>
-        <TableView.Column>Birthday</TableView.Column>
-      </TableView.Header>
-      <TableView.Body
+    <Table aria-label="Example table for nested columns" {...args}>
+      <Table.Header>
+        <Table.Column>First Name</Table.Column>
+        <Table.Column>Last Name</Table.Column>
+        <Table.Column>Age</Table.Column>
+        <Table.Column>Birthday</Table.Column>
+      </Table.Header>
+      <Table.Body
         emptyState={() => (
           <EmptyState
             title="No results found."
@@ -443,8 +443,8 @@ export const Empty = meta.story({
         )}
       >
         {[]}
-      </TableView.Body>
-    </TableView>
+      </Table.Body>
+    </Table>
   ),
   play: async ({ canvas, step }) => {
     await step('Verify empty state message is displayed', async () => {
@@ -577,37 +577,37 @@ export const Sorting = meta.story({
 
     return (
       <>
-        <TableView
+        <Table
           aria-label="Example table with client side sorting"
           sortDescriptor={descriptor}
           onSortChange={sort}
           selectionMode="multiple"
           {...args}
         >
-          <TableView.Header columns={columns}>
+          <Table.Header columns={columns}>
             {column => (
-              <TableView.Column
+              <Table.Column
                 isRowHeader={column.isRowHeader}
                 id={column.id}
                 align={column.align}
                 allowsSorting
               >
                 {column.name}
-              </TableView.Column>
+              </Table.Column>
             )}
-          </TableView.Header>
-          <TableView.Body items={list}>
+          </Table.Header>
+          <Table.Body items={list}>
             {item => (
-              <TableView.Row columns={columns}>
+              <Table.Row columns={columns}>
                 {column => (
-                  <TableView.Cell align={column.align}>
+                  <Table.Cell align={column.align}>
                     {item[column.id]}
-                  </TableView.Cell>
+                  </Table.Cell>
                 )}
-              </TableView.Row>
+              </Table.Row>
             )}
-          </TableView.Body>
-        </TableView>
+          </Table.Body>
+        </Table>
         <br />
         <div>
           Sort: {descriptor.column} / {descriptor.direction}
@@ -667,41 +667,41 @@ export const WithActions = meta.story({
     selectionMode: 'multiple',
   },
   render: args => (
-    <TableView aria-label="Table with actions" {...args}>
-      <TableView.Header>
-        <TableView.Column>Name</TableView.Column>
-        <TableView.Column>Email</TableView.Column>
-        <TableView.Column>Location</TableView.Column>
-        <TableView.Column>Status</TableView.Column>
-        <TableView.Column align="right">Balance</TableView.Column>
-        <TableView.Column width={72} align="right">
+    <Table aria-label="Table with actions" {...args}>
+      <Table.Header>
+        <Table.Column>Name</Table.Column>
+        <Table.Column>Email</Table.Column>
+        <Table.Column>Location</Table.Column>
+        <Table.Column>Status</Table.Column>
+        <Table.Column align="right">Balance</Table.Column>
+        <Table.Column width={72} align="right">
           Actions
-        </TableView.Column>
-      </TableView.Header>
-      <TableView.Body>
+        </Table.Column>
+      </Table.Header>
+      <Table.Body>
         {users.map(user => (
-          <TableView.Row key={user.email}>
-            <TableView.Cell>
+          <Table.Row key={user.email}>
+            <Table.Cell>
               <Stack space="0.5">
                 <Text weight="medium">{user.name}</Text>
                 <Text size="xs" color="muted-foreground">
                   {user.handle}
                 </Text>
               </Stack>
-            </TableView.Cell>
-            <TableView.Cell>{user.email}</TableView.Cell>
-            <TableView.Cell>{user.location}</TableView.Cell>
-            <TableView.Cell>
+            </Table.Cell>
+            <Table.Cell>{user.email}</Table.Cell>
+            <Table.Cell>{user.location}</Table.Cell>
+            <Table.Cell>
               <Badge>{user.status}</Badge>
-            </TableView.Cell>
-            <TableView.Cell align="right">
+            </Table.Cell>
+            <Table.Cell align="right">
               <NumericFormat
                 style="currency"
                 currency="EUR"
                 value={user.balance}
               />
-            </TableView.Cell>
-            <TableView.Cell align="right">
+            </Table.Cell>
+            <Table.Cell align="right">
               <ActionMenu aria-label="Actions">
                 <ActionMenu.Item key="view">View</ActionMenu.Item>
                 <ActionMenu.Item key="edit">Edit</ActionMenu.Item>
@@ -709,11 +709,11 @@ export const WithActions = meta.story({
                   Delete
                 </ActionMenu.Item>
               </ActionMenu>
-            </TableView.Cell>
-          </TableView.Row>
+            </Table.Cell>
+          </Table.Row>
         ))}
-      </TableView.Body>
-    </TableView>
+      </Table.Body>
+    </Table>
   ),
   play: async ({ canvas, step }) => {
     await step('Verify table renders with data', async () => {
@@ -791,30 +791,24 @@ export const ScrollableAndSticky = meta.story({
     return (
       <Stack>
         <Scrollable height="400px">
-          <TableView
-            aria-label="Todos Table"
-            selectionMode="multiple"
-            {...args}
-          >
-            <TableView.Header sticky>
-              <TableView.Column>ID</TableView.Column>
-              <TableView.Column>Title</TableView.Column>
-              <TableView.Column>User</TableView.Column>
-              <TableView.Column>Completed</TableView.Column>
-            </TableView.Header>
-            <TableView.Body>
+          <Table aria-label="Todos Table" selectionMode="multiple" {...args}>
+            <Table.Header sticky>
+              <Table.Column>ID</Table.Column>
+              <Table.Column>Title</Table.Column>
+              <Table.Column>User</Table.Column>
+              <Table.Column>Completed</Table.Column>
+            </Table.Header>
+            <Table.Body>
               {todos.map(todo => (
-                <TableView.Row key={todo.id}>
-                  <TableView.Cell>{todo.id}</TableView.Cell>
-                  <TableView.Cell>{todo.title}</TableView.Cell>
-                  <TableView.Cell>{todo.userId}</TableView.Cell>
-                  <TableView.Cell>
-                    {todo.completed ? 'Yes' : 'No'}
-                  </TableView.Cell>
-                </TableView.Row>
+                <Table.Row key={todo.id}>
+                  <Table.Cell>{todo.id}</Table.Cell>
+                  <Table.Cell>{todo.title}</Table.Cell>
+                  <Table.Cell>{todo.userId}</Table.Cell>
+                  <Table.Cell>{todo.completed ? 'Yes' : 'No'}</Table.Cell>
+                </Table.Row>
               ))}
-            </TableView.Body>
-          </TableView>
+            </Table.Body>
+          </Table>
         </Scrollable>
         <div className="h-px w-full bg-black" />
         <div>Content below the scrollable area.</div>
@@ -848,28 +842,28 @@ export const Links = meta.story({
     ];
 
     return (
-      <TableView aria-label="Table with links" {...args}>
-        <TableView.Header>
-          <TableView.Column>Name</TableView.Column>
-          <TableView.Column>Description</TableView.Column>
-          <TableView.Column>URL</TableView.Column>
-        </TableView.Header>
-        <TableView.Body>
+      <Table aria-label="Table with links" {...args}>
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+          <Table.Column>Description</Table.Column>
+          <Table.Column>URL</Table.Column>
+        </Table.Header>
+        <Table.Body>
           {websites.map(site => (
-            <TableView.Row key={site.name} href={site.url}>
-              <TableView.Cell>
+            <Table.Row key={site.name} href={site.url}>
+              <Table.Cell>
                 <Text weight="medium">{site.name}</Text>
-              </TableView.Cell>
-              <TableView.Cell>{site.description}</TableView.Cell>
-              <TableView.Cell>
+              </Table.Cell>
+              <Table.Cell>{site.description}</Table.Cell>
+              <Table.Cell>
                 <Text size="sm" color="muted-foreground">
                   {site.url}
                 </Text>
-              </TableView.Cell>
-            </TableView.Row>
+              </Table.Cell>
+            </Table.Row>
           ))}
-        </TableView.Body>
-      </TableView>
+        </Table.Body>
+      </Table>
     );
   },
   play: async ({ canvas, step }) => {
@@ -915,8 +909,8 @@ export const DragAndDrop = meta.story({
     });
 
     const { dragAndDropHooks } = useDragAndDrop({
-      renderDropIndicator: TableView.renderDropIndicator,
-      renderDragPreview: TableView.renderDragPreview,
+      renderDropIndicator: Table.renderDropIndicator,
+      renderDragPreview: Table.renderDragPreview,
       getItems: keys =>
         [...keys].map(key => ({
           'text/plain': list.getItem(key)!.name,
@@ -934,26 +928,26 @@ export const DragAndDrop = meta.story({
     });
 
     return (
-      <TableView
+      <Table
         aria-label="Reorderable files"
         dragAndDropHooks={dragAndDropHooks}
         {...args}
       >
-        <TableView.Header>
-          <TableView.Column isRowHeader>Name</TableView.Column>
-          <TableView.Column>Email</TableView.Column>
-          <TableView.Column>Location</TableView.Column>
-        </TableView.Header>
-        <TableView.Body items={list.items}>
+        <Table.Header>
+          <Table.Column isRowHeader>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Location</Table.Column>
+        </Table.Header>
+        <Table.Body items={list.items}>
           {item => (
-            <TableView.Row>
-              <TableView.Cell>{item.name}</TableView.Cell>
-              <TableView.Cell>{item.email}</TableView.Cell>
-              <TableView.Cell>{item.location}</TableView.Cell>
-            </TableView.Row>
+            <Table.Row>
+              <Table.Cell>{item.name}</Table.Cell>
+              <Table.Cell>{item.email}</Table.Cell>
+              <Table.Cell>{item.location}</Table.Cell>
+            </Table.Row>
           )}
-        </TableView.Body>
-      </TableView>
+        </Table.Body>
+      </Table>
     );
   },
 });
@@ -974,31 +968,31 @@ export const AllowTextSelection = meta.story({
           onChange={setAllowTextSelection}
         />
 
-        <TableView
+        <Table
           key={String(allowTextSelection)}
           aria-label="Table demonstrating allowTextSelection prop"
           {...args}
           allowTextSelection={allowTextSelection}
         >
-          <TableView.Header>
-            <TableView.Column>Name</TableView.Column>
-            <TableView.Column>Email</TableView.Column>
-            <TableView.Column>Location</TableView.Column>
-            <TableView.Column>Status</TableView.Column>
-          </TableView.Header>
-          <TableView.Body>
+          <Table.Header>
+            <Table.Column>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Location</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body>
             {users.slice(0, 3).map(user => (
-              <TableView.Row key={user.email}>
-                <TableView.Cell>{user.name}</TableView.Cell>
-                <TableView.Cell>{user.email}</TableView.Cell>
-                <TableView.Cell>{user.location}</TableView.Cell>
-                <TableView.Cell>
+              <Table.Row key={user.email}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.location}</Table.Cell>
+                <Table.Cell>
                   <Badge>{user.status}</Badge>
-                </TableView.Cell>
-              </TableView.Row>
+                </Table.Cell>
+              </Table.Row>
             ))}
-          </TableView.Body>
-        </TableView>
+          </Table.Body>
+        </Table>
       </Stack>
     );
   },
@@ -1067,17 +1061,17 @@ export const EditableCell = meta.story({
     };
 
     return (
-      <TableView aria-label="Editable table" {...args}>
-        <TableView.Header>
-          <TableView.Column>Name</TableView.Column>
-          <TableView.Column>Email</TableView.Column>
-          <TableView.Column>Location</TableView.Column>
-          <TableView.Column>Status</TableView.Column>
-        </TableView.Header>
-        <TableView.Body>
+      <Table aria-label="Editable table" {...args}>
+        <Table.Header>
+          <Table.Column>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Location</Table.Column>
+          <Table.Column>Status</Table.Column>
+        </Table.Header>
+        <Table.Body>
           {data.map((user, i) => (
-            <TableView.Row key={user.email}>
-              <TableView.EditableCell
+            <Table.Row key={user.email}>
+              <Table.EditableCell
                 renderEditing={() => (
                   <TextField
                     aria-label="Name"
@@ -1089,8 +1083,8 @@ export const EditableCell = meta.story({
                 onSubmit={e => handleSubmit(i, e)}
               >
                 {user.name}
-              </TableView.EditableCell>
-              <TableView.EditableCell
+              </Table.EditableCell>
+              <Table.EditableCell
                 renderEditing={() => (
                   <TextField
                     aria-label="Email"
@@ -1102,9 +1096,9 @@ export const EditableCell = meta.story({
                 onSubmit={e => handleSubmit(i, e)}
               >
                 {user.email}
-              </TableView.EditableCell>
-              <TableView.Cell>{user.location}</TableView.Cell>
-              <TableView.EditableCell
+              </Table.EditableCell>
+              <Table.Cell>{user.location}</Table.Cell>
+              <Table.EditableCell
                 renderEditing={() => (
                   <Select
                     aria-label="Status"
@@ -1120,11 +1114,11 @@ export const EditableCell = meta.story({
                 onSubmit={e => handleSubmit(i, e)}
               >
                 <Badge>{user.status}</Badge>
-              </TableView.EditableCell>
-            </TableView.Row>
+              </Table.EditableCell>
+            </Table.Row>
           ))}
-        </TableView.Body>
-      </TableView>
+        </Table.Body>
+      </Table>
     );
   },
 });
@@ -1174,30 +1168,30 @@ export const DynamicColumnsAndRows = meta.story({
           <Checkbox value="handle" label="Handle" />
         </Checkbox.Group>
 
-        <TableView aria-label="Users" {...args}>
-          <TableView.Header columns={visibleColumns}>
+        <Table aria-label="Users" {...args}>
+          <Table.Header columns={visibleColumns}>
             {column => (
-              <TableView.Column isRowHeader={column.isRowHeader} id={column.id}>
+              <Table.Column isRowHeader={column.isRowHeader} id={column.id}>
                 {column.name}
-              </TableView.Column>
+              </Table.Column>
             )}
-          </TableView.Header>
-          <TableView.Body items={rows} dependencies={[visibleColumns]}>
+          </Table.Header>
+          <Table.Body items={rows} dependencies={[visibleColumns]}>
             {item => (
-              <TableView.Row id={item.id} columns={visibleColumns}>
+              <Table.Row id={item.id} columns={visibleColumns}>
                 {column => (
-                  <TableView.Cell>
+                  <Table.Cell>
                     {column.id === 'status' ? (
                       <Badge>{item[column.id]}</Badge>
                     ) : (
                       item[column.id]
                     )}
-                  </TableView.Cell>
+                  </Table.Cell>
                 )}
-              </TableView.Row>
+              </Table.Row>
             )}
-          </TableView.Body>
-        </TableView>
+          </Table.Body>
+        </Table>
 
         <div>
           <Button variant="primary" onPress={addRow}>

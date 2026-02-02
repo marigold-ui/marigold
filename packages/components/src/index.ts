@@ -220,16 +220,18 @@ export type { StackProps } from './Stack/Stack';
 export { Switch } from './Switch/Switch';
 export type { SwitchProps } from './Switch/Switch';
 
-export { TableView } from './TableView/TableView';
+export { Table } from './Table/Table';
 export type {
-  TableViewProps,
-  TableViewHeaderProps,
-  TableViewColumnProps,
-  TableViewBodyProps,
-  TableViewRowProps,
-  TableViewCellProps,
-  TableViewEditableCellProps,
-} from './TableView/TableView';
+  TableProps,
+  TableHeaderProps,
+  TableColumnProps,
+  TableBodyProps,
+  TableRowProps,
+  TableCellProps,
+  TableEditableCellProps,
+  TableDropIndicatorProps,
+  TableDragPreviewProps,
+} from './Table/Table';
 
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';

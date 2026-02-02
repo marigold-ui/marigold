@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Stack, TableView } from '@marigold/components';
+import { Stack, Table } from '@marigold/components';
 
 export default () => {
   const [users, setUsers] = useState<
@@ -19,27 +19,27 @@ export default () => {
   return (
     <>
       {!loading ? (
-        <TableView aria-label="user Table" selectionMode="multiple">
-          <TableView.Header>
-            <TableView.Column>Id</TableView.Column>
-            <TableView.Column>Name</TableView.Column>
-            <TableView.Column>User</TableView.Column>
-          </TableView.Header>
-          <TableView.Body>
+        <Table aria-label="user Table" selectionMode="multiple">
+          <Table.Header>
+            <Table.Column>Id</Table.Column>
+            <Table.Column>Name</Table.Column>
+            <Table.Column>User</Table.Column>
+          </Table.Header>
+          <Table.Body>
             {users.map(user => (
-              <TableView.Row key={`${user.name}-${user.id}`}>
-                <TableView.Cell>{user.id}</TableView.Cell>
-                <TableView.Cell>{user.name}</TableView.Cell>
-                <TableView.Cell>
+              <Table.Row key={`${user.name}-${user.id}`}>
+                <Table.Cell>{user.id}</Table.Cell>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>
                   <Stack>
                     {user.username}
                     <span className="text-text-info text-xs">{user.email}</span>
                   </Stack>
-                </TableView.Cell>
-              </TableView.Row>
+                </Table.Cell>
+              </Table.Row>
             ))}
-          </TableView.Body>
-        </TableView>
+          </Table.Body>
+        </Table>
       ) : (
         'Loading data ...... '
       )}
