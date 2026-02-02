@@ -1,409 +1,344 @@
 ---
 title: Table
-caption: Organize and display large amount of data in table format.
+caption: Display and interact with structured data in rows and columns.
+badge: updated
 ---
 
-The `<Table>` is a structured component used to organize and display tabular data in rows and columns. It enhances the functionality of regular `<table>` elements with the possibility to interact and select the data, and helps with accessibility by enabling keyboard navigation.
+The Table component displays structured data in a grid layout with rows and columns. It provides features for selecting, sorting, editing, and reordering data, making it ideal for applications that need to present and manipulate tabular information.
 
-<SectionMessage>
-  <SectionMessage.Title>What is tabular data?</SectionMessage.Title>
-  <SectionMessage.Content>
-    Tabular data is a structured form of data that is organized in rows and
-    columns and resembles a table format.
-  </SectionMessage.Content>
-</SectionMessage>
+Use tables when you need to display datasets where users benefit from seeing multiple records at once, comparing values across columns, or performing bulk operations on selected items. Tables work well for admin interfaces, data management screens, and dashboards where structured information needs to be organized and actionable.
 
-Our table allows user to selecting one or multiple rows, it includes an action cell, and supports sorting columns. Additionally, it features a sticky header, can stretch to full size, and allows columns to be aligned to the left, center, or right. The table also supports nesting columns and having fixed column widths.
-
-These features will be explained in more detail in the usage section further down the page.
+The component is built on react-aria-components, ensuring full keyboard navigation and screen reader support. It supports both static and dynamic data rendering, making it flexible for various use cases from simple read-only lists to complex editable data grids.
 
 ## Anatomy
 
-A table is composed of a container element that organizes data into rows and columns. Each cell within the table can hold either plain text or focusable elements. If the table allows multiple row selection, the first column of each row include a checkbox for selecting that row and the first column header will contain a "select all" checkbox.
-
 <Image
-  src="/table/table-anatomy.jpg"
-  alt="Anatomy of table"
+  src="/table/table-anatomy.svg"
+  alt="Anatomy of Table component"
   width={800}
   height={550}
   className="mx-auto block"
 />
 
+<ul>
+  <li>
+    <b>Table:</b> Main container that wraps all table elements.
+  </li>
+  <li>
+    <b>Header (sticky):</b> Container for column headers, can stick to viewport
+    top when scrolling.
+  </li>
+  <li>
+    <b>Column with sorting:</b> Individual column headers that can enable
+    sorting functionality.
+  </li>
+  <li>
+    <b>Selection checkbox:</b> Checkbox for selecting individual rows or all
+    rows at once.
+  </li>
+  <li>
+    <b>Row (selectable):</b> Individual table rows that can be selected,
+    clicked, or dragged.
+  </li>
+  <li>
+    <b>Cell:</b> Standard cell containing data, text, or components.
+  </li>
+  <li>
+    <b>Editable Cell (with edit icon):</b> Cell that can be edited inline with a
+    pencil icon trigger.
+  </li>
+  <li>
+    <b>Drag handle:</b> Visual indicator for drag and drop reordering of rows.
+  </li>
+</ul>
+
 ## Appearance
 
 <AppearanceDemo component={title} />
-
 <AppearanceTable component={title} />
 
 ## Usage
 
-Use a `<Table>` if you need to organize and display large amout of data.
-Grouping informations provide a structured and organized way to display data, making it easier to understand and analyze.
-Tables allow you to group related information in a clear and concise manner, which enhances data readability and comprehension.
+Tables organize information into a grid structure that makes data easy to scan, compare, and act upon. Use tables when you need to present multiple records with consistent attributes, allow users to select and perform actions on items, or enable sorting and filtering of large datasets.
 
-They are ideal for comparing data points. Unlike cards, tables enable users to compare multiple rows and columns without having to move their eyes too much or rely on memory.
-Also with the support of single or multiple row actions, they make it convenient to perform data-specific actions such as deleting, sharing, or editing records directly within the table.
+The Table component supports various interaction patterns including row selection for bulk operations, column sorting for data organization, inline editing for quick updates, and drag and drop for manual reordering. Choose the features that match your use case without overwhelming users with unnecessary functionality.
 
-<GuidelineTiles>
-  <Do>
-    <Do.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/table/table-do-names.jpg"
-        alt="Use tables with clear understandable content"
-      />
-    </Do.Figure>
-    <Do.Description>
-      Provide descriptive column headers for each column that accurately
-      represent the data.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/table/table-dont-names.jpg"
-        alt="Dont use tables with empty column headers."
-      />
-    </Dont.Figure>
-    <Dont.Description>
-      Avoid using vague or misleading column headers that do not clearly
-      represent the data.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
+### Displaying data
 
-<Do>
-  <Do.Figure>
-    <Image
-      width={700}
-      height={700}
-      unoptimized
-      src="/table/table-do-size.jpg"
-      alt="Stretch tables to available width."
-    />
-  </Do.Figure>
-  <Do.Description>Stretch tables to available width.</Do.Description>
-</Do>
+When you need to present structured information in a clear, scannable format, use tables to organize data into rows and columns. Each row represents a record, and each column represents an attribute of that record.
 
-<p />
+<ComponentDemo file="./table-basic.demo.tsx" />
 
-<Dont>
-  <Dont.Figure>
-    <Image
-      width={700}
-      height={700}
-      unoptimized
-      src="/table/table-dont-content.jpg"
-      alt="Dont use tables for layouts"
-    />
-  </Dont.Figure>
-  <Dont.Description>Don't use a table for layouting content.</Dont.Description>
-</Dont>
+Define columns using `Table.Column` within `Table.Header`. Use `Table.Cell` within `Table.Row` to populate data. Align numeric values to the right using the `align` prop for better readability and comparison.
 
-### Variants
+### Selecting rows
 
-<ul>
-  <li>
-    **Default:** You should use the default variant of the Table component when
-    you want a clean, standard table appearance. It’s ideal for most use cases
-    where you want to display tabular data clearly and simply. The default
-    variant is a good starting point for most tables.
-  </li>
-  <li>
-    **Muted:** Use the `muted` variant for table to reduce visual noise and
-    improve clarity, especially in tables with extensive content. This helps
-    users focus on the data while maintaining a clean and organized appearance.
-  </li>
-  <li>
-    **Grid:** The `grid` variant is useful if you want clearer separation
-    between columns, especially for tables with many columns or dense data. The
-    grid variant adds vertical borders between columns, making it easier to scan
-    and compare values across rows.
-  </li>
-  <li>
-    **Admin- and Master:** Use this variant to identify rows that are only
-    relevant for internal users. [Learn more about its
-    usage.](/patterns/admin-master-mark)
-  </li>
-</ul>
+When users need to perform actions on multiple items at once, enable row selection. This allows users to select individual rows or all rows, then perform bulk operations like delete, export, or modify.
 
-### Display secondary information
+<ComponentDemo file="./table-selection.demo.tsx" />
 
-Secondary data in a cell is needed when additional context or details are necessary to fully understand the primary data. The primary data of a table cell should always be displayed clearly. It provides better readability and can improve the user experience. Too much secondary data can overwelm users and make the table complexer and harder to read.
-
-<ComponentDemo file="./table-secondary-content.demo.tsx" />
-
-<GuidelineTiles>
-  <Do>
-    <Do.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/table/table-do-hierarchy.jpg"
-        alt="Use tables with clear understandable content"
-      />
-    </Do.Figure>
-    <Do.Description>
-      Keep cell content concise. Only add additional data when necessary to help
-      understand the data.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Figure>
-      <Image
-        width={700}
-        height={700}
-        unoptimized
-        src="/table/table-dont-hierarchy.jpg"
-        alt="Dont use tables with too much informations inside"
-      />
-    </Dont.Figure>
-    <Dont.Description>
-      Avoid overloading cells with too much information or complex data, and
-      multiple data values in one cell.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
-
-### Sticky header
-
-If you have large data tables, setting the header to sticky can provide context when scrolling. To do this, set the `stickyHeader` property on the `<Table>` and wrap it in the [Scrollable](../layout/scrollable) component with a specified height, as shown in the example below.
-
-<ComponentDemo file="./table-fixed-header.demo.tsx" />
-
-### Highlight data
-
-This is an example of how you can use the [`<Badge>`](../content/badge) within the `<Table>`. Badges can be used in a table to highlight or categorize certain data, making it easier for users to quickly identify key information. This is a common use case if you need to add status indicators, categorizations, labels or tags within the table.
-
-<ComponentDemo file="./table-badge.demo.tsx" />
+Set `selectionMode` to `"multiple"` for checkboxes or `"single"` for radio button behavior. Control selection state with `selectedKeys` and `onSelectionChange`. The component automatically adds a selection column with checkboxes when selection is enabled.
 
 <GuidelineTiles>
   <Do>
     <Do.Description>
-      Place badges consistently within the table, preferably in a dedicated
-      column.
+      Use multiple selection when users need to perform bulk operations on
+      several items.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Show the number of selected items and available actions clearly.
     </Do.Description>
   </Do>
   <Dont>
     <Dont.Description>
-      Don't place badges randomly within the table or overload the table with
-      too many badges.
+      Don't use single selection when radio buttons or a dropdown would be more
+      appropriate for choosing one option.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Description>
+      Don't enable selection if there are no bulk actions available for selected
+      items.
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
 
-### Sorting
+### Sorting columns
 
-Enable the sorting function to help users organize and find data efficiently. This is especially useful since different user tasks may require different sorting orders.
+When working with large datasets, users often need to organize information by specific attributes. Enable sorting to let users click column headers and reorder rows by that column's values.
 
-The `<Table>` is sortable through `allowsSorting` prop on it. Sorting controls, indicated by an arrow icon, are located in the column headers and allow for ascending or descending order. For this purpose the properties `onSortChange` which handles the direction when changing and `sortDescriptor`, containing the current column and direction must be specified.
+<ComponentDemo file="./table-sorting.demo.tsx" />
 
-To make async sorting more convenient, you can use the `useAsyncList` hook. The hook manages the async list data and provides convenience methods for updating the data.
-
-<ComponentDemo file="./table-async.demo.tsx" />
-
-### Handling numeric values
-
-With our formatting helper components for dates and numeric values you can easily ensure consistent and accurate display. See [NumericFormat](../formatters/numericformat), [DateFormat](../formatters/dateformat) for more informations.
-
-Also you see how to use the `align` property on the columns. With that you can set the content of a column to left, center or right.
-
-<ComponentDemo file="./table-numeric.demo.tsx" />
-
-<Do>
-  <Do.Description>
-    <ul>
-      <li>Align numeric values and their header cells to the right.</li>
-      <li>Format numbers to provide tabular numeric font style.</li>
-    </ul>
-  </Do.Description>
-</Do>
-
-### Nested columns
-
-Nested columns can be useful in tables when you need to organize complex or hierarchical data in a more structured format. These columns can be nested, which will result in more than one header row to be created.
-
-Note the usage of `isRowHeader` in the example below. It controls which columns are included in the [accessibility name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name) for each row. By default, only the first column is included, meaning the aria label will be on the first column only.
-
-<ComponentDemo file="./table-nested.demo.tsx" />
+Set `allowsSorting` on columns that should be sortable. Manage sort state with `sortDescriptor` and `onSortChange`. The component displays sort direction indicators (ascending/descending arrows) in column headers. Implement the sorting logic in your `onSortChange` handler, either client-side for small datasets or server-side for large ones.
 
 <GuidelineTiles>
   <Do>
     <Do.Description>
-      Keep nested columns simple to avoid overwhelming users with too much
-      information at once. Only use one level of nesting.
+      Enable sorting on columns with comparable data like numbers, dates, or
+      alphabetical text.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Right-align numeric columns to make values easier to compare when sorted.
     </Do.Description>
   </Do>
   <Dont>
     <Dont.Description>
-      Don't use multiple levels of nested columns, this can make the table
-      complex and difficult to navigate.
+      Don't make every column sortable if some contain non-comparable content
+      like icons or actions.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Description>
+      Don't forget to handle sorting server-side for large datasets to maintain
+      performance.
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
 
-### Multiple line cells
+### Editing data inline
 
-If your table contains cells with multiple lines of text, use the `alignY="top"` property on the `<Table>` component to align cell content to the top. This ensures text consistently starts at the top of each cell, making it easier to scan down columns. It also keeps buttons, text, and icons visually aligned, avoiding uneven spacing caused by varying content heights.
+When users need to make quick edits to individual values without navigating to a separate form, use editable cells. This reduces friction and keeps users in context while maintaining a clear editing workflow.
 
-<ComponentDemo file="./table-align-top.demo.tsx" />
+<ComponentDemo file="./table-editable.demo.tsx" />
 
-### Row Actions
+Use `Table.EditableCell` instead of `Table.Cell` for editable fields. Provide a form control via `renderEditing` that appears when users click the edit icon. The editing interface adapts responsively, showing a Dialog on mobile and a Popover on desktop. Handle form submission with `onSubmit` to update your data.
 
-Row actions let users interact with individual records directly from a table, such as editing, viewing details, or triggering specific operations. These interactions are essential for working with tabular data, and thoughtful design helps users stay oriented and confident. To support clarity, predictability, and efficiency, it’s important to align how and where these actions appear.
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use editable cells for quick, single-value updates like changing status or
+      correcting typos.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Provide appropriate input types like TextField for text, Select for
+      constrained options.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't make cells editable if editing requires complex validation or
+      multiple related fields.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Description>
+      Don't use editable cells when a dedicated edit form would provide better
+      context and validation.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
-Use the `<Button>` component with the secondary (default) variant for row actions. If the action is destructive, use the destructive variant instead. In both cases, apply the small button size to maintain visual consistency and minimize visual noise in dense table layouts.
+### Reordering with drag and drop
 
-When it comes to placement, always position row actions at the end of the row. This improves scannability and clearly signals which parts of the row are interactive, helping users quickly locate available actions.
+When the order of items matters and users need to manually arrange them, enable drag and drop. This works well for priority lists, custom orderings, or workflows where sequence is important.
 
-<ComponentDemo file="./table-action.demo.tsx" />
+<ComponentDemo file="./table-drag-drop.demo.tsx" />
 
-Show only the most important 1–3 actions per row. These should be the actions users are most likely to need or expect to find without having to open a menu, such as “Edit” or “View.” If you need to support more than three actions, prioritize them by frequency and importance: display the most critical ones directly, and group the rest into a contextual menu using an `<ActionMenu>` (see [ActionMenu section](/components/overlay/menu#actionmenu)). This keeps the row clean and scannable while still offering access to all necessary actions.
+Use `useDragAndDrop` from react-aria-components and `useListData` from react-stately to manage drag operations. Pass `dragAndDropHooks` to the Table and implement `onReorder` to update your data. The component shows drag handles on hover and visual indicators for drop positions.
 
-Using too many visible actions at once can overwhelm users, make it hard to identify what to do, and increase visual clutter. If space is limited or the layout feels crowded, consider using icon buttons to keep actions compact. Pair them with tooltips to clearly communicate each action’s purpose without adding visual noise.
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use drag and drop when manual ordering is meaningful, like task
+      prioritization or custom sequences.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Combine with selection mode to allow dragging multiple items at once.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't enable drag and drop if items have a natural sort order like dates
+      or alphabetical names.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Description>
+      Don't forget to provide keyboard alternatives for reordering, as not all
+      users can drag.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
-<SectionMessage>
-  <SectionMessage.Title>Use icons with care</SectionMessage.Title>
-  <SectionMessage.Content>
-    Only use icons when their meaning is clear without explanation. If the icon
-    might be ambiguous, prefer a labeled button or add context with a tooltip.
-  </SectionMessage.Content>
-</SectionMessage>
+### Handling empty states
 
-<ComponentDemo file="./table-action-menu.demo.tsx" />
+When a table has no data to display, whether from empty search results, filters with no matches, or newly created lists, show a helpful empty state instead of a blank table body.
 
-If you cannot place all row actions at the end of the row, be mindful of clarity and consistency. Actions should remain visually distinct from content and navigation, and be grouped where possible to support scannability. Apply consistent styling to each action and avoid placing them in unexpected locations, as this can increase cognitive load and make it harder for users to understand what they can do in each row.
+<ComponentDemo file="./table-empty.demo.tsx" />
 
-### Links
+Use the `emptyState` prop on `Table.Body` to render an `EmptyState` component with a clear title and helpful description. Guide users on why the table is empty and what they can do next, like adjusting filters or adding their first item.
 
-Inline links for actions can sometimes be mistaken for regular content and may add visual noise, so it’s best to use them with care. A common and appropriate use of links in tables is placing one on the identifying attribute of a record, such as a name or title, when it leads to the related item or detail view.
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Provide specific guidance about why the table is empty and what users can
+      do.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Include action buttons in empty states when appropriate, like "Add first
+      item" or "Clear filters".
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't show a generic "No data" message without context or next steps.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Description>
+      Don't hide the table headers when empty, as they provide important context
+      about what data should appear.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
-When using links in tables, default to the standard `<Link>` component. If the table contains many links, consider simplifying the layout to reduce visual clutter. If links cannot be reduced, use the secondary variant of `<Link>` to maintain clarity and minimize distraction.
+### Making headers sticky
 
-<ComponentDemo file="./table-links.demo.tsx" />
+For tables with many rows that require scrolling, sticky headers keep column labels visible as users scroll through data. This helps users maintain context about what each column represents.
+
+<ComponentDemo file="./table-sticky.demo.tsx" />
+
+Add the `sticky` prop to `Table.Header` and wrap the table in a `Scrollable` component with a defined height. Headers will stick to the top of the viewport as users scroll through rows, maintaining visibility of column labels.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Use sticky headers for tables with more than 10-15 rows where scrolling is
+      necessary.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Ensure the scrollable container has a defined height so the sticky
+      behavior works correctly.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't make headers sticky for short tables where all rows fit on screen
+      without scrolling.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Aligning content
+
+Proper text alignment makes tabular data easier to scan and compare. Different data types benefit from different alignments to improve readability and understanding.
+
+<ComponentDemo file="./table-alignment.demo.tsx" />
+
+Use `align="left"` for text content (names, descriptions), `align="right"` for numeric values (prices, quantities, percentages), and `align="center"` sparingly for icons or status indicators. Apply alignment to both columns and cells for consistency.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Right-align numeric columns to make decimal points and place values line
+      up vertically.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Left-align text content for natural reading flow in LTR languages.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't center-align numbers or long text, as this makes scanning and
+      comparison difficult.
+    </Dont.Description>
+  </Dont>
+  <Dont>
+    <Dont.Description>
+      Don't mix alignments within a single column, as inconsistency breaks
+      visual rhythm.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
+
+### Allowing text selection
+
+By default, when selection mode is enabled, clicking on cell text selects the row. When users need to copy cell content like emails, IDs, or other data, enable text selection.
+
+<ComponentDemo file="./table-text-selection.demo.tsx" />
+
+Set `allowTextSelection` to `true` on the Table. This wraps cell content in a focusable container that allows text selection while still supporting row selection via checkboxes. Users can triple-click or drag to select text within cells.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      Enable text selection when users frequently need to copy data like IDs,
+      emails, or reference numbers.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Keep selection checkboxes visible so users can still select rows for
+      actions.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      Don't enable text selection by default, as it adds interaction complexity
+      most tables don't need.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ## Props
 
-<SectionMessage>
-  <SectionMessage.Title>Hint: Dynamic Collections</SectionMessage.Title>
-  <SectionMessage.Content>
-    You don't have to hard code the table items, you could also create a dynamic
-    collection and iterate through it. You can read more about these collections
-    [here](https://react-spectrum.adobe.com/react-aria/collections.html#dynamic-collections).
-  </SectionMessage.Content>
-</SectionMessage>
-
 <StorybookHintMessage component={title} />
-
-### Table
-
 <PropsTable component={title} />
-
-### Table.Header
-
-<PropsTable component="Table.Header" />
-
-### Table.Column
-
-<PropsTable component="Table.Column" />
-
-### Table.Body
-
-<PropsTable component="Table.Body" />
-
-### Table.Row
-
-<PropsTable component="Table.Row" />
-
-### Table.Cell
-
-<PropsTable component="Table.Cell" />
 
 ## Alternative components
 
-Choosing the right alternative to data tables is crucial for effectively displaying your data and enhancing user interaction. Depending on the type of data and the desired user experience, different components can offer different benefits. Here are some alternatives to data tables that might better suit your needs:
-
-<ul>
-  <li>
-    [SelectionList](/components/collection/selectlist): Displays a list of
-    interactive items, useful to create an actionable list of related items,
-    such as a list of users.
-  </li>
-  <li>
-    [Cards](/components/content/card): Helpful if the data needs to be displayed
-    with more visual hierarchy. Keep in mind that you can't compare data in this
-    way not as good as tables, because the eyes have to move much more.
-  </li>
-  <li>
-    [List](/components/content/list): When presenting a simple, linear
-    collection of items, often with less data per item. Easy to read and
-    navigate, especially for data that doesn’t require complex organization.
-  </li>
-  <li>
-    [Grid](/components/layout/grid): Layout in a table-like structure. This
-    gives you full control over the size of the columns and rows and allows you
-    to align them according to your needs.
-  </li>
-  <li>
-    [Columns](/components/layout/columns): Create columns in one row, useful if
-    you need to align content in a table-like way with fewer rows.
-  </li>
-</ul>
-
-Is there still not the right alternative for you please [get in touch](../../resources/get-in-touch) with us!
-
-## Related
-
-<TeaserList
-  items={[
-    {
-      title: 'Admin- & master mark',
-      href: '/patterns/admin-master-mark',
-      caption: 'Used for marking internal-only features.',
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="size-5"
-        >
-          <path d="M9 11l-6 6v3h9l3-3" />
-          <path d="M22 12l-4.6 4.6a2 2 0 01-2.8 0l-5.2-5.2a2 2 0 010-2.8L14 4" />
-        </svg>
-      ),
-    },
-    {
-      title: 'useAsyncListData',
-      href: '../hooks-and-utils/useAsyncListData',
-      caption: 'If you need to load async data into tables.',
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"
-          />
-        </svg>
-      ),
-    },
-  ]}
-/>
+- [ListView](/components/collection/listview): Use for simpler lists where tabular structure isn't needed.

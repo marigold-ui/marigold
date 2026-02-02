@@ -16,7 +16,7 @@ import type { Selection } from '../../types';
 import { Table } from './Table';
 
 const meta = preview.meta({
-  title: 'Components/legacy/Table',
+  title: 'Legacy/Table',
   component: Table,
   argTypes: {
     selectionMode: {
