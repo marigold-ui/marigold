@@ -18,7 +18,7 @@ export default (props: TableProps) => (
         </Table.Column>
       )}
     </Table.Header>
-    <Table.Body items={venues.slice(0, 5)}>
+    <Table.Body items={venues.slice(2, 5)}>
       {item => (
         <Table.Row key={item.id}>
           <Table.Cell>

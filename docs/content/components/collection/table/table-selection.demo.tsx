@@ -1,45 +1,29 @@
 import { venueTypes, venues } from '@/lib/data/venues';
-import { useState } from 'react';
-import type { Selection } from '@marigold/components';
-import { Stack, Table, Text } from '@marigold/components';
+import { Table, Text } from '@marigold/components';
 
-export default () => {
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
-
-  return (
-    <Stack space={3}>
-      <Table
-        aria-label="Select venues"
-        selectionMode="multiple"
-        selectedKeys={selectedKeys}
-        onSelectionChange={setSelectedKeys}
-      >
-        <Table.Header>
-          <Table.Column>Venue</Table.Column>
-          <Table.Column>Type</Table.Column>
-          <Table.Column>City</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          {venues.slice(0, 5).map(venue => (
-            <Table.Row key={venue.id}>
-              <Table.Cell>
-                <Text weight="medium">{venue.name}</Text>
-              </Table.Cell>
-              <Table.Cell>
-                <Text size="sm" color="muted-foreground">
-                  {venueTypes[venue.type]}
-                </Text>
-              </Table.Cell>
-              <Table.Cell>
-                {venue.city}, {venue.country}
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-      <Text size="sm" color="muted-foreground">
-        Selected: {selectedKeys === 'all' ? 'all' : selectedKeys.size} rows
-      </Text>
-    </Stack>
-  );
-};
+export default () => (
+  <Table aria-label="Select venues" selectionMode="multiple">
+    <Table.Header>
+      <Table.Column>Venue</Table.Column>
+      <Table.Column>Type</Table.Column>
+      <Table.Column>City</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      {venues.slice(2, 5).map(venue => (
+        <Table.Row key={venue.id}>
+          <Table.Cell>
+            <Text weight="medium">{venue.name}</Text>
+          </Table.Cell>
+          <Table.Cell>
+            <Text size="sm" color="muted-foreground">
+              {venueTypes[venue.type]}
+            </Text>
+          </Table.Cell>
+          <Table.Cell>
+            {venue.city}, {venue.country}
+          </Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);

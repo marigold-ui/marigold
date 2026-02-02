@@ -6,8 +6,10 @@ export default () => {
     <Table aria-label="Venues with descriptions">
       <Table.Header>
         <Table.Column width={250}>Venue</Table.Column>
-        <Table.Column width={150}>City</Table.Column>
         <Table.Column>Description</Table.Column>
+        <Table.Column width={75} align="right">
+          Rating
+        </Table.Column>
       </Table.Header>
       <Table.Body>
         {venues.slice(0, 5).map(venue => (
@@ -15,10 +17,8 @@ export default () => {
             <Table.Cell>
               <Text weight="medium">{venue.name}</Text>
             </Table.Cell>
-            <Table.Cell>
-              {venue.city}, {venue.country}
-            </Table.Cell>
             <Table.Cell overflow="truncate">{venue.description}</Table.Cell>
+            <Table.Cell>{venue.rating}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
