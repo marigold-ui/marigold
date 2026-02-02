@@ -43,6 +43,7 @@ export default defineConfig([
       '.storybook/vitest.setup.ts',
       'fumadocs/.source/**',
       'fumadocs/.registry/**',
+      '.claude/**',
     ],
   },
 ]);
