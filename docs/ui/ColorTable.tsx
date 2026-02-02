@@ -1,5 +1,5 @@
+import { Table } from '@/ui';
 import { ReactNode } from 'react';
-import { Table } from '@marigold/components';
 
 export interface ColorCanvasProps {
   children?: ReactNode;

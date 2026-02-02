@@ -23,7 +23,7 @@ export const TableRow = ({ children, row }: TableRowProps) => {
   const { variant, size } = row.props;
 
   const classNames = useClassNames({
-    component: 'Table',
+    component: 'LegacyTable',
     variant: variant || ctx.variant,
     size: size || ctx.size,
   });
