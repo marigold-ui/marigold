@@ -26,7 +26,6 @@ export const UserTable = () => (
     </Inline>
     <Table
       selectionMode="multiple"
-      stretch
       defaultSelectedKeys={[people[0].id, people[1].id]}
     >
       <Table.Header>
