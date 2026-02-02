@@ -1123,6 +1123,49 @@ export const EditableCell = meta.story({
   },
 });
 
+export const CellOverrideTableTruncate = meta.story({
+  tags: ['component-test'],
+  args: {
+    overflow: 'truncate',
+  },
+  render: args => (
+    <Table aria-label="Table with truncate default" {...args}>
+      <Table.Header>
+        <Table.Column>Inherit Truncate</Table.Column>
+        <Table.Column>Override to Wrap</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            Long text that inherits table truncate behavior
+          </Table.Cell>
+          <Table.Cell overflow="wrap">
+            Long text with wrap override that should wrap
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+  play: async ({ canvas, step }) => {
+    await step('Verify table renders with two columns', async () => {
+      expect(canvas.getByText('Inherit Truncate')).toBeInTheDocument();
+      expect(canvas.getByText('Override to Wrap')).toBeInTheDocument();
+    });
+
+    await step('Verify first cell uses table default (truncate)', async () => {
+      const cells = canvas.getAllByRole('gridcell');
+      expect(cells[0]).toHaveClass('truncate');
+      expect(cells[0]).toHaveClass('max-w-0');
+    });
+
+    await step('Verify second cell overrides to wrap', async () => {
+      const cells = canvas.getAllByRole('gridcell');
+      expect(cells[1]).toHaveClass('wrap-break-word');
+      expect(cells[1]).not.toHaveClass('truncate');
+    });
+  },
+});
+
 export const DynamicColumnsAndRows = meta.story({
   tags: ['component-test'],
   render: args => {

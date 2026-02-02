@@ -57,6 +57,11 @@ export interface TableEditableCellProps {
    * @default 'left'
    */
   align?: keyof typeof textAlign;
+  /**
+   * Text overflow behavior for this specific cell. Overrides the table-level overflow setting.
+   * @default undefined (inherits from table)
+   */
+  overflow?: 'truncate' | 'wrap';
 }
 
 // EditableCellPopover
@@ -126,14 +131,18 @@ export const TableEditableCell = ({
   disabled = false,
   action,
   align = 'left',
+  overflow: cellOverflow,
 }: TableEditableCellProps) => {
   const {
     classNames,
-    overflow = 'wrap',
+    overflow: tableOverflow = 'wrap',
     allowTextSelection = false,
   } = useTableContext();
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  // Cell-level overflow overrides table-level
+  const overflow = cellOverflow ?? tableOverflow;
 
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);

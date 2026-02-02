@@ -19,17 +19,30 @@ export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
    * @default 'left'
    */
   align?: keyof typeof textAlign;
+  /**
+   * Text overflow behavior for this specific cell. Overrides the table-level overflow setting.
+   * @default undefined (inherits from table)
+   */
+  overflow?: 'truncate' | 'wrap';
 }
 
 // Component
 // ---------------
-const TableCell = ({ children, align = 'left', ...props }: TableCellProps) => {
+const TableCell = ({
+  children,
+  align = 'left',
+  overflow: cellOverflow,
+  ...props
+}: TableCellProps) => {
   const {
     classNames,
-    overflow = 'wrap',
+    overflow: tableOverflow = 'wrap',
     allowTextSelection = false,
   } = useTableContext();
   const { selectionMode } = useTableOptions();
+
+  // Cell-level overflow overrides table-level
+  const overflow = cellOverflow ?? tableOverflow;
 
   return (
     <Cell

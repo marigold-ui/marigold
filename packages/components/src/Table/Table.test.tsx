@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import {
   Basic,
+  CellOverrideTableTruncate,
   DragAndDrop,
   DynamicData,
   EditableCell,
@@ -13,8 +14,6 @@ import {
   WithActions,
 } from './Table.stories';
 
-// Setup
-// ---------------
 const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
@@ -177,7 +176,6 @@ describe('Accessibility', () => {
     // DynamicData story has selectionMode="multiple"
     render(<DynamicData.Component />);
 
-    // Should render checkboxes for selection
     const checkboxes = screen.getAllByRole('checkbox');
     expect(checkboxes.length).toBeGreaterThan(0);
   });
@@ -192,7 +190,6 @@ describe('Accessibility', () => {
 
 describe('Cell Alignment', () => {
   test('aligns cell content to the right', () => {
-    // Basic story has Balance column with align="right"
     render(<Basic.Component />);
 
     const balanceCells = screen
@@ -204,7 +201,6 @@ describe('Cell Alignment', () => {
   test('defaults to left alignment', () => {
     render(<Basic.Component />);
 
-    // First cell (Name column) should have left alignment
     const cells = screen.getAllByRole('gridcell');
     const nameCell = cells[0];
     expect(nameCell).toHaveClass('text-left');
@@ -213,13 +209,10 @@ describe('Cell Alignment', () => {
 
 describe('Sticky Header', () => {
   test('applies sticky class to header', async () => {
-    // ScrollableAndSticky story has sticky header
     render(<ScrollableAndSticky.Component />);
 
-    // Wait for async data to load
     await screen.findByRole('grid');
 
-    // Get a column header and check its parent rowgroup (thead)
     const columnHeader = screen.getByRole('columnheader', { name: 'ID' });
     // eslint-disable-next-line testing-library/no-node-access
     const header = columnHeader.closest('thead');
@@ -231,7 +224,6 @@ describe('Sticky Header', () => {
     // Basic story does not have sticky header
     render(<Basic.Component />);
 
-    // Get a column header and check its parent rowgroup (thead)
     const columnHeader = screen.getByRole('columnheader', { name: 'Name' });
     // eslint-disable-next-line testing-library/no-node-access
     const header = columnHeader.closest('thead');
@@ -251,5 +243,18 @@ describe('EditableCell', () => {
     render(<EditableCell.Component />);
 
     expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+  });
+});
+
+describe('Cell-Level Overflow', () => {
+  test('cell with overflow="wrap" overrides table default (truncate)', () => {
+    render(<CellOverrideTableTruncate.Component />);
+
+    const cells = screen.getAllByRole('gridcell');
+    expect(cells[0]).toHaveClass('truncate');
+    expect(cells[0]).toHaveClass('max-w-0');
+
+    expect(cells[1]).toHaveClass('wrap-break-word');
+    expect(cells[1]).not.toHaveClass('truncate');
   });
 });
