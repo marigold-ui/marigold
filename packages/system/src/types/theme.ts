@@ -151,6 +151,18 @@ export type Theme = {
       'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
       ComponentStyleFunction<string, string>
     >;
+    TagField?: Record<
+      | 'trigger'
+      | 'tags'
+      | 'listItems'
+      | 'button'
+      | 'icon'
+      | 'emptyState'
+      | 'search'
+      | 'searchInput'
+      | 'input',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
     Tooltip?: Record<

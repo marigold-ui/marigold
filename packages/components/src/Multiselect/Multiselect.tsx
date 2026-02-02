@@ -25,6 +25,9 @@ import { Label } from '../Label/Label';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { X } from '../icons/X';
 
+/**
+ * @deprecated Use `TagField` instead. Will be removed in a future major version.
+ */
 interface MultipleSelectProps extends Pick<
   FieldBaseProps<'label'>,
   'width' | 'size' | 'variant' | 'label' | 'description' | 'errorMessage'
@@ -199,6 +202,9 @@ const getClassNames = (
   valueContainer: () => classNames.valueContainer,
 });
 
+/**
+ * @deprecated Use `TagField` instead. Will be removed in a future major version.
+ */
 export const Multiselect = ({
   disabled,
   readOnly = false,
