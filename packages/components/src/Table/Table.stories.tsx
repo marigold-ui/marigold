@@ -1203,11 +1203,21 @@ export const DynamicColumnsAndRows = meta.story({
   },
   play: async ({ canvas, step }) => {
     await step('Verify initial columns are visible', async () => {
-      expect(canvas.getByText('Name')).toBeInTheDocument();
-      expect(canvas.getByText('Email')).toBeInTheDocument();
-      expect(canvas.getByText('Handle')).toBeInTheDocument();
-      expect(canvas.getByText('Location')).toBeInTheDocument();
-      expect(canvas.getByText('Status')).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Name' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Email' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Handle' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Location' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Status' })
+      ).toBeInTheDocument();
     });
 
     await step('Verify initial rows are rendered', async () => {
@@ -1225,7 +1235,9 @@ export const DynamicColumnsAndRows = meta.story({
       await waitFor(() => {
         const headers = canvas.getAllByRole('columnheader');
         expect(headers).toHaveLength(4);
-        expect(canvas.queryByText('Location')).not.toBeInTheDocument();
+        expect(
+          canvas.queryByRole('columnheader', { name: 'Location' })
+        ).not.toBeInTheDocument();
       });
     });
 
@@ -1236,7 +1248,9 @@ export const DynamicColumnsAndRows = meta.story({
 
     await step('Verify Location column is visible again', async () => {
       await waitFor(() => {
-        expect(canvas.getByText('Location')).toBeInTheDocument();
+        expect(
+          canvas.getByRole('columnheader', { name: 'Location' })
+        ).toBeInTheDocument();
       });
     });
 
@@ -1249,7 +1263,9 @@ export const DynamicColumnsAndRows = meta.story({
       await waitFor(() => {
         const headers = canvas.getAllByRole('columnheader');
         expect(headers).toHaveLength(4);
-        expect(canvas.queryByText('Handle')).not.toBeInTheDocument();
+        expect(
+          canvas.queryByRole('columnheader', { name: 'Handle' })
+        ).not.toBeInTheDocument();
       });
     });
 
