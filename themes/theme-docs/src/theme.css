@@ -172,6 +172,5 @@
 }
 
 @plugin 'tailwindcss-react-aria-components';
-@plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
 @plugin 'tailwind-scrollbar';
