@@ -93,6 +93,13 @@ For columns where users need to read the complete value (like names, IDs, or sta
 
 When users need to perform actions on multiple items at once, enable row selection. This allows users to select individual rows or all rows, then perform bulk operations like delete, export, or modify.
 
+Row selection is particularly valuable in scenarios where users manage multiple records simultaneously, such as bulk deleting outdated entries, exporting selected data for reports, moving items between categories, or applying changes to multiple records. The selection mechanism provides visual feedback through checkboxes and highlights the selected rows to maintain clear context of what will be affected by subsequent actions.
+
+The Table component supports two selection modes:
+
+- **Multiple selection:** Users can select any number of rows using checkboxes. Click individual checkboxes to select specific rows, or use the header checkbox to select all rows at once. This mode is ideal for bulk operations where users need flexibility in choosing which items to act upon.
+- **Single selection:** Users can select only one row at a time by clicking anywhere on the row. Selecting a new row automatically deselects the previous one. Use this mode when actions apply to only one item, like viewing details or editing a single record.
+
 <ComponentDemo file="./table-selection.demo.tsx" />
 
 <GuidelineTiles>
