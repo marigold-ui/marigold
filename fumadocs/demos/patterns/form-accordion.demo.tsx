@@ -152,7 +152,7 @@ export default () => (
         </Accordion.Item>
       </Accordion>
     </Stack>
-    <Inline space="fieldX">
+    <Inline space="related">
       <Button variant="primary">Create Event</Button>
       <Button variant="secondary">Save as Draft</Button>
     </Inline>
