@@ -33,22 +33,12 @@ Use tables when you need to display datasets where users benefit from seeing mul
 
 <AppearanceTable component={title} />
 
-### Variants
+The Table component offers different visual styles to match your use case and data density.
 
-- **Default:** You should use the default variant of the Table component when
-  you want a clean, standard table appearance. It’s ideal for most use cases
-  where you want to display tabular data clearly and simply. The default
-  variant is a good starting point for most tables.
-- **Muted:** Use the `muted` variant for table to reduce visual noise and
-  improve clarity, especially in tables with extensive content. This helps
-  users focus on the data while maintaining a clean and organized appearance.
-- **Grid:** The `grid` variant is useful if you want clearer separation
-  between columns, especially for tables with many columns or dense data. The
-  grid variant adds vertical borders between columns, making it easier to scan
-  and compare values across rows.
-- **Admin- and Master:** Use this variant to identify rows that are only
-  relevant for internal users. [Learn more about its
-  usage.](/patterns/admin-master-mark)
+- **Default:** Standard table appearance for most use cases with clean, clear data presentation.
+- **Muted:** Reduces visual noise in tables with extensive content, helping users focus on the data.
+- **Grid:** Adds vertical borders between columns for clearer separation, useful for tables with many columns or dense data.
+- **Admin and Master:** Identifies rows relevant only for internal users. [Learn more about its usage.](/patterns/admin-master-mark)
 
 ## Usage
 
@@ -101,8 +91,6 @@ When users need to perform actions on multiple items at once, enable row selecti
 
 <ComponentDemo file="./table-selection.demo.tsx" />
 
-Set `selectionMode` to `"multiple"` for checkboxes or `"single"` for radio button behavior. Control selection state with `selectedKeys` and `onSelectionChange`. The component automatically adds a selection column with checkboxes when selection is enabled.
-
 <GuidelineTiles>
   <Do>
     <Do.Description>
@@ -115,18 +103,6 @@ Set `selectionMode` to `"multiple"` for checkboxes or `"single"` for radio butto
       Show the number of selected items and available actions clearly.
     </Do.Description>
   </Do>
-  <Dont>
-    <Dont.Description>
-      Don't use single selection when radio buttons or a dropdown would be more
-      appropriate for choosing one option.
-    </Dont.Description>
-  </Dont>
-  <Dont>
-    <Dont.Description>
-      Don't enable selection if there are no bulk actions available for selected
-      items.
-    </Dont.Description>
-  </Dont>
 </GuidelineTiles>
 
 ### Sorting columns
