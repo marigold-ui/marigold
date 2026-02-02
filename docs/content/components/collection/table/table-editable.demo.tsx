@@ -22,7 +22,7 @@ export default () => {
   return (
     <Table aria-label="Editable venue data">
       <Table.Header>
-        <Table.Column>Venue</Table.Column>
+        <Table.Column isRowHeader>Venue</Table.Column>
         <Table.Column>City</Table.Column>
         <Table.Column>Capacity</Table.Column>
       </Table.Header>

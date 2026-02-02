@@ -13,7 +13,7 @@ export default (props: TableProps) => (
   <Table {...props}>
     <Table.Header columns={columns}>
       {column => (
-        <Table.Column width={column.width} align={column.align}>
+        <Table.Column width={column.width} align={column.align} isRowHeader>
           {column.name}
         </Table.Column>
       )}

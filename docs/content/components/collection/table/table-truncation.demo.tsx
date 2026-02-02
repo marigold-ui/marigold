@@ -5,7 +5,9 @@ export default () => {
   return (
     <Table aria-label="Venues with descriptions">
       <Table.Header>
-        <Table.Column width={250}>Venue</Table.Column>
+        <Table.Column width={250} isRowHeader>
+          Venue
+        </Table.Column>
         <Table.Column>Description</Table.Column>
         <Table.Column width={75} align="right">
           Rating

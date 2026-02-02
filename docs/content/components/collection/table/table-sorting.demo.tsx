@@ -32,7 +32,7 @@ export default () => {
       onSortChange={sort}
     >
       <Table.Header>
-        <Table.Column id="name" allowsSorting>
+        <Table.Column id="name" allowsSorting isRowHeader>
           Venue
         </Table.Column>
         <Table.Column id="capacity" align="right" width={120} allowsSorting>

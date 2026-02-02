@@ -6,7 +6,9 @@ export default () => {
   return (
     <Table aria-label="Venue pricing">
       <Table.Header>
-        <Table.Column align="left">Venue</Table.Column>
+        <Table.Column align="left" isRowHeader>
+          Venue
+        </Table.Column>
         <Table.Column align="right">Capacity</Table.Column>
         <Table.Column align="right">Price From</Table.Column>
       </Table.Header>
