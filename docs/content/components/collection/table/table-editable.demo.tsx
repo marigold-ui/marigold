@@ -1,9 +1,9 @@
-import { people } from '@/lib/data/people';
+import { venues } from '@/lib/data/venues';
 import { useState } from 'react';
-import { Stack, Table, Text, TextField } from '@marigold/components';
+import { NumberField, Table, Text, TextField } from '@marigold/components';
 
 export default () => {
-  const [data, setData] = useState(people.slice(0, 3));
+  const [data, setData] = useState(venues.slice(0, 3));
 
   const handleSubmit = (index: number, e: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(e.currentTarget);
@@ -12,63 +12,63 @@ export default () => {
       next[index] = {
         ...next[index],
         name: (formData.get('name') as string) || next[index].name,
-        position: (formData.get('position') as string) || next[index].position,
-        email: (formData.get('email') as string) || next[index].email,
+        city: (formData.get('city') as string) || next[index].city,
+        capacity: Number(formData.get('capacity')) || next[index].capacity,
       };
       return next;
     });
   };
 
   return (
-    <Table aria-label="Editable team data">
+    <Table aria-label="Editable venue data">
       <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Position</Table.Column>
-        <Table.Column>Email</Table.Column>
+        <Table.Column>Venue</Table.Column>
+        <Table.Column>City</Table.Column>
+        <Table.Column>Capacity</Table.Column>
       </Table.Header>
       <Table.Body>
-        {data.map((person, i) => (
-          <Table.Row key={person.id}>
+        {data.map((venue, i) => (
+          <Table.Row key={venue.id}>
             <Table.EditableCell
               renderEditing={() => (
                 <TextField
-                  aria-label="Name"
+                  aria-label="Venue name"
                   name="name"
-                  defaultValue={person.name}
+                  defaultValue={venue.name}
                   autoFocus
                 />
               )}
               onSubmit={e => handleSubmit(i, e)}
             >
-              <Text weight="medium">{person.name}</Text>
+              <Text weight="medium">{venue.name}</Text>
             </Table.EditableCell>
             <Table.EditableCell
               renderEditing={() => (
                 <TextField
-                  aria-label="Position"
-                  name="position"
-                  defaultValue={person.position}
+                  aria-label="City"
+                  name="city"
+                  defaultValue={venue.city}
                   autoFocus
                 />
               )}
               onSubmit={e => handleSubmit(i, e)}
             >
               <Text size="sm" color="muted-foreground">
-                {person.position}
+                {venue.city}
               </Text>
             </Table.EditableCell>
             <Table.EditableCell
               renderEditing={() => (
-                <TextField
-                  aria-label="Email"
-                  name="email"
-                  defaultValue={person.email}
+                <NumberField
+                  aria-label="Capacity"
+                  name="capacity"
+                  defaultValue={venue.capacity}
                   autoFocus
                 />
               )}
               onSubmit={e => handleSubmit(i, e)}
             >
-              {person.email}
+              {venue.capacity.toLocaleString()}
             </Table.EditableCell>
           </Table.Row>
         ))}

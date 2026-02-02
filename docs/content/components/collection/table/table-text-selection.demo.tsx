@@ -1,4 +1,4 @@
-import { people } from '@/lib/data/people';
+import { venueTypes, venues } from '@/lib/data/venues';
 import { useState } from 'react';
 import { Stack, Switch, Table, Text } from '@marigold/components';
 
@@ -20,18 +20,18 @@ export default () => {
         allowTextSelection={allowTextSelection}
       >
         <Table.Header>
-          <Table.Column>Name</Table.Column>
-          <Table.Column>Position</Table.Column>
+          <Table.Column>Venue</Table.Column>
+          <Table.Column>Type</Table.Column>
         </Table.Header>
         <Table.Body>
-          {people.slice(0, 4).map(person => (
-            <Table.Row key={person.id}>
+          {venues.slice(0, 4).map(venue => (
+            <Table.Row key={venue.id}>
               <Table.Cell>
-                <Text weight="medium">{person.name}</Text>
+                <Text weight="medium">{venue.name}</Text>
               </Table.Cell>
               <Table.Cell>
                 <Text size="sm" color="muted-foreground">
-                  {person.position}
+                  {venueTypes[venue.type]}
                 </Text>
               </Table.Cell>
             </Table.Row>

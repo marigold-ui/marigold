@@ -1,32 +1,29 @@
+import { venues } from '@/lib/data/venues';
 import { Table, Text } from '@marigold/components';
 import { NumericFormat } from '@marigold/system';
 
 export default () => {
-  const products = [
-    { id: '1', name: 'Laptop', quantity: 5, price: 1299.99 },
-    { id: '2', name: 'Mouse', quantity: 23, price: 29.99 },
-    { id: '3', name: 'Keyboard', quantity: 12, price: 89.5 },
-  ];
-
   return (
-    <Table aria-label="Product inventory">
+    <Table aria-label="Venue pricing">
       <Table.Header>
-        <Table.Column align="left">Product</Table.Column>
-        <Table.Column align="right">Quantity</Table.Column>
-        <Table.Column align="right">Price</Table.Column>
+        <Table.Column align="left">Venue</Table.Column>
+        <Table.Column align="right">Capacity</Table.Column>
+        <Table.Column align="right">Price From</Table.Column>
       </Table.Header>
       <Table.Body>
-        {products.map(product => (
-          <Table.Row key={product.id}>
+        {venues.slice(0, 5).map(venue => (
+          <Table.Row key={venue.id}>
             <Table.Cell align="left">
-              <Text weight="medium">{product.name}</Text>
+              <Text weight="medium">{venue.name}</Text>
             </Table.Cell>
-            <Table.Cell align="right">{product.quantity}</Table.Cell>
+            <Table.Cell align="right">
+              {venue.capacity.toLocaleString()}
+            </Table.Cell>
             <Table.Cell align="right">
               <NumericFormat
                 style="currency"
                 currency="USD"
-                value={product.price}
+                value={venue.price.from}
               />
             </Table.Cell>
           </Table.Row>

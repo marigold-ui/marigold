@@ -1,11 +1,11 @@
-import { people } from '@/lib/data/people';
+import { venues } from '@/lib/data/venues';
 import { useDragAndDrop } from 'react-aria-components';
 import { useListData } from 'react-stately';
 import { Table, Text } from '@marigold/components';
 
 export default () => {
   const list = useListData({
-    initialItems: people.slice(0, 5),
+    initialItems: venues.slice(0, 5),
   });
 
   const { dragAndDropHooks } = useDragAndDrop({
@@ -26,13 +26,13 @@ export default () => {
 
   return (
     <Table
-      aria-label="Reorderable team members"
+      aria-label="Reorderable venues"
       selectionMode="multiple"
       dragAndDropHooks={dragAndDropHooks}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Position</Table.Column>
+        <Table.Column>Venue</Table.Column>
+        <Table.Column>City</Table.Column>
       </Table.Header>
       <Table.Body items={list.items}>
         {item => (
@@ -42,7 +42,7 @@ export default () => {
             </Table.Cell>
             <Table.Cell>
               <Text size="sm" color="muted-foreground">
-                {item.position}
+                {item.city}, {item.country}
               </Text>
             </Table.Cell>
           </Table.Row>
