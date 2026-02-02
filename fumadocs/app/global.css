@@ -20,3 +20,11 @@
 @source './../../packages/{components,system}/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/node_modules/**/*.{tsx,ts}';
 @source '!../../packages/{components,system}/**/*.{stories,test}.{tsx,ts}';
+
+@layer base {
+  :root {
+    --page-padding: 0.75rem;
+    --page-padding-md: 2rem;
+    --page-padding-xl: 3rem;
+  }
+}
