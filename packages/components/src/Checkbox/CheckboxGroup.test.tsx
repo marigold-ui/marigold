@@ -27,7 +27,7 @@ test('applies group styles from theme', () => {
   const group = screen.getByRole('group');
 
   expect(group.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-full space-y-2 gap-x-2"`
+    `"group/field w-full space-y-2 flex flex-col gap-1 gap-x-2"`
   );
 });
 
