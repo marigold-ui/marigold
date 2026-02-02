@@ -22,18 +22,19 @@ export const Surface = meta.story({
     <Stack space="group">
       <Headline level="3">Surface</Headline>
       <Inline space="peer">
-        <Base className="ui-surface">raised</Base>
-        <Base className="ui-surface ui-elevation-overlay">overlay</Base>
-        <Base className="ui-surface ui-elevation-overlay ui-state-error">
+        <Base className="ui-surface shadow-elevation-border">border</Base>
+        <Base className="ui-surface shadow-elevation-raised">raised</Base>
+        <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
+        <Base className="ui-surface shadow-elevation-overlay ui-state-error">
           overlay / error
         </Base>
       </Inline>
       <Headline level="3">With Tailwind Classes</Headline>
       <Inline space="peer">
-        <Base className="ui-surface ui-elevation-overlay shadow-fuchsia-600">
+        <Base className="ui-surface shadow-elevation-overlay shadow-fuchsia-600">
           overlay / tw shadow color
         </Base>
-        <Base className="ui-surface ui-elevation-overlay inset-shadow-sm/50 inset-shadow-fuchsia-600">
+        <Base className="ui-surface shadow-elevation-overlay inset-shadow-sm/50 inset-shadow-fuchsia-600">
           overlay / tw (inset) shadow
         </Base>
       </Inline>

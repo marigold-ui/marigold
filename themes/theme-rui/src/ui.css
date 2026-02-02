@@ -68,10 +68,8 @@
 * Applies a consistent visual style for invalid elements.
 */
 @utility ui-state-error {
-  --tw-shadow-color: var(--color-destructive);
-
   /* Overrides the transparent border. Gradient would get too dark. */
-  @apply border-destructive;
+  @apply border-destructive shadow-destructive/20;
   @apply focus:border-destructive focus:ring-destructive/20;
 }
 
