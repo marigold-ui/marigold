@@ -20,7 +20,7 @@ export default () => (
                 aria-label="Amenities"
                 name="amenities"
                 selectionMode="multiple"
-                defaultValue={venue.amenities}
+                defaultValue={[...venue.amenities]}
                 autoFocus
               >
                 {amenitiesOptions.map((option, idx) => (
