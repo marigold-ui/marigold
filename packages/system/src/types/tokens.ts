@@ -13,7 +13,4 @@ export type SpacingTokens =
   | 'peer'
   | 'group'
   | 'section'
-  | 'context'
-  | 'fieldY'
-  | 'fieldX'
-  | 'container';
+  | 'context';
