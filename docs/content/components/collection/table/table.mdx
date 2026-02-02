@@ -146,17 +146,21 @@ Enable sorting to let users click column headers and dynamically reorder rows by
 
 ### Editing data inline
 
-When users need to make quick edits to individual values without navigating to a separate form, use editable cells. This reduces friction and keeps users in context while maintaining a clear editing workflow.
+When users need to make quick edits to individual values without navigating to a separate form, use editable cells. This is particularly effective for small, atomic changes where users need to update a single field across multiple records—like updating product prices, changing task statuses, correcting typos, or adjusting quantities. By allowing edits directly within the table, you keep users in context and reduce friction.
 
 <ComponentDemo file="./table-editable.demo.tsx" />
-
-Use `Table.EditableCell` instead of `Table.Cell` for editable fields. Provide a form control via `renderEditing` that appears when users click the edit icon. The editing interface adapts responsively, showing a Dialog on mobile and a Popover on desktop. Handle form submission with `onSubmit` to update your data.
 
 <GuidelineTiles>
   <Do>
     <Do.Description>
       Use editable cells for quick, single-value updates like changing status or
       correcting typos.
+    </Do.Description>
+  </Do>
+  <Do>
+    <Do.Description>
+      Choose form controls that match the data type (e.g. Select for predefined
+      options, NumberField for numbers, DatePicker for dates).
     </Do.Description>
   </Do>
   <Dont>
