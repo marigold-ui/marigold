@@ -1,78 +1,56 @@
-import { venues } from '@/lib/data/venues';
-import { useState } from 'react';
-import { NumberField, Table, Text, TextField } from '@marigold/components';
+import { amenitiesOptions, venues } from '@/lib/data/venues';
+import { NumberField, Select, Table, Text } from '@marigold/components';
 
-export default () => {
-  const [data, setData] = useState(venues.slice(0, 3));
-
-  const handleSubmit = (index: number, e: React.FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(e.currentTarget);
-    setData(prev => {
-      const next = [...prev];
-      next[index] = {
-        ...next[index],
-        name: (formData.get('name') as string) || next[index].name,
-        city: (formData.get('city') as string) || next[index].city,
-        capacity: Number(formData.get('capacity')) || next[index].capacity,
-      };
-      return next;
-    });
-  };
-
-  return (
-    <Table aria-label="Editable venue data">
-      <Table.Header>
-        <Table.Column isRowHeader>Venue</Table.Column>
-        <Table.Column>City</Table.Column>
-        <Table.Column>Capacity</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        {data.map((venue, i) => (
-          <Table.Row key={venue.id}>
-            <Table.EditableCell
-              renderEditing={() => (
-                <TextField
-                  aria-label="Venue name"
-                  name="name"
-                  defaultValue={venue.name}
-                  autoFocus
-                />
-              )}
-              onSubmit={e => handleSubmit(i, e)}
-            >
-              <Text weight="medium">{venue.name}</Text>
-            </Table.EditableCell>
-            <Table.EditableCell
-              renderEditing={() => (
-                <TextField
-                  aria-label="City"
-                  name="city"
-                  defaultValue={venue.city}
-                  autoFocus
-                />
-              )}
-              onSubmit={e => handleSubmit(i, e)}
-            >
-              <Text size="sm" color="muted-foreground">
-                {venue.city}
-              </Text>
-            </Table.EditableCell>
-            <Table.EditableCell
-              renderEditing={() => (
-                <NumberField
-                  aria-label="Capacity"
-                  name="capacity"
-                  defaultValue={venue.capacity}
-                  autoFocus
-                />
-              )}
-              onSubmit={e => handleSubmit(i, e)}
-            >
-              {venue.capacity.toLocaleString()}
-            </Table.EditableCell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  );
-};
+export default () => (
+  <Table aria-label="Editable venue data">
+    <Table.Header>
+      <Table.Column isRowHeader>Venue</Table.Column>
+      <Table.Column>Amenities</Table.Column>
+      <Table.Column width={100}>Rating</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      {venues.slice(3, 7).map(venue => (
+        <Table.Row key={venue.id}>
+          <Table.Cell>
+            <Text weight="medium">{venue.name}</Text>
+          </Table.Cell>
+          <Table.EditableCell
+            renderEditing={() => (
+              <Select
+                aria-label="Amenities"
+                name="amenities"
+                selectionMode="multiple"
+                defaultValue={venue.amenities}
+                autoFocus
+              >
+                {amenitiesOptions.map((option, idx) => (
+                  <Select.Option key={option} id={idx}>
+                    {option}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
+          >
+            {venue.amenities
+              .map(amenity => amenitiesOptions[amenity])
+              .join(', ')}
+          </Table.EditableCell>
+          <Table.EditableCell
+            renderEditing={() => (
+              <NumberField
+                aria-label="Rating"
+                name="rating"
+                defaultValue={venue.rating}
+                minValue={1}
+                maxValue={5}
+                autoFocus
+              />
+            )}
+          >
+            {venue.rating}
+          </Table.EditableCell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
