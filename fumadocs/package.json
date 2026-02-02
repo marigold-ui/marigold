@@ -11,7 +11,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "fumadocs-core": "16.4.7",
+    "fumadocs-core": "16.4.10",
     "fumadocs-mdx": "14.2.6",
     "fumadocs-ui": "16.4.7",
     "@marigold/components": "workspace:*",
