@@ -2,21 +2,21 @@ import { useEffect, useState } from 'react';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
-import { Badge } from '../Badge/Badge';
-import { Button } from '../Button/Button';
-import { Center } from '../Center/Center';
-import { Checkbox } from '../Checkbox/Checkbox';
-import { EmptyState } from '../EmptyState/EmptyState';
-import { Scrollable } from '../Scrollable/Scrollable';
-import { Select } from '../Select/Select';
-import { Stack } from '../Stack/Stack';
-import { Text } from '../Text/Text';
-import { TextArea } from '../TextArea/TextArea';
-import type { Selection } from '../types';
+import { Badge } from '../../Badge/Badge';
+import { Button } from '../../Button/Button';
+import { Center } from '../../Center/Center';
+import { Checkbox } from '../../Checkbox/Checkbox';
+import { EmptyState } from '../../EmptyState/EmptyState';
+import { Scrollable } from '../../Scrollable/Scrollable';
+import { Select } from '../../Select/Select';
+import { Stack } from '../../Stack/Stack';
+import { Text } from '../../Text/Text';
+import { TextArea } from '../../TextArea/TextArea';
+import type { Selection } from '../../types';
 import { Table } from './Table';
 
 const meta = preview.meta({
-  title: 'Components/Table',
+  title: 'Components/legacy/Table',
   component: Table,
   argTypes: {
     selectionMode: {

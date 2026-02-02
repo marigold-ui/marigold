@@ -15,12 +15,14 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
-    "./*": {
-      "require": "./dist/*.js",
-      "import": "./dist/*.mjs"
+    "./legacy": {
+      "types": "./dist/legacy.d.ts",
+      "require": "./dist/legacy.js",
+      "import": "./dist/legacy.mjs"
     }
   },
   "sideEffects": false,
@@ -72,8 +74,8 @@
     "tsdown": "0.16.8"
   },
   "scripts": {
-    "build": "tsdown src/index.ts",
-    "watch": "tsdown src/index.ts --watch",
+    "build": "tsdown",
+    "watch": "tsdown --watch",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
 }

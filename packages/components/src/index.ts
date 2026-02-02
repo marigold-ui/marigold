@@ -220,9 +220,6 @@ export type { StackProps } from './Stack/Stack';
 export { Switch } from './Switch/Switch';
 export type { SwitchProps } from './Switch/Switch';
 
-export { Table } from './Table/Table';
-export type { TableProps } from './Table/Table';
-
 export { TableView } from './TableView/TableView';
 export type {
   TableViewProps,

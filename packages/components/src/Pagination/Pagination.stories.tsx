@@ -5,8 +5,8 @@ import { Inline } from '../Inline/Inline';
 import { Select } from '../Select/Select';
 import { Split } from '../Split/Split';
 import { Stack } from '../Stack/Stack';
-import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
+import { Table } from '../legacy/Table/Table';
 import { Pagination, PaginationProps } from './Pagination';
 
 const meta = preview.meta({
