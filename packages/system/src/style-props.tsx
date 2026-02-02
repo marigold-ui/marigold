@@ -629,6 +629,13 @@ export const textAlign = {
   right: 'text-right',
 } as const;
 
+export const verticalAlign = {
+  top: 'align-top',
+  middle: 'align-middle',
+  bottom: 'align-bottom',
+  baseline: 'align-baseline',
+} as const;
+
 export const aspect = {
   square: 'aspect-[1]',
   landscape: 'aspect-4/3',
@@ -796,6 +803,13 @@ export type TextAlignProp = {
    * Set the text alignment for the element.
    */
   align?: keyof typeof textAlign;
+};
+
+export type VerticalAlignProp = {
+  /**
+   * Set the vertical alignment for the element.
+   */
+  verticalAlign?: keyof typeof verticalAlign;
 };
 
 export type WidthProp = {

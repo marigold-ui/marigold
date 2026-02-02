@@ -31,6 +31,11 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    * @default false
    */
   allowTextSelection?: boolean;
+  /**
+   * Controls vertical alignment of cell content.
+   * @default 'middle'
+   */
+  verticalAlign?: 'top' | 'middle' | 'bottom' | 'baseline';
 }
 
 const _Table = ({
@@ -38,6 +43,7 @@ const _Table = ({
   size,
   overflow = 'wrap',
   allowTextSelection = false,
+  verticalAlign = 'middle',
   ...props
 }: TableProps) => {
   const classNames = useClassNames({
@@ -47,8 +53,15 @@ const _Table = ({
   });
 
   const ctx = useMemo(
-    () => ({ classNames, variant, size, overflow, allowTextSelection }),
-    [classNames, variant, size, overflow, allowTextSelection]
+    () => ({
+      classNames,
+      variant,
+      size,
+      overflow,
+      allowTextSelection,
+      verticalAlign,
+    }),
+    [classNames, variant, size, overflow, allowTextSelection, verticalAlign]
   );
 
   return (

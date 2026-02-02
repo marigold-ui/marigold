@@ -10,6 +10,7 @@ import {
   Links,
   ScrollableAndSticky,
   Sorting,
+  VerticalAlignment,
   WidthsAndOverflow,
   WithActions,
 } from './Table.stories';
@@ -161,6 +162,33 @@ describe('Props and Variants', () => {
 
     const cell = screen.getAllByRole('gridcell')[0];
     expect(cell).toHaveClass('wrap-break-word');
+  });
+
+  test('applies verticalAlign prop to cells', () => {
+    // VerticalAlignment story has verticalAlign="top"
+    render(<VerticalAlignment.Component />);
+
+    const cells = screen.getAllByRole('gridcell');
+    // First cell should have align-top from table prop
+    expect(cells[0]).toHaveClass('align-top');
+  });
+
+  test('defaults to middle vertical alignment', () => {
+    // Basic story doesn't set verticalAlign, should default to middle
+    render(<Basic.Component />);
+
+    const cell = screen.getAllByRole('gridcell')[0];
+    expect(cell).toHaveClass('align-middle');
+  });
+
+  test('cell-level verticalAlign overrides table-level', () => {
+    // VerticalAlignment story has table verticalAlign="top" but second row first cell has verticalAlign="bottom"
+    render(<VerticalAlignment.Component />);
+
+    const cells = screen.getAllByRole('gridcell');
+    // Second row first cell (index 2) should have align-bottom override
+    expect(cells[2]).toHaveClass('align-bottom');
+    expect(cells[2]).not.toHaveClass('align-top');
   });
 });
 

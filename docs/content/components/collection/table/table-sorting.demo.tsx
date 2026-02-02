@@ -4,7 +4,7 @@ import type { SortDescriptor } from '@react-types/shared';
 import { Table, Text } from '@marigold/components';
 
 export default () => {
-  const data = venues.slice(0, 6);
+  const data = venues.slice(0, 9);
   const [list, setList] = useState(data);
   const [descriptor, setDescriptor] = useState<SortDescriptor>({
     column: '',
@@ -35,12 +35,13 @@ export default () => {
         <Table.Column id="name" allowsSorting>
           Venue
         </Table.Column>
-        <Table.Column id="capacity" align="right" allowsSorting>
+        <Table.Column id="capacity" align="right" width={120} allowsSorting>
           Capacity
         </Table.Column>
-        <Table.Column id="rating" align="right" allowsSorting>
+        <Table.Column id="rating" align="right" width={90} allowsSorting>
           Rating
         </Table.Column>
+        <Table.Column>Description</Table.Column>
       </Table.Header>
       <Table.Body>
         {list.map(item => (
@@ -48,10 +49,9 @@ export default () => {
             <Table.Cell>
               <Text weight="medium">{item.name}</Text>
             </Table.Cell>
-            <Table.Cell align="right">
-              {item.capacity.toLocaleString()}
-            </Table.Cell>
-            <Table.Cell align="right">{item.rating.toFixed(1)}</Table.Cell>
+            <Table.Cell align="right">{item.capacity}</Table.Cell>
+            <Table.Cell align="right">{item.rating}</Table.Cell>
+            <Table.Cell overflow="truncate">{item.description}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

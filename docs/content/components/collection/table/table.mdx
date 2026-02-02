@@ -111,11 +111,16 @@ When users need to perform actions on multiple items at once, enable row selecti
 
 ### Sorting columns
 
-When working with large datasets, users often need to organize information by specific attributes. Enable sorting to let users click column headers and reorder rows by that column's values.
+When working with large datasets, users often need to organize information by specific attributes to find what they're looking for or identify patterns. Sorting solves the problem of information overload by letting users reorder data in a way that makes sense for their current task—whether that's finding the highest value, the most recent date, or items alphabetically.
+
+Enable sorting to let users click column headers and dynamically reorder rows by that column's values. This is particularly valuable when users need to:
+
+- **Find extremes**: Quickly locate the highest price, earliest date, or longest duration
+- **Compare values**: See how items stack up against each other when ordered by a specific metric
+- **Identify patterns**: Spot trends, outliers, or groupings that emerge when data is organized
+- **Prioritize work**: Focus on urgent items by sorting by deadline or status
 
 <ComponentDemo file="./table-sorting.demo.tsx" />
-
-Set `allowsSorting` on columns that should be sortable. Manage sort state with `sortDescriptor` and `onSortChange`. The component displays sort direction indicators (ascending/descending arrows) in column headers. Implement the sorting logic in your `onSortChange` handler, either client-side for small datasets or server-side for large ones.
 
 <GuidelineTiles>
   <Do>
@@ -124,21 +129,10 @@ Set `allowsSorting` on columns that should be sortable. Manage sort state with `
       alphabetical text.
     </Do.Description>
   </Do>
-  <Do>
-    <Do.Description>
-      Right-align numeric columns to make values easier to compare when sorted.
-    </Do.Description>
-  </Do>
   <Dont>
     <Dont.Description>
       Don't make every column sortable if some contain non-comparable content
       like icons or actions.
-    </Dont.Description>
-  </Dont>
-  <Dont>
-    <Dont.Description>
-      Don't forget to handle sorting server-side for large datasets to maintain
-      performance.
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
@@ -156,12 +150,6 @@ Use `Table.EditableCell` instead of `Table.Cell` for editable fields. Provide a 
     <Do.Description>
       Use editable cells for quick, single-value updates like changing status or
       correcting typos.
-    </Do.Description>
-  </Do>
-  <Do>
-    <Do.Description>
-      Provide appropriate input types like TextField for text, Select for
-      constrained options.
     </Do.Description>
   </Do>
   <Dont>

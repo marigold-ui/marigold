@@ -1166,6 +1166,39 @@ export const CellOverrideTableTruncate = meta.story({
   },
 });
 
+export const VerticalAlignment = meta.story({
+  args: {
+    verticalAlign: 'top',
+  },
+  render: args => (
+    <Table aria-label="Table with vertical alignment" {...args}>
+      <Table.Header>
+        <Table.Column>Item</Table.Column>
+        <Table.Column>Description</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Short</Table.Cell>
+          <Table.Cell>
+            <div className="h-20">
+              Tall cell content to demonstrate vertical alignment. The content
+              in the first column will align to the top of this tall cell.
+            </div>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell verticalAlign="bottom">Override</Table.Cell>
+          <Table.Cell>
+            <div className="h-20">
+              This row's first cell overrides with bottom alignment.
+            </div>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+});
+
 export const DynamicColumnsAndRows = meta.story({
   tags: ['component-test'],
   render: args => {

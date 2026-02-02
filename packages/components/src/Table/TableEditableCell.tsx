@@ -7,7 +7,7 @@ import type {
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Cell, Popover } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, textAlign, useSmallScreen } from '@marigold/system';
+import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
@@ -62,6 +62,11 @@ export interface TableEditableCellProps {
    * @default undefined (inherits from table)
    */
   overflow?: 'truncate' | 'wrap';
+  /**
+   * Vertical alignment of cell content. Overrides the table-level verticalAlign setting.
+   * @default undefined (inherits from table)
+   */
+  verticalAlign?: keyof typeof verticalAlign;
 }
 
 // EditableCellPopover
@@ -132,17 +137,20 @@ export const TableEditableCell = ({
   action,
   align = 'left',
   overflow: cellOverflow,
+  verticalAlign: cellVerticalAlign,
 }: TableEditableCellProps) => {
   const {
     classNames,
     overflow: tableOverflow = 'wrap',
     allowTextSelection = false,
+    verticalAlign: tableVerticalAlign = 'middle',
   } = useTableContext();
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  // Cell-level overflow overrides table-level
+  // Cell-level overrides table-level
   const overflow = cellOverflow ?? tableOverflow;
+  const vAlign = cellVerticalAlign ?? tableVerticalAlign;
 
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
@@ -197,6 +205,7 @@ export const TableEditableCell = ({
       className={cn(
         classNames.cell,
         textAlign[align],
+        verticalAlign[vAlign],
         overflow === 'truncate' ? 'max-w-0 truncate' : 'wrap-break-word'
       )}
     >
