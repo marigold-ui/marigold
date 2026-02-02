@@ -14,7 +14,7 @@ import {
 
 export default () => (
   <Stack space="section">
-    <Stack space="fieldY">
+    <Stack space="group">
       <Headline level={2}>Event Details</Headline>
       <TextField
         label="Event Name"
@@ -27,7 +27,7 @@ export default () => (
         rows={3}
         required
       />
-      <Inline space="fieldX">
+      <Inline space="related">
         <DatePicker label="Start Date" width="fit" required />
         <DatePicker label="End Date" width="fit" />
       </Inline>
@@ -36,7 +36,7 @@ export default () => (
       <Accordion.Item id="advanced-settings">
         <Accordion.Header>Advanced Event Settings</Accordion.Header>
         <Accordion.Content>
-          <Stack space="fieldY">
+          <Stack space="group">
             <Select
               label="Event Category"
               placeholder="Select category"
@@ -63,7 +63,7 @@ export default () => (
         </Accordion.Content>
       </Accordion.Item>
     </Accordion>
-    <Stack space="fieldY">
+    <Stack space="group">
       <Headline level={2}>Location & Capacity</Headline>
       <TextField
         label="Venue Name"
@@ -75,7 +75,7 @@ export default () => (
         description="Street address of the venue"
         required
       />
-      <Inline space="fieldX">
+      <Inline space="related">
         <TextField label="City" required />
         <TextField label="Postal Code" width={20} />
       </Inline>
@@ -83,7 +83,7 @@ export default () => (
         <Accordion.Item id="location-details">
           <Accordion.Header>Additional Location Details</Accordion.Header>
           <Accordion.Content>
-            <Stack space="fieldY">
+            <Stack space="group">
               <TextField
                 label="Room Number "
                 description="Specific room or area within venue"
@@ -114,7 +114,7 @@ export default () => (
         <Accordion.Item id="contact-info">
           <Accordion.Header>Contact Information</Accordion.Header>
           <Accordion.Content>
-            <Stack space="fieldY">
+            <Stack space="group">
               <TextField
                 label="Organizer Name"
                 description="Main contact person"
@@ -138,7 +138,7 @@ export default () => (
         <Accordion.Item id="special-requirements">
           <Accordion.Header>Special Requirements</Accordion.Header>
           <Accordion.Content>
-            <Stack space="fieldY">
+            <Stack space="group">
               <Checkbox label="Catering required" />
               <Checkbox label="Audio/Visual equipment needed" />
               <Checkbox label="Security required" />
