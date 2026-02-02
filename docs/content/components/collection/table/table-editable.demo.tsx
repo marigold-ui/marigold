@@ -1,56 +1,90 @@
 import { amenitiesOptions, venues } from '@/lib/data/venues';
-import { NumberField, Select, Table, Text } from '@marigold/components';
+import { useState } from 'react';
+import {
+  NumberField,
+  NumericFormat,
+  Select,
+  Table,
+  Text,
+} from '@marigold/components';
 
-export default () => (
-  <Table aria-label="Editable venue data">
-    <Table.Header>
-      <Table.Column isRowHeader>Venue</Table.Column>
-      <Table.Column>Amenities</Table.Column>
-      <Table.Column width={100}>Rating</Table.Column>
-    </Table.Header>
-    <Table.Body>
-      {venues.slice(3, 7).map(venue => (
-        <Table.Row key={venue.id}>
-          <Table.Cell>
-            <Text weight="medium">{venue.name}</Text>
-          </Table.Cell>
-          <Table.EditableCell
-            renderEditing={() => (
-              <Select
-                aria-label="Amenities"
-                name="amenities"
-                selectionMode="multiple"
-                defaultValue={[...venue.amenities]}
-                autoFocus
-              >
-                {amenitiesOptions.map((option, idx) => (
-                  <Select.Option key={option} id={idx}>
-                    {option}
-                  </Select.Option>
-                ))}
-              </Select>
-            )}
-          >
-            {venue.amenities
-              .map(amenity => amenitiesOptions[amenity])
-              .join(', ')}
-          </Table.EditableCell>
-          <Table.EditableCell
-            renderEditing={() => (
-              <NumberField
-                aria-label="Rating"
-                name="rating"
-                defaultValue={venue.rating}
-                minValue={1}
-                maxValue={5}
-                autoFocus
+export default () => {
+  const [tableData, setTableData] = useState(() => venues.slice(3, 7));
+
+  const update = (
+    venueId: string,
+    field: string,
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    const formData = new FormData(e.currentTarget);
+    const value = formData.get(field);
+    const processedValue = field === 'rating' ? Number(value) : value;
+
+    setTableData(prev =>
+      prev.map(venue =>
+        venue.id === venueId ? { ...venue, [field]: processedValue } : venue
+      )
+    );
+  };
+
+  return (
+    <Table aria-label="Editable venue data">
+      <Table.Header>
+        <Table.Column isRowHeader>Venue</Table.Column>
+        <Table.Column>Amenities</Table.Column>
+        <Table.Column width={100}>Rating</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {tableData.map(venue => (
+          <Table.Row key={venue.id}>
+            <Table.Cell>
+              <Text weight="medium">{venue.name}</Text>
+            </Table.Cell>
+            <Table.EditableCell
+              onSubmit={e => update(venue.id, 'amenities', e)}
+              renderEditing={() => (
+                <Select
+                  aria-label="Amenities"
+                  name="amenities"
+                  selectionMode="multiple"
+                  defaultValue={[...venue.amenities]}
+                  autoFocus
+                >
+                  {amenitiesOptions.map((option, idx) => (
+                    <Select.Option key={option} id={idx}>
+                      {option}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
+            >
+              {venue.amenities
+                .map(amenity => amenitiesOptions[amenity])
+                .join(', ')}
+            </Table.EditableCell>
+            <Table.EditableCell
+              onSubmit={e => update(venue.id, 'rating', e)}
+              renderEditing={() => (
+                <NumberField
+                  aria-label="Rating"
+                  name="rating"
+                  defaultValue={venue.rating}
+                  minValue={1}
+                  maxValue={5}
+                  step={0.1}
+                  autoFocus
+                />
+              )}
+            >
+              <NumericFormat
+                value={venue.rating}
+                minimumFractionDigits={1}
+                maximumFractionDigits={1}
               />
-            )}
-          >
-            {venue.rating}
-          </Table.EditableCell>
-        </Table.Row>
-      ))}
-    </Table.Body>
-  </Table>
-);
+            </Table.EditableCell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
+  );
+};
