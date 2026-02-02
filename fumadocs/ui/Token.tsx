@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Inline, Stack, Table, alignment, cn, paddingSpace } from '@/ui';
+import { Card, Inline, Stack, alignment, cn, paddingSpace } from '@/ui';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
@@ -117,137 +117,139 @@ export const Breakpoints = () => {
 
   return (
     <div data-theme="rui">
-      <Table aria-label="breakpoints" stretch>
-        <Table.Header>
-          <Table.Column key={'name'}>Name</Table.Column>
-          <Table.Column key={'value'}>Breaks at</Table.Column>
-        </Table.Header>
-        <Table.Body>
+      <table aria-label="breakpoints" style={{ width: '100%' }}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Breaks at</th>
+          </tr>
+        </thead>
+        <tbody>
           {Object.entries(breakpoints).map(([key, value]) => (
-            <Table.Row key={key}>
-              <Table.Cell>
+            <tr key={key}>
+              <td>
                 <code className="before:content-none after:content-none">
                   {key}
                 </code>
-              </Table.Cell>
-              <Table.Cell>{value}</Table.Cell>
-            </Table.Row>
+              </td>
+              <td>{value}</td>
+            </tr>
           ))}
-        </Table.Body>
-      </Table>
+        </tbody>
+      </table>
     </div>
   );
 };
 
 export const Spacing = () => {
   return (
-    <Table aria-label="spaces" stretch>
-      <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
-        <Table.Column key={'value'}>Value</Table.Column>
-        <Table.Column key={'example'}>Example</Table.Column>
-      </Table.Header>
-      <Table.Body>
+    <table aria-label="spaces" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
         {Object.keys(paddingSpace)
           .sort((a, b) => parseFloat(a) - parseFloat(b))
           .map(key => (
-            <Table.Row key={key}>
-              <Table.Cell>
+            <tr key={key}>
+              <td>
                 <code className="before:content-none after:content-none">
                   {key}
                 </code>
-              </Table.Cell>
-              <Table.Cell>{Number(key) * 4}px</Table.Cell>
-              <Table.Cell>
+              </td>
+              <td>{Number(key) * 4}px</td>
+              <td>
                 <div className={cn(`pl-${key}`, 'bg-slate-300')}>
                   <div className="h-3 bg-white"></div>
                 </div>
-              </Table.Cell>
-            </Table.Row>
+              </td>
+            </tr>
           ))}
-      </Table.Body>
-    </Table>
+      </tbody>
+    </table>
   );
 };
 
 export const SpacingTokensTable = () => {
   return (
-    <Table aria-label="spacing tokens">
-      <Table.Header>
-        <Table.Column>Token</Table.Column>
-        <Table.Column>Value</Table.Column>
-        <Table.Column>Description</Table.Column>
-        <Table.Column>Relevant components</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row key={0}>
-          <Table.Cell>
+    <table aria-label="spacing tokens" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Value</th>
+          <th>Description</th>
+          <th>Relevant components</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
             <code className="before:content-none after:content-none">
               container
             </code>
-          </Table.Cell>
-          <Table.Cell>50rem (800px)</Table.Cell>
-          <Table.Cell>
-            Used width or max-width for the form container.
-          </Table.Cell>
-          <Table.Cell>
+          </td>
+          <td>50rem (800px)</td>
+          <td>Used width or max-width for the form container.</td>
+          <td>
             {'<div>'}, {'<Form>'}
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row key={1}>
-          <Table.Cell>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <code className="before:content-none after:content-none">
               section
             </code>
-          </Table.Cell>
-          <Table.Cell>3.5rem (56px)</Table.Cell>
-          <Table.Cell>
-            Used for creating space between different form sections.
-          </Table.Cell>
-          <Table.Cell>{'<Stack>'}</Table.Cell>
-        </Table.Row>
-        <Table.Row key={2}>
-          <Table.Cell>
+          </td>
+          <td>3.5rem (56px)</td>
+          <td>Used for creating space between different form sections.</td>
+          <td>{'<Stack>'}</td>
+        </tr>
+        <tr>
+          <td>
             <code className="before:content-none after:content-none">
               fieldY
             </code>
-          </Table.Cell>
-          <Table.Cell>2rem (32px)</Table.Cell>
-          <Table.Cell>
+          </td>
+          <td>2rem (32px)</td>
+          <td>
             Used for creating vertical space between individual form fields in a
             section.
-          </Table.Cell>
-          <Table.Cell>{'<Stack>'}</Table.Cell>
-        </Table.Row>
-        <Table.Row key={3}>
-          <Table.Cell>
+          </td>
+          <td>{'<Stack>'}</td>
+        </tr>
+        <tr>
+          <td>
             <code className="before:content-none after:content-none">
               fieldX
             </code>
-          </Table.Cell>
-          <Table.Cell>1.25rem (20px)</Table.Cell>
-          <Table.Cell>
+          </td>
+          <td>1.25rem (20px)</td>
+          <td>
             Used for creating horizontal space between individual form fields in
             a section.
-          </Table.Cell>
-          <Table.Cell>{'<Inline>'}</Table.Cell>
-        </Table.Row>
-        <Table.Row key={4}>
-          <Table.Cell>
+          </td>
+          <td>{'<Inline>'}</td>
+        </tr>
+        <tr>
+          <td>
             <code className="before:content-none after:content-none">
               group
             </code>
-          </Table.Cell>
-          <Table.Cell>1rem (16px)</Table.Cell>
-          <Table.Cell>
+          </td>
+          <td>1rem (16px)</td>
+          <td>
             Used for grouping related fields (address components, date/time
             fields) or multiple accordion sections together.
-          </Table.Cell>
-          <Table.Cell>
+          </td>
+          <td>
             {'<Stack>'}, {'<Inset>'}
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
