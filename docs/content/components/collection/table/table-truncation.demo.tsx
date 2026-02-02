@@ -1,5 +1,5 @@
 import { venues } from '@/lib/data/venues';
-import { Table, Text } from '@marigold/components';
+import { NumericFormat, Table, Text } from '@marigold/components';
 
 export default () => {
   return (
@@ -20,7 +20,13 @@ export default () => {
               <Text weight="medium">{venue.name}</Text>
             </Table.Cell>
             <Table.Cell overflow="truncate">{venue.description}</Table.Cell>
-            <Table.Cell>{venue.rating}</Table.Cell>
+            <Table.Cell>
+              <NumericFormat
+                value={venue.rating}
+                minimumFractionDigits={1}
+                maximumFractionDigits={1}
+              />
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

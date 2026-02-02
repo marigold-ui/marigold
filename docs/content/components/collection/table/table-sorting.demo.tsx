@@ -1,7 +1,7 @@
 import { venues } from '@/lib/data/venues';
 import { useState } from 'react';
 import type { SortDescriptor } from '@react-types/shared';
-import { Table, Text } from '@marigold/components';
+import { NumericFormat, Table, Text } from '@marigold/components';
 
 export default () => {
   const data = venues.slice(0, 9);
@@ -49,8 +49,16 @@ export default () => {
             <Table.Cell>
               <Text weight="medium">{item.name}</Text>
             </Table.Cell>
-            <Table.Cell align="right">{item.capacity}</Table.Cell>
-            <Table.Cell align="right">{item.rating}</Table.Cell>
+            <Table.Cell align="right">
+              <NumericFormat value={item.capacity} />
+            </Table.Cell>
+            <Table.Cell align="right">
+              <NumericFormat
+                value={item.rating}
+                minimumFractionDigits={1}
+                maximumFractionDigits={1}
+              />
+            </Table.Cell>
             <Table.Cell overflow="truncate">{item.description}</Table.Cell>
           </Table.Row>
         ))}

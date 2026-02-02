@@ -1,6 +1,5 @@
 import { venues } from '@/lib/data/venues';
-import { Table, Text } from '@marigold/components';
-import { NumericFormat } from '@marigold/system';
+import { NumericFormat, Table, Text } from '@marigold/components';
 
 export default () => {
   return (
@@ -19,7 +18,7 @@ export default () => {
               <Text weight="medium">{venue.name}</Text>
             </Table.Cell>
             <Table.Cell align="right">
-              {venue.capacity.toLocaleString()}
+              <NumericFormat value={venue.capacity} />
             </Table.Cell>
             <Table.Cell align="right">
               <NumericFormat

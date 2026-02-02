@@ -1,5 +1,5 @@
 import { venues } from '@/lib/data/venues';
-import { Scrollable, Table, Text } from '@marigold/components';
+import { NumericFormat, Scrollable, Table, Text } from '@marigold/components';
 
 export default () => {
   return (
@@ -19,7 +19,9 @@ export default () => {
               <Table.Cell>
                 {venue.city}, {venue.country}
               </Table.Cell>
-              <Table.Cell>{venue.capacity.toLocaleString()}</Table.Cell>
+              <Table.Cell>
+                <NumericFormat value={venue.capacity} />
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

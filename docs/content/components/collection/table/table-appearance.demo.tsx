@@ -1,6 +1,6 @@
 import { venueTypes, venues } from '@/lib/data/venues';
 import type { TableProps } from '@marigold/components';
-import { Table, Text } from '@marigold/components';
+import { NumericFormat, Table, Text } from '@marigold/components';
 
 const columns = [
   { name: 'Venue', key: 'name', width: '1fr', align: 'left' },
@@ -28,7 +28,9 @@ export default (props: TableProps) => (
           <Table.Cell>
             {item.city}, {item.country}
           </Table.Cell>
-          <Table.Cell>{item.capacity}</Table.Cell>
+          <Table.Cell>
+            <NumericFormat value={item.capacity} />
+          </Table.Cell>
         </Table.Row>
       )}
     </Table.Body>
