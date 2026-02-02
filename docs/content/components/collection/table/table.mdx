@@ -50,8 +50,6 @@ The Table component supports various interaction patterns including row selectio
 
 When you need to present structured information in a clear, scannable format, use tables to organize data into rows and columns. Each row represents a record, and each column represents an attribute of that record.
 
-<ComponentDemo file="./table-basic.demo.tsx" />
-
 <GuidelineTiles>
   <Do>
     <Do.Figure>
@@ -84,6 +82,12 @@ When you need to present structured information in a clear, scannable format, us
     </Dont.Description>
   </Dont>
 </GuidelineTiles>
+
+When cell content exceeds the available column width, consider truncating text to maintain table scannability and consistent row heights. Truncation works best for columns with long text values like descriptions, addresses, or notes where seeing the full content isn't critical for initial scanning.
+
+For columns where users need to read the complete value (like names, IDs, or status) avoid truncation or provide the full text on hover using a tooltip. Balance readability with density by ensuring the most important columns display their full content while less critical columns can be truncated.
+
+<ComponentDemo file="./table-truncation.demo.tsx" />
 
 ### Selecting rows
 
