@@ -1,15 +1,11 @@
+import { people } from '@/lib/data/people';
 import { useDragAndDrop } from 'react-aria-components';
 import { useListData } from 'react-stately';
-import { Table, Text } from '@marigold/components';
+import { Stack, Table, Text } from '@marigold/components';
 
 export default () => {
   const list = useListData({
-    initialItems: [
-      { id: 1, name: 'Hans Müller', location: 'Berlin, BE' },
-      { id: 2, name: 'Fritz Schneider', location: 'München, BY' },
-      { id: 3, name: 'Klaus Becker', location: 'Hamburg, HH' },
-      { id: 4, name: 'Helga Fischer', location: 'Stuttgart, BW' },
-    ],
+    initialItems: people.slice(0, 5),
   });
 
   const { dragAndDropHooks } = useDragAndDrop({
@@ -30,21 +26,32 @@ export default () => {
 
   return (
     <Table
-      aria-label="Reorderable users"
+      aria-label="Reorderable team members"
       selectionMode="multiple"
       dragAndDropHooks={dragAndDropHooks}
     >
       <Table.Header>
         <Table.Column>Name</Table.Column>
-        <Table.Column>Location</Table.Column>
+        <Table.Column>Position</Table.Column>
       </Table.Header>
       <Table.Body items={list.items}>
         {item => (
           <Table.Row>
             <Table.Cell>
-              <Text weight="medium">{item.name}</Text>
+              <Stack space={2} alignItems="center" direction="row">
+                <img
+                  src={item.avatar}
+                  alt={item.name}
+                  className="size-8 rounded-full object-cover"
+                />
+                <Text weight="medium">{item.name}</Text>
+              </Stack>
             </Table.Cell>
-            <Table.Cell>{item.location}</Table.Cell>
+            <Table.Cell>
+              <Text size="sm" color="muted-foreground">
+                {item.position}
+              </Text>
+            </Table.Cell>
           </Table.Row>
         )}
       </Table.Body>

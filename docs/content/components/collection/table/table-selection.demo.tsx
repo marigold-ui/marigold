@@ -1,54 +1,43 @@
+import { people } from '@/lib/data/people';
 import { useState } from 'react';
-import { Badge, Stack, Table, Text } from '@marigold/components';
 import type { Selection } from '@marigold/components';
+import { Stack, Table, Text } from '@marigold/components';
 
 export default () => {
-  const users = [
-    {
-      id: '1',
-      name: 'Hans Müller',
-      email: 'hans.mueller@example.de',
-      status: 'active',
-    },
-    {
-      id: '2',
-      name: 'Fritz Schneider',
-      email: 'fritz.schneider@example.de',
-      status: 'inactive',
-    },
-    {
-      id: '3',
-      name: 'Klaus Becker',
-      email: 'klaus.becker@example.de',
-      status: 'suspended',
-    },
-  ];
-
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
 
   return (
     <Stack space={3}>
       <Table
-        aria-label="Select users"
+        aria-label="Select team members"
         selectionMode="multiple"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
       >
         <Table.Header>
           <Table.Column>Name</Table.Column>
+          <Table.Column>Position</Table.Column>
           <Table.Column>Email</Table.Column>
-          <Table.Column>Status</Table.Column>
         </Table.Header>
         <Table.Body>
-          {users.map(user => (
-            <Table.Row key={user.id}>
+          {people.slice(0, 5).map(person => (
+            <Table.Row key={person.id}>
               <Table.Cell>
-                <Text weight="medium">{user.name}</Text>
+                <Stack space={2} alignItems="center" direction="row">
+                  <img
+                    src={person.avatar}
+                    alt={person.name}
+                    className="size-8 rounded-full object-cover"
+                  />
+                  <Text weight="medium">{person.name}</Text>
+                </Stack>
               </Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>
-                <Badge>{user.status}</Badge>
+                <Text size="sm" color="muted-foreground">
+                  {person.position}
+                </Text>
               </Table.Cell>
+              <Table.Cell>{person.email}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

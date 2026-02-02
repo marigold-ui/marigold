@@ -1,28 +1,25 @@
+import { venues } from '@/lib/data/venues';
 import { Scrollable, Table, Text } from '@marigold/components';
 
 export default () => {
-  const items = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    title: `Item ${i + 1}`,
-    description: `This is the description for item ${i + 1}`,
-  }));
-
   return (
     <Scrollable height="300px">
       <Table aria-label="Long scrollable table">
         <Table.Header sticky>
-          <Table.Column>ID</Table.Column>
-          <Table.Column>Title</Table.Column>
-          <Table.Column>Description</Table.Column>
+          <Table.Column>Venue</Table.Column>
+          <Table.Column>City</Table.Column>
+          <Table.Column>Capacity</Table.Column>
         </Table.Header>
         <Table.Body>
-          {items.map(item => (
-            <Table.Row key={item.id}>
-              <Table.Cell>{item.id}</Table.Cell>
+          {venues.map(venue => (
+            <Table.Row key={venue.id}>
               <Table.Cell>
-                <Text weight="medium">{item.title}</Text>
+                <Text weight="medium">{venue.name}</Text>
               </Table.Cell>
-              <Table.Cell>{item.description}</Table.Cell>
+              <Table.Cell>
+                {venue.city}, {venue.country}
+              </Table.Cell>
+              <Table.Cell>{venue.capacity.toLocaleString()}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

@@ -8,49 +8,24 @@ The Table component displays structured data in a grid layout with rows and colu
 
 Use tables when you need to display datasets where users benefit from seeing multiple records at once, comparing values across columns, or performing bulk operations on selected items. Tables work well for admin interfaces, data management screens, and dashboards where structured information needs to be organized and actionable.
 
-The component is built on react-aria-components, ensuring full keyboard navigation and screen reader support. It supports both static and dynamic data rendering, making it flexible for various use cases from simple read-only lists to complex editable data grids.
-
 ## Anatomy
 
 <Image
-  src="/table/table-anatomy.svg"
+  src="/table/table-anatomy.jpg"
   alt="Anatomy of Table component"
   width={800}
   height={550}
   className="mx-auto block"
 />
 
-<ul>
-  <li>
-    <b>Table:</b> Main container that wraps all table elements.
-  </li>
-  <li>
-    <b>Header (sticky):</b> Container for column headers, can stick to viewport
-    top when scrolling.
-  </li>
-  <li>
-    <b>Column with sorting:</b> Individual column headers that can enable
-    sorting functionality.
-  </li>
-  <li>
-    <b>Selection checkbox:</b> Checkbox for selecting individual rows or all
-    rows at once.
-  </li>
-  <li>
-    <b>Row (selectable):</b> Individual table rows that can be selected,
-    clicked, or dragged.
-  </li>
-  <li>
-    <b>Cell:</b> Standard cell containing data, text, or components.
-  </li>
-  <li>
-    <b>Editable Cell (with edit icon):</b> Cell that can be edited inline with a
-    pencil icon trigger.
-  </li>
-  <li>
-    <b>Drag handle:</b> Visual indicator for drag and drop reordering of rows.
-  </li>
-</ul>
+- **Table:** Main container that wraps all table elements.
+- **Header (sticky):** Container for column headers, can stick to viewport top when scrolling.
+- **Column with sorting:** Individual column headers that can enable sorting functionality.
+- **Selection checkbox:** Checkbox for selecting individual rows or all rows at once.
+- **Row (selectable):** Individual table rows that can be selected, clicked, or dragged.
+- **Cell:** Standard cell containing data, text, or components.
+- **Editable Cell (with edit icon):** Cell that can be edited inline with a pencil icon trigger.
+- **Drag handle:** Visual indicator for drag and drop reordering of rows.
 
 ## Appearance
 
@@ -338,7 +313,3 @@ Set `allowTextSelection` to `true` on the Table. This wraps cell content in a fo
 
 <StorybookHintMessage component={title} />
 <PropsTable component={title} />
-
-## Alternative components
-
-- [ListView](/components/collection/listview): Use for simpler lists where tabular structure isn't needed.

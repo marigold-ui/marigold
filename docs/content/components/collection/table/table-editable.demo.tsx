@@ -1,27 +1,9 @@
+import { people } from '@/lib/data/people';
 import { useState } from 'react';
-import { Badge, Select, Table, TextField } from '@marigold/components';
+import { Stack, Table, Text, TextField } from '@marigold/components';
 
 export default () => {
-  const [data, setData] = useState([
-    {
-      id: '1',
-      name: 'Hans Müller',
-      email: 'hans.mueller@example.de',
-      status: 'active',
-    },
-    {
-      id: '2',
-      name: 'Fritz Schneider',
-      email: 'fritz.schneider@example.de',
-      status: 'inactive',
-    },
-    {
-      id: '3',
-      name: 'Klaus Becker',
-      email: 'klaus.becker@example.de',
-      status: 'suspended',
-    },
-  ]);
+  const [data, setData] = useState(people.slice(0, 3));
 
   const handleSubmit = (index: number, e: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(e.currentTarget);
@@ -30,65 +12,63 @@ export default () => {
       next[index] = {
         ...next[index],
         name: (formData.get('name') as string) || next[index].name,
+        position: (formData.get('position') as string) || next[index].position,
         email: (formData.get('email') as string) || next[index].email,
-        status: (formData.get('status') as string) || next[index].status,
       };
       return next;
     });
   };
 
   return (
-    <Table aria-label="Editable user data">
+    <Table aria-label="Editable team data">
       <Table.Header>
         <Table.Column>Name</Table.Column>
+        <Table.Column>Position</Table.Column>
         <Table.Column>Email</Table.Column>
-        <Table.Column>Status</Table.Column>
       </Table.Header>
       <Table.Body>
-        {data.map((user, i) => (
-          <Table.Row key={user.id}>
+        {data.map((person, i) => (
+          <Table.Row key={person.id}>
             <Table.EditableCell
               renderEditing={() => (
                 <TextField
                   aria-label="Name"
                   name="name"
-                  defaultValue={user.name}
+                  defaultValue={person.name}
                   autoFocus
                 />
               )}
               onSubmit={e => handleSubmit(i, e)}
             >
-              {user.name}
+              <Text weight="medium">{person.name}</Text>
+            </Table.EditableCell>
+            <Table.EditableCell
+              renderEditing={() => (
+                <TextField
+                  aria-label="Position"
+                  name="position"
+                  defaultValue={person.position}
+                  autoFocus
+                />
+              )}
+              onSubmit={e => handleSubmit(i, e)}
+            >
+              <Text size="sm" color="muted-foreground">
+                {person.position}
+              </Text>
             </Table.EditableCell>
             <Table.EditableCell
               renderEditing={() => (
                 <TextField
                   aria-label="Email"
                   name="email"
-                  defaultValue={user.email}
+                  defaultValue={person.email}
                   autoFocus
                 />
               )}
               onSubmit={e => handleSubmit(i, e)}
             >
-              {user.email}
-            </Table.EditableCell>
-            <Table.EditableCell
-              renderEditing={() => (
-                <Select
-                  aria-label="Status"
-                  name="status"
-                  defaultSelectedKey={user.status}
-                  autoFocus
-                >
-                  <Select.Option id="active">active</Select.Option>
-                  <Select.Option id="inactive">inactive</Select.Option>
-                  <Select.Option id="suspended">suspended</Select.Option>
-                </Select>
-              )}
-              onSubmit={e => handleSubmit(i, e)}
-            >
-              <Badge>{user.status}</Badge>
+              {person.email}
             </Table.EditableCell>
           </Table.Row>
         ))}
