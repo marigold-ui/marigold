@@ -30,7 +30,25 @@ Use tables when you need to display datasets where users benefit from seeing mul
 ## Appearance
 
 <AppearanceDemo component={title} />
+
 <AppearanceTable component={title} />
+
+### Variants
+
+- **Default:** You should use the default variant of the Table component when
+  you want a clean, standard table appearance. It’s ideal for most use cases
+  where you want to display tabular data clearly and simply. The default
+  variant is a good starting point for most tables.
+- **Muted:** Use the `muted` variant for table to reduce visual noise and
+  improve clarity, especially in tables with extensive content. This helps
+  users focus on the data while maintaining a clean and organized appearance.
+- **Grid:** The `grid` variant is useful if you want clearer separation
+  between columns, especially for tables with many columns or dense data. The
+  grid variant adds vertical borders between columns, making it easier to scan
+  and compare values across rows.
+- **Admin- and Master:** Use this variant to identify rows that are only
+  relevant for internal users. [Learn more about its
+  usage.](/patterns/admin-master-mark)
 
 ## Usage
 
@@ -44,7 +62,38 @@ When you need to present structured information in a clear, scannable format, us
 
 <ComponentDemo file="./table-basic.demo.tsx" />
 
-Define columns using `Table.Column` within `Table.Header`. Use `Table.Cell` within `Table.Row` to populate data. Align numeric values to the right using the `align` prop for better readability and comparison.
+<GuidelineTiles>
+  <Do>
+    <Do.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table/table-do-names.jpg"
+        alt="Use tables with clear understandable content"
+      />
+    </Do.Figure>
+    <Do.Description>
+      Provide descriptive column headers for each column that accurately
+      represent the data.
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Figure>
+      <Image
+        width={700}
+        height={700}
+        unoptimized
+        src="/table/table-dont-names.jpg"
+        alt="Dont use tables with empty column headers."
+      />
+    </Dont.Figure>
+    <Dont.Description>
+      Avoid using vague or misleading column headers that do not clearly
+      represent the data.
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ### Selecting rows
 

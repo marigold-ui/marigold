@@ -1,5 +1,5 @@
 import { people } from '@/lib/data/people';
-import { Stack, Table, Text } from '@marigold/components';
+import { Table, Text } from '@marigold/components';
 
 export default () => {
   return (
@@ -13,14 +13,7 @@ export default () => {
         {people.slice(0, 5).map(person => (
           <Table.Row key={person.id}>
             <Table.Cell>
-              <Stack space={2} alignItems="center" direction="row">
-                <img
-                  src={person.avatar}
-                  alt={person.name}
-                  className="size-8 rounded-full object-cover"
-                />
-                <Text weight="medium">{person.name}</Text>
-              </Stack>
+              <Text weight="medium">{person.name}</Text>
             </Table.Cell>
             <Table.Cell>
               <Text size="sm" color="muted-foreground">
