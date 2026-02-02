@@ -3,7 +3,7 @@ import type { ThemeComponent } from '@marigold/system';
 
 export const Input: ThemeComponent<'Input'> = {
   input: cva([
-    'ui-surface ui-input',
+    'ui-surface shadow-elevation-border ui-input',
     'disabled:ui-state-disabled',
     'group-read-only/field:ui-state-readonly',
     'invalid:ui-state-error',

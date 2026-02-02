@@ -4,7 +4,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva([
     'ui-surface p-2',
     // In a Popover
-    'group-data-trigger/popover:ui-elevation-overlay',
+    'group-data-trigger/popover:shadow-elevation-overlay',
   ]),
   calendarCell: cva([
     'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg justify-self-center',

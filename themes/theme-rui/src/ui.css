@@ -49,46 +49,6 @@
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
   border: 1px solid transparent;
-
-  /* Make the shadow a local variable so it is tracking the color. */
-  @apply ui-shadow-raised;
-  @apply shadow-(--ui-box-shadow,var(--shadow-elevation-raised));
-}
-
-/* ========================= */
-/*         Elevation         */
-/* ========================= */
-
-/*
- * Use this utility when you want to visually lift an element above the base level,
- * such as for cards, or interactive components that require emphasis. This is the 
- * lowest elevation level.
- */
-@utility ui-elevation-raised {
-  @apply ui-shadow-raised;
-  --ui-box-shadow: var(--shadow-elevation-raised);
-}
-
-@utility ui-shadow-raised {
-  --shadow-elevation-raised:
-    0 0.5px 1px oklch(from var(--tw-shadow-color, #000) l c h / 0.08),
-    0 1px 2px oklch(from var(--tw-shadow-color, #000) l c h / 0.06);
-}
-
-/*
- * Use this utility when you want to visually lift an element above the raised level,
- * such as for dialogs, or popups. This is the highest elevation level.
- */
-@utility ui-elevation-overlay {
-  @apply ui-shadow-overlay;
-  --ui-box-shadow: var(--shadow-elevation-overlay);
-}
-
-@utility ui-shadow-overlay {
-  --shadow-elevation-overlay:
-    0 1px 2px oklch(from var(--tw-shadow-color, #000) l c h / 0.12),
-    0 2px 4px oklch(from var(--tw-shadow-color, #000) l c h / 0.1),
-    0 4px 8px oklch(from var(--tw-shadow-color, #000) l c h / 0.08);
 }
 
 /* ========================= */

@@ -12,7 +12,7 @@ export const Drawer: ThemeComponent<'Drawer'> = {
     [
       'w-full relative grid-rows-[auto_1fr_auto]',
       // TODO: if we keep placement we need direction aware shadows
-      'bg-surface border-surface-border ui-elevation-overlay util-scrollbar',
+      'bg-surface border-surface-border shadow-elevation-overlay util-scrollbar',
       'placement-right:border-l placement-left:border-r placement-top:border-b placement-bottom:border-t',
       'placement-top:w-full placement-bottom:w-full',
     ],
