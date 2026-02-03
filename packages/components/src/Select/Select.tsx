@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -97,15 +97,27 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
     open,
     label,
     children,
+    selectionMode,
+    onChange,
     ...rest
   }: SelectProps<T, M>,
   ref: Ref<HTMLButtonElement>
 ) {
+  const isSingleSelect = !selectionMode || selectionMode === 'single';
+  const [trayOpen, setTrayOpen] = useState(false);
+
   const props: RAC.SelectProps<T, M> = {
     isDisabled: disabled,
     isInvalid: error,
     isOpen: open,
     isRequired: required,
+    selectionMode,
+    onChange: (...args) => {
+      onChange?.(...args);
+      if (isSingleSelect) {
+        setTrayOpen(false);
+      }
+    },
     ...rest,
   };
   const classNames = useClassNames({ component: 'Select', variant, size });
@@ -122,7 +134,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
       {...props}
     >
       {isSmallScreen ? (
-        <Tray.Trigger>
+        <Tray.Trigger open={trayOpen} onOpenChange={setTrayOpen}>
           <IconButton
             className={cn(
               'flex w-full items-center justify-between gap-1 overflow-hidden',
