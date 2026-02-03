@@ -9,7 +9,6 @@ export { remarkResolvePropsTable } from './resolve-props-table';
 export type { ResolvePropsTableOptions } from './resolve-props-table';
 
 export { remarkResolveAppearanceDemo } from './resolve-appearance-demo';
-export type { ResolveAppearanceDemoOptions } from './resolve-appearance-demo';
 
 export { remarkResolveAppearanceTable } from './resolve-appearance-table';
 export type { ResolveAppearanceTableOptions } from './resolve-appearance-table';

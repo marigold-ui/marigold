@@ -2,15 +2,11 @@ import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
 import { MdxJsxElement } from './shared';
 
-export interface ResolveAppearanceDemoOptions {}
-
 /**
  * Replaces <AppearanceDemo /> with a simple text note.
  * The actual appearance info comes from AppearanceTable.
  */
-export function remarkResolveAppearanceDemo(
-  _options: ResolveAppearanceDemoOptions = {}
-) {
+export function remarkResolveAppearanceDemo() {
   return (tree: Node) => {
     visit(
       tree,

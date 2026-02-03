@@ -239,7 +239,7 @@ export function remarkSimplifyJsx() {
             // Parse the array expression like ['ArrowUp', 'ArrowDown']
             const expr = iconsAttr.value.value;
             const iconNames = expr
-              .replace(/[\[\]'"\s]/g, '')
+              .replace(/[[\]'"\s]/g, '')
               .split(',')
               .filter(Boolean);
             if (iconNames.length > 0) {

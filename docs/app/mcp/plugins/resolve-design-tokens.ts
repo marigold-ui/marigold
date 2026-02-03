@@ -36,7 +36,7 @@ async function extractThemeTokens(): Promise<{
   const content = await fs.readFile(themeCssPath, 'utf-8');
 
   const colorTokens = new Set<string>();
-  const colorRegex = /--color-([a-z0-9\-]+):/g;
+  const colorRegex = /--color-([a-z0-9-]+):/g;
   let match;
   while ((match = colorRegex.exec(content)) !== null) {
     colorTokens.add(match[1]);
@@ -93,7 +93,7 @@ async function extractThemeTokens(): Promise<{
   }
 
   const borderRadius: Record<string, string> = {};
-  const radiusRegex = /--radius-([a-z0-9\-]+):\s*([^;]+);/g;
+  const radiusRegex = /--radius-([a-z0-9-]+):\s*([^;]+);/g;
   while ((match = radiusRegex.exec(content)) !== null) {
     borderRadius[`rounded-${match[1]}`] = match[2].trim();
   }
@@ -178,7 +178,7 @@ function generateTextAligns(): Node {
 }
 
 function generateHeadlines(
-  tokens: Awaited<ReturnType<typeof extractThemeTokens>>
+  _tokens: Awaited<ReturnType<typeof extractThemeTokens>>
 ): Node {
   // Extract headline styles from rui theme component
   const headlineComponent = ruiTheme.components.Headline;
