@@ -59,7 +59,7 @@ export default () => {
         )}
       </Autocomplete>
       {result === null ? null : result.length > 0 ? (
-        <Table aria-label="Character results" selectionMode="none" stretch>
+        <Table aria-label="Character results" selectionMode="none">
           <Table.Header columns={columns}>
             {column => <Table.Column>{(column as any).name}</Table.Column>}
           </Table.Header>

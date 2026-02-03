@@ -94,7 +94,6 @@ export default () => {
         <Table
           aria-labelledby="table-header table-description"
           selectionMode="multiple"
-          stretch
           selectedKeys={selected}
           onSelectionChange={setSelected}
         >

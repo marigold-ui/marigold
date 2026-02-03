@@ -1,7 +1,7 @@
 import { Table } from '@marigold/components';
 
 export default () => (
-  <Table aria-label="Event List" stretch>
+  <Table aria-label="Event List">
     <Table.Header>
       <Table.Column>Event Name</Table.Column>
       <Table.Column>Date</Table.Column>

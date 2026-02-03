@@ -17,7 +17,7 @@ const Empty = () => (
 );
 
 export default () => (
-  <Table aria-label="Empty table" stretch emptyState={Empty}>
+  <Table aria-label="Empty table">
     <Table.Header>
       <Table.Column>Name</Table.Column>
       <Table.Column>Type</Table.Column>
@@ -25,6 +25,6 @@ export default () => (
       <Table.Column>Capacity</Table.Column>
       <Table.Column>Price</Table.Column>
     </Table.Header>
-    <Table.Body>{[]}</Table.Body>
+    <Table.Body emptyState={Empty}>{[]}</Table.Body>
   </Table>
 );
