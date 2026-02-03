@@ -134,6 +134,32 @@ The Table component supports two selection modes:
   </Do>
 </GuidelineTiles>
 
+### Row Actions
+
+Row actions let users interact with individual records directly from a table, such as editing, viewing details, or triggering specific operations. These interactions are essential for working with tabular data, and thoughtful design helps users stay oriented and confident. To support clarity, predictability, and efficiency, it’s important to align how and where these actions appear.
+
+Use the `<Button>` component with the secondary (default) variant for row actions. If the action is destructive, use the destructive variant instead. In both cases, apply the small button size to maintain visual consistency and minimize visual noise in dense table layouts.
+
+When it comes to placement, always position row actions at the end of the row. This improves scannability and clearly signals which parts of the row are interactive, helping users quickly locate available actions.
+
+<ComponentDemo file="./table-action.demo.tsx" />
+
+Show only the most important 1–3 actions per row. These should be the actions users are most likely to need or expect to find without having to open a menu, such as “Edit” or “View.” If you need to support more than three actions, prioritize them by frequency and importance: display the most critical ones directly, and group the rest into a contextual menu using an `<ActionMenu>` (see [ActionMenu section](/components/overlay/menu#actionmenu)). This keeps the row clean and scannable while still offering access to all necessary actions.
+
+Using too many visible actions at once can overwhelm users, make it hard to identify what to do, and increase visual clutter. If space is limited or the layout feels crowded, consider using icon buttons to keep actions compact. Pair them with tooltips to clearly communicate each action’s purpose without adding visual noise.
+
+<SectionMessage>
+  <SectionMessage.Title>Use icons with care</SectionMessage.Title>
+  <SectionMessage.Content>
+    Only use icons when their meaning is clear without explanation. If the icon
+    might be ambiguous, prefer a labeled button or add context with a tooltip.
+  </SectionMessage.Content>
+</SectionMessage>
+
+<ComponentDemo file="./table-action-menu.demo.tsx" />
+
+If you cannot place all row actions at the end of the row, be mindful of clarity and consistency. Actions should remain visually distinct from content and navigation, and be grouped where possible to support scannability. Apply consistent styling to each action and avoid placing them in unexpected locations, as this can increase cognitive load and make it harder for users to understand what they can do in each row.
+
 ### Sorting columns
 
 When working with large datasets, users often need to organize information by specific attributes to find what they're looking for or identify patterns. Sorting solves the problem of information overload by letting users reorder data in a way that makes sense for their current task—whether that's finding the highest value, the most recent date, or items alphabetically.
@@ -199,35 +225,17 @@ When users need to make quick edits to individual values without navigating to a
 
 When the order of items matters and users need to manually arrange them, enable drag and drop. This works well for priority lists, custom orderings, or workflows where sequence is important.
 
+<SectionMessage variant="info">
+  <SectionMessage.Title>
+    Keyboard support and multiple items
+  </SectionMessage.Title>
+  <SectionMessage.Content>
+    Reordering is fully keyboard accessible. Users can also move multiple items
+    at once by selecting them before initiating the drag operation.
+  </SectionMessage.Content>
+</SectionMessage>
+
 <ComponentDemo file="./table-drag-drop.demo.tsx" />
-
-Use `useDragAndDrop` from react-aria-components and `useListData` from react-stately to manage drag operations. Pass `dragAndDropHooks` to the Table and implement `onReorder` to update your data. The component shows drag handles on hover and visual indicators for drop positions.
-
-<GuidelineTiles>
-  <Do>
-    <Do.Description>
-      Use drag and drop when manual ordering is meaningful, like task
-      prioritization or custom sequences.
-    </Do.Description>
-  </Do>
-  <Do>
-    <Do.Description>
-      Combine with selection mode to allow dragging multiple items at once.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Description>
-      Don't enable drag and drop if items have a natural sort order like dates
-      or alphabetical names.
-    </Dont.Description>
-  </Dont>
-  <Dont>
-    <Dont.Description>
-      Don't forget to provide keyboard alternatives for reordering, as not all
-      users can drag.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
 
 ### Handling empty states
 
@@ -235,15 +243,7 @@ When a table has no data to display, whether from empty search results, filters 
 
 <ComponentDemo file="./table-empty.demo.tsx" />
 
-Use the `emptyState` prop on `Table.Body` to render an `EmptyState` component with a clear title and helpful description. Guide users on why the table is empty and what they can do next, like adjusting filters or adding their first item.
-
 <GuidelineTiles>
-  <Do>
-    <Do.Description>
-      Provide specific guidance about why the table is empty and what users can
-      do.
-    </Do.Description>
-  </Do>
   <Do>
     <Do.Description>
       Include action buttons in empty states when appropriate, like "Add first
@@ -255,12 +255,6 @@ Use the `emptyState` prop on `Table.Body` to render an `EmptyState` component wi
       Don't show a generic "No data" message without context or next steps.
     </Dont.Description>
   </Dont>
-  <Dont>
-    <Dont.Description>
-      Don't hide the table headers when empty, as they provide important context
-      about what data should appear.
-    </Dont.Description>
-  </Dont>
 </GuidelineTiles>
 
 ### Making headers sticky
@@ -269,19 +263,11 @@ For tables with many rows that require scrolling, sticky headers keep column lab
 
 <ComponentDemo file="./table-sticky.demo.tsx" />
 
-Add the `sticky` prop to `Table.Header` and wrap the table in a `Scrollable` component with a defined height. Headers will stick to the top of the viewport as users scroll through rows, maintaining visibility of column labels.
-
 <GuidelineTiles>
   <Do>
     <Do.Description>
       Use sticky headers for tables with more than 10-15 rows where scrolling is
       necessary.
-    </Do.Description>
-  </Do>
-  <Do>
-    <Do.Description>
-      Ensure the scrollable container has a defined height so the sticky
-      behavior works correctly.
     </Do.Description>
   </Do>
   <Dont>

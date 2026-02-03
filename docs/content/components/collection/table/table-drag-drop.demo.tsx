@@ -1,7 +1,5 @@
 import { venues } from '@/lib/data/venues';
-import { useDragAndDrop } from 'react-aria-components';
-import { useListData } from 'react-stately';
-import { Table, Text } from '@marigold/components';
+import { Table, Text, useDragAndDrop, useListData } from '@marigold/components';
 
 export default () => {
   const list = useListData({
@@ -31,7 +29,7 @@ export default () => {
       dragAndDropHooks={dragAndDropHooks}
     >
       <Table.Header>
-        <Table.Column>Venue</Table.Column>
+        <Table.Column isRowHeader>Venue</Table.Column>
         <Table.Column>City</Table.Column>
       </Table.Header>
       <Table.Body items={list.items}>
