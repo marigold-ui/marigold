@@ -1,0 +1,31 @@
+# cn
+
+_Helper that combines classnames together._
+
+To combine Tailwind CSS classes with other classes, utilize the `cn` function within the className attribute to merge them seamlessly. The inputs of the `className` accept nearly every type. The function itself uses `tailwind-merge` which is a utility function to easily merge the given tailwind classes. We also use `cx` function from [cva](https://cva.style/docs/api-reference), which combines the class names together. You can pass in arrays, boolean conditions, strings or numbers.
+
+## Import
+
+```tsx
+import { cn } from '@marigold/system';
+```
+
+## Examples
+
+### Conditionally apply classnames
+
+In this example you can see how to use the `cn` function on a `<div>` element. Here are written down some Tailwind CSS class names which will be merged with the ones before. So in the end the class names will be rendered (if `myValue` will be true) as `className='flex flex-col cursor-pointer p-4'`
+
+```tsx
+const myOtherValue = 'p-4'
+...
+<div
+  className={cn(
+    'flex flex-col p-3',
+    myValue ? 'cursor-pointer' : 'cursor-not-allowed',
+    myOtherValue
+  )}
+/>
+```
+
+In this code you can see that `p-3` will be overwritten by `p-4`, so keep in mind the order of your class names.
