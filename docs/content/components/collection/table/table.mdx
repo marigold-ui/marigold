@@ -89,6 +89,14 @@ For columns where users need to read the complete value (like names, IDs, or sta
 
 <ComponentDemo file="./table-truncation.demo.tsx" />
 
+### Cell alignment
+
+Proper alignment makes data easier to scan and compare. Different data types benefit from different horizontal alignments—align text content like names and descriptions to the left for natural reading flow, align numeric values to the right so decimal points and place values line up vertically, and center icons or status indicators sparingly.
+
+When cells contain varying heights of content like multi-line text or mixed element sizes, vertical alignment helps maintain visual consistency. Aligning content to the top works best when rows have unpredictable heights or when you want to prioritize reading flow from the top down. Center alignment keeps content visually balanced when most cells have similar heights but occasional outliers exist. Bottom alignment is useful when you need to align baselines of text or when grouping related elements at the cell's bottom edge.
+
+<ComponentDemo file="./table-cell-alignment.demo.tsx" />
+
 ### Selecting rows
 
 When users need to perform actions on multiple items at once, enable row selection. This allows users to select individual rows or all rows, then perform bulk operations like delete, export, or modify.
