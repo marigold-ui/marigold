@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { I18nProvider } from '@react-aria/i18n';
 import { makeFile } from './../test.utils';
@@ -158,4 +158,79 @@ test('hidden input persists after file removal', async () => {
 
   expect(screen.queryByText('a.pdf')).not.toBeInTheDocument();
   expect(screen.getByText('b.pdf')).toBeInTheDocument();
+});
+
+test('displays preview for image files', async () => {
+  const user = userEvent.setup();
+  render(<MultipleFileUpload.Component label="Label" multiple />);
+
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+  const imageFile = makeFile('pic.jpg', 'image/jpeg');
+
+  await user.upload(input, imageFile);
+
+  await waitFor(() => {
+    const preview = screen.queryByRole('presentation');
+    expect(preview).toBeInTheDocument();
+  });
+
+  const previewImg = screen.getByRole('presentation') as HTMLImageElement;
+  expect(previewImg).toHaveAttribute('alt', '');
+  expect(previewImg.src).toContain('data:image');
+});
+
+test('does not display preview for non-image files', async () => {
+  const user = userEvent.setup();
+  render(<Basic.Component label="Label" />);
+
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+  const pdfFile = makeFile('doc.pdf', 'application/pdf');
+
+  await user.upload(input, pdfFile);
+
+  const preview = screen.queryByRole('presentation');
+  expect(preview).not.toBeInTheDocument();
+});
+
+test('handles mixed image and non-image files', async () => {
+  const user = userEvent.setup();
+  render(<MultipleFileUpload.Component label="Label" multiple />);
+
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+  const imageFile = makeFile('pic.jpg', 'image/jpeg');
+  const pdfFile = makeFile('doc.pdf', 'application/pdf');
+
+  await user.upload(input, [imageFile, pdfFile]);
+
+  await waitFor(() => {
+    const previews = screen.queryAllByRole('presentation');
+    expect(previews.length).toBe(1);
+  });
+});
+
+test('removes preview when file is removed', async () => {
+  const user = userEvent.setup();
+  render(<MultipleFileUpload.Component label="Label" multiple />);
+
+  const input = document.querySelector(
+    'input[type="file"]'
+  ) as HTMLInputElement;
+  const imageFile = makeFile('pic.jpg', 'image/jpeg');
+
+  await user.upload(input, imageFile);
+
+  await waitFor(() => {
+    expect(screen.getByRole('presentation')).toBeInTheDocument();
+  });
+
+  const removeButton = screen.getByRole('button', { name: 'Remove file' });
+  await user.click(removeButton);
+
+  expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
 });

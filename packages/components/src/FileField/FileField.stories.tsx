@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect } from 'storybook/test';
+import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
 import { Button } from '../Button/Button';
@@ -190,5 +190,71 @@ export const InForm = meta.story({
     await expect(
       canvas.getByText('report.pdf (1048576 bytes)')
     ).toBeInTheDocument();
+  },
+});
+
+export const ImagePreview = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Upload images',
+    multiple: true,
+    accept: ['image/*'],
+  },
+  play: async ({ canvas, userEvent }) => {
+    const input = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+
+    const imageFile = makeFile('photo.jpg', 'image/jpeg', 1024 * 1024);
+    await userEvent.upload(input, imageFile);
+
+    await expect(canvas.getByText('photo.jpg')).toBeInTheDocument();
+
+    await waitFor(
+      () => {
+        const preview = canvas.queryByRole('presentation');
+        expect(preview).toBeInTheDocument();
+      },
+      { timeout: 3000 }
+    );
+
+    const previewImg = canvas.getByRole('presentation') as HTMLImageElement;
+    await expect(previewImg).toHaveAttribute('alt', '');
+    await expect(previewImg.src).toContain('data:image');
+  },
+});
+
+export const MixedFilesWithPreview = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Upload mixed files',
+    multiple: true,
+  },
+  play: async ({ canvas, userEvent }) => {
+    const input = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+
+    const imageFile = makeFile('photo.jpg', 'image/jpeg', 0.5 * 1024 * 1024);
+    const pdfFile = makeFile(
+      'document.pdf',
+      'application/pdf',
+      2 * 1024 * 1024
+    );
+    const textFile = makeFile('notes.txt', 'text/plain', 0.1 * 1024 * 1024);
+
+    await userEvent.upload(input, [imageFile, pdfFile, textFile]);
+
+    await expect(canvas.getByText('photo.jpg')).toBeInTheDocument();
+    await expect(canvas.getByText('document.pdf')).toBeInTheDocument();
+    await expect(canvas.getByText('notes.txt')).toBeInTheDocument();
+
+    await waitFor(
+      () => {
+        const previews = canvas.queryAllByRole('presentation');
+        expect(previews.length).toBe(1);
+      },
+      { timeout: 3000 }
+    );
   },
 });

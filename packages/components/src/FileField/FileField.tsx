@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import RAC, { DropZone } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
@@ -6,7 +6,11 @@ import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
 import { FileTrigger } from './FileTrigger';
-import { isFileDropItem, normalizeAndLimitFiles } from './fileUtils';
+import {
+  generateImagePreview,
+  isFileDropItem,
+  normalizeAndLimitFiles,
+} from './fileUtils';
 
 type RemovedProps =
   | 'className'
@@ -62,10 +66,35 @@ export const FileField = ({
   ...props
 }: FileFieldProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
+  const [previews, setPreviews] = useState<(string | null)[]>([]);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const dropZoneLabel = stringFormatter.format('dropZoneLabel');
   const buttonLabel = stringFormatter.format('uploadLabel');
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const loadPreviews = async () => {
+      if (!files) {
+        setPreviews([]);
+        return;
+      }
+
+      const previewPromises = files.map(generateImagePreview);
+      const results = await Promise.all(previewPromises);
+
+      if (!isCancelled) {
+        setPreviews(results);
+      }
+    };
+
+    loadPreviews();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [files]);
 
   const syncHiddenInput = (newFiles: File[] | null) => {
     if (!hiddenInputRef.current || !name || typeof DataTransfer === 'undefined')
@@ -136,6 +165,7 @@ export const FileField = ({
       {files?.map((file, index) => (
         <FileField.Item
           key={index}
+          preview={previews[index] ?? null}
           onRemove={() => {
             const updated = (files ?? []).filter((_, i) => i !== index);
             setFiles(updated);

@@ -202,7 +202,9 @@ export type Theme = {
       | 'item'
       | 'itemLabel'
       | 'itemDescription'
-      | 'itemRemove',
+      | 'itemRemove'
+      | 'itemPreview'
+      | 'itemPreviewImage',
       ComponentStyleFunction<string, string>
     >;
     EmptyState?: Record<

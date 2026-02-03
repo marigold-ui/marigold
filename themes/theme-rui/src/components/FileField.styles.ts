@@ -14,11 +14,18 @@ export const FileField: ThemeComponent<'FileField'> = {
   ),
   dropZoneLabel: cva('text-sm font-medium'),
   item: cva([
-    "[grid-template-areas:'label_remove'_'description_remove'] grid-cols-[1fr_auto] gap-y-0.5 gap-x-2",
+    "[grid-template-areas:'preview_label_remove'_'preview_description_remove'] grid-cols-[auto_1fr_auto] gap-y-0.5 gap-x-3",
     'p-2',
     'ui-surface',
   ]),
   itemLabel: cva(['truncate text-[13px] font-medium']),
   itemDescription: cva(['text-muted-foreground text-xs']),
   itemRemove: cva(['flex items-center']),
+  itemPreview: cva(['flex items-center justify-center']),
+  itemPreviewImage: cva([
+    'size-12',
+    'rounded-md',
+    'object-cover',
+    'border border-surface-border',
+  ]),
 };

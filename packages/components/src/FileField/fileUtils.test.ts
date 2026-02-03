@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { makeFile } from '../test.utils';
 import {
   filterAcceptedFiles,
+  generateImagePreview,
   isFileDropItem,
+  isImageFile,
   normalizeAndLimitFiles,
 } from './fileUtils';
 
@@ -172,5 +174,32 @@ describe('isFileDropItem', () => {
     expect(isFileDropItem(undefined)).toBeFalsy();
     expect(isFileDropItem('file' as any)).toBeFalsy();
     expect(isFileDropItem(123 as any)).toBeFalsy();
+  });
+});
+
+describe('isImageFile', () => {
+  it('returns true for image MIME types', () => {
+    expect(isImageFile(makeFile('pic.jpg', 'image/jpeg'))).toBe(true);
+    expect(isImageFile(makeFile('pic.png', 'image/png'))).toBe(true);
+    expect(isImageFile(makeFile('pic.gif', 'image/gif'))).toBe(true);
+  });
+
+  it('returns false for non-image MIME types', () => {
+    expect(isImageFile(makeFile('doc.pdf', 'application/pdf'))).toBe(false);
+    expect(isImageFile(makeFile('doc.txt', 'text/plain'))).toBe(false);
+  });
+});
+
+describe('generateImagePreview', () => {
+  it('returns null for non-image files', async () => {
+    const pdfFile = makeFile('doc.pdf', 'application/pdf');
+    const preview = await generateImagePreview(pdfFile);
+    expect(preview).toBeNull();
+  });
+
+  it('generates data URL for image files', async () => {
+    const imageFile = makeFile('pic.jpg', 'image/jpeg');
+    const preview = await generateImagePreview(imageFile);
+    expect(preview).toContain('data:');
   });
 });

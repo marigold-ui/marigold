@@ -70,3 +70,25 @@ export const normalizeAndLimitFiles = (
 
   return multiple ? accepted : accepted.slice(0, 1);
 };
+
+export const isImageFile = (file: File): boolean => {
+  return file.type.startsWith('image/');
+};
+
+export const generateImagePreview = (file: File): Promise<string | null> => {
+  return new Promise(resolve => {
+    if (!file.type.startsWith('image/')) {
+      resolve(null);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = () => {
+      resolve(null);
+    };
+    reader.readAsDataURL(file);
+  });
+};
