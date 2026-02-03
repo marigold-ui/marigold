@@ -1,6 +1,8 @@
 import type { PropsWithChildren } from 'react';
 import preview from '.storybook/preview';
-import { Headline, Inline, Stack } from '@marigold/components';
+import { Headline } from './Headline/Headline';
+import { Inline } from './Inline/Inline';
+import { Stack } from './Stack/Stack';
 
 const meta = preview.meta({
   title: 'Styles/RUI',
@@ -48,21 +50,21 @@ export const Surface = meta.story({
       <Headline level="3">Input</Headline>
       <Inline space="peer">
         <input
-          className="ui-surface invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-surface shadow-elevation-border invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="default"
         />
         <input
-          className="ui-surface invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-surface shadow-elevation-border invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="invalid"
           required
         />
         <input
-          className="ui-surface disabled:ui-state-disabled focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-surface shadow-elevation-border disabled:ui-state-disabled focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="disabled"
           disabled
         />
         <input
-          className="ui-surface read-only:ui-state-readonly focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-surface shadow-elevation-border read-only:ui-state-readonly focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="readonly"
           readOnly
         />
