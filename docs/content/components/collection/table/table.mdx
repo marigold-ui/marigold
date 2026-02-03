@@ -294,9 +294,14 @@ Add the `sticky` prop to `Table.Header` and wrap the table in a `Scrollable` com
 
 ### Allowing text selection
 
-By default, when selection mode is enabled, clicking on cell text selects the row. When users need to copy cell content like emails, IDs, or other data, enable text selection.
+Text selection is disabled by default to avoid interaction complexity. When enabled, users must distinguish between clicking to select a row versus clicking to select text. Enable text selection when users frequently need to copy cell content like emails, IDs, or reference numbers. Row selection will still work through checkboxes while allowing users to select and copy text within cells.
 
-Users can triple-click or drag to select text within cells.
+<SectionMessage variant="info">
+  <SectionMessage.Title>Did you know?</SectionMessage.Title>
+  <SectionMessage.Content>
+    Users can triple-click on a text to quickly select the whole content.
+  </SectionMessage.Content>
+</SectionMessage>
 
 <ComponentDemo file="./table-text-selection.demo.tsx" />
 
