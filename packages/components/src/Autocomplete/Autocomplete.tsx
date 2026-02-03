@@ -251,6 +251,7 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
                 onSubmit={onSubmit}
                 onClear={onClear}
                 ref={ref}
+                autoFocus
               />
             }
           >
