@@ -1,7 +1,7 @@
 import { CalendarDate, DateFormatter } from '@internationalized/date';
 import { useState } from 'react';
 import { DateValue, I18nProvider } from 'react-aria-components';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { Stack } from '../Stack/Stack';
@@ -369,23 +369,27 @@ export const MultipleSelection = meta.story({
     const firstGrid = within(grids[0]);
     const secondGrid = within(grids[1]);
 
-    // Select day 10 from the first month (February)
+    // Select day 10 from the first month (February) using keyboard to avoid
+    // Firefox pointer capture issues
     const day10Feb = firstGrid.getByRole('button', {
       name: /Monday, February 10, 2025/i,
     });
-    await userEvent.click(day10Feb);
+    day10Feb.focus();
+    await userEvent.keyboard('{Enter}');
 
     // Select day 20 from the first month (February)
     const day20Feb = firstGrid.getByRole('button', {
       name: /Thursday, February 20, 2025/i,
     });
-    await userEvent.click(day20Feb);
+    day20Feb.focus();
+    await userEvent.keyboard('{Enter}');
 
     // Select day 5 from the second month (March)
     const day5Mar = secondGrid.getByRole('button', {
       name: /Wednesday, March 5, 2025/i,
     });
-    await userEvent.click(day5Mar);
+    day5Mar.focus();
+    await userEvent.keyboard('{Enter}');
 
     // Verify tags are displayed
     await waitFor(() =>
