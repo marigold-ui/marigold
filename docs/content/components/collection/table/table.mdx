@@ -91,9 +91,19 @@ For columns where users need to read the complete value (like names, IDs, or sta
 
 ### Cell alignment
 
-Proper alignment makes data easier to scan and compare. Different data types benefit from different horizontal alignments—align text content like names and descriptions to the left for natural reading flow, align numeric values to the right so decimal points and place values line up vertically, and center icons or status indicators sparingly.
+Proper alignment makes data easier to scan and compare. Different data types benefit from different alignments.
 
-When cells contain varying heights of content like multi-line text or mixed element sizes, vertical alignment helps maintain visual consistency. Aligning content to the top works best when rows have unpredictable heights or when you want to prioritize reading flow from the top down. Center alignment keeps content visually balanced when most cells have similar heights but occasional outliers exist. Bottom alignment is useful when you need to align baselines of text or when grouping related elements at the cell's bottom edge.
+**Horizontal alignment:**
+
+- **Left (default):** Text content like names and descriptions for natural reading flow
+- **Right:** Numeric values so decimal points and place values line up vertically
+- **Center:** Icons or status indicators (use sparingly)
+
+**Vertical alignment:**
+
+- **Top:** Best for unpredictable row heights or prioritizing top-down reading flow
+- **Center (default):** Balances content when most cells have similar heights
+- **Bottom:** Aligns text baselines or groups elements at the bottom edge
 
 <ComponentDemo file="./table-cell-alignment.demo.tsx" />
 
@@ -282,59 +292,19 @@ Add the `sticky` prop to `Table.Header` and wrap the table in a `Scrollable` com
   </Dont>
 </GuidelineTiles>
 
-### Aligning content
-
-Proper text alignment makes tabular data easier to scan and compare. Different data types benefit from different alignments to improve readability and understanding.
-
-<ComponentDemo file="./table-alignment.demo.tsx" />
-
-Use `align="left"` for text content (names, descriptions), `align="right"` for numeric values (prices, quantities, percentages), and `align="center"` sparingly for icons or status indicators. Apply alignment to both columns and cells for consistency.
-
-<GuidelineTiles>
-  <Do>
-    <Do.Description>
-      Right-align numeric columns to make decimal points and place values line
-      up vertically.
-    </Do.Description>
-  </Do>
-  <Do>
-    <Do.Description>
-      Left-align text content for natural reading flow in LTR languages.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Description>
-      Don't center-align numbers or long text, as this makes scanning and
-      comparison difficult.
-    </Dont.Description>
-  </Dont>
-  <Dont>
-    <Dont.Description>
-      Don't mix alignments within a single column, as inconsistency breaks
-      visual rhythm.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
-
 ### Allowing text selection
 
 By default, when selection mode is enabled, clicking on cell text selects the row. When users need to copy cell content like emails, IDs, or other data, enable text selection.
 
-<ComponentDemo file="./table-text-selection.demo.tsx" />
+Users can triple-click or drag to select text within cells.
 
-Set `allowTextSelection` to `true` on the Table. This wraps cell content in a focusable container that allows text selection while still supporting row selection via checkboxes. Users can triple-click or drag to select text within cells.
+<ComponentDemo file="./table-text-selection.demo.tsx" />
 
 <GuidelineTiles>
   <Do>
     <Do.Description>
       Enable text selection when users frequently need to copy data like IDs,
       emails, or reference numbers.
-    </Do.Description>
-  </Do>
-  <Do>
-    <Do.Description>
-      Keep selection checkboxes visible so users can still select rows for
-      actions.
     </Do.Description>
   </Do>
   <Dont>
