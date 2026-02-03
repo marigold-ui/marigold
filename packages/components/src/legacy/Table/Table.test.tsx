@@ -19,7 +19,7 @@ const theme: Theme = {
       label: cva(),
       group: cva(),
     },
-    Table: {
+    LegacyTable: {
       table: cva('border-collapse'),
       thead: cva(),
       header: cva('p-4'),
