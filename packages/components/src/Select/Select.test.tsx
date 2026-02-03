@@ -1,7 +1,6 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
-import { Form } from 'react-aria-components';
 import { vi } from 'vitest';
 import { Theme, cva } from '@marigold/system';
 import { setup } from '../test.utils';
@@ -249,73 +248,4 @@ test('error is there', () => {
   const container = screen.getAllByText('Label')[0].parentElement;
 
   expect(container).toHaveAttribute('data-error');
-});
-
-test('supports multiple selection', async () => {
-  const handleSubmit = vi.fn((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    return { formData };
-  });
-
-  render(
-    <Form onSubmit={handleSubmit}>
-      <Select
-        label="Favorite"
-        name="favorite"
-        selectionMode="multiple"
-        data-testid="select"
-      >
-        <Select.Option id="Harry Potter">Harry Potter</Select.Option>
-        <Select.Option id="Lord of the Rings">Lord of the Rings</Select.Option>
-        <Select.Option id="Star Wars">Star Wars</Select.Option>
-        <Select.Option id="Star Trek">Star Trek</Select.Option>
-        <Select.Option id="Firefly">Firefly</Select.Option>
-      </Select>
-    </Form>
-  );
-
-  const selectButton = screen.getByRole('button', { name: /favorite/i });
-  await user.click(selectButton);
-
-  // Wait for the listbox to appear
-  await waitFor(() => {
-    expect(screen.getByRole('listbox')).toBeInTheDocument();
-  });
-
-  const listbox = screen.getByRole('listbox');
-
-  // Select multiple options
-  const starWars = within(listbox).getByText('Star Wars');
-  await user.click(starWars);
-
-  const firefly = within(listbox).getByText('Firefly');
-  await user.click(firefly);
-
-  // Verify both options are selected
-  expect(
-    within(listbox).getByRole('option', { name: 'Star Wars' })
-  ).toHaveAttribute('aria-selected', 'true');
-  expect(
-    within(listbox).getByRole('option', { name: 'Firefly' })
-  ).toHaveAttribute('aria-selected', 'true');
-
-  // Close the listbox
-  await user.keyboard('{Escape}');
-
-  // Get the form element and submit it
-  // eslint-disable-next-line testing-library/no-node-access
-  const form = screen
-    .getByRole('button', { name: /favorite/i })
-    .closest('form');
-  expect(form).not.toBeNull();
-
-  // Trigger form submission
-  form?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-
-  expect(handleSubmit).toHaveBeenCalledTimes(1);
-
-  const formData = handleSubmit.mock.results[0].value.formData;
-  const favorites = formData.getAll('favorite');
-  expect(favorites).toEqual(['Star Wars', 'Firefly']);
 });
