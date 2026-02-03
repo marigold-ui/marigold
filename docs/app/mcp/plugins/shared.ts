@@ -135,30 +135,3 @@ export function findJsxElements(nodes: Node[], name: string): MdxJsxElement[] {
   nodes.forEach(walk);
   return results;
 }
-
-// ============================================================================
-// String Helpers
-// ============================================================================
-
-/**
- * Strips HTML markup and decodes HTML entity references.
- * Removes all tags and converts common entity codes to their character equivalents.
- */
-export function stripHtml(html: string): string {
-  return html
-    .replace(/<[^>]*>/g, '')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/&#x3C;/g, '<')
-    .replace(/&#x3E;/g, '>')
-    .trim();
-}
-
-/**
- * Escapes pipe characters for safe inclusion in markdown table cells.
- * Markdown table format uses pipes as column delimiters, so pipes in content must be escaped.
- */
-export function escapePipes(str: string): string {
-  return str.replace(/\|/g, '\\|');
-}
