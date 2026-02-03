@@ -4,7 +4,11 @@ import { Underlay } from './Underlay';
 const meta = preview.meta({
   title: 'Components/Underlay',
   component: Underlay,
+  // stories don'ts how up in storybook and chromatic creates no snapshots for this
   tags: ['!autodocs', '!dev'],
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 });
 
 export const Basic = meta.story({
