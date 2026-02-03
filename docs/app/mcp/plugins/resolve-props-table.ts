@@ -22,18 +22,12 @@ type PropsJson = Record<string, Record<string, PropDefinition>>;
 // ============================================================================
 
 /**
- * Cleans text by removing HTML tags and normalizing whitespace.
- * Simple regex-based approach sufficient for prop type/description text.
+ * Cleans text by normalizing whitespace.
+ * Input comes from react-docgen-typescript (trusted source),
+ * so we don't need to sanitize HTML or decode entities.
  */
 function cleanText(text: string): string {
-  return text
-    .replace(/<[^>]+>/g, '') // Remove HTML tags
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .trim();
+  return text.trim();
 }
 
 /**
@@ -46,6 +40,7 @@ function createTableRow(
   return {
     type: 'tableRow',
     children: cells.map(cell => {
+      // Build cell children based on formatting requirements.
       let cellChildren;
 
       if (cell.strong) {
@@ -85,6 +80,7 @@ function createPropsTable(props: Record<string, PropDefinition>): Node {
     } as Node;
   }
 
+  // Build table rows with proper AST structure.
   const rows: Node[] = [
     createTableRow([
       { value: 'Prop' },
@@ -94,6 +90,7 @@ function createPropsTable(props: Record<string, PropDefinition>): Node {
     ]),
   ];
 
+  // Generate a row for each prop with proper formatting.
   for (const prop of entries) {
     const nameValue = prop.required ? `${prop.name} (required)` : prop.name;
     const typeValue = cleanText(prop.type.name);
@@ -136,14 +133,17 @@ export interface ResolvePropsTableOptions {
 export function remarkResolvePropsTable(options: ResolvePropsTableOptions) {
   const { propsJsonPath, frontmatterTitle } = options;
 
+  // Load props.json at plugin initialization time.
   let propsJson: PropsJson = {};
   try {
     propsJson = JSON.parse(fs.readFileSync(propsJsonPath, 'utf-8'));
   } catch {
+    // Log warning but allow plugin to continue with empty registry.
     console.warn('[PropsTable] Could not load props.json');
   }
 
   return (tree: Node) => {
+    // Visit all mdxJsxFlowElement nodes (MDX components) in the AST.
     visit(
       tree,
       'mdxJsxFlowElement',
@@ -151,6 +151,7 @@ export function remarkResolvePropsTable(options: ResolvePropsTableOptions) {
         if (node.name !== 'PropsTable') return;
         if (!parent || typeof index !== 'number') return;
 
+        // Get component name from JSX attribute or use frontmatter title.
         let componentName = getJsxAttr(node, 'component');
         if (componentName === 'title' && frontmatterTitle) {
           componentName = frontmatterTitle;
@@ -158,6 +159,7 @@ export function remarkResolvePropsTable(options: ResolvePropsTableOptions) {
 
         if (!componentName) return;
 
+        // Look up component props and generate table or not-found message.
         const props = propsJson[componentName];
         const tableNode = props
           ? createPropsTable(props)
@@ -171,6 +173,7 @@ export function remarkResolvePropsTable(options: ResolvePropsTableOptions) {
               ],
             } as Node);
 
+        // Replace JSX component node with generated table or message.
         (parent.children as Node[])[index] = tableNode;
       }
     );
