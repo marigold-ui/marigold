@@ -31,6 +31,8 @@ const MenuSectionComponent = (props: MenuProps) => (
 const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
   }));
 
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);

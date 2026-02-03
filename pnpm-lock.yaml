@@ -570,6 +570,9 @@ importers:
       '@react-types/table':
         specifier: ^3.13.4
         version: 3.13.4(react@19.2.3)
+      motion:
+        specifier: 12.23.26
+        version: 12.23.26(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-aria-components:
         specifier: ^1.14.0
         version: 1.14.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)

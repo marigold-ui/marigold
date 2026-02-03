@@ -1,4 +1,18 @@
-import { Modal, ModalOverlay } from 'react-aria-components';
+import {
+  AnimatePresence,
+  animate,
+  cubicBezier,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useTransform,
+} from 'motion/react';
+import { useContext } from 'react';
+import {
+  Modal,
+  ModalOverlay,
+  OverlayTriggerStateContext,
+} from 'react-aria-components';
 import type RAC from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 
@@ -16,36 +30,79 @@ interface TrayModalProps extends Omit<RAC.ModalOverlayProps, RemovedProps> {
   keyboardDismissable?: RAC.ModalOverlayProps['isKeyboardDismissDisabled'];
 }
 
-export const TrayModal = ({ children, ...props }: TrayModalProps) => {
+// Wrap React Aria modal components so they support motion values.
+const MotionModal = motion.create(Modal);
+const MotionModalOverlay = motion.create(ModalOverlay);
+
+const inertiaTransition = {
+  type: 'inertia' as const,
+  bounceStiffness: 300,
+  bounceDamping: 40,
+  timeConstant: 300,
+};
+
+const staticTransition = {
+  duration: 0.5,
+  ease: cubicBezier(0.32, 0.72, 0, 1),
+};
+
+export const TrayModal = ({
+  open,
+  onOpenChange,
+  dismissable = true,
+  keyboardDismissable = true,
+  children,
+}: TrayModalProps) => {
   const classNames = useClassNames({ component: 'Tray' });
+  const state = useContext(OverlayTriggerStateContext);
+  const h = typeof window !== 'undefined' ? window.innerHeight : 0;
+  const y = useMotionValue(h);
+  const bgOpacity = useTransform(y, [0, h], [0.4, 0]);
+  const bg = useMotionTemplate`rgba(0, 0, 0, ${bgOpacity})`;
+
+  const handleOpenChange = (isOpen: boolean) => {
+    onOpenChange?.(isOpen);
+    if (!isOpen) {
+      state?.close();
+    }
+  };
 
   return (
-    <ModalOverlay
-      {...props}
-      isDismissable={props.dismissable}
-      className={({ isEntering, isExiting }) =>
-        cn(
-          isEntering ? 'animate-in fade-in duration-400 ease-out' : '',
-          isExiting ? 'animate-out fade-out duration-300 ease-in' : '',
-          classNames.overlay
-        )
-      }
-    >
-      <Modal
-        className={({ isEntering, isExiting }) =>
-          cn(
-            'group/tray w-full',
-            isEntering
-              ? 'animate-in slide-in-from-bottom duration-400 ease-out'
-              : '',
-            isExiting
-              ? 'animate-out slide-out-to-bottom duration-300 ease-in'
-              : ''
-          )
-        }
-      >
-        {children}
-      </Modal>
-    </ModalOverlay>
+    <AnimatePresence>
+      {open && (
+        <MotionModalOverlay
+          // Force the modal to be open when AnimatePresence renders it.
+          isOpen
+          onOpenChange={handleOpenChange}
+          isDismissable={dismissable}
+          isKeyboardDismissDisabled={!keyboardDismissable}
+          className={cn(
+            'fixed inset-0 z-40 flex items-end justify-center',
+            classNames.overlay
+          )}
+          style={{ backgroundColor: bg as never }}
+        >
+          <MotionModal
+            className={cn('group/tray w-full', classNames.container)}
+            initial={{ y: h }}
+            animate={{ y: 0 }}
+            exit={{ y: h }}
+            transition={staticTransition}
+            style={{ y }}
+            drag="y"
+            dragConstraints={{ top: 0 }}
+            onDragEnd={(_e, { offset, velocity }) => {
+              if (offset.y > window.innerHeight * 0.75 || velocity.y > 10) {
+                handleOpenChange(false);
+              } else {
+                animate(y, 0, { ...inertiaTransition, min: 0, max: 0 });
+              }
+            }}
+          >
+            {children}
+          </MotionModal>
+        </MotionModalOverlay>
+      )}
+    </AnimatePresence>
   );
 };

@@ -101,6 +101,7 @@ export const Tray = ({
       keyboardDismissable={keyboardDismissable}
     >
       <Dialog {...props} className={classNames.container}>
+        <div className={classNames.drag} />
         <CloseButton
           aria-label={stringFormatter.format('closeTray')}
           className={classNames.closeButton}
