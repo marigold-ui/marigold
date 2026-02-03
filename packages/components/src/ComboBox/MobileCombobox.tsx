@@ -82,7 +82,7 @@ const MobileComboBox = ({
       <Tray>
         <Tray.Title>{label}</Tray.Title>
         <Tray.Content className={'flex flex-col gap-2'}>
-          <Input />
+          <Input autoFocus />
           <ListBox
             renderEmptyState={() =>
               emptyState ?? (

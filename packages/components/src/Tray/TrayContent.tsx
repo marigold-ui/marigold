@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { FocusScope } from '@react-aria/focus';
 import { cn, useClassNames } from '@marigold/system';
 
 // Props
@@ -24,17 +23,15 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
   });
 
   return (
-    <FocusScope autoFocus restoreFocus>
-      <div
-        ref={node => {
-          if (node && !node.style.minHeight) {
-            node.style.minHeight = `${node.offsetHeight}px`;
-          }
-        }}
-        className={cn('[grid-area:content]', classNames.content, className)}
-      >
-        {children}
-      </div>
-    </FocusScope>
+    <div
+      ref={node => {
+        if (node && !node.style.minHeight) {
+          node.style.minHeight = `${node.offsetHeight}px`;
+        }
+      }}
+      className={cn('[grid-area:content]', classNames.content, className)}
+    >
+      {children}
+    </div>
   );
 };
