@@ -9,7 +9,8 @@
     "build:registry": "zx ./scripts/build-registry.mjs && node ./scripts/build-appearances.mjs",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs",
-    "build:contentlayer": "pnpm contentlayer2 build"
+    "build:contentlayer": "pnpm contentlayer2 build",
+    "build:md-docs": "pnpm tsx app/mcp/build.ts"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "1.4.0",
@@ -64,6 +65,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "tailwindcss-animate": "1.0.7",
+    "tsx": "4.19.2",
     "typescript": "5.9.3",
     "unist-builder": "4.0.0",
     "unist-util-visit": "5.1.0"
