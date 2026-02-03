@@ -24,7 +24,7 @@ export function remarkResolveAppearanceDemo() {
                 'This component has multiple appearance variants and sizes available.',
             },
           ],
-        };
+        } as Node;
       }
     );
   };
