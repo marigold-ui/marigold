@@ -150,7 +150,7 @@ export const Multiple = meta.story({
         onSubmit={e => {
           e.preventDefault();
           const formData = new FormData(e.currentTarget);
-          setSelected(formData.getAll('foo'));
+          setSelected(formData.getAll('foo') as Key[]);
         }}
       >
         <Stack space={6} alignX="left">
