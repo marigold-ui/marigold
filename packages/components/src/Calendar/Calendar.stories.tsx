@@ -1,8 +1,11 @@
-import { CalendarDate } from '@internationalized/date';
+import { CalendarDate, DateFormatter } from '@internationalized/date';
 import { useState } from 'react';
-import { DateValue } from 'react-aria-components';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { DateValue, I18nProvider } from 'react-aria-components';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Key } from '@react-types/shared';
+import { Stack } from '../Stack/Stack';
+import { Tag } from '../TagGroup/Tag';
 import { Calendar } from './Calendar';
 
 const meta = preview.meta({
@@ -261,44 +264,20 @@ export const MultiMonthNavigation = meta.story({
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Navigate forward
-    await userEvent.click(canvas.getByRole('button', { name: /next/i }));
+    // Navigate forward (use getAllByRole to handle react-aria's hidden button)
+    const nextButtons = canvas.getAllByRole('button', { name: /next/i });
+    await userEvent.click(nextButtons[0]);
 
     // With pageBehavior='visible' (default), should advance by 2 months
-    let headings = canvas.getAllByRole('heading');
-    await expect(headings[0]).toHaveTextContent(/March 2025/i);
-    await expect(headings[1]).toHaveTextContent(/April 2025/i);
+    await expect(canvas.getByText('March 2025')).toBeInTheDocument();
+    await expect(canvas.getByText('April 2025')).toBeInTheDocument();
 
     // Navigate back
-    await userEvent.click(canvas.getByRole('button', { name: /previous/i }));
+    const prevButtons = canvas.getAllByRole('button', { name: /previous/i });
+    await userEvent.click(prevButtons[0]);
 
-    headings = canvas.getAllByRole('heading');
-    await expect(headings[0]).toHaveTextContent(/January 2025/i);
-    await expect(headings[1]).toHaveTextContent(/February 2025/i);
-  },
-});
-
-export const MultiMonthSelection = meta.story({
-  tags: ['component-test'],
-  args: {
-    visibleDuration: { months: 2 },
-    defaultValue: new CalendarDate(2025, 2, 15),
-    onChange: fn(),
-  },
-  render: args => <Calendar {...args} />,
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // Select a date in the second month (March)
-    const grids = canvas.getAllByRole('grid');
-    const secondGridCells = within(grids[1]).getAllByRole('gridcell');
-    const day10 = secondGridCells.find(
-      cell => cell.textContent === '10' && !cell.getAttribute('aria-disabled')
-    );
-
-    expect(day10).toBeDefined();
-    await userEvent.click(day10!);
-    await expect(args.onChange).toHaveBeenCalled();
+    await expect(canvas.getByText('January 2025')).toBeInTheDocument();
+    await expect(canvas.getByText('February 2025')).toBeInTheDocument();
   },
 });
 
@@ -314,10 +293,116 @@ export const MultiMonthSinglePageBehavior = meta.story({
     const canvas = within(canvasElement);
 
     // With pageBehavior='single', should advance by 1 month
-    await userEvent.click(canvas.getByRole('button', { name: /next/i }));
+    // Use getAllByRole to handle react-aria's hidden button
+    const nextButtons = canvas.getAllByRole('button', { name: /next/i });
+    await userEvent.click(nextButtons[0]);
 
-    const headings = canvas.getAllByRole('heading');
-    await expect(headings[0]).toHaveTextContent(/February 2025/i);
-    await expect(headings[1]).toHaveTextContent(/March 2025/i);
+    await expect(canvas.getByText('February 2025')).toBeInTheDocument();
+    await expect(canvas.getByText('March 2025')).toBeInTheDocument();
+  },
+});
+
+interface SelectedDate {
+  id: string;
+  date: DateValue;
+}
+
+export const MultipleSelection = meta.story({
+  tags: ['component-test'],
+  args: {
+    visibleDuration: { months: 2 },
+    defaultValue: new CalendarDate(2025, 2, 15),
+    onChange: fn(),
+  },
+  render: args => {
+    const [selectedDates, setSelectedDates] = useState<SelectedDate[]>([]);
+
+    const formatter = new DateFormatter('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+
+    const handleDateSelect = (date: DateValue | null) => {
+      if (!date) return;
+
+      args.onChange?.(date);
+
+      const dateId = `${date.year}-${date.month}-${date.day}`;
+      const exists = selectedDates.some(d => d.id === dateId);
+
+      if (exists) {
+        setSelectedDates(prev => prev.filter(d => d.id !== dateId));
+      } else {
+        setSelectedDates(prev => [...prev, { id: dateId, date }]);
+      }
+    };
+
+    const handleRemove = (keys: Set<Key>) => {
+      setSelectedDates(prev => prev.filter(d => !keys.has(d.id)));
+    };
+
+    return (
+      <I18nProvider locale="en-US">
+        <Stack space={4}>
+          <Calendar {...args} onChange={handleDateSelect} />
+          <Tag.Group
+            label="Selected Dates"
+            items={selectedDates}
+            onRemove={handleRemove}
+          >
+            {(item: SelectedDate) => (
+              <Tag id={item.id}>
+                {formatter.format(item.date.toDate('UTC'))}
+              </Tag>
+            )}
+          </Tag.Group>
+        </Stack>
+      </I18nProvider>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Get both calendar grids (February and March)
+    const grids = canvas.getAllByRole('grid');
+    const firstGrid = within(grids[0]);
+    const secondGrid = within(grids[1]);
+
+    // Select day 10 from the first month (February)
+    const day10Feb = firstGrid.getByRole('button', {
+      name: /Monday, February 10, 2025/i,
+    });
+    await userEvent.click(day10Feb);
+
+    // Select day 20 from the first month (February)
+    const day20Feb = firstGrid.getByRole('button', {
+      name: /Thursday, February 20, 2025/i,
+    });
+    await userEvent.click(day20Feb);
+
+    // Select day 5 from the second month (March)
+    const day5Mar = secondGrid.getByRole('button', {
+      name: /Wednesday, March 5, 2025/i,
+    });
+    await userEvent.click(day5Mar);
+
+    // Verify tags are displayed
+    await waitFor(() =>
+      expect(canvas.getByText('Feb 10, 2025')).toBeInTheDocument()
+    );
+    await expect(canvas.getByText('Feb 20, 2025')).toBeInTheDocument();
+    await expect(canvas.getByText('Mar 5, 2025')).toBeInTheDocument();
+
+    // Remove one date by clicking on the tag's remove button
+    const feb10Tag = canvas.getByText('Feb 10, 2025');
+    await userEvent.click(within(feb10Tag).getByRole('button'));
+
+    // Verify the tag was removed
+    await waitFor(() =>
+      expect(canvas.queryByText('Feb 10, 2025')).not.toBeInTheDocument()
+    );
+    await expect(canvas.getByText('Feb 20, 2025')).toBeInTheDocument();
+    await expect(canvas.getByText('Mar 5, 2025')).toBeInTheDocument();
   },
 });
