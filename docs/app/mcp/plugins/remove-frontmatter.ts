@@ -32,7 +32,7 @@ export function remarkRemoveFrontmatter(frontmatter: Record<string, string>) {
       type: 'heading',
       depth: 1,
       children: [{ type: 'text', value: frontmatter.title }],
-    });
+    } as Node);
 
     if (frontmatter.caption) {
       tree.children.splice(1, 0, {
@@ -43,7 +43,7 @@ export function remarkRemoveFrontmatter(frontmatter: Record<string, string>) {
             children: [{ type: 'text', value: frontmatter.caption }],
           },
         ],
-      });
+      } as Node);
     }
   };
 }
