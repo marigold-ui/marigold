@@ -108,7 +108,7 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
 
       <div
         className={
-          'border-fd-primary/10 prose-no-margin overflow-hidden rounded-lg border'
+          'border-fd-primary/10 prose-no-margin relative overflow-hidden rounded-lg border'
         }
       >
         <div className="absolute top-3 left-4 flex w-full flex-wrap gap-2">
