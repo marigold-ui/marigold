@@ -1,0 +1,241 @@
+# Loading States
+
+_Learn when to use which loading state._
+
+> ⚠️ Note: This pattern is awaiting validation by Reservix product teams. If your team
+> has decided to implement loading states, please notify the Design System
+> Team as soon as possible
+> so that we can observe their implementation.
+
+Loading states provide visual feedback to users indicating that an action they have taken has been received and the system is working on their request.
+
+Loading states help manage user expectations during times of delayed response, and communicate what actions can be taken during and after the loading process. They are crucial for maintaining user engagement and reducing frustration when there are delays in processing user requests.
+
+## Key principles
+
+Loading states should be:
+
+- **Noticeable.** Users should be able to quickly understand that content is loading and where it will appear.
+- **Non-interruptive.** Loading indicators should only appear when users need reassurance that their action has been received, and should only block action when necessary.
+- **Timely.** Loading indicators should not appear before the user expects them and should disappear promptly, transitioning smoothly to the next state.
+- **Communicative.** Any accompanying text should clearly communicate what the system is doing so the user knows how to respond.
+
+## When to use
+
+Use loading states when the system needs more than one second to process a user request, such as when fetching data from a server, submitting a form, or uploading a file.
+
+## When not to use
+
+Don’t use loading states for actions that are likely to be processed in less than one second. Because loading indicators are another piece of content that has to be mentally processed by the user, only add them when necessary to reduce user uncertainty during longer processes.
+
+## Types of loading states
+
+### Inline indicators
+
+```tsx title="inline-indicator"
+import { FormEvent, useState } from 'react';
+import { Button, Form, Headline, Stack, TextField } from '@marigold/components';
+
+export default () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const api = (inputValue: string): Promise<string> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(inputValue);
+      }, 3000);
+    });
+  };
+
+  const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    //avoid multiple submits while loading
+    if (isLoading) {
+      return;
+    }
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const data: { [bookInput: string]: FormDataEntryValue } =
+      Object.fromEntries(formData);
+    setIsLoading(true);
+    const res = await api(data['bookInput'].toString());
+    setSearchTerm(res);
+    setIsLoading(false);
+  };
+
+  return (
+    <Form onSubmit={handleOnSubmit}>
+      <Headline level={2}>Book search</Headline>
+      <TextField
+        label="Book name:"
+        description="Please enter a book name"
+        placeholder="Book name"
+        name="bookInput"
+      />
+      <Stack space={2}>
+        <Stack alignX="right">
+          <Button
+            variant="primary"
+            size="small"
+            type="submit"
+            loading={isLoading}
+          >
+            Submit
+          </Button>
+        </Stack>
+        {searchTerm && `You searched for <b>${searchTerm}</b>.`}
+      </Stack>
+    </Form>
+  );
+};
+```
+
+Inline indicators are only displayed on a single component, typically a [button](/components/actions/button#loading-state). Use them when:
+
+- no or little visible content in the current view will be changed.
+- the process has no or little visual result in the current view.
+- the updated content will only be visible after a clear transition, like redirecting to a new page, closing a drawer, or closing a dialogue.
+
+Don’t use them over navigational links.
+
+#### For loading times under 10 seconds
+
+At this stage:
+
+- The button state changes to `disabled`. If other actions on the page could affect successful processing, decide if these should be disabled as well.
+- The button's label is hidden and a loading spinner becomes visible.
+- The mouse cursor style changes to `progress`.
+
+These effects last for a minimum of 1 second regardless of process duration.
+
+#### Greater than 10 seconds
+
+Marigold does not currently have a progress bar to show more granular loading states. If no end is in sight, consider if the user needs an “emergency exit” at this point. If so, use the appropriate [feedback message](https://www.marigold-ui.io/patterns/feedback-messages) so the user understands what’s happening and what they can do next. If research indicates that user frustration peaks before 10 seconds, consider showing a feedback message sooner and [notify the design system team](https://www.marigold-ui.io/introduction/get-in-touch).
+
+#### Result
+
+- If the process is successful, continue as normal in the user’s flow. Use feedback messages where appropriate to communicate system status.
+- If the process is unsuccessful, display an appropriate error message so the user knows why the process failed and what they can do next.
+
+### Section and fullscreen indicators
+
+```tsx title="full-section"
+import { FormEvent, useState } from 'react';
+import {
+  Button,
+  Form,
+  Headline,
+  Loader,
+  Stack,
+  TextField,
+} from '@marigold/components';
+
+export default () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const api = (inputValue: string): Promise<string> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(inputValue);
+      }, 3000);
+    });
+  };
+
+  const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const data: { [bookInput: string]: FormDataEntryValue } =
+      Object.fromEntries(formData);
+
+    setIsLoading(true);
+    const res = await api(data['bookInput'].toString());
+    setSearchTerm(res);
+    setIsLoading(false);
+  };
+
+  return (
+    <div>
+      <Form onSubmit={handleOnSubmit}>
+        <Headline level={2}>Book search</Headline>
+        <TextField
+          label="Book name:"
+          description="Please enter a book name"
+          placeholder="Book name"
+          name="bookInput"
+        />
+        <Stack space={2}>
+          <Stack alignX="right">
+            <Button variant="primary" size="small" type="submit">
+              Submit
+            </Button>
+          </Stack>
+          {searchTerm && `You searched for ${searchTerm}.`}
+        </Stack>
+      </Form>
+      {isLoading && <Loader mode="fullscreen" />}
+    </div>
+  );
+};
+```
+
+Section and fullscreen indicators are displayed over large sections of content or the entire page. Use them when:
+
+- large areas of existing, visible content in the current view are changing.
+- large areas of new content are being added.
+- the user must be prevented from interacting with the content in the affected container or page.
+
+#### For loading times under 10 seconds
+
+At this stage:
+
+- Disable any actions that must be disabled for successful processing. (Ignore actions underneath section and fullscreen indicators, as these will be inaccessible regardless.)
+- The Loader animation appears within an overlay (created via a [dialog](https://www.marigold-ui.io/components/overlay/dialog)) over the container of the loading content.
+  - If the context requires additional information, add a label under the Loader. Use labels sparingly, like at the start or end of important tasks or at particularly confusing junctions.
+- If the button used to start the process is visible and located outside the container of the loading content, ensure it follows the process for inline indicators as well.
+- The mouse cursor style changes to progress.
+
+These effects last for a minimum of 1 second regardless of process duration.
+
+#### Greater than 10 seconds
+
+Marigold does not currently have a progress bar to show more granular loading states. If no end is in sight, consider if the user needs an “emergency exit” at this point. If so, use the appropriate feedback message so they understand what’s happening and what they can do next. If research indicates that user frustration peaks before 10 seconds, consider showing a feedback message sooner and [notify the design system team](https://www.marigold-ui.io/introduction/get-in-touch).
+
+#### Results
+
+- If the process is successful, continue as normal in the user’s flow. Use feedback messages where appropriate to communicate system status.
+- If the process is unsuccessful, display an appropriate error message so the user knows why the process failed and what they can do next.
+
+## Placement and appearance
+
+The loading indicator should always be placed in the center of its container.
+
+## User interaction
+
+- Consider if users should have the option to cancel the action if the loading time is too long.
+- Provide an option to retry the action if the loading fails due to network issues or other problems.
+- User actions can be afforded via labels (in section indicators) or feedback messages.
+
+## Content guidelines
+
+### Labels
+
+Avoid labels with the full-section indicator if possible. If they are needed, make sure that they are no more than a few words and provide useful context, like “Finalizing your event…” instead of “Loading…”. Use labels sparingly, like at the start or end of important tasks or at particularly important moments.
+
+### Feedback messages
+
+Feedback messages that appear after the process has returned a result should clearly communicate what’s happened and, if appropriate, what actions the user can take next. Follow the [content guidelines for feedback messages](https://www.marigold-ui.io/patterns/feedback-messages?theme=b2b#content-guidelines).
+
+## References
+
+[Loading feedback](https://www.pencilandpaper.io/articles/ux-pattern-analysis-loading-feedback) - Pencil & Paper
+
+[Progress indicators](https://www.nngroup.com/articles/progress-indicators/) - NNGroup
+
+[Asynchronous UX](https://gitnation.com/contents/asynchronous-ux) - Toni Petrina, React Advanced Conference 2021
+
+## Related
+
+- [Form developement guide](../patterns/form-implementation) - This page should introduce you on how to build forms with Marigold.

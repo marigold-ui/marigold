@@ -1,0 +1,30 @@
+# Marigold v10.1.2
+
+Happy New Year! 🥳 Marigold v10.1.2 kicks off the year with updates to key components and the introduction of a brand-new component. Along with that we made a lot of dependency updates including changing the React version to React 19. Thanks for being part of the journey—we’re excited for what’s ahead.
+
+Here’s what’s new!
+
+## Improvements
+
+- **React 19:** We have updated to React 19, bringing enhanced performance, streamlined simplicity, and an improved development experience.
+
+### Components
+
+- **Pagination:** We added a new component `<Pagination>` to the Marigold library. This component is used to divide and navigate large data sets. You can find more information about this component in the documentation.
+- **SectionMessage:** You now have the possibility to control the dismissable `<SectionMessage>` we've added the properties `close` and `onCloseChange` to handle the dismissable state.
+- **XLoader:** The `<XLoader>` was refactored and is now more accessible! Besides this the docs page were updated.
+
+### Documentation
+
+We of course also keep on updating our component documentation pages. These following pages have been updated:
+
+- `<Aspect>`
+- `<Calendar>`
+- `<Inset>`
+- `<Grid>`
+- `<SearchField>`
+- `<Tiles>`
+
+---
+
+Thanks for reading, and we hope you enjoy the new features in Marigold 10.1.2! Be sure to check out the updated documentation for more details, and as always, we're here if you need help.

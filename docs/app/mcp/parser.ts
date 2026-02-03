@@ -114,11 +114,9 @@ export async function parseMdxToMarkdown(
   // to compact tables:
   //   | Prop | Type | Default |
   markdown = markdown.replace(/^(\|[^\n]+\|)$/gm, match => {
-    // Split by pipes, trim each cell, rejoin
-    return match
-      .split('|')
-      .map(cell => cell.trim())
-      .join(' | ');
+    // Split by unescaped pipes only (not \|)
+    const parts = match.split(/(?<!\\)\|/);
+    return parts.map(cell => cell.trim()).join(' | ');
   });
 
   return {
