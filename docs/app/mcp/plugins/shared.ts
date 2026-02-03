@@ -34,7 +34,9 @@ export interface InlineCodeNode extends Node {
 // ============================================================================
 
 /**
- * Gets a JSX attribute value. Handles both simple strings and expressions.
+ * Gets a JSX attribute value from a MDX element node.
+ * Handles both simple string values and complex JavaScript expressions.
+ * Returns undefined if attribute not found.
  */
 export function getJsxAttr(
   node: MdxJsxElement,
@@ -46,16 +48,19 @@ export function getJsxAttr(
 
   if (!attr) return undefined;
 
+  // Handle simple string attribute values.
   if (typeof attr.value === 'string') {
     return attr.value;
   }
 
+  // Handle complex expression attributes (e.g., {variableName}).
   if (attr.value && typeof attr.value === 'object') {
-    // Try to get identifier from estree (for expressions like {title})
+    // Try to extract identifier name from estree AST expression.
     const estree = attr.value.data?.estree;
     if (estree?.body?.[0]?.expression?.name) {
       return estree.body[0].expression.name;
     }
+    // Fallback to direct value property if available.
     if ('value' in attr.value) {
       return attr.value.value;
     }
@@ -69,7 +74,8 @@ export function getJsxAttr(
 // ============================================================================
 
 /**
- * Extracts plain text from a node tree. Replaces newlines with spaces.
+ * Extracts plain text content from a node tree recursively.
+ * Converts newlines to spaces for inline text representation.
  */
 export function extractText(node: Node): string {
   if (node.type === 'text') {
@@ -80,6 +86,7 @@ export function extractText(node: Node): string {
     return (node as InlineCodeNode).value;
   }
 
+  // Recursively extract text from parent nodes containing children.
   if ('children' in node && Array.isArray((node as Parent).children)) {
     return (node as Parent).children.map(extractText).join('').trim();
   }
@@ -88,13 +95,15 @@ export function extractText(node: Node): string {
 }
 
 /**
- * Flattens children, unwrapping JSX elements but keeping text/code nodes.
+ * Flattens node tree while unwrapping JSX container elements.
+ * Preserves text and inline code nodes at terminal positions.
  */
 export function flattenChildren(node: Node): Node[] {
   if (node.type === 'text' || node.type === 'inlineCode') {
     return [node];
   }
 
+  // Recursively flatten children from parent nodes.
   if ('children' in node && Array.isArray((node as Parent).children)) {
     return (node as Parent).children.flatMap(flattenChildren);
   }
@@ -103,17 +112,21 @@ export function flattenChildren(node: Node): Node[] {
 }
 
 /**
- * Recursively finds all JSX elements with a specific name.
+ * Finds all JSX elements matching a specific component name.
+ * Performs depth-first traversal of the node tree to locate matching elements.
  */
 export function findJsxElements(nodes: Node[], name: string): MdxJsxElement[] {
   const results: MdxJsxElement[] = [];
 
+  // Recursive walker function to traverse the node tree.
   function walk(node: Node) {
     const isJsx =
       node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement';
+    // Record JSX elements that match the target name.
     if (isJsx && (node as MdxJsxElement).name === name) {
       results.push(node as MdxJsxElement);
     }
+    // Continue traversal into children of parent nodes.
     if ('children' in node && Array.isArray((node as Parent).children)) {
       (node as Parent).children.forEach(walk);
     }
@@ -128,7 +141,8 @@ export function findJsxElements(nodes: Node[], name: string): MdxJsxElement[] {
 // ============================================================================
 
 /**
- * Strips HTML tags and decodes common entities.
+ * Strips HTML markup and decodes HTML entity references.
+ * Removes all tags and converts common entity codes to their character equivalents.
  */
 export function stripHtml(html: string): string {
   return html
@@ -142,7 +156,8 @@ export function stripHtml(html: string): string {
 }
 
 /**
- * Escapes pipe characters for markdown tables.
+ * Escapes pipe characters for safe inclusion in markdown table cells.
+ * Markdown table format uses pipes as column delimiters, so pipes in content must be escaped.
  */
 export function escapePipes(str: string): string {
   return str.replace(/\|/g, '\\|');
