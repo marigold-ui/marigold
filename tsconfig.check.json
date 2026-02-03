@@ -28,6 +28,7 @@
     "vite.config.ts",
     "**/dist/*",
     "**/node_modules/*",
-    "fumadocs/**/*"
+    "fumadocs/**/*",
+    ".claude/**/*"
   ]
 }
