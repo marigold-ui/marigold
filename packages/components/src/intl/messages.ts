@@ -1,6 +1,7 @@
 export const intlMessages = {
   'de-DE': {
     cancel: 'Abbrechen',
+    close: 'Schließen',
     dropZoneLabel: 'Dateien hierher ziehen',
     help: 'Hilfe',
     hiddenBreadcrumbs: 'Diese Breadcrumbs sind ausgeblendet',
@@ -20,6 +21,7 @@ export const intlMessages = {
   },
   'en-US': {
     cancel: 'Cancel',
+    close: 'Close',
     dropZoneLabel: 'Drop files here',
     help: 'Help',
     hiddenBreadcrumbs: 'These breadcrumbs are hidden',

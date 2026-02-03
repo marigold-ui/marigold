@@ -1,10 +1,13 @@
 import { Key, ReactNode } from 'react';
 import type RAC from 'react-aria-components';
-import { Button, Menu, MenuTrigger } from 'react-aria-components';
+import { Menu, MenuTrigger, Button as RACButton } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames, useSmallScreen } from '@marigold/system';
+import { Button } from '../Button/Button';
 import type { PopoverProps } from '../Overlay/Popover';
 import { Popover } from '../Overlay/Popover';
 import { Tray } from '../Tray/Tray';
+import { intlMessages } from '../intl/messages';
 import { MenuItem } from './MenuItem';
 import { MenuSection } from './MenuSection';
 
@@ -63,16 +66,17 @@ const _Menu = ({
 }: MenuProps) => {
   const classNames = useClassNames({ component: 'Menu', variant, size });
   const isSmallScreen = useSmallScreen();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <MenuTrigger {...props}>
-      <Button
+      <RACButton
         className={classNames.button}
         aria-label={ariaLabel}
         isDisabled={disabled}
       >
         {label}
-      </Button>
+      </RACButton>
       {isSmallScreen ? (
         <Tray>
           <Tray.Title>{label}</Tray.Title>
@@ -81,6 +85,9 @@ const _Menu = ({
               {children}
             </Menu>
           </Tray.Content>
+          <Tray.Actions>
+            <Button slot="close">{stringFormatter.format('close')}</Button>
+          </Tray.Actions>
         </Tray>
       ) : (
         <Popover open={open} placement={placement}>

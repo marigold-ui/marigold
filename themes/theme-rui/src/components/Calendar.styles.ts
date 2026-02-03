@@ -6,7 +6,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     // In a Popover
     'group-data-trigger/popover:ui-elevation-overlay',
     // In a Tray
-    'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0',
+    'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0',
   ]),
   calendarCell: cva([
     'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg justify-self-center',

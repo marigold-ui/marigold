@@ -1,8 +1,12 @@
 import type { ReactNode } from 'react';
 import { useContext } from 'react';
-import { Button, ComboBoxStateContext } from 'react-aria-components';
+import {
+  ComboBoxStateContext,
+  Button as RACButton,
+} from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { cn, useClassNames } from '@marigold/system';
+import { Button } from '../Button/Button';
 import { Center } from '../Center/Center';
 import { Input } from '../Input/Input';
 import { ListBox } from '../ListBox/ListBox';
@@ -72,9 +76,9 @@ const MobileComboBox = ({
 
   return (
     <Tray.Trigger>
-      <Button className="group/trigger outline-none">
+      <RACButton className="group/trigger outline-none">
         <MobileComboBoxTrigger placeholder={placeholder} />
-      </Button>
+      </RACButton>
       <Tray>
         <Tray.Title>{label}</Tray.Title>
         <Tray.Content className={'flex flex-col gap-2'}>
@@ -89,6 +93,9 @@ const MobileComboBox = ({
             {children}
           </ListBox>
         </Tray.Content>
+        <Tray.Actions>
+          <Button slot="close">{stringFormatter.format('close')}</Button>
+        </Tray.Actions>
       </Tray>
     </Tray.Trigger>
   );

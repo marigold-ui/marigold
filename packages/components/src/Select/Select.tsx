@@ -2,18 +2,21 @@ import { forwardRef } from 'react';
 import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import {
-  Button,
+  Button as RACButton,
   Select as ReactAriaSelect,
   SelectValue,
 } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { forwardRefType } from '@react-types/shared';
 import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
+import { Button } from '../Button/Button';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
+import { intlMessages } from '../intl/messages';
 
 export type SelectionMode = 'single' | 'multiple';
 
@@ -107,6 +110,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
   };
   const classNames = useClassNames({ component: 'Select', variant, size });
   const isSmallScreen = useSmallScreen();
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <FieldBase
@@ -133,11 +137,14 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
             <Tray.Content>
               <ListBox items={items}>{children}</ListBox>
             </Tray.Content>
+            <Tray.Actions>
+              <Button slot="close">{stringFormatter.format('close')}</Button>
+            </Tray.Actions>
           </Tray>
         </Tray.Trigger>
       ) : (
         <>
-          <Button
+          <RACButton
             className={cn(
               'flex w-full items-center justify-between gap-1',
               classNames.select
@@ -145,7 +152,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
           >
             <SelectValue className="truncate text-nowrap **:[[slot=description]]:hidden" />
             <ChevronsVertical size="16" className={classNames.icon} />
-          </Button>
+          </RACButton>
           <Popover>
             <ListBox items={items}>{children}</ListBox>
           </Popover>

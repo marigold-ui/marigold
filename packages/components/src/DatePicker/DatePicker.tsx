@@ -7,7 +7,9 @@ import {
   type DateValue,
   Dialog,
 } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { WidthProp, useClassNames, useSmallScreen } from '@marigold/system';
+import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
 import { DateInput } from '../DateField/DateInput';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
@@ -15,6 +17,7 @@ import { IconButton } from '../IconButton/IconButton';
 import { Popover } from '../Overlay/Popover';
 import { Tray } from '../Tray/Tray';
 import { Calendar as CalendarIcon } from '../icons/Calendar';
+import { intlMessages } from '../intl/messages';
 
 type RemovedProps =
   | 'isDisabled'
@@ -110,6 +113,7 @@ const _DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     });
 
     const isSmallScreen = useSmallScreen();
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
     return (
       <FieldBase
@@ -133,6 +137,9 @@ const _DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             <Tray.Content>
               <Calendar disabled={disabled} />
             </Tray.Content>
+            <Tray.Actions>
+              <Button slot="close">{stringFormatter.format('close')}</Button>
+            </Tray.Actions>
           </Tray>
         ) : (
           <Popover>
