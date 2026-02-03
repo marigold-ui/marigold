@@ -9,7 +9,7 @@ import {
 } from '@marigold/components';
 
 export default () => {
-  const [tableData, setTableData] = useState(() => venues.slice(3, 7));
+  const [data, setData] = useState(() => venues.slice(3, 7));
 
   const update = (
     venueId: string,
@@ -19,8 +19,8 @@ export default () => {
     const formData = new FormData(e.currentTarget);
     const value = formData.get(field);
     const processedValue = field === 'rating' ? Number(value) : value;
-
-    setTableData(prev =>
+    console.log(formData.get(field));
+    setData(prev =>
       prev.map(venue =>
         venue.id === venueId ? { ...venue, [field]: processedValue } : venue
       )
@@ -35,7 +35,7 @@ export default () => {
         <Table.Column width={100}>Rating</Table.Column>
       </Table.Header>
       <Table.Body>
-        {tableData.map(venue => (
+        {data.map(venue => (
           <Table.Row key={venue.id}>
             <Table.Cell>
               <Text weight="medium">{venue.name}</Text>
