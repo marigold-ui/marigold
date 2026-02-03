@@ -106,7 +106,7 @@ export const MonthYearSelection = meta.story({
     defaultValue: new CalendarDate(2019, 6, 5),
     onChange: fn(),
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     // Change year via dropdown
@@ -261,7 +261,7 @@ export const MultiMonthNavigation = meta.story({
     onChange: fn(),
   },
   render: args => <Calendar {...args} />,
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     // Navigate forward (use getAllByRole to handle react-aria's hidden button)
@@ -289,7 +289,7 @@ export const MultiMonthSinglePageBehavior = meta.story({
     defaultValue: new CalendarDate(2025, 1, 15),
   },
   render: args => <Calendar {...args} />,
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     // With pageBehavior='single', should advance by 1 month
@@ -361,7 +361,7 @@ export const MultipleSelection = meta.story({
       </I18nProvider>
     );
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
     // Get both calendar grids (February and March)
