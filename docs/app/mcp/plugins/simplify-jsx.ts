@@ -85,7 +85,7 @@ function convertTableToMarkdown(tableNode: MdxJsxElement): Node | null {
         type: 'tableCell',
         children: [{ type: 'text', value: cell }],
       })),
-    });
+    } as Node);
   }
 
   for (const cells of rows) {
@@ -95,15 +95,15 @@ function convertTableToMarkdown(tableNode: MdxJsxElement): Node | null {
         type: 'tableCell',
         children: [{ type: 'text', value: cell }],
       })),
-    });
+    } as Node);
   }
 
   return tableRows.length > 0
-    ? {
+    ? ({
         type: 'table',
         align: headerCells.map(() => 'left'),
         children: tableRows,
-      }
+      } as Node)
     : null;
 }
 
@@ -144,7 +144,7 @@ export function remarkSimplifyJsx() {
           (parent.children as Node[])[index] = {
             type: 'paragraph',
             children: [{ type: 'text', value: `${prefix} ${text}` }],
-          };
+          } as Node;
         } else {
           (parent.children as Node[]).splice(index, 1);
           return [SKIP, index];
@@ -182,7 +182,7 @@ export function remarkSimplifyJsx() {
                 ],
               },
             ],
-          };
+          } as Node;
         } else {
           (parent.children as Node[]).splice(index, 1);
           return [SKIP, index];
@@ -200,7 +200,7 @@ export function remarkSimplifyJsx() {
               { type: 'strong', children },
               { type: 'text', value: ': ' },
             ],
-          };
+          } as Node;
         } else {
           (parent.children as Node[]).splice(index, 1);
           return [SKIP, index];
@@ -256,7 +256,7 @@ export function remarkSimplifyJsx() {
                 type: 'list',
                 ordered: false,
                 children: iconList,
-              };
+              } as Node;
               return;
             }
           } catch {
@@ -321,7 +321,7 @@ export function remarkSimplifyJsx() {
                 type: 'list',
                 ordered: false,
                 children: listItems,
-              };
+              } as Node;
               return;
             }
           } catch {
@@ -339,7 +339,7 @@ export function remarkSimplifyJsx() {
           (parent.children as Node[])[index] = {
             type: 'text',
             value: `(${text})`,
-          };
+          } as Node;
         } else {
           (parent.children as Node[]).splice(index, 1);
           return [SKIP, index];
@@ -370,7 +370,11 @@ export function remarkSimplifyJsx() {
     );
 
     // Remove MDX expression comments (flow and inline)
-    const cleanExpression = (node: any, index: number, parent: Parent) => {
+    const cleanExpression = (
+      node: any,
+      index: number,
+      parent: Parent
+    ): [typeof SKIP, number] | void => {
       const value = node.value?.trim() || '';
       if (
         value.startsWith('/*') ||
