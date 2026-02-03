@@ -1,11 +1,3 @@
-#!/usr/bin/env npx tsx
-
-/**
- * Converts MDX documentation to clean Markdown for MCP servers.
- *
- * Usage: pnpm build:mcp
- * Output: docs/app/mcp/output/*.md
- */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { getAllMdxFiles, parseMdxToMarkdown } from './parser';
@@ -22,10 +14,10 @@ interface BuildStats {
 }
 
 async function build(): Promise<void> {
-  console.log('🚀 Starting MCP documentation build...\n');
-  console.log(`📁 Content directory: ${CONTENT_DIR}`);
-  console.log(`📁 Output directory: ${OUTPUT_DIR}`);
-  console.log(`📄 Props JSON: ${PROPS_JSON}\n`);
+  console.log('Starting Markdown documentation build...');
+  console.log(`Content: ${CONTENT_DIR}`);
+  console.log(`Output: ${OUTPUT_DIR}`);
+  console.log(`Props: ${PROPS_JSON}\n`);
 
   const stats: BuildStats = { total: 0, success: 0, failed: 0, errors: [] };
 
@@ -33,7 +25,7 @@ async function build(): Promise<void> {
 
   const mdxFiles = await getAllMdxFiles(CONTENT_DIR);
   stats.total = mdxFiles.length;
-  console.log(`📝 Found ${mdxFiles.length} MDX files\n`);
+  console.log(`Processing ${mdxFiles.length} files...\n`);
 
   for (const filePath of mdxFiles) {
     try {
@@ -49,11 +41,10 @@ async function build(): Promise<void> {
       );
 
       await fs.writeFile(outputPath, result.markdown, 'utf-8');
-      console.log(`✅ ${filePath} -> ${path.basename(outputPath)}`);
       stats.success++;
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      console.error(`❌ ${filePath}: ${msg}`);
+      console.error(`[FAIL] ${filePath}: ${msg}`);
       stats.failed++;
       stats.errors.push(`${filePath}: ${msg}`);
     }
@@ -61,18 +52,18 @@ async function build(): Promise<void> {
 
   // Summary
   console.log('\n' + '='.repeat(50));
-  console.log('📊 Build Summary');
+  console.log('Build Summary');
   console.log('='.repeat(50));
-  console.log(`Total files:    ${stats.total}`);
-  console.log(`✅ Success:     ${stats.success}`);
-  console.log(`❌ Failed:      ${stats.failed}`);
+  console.log(`Total:   ${stats.total}`);
+  console.log(`Success: ${stats.success}`);
+  console.log(`Failed:  ${stats.failed}`);
 
   if (stats.errors.length > 0) {
-    console.log('\n⚠️ Errors:');
-    stats.errors.forEach(e => console.log(`   - ${e}`));
+    console.log('\nErrors:');
+    stats.errors.forEach(e => console.log(`  ${e}`));
   }
 
-  console.log('\n✨ Build complete!\n');
+  console.log('\nBuild complete.\n');
 
   // Create index
   await createIndex(mdxFiles);
@@ -95,10 +86,9 @@ async function createIndex(files: string[]): Promise<void> {
 
   const indexPath = path.join(OUTPUT_DIR, '_index.json');
   await fs.writeFile(indexPath, JSON.stringify(index, null, 2), 'utf-8');
-  console.log(`📇 Created index: ${indexPath}`);
 }
 
 build().catch(err => {
-  console.error('💥 Build failed:', err);
+  console.error('Build failed:', err);
   process.exit(1);
 });
