@@ -106,7 +106,7 @@ export function remarkResolveAppearanceTable(
               [0, 1]
             ),
           ],
-        };
+        } as Node;
 
         (parent.children as Node[])[index] = table;
       }
@@ -130,5 +130,5 @@ function createTableRow(
         },
       ],
     })),
-  };
+  } as Parent;
 }

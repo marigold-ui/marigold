@@ -21,8 +21,44 @@ const PADDING_SPACE = paddingSpace;
 const ALIGNMENT_X = Object.keys(alignment.horizontal.alignmentX);
 const ALIGNMENT_Y = Object.keys(alignment.vertical.alignmentY);
 
-async function extractThemeTokens(): Promise<{
+/**
+ * Extract all design tokens from Token.tsx (source of truth for UI)
+ */
+async function extractTokensFromUI(): Promise<{
   borderRadius: Record<string, string>;
+  breakpoints: Record<string, string>;
+}> {
+  const tokenTsxPath = path.resolve(__dirname, '../../../ui/Token.tsx');
+  const tokenContent = await fs.readFile(tokenTsxPath, 'utf-8');
+
+  const result = {
+    borderRadius: {} as Record<string, string>,
+    breakpoints: {} as Record<string, string>,
+  };
+
+  // Extract BorderRadius from <code>rounded-* Xpx</code>
+  const radiusMatch = tokenContent.match(
+    /export const BorderRadius = \(\) => \([^]*?<\/Card>\s*\)/
+  );
+  if (radiusMatch) {
+    const codeRegex = /<code[^>]*>\s*rounded-([a-z0-9]+)\s*(\d+px)\s*<\/code>/g;
+    let match;
+    while ((match = codeRegex.exec(radiusMatch[0])) !== null) {
+      result.borderRadius[`rounded-${match[1]}`] = match[2];
+    }
+  }
+
+  // Extract Breakpoints from CSS variables in Breakpoints component
+  const breakpointKeys = ['sm', 'md', 'lg', 'xl', '2xl'];
+  for (const key of breakpointKeys) {
+    // Try to find in theme CSS as fallback
+    result.breakpoints[key] = `var(--breakpoint-${key})`;
+  }
+
+  return result;
+}
+
+async function extractColorTokens(): Promise<{
   baseColors: string[];
   colorScales: string[];
   baseSemantic: string[];
@@ -92,19 +128,12 @@ async function extractThemeTokens(): Promise<{
     }
   }
 
-  const borderRadius: Record<string, string> = {};
-  const radiusRegex = /--radius-([a-z0-9-]+):\s*([^;]+);/g;
-  while ((match = radiusRegex.exec(content)) !== null) {
-    borderRadius[`rounded-${match[1]}`] = match[2].trim();
-  }
-
   const scales = new Set<number>();
   for (const scaleSet of colorScaleTokens.values()) {
     scaleSet.forEach(s => scales.add(s));
   }
 
   return {
-    borderRadius,
     baseColors: Array.from(baseColors).sort(),
     colorScales: Array.from(scales)
       .sort((a, b) => a - b)
@@ -115,7 +144,10 @@ async function extractThemeTokens(): Promise<{
   };
 }
 
-let cachedTokens: Awaited<ReturnType<typeof extractThemeTokens>> | null = null;
+let cachedTokens:
+  | (Awaited<ReturnType<typeof extractTokensFromUI>> &
+      Awaited<ReturnType<typeof extractColorTokens>>)
+  | null = null;
 
 function createTable(headers: string[], rows: string[][]): Node {
   return {
@@ -137,7 +169,7 @@ function createTable(headers: string[], rows: string[][]): Node {
         })),
       })),
     ],
-  };
+  } as Node;
 }
 
 function createHeading(level: number, text: string): Node {
@@ -145,7 +177,7 @@ function createHeading(level: number, text: string): Node {
     type: 'heading',
     depth: level,
     children: [{ type: 'text', value: text }],
-  };
+  } as Node;
 }
 
 function generateFontSizes(): Node {
@@ -156,7 +188,7 @@ function generateFontSizes(): Node {
 function generateFontWeights(): Node {
   const rows = Object.entries(FONT_WEIGHTS).map(([name, value]) => [
     name,
-    value,
+    String(value),
   ]);
   return createTable(['Name', 'Value'], rows);
 }
@@ -164,7 +196,7 @@ function generateFontWeights(): Node {
 function generateFontStyles(): Node {
   const rows = Object.entries(FONT_STYLES).map(([name, value]) => [
     name,
-    value,
+    String(value),
   ]);
   return createTable(['Name', 'Value'], rows);
 }
@@ -172,14 +204,12 @@ function generateFontStyles(): Node {
 function generateTextAligns(): Node {
   const rows = Object.entries(TEXT_ALIGNS).map(([name, value]) => [
     name,
-    value,
+    String(value),
   ]);
   return createTable(['Name', 'Value'], rows);
 }
 
-function generateHeadlines(
-  _tokens: Awaited<ReturnType<typeof extractThemeTokens>>
-): Node {
+function generateHeadlines(): Node {
   // Extract headline styles from rui theme component
   const headlineComponent = ruiTheme.components.Headline;
 
@@ -214,9 +244,8 @@ function generateSpacing(): Node {
   return createTable(['Name', 'Value'], rows);
 }
 
-function generateBorderRadius(
-  tokens: Awaited<ReturnType<typeof extractThemeTokens>>
-): Node {
+function generateBorderRadius(tokens: typeof cachedTokens): Node {
+  if (!tokens) throw new Error('Tokens not loaded');
   const rows = Object.entries(tokens.borderRadius).map(([name, value]) => [
     name,
     value,
@@ -234,9 +263,8 @@ function generateAlignmentsY(): Node {
   return createTable(['Value'], rows);
 }
 
-function generateColorTokenTable(
-  tokens: Awaited<ReturnType<typeof extractThemeTokens>>
-): Node[] {
+function generateColorTokenTable(tokens: typeof cachedTokens): Node[] {
+  if (!tokens) throw new Error('Tokens not loaded');
   const nodes: Node[] = [];
 
   // Base color palettes (dynamically extracted)
@@ -282,15 +310,13 @@ function generateColorTokenTable(
 // Component Map
 // ============================================================================
 
-function getComponentGenerators(
-  tokens: Awaited<ReturnType<typeof extractThemeTokens>>
-) {
+function getComponentGenerators(tokens: typeof cachedTokens) {
   return {
     FontSizes: generateFontSizes,
     FontWeights: generateFontWeights,
     FontStyle: generateFontStyles,
     TextAlign: generateTextAligns,
-    Headlines: () => generateHeadlines(tokens),
+    Headlines: generateHeadlines,
     Spacing: generateSpacing,
     BorderRadius: () => generateBorderRadius(tokens),
     AlignmentsX: generateAlignmentsX,
@@ -305,13 +331,18 @@ function getComponentGenerators(
 
 /**
  * Resolves design token components into static Markdown tables.
- * Dynamically extracts token data from theme CSS.
+ * Dynamically extracts all token data from:
+ * - /docs/ui/Token.tsx (source of truth for rendered UI values)
+ * - @marigold/system (typography, spacing, alignment)
+ * - theme.css (colors, semantic tokens)
  */
 export function remarkResolveDesignTokens() {
   return async (tree: Node) => {
-    // Extract tokens once per build
+    // Extract tokens once per build from all sources
     if (!cachedTokens) {
-      cachedTokens = await extractThemeTokens();
+      const uiTokens = await extractTokensFromUI();
+      const colorTokens = await extractColorTokens();
+      cachedTokens = { ...uiTokens, ...colorTokens };
     }
 
     const generators = getComponentGenerators(cachedTokens);
@@ -344,17 +375,23 @@ export function remarkResolveDesignTokens() {
           // Recursively find Tabs.Item elements (may be nested in paragraphs)
           const findTabItems = (nodes: Node[]) => {
             for (const node of nodes) {
-              const el = node as MdxJsxElement;
-              if (el.name === 'Tabs.List') {
-                findTabItems(el.children || []);
-              } else if (el.name === 'Tabs.Item') {
-                const id = getJsxAttr(el, 'id') || '';
-                const label =
-                  el.children?.find((c: any) => c.type === 'text')?.value || id;
-                tabItems.push({ id, label: String(label).trim() });
-              } else if (el.type === 'paragraph' && el.children) {
-                // Tabs.Item can be inside a paragraph wrapper
-                findTabItems(el.children as Node[]);
+              if (node.type === 'paragraph') {
+                // Paragraphs can contain Tabs.Item elements
+                const children =
+                  'children' in node ? (node.children as Node[]) : [];
+                findTabItems(children);
+              } else {
+                const el = node as MdxJsxElement;
+                if (el.name === 'Tabs.List') {
+                  findTabItems(el.children || []);
+                } else if (el.name === 'Tabs.Item') {
+                  const id = getJsxAttr(el, 'id') || '';
+                  const textNode = el.children?.find(
+                    (c: any) => c.type === 'text'
+                  ) as any;
+                  const label = textNode?.value || id;
+                  tabItems.push({ id, label: String(label).trim() });
+                }
               }
             }
           };
@@ -377,7 +414,23 @@ export function remarkResolveDesignTokens() {
           for (const { id, label } of tabItems) {
             extractedNodes.push(createHeading(4, label));
             const panelContent = tabPanels.get(id) || [];
-            extractedNodes.push(...panelContent);
+
+            // Process any generator components inside panel content
+            for (const panelNode of panelContent) {
+              const el = panelNode as MdxJsxElement;
+              if (el.name && generators[el.name as keyof typeof generators]) {
+                const generator =
+                  generators[el.name as keyof typeof generators];
+                const result = generator();
+                if (Array.isArray(result)) {
+                  extractedNodes.push(...result);
+                } else {
+                  extractedNodes.push(result);
+                }
+              } else {
+                extractedNodes.push(panelNode);
+              }
+            }
           }
 
           if (extractedNodes.length > 0) {

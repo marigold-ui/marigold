@@ -39,14 +39,14 @@ export function remarkResolveComponentDemo(
             lang: 'tsx',
             meta: `title="${demoName}"`,
             value: source.trim(),
-          };
+          } as Node;
         } catch {
           (parent.children as Node[])[index] = {
             type: 'paragraph',
             children: [
               { type: 'text', value: `[Demo not found: ${demoFile}]` },
             ],
-          };
+          } as Node;
         }
       }
     );
