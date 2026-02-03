@@ -160,14 +160,14 @@ Output a structured review report in this format:
 After displaying the review report, ask the user if they want to post the review as a comment on the PR.
 
 Use `AskUserQuestion` with options:
-- **Post as comment** - Post the full review as a PR comment
 - **Post issues only** - Post only the "Issues Found" section
+- **Post as comment** - Post the full review as a PR comment
 - **Skip** - Don't post anything to GitHub
 
 If the user chooses to post, use:
 
 ```bash
-gh pr comment <number> --body "<review content>"
+gh pr review <number> --comment --body "<review content>"
 ```
 
 For the comment, format it nicely for GitHub with a header indicating it's an automated review:
