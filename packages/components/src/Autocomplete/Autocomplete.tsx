@@ -42,6 +42,11 @@ interface AutocompleteInputProps {
   ref?: Ref<HTMLInputElement> | undefined;
 
   loading?: boolean;
+
+  /**
+   * Focuses the input per default
+   */
+  autoFocus?: boolean;
 }
 
 const AutocompleteInput = ({
@@ -49,6 +54,7 @@ const AutocompleteInput = ({
   onSubmit,
   onClear,
   ref,
+  autoFocus,
 }: AutocompleteInputProps) => {
   const state = useContext(ComboBoxStateContext);
   // needed to get the triggerwidth on the right button
@@ -58,6 +64,7 @@ const AutocompleteInput = ({
     <SearchInput
       ref={ref}
       loading={loading}
+      autoFocus={autoFocus}
       className={{
         action: cn(
           state?.inputValue === '' ? 'invisible' : 'visible',
