@@ -1,0 +1,79 @@
+# MarigoldProvider
+
+_Container for apps using Marigold._
+
+The `<MarigoldProvider>` component serves as the wrapper for any application that integrates with Marigold. It is responsible for managing and distributing critical application-level settings, including providing theming to all child components.
+
+By wrapping an app in `<MarigoldProvider>`, developers can ensure that a consistent theme and other globally relevant configurations are propagated throughout the app's component tree.
+
+## Appearance
+
+The `<MarigoldProvider>` component does not have its own visual appearance. However, it hosts the root styles of a theme, ensuring that global styles and theming are applied across the entire app.
+
+## Usage
+
+### Setup
+
+It is recommended to place `<MarigoldProvider>` in its own file, alongside other providers you may use, and wrap your root component with it. This approach keeps your project structure organized and ensures that global settings like theming are applied consistently across your app.
+
+```tsx
+import { PropsWithChildren } from 'react';
+import { MarigoldProvider } from '@marigold/components';
+import theme from '@marigold/theme-rui';
+
+export const App = ({ children }: PropsWithChildren) => (
+  <MarigoldProvider theme={theme}>{children}</MarigoldProvider>
+);
+```
+
+### Overriding root styles
+
+The `<MarigoldProvider>` supports overriding root styles by passing custom class names to it. This feature is useful when you need to adjust or customize the root styles, depending on the context in which your app is used.
+
+```tsx title="provider-root-styles"
+import { Card, Inset, MarigoldProvider } from '@marigold/components';
+import theme from '@marigold/theme-rui';
+
+export default () => (
+  <MarigoldProvider theme={theme} className="bg-surface-sunken rounded-lg">
+    <Inset space={6}>
+      <Card p={4}>
+        This card will always be on a sunken surface with rounded corners.
+      </Card>
+    </Inset>
+  </MarigoldProvider>
+);
+```
+
+### Nesting Providers
+
+The `<MarigoldProvider>` supports nesting themes, allowing you to apply a different theme within a nested provider. This enables sections of your app to have distinct themes, providing flexibility in styling different parts of the application.
+
+Note that in these scenarios, it often makes sense to adjust the root styles using the aforementioned `className` prop.
+
+```tsx
+import { Card, MarigoldProvider, Stack } from '@marigold/components';
+import ruiTheme from '@marigold/theme-rui';
+import customTheme from './custom-theme';
+
+export default () => (
+  <MarigoldProvider theme={rui}>
+    <Card p={4}>
+      <Stack space={4}>
+        This area is still using the <strong>rui theme</strong>.
+        <MarigoldProvider theme={ruiTheme} className="bg-transparent">
+          This area is still using the <strong>rui theme</strong>.
+        </MarigoldProvider>
+      </Stack>
+    </Card>
+  </MarigoldProvider>
+);
+```
+
+## Props
+
+| Prop                    | Type        | Default | Description                                                          |
+| :---------------------- | :---------- | :------ | :------------------------------------------------------------------- |
+| **children (required)** | `ReactNode` | -       | The children of the component.                                       |
+| className               | `string`    | -       | Additional class names to apply to the root element of the provider. |
+| **theme (required)**    | `Theme`     | -       | The theme that should be used within the provider context.           |

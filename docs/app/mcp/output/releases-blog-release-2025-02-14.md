@@ -1,0 +1,100 @@
+# Marigold v11.0.0
+
+**Marigold 11 is Here—Just in Time for Valentine's Day!** 💖 Happy Friday and Happy Valentine's Day! Whether you're celebrating with chocolates, flowers, or just a quiet night of coding, we've got something special for you—Marigold 11 is officially here! This release is packed with improvements, thoughtful refinements, and a few features we think you'll love. So, grab a heart-shaped cookie (or two), and let's dive into what's new! 🚀
+
+## Breaking Changes
+
+### TailwindCSS 4
+
+Marigold 11 upgrades to Tailwind CSS 4, bringing support for CSS color-mix and native container queries. This allows for more flexible, modern styling with less custom code. The upgrade ensures Marigold can leverage the latest web standards, making styling more powerful and efficient.
+
+We've updated our [installation guide](/getting-started/installation?theme=core#using-tailwind-css) to help you transition smoothly, but you can also refer to the [official Tailwind CSS migration guide](https://tailwindcss.com/docs/upgrade-guide) for more details. The Reservix system is already updated, so everything should work seamlessly. If you run into any issues or have questions, don't hesitate to reach out—we're happy to help!
+
+### Accordion
+
+The `<Accordion>` component has been rewritten with improved accessibility while keeping all the features you love. It now supports the `hidden="until-found"` API, currently available in Chrome, allowing users to search collapsed content with Ctrl + F. This makes finding information inside accordions smoother and more intuitive.
+
+#### What you have to do:
+
+To align the API with other components, `<Accordion>` now has dedicated compound components: `<Accordion.Header>` for the header and `<Accordion.Content>` for the content.
+
+You also no longer need to add `key` props to `<Accordion.Item>`. It now follows the same API as components like `<Select>`, using `id` instead.
+
+**Before v11:**
+
+```jsx
+<Accordion defaultExpandedKeys={['1']}>
+  <Accordion.Item key="1" title="Personal Settings">
+    <Text>Here is some useful text with some settings to choose</Text>
+  </Accordion.Item>
+  <Accordion.Item key="2" title="Billing Adress">
+    <Text>Some more informations</Text>
+  </Accordion.Item>
+</Accordion>
+```
+
+**With v11:**
+
+```jsx
+<Accordion defaultExpandedKeys={['1']}>
+  <Accordion.Item id="1">
+    <Accordion.Header>Personal Settings</Accordion.Header>
+    <Accordion.Content>
+      Here is some useful text with some settings to choose
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item id="2">
+    <Accordion.Header>Billing Adress</Accordion.Header>
+    <Accordion.Content>Some more informations</Accordion.Content>
+  </Accordion.Item>
+</Accordion>
+```
+
+### Container and Breakout
+
+We've overhauled `<Container>` and `<Breakout>` to make them more practical for real-world use. `<Container>` now supports the `space` style prop and has a cleaner API with unnecessary props removed. `<Breakout>` is now simpler and more composable with other layout components. Plus, `<Text>` and `<Headline>` now automatically adhere to the content length of `<Container>`, ensuring better typography consistency.
+
+#### What you have to do:
+
+`<Breakout>` now works flawlessly with all our layout components, making it easier to create flexible and consistent designs. Whether you're combining it with `<Stack>`, `<Inline>`, or other layout elements, it seamlessly integrates without extra adjustments.
+
+```jsx
+<Container align="center" alignItems="center" space={4}>
+  <Headline level="3">Headline</Headline>
+  <Breakout>
+    <Inline space={4} alignY="center" alignX="center">
+      <Aspect maxWidth="200px">
+        <Image src="1.webp" alt="" />
+      </Aspect>
+      <Aspect maxWidth="200px">
+        <Image src="2.webp" alt="" />
+      </Aspect>
+      <Aspect maxWidth="200px">
+        <Image src="3.webp" alt="" />
+      </Aspect>
+    </Inline>
+  </Breakout>
+  <Text>Copy Text.</Text>
+</Container>
+```
+
+If you have used the alignment props of `<Breakout>`, remove them and use one of the layout components.
+
+### XLoader
+
+The modes of `<XLoader>` are now fully aligned with our [loading state pattern](/patterns/loading-states), ensuring consistency across the design system. We've also updated the documentation with clearer explanations and new examples to make implementation even easier.
+
+#### What you have to do:
+
+Rename the `mode` prop to from `"fullsize"` to `"fullscreen"` and `"inline"` to `"section"`. That's all 🙃
+
+## Bug fixes
+
+- We fixed a bug in the `<Checkbox>` component where the checkmark was not displayed correctly in Safari. It now renders as expected across all browsers.
+- In the B2B theme, the incorrect token was used for the underlay (that thing behind a `<Dialog>`). It has now been updated to use the correct one.
+- We fixed an issue where inputs didn't have the correct height. They now match the expected sizing for better consistency and usability with other components like `<Button>`.
+- The `<Pagination>` component now correctly selects the first page button when changing the page size. The "With Table" example in storybook now shows the correct range of visible results in the results indicator.
+
+---
+
+Thanks for reading, and we hope you enjoy the new features in Marigold 11.0! Be sure to check out the updated documentation for more details, and as always, we're here if you need help.
