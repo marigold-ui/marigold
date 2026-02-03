@@ -89,7 +89,10 @@ export function remarkResolvePropsTable(options: ResolvePropsTableOptions) {
           ? `\n${createPropsTable(props)}`
           : `\n*Props for "${componentName}" not found.*`;
 
-        (parent.children as Node[])[index] = { type: 'html', value: content };
+        (parent.children as Node[])[index] = {
+          type: 'html',
+          value: content,
+        } as Node;
       }
     );
   };
