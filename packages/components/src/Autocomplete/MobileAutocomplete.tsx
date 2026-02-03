@@ -24,7 +24,7 @@ interface MobileAutocompleteProps {
   placeholder?: string;
   label?: ReactNode;
   emptyState?: ReactNode;
-  children?: ReactNode | ((item: any) => ReactNode);
+  children?: ReactNode | ((item: object) => ReactNode);
   input: ReactNode;
 }
 

@@ -8,7 +8,7 @@ export interface TrayTriggerProps extends Omit<
   'isOpen'
 > {
   /**
-   * Whether the overlay is open by default (controlled).
+   * Whether the overlay is open (controlled).
    * @default false
    */
   open?: boolean;

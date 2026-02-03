@@ -25,7 +25,14 @@ export const TrayContent = ({ children, className }: TrayContentProps) => {
 
   return (
     <FocusScope autoFocus restoreFocus>
-      <div className={cn('[grid-area:content]', classNames.content, className)}>
+      <div
+        ref={node => {
+          if (node && !node.style.minHeight) {
+            node.style.minHeight = `${node.offsetHeight}px`;
+          }
+        }}
+        className={cn('[grid-area:content]', classNames.content, className)}
+      >
         {children}
       </div>
     </FocusScope>

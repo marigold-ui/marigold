@@ -24,7 +24,7 @@ interface MobileComboBoxProps {
   placeholder?: string;
   label?: ReactNode;
   emptyState?: ReactNode;
-  children?: ReactNode | ((item: any) => ReactNode);
+  children?: ReactNode | ((item: object) => ReactNode);
 }
 
 // Trigger Display (for Mobile mode)
