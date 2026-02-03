@@ -17,12 +17,22 @@ export default () => {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     const formData = new FormData(e.currentTarget);
-    const value = formData.get(field);
-    const processedValue = field === 'rating' ? Number(value) : value;
-    console.log(formData.get(field));
+
+    let next: any;
+    switch (field) {
+      case 'amenities':
+        next = formData.getAll(field).map(Number);
+        break;
+      case 'rating':
+        next = Number(formData.get(field));
+        break;
+      default:
+        next = formData.get(field);
+    }
+
     setData(prev =>
       prev.map(venue =>
-        venue.id === venueId ? { ...venue, [field]: processedValue } : venue
+        venue.id === venueId ? { ...venue, [field]: next } : venue
       )
     );
   };
