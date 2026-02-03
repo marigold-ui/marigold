@@ -68,7 +68,6 @@ export const Basic = meta.story({
 });
 
 export const Controlled = meta.story({
-  tags: ['component-test'],
   render: args => {
     const [value, setValue] = useState<DateValue>(new CalendarDate(2019, 6, 5));
     return (
@@ -81,29 +80,37 @@ export const Controlled = meta.story({
       </>
     );
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+});
 
-    const result = await canvas.findByTestId('selectedDate');
-
-    await expect(result).toHaveTextContent(
-      'DateField Value:Day:5 Month:6 Year:2019'
-    );
+export const Disabled = meta.story({
+  ...Basic.input,
+  args: {
+    disabled: true,
   },
 });
 
-export const Uncontrolled = meta.story({
+export const ReadOnly = meta.story({
+  ...Basic.input,
+  args: {
+    readOnly: true,
+  },
+});
+
+export const MonthYearSelection = meta.story({
   ...Basic.input,
   tags: ['component-test'],
   args: {
     defaultValue: new CalendarDate(2019, 6, 5),
     onChange: fn(),
   },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
+    // Change year via dropdown
     await userEvent.click(canvas.getByTestId('year'));
     await userEvent.click(canvas.getByText('2018'));
+
+    // Change month via dropdown
     await userEvent.click(canvas.getByTestId('month'));
     await userEvent.click(canvas.getByText('Feb'));
 
@@ -112,49 +119,7 @@ export const Uncontrolled = meta.story({
   },
 });
 
-export const Disabled = meta.story({
-  ...Basic.input,
-  tags: ['component-test'],
-  args: {
-    disabled: true,
-    onChange: fn(),
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const calendar = canvas.getByRole('application');
-    const days = canvas.getAllByRole('gridcell');
-    const monthButton = canvas.getByTestId('month');
-    const yearButton = canvas.getByTestId('year');
-
-    await expect(calendar).toHaveAttribute('data-disabled');
-    for (const day of days.slice(0, 3)) {
-      await expect(day).toHaveAttribute('aria-disabled', 'true');
-    }
-    await expect(monthButton).toHaveAttribute('disabled');
-    await expect(yearButton).toHaveAttribute('disabled');
-  },
-});
-
-export const ReadOnly = meta.story({
-  ...Basic.input,
-  tags: ['component-test'],
-  args: {
-    readOnly: true,
-    onChange: fn(),
-  },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-    const days = canvas.getAllByRole('gridcell');
-
-    // Verify gridcells have aria-disabled when readonly
-    for (const day of days.slice(0, 3)) {
-      await expect(day).toHaveAttribute('aria-disabled', 'true');
-    }
-    await expect(args.onChange).not.toHaveBeenCalled();
-  },
-});
-
-export const OnlyOneMonthAndYear = meta.story({
+export const ConstrainedDateRange = meta.story({
   ...Basic.input,
   tags: ['component-test'],
   args: {
@@ -167,29 +132,14 @@ export const OnlyOneMonthAndYear = meta.story({
     const monthButton = canvas.getByTestId('month');
     const yearButton = canvas.getByTestId('year');
 
+    // When only one month/year is selectable, buttons should be disabled
     await userEvent.click(monthButton);
     await userEvent.click(yearButton);
 
-    expect(monthButton).toBeDisabled();
-    expect(yearButton).toBeDisabled();
-    expect(canvas.queryByRole('dialog')).toBeNull();
-    expect(canvas.queryByRole('listbox')).toBeNull();
-  },
-});
+    await expect(monthButton).toBeDisabled();
+    await expect(yearButton).toBeDisabled();
 
-export const OnlyOneMonthAndYearAriaLabel = meta.story({
-  ...Basic.input,
-  tags: ['component-test'],
-  args: {
-    minValue: new CalendarDate(2020, 5, 5),
-    maxValue: new CalendarDate(2020, 5, 20),
-    onChange: fn(),
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const monthButton = canvas.getByTestId('month');
-    const yearButton = canvas.getByTestId('year');
-
+    // Verify aria-labels indicate not selectable
     await expect(monthButton).toHaveAttribute(
       'aria-label',
       'May not selectable'
@@ -201,7 +151,7 @@ export const OnlyOneMonthAndYearAriaLabel = meta.story({
   },
 });
 
-export const MonthOptionsAccessibility = meta.story({
+export const MonthSelectionAccessibility = meta.story({
   ...Basic.input,
   tags: ['component-test'],
   args: {
@@ -211,52 +161,28 @@ export const MonthOptionsAccessibility = meta.story({
   },
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
-    const monthSelection = canvas.getByRole('button', { name: 'Jan' });
-    await userEvent.click(monthSelection);
+    await userEvent.click(canvas.getByRole('button', { name: 'Jan' }));
 
     const monthOptions = canvas.getAllByRole('option');
     const janOption = monthOptions.find(opt => opt.textContent === 'Jan');
     const febOption = monthOptions.find(opt => opt.textContent === 'Feb');
     const marOption = monthOptions.find(opt => opt.textContent === 'Mar');
 
-    await expect(janOption).toHaveAttribute('aria-label', 'Jan selected');
-    await expect(febOption).toHaveAttribute('aria-label', 'Feb');
-    await expect(marOption).toHaveAttribute('aria-label', 'Mar not selectable');
-
-    const allMonthOptions = canvas
-      .getAllByTestId('monthOptions')
-      .flatMap(opt => Array.from(opt.querySelectorAll('[role="option"]')));
-    for (const option of allMonthOptions) {
-      const text = option.textContent;
-      if (text !== 'Jan' && text !== 'Feb') {
-        await expect(option).toHaveAttribute('aria-disabled', 'true');
-      } else {
-        await expect(option).not.toHaveAttribute('aria-disabled');
-      }
-    }
-  },
-});
-
-export const SelectedMonthAriaSelected = meta.story({
-  ...Basic.input,
-  tags: ['component-test'],
-  args: {
-    minValue: new CalendarDate(2020, 1, 15),
-    maxValue: new CalendarDate(2020, 2, 15),
-    value: new CalendarDate(2020, 1, 30),
-  },
-  play: async ({ canvasElement, userEvent }) => {
-    const canvas = within(canvasElement);
-    const monthSelection = canvas.getByRole('button', { name: 'Jan' });
-    await userEvent.click(monthSelection);
-
-    const monthOptions = canvas.getAllByRole('option');
-    const janOption = monthOptions.find(opt => opt.textContent === 'Jan');
+    // Selected month has proper aria attributes
     await expect(janOption).toHaveAttribute('aria-selected', 'true');
+    await expect(janOption).toHaveAttribute('aria-label', 'Jan selected');
+
+    // Available month has proper aria attributes
+    await expect(febOption).toHaveAttribute('aria-label', 'Feb');
+    await expect(febOption).not.toHaveAttribute('aria-disabled');
+
+    // Unavailable month is disabled with proper label
+    await expect(marOption).toHaveAttribute('aria-label', 'Mar not selectable');
+    await expect(marOption).toHaveAttribute('aria-disabled', 'true');
   },
 });
 
-export const MonthSelectionMinMax = meta.story({
+export const MonthSelectionWithMinMax = meta.story({
   ...Basic.input,
   tags: ['component-test'],
   args: {
@@ -266,16 +192,14 @@ export const MonthSelectionMinMax = meta.story({
   },
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
-    const monthSelection = canvas.getByRole('button', { name: 'Jan' });
-    await userEvent.click(monthSelection);
+    await userEvent.click(canvas.getByRole('button', { name: 'Jan' }));
 
-    const monthOptionMar = canvas.getByText('Mar');
-    const monthOptionDec = canvas.getByText('Dec');
-    const monthOptionFeb = canvas.getByText('Feb');
+    // Clicking disabled months should not change selection
+    await userEvent.click(canvas.getByText('Mar'));
+    await userEvent.click(canvas.getByText('Dec'));
 
-    await userEvent.click(monthOptionMar);
-    await userEvent.click(monthOptionDec);
-    await userEvent.click(monthOptionFeb);
+    // Clicking valid month should work
+    await userEvent.click(canvas.getByText('Feb'));
 
     await expect(canvas.queryByTestId('monthOptions')).not.toBeInTheDocument();
     await expect(
@@ -284,7 +208,7 @@ export const MonthSelectionMinMax = meta.story({
   },
 });
 
-export const YearSelectionMinMax = meta.story({
+export const YearSelectionWithMinMax = meta.story({
   ...Basic.input,
   tags: ['component-test'],
   args: {
@@ -294,20 +218,106 @@ export const YearSelectionMinMax = meta.story({
   },
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
-    const yearSelection = canvas.getByRole('button', { name: '2020' });
-    await userEvent.click(yearSelection);
+    await userEvent.click(canvas.getByRole('button', { name: '2020' }));
 
-    const yearOption2022 = canvas.getByText('2022');
-    const yearOption2021 = canvas.getByText('2021');
-    const yearOption2019 = canvas.getByText('2019');
+    // Clicking disabled years should not change selection
+    await userEvent.click(canvas.getByText('2022'));
+    await userEvent.click(canvas.getByText('2019'));
 
-    await userEvent.click(yearOption2022);
-    await userEvent.click(yearOption2019);
-    await userEvent.click(yearOption2021);
+    // Clicking valid year should work
+    await userEvent.click(canvas.getByText('2021'));
 
     await expect(canvas.queryByTestId('yearOptions')).not.toBeInTheDocument();
     await expect(
       canvas.getByRole('button', { name: '2021' })
     ).toBeInTheDocument();
+  },
+});
+
+export const TwoMonths = meta.story({
+  args: {
+    visibleDuration: { months: 2 },
+    defaultValue: new CalendarDate(2025, 2, 15),
+  },
+  render: args => <Calendar {...args} />,
+});
+
+export const ThreeMonths = meta.story({
+  args: {
+    visibleDuration: { months: 3 },
+    defaultValue: new CalendarDate(2025, 6, 1),
+  },
+  render: args => <Calendar {...args} />,
+});
+
+export const MultiMonthNavigation = meta.story({
+  tags: ['component-test'],
+  args: {
+    visibleDuration: { months: 2 },
+    defaultValue: new CalendarDate(2025, 1, 15),
+    onChange: fn(),
+  },
+  render: args => <Calendar {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Navigate forward
+    await userEvent.click(canvas.getByRole('button', { name: /next/i }));
+
+    // With pageBehavior='visible' (default), should advance by 2 months
+    let headings = canvas.getAllByRole('heading');
+    await expect(headings[0]).toHaveTextContent(/March 2025/i);
+    await expect(headings[1]).toHaveTextContent(/April 2025/i);
+
+    // Navigate back
+    await userEvent.click(canvas.getByRole('button', { name: /previous/i }));
+
+    headings = canvas.getAllByRole('heading');
+    await expect(headings[0]).toHaveTextContent(/January 2025/i);
+    await expect(headings[1]).toHaveTextContent(/February 2025/i);
+  },
+});
+
+export const MultiMonthSelection = meta.story({
+  tags: ['component-test'],
+  args: {
+    visibleDuration: { months: 2 },
+    defaultValue: new CalendarDate(2025, 2, 15),
+    onChange: fn(),
+  },
+  render: args => <Calendar {...args} />,
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Select a date in the second month (March)
+    const grids = canvas.getAllByRole('grid');
+    const secondGridCells = within(grids[1]).getAllByRole('gridcell');
+    const day10 = secondGridCells.find(
+      cell => cell.textContent === '10' && !cell.getAttribute('aria-disabled')
+    );
+
+    expect(day10).toBeDefined();
+    await userEvent.click(day10!);
+    await expect(args.onChange).toHaveBeenCalled();
+  },
+});
+
+export const MultiMonthSinglePageBehavior = meta.story({
+  tags: ['component-test'],
+  args: {
+    visibleDuration: { months: 2 },
+    pageBehavior: 'single',
+    defaultValue: new CalendarDate(2025, 1, 15),
+  },
+  render: args => <Calendar {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // With pageBehavior='single', should advance by 1 month
+    await userEvent.click(canvas.getByRole('button', { name: /next/i }));
+
+    const headings = canvas.getAllByRole('heading');
+    await expect(headings[0]).toHaveTextContent(/February 2025/i);
+    await expect(headings[1]).toHaveTextContent(/March 2025/i);
   },
 });

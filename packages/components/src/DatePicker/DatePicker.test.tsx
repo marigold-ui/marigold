@@ -38,6 +38,8 @@ const theme: Theme = {
     Underlay: cva(''),
     Calendar: {
       calendar: cva(''),
+      calendarContainer: cva(''),
+      calendarMonth: cva(''),
       calendarListboxButton: cva(''),
       calendarCell: cva(''),
       calendarControllers: cva(''),
