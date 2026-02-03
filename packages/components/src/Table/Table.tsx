@@ -20,7 +20,7 @@ type RemovedProps = 'className' | 'style' | 'selectionBehavior';
 
 export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
   variant?: 'grid' | 'default' | 'muted' | (string & {});
-  size?: string;
+  size?: 'compact' | 'default' | 'spacious' | (string & {});
   /**
    * Controls how cell content overflows. Works best when columns have defined width props.
    * @default 'wrap'
