@@ -16,7 +16,7 @@
     "dayjs": "^1.11.13",
     "react-use": "^17.6.0",
     "react-hook-form": "7.68.0",
-    "fumadocs-core": "16.4.7",
+    "fumadocs-core": "^16.5.0",
     "fumadocs-mdx": "14.2.6",
     "fumadocs-ui": "16.4.10",
     "@marigold/components": "workspace:*",

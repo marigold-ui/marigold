@@ -3,7 +3,6 @@
 import { type RegistryKey, registry } from '@/.registry/demos';
 import { getAppearance } from '@/lib/utils';
 import { ruiTheme } from '@/theme';
-import { Card } from 'fumadocs-ui/components/card';
 import type { ComponentType } from 'react';
 import { useState } from 'react';
 import {
@@ -107,7 +106,11 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
         on the active theme.
       </p>
 
-      <Card title="" className="relative p-0">
+      <div
+        className={
+          'border-fd-primary/10 prose-no-margin overflow-hidden rounded-lg border'
+        }
+      >
         <div className="absolute top-3 left-4 flex w-full flex-wrap gap-2">
           <Select
             label="Variant"
@@ -166,7 +169,7 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
             </MarigoldProvider>
           </OverlayContainerProvider>
         </div>
-      </Card>
+      </div>
     </>
   );
 };
