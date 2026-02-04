@@ -114,6 +114,6 @@ export const Table: ThemeComponent<'Table'> = {
   // Editable cell
   editablePopover: cva([
     'ui-surface ui-elevation-overlay',
-    'flex items-start gap-2 px-2 py-1',
+    'flex items-start gap-1 pl-1 pr-1 py-1',
   ]),
 };
