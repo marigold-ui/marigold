@@ -17,7 +17,6 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
     'disabled:pointer-events-none disabled:opacity-30',
     'unavailable:pointer-events-none unavailable:opacity-30 unavailable:line-through',
-    // Hide dates from adjacent months in multi-month view to avoid duplicate selection confusion
     'outside-month:hidden',
   ]),
   calendarControllers: cva([

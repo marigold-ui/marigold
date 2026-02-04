@@ -207,8 +207,6 @@ describe('Calendar - Multi-month', () => {
     const grids = screen.getAllByRole('grid');
     expect(grids).toHaveLength(2);
 
-    // Check that we have month headings (our custom CalendarHeader uses h2 via RAC Heading)
-    // The container also has text content for each month
     const calendar = screen.getByRole('application');
     expect(calendar).toHaveTextContent(/February 2025/i);
     expect(calendar).toHaveTextContent(/March 2025/i);
@@ -220,8 +218,6 @@ describe('Calendar - Multi-month', () => {
     const grids = screen.getAllByRole('grid');
     expect(grids).toHaveLength(3);
 
-    // The defaultValue is June 1, 2025, but with selectionAlignment='center' (default)
-    // and 3 months, it shows May-June-July (centered on the selection)
     const calendar = screen.getByRole('application');
     expect(calendar).toHaveTextContent(/May 2025/i);
     expect(calendar).toHaveTextContent(/June 2025/i);
@@ -248,13 +244,11 @@ describe('Calendar - Multi-month', () => {
     expect(calendar).toHaveTextContent(/January 2025/i);
     expect(calendar).toHaveTextContent(/February 2025/i);
 
-    // Find the next button by its slot attribute
     const buttons = screen.getAllByRole('button');
     const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
     expect(nextButton).toBeDefined();
     await user.click(nextButton!);
 
-    // With pageBehavior='visible' (default), should advance by 2 months
     expect(calendar).toHaveTextContent(/March 2025/i);
     expect(calendar).toHaveTextContent(/April 2025/i);
   });
@@ -268,7 +262,6 @@ describe('Calendar - Multi-month', () => {
     expect(calendar).toHaveTextContent(/March 2025/i);
     expect(calendar).toHaveTextContent(/April 2025/i);
 
-    // Find the previous button by its slot attribute
     const buttons = screen.getAllByRole('button');
     const prevButton = buttons.find(b => b.getAttribute('slot') === 'previous');
     expect(prevButton).toBeDefined();
@@ -288,7 +281,6 @@ describe('Calendar - Multi-month', () => {
     );
 
     const grids = screen.getAllByRole('grid');
-    // Find a date "10" in the second grid (March) - need to click on the button inside the cell
     const secondGrid = grids[1];
     const cells = within(secondGrid).getAllByRole('gridcell');
     const day10Cell = cells.find(
@@ -297,10 +289,8 @@ describe('Calendar - Multi-month', () => {
         cell.getAttribute('aria-disabled') !== 'true'
     );
 
-    // Cell should exist
     expect(day10Cell).toBeDefined();
 
-    // Click on the button inside the cell (the actual clickable element)
     const button =
       day10Cell!.querySelector('span[role="button"], span[tabindex]') ||
       day10Cell!.firstChild;
@@ -308,14 +298,12 @@ describe('Calendar - Multi-month', () => {
 
     await user.click(button as Element);
     expect(onChange).toHaveBeenCalled();
-    // Should be March 10, 2025
     expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2025, 3, 10));
   });
 
   test('does not show month/year dropdowns in multi-month view', () => {
     render(<TwoMonths.Component />);
 
-    // In multi-month view, we use headings instead of dropdown buttons
     expect(screen.queryByTestId('month')).not.toBeInTheDocument();
     expect(screen.queryByTestId('year')).not.toBeInTheDocument();
   });
@@ -333,13 +321,11 @@ describe('Calendar - Multi-month', () => {
     expect(calendar).toHaveTextContent(/January 2025/i);
     expect(calendar).toHaveTextContent(/February 2025/i);
 
-    // Find the next button by its slot attribute
     const buttons = screen.getAllByRole('button');
     const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
     expect(nextButton).toBeDefined();
     await user.click(nextButton!);
 
-    // With pageBehavior='single', should advance by 1 month only
     expect(calendar).toHaveTextContent(/February 2025/i);
     expect(calendar).toHaveTextContent(/March 2025/i);
   });

@@ -123,7 +123,6 @@ const _Calendar = ({
     ),
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
-  // Multi-month view renders a simplified header per month without dropdowns
   if (isMultiMonth) {
     return (
       <CalendarContext.Provider
@@ -160,7 +159,6 @@ const _Calendar = ({
     );
   }
 
-  // Single-month view with dropdowns for month/year selection
   return (
     <CalendarContext.Provider
       value={{

@@ -109,11 +109,9 @@ export const MonthYearSelection = meta.story({
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
-    // Change year via dropdown
     await userEvent.click(canvas.getByTestId('year'));
     await userEvent.click(canvas.getByText('2018'));
 
-    // Change month via dropdown
     await userEvent.click(canvas.getByTestId('month'));
     await userEvent.click(canvas.getByText('Feb'));
 
@@ -135,14 +133,12 @@ export const ConstrainedDateRange = meta.story({
     const monthButton = canvas.getByTestId('month');
     const yearButton = canvas.getByTestId('year');
 
-    // When only one month/year is selectable, buttons should be disabled
     await userEvent.click(monthButton);
     await userEvent.click(yearButton);
 
     await expect(monthButton).toBeDisabled();
     await expect(yearButton).toBeDisabled();
 
-    // Verify aria-labels indicate not selectable
     await expect(monthButton).toHaveAttribute(
       'aria-label',
       'May not selectable'
@@ -171,15 +167,12 @@ export const MonthSelectionAccessibility = meta.story({
     const febOption = monthOptions.find(opt => opt.textContent === 'Feb');
     const marOption = monthOptions.find(opt => opt.textContent === 'Mar');
 
-    // Selected month has proper aria attributes
     await expect(janOption).toHaveAttribute('aria-selected', 'true');
     await expect(janOption).toHaveAttribute('aria-label', 'Jan selected');
 
-    // Available month has proper aria attributes
     await expect(febOption).toHaveAttribute('aria-label', 'Feb');
     await expect(febOption).not.toHaveAttribute('aria-disabled');
 
-    // Unavailable month is disabled with proper label
     await expect(marOption).toHaveAttribute('aria-label', 'Mar not selectable');
     await expect(marOption).toHaveAttribute('aria-disabled', 'true');
   },
@@ -197,11 +190,9 @@ export const MonthSelectionWithMinMax = meta.story({
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('button', { name: 'Jan' }));
 
-    // Clicking disabled months should not change selection
     await userEvent.click(canvas.getByText('Mar'));
     await userEvent.click(canvas.getByText('Dec'));
 
-    // Clicking valid month should work
     await userEvent.click(canvas.getByText('Feb'));
 
     await expect(canvas.queryByTestId('monthOptions')).not.toBeInTheDocument();
@@ -223,11 +214,9 @@ export const YearSelectionWithMinMax = meta.story({
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('button', { name: '2020' }));
 
-    // Clicking disabled years should not change selection
     await userEvent.click(canvas.getByText('2022'));
     await userEvent.click(canvas.getByText('2019'));
 
-    // Clicking valid year should work
     await userEvent.click(canvas.getByText('2021'));
 
     await expect(canvas.queryByTestId('yearOptions')).not.toBeInTheDocument();
@@ -264,15 +253,12 @@ export const MultiMonthNavigation = meta.story({
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
-    // Navigate forward (use getAllByRole to handle react-aria's hidden button)
     const nextButtons = canvas.getAllByRole('button', { name: /next/i });
     await userEvent.click(nextButtons[0]);
 
-    // With pageBehavior='visible' (default), should advance by 2 months
     await expect(canvas.getByText('March 2025')).toBeInTheDocument();
     await expect(canvas.getByText('April 2025')).toBeInTheDocument();
 
-    // Navigate back
     const prevButtons = canvas.getAllByRole('button', { name: /previous/i });
     await userEvent.click(prevButtons[0]);
 
@@ -292,8 +278,6 @@ export const MultiMonthSinglePageBehavior = meta.story({
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
-    // With pageBehavior='single', should advance by 1 month
-    // Use getAllByRole to handle react-aria's hidden button
     const nextButtons = canvas.getAllByRole('button', { name: /next/i });
     await userEvent.click(nextButtons[0]);
 
@@ -364,45 +348,37 @@ export const MultipleSelection = meta.story({
   play: async ({ canvasElement, userEvent }) => {
     const canvas = within(canvasElement);
 
-    // Get both calendar grids (February and March)
     const grids = canvas.getAllByRole('grid');
     const firstGrid = within(grids[0]);
     const secondGrid = within(grids[1]);
 
-    // Select day 10 from the first month (February) using keyboard to avoid
-    // Firefox pointer capture issues
     const day10Feb = firstGrid.getByRole('button', {
       name: /Monday, February 10, 2025/i,
     });
     day10Feb.focus();
     await userEvent.keyboard('{Enter}');
 
-    // Select day 20 from the first month (February)
     const day20Feb = firstGrid.getByRole('button', {
       name: /Thursday, February 20, 2025/i,
     });
     day20Feb.focus();
     await userEvent.keyboard('{Enter}');
 
-    // Select day 5 from the second month (March)
     const day5Mar = secondGrid.getByRole('button', {
       name: /Wednesday, March 5, 2025/i,
     });
     day5Mar.focus();
     await userEvent.keyboard('{Enter}');
 
-    // Verify tags are displayed
     await waitFor(() =>
       expect(canvas.getByText('Feb 10, 2025')).toBeInTheDocument()
     );
     await expect(canvas.getByText('Feb 20, 2025')).toBeInTheDocument();
     await expect(canvas.getByText('Mar 5, 2025')).toBeInTheDocument();
 
-    // Remove one date by clicking on the tag's remove button
     const feb10Tag = canvas.getByText('Feb 10, 2025');
     await userEvent.click(within(feb10Tag).getByRole('button'));
 
-    // Verify the tag was removed
     await waitFor(() =>
       expect(canvas.queryByText('Feb 10, 2025')).not.toBeInTheDocument()
     );
