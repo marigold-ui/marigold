@@ -3,6 +3,7 @@
 export * from '@marigold/components';
 export * from '@marigold/system';
 export * as Icons from '@marigold/icons';
+// AutoTypeTable is server-only, exported separately
 export * from './ColorTokens';
 export * from './ColorTable';
 export * from './Typography';
