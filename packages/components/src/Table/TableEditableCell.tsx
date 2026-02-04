@@ -236,7 +236,11 @@ export const TableEditableCell = ({
         )}
       </div>
       {isSmallScreen ? (
-        <Dialog open={open} onOpenChange={handleOpenChange}>
+        <Dialog
+          aria-label={stringFormatter.format('editCell')}
+          open={open}
+          onOpenChange={handleOpenChange}
+        >
           <Form unstyled action={action} onSubmit={handleSubmit}>
             <Dialog.Content>{renderField()}</Dialog.Content>
             <Dialog.Actions>
