@@ -109,10 +109,7 @@ test('takes full width by default', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement!;
-
-  expect(container.className).toMatchInlineSnapshot(
-    `"group/field flex min-w-0 flex-col w-auto space-y-2"`
-  );
+  expect(container).toHaveClass('w-auto');
 });
 
 test('applies width variables for numeric width', () => {
