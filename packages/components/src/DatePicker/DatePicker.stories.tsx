@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
 import { useState } from 'react';
-import { DateValue } from 'react-aria-components';
+import type { DateValue } from 'react-aria-components';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
 import { Stack } from '../Stack/Stack';
@@ -87,6 +87,30 @@ const meta = preview.meta({
     required: false,
     error: false,
   },
+  decorators: [
+    Story => {
+      // Mock matchMedia for tests
+      if (typeof window !== 'undefined' && !window.matchMedia) {
+        Object.defineProperty(window, 'matchMedia', {
+          writable: true,
+          value: (query: string) => ({
+            matches: query === '(max-width: 600px)',
+            media: query,
+            onchange: null,
+            addListener: () => {},
+            removeListener: () => {},
+            addEventListener: () => {},
+            removeEventListener: () => {},
+          }),
+        });
+      }
+      return (
+        <div id="storybook-root">
+          <Story />
+        </div>
+      );
+    },
+  ],
 });
 
 export const Basic: any = meta.story({
@@ -158,6 +182,31 @@ export const UnavailableDate: any = meta.story({
         dateUnavailable={date => date.toDate('Europe/Berlin').getDate() !== 1}
         {...args}
       />
+    </I18nProvider>
+  ),
+});
+
+export const WithDefaultValue: any = meta.story({
+  render: args => (
+    <I18nProvider locale="en-US">
+      <DatePicker
+        label="Date"
+        defaultValue={new CalendarDate(2019, 2, 3)}
+        {...args}
+      />
+    </I18nProvider>
+  ),
+});
+
+export const WithError: any = meta.story({
+  args: {
+    error: true,
+    errorMessage: 'Whoopsie',
+    description: 'Some helpful text',
+  },
+  render: args => (
+    <I18nProvider locale="de-DE">
+      <DatePicker label="A Label" {...args} />
     </I18nProvider>
   ),
 });

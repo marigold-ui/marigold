@@ -1,14 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { ComboBoxProps } from '@marigold/components';
+import { renderWithOverlay } from '../test.utils';
 import { Basic } from './ComboBox.stories';
-
-const BasicComponent = (props: ComboBoxProps) => (
-  <div id="storybook-root">
-    <Basic.Component {...props} />
-  </div>
-);
 
 const user = userEvent.setup();
 
@@ -25,7 +19,7 @@ const mockMatchMedia = (matches: string[]) =>
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
 test('renders an input', () => {
-  render(<BasicComponent />);
+  renderWithOverlay(<Basic.Component />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -35,7 +29,7 @@ test('renders an input', () => {
 });
 
 test('check classname slots', () => {
-  render(<BasicComponent />);
+  renderWithOverlay(<Basic.Component />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
@@ -54,7 +48,7 @@ test('check classname slots', () => {
 });
 
 test('supports disabled', () => {
-  render(<BasicComponent disabled />);
+  renderWithOverlay(<Basic.Component disabled />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -62,7 +56,7 @@ test('supports disabled', () => {
 });
 
 test('supports required', () => {
-  render(<BasicComponent required />);
+  renderWithOverlay(<Basic.Component required />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -70,7 +64,7 @@ test('supports required', () => {
 });
 
 test('supports readonly', () => {
-  render(<BasicComponent readOnly />);
+  renderWithOverlay(<Basic.Component readOnly />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -78,8 +72,8 @@ test('supports readonly', () => {
 });
 
 test('uses field structure', () => {
-  render(
-    <BasicComponent
+  renderWithOverlay(
+    <Basic.Component
       label="Label"
       description="Some helpful text"
       errorMessage="Whoopsie"
@@ -96,7 +90,7 @@ test('uses field structure', () => {
 });
 
 test('supporst showing a help text', () => {
-  render(<BasicComponent description="This is a description" />);
+  renderWithOverlay(<Basic.Component description="This is a description" />);
 
   const description = screen.getAllByText('This is a description')[0];
 
@@ -104,13 +98,13 @@ test('supporst showing a help text', () => {
 });
 
 test('supporst showing an error', () => {
-  render(<BasicComponent error errorMessage="Error!" />);
+  renderWithOverlay(<Basic.Component error errorMessage="Error!" />);
 
   expect(screen.getByText('Error!')).toBeInTheDocument();
 });
 
 test('supports default value', () => {
-  render(<BasicComponent defaultValue="garlic" />);
+  renderWithOverlay(<Basic.Component defaultValue="garlic" />);
 
   const textField = screen.getAllByLabelText(/Label/i)[0];
 
@@ -118,7 +112,7 @@ test('supports default value', () => {
 });
 
 test('supports autocompletion', async () => {
-  render(<BasicComponent label="Label" />);
+  renderWithOverlay(<Basic.Component label="Label" />);
 
   const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'do');
@@ -130,18 +124,18 @@ test('supports autocompletion', async () => {
 });
 
 test('supports loading state', () => {
-  render(<BasicComponent label="Label" loading />);
+  renderWithOverlay(<Basic.Component label="Label" loading />);
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
 
 test('hides loading state when loading is false', () => {
-  render(<BasicComponent label="Label" loading={false} />);
+  renderWithOverlay(<Basic.Component label="Label" loading={false} />);
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
 
 test('supports specific empty state text', async () => {
-  render(
-    <BasicComponent
+  renderWithOverlay(
+    <Basic.Component
       label="Label"
       allowsEmptyCollection
       emptyState="No vegetables found"

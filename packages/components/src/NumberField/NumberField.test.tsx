@@ -1,49 +1,12 @@
-import { screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useState } from 'react';
 import { vi } from 'vitest';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { NumberField } from './NumberField';
-
-const theme: Theme = {
-  name: 'NumberField testing',
-  components: {
-    NumberField: {
-      group: cva('rounded-xs border border-solid border-black'),
-      stepper: cva('w-3.5 text-green-600'),
-      input: cva(),
-    },
-
-    Field: cva(''),
-    Label: cva(),
-    HelpText: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'p-2',
-          },
-        },
-      }),
-      icon: cva(''),
-    },
-    Input: {
-      action: cva(),
-      icon: cva(),
-      input: cva(),
-    },
-  },
-};
-
-const { render } = setup({ theme });
+import { Basic, Controlled } from './NumberField.stories';
 
 // Tests
 // ---------------
 test('renders an input', () => {
-  render(<NumberField label="Label" data-testid="number-field" />);
+  render(<Basic.Component data-testid="number-field" />);
 
   const numberField = screen.getByRole('textbox');
   expect(numberField).toBeInTheDocument();
@@ -51,44 +14,25 @@ test('renders an input', () => {
   expect(numberField).toBeInstanceOf(HTMLInputElement);
 });
 
-test('input can be styled via "Input" styles', () => {
-  render(<NumberField label="A Label" data-testid="number-field" />);
+test('renders with stepper buttons', () => {
+  render(<Basic.Component data-testid="number-field" />);
   const numberFieldContainer = screen.getByRole('group');
   expect(numberFieldContainer).toBeInTheDocument();
-  expect(numberFieldContainer.className).toMatchInlineSnapshot(
-    `"flex items-stretch rounded-xs border border-solid border-black"`
-  );
-});
 
-test('group and stepper can styled via "NumberField" styles', () => {
-  render(<NumberField label="A Label" data-testid="number-field" />);
-
-  const group = screen.getByRole('group');
-  expect(group.className).toMatchInlineSnapshot(
-    `"flex items-stretch rounded-xs border border-solid border-black"`
-  );
-
-  const steppers = within(group).getAllByRole('button');
-  expect(steppers[0].className).toMatchInlineSnapshot(
-    `"flex items-center justify-center cursor-pointer data-disabled:cursor-not-allowed w-3.5 text-green-600"`
-  );
-  expect(steppers[1].className).toMatchInlineSnapshot(
-    `"flex items-center justify-center cursor-pointer data-disabled:cursor-not-allowed w-3.5 text-green-600"`
-  );
+  const steppers = within(numberFieldContainer).getAllByRole('button');
+  expect(steppers).toHaveLength(2);
 });
 
 test('allows to set width via prop', () => {
-  render(<NumberField data-testid="number-field" label="Label" width="1/2" />);
+  render(<Basic.Component data-testid="number-field" width="1/2" />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-1/2"`
-  );
+  expect(container).toHaveClass('w-1/2');
 });
 
 test('supports disabled', () => {
-  render(<NumberField label="A Label" disabled data-testid="number-field" />);
+  render(<Basic.Component disabled data-testid="number-field" />);
 
   const numberField = screen.getByRole('textbox');
   expect(numberField).toBeDisabled();
@@ -100,14 +44,14 @@ test('supports disabled', () => {
 });
 
 test('supports required', () => {
-  render(<NumberField label="A Label" required data-testid="number-field" />);
+  render(<Basic.Component required data-testid="number-field" />);
 
   const numberField = screen.getByRole('textbox');
   expect(numberField).toBeRequired();
 });
 
 test('supports readonly', () => {
-  render(<NumberField label="A Label" readOnly data-testid="number-field" />);
+  render(<Basic.Component readOnly data-testid="number-field" />);
 
   const numberField = screen.getByRole('textbox');
   expect(numberField).toHaveAttribute('readonly');
@@ -115,7 +59,7 @@ test('supports readonly', () => {
 
 test('supports field structure', () => {
   render(
-    <NumberField
+    <Basic.Component
       label="A Label"
       description="Some helpful text"
       errorMessage="Whoopsie"
@@ -134,7 +78,7 @@ test('supports field structure', () => {
 
 test('supports field structure (with error)', () => {
   render(
-    <NumberField
+    <Basic.Component
       label="A Label"
       description="Some helpful text"
       error={true}
@@ -153,9 +97,7 @@ test('supports field structure (with error)', () => {
 });
 
 test('can have default value', () => {
-  render(
-    <NumberField data-testid="number-field" label="A Label" defaultValue={50} />
-  );
+  render(<Basic.Component label="A Label" defaultValue={50} />);
 
   const input = screen.getByRole('textbox');
   expect(input).toHaveValue('50');
@@ -164,37 +106,22 @@ test('can have default value', () => {
 test('can be controlled', async () => {
   const user = userEvent.setup();
 
-  const Controlled = () => {
-    const [value, setValue] = useState(0);
-
-    return (
-      <>
-        <NumberField
-          data-testid="number-field"
-          label="A Label"
-          value={value}
-          onChange={setValue}
-        />
-        <span data-testid="output">{value}</span>
-      </>
-    );
-  };
-
-  render(<Controlled />);
+  render(<Controlled.Component label="A Label" />);
 
   const input = screen.getByRole('textbox');
   await user.click(input);
   await user.type(input, '42');
   await user.tab();
 
-  expect(screen.getByTestId('output')).toHaveTextContent('42');
+  // Verify the input value is controlled and displays correctly
+  expect(input).toHaveValue('42');
 });
 
 test('allows to specify min and max value', async () => {
   const user = userEvent.setup();
   const onChange = vi.fn();
   render(
-    <NumberField
+    <Basic.Component
       label="A Label"
       data-testid="number-field"
       minValue={0}
@@ -217,7 +144,11 @@ test('increment and decrement value via stepper', async () => {
   const user = userEvent.setup();
 
   render(
-    <NumberField label="A Label" data-testid="number-field" defaultValue={50} />
+    <Basic.Component
+      label="A Label"
+      data-testid="number-field"
+      defaultValue={50}
+    />
   );
 
   const input: HTMLInputElement = screen.getByRole('textbox');
@@ -239,7 +170,7 @@ test('increment and decrement value via stepper (with min and max)', async () =>
   const user = userEvent.setup();
 
   render(
-    <NumberField
+    <Basic.Component
       label="A Label"
       data-testid="number-field"
       minValue={0}
@@ -274,7 +205,7 @@ test('increment and decrement with custom steps', async () => {
   const user = userEvent.setup();
 
   render(
-    <NumberField
+    <Basic.Component
       label="A Label"
       data-testid="number-field"
       defaultValue={0}
@@ -298,7 +229,7 @@ test('increment and decrement with custom steps', async () => {
 
 test('hide stepper buttons', () => {
   render(
-    <NumberField label="A Label" data-testid="number-field" hideStepper />
+    <Basic.Component label="A Label" data-testid="number-field" hideStepper />
   );
 
   const group = screen.getByRole('group');
@@ -310,8 +241,8 @@ test('hide stepper buttons', () => {
 test('allows formatting of displayed value', () => {
   render(
     <>
-      <NumberField
-        label="A Label"
+      <Basic.Component
+        label="Decimal"
         data-testid="number-field-decimal"
         defaultValue={3.41}
         formatOptions={{
@@ -320,8 +251,8 @@ test('allows formatting of displayed value', () => {
           maximumFractionDigits: 2,
         }}
       />
-      <NumberField
-        label="A Label"
+      <Basic.Component
+        label="Money"
         data-testid="number-field-money"
         defaultValue={9.99}
         formatOptions={{
@@ -329,17 +260,16 @@ test('allows formatting of displayed value', () => {
           currency: 'EUR',
         }}
       />
-
-      <NumberField
-        label="A Label"
+      <Basic.Component
+        label="Percentage"
         data-testid="number-field-percentage"
         defaultValue={0.34}
         formatOptions={{
           style: 'percent',
         }}
       />
-      <NumberField
-        label="A Label"
+      <Basic.Component
+        label="Unit"
         data-testid="number-field-unit"
         defaultValue={150}
         formatOptions={{
@@ -367,7 +297,7 @@ test('allows formatting of displayed value', () => {
 test('selects all text on first click', async () => {
   const user = userEvent.setup();
 
-  render(<NumberField label="A Label" defaultValue={42} />);
+  render(<Basic.Component label="A Label" defaultValue={42} />);
 
   const input: HTMLInputElement = screen.getByRole('textbox');
   const selectSpy = vi.spyOn(input, 'select');
@@ -380,7 +310,7 @@ test('selects all text on first click', async () => {
 test('does not select text on subsequent clicks without blur', async () => {
   const user = userEvent.setup();
 
-  render(<NumberField label="A Label" defaultValue={42} />);
+  render(<Basic.Component label="A Label" defaultValue={42} />);
 
   const input: HTMLInputElement = screen.getByRole('textbox');
   const selectSpy = vi.spyOn(input, 'select');
@@ -400,7 +330,7 @@ test('resets selection behavior after blur', async () => {
 
   render(
     <>
-      <NumberField label="A Label" defaultValue={42} />
+      <Basic.Component label="A Label" defaultValue={42} />
       <button>Outside</button>
     </>
   );

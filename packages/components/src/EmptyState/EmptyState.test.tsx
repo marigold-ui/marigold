@@ -1,26 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { EmptyStateProps } from '@marigold/components';
 import { Basic, WithAction } from './EmptyState.stories';
 
-// Setup
-// ---------------
-
-const BasicComponent = (props?: Partial<EmptyStateProps>) => (
-  <div id="storybook-root">
-    <Basic.Component {...props} />
-  </div>
-);
-
-const WithActionComponent = () => (
-  <div id="storybook-root">
-    <WithAction.Component />
-  </div>
-);
-
-// Tests
-// ---------------
 test('renders with title and description', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component />);
 
   const title = screen.getByText('No items found');
   const description = screen.getByText(
@@ -32,7 +14,7 @@ test('renders with title and description', () => {
 });
 
 test('renders with action buttons', () => {
-  render(<WithActionComponent />);
+  render(<WithAction.Component />);
 
   const primaryButton = screen.getByRole('button', { name: 'Browse Products' });
   const secondaryButton = screen.getByRole('button', { name: 'View Wishlist' });
@@ -42,7 +24,7 @@ test('renders with action buttons', () => {
 });
 
 test('renders SVG illustration', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component />);
   const svg = screen.getByTestId('empty-state-illustration');
 
   expect(svg).toBeInTheDocument();

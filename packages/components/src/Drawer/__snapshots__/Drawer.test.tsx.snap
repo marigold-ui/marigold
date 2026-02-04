@@ -1,3 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`slides from the left > "entering:animate-slide-in-left exiting:animate-slide-out-left top-0 left-0" 1`] = `"fixed"`;
