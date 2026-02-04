@@ -1,110 +1,20 @@
-/* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { I18nProvider } from 'react-aria-components';
 import { vi } from 'vitest';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { DatePicker } from './DatePicker';
+import {
+  Basic,
+  UnavailableDate,
+  WithDefaultValue,
+  WithError,
+} from './DatePicker.stories';
 
-const getTextValue = (el: HTMLElement): any => {
-  if (
-    el.className?.includes?.('DatePicker-placeholder') &&
-    !el?.parentElement?.className.includes('is-placeholder')
-  ) {
-    return '';
-  }
-  return [...el.childNodes]
-    .map(el =>
-      el?.nodeType === 3 ? el.textContent : getTextValue(el as HTMLElement)
-    )
-    .join('');
-};
-
-const theme: Theme = {
-  name: 'date picker test',
-  components: {
-    DatePicker: cva(''),
-    DateField: {
-      input: cva(''),
-      action: cva(''),
-      field: cva(''),
-      segment: cva(''),
-    },
-    Field: cva(''),
-    Label: cva(''),
-    Button: cva(''),
-    Underlay: cva(''),
-    Calendar: {
-      calendar: cva(''),
-      calendarListboxButton: cva(''),
-      calendarCell: cva(''),
-      calendarControllers: cva(''),
-      calendarHeader: cva(''),
-      calendarGrid: cva(''),
-      select: cva(''),
-    },
-    Select: {
-      icon: cva(''),
-      select: cva(''),
-    },
-    Popover: cva(['mt-0.5'], {
-      variants: {
-        variant: {
-          top: ['mb-0.5'],
-        },
-      },
-    }),
-    HelpText: {
-      container: cva(),
-      icon: cva(),
-    },
-    IconButton: cva(''),
-  },
-};
-
-const { render } = setup({ theme });
 const user = userEvent.setup();
 
-// Helper function to normalize date strings for pasting
-const normalizeDateString = (input: string): string => {
-  // Handle YYYY/MM/DD format by converting to YYYY-MM-DD
-  const slashMatch = input.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
-  if (slashMatch) {
-    const year = slashMatch[1];
-    const month = slashMatch[2].padStart(2, '0');
-    const day = slashMatch[3].padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-  return input;
-};
-
 describe('DatePicker', () => {
-  beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      value: vi.fn(() => {
-        return {
-          matches: true,
-          addListener: vi.fn(),
-          removeListener: vi.fn(),
-        };
-      }),
-    });
-  });
-
-  const mockMatchMedia = (matches: string[]) =>
-    vi.fn().mockImplementation(query => ({
-      matches: matches.includes(query),
-    }));
-
-  window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
-
   describe('basics', () => {
     test('renders date picker with specified date', () => {
-      render(
-        <DatePicker label="Date" defaultValue={new CalendarDate(2019, 2, 3)} />
-      );
+      render(<WithDefaultValue.Component />);
 
       const dateinput = screen.getAllByRole('group')[0];
       expect(dateinput).toBeVisible();
@@ -113,21 +23,25 @@ describe('DatePicker', () => {
 
       const segments = screen.getAllByRole('spinbutton');
       expect(segments.length).toBe(3);
-      expect(getTextValue(segments[0])).toBe('02');
+
+      // Month segment (en-US format: MM/DD/YYYY)
+      expect(segments[0]).toHaveTextContent('02');
       expect(segments[0].getAttribute('aria-label')).toBe('month, ');
       expect(segments[0].getAttribute('aria-valuenow')).toBe('2');
       expect(segments[0].getAttribute('aria-valuetext')).toBe('2 – February');
       expect(segments[0].getAttribute('aria-valuemin')).toBe('1');
       expect(segments[0].getAttribute('aria-valuemax')).toBe('12');
 
-      expect(getTextValue(segments[1])).toBe('03');
+      // Day segment
+      expect(segments[1]).toHaveTextContent('03');
       expect(segments[1].getAttribute('aria-label')).toBe('day, ');
       expect(segments[1].getAttribute('aria-valuenow')).toBe('3');
       expect(segments[1].getAttribute('aria-valuetext')).toBe('3');
       expect(segments[1].getAttribute('aria-valuemin')).toBe('1');
       expect(segments[1].getAttribute('aria-valuemax')).toBe('28');
 
-      expect(getTextValue(segments[2])).toBe('2019');
+      // Year segment
+      expect(segments[2]).toHaveTextContent('2019');
       expect(segments[2].getAttribute('aria-label')).toBe('year, ');
       expect(segments[2].getAttribute('aria-valuenow')).toBe('2019');
       expect(segments[2].getAttribute('aria-valuetext')).toBe('2019');
@@ -135,27 +49,34 @@ describe('DatePicker', () => {
       expect(segments[2].getAttribute('aria-valuemax')).toBe('9999');
     });
 
-    test('renders the calendar when date picker is open', () => {
-      render(<DatePicker label="date picker" data-testid="date picker" open />);
+    test('renders the calendar when date picker is open', async () => {
+      render(<Basic.Component data-testid="date picker" open />);
 
       const picker = screen.getByTestId('date picker');
 
       expect(picker).toBeVisible();
-      const tableGrid = screen.getByRole('application');
-      expect(tableGrid).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole('application')).toBeVisible();
+      });
     });
 
     test('does not render calendar when date picker is not open', () => {
-      render(<DatePicker aria-label="date picker" />);
+      render(<Basic.Component aria-label="date picker" />);
+
       const heading = screen.queryByRole('heading');
+
       expect(heading).not.toBeInTheDocument();
     });
+
     test('supports autoFocus', () => {
-      render(<DatePicker label="Date" autoFocus />);
+      render(<Basic.Component autoFocus />);
+
+      // eslint-disable-next-line testing-library/no-node-access
       expect(document.activeElement).toBe(screen.getAllByRole('spinbutton')[0]);
     });
+
     test('passes through data attributes', () => {
-      render(<DatePicker label="Date" data-testid="foo" />);
+      render(<Basic.Component data-testid="foo" />);
 
       expect(screen.getByTestId('foo')).toHaveAttribute('data-rac');
     });
@@ -163,7 +84,8 @@ describe('DatePicker', () => {
 
   describe('labeling', () => {
     test('supports labeling with aria-label', () => {
-      render(<DatePicker aria-label="Birth date" />);
+      // Basic uses de-DE locale, so aria-label is "Kalender"
+      render(<Basic.Component aria-label="Birth date" label={undefined} />);
 
       const group = screen.getByRole('group');
       expect(group).toHaveAttribute('id');
@@ -171,16 +93,17 @@ describe('DatePicker', () => {
       const comboboxId = group.getAttribute('id');
 
       const button = screen.getByRole('button');
-      expect(button).toHaveAttribute('aria-label', 'Calendar');
-      expect(button).toHaveAttribute('id');
       const buttonId = button.getAttribute('id');
+      const segments = screen.getAllByRole('spinbutton');
+
+      expect(button).toHaveAttribute('aria-label', 'Kalender');
+      expect(button).toHaveAttribute('id');
       expect(button).toHaveAttribute(
         'aria-labelledby',
         `${buttonId} ${comboboxId}`
       );
 
-      const segments = screen.getAllByRole('spinbutton');
-      for (let segment of segments) {
+      for (const segment of segments) {
         expect(segment).toHaveAttribute('id');
         expect(
           segment?.getAttribute('aria-label')?.endsWith('Birth date')
@@ -191,7 +114,7 @@ describe('DatePicker', () => {
 
     test('supports field structure', () => {
       render(
-        <DatePicker
+        <Basic.Component
           label="A Label"
           description="Some helpful text"
           errorMessage="Whoopsie"
@@ -199,37 +122,28 @@ describe('DatePicker', () => {
       );
 
       const label = screen.queryByText('A Label');
-      expect(label).toBeInTheDocument();
-
       const description = screen.queryByText('Some helpful text');
-      expect(description).toBeInTheDocument();
-
       const error = screen.queryByText('Whoopsie');
+
+      expect(label).toBeInTheDocument();
+      expect(description).toBeInTheDocument();
       expect(error).not.toBeInTheDocument();
     });
 
     test('supports field structure (with error)', () => {
-      render(
-        <DatePicker
-          label="A Label"
-          description="Some helpful text"
-          error={true}
-          errorMessage="Whoopsie"
-        />
-      );
+      render(<WithError.Component />);
 
       const label = screen.queryByText('A Label');
-      expect(label).toBeInTheDocument();
-
       const description = screen.queryByText('Some helpful text');
-      expect(description).not.toBeInTheDocument();
-
       const error = screen.queryByText('Whoopsie');
+
+      expect(label).toBeInTheDocument();
+      expect(description).not.toBeInTheDocument();
       expect(error).toBeInTheDocument();
     });
   });
 
-  describe('events', function () {
+  describe('events', () => {
     const onBlurSpy = vi.fn();
     const onFocusChangeSpy = vi.fn();
     const onFocusSpy = vi.fn();
@@ -244,10 +158,9 @@ describe('DatePicker', () => {
       onKeyUpSpy.mockClear();
     });
 
-    test('focuses field, move a segment, and open popover and does not blur-xs', async () => {
+    test('focuses field, move a segment, and open popover and does not blur', async () => {
       render(
-        <DatePicker
-          label="Date"
+        <Basic.Component
           onBlur={onBlurSpy}
           onFocus={onFocusSpy}
           onFocusChange={onFocusChangeSpy}
@@ -255,9 +168,6 @@ describe('DatePicker', () => {
       );
       const segments = screen.getAllByRole('spinbutton');
       const button = screen.getByRole('button');
-
-      screen.getAllByRole('spinbutton');
-      screen.getByRole('button');
 
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).not.toHaveBeenCalled();
@@ -275,20 +185,20 @@ describe('DatePicker', () => {
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
 
-      // eslint-disable-next-line testing-library/await-async-events
-      user.click(button);
+      await user.click(button);
 
-      const popovers = screen.getAllByRole('presentation');
-      expect(popovers[0]).toBeVisible();
+      // Wait for calendar popover to appear
+      await waitFor(() => {
+        expect(screen.getByRole('application')).toBeVisible();
+      });
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('should focus field and leave to blur-xs', async () => {
+    test('should focus field and leave to blur', async () => {
       render(
-        <DatePicker
-          label="Date"
+        <Basic.Component
           onBlur={onBlurSpy}
           onFocus={onFocusSpy}
           onFocusChange={onFocusChangeSpy}
@@ -315,8 +225,7 @@ describe('DatePicker', () => {
 
     test('should open popover and call picker onFocus', async () => {
       render(
-        <DatePicker
-          label="Date"
+        <Basic.Component
           onBlur={onBlurSpy}
           onFocus={onFocusSpy}
           onFocusChange={onFocusChangeSpy}
@@ -330,17 +239,17 @@ describe('DatePicker', () => {
 
       await user.click(button);
 
-      const popover = screen.getByRole('application');
-      expect(popover).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole('application')).toBeVisible();
+      });
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('should open and close popover and only call blur-xs when focus leaves picker', async () => {
+    test('should open and close popover and only call blur when focus leaves picker', async () => {
       render(
-        <DatePicker
-          label="Date"
+        <Basic.Component
           onBlur={onBlurSpy}
           onFocus={onFocusSpy}
           onFocusChange={onFocusChangeSpy}
@@ -354,8 +263,10 @@ describe('DatePicker', () => {
 
       await user.click(button);
 
+      await waitFor(() => {
+        expect(screen.getByRole('application')).toBeVisible();
+      });
       const popover = screen.getByRole('application');
-      expect(popover).toBeVisible();
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
@@ -372,13 +283,7 @@ describe('DatePicker', () => {
     });
 
     test('should trigger right arrow key event for segment navigation', async () => {
-      render(
-        <DatePicker
-          label="Date"
-          onKeyDown={onKeyDownSpy}
-          onKeyUp={onKeyUpSpy}
-        />
-      );
+      render(<Basic.Component onKeyDown={onKeyDownSpy} onKeyUp={onKeyUpSpy} />);
       const segments = screen.getAllByRole('spinbutton');
 
       expect(onKeyDownSpy).not.toHaveBeenCalled();
@@ -397,8 +302,7 @@ describe('DatePicker', () => {
 
     test('should trigger key event in popover and focus/blur/key events are not called', async () => {
       render(
-        <DatePicker
-          label="Date"
+        <Basic.Component
           onBlur={onBlurSpy}
           onFocus={onFocusSpy}
           onFocusChange={onFocusChangeSpy}
@@ -406,7 +310,7 @@ describe('DatePicker', () => {
           onKeyUp={onKeyUpSpy}
         />
       );
-      let button = screen.getByRole('button');
+      const button = screen.getByRole('button');
 
       expect(onKeyDownSpy).not.toHaveBeenCalled();
       expect(onKeyUpSpy).not.toHaveBeenCalled();
@@ -416,8 +320,9 @@ describe('DatePicker', () => {
 
       await user.click(button);
 
-      const popover = screen.getByRole('application');
-      expect(popover).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole('application')).toBeVisible();
+      });
       expect(onBlurSpy).not.toHaveBeenCalled();
       expect(onFocusChangeSpy).toHaveBeenCalledTimes(1);
       expect(onFocusSpy).toHaveBeenCalledTimes(1);
@@ -434,112 +339,103 @@ describe('DatePicker', () => {
 
 test('DatePicker supports width prop', () => {
   render(
-    <DatePicker data-testid="picker" aria-label="date picker" width={10} />
+    <Basic.Component data-testid="picker" aria-label="date picker" width={10} />
   );
+
   const picker = screen.getByTestId('picker');
 
-  expect(picker.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-10"`
-  );
+  expect(picker).toHaveClass('w-10');
 });
 
 test('DatePicker supports data unavailable property', async () => {
   render(
-    <I18nProvider locale="de-DE">
-      <DatePicker
-        data-testid="picker"
-        aria-label="date picker"
-        dateUnavailable={() => {
-          return true;
-        }}
-      />
-    </I18nProvider>
+    <UnavailableDate.Component data-testid="picker" aria-label="date picker" />
   );
 
   const button = screen.getByRole('button');
   await user.click(button);
-
-  const popover = screen.getByRole('application');
-  expect(popover).toBeVisible();
   const date = screen.getAllByRole('gridcell');
 
+  await waitFor(() => {
+    expect(screen.getByRole('application')).toBeVisible();
+  });
+  // eslint-disable-next-line testing-library/no-node-access
   expect(date[10].firstChild).toHaveAttribute('data-unavailable', 'true');
 });
 
-const pasteCases: Array<
-  [string, { year: number; month: number; day: number }]
-> = [
-  ['2025-09-24', { year: 2025, month: 9, day: 24 }],
-  ['09/24/2025', { year: 2025, month: 9, day: 24 }],
-  ['24.09.2025', { year: 2025, month: 9, day: 24 }],
-  ['2025/09/24', { year: 2025, month: 9, day: 24 }],
-];
-
-test.each(pasteCases)(
-  'should handle pasting a valid date string (%s)',
-  async (pastedValue, expected) => {
+describe('paste handling', () => {
+  test('should handle pasting a valid ISO date string', async () => {
     const onChange = vi.fn();
+    render(<Basic.Component onChange={onChange} aria-label="date picker" />);
+
+    const group = screen.getAllByRole('group')[0];
+    await user.click(group);
+    await user.paste('2025-09-24');
+    const changedDate = onChange.mock.calls[0][0];
+
+    expect(onChange).toHaveBeenCalled();
+    expect(changedDate.year).toBe(2025);
+    expect(changedDate.month).toBe(9);
+    expect(changedDate.day).toBe(24);
+  });
+
+  test('should handle pasting US format date string', async () => {
+    const onChange = vi.fn();
+    render(<Basic.Component onChange={onChange} aria-label="date picker" />);
+
+    const group = screen.getAllByRole('group')[0];
+    await user.click(group);
+    await user.paste('09/24/2025');
+    const changedDate = onChange.mock.calls[0][0];
+
+    expect(onChange).toHaveBeenCalled();
+    expect(changedDate.year).toBe(2025);
+    expect(changedDate.month).toBe(9);
+    expect(changedDate.day).toBe(24);
+  });
+
+  test('should handle pasting European dot format date string', async () => {
+    const onChange = vi.fn();
+    render(<Basic.Component onChange={onChange} aria-label="date picker" />);
+
+    const group = screen.getAllByRole('group')[0];
+    await user.click(group);
+    await user.paste('24.09.2025');
+
+    const changedDate = onChange.mock.calls[0][0];
+
+    expect(onChange).toHaveBeenCalled();
+    expect(changedDate.year).toBe(2025);
+    expect(changedDate.month).toBe(9);
+    expect(changedDate.day).toBe(24);
+  });
+
+  test('should handle pasting an invalid date format', async () => {
+    const onChange = vi.fn();
+    render(<Basic.Component onChange={onChange} aria-label="date picker" />);
+
+    const group = screen.getAllByRole('group')[0];
+    await user.click(group);
+    await user.paste('invalid-date');
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test('should support copying date value', async () => {
     render(
-      <DatePicker label="Date" onChange={onChange} aria-label="date picker" />
+      <WithDefaultValue.Component
+        defaultValue={new CalendarDate(2025, 9, 24)}
+        aria-label="date picker"
+      />
     );
 
     const dateInput = screen.getAllByRole('spinbutton')[0];
     await user.click(dateInput);
 
-    // Use normalized date string for pasting
-    const normalizedValue = normalizeDateString(pastedValue);
-    fireEvent.paste(dateInput, {
-      clipboardData: {
-        getData: () => normalizedValue,
-      },
-    });
-
-    expect(onChange).toHaveBeenCalled();
-    const changedDate = onChange.mock.calls[0][0];
-    expect(changedDate.year).toBe(expected.year);
-    expect(changedDate.month).toBe(expected.month);
-    expect(changedDate.day).toBe(expected.day);
-  }
-);
-
-test('should handle pasting an invalid date format', async () => {
-  const onChange = vi.fn();
-  render(
-    <DatePicker label="Date" onChange={onChange} aria-label="date picker" />
-  );
-
-  const dateInput = screen.getAllByRole('spinbutton')[0];
-  await user.click(dateInput);
-
-  // Simulate pasting an invalid date
-  fireEvent.paste(dateInput, {
-    clipboardData: {
-      getData: () => 'invalid-date',
-    },
+    // Verify the date is formatted correctly in the input
+    const segments = screen.getAllByRole('spinbutton');
+    expect(segments[0]).toHaveTextContent('09');
+    expect(segments[1]).toHaveTextContent('24');
+    expect(segments[2]).toHaveTextContent('2025');
   });
-
-  expect(onChange).not.toHaveBeenCalled();
-});
-
-test('should support copying date value', async () => {
-  const execCommand = vi.fn();
-  document.execCommand = execCommand;
-
-  render(
-    <DatePicker
-      label="Date"
-      defaultValue={new CalendarDate(2025, 9, 24)}
-      aria-label="date picker"
-    />
-  );
-
-  const dateInput = screen.getAllByRole('spinbutton')[0];
-  await user.click(dateInput);
-
-  // We can't directly test clipboard content in JSDOM,
-  // but we can verify the date is formatted correctly in the input
-  const segments = screen.getAllByRole('spinbutton');
-  expect(getTextValue(segments[0])).toBe('09');
-  expect(getTextValue(segments[1])).toBe('24');
-  expect(getTextValue(segments[2])).toBe('2025');
 });

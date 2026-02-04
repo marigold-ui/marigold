@@ -1,20 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ToggleButtonProps } from './ToggleButton';
 import { Basic } from './ToggleButton.stories';
 
-// Setup
-// ---------------
-const BasicComponent = (props: ToggleButtonProps) => (
-  <div id="storybook-root">
-    <Basic.Component {...props} />
-  </div>
-);
-
-// Tests
-// ---------------
 test('renders correctly', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component />);
 
   const label = screen.getByText('Toggle');
 
@@ -36,7 +25,7 @@ test('renders correctly', () => {
 test('respects disabled state', async () => {
   const user = userEvent.setup();
   const onChange = vi.fn();
-  render(<BasicComponent disabled onChange={onChange} />);
+  render(<Basic.Component disabled onChange={onChange} />);
   const button = screen.getByRole('button');
 
   await user.click(button);
@@ -46,7 +35,7 @@ test('respects disabled state', async () => {
 });
 
 test('respects initial selected state', () => {
-  render(<BasicComponent selected />);
+  render(<Basic.Component selected />);
 
   const button = screen.getByRole('button');
 
@@ -54,13 +43,13 @@ test('respects initial selected state', () => {
 });
 
 test('renders children content', () => {
-  render(<BasicComponent>Custom Label</BasicComponent>);
+  render(<Basic.Component>Custom Label</Basic.Component>);
 
   expect(screen.getByText('Custom Label')).toBeInTheDocument();
 });
 
 test('supports different sizes', () => {
-  const { rerender } = render(<BasicComponent size="small" />);
+  const { rerender } = render(<Basic.Component size="small" />);
   let button = screen.getByRole('button');
 
   expect(button).toMatchInlineSnapshot(`
@@ -76,7 +65,7 @@ test('supports different sizes', () => {
     </button>
   `);
 
-  rerender(<BasicComponent size="icon" />);
+  rerender(<Basic.Component size="icon" />);
   expect(screen.getByRole('button')).toMatchInlineSnapshot(`
     <button
       aria-pressed="false"
