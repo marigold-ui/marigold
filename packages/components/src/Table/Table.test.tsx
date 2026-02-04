@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
+import { Table } from './Table';
 import {
   Basic,
   CellOverrideTableTruncate,
@@ -16,6 +17,7 @@ import {
   WithActions,
 } from './Table.stories';
 import { renderDragPreview } from './TableDragPreview';
+import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
 
 const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
@@ -320,35 +322,35 @@ describe('renderDragPreview Hook', () => {
   test('returns TableDragPreview component for multiple items', () => {
     const items = [{ 'text/plain': 'Item 1' }, { 'text/plain': 'Item 2' }];
 
-    const result = renderDragPreview(items);
+    const preview = renderDragPreview!(items);
 
-    expect(result).not.toBeUndefined();
-    expect(result).toBeTruthy();
+    expect(preview).not.toBeUndefined();
+    expect(preview).toBeTruthy();
   });
 
   test('returns undefined for single item to use default preview', () => {
     const items = [{ 'text/plain': 'Single Item' }];
 
-    const result = renderDragPreview(items);
+    const preview = renderDragPreview!(items);
 
-    expect(result).toBeUndefined();
+    expect(preview).toBeUndefined();
   });
 
   test('returns undefined for empty items array', () => {
     const items: Record<string, string>[] = [];
 
-    const result = renderDragPreview(items);
+    const preview = renderDragPreview!(items);
 
-    expect(result).toBeUndefined();
+    expect(preview).toBeUndefined();
   });
 
   test('handles two items correctly', () => {
     const items = [{ 'text/plain': 'First' }, { 'text/plain': 'Second' }];
 
-    const result = renderDragPreview(items);
+    const preview = renderDragPreview!(items);
 
-    expect(result).not.toBeUndefined();
-    expect(result).toBeTruthy();
+    expect(preview).not.toBeUndefined();
+    expect(preview).toBeTruthy();
   });
 
   test('handles large number of items', () => {
@@ -356,38 +358,183 @@ describe('renderDragPreview Hook', () => {
       'text/plain': `Item ${i + 1}`,
     }));
 
-    const result = renderDragPreview(items);
+    const preview = renderDragPreview!(items);
 
-    expect(result).not.toBeUndefined();
-    expect(result).toBeTruthy();
+    expect(preview).not.toBeUndefined();
+    expect(preview).toBeTruthy();
   });
 
   test('returns component for multiple items with mixed properties', () => {
-    const items = [
+    const items: Record<string, string>[] = [
       { 'text/plain': 'Item 1', 'application/json': '{}' },
       { 'text/plain': 'Item 2', 'text/html': '<div></div>' },
       { 'application/json': '[]' },
     ];
 
-    const result = renderDragPreview(items);
+    const preview = renderDragPreview!(items);
 
-    expect(result).not.toBeUndefined();
-    expect(result).toBeTruthy();
+    expect(preview).not.toBeUndefined();
+    expect(preview).toBeTruthy();
   });
 
   test('boundary case: exactly one item returns undefined', () => {
     const items = [{ 'text/plain': 'Only One', other: 'data' }];
 
-    const result = renderDragPreview(items);
+    const preview = renderDragPreview!(items);
 
-    expect(result).toBeUndefined();
+    expect(preview).toBeUndefined();
   });
 
   test('boundary case: exactly two items returns component', () => {
     const items = [{ 'text/plain': 'First' }, { 'text/plain': 'Second' }];
 
-    const result = renderDragPreview(items);
+    const preview = renderDragPreview!(items);
 
-    expect(result).not.toBeUndefined();
+    expect(preview).not.toBeUndefined();
+  });
+});
+
+describe('TableDropIndicator Integration', () => {
+  test('renders in drag and drop table', () => {
+    render(<DragAndDrop.Component />);
+
+    const table = screen.getByRole('grid');
+    expect(table).toBeInTheDocument();
+  });
+
+  test('table uses renderDropIndicator for drag and drop', () => {
+    render(<DragAndDrop.Component />);
+
+    // Verify the table has drag and drop functionality
+    const rows = screen.getAllByRole('row');
+    const dataRows = rows.slice(1); // Skip header row
+    expect(dataRows[0]).toHaveAttribute('draggable', 'true');
+  });
+});
+
+describe('renderDropIndicator Hook', () => {
+  test('returns TableDropIndicator component', () => {
+    const target = {
+      type: 'item' as const,
+      key: '1',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    expect(dropIndicator).toBeDefined();
+    expect(dropIndicator.type).toBe(TableDropIndicator);
+  });
+
+  test('passes target prop correctly', () => {
+    const target = {
+      type: 'item' as const,
+      key: 'test-key',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    expect(dropIndicator.props.target).toEqual(target);
+  });
+
+  test('handles different target types', () => {
+    const itemTarget = {
+      type: 'item' as const,
+      key: '1',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator1 = renderDropIndicator!(itemTarget);
+    expect(dropIndicator1.props.target).toEqual(itemTarget);
+
+    const rootTarget = { type: 'root' as const };
+    const dropIndicator2 = renderDropIndicator!(rootTarget);
+    expect(dropIndicator2.props.target).toEqual(rootTarget);
+  });
+
+  test('handles target with dropPosition', () => {
+    const target = {
+      type: 'item' as const,
+      key: '1',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    expect(dropIndicator.props.target).toEqual(target);
+  });
+
+  test('creates React element with correct structure', () => {
+    const target = {
+      type: 'item' as const,
+      key: 'test-id',
+      dropPosition: 'after' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    // Verify it's a valid React element
+    expect(dropIndicator).toHaveProperty('type');
+    expect(dropIndicator).toHaveProperty('props');
+    expect(dropIndicator.props).toHaveProperty('target');
+  });
+
+  test('returned element has target property in props', () => {
+    const target = {
+      type: 'item' as const,
+      key: 'complex-key',
+      dropPosition: 'after' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    expect(dropIndicator.props.target.type).toBe('item');
+    expect(dropIndicator.props.target.key).toBe('complex-key');
+    expect(dropIndicator.props.target.dropPosition).toBe('after');
+  });
+});
+
+describe('Table Static Properties - Drop Indicator', () => {
+  test('Table.renderDropIndicator is accessible', () => {
+    expect(Table.renderDropIndicator).toBeDefined();
+    expect(typeof Table.renderDropIndicator).toBe('function');
+  });
+
+  test('Table.renderDropIndicator matches renderDropIndicator export', () => {
+    expect(Table.renderDropIndicator).toBe(renderDropIndicator);
+  });
+
+  test('Table.DropIndicator component is accessible', () => {
+    expect(Table.DropIndicator).toBeDefined();
+    expect(Table.DropIndicator).toBe(TableDropIndicator);
+  });
+
+  test('Table has all drag and drop related exports', () => {
+    expect(Table.DropIndicator).toBeDefined();
+    expect(Table.DragPreview).toBeDefined();
+    expect(Table.renderDropIndicator).toBeDefined();
+    expect(Table.renderDragPreview).toBeDefined();
+  });
+});
+
+describe('renderDropIndicator Function Signature', () => {
+  test('accepts item target with key and dropPosition', () => {
+    const dropIndicator = renderDropIndicator!({
+      type: 'item',
+      key: '123',
+      dropPosition: 'before',
+    });
+    expect(dropIndicator).toBeDefined();
+  });
+
+  test('accepts root target without key', () => {
+    const dropIndicator = renderDropIndicator!({ type: 'root' });
+    expect(dropIndicator).toBeDefined();
+  });
+
+  test('preserves all target properties', () => {
+    const complexTarget = {
+      type: 'item' as const,
+      key: 'item-1',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator = renderDropIndicator!(complexTarget);
+
+    expect(dropIndicator.props.target).toStrictEqual(complexTarget);
   });
 });
