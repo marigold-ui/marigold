@@ -1,15 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AutocompleteProps } from '@marigold/components';
+import { vi } from 'vitest';
+import { renderWithOverlay } from '../test.utils';
 import { Basic, WithSections } from './Autocomplete.stories';
-
-// Setup
-// ---------------
-const BasicComponent = (props: AutocompleteProps) => (
-  <div id="storybook-root">
-    <Basic.Component {...props} />
-  </div>
-);
 
 const user = userEvent.setup();
 
@@ -29,7 +22,7 @@ Object.defineProperty(window, 'matchMedia', {
 // Tests
 // ---------------
 test('renders an input', () => {
-  render(<BasicComponent />);
+  renderWithOverlay(<Basic.Component />);
 
   const textField = screen.getByRole('combobox');
 
@@ -39,7 +32,7 @@ test('renders an input', () => {
 });
 
 test('renders a label', () => {
-  render(<BasicComponent label="Label" />);
+  renderWithOverlay(<Basic.Component label="Label" />);
 
   const label = screen.getByText('Label');
 
@@ -48,7 +41,7 @@ test('renders a label', () => {
 });
 
 test('supports disabled', () => {
-  render(<BasicComponent disabled />);
+  renderWithOverlay(<Basic.Component disabled />);
 
   const textField = screen.getByRole('combobox');
 
@@ -56,7 +49,7 @@ test('supports disabled', () => {
 });
 
 test('supports required', () => {
-  render(<BasicComponent required />);
+  renderWithOverlay(<Basic.Component required />);
 
   const textField = screen.getByRole('combobox');
 
@@ -64,7 +57,7 @@ test('supports required', () => {
 });
 
 test('supports readonly', () => {
-  render(<BasicComponent readOnly />);
+  renderWithOverlay(<Basic.Component readOnly />);
 
   const textField = screen.getByRole('combobox');
 
@@ -72,20 +65,20 @@ test('supports readonly', () => {
 });
 
 test('supports showing an error', () => {
-  render(<BasicComponent error errorMessage="Error!" />);
+  renderWithOverlay(<Basic.Component error errorMessage="Error!" />);
 
   expect(screen.getByText('Error!')).toBeInTheDocument();
 });
 
 test('supports default value', () => {
-  render(<BasicComponent defaultValue="garlic" />);
+  renderWithOverlay(<Basic.Component defaultValue="garlic" />);
 
   expect(screen.getByRole('combobox')).toHaveValue('garlic');
 });
 
 test('uses field structure', () => {
-  render(
-    <BasicComponent
+  renderWithOverlay(
+    <Basic.Component
       label="Label"
       description="Some helpful text"
       errorMessage="Whoopsie"
@@ -103,7 +96,7 @@ test('uses field structure', () => {
 });
 
 test('opens the suggestions on user input', async () => {
-  render(<BasicComponent label="Label" />);
+  renderWithOverlay(<Basic.Component label="Label" />);
 
   const input = screen.getByRole('combobox');
   await user.type(input, 'ha');
@@ -113,7 +106,7 @@ test('opens the suggestions on user input', async () => {
 });
 
 test('supports default empty state text', async () => {
-  render(<BasicComponent label="Label" allowsEmptyCollection />);
+  renderWithOverlay(<Basic.Component label="Label" allowsEmptyCollection />);
 
   const input = screen.getByRole('combobox');
   await user.type(input, 'xyz');
@@ -123,8 +116,8 @@ test('supports default empty state text', async () => {
 });
 
 test('supports passting  empty state text', async () => {
-  render(
-    <BasicComponent
+  renderWithOverlay(
+    <Basic.Component
       label="Label"
       emptyState={<span>can not find value</span>}
       allowsEmptyCollection
@@ -139,7 +132,7 @@ test('supports passting  empty state text', async () => {
 });
 
 test('opens the suggestions on focus', async () => {
-  render(<BasicComponent label="Label" menuTrigger="focus" />);
+  renderWithOverlay(<Basic.Component label="Label" menuTrigger="focus" />);
 
   const input = screen.getByRole('combobox');
   await user.click(input);
@@ -149,7 +142,7 @@ test('opens the suggestions on focus', async () => {
 });
 
 test('opens the suggestions on arrow down (manual)', async () => {
-  render(<BasicComponent label="Label" menuTrigger="manual" />);
+  renderWithOverlay(<Basic.Component label="Label" menuTrigger="manual" />);
 
   const input = screen.getByRole('combobox');
   await user.type(input, '{arrowdown}');
@@ -159,7 +152,7 @@ test('opens the suggestions on arrow down (manual)', async () => {
 });
 
 test('shows suggestions based on user input', async () => {
-  render(<BasicComponent label="Label" />);
+  renderWithOverlay(<Basic.Component label="Label" />);
 
   const input = screen.getByRole('combobox');
   await user.type(input, 'ha');
@@ -172,7 +165,9 @@ test('shows suggestions based on user input', async () => {
 });
 
 test('supports disabling suggestions', async () => {
-  render(<BasicComponent label="Label" disabledKeys={['Firefly']} />);
+  renderWithOverlay(
+    <Basic.Component label="Label" disabledKeys={['Firefly']} />
+  );
 
   const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'fi');
@@ -182,11 +177,7 @@ test('supports disabling suggestions', async () => {
 });
 
 test('supports sections', async () => {
-  render(
-    <div id="storybook-root">
-      <WithSections.Component label="Label" />
-    </div>
-  );
+  renderWithOverlay(<WithSections.Component label="Label" />);
 
   const input = screen.getAllByLabelText(/Label/i)[0];
   await user.type(input, 'a');
@@ -201,23 +192,29 @@ test('supports sections', async () => {
 });
 
 test('supporst showing a help text', () => {
-  render(<BasicComponent label="Label" description="This is a description" />);
+  renderWithOverlay(
+    <Basic.Component label="Label" description="This is a description" />
+  );
 
   const description = screen.queryAllByText('This is a description')[0];
   expect(description).toBeInTheDocument();
 });
 
 test('supports loading state', () => {
-  render(
-    <BasicComponent label="Label" loading description="This is a description" />
+  renderWithOverlay(
+    <Basic.Component
+      label="Label"
+      loading
+      description="This is a description"
+    />
   );
 
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
 
 test('hides loading state when loading is false', () => {
-  render(
-    <BasicComponent
+  renderWithOverlay(
+    <Basic.Component
       label="Label"
       loading={false}
       description="This is a description"

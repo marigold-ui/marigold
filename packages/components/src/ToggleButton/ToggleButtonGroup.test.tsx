@@ -1,23 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ReactNode } from 'react';
-import { ToggleButtonGroupProps } from './ToggleButtonGroup';
 import { Basic } from './ToggleButtonGroup.stories';
 
-// Setup
-// ---------------
-const BasicComponent = (
-  props: ToggleButtonGroupProps & { children?: ReactNode }
-) => (
-  <div id="storybook-root">
-    <Basic.Component {...props} />
-  </div>
-);
-
-// Tests
-// ---------------
 test('renders correctly with children', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component />);
 
   expect(screen.getByRole('radiogroup')).toMatchInlineSnapshot(`
     <div
@@ -69,7 +55,7 @@ test('renders correctly with children', () => {
 test.each([{ size: 'small' }, { size: 'icon' }])(
   'provides size context to child buttons with size=$size',
   ({ size }) => {
-    render(<BasicComponent size={size} />);
+    render(<Basic.Component size={size} />);
 
     const sumButton = screen.getByText('Sum');
     const medianButton = screen.getByText('Median');
@@ -84,7 +70,7 @@ test.each([{ size: 'small' }, { size: 'icon' }])(
 test('respects disabled state', async () => {
   const user = userEvent.setup();
   const onSelectionChange = vi.fn();
-  render(<BasicComponent disabled onSelectionChange={onSelectionChange} />);
+  render(<Basic.Component disabled onSelectionChange={onSelectionChange} />);
 
   const sumButton = screen.getByText('Sum');
   const medianButton = screen.getByText('Median');
@@ -99,7 +85,7 @@ test('respects disabled state', async () => {
 });
 
 test('handles defaultSelectedKeys', () => {
-  render(<BasicComponent defaultSelectedKeys={['sum']}></BasicComponent>);
+  render(<Basic.Component defaultSelectedKeys={['sum']} />);
 
   const option1 = screen.getByText('Sum');
 
