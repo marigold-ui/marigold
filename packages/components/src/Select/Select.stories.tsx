@@ -13,6 +13,13 @@ import { Select } from './Select';
 const meta = preview.meta({
   title: 'Components/Select',
   component: Select,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: {
       control: {
@@ -74,6 +81,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => {
     const [selected, setSelected] = useState<any>('');
     return (
@@ -142,6 +150,7 @@ export const Basic = meta.story({
 });
 
 export const Multiple = meta.story({
+  tags: ['component-test'],
   // No args here, it breaks the types
   render: ({ label }) => {
     const [selected, setSelected] = useState<Key[]>([]);
@@ -150,13 +159,13 @@ export const Multiple = meta.story({
         onSubmit={e => {
           e.preventDefault();
           const formData = new FormData(e.currentTarget);
-          setSelected(formData.getAll('foo') as Key[]);
+          setSelected(formData.getAll('favorite') as Key[]);
         }}
       >
         <Stack space={6} alignX="left">
           <Select
             label={label}
-            name="foo"
+            name="favorite"
             selectionMode="multiple"
             defaultValue={selected}
             width={64}
