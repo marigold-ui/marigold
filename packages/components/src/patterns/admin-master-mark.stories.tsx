@@ -3,8 +3,8 @@ import { Badge } from '../Badge/Badge';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Radio } from '../Radio/Radio';
 import { Stack } from '../Stack/Stack';
+import { Table } from '../Table/Table';
 import { TextField } from '../TextField/TextField';
-import { Table } from '../legacy/Table/Table';
 
 const meta = preview.meta({
   title: 'Patterns/Master- & Admin-Mark',
