@@ -1104,34 +1104,34 @@ export const EditableCell = meta.story({
           {data.map((user, i) => (
             <Table.Row key={user.email}>
               <Table.EditableCell
-                renderEditing={() => (
+                field={
                   <TextField
                     aria-label="Name"
                     name="name"
                     defaultValue={user.name}
                     autoFocus
                   />
-                )}
+                }
                 onSubmit={e => handleSubmit(i, e)}
               >
                 {user.name}
               </Table.EditableCell>
               <Table.EditableCell
-                renderEditing={() => (
+                field={
                   <TextField
                     aria-label="Email"
                     name="email"
                     defaultValue={user.email}
                     autoFocus
                   />
-                )}
+                }
                 onSubmit={e => handleSubmit(i, e)}
               >
                 {user.email}
               </Table.EditableCell>
               <Table.Cell>{user.location}</Table.Cell>
               <Table.EditableCell
-                renderEditing={() => (
+                field={
                   <Select
                     aria-label="Status"
                     name="status"
@@ -1142,7 +1142,7 @@ export const EditableCell = meta.story({
                     <Select.Option id="inactive">inactive</Select.Option>
                     <Select.Option id="suspended">suspended</Select.Option>
                   </Select>
-                )}
+                }
                 onSubmit={e => handleSubmit(i, e)}
               >
                 <Badge>{user.status}</Badge>

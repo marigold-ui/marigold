@@ -26,10 +26,13 @@ export interface TableEditableCellProps {
    */
   children: ReactNode;
   /**
-   * Render function that returns the editing UI (e.g. TextField, Picker).
-   * Called when the edit popover/dialog opens.
+   * Form field shown when editing the cell. Make sure fields have a
+   * "name" attribute to allow form data extraction via when submited.
+   *
+   * The field is automatically wrapped in a form and shown in a popover (desktop)
+   * or dialog (mobile). Submission is handled via `onSubmit` or `action`.
    */
-  renderEditing: () => ReactNode;
+  field: ReactNode | (() => ReactNode);
   /**
    * Whether the cell is currently saving. Shows a loading indicator on the save button.
    * @default false
@@ -129,7 +132,7 @@ const EditableCellPopover = ({
 // ---------------
 export const TableEditableCell = ({
   children,
-  renderEditing,
+  field,
   saving = false,
   onSubmit,
   onCancel,
@@ -177,6 +180,8 @@ export const TableEditableCell = ({
     submittedRef.current = false;
     setOpen(isOpen);
   };
+
+  const renderField = () => (typeof field === 'function' ? field() : field);
 
   const cancelButton = (
     <Button
@@ -233,7 +238,7 @@ export const TableEditableCell = ({
       {isSmallScreen ? (
         <Dialog open={open} onOpenChange={handleOpenChange}>
           <Form unstyled action={action} onSubmit={handleSubmit}>
-            <Dialog.Content>{renderEditing()}</Dialog.Content>
+            <Dialog.Content>{renderField()}</Dialog.Content>
             <Dialog.Actions>
               {cancelButton}
               {saveButton}
@@ -248,7 +253,7 @@ export const TableEditableCell = ({
           className={classNames.editablePopover}
         >
           <Form unstyled action={action} onSubmit={handleSubmit}>
-            <div className="flex-1">{renderEditing()}</div>
+            <div className="flex-1">{renderField()}</div>
             {cancelButton}
             {saveButton}
           </Form>

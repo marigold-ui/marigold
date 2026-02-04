@@ -52,7 +52,7 @@ export default () => {
             </Table.Cell>
             <Table.EditableCell
               onSubmit={e => update(venue.id, 'amenities', e)}
-              renderEditing={() => (
+              field={
                 <Select
                   aria-label="Amenities"
                   name="amenities"
@@ -66,7 +66,7 @@ export default () => {
                     </Select.Option>
                   ))}
                 </Select>
-              )}
+              }
             >
               {venue.amenities
                 .map(amenity => amenitiesOptions[amenity])
@@ -74,7 +74,7 @@ export default () => {
             </Table.EditableCell>
             <Table.EditableCell
               onSubmit={e => update(venue.id, 'rating', e)}
-              renderEditing={() => (
+              field={
                 <NumberField
                   aria-label="Rating"
                   name="rating"
@@ -84,7 +84,7 @@ export default () => {
                   step={0.1}
                   autoFocus
                 />
-              )}
+              }
             >
               <NumericFormat
                 value={venue.rating}
