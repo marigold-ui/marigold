@@ -34,13 +34,16 @@ export const getMDXComponents = (components?: MDXComponents): MDXComponents => {
         : props.path;
 
       // Auto resolve component names to their file paths
-      // If path contains / (e.g., "Provider/MarigoldProvider"), append .tsx
+      // If path contains / (e.g., "Provider/MarigoldProvider"), append .tsx if not already present
       // If path is just a component name (e.g., "Button"), resolve to "Button/Button.tsx"
-      const resolvedPath = cleanPath?.includes('/')
-        ? `${cleanPath}.tsx`
-        : cleanPath
-          ? `${cleanPath}/${cleanPath}.tsx`
-          : undefined;
+      // If path already ends with .tsx, use it as-is
+      const resolvedPath = cleanPath?.endsWith('.tsx')
+        ? cleanPath
+        : cleanPath?.includes('/')
+          ? `${cleanPath}.tsx`
+          : cleanPath
+            ? `${cleanPath}/${cleanPath}.tsx`
+            : undefined;
 
       return (
         <AutoTypeTable
