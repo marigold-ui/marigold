@@ -6,6 +6,7 @@ export const Tray: ThemeComponent<'Tray'> = {
     'relative grid-rows-[auto_auto_1fr_auto] max-h-[95vh] rounded-b-none',
     'ui-surface ui-elevation-overlay',
     "group/tray outline-hidden grid [grid-template-areas:'drag'_'title'_'content'_'actions']",
+    "after:absolute after:inset-x-0 after:top-full after:h-screen after:bg-background after:content-['']",
   ]),
   closeButton: cva(['absolute top-3.5 right-3 z-50', 'size-7']),
   drag: cva(
