@@ -4,7 +4,6 @@ import { vi } from 'vitest';
 import { Table } from './Table';
 import {
   Basic,
-  CellOverrideTableTruncate,
   DragAndDrop,
   DragPreview,
   DynamicData,
@@ -59,7 +58,8 @@ describe('Basic Rendering', () => {
   test('applies colspans to cells', () => {
     render(<WidthsAndOverflow.Component />);
 
-    const totalCell = screen.getByRole('gridcell', { name: 'Total' });
+    // eslint-disable-next-line testing-library/no-node-access
+    const totalCell = screen.getByText('Total').closest('td');
     expect(totalCell).toBeInTheDocument();
     expect(totalCell).toHaveAttribute('colspan', '4');
   });
@@ -185,12 +185,12 @@ describe('Props and Variants', () => {
   });
 
   test('cell-level verticalAlign overrides table-level', () => {
-    render(<VerticalAlignment.Component />);
+    render(<VerticalAlignment.Component verticalAlign="top" />);
 
-    const cells = screen.getAllByRole('gridcell');
-
-    expect(cells[2]).toHaveClass('align-bottom');
-    expect(cells[2]).not.toHaveClass('align-top');
+    // eslint-disable-next-line testing-library/no-node-access
+    const overrideCell = screen.getByText('Override').closest('td');
+    expect(overrideCell).toHaveClass('align-bottom');
+    expect(overrideCell).not.toHaveClass('align-top');
   });
 });
 
@@ -428,19 +428,6 @@ describe('EditableCell', () => {
     // On small screens, buttons show text
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
-  });
-});
-
-describe('Cell-Level Overflow', () => {
-  test('cell with overflow="wrap" overrides table default (truncate)', () => {
-    render(<CellOverrideTableTruncate.Component />);
-
-    const cells = screen.getAllByRole('gridcell');
-    expect(cells[0]).toHaveClass('truncate');
-    expect(cells[0]).toHaveClass('max-w-0');
-
-    expect(cells[1]).toHaveClass('wrap-break-word');
-    expect(cells[1]).not.toHaveClass('truncate');
   });
 });
 

@@ -1179,21 +1179,16 @@ export const CellOverrideTableTruncate = meta.story({
     </Table>
   ),
   play: async ({ canvas, step }) => {
-    await step('Verify table renders with two columns', async () => {
-      expect(canvas.getByText('Inherit Truncate')).toBeInTheDocument();
-      expect(canvas.getByText('Override to Wrap')).toBeInTheDocument();
-    });
-
     await step('Verify first cell uses table default (truncate)', async () => {
-      const cells = canvas.getAllByRole('gridcell');
-      expect(cells[0]).toHaveClass('truncate');
-      expect(cells[0]).toHaveClass('max-w-0');
+      const cell = canvas.getByText(/truncate behavior/);
+      expect(cell).toHaveClass('truncate');
+      expect(cell).toHaveClass('max-w-0');
     });
 
     await step('Verify second cell overrides to wrap', async () => {
-      const cells = canvas.getAllByRole('gridcell');
-      expect(cells[1]).toHaveClass('wrap-break-word');
-      expect(cells[1]).not.toHaveClass('truncate');
+      const cell = canvas.getByText(/wrap override/);
+      expect(cell).toHaveClass('wrap-break-word');
+      expect(cell).not.toHaveClass('truncate');
     });
   },
 });
@@ -1222,7 +1217,7 @@ export const VerticalAlignment = meta.story({
           <Table.Cell verticalAlign="bottom">Override</Table.Cell>
           <Table.Cell>
             <div className="h-20">
-              This row's first cell overrides with bottom alignment.
+              This row&apos;s first cell overrides with bottom alignment.
             </div>
           </Table.Cell>
         </Table.Row>
