@@ -108,7 +108,7 @@ export const VenuesView = () => {
   return (
     <Table aria-label="Venue List">
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Type</Table.Column>
         <Table.Column>Address</Table.Column>
         <Table.Column align="right">Capacity</Table.Column>

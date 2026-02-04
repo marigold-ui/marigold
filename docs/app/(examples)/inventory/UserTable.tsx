@@ -29,7 +29,7 @@ export const UserTable = () => (
       defaultSelectedKeys={[people[0].id, people[1].id]}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Email</Table.Column>
         <Table.Column>Status</Table.Column>
         <Table.Column>Role</Table.Column>

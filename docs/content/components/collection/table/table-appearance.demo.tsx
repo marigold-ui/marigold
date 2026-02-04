@@ -3,17 +3,45 @@ import type { TableProps } from '@marigold/components';
 import { NumericFormat, Table, Text } from '@marigold/components';
 
 const columns = [
-  { name: 'Venue', key: 'name', width: '1fr', align: 'left' },
-  { name: 'Type', key: 'type', width: '1fr', align: 'left' },
-  { name: 'City', key: 'city', width: '1fr', align: 'left' },
-  { name: 'Capacity', key: 'capacity', width: 100, align: 'right' },
+  {
+    name: 'Venue',
+    key: 'name',
+    width: '1fr',
+    align: 'left',
+    isRowHeader: true,
+  },
+  {
+    name: 'Type',
+    key: 'type',
+    width: '1fr',
+    align: 'left',
+    isRowHeader: false,
+  },
+  {
+    name: 'City',
+    key: 'city',
+    width: '1fr',
+    align: 'left',
+    isRowHeader: false,
+  },
+  {
+    name: 'Capacity',
+    key: 'capacity',
+    width: 100,
+    align: 'right',
+    isRowHeader: false,
+  },
 ] as const;
 
 export default (props: TableProps) => (
   <Table {...props}>
     <Table.Header columns={columns}>
       {column => (
-        <Table.Column width={column.width} align={column.align} isRowHeader>
+        <Table.Column
+          width={column.width}
+          align={column.align}
+          isRowHeader={column.isRowHeader}
+        >
           {column.name}
         </Table.Column>
       )}

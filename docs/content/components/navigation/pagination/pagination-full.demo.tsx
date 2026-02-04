@@ -39,7 +39,7 @@ export default (paginationProps: PaginationProps, tableProps: TableProps) => {
     <Stack alignX="left" space={2}>
       <Table aria-label="label" {...tableProps}>
         <Table.Header>
-          <Table.Column>ID</Table.Column>
+          <Table.Column isRowHeader>ID</Table.Column>
           <Table.Column>Name</Table.Column>
           <Table.Column>Email</Table.Column>
           <Table.Column>Role</Table.Column>

@@ -151,7 +151,7 @@ export const Basic = meta.story({
   render: args => (
     <Table aria-label="label" {...args}>
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
@@ -335,7 +335,9 @@ export const WidthsAndOverflow = meta.story({
             overflow={overflow}
           >
             <Table.Header>
-              <Table.Column width={40}>ID</Table.Column>
+              <Table.Column width={40} isRowHeader>
+                ID
+              </Table.Column>
               <Table.Column minWidth={100}>Name</Table.Column>
               <Table.Column width={100}>Status</Table.Column>
               <Table.Column minWidth={100}>Location</Table.Column>
@@ -429,7 +431,7 @@ export const Empty = meta.story({
   render: args => (
     <Table aria-label="Example table for nested columns" {...args}>
       <Table.Header>
-        <Table.Column>First Name</Table.Column>
+        <Table.Column isRowHeader>First Name</Table.Column>
         <Table.Column>Last Name</Table.Column>
         <Table.Column>Age</Table.Column>
         <Table.Column>Birthday</Table.Column>
@@ -669,7 +671,7 @@ export const WithActions = meta.story({
   render: args => (
     <Table aria-label="Table with actions" {...args}>
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
@@ -793,7 +795,7 @@ export const ScrollableAndSticky = meta.story({
         <Scrollable height="400px">
           <Table aria-label="Todos Table" selectionMode="multiple" {...args}>
             <Table.Header sticky>
-              <Table.Column>ID</Table.Column>
+              <Table.Column isRowHeader>ID</Table.Column>
               <Table.Column>Title</Table.Column>
               <Table.Column>User</Table.Column>
               <Table.Column>Completed</Table.Column>
@@ -844,7 +846,7 @@ export const Links = meta.story({
     return (
       <Table aria-label="Table with links" {...args}>
         <Table.Header>
-          <Table.Column>Name</Table.Column>
+          <Table.Column isRowHeader>Name</Table.Column>
           <Table.Column>Description</Table.Column>
           <Table.Column>URL</Table.Column>
         </Table.Header>
@@ -1005,7 +1007,7 @@ export const AllowTextSelection = meta.story({
           allowTextSelection={allowTextSelection}
         >
           <Table.Header>
-            <Table.Column>Name</Table.Column>
+            <Table.Column isRowHeader>Name</Table.Column>
             <Table.Column>Email</Table.Column>
             <Table.Column>Location</Table.Column>
             <Table.Column>Status</Table.Column>
@@ -1093,7 +1095,7 @@ export const EditableCell = meta.story({
     return (
       <Table aria-label="Editable table" {...args}>
         <Table.Header>
-          <Table.Column>Name</Table.Column>
+          <Table.Column isRowHeader>Name</Table.Column>
           <Table.Column>Email</Table.Column>
           <Table.Column>Location</Table.Column>
           <Table.Column>Status</Table.Column>
@@ -1161,7 +1163,7 @@ export const CellOverrideTableTruncate = meta.story({
   render: args => (
     <Table aria-label="Table with truncate default" {...args}>
       <Table.Header>
-        <Table.Column>Inherit Truncate</Table.Column>
+        <Table.Column isRowHeader>Inherit Truncate</Table.Column>
         <Table.Column>Override to Wrap</Table.Column>
       </Table.Header>
       <Table.Body>
@@ -1203,7 +1205,7 @@ export const VerticalAlignment = meta.story({
   render: args => (
     <Table aria-label="Table with vertical alignment" {...args}>
       <Table.Header>
-        <Table.Column>Item</Table.Column>
+        <Table.Column isRowHeader>Item</Table.Column>
         <Table.Column>Description</Table.Column>
       </Table.Header>
       <Table.Body>

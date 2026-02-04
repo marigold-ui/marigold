@@ -166,7 +166,7 @@ export const Basic = meta.story({
   render: args => (
     <Table aria-label="label" {...args}>
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
@@ -273,9 +273,9 @@ export const NestedColumns = meta.story({
   render: args => (
     <Table aria-label="Example table for nested columns" {...args}>
       <Table.Header>
-        <Table.Column title="Name">
-          <Table.Column isRowHeader>First Name</Table.Column>
-          <Table.Column isRowHeader>Last Name</Table.Column>
+        <Table.Column title="Name" isRowHeader>
+          <Table.Column>First Name</Table.Column>
+          <Table.Column>Last Name</Table.Column>
         </Table.Column>
         <Table.Column title="Information">
           <Table.Column>Age</Table.Column>

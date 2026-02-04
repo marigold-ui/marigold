@@ -222,6 +222,7 @@ export const WithScrollableContent = meta.story({
                       width={
                         index === tableHeaders.length - 1 ? 'full' : 'auto'
                       }
+                      isRowHeader={index === 0}
                       key={index}
                     >
                       {header}

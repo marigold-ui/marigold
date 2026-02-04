@@ -67,9 +67,9 @@ export default () => (
       </Stack>
     </Tabs.TabPanel>
     <Tabs.TabPanel id="events">
-      <Table aria-label="Event List" stretch>
+      <Table aria-label="Event List">
         <Table.Header>
-          <Table.Column>Name</Table.Column>
+          <Table.Column isRowHeader>Name</Table.Column>
           <Table.Column>Date</Table.Column>
           <Table.Column>Location</Table.Column>
           <Table.Column>Status</Table.Column>

@@ -3,7 +3,7 @@ import { EmptyState, Table } from '@marigold/components';
 export default () => (
   <Table aria-label="Empty table">
     <Table.Header>
-      <Table.Column>Name</Table.Column>
+      <Table.Column isRowHeader>Name</Table.Column>
       <Table.Column>Email</Table.Column>
       <Table.Column>Status</Table.Column>
     </Table.Header>
