@@ -6,7 +6,7 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     // Standalone
     'not-group-data-trigger/popover:',
     // In a Popover
-    'group-data-trigger/popover:ui-elevation-overlay',
+    'group-data-trigger/popover:shadow-elevation-overlay',
     'group-data-trigger/popover:w-full',
     'group-data-trigger/popover:overflow-hidden',
     // In a Tray

@@ -2,9 +2,9 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Calendar: ThemeComponent<'Calendar'> = {
   calendar: cva([
-    'ui-surface p-2',
+    'ui-surface shadow-elevation-border p-2',
     // In a Popover
-    'group-data-trigger/popover:ui-elevation-overlay',
+    'group-data-trigger/popover:shadow-elevation-overlay',
     // In a Tray
     'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0',
   ]),
