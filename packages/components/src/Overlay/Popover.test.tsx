@@ -1,6 +1,5 @@
 /* eslint-disable testing-library/no-node-access */
 import { screen } from '@testing-library/react';
-import { vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
 import { Basic, OpenPopover } from './Popover.stories';
 

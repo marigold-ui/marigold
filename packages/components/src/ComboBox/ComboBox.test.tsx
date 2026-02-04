@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
 import { Basic } from './ComboBox.stories';
 
