@@ -1,0 +1,596 @@
+---
+title: Development Guidelines
+caption: Comprehensive guidelines for developing in the Marigold Design System repository.
+---
+
+## Overview
+
+This document provides development guidelines for contributors to the Marigold Design System. It covers coding standards, testing practices, commit conventions, and workflow patterns derived from actual project practices.
+
+## Development Environment
+
+### Prerequisites
+
+Read [README](https://github.com/marigold-ui/marigold#local-development) to get started.
+
+### Common Commands
+
+| Command               | Description                           |
+| --------------------- | ------------------------------------- |
+| `pnpm sb`             | Start Storybook at localhost:6006     |
+| `pnpm start`          | Start documentation at localhost:3000 |
+| `pnpm build`          | Build components and themes           |
+| `pnpm test`           | Run all tests                         |
+| `pnpm test:unit`      | Run unit tests only                   |
+| `pnpm test:sb`        | Run Storybook component tests         |
+| `pnpm typecheck:only` | Run TypeScript type checking          |
+| `pnpm lint`           | Run ESLint                            |
+| `pnpm format`         | Format code with Prettier             |
+
+## Coding Standards
+
+### Naming
+
+Try to use names from [Open UI](https://open-ui.org/) for components and their props.
+
+### TypeScript
+
+- Strict typing required - no `any` types, use `unknown` or proper types
+- Use `import type` for type-only imports (better tree-shaking)
+- Use `const` over `let`, never use `var`
+- Prefer `@ts-expect-error` with explanation over `@ts-ignore`
+
+### File Naming
+
+- Component files: `PascalCase` (e.g., `Button.tsx`, `ActionBar.tsx`)
+- Utility files: `camelCase` (e.g., `useTheme.ts`, `useClassNames.ts`)
+- Test files: `<Component>.test.tsx`
+- Story files: `<Component>.stories.tsx`
+
+### File Structure
+
+- Always use named exports, never default exports (better debugging experience)
+- Use interfaces to specify component props
+- General helper functions are in `@marigold/system` (e.g., `useTheme`)
+
+Every component has its own folder containing:
+
+```
+components/src
+├── Button
+│   ├── Button.tsx          # Main component
+│   ├── Button.test.tsx     # Unit tests
+│   └── Button.stories.tsx  # Storybook stories
+├── Menu
+│   ├── ActionMenu.tsx      # Sub-component
+│   ├── Context.ts          # Context for compound components
+│   ├── Menu.tsx            # Main component
+│   ├── Menu.test.tsx
+│   ├── Menu.stories.tsx
+│   ├── MenuItem.tsx        # Child component
+│   ├── MenuSection.tsx
+│   └── MenuTrigger.tsx
+└── index.ts                # Package exports
+```
+
+## Component Development
+
+### Component Release Phases
+
+Components go through three phases: **Alpha**, **Beta**, and **Stable**. See [Release Phases](/getting-started/release-phases) for user-facing documentation.
+
+**For developers:**
+
+| Phase  | Documentation Required              | Test Coverage | API Stability                     |
+| ------ | ----------------------------------- | ------------- | --------------------------------- |
+| Alpha  | Props table + appearance demo only  | Full coverage | Breaking changes expected         |
+| Beta   | Full documentation with limitations | Full coverage | Mostly stable, may change         |
+| Stable | Complete documentation              | Full coverage | Final, deprecation policy applies |
+
+**Marking component phase in docs:**
+
+```mdx
+---
+title: MyComponent
+badge: alpha # or beta, or omit for stable
+---
+```
+
+### Component Naming Conventions
+
+[Compound components](https://www.smashingmagazine.com/2021/08/compound-components-react/) should use dot-notation to imply their relationship and hierarchy:
+
+```tsx
+<Tabs>
+  <Tabs.List>
+    <Tabs.Item id="1">Start</Tabs.Item>
+    <Tabs.Item id="2">Settings</Tabs.Item>
+  </Tabs.List>
+  <Tabs.TabPanel id="1">Start</Tabs.TabPanel>
+  <Tabs.TabPanel id="2">Settings</Tabs.TabPanel>
+</Tabs>
+```
+
+### Wrapping React Aria Components (RAC)
+
+When wrapping RAC components, name the internal component `_Component` and import the RAC component as-is:
+
+```tsx
+import type RAC from 'react-aria-components';
+
+type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
+
+export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
+  variant?: 'primary' | 'secondary' | (string & {});
+  size?: 'default' | 'small' | (string & {});
+  disabled?: RAC.ButtonProps['isDisabled'];
+  loading?: RAC.ButtonProps['isPending'];
+}
+```
+
+Export the component without the underscore: `export { _Component as Component }`
+
+### Props Naming Convention
+
+- Use regular HTML attribute names: `disabled` not `isDisabled`
+- Event handler props should start with `on` (e.g., `onSelectionChange`, `onChange`)
+- Props should have a description (used by props table in documentation)
+
+### Styling with useClassNames
+
+```tsx
+import { cn, useClassNames } from '@marigold/system';
+
+const MyComponent = ({ variant, size, fullWidth }) => {
+  const classNames = useClassNames({
+    component: 'MyComponent',
+    variant,
+    size,
+  });
+
+  return <div className={cn(classNames.container, fullWidth && 'w-full')} />;
+};
+```
+
+## Testing
+
+### Test Framework
+
+- **Vitest** - use `vi.fn()`, `vi.spyOn()`, `vi.mock()`
+
+### Story-Based Testing (Preferred Pattern)
+
+Import stories in test files instead of creating test fixtures:
+
+```tsx
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { expect, test, vi } from 'vitest';
+import { AllSelected, Basic, NoSelection } from './ActionBar.stories';
+
+const user = userEvent.setup();
+
+test('renders ActionBar with selected count', () => {
+  // Arrange
+  render(<Basic.Component />);
+
+  // Act
+  const count = screen.getByText('3 selected');
+
+  // Assert
+  expect(count).toBeInTheDocument();
+});
+
+test('calls handler when button is clicked', async () => {
+  // Arrange
+  const onClearSelection = vi.fn();
+  render(<Basic.Component onClearSelection={onClearSelection} />);
+
+  // Act
+  await user.click(screen.getByRole('button', { name: /clear/i }));
+
+  // Assert
+  expect(onClearSelection).toHaveBeenCalledTimes(1);
+});
+```
+
+### Test Structure (AAA Pattern)
+
+Use the **Arrange, Act, Assert** pattern. Each section should be a separate block with blank lines for readability:
+
+```typescript
+test('has the correct role', () => {
+  // Arrange
+  render(<Basic.Component />);
+
+  // Act
+  const pagination = screen.getByRole('navigation');
+
+  // Assert
+  expect(pagination).toBeInTheDocument();
+});
+```
+
+If you find tests where assertions are mixed in, consider:
+
+- Remove the intermediate asserts if unnecessary
+- Split into separate tests
+
+### Component Tests in Stories (Play Functions)
+
+Component tests simulate user behavior (clicking, tabbing, typing). Add `play` functions to stories:
+
+```tsx
+import { expect, fn, userEvent } from 'storybook/test';
+import preview from '.storybook/preview';
+
+const meta = preview.meta({
+  title: 'Components/ActionBar',
+  component: ActionBar,
+  args: {
+    onClearSelection: fn(),
+  },
+});
+
+export const Basic = meta.story({
+  tags: ['component-test'], // Required for test runner
+  render: args => <ActionBar {...args} selectedItemCount={3} />,
+  play: async ({ args, canvas }) => {
+    await expect(canvas.getByText('3 selected')).toBeInTheDocument();
+
+    const clearButton = canvas.getByRole('button', { name: /clear/i });
+    await userEvent.click(clearButton);
+
+    await expect(args.onClearSelection).toHaveBeenCalled();
+  },
+});
+```
+
+**Key points:**
+
+- Tag with `component-test` to run in the pipeline
+- Replace `screen` with `canvas`
+- Import `expect`, `userEvent` from `storybook/test`
+
+### Testing Overlay Components
+
+For components using portals (Dialog, Select, Tooltip, Drawer), use `renderWithOverlay`:
+
+```tsx
+import { renderWithOverlay } from '../test.utils';
+import { Basic } from './Dialog.stories';
+
+test('renders dialog', () => {
+  renderWithOverlay(<Basic.Component />);
+  // assertions...
+});
+```
+
+### Testing Style Application
+
+Use `toHaveClass` for specific style assertions, or `toMatchInlineSnapshot` for className testing:
+
+```tsx
+test('accepts a variant with parts', () => {
+  render(<SectionMessage data-testid="messages" variant="warning" />);
+
+  const container = screen.getByTestId('messages');
+
+  expect(container.className).toMatchInlineSnapshot(
+    `"grid auto-rows-min text-orange-700"`
+  );
+});
+```
+
+### Testing Rules
+
+| Do                                                    | Don't                             |
+| ----------------------------------------------------- | --------------------------------- |
+| Use `userEvent` from `@testing-library/user-event`    | Use `fireEvent`                   |
+| Use accessible queries: `getByRole`, `getByLabelText` | Use `getByTestId` as first choice |
+| Import stories for test fixtures                      | Create inline themes in tests     |
+| Use AAA pattern with blank lines                      | Mix assertions throughout         |
+
+## Writing Stories
+
+### Story Structure
+
+```tsx
+import { fn } from 'storybook/test';
+import preview from '.storybook/preview';
+import { MyComponent } from './MyComponent';
+
+const meta = preview.meta({
+  title: 'Components/MyComponent',
+  component: MyComponent, // Makes basic version available by default
+  argTypes: {
+    variant: {
+      control: { type: 'radio' },
+      options: ['primary', 'secondary'],
+      description: 'The visual style variant',
+    },
+  },
+  args: {
+    onPress: fn(), // Default values go here, not in argTypes
+  },
+});
+
+export const Basic = meta.story({
+  tags: ['component-test'],
+  render: args => <MyComponent {...args}>Click me</MyComponent>,
+});
+
+export const Secondary = meta.story({
+  args: {
+    variant: 'secondary',
+  },
+  render: args => <MyComponent {...args}>Secondary</MyComponent>,
+});
+```
+
+### Story Guidelines
+
+- Show the most basic use case first (using defaults)
+- Add known use cases from applications
+- Expose available props as `meta.argTypes` with specific controls
+- Use `fn()` from `storybook/test` for callback props
+- Add `tags: ['component-test']` for stories that should run as tests
+
+### Reducing Boilerplate
+
+1. For required props without defaults, configure in `args: {}`
+2. For story-specific args:
+
+```tsx
+export const OnePage: Story = {
+  args: {
+    totalItems: 10,
+    pageSize: 10,
+  },
+};
+```
+
+### Args Positioning
+
+Only put `{...args}` to ensure story controls work correctly:
+
+```tsx
+// Correct - placeholder can be overridden by overriding args
+args: {
+  placeholder: 'Overriden'
+},
+render: args => <Autocomplete {...args}>
+
+// Wrong - placeholder will always override args so control doesn't work anymore
+render: args => <Autocomplete {...args} placeholder="Movie" >
+```
+
+### argTypes - No defaultValue
+
+`defaultValue` in argTypes is deprecated. Use `args` in meta instead:
+
+```tsx
+// Wrong
+argTypes: {
+  errorMessage: {
+    defaultValue: 'Something went wrong', // deprecated
+  },
+}
+
+// Correct
+args: {
+  errorMessage: 'Something went wrong',
+}
+```
+
+## Git Workflow
+
+### Branch Strategy
+
+- Branch from `main`
+- Use descriptive branch names - put jira ticket id in front of it if there, e.g. `<jira ticket id>_<short descriptive branch name>` <br/>
+  `DST-1184_add-name-prop-to-filefield` (There should be always a jira ticket)
+
+### Commit Message Format
+
+[\<jira ticket id\>]: \<summary of changes\>
+
+**DON'T** have totally useless messages like uh, ah, save...
+
+### Pull Request Title Format
+
+```
+<type>[<jira ticket id>]: <Title>
+```
+
+| Type     | When to use                          |
+| -------- | ------------------------------------ |
+| `feat`   | New features or components           |
+| `fix`    | Bug fixes                            |
+| `hotfix` | Hot fixes                            |
+| `docs`   | Documentation changes                |
+| `chore`  | Infrastructure or dependency updates |
+| `refa`   | Refactoring                          |
+| `style`  | Changes only in theme packages       |
+
+**Examples:**
+
+```
+feat[DST-1184]: Add `name` prop to `FileField`
+fix[Checkbox]: Correctly apply focus styling on checkboxes
+chore[deps]: update dependency @tanstack/react-query to v5.90.20
+docs: Fix typo in `Style.stories.tsx`
+test: Use `userEvent` instead of `fireEvent` to make tests more stable
+[DST-1187]: Migrate test files to story-based approach
+```
+
+### Changesets
+
+Changesets is a tool for managing versioning and changelogs in our monorepo. It automates the release process by tracking changes across packages and generating changelogs that appear in our documentation.
+
+**Create a changeset:**
+
+```bash
+pnpm changeset
+```
+
+**Changeset title format:**
+
+```
+<type>[<jira ticket id>]: <description>
+```
+
+| Type     | When to use                          |
+| -------- | ------------------------------------ |
+| `feat`   | New features or components           |
+| `fix`    | Bug fixes                            |
+| `hotfix` | Hot fixes                            |
+| `docs`   | Documentation changes                |
+| `chore`  | Infrastructure or dependency updates |
+| `refa`   | Refactoring                          |
+| `style`  | Changes only in theme packages       |
+
+**Writing the description:**
+
+- Write 1-4 sentences about the pull request
+- Explain what was improved, what changed, or why certain decisions were made
+- Mark breaking changes with **bold uppercase text**
+- Always use backticks around angle brackets in code references (e.g., `<ActionBar>`)
+
+**Example changeset:**
+
+```md
+---
+'@marigold/components': patch
+'@marigold/theme-rui': patch
+---
+
+feat([DST-123]): Added user authentication module
+
+We have implemented a new user authentication feature using JWT tokens
+to improve security and streamline login processes. This includes new
+components for handling login forms and token management.
+
+**BREAKING CHANGE**: Updated API routes for user authentication now require JWT tokens.
+```
+
+| Type    | When to use                        |
+| ------- | ---------------------------------- |
+| `patch` | Bug fixes, minor improvements      |
+| `minor` | New features (backward compatible) |
+| `major` | Breaking changes                   |
+
+## Styling
+
+### Exposing className on UI Components
+
+We don't expose the `className` prop on any of our components to:
+
+- Prevent entropy in designs
+- Prevent developers from accidentally using styles not part of the design system
+
+```tsx
+type RemovedProps = 'className';
+
+export interface ComponentProps extends Omit<RAC.ComponentProp, RemovedProps> {}
+```
+
+<SectionMessage variant="info">
+  <SectionMessage.Title>Escape hatch</SectionMessage.Title>
+  <SectionMessage.Content>
+Use a regular `<div>` (or any other HTML element) and add available classes from our theme.
+  </SectionMessage.Content>
+</SectionMessage>
+
+### Themable Components
+
+UI Components has individually styleable parts.
+
+- Every visible part must accept a `className` for styling
+- Components can have default `className` values overridable by theme
+- Implementation-only parts (e.g., hidden checkbox inputs for a11y) can have hardcoded `className`
+- For multi-part components, the outermost slot is called `container`
+
+### Theme Structure
+
+Components with multiple parts use slots:
+
+```tsx
+const Input: ThemeComponent<'Input'> = {
+  icon: cva('left-2'),
+  action: cva('right-0'),
+  input: cva(['leading-2', 'read-only:focus:border-border-light']),
+};
+```
+
+Use `cva` with variants and defaultVariants:
+
+```tsx
+export const Select: ThemeComponent<'Select'> = {
+  icon: cva('text-secondary-400', {
+    variants: {
+      variant: {
+        default: '',
+        floating: 'justify-self-end',
+      },
+      size: {
+        default: '',
+        small: 'size-3',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }),
+};
+```
+
+## Quality Checklist
+
+Before submitting a PR:
+
+- Run `pnpm typecheck:only` - no type errors
+- Run `pnpm lint` - no linting errors
+- Run `pnpm format` - code is formatted
+- Run `pnpm test` - all tests pass
+- Run `pnpm test:coverage` - check if changes are well tested
+- Tests follow story-based pattern and AAA structure
+- Stories have proper argTypes and component-test tags where needed
+- Create changeset if package versions need updating
+- Documentation updated if API changed
+
+## Do Not
+
+### Code
+
+- Don't use `any` type - use proper types or `unknown`
+- Don't expose `className` or `style` props on components
+- Don't use class components - use functional components with hooks
+- Don't import CSS files - use Tailwind utilities
+- Don't use npm or yarn - only pnpm is supported
+- Don't write inline styles
+
+### Testing
+
+- Don't use `fireEvent` - use `userEvent`
+- Don't use Jest APIs - use Vitest equivalents
+- Don't create test fixtures/themes - import stories instead
+- Don't rely on `getByTestId` - prefer accessible queries
+- Don't import from `dist/` - import from source packages
+- Don't mix assertions throughout tests - use AAA pattern
+
+### Git
+
+- Don't skip pre-commit hooks without explicit reason
+- Don't force push to main/master
+- Don't commit without a changeset for version-worthy changes
+
+## Resources
+
+- [Storybook - Marigold](https://marigold-latest.vercel.app/)
+- [Documentation](https://www.marigold-ui.io/)
+- [React Aria Components](https://react-spectrum.adobe.com/react-aria/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Open UI](https://open-ui.org/)
+- [Storybook](https://storybook.js.org/docs)
