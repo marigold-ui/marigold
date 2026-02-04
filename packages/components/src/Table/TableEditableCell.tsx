@@ -26,11 +26,8 @@ export interface TableEditableCellProps {
    */
   children: ReactNode;
   /**
-   * Form field shown when editing the cell. Make sure fields have a
-   * "name" attribute to allow form data extraction via when submited.
-   *
-   * The field is automatically wrapped in a form and shown in a popover (desktop)
-   * or dialog (mobile). Submission is handled via `onSubmit` or `action`.
+   * Form field shown when editing. Must include `name` attribute for form data.
+   * Supports input elements like TextField, Select, etc.
    */
   field: ReactNode | (() => ReactNode);
   /**
