@@ -282,14 +282,21 @@ test('accepts a variant with parts', () => {
 });
 ```
 
+### VRT - Visual Regression Tests
+
+We use chromatic for visual regression testing. They should always run when touching the UI of components.
+
+To run these use either `ui` in your branch name or trigger it via Actions - Visual-Regression-Tests in github.
+
 ### Testing Rules
 
-| Do                                                    | Don't                             |
-| ----------------------------------------------------- | --------------------------------- |
-| Use `userEvent` from `@testing-library/user-event`    | Use `fireEvent`                   |
-| Use accessible queries: `getByRole`, `getByLabelText` | Use `getByTestId` as first choice |
-| Import stories for test fixtures                      | Create inline themes in tests     |
-| Use AAA pattern with blank lines                      | Mix assertions throughout         |
+| Do                                                    | Don't                                    |
+| ----------------------------------------------------- | ---------------------------------------- |
+| Use `userEvent` from `@testing-library/user-event`    | Use `fireEvent`                          |
+| Use accessible queries: `getByRole`, `getByLabelText` | Use `getByTestId` as first choice        |
+| Import stories for test fixtures                      | Create inline themes in tests            |
+| Use AAA pattern with blank lines                      | Mix assertions throughout                |
+| Run VRT when you changed the appearance of components | Run VRT when no visual changes were made |
 
 ## Writing Stories
 
