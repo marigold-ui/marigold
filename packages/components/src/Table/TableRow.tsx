@@ -1,4 +1,3 @@
-import { GripVertical } from 'lucide-react';
 import type RAC from 'react-aria-components';
 import {
   Button,
@@ -9,6 +8,7 @@ import {
 } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
+import { GripVertical } from '../icons/GripVertical';
 import { useTableContext } from './Context';
 
 type RemovedProps = 'className' | 'style';
