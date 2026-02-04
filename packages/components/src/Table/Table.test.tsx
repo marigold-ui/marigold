@@ -154,7 +154,6 @@ describe('Props and Variants', () => {
   });
 
   test('applies overflow prop to cells', () => {
-    // WidthsAndOverflow story has a switch to toggle between wrap and truncate
     render(<WidthsAndOverflow.Component />);
 
     const cells = screen.getAllByRole('gridcell');
@@ -179,7 +178,6 @@ describe('Props and Variants', () => {
   });
 
   test('defaults to middle vertical alignment', () => {
-    // Basic story doesn't set verticalAlign, should default to middle
     render(<Basic.Component />);
 
     const cell = screen.getAllByRole('gridcell')[0];
@@ -187,11 +185,10 @@ describe('Props and Variants', () => {
   });
 
   test('cell-level verticalAlign overrides table-level', () => {
-    // VerticalAlignment story has table verticalAlign="top" but second row first cell has verticalAlign="bottom"
     render(<VerticalAlignment.Component />);
 
     const cells = screen.getAllByRole('gridcell');
-    // Second row first cell (index 2) should have align-bottom override
+
     expect(cells[2]).toHaveClass('align-bottom');
     expect(cells[2]).not.toHaveClass('align-top');
   });
@@ -206,7 +203,6 @@ describe('Accessibility', () => {
   });
 
   test('renders with selection mode multiple', () => {
-    // DynamicData story has selectionMode="multiple"
     render(<DynamicData.Component />);
 
     const checkboxes = screen.getAllByRole('checkbox');
@@ -254,7 +250,6 @@ describe('Sticky Header', () => {
   });
 
   test('header without sticky prop does not have sticky class', () => {
-    // Basic story does not have sticky header
     render(<Basic.Component />);
 
     const columnHeader = screen.getByRole('columnheader', { name: 'Name' });
@@ -407,7 +402,6 @@ describe('EditableCell', () => {
     render(<EditableCell.Component />);
 
     const editButtons = screen.getAllByLabelText('Edit');
-    // Status is the third editable cell (index 2 since location is not editable)
     await user.click(editButtons[2]);
 
     await waitFor(() => {
@@ -564,7 +558,6 @@ describe('TableDropIndicator Integration', () => {
   test('table uses renderDropIndicator for drag and drop', () => {
     render(<DragAndDrop.Component />);
 
-    // Verify the table has drag and drop functionality
     const rows = screen.getAllByRole('row');
     const dataRows = rows.slice(1); // Skip header row
     expect(dataRows[0]).toHaveAttribute('draggable', 'true');
