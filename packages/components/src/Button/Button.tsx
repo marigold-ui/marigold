@@ -8,9 +8,6 @@ import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 type RemovedProps = 'isDisabled' | 'isPending' | 'className' | 'style';
 
 export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
-  /**
-   * @internal
-   */
   variant?:
     | 'primary'
     | 'secondary'

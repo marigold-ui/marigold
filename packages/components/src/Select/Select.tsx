@@ -27,11 +27,14 @@ type RemovedProps =
 export interface SelectProps<
   T extends object,
   M extends SelectionMode = 'single',
->
-  extends Omit<RAC.SelectProps<T, M>, RemovedProps>, WidthProp {
+> extends Omit<RAC.SelectProps<T, M>, RemovedProps> {
   variant?: string;
   size?: string;
 
+  /**
+   * @remarks `WidthProp`
+   */
+  width?: WidthProp['width'];
   /**
    * Children of the select.
    */

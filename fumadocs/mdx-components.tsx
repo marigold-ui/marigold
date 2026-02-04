@@ -24,8 +24,9 @@ export const getMDXComponents = (components?: MDXComponents): MDXComponents => {
     }) => {
       // Auto resolve component names to their file paths
       // If path is just a component name (e.g., "Button"), resolve to "Button/Button.tsx"
+      // If path contains / (e.g., "Radio/RadioGroup"), append .tsx to the last segment
       const resolvedPath = props.path?.includes('/')
-        ? props.path
+        ? `${props.path}.tsx`
         : props.path
           ? `${props.path}/${props.path}.tsx`
           : undefined;

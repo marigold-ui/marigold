@@ -12,6 +12,7 @@
     "registry:build": "node scripts/build-registry.mjs"
   },
   "dependencies": {
+    "@internationalized/date": "^3.10.1",
     "@tanstack/react-query": "^5.62.0",
     "dayjs": "^1.11.13",
     "react-use": "^17.6.0",
