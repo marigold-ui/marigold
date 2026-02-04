@@ -20,11 +20,12 @@ window.matchMedia = mockMatchMedia();
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva(),
-    CloseButton: cva('size-5'),
+    Button: cva({}),
+    CloseButton: cva({ base: 'size-5' }),
     Drawer: {
-      overlay: cva(),
-      container: cva('p-5', {
+      overlay: cva({}),
+      container: cva({
+        base: 'p-5',
         variants: {
           variant: {
             custom: 'bg-green-400',
@@ -34,20 +35,21 @@ const theme: Theme = {
           },
         },
       }),
-      closeButton: cva('p-1', {
+      closeButton: cva({
+        base: 'p-1',
         variants: {
           variant: {
             custom: 'bg-black',
           },
         },
       }),
-      header: cva(),
-      title: cva(),
-      content: cva(),
-      actions: cva(),
+      header: cva({}),
+      title: cva({}),
+      content: cva({}),
+      actions: cva({}),
     },
-    Underlay: cva(),
-    Modal: cva(),
+    Underlay: cva({}),
+    Modal: cva({}),
   },
 };
 

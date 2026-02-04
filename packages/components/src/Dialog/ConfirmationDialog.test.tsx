@@ -10,10 +10,11 @@ import { ConfirmationDialog } from './ConfirmationDialog';
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva(''),
-    CloseButton: cva('size-7'),
+    Button: cva({}),
+    CloseButton: cva({ base: 'size-7' }),
     Dialog: {
-      container: cva('p-5', {
+      container: cva({
+        base: 'p-5',
         variants: {
           variant: {
             custom: 'bg-green-400',
@@ -23,21 +24,22 @@ const theme: Theme = {
           },
         },
       }),
-      closeButton: cva('p-1', {
+      closeButton: cva({
+        base: 'p-1',
         variants: {
           variant: {
             custom: 'bg-black',
           },
         },
       }),
-      header: cva(''),
-      content: cva(''),
-      actions: cva(''),
-      title: cva(''),
+      header: cva({}),
+      content: cva({}),
+      actions: cva({}),
+      title: cva({}),
     },
-    Headline: cva(''),
-    Underlay: cva('bg-black opacity-5'),
-    Modal: cva(''),
+    Headline: cva({}),
+    Underlay: cva({ base: 'bg-black opacity-5' }),
+    Modal: cva({}),
   },
 };
 

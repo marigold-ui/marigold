@@ -5,7 +5,8 @@ import { Label } from './Label';
 const theme: Theme = {
   name: 'test',
   components: {
-    Label: cva('', {
+    Label: cva({
+      base: '',
       variants: {
         variant: {
           lime: 'text-lime-600',

@@ -5,7 +5,8 @@ import { Divider } from './Divider';
 const theme: Theme = {
   name: 'test',
   components: {
-    Divider: cva('m-1', {
+    Divider: cva({
+      base: 'm-1',
       variants: {
         variant: {
           bold: 'm-2',

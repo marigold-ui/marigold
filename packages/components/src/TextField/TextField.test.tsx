@@ -10,8 +10,9 @@ import { TextField } from './TextField';
 const theme: Theme = {
   name: 'test',
   components: {
-    Field: cva(),
-    Label: cva('', {
+    Field: cva({}),
+    Label: cva({
+      base: '',
       variants: {
         variant: {
           lime: 'text-lime-600',
@@ -22,7 +23,8 @@ const theme: Theme = {
       },
     }),
     HelpText: {
-      container: cva('', {
+      container: cva({
+        base: '',
         variants: {
           variant: {
             lime: 'text-lime-600',
@@ -32,14 +34,15 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva(''),
+      icon: cva({ base: '' }),
     },
     Input: {
-      input: cva('border-blue-700'),
-      icon: cva(),
-      action: cva(),
+      input: cva({ base: 'border-blue-700' }),
+      icon: cva({}),
+      action: cva({}),
     },
-    Button: cva('align-center flex disabled:bg-gray-600', {
+    Button: cva({
+      base: 'align-center flex disabled:bg-gray-600',
       variants: {
         variant: {
           primary: 'text-primary-500',

@@ -10,15 +10,16 @@ const theme: Theme = {
   name: 'NumberField testing',
   components: {
     NumberField: {
-      group: cva('rounded-xs border border-solid border-black'),
-      stepper: cva('w-3.5 text-green-600'),
-      input: cva(),
+      group: cva({ base: 'rounded-xs border border-solid border-black' }),
+      stepper: cva({ base: 'w-3.5 text-green-600' }),
+      input: cva({}),
     },
 
-    Field: cva(''),
-    Label: cva(),
+    Field: cva({}),
+    Label: cva({}),
     HelpText: {
-      container: cva('', {
+      container: cva({
+        base: '',
         variants: {
           variant: {
             lime: 'text-lime-600',
@@ -28,12 +29,12 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva(''),
+      icon: cva({}),
     },
     Input: {
-      action: cva(),
-      icon: cva(),
-      input: cva(),
+      action: cva({}),
+      icon: cva({}),
+      input: cva({}),
     },
   },
 };

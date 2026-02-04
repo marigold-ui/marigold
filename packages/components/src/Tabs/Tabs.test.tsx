@@ -10,23 +10,21 @@ const theme: Theme = {
   name: 'tabs test',
   components: {
     Tabs: {
-      container: cva('flex'),
-      tabpanel: cva('border-3 border-solid border-red-400'),
-      tabsList: cva('mb-[10px]'),
-      tab: cva(
-        [
+      container: cva({ base: 'flex' }),
+      tabpanel: cva({ base: 'border-3 border-solid border-red-400' }),
+      tabsList: cva({ base: 'mb-[10px]' }),
+      tab: cva({
+        base: [
           'selected:border-red-500  selected:border-b-8  selected:border-solid ',
         ],
-        {
-          variants: {
-            size: {
-              small: 'px-1 pb-1',
-              medium: 'px-2 pb-2 text-lg',
-              large: 'px-4 pb-4 text-2xl',
-            },
+        variants: {
+          size: {
+            small: 'px-1 pb-1',
+            medium: 'px-2 pb-2 text-lg',
+            large: 'px-4 pb-4 text-2xl',
           },
-        }
-      ),
+        },
+      }),
     },
   },
 };

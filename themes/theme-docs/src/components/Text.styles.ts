@@ -1,6 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Text: ThemeComponent<'Text'> = cva('leading-7', {
+export const Text: ThemeComponent<'Text'> = cva({
+  base: 'leading-7',
   variants: {
     variant: {
       lead: 'text-muted-foreground text-xl',

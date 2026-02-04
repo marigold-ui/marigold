@@ -5,7 +5,8 @@ import { Underlay } from './Underlay';
 const theme: Theme = {
   name: 'test',
   components: {
-    Underlay: cva('flex', {
+    Underlay: cva({
+      base: 'flex',
       variants: {
         variant: {
           one: 'bg-pink-600',

@@ -7,7 +7,8 @@ const theme: Theme = {
   name: 'test',
   components: {
     Input: {
-      input: cva('border-blue-700', {
+      input: cva({
+        base: 'border-blue-700',
         variants: {
           variant: {
             yellow: 'bg-yellow-300',
@@ -17,8 +18,8 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva('size-4'),
-      action: cva('bg-slate-400'),
+      icon: cva({ base: 'size-4' }),
+      action: cva({ base: 'bg-slate-400' }),
     },
   },
 };

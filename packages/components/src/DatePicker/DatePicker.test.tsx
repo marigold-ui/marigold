@@ -25,31 +25,32 @@ const getTextValue = (el: HTMLElement): any => {
 const theme: Theme = {
   name: 'date picker test',
   components: {
-    DatePicker: cva(''),
+    DatePicker: cva({}),
     DateField: {
-      input: cva(''),
-      action: cva(''),
-      field: cva(''),
-      segment: cva(''),
+      input: cva({}),
+      action: cva({}),
+      field: cva({}),
+      segment: cva({}),
     },
-    Field: cva(''),
-    Label: cva(''),
-    Button: cva(''),
-    Underlay: cva(''),
+    Field: cva({}),
+    Label: cva({}),
+    Button: cva({}),
+    Underlay: cva({}),
     Calendar: {
-      calendar: cva(''),
-      calendarListboxButton: cva(''),
-      calendarCell: cva(''),
-      calendarControllers: cva(''),
-      calendarHeader: cva(''),
-      calendarGrid: cva(''),
-      select: cva(''),
+      calendar: cva({}),
+      calendarListboxButton: cva({}),
+      calendarCell: cva({}),
+      calendarControllers: cva({}),
+      calendarHeader: cva({}),
+      calendarGrid: cva({}),
+      select: cva({}),
     },
     Select: {
-      icon: cva(''),
-      select: cva(''),
+      icon: cva({}),
+      select: cva({}),
     },
-    Popover: cva(['mt-0.5'], {
+    Popover: cva({
+      base: ['mt-0.5'],
       variants: {
         variant: {
           top: ['mb-0.5'],
@@ -57,10 +58,10 @@ const theme: Theme = {
       },
     }),
     HelpText: {
-      container: cva(),
-      icon: cva(),
+      container: cva({}),
+      icon: cva({}),
     },
-    IconButton: cva(''),
+    IconButton: cva({}),
   },
 };
 

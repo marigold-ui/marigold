@@ -9,9 +9,10 @@ const user = userEvent.setup();
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva(''),
+    Button: cva({ base: '' }),
     Tooltip: {
-      container: cva('text-body bg-green-500', {
+      container: cva({
+        base: 'text-body bg-green-500',
         variants: {
           variant: {
             lime: 'bg-lime-300',
@@ -21,7 +22,8 @@ const theme: Theme = {
           },
         },
       }),
-      arrow: cva('border-gray-700', {
+      arrow: cva({
+        base: 'border-gray-700',
         variants: {
           variant: {
             lime: 'border-lime-400',

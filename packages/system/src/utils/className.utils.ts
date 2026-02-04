@@ -1,14 +1,29 @@
-import { cva as _cva, cx } from 'class-variance-authority';
-import {
-  ClassProp,
-  ClassValue,
-  StringToBoolean,
-} from 'class-variance-authority/dist/types';
+import { type VariantProps, cva as _cva, cx } from 'cva';
 import { twMerge } from 'tailwind-merge';
 
-export type { ClassValue };
-export type { VariantProps } from 'class-variance-authority';
+// Re-export core types from cva
+export type { VariantProps };
 
+// ClassValue type - basic structure for class inputs
+export type ClassValue =
+  | ClassArray
+  | ClassDictionary
+  | string
+  | number
+  | bigint
+  | null
+  | boolean
+  | undefined;
+export type ClassDictionary = Record<string, any>;
+export type ClassArray = ClassValue[];
+
+// ClassProp type for components that accept className
+export type ClassProp = { className?: ClassValue; class?: ClassValue };
+
+// StringToBoolean helper type
+export type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
+
+// Config types for variant schema
 export type ConfigSchema = Record<string, Record<string, ClassValue>>;
 export type ConfigVariants<T extends ConfigSchema> = {
   [Variant in keyof T]?: StringToBoolean<keyof T[Variant]> | null | undefined;
@@ -19,23 +34,26 @@ export type ConfigVariantsMulti<T extends ConfigSchema> = {
     | StringToBoolean<keyof T[Variant]>[]
     | undefined;
 };
-export type Config<T> = T extends ConfigSchema
-  ? {
-      variants?: T;
-      defaultVariants?: ConfigVariants<T>;
-      compoundVariants?: (T extends ConfigSchema
-        ? (ConfigVariants<T> | ConfigVariantsMulti<T>) & ClassProp
-        : ClassProp)[];
-    }
-  : never;
+
+// New config interface matching cva beta API
+export interface CvaConfig<T extends ConfigSchema = ConfigSchema> {
+  base?: ClassValue;
+  variants?: T;
+  defaultVariants?: ConfigVariants<T>;
+  compoundVariants?: ((ConfigVariants<T> | ConfigVariantsMulti<T>) &
+    ClassProp)[];
+}
+
+export type Config<T> = T extends ConfigSchema ? CvaConfig<T> : never;
 
 export type Props<T> = T extends ConfigSchema
   ? ConfigVariants<T> & ClassProp
   : ClassProp;
 
-export const cva = <T>(base?: ClassValue, config?: Config<T>) => {
+// Updated CVA wrapper with new signature
+export const cva = <T extends ConfigSchema>(config?: CvaConfig<T>) => {
   function styles(props?: Props<T>) {
-    return twMerge(_cva(base, config)(props));
+    return twMerge(_cva(config as any)(props as any));
   }
   styles.variants = config?.variants;
 

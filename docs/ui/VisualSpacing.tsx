@@ -3,7 +3,8 @@ import type { Scale, SpacingTokens } from '@marigold/system';
 import { cn, createVar, cva } from '@marigold/system';
 
 const classNames = {
-  container: cva(['relative bg-pink-100'], {
+  container: cva({
+    base: ['relative bg-pink-100'],
     variants: {
       orientation: {
         horizontal: ['-mx-(--space) w-(--space) h-full'],
@@ -11,7 +12,8 @@ const classNames = {
       },
     },
   }),
-  icon: cva(['border-pink-600', 'before:block before:bg-pink-600'], {
+  icon: cva({
+    base: ['border-pink-600', 'before:block before:bg-pink-600'],
     variants: {
       orientation: {
         horizontal: [
@@ -29,20 +31,18 @@ const classNames = {
       },
     },
   }),
-  guide: cva(
-    [
+  guide: cva({
+    base: [
       'absolute flex items-center gap-1',
       'text-xs/1 font-semibold text-pink-600',
     ],
-    {
-      variants: {
-        orientation: {
-          horizontal: ['flex-col', 'left-0 right-0 top-full mt-1.5'],
-          vertical: ['top-1/2 -translate-y-1/2 left-full ml-1.5'],
-        },
+    variants: {
+      orientation: {
+        horizontal: ['flex-col', 'left-0 right-0 top-full mt-1.5'],
+        vertical: ['top-1/2 -translate-y-1/2 left-full ml-1.5'],
       },
-    }
-  ),
+    },
+  }),
 };
 
 export interface VisualSpacingProps {
@@ -78,66 +78,39 @@ export interface VisualInsetProps {
   name: string;
   spaceX: Scale;
   spaceY: Scale;
+  children: PropsWithChildren['children'];
 }
 
 export const VisualInset = ({
-  children,
   className,
   name,
   spaceX,
   spaceY,
-}: PropsWithChildren<VisualInsetProps>) => (
-  <div
-    className="size-full"
-    data-hello
-    style={createVar({
-      'space-y': `calc(var(--spacing)*${spaceY})`,
-      'space-x': `calc(var(--spacing)*${spaceX})`,
-    })}
-  >
-    <div
-      className={cn(
-        'size-full overflow-hidden bg-pink-100 px-(--space-x) py-(--space-y)',
-        className
-      )}
-    >
-      <div className="text-secondary-700 grid size-full place-items-center bg-white text-xs font-medium">
-        {children}
+  children,
+}: VisualInsetProps) => (
+  <div className={cn('relative flex w-max items-center', className)}>
+    <div className="p-1">
+      <div className="bg-pink-100">
+        <div className="flex">
+          <VisualSpacing
+            space={spaceX as SpacingTokens}
+            orientation="horizontal"
+          />
+          {children}
+          <VisualSpacing
+            space={spaceX as SpacingTokens}
+            orientation="horizontal"
+          />
+        </div>
+        <div className="relative flex items-center">
+          <VisualSpacing
+            space={spaceY as SpacingTokens}
+            orientation="vertical"
+            hideGuide
+          />
+          <div className="text-xs/1 font-semibold text-pink-600">{name}</div>
+        </div>
       </div>
-    </div>
-    {/* left guide */}
-    <div
-      className={classNames.guide({
-        orientation: 'vertical',
-        className: [
-          'right-full left-auto mr-1.5 ml-0',
-          'top-auto bottom-0 translate-0',
-          'flex-row-reverse',
-        ],
-      })}
-    >
-      <div
-        className={classNames.icon({
-          orientation: 'vertical',
-          className: 'h-(--space-y) before:h-[calc(var(--space-y)-2px)]',
-        })}
-      />
-      {name}
-    </div>
-    {/* bottom guide */}
-    <div
-      className={classNames.guide({
-        orientation: 'horizontal',
-        className: 'items-start',
-      })}
-    >
-      <div
-        className={classNames.icon({
-          orientation: 'horizontal',
-          className: 'w-(--space-x) before:w-[calc(var(--space-x)-2px)]',
-        })}
-      />
-      {name}
     </div>
   </div>
 );

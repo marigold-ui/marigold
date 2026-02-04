@@ -10,8 +10,9 @@ const user = userEvent.setup();
 const theme: Theme = {
   name: 'test',
   components: {
-    Field: cva(),
-    Label: cva('', {
+    Field: cva({}),
+    Label: cva({
+      base: '',
       variants: {
         variant: {
           lime: 'text-lime-600',
@@ -22,7 +23,8 @@ const theme: Theme = {
       },
     }),
     HelpText: {
-      container: cva('', {
+      container: cva({
+        base: '',
         variants: {
           variant: {
             lime: 'text-lime-600',
@@ -32,20 +34,20 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva(''),
+      icon: cva({ base: '' }),
     },
     Input: {
-      input: cva('border-blue-700'),
-      icon: cva(),
-      action: cva(),
+      input: cva({ base: 'border-blue-700' }),
+      icon: cva({}),
+      action: cva({}),
     },
-    Underlay: cva(),
+    Underlay: cva({}),
     ListBox: {
-      container: cva(),
-      list: cva(),
-      item: cva(),
-      section: cva(),
-      header: cva(),
+      container: cva({}),
+      list: cva({}),
+      item: cva({}),
+      section: cva({}),
+      header: cva({}),
     },
   },
 };

@@ -8,9 +8,10 @@ import { SectionMessage } from './SectionMessage';
 const theme: Theme = {
   name: 'test',
   components: {
-    CloseButton: cva('size-4'),
+    CloseButton: cva({ base: 'size-4' }),
     SectionMessage: {
-      container: cva('text-blue-500', {
+      container: cva({
+        base: 'text-blue-500',
         variants: {
           variant: {
             info: 'items-start',
@@ -20,7 +21,8 @@ const theme: Theme = {
           size: { small: 'p-1' },
         },
       }),
-      content: cva('', {
+      content: cva({
+        base: '',
         variants: {
           variant: {
             info: 'text-black',
@@ -30,7 +32,8 @@ const theme: Theme = {
           size: { small: 'p-1' },
         },
       }),
-      title: cva('', {
+      title: cva({
+        base: '',
         variants: {
           variant: {
             warning: 'font-bold',
@@ -38,12 +41,13 @@ const theme: Theme = {
           size: { small: 'p-1' },
         },
       }),
-      icon: cva('', {
+      icon: cva({
+        base: '',
         variants: {
           size: { small: 'p-1' },
         },
       }),
-      close: cva(''),
+      close: cva({ base: '' }),
     },
   },
 };

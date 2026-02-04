@@ -7,7 +7,8 @@ import {
 } from './Input.styles';
 
 export const Select: ThemeComponent<'Select'> = {
-  icon: cva('text-secondary-400', {
+  icon: cva({
+    base: 'text-secondary-400',
     variants: {
       variant: {
         default: '',
@@ -23,7 +24,8 @@ export const Select: ThemeComponent<'Select'> = {
       size: 'default',
     },
   }),
-  select: cva([inputBox, inputBackground, inputDisabled, 'outline-hidden'], {
+  select: cva({
+    base: [inputBox, inputBackground, inputDisabled, 'outline-hidden'],
     variants: {
       variant: {
         default: 'gap-2',

@@ -7,10 +7,11 @@ import { Radio } from './Radio';
 const theme: Theme = {
   name: 'test',
   components: {
-    Field: cva(),
-    Label: cva(),
+    Field: cva({}),
+    Label: cva({}),
     HelpText: {
-      container: cva('', {
+      container: cva({
+        base: '',
         variants: {
           variant: {
             lime: 'text-lime-600',
@@ -20,10 +21,11 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva(''),
+      icon: cva({ base: '' }),
     },
     Radio: {
-      container: cva('', {
+      container: cva({
+        base: '',
         variants: {
           variant: {
             green: 'text-green-800',
@@ -33,9 +35,9 @@ const theme: Theme = {
           },
         },
       }),
-      radio: cva('rounded-xs border-solid checked:text-blue-700'),
-      label: cva('text-base'),
-      group: cva(),
+      radio: cva({ base: 'rounded-xs border-solid checked:text-blue-700' }),
+      label: cva({ base: 'text-base' }),
+      group: cva({}),
     },
   },
 };

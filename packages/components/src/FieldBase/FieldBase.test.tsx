@@ -11,8 +11,9 @@ import { FieldBase } from './FieldBase';
 const theme: Theme = {
   name: 'test',
   components: {
-    Field: cva(),
-    Label: cva('', {
+    Field: cva({}),
+    Label: cva({
+      base: '',
       variants: {
         variant: {
           blue: 'text-blue-600',
@@ -23,7 +24,8 @@ const theme: Theme = {
       },
     }),
     HelpText: {
-      container: cva('p-1', {
+      container: cva({
+        base: 'p-1',
         variants: {
           variant: {
             lime: 'text-blue-600',
@@ -33,12 +35,12 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva(''),
+      icon: cva({}),
     },
     Input: {
-      input: cva('border-blue-700'),
-      icon: cva(),
-      action: cva(),
+      input: cva({ base: 'border-blue-700' }),
+      icon: cva({}),
+      action: cva({}),
     },
   },
 };

@@ -8,7 +8,8 @@ const theme: Theme = {
   name: 'test',
   components: {
     HelpText: {
-      container: cva('', {
+      container: cva({
+        base: '',
         variants: {
           variant: {
             lime: 'text-lime-600',
@@ -18,7 +19,7 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva('size-3'),
+      icon: cva({ base: 'size-3' }),
     },
   },
 };

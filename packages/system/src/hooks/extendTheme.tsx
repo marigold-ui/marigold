@@ -31,7 +31,7 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
             };
             return acc;
           }, {});
-          acc[slot] = cva([mergedSlot(), newSlot()], { variants });
+          acc[slot] = cva({ base: [mergedSlot(), newSlot()], variants });
           return acc;
         },
         { ...mergedComponentStyles }
@@ -67,12 +67,10 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
       }, {});
 
       // @ts-expect-error any any
-      mergedStyles[component] = cva(
-        [mergedComponentStyles(), componentStyles()],
-        {
-          variants,
-        }
-      );
+      mergedStyles[component] = cva({
+        base: [mergedComponentStyles(), componentStyles()],
+        variants,
+      });
     }
   });
 

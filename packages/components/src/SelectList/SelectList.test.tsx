@@ -11,11 +11,11 @@ const theme: Theme = {
   name: 'test',
   components: {
     ListBox: {
-      container: cva('border-border-light'),
-      list: cva('outline-hidden'),
-      item: cva('p-3 outline-hidden'),
-      section: cva('border outline-hidden'),
-      header: cva('[&_header]:text-text-accent'),
+      container: cva({ base: 'border-border-light' }),
+      list: cva({ base: 'outline-hidden' }),
+      item: cva({ base: 'p-3 outline-hidden' }),
+      section: cva({ base: 'border outline-hidden' }),
+      header: cva({ base: '[&_header]:text-text-accent' }),
     },
   },
 };

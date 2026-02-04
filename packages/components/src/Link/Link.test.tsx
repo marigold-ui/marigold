@@ -11,7 +11,8 @@ const user = userEvent.setup();
 const theme: Theme = {
   name: 'test',
   components: {
-    Link: cva('font-link text-blue-700 disabled:text-gray-500', {
+    Link: cva({
+      base: 'font-link text-blue-700 disabled:text-gray-500',
       variants: {
         variant: {
           second: 'font-body text-green-700',

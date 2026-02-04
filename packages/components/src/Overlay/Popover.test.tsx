@@ -11,24 +11,25 @@ import { Popover } from './Popover';
 const theme: Theme = {
   name: 'test',
   components: {
-    Popover: cva(['mt-0.5'], {
+    Popover: cva({
+      base: ['mt-0.5'],
       variants: {
         variant: {
           top: ['mb-0.5'],
         },
       },
     }),
-    Underlay: cva(),
+    Underlay: cva({}),
     Dialog: {
-      closeButton: cva('p-3'),
-      container: cva('p-2'),
-      title: cva(),
-      header: cva(),
-      content: cva(),
-      actions: cva(),
+      closeButton: cva({ base: 'p-3' }),
+      container: cva({ base: 'p-2' }),
+      title: cva({}),
+      header: cva({}),
+      content: cva({}),
+      actions: cva({}),
     },
-    Button: cva('bg-red-300'),
-    Text: cva('text-black-300'),
+    Button: cva({ base: 'bg-red-300' }),
+    Text: cva({ base: 'text-black-300' }),
   },
 };
 

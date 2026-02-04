@@ -7,7 +7,8 @@ import { IconButton } from './IconButton';
 const theme: Theme = {
   name: 'test',
   components: {
-    IconButton: cva('cursor-pointer outline-0', {
+    IconButton: cva({
+      base: 'cursor-pointer outline-0',
       variants: {
         variant: {
           navigation: 'hover:bg-hover hover:text-hover-foreground',

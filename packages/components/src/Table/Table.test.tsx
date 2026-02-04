@@ -14,21 +14,21 @@ const theme: Theme = {
   name: 'test',
   components: {
     Checkbox: {
-      checkbox: cva(),
-      container: cva(),
-      label: cva(),
-      group: cva(),
+      checkbox: cva({}),
+      container: cva({}),
+      label: cva({}),
+      group: cva({}),
     },
     Table: {
-      table: cva('border-collapse'),
-      thead: cva(),
-      header: cva('p-4'),
-      headerRow: cva('border-b'),
-      body: cva('bg-white'),
-      row: cva('bg-blue-700'),
-      cell: cva('p-10'),
+      table: cva({ base: 'border-collapse' }),
+      thead: cva({}),
+      header: cva({ base: 'p-4' }),
+      headerRow: cva({ base: 'border-b' }),
+      body: cva({ base: 'bg-white' }),
+      row: cva({ base: 'bg-blue-700' }),
+      cell: cva({ base: 'p-10' }),
     },
-    Field: cva(''),
+    Field: cva({ base: '' }),
   },
 };
 
