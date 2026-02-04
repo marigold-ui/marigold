@@ -10,13 +10,6 @@ import { DatePicker } from './DatePicker';
 const meta = preview.meta({
   title: 'Components/DatePicker',
   component: DatePicker,
-  decorators: [
-    Story => (
-      <div id="storybook-root">
-        <Story />
-      </div>
-    ),
-  ],
   argTypes: {
     disabled: {
       control: {
