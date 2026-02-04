@@ -1,19 +1,11 @@
-import { HeartCrack } from 'lucide-react';
-import { Button, Inset, Stack, Table, Text } from '@marigold/components';
+import { Button, EmptyState, Table } from '@marigold/components';
 
 const Empty = () => (
-  <Inset space={4}>
-    <Stack space={6} alignX="center">
-      <Stack alignX="center">
-        <HeartCrack className="size-16" strokeWidth={1} />
-        <Text fontSize="xl" weight="medium">
-          No results found.
-        </Text>
-        <Text>Try adjusting your search or filters.</Text>
-      </Stack>
-      <Button>Clear all filters</Button>
-    </Stack>
-  </Inset>
+  <EmptyState
+    title="No results found."
+    description="Try adjusting your search or filters."
+    action={<Button>Clear all filters</Button>}
+  />
 );
 
 export default () => (
