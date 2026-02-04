@@ -13,7 +13,7 @@ export const buttonBase = [
 export const Button: ThemeComponent<'Button'> = cva(
   [
     ...buttonBase,
-    'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
+    'duration-150 active:scale-[0.97] pressed:not-expanded:scale-[0.97]',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
   ],
   {

@@ -1,76 +1,16 @@
-import { screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
-import { vi } from 'vitest';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { Select } from './Select';
-import { Basic } from './Select.stories';
+import { renderWithOverlay } from '../test.utils';
+import { Basic, Sections } from './Select.stories';
 
-// Setup
-// ---------------
 const user = userEvent.setup();
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Field: cva(''),
-    Label: cva('', {
-      variants: {
-        variant: { lime: 'text-lime-500' },
-        size: { small: 'text-sm' },
-      },
-    }),
-    Text: cva(),
-    Popover: cva(['mt-0.5'], {
-      variants: {
-        variant: {
-          top: ['mb-0.5'],
-        },
-      },
-    }),
-    HelpText: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'text-sm',
-          },
-        },
-      }),
-      icon: cva(''),
-    },
-    Select: {
-      select: cva('text-blue-500', {
-        variants: {
-          variant: { violet: 'text-violet-500' },
-          size: { small: 'text-sm' },
-        },
-      }),
-      icon: cva('text-zinc-600'),
-    },
-    Underlay: cva(),
-    ListBox: {
-      container: cva(),
-      list: cva(),
-      item: cva(),
-      section: cva(),
-      header: cva(),
-    },
-    IconButton: cva(''),
-  },
-};
-
-const { render } = setup({ theme });
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: () => {
     return {
       matches: false,
-
       addListener: () => {},
       removeListener: () => {},
     };
@@ -127,114 +67,84 @@ test('allows to disable select', async () => {
 });
 
 test('allows to disable options', async () => {
-  render(
-    <Select label="Label" data-testid="select" disabledKeys={['two']}>
-      <Select.Option id="one">one</Select.Option>
-      <Select.Option id="two">two</Select.Option>
-      <Select.Option id="three">three</Select.Option>
-    </Select>
-  );
+  // Basic story has disabledKeys={['Firefly']} built-in
+  renderWithOverlay(<Basic.Component label="Label" data-testid="select" />);
 
   const button = screen.getByRole('button');
   await user.click(button);
 
   const options = screen.getByRole('listbox');
-  const twoo = within(options).getByRole('option', { name: 'two' });
+  const firefly = within(options).getByRole('option', { name: 'Firefly' });
 
-  expect(twoo).toHaveAttribute('aria-disabled', 'true');
+  expect(firefly).toHaveAttribute('aria-disabled', 'true');
 });
 
 test('controlled', async () => {
-  const spy = vi.fn();
-  render(
-    <Select label="Label" data-testid="select" onChange={spy}>
-      <Select.Option id="one">one</Select.Option>
-      <Select.Option id="two">two</Select.Option>
-      <Select.Option id="three">three</Select.Option>
-    </Select>
-  );
+  // Basic story already has onChange that updates selected state
+  renderWithOverlay(<Basic.Component label="Label" data-testid="select" />);
 
   const button = screen.getByRole('button');
   await user.click(button);
 
   const options = screen.getByRole('listbox');
-  const three = within(options).getByText('three');
-  await user.click(three);
+  const starWars = within(options).getByText('Star Wars');
+  await user.click(starWars);
 
-  expect(spy).toHaveBeenCalledTimes(1);
-  expect(spy).toHaveBeenCalledWith('three');
+  // Basic story renders selected value in a pre element
+  expect(screen.getByTestId('selected')).toHaveTextContent(
+    'selected: Star Wars'
+  );
 });
 
 test('supports default value via "defaultSelectedKey"', async () => {
-  render(
-    <Select label="Label" data-testid="select" defaultSelectedKey="three">
-      <Select.Option id="one">one</Select.Option>
-      <Select.Option id="two">two</Select.Option>
-      <Select.Option id="three">three</Select.Option>
-    </Select>
+  renderWithOverlay(
+    <Basic.Component
+      label="Label"
+      data-testid="select"
+      defaultSelectedKey="Star Trek"
+    />
   );
 
   const button = screen.getByRole('button');
-  expect(button).toHaveTextContent(/three/);
+  expect(button).toHaveTextContent(/Star Trek/);
 
   await user.click(button);
 
   const options = screen.getByRole('listbox');
-  const three = within(options).getByRole('option', { name: 'three' });
+  const starTrek = within(options).getByRole('option', { name: 'Star Trek' });
 
-  expect(three).toHaveAttribute('aria-selected', 'true');
+  expect(starTrek).toHaveAttribute('aria-selected', 'true');
 });
 
 test('supports sections', async () => {
-  render(
-    <Select label="Label" data-testid="select">
-      <Select.Section header="Section 1">
-        <Select.Option id="one">one</Select.Option>
-        <Select.Option id="two">two</Select.Option>
-      </Select.Section>
-      <Select.Section header="Section 2">
-        <Select.Option id="three">three</Select.Option>
-        <Select.Option id="four">four</Select.Option>
-      </Select.Section>
-    </Select>
-  );
+  renderWithOverlay(<Sections.Component label="Label" data-testid="select" />);
 
   const button = screen.getByRole('button');
   await user.click(button);
 
   const options = screen.getByRole('listbox');
-  const sectionOne = within(options).getByText('Section 1');
-  const sectionTwo = within(options).getByText('Section 2');
+  const fantasy = within(options).getByText('Fantasy');
+  const sciFi = within(options).getByText('Sci-Fi');
 
-  expect(sectionOne).toBeVisible();
-  expect(sectionTwo).toBeVisible();
+  expect(fantasy).toBeVisible();
+  expect(sciFi).toBeVisible();
 });
 
 test('set width via props', () => {
-  render(
-    <Select label="Label" data-testid="select" width="1/2">
-      <Select.Option id="one">one</Select.Option>
-      <Select.Option id="two">two</Select.Option>
-    </Select>
-  );
+  render(<Basic.Component label="Label" data-testid="select" width="1/2" />);
 
   // We need to query all, since there is also a label in the hidden select
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Label')[0].parentElement;
   expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex min-w-0 flex-col w-(--container-width)"`
+    `"group/field flex min-w-0 flex-col w-(--container-width) space-y-2"`
   );
 });
 
 test('forwards ref', () => {
   const ref = createRef<HTMLButtonElement>();
   render(
-    <Select label="Label" data-testid="select" ref={ref as any}>
-      <Select.Section header="Section 1">
-        <Select.Option id="one">one</Select.Option>
-        <Select.Option id="two">two</Select.Option>
-      </Select.Section>
-    </Select>
+    <Basic.Component label="Label" data-testid="select" ref={ref as any} />
   );
 
   expect(ref.current).toBeInstanceOf(HTMLDivElement);

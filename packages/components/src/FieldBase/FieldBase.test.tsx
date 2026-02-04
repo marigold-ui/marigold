@@ -1,47 +1,43 @@
 import { render, screen } from '@testing-library/react';
-import { FieldErrorContext } from 'react-aria-components';
-import { FieldBaseProps } from '@marigold/components';
+import type { ReactNode } from 'react';
+import { TextField } from 'react-aria-components';
 import { Basic } from './FieldBase.stories';
-
-// Setup
-// ---------------
-
-/**
- * FieldBase uses HelpText which relies on FieldErrorContext from react-aria
- * to determine when to show error messages vs descriptions. In production,
- * this context is provided by react-aria field components (TextField, etc.).
- * For testing FieldBase in isolation, we need to provide this context manually.
- */
-const BasicComponent = (props?: Partial<FieldBaseProps<any>>) => (
-  <FieldErrorContext.Provider
-    value={{
-      isInvalid: props?.isInvalid ?? false,
-      validationErrors: [],
-      validationDetails: {
-        badInput: false,
-        customError: false,
-        patternMismatch: false,
-        rangeOverflow: false,
-        rangeUnderflow: false,
-        stepMismatch: false,
-        tooLong: false,
-        tooShort: false,
-        typeMismatch: false,
-        valid: true,
-        valueMissing: false,
-      },
-    }}
-  >
-    <div id="storybook-root">
-      <Basic.Component {...props} />
-    </div>
-  </FieldErrorContext.Provider>
-);
 
 // Tests
 // ---------------
-test('render Field with label and helptext', () => {
+
+interface MockedFieldProps {
+  children?: ReactNode;
+  isInvalid?: boolean;
+}
+
+const MockedField = ({ children }: MockedFieldProps) => (
+  <div data-testid="mocked-field">{children}</div>
+);
+
+test('render passed in field', () => {
+  render(<Basic.Component as={MockedField} />);
+
+  const field = screen.getByTestId('mocked-field');
+  expect(field).toBeInTheDocument();
+});
+
+test('render input element', () => {
   render(<Basic.Component />);
+
+  // The Basic story renders an input with className="border"
+  const input = screen.getByRole('textbox');
+  expect(input).toBeInTheDocument();
+});
+
+test('render Field with label and helptext', () => {
+  render(
+    <Basic.Component
+      label="Label"
+      description="This is a helpful text"
+      errorMessage="Something went wrong"
+    />
+  );
 
   const label = screen.getByText('This is the label');
   const description = screen.getByText('This is a help text description');
@@ -53,8 +49,18 @@ test('render Field with label and helptext', () => {
 });
 
 test('render Field with label and errorMessage', () => {
-  render(<BasicComponent isInvalid></BasicComponent>);
-  const label = screen.getByText('This is the label');
+  render(
+    <Basic.Component
+      as={TextField}
+      label="Label"
+      isInvalid
+      errorMessage="Something went wrong"
+    />
+  );
+
+  const label = screen.getByText('Label');
+  expect(label).toBeInTheDocument();
+
   const error = screen.getByText('Something went wrong');
 
   expect(label).toBeInTheDocument();
@@ -62,18 +68,42 @@ test('render Field with label and errorMessage', () => {
 });
 
 test('render Field with label and errorMessage although description is set', () => {
-  render(<BasicComponent isInvalid errorMessage="Something went wrong" />);
-  const label = screen.getByText('This is the label');
-  const description = screen.queryByText('This is a help text description');
-  const error = screen.getByText('Something went wrong');
+  render(
+    <Basic.Component
+      as={TextField}
+      label="Label"
+      description="This is a helpful text"
+      errorMessage="Something went wrong"
+      isInvalid
+    />
+  );
 
+  const label = screen.getByText('Label');
   expect(label).toBeInTheDocument();
   expect(description).not.toBeInTheDocument();
   expect(error).toBeInTheDocument();
 });
 
+test('passes down variant and size', () => {
+  render(
+    <Basic.Component
+      label="Label"
+      description="Description"
+      variant="blue"
+      size="small"
+    />
+  );
+
+  const label = screen.getByText('Label');
+  expect(label).toBeInTheDocument();
+
+  const helptext = screen.getByText('Description');
+  expect(helptext).toBeInTheDocument();
+});
+
 test('takes full width by default', () => {
-  render(<BasicComponent />);
+  render(<Basic.Component label="Label" description="Description" />);
+
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('This is the label').parentElement!;
 
