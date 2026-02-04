@@ -1155,77 +1155,6 @@ export const EditableCell = meta.story({
   },
 });
 
-export const CellOverrideTableTruncate = meta.story({
-  tags: ['component-test'],
-  args: {
-    overflow: 'truncate',
-  },
-  render: args => (
-    <Table aria-label="Table with truncate default" {...args}>
-      <Table.Header>
-        <Table.Column isRowHeader>Inherit Truncate</Table.Column>
-        <Table.Column>Override to Wrap</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            Long text that inherits table truncate behavior
-          </Table.Cell>
-          <Table.Cell overflow="wrap">
-            Long text with wrap override that should wrap
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
-  play: async ({ canvas, step }) => {
-    await step('Verify first cell uses table default (truncate)', async () => {
-      const cell = canvas.getByText(/truncate behavior/);
-      expect(cell).toHaveClass('truncate');
-      expect(cell).toHaveClass('max-w-0');
-    });
-
-    await step('Verify second cell overrides to wrap', async () => {
-      const cell = canvas.getByText(/wrap override/);
-      expect(cell).toHaveClass('wrap-break-word');
-      expect(cell).not.toHaveClass('truncate');
-    });
-  },
-});
-
-export const VerticalAlignment = meta.story({
-  args: {
-    verticalAlign: 'top',
-  },
-  render: args => (
-    <Table aria-label="Table with vertical alignment" {...args}>
-      <Table.Header>
-        <Table.Column isRowHeader>Item</Table.Column>
-        <Table.Column>Description</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Short</Table.Cell>
-          <Table.Cell>
-            <div className="h-20">
-              Tall cell content to demonstrate vertical alignment. The content
-              in the first column will align to the top of this tall cell.
-            </div>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell verticalAlign="bottom">Override</Table.Cell>
-          <Table.Cell>
-            <div className="h-20">
-              This row&apos;s first cell overrides with bottom alignment.
-            </div>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
-});
-
 export const DynamicColumnsAndRows = meta.story({
   tags: ['component-test'],
   render: args => {
@@ -1397,6 +1326,79 @@ export const DynamicColumnsAndRows = meta.story({
       });
     });
   },
+});
+
+/* ================ STORIES FOR TESTING ================ */
+
+export const CellOverrideTableTruncate = meta.story({
+  tags: ['component-test'],
+  args: {
+    overflow: 'truncate',
+  },
+  render: args => (
+    <Table aria-label="Table with truncate default" {...args}>
+      <Table.Header>
+        <Table.Column isRowHeader>Inherit Truncate</Table.Column>
+        <Table.Column>Override to Wrap</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            Long text that inherits table truncate behavior
+          </Table.Cell>
+          <Table.Cell overflow="wrap">
+            Long text with wrap override that should wrap
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+  play: async ({ canvas, step }) => {
+    await step('Verify first cell uses table default (truncate)', async () => {
+      const cell = canvas.getByText(/truncate behavior/);
+      expect(cell).toHaveClass('truncate');
+      expect(cell).toHaveClass('max-w-0');
+    });
+
+    await step('Verify second cell overrides to wrap', async () => {
+      const cell = canvas.getByText(/wrap override/);
+      expect(cell).toHaveClass('wrap-break-word');
+      expect(cell).not.toHaveClass('truncate');
+    });
+  },
+});
+
+export const VerticalAlignment = meta.story({
+  args: {
+    verticalAlign: 'top',
+  },
+  render: args => (
+    <Table aria-label="Table with vertical alignment" {...args}>
+      <Table.Header>
+        <Table.Column isRowHeader>Item</Table.Column>
+        <Table.Column>Description</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Short</Table.Cell>
+          <Table.Cell>
+            <div className="h-20">
+              Tall cell content to demonstrate vertical alignment. The content
+              in the first column will align to the top of this tall cell.
+            </div>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell verticalAlign="bottom">Override</Table.Cell>
+          <Table.Cell>
+            <div className="h-20">
+              This row&apos;s first cell overrides with bottom alignment.
+            </div>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
 });
 
 export const DragPreview = meta.story({
