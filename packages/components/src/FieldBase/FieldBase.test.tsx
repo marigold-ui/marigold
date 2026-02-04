@@ -39,8 +39,8 @@ test('render Field with label and helptext', () => {
     />
   );
 
-  const label = screen.getByText('This is the label');
-  const description = screen.getByText('This is a help text description');
+  const label = screen.getByText('Label');
+  const description = screen.getByText('This is a helpful text');
   const error = screen.queryByText('Something went wrong');
 
   expect(label).toBeInTheDocument();
@@ -79,6 +79,9 @@ test('render Field with label and errorMessage although description is set', () 
   );
 
   const label = screen.getByText('Label');
+  const description = screen.queryByText('This is a helpful text');
+  const error = screen.getByText('Something went wrong');
+
   expect(label).toBeInTheDocument();
   expect(description).not.toBeInTheDocument();
   expect(error).toBeInTheDocument();
@@ -105,7 +108,7 @@ test('takes full width by default', () => {
   render(<Basic.Component label="Label" description="Description" />);
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('This is the label').parentElement!;
+  const container = screen.getByText('Label').parentElement!;
 
   expect(container.className).toMatchInlineSnapshot(
     `"group/field flex min-w-0 flex-col w-auto space-y-2"`
@@ -113,7 +116,7 @@ test('takes full width by default', () => {
 });
 
 test('applies width variables for numeric width', () => {
-  render(<BasicComponent width={80} />);
+  render(<Basic.Component width={80} />);
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('This is the label').parentElement!;
 
@@ -127,7 +130,7 @@ test('applies width variables for numeric width', () => {
 });
 
 test('applies width variables for fraction width', () => {
-  render(<BasicComponent width="1/2" />);
+  render(<Basic.Component width="1/2" />);
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('This is the label').parentElement!;
 

@@ -44,16 +44,16 @@ test('takes full width by default', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('My label is great.').parentElement;
-  expect(container).toHaveClass('w-full');
+  expect(container).toHaveClass('w-(--container-width)');
 });
 
 test('allows to set custom width', () => {
   render(<Basic.Component width="1/2" />);
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
+  const container = screen.getByText('My label is great.').parentElement;
   expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex min-w-0 flex-col w-(--container-width)"`
+    `"group/field flex min-w-0 flex-col w-(--container-width) space-y-2"`
   );
 });
 
