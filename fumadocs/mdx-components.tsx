@@ -22,29 +22,21 @@ export const getMDXComponents = (components?: MDXComponents): MDXComponents => {
       name?: string;
       [key: string]: unknown;
     }) => {
-      // Auto resolve component names to their file paths
-      // If path is just a component name (e.g., "Button"), resolve to "Button/Button.tsx"
-      // If path contains / (e.g., "Radio/RadioGroup"), append .tsx to the last segment
-      // If path contains "system", strip "system/" prefix and use system basePath
+      // Determine basePath based on whether path contains "system"
       const isSystemPackage = props.path?.includes('system');
-      const cleanPath = isSystemPackage
-        ? props.path.replace(/^system\//, '')
-        : props.path;
-
-      const resolvedPath = cleanPath?.includes('/')
-        ? `${cleanPath}.tsx`
-        : cleanPath
-          ? `${cleanPath}/${cleanPath}.tsx`
-          : undefined;
-
       const basePath = isSystemPackage
         ? '../packages/system/src/'
         : '../packages/components/src/';
 
+      // Strip "system/" prefix from path if present
+      const cleanPath = isSystemPackage
+        ? props.path?.replace(/^system\//, '')
+        : props.path;
+
       return (
         <AutoTypeTable
           {...props}
-          path={resolvedPath}
+          path={cleanPath}
           generator={generator}
           options={{ basePath }}
         />
