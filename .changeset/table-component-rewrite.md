@@ -12,6 +12,8 @@ This release introduces a complete rewrite of the `Table` component built on rea
 
 The old `Table` component has been moved to `@marigold/components/legacy`. The main `Table` export now refers to the new implementation.
 
+### Changed API Structure
+
 **Migration Required:**
 
 ```typescript
@@ -34,6 +36,34 @@ import { Table } from '@marigold/components';
       <Table.Cell>John Doe</Table.Cell>
       <Table.Cell>john@example.com</Table.Cell>
     </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### Empty State Prop Location
+
+The `emptyState` prop has been moved from the `Table` component to `Table.Body`. This change provides better composition and follows react-aria-components patterns.
+
+**Migration Required:**
+
+```typescript
+// Before (old Table)
+<Table emptyState={<EmptyMessage />}>
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    {/* rows */}
+  </Table.Body>
+</Table>
+
+// After (new Table)
+<Table>
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+  </Table.Header>
+  <Table.Body emptyState={<EmptyMessage />}>
+    {/* rows */}
   </Table.Body>
 </Table>
 ```
