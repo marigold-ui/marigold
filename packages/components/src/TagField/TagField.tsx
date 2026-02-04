@@ -3,7 +3,6 @@ import { forwardRef, useContext, useRef } from 'react';
 import type RAC from 'react-aria-components';
 import {
   Autocomplete,
-  Button,
   Group,
   Select as ReactAriaSelect,
   SearchField,
@@ -12,14 +11,17 @@ import {
   TagList,
   useFilter,
 } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { forwardRefType } from '@react-types/shared';
-import { type WidthProp, cn, useClassNames } from '@marigold/system';
+import { type WidthProp, createVar, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { IconButton } from '../IconButton/IconButton';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { Tag } from '../TagGroup/Tag';
-import { ChevronsVertical } from '../icons/ChevronsVertical';
+import { Plus } from '../icons/Plus';
+import { intlMessages } from '../intl/messages';
 
 // Props
 // ---------------
@@ -91,6 +93,11 @@ export interface TagFieldProps<T extends object>
    * Placeholder text when no items are selected.
    */
   placeholder?: string;
+
+  /**
+   * Provides content to display when there are no items in the list.
+   */
+  emptyState?: ReactNode;
 }
 
 // Inner component that reads SelectStateContext to render tags
@@ -98,9 +105,10 @@ export interface TagFieldProps<T extends object>
 interface TagDisplayProps {
   placeholder?: string;
   classNames: Record<string, string>;
+  disabled?: boolean;
 }
 
-const TagDisplay = ({ placeholder, classNames }: TagDisplayProps) => {
+const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
   const state = useContext(SelectStateContext);
 
   if (!state) {
@@ -124,16 +132,25 @@ const TagDisplay = ({ placeholder, classNames }: TagDisplayProps) => {
   return (
     <TagGroup
       aria-label="Selected items"
-      onRemove={keys => {
-        const s = state as any;
-        if (Array.isArray(s.value)) {
-          s.setValue(s.value.filter((k: Key) => !(keys as Set<Key>).has(k)));
-        }
-      }}
+      className="flex flex-1 flex-wrap items-center gap-1"
+      onRemove={
+        disabled
+          ? undefined
+          : keys => {
+              const s = state as any;
+              if (Array.isArray(s.value)) {
+                s.setValue(
+                  s.value.filter((k: Key) => !(keys as Set<Key>).has(k))
+                );
+              }
+            }
+      }
     >
       <TagList items={selectedItems} className={classNames.listItems}>
         {(item: { id: Key; textValue: string }) => (
-          <Tag id={item.id as string | number}>{item.textValue}</Tag>
+          <Tag id={item.id as string | number} disabled={disabled}>
+            {item.textValue}
+          </Tag>
         )}
       </TagList>
     </TagGroup>
@@ -155,6 +172,7 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
     open,
     children,
     placeholder,
+    emptyState,
     ...rest
   }: TagFieldProps<T>,
   ref: Ref<HTMLDivElement>
@@ -172,6 +190,7 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
   };
 
   const classNames = useClassNames({ component: 'TagField', variant, size });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
     <FieldBase
@@ -181,35 +200,41 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
       size={size}
       {...props}
     >
-      <Group
-        ref={triggerRef}
-        className={cn(
-          'flex w-full items-center justify-between gap-1',
-          classNames.trigger
-        )}
-      >
-        <div
-          className={cn(
-            'flex flex-1 flex-wrap items-center gap-1',
-            classNames.tags
-          )}
-        >
-          <TagDisplay placeholder={placeholder} classNames={classNames} />
-        </div>
-        <Button className={classNames.button}>
-          <ChevronsVertical size="16" className={classNames.icon} />
-        </Button>
+      <Group ref={triggerRef} className={classNames.trigger}>
+        <TagDisplay
+          placeholder={placeholder}
+          classNames={classNames}
+          disabled={disabled}
+        />
+        <IconButton className={classNames.button}>
+          <Plus />
+        </IconButton>
       </Group>
       <Popover triggerRef={triggerRef}>
         <div
-          style={{ width: triggerRef.current?.offsetWidth }}
           className={classNames.container}
+          style={createVar({
+            'tagfield-trigger-width': triggerRef.current
+              ? `${triggerRef.current.offsetWidth}px`
+              : undefined,
+          })}
         >
           <Autocomplete filter={contains}>
             <SearchField aria-label="Search" autoFocus>
               <SearchInput placeholder={placeholder} />
             </SearchField>
-            <ListBox items={items}>{children}</ListBox>
+            <ListBox
+              items={items}
+              renderEmptyState={() =>
+                emptyState ?? (
+                  <div className="flex items-center">
+                    {stringFormatter.format('noResultsFound')}
+                  </div>
+                )
+              }
+            >
+              {children}
+            </ListBox>
           </Autocomplete>
         </div>
       </Popover>
