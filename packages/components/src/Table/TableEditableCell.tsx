@@ -183,6 +183,7 @@ export const TableEditableCell = ({
   const cancelButton = (
     <Button
       variant="ghost"
+      size="icon"
       onPress={handleCancel}
       aria-label={isSmallScreen ? undefined : stringFormatter.format('cancel')}
     >
@@ -193,6 +194,7 @@ export const TableEditableCell = ({
   const saveButton = (
     <Button
       variant="ghost"
+      size="icon"
       type="submit"
       loading={saving}
       aria-label={isSmallScreen ? undefined : stringFormatter.format('save')}
