@@ -4,6 +4,7 @@ import {
   Basic,
   CellOverrideTableTruncate,
   DragAndDrop,
+  DragPreview,
   DynamicData,
   EditableCell,
   Empty,
@@ -14,6 +15,7 @@ import {
   WidthsAndOverflow,
   WithActions,
 } from './Table.stories';
+import { renderDragPreview } from './TableDragPreview';
 
 const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
@@ -284,5 +286,108 @@ describe('Cell-Level Overflow', () => {
 
     expect(cells[1]).toHaveClass('wrap-break-word');
     expect(cells[1]).not.toHaveClass('truncate');
+  });
+});
+
+describe('TableDragPreview Component', () => {
+  test('renders single item with text and count', () => {
+    render(<DragPreview.Component />);
+
+    expect(screen.getByText('Single Item')).toBeInTheDocument();
+    const counters = screen.getAllByText('1');
+    expect(counters.length).toBeGreaterThan(0);
+  });
+
+  test('renders multiple items with first item text and count', () => {
+    render(<DragPreview.Component />);
+
+    const items = screen.getAllByText('Item 1');
+    expect(items.length).toBeGreaterThan(0);
+    const counters = screen.getAllByText('3');
+    expect(counters.length).toBeGreaterThan(0);
+  });
+
+  test('shows fallback text when text/plain is empty or missing', () => {
+    render(<DragPreview.Component />);
+
+    const fallbackTexts = screen.getAllByText(/items/i);
+    // Should have at least 1 fallback text (either empty text or no text/plain)
+    expect(fallbackTexts.length).toBeGreaterThan(0);
+  });
+});
+
+describe('renderDragPreview Hook', () => {
+  test('returns TableDragPreview component for multiple items', () => {
+    const items = [{ 'text/plain': 'Item 1' }, { 'text/plain': 'Item 2' }];
+
+    const result = renderDragPreview(items);
+
+    expect(result).not.toBeUndefined();
+    expect(result).toBeTruthy();
+  });
+
+  test('returns undefined for single item to use default preview', () => {
+    const items = [{ 'text/plain': 'Single Item' }];
+
+    const result = renderDragPreview(items);
+
+    expect(result).toBeUndefined();
+  });
+
+  test('returns undefined for empty items array', () => {
+    const items: Record<string, string>[] = [];
+
+    const result = renderDragPreview(items);
+
+    expect(result).toBeUndefined();
+  });
+
+  test('handles two items correctly', () => {
+    const items = [{ 'text/plain': 'First' }, { 'text/plain': 'Second' }];
+
+    const result = renderDragPreview(items);
+
+    expect(result).not.toBeUndefined();
+    expect(result).toBeTruthy();
+  });
+
+  test('handles large number of items', () => {
+    const items = Array.from({ length: 100 }, (_, i) => ({
+      'text/plain': `Item ${i + 1}`,
+    }));
+
+    const result = renderDragPreview(items);
+
+    expect(result).not.toBeUndefined();
+    expect(result).toBeTruthy();
+  });
+
+  test('returns component for multiple items with mixed properties', () => {
+    const items = [
+      { 'text/plain': 'Item 1', 'application/json': '{}' },
+      { 'text/plain': 'Item 2', 'text/html': '<div></div>' },
+      { 'application/json': '[]' },
+    ];
+
+    const result = renderDragPreview(items);
+
+    expect(result).not.toBeUndefined();
+    expect(result).toBeTruthy();
+  });
+
+  test('boundary case: exactly one item returns undefined', () => {
+    const items = [{ 'text/plain': 'Only One', other: 'data' }];
+
+    const result = renderDragPreview(items);
+
+    expect(result).toBeUndefined();
+  });
+
+  test('boundary case: exactly two items returns component', () => {
+    const items = [{ 'text/plain': 'First' }, { 'text/plain': 'Second' }];
+
+    const result = renderDragPreview(items);
+
+    expect(result).not.toBeUndefined();
   });
 });

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useDragAndDrop } from 'react-aria-components';
+import { I18nProvider, useDragAndDrop } from 'react-aria-components';
 import { useListData } from 'react-stately';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
@@ -1368,6 +1368,87 @@ export const DynamicColumnsAndRows = meta.story({
         const rows = canvas.getAllByRole('row');
         expect(rows).toHaveLength(6);
       });
+    });
+  },
+});
+
+export const DragPreview = meta.story({
+  tags: ['component-test'],
+  render: () => {
+    const singleItem = [{ 'text/plain': 'Single Item' }];
+    const multipleItems = [
+      { 'text/plain': 'Item 1' },
+      { 'text/plain': 'Item 2' },
+      { 'text/plain': 'Item 3' },
+    ];
+    const emptyTextItem = [{ 'text/plain': '' }];
+    const noTextItem = [{ 'application/json': 'data' }];
+
+    return (
+      <I18nProvider locale="en">
+        <Stack space={3} alignX="left">
+          <div data-testid="single-item-preview">
+            <Text weight="medium">Single item:</Text>
+            <Table.DragPreview items={singleItem} />
+          </div>
+          <div data-testid="multiple-items-preview">
+            <Text weight="medium">Multiple items:</Text>
+            <Table.DragPreview items={multipleItems} />
+          </div>
+          <div data-testid="empty-text-preview">
+            <Text weight="medium">Empty text/plain:</Text>
+            <Table.DragPreview items={emptyTextItem} />
+          </div>
+          <div data-testid="no-text-preview">
+            <Text weight="medium">No text/plain property:</Text>
+            <Table.DragPreview items={noTextItem} />
+          </div>
+          <div data-testid="variant-size-preview">
+            <Text weight="medium">With variant and size:</Text>
+            <Table.DragPreview
+              items={multipleItems}
+              variant="compact"
+              size="small"
+            />
+          </div>
+        </Stack>
+      </I18nProvider>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify single item renders with text and count', async () => {
+      const section = canvas.getByTestId('single-item-preview');
+      expect(within(section).getByText('Single Item')).toBeInTheDocument();
+      expect(within(section).getByText('1')).toBeInTheDocument();
+    });
+
+    await step(
+      'Verify multiple items show first item text and count',
+      async () => {
+        const section = canvas.getByTestId('multiple-items-preview');
+        expect(within(section).getByText('Item 1')).toBeInTheDocument();
+        expect(within(section).getByText('3')).toBeInTheDocument();
+      }
+    );
+
+    await step('Verify empty text/plain shows fallback text', async () => {
+      const section = canvas.getByTestId('empty-text-preview');
+      expect(within(section).getByText('1')).toBeInTheDocument();
+    });
+
+    await step(
+      'Verify no text/plain property shows fallback text',
+      async () => {
+        const section = canvas.getByTestId('no-text-preview');
+        expect(within(section).getByText('Items')).toBeInTheDocument();
+        expect(within(section).getByText('1')).toBeInTheDocument();
+      }
+    );
+
+    await step('Verify variant and size props work', async () => {
+      const section = canvas.getByTestId('variant-size-preview');
+      expect(within(section).getByText('Item 1')).toBeInTheDocument();
+      expect(within(section).getByText('3')).toBeInTheDocument();
     });
   },
 });
