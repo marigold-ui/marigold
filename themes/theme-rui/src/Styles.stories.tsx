@@ -1,6 +1,8 @@
 import type { PropsWithChildren } from 'react';
 import preview from '.storybook/preview';
-import { Headline, Inline, Stack } from '@marigold/components';
+import { Headline } from '../../../packages/components/src/Headline/Headline';
+import { Inline } from '../../../packages/components/src/Inline/Inline';
+import { Stack } from '../../../packages/components/src/Stack/Stack';
 
 const meta = preview.meta({
   title: 'Styles/RUI',
