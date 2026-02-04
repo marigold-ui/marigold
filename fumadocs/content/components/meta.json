@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "application",
+    "layout",
+    "actions",
+    "form",
+    "collection",
+    "navigation",
+    "overlay",
+    "content",
+    "formatters",
+    "hooks-and-utils"
+  ]
+}
