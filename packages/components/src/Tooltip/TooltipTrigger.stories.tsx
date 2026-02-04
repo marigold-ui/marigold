@@ -114,3 +114,15 @@ export const ControlledTooltipTrigger = meta.story({
     );
   },
 });
+
+export const Single = meta.story({
+  args: {
+    delay: 0,
+  },
+  render: args => (
+    <Tooltip.Trigger {...args}>
+      <Button variant="primary">Hover me!</Button>
+      <Tooltip>Look at this tooltip!</Tooltip>
+    </Tooltip.Trigger>
+  ),
+});

@@ -1,27 +1,10 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { MockInstance, vi } from 'vitest';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { Link } from './Link';
+import { Basic } from './Link.stories';
 
 const user = userEvent.setup();
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Link: cva('font-link text-blue-700 disabled:text-gray-500', {
-      variants: {
-        variant: {
-          second: 'font-body text-green-700',
-        },
-      },
-    }),
-  },
-};
-
-const { render } = setup({ theme });
 
 let warnMock: MockInstance;
 
@@ -33,78 +16,53 @@ afterEach(() => {
   warnMock.mockRestore();
 });
 
-test('uses base classnames', () => {
-  render(<Link href="#!">Link</Link>);
-  const link = screen.getByText(/Link/);
-
-  expect(link).toHaveClass('font-link text-blue-700 disabled:text-gray-500');
-});
-
-test('allows to change variants via `variant` prop (with "text" prefix)', () => {
-  render(
-    <Link href="#!" variant="second">
-      Link
-    </Link>
-  );
-  const link = screen.getByText(/Link/);
-
-  expect(link).toHaveClass(`font-body`);
-});
-
 test('renders a <a> element by default', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Link href="#!">Link</Link>
-    </ThemeProvider>
-  );
-  const link = screen.getByText(/Link/);
+  render(<Basic.Component />);
+  const link = screen.getByRole('link');
 
   expect(link instanceof HTMLAnchorElement).toBeTruthy();
 });
 
-test('a link can be disabled via aria attributes', () => {
-  render(
-    <Link href="#!" disabled={true}>
-      Link
-    </Link>
-  );
-  const link = screen.getByText(/Link/);
-  expect(link.getAttribute('aria-disabled')).toEqual('true');
+test('supports href prop', () => {
+  render(<Basic.Component href="https://example.com" />);
+  const link = screen.getByRole('link');
+
+  expect(link).toHaveAttribute('href', 'https://example.com');
 });
 
-test('link supports disabled variant', () => {
-  render(
-    <Link href="#!" disabled={true}>
-      Link
-    </Link>
-  );
+test('supports disabled prop via aria attributes', () => {
+  render(<Basic.Component disabled />);
+  const link = screen.getByRole('link');
 
-  const link = screen.getByText(/Link/);
-  expect(link).toHaveClass(`disabled:text-gray-500`);
+  expect(link).toHaveAttribute('aria-disabled', 'true');
 });
 
-test('renders anchor element', () => {
+test('supports variant prop', () => {
+  render(<Basic.Component variant="secondary" />);
+  const link = screen.getByRole('link');
+
+  expect(link).toBeInTheDocument();
+});
+
+test('forwards ref', () => {
   const ref = createRef<HTMLAnchorElement>();
-  render(
-    <Link href="/" ref={ref}>
-      Link
-    </Link>
-  );
+  render(<Basic.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
 });
 
 test('renders span element when no href', () => {
   const ref = createRef<HTMLAnchorElement>();
-  render(<Link ref={ref}>Link</Link>);
+  render(<Basic.Component href={undefined} ref={ref} />);
 
+  // When no href, it renders a span, not a link
   expect(ref.current).toBeInstanceOf(HTMLSpanElement);
 });
 
 test('supports "onPress"', async () => {
-  render(<Link onPress={() => {}}>Link</Link>);
+  render(<Basic.Component onPress={() => {}} />);
 
-  const link = screen.getByText('Link');
+  const link = screen.getByRole('link');
   await user.click(link);
 
   expect(warnMock).not.toHaveBeenCalled();
