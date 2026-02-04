@@ -2,7 +2,7 @@ import { type ThemeComponent, cva } from '@marigold/system';
 
 export const DateField: ThemeComponent<'DateField'> = {
   field: cva([
-    'ui-surface h-input',
+    'ui-surface shadow-elevation-border h-input',
     'flex items-center',
     'disabled:ui-state-disabled',
     'group-read-only/field:ui-state-readonly',

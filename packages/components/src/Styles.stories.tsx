@@ -1,6 +1,8 @@
 import type { PropsWithChildren } from 'react';
 import preview from '.storybook/preview';
-import { Headline, Inline, Stack } from '@marigold/components';
+import { Headline } from './Headline/Headline';
+import { Inline } from './Inline/Inline';
+import { Stack } from './Stack/Stack';
 
 const meta = preview.meta({
   title: 'Styles/RUI',
@@ -22,18 +24,19 @@ export const Surface = meta.story({
     <Stack space="group">
       <Headline level="3">Surface</Headline>
       <Inline space="peer">
-        <Base className="ui-surface">raised</Base>
-        <Base className="ui-surface ui-elevation-overlay">overlay</Base>
-        <Base className="ui-surface ui-elevation-overlay ui-state-error">
+        <Base className="ui-surface shadow-elevation-border">border</Base>
+        <Base className="ui-surface shadow-elevation-raised">raised</Base>
+        <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
+        <Base className="ui-surface shadow-elevation-overlay ui-state-error">
           overlay / error
         </Base>
       </Inline>
       <Headline level="3">With Tailwind Classes</Headline>
       <Inline space="peer">
-        <Base className="ui-surface ui-elevation-overlay shadow-fuchsia-600">
+        <Base className="ui-surface shadow-elevation-overlay shadow-fuchsia-600">
           overlay / tw shadow color
         </Base>
-        <Base className="ui-surface ui-elevation-overlay inset-shadow-sm/50 inset-shadow-fuchsia-600">
+        <Base className="ui-surface shadow-elevation-overlay inset-shadow-sm/50 inset-shadow-fuchsia-600">
           overlay / tw (inset) shadow
         </Base>
       </Inline>
@@ -47,21 +50,21 @@ export const Surface = meta.story({
       <Headline level="3">Input</Headline>
       <Inline space="peer">
         <input
-          className="ui-surface invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-surface shadow-elevation-border invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="default"
         />
         <input
-          className="ui-surface invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-surface shadow-elevation-border invalid:ui-state-error focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="invalid"
           required
         />
         <input
-          className="ui-surface disabled:ui-state-disabled focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-surface shadow-elevation-border disabled:ui-state-disabled focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="disabled"
           disabled
         />
         <input
-          className="ui-surface read-only:ui-state-readonly focus:ui-state-focus p-squish-relaxed text-sm"
+          className="ui-surface shadow-elevation-border read-only:ui-state-readonly focus:ui-state-focus p-squish-relaxed text-sm"
           placeholder="readonly"
           readOnly
         />

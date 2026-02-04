@@ -9,14 +9,14 @@ test('renders correctly with children', () => {
     <div
       aria-disabled="false"
       aria-orientation="horizontal"
-      class="group inline-flex ui-surface text-sm"
+      class="group inline-flex ui-surface shadow-elevation-border text-sm"
       data-orientation="horizontal"
       data-rac=""
       role="radiogroup"
     >
       <button
         aria-checked="true"
-        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 text-sm h-button px-4 py-2 [&_svg]:size-4"
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface shadow-elevation-border hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 text-sm h-button px-4 py-2 [&_svg]:size-4"
         data-rac=""
         data-react-aria-pressable="true"
         data-selected="true"
@@ -28,7 +28,7 @@ test('renders correctly with children', () => {
       </button>
       <button
         aria-checked="false"
-        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 text-sm h-button px-4 py-2 [&_svg]:size-4"
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface shadow-elevation-border hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 text-sm h-button px-4 py-2 [&_svg]:size-4"
         data-rac=""
         data-react-aria-pressable="true"
         role="radio"
@@ -39,7 +39,7 @@ test('renders correctly with children', () => {
       </button>
       <button
         aria-checked="false"
-        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 text-sm h-button px-4 py-2 [&_svg]:size-4"
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform] [&_svg]:pointer-events-none [&_svg]:shrink-0 focus-visible:ui-state-focus outline-none disabled:ui-state-disabled cursor-pointer ui-surface shadow-elevation-border hover:[--ui-background-color:var(--color-hover)] hover:text-foreground disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)] selected:[--ui-background-color:var(--color-input)] selected:shadow-none in-[.group]:rounded-none in-[.group]:shadow-none in-[.group]:border-y-0 in-[.group]:border-l-0 in-[.group]:first:rounded-l-surface in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0 text-sm h-button px-4 py-2 [&_svg]:size-4"
         data-rac=""
         data-react-aria-pressable="true"
         role="radio"
