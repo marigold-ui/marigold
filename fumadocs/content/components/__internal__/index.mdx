@@ -1,0 +1,117 @@
+---
+title: Internal
+description: A page to test stuff
+---
+
+## Do's and Don'ts
+
+Use `<GuidelineTiles>` to correctly place the `<Do>` and `<Dont`> component with the rest of the content.
+
+<GuidelineTiles>
+  <Do>
+    <DoFigure>
+      <ImageZoom
+        className="aspect-square"
+        width={700}
+        height={700}
+        src="https://upload.wikimedia.org/wikipedia/commons/1/18/Dog_Breeds.jpg"
+        alt="Don't"
+      />
+    </DoFigure>
+    <DoDescription>
+      Use one primary call to action to help people to proceed
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontFigure>
+      <ImageZoom
+        className="aspect-square"
+        width={700}
+        height={700}
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/220px-Cat03.jpg"
+        alt="Don't"
+      />
+    </DontFigure>
+    <DontDescription>
+      Don’t use many calls to action in one page or container.
+    </DontDescription>
+  </Dont>
+  <Do>
+    <DoDescription>
+      <ul>
+        <li>Cheese</li>
+        <li>Milk</li>
+        <li>Bread</li>
+      </ul>
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      <ul>
+        <li>Chocolate</li>
+        <li>Gummibears</li>
+        <li>Pop Tarts</li>
+        <li>Ice Cream</li>
+      </ul>
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Form Controls
+
+<Stack space={8}>
+<Select label="Favorite character" placeholder="Select your character">
+  <Select.Option>Mario</Select.Option>
+  <Select.Option>Luigi</Select.Option>
+  <Select.Option>Toad</Select.Option>
+  <Select.Option>Yoshi</Select.Option>
+  <Select.Option>Bowser</Select.Option>
+  <Select.Option>Peach</Select.Option>
+</Select>
+
+<Select
+  label="Favorite character"
+  placeholder="Select your character"
+  size="small"
+>
+  <Select.Option>Mario</Select.Option>
+  <Select.Option>Luigi</Select.Option>
+  <Select.Option>Toad</Select.Option>
+  <Select.Option>Yoshi</Select.Option>
+  <Select.Option>Bowser</Select.Option>
+  <Select.Option>Peach</Select.Option>
+</Select>
+</Stack>
+
+### Floating
+
+This is not meant to be used within a regular form. The floating form fields should be used when position over other content (e.g. demos). Be aware that your label will be suffixed with a ":".
+
+<Stack space={8}>
+<Select
+  variant="floating"
+  label="Favorite character"
+  placeholder="Select your character"
+>
+  <Select.Option>Mario</Select.Option>
+  <Select.Option>Luigi</Select.Option>
+  <Select.Option>Toad</Select.Option>
+  <Select.Option>Yoshi</Select.Option>
+  <Select.Option>Bowser</Select.Option>
+  <Select.Option>Peach</Select.Option>
+</Select>
+
+<Select
+  variant="floating"
+  size="small"
+  label="Favorite character"
+  placeholder="Select your character"
+>
+  <Select.Option>Mario</Select.Option>
+  <Select.Option>Luigi</Select.Option>
+  <Select.Option>Toad</Select.Option>
+  <Select.Option>Yoshi</Select.Option>
+  <Select.Option>Bowser</Select.Option>
+  <Select.Option>Peach</Select.Option>
+</Select>
+</Stack>
