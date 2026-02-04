@@ -1,56 +1,9 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { SearchField } from './SearchField';
+import { Basic } from './SearchField.stories';
 
 const user = userEvent.setup();
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Field: cva(),
-    Label: cva('', {
-      variants: {
-        variant: {
-          lime: 'text-lime-600',
-        },
-        size: {
-          small: 'p-1',
-        },
-      },
-    }),
-    HelpText: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'p-2',
-          },
-        },
-      }),
-      icon: cva(''),
-    },
-    Input: {
-      input: cva('border-blue-700'),
-      icon: cva(),
-      action: cva(),
-    },
-    Underlay: cva(),
-    ListBox: {
-      container: cva(),
-      list: cva(),
-      item: cva(),
-      section: cva(),
-      header: cva(),
-    },
-  },
-};
-
-const { render } = setup({ theme });
 
 describe('Search', () => {
   let onChange = vi.fn();
@@ -66,7 +19,9 @@ describe('Search', () => {
   });
 
   test('should be required', () => {
-    render(<SearchField required data-testid="test-id" label="search field" />);
+    render(
+      <Basic.Component required data-testid="test-id" label="search field" />
+    );
     const input = screen.getByRole('searchbox');
 
     expect(input).toBeInTheDocument();
@@ -75,21 +30,23 @@ describe('Search', () => {
   });
 
   test('the icon is null', () => {
-    render(<SearchField required data-testid="test-id" label="search field" />);
+    render(
+      <Basic.Component required data-testid="test-id" label="search field" />
+    );
     const input = screen.queryByTestId('test-id');
     expect(input).toBeInTheDocument();
     expect(screen.queryByTestId('searchicon')).toBeNull();
   });
 
   test('Name should support error message', () => {
-    render(<SearchField label="search field" data-testid="test-id" />);
+    render(<Basic.Component label="search field" data-testid="test-id" />);
     const error = screen.queryByText('Something went wrong');
     expect(error).not.toBeInTheDocument();
   });
 
   test('Should support aria label', () => {
     render(
-      <SearchField
+      <Basic.Component
         excludeFromTabOrder
         aria-label="search field"
         data-testid="test-id"
@@ -101,7 +58,7 @@ describe('Search', () => {
 
   test('should support excludeFromTabOrder', () => {
     render(
-      <SearchField
+      <Basic.Component
         excludeFromTabOrder
         label="search field"
         data-testid="test-id"
@@ -114,7 +71,7 @@ describe('Search', () => {
 
   test('Should not handle change when field is disalbed', async () => {
     render(
-      <SearchField
+      <Basic.Component
         onChange={onChange}
         label="search field"
         data-testid="test-id"
