@@ -5,7 +5,6 @@ import {
   Autocomplete,
   Button,
   Group,
-  Input,
   Select as ReactAriaSelect,
   SearchField,
   SelectStateContext,
@@ -16,11 +15,11 @@ import {
 import { forwardRefType } from '@react-types/shared';
 import { type WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
+import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { Tag } from '../TagGroup/Tag';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
-import { Search } from '../icons/Search';
 
 // Props
 // ---------------
@@ -177,7 +176,7 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
   return (
     <FieldBase
       as={ReactAriaSelect}
-      ref={ref as never}
+      ref={ref}
       variant={variant}
       size={size}
       {...props}
@@ -202,17 +201,13 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
         </Button>
       </Group>
       <Popover triggerRef={triggerRef}>
-        <div className="flex flex-col overflow-hidden">
+        <div
+          style={{ width: triggerRef.current?.offsetWidth }}
+          className={classNames.container}
+        >
           <Autocomplete filter={contains}>
-            <SearchField
-              aria-label="Search"
-              autoFocus
-              className={classNames.search}
-            >
-              <div className={classNames.searchInput}>
-                <Search aria-hidden size="16" />
-                <Input placeholder={placeholder} className={classNames.input} />
-              </div>
+            <SearchField aria-label="Search" autoFocus>
+              <SearchInput placeholder={placeholder} />
             </SearchField>
             <ListBox items={items}>{children}</ListBox>
           </Autocomplete>
