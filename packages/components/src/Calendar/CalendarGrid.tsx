@@ -1,3 +1,4 @@
+import type { DateDuration } from '@internationalized/date';
 import {
   CalendarCell,
   CalendarGrid,
@@ -6,11 +7,19 @@ import {
 import { cn, useClassNames } from '@marigold/system';
 import { CalendarGridHeader } from './CalendarGridHeader';
 
-const _CalendarGrid = () => {
+export interface CalendarGridProps {
+  /**
+   * The offset for the calendar grid when displaying multiple months.
+   * For example, { months: 1 } will show the next month.
+   */
+  offset?: DateDuration;
+}
+
+const _CalendarGrid = ({ offset }: CalendarGridProps) => {
   const classNames = useClassNames({ component: 'Calendar' });
 
   return (
-    <CalendarGrid className={classNames.calendarGrid}>
+    <CalendarGrid offset={offset} className={classNames.calendarGrid}>
       <CalendarGridHeader />
       <CalendarGridBody>
         {date => (
