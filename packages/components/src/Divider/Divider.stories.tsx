@@ -32,3 +32,16 @@ export const Basic = meta.story({
     </>
   ),
 });
+
+export const Bold = meta.story({
+  args: {
+    variant: 'bold',
+  },
+  render: args => (
+    <>
+      <p>Above</p>
+      <Divider {...args} />
+      <p>Below</p>
+    </>
+  ),
+});

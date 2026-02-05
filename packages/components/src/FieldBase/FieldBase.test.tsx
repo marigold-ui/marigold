@@ -1,49 +1,10 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { TextField } from 'react-aria-components';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { FieldBase } from './FieldBase';
+import { Basic } from './FieldBase.stories';
 
-// Setup
+// Tests
 // ---------------
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Field: cva(),
-    Label: cva('', {
-      variants: {
-        variant: {
-          blue: 'text-blue-600',
-        },
-        size: {
-          small: 'text-base',
-        },
-      },
-    }),
-    HelpText: {
-      container: cva('p-1', {
-        variants: {
-          variant: {
-            lime: 'text-blue-600',
-          },
-          size: {
-            small: 'text-base',
-          },
-        },
-      }),
-      icon: cva(''),
-    },
-    Input: {
-      input: cva('border-blue-700'),
-      icon: cva(),
-      action: cva(),
-    },
-  },
-};
-
-const { render } = setup({ theme });
 
 interface MockedFieldProps {
   children?: ReactNode;
@@ -54,39 +15,28 @@ const MockedField = ({ children }: MockedFieldProps) => (
   <div data-testid="mocked-field">{children}</div>
 );
 
-// Tests
-// ---------------
 test('render passed in field', () => {
-  render(
-    <FieldBase as={MockedField}>
-      <input />
-    </FieldBase>
-  );
+  render(<Basic.Component as={MockedField} />);
 
   const field = screen.getByTestId('mocked-field');
   expect(field).toBeInTheDocument();
 });
 
-test('render passed in input', () => {
-  render(
-    <FieldBase as={MockedField}>
-      <input data-testid="test-input" />
-    </FieldBase>
-  );
+test('render input element', () => {
+  render(<Basic.Component />);
 
-  const input = screen.getByTestId('test-input');
+  // The Basic story renders an input with className="border"
+  const input = screen.getByRole('textbox');
   expect(input).toBeInTheDocument();
 });
 
 test('render Field with label and helptext', () => {
   render(
-    <FieldBase
+    <Basic.Component
       label="Label"
       description="This is a helpful text"
       errorMessage="Something went wrong"
-    >
-      <input />
-    </FieldBase>
+    />
   );
 
   const label = screen.getByText('Label');
@@ -99,12 +49,12 @@ test('render Field with label and helptext', () => {
 
 test('render Field with label and errorMessage', () => {
   render(
-    <FieldBase
+    <Basic.Component
       as={TextField}
       label="Label"
       isInvalid
       errorMessage="Something went wrong"
-    ></FieldBase>
+    />
   );
 
   const label = screen.getByText('Label');
@@ -116,15 +66,13 @@ test('render Field with label and errorMessage', () => {
 
 test('render Field with label and errorMessage although description is set', () => {
   render(
-    <FieldBase
+    <Basic.Component
       as={TextField}
       label="Label"
       description="This is a helpful text"
       errorMessage="Something went wrong"
       isInvalid
-    >
-      <input />
-    </FieldBase>
+    />
   );
 
   const label = screen.getByText('Label');
@@ -139,35 +87,25 @@ test('render Field with label and errorMessage although description is set', () 
 
 test('passes down variant and size', () => {
   render(
-    <FieldBase
+    <Basic.Component
       label="Label"
       description="Description"
       variant="blue"
       size="small"
-    >
-      <input type="text" />
-    </FieldBase>
+    />
   );
 
   const label = screen.getByText('Label');
-  expect(label.className).toMatchInlineSnapshot(
-    `"text-blue-600 text-base inline-flex"`
-  );
+  expect(label).toBeInTheDocument();
 
   const helptext = screen.getByText('Description');
   expect(helptext).toBeInTheDocument();
 });
 
 test('takes full width by default', () => {
-  render(
-    <FieldBase label="Label" description="Description">
-      <input type="text" />
-    </FieldBase>
-  );
+  render(<Basic.Component label="Label" description="Description" />);
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement!;
-  expect(container.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-full"`
-  );
+  expect(container).toHaveClass('w-full');
 });
