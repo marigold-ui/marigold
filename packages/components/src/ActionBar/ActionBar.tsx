@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Text } from '../Text/Text';
 import { intlMessages } from '../intl/messages';
@@ -70,7 +70,7 @@ export const ActionBar = ({
   return (
     <div
       id={id}
-      className={classNames.container}
+      className={cn('z-80', classNames.container)}
       role="toolbar"
       aria-label={stringFormatter.format('bulkActionsAriaLabel')}
     >
