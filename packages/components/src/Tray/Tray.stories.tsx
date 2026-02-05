@@ -18,7 +18,7 @@ const meta = preview.meta({
     ),
   ],
   globals: {
-    viewport: { value: 'mobile1' },
+    viewport: { value: 'smallScreen' },
   },
   argTypes: {
     dismissable: {

@@ -481,7 +481,7 @@ export const WithImages = meta.story({
 
 export const Mobile = meta.story({
   globals: {
-    viewport: { value: 'mobile1' },
+    viewport: { value: 'smallScreen' },
   },
   render: args => {
     return (

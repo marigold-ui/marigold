@@ -304,7 +304,7 @@ export const DisabledSuggestions: any = meta.story({
 export const Mobile: any = meta.story({
   tags: ['component-test'],
   globals: {
-    viewport: { value: 'mobile1' },
+    viewport: { value: 'smallScreen' },
   },
   render: args => (
     <Autocomplete {...args}>
