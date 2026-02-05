@@ -7,23 +7,30 @@ import { TableSelectableCell } from './TableSelectableCell';
 
 // Inner
 // ---------------
-interface InnerTableCellProps {
+interface CellContent {
   align: keyof typeof textAlign;
-  vAlign: keyof typeof verticalAlign;
-  overflow: 'truncate' | 'wrap';
-  allowTextSelection: boolean;
-  selectionMode: 'none' | 'single' | 'multiple';
+  cellOverflow?: 'truncate' | 'wrap';
+  cellVerticalAlign?: keyof typeof verticalAlign;
   children: ReactNode;
 }
 
-const InnerTableCell = ({
+const CellContent = ({
   align,
-  vAlign,
-  overflow,
-  allowTextSelection,
-  selectionMode,
+  cellOverflow,
+  cellVerticalAlign,
   children,
-}: InnerTableCellProps) => {
+}: CellContent) => {
+  const {
+    overflow: tableOverflow = 'wrap',
+    allowTextSelection = false,
+    verticalAlign: tableVerticalAlign = 'middle',
+  } = useTableContext();
+  const { selectionMode } = useTableOptions();
+
+  // Cell-level overrides table-level
+  const overflow = cellOverflow ?? tableOverflow;
+  const vAlign = cellVerticalAlign ?? tableVerticalAlign;
+
   const content =
     allowTextSelection && selectionMode !== 'none' ? (
       <TableSelectableCell>{children}</TableSelectableCell>
@@ -79,29 +86,17 @@ const TableCell = ({
   verticalAlign: cellVerticalAlign,
   ...props
 }: TableCellProps) => {
-  const {
-    classNames,
-    overflow: tableOverflow = 'wrap',
-    allowTextSelection = false,
-    verticalAlign: tableVerticalAlign = 'middle',
-  } = useTableContext();
-  const { selectionMode } = useTableOptions();
-
-  // Cell-level overrides table-level
-  const overflow = cellOverflow ?? tableOverflow;
-  const vAlign = cellVerticalAlign ?? tableVerticalAlign;
+  const { classNames } = useTableContext();
 
   return (
     <Cell className={classNames.cell} {...props}>
-      <InnerTableCell
+      <CellContent
         align={align}
-        vAlign={vAlign}
-        overflow={overflow}
-        allowTextSelection={allowTextSelection}
-        selectionMode={selectionMode}
+        cellOverflow={cellOverflow}
+        cellVerticalAlign={cellVerticalAlign}
       >
         {children}
-      </InnerTableCell>
+      </CellContent>
     </Cell>
   );
 };
