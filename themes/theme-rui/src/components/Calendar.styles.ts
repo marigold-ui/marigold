@@ -6,7 +6,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     // In a Popover
     'group-data-trigger/popover:shadow-elevation-overlay',
     // In a Tray
-    'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0',
+    'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
   ]),
   calendarContainer: cva('flex gap-4'),
   calendarMonth: cva('min-w-[250px] flex-1'),
