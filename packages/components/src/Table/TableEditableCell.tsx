@@ -13,7 +13,7 @@ import {
   getOwnerDocument,
   nodeContains,
 } from '@react-aria/utils';
-import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
+import { textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
@@ -141,21 +141,13 @@ export const TableEditableCell = ({
   onCancel,
   disabled = false,
   action,
-  align = 'left',
+  align,
   overflow: cellOverflow,
   verticalAlign: cellVerticalAlign,
 }: TableEditableCellProps) => {
-  const {
-    classNames,
-    overflow: tableOverflow = 'wrap',
-    verticalAlign: tableVerticalAlign = 'middle',
-  } = useTableContext();
+  const { classNames } = useTableContext();
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-
-  // Cell-level overrides table-level
-  const overflow = cellOverflow ?? tableOverflow;
-  const vAlign = cellVerticalAlign ?? tableVerticalAlign;
 
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
@@ -229,73 +221,75 @@ export const TableEditableCell = ({
   );
 
   return (
-    <Cell
-      ref={cellRef}
-      className={cn(
-        classNames.cell,
-        textAlign[align],
-        verticalAlign[vAlign],
-        overflow === 'truncate' ? 'max-w-0 truncate' : 'wrap-break-word'
-      )}
-    >
-      <div className="group/editable-cell flex items-center gap-1">
-        <TableCellContent align="left" className="min-w-0 flex-1">
-          {children}
-        </TableCellContent>
-        {!disabled && (
-          <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 [.group\/editable-cell:has(:focus-visible)_&]:opacity-100 [[role=row]:hover_&]:opacity-100">
-            <Button
-              variant="ghost"
-              size="small"
-              aria-label={stringFormatter.format('edit')}
-              onPress={() => setOpen(true)}
+    <Cell ref={cellRef} className={classNames.cell}>
+      {({ columnIndex }) => (
+        <>
+          <div className="group/editable-cell flex items-center gap-1">
+            <TableCellContent
+              columnIndex={columnIndex}
+              align={align}
+              cellOverflow={cellOverflow}
+              cellVerticalAlign={cellVerticalAlign}
+              className="min-w-0 flex-1"
             >
-              <Pencil />
-            </Button>
+              {children}
+            </TableCellContent>
+            {!disabled && (
+              <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 [.group\/editable-cell:has(:focus-visible)_&]:opacity-100 [[role=row]:hover_&]:opacity-100">
+                <Button
+                  variant="ghost"
+                  size="small"
+                  aria-label={stringFormatter.format('edit')}
+                  onPress={() => setOpen(true)}
+                >
+                  <Pencil />
+                </Button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      {isSmallScreen ? (
-        <Dialog
-          aria-label={stringFormatter.format('editCell')}
-          open={open}
-          onOpenChange={handleOpenChange}
-        >
-          <Form
-            unstyled
-            ref={handleFormRef}
-            action={action}
-            onSubmit={handleSubmit}
-          >
-            <Dialog.Content>
-              <FocusScope autoFocus>{renderField()}</FocusScope>
-            </Dialog.Content>
-            <Dialog.Actions>
-              {cancelButton}
-              {saveButton}
-            </Dialog.Actions>
-          </Form>
-        </Dialog>
-      ) : (
-        <EditableCellPopover
-          cellRef={cellRef}
-          open={open}
-          onOpenChange={handleOpenChange}
-          className={classNames.editablePopover}
-        >
-          <Form
-            unstyled
-            ref={handleFormRef}
-            action={action}
-            onSubmit={handleSubmit}
-          >
-            <FocusScope autoFocus>
-              {renderField()}
-              {cancelButton}
-              {saveButton}
-            </FocusScope>
-          </Form>
-        </EditableCellPopover>
+          {isSmallScreen ? (
+            <Dialog
+              aria-label={stringFormatter.format('editCell')}
+              open={open}
+              onOpenChange={handleOpenChange}
+            >
+              <Form
+                unstyled
+                ref={handleFormRef}
+                action={action}
+                onSubmit={handleSubmit}
+              >
+                <Dialog.Content>
+                  <FocusScope autoFocus>{renderField()}</FocusScope>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  {cancelButton}
+                  {saveButton}
+                </Dialog.Actions>
+              </Form>
+            </Dialog>
+          ) : (
+            <EditableCellPopover
+              cellRef={cellRef}
+              open={open}
+              onOpenChange={handleOpenChange}
+              className={classNames.editablePopover}
+            >
+              <Form
+                unstyled
+                ref={handleFormRef}
+                action={action}
+                onSubmit={handleSubmit}
+              >
+                <FocusScope autoFocus>
+                  {renderField()}
+                  {cancelButton}
+                  {saveButton}
+                </FocusScope>
+              </Form>
+            </EditableCellPopover>
+          )}
+        </>
       )}
     </Cell>
   );
