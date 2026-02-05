@@ -1096,61 +1096,63 @@ export const EditableCell = meta.story({
     };
 
     return (
-      <Table aria-label="Editable table" {...args}>
-        <Table.Header>
-          <Table.Column isRowHeader>Name</Table.Column>
-          <Table.Column>Email</Table.Column>
-          <Table.Column>Location</Table.Column>
-          <Table.Column>Status</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          {data.map((user, i) => (
-            <Table.Row key={user.email}>
-              <Table.EditableCell
-                field={
-                  <TextField
-                    aria-label="Name"
-                    name="name"
-                    defaultValue={user.name}
-                  />
-                }
-                onSubmit={e => handleSubmit(i, e)}
-              >
-                {user.name}
-              </Table.EditableCell>
-              <Table.EditableCell
-                field={
-                  <TextField
-                    aria-label="Email"
-                    name="email"
-                    defaultValue={user.email}
-                  />
-                }
-                onSubmit={e => handleSubmit(i, e)}
-              >
-                {user.email}
-              </Table.EditableCell>
-              <Table.Cell>{user.location}</Table.Cell>
-              <Table.EditableCell
-                field={
-                  <Select
-                    aria-label="Status"
-                    name="status"
-                    defaultValue={user.status}
-                  >
-                    <Select.Option id="active">active</Select.Option>
-                    <Select.Option id="inactive">inactive</Select.Option>
-                    <Select.Option id="suspended">suspended</Select.Option>
-                  </Select>
-                }
-                onSubmit={e => handleSubmit(i, e)}
-              >
-                <Badge>{user.status}</Badge>
-              </Table.EditableCell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      <I18nProvider locale="en">
+        <Table aria-label="Editable table" {...args}>
+          <Table.Header>
+            <Table.Column isRowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Location</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {data.map((user, i) => (
+              <Table.Row key={user.email}>
+                <Table.EditableCell
+                  field={
+                    <TextField
+                      aria-label="Name"
+                      name="name"
+                      defaultValue={user.name}
+                    />
+                  }
+                  onSubmit={e => handleSubmit(i, e)}
+                >
+                  {user.name}
+                </Table.EditableCell>
+                <Table.EditableCell
+                  field={
+                    <TextField
+                      aria-label="Email"
+                      name="email"
+                      defaultValue={user.email}
+                    />
+                  }
+                  onSubmit={e => handleSubmit(i, e)}
+                >
+                  {user.email}
+                </Table.EditableCell>
+                <Table.Cell>{user.location}</Table.Cell>
+                <Table.EditableCell
+                  field={
+                    <Select
+                      aria-label="Status"
+                      name="status"
+                      defaultValue={user.status}
+                    >
+                      <Select.Option id="active">active</Select.Option>
+                      <Select.Option id="inactive">inactive</Select.Option>
+                      <Select.Option id="suspended">suspended</Select.Option>
+                    </Select>
+                  }
+                  onSubmit={e => handleSubmit(i, e)}
+                >
+                  <Badge>{user.status}</Badge>
+                </Table.EditableCell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </I18nProvider>
     );
   },
   play: async ({ canvas }) => {
