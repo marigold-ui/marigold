@@ -44,7 +44,10 @@ export const Table: ThemeComponent<'Table'> = {
       variants: {
         variant: {
           default: '',
-          grid: '**:not-last:[[role=gridcell]]:border-r **:not-last:[[role=gridcell]]:border-border',
+          grid: [
+            '**:not-last:[[role=rowheader]]:border-r **:not-last:[[role=rowheader]]:border-border',
+            '**:not-last:[[role=gridcell]]:border-r **:not-last:[[role=gridcell]]:border-border',
+          ],
           admin: ['bg-access-admin'],
           master: ['bg-access-master'],
         },
