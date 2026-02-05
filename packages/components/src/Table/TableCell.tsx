@@ -35,7 +35,7 @@ export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
 // ---------------
 const TableCell = ({
   children,
-  align = 'left',
+  align,
   overflow: cellOverflow,
   verticalAlign: cellVerticalAlign,
   ...props
@@ -44,13 +44,16 @@ const TableCell = ({
 
   return (
     <Cell className={classNames.cell} {...props}>
-      <TableCellContent
-        align={align}
-        cellOverflow={cellOverflow}
-        cellVerticalAlign={cellVerticalAlign}
-      >
-        {children}
-      </TableCellContent>
+      {({ columnIndex }) => (
+        <TableCellContent
+          columnIndex={columnIndex}
+          align={align}
+          cellOverflow={cellOverflow}
+          cellVerticalAlign={cellVerticalAlign}
+        >
+          {children}
+        </TableCellContent>
+      )}
     </Cell>
   );
 };

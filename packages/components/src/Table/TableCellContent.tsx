@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
-import { useTableOptions } from 'react-aria-components';
+import { type ReactNode, useContext } from 'react';
+import { TableStateContext } from 'react-aria-components';
 import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 
@@ -18,10 +18,11 @@ const stopPropagationProps = {
 // Props
 // ---------------
 export interface TableCellContentProps {
+  columnIndex?: number | null;
   /**
    * Horizontal text alignment of the cell content.
    */
-  align: keyof typeof textAlign;
+  align?: keyof typeof textAlign;
   /**
    * Text overflow behavior for this specific cell. Overrides the table-level overflow setting.
    */
@@ -43,6 +44,7 @@ export interface TableCellContentProps {
 // Component
 // ---------------
 export const TableCellContent = ({
+  columnIndex,
   align,
   cellOverflow,
   cellVerticalAlign,
@@ -50,31 +52,37 @@ export const TableCellContent = ({
   className,
 }: TableCellContentProps) => {
   const {
-    overflow: tableOverflow = 'wrap',
-    allowTextSelection = false,
+    overflow: tableOverflow,
+    allowTextSelection,
     verticalAlign: tableVerticalAlign = 'middle',
   } = useTableContext();
-  const tableOptions = useTableOptions();
-  const selectionMode = tableOptions?.selectionMode ?? 'none';
+  const state = useContext(TableStateContext);
 
   // Cell-level overrides table-level
   const overflow = cellOverflow ?? tableOverflow;
   const vAlign = cellVerticalAlign ?? tableVerticalAlign;
 
   // Determine if content should be selectable
-  const isSelectable = allowTextSelection && selectionMode !== 'none';
+  const selectable =
+    allowTextSelection && state?.selectionManager.selectionMode !== 'none';
+
+  // Get align prop from column
+  const columnAlign = columnIndex
+    ? (state?.collection.columns[columnIndex].props
+        .align as keyof typeof textAlign)
+    : undefined;
 
   return (
     <div
       className={cn(
-        textAlign[align],
+        textAlign[align || columnAlign || 'left'],
         verticalAlign[vAlign],
         overflow === 'truncate' ? 'max-w-0 truncate' : 'wrap-break-word',
-        isSelectable && 'cursor-text outline-none',
+        selectable && 'cursor-text outline-none',
         className
       )}
-      tabIndex={isSelectable ? -1 : undefined}
-      {...(isSelectable ? stopPropagationProps : {})}
+      tabIndex={selectable ? -1 : undefined}
+      {...(selectable ? stopPropagationProps : {})}
     >
       {children}
     </div>

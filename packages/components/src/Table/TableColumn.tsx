@@ -60,6 +60,8 @@ const TableColumn = ({
       width={width}
       // Enforces width to be applied if its static (non-fraction)
       minWidth={ensureWidth(width, minWidth)}
+      // @ts-expect-error will be passed down
+      align={align}
       {...props}
     >
       {({ allowsSorting, sortDirection }) => (

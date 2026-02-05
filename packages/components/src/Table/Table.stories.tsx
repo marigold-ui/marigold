@@ -173,7 +173,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Badge>{user.status}</Badge>
             </Table.Cell>
-            <Table.Cell align="right">
+            <Table.Cell>
               <NumericFormat
                 style="currency"
                 currency="EUR"
