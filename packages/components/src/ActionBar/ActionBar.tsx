@@ -70,7 +70,7 @@ export const ActionBar = ({
   return (
     <div
       id={id}
-      className={cn('z-80', classNames.container)}
+      className={cn('z-30', classNames.container)}
       role="toolbar"
       aria-label={stringFormatter.format('bulkActionsAriaLabel')}
     >

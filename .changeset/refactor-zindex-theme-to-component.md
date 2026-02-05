@@ -11,6 +11,7 @@ Refactor z-index implementation to move all z-index values from theme style file
 - Updated 8 component files: ToastProvider, Popover, Tooltip, Underlay, DrawerModal, Drawer, ActionBar
 - Updated 7 theme style files to remove z-index classes
 - Added comprehensive z-index documentation to CLAUDE.md
+- ActionBar moved to floating layer (z-30) for better integration with content overlays
 
 **Benefits:**
 - Z-index stacking order is now consistent across all themes

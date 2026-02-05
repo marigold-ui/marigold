@@ -158,13 +158,13 @@ Z-index values are centralized and standardized across the design system to ensu
 
 /* Floating Layer (20-49) */
 --z-20: 20; /* Dropdowns (Multiselect, Select, ComboBox) */
---z-30: 30; /* Popovers, Menus, Tooltips */
+--z-30: 30; /* Popovers, Menus, Tooltips, ActionBar */
 
 /* Overlay Layer (50-79) */
 --z-50: 50; /* Modal overlays, Drawer overlays, Underlay */
 
 /* Notification Layer (80-99) */
---z-80: 80; /* Toast notifications, ActionBar, Drawer close button */
+--z-80: 80; /* Toast notifications, Drawer close button */
 
 /* System Layer (100+) */
 --z-100: 100; /* Touch hitbox utility */
@@ -202,8 +202,8 @@ export const Toast: ThemeComponent = {
 
 **Stacking Hierarchy**:
 
-- Toast/ActionBar (z-80) appear **above** modals (z-50)
-- Popovers/Menus/Tooltips (z-30) appear **below** modals (z-50)
+- Toast notifications (z-80) appear **above** modals (z-50)
+- Popovers/Menus/Tooltips/ActionBar (z-30) appear **below** modals (z-50)
 - This ensures notifications remain visible while modals properly block interactions
 
 ## Testing Patterns
