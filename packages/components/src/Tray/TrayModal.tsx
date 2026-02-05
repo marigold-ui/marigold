@@ -57,8 +57,6 @@ export const TrayModal = ({
   const state = useContext(OverlayTriggerStateContext);
   const h = typeof window !== 'undefined' ? window.innerHeight : 0;
   const y = useMotionValue(h);
-  const bgOpacity = useTransform(y, [0, h], [0.4, 0]);
-  const bg = useMotionTemplate`rgba(0, 0, 0, ${bgOpacity})`;
 
   const handleOpenChange = (isOpen: boolean) => {
     onOpenChange?.(isOpen);
