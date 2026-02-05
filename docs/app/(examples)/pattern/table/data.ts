@@ -1,45 +1,1970 @@
 import type { Booking } from './booking';
 
-// Common events that will be repeated
+// Diverse events with different categories and seating types
 const popularEvents = [
   {
     title: 'Wombatlove - Eye of the Wombat',
     date: '20.04.2030',
     time: '20:00 Uhr',
-    category: 'Normalpreis 1',
-    venue: 'Wombatlove',
+    category: 'Regular Price',
+    subcategory: 'Reserved Seating',
+    venue: 'Wombatlove Arena',
   },
   {
     title: 'Wombatlove - Wombats in Town',
     date: '24.04.2030',
     time: '20:00 Uhr',
-    category: 'Normalpreis 1',
-    venue: 'Wombatlove',
+    category: 'VIP',
+    subcategory: 'Section A',
+    venue: 'Wombatlove Arena',
   },
   {
     title: 'Wombatlove - Every Wombat You Take',
     date: '24.09.2030',
     time: '20:00 Uhr',
-    category: 'Normalpreis 1',
-    venue: 'Wombatlove',
+    category: 'Student Discount',
+    subcategory: 'General Admission',
+    venue: 'Wombatlove Theater',
   },
   {
-    title: 'We love Wombats - Freie Platzwahl',
+    title: 'We love Wombats - Open Seating',
     date: '10.09.2035',
     time: '10:00 Uhr',
-    category: 'Ermäßigt',
-    venue: 'Wombatlove',
+    category: 'Family Pass',
+    subcategory: 'General Admission',
+    venue: 'Wombatlove Park',
   },
   {
     title: 'Bohemian Wombatsody',
     date: '20.04.2030',
     time: '20:00 Uhr',
-    category: 'Normalpreis 1',
-    venue: 'Wombatlove',
+    category: 'Regular Price',
+    subcategory: 'Section B',
+    venue: 'Grand Theater',
+  },
+  {
+    title: 'Wombat Symphony Orchestra',
+    date: '15.05.2030',
+    time: '19:30 Uhr',
+    category: 'Premium',
+    subcategory: 'Reserved Seating',
+    venue: 'Concert Hall',
+  },
+  {
+    title: 'Comedy Night with Wombats',
+    date: '22.06.2030',
+    time: '21:00 Uhr',
+    category: 'Early Bird',
+    subcategory: 'General Admission',
+    venue: 'Comedy Club',
+  },
+  {
+    title: 'Wombat Rock Festival',
+    date: '12.07.2030',
+    time: '14:00 Uhr',
+    category: 'Weekend Pass',
+    subcategory: 'General Admission',
+    venue: 'Festival Grounds',
+  },
+  {
+    title: 'Classical Wombat Evening',
+    date: '18.08.2030',
+    time: '20:00 Uhr',
+    category: 'Senior Discount',
+    subcategory: 'Reserved Seating',
+    venue: 'Opera House',
+  },
+  {
+    title: 'Wombat Jazz Night',
+    date: '05.09.2030',
+    time: '22:00 Uhr',
+    category: 'Regular Price',
+    subcategory: 'Section C',
+    venue: 'Jazz Lounge',
+  },
+  {
+    title: 'Kids Love Wombats',
+    date: '25.09.2030',
+    time: '15:00 Uhr',
+    category: 'Child Ticket',
+    subcategory: 'General Admission',
+    venue: 'Family Arena',
+  },
+  {
+    title: 'Wombat Dance Spectacular',
+    date: '30.10.2030',
+    time: '19:00 Uhr',
+    category: 'Group Discount',
+    subcategory: 'Reserved Seating',
+    venue: 'Dance Theater',
   },
 ];
 
 export const bookings: Booking[] = [
+  // Order with multiple items in different categories
+  {
+    id: '95000001',
+    date: 'Mo, 03.02.2026 10:30:15 Uhr',
+    customer: {
+      number: '30000001',
+      firstName: 'Emma',
+      lastName: 'Schmidt',
+      address: {
+        street: 'Hauptstraße 123',
+        postalCode: '10115',
+        city: 'Berlin',
+      },
+      email: 'emma.schmidt@email.de',
+      phone: '030123456789',
+    },
+    orderItems: [
+      {
+        event: popularEvents[0],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[1],
+        quantity: 1,
+        price: 150.0,
+        pricePerItem: 150.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 3,
+        price: 90.0,
+        pricePerItem: 30.0,
+      },
+    ],
+    orderValue: 360.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 360.0,
+    },
+    invoice: {
+      date: '03.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Personalisierung', 'Dokumente'],
+    },
+  },
+  // Partially cancelled order
+  {
+    id: '95000002',
+    date: 'Mo, 03.02.2026 11:45:22 Uhr',
+    customer: {
+      number: '30000002',
+      firstName: 'Lukas',
+      lastName: 'Müller',
+      address: {
+        street: 'Gartenweg 45',
+        postalCode: '80331',
+        city: 'München',
+      },
+      email: 'lukas.mueller@provider.de',
+      phone: '089987654321',
+    },
+    orderItems: [
+      {
+        event: popularEvents[2],
+        quantity: 4,
+        price: 200.0,
+        pricePerItem: 50.0,
+      },
+      {
+        event: popularEvents[4],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+        cancelled: true,
+      },
+      {
+        event: popularEvents[8],
+        quantity: 2,
+        price: 70.0,
+        pricePerItem: 35.0,
+      },
+    ],
+    orderValue: 270.0,
+    payment: {
+      status: 'Kasse',
+      amount: 270.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '03.02.2026, 12:00',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Zutrittsstatus', 'Dokumente'],
+    },
+  },
+  // General admission order
+  {
+    id: '95000003',
+    date: 'Mo, 03.02.2026 14:20:30 Uhr',
+    customer: {
+      number: '30000003',
+      firstName: 'Sophie',
+      lastName: 'Wagner',
+      address: {
+        street: 'Schillerstraße 78',
+        postalCode: '50667',
+        city: 'Köln',
+      },
+      email: 'sophie.wagner@email.com',
+    },
+    orderItems: [
+      {
+        event: popularEvents[3],
+        quantity: 4,
+        price: 160.0,
+        pricePerItem: 40.0,
+      },
+      {
+        event: popularEvents[10],
+        quantity: 2,
+        price: 50.0,
+        pricePerItem: 25.0,
+      },
+    ],
+    orderValue: 210.0,
+    payment: {
+      status: 'Überweisung',
+      method: 'Überweisung (Vorkasse)',
+      amount: 210.0,
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Dokumente'],
+    },
+  },
+  // VIP and Premium mix
+  {
+    id: '95000004',
+    date: 'Di, 04.02.2026 09:15:45 Uhr',
+    customer: {
+      number: '30000004',
+      firstName: 'Maximilian',
+      lastName: 'Fischer',
+      address: {
+        street: 'Königsallee 200',
+        postalCode: '40212',
+        city: 'Düsseldorf',
+      },
+      email: 'max.fischer@business.de',
+      phone: '0211555777',
+      iban: 'DE89 3704 0044 0532 0130 00',
+      bic: 'COBADEFFXXX',
+    },
+    orderItems: [
+      {
+        event: popularEvents[1],
+        quantity: 2,
+        price: 300.0,
+        pricePerItem: 150.0,
+      },
+      {
+        event: popularEvents[5],
+        quantity: 2,
+        price: 240.0,
+        pricePerItem: 120.0,
+      },
+    ],
+    orderValue: 540.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 540.0,
+    },
+    invoice: {
+      date: '04.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '04.02.2026, 09:30',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Tickets drucken'],
+    },
+  },
+  // Student discount order with cancellation
+  {
+    id: '95000005',
+    date: 'Di, 04.02.2026 12:30:18 Uhr',
+    customer: {
+      number: '30000005',
+      firstName: 'Laura',
+      lastName: 'Becker',
+      address: {
+        street: 'Universitätsstraße 12',
+        postalCode: '69117',
+        city: 'Heidelberg',
+      },
+      email: 'laura.becker@student.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[2],
+        quantity: 1,
+        price: 50.0,
+        pricePerItem: 50.0,
+      },
+      {
+        event: popularEvents[7],
+        quantity: 2,
+        price: 140.0,
+        pricePerItem: 70.0,
+        cancelled: true,
+      },
+    ],
+    orderValue: 50.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 50.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Personalisierung'],
+    },
+  },
+  // Large family order
+  {
+    id: '95000006',
+    date: 'Mi, 05.02.2026 16:45:33 Uhr',
+    customer: {
+      number: '30000006',
+      firstName: 'Anna',
+      lastName: 'Hoffmann',
+      address: {
+        street: 'Waldweg 56',
+        postalCode: '20095',
+        city: 'Hamburg',
+      },
+      email: 'anna.hoffmann@family.de',
+      phone: '040888999',
+    },
+    orderItems: [
+      {
+        event: popularEvents[3],
+        quantity: 2,
+        price: 80.0,
+        pricePerItem: 40.0,
+      },
+      {
+        event: popularEvents[10],
+        quantity: 3,
+        price: 75.0,
+        pricePerItem: 25.0,
+      },
+      {
+        event: popularEvents[11],
+        quantity: 1,
+        price: 90.0,
+        pricePerItem: 90.0,
+      },
+    ],
+    orderValue: 245.0,
+    payment: {
+      status: 'Kasse',
+      amount: 245.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '05.02.2026, 17:00',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Tickets drucken'],
+    },
+  },
+  // Senior discount with reserved seating
+  {
+    id: '95000007',
+    date: 'Mi, 05.02.2026 10:20:12 Uhr',
+    customer: {
+      number: '30000007',
+      firstName: 'Heinrich',
+      lastName: 'Weber',
+      address: {
+        street: 'Rosengarten 23',
+        postalCode: '70173',
+        city: 'Stuttgart',
+      },
+      email: 'h.weber@senior.de',
+      phone: '0711333444',
+    },
+    orderItems: [
+      {
+        event: popularEvents[8],
+        quantity: 2,
+        price: 70.0,
+        pricePerItem: 35.0,
+      },
+      {
+        event: popularEvents[9],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+    ],
+    orderValue: 190.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 190.0,
+    },
+    invoice: {
+      date: '05.02.2026',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Dokumente'],
+    },
+  },
+  // Mixed order with partial cancellation
+  {
+    id: '95000008',
+    date: 'Do, 06.02.2026 15:55:27 Uhr',
+    customer: {
+      number: '30000008',
+      firstName: 'Julia',
+      lastName: 'Koch',
+      address: {
+        street: 'Marktplatz 88',
+        postalCode: '60311',
+        city: 'Frankfurt',
+      },
+      email: 'julia.koch@email.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[0],
+        quantity: 3,
+        price: 180.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 2,
+        price: 60.0,
+        pricePerItem: 30.0,
+        cancelled: true,
+      },
+      {
+        event: popularEvents[4],
+        quantity: 1,
+        price: 60.0,
+        pricePerItem: 60.0,
+      },
+    ],
+    orderValue: 240.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 240.0,
+      invoiceStatus: 'teilweise',
+    },
+    invoice: {
+      date: '06.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Scanstatus bearbeiten'],
+    },
+  },
+  // Group discount order
+  {
+    id: '95000009',
+    date: 'Do, 06.02.2026 11:10:40 Uhr',
+    customer: {
+      number: '30000009',
+      firstName: 'Thomas',
+      lastName: 'Schneider',
+      address: {
+        street: 'Gruppenstraße 15',
+        postalCode: '04109',
+        city: 'Leipzig',
+      },
+      email: 'thomas.schneider@company.de',
+      phone: '034166677788',
+    },
+    orderItems: [
+      {
+        event: popularEvents[11],
+        quantity: 10,
+        price: 800.0,
+        pricePerItem: 80.0,
+      },
+    ],
+    orderValue: 800.0,
+    payment: {
+      status: 'Überweisung',
+      method: 'Überweisung (Vorkasse)',
+      amount: 800.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '06.02.2026, 11:30',
+    },
+    actions: {
+      items: ['Bestellterminale', 'Tickets drucken'],
+    },
+  },
+  // Jazz night with general admission
+  {
+    id: '95000010',
+    date: 'Fr, 07.02.2026 18:25:55 Uhr',
+    customer: {
+      number: '30000010',
+      firstName: 'Maria',
+      lastName: 'Zimmermann',
+      address: {
+        street: 'Jazzallee 77',
+        postalCode: '90402',
+        city: 'Nürnberg',
+      },
+      email: 'maria.zimmermann@jazz.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[9],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 2,
+        price: 60.0,
+        pricePerItem: 30.0,
+      },
+    ],
+    orderValue: 180.0,
+    payment: {
+      status: 'Kasse',
+      amount: 180.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '07.02.2026, 18:40',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Tickets drucken'],
+    },
+  },
+  // Festival weekend pass
+  {
+    id: '95000011',
+    date: 'Fr, 07.02.2026 14:30:20 Uhr',
+    customer: {
+      number: '30000011',
+      firstName: 'Felix',
+      lastName: 'Braun',
+      address: {
+        street: 'Festivalplatz 1',
+        postalCode: '01067',
+        city: 'Dresden',
+      },
+      email: 'felix.braun@festival.de',
+      phone: '0351222333',
+    },
+    orderItems: [
+      {
+        event: popularEvents[7],
+        quantity: 2,
+        price: 140.0,
+        pricePerItem: 70.0,
+      },
+    ],
+    orderValue: 140.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 140.0,
+    },
+    invoice: {
+      date: '07.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Scanstatus bearbeiten'],
+    },
+  },
+  // Multi-event order with cancellation
+  {
+    id: '95000012',
+    date: 'Sa, 08.02.2026 10:15:33 Uhr',
+    customer: {
+      number: '30000012',
+      firstName: 'Sarah',
+      lastName: 'Klein',
+      address: {
+        street: 'Bergstraße 99',
+        postalCode: '79098',
+        city: 'Freiburg',
+      },
+      email: 'sarah.klein@email.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[0],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[5],
+        quantity: 1,
+        price: 120.0,
+        pricePerItem: 120.0,
+        cancelled: true,
+      },
+      {
+        event: popularEvents[8],
+        quantity: 2,
+        price: 70.0,
+        pricePerItem: 35.0,
+      },
+      {
+        event: popularEvents[10],
+        quantity: 2,
+        price: 50.0,
+        pricePerItem: 25.0,
+        cancelled: true,
+      },
+    ],
+    orderValue: 190.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 190.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Dokumente'],
+    },
+  },
+  // Premium seats order
+  {
+    id: '95000013',
+    date: 'Sa, 08.02.2026 16:40:18 Uhr',
+    customer: {
+      number: '30000013',
+      firstName: 'Michael',
+      lastName: 'Herrmann',
+      address: {
+        street: 'VIP Allee 50',
+        postalCode: '22763',
+        city: 'Hamburg',
+      },
+      email: 'michael.herrmann@premium.de',
+      phone: '040111222333',
+      iban: 'DE12 5001 0517 5407 3249 31',
+      bic: 'INGDDEFFXXX',
+    },
+    orderItems: [
+      {
+        event: popularEvents[1],
+        quantity: 4,
+        price: 600.0,
+        pricePerItem: 150.0,
+      },
+      {
+        event: popularEvents[5],
+        quantity: 2,
+        price: 240.0,
+        pricePerItem: 120.0,
+      },
+    ],
+    orderValue: 840.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 840.0,
+    },
+    invoice: {
+      date: '08.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '08.02.2026, 17:00',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Personalisierung', 'Tickets drucken'],
+    },
+  },
+  // Early bird special
+  {
+    id: '95000014',
+    date: 'So, 09.02.2026 09:05:22 Uhr',
+    customer: {
+      number: '30000014',
+      firstName: 'Christina',
+      lastName: 'Wolf',
+      address: {
+        street: 'Frühlingsweg 34',
+        postalCode: '80331',
+        city: 'München',
+      },
+      email: 'christina.wolf@earlybird.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[6],
+        quantity: 4,
+        price: 120.0,
+        pricePerItem: 30.0,
+      },
+      {
+        event: popularEvents[7],
+        quantity: 2,
+        price: 140.0,
+        pricePerItem: 70.0,
+      },
+    ],
+    orderValue: 260.0,
+    payment: {
+      status: 'Überweisung',
+      method: 'Überweisung (Vorkasse)',
+      amount: 260.0,
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Dokumente'],
+    },
+  },
+  // Family package with kids tickets
+  {
+    id: '95000015',
+    date: 'So, 09.02.2026 13:20:45 Uhr',
+    customer: {
+      number: '30000015',
+      firstName: 'Peter',
+      lastName: 'Schäfer',
+      address: {
+        street: 'Kinderweg 88',
+        postalCode: '50667',
+        city: 'Köln',
+      },
+      email: 'peter.schaefer@family.de',
+      phone: '0221444555666',
+    },
+    orderItems: [
+      {
+        event: popularEvents[3],
+        quantity: 2,
+        price: 80.0,
+        pricePerItem: 40.0,
+      },
+      {
+        event: popularEvents[10],
+        quantity: 4,
+        price: 100.0,
+        pricePerItem: 25.0,
+      },
+    ],
+    orderValue: 180.0,
+    payment: {
+      status: 'Kasse',
+      amount: 180.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '09.02.2026, 13:35',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Tickets drucken'],
+    },
+  },
+  // Reserved seating multi-show
+  {
+    id: '95000016',
+    date: 'Mo, 10.02.2026 11:30:55 Uhr',
+    customer: {
+      number: '30000016',
+      firstName: 'Sabine',
+      lastName: 'Neumann',
+      address: {
+        street: 'Theaterstraße 12',
+        postalCode: '40212',
+        city: 'Düsseldorf',
+      },
+      email: 'sabine.neumann@theater.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[0],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[4],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[11],
+        quantity: 2,
+        price: 180.0,
+        pricePerItem: 90.0,
+      },
+    ],
+    orderValue: 420.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 420.0,
+    },
+    invoice: {
+      date: '10.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Scanstatus bearbeiten'],
+    },
+  },
+  // Student group with partial cancellation
+  {
+    id: '95000017',
+    date: 'Mo, 10.02.2026 14:45:20 Uhr',
+    customer: {
+      number: '30000017',
+      firstName: 'Jonas',
+      lastName: 'Richter',
+      address: {
+        street: 'Campusstraße 5',
+        postalCode: '69117',
+        city: 'Heidelberg',
+      },
+      email: 'jonas.richter@uni.de',
+      phone: '06221777888',
+    },
+    orderItems: [
+      {
+        event: popularEvents[2],
+        quantity: 5,
+        price: 250.0,
+        pricePerItem: 50.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 3,
+        price: 90.0,
+        pricePerItem: 30.0,
+        cancelled: true,
+      },
+    ],
+    orderValue: 250.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 250.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Bestellterminale'],
+    },
+  },
+  // VIP experience package
+  {
+    id: '95000018',
+    date: 'Di, 11.02.2026 10:20:33 Uhr',
+    customer: {
+      number: '30000018',
+      firstName: 'Alexander',
+      lastName: 'Hartmann',
+      address: {
+        street: 'Luxusstraße 100',
+        postalCode: '10115',
+        city: 'Berlin',
+      },
+      email: 'alex.hartmann@vip.de',
+      phone: '030999888777',
+      iban: 'DE89 3704 0044 0532 0130 00',
+      bic: 'COBADEFFXXX',
+    },
+    orderItems: [
+      {
+        event: popularEvents[1],
+        quantity: 2,
+        price: 300.0,
+        pricePerItem: 150.0,
+      },
+      {
+        event: popularEvents[5],
+        quantity: 2,
+        price: 240.0,
+        pricePerItem: 120.0,
+      },
+      {
+        event: popularEvents[11],
+        quantity: 2,
+        price: 180.0,
+        pricePerItem: 90.0,
+      },
+    ],
+    orderValue: 720.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 720.0,
+    },
+    invoice: {
+      date: '11.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '11.02.2026, 10:45',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Personalisierung', 'Tickets drucken'],
+    },
+  },
+  // General admission festival
+  {
+    id: '95000019',
+    date: 'Di, 11.02.2026 15:50:18 Uhr',
+    customer: {
+      number: '30000019',
+      firstName: 'Lisa',
+      lastName: 'Engel',
+      address: {
+        street: 'Partystraße 55',
+        postalCode: '20095',
+        city: 'Hamburg',
+      },
+      email: 'lisa.engel@party.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[7],
+        quantity: 1,
+        price: 70.0,
+        pricePerItem: 70.0,
+      },
+      {
+        event: popularEvents[3],
+        quantity: 1,
+        price: 40.0,
+        pricePerItem: 40.0,
+      },
+    ],
+    orderValue: 110.0,
+    payment: {
+      status: 'Kasse',
+      amount: 110.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '11.02.2026, 16:00',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
+    },
+  },
+  // Senior couple reserved seats
+  {
+    id: '95000020',
+    date: 'Mi, 12.02.2026 09:15:44 Uhr',
+    customer: {
+      number: '30000020',
+      firstName: 'Helga',
+      lastName: 'Bergmann',
+      address: {
+        street: 'Seniorenweg 23',
+        postalCode: '70173',
+        city: 'Stuttgart',
+      },
+      email: 'helga.bergmann@senior.de',
+      phone: '0711888999000',
+    },
+    orderItems: [
+      {
+        event: popularEvents[8],
+        quantity: 2,
+        price: 70.0,
+        pricePerItem: 35.0,
+      },
+      {
+        event: popularEvents[9],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+    ],
+    orderValue: 190.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 190.0,
+    },
+    invoice: {
+      date: '12.02.2026',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Dokumente'],
+    },
+  },
+  // Mixed category large order
+  {
+    id: '95000021',
+    date: 'Mi, 12.02.2026 13:40:27 Uhr',
+    customer: {
+      number: '30000021',
+      firstName: 'Daniel',
+      lastName: 'Vogel',
+      address: {
+        street: 'Mixstraße 44',
+        postalCode: '60311',
+        city: 'Frankfurt',
+      },
+      email: 'daniel.vogel@mixed.de',
+      phone: '069333444555',
+    },
+    orderItems: [
+      {
+        event: popularEvents[0],
+        quantity: 3,
+        price: 180.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[2],
+        quantity: 2,
+        price: 100.0,
+        pricePerItem: 50.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 2,
+        price: 60.0,
+        pricePerItem: 30.0,
+      },
+      {
+        event: popularEvents[10],
+        quantity: 3,
+        price: 75.0,
+        pricePerItem: 25.0,
+      },
+    ],
+    orderValue: 415.0,
+    payment: {
+      status: 'Überweisung',
+      method: 'Überweisung (Vorkasse)',
+      amount: 415.0,
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Bestellterminale', 'Dokumente'],
+    },
+  },
+  // Comedy night general admission
+  {
+    id: '95000022',
+    date: 'Do, 13.02.2026 19:25:15 Uhr',
+    customer: {
+      number: '30000022',
+      firstName: 'Nina',
+      lastName: 'Schulz',
+      address: {
+        street: 'Lachweg 77',
+        postalCode: '04109',
+        city: 'Leipzig',
+      },
+      email: 'nina.schulz@laugh.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[6],
+        quantity: 4,
+        price: 120.0,
+        pricePerItem: 30.0,
+      },
+    ],
+    orderValue: 120.0,
+    payment: {
+      status: 'Kasse',
+      amount: 120.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '13.02.2026, 19:40',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Tickets drucken'],
+    },
+  },
+  // Cancelled premium order
+  {
+    id: '95000023',
+    date: 'Do, 13.02.2026 11:55:33 Uhr',
+    customer: {
+      number: '30000023',
+      firstName: 'Robert',
+      lastName: 'Lang',
+      address: {
+        street: 'Stornogasse 12',
+        postalCode: '90402',
+        city: 'Nürnberg',
+      },
+      email: 'robert.lang@email.de',
+      phone: '0911222333444',
+    },
+    orderItems: [
+      {
+        event: popularEvents[5],
+        quantity: 2,
+        price: 240.0,
+        pricePerItem: 120.0,
+        cancelled: true,
+      },
+      {
+        event: popularEvents[1],
+        quantity: 1,
+        price: 150.0,
+        pricePerItem: 150.0,
+      },
+      {
+        event: popularEvents[11],
+        quantity: 2,
+        price: 180.0,
+        pricePerItem: 90.0,
+        cancelled: true,
+      },
+    ],
+    orderValue: 150.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 150.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Dokumente'],
+    },
+  },
+  // Kids show family package
+  {
+    id: '95000024',
+    date: 'Fr, 14.02.2026 14:10:22 Uhr',
+    customer: {
+      number: '30000024',
+      firstName: 'Katharina',
+      lastName: 'Frank',
+      address: {
+        street: 'Kinderplatz 90',
+        postalCode: '01067',
+        city: 'Dresden',
+      },
+      email: 'katharina.frank@kids.de',
+      phone: '0351555666777',
+    },
+    orderItems: [
+      {
+        event: popularEvents[10],
+        quantity: 5,
+        price: 125.0,
+        pricePerItem: 25.0,
+      },
+      {
+        event: popularEvents[3],
+        quantity: 2,
+        price: 80.0,
+        pricePerItem: 40.0,
+      },
+    ],
+    orderValue: 205.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 205.0,
+    },
+    invoice: {
+      date: '14.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '14.02.2026, 14:30',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Personalisierung', 'Tickets drucken'],
+    },
+  },
+  // Jazz and classical mix
+  {
+    id: '95000025',
+    date: 'Fr, 14.02.2026 17:35:40 Uhr',
+    customer: {
+      number: '30000025',
+      firstName: 'Wolfgang',
+      lastName: 'Stein',
+      address: {
+        street: 'Musikweg 33',
+        postalCode: '79098',
+        city: 'Freiburg',
+      },
+      email: 'wolfgang.stein@music.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[9],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[8],
+        quantity: 2,
+        price: 70.0,
+        pricePerItem: 35.0,
+      },
+    ],
+    orderValue: 190.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 190.0,
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Dokumente'],
+    },
+  },
+  // Large group booking
+  {
+    id: '95000026',
+    date: 'Sa, 15.02.2026 10:05:15 Uhr',
+    customer: {
+      number: '30000026',
+      firstName: 'Andrea',
+      lastName: 'Lorenz',
+      address: {
+        street: 'Gruppenweg 200',
+        postalCode: '22763',
+        city: 'Hamburg',
+      },
+      email: 'andrea.lorenz@group.de',
+      phone: '040666777888',
+    },
+    orderItems: [
+      {
+        event: popularEvents[11],
+        quantity: 12,
+        price: 960.0,
+        pricePerItem: 80.0,
+      },
+    ],
+    orderValue: 960.0,
+    payment: {
+      status: 'Überweisung',
+      method: 'Überweisung (Vorkasse)',
+      amount: 960.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '15.02.2026, 10:30',
+    },
+    actions: {
+      items: ['Bestellterminale', 'Tickets drucken'],
+    },
+  },
+  // Festival weekend with cancellation
+  {
+    id: '95000027',
+    date: 'Sa, 15.02.2026 16:20:50 Uhr',
+    customer: {
+      number: '30000027',
+      firstName: 'Patrick',
+      lastName: 'Keller',
+      address: {
+        street: 'Festivalweg 8',
+        postalCode: '80331',
+        city: 'München',
+      },
+      email: 'patrick.keller@festival.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[7],
+        quantity: 3,
+        price: 210.0,
+        pricePerItem: 70.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 2,
+        price: 60.0,
+        pricePerItem: 30.0,
+        cancelled: true,
+      },
+    ],
+    orderValue: 210.0,
+    payment: {
+      status: 'Kasse',
+      amount: 210.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '15.02.2026, 16:35',
+    },
+    actions: {
+      items: [
+        'Stornobedürg drucken',
+        'Zutrittsstatus',
+        'Scanstatus bearbeiten',
+      ],
+    },
+  },
+  // Multi-event subscription-style
+  {
+    id: '95000028',
+    date: 'So, 16.02.2026 11:45:28 Uhr',
+    customer: {
+      number: '30000028',
+      firstName: 'Claudia',
+      lastName: 'Sommer',
+      address: {
+        street: 'Abostraße 66',
+        postalCode: '50667',
+        city: 'Köln',
+      },
+      email: 'claudia.sommer@subscription.de',
+      phone: '0221888999000',
+    },
+    orderItems: [
+      {
+        event: popularEvents[0],
+        quantity: 1,
+        price: 60.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[4],
+        quantity: 1,
+        price: 60.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[8],
+        quantity: 1,
+        price: 35.0,
+        pricePerItem: 35.0,
+      },
+      {
+        event: popularEvents[9],
+        quantity: 1,
+        price: 60.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[11],
+        quantity: 1,
+        price: 90.0,
+        pricePerItem: 90.0,
+      },
+    ],
+    orderValue: 305.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 305.0,
+    },
+    invoice: {
+      date: '16.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Scanstatus bearbeiten'],
+    },
+  },
+  // Student discount multiple shows
+  {
+    id: '95000029',
+    date: 'So, 16.02.2026 15:30:12 Uhr',
+    customer: {
+      number: '30000029',
+      firstName: 'Tim',
+      lastName: 'Baumann',
+      address: {
+        street: 'Studentenweg 101',
+        postalCode: '69117',
+        city: 'Heidelberg',
+      },
+      email: 'tim.baumann@student.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[2],
+        quantity: 2,
+        price: 100.0,
+        pricePerItem: 50.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 2,
+        price: 60.0,
+        pricePerItem: 30.0,
+      },
+    ],
+    orderValue: 160.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 160.0,
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Dokumente'],
+    },
+  },
+  // VIP complete experience
+  {
+    id: '95000030',
+    date: 'Mo, 17.02.2026 09:20:35 Uhr',
+    customer: {
+      number: '30000030',
+      firstName: 'Stephanie',
+      lastName: 'Gross',
+      address: {
+        street: 'Premiumallee 1',
+        postalCode: '40212',
+        city: 'Düsseldorf',
+      },
+      email: 'stephanie.gross@premium.de',
+      phone: '0211111222333',
+      iban: 'DE12 5001 0517 5407 3249 31',
+      bic: 'INGDDEFFXXX',
+    },
+    orderItems: [
+      {
+        event: popularEvents[1],
+        quantity: 3,
+        price: 450.0,
+        pricePerItem: 150.0,
+      },
+      {
+        event: popularEvents[5],
+        quantity: 3,
+        price: 360.0,
+        pricePerItem: 120.0,
+      },
+    ],
+    orderValue: 810.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 810.0,
+    },
+    invoice: {
+      date: '17.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '17.02.2026, 09:45',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Personalisierung', 'Tickets drucken'],
+    },
+  },
+  // Family bundle with partial cancellation
+  {
+    id: '95000031',
+    date: 'Mo, 17.02.2026 14:15:48 Uhr',
+    customer: {
+      number: '30000031',
+      firstName: 'Martin',
+      lastName: 'Dietrich',
+      address: {
+        street: 'Familienstraße 45',
+        postalCode: '10115',
+        city: 'Berlin',
+      },
+      email: 'martin.dietrich@family.de',
+      phone: '030444555666',
+    },
+    orderItems: [
+      {
+        event: popularEvents[3],
+        quantity: 3,
+        price: 120.0,
+        pricePerItem: 40.0,
+      },
+      {
+        event: popularEvents[10],
+        quantity: 4,
+        price: 100.0,
+        pricePerItem: 25.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 2,
+        price: 60.0,
+        pricePerItem: 30.0,
+        cancelled: true,
+      },
+    ],
+    orderValue: 220.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 220.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Bestellterminale'],
+    },
+  },
+  // General admission party package
+  {
+    id: '95000032',
+    date: 'Di, 18.02.2026 18:40:20 Uhr',
+    customer: {
+      number: '30000032',
+      firstName: 'Jennifer',
+      lastName: 'Huber',
+      address: {
+        street: 'Partyplatz 88',
+        postalCode: '20095',
+        city: 'Hamburg',
+      },
+      email: 'jennifer.huber@party.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[7],
+        quantity: 5,
+        price: 350.0,
+        pricePerItem: 70.0,
+      },
+      {
+        event: popularEvents[3],
+        quantity: 2,
+        price: 80.0,
+        pricePerItem: 40.0,
+      },
+    ],
+    orderValue: 430.0,
+    payment: {
+      status: 'Kasse',
+      amount: 430.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '18.02.2026, 19:00',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
+    },
+  },
+  // Reserved seating culture package
+  {
+    id: '95000033',
+    date: 'Di, 18.02.2026 10:25:33 Uhr',
+    customer: {
+      number: '30000033',
+      firstName: 'Matthias',
+      lastName: 'Scholz',
+      address: {
+        street: 'Kulturallee 22',
+        postalCode: '70173',
+        city: 'Stuttgart',
+      },
+      email: 'matthias.scholz@culture.de',
+      phone: '0711222333444',
+    },
+    orderItems: [
+      {
+        event: popularEvents[8],
+        quantity: 2,
+        price: 70.0,
+        pricePerItem: 35.0,
+      },
+      {
+        event: popularEvents[11],
+        quantity: 2,
+        price: 180.0,
+        pricePerItem: 90.0,
+      },
+      {
+        event: popularEvents[5],
+        quantity: 1,
+        price: 120.0,
+        pricePerItem: 120.0,
+      },
+    ],
+    orderValue: 370.0,
+    payment: {
+      status: 'Überweisung',
+      method: 'Überweisung (Vorkasse)',
+      amount: 370.0,
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Dokumente'],
+    },
+  },
+  // Mixed categories large order
+  {
+    id: '95000034',
+    date: 'Mi, 19.02.2026 13:50:15 Uhr',
+    customer: {
+      number: '30000034',
+      firstName: 'Anja',
+      lastName: 'Krause',
+      address: {
+        street: 'Eventweg 99',
+        postalCode: '60311',
+        city: 'Frankfurt',
+      },
+      email: 'anja.krause@events.de',
+      phone: '069555666777',
+    },
+    orderItems: [
+      {
+        event: popularEvents[0],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[2],
+        quantity: 3,
+        price: 150.0,
+        pricePerItem: 50.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 4,
+        price: 120.0,
+        pricePerItem: 30.0,
+      },
+      {
+        event: popularEvents[9],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+    ],
+    orderValue: 510.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 510.0,
+    },
+    invoice: {
+      date: '19.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Scanstatus bearbeiten'],
+    },
+  },
+  // Early bird special with cancellation
+  {
+    id: '95000035',
+    date: 'Mi, 19.02.2026 08:15:40 Uhr',
+    customer: {
+      number: '30000035',
+      firstName: 'Frank',
+      lastName: 'Roth',
+      address: {
+        street: 'Frühstraße 11',
+        postalCode: '04109',
+        city: 'Leipzig',
+      },
+      email: 'frank.roth@early.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[6],
+        quantity: 3,
+        price: 90.0,
+        pricePerItem: 30.0,
+      },
+      {
+        event: popularEvents[7],
+        quantity: 1,
+        price: 70.0,
+        pricePerItem: 70.0,
+        cancelled: true,
+      },
+    ],
+    orderValue: 90.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 90.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Dokumente'],
+    },
+  },
+  // Premium seats couple
+  {
+    id: '95000036',
+    date: 'Do, 20.02.2026 16:30:25 Uhr',
+    customer: {
+      number: '30000036',
+      firstName: 'Gabriele',
+      lastName: 'Mayer',
+      address: {
+        street: 'Premiumweg 77',
+        postalCode: '90402',
+        city: 'Nürnberg',
+      },
+      email: 'gabriele.mayer@premium.de',
+      phone: '0911777888999',
+    },
+    orderItems: [
+      {
+        event: popularEvents[1],
+        quantity: 2,
+        price: 300.0,
+        pricePerItem: 150.0,
+      },
+      {
+        event: popularEvents[5],
+        quantity: 2,
+        price: 240.0,
+        pricePerItem: 120.0,
+      },
+    ],
+    orderValue: 540.0,
+    payment: {
+      status: 'Lastschrift',
+      amount: 540.0,
+    },
+    invoice: {
+      date: '20.02.2026',
+      status: 'bezahlt',
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '20.02.2026, 16:50',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Personalisierung', 'Tickets drucken'],
+    },
+  },
+  // Kids entertainment package
+  {
+    id: '95000037',
+    date: 'Do, 20.02.2026 11:05:18 Uhr',
+    customer: {
+      number: '30000037',
+      firstName: 'Birgit',
+      lastName: 'Jung',
+      address: {
+        street: 'Spielstraße 33',
+        postalCode: '01067',
+        city: 'Dresden',
+      },
+      email: 'birgit.jung@kids.de',
+      phone: '0351333444555',
+    },
+    orderItems: [
+      {
+        event: popularEvents[10],
+        quantity: 6,
+        price: 150.0,
+        pricePerItem: 25.0,
+      },
+      {
+        event: popularEvents[3],
+        quantity: 2,
+        price: 80.0,
+        pricePerItem: 40.0,
+      },
+    ],
+    orderValue: 230.0,
+    payment: {
+      status: 'Kasse',
+      amount: 230.0,
+    },
+    ticketPrint: {
+      status: 'Erstellt am',
+      printedAt: '20.02.2026, 11:20',
+    },
+    actions: {
+      items: ['Zutrittsstatus', 'Tickets drucken'],
+    },
+  },
+  // Jazz lover season tickets
+  {
+    id: '95000038',
+    date: 'Fr, 21.02.2026 14:40:55 Uhr',
+    customer: {
+      number: '30000038',
+      firstName: 'Rainer',
+      lastName: 'Pohl',
+      address: {
+        street: 'Jazzstraße 66',
+        postalCode: '79098',
+        city: 'Freiburg',
+      },
+      email: 'rainer.pohl@jazz.de',
+    },
+    orderItems: [
+      {
+        event: popularEvents[9],
+        quantity: 4,
+        price: 240.0,
+        pricePerItem: 60.0,
+      },
+    ],
+    orderValue: 240.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 240.0,
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Personalisierung', 'Dokumente'],
+    },
+  },
+  // Festival general admission group
+  {
+    id: '95000039',
+    date: 'Fr, 21.02.2026 17:20:30 Uhr',
+    customer: {
+      number: '30000039',
+      firstName: 'Susanne',
+      lastName: 'Busch',
+      address: {
+        street: 'Festivalring 200',
+        postalCode: '22763',
+        city: 'Hamburg',
+      },
+      email: 'susanne.busch@festival.de',
+      phone: '040999000111',
+    },
+    orderItems: [
+      {
+        event: popularEvents[7],
+        quantity: 8,
+        price: 560.0,
+        pricePerItem: 70.0,
+      },
+    ],
+    orderValue: 560.0,
+    payment: {
+      status: 'Überweisung',
+      method: 'Überweisung (Vorkasse)',
+      amount: 560.0,
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Bestellterminale', 'Dokumente'],
+    },
+  },
+  // Multi-show with heavy cancellation
+  {
+    id: '95000040',
+    date: 'Sa, 22.02.2026 10:35:22 Uhr',
+    customer: {
+      number: '30000040',
+      firstName: 'Uwe',
+      lastName: 'Fuchs',
+      address: {
+        street: 'Stornoweg 8',
+        postalCode: '80331',
+        city: 'München',
+      },
+      email: 'uwe.fuchs@cancelled.de',
+      phone: '089111222333',
+    },
+    orderItems: [
+      {
+        event: popularEvents[0],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+        cancelled: true,
+      },
+      {
+        event: popularEvents[4],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+      {
+        event: popularEvents[6],
+        quantity: 3,
+        price: 90.0,
+        pricePerItem: 30.0,
+        cancelled: true,
+      },
+      {
+        event: popularEvents[9],
+        quantity: 2,
+        price: 120.0,
+        pricePerItem: 60.0,
+      },
+    ],
+    orderValue: 240.0,
+    payment: {
+      status: 'Rechnung',
+      amount: 240.0,
+      invoiceStatus: 'teilweise',
+    },
+    ticketPrint: {
+      status: 'Nicht gedruckt',
+    },
+    actions: {
+      items: ['Stornobedürg drucken', 'Bestellterminale', 'Dokumente'],
+    },
+  },
+
+  // Original bookings (keeping some for continuity)
   {
     id: '85175192',
     date: 'Mi, 14.01.2026 16:46:41 Uhr',
@@ -81,2043 +2006,5 @@ export const bookings: Booking[] = [
       items: ['Zutrittsstatus', 'Personalisierung', 'Stornobedürg drucken'],
     },
     scanLog: 'E-Mail-Versand Scan-Logbuch',
-  },
-  {
-    id: '85172443',
-    date: 'Mi, 14.01.2026 14:50:15 Uhr',
-    customer: {
-      number: '24379585',
-      firstName: 'Laura',
-      lastName: 'Warnher',
-      address: {
-        street: 'Unigostraße 1',
-        postalCode: '79102',
-        city: 'Freiburg',
-      },
-      email: 'laura.warnher@reservix.de',
-      phone: '07958704048',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 1,
-        price: 200.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 200.0,
-    payment: {
-      status: 'Kasse',
-      amount: 0.0,
-    },
-    invoice: {
-      date: '14.01.2026',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '85172275',
-    date: 'Mi, 14.01.2026 14:01:31 Uhr',
-    customer: {
-      number: '24379280',
-      firstName: 'Laura',
-      lastName: 'Frau',
-      address: {
-        street: 'Unigostraße 1',
-        postalCode: '79102',
-        city: 'Freiburg',
-      },
-      email: 'laura.warnher@reservix.de',
-      phone: '07958704048',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 192.0,
-      invoiceStatus: 'storniert',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung', 'Stornobedürg drucken'],
-    },
-  },
-  {
-    id: '85172272',
-    date: 'Mi, 14.01.2026 13:59:24 Uhr',
-    customer: {
-      number: '24135207',
-      firstName: 'Wernerweir',
-      lastName: 'Warnz',
-      address: {
-        street: 'Hauptstraße 45',
-        postalCode: '10115',
-        city: 'Berlin',
-      },
-      email: 'w.warnz@email.de',
-      iban: 'DE79 2004 1155 0799 2308 00',
-      bic: 'COBADEFFXXX',
-      bank: 'Deutsche Bank',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 1,
-        price: 60.0,
-        pricePerItem: 60.0,
-      },
-    ],
-    orderValue: 60.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 60.0,
-    },
-    invoice: {
-      date: '14.01.2026',
-      dueDate: '14.43:19 Uhr',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Ticketdruck pro Position'],
-    },
-  },
-  {
-    id: '85146842',
-    date: 'Di, 13.01.2026 11:09:24 Uhr',
-    customer: {
-      number: '24379280',
-      firstName: 'Asd',
-      lastName: 'Test',
-      address: {
-        street: 'Unigostraße 1',
-        postalCode: '79102',
-        city: 'Freiburg',
-      },
-      email: 'test@reservix.de',
-      phone: '07958704048',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 2,
-        price: 224.0,
-        pricePerItem: 112.0,
-      },
-    ],
-    orderValue: 224.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 0.0,
-      invoiceStatus: 'storniert',
-    },
-    invoice: {
-      date: '20.01.2026',
-      dueDate: '00:07:76',
-      status: 'storniert',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Bestellterminale', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '85142168',
-    date: 'Di, 13.01.2026 09:02:21 Uhr',
-    customer: {
-      number: '24135207',
-      firstName: 'Wernerweir',
-      lastName: 'Warnz',
-      address: {
-        street: 'Berliner Str. 123',
-        postalCode: '10115',
-        city: 'Berlin',
-      },
-      email: 'warnz@example.com',
-      iban: 'DE79 2004 1155 0799 2308 00',
-      bic: 'COBADEFFXXX',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 3,
-        price: 300.0,
-        pricePerItem: 100.0,
-      },
-    ],
-    orderValue: 300.0,
-    payment: {
-      status: 'Kasse',
-      amount: 0.0,
-      invoiceStatus: 'storniert',
-    },
-    invoice: {
-      date: '20.01.2026',
-      dueDate: '00:07:19',
-      status: 'storniert',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Überweisung (Vorkasse)', 'Dokumente'],
-    },
-  },
-  {
-    id: '83492344',
-    date: 'Fr, 19.12.2025 10:38:31 Uhr',
-    customer: {
-      number: '23882460',
-      firstName: 'Maxima',
-      lastName: 'Musterfrau',
-      address: {
-        street: 'Humboldtstr. 2',
-        postalCode: '79098',
-        city: 'Freiburg',
-      },
-      email: 'maxima@testuser.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 2,
-        price: 80.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 80.0,
-    payment: {
-      status: 'Überweisung',
-      amount: 0.0,
-    },
-    invoice: {
-      date: '10.11.2025',
-      dueDate: '10:39:18 Uhr',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '83493182',
-    date: 'Mo, 10.11.2025 11:42:33 Uhr',
-    customer: {
-      number: '25614880',
-      firstName: 'Maxima',
-      lastName: 'Musterfrau',
-      address: {
-        street: 'Testweg 17',
-        postalCode: '80331',
-        city: 'München',
-      },
-      email: 'dd-testuser1@reservix.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 2,
-        price: 120.0,
-        pricePerItem: 60.0,
-      },
-    ],
-    orderValue: 120.0,
-    payment: {
-      status: 'Rechnung',
-      method: 'Rechnung',
-      amount: 60.0,
-      invoiceStatus: 'teilweise',
-    },
-    invoice: {
-      date: '10.11.2025',
-      dueDate: '10:40:43',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Bestellterminale', 'Tickets sperren'],
-    },
-  },
-  {
-    id: '83493158',
-    date: 'Mo, 10.11.2025 09:21:15 Uhr',
-    customer: {
-      number: '23882460',
-      firstName: 'Maxima',
-      lastName: 'Musterfrau',
-      address: {
-        street: 'Humboldtstr. 2',
-        postalCode: '79098',
-        city: 'Freiburg',
-      },
-      email: 'maxima@example.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 1,
-        price: 60.0,
-        pricePerItem: 60.0,
-      },
-    ],
-    orderValue: 60.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 60.0,
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '83492360',
-    date: 'Mo, 10.11.2025 08:15:17 Uhr',
-    customer: {
-      number: '23883617',
-      firstName: 'Laura',
-      lastName: 'Frau',
-      address: {
-        street: 'Kaiserstraße 99',
-        postalCode: '60311',
-        city: 'Frankfurt',
-      },
-      email: 'laura.frau@mail.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 1,
-        price: 240.0,
-        pricePerItem: 240.0,
-      },
-    ],
-    orderValue: 240.0,
-    payment: {
-      status: 'Überweisung',
-      method: 'Überweisung (Vorkasse)',
-      amount: 300.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '10.11.2025, 08:20',
-    },
-    actions: {
-      items: ['Teilnahmebedingungen', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '83445621',
-    date: 'Fr, 07.11.2025 15:33:42 Uhr',
-    customer: {
-      number: '23771234',
-      firstName: 'Hans',
-      lastName: 'Schmidt',
-      address: {
-        street: 'Mozartstraße 15',
-        postalCode: '50674',
-        city: 'Köln',
-      },
-      email: 'h.schmidt@email.com',
-      phone: '022154321',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 4,
-        price: 384.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 384.0,
-    payment: {
-      status: 'Kasse',
-      amount: 384.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '07.11.2025, 15:40',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '83401928',
-    date: 'Do, 06.11.2025 11:22:19 Uhr',
-    customer: {
-      number: '22984567',
-      firstName: 'Emma',
-      lastName: 'Weber',
-      address: {
-        street: 'Goetheweg 8',
-        postalCode: '20095',
-        city: 'Hamburg',
-      },
-      email: 'emma.weber@provider.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 192.0,
-    },
-    invoice: {
-      date: '06.11.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '83398274',
-    date: 'Do, 06.11.2025 09:15:33 Uhr',
-    customer: {
-      number: '22945123',
-      firstName: 'Lukas',
-      lastName: 'Becker',
-      address: {
-        street: 'Schillerplatz 3',
-        postalCode: '70173',
-        city: 'Stuttgart',
-      },
-      email: 'lukas.becker@mail.com',
-      phone: '071134567',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 3,
-        price: 150.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 150.0,
-    payment: {
-      status: 'Kasse',
-      amount: 150.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '06.11.2025, 09:20',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '83365489',
-    date: 'Mi, 05.11.2025 16:44:21 Uhr',
-    customer: {
-      number: '22881456',
-      firstName: 'Sophie',
-      lastName: 'Müller',
-      address: {
-        street: 'Bahnhofstraße 22',
-        postalCode: '01067',
-        city: 'Dresden',
-      },
-      email: 'sophie.mueller@example.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 1,
-        price: 200.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 200.0,
-    payment: {
-      status: 'Lastschrift',
-      amount: 200.0,
-    },
-    invoice: {
-      date: '05.11.2025',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '83342156',
-    date: 'Mi, 05.11.2025 10:12:45 Uhr',
-    customer: {
-      number: '22798234',
-      firstName: 'Felix',
-      lastName: 'Hoffmann',
-      address: {
-        street: 'Leopoldstraße 88',
-        postalCode: '80802',
-        city: 'München',
-      },
-      email: 'f.hoffmann@provider.com',
-      phone: '089765432',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 5,
-        price: 200.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 200.0,
-    payment: {
-      status: 'Kasse',
-      amount: 200.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '05.11.2025, 10:18',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '83315678',
-    date: 'Di, 04.11.2025 14:55:18 Uhr',
-    customer: {
-      number: '22745891',
-      firstName: 'Anna',
-      lastName: 'Fischer',
-      address: {
-        street: 'Marienplatz 11',
-        postalCode: '90402',
-        city: 'Nürnberg',
-      },
-      email: 'anna.fischer@email.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 192.0,
-    },
-    invoice: {
-      date: '04.11.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '83298745',
-    date: 'Di, 04.11.2025 11:33:29 Uhr',
-    customer: {
-      number: '22698123',
-      firstName: 'Paul',
-      lastName: 'Wagner',
-      address: {
-        street: 'Friedrichstraße 50',
-        postalCode: '10117',
-        city: 'Berlin',
-      },
-      email: 'paul.wagner@mail.de',
-      phone: '030123456',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 1,
-        price: 96.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 96.0,
-    payment: {
-      status: 'Kasse',
-      amount: 96.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '04.11.2025, 11:40',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '83267412',
-    date: 'Mo, 03.11.2025 16:22:10 Uhr',
-    customer: {
-      number: '22634567',
-      firstName: 'Marie',
-      lastName: 'Klein',
-      address: {
-        street: 'Königsallee 77',
-        postalCode: '40212',
-        city: 'Düsseldorf',
-      },
-      email: 'marie.klein@provider.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 2,
-        price: 100.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 100.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 100.0,
-    },
-    invoice: {
-      date: '03.11.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '83245189',
-    date: 'Mo, 03.11.2025 09:45:55 Uhr',
-    customer: {
-      number: '22589234',
-      firstName: 'Tim',
-      lastName: 'Schulz',
-      address: {
-        street: 'Alexanderplatz 1',
-        postalCode: '10178',
-        city: 'Berlin',
-      },
-      email: 'tim.schulz@email.com',
-      phone: '030987654',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 3,
-        price: 600.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 600.0,
-    payment: {
-      status: 'Lastschrift',
-      amount: 600.0,
-    },
-    invoice: {
-      date: '03.11.2025',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung'],
-    },
-  },
-  {
-    id: '83198765',
-    date: 'So, 02.11.2025 19:30:42 Uhr',
-    customer: {
-      number: '22512345',
-      firstName: 'Lena',
-      lastName: 'Krause',
-      address: {
-        street: 'Elbchaussee 150',
-        postalCode: '22763',
-        city: 'Hamburg',
-      },
-      email: 'lena.krause@mail.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 2,
-        price: 80.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 80.0,
-    payment: {
-      status: 'Kasse',
-      amount: 80.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '02.11.2025, 19:35',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '83167234',
-    date: 'So, 02.11.2025 14:18:27 Uhr',
-    customer: {
-      number: '22467891',
-      firstName: 'Jonas',
-      lastName: 'Zimmermann',
-      address: {
-        street: 'Münchener Straße 45',
-        postalCode: '60329',
-        city: 'Frankfurt',
-      },
-      email: 'jonas.z@provider.com',
-      phone: '069234567',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 4,
-        price: 384.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 384.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 384.0,
-    },
-    invoice: {
-      date: '02.11.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '83134567',
-    date: 'Sa, 01.11.2025 20:55:13 Uhr',
-    customer: {
-      number: '22398456',
-      firstName: 'Lisa',
-      lastName: 'Braun',
-      address: {
-        street: 'Breite Straße 88',
-        postalCode: '50667',
-        city: 'Köln',
-      },
-      email: 'lisa.braun@email.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 1,
-        price: 96.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 96.0,
-    payment: {
-      status: 'Kasse',
-      amount: 96.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '01.11.2025, 21:00',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '83112345',
-    date: 'Sa, 01.11.2025 17:20:48 Uhr',
-    customer: {
-      number: '22345678',
-      firstName: 'Max',
-      lastName: 'Koch',
-      address: {
-        street: 'Theaterplatz 2',
-        postalCode: '01067',
-        city: 'Dresden',
-      },
-      email: 'max.koch@provider.de',
-      phone: '0351876543',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 5,
-        price: 250.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 250.0,
-    payment: {
-      status: 'Überweisung',
-      method: 'Überweisung (Vorkasse)',
-      amount: 250.0,
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '83089234',
-    date: 'Sa, 01.11.2025 12:08:19 Uhr',
-    customer: {
-      number: '22289123',
-      firstName: 'Julia',
-      lastName: 'Schröder',
-      address: {
-        street: 'Schlossstraße 100',
-        postalCode: '70176',
-        city: 'Stuttgart',
-      },
-      email: 'julia.schroeder@mail.com',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 2,
-        price: 400.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 400.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 400.0,
-    },
-    invoice: {
-      date: '01.11.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '83067891',
-    date: 'Fr, 31.10.2025 18:45:35 Uhr',
-    customer: {
-      number: '22234567',
-      firstName: 'David',
-      lastName: 'Neumann',
-      address: {
-        street: 'Rathausmarkt 5',
-        postalCode: '20095',
-        city: 'Hamburg',
-      },
-      email: 'd.neumann@email.de',
-      phone: '040567890',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 3,
-        price: 120.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 120.0,
-    payment: {
-      status: 'Kasse',
-      amount: 120.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '31.10.2025, 18:50',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '83045678',
-    date: 'Fr, 31.10.2025 15:30:22 Uhr',
-    customer: {
-      number: '22178234',
-      firstName: 'Sarah',
-      lastName: 'Wolf',
-      address: {
-        street: 'Karolinenplatz 12',
-        postalCode: '90402',
-        city: 'Nürnberg',
-      },
-      email: 'sarah.wolf@provider.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Lastschrift',
-      amount: 192.0,
-    },
-    invoice: {
-      date: '31.10.2025',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '83023456',
-    date: 'Fr, 31.10.2025 10:15:09 Uhr',
-    customer: {
-      number: '22123891',
-      firstName: 'Michael',
-      lastName: 'Richter',
-      address: {
-        street: 'Unter den Linden 44',
-        postalCode: '10117',
-        city: 'Berlin',
-      },
-      email: 'michael.richter@mail.de',
-      phone: '030345678',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 3,
-        price: 288.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 288.0,
-    payment: {
-      status: 'Kasse',
-      amount: 288.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '31.10.2025, 10:20',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '82998234',
-    date: 'Do, 30.10.2025 19:40:51 Uhr',
-    customer: {
-      number: '22067345',
-      firstName: 'Nina',
-      lastName: 'Lange',
-      address: {
-        street: 'Bismarckstraße 33',
-        postalCode: '40210',
-        city: 'Düsseldorf',
-      },
-      email: 'nina.lange@email.com',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 1,
-        price: 50.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 50.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 50.0,
-    },
-    invoice: {
-      date: '30.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82976123',
-    date: 'Do, 30.10.2025 16:22:37 Uhr',
-    customer: {
-      number: '22012456',
-      firstName: 'Tom',
-      lastName: 'Hartmann',
-      address: {
-        street: 'Sendlinger Straße 20',
-        postalCode: '80331',
-        city: 'München',
-      },
-      email: 'tom.hartmann@provider.com',
-      phone: '089987654',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 4,
-        price: 800.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 800.0,
-    payment: {
-      status: 'Kasse',
-      amount: 800.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '30.10.2025, 16:30',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '82954567',
-    date: 'Do, 30.10.2025 11:55:24 Uhr',
-    customer: {
-      number: '21967234',
-      firstName: 'Katharina',
-      lastName: 'Berger',
-      address: {
-        street: 'Alte Brücke 7',
-        postalCode: '69117',
-        city: 'Heidelberg',
-      },
-      email: 'k.berger@mail.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 1,
-        price: 40.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 40.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 40.0,
-    },
-    invoice: {
-      date: '30.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82932345',
-    date: 'Mi, 29.10.2025 20:33:15 Uhr',
-    customer: {
-      number: '21912345',
-      firstName: 'Sebastian',
-      lastName: 'Frank',
-      address: {
-        street: 'Poststraße 88',
-        postalCode: '20354',
-        city: 'Hamburg',
-      },
-      email: 'sebastian.frank@email.de',
-      phone: '040234567',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 5,
-        price: 480.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 480.0,
-    payment: {
-      status: 'Lastschrift',
-      amount: 480.0,
-    },
-    invoice: {
-      date: '29.10.2025',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung'],
-    },
-  },
-  {
-    id: '82910123',
-    date: 'Mi, 29.10.2025 17:08:42 Uhr',
-    customer: {
-      number: '21867891',
-      firstName: 'Vanessa',
-      lastName: 'Schmitt',
-      address: {
-        street: 'Rheinufer 15',
-        postalCode: '40221',
-        city: 'Düsseldorf',
-      },
-      email: 'vanessa.schmitt@provider.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Kasse',
-      amount: 192.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '29.10.2025, 17:15',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '82887891',
-    date: 'Mi, 29.10.2025 13:45:29 Uhr',
-    customer: {
-      number: '21812456',
-      firstName: 'Christian',
-      lastName: 'Werner',
-      address: {
-        street: 'Königstraße 1',
-        postalCode: '70173',
-        city: 'Stuttgart',
-      },
-      email: 'christian.werner@mail.com',
-      phone: '0711123456',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 2,
-        price: 100.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 100.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 100.0,
-    },
-    invoice: {
-      date: '29.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82865678',
-    date: 'Mi, 29.10.2025 09:20:17 Uhr',
-    customer: {
-      number: '21767234',
-      firstName: 'Petra',
-      lastName: 'Meyer',
-      address: {
-        street: 'Neumarkt 22',
-        postalCode: '04109',
-        city: 'Leipzig',
-      },
-      email: 'petra.meyer@email.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 3,
-        price: 600.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 600.0,
-    payment: {
-      status: 'Kasse',
-      amount: 600.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '29.10.2025, 09:25',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '82843456',
-    date: 'Di, 28.10.2025 21:15:55 Uhr',
-    customer: {
-      number: '21712345',
-      firstName: 'Martin',
-      lastName: 'Bauer',
-      address: {
-        street: 'Ludwigstraße 50',
-        postalCode: '80539',
-        city: 'München',
-      },
-      email: 'martin.bauer@provider.com',
-      phone: '089345678',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 4,
-        price: 160.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 160.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 160.0,
-    },
-    invoice: {
-      date: '28.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82821234',
-    date: 'Di, 28.10.2025 18:40:33 Uhr',
-    customer: {
-      number: '21667891',
-      firstName: 'Sandra',
-      lastName: 'Huber',
-      address: {
-        street: 'Altstadt 18',
-        postalCode: '90403',
-        city: 'Nürnberg',
-      },
-      email: 'sandra.huber@mail.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 1,
-        price: 96.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 96.0,
-    payment: {
-      status: 'Kasse',
-      amount: 96.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '28.10.2025, 18:45',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '82799123',
-    date: 'Di, 28.10.2025 14:25:18 Uhr',
-    customer: {
-      number: '21612456',
-      firstName: 'Daniel',
-      lastName: 'Keller',
-      address: {
-        street: 'Spandauer Straße 99',
-        postalCode: '10178',
-        city: 'Berlin',
-      },
-      email: 'd.keller@email.com',
-      phone: '030456789',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Lastschrift',
-      amount: 192.0,
-    },
-    invoice: {
-      date: '28.10.2025',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '82776891',
-    date: 'Di, 28.10.2025 10:50:06 Uhr',
-    customer: {
-      number: '21567234',
-      firstName: 'Claudia',
-      lastName: 'Vogel',
-      address: {
-        street: 'Reeperbahn 77',
-        postalCode: '20359',
-        city: 'Hamburg',
-      },
-      email: 'claudia.vogel@provider.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 6,
-        price: 300.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 300.0,
-    payment: {
-      status: 'Kasse',
-      amount: 300.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '28.10.2025, 10:55',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '82754678',
-    date: 'Mo, 27.10.2025 22:35:41 Uhr',
-    customer: {
-      number: '21512345',
-      firstName: 'Andreas',
-      lastName: 'Herrmann',
-      address: {
-        street: 'Mainzer Landstraße 66',
-        postalCode: '60325',
-        city: 'Frankfurt',
-      },
-      email: 'andreas.herrmann@mail.de',
-      phone: '069567890',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 1,
-        price: 200.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 200.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 200.0,
-    },
-    invoice: {
-      date: '27.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82732456',
-    date: 'Mo, 27.10.2025 19:18:27 Uhr',
-    customer: {
-      number: '21467891',
-      firstName: 'Stefanie',
-      lastName: 'Schubert',
-      address: {
-        street: 'Schlossplatz 5',
-        postalCode: '70173',
-        city: 'Stuttgart',
-      },
-      email: 'stefanie.schubert@email.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 2,
-        price: 80.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 80.0,
-    payment: {
-      status: 'Kasse',
-      amount: 80.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '27.10.2025, 19:25',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '82710234',
-    date: 'Mo, 27.10.2025 15:05:14 Uhr',
-    customer: {
-      number: '21412456',
-      firstName: 'Thomas',
-      lastName: 'Groß',
-      address: {
-        street: 'Rathausplatz 8',
-        postalCode: '50667',
-        city: 'Köln',
-      },
-      email: 'thomas.gross@provider.com',
-      phone: '0221678901',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 3,
-        price: 288.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 288.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 288.0,
-    },
-    invoice: {
-      date: '27.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82688123',
-    date: 'Mo, 27.10.2025 11:42:59 Uhr',
-    customer: {
-      number: '21367234',
-      firstName: 'Simone',
-      lastName: 'Dietrich',
-      address: {
-        street: 'Prager Straße 33',
-        postalCode: '01069',
-        city: 'Dresden',
-      },
-      email: 'simone.dietrich@mail.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 4,
-        price: 384.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 384.0,
-    payment: {
-      status: 'Lastschrift',
-      amount: 384.0,
-    },
-    invoice: {
-      date: '27.10.2025',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung'],
-    },
-  },
-  {
-    id: '82665891',
-    date: 'So, 26.10.2025 23:28:35 Uhr',
-    customer: {
-      number: '21312345',
-      firstName: 'Frank',
-      lastName: 'Scholz',
-      address: {
-        street: 'Kurfürstendamm 111',
-        postalCode: '10711',
-        city: 'Berlin',
-      },
-      email: 'frank.scholz@email.com',
-      phone: '030789012',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 1,
-        price: 50.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 50.0,
-    payment: {
-      status: 'Kasse',
-      amount: 50.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '26.10.2025, 23:35',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '82643678',
-    date: 'So, 26.10.2025 20:15:22 Uhr',
-    customer: {
-      number: '21267891',
-      firstName: 'Anja',
-      lastName: 'Seidel',
-      address: {
-        street: 'Mönckebergstraße 44',
-        postalCode: '20095',
-        city: 'Hamburg',
-      },
-      email: 'anja.seidel@provider.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 2,
-        price: 400.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 400.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 400.0,
-    },
-    invoice: {
-      date: '26.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82621456',
-    date: 'So, 26.10.2025 17:50:08 Uhr',
-    customer: {
-      number: '21212456',
-      firstName: 'Markus',
-      lastName: 'Lorenz',
-      address: {
-        street: 'Residenzstraße 7',
-        postalCode: '80333',
-        city: 'München',
-      },
-      email: 'markus.lorenz@mail.com',
-      phone: '089678901',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 5,
-        price: 200.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 200.0,
-    payment: {
-      status: 'Kasse',
-      amount: 200.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '26.10.2025, 17:55',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '82599234',
-    date: 'So, 26.10.2025 14:32:45 Uhr',
-    customer: {
-      number: '21167234',
-      firstName: 'Kerstin',
-      lastName: 'Jung',
-      address: {
-        street: 'Augustusplatz 9',
-        postalCode: '04109',
-        city: 'Leipzig',
-      },
-      email: 'kerstin.jung@email.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 192.0,
-    },
-    invoice: {
-      date: '26.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82577123',
-    date: 'So, 26.10.2025 10:18:31 Uhr',
-    customer: {
-      number: '21112345',
-      firstName: 'Uwe',
-      lastName: 'Stein',
-      address: {
-        street: 'Hafenstraße 20',
-        postalCode: '40221',
-        city: 'Düsseldorf',
-      },
-      email: 'uwe.stein@provider.com',
-      phone: '0211890123',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 1,
-        price: 96.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 96.0,
-    payment: {
-      status: 'Lastschrift',
-      amount: 96.0,
-    },
-    invoice: {
-      date: '26.10.2025',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '82554891',
-    date: 'Sa, 25.10.2025 21:55:17 Uhr',
-    customer: {
-      number: '21067891',
-      firstName: 'Birgit',
-      lastName: 'Heinrich',
-      address: {
-        street: 'Königsstraße 55',
-        postalCode: '70173',
-        city: 'Stuttgart',
-      },
-      email: 'birgit.heinrich@mail.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 3,
-        price: 150.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 150.0,
-    payment: {
-      status: 'Kasse',
-      amount: 150.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '25.10.2025, 22:00',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '82532678',
-    date: 'Sa, 25.10.2025 18:40:53 Uhr',
-    customer: {
-      number: '21012456',
-      firstName: 'Ralf',
-      lastName: 'Pohl',
-      address: {
-        street: 'Neuhauser Straße 88',
-        postalCode: '80331',
-        city: 'München',
-      },
-      email: 'ralf.pohl@email.com',
-      phone: '089901234',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 4,
-        price: 800.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 800.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 800.0,
-    },
-    invoice: {
-      date: '25.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82510456',
-    date: 'Sa, 25.10.2025 15:25:39 Uhr',
-    customer: {
-      number: '20967234',
-      firstName: 'Monika',
-      lastName: 'Busch',
-      address: {
-        street: 'Zeil 99',
-        postalCode: '60313',
-        city: 'Frankfurt',
-      },
-      email: 'monika.busch@provider.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 1,
-        price: 40.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 40.0,
-    payment: {
-      status: 'Kasse',
-      amount: 40.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '25.10.2025, 15:30',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '82488234',
-    date: 'Sa, 25.10.2025 11:10:25 Uhr',
-    customer: {
-      number: '20912345',
-      firstName: 'Jürgen',
-      lastName: 'Engel',
-      address: {
-        street: 'Königsallee 88',
-        postalCode: '40212',
-        city: 'Düsseldorf',
-      },
-      email: 'juergen.engel@mail.de',
-      phone: '0211012345',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 5,
-        price: 480.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 480.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 480.0,
-    },
-    invoice: {
-      date: '25.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82466123',
-    date: 'Fr, 24.10.2025 22:45:11 Uhr',
-    customer: {
-      number: '20867891',
-      firstName: 'Gabriele',
-      lastName: 'Becker',
-      address: {
-        street: 'Brühl 12',
-        postalCode: '04109',
-        city: 'Leipzig',
-      },
-      email: 'gabriele.becker@email.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[4],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Lastschrift',
-      amount: 192.0,
-    },
-    invoice: {
-      date: '24.10.2025',
-      status: 'bezahlt',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Personalisierung'],
-    },
-  },
-  {
-    id: '82443891',
-    date: 'Fr, 24.10.2025 19:30:57 Uhr',
-    customer: {
-      number: '20812456',
-      firstName: 'Holger',
-      lastName: 'Roth',
-      address: {
-        street: 'Jungfernstieg 44',
-        postalCode: '20354',
-        city: 'Hamburg',
-      },
-      email: 'holger.roth@provider.com',
-      phone: '040123456',
-    },
-    orderItems: [
-      {
-        event: popularEvents[0],
-        quantity: 2,
-        price: 100.0,
-        pricePerItem: 50.0,
-      },
-    ],
-    orderValue: 100.0,
-    payment: {
-      status: 'Kasse',
-      amount: 100.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '24.10.2025, 19:35',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Tickets drucken'],
-    },
-  },
-  {
-    id: '82421678',
-    date: 'Fr, 24.10.2025 16:15:43 Uhr',
-    customer: {
-      number: '20767234',
-      firstName: 'Sabine',
-      lastName: 'Fuchs',
-      address: {
-        street: 'Marienplatz 20',
-        postalCode: '80331',
-        city: 'München',
-      },
-      email: 'sabine.fuchs@mail.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[1],
-        quantity: 1,
-        price: 200.0,
-        pricePerItem: 200.0,
-      },
-    ],
-    orderValue: 200.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 200.0,
-    },
-    invoice: {
-      date: '24.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
-  },
-  {
-    id: '82399456',
-    date: 'Fr, 24.10.2025 12:50:29 Uhr',
-    customer: {
-      number: '20712345',
-      firstName: 'Werner',
-      lastName: 'Scholz',
-      address: {
-        street: 'Altmarkt 7',
-        postalCode: '01067',
-        city: 'Dresden',
-      },
-      email: 'werner.scholz@email.com',
-      phone: '0351234567',
-    },
-    orderItems: [
-      {
-        event: popularEvents[3],
-        quantity: 3,
-        price: 120.0,
-        pricePerItem: 40.0,
-      },
-    ],
-    orderValue: 120.0,
-    payment: {
-      status: 'Kasse',
-      amount: 120.0,
-    },
-    ticketPrint: {
-      status: 'Erstellt am',
-      printedAt: '24.10.2025, 12:55',
-    },
-    actions: {
-      items: ['Zutrittsstatus', 'Scanstatus bearbeiten'],
-    },
-  },
-  {
-    id: '82377234',
-    date: 'Fr, 24.10.2025 09:35:15 Uhr',
-    customer: {
-      number: '20667891',
-      firstName: 'Ingrid',
-      lastName: 'Vogt',
-      address: {
-        street: 'Breite Straße 33',
-        postalCode: '50667',
-        city: 'Köln',
-      },
-      email: 'ingrid.vogt@provider.de',
-    },
-    orderItems: [
-      {
-        event: popularEvents[2],
-        quantity: 2,
-        price: 192.0,
-        pricePerItem: 96.0,
-      },
-    ],
-    orderValue: 192.0,
-    payment: {
-      status: 'Rechnung',
-      amount: 192.0,
-    },
-    invoice: {
-      date: '24.10.2025',
-    },
-    ticketPrint: {
-      status: 'Nicht gedruckt',
-    },
-    actions: {
-      items: ['Personalisierung', 'Dokumente'],
-    },
   },
 ];

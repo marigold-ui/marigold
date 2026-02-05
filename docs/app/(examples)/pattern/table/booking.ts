@@ -31,6 +31,7 @@ export interface OrderItem {
   quantity: number;
   price: number;
   pricePerItem: number;
+  cancelled?: boolean;
 }
 
 export type PaymentStatus =
