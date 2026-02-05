@@ -75,9 +75,8 @@ export type Theme = {
     >;
     Tray?: Record<
       | 'overlay'
-      | 'closeButton'
       | 'container'
-      | 'drag'
+      | 'dragHandle'
       | 'header'
       | 'title'
       | 'content'

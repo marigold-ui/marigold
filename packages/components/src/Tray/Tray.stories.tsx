@@ -86,20 +86,6 @@ Basic.test('Opens and closes the tray', async ({ canvas, step }) => {
     );
   });
 
-  await step('Closes via dismiss button', async () => {
-    const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-    await userEvent.click(openButton);
-
-    await waitFor(() => expect(canvas.getByRole('dialog')).toBeInTheDocument());
-
-    const dismissBtn = canvas.getByLabelText('Close Tray');
-    await userEvent.click(dismissBtn);
-
-    await waitFor(() =>
-      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-    );
-  });
-
   await step('Can be closed with escape key', async () => {
     const openButton = canvas.getByRole('button', { name: 'Open Tray' });
     await userEvent.click(openButton);
@@ -134,8 +120,8 @@ export const DismissControlsWithCallbacks = meta.story({
               <Inset space={4}>
                 <Text>
                   This tray demonstrates all dismiss methods with callback
-                  hooks. Try closing it via the X button, the close button,
-                  pressing Escape, or clicking the backdrop.
+                  hooks. Try closing it via the close button, pressing Escape,
+                  or clicking the backdrop.
                 </Text>
               </Inset>
             </Tray.Content>
@@ -185,24 +171,6 @@ DismissControlsWithCallbacks.test(
       );
       expect(canvas.getByText('Tray is closed')).toBeInTheDocument();
       expect(canvas.getByText(/Tray closed/)).toBeInTheDocument();
-    });
-
-    await step('Closes via dismiss button and logs event', async () => {
-      const openButton = canvas.getByRole('button', { name: 'Open Tray' });
-
-      await userEvent.click(openButton);
-
-      await waitFor(() =>
-        expect(canvas.getByRole('dialog')).toBeInTheDocument()
-      );
-
-      const dismissBtn = canvas.getByLabelText('Close Tray');
-
-      await userEvent.click(dismissBtn);
-
-      await waitFor(() =>
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
-      );
     });
 
     await step('Closes via escape key and logs event', async () => {

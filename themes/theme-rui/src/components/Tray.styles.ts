@@ -8,8 +8,7 @@ export const Tray: ThemeComponent<'Tray'> = {
     "group/tray outline-hidden grid [grid-template-areas:'drag'_'title'_'content'_'actions']",
     "after:absolute after:inset-x-0 after:top-full after:h-screen after:bg-background after:content-['']",
   ]),
-  closeButton: cva(['absolute top-3.5 right-3 z-50', 'size-7']),
-  drag: cva(
+  dragHandle: cva(
     'bg-surface-border mx-auto mt-2 h-1.5 w-12 rounded-full [grid-area:drag]'
   ),
   header: cva('border-border border-b px-6 py-4'),
