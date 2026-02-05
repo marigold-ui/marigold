@@ -18,9 +18,3 @@ Refactor z-index implementation to move all z-index values from theme style file
 - Components control their own z-index, making it part of component behavior
 - Easier maintenance - developers only check component files to understand stacking
 - Future themes automatically inherit correct z-index stacking
-
-**No Breaking Changes:**
-- Z-index numeric values remain identical
-- Stacking order unchanged
-- Component behavior and API unchanged
-- Fully backwards compatible
