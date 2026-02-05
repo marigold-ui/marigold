@@ -61,6 +61,7 @@ export {
   alignment,
   placeItems,
   textAlign,
+  verticalAlign,
   aspect,
   cursorStyle,
 } from './style-props';
@@ -84,6 +85,7 @@ export type {
   PaddingBottomProp,
   PlaceItemsProp,
   TextAlignProp,
+  VerticalAlignProp,
   SpaceProp,
   WidthProp,
   MaxWidthProp,

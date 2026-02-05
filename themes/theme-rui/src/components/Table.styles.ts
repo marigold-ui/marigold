@@ -1,83 +1,52 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Table: ThemeComponent<'Table'> = {
-  table: cva(
-    'text-sm [&_td]:border-border [&_th]:border-border border-separate border-spacing-0 [&_th]:border-b [&_tr]:border-none [&_tr:not(:last-child)_td]:border-b',
-    {
-      variants: {
-        variant: {
-          default: '',
-          grid: '',
-        },
-      },
-    }
-  ),
-  thead: cva(
-    // for sticky header
-    'bg-background/90 top-0 z-1 backdrop-blur-xs ',
-    {
-      variants: {
-        variant: {
-          default: '',
-          grid: '',
-        },
-      },
-    }
-  ),
-  headerRow: cva(['border-border border-b'], {
+  table: cva(['text-sm bg-background'], {
     variants: {
       variant: {
         default: '',
-        grid: '[&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
-        muted: 'bg-muted',
+        grid: 'border-hidden',
+        muted: '',
+      },
+      size: {
+        compact: [
+          '[--cell-y-padding:calc(var(--spacing)*1.5)]',
+          '[--cell-x-padding:calc(var(--spacing)*2)]',
+          '[--header-height:calc(var(--spacing)*8)]',
+        ],
+        default: [
+          '[--cell-y-padding:calc(var(--spacing)*2.5)]',
+          '[--cell-x-padding:calc(var(--spacing)*2.5)]',
+          '[--header-height:calc(var(--spacing)*10)]',
+        ],
+        spacious: [
+          '[--cell-y-padding:calc(var(--spacing)*4)]',
+          '[--cell-x-padding:calc(var(--spacing)*4)]',
+          '[--header-height:calc(var(--spacing)*12)]',
+        ],
       },
     },
     defaultVariants: {
       variant: 'default',
+      size: 'default',
     },
   }),
-  header: cva(
-    [
-      'h-12 px-3 align-middle font-medium text-muted-foreground',
-      'focus-visible:outline-2 outline-offset-2 outline-ring/70',
-    ],
-    {
-      variants: {
-        variant: {
-          default: '[&:has([type=checkbox])]:pr-0',
-          grid: '',
-          muted: 'border-t',
-        },
-      },
-      defaultVariants: {
-        variant: 'default',
-      },
-    }
-  ),
-  body: cva('[&_tr:last-child]:border-0 bg-background'),
   row: cva(
     [
-      'border-b border-border transition-colors',
-      'focus-visible:outline-2 outline-offset-2 outline-ring/70',
-      'data-disabled:cursor-not-allowed',
+      'border-border not-last:border-b',
+      'transition-[background-color]',
+      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
+      'disabled:cursor-not-allowed',
+      'data-selection-mode:cursor-pointer data-selection-mode:hover:bg-muted',
+      'dragging:opacity-50 dragging:transform-gpu',
     ],
     {
       variants: {
         variant: {
-          default: 'aria-selected:bg-muted',
-          grid: 'aria-selected:bg-muted [&>:not(:last-child)]:border-r [&>:not(:last-child)]:border-border',
-          admin: [
-            'bg-access-admin',
-            '[&_td:first-child]:relative [&_td:first-child]:pl-4',
-            '[&_td:first-child:before]:content-[""] [&_td:first-child:before]:absolute [&_td:first-child:before]:top-0 [&_td:first-child:before]:bottom-0 [&_td:first-child:before]:left-0 [&_td:first-child:before]:w-1',
-            '[&_td:first-child:before]:bg-access-admin-foreground',
-          ],
-          master: [
-            'bg-access-master',
-            '[&_td:first-child]:relative [&_td:first-child]:pl-4',
-            '[&_td:first-child:before]:content-[""] [&_td:first-child:before]:absolute [&_td:first-child:before]:top-0 [&_td:first-child:before]:bottom-0 [&_td:first-child:before]:left-0 [&_td:first-child:before]:w-1',
-            '[&_td:first-child:before]:bg-access-master-foreground',
-          ],
+          default: '',
+          grid: '**:not-last:[[role=gridcell]]:border-r **:not-last:[[role=gridcell]]:border-border',
+          admin: ['bg-access-admin'],
+          master: ['bg-access-master'],
         },
       },
       defaultVariants: {
@@ -85,15 +54,66 @@ export const Table: ThemeComponent<'Table'> = {
       },
     }
   ),
-  cell: cva('p-3 focus-visible:outline-2 outline-offset-2 outline-ring/70', {
-    variants: {
-      variant: {
-        default: '[&:has([type=checkbox])]:pr-0',
-        grid: '',
+
+  // <thead>
+  head: cva([
+    // for sticky header
+    'bg-background/90 z-1',
+    'border-border border-b',
+  ]),
+  column: cva(
+    [
+      'h-(--header-height) px-(--cell-x-padding) align-middle',
+      'font-medium text-muted-foreground',
+      'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring',
+      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring', // This one is for the empty dragging header column
+      'aria-[sort]:hover:bg-muted aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
+    ],
+    {
+      variants: {
+        variant: {
+          default: '',
+          grid: 'not-last:border-r border-border',
+          muted: 'bg-muted border-t border-border',
+        },
       },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  }),
+      defaultVariants: {
+        variant: 'default',
+      },
+    }
+  ),
+
+  // <tbody>
+  body: cva(['bg-background']),
+  cell: cva([
+    'px-(--cell-x-padding) py-(--cell-y-padding)',
+    'focus:outline-2 focus:-outline-offset-2 focus:outline-ring',
+  ]),
+
+  // Drag and drop
+  dragHandle: cva([
+    'text-muted-foreground rounded size-4',
+    '[&_svg]:size-4',
+    'focus-visible:util-focus-ring outline-none',
+  ]),
+  dragPreview: cva([
+    'px-4 py-3 bg-brand rounded-lg shadow-lg',
+    'text-sm text-brand-foreground',
+  ]),
+  dragPreviewCounter: cva([
+    'flex items-center justify-center rounded-full',
+    'bg-brand-foreground px-2',
+    'text-xs font-medium leading-normal text-brand',
+  ]),
+  dropIndicator: cva([
+    'relative',
+    'before:absolute before:inset-0 before:h-0.5 before:-translate-y-1/2 before:bg-stone-300',
+    'drop-target:before:z-10 drop-target:before:bg-stone-800',
+  ]),
+
+  // Editable cell
+  editablePopover: cva([
+    'ui-surface ui-elevation-overlay',
+    'flex items-start gap-1 pl-1 pr-1 py-1',
+  ]),
 };

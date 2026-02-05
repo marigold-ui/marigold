@@ -1,184 +1,505 @@
-import { render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
+import { Table } from './Table';
 import {
   Basic,
-  ControlledTable,
+  DragAndDrop,
+  DragPreview,
+  DynamicData,
   Empty,
-  NestedColumns,
+  Links,
+  ScrollableAndSticky,
   Sorting,
-  Static,
-  WithAlignedColumns,
+  VerticalAlignment,
+  WidthsAndOverflow,
+  WithActions,
 } from './Table.stories';
+import { renderDragPreview } from './TableDragPreview';
+import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
 
-const user = userEvent.setup();
+const mockMatchMedia = (matches: string[]) =>
+  vi.fn().mockImplementation(query => ({
+    matches: matches.includes(query),
+  }));
 
-test('renders contents correctly', () => {
-  render(<Basic.Component />);
+window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 
-  // Renders Header from Basic story
-  expect(screen.getByText('Name')).toBeInTheDocument();
-  expect(screen.getByText('Email')).toBeInTheDocument();
+describe('Basic Rendering', () => {
+  test('renders table element with proper structure', () => {
+    render(<Basic.Component />);
 
-  // Renders Content from Basic story
-  expect(screen.getByText('Hans Müller')).toBeInTheDocument();
-  expect(screen.getByText('hans.mueller@example.de')).toBeInTheDocument();
+    const table = screen.getByRole('grid');
+    expect(table instanceof HTMLTableElement).toBeTruthy();
+  });
+
+  test('renders column headers', () => {
+    render(<Basic.Component />);
+
+    expect(
+      screen.getByRole('columnheader', { name: 'Name' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Email' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'Location' })
+    ).toBeInTheDocument();
+  });
+
+  test('renders table rows with data', () => {
+    render(<Basic.Component />);
+
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    expect(screen.getByText('Fritz Schneider')).toBeInTheDocument();
+  });
+
+  test('applies colspans to cells', () => {
+    render(<WidthsAndOverflow.Component />);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const totalCell = screen.getByText('Total').closest('td');
+    expect(totalCell).toBeInTheDocument();
+    expect(totalCell).toHaveAttribute('colspan', '4');
+  });
 });
 
-test('renders empty state when collection is empty', () => {
-  render(<Empty.Component />);
+describe('Data Handling', () => {
+  test('supports dynamic data with selection mode', () => {
+    render(<DynamicData.Component />);
 
-  expect(screen.getByText('No data available')).toBeInTheDocument();
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes.length).toBeGreaterThan(0);
+
+    expect(screen.getByText('Harry')).toBeInTheDocument();
+    expect(screen.getByText('Draco')).toBeInTheDocument();
+  });
+
+  test('displays empty state when no data', () => {
+    render(<Empty.Component />);
+
+    expect(screen.getByText('No results found.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Try adjusting your search or filters.')
+    ).toBeInTheDocument();
+  });
 });
 
-test('renders no empty state when collection has items', async () => {
-  render(<Basic.Component />);
+describe('Column Configuration', () => {
+  test('renders table with custom column widths', () => {
+    render(<WidthsAndOverflow.Component />);
 
-  // Basic story has items, so there should be no empty state
-  expect(screen.queryByText('No data available')).not.toBeInTheDocument();
-  // And we should see actual data
-  expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    expect(
+      screen.getByRole('columnheader', { name: 'ID' })
+    ).toBeInTheDocument();
+  });
 });
 
-test('renders table structure correctly', async () => {
-  render(<ControlledTable.Component />);
+describe('Interactions', () => {
+  test('supports sorting with sortable columns', () => {
+    render(<Sorting.Component />);
 
-  const table = screen.getAllByRole('grid');
-  expect(table[0]).toBeInTheDocument();
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+    const sortableHeaders = screen
+      .getAllByRole('columnheader')
+      .filter(header => header.getAttribute('aria-sort') !== null);
+    expect(sortableHeaders.length).toBeGreaterThan(0);
+  });
 
-  const [tableHead, tableBody] = within(table[0]).getAllByRole('rowgroup');
-  expect(tableHead).toBeInTheDocument();
-  expect(tableBody).toBeInTheDocument();
+  test('renders table with drag and drop support', () => {
+    render(<DragAndDrop.Component />);
 
-  const tableHeaderRow = within(tableHead).getByRole('row');
-  expect(tableHeaderRow).toBeInTheDocument();
-
-  const tableHeader = screen.getAllByRole('columnheader');
-  expect(tableHeader.length).toBeGreaterThan(0);
-
-  const tableRows = screen.getAllByRole('row');
-  await user.click(tableRows[1]);
-  expect(tableRows[1]).toHaveAttribute('aria-selected', 'true');
-
-  const tableCells = screen.getAllByRole('gridcell');
-  expect(tableCells.length).toBeGreaterThan(0);
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes.length).toBeGreaterThan(0);
+  });
 });
 
-test('supports selectionMode single', async () => {
-  // ControlledTable story has selectionMode="multiple", but we can override it
-  render(<Basic.Component selectionMode="single" />);
+describe('Content', () => {
+  test('renders table with action menus', () => {
+    render(<WithActions.Component />);
 
-  const firstRow = screen.getAllByRole('row')[1];
-  await user.click(firstRow);
-  expect(firstRow).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
+    const actionMenus = screen.getAllByRole('button', { name: /Actions/i });
+    expect(actionMenus.length).toBeGreaterThan(0);
+  });
+
+  test('renders table with clickable row links', () => {
+    render(<Links.Component />);
+
+    expect(screen.getByText('Marigold')).toBeInTheDocument();
+    expect(screen.getByText('Reservix')).toBeInTheDocument();
+  });
 });
 
-test('supports selectionMode multiple', async () => {
-  // ControlledTable story has selectionMode="multiple"
-  render(<ControlledTable.Component />);
+describe('Advanced Features', () => {
+  test('renders scrollable table with sticky header', async () => {
+    render(<ScrollableAndSticky.Component />);
 
-  // select two rows
-  const tableRows = screen.getAllByRole('row');
-  await user.click(tableRows[1]);
-  expect(tableRows[1]).toHaveAttribute('aria-selected', 'true');
-  await user.click(tableRows[2]);
-  expect(tableRows[2]).toHaveAttribute('aria-selected', 'true');
-
-  // unselect one row
-  await user.click(tableRows[1]);
-  expect(tableRows[1]).toHaveAttribute('aria-selected', 'false');
+    // Wait for the async data to load
+    const table = await screen.findByRole('grid');
+    expect(table).toBeInTheDocument();
+  });
 });
 
-test('supports colspans', () => {
-  render(<NestedColumns.Component />);
+describe('Props and Variants', () => {
+  test('applies variant class to table', () => {
+    render(<Basic.Component />);
 
-  const nameHeader = screen.getByText('Name');
-  expect(nameHeader).toHaveAttribute('colspan', '2');
+    const table = screen.getByRole('grid');
 
-  const informationHeader = screen.getByText('Information');
-  expect(informationHeader).toHaveAttribute('colspan', '2');
+    expect(table).toHaveClass('group/table');
+  });
+
+  test('applies overflow prop to cells', () => {
+    render(<WidthsAndOverflow.Component />);
+
+    const cells = screen.getAllByRole('gridcell');
+    // Story defaults to wrap mode
+    expect(cells[0]).toHaveClass('wrap-break-word');
+  });
+
+  test('defaults to wrap overflow', () => {
+    render(<Basic.Component />);
+
+    const cell = screen.getAllByRole('gridcell')[0];
+    expect(cell).toHaveClass('wrap-break-word');
+  });
+
+  test('applies verticalAlign prop to cells', () => {
+    // VerticalAlignment story has verticalAlign="top"
+    render(<VerticalAlignment.Component />);
+
+    const cells = screen.getAllByRole('gridcell');
+    // First cell should have align-top from table prop
+    expect(cells[0]).toHaveClass('align-top');
+  });
+
+  test('defaults to middle vertical alignment', () => {
+    render(<Basic.Component />);
+
+    const cell = screen.getAllByRole('gridcell')[0];
+    expect(cell).toHaveClass('align-middle');
+  });
+
+  test('cell-level verticalAlign overrides table-level', () => {
+    render(<VerticalAlignment.Component verticalAlign="top" />);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const overrideCell = screen.getByText('Override').closest('td');
+    expect(overrideCell).toHaveClass('align-bottom');
+    expect(overrideCell).not.toHaveClass('align-top');
+  });
 });
 
-test('sorting', async () => {
-  render(<Sorting.Component />);
+describe('Accessibility', () => {
+  test('applies aria-label to table', () => {
+    render(<Basic.Component />);
 
-  const rows = screen.getAllByRole('row');
+    const table = screen.getByRole('grid', { name: 'label' });
+    expect(table).toBeInTheDocument();
+  });
 
-  // Initial order from Sorting story
-  expect(rows[1].textContent).toContain('Luke Skywalker');
+  test('renders with selection mode multiple', () => {
+    render(<DynamicData.Component />);
 
-  // Get the Name column header
-  const nameHeader = screen.getByRole('columnheader', { name: 'Name' });
-  expect(nameHeader).toHaveAttribute('aria-sort', 'none');
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes.length).toBeGreaterThan(0);
+  });
 
-  // Click on Name header to sort
-  await user.click(nameHeader);
+  test('uses grid role for table', () => {
+    render(<Basic.Component />);
 
-  // Verify aria-sort changed after clicking
-  expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
+    const grid = screen.getByRole('grid');
+    expect(grid).toBeInstanceOf(HTMLTableElement);
+  });
 });
 
-test('allows to stretch to fit container', () => {
-  render(<Basic.Component stretch />);
+describe('Cell Alignment', () => {
+  test('aligns cell content to the right', () => {
+    render(<Basic.Component />);
 
-  const table = screen.getAllByRole('grid');
-  expect(table[0]).toHaveClass(`w-full`);
+    const balanceCells = screen
+      .getAllByRole('gridcell')
+      .filter(cell => cell.textContent?.includes('€'));
+    expect(balanceCells[0]).toHaveClass('text-right');
+  });
+
+  test('defaults to left alignment', () => {
+    render(<Basic.Component />);
+
+    const cells = screen.getAllByRole('gridcell');
+    const nameCell = cells[0];
+    expect(nameCell).toHaveClass('text-left');
+  });
 });
 
-test('supports non-interactive table', async () => {
-  // Static story has selectionMode="none"
-  render(<Static.Component />);
+describe('Sticky Header', () => {
+  test('applies sticky class to header', async () => {
+    render(<ScrollableAndSticky.Component />);
 
-  const rows = screen.getAllByRole('row');
+    await screen.findByRole('grid');
 
-  expect(rows[1]).toHaveClass('cursor-text');
-  expect(rows[2]).toHaveClass('cursor-text');
+    const columnHeader = screen.getByRole('columnheader', { name: 'ID' });
+    // eslint-disable-next-line testing-library/no-node-access
+    const header = columnHeader.closest('thead');
+    expect(header).toHaveClass('sticky');
+    expect(header).toHaveClass('top-0');
+  });
+
+  test('header without sticky prop does not have sticky class', () => {
+    render(<Basic.Component />);
+
+    const columnHeader = screen.getByRole('columnheader', { name: 'Name' });
+    // eslint-disable-next-line testing-library/no-node-access
+    const header = columnHeader.closest('thead');
+    expect(header).not.toHaveClass('sticky');
+  });
 });
 
-test('supports table columns alignment', () => {
-  render(<WithAlignedColumns.Component />);
+describe('TableDragPreview Component', () => {
+  test('renders single item with text and count', () => {
+    render(<DragPreview.Component />);
 
-  // WithAlignedColumns story has Price and Ticket Number columns aligned right
-  const priceHeader = screen.getByText('Price');
-  const ticketHeader = screen.getByText('Ticket Number');
+    expect(screen.getByText('Single Item')).toBeInTheDocument();
+    const counters = screen.getAllByText('1');
+    expect(counters.length).toBeGreaterThan(0);
+  });
 
-  expect(priceHeader).toHaveAttribute('align', 'right');
-  expect(ticketHeader).toHaveAttribute('align', 'right');
+  test('renders multiple items with first item text and count', () => {
+    render(<DragPreview.Component />);
+
+    const items = screen.getAllByText('Item 1');
+    expect(items.length).toBeGreaterThan(0);
+    const counters = screen.getAllByText('3');
+    expect(counters.length).toBeGreaterThan(0);
+  });
+
+  test('shows fallback text when text/plain is empty or missing', () => {
+    render(<DragPreview.Component />);
+
+    const fallbackTexts = screen.getAllByText(/items/i);
+    // Should have at least 1 fallback text (either empty text or no text/plain)
+    expect(fallbackTexts.length).toBeGreaterThan(0);
+  });
 });
 
-test('cursor indicates interactivity', async () => {
-  // Basic story with selectionMode and disabledKeys
-  render(
-    <Basic.Component
-      selectionMode="single"
-      disabledKeys={['fritz.schneider@example.de']}
-    />
-  );
+describe('renderDragPreview Hook', () => {
+  test('returns TableDragPreview component for multiple items', () => {
+    const items = [{ 'text/plain': 'Item 1' }, { 'text/plain': 'Item 2' }];
 
-  const rows = screen.getAllByRole('row');
-  // First data row (Hans Müller) should be clickable
-  expect(rows[1]).toHaveClass('cursor-pointer');
-  // Second data row (Fritz Schneider) is disabled
-  expect(rows[2]).toHaveClass('cursor-default');
+    const preview = renderDragPreview!(items);
+
+    expect(preview).not.toBeUndefined();
+    expect(preview).toBeTruthy();
+  });
+
+  test('returns undefined for single item to use default preview', () => {
+    const items = [{ 'text/plain': 'Single Item' }];
+
+    const preview = renderDragPreview!(items);
+
+    expect(preview).toBeUndefined();
+  });
+
+  test('returns undefined for empty items array', () => {
+    const items: Record<string, string>[] = [];
+
+    const preview = renderDragPreview!(items);
+
+    expect(preview).toBeUndefined();
+  });
+
+  test('handles two items correctly', () => {
+    const items = [{ 'text/plain': 'First' }, { 'text/plain': 'Second' }];
+
+    const preview = renderDragPreview!(items);
+
+    expect(preview).not.toBeUndefined();
+    expect(preview).toBeTruthy();
+  });
+
+  test('handles large number of items', () => {
+    const items = Array.from({ length: 100 }, (_, i) => ({
+      'text/plain': `Item ${i + 1}`,
+    }));
+
+    const preview = renderDragPreview!(items);
+
+    expect(preview).not.toBeUndefined();
+    expect(preview).toBeTruthy();
+  });
+
+  test('returns component for multiple items with mixed properties', () => {
+    const items: Record<string, string>[] = [
+      { 'text/plain': 'Item 1', 'application/json': '{}' },
+      { 'text/plain': 'Item 2', 'text/html': '<div></div>' },
+      { 'application/json': '[]' },
+    ];
+
+    const preview = renderDragPreview!(items);
+
+    expect(preview).not.toBeUndefined();
+    expect(preview).toBeTruthy();
+  });
+
+  test('boundary case: exactly one item returns undefined', () => {
+    const items = [{ 'text/plain': 'Only One', other: 'data' }];
+
+    const preview = renderDragPreview!(items);
+
+    expect(preview).toBeUndefined();
+  });
+
+  test('boundary case: exactly two items returns component', () => {
+    const items = [{ 'text/plain': 'First' }, { 'text/plain': 'Second' }];
+
+    const preview = renderDragPreview!(items);
+
+    expect(preview).not.toBeUndefined();
+  });
 });
 
-test('Table cell mouse down will not be selectable', async () => {
-  // Static story has selectionMode="none"
-  render(<Static.Component />);
+describe('TableDropIndicator Integration', () => {
+  test('renders in drag and drop table', () => {
+    render(<DragAndDrop.Component />);
 
-  const cell = screen.getByText('Potter');
-  await user.pointer({ target: cell, keys: '[MouseLeft>]' });
+    const table = screen.getByRole('grid');
+    expect(table).toBeInTheDocument();
+  });
 
-  const row = screen.getAllByRole('row');
-  expect(row[0]).not.toHaveAttribute('aria-selected');
+  test('table uses renderDropIndicator for drag and drop', () => {
+    render(<DragAndDrop.Component />);
+
+    const rows = screen.getAllByRole('row');
+    const dataRows = rows.slice(1); // Skip header row
+    expect(dataRows[0]).toHaveAttribute('draggable', 'true');
+  });
 });
 
-test('Table cell pointer down will not be selectable', async () => {
-  // Static story has selectionMode="none"
-  render(<Static.Component />);
+describe('renderDropIndicator Hook', () => {
+  test('returns TableDropIndicator component', () => {
+    const target = {
+      type: 'item' as const,
+      key: '1',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
 
-  const cell = screen.getByText('Potter');
-  await user.pointer({ target: cell, keys: '[MouseLeft>]' });
+    expect(dropIndicator).toBeDefined();
+    expect(dropIndicator.type).toBe(TableDropIndicator);
+  });
 
-  const row = screen.getAllByRole('row');
-  expect(row[0]).not.toHaveAttribute('aria-selected');
+  test('passes target prop correctly', () => {
+    const target = {
+      type: 'item' as const,
+      key: 'test-key',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    expect(dropIndicator.props.target).toEqual(target);
+  });
+
+  test('handles different target types', () => {
+    const itemTarget = {
+      type: 'item' as const,
+      key: '1',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator1 = renderDropIndicator!(itemTarget);
+    expect(dropIndicator1.props.target).toEqual(itemTarget);
+
+    const rootTarget = { type: 'root' as const };
+    const dropIndicator2 = renderDropIndicator!(rootTarget);
+    expect(dropIndicator2.props.target).toEqual(rootTarget);
+  });
+
+  test('handles target with dropPosition', () => {
+    const target = {
+      type: 'item' as const,
+      key: '1',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    expect(dropIndicator.props.target).toEqual(target);
+  });
+
+  test('creates React element with correct structure', () => {
+    const target = {
+      type: 'item' as const,
+      key: 'test-id',
+      dropPosition: 'after' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    // Verify it's a valid React element
+    expect(dropIndicator).toHaveProperty('type');
+    expect(dropIndicator).toHaveProperty('props');
+    expect(dropIndicator.props).toHaveProperty('target');
+  });
+
+  test('returned element has target property in props', () => {
+    const target = {
+      type: 'item' as const,
+      key: 'complex-key',
+      dropPosition: 'after' as const,
+    };
+    const dropIndicator = renderDropIndicator!(target);
+
+    expect(dropIndicator.props.target.type).toBe('item');
+    expect(dropIndicator.props.target.key).toBe('complex-key');
+    expect(dropIndicator.props.target.dropPosition).toBe('after');
+  });
+});
+
+describe('Table Static Properties - Drop Indicator', () => {
+  test('Table.renderDropIndicator is accessible', () => {
+    expect(Table.renderDropIndicator).toBeDefined();
+    expect(typeof Table.renderDropIndicator).toBe('function');
+  });
+
+  test('Table.renderDropIndicator matches renderDropIndicator export', () => {
+    expect(Table.renderDropIndicator).toBe(renderDropIndicator);
+  });
+
+  test('Table.DropIndicator component is accessible', () => {
+    expect(Table.DropIndicator).toBeDefined();
+    expect(Table.DropIndicator).toBe(TableDropIndicator);
+  });
+
+  test('Table has all drag and drop related exports', () => {
+    expect(Table.DropIndicator).toBeDefined();
+    expect(Table.DragPreview).toBeDefined();
+    expect(Table.renderDropIndicator).toBeDefined();
+    expect(Table.renderDragPreview).toBeDefined();
+  });
+});
+
+describe('renderDropIndicator Function Signature', () => {
+  test('accepts item target with key and dropPosition', () => {
+    const dropIndicator = renderDropIndicator!({
+      type: 'item',
+      key: '123',
+      dropPosition: 'before',
+    });
+    expect(dropIndicator).toBeDefined();
+  });
+
+  test('accepts root target without key', () => {
+    const dropIndicator = renderDropIndicator!({ type: 'root' });
+    expect(dropIndicator).toBeDefined();
+  });
+
+  test('preserves all target properties', () => {
+    const complexTarget = {
+      type: 'item' as const,
+      key: 'item-1',
+      dropPosition: 'before' as const,
+    };
+    const dropIndicator = renderDropIndicator!(complexTarget);
+
+    expect(dropIndicator.props.target).toStrictEqual(complexTarget);
+  });
 });

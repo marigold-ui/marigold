@@ -106,9 +106,9 @@ export const VenuesView = () => {
   });
 
   return (
-    <Table aria-label="Venue List" emptyState={EmptyState}>
+    <Table aria-label="Venue List">
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Type</Table.Column>
         <Table.Column>Address</Table.Column>
         <Table.Column align="right">Capacity</Table.Column>
@@ -118,7 +118,7 @@ export const VenuesView = () => {
         <Table.Column>Parking</Table.Column>
         <Table.Column align="right">Rating</Table.Column>
       </Table.Header>
-      <Table.Body>
+      <Table.Body emptyState={EmptyState}>
         {result.map(venue => (
           <Table.Row key={venue.id}>
             <Table.Cell>

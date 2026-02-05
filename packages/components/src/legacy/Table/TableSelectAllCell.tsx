@@ -13,7 +13,7 @@ import {
   width as twWidth,
   useStateProps,
 } from '@marigold/system';
-import { Checkbox } from '../Checkbox/Checkbox';
+import { Checkbox } from '../../Checkbox/Checkbox';
 import { useTableContext } from './Context';
 import { mapCheckboxProps } from './utils';
 

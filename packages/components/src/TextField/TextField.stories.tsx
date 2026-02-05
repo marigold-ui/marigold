@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import preview from '.storybook/preview';
-import { Stack } from '@marigold/components';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
+import { Stack } from '../Stack/Stack';
 import { TextField } from './TextField';
 
 const meta = preview.meta({

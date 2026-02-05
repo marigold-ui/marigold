@@ -94,12 +94,11 @@ export default () => {
         <Table
           aria-labelledby="table-header table-description"
           selectionMode="multiple"
-          stretch
           selectedKeys={selected}
           onSelectionChange={setSelected}
         >
           <Table.Header>
-            <Table.Column>Name</Table.Column>
+            <Table.Column isRowHeader>Name</Table.Column>
             <Table.Column>Date</Table.Column>
             <Table.Column align="right">Price</Table.Column>
             <Table.Column align="right">Available Tickets</Table.Column>

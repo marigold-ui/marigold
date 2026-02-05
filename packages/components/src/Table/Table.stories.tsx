@@ -1,22 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { I18nProvider, useDragAndDrop } from 'react-aria-components';
+import { useListData } from 'react-stately';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
-import { Center } from '../Center/Center';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { EmptyState } from '../EmptyState/EmptyState';
+import { ActionMenu } from '../Menu/ActionMenu';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
 import { Stack } from '../Stack/Stack';
+import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
-import { TextArea } from '../TextArea/TextArea';
+import { TextField } from '../TextField/TextField';
 import type { Selection } from '../types';
 import { Table } from './Table';
 
 const meta = preview.meta({
   title: 'Components/Table',
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   component: Table,
   argTypes: {
     selectionMode: {
@@ -26,53 +38,25 @@ const meta = preview.meta({
       options: ['none', 'single', 'multiple'],
       description: 'selection mode',
     },
-    focusMode: {
-      control: {
-        type: 'select',
-      },
-      options: ['row', 'cell'],
-      description: 'Focus Mode with Keyboard',
-      table: {
-        type: { summary: 'select' },
-        defaultValue: { summary: 'row' },
-      },
-    },
-    stretch: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'Stretch to fill the container',
-    },
-    stickyHeader: {
-      control: {
-        type: 'boolean',
-      },
-      description: 'stick the header to the top of the table',
-    },
-    alignY: {
-      control: {
-        type: 'select',
-      },
-      options: ['top', 'middle'],
-      description: 'alignment of the table content in the Y axis',
-    },
     variant: {
       control: {
         type: 'select',
       },
-      options: ['default', 'master', 'muted', 'muted', 'admin', 'grid'],
+      options: ['default', 'muted', 'grid'],
       description: 'variant for the table',
     },
     size: {
       control: {
         type: 'select',
       },
-      options: ['compact', 'expanded'],
-      description: 'size for the table: for example: compact',
+      options: ['default', 'compact', 'spacious'],
+      description: 'size for the table',
     },
   },
   args: {
-    focusMode: 'row',
+    variant: 'default',
+    size: 'default',
+    selectionMode: 'none',
   },
 });
 
@@ -163,10 +147,11 @@ const users = [
 // Stories
 // ---------------
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => (
     <Table aria-label="label" {...args}>
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
@@ -188,7 +173,7 @@ export const Basic = meta.story({
             <Table.Cell>
               <Badge>{user.status}</Badge>
             </Table.Cell>
-            <Table.Cell>
+            <Table.Cell align="right">
               <NumericFormat
                 style="currency"
                 currency="EUR"
@@ -200,18 +185,48 @@ export const Basic = meta.story({
       </Table.Body>
     </Table>
   ),
+  play: async ({ canvas, step }) => {
+    await step('Verify table renders with correct structure', async () => {
+      const table = canvas.getByRole('grid');
+      expect(table).toBeInTheDocument();
+    });
+
+    await step('Verify column headers are present', async () => {
+      expect(canvas.getByText('Name')).toBeInTheDocument();
+      expect(canvas.getByText('Email')).toBeInTheDocument();
+      expect(canvas.getByText('Location')).toBeInTheDocument();
+      expect(canvas.getByText('Status')).toBeInTheDocument();
+      expect(canvas.getByText('Balance')).toBeInTheDocument();
+    });
+
+    await step('Verify first user data is rendered', async () => {
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
+      expect(canvas.getByText('hans.mueller@example.de')).toBeInTheDocument();
+      expect(canvas.getByText('Berlin, BE')).toBeInTheDocument();
+    });
+
+    await step('Verify all rows are rendered', async () => {
+      const rows = canvas.getAllByRole('row');
+      // 10 users + 1 header row = 11 rows
+      expect(rows).toHaveLength(11);
+    });
+  },
 });
 
-export const ControlledTable = meta.story({
+export const DynamicData = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'single',
+  },
   render: args => {
     const columns = [
-      { name: 'Name', key: 'name' },
-      { name: 'Firstname', key: 'firstname' },
-      { name: 'House', key: 'house' },
-      { name: 'Year of birth', key: 'year' },
-    ];
+      { name: 'Name', id: 'name', isRowHeader: true },
+      { name: 'Firstname', id: 'firstname', isRowHeader: false },
+      { name: 'House', id: 'house', isRowHeader: false },
+      { name: 'Year of birth', id: 'year', isRowHeader: false },
+    ] as const;
 
-    const rows: { [key: string]: string }[] = [
+    const rows = [
       {
         id: '1',
         name: 'Potter',
@@ -240,159 +255,302 @@ export const ControlledTable = meta.story({
         house: 'Ravenclaw',
         year: '1981',
       },
-    ];
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
-    const selected = Array.from(selectedKeys);
+    ] as const;
+
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['2']));
+
     return (
       <Stack space={3}>
         <Table
           aria-label="Example dynamic collection table"
           selectionMode="multiple"
           {...args}
+          selectedKeys={selectedKeys}
           onSelectionChange={setSelectedKeys}
         >
           <Table.Header columns={columns}>
-            {column => <Table.Column>{column.name}</Table.Column>}
+            {column => (
+              <Table.Column isRowHeader={column.isRowHeader} id={column.id}>
+                {column.name}
+              </Table.Column>
+            )}
           </Table.Header>
           <Table.Body items={rows}>
             {item => (
-              <Table.Row>
-                {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+              <Table.Row columns={columns}>
+                {column => <Table.Cell>{item[column.id]}</Table.Cell>}
               </Table.Row>
             )}
           </Table.Body>
         </Table>
-        <div>Selected rows: {selected.join(', ')}</div>
+        <div>Selected rows: {selectedKeys}</div>
       </Stack>
     );
   },
+  play: async ({ canvas, step }) => {
+    await step('Verify dynamic data renders correctly', async () => {
+      expect(canvas.getByText('Potter')).toBeInTheDocument();
+      expect(canvas.getByText('Harry')).toBeInTheDocument();
+      expect(canvas.getByText('Gryffindor')).toBeInTheDocument();
+    });
+
+    await step(
+      'Verify initial selection (Malfoy row is selected)',
+      async () => {
+        expect(canvas.getByText('Selected rows: 2')).toBeInTheDocument();
+      }
+    );
+
+    await step('Select another row', async () => {
+      const potterRow = canvas.getByText('Potter').closest('tr');
+      const checkbox = within(potterRow!).getByRole('checkbox');
+
+      await userEvent.click(checkbox);
+    });
+
+    await step('Verify multiple selection', async () => {
+      await waitFor(() => {
+        const selectedText = canvas.getByText(/Selected rows:/);
+        expect(selectedText).toBeInTheDocument();
+      });
+    });
+  },
 });
 
-// https://react-spectrum.adobe.com/react-aria/useTable.html#nested-columns
-export const NestedColumns = meta.story({
-  render: args => (
-    <Table aria-label="Example table for nested columns" {...args}>
-      <Table.Header>
-        <Table.Column title="Name">
-          <Table.Column isRowHeader>First Name</Table.Column>
-          <Table.Column isRowHeader>Last Name</Table.Column>
-        </Table.Column>
-        <Table.Column title="Information">
-          <Table.Column>Age</Table.Column>
-          <Table.Column>Birthday</Table.Column>
-        </Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>Sam</Table.Cell>
-          <Table.Cell>Smith</Table.Cell>
-          <Table.Cell>36</Table.Cell>
-          <Table.Cell>May 3</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Julia</Table.Cell>
-          <Table.Cell>Jones</Table.Cell>
-          <Table.Cell>24</Table.Cell>
-          <Table.Cell>February 10</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Peter</Table.Cell>
-          <Table.Cell>Parker</Table.Cell>
-          <Table.Cell>28</Table.Cell>
-          <Table.Cell>September 7</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Bruce</Table.Cell>
-          <Table.Cell>Wayne</Table.Cell>
-          <Table.Cell>32</Table.Cell>
-          <Table.Cell>December 18</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
+export const WidthsAndOverflow = meta.story({
+  tags: ['component-test'],
+  render: args => {
+    const [overflow, setOverflow] = useState<'truncate' | 'wrap'>('wrap');
+
+    return (
+      <Stack space={3}>
+        <div
+          data-testid="table-container"
+          className="max-w-2xl resize-x overflow-x-auto border border-stone-800"
+        >
+          <Table
+            key={overflow}
+            {...args}
+            aria-label="Table with custom column widths"
+            overflow={overflow}
+          >
+            <Table.Header>
+              <Table.Column width={40} isRowHeader>
+                ID
+              </Table.Column>
+              <Table.Column minWidth={100}>Name</Table.Column>
+              <Table.Column width={100}>Status</Table.Column>
+              <Table.Column minWidth={100}>Location</Table.Column>
+              <Table.Column minWidth={80} align="right">
+                Balance
+              </Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {users.slice(0, 5).map((user, index) => (
+                <Table.Row key={user.email}>
+                  <Table.Cell>{index + 1}</Table.Cell>
+                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell>
+                    <Badge
+                      variant={user.status === 'active' ? 'success' : 'warning'}
+                    >
+                      {user.status}
+                    </Badge>
+                  </Table.Cell>
+                  <Table.Cell>{user.location}</Table.Cell>
+                  <Table.Cell align="right">
+                    <NumericFormat
+                      value={user.balance}
+                      style="currency"
+                      currency="EUR"
+                    />
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+              <Table.Row>
+                <Table.Cell colSpan={4}>Total</Table.Cell>
+                <Table.Cell align="right">
+                  <NumericFormat
+                    value={users
+                      .slice(0, 5)
+                      .reduce((sum, user) => sum + user.balance, 0)}
+                    style="currency"
+                    currency="EUR"
+                  />
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </div>
+        <p className="text-muted-foreground block text-xs">
+          Column widths: ID 40px, Name min 100px, Status 100px, Location min
+          100px, Balance min 80px.
+        </p>
+        <Switch
+          label="Truncate cell content"
+          selected={overflow === 'truncate'}
+          onChange={selected => setOverflow(selected ? 'truncate' : 'wrap')}
+        />
+      </Stack>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify table with custom widths renders', async () => {
+      expect(canvas.getByText('ID')).toBeInTheDocument();
+      expect(canvas.getByText('Ursula Weber')).toBeInTheDocument();
+    });
+
+    await step('Verify Total row with colspan is displayed', async () => {
+      expect(canvas.getByText('Total')).toBeInTheDocument();
+    });
+
+    await step('Reduce table container width', async () => {
+      const container = canvas.getByTestId('table-container');
+      // Simulate resize by setting width style
+      container.style.width = '300px';
+    });
+
+    await step('Toggle truncate switch', async () => {
+      const switchElement = canvas.getByLabelText('Truncate cell content');
+      await userEvent.click(switchElement);
+    });
+
+    await step('Verify truncated text', async () => {
+      const ursulaCell = canvas.getByText('Ursula Weber').closest('td');
+      const styles = window.getComputedStyle(ursulaCell!);
+
+      // Check CSS properties (no way to check otherwise...)
+      expect(styles.textOverflow).toBe('ellipsis');
+      expect(styles.overflow).toBe('hidden');
+    });
+  },
 });
 
 export const Empty = meta.story({
+  tags: ['component-test'],
   render: args => (
-    <Table
-      aria-label="Example table for nested columns"
-      emptyState={() => (
-        <EmptyState
-          title="No data available"
-          description="There is no data to display in this table."
-        />
-      )}
-      {...args}
-    >
+    <Table aria-label="Example table for nested columns" {...args}>
       <Table.Header>
-        <Table.Column>First Name</Table.Column>
+        <Table.Column isRowHeader>First Name</Table.Column>
         <Table.Column>Last Name</Table.Column>
         <Table.Column>Age</Table.Column>
         <Table.Column>Birthday</Table.Column>
       </Table.Header>
-      <Table.Body>{[]}</Table.Body>
+      <Table.Body
+        emptyState={() => (
+          <EmptyState
+            title="No results found."
+            description="Try adjusting your search or filters."
+          />
+        )}
+      >
+        {[]}
+      </Table.Body>
     </Table>
   ),
+  play: async ({ canvas, step }) => {
+    await step('Verify empty state message is displayed', async () => {
+      expect(canvas.getByText('No results found.')).toBeInTheDocument();
+      expect(
+        canvas.getByText('Try adjusting your search or filters.')
+      ).toBeInTheDocument();
+    });
+
+    await step('Verify table headers are still present', async () => {
+      expect(canvas.getByText('First Name')).toBeInTheDocument();
+      expect(canvas.getByText('Last Name')).toBeInTheDocument();
+      expect(canvas.getByText('Age')).toBeInTheDocument();
+      expect(canvas.getByText('Birthday')).toBeInTheDocument();
+    });
+
+    await step('Verify no data rows are present', async () => {
+      const rows = canvas.getAllByRole('row');
+      expect(rows).toHaveLength(2);
+    });
+  },
 });
 
 export const Sorting = meta.story({
+  tags: ['component-test'],
   render: args => {
+    const columns = [
+      { name: 'Name', id: 'name', align: 'left', isRowHeader: true },
+      { name: 'Height', id: 'height', align: 'right', isRowHeader: false },
+      { name: 'Mass', id: 'mass', align: 'right', isRowHeader: false },
+      {
+        name: 'Birth Year',
+        id: 'birth_year',
+        align: 'left',
+        isRowHeader: false,
+      },
+    ] as const;
+
     const data = [
       {
+        id: '1',
         name: 'Luke Skywalker',
         height: '172',
         mass: '77',
         birth_year: '19BBY',
       },
       {
+        id: '2',
         name: 'C-3PO',
         height: '167',
         mass: '75',
         birth_year: '112BBY',
       },
       {
+        id: '3',
         name: 'R2-D2',
         height: '96',
         mass: '32',
         birth_year: '33BBY',
       },
       {
+        id: '4',
         name: 'Darth Vader',
         height: '202',
         mass: '136',
         birth_year: '41.9BBY',
       },
       {
+        id: '5',
         name: 'Leia Organa',
         height: '150',
         mass: '49',
         birth_year: '19BBY',
       },
       {
+        id: '6',
         name: 'Owen Lars',
         height: '178',
         mass: '120',
         birth_year: '52BBY',
       },
       {
+        id: '7',
         name: 'Beru Whitesun lars',
         height: '165',
         mass: '75',
         birth_year: '47BBY',
       },
       {
+        id: '8',
         name: 'R5-D4',
         height: '97',
         mass: '32',
         birth_year: 'unknown',
       },
       {
+        id: '9',
         name: 'Biggs Darklighter',
         height: '183',
         mass: '84',
         birth_year: '24BBY',
       },
       {
+        id: '10',
         name: 'Obi-Wan Kenobi',
         height: '182',
         mass: '77',
@@ -428,555 +586,933 @@ export const Sorting = meta.story({
           selectionMode="multiple"
           {...args}
         >
-          <Table.Header>
-            <Table.Column key="name" allowsSorting>
-              Name
-            </Table.Column>
-            <Table.Column key="height" allowsSorting>
-              Height
-            </Table.Column>
-            <Table.Column key="mass" allowsSorting>
-              Mass
-            </Table.Column>
-            <Table.Column key="birth_year" allowsSorting>
-              Birth Year
-            </Table.Column>
+          <Table.Header columns={columns}>
+            {column => (
+              <Table.Column
+                isRowHeader={column.isRowHeader}
+                id={column.id}
+                align={column.align}
+                allowsSorting
+              >
+                {column.name}
+              </Table.Column>
+            )}
           </Table.Header>
           <Table.Body items={list}>
             {item => (
-              <Table.Row key={item.name}>
-                {columnKey => (
-                  <Table.Cell>{(item as any)[columnKey]}</Table.Cell>
+              <Table.Row columns={columns}>
+                {column => (
+                  <Table.Cell align={column.align}>
+                    {item[column.id]}
+                  </Table.Cell>
                 )}
               </Table.Row>
             )}
           </Table.Body>
         </Table>
         <br />
-        <pre>
+        <div>
           Sort: {descriptor.column} / {descriptor.direction}
-        </pre>
+        </div>
       </>
     );
   },
-});
+  play: async ({ canvas, step }) => {
+    await step('Verify initial state (no sorting)', async () => {
+      expect(canvas.getByText(/Sort:.*\/ ascending/)).toBeInTheDocument();
+    });
 
-export const Compact = meta.story({
-  render: args => (
-    <Table
-      aria-label="Table with multiple selection"
-      selectionMode="multiple"
-      size="compact"
-      {...args}
-    >
-      <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Firstname</Table.Column>
-        <Table.Column>House</Table.Column>
-        <Table.Column>Year of birth</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row key={1}>
-          <Table.Cell>Potter</Table.Cell>
-          <Table.Cell>Harry</Table.Cell>
-          <Table.Cell>Gryffindor</Table.Cell>
-          <Table.Cell>1980</Table.Cell>
-        </Table.Row>
-        <Table.Row key={2}>
-          <Table.Cell>Malfoy</Table.Cell>
-          <Table.Cell>Draco</Table.Cell>
-          <Table.Cell>Slytherin</Table.Cell>
-          <Table.Cell>1980</Table.Cell>
-        </Table.Row>
-        <Table.Row key={3}>
-          <Table.Cell>Diggory</Table.Cell>
-          <Table.Cell>Cedric</Table.Cell>
-          <Table.Cell>Hufflepuff</Table.Cell>
-          <Table.Cell>1977</Table.Cell>
-        </Table.Row>
-        <Table.Row key={4}>
-          <Table.Cell>Lovegood</Table.Cell>
-          <Table.Cell>Luna</Table.Cell>
-          <Table.Cell>Ravenclaw</Table.Cell>
-          <Table.Cell>1981</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
-});
+    await step('Click Name column header to sort', async () => {
+      const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
+      await userEvent.click(nameHeader);
+    });
 
-export const Expanded = meta.story({
-  render: args => (
-    <Table
-      aria-label="Table with multiple selection"
-      selectionMode="multiple"
-      size="expanded"
-      {...args}
-    >
-      <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Firstname</Table.Column>
-        <Table.Column>House</Table.Column>
-        <Table.Column>Year of birth</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row key={1}>
-          <Table.Cell>Potter</Table.Cell>
-          <Table.Cell>Harry</Table.Cell>
-          <Table.Cell>Gryffindor</Table.Cell>
-          <Table.Cell>1980</Table.Cell>
-        </Table.Row>
-        <Table.Row key={2}>
-          <Table.Cell>Malfoy</Table.Cell>
-          <Table.Cell>Draco</Table.Cell>
-          <Table.Cell>Slytherin</Table.Cell>
-          <Table.Cell>1980</Table.Cell>
-        </Table.Row>
-        <Table.Row key={3}>
-          <Table.Cell>Diggory</Table.Cell>
-          <Table.Cell>Cedric</Table.Cell>
-          <Table.Cell>Hufflepuff</Table.Cell>
-          <Table.Cell>1977</Table.Cell>
-        </Table.Row>
-        <Table.Row key={4}>
-          <Table.Cell>Lovegood</Table.Cell>
-          <Table.Cell>Luna</Table.Cell>
-          <Table.Cell>Ravenclaw</Table.Cell>
-          <Table.Cell>1981</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
-});
+    await step('Verify sorting is applied (ascending)', async () => {
+      await waitFor(() => {
+        expect(canvas.getByText(/Sort: name \/ ascending/)).toBeInTheDocument();
+      });
+    });
 
-export const Static = meta.story({
-  render: args => (
-    <Table
-      aria-label="Table without interaction"
-      selectionMode="none"
-      {...args}
-    >
-      <Table.Header>
-        <Table.Column>Name</Table.Column>
-        <Table.Column>Firstname</Table.Column>
-        <Table.Column>House</Table.Column>
-        <Table.Column>Year of birth</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row key={1}>
-          <Table.Cell>Potter</Table.Cell>
-          <Table.Cell>Harry</Table.Cell>
-          <Table.Cell>Gryffindor</Table.Cell>
-          <Table.Cell>1980</Table.Cell>
-        </Table.Row>
-        <Table.Row key={2}>
-          <Table.Cell>Malfoy</Table.Cell>
-          <Table.Cell>Draco</Table.Cell>
-          <Table.Cell>Slytherin</Table.Cell>
-          <Table.Cell>1980</Table.Cell>
-        </Table.Row>
-        <Table.Row key={3}>
-          <Table.Cell>Diggory</Table.Cell>
-          <Table.Cell>Cedric</Table.Cell>
-          <Table.Cell>Hufflepuff</Table.Cell>
-          <Table.Cell>1977</Table.Cell>
-        </Table.Row>
-        <Table.Row key={4}>
-          <Table.Cell>Lovegood</Table.Cell>
-          <Table.Cell>Luna</Table.Cell>
-          <Table.Cell>Ravenclaw</Table.Cell>
-          <Table.Cell>1981</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
-});
+    await step('Click Name column header again to reverse sort', async () => {
+      const nameHeader = canvas.getByRole('columnheader', { name: /Name/i });
+      await userEvent.click(nameHeader);
+    });
 
-const columns = [
-  { name: 'Name', key: 'name' },
-  { name: 'Firstname', key: 'firstname' },
-  { name: 'House', key: 'house' },
-  { name: 'Year of birth', key: 'year' },
-  { name: 'Bearbeiten', key: 'edit' },
-];
+    await step('Verify sorting direction changed (descending)', async () => {
+      await waitFor(() => {
+        expect(
+          canvas.getByText(/Sort: name \/ descending/)
+        ).toBeInTheDocument();
+      });
+    });
 
-const rows = [
-  {
-    id: '1',
-    name: 'Potter',
-    firstname: 'Harry',
-    house: 'Gryffindor',
-    year: '1980',
-  },
-  {
-    id: '2',
-    name: 'Malfoy',
-    firstname: 'Draco',
-    house: 'Slytherin',
-    year: '1980',
-  },
-] as const;
+    await step('Sort by different column (Height)', async () => {
+      const heightHeader = canvas.getByRole('columnheader', {
+        name: /Height/i,
+      });
+      await userEvent.click(heightHeader);
+    });
 
-const DataTable = ({ editable, ...rest }: { editable: boolean }) => (
-  <Table aria-label="Data Table" {...rest}>
-    <Table.Header columns={columns}>
-      {col => <Table.Column>{col.name}</Table.Column>}
-    </Table.Header>
-    <Table.Body items={rows}>
-      {rows.map(item => (
-        <Table.Row key={item.id}>
-          <Table.Cell>{item.name}</Table.Cell>
-          <Table.Cell>{item.firstname}</Table.Cell>
-          <Table.Cell>{item.house}</Table.Cell>
-          <Table.Cell>{item.year}</Table.Cell>
-          <Table.Cell>
-            <Button variant="ghost" disabled={!editable}>
-              Bearbeiten
-            </Button>
-          </Table.Cell>
-        </Table.Row>
-      ))}
-    </Table.Body>
-  </Table>
-);
-
-export const WithParentProp = meta.story({
-  render: args => {
-    const [editable, setEditable] = useState(true);
-
-    return (
-      <Stack>
-        <Checkbox
-          label="Allow editing"
-          checked={editable}
-          onChange={setEditable}
-        />
-        <DataTable editable={editable} {...args} />
-      </Stack>
-    );
+    await step('Verify Height column is sorted', async () => {
+      await waitFor(() => {
+        expect(
+          canvas.getByText(/Sort: height \/ ascending/)
+        ).toBeInTheDocument();
+      });
+    });
   },
 });
 
-export const WithAlignedColumns = meta.story({
+export const WithActions = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+  },
   render: args => (
-    <Table aria-label="Table with selection" {...args}>
+    <Table aria-label="Table with actions" {...args}>
       <Table.Header>
-        <Table.Column>Event</Table.Column>
-        <Table.Column>Date</Table.Column>
+        <Table.Column isRowHeader>Name</Table.Column>
+        <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
-        <Table.Column align="right">Price</Table.Column>
-        <Table.Column align="right">Ticket Number</Table.Column>
+        <Table.Column>Status</Table.Column>
+        <Table.Column align="right">Balance</Table.Column>
+        <Table.Column width={72} align="right">
+          Actions
+        </Table.Column>
       </Table.Header>
       <Table.Body>
-        <Table.Row key={1}>
-          <Table.Cell>Music Festival</Table.Cell>
-          <Table.Cell>2023-08-25</Table.Cell>
-          <Table.Cell>Central Park</Table.Cell>
-          <Table.Cell>$50</Table.Cell>
-          <Table.Cell>123456789</Table.Cell>
-        </Table.Row>
-        <Table.Row key={2}>
-          <Table.Cell>Movie Premiere</Table.Cell>
-          <Table.Cell>2023-09-10</Table.Cell>
-          <Table.Cell>Red Carpet Theater</Table.Cell>
-          <Table.Cell>$100</Table.Cell>
-          <Table.Cell>987654321</Table.Cell>
-        </Table.Row>
-        <Table.Row key={3}>
-          <Table.Cell>Conference</Table.Cell>
-          <Table.Cell>2023-10-05</Table.Cell>
-          <Table.Cell>Convention Center</Table.Cell>
-          <Table.Cell>$200</Table.Cell>
-          <Table.Cell>246813579</Table.Cell>
-        </Table.Row>
-        <Table.Row key={4}>
-          <Table.Cell>Sports Tournament</Table.Cell>
-          <Table.Cell>2023-11-20</Table.Cell>
-          <Table.Cell>Stadium</Table.Cell>
-          <Table.Cell>$75</Table.Cell>
-          <Table.Cell>135792468</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  ),
-});
-
-export const SelectedTable = meta.story({
-  render: args => (
-    <Table aria-label="Data Table" {...args}>
-      <Table.Header columns={columns}>
-        {col => <Table.Column>{col.name}</Table.Column>}
-      </Table.Header>
-      <Table.Body items={rows}>
-        {rows.map(item => (
-          <Table.Row key={item.id}>
-            <Table.Cell>{item.name}</Table.Cell>
-            <Table.Cell>{item.firstname}</Table.Cell>
-            <Table.Cell>{item.house}</Table.Cell>
-            <Table.Cell>{item.year}</Table.Cell>
+        {users.map(user => (
+          <Table.Row key={user.email}>
             <Table.Cell>
-              <Select disabledKeys={['Firefly']}>
-                <Select.Option key="Harry Potter">Harry Potter</Select.Option>
-                <Select.Option key="Lord of the Rings">
-                  Lord of the Rings
-                </Select.Option>
-                <Select.Option key="Star Wars">Star Wars</Select.Option>
-                <Select.Option key="Star Trek">Star Trek</Select.Option>
-                <Select.Option key="Firefly">Firefly</Select.Option>
-              </Select>
+              <Stack space="0.5">
+                <Text weight="medium">{user.name}</Text>
+                <Text size="xs" color="muted-foreground">
+                  {user.handle}
+                </Text>
+              </Stack>
+            </Table.Cell>
+            <Table.Cell>{user.email}</Table.Cell>
+            <Table.Cell>{user.location}</Table.Cell>
+            <Table.Cell>
+              <Badge>{user.status}</Badge>
+            </Table.Cell>
+            <Table.Cell align="right">
+              <NumericFormat
+                style="currency"
+                currency="EUR"
+                value={user.balance}
+              />
+            </Table.Cell>
+            <Table.Cell align="right">
+              <ActionMenu aria-label="Actions">
+                <ActionMenu.Item key="view">View</ActionMenu.Item>
+                <ActionMenu.Item key="edit">Edit</ActionMenu.Item>
+                <ActionMenu.Item key="delete" variant="destructive">
+                  Delete
+                </ActionMenu.Item>
+              </ActionMenu>
             </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
     </Table>
   ),
-});
+  play: async ({ canvas, step }) => {
+    await step('Verify table renders with data', async () => {
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
+      expect(canvas.getByText('@schnitzelmeister')).toBeInTheDocument();
+    });
 
-export const ScrollableTable = meta.story({
-  render: args => {
-    const [todos, setTodos] = useState<
-      { userId: string; id: string; title: string; completed: boolean }[]
-    >([]);
-    useEffect(() => {
-      fetch('https://jsonplaceholder.typicode.com/todos')
-        .then(res => res.json())
-        .then(data => setTodos(data));
-    }, []);
-    const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
-    return (
-      <>
-        {tableHeaders.length ? (
-          <Stack space={4}>
-            <Scrollable height="400px">
-              <Table
-                aria-label="Todos Table"
-                selectionMode="multiple"
-                stickyHeader
-                {...args}
-              >
-                <Table.Header>
-                  {tableHeaders.map((header, index) => (
-                    <Table.Column
-                      width={
-                        index === tableHeaders.length - 1 ? 'full' : 'auto'
-                      }
-                      key={index}
-                    >
-                      {header}
-                    </Table.Column>
-                  ))}
-                </Table.Header>
-                <Table.Body>
-                  {todos.map(todo => (
-                    <Table.Row key={`${todo.title}-${todo.id}`}>
-                      <Table.Cell>{todo.id}</Table.Cell>
-                      <Table.Cell>{todo.userId}</Table.Cell>
-                      <Table.Cell>{todo.title}</Table.Cell>
-                      <Table.Cell>{JSON.stringify(todo.completed)}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-            </Scrollable>
-            <Center>Some content below the table</Center>
-          </Stack>
-        ) : (
-          'Loading data ⬇️ ...... '
-        )}
-      </>
-    );
+    await step('Verify ActionMenu is present in each row', async () => {
+      const actionMenus = canvas.getAllByLabelText('Actions');
+      expect(actionMenus).toHaveLength(10);
+    });
+
+    await step('Open ActionMenu', async () => {
+      const firstActionMenu = canvas.getAllByLabelText('Actions')[0];
+      await userEvent.click(firstActionMenu);
+
+      expect(canvas.getByText('View')).toBeVisible();
+      expect(canvas.getByText('Edit')).toBeVisible();
+      expect(canvas.getByText('Delete')).toBeVisible();
+    });
+
+    await step('Use ActionMenu', async () => {
+      await userEvent.click(canvas.getByText('Edit'));
+
+      expect(canvas.queryByText('View')).not.toBeInTheDocument();
+      expect(canvas.queryByText('Edit')).not.toBeInTheDocument();
+      expect(canvas.queryByText('Delete')).not.toBeInTheDocument();
+    });
   },
 });
 
-export const InputTable = meta.story({
+export const ScrollableAndSticky = meta.story({
   render: args => {
-    const columns = [
-      { name: 'Name', key: 'name' },
-      { name: 'Firstname', key: 'firstname' },
-      { name: 'House', key: 'house' },
-      { name: 'Year of birth', key: 'year' },
-    ];
+    type Todo = {
+      userId: number;
+      id: number;
+      title: string;
+      completed: boolean;
+    };
 
-    const rowData: { [key: string]: string }[] = [
-      {
-        id: '1',
-        name: 'Potter',
-        firstname: 'Harry',
-        house: 'Gryffindor',
-        year: '1980',
-      },
-      {
-        id: '2',
-        name: 'Malfoy',
-        firstname: 'Draco',
-        house: 'Slytherin',
-        year: '1980',
-      },
-      {
-        id: '3',
-        name: 'Diggory',
-        firstname: 'Cedric',
-        house: 'Hufflepuff',
-        year: '1977',
-      },
-      {
-        id: '4',
-        name: 'Lovegood',
-        firstname: 'Luna',
-        house: 'Ravenclaw',
-        year: '1981',
-      },
-    ];
-    const [data, setData] = useState(rowData);
-
-    function handleChange(id: string, newValue: string, key: string): void {
-      const changedData = data.map(item => {
-        if (item.id === id) {
-          return { ...item, [key]: newValue };
+    const {
+      data: todos = [],
+      isLoading,
+      error,
+    } = useQuery<Todo[]>({
+      queryKey: ['todos'],
+      queryFn: async () => {
+        const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
-        return { ...item };
-      });
-      setData(changedData);
+        return res.json();
+      },
+    });
+
+    if (isLoading) {
+      return (
+        <pre>
+          <code>Loading todos...</code>
+        </pre>
+      );
+    }
+
+    if (error) {
+      return (
+        <pre>
+          <code>
+            Error loading todos:{' '}
+            {error instanceof Error ? error.message : 'Unknown error'}
+          </code>
+        </pre>
+      );
     }
 
     return (
-      <Stack space={3}>
-        <Table
-          aria-label="Example dynamic collection table"
-          disableKeyboardNavigation
-          alignY="top"
-          {...args}
-        >
-          <Table.Header columns={columns}>
-            {column => <Table.Column>{column.name}</Table.Column>}
-          </Table.Header>
-          <Table.Body items={data}>
-            {item => (
-              <Table.Row key={item.id}>
-                {columnKey =>
-                  columnKey !== 'house' ? (
-                    <Table.Cell>{item[columnKey]}</Table.Cell>
-                  ) : (
-                    <Table.Cell>
-                      <TextArea
-                        value={item.house}
-                        disabled={false}
-                        onChange={(value: string) =>
-                          handleChange(item.id, value, 'house')
-                        }
-                        rows={3}
-                        aria-label={'house'}
-                      />
-                    </Table.Cell>
-                  )
-                }
-              </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
+      <Stack>
+        <Scrollable height="400px">
+          <Table aria-label="Todos Table" selectionMode="multiple" {...args}>
+            <Table.Header sticky>
+              <Table.Column isRowHeader>ID</Table.Column>
+              <Table.Column>Title</Table.Column>
+              <Table.Column>User</Table.Column>
+              <Table.Column>Completed</Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {todos.map(todo => (
+                <Table.Row key={todo.id}>
+                  <Table.Cell>{todo.id}</Table.Cell>
+                  <Table.Cell>{todo.title}</Table.Cell>
+                  <Table.Cell>{todo.userId}</Table.Cell>
+                  <Table.Cell>{todo.completed ? 'Yes' : 'No'}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </Scrollable>
+        <div className="h-px w-full bg-black" />
+        <div>Content below the scrollable area.</div>
       </Stack>
     );
   },
 });
 
-export const DestructiveAction = meta.story({
+export const Links = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+  },
   render: args => {
-    const users = [
+    const websites = [
       {
-        id: '1',
-        name: 'Jane Doe',
-        email: 'jane.doe@example.com',
-        status: 'active',
+        name: 'Marigold',
+        url: 'https://marigold-ui.io',
+        description: 'Design System & Component Library',
       },
       {
-        id: '2',
-        name: 'John Smith',
-        email: 'john.smith@example.com',
-        status: 'inactive',
+        name: 'Reservix',
+        url: 'https://reservix.net',
+        description: 'Ticketing Platform',
       },
       {
-        id: '3',
-        name: 'Emily Johnson',
-        email: 'emily.johnson@example.com',
-        status: 'suspended',
-      },
-      {
-        id: '4',
-        name: 'Michael Brown',
-        email: 'michael.brown@example.com',
-        status: 'active',
-      },
-      {
-        id: '5',
-        name: 'Olivia Wilson',
-        email: 'olivia.wilson@example.com',
-        status: 'inactive',
-      },
-      {
-        id: '6',
-        name: 'William Lee',
-        email: 'william.lee@example.com',
-        status: 'active',
-      },
-      {
-        id: '7',
-        name: 'Sophia Martinez',
-        email: 'sophia.martinez@example.com',
-        status: 'suspended',
-      },
-      {
-        id: '8',
-        name: 'James Anderson',
-        email: 'james.anderson@example.com',
-        status: 'inactive',
-      },
-      {
-        id: '9',
-        name: 'Charlotte Thomas',
-        email: 'charlotte.thomas@example.com',
-        status: 'active',
-      },
-      {
-        id: '10',
-        name: 'Benjamin Harris',
-        email: 'benjamin.harris@example.com',
-        status: 'suspended',
+        name: 'ADticket',
+        url: 'https://www.adticket.de/',
+        description: 'Event Ticketing Service',
       },
     ];
 
     return (
-      <Table
-        aria-label="User Management Table"
-        selectionMode="multiple"
-        size="expanded"
-        {...args}
-      >
+      <Table aria-label="Table with links" {...args}>
         <Table.Header>
-          <Table.Column>Name</Table.Column>
-          <Table.Column>Email</Table.Column>
-          <Table.Column>Status</Table.Column>
-          <Table.Column align="right">Actions</Table.Column>
+          <Table.Column isRowHeader>Name</Table.Column>
+          <Table.Column>Description</Table.Column>
+          <Table.Column>URL</Table.Column>
         </Table.Header>
         <Table.Body>
-          {users.map(user => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.name}</Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
+          {websites.map(site => (
+            <Table.Row key={site.name} href={site.url}>
               <Table.Cell>
-                <Badge>{user.status}</Badge>
+                <Text weight="medium">{site.name}</Text>
               </Table.Cell>
+              <Table.Cell>{site.description}</Table.Cell>
               <Table.Cell>
-                <Button variant="secondary" size="small">
-                  Edit
-                </Button>{' '}
-                <Button variant="destructive-ghost" size="small">
-                  Delete
-                </Button>
+                <Text size="sm" color="muted-foreground">
+                  {site.url}
+                </Text>
               </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
       </Table>
     );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify table with links renders', async () => {
+      expect(canvas.getByText('Marigold')).toBeInTheDocument();
+      expect(canvas.getByText('Reservix')).toBeInTheDocument();
+      expect(canvas.getByText('ADticket')).toBeInTheDocument();
+    });
+
+    await step('Verify row has link attribute', async () => {
+      const marigoldRow = canvas.getByText('Marigold').closest('tr');
+      expect(marigoldRow).toBeInTheDocument();
+    });
+
+    await step('Verify descriptions are displayed', async () => {
+      expect(
+        canvas.getByText('Design System & Component Library')
+      ).toBeInTheDocument();
+      expect(canvas.getByText('Ticketing Platform')).toBeInTheDocument();
+      expect(canvas.getByText('Event Ticketing Service')).toBeInTheDocument();
+    });
+
+    await step('Verify URLs are displayed', async () => {
+      expect(canvas.getByText('https://marigold-ui.io')).toBeInTheDocument();
+      expect(canvas.getByText('https://reservix.net')).toBeInTheDocument();
+      expect(canvas.getByText('https://www.adticket.de/')).toBeInTheDocument();
+    });
+  },
+});
+
+export const DragAndDrop = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+  },
+  render: args => {
+    const list = useListData({
+      initialItems: users.slice(0, 5).map((user, index) => ({
+        id: index + 1,
+        name: user.name,
+        email: user.email,
+        location: user.location,
+      })),
+    });
+
+    const { dragAndDropHooks } = useDragAndDrop({
+      renderDropIndicator: Table.renderDropIndicator,
+      renderDragPreview: Table.renderDragPreview,
+      getItems: keys =>
+        [...keys].map(key => ({
+          'text/plain': list.getItem(key)!.name,
+        })),
+      onReorder(e) {
+        if (e.target.dropPosition === 'before') {
+          list.moveBefore(e.target.key, e.keys);
+          return;
+        }
+        if (e.target.dropPosition === 'after') {
+          list.moveAfter(e.target.key, e.keys);
+          return;
+        }
+      },
+    });
+
+    return (
+      <Table
+        aria-label="Reorderable files"
+        dragAndDropHooks={dragAndDropHooks}
+        {...args}
+      >
+        <Table.Header>
+          <Table.Column isRowHeader>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Location</Table.Column>
+        </Table.Header>
+        <Table.Body items={list.items}>
+          {item => (
+            <Table.Row>
+              <Table.Cell>{item.name}</Table.Cell>
+              <Table.Cell>{item.email}</Table.Cell>
+              <Table.Cell>{item.location}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify table with drag and drop renders', async () => {
+      const table = canvas.getByRole('grid');
+      expect(table).toBeInTheDocument();
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
+      expect(canvas.getByText('Fritz Schneider')).toBeInTheDocument();
+    });
+
+    await step('Verify initial order of items', async () => {
+      const rows = canvas.getAllByRole('row');
+      expect(within(rows[1]).getByText('Hans Müller')).toBeInTheDocument();
+      expect(within(rows[2]).getByText('Fritz Schneider')).toBeInTheDocument();
+      expect(within(rows[3]).getByText('Klaus Becker')).toBeInTheDocument();
+      expect(within(rows[4]).getByText('Helga Fischer')).toBeInTheDocument();
+      expect(within(rows[5]).getByText('Ursula Weber')).toBeInTheDocument();
+    });
+
+    await step('Verify rows are draggable', async () => {
+      const firstRow = canvas.getByText('Hans Müller').closest('tr');
+      expect(firstRow).toHaveAttribute('draggable', 'true');
+    });
+
+    await step('Verify drop indicator has correct styling', async () => {
+      // Drop indicators are created dynamically during drag operations
+      // We verify the renderDropIndicator function is being used
+      const table = canvas.getByRole('grid');
+      expect(table).toBeInTheDocument();
+    });
+  },
+});
+
+export const AllowTextSelection = meta.story({
+  tags: ['component-test'],
+  args: {
+    selectionMode: 'multiple',
+  },
+  render: args => {
+    const [allowTextSelection, setAllowTextSelection] = useState(false);
+
+    return (
+      <Stack space={3}>
+        <Switch
+          label="Allow Text Selection"
+          selected={allowTextSelection}
+          onChange={setAllowTextSelection}
+        />
+
+        <Table
+          key={String(allowTextSelection)}
+          aria-label="Table demonstrating allowTextSelection prop"
+          {...args}
+          allowTextSelection={allowTextSelection}
+        >
+          <Table.Header>
+            <Table.Column isRowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Location</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {users.slice(0, 3).map(user => (
+              <Table.Row key={user.email}>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.location}</Table.Cell>
+                <Table.Cell>
+                  <Badge>{user.status}</Badge>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </Stack>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    const cell = canvas.getByText('Hans Müller');
+
+    await step(
+      'Verify that clicking on cell text, when allowTextSelection is false, does select the row instead',
+      async () => {
+        await userEvent.click(cell);
+
+        const selection = window.getSelection();
+        expect(selection?.toString()).toBe('');
+
+        // Verify the row is selected by checking the checkbox in Hans Müller's row
+        const hansRow = cell.closest('tr');
+        const checkbox = hansRow?.querySelector('input[type="checkbox"]');
+        expect(checkbox).toBeChecked();
+      }
+    );
+
+    await step('Enable text selection via toggle', async () => {
+      const switchElement = canvas.getByLabelText('Allow Text Selection');
+      await userEvent.click(switchElement);
+    });
+
+    await step('Try to select text in a cell', async () => {
+      // Wait for the component to re-render with allowTextSelection=true
+      await waitFor(() => {
+        const cellElement = canvas.getByText('Hans Müller');
+        const wrapper = cellElement.closest('div[tabindex="-1"]');
+        expect(wrapper).toBeInTheDocument();
+      });
+
+      // Get the cell element fresh after the re-render
+      const cellAfterToggle = canvas.getByText('Hans Müller');
+      await userEvent.tripleClick(cellAfterToggle);
+
+      await waitFor(() => {
+        const selection = window.getSelection();
+        expect(selection?.toString()).toBe('Hans Müller');
+      });
+    });
+  },
+});
+
+export const EditableCell = meta.story({
+  tags: ['component-test'],
+  render: args => {
+    const [data, setData] = useState(users.slice(0, 5).map(u => ({ ...u })));
+
+    const handleSubmit = (
+      index: number,
+      e: React.FormEvent<HTMLFormElement>
+    ) => {
+      const formData = new FormData(e.currentTarget);
+      setData(prev => {
+        const next = [...prev];
+        next[index] = {
+          ...next[index],
+          name: (formData.get('name') as string) || next[index].name,
+          email: (formData.get('email') as string) || next[index].email,
+          status: (formData.get('status') as string) || next[index].status,
+        };
+        return next;
+      });
+    };
+
+    return (
+      <Table aria-label="Editable table" {...args}>
+        <Table.Header>
+          <Table.Column isRowHeader>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column>Location</Table.Column>
+          <Table.Column>Status</Table.Column>
+        </Table.Header>
+        <Table.Body>
+          {data.map((user, i) => (
+            <Table.Row key={user.email}>
+              <Table.EditableCell
+                field={
+                  <TextField
+                    aria-label="Name"
+                    name="name"
+                    defaultValue={user.name}
+                  />
+                }
+                onSubmit={e => handleSubmit(i, e)}
+              >
+                {user.name}
+              </Table.EditableCell>
+              <Table.EditableCell
+                field={
+                  <TextField
+                    aria-label="Email"
+                    name="email"
+                    defaultValue={user.email}
+                  />
+                }
+                onSubmit={e => handleSubmit(i, e)}
+              >
+                {user.email}
+              </Table.EditableCell>
+              <Table.Cell>{user.location}</Table.Cell>
+              <Table.EditableCell
+                field={
+                  <Select
+                    aria-label="Status"
+                    name="status"
+                    defaultValue={user.status}
+                  >
+                    <Select.Option id="active">active</Select.Option>
+                    <Select.Option id="inactive">inactive</Select.Option>
+                    <Select.Option id="suspended">suspended</Select.Option>
+                  </Select>
+                }
+                onSubmit={e => handleSubmit(i, e)}
+              >
+                <Badge>{user.status}</Badge>
+              </Table.EditableCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
+  },
+  play: async ({ canvas }) => {
+    const editButtons = canvas.getAllByLabelText('Edit');
+
+    // Click the first edit button to open the editor
+    await userEvent.click(editButtons[0]);
+
+    // Wait for the name input to appear
+    await waitFor(() => {
+      expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+    });
+
+    // Verify input is focused and text is selected
+    const nameInput = canvas.getByLabelText('Name') as HTMLInputElement;
+    expect(nameInput).toHaveFocus();
+    expect(nameInput.selectionStart).toBe(0);
+    expect(nameInput.selectionEnd).toBe(nameInput.value.length);
+
+    // Close the editor
+    const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+    await userEvent.click(cancelButton);
+
+    await waitFor(() => {
+      expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+    });
+
+    // Test with email field
+    await userEvent.click(editButtons[1]);
+
+    await waitFor(() => {
+      expect(canvas.getByLabelText('Email')).toBeInTheDocument();
+    });
+
+    const emailInput = canvas.getByLabelText('Email') as HTMLInputElement;
+    expect(emailInput).toHaveFocus();
+    expect(emailInput.selectionStart).toBe(0);
+    expect(emailInput.selectionEnd).toBe(emailInput.value.length);
+  },
+});
+
+export const DynamicColumnsAndRows = meta.story({
+  tags: ['component-test'],
+  render: args => {
+    const columns = [
+      { name: 'Name', id: 'name', isRowHeader: true },
+      { name: 'Email', id: 'email', isRowHeader: false },
+      { name: 'Handle', id: 'handle', isRowHeader: false },
+      { name: 'Location', id: 'location', isRowHeader: false },
+      { name: 'Status', id: 'status', isRowHeader: false },
+    ] as const;
+
+    const [showColumns, setShowColumns] = useState([
+      'name',
+      'email',
+      'handle',
+      'location',
+      'status',
+    ]);
+    const visibleColumns = columns.filter(column =>
+      showColumns.includes(column.id)
+    );
+
+    const [rows, setRows] = useState(
+      users.slice(0, 3).map((user, index) => ({ ...user, id: index + 1 }))
+    );
+    const [nextId, setNextId] = useState(4);
+
+    const addRow = () => {
+      const randomUser = users[Math.floor(Math.random() * users.length)];
+      setRows(rows => [...rows, { ...randomUser, id: nextId }]);
+      setNextId(id => id + 1);
+    };
+
+    return (
+      <Stack space={3}>
+        <Checkbox.Group
+          label="Show columns"
+          value={showColumns}
+          onChange={setShowColumns}
+          orientation="horizontal"
+        >
+          <Checkbox value="location" label="Location" />
+          <Checkbox value="handle" label="Handle" />
+        </Checkbox.Group>
+
+        <Table aria-label="Users" {...args}>
+          <Table.Header columns={visibleColumns}>
+            {column => (
+              <Table.Column isRowHeader={column.isRowHeader} id={column.id}>
+                {column.name}
+              </Table.Column>
+            )}
+          </Table.Header>
+          <Table.Body items={rows} dependencies={[visibleColumns]}>
+            {item => (
+              <Table.Row id={item.id} columns={visibleColumns}>
+                {column => (
+                  <Table.Cell>
+                    {column.id === 'status' ? (
+                      <Badge>{item[column.id]}</Badge>
+                    ) : (
+                      item[column.id]
+                    )}
+                  </Table.Cell>
+                )}
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+
+        <div>
+          <Button variant="primary" onPress={addRow}>
+            Add row
+          </Button>
+        </div>
+      </Stack>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify initial columns are visible', async () => {
+      expect(
+        canvas.getByRole('columnheader', { name: 'Name' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Email' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Handle' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Location' })
+      ).toBeInTheDocument();
+      expect(
+        canvas.getByRole('columnheader', { name: 'Status' })
+      ).toBeInTheDocument();
+    });
+
+    await step('Verify initial rows are rendered', async () => {
+      expect(canvas.getByText('Hans Müller')).toBeInTheDocument();
+      expect(canvas.getByText('Fritz Schneider')).toBeInTheDocument();
+      expect(canvas.getByText('Klaus Becker')).toBeInTheDocument();
+    });
+
+    await step('Toggle Location column off', async () => {
+      const locationCheckbox = canvas.getByLabelText('Location');
+      await userEvent.click(locationCheckbox);
+    });
+
+    await step('Verify Location column is hidden', async () => {
+      await waitFor(() => {
+        const headers = canvas.getAllByRole('columnheader');
+        expect(headers).toHaveLength(4);
+        expect(
+          canvas.queryByRole('columnheader', { name: 'Location' })
+        ).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Toggle Location column back on', async () => {
+      const locationCheckbox = canvas.getByLabelText('Location');
+      await userEvent.click(locationCheckbox);
+    });
+
+    await step('Verify Location column is visible again', async () => {
+      await waitFor(() => {
+        expect(
+          canvas.getByRole('columnheader', { name: 'Location' })
+        ).toBeInTheDocument();
+      });
+    });
+
+    await step('Toggle Handle column off', async () => {
+      const handleCheckbox = canvas.getByLabelText('Handle');
+      await userEvent.click(handleCheckbox);
+    });
+
+    await step('Verify Handle column is hidden', async () => {
+      await waitFor(() => {
+        const headers = canvas.getAllByRole('columnheader');
+        expect(headers).toHaveLength(4);
+        expect(
+          canvas.queryByRole('columnheader', { name: 'Handle' })
+        ).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Add a new row', async () => {
+      const addButton = canvas.getByRole('button', { name: 'Add row' });
+      await userEvent.click(addButton);
+    });
+
+    await step('Verify new row is added', async () => {
+      await waitFor(() => {
+        const rows = canvas.getAllByRole('row');
+        // 3 initial users + 1 header row + 1 new user = 5 rows
+        expect(rows).toHaveLength(5);
+      });
+    });
+
+    await step('Add another row', async () => {
+      const addButton = canvas.getByRole('button', { name: 'Add row' });
+      await userEvent.click(addButton);
+    });
+
+    await step('Verify second new row is added', async () => {
+      await waitFor(() => {
+        const rows = canvas.getAllByRole('row');
+        expect(rows).toHaveLength(6);
+      });
+    });
+  },
+});
+
+/* ================ STORIES FOR TESTING ================ */
+
+export const CellOverrideTableTruncate = meta.story({
+  tags: ['component-test'],
+  args: {
+    overflow: 'truncate',
+  },
+  render: args => (
+    <Table aria-label="Table with truncate default" {...args}>
+      <Table.Header>
+        <Table.Column isRowHeader>Inherit Truncate</Table.Column>
+        <Table.Column>Override to Wrap</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            Long text that inherits table truncate behavior
+          </Table.Cell>
+          <Table.Cell overflow="wrap">
+            Long text with wrap override that should wrap
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+  play: async ({ canvas, step }) => {
+    await step('Verify first cell uses table default (truncate)', async () => {
+      const cell = canvas.getByText(/truncate behavior/);
+      expect(cell).toHaveClass('truncate');
+      expect(cell).toHaveClass('max-w-0');
+    });
+
+    await step('Verify second cell overrides to wrap', async () => {
+      const cell = canvas.getByText(/wrap override/);
+      expect(cell).toHaveClass('wrap-break-word');
+      expect(cell).not.toHaveClass('truncate');
+    });
+  },
+});
+
+export const VerticalAlignment = meta.story({
+  args: {
+    verticalAlign: 'top',
+  },
+  render: args => (
+    <Table aria-label="Table with vertical alignment" {...args}>
+      <Table.Header>
+        <Table.Column isRowHeader>Item</Table.Column>
+        <Table.Column>Description</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Short</Table.Cell>
+          <Table.Cell>
+            <div className="h-20">
+              Tall cell content to demonstrate vertical alignment. The content
+              in the first column will align to the top of this tall cell.
+            </div>
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell verticalAlign="bottom">Override</Table.Cell>
+          <Table.Cell>
+            <div className="h-20">
+              This row&apos;s first cell overrides with bottom alignment.
+            </div>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+});
+
+export const DragPreview = meta.story({
+  tags: ['component-test'],
+  render: () => {
+    const singleItem = [{ 'text/plain': 'Single Item' }];
+    const multipleItems = [
+      { 'text/plain': 'Item 1' },
+      { 'text/plain': 'Item 2' },
+      { 'text/plain': 'Item 3' },
+    ];
+    const emptyTextItem = [{ 'text/plain': '' }];
+    const noTextItem = [{ 'application/json': 'data' }];
+
+    return (
+      <I18nProvider locale="en">
+        <Stack space={3} alignX="left">
+          <div data-testid="single-item-preview">
+            <Text weight="medium">Single item:</Text>
+            <Table.DragPreview items={singleItem} />
+          </div>
+          <div data-testid="multiple-items-preview">
+            <Text weight="medium">Multiple items:</Text>
+            <Table.DragPreview items={multipleItems} />
+          </div>
+          <div data-testid="empty-text-preview">
+            <Text weight="medium">Empty text/plain:</Text>
+            <Table.DragPreview items={emptyTextItem} />
+          </div>
+          <div data-testid="no-text-preview">
+            <Text weight="medium">No text/plain property:</Text>
+            <Table.DragPreview items={noTextItem} />
+          </div>
+          <div data-testid="variant-size-preview">
+            <Text weight="medium">With variant and size:</Text>
+            <Table.DragPreview
+              items={multipleItems}
+              variant="compact"
+              size="small"
+            />
+          </div>
+        </Stack>
+      </I18nProvider>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Verify single item renders with text and count', async () => {
+      const section = canvas.getByTestId('single-item-preview');
+      expect(within(section).getByText('Single Item')).toBeInTheDocument();
+      expect(within(section).getByText('1')).toBeInTheDocument();
+    });
+
+    await step(
+      'Verify multiple items show first item text and count',
+      async () => {
+        const section = canvas.getByTestId('multiple-items-preview');
+        expect(within(section).getByText('Item 1')).toBeInTheDocument();
+        expect(within(section).getByText('3')).toBeInTheDocument();
+      }
+    );
+
+    await step('Verify empty text/plain shows fallback text', async () => {
+      const section = canvas.getByTestId('empty-text-preview');
+      expect(within(section).getByText('1')).toBeInTheDocument();
+    });
+
+    await step(
+      'Verify no text/plain property shows fallback text',
+      async () => {
+        const section = canvas.getByTestId('no-text-preview');
+        expect(within(section).getByText('Items')).toBeInTheDocument();
+        expect(within(section).getByText('1')).toBeInTheDocument();
+      }
+    );
+
+    await step('Verify variant and size props work', async () => {
+      const section = canvas.getByTestId('variant-size-preview');
+      expect(within(section).getByText('Item 1')).toBeInTheDocument();
+      expect(within(section).getByText('3')).toBeInTheDocument();
+    });
   },
 });

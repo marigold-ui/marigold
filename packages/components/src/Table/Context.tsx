@@ -1,21 +1,20 @@
 import { createContext, useContext } from 'react';
-import { TableState } from '@react-stately/table';
+import type { ComponentClassNames } from '@marigold/system';
 
 export interface TableContextProps {
-  state: TableState<object>;
-  interactive: boolean;
-  classNames?: {
-    table?: string;
-    thead?: string;
-    headerRow?: string;
-    header?: string;
-    body?: string;
-    row?: string;
-    cell?: string;
-  };
+  classNames: ComponentClassNames<'Table'>;
   variant?: string;
   size?: string;
+  overflow?: 'truncate' | 'wrap';
+  allowTextSelection?: boolean;
+  verticalAlign?: 'top' | 'middle' | 'bottom' | 'baseline';
 }
 
-export const TableContext = createContext<TableContextProps>({} as any);
-export const useTableContext = () => useContext(TableContext);
+export const TableContext = createContext<TableContextProps | null>(null);
+export const useTableContext = () => {
+  const context = useContext(TableContext);
+  if (context === null) {
+    throw new Error('useTableContext must be used within a <Table> component');
+  }
+  return context;
+};

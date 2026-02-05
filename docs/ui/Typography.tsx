@@ -20,7 +20,9 @@ export const Headlines = () => {
   return (
     <Table aria-labelledby="typography table" stretch>
       <Table.Header>
-        <Table.Column key={'level'}>Level</Table.Column>
+        <Table.Column key={'level'} isRowHeader>
+          Level
+        </Table.Column>
         <Table.Column key={'example'}>Example</Table.Column>
         <Table.Column key={'size'}>Styles</Table.Column>
       </Table.Header>
@@ -51,7 +53,9 @@ export const FontSizes = () => {
   return (
     <Table aria-labelledby="typography table" stretch>
       <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
+        <Table.Column key={'name'} isRowHeader>
+          Name
+        </Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>
         <Table.Column key={'example'}>Example</Table.Column>
       </Table.Header>
@@ -80,7 +84,9 @@ export const FontWeights = () => {
   return (
     <Table aria-labelledby="typography table" stretch>
       <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
+        <Table.Column key={'name'} isRowHeader>
+          Name
+        </Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>
         <Table.Column key={'example'}>Example</Table.Column>
       </Table.Header>
@@ -109,7 +115,9 @@ export const FontStyle = () => {
   return (
     <Table aria-labelledby="typography table" stretch>
       <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
+        <Table.Column key={'name'} isRowHeader>
+          Name
+        </Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>
         <Table.Column key={'example'}>Example</Table.Column>
       </Table.Header>
@@ -138,7 +146,9 @@ export const TextAlign = () => {
   return (
     <Table aria-labelledby="typography table" stretch>
       <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
+        <Table.Column key={'name'} isRowHeader>
+          Name
+        </Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>
         <Table.Column key={'example'}>Example</Table.Column>
       </Table.Header>

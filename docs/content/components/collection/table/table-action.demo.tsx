@@ -2,9 +2,9 @@ import { venues } from '@/lib/data/venues';
 import { Button, Table } from '@marigold/components';
 
 export default () => (
-  <Table aria-label="Venue List" stretch>
+  <Table aria-label="Venue List">
     <Table.Header>
-      <Table.Column>Venue</Table.Column>
+      <Table.Column isRowHeader>Venue</Table.Column>
       <Table.Column>Address</Table.Column>
       <Table.Column align="right">Rating</Table.Column>
       <Table.Column>Action</Table.Column>
