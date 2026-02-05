@@ -5,6 +5,45 @@ import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 import { TableSelectableCell } from './TableSelectableCell';
 
+// Inner
+// ---------------
+interface InnerTableCellProps {
+  align: keyof typeof textAlign;
+  vAlign: keyof typeof verticalAlign;
+  overflow: 'truncate' | 'wrap';
+  allowTextSelection: boolean;
+  selectionMode: 'none' | 'single' | 'multiple';
+  children: ReactNode;
+}
+
+const InnerTableCell = ({
+  align,
+  vAlign,
+  overflow,
+  allowTextSelection,
+  selectionMode,
+  children,
+}: InnerTableCellProps) => {
+  const content =
+    allowTextSelection && selectionMode !== 'none' ? (
+      <TableSelectableCell>{children}</TableSelectableCell>
+    ) : (
+      children
+    );
+
+  return (
+    <div
+      className={cn(
+        textAlign[align],
+        verticalAlign[vAlign],
+        overflow === 'truncate' ? 'max-w-0 truncate' : 'wrap-break-word'
+      )}
+    >
+      {content}
+    </div>
+  );
+};
+
 // Props
 // ---------------
 type RemovedProps = 'className' | 'style' | 'children';
@@ -53,20 +92,16 @@ const TableCell = ({
   const vAlign = cellVerticalAlign ?? tableVerticalAlign;
 
   return (
-    <Cell
-      className={cn(
-        classNames.cell,
-        textAlign[align],
-        verticalAlign[vAlign],
-        overflow === 'truncate' ? 'max-w-0 truncate' : 'wrap-break-word'
-      )}
-      {...props}
-    >
-      {allowTextSelection && selectionMode !== 'none' ? (
-        <TableSelectableCell>{children}</TableSelectableCell>
-      ) : (
-        children
-      )}
+    <Cell className={classNames.cell} {...props}>
+      <InnerTableCell
+        align={align}
+        vAlign={vAlign}
+        overflow={overflow}
+        allowTextSelection={allowTextSelection}
+        selectionMode={selectionMode}
+      >
+        {children}
+      </InnerTableCell>
     </Cell>
   );
 };

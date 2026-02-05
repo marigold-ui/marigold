@@ -156,14 +156,18 @@ describe('Props and Variants', () => {
 
     const cells = screen.getAllByRole('gridcell');
     // Story defaults to wrap mode
-    expect(cells[0]).toHaveClass('wrap-break-word');
+    // eslint-disable-next-line testing-library/no-node-access
+    const innerDiv = cells[0].querySelector('div');
+    expect(innerDiv).toHaveClass('wrap-break-word');
   });
 
   test('defaults to wrap overflow', () => {
     render(<Basic.Component />);
 
     const cell = screen.getAllByRole('gridcell')[0];
-    expect(cell).toHaveClass('wrap-break-word');
+    // eslint-disable-next-line testing-library/no-node-access
+    const innerDiv = cell.querySelector('div');
+    expect(innerDiv).toHaveClass('wrap-break-word');
   });
 
   test('applies verticalAlign prop to cells', () => {
@@ -172,14 +176,18 @@ describe('Props and Variants', () => {
 
     const cells = screen.getAllByRole('gridcell');
     // First cell should have align-top from table prop
-    expect(cells[0]).toHaveClass('align-top');
+    // eslint-disable-next-line testing-library/no-node-access
+    const innerDiv = cells[0].querySelector('div');
+    expect(innerDiv).toHaveClass('align-top');
   });
 
   test('defaults to middle vertical alignment', () => {
     render(<Basic.Component />);
 
     const cell = screen.getAllByRole('gridcell')[0];
-    expect(cell).toHaveClass('align-middle');
+    // eslint-disable-next-line testing-library/no-node-access
+    const innerDiv = cell.querySelector('div');
+    expect(innerDiv).toHaveClass('align-middle');
   });
 
   test('cell-level verticalAlign overrides table-level', () => {
@@ -187,8 +195,10 @@ describe('Props and Variants', () => {
 
     // eslint-disable-next-line testing-library/no-node-access
     const overrideCell = screen.getByText('Override').closest('td');
-    expect(overrideCell).toHaveClass('align-bottom');
-    expect(overrideCell).not.toHaveClass('align-top');
+    // eslint-disable-next-line testing-library/no-node-access
+    const innerDiv = overrideCell?.querySelector('div');
+    expect(innerDiv).toHaveClass('align-bottom');
+    expect(innerDiv).not.toHaveClass('align-top');
   });
 });
 
@@ -222,7 +232,9 @@ describe('Cell Alignment', () => {
     const balanceCells = screen
       .getAllByRole('gridcell')
       .filter(cell => cell.textContent?.includes('€'));
-    expect(balanceCells[0]).toHaveClass('text-right');
+    // eslint-disable-next-line testing-library/no-node-access
+    const innerDiv = balanceCells[0].querySelector('div');
+    expect(innerDiv).toHaveClass('text-right');
   });
 
   test('defaults to left alignment', () => {
@@ -230,7 +242,27 @@ describe('Cell Alignment', () => {
 
     const cells = screen.getAllByRole('gridcell');
     const nameCell = cells[0];
-    expect(nameCell).toHaveClass('text-left');
+    // eslint-disable-next-line testing-library/no-node-access
+    const innerDiv = nameCell.querySelector('div');
+    expect(innerDiv).toHaveClass('text-left');
+  });
+
+  test('outer cell retains only theme classes, inner div has styling classes', () => {
+    render(<Basic.Component />);
+
+    const cell = screen.getAllByRole('gridcell')[0];
+    // eslint-disable-next-line testing-library/no-node-access
+    const innerDiv = cell.querySelector('div');
+
+    // Outer cell should NOT have alignment/overflow classes
+    expect(cell).not.toHaveClass('text-left');
+    expect(cell).not.toHaveClass('align-middle');
+    expect(cell).not.toHaveClass('wrap-break-word');
+
+    // Inner div should have all presentation classes
+    expect(innerDiv).toHaveClass('text-left');
+    expect(innerDiv).toHaveClass('align-middle');
+    expect(innerDiv).toHaveClass('wrap-break-word');
   });
 });
 
