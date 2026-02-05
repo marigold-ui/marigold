@@ -36,7 +36,7 @@ const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
   const displayText = state?.selectedItem?.textValue || '';
 
   return (
-    <div className="group/input relative flex items-center">
+    <div className={comboBoxClassNames.mobileTrigger}>
       <span
         className={cn(
           'w-full flex-1 text-left',

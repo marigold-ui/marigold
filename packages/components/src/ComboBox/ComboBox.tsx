@@ -168,7 +168,7 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
           <>
             <Input
               action={
-                <IconButton className={classNames}>
+                <IconButton className={classNames.icon}>
                   {loading ? (
                     <ProgressCircle />
                   ) : (

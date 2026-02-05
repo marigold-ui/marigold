@@ -35,10 +35,11 @@ const MobileAutocompleteTrigger = ({
 }: MobileAutocompleteTriggerProps) => {
   const state = useContext(ComboBoxStateContext);
   const inputClassNames = useClassNames({ component: 'Input' });
+  const autocompleteClassNames = useClassNames({ component: 'Autocomplete' });
   const displayText = state?.selectedItem?.textValue || '';
 
   return (
-    <div className="group/input relative flex items-center" data-icon="">
+    <div className={autocompleteClassNames.mobileTrigger} data-icon="">
       <Search
         aria-hidden="true"
         size="16"

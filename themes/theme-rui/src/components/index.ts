@@ -1,5 +1,6 @@
 export { Accordion } from './Accordion.styles';
 export { ActionBar } from './ActionBar.styles';
+export { Autocomplete } from './Autocomplete.styles';
 export { Badge } from './Badge.styles';
 
 export { Button } from './Button.styles';
