@@ -96,8 +96,11 @@ Inlining form fields directly in table cells is no longer supported. This approa
   </Table.Header>
   <Table.Body>
     <Table.Row>
-      <Table.EditableCell>
-        {value => <TextField value={value} />}
+      <Table.EditableCell
+        field={<TextField name="name" defaultValue={value} />}
+        onSubmit={handleSubmit}
+      >
+        {value}
       </Table.EditableCell>
     </Table.Row>
   </Table.Body>
