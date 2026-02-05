@@ -416,8 +416,10 @@ export const WidthsAndOverflow = meta.story({
     });
 
     await step('Verify truncated text', async () => {
-      const ursulaCell = canvas.getByText('Ursula Weber').closest('td');
-      const styles = window.getComputedStyle(ursulaCell!);
+      const ursulaText = canvas.getByText('Ursula Weber');
+      // The text should be inside the TableCellContent div
+      const ursulaContentDiv = ursulaText.closest('div');
+      const styles = window.getComputedStyle(ursulaContentDiv!);
 
       // Check CSS properties (no way to check otherwise...)
       expect(styles.textOverflow).toBe('ellipsis');
@@ -1055,8 +1057,8 @@ export const AllowTextSelection = meta.story({
       // Wait for the component to re-render with allowTextSelection=true
       await waitFor(() => {
         const cellElement = canvas.getByText('Hans Müller');
-        const wrapper = cellElement.closest('div[tabindex="-1"]');
-        expect(wrapper).toBeInTheDocument();
+        const wrapper = cellElement.parentElement;
+        expect(wrapper).toHaveAttribute('tabindex', '-1');
       });
 
       // Get the cell element fresh after the re-render

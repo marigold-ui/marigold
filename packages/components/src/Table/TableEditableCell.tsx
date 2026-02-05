@@ -22,7 +22,7 @@ import { Pencil } from '../icons/Pencil';
 import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 import { useTableContext } from './Context';
-import { TableSelectableCell } from './TableSelectableCell';
+import { TableCellContent } from './TableCellContent';
 
 // Props
 // ---------------
@@ -148,7 +148,6 @@ export const TableEditableCell = ({
   const {
     classNames,
     overflow: tableOverflow = 'wrap',
-    allowTextSelection = false,
     verticalAlign: tableVerticalAlign = 'middle',
   } = useTableContext();
   const isSmallScreen = useSmallScreen();
@@ -240,13 +239,9 @@ export const TableEditableCell = ({
       )}
     >
       <div className="group/editable-cell flex items-center gap-1">
-        <div className="min-w-0 flex-1">
-          {allowTextSelection ? (
-            <TableSelectableCell>{children}</TableSelectableCell>
-          ) : (
-            children
-          )}
-        </div>
+        <TableCellContent align="left" className="min-w-0 flex-1">
+          {children}
+        </TableCellContent>
         {!disabled && (
           <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 [.group\/editable-cell:has(:focus-visible)_&]:opacity-100 [[role=row]:hover_&]:opacity-100">
             <Button
