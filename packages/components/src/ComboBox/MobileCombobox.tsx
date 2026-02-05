@@ -53,7 +53,7 @@ const MobileComboBoxTrigger = ({ placeholder }: MobileComboBoxTriggerProps) => {
       </span>
       <span
         className={cn(
-          'absolute right-0 cursor-pointer',
+          'absolute right-2 cursor-pointer',
           inputClassNames.action,
           comboBoxClassNames
         )}
