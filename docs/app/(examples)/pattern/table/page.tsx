@@ -1,44 +1,41 @@
 'use client';
 
-import { Table } from '@marigold/components';
+import { Button, Table } from '@marigold/components';
 import type { Booking } from './booking';
 import { bookings } from './data';
 
 const BookingTablePage = () => {
   return (
-    <div className="mx-auto max-w-7xl p-6">
+    <div className="mx-auto p-6">
       <h1 className="mb-6 text-2xl font-bold">Booking Overview</h1>
-      <Table
-        aria-label="Booking table"
-        variant="default"
-        size="default"
-        overflow="truncate"
-        verticalAlign="top"
-      >
+      <Table aria-label="Booking table" verticalAlign="top">
         <Table.Header>
-          <Table.Column id="id" width="8%">
+          <Table.Column id="id" width="7%">
             Booking ID
           </Table.Column>
-          <Table.Column id="date" width="10%">
+          <Table.Column id="date" width="9%">
             Date
           </Table.Column>
-          <Table.Column id="customer" width="22%">
+          <Table.Column id="customer" width="20%">
             Customer
           </Table.Column>
-          <Table.Column id="order" width="28%">
+          <Table.Column id="order" width="26%">
             Order
           </Table.Column>
-          <Table.Column id="orderValue" width="7%">
+          <Table.Column id="orderValue" width="6%">
             Order Value
           </Table.Column>
-          <Table.Column id="payment" width="9%">
+          <Table.Column id="payment" width="8%">
             Payment Status
           </Table.Column>
-          <Table.Column id="invoice" width="9%">
+          <Table.Column id="invoice" width="8%">
             Invoice Status
           </Table.Column>
-          <Table.Column id="ticketStatus" width="7%">
+          <Table.Column id="ticketStatus" width="6%">
             Ticket Status
+          </Table.Column>
+          <Table.Column id="actions" width="10%">
+            Actions
           </Table.Column>
         </Table.Header>
         <Table.Body items={bookings}>
@@ -73,7 +70,7 @@ const BookingTablePage = () => {
                     {booking.orderItems.map((item, index) => (
                       <div
                         key={index}
-                        className="border-b border-gray-200 pb-1 last:border-0 last:pb-0"
+                        className={`border-b border-gray-200 pb-1 last:border-0 last:pb-0 ${item.cancelled ? 'text-red-600 line-through opacity-75' : ''}`}
                       >
                         <div className="font-medium">{item.event.title}</div>
                         <div className="text-xs text-gray-600">
@@ -93,6 +90,11 @@ const BookingTablePage = () => {
                           Qty: {item.quantity} × {item.pricePerItem.toFixed(2)}{' '}
                           € = {item.price.toFixed(2)} €
                         </div>
+                        {item.cancelled && (
+                          <div className="text-xs font-semibold uppercase">
+                            Cancelled
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -101,13 +103,56 @@ const BookingTablePage = () => {
                 )}
               </Table.Cell>
               <Table.Cell>{booking.orderValue.toFixed(2)} €</Table.Cell>
-              <Table.Cell>{booking.payment.status}</Table.Cell>
               <Table.Cell>
-                {booking.payment.invoiceStatus ||
-                  booking.invoice?.status ||
-                  '-'}
+                <span
+                  className={
+                    booking.payment.status === 'storniert'
+                      ? 'font-semibold text-red-600'
+                      : ''
+                  }
+                >
+                  {booking.payment.status}
+                </span>
+              </Table.Cell>
+              <Table.Cell>
+                <span
+                  className={
+                    booking.payment.invoiceStatus === 'storniert' ||
+                    booking.invoice?.status === 'storniert' ||
+                    booking.payment.invoiceStatus === 'teilweise' ||
+                    booking.invoice?.status === 'teilweise'
+                      ? 'font-semibold text-red-600'
+                      : ''
+                  }
+                >
+                  {booking.payment.invoiceStatus ||
+                    booking.invoice?.status ||
+                    '-'}
+                </span>
               </Table.Cell>
               <Table.Cell>{booking.ticketPrint.status}</Table.Cell>
+              <Table.Cell>
+                <div className="flex gap-1">
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    onPress={() => console.log('View booking', booking.id)}
+                  >
+                    View
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="destructive"
+                    onPress={() => console.log('Cancel booking', booking.id)}
+                    disabled={
+                      booking.payment.status === 'storniert' ||
+                      booking.payment.invoiceStatus === 'storniert'
+                    }
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
