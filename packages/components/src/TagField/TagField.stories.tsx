@@ -71,31 +71,39 @@ export const Basic = meta.story({
       </Stack>
     );
   },
-  play: async ({ canvas, args }) => {
+});
+
+Basic.test('Select multiple items', async ({ canvas, step, args }) => {
+  await step('Open the dropdown', async () => {
     const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
 
-    // Open the dropdown
     await userEvent.click(trigger);
-    await waitFor(() => canvas.getByRole('dialog'));
 
+    await waitFor(() => canvas.getByRole('dialog'));
+  });
+
+  await step('Select Rock and Jazz', async () => {
     const dialog = canvas.getByRole('dialog');
 
-    // Select two items
     await userEvent.click(within(dialog).getByText('Rock'));
     await userEvent.click(within(dialog).getByText('Jazz'));
+  });
 
-    // Close the dropdown
+  await step('Close the dropdown', async () => {
     await userEvent.click(document.body);
 
-    // Verify selected items
-    await expect(canvas.getByTestId('selected')).toHaveTextContent(
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
+  await step('Verify selected items appear as tags', async () => {
+    expect(canvas.getByTestId('selected')).toHaveTextContent(
       'selected: ["rock","jazz"]'
     );
-
-    // Verify tags are rendered
-    await expect(canvas.getByText('Rock')).toBeVisible();
-    await expect(canvas.getByText('Jazz')).toBeVisible();
-  },
+    expect(canvas.getAllByText('Rock')[0]).toBeVisible();
+    expect(canvas.getAllByText('Jazz')[0]).toBeVisible();
+  });
 });
 
 export const Controlled = meta.story({
