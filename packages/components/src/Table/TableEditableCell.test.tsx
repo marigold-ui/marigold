@@ -292,10 +292,60 @@ describe('TableEditableCell - Advanced Features', () => {
     await user.click(editButtons[0]);
 
     await waitFor(() => {
-      const nameInput = screen.getByLabelText('Name');
-      expect(nameInput).toBeInTheDocument();
-      // The field should get focus due to autoFocus prop in the story
+      expect(screen.getByLabelText('Name')).toBeInTheDocument();
     });
+
+    const nameInput = screen.getByLabelText('Name');
+    expect(nameInput).toHaveFocus();
+  });
+
+  test('automatically selects input text when opening editor', async () => {
+    const user = userEvent.setup();
+
+    render(<EditableCell.Component />);
+
+    const editButtons = screen.getAllByLabelText('Edit');
+    await user.click(editButtons[0]);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    });
+
+    const nameInput = screen.getByLabelText('Name') as HTMLInputElement;
+    expect(nameInput).toHaveFocus();
+    expect(nameInput.selectionStart).toBe(0);
+    expect(nameInput.selectionEnd).toBe(nameInput.value.length);
+  });
+
+  test('text selection works for different input fields', async () => {
+    const user = userEvent.setup();
+
+    render(<EditableCell.Component />);
+
+    const editButtons = screen.getAllByLabelText('Edit');
+
+    // Test name field
+    await user.click(editButtons[0]);
+    await waitFor(() => {
+      expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    });
+
+    const nameInput = screen.getByLabelText('Name') as HTMLInputElement;
+    expect(nameInput.selectionStart).toBe(0);
+    expect(nameInput.selectionEnd).toBe(nameInput.value.length);
+
+    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+    await user.click(cancelButton);
+
+    // Test email field
+    await user.click(editButtons[1]);
+    await waitFor(() => {
+      expect(screen.getByLabelText('Email')).toBeInTheDocument();
+    });
+
+    const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
+    expect(emailInput.selectionStart).toBe(0);
+    expect(emailInput.selectionEnd).toBe(emailInput.value.length);
   });
 
   test('handles rapid open/close cycles', async () => {

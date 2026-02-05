@@ -1072,6 +1072,7 @@ export const AllowTextSelection = meta.story({
 });
 
 export const EditableCell = meta.story({
+  tags: ['component-test'],
   render: args => {
     const [data, setData] = useState(users.slice(0, 5).map(u => ({ ...u })));
 
@@ -1109,7 +1110,6 @@ export const EditableCell = meta.story({
                     aria-label="Name"
                     name="name"
                     defaultValue={user.name}
-                    autoFocus
                   />
                 }
                 onSubmit={e => handleSubmit(i, e)}
@@ -1122,7 +1122,6 @@ export const EditableCell = meta.story({
                     aria-label="Email"
                     name="email"
                     defaultValue={user.email}
-                    autoFocus
                   />
                 }
                 onSubmit={e => handleSubmit(i, e)}
@@ -1135,8 +1134,7 @@ export const EditableCell = meta.story({
                   <Select
                     aria-label="Status"
                     name="status"
-                    defaultSelectedKey={user.status}
-                    autoFocus
+                    defaultValue={user.status}
                   >
                     <Select.Option id="active">active</Select.Option>
                     <Select.Option id="inactive">inactive</Select.Option>
@@ -1152,6 +1150,43 @@ export const EditableCell = meta.story({
         </Table.Body>
       </Table>
     );
+  },
+  play: async ({ canvas }) => {
+    const editButtons = canvas.getAllByLabelText('Edit');
+
+    // Click the first edit button to open the editor
+    await userEvent.click(editButtons[0]);
+
+    // Wait for the name input to appear
+    await waitFor(() => {
+      expect(canvas.getByLabelText('Name')).toBeInTheDocument();
+    });
+
+    // Verify input is focused and text is selected
+    const nameInput = canvas.getByLabelText('Name') as HTMLInputElement;
+    expect(nameInput).toHaveFocus();
+    expect(nameInput.selectionStart).toBe(0);
+    expect(nameInput.selectionEnd).toBe(nameInput.value.length);
+
+    // Close the editor
+    const cancelButton = canvas.getByRole('button', { name: 'Cancel' });
+    await userEvent.click(cancelButton);
+
+    await waitFor(() => {
+      expect(canvas.queryByLabelText('Name')).not.toBeInTheDocument();
+    });
+
+    // Test with email field
+    await userEvent.click(editButtons[1]);
+
+    await waitFor(() => {
+      expect(canvas.getByLabelText('Email')).toBeInTheDocument();
+    });
+
+    const emailInput = canvas.getByLabelText('Email') as HTMLInputElement;
+    expect(emailInput).toHaveFocus();
+    expect(emailInput.selectionStart).toBe(0);
+    expect(emailInput.selectionEnd).toBe(emailInput.value.length);
   },
 });
 

@@ -4,9 +4,15 @@ import type {
   ReactNode,
   RefObject,
 } from 'react';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Cell, Popover } from 'react-aria-components';
+import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import {
+  getActiveElement,
+  getOwnerDocument,
+  nodeContains,
+} from '@react-aria/utils';
 import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
@@ -155,6 +161,26 @@ export const TableEditableCell = ({
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
   const cellRef = useRef<HTMLTableCellElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Auto-select input/textarea content when popover/dialog opens
+  const handleFormRef = useCallback((node: HTMLFormElement | null) => {
+    formRef.current = node;
+    if (node) {
+      requestAnimationFrame(() => {
+        const activeElement = getActiveElement(getOwnerDocument(node));
+        if (
+          activeElement &&
+          nodeContains(node, activeElement) &&
+          (activeElement instanceof HTMLInputElement ||
+            activeElement instanceof HTMLTextAreaElement) &&
+          typeof activeElement.select === 'function'
+        ) {
+          activeElement.select();
+        }
+      });
+    }
+  }, []);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -240,8 +266,15 @@ export const TableEditableCell = ({
           open={open}
           onOpenChange={handleOpenChange}
         >
-          <Form unstyled action={action} onSubmit={handleSubmit}>
-            <Dialog.Content>{renderField()}</Dialog.Content>
+          <Form
+            unstyled
+            ref={handleFormRef}
+            action={action}
+            onSubmit={handleSubmit}
+          >
+            <Dialog.Content>
+              <FocusScope autoFocus>{renderField()}</FocusScope>
+            </Dialog.Content>
             <Dialog.Actions>
               {cancelButton}
               {saveButton}
@@ -255,10 +288,17 @@ export const TableEditableCell = ({
           onOpenChange={handleOpenChange}
           className={classNames.editablePopover}
         >
-          <Form unstyled action={action} onSubmit={handleSubmit}>
-            <div className="flex-1">{renderField()}</div>
-            {cancelButton}
-            {saveButton}
+          <Form
+            unstyled
+            ref={handleFormRef}
+            action={action}
+            onSubmit={handleSubmit}
+          >
+            <FocusScope autoFocus>
+              {renderField()}
+              {cancelButton}
+              {saveButton}
+            </FocusScope>
           </Form>
         </EditableCellPopover>
       )}
