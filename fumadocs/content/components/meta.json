@@ -1,14 +1,24 @@
 {
   "pages": [
-    "application",
-    "layout",
-    "actions",
-    "form",
-    "collection",
-    "navigation",
-    "overlay",
-    "content",
-    "formatters",
-    "hooks-and-utils"
+    "---Application---",
+    "...application",
+    "---Layout---",
+    "...layout",
+    "---Actions---",
+    "...actions",
+    "---Form---",
+    "...form",
+    "---Collection---",
+    "...collection",
+    "---Navigation---",
+    "...navigation",
+    "---Overlay---",
+    "...overlay",
+    "---Content---",
+    "...content",
+    "---Formatters---",
+    "...formatters",
+    "---Hooks and Utils---",
+    "...hooks-and-utils"
   ]
 }
