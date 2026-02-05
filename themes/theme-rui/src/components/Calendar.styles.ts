@@ -6,15 +6,18 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     // In a Popover
     'group-data-trigger/popover:shadow-elevation-overlay',
   ]),
+  calendarContainer: cva('flex gap-4'),
+  calendarMonth: cva('min-w-[250px] flex-1'),
   calendarCell: cva([
     'relative flex size-9 items-center justify-center whitespace-nowrap rounded-lg justify-self-center',
     'border border-transparent p-0 text-sm font-normal text-foreground',
     'outline-offset-2 duration-150 transition-all',
-    'selected:bg-brand  selected:text-brand-foreground',
+    'selected:bg-brand selected:text-brand-foreground',
     'data-hovered:bg-hover data-hovered:text-foreground',
     'data-focus-visible:z-10 focus-visible:ui-state-focus outline-none',
     'disabled:pointer-events-none disabled:opacity-30',
     'unavailable:pointer-events-none unavailable:opacity-30 unavailable:line-through',
+    'outside-month:hidden',
   ]),
   calendarControllers: cva([
     'size-9 rounded-lg',
