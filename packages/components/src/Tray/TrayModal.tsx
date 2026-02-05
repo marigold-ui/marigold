@@ -76,14 +76,10 @@ export const TrayModal = ({
           onOpenChange={handleOpenChange}
           isDismissable={dismissable}
           isKeyboardDismissDisabled={!keyboardDismissable}
-          className={cn(
-            'fixed inset-0 z-40 flex items-end justify-center',
-            classNames.overlay
-          )}
-          style={{ backgroundColor: bg as never }}
+          className={cn(classNames.overlay)}
         >
           <MotionModal
-            className={cn('group/tray w-full', classNames.container)}
+            className={classNames.container}
             initial={{ y: h }}
             animate={{ y: 0 }}
             exit={{ y: h }}
