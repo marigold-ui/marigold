@@ -3,9 +3,7 @@ import {
   animate,
   cubicBezier,
   motion,
-  useMotionTemplate,
   useMotionValue,
-  useTransform,
 } from 'motion/react';
 import { useContext } from 'react';
 import {
