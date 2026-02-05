@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Key } from 'react-aria-components';
+import { Form, Key } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
+import { Button } from '../Button/Button';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
@@ -12,6 +13,13 @@ import { Select } from './Select';
 const meta = preview.meta({
   title: 'Components/Select',
   component: Select,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: {
       control: {
@@ -73,6 +81,7 @@ const meta = preview.meta({
 });
 
 export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => {
     const [selected, setSelected] = useState<any>('');
     return (
@@ -141,29 +150,41 @@ export const Basic = meta.story({
 });
 
 export const Multiple = meta.story({
+  tags: ['component-test'],
   // No args here, it breaks the types
   render: ({ label }) => {
     const [selected, setSelected] = useState<Key[]>([]);
     return (
-      <Stack space={6}>
-        <Select
-          label={label}
-          selectionMode="multiple"
-          value={selected}
-          onChange={setSelected}
-          width={64}
-        >
-          <Select.Option id="Harry Potter">Harry Potter</Select.Option>
-          <Select.Option id="Lord of the Rings">
-            Lord of the Rings
-          </Select.Option>
-          <Select.Option id="Star Wars">Star Wars</Select.Option>
-          <Select.Option id="Star Trek">Star Trek</Select.Option>
-          <Select.Option id="Firefly">Firefly</Select.Option>
-        </Select>
-        <hr />
-        <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
-      </Stack>
+      <Form
+        onSubmit={e => {
+          e.preventDefault();
+          const formData = new FormData(e.currentTarget);
+          setSelected(formData.getAll('favorite') as Key[]);
+        }}
+      >
+        <Stack space={6} alignX="left">
+          <Select
+            label={label}
+            name="favorite"
+            selectionMode="multiple"
+            defaultValue={selected}
+            width={64}
+          >
+            <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+            <Select.Option id="Lord of the Rings">
+              Lord of the Rings
+            </Select.Option>
+            <Select.Option id="Star Wars">Star Wars</Select.Option>
+            <Select.Option id="Star Trek">Star Trek</Select.Option>
+            <Select.Option id="Firefly">Firefly</Select.Option>
+          </Select>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+          <hr />
+          <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
+        </Stack>
+      </Form>
     );
   },
   play: async ({ args, canvas, userEvent }) => {
@@ -179,6 +200,7 @@ export const Multiple = meta.story({
     await userEvent.click(within(options).getByText('Firefly'));
 
     await userEvent.click(document.body);
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
 
     expect(canvas.getByTestId('selected')).toHaveTextContent(
       'selected: ["Star Wars","Firefly"]'
