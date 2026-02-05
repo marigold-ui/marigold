@@ -29,10 +29,6 @@ Read [README](https://github.com/marigold-ui/marigold#local-development) to get 
 
 ## Coding Standards
 
-### Naming
-
-Try to use names from [Open UI](https://open-ui.org/) for components and their props.
-
 ### TypeScript
 
 - Strict typing required - no `any` types, use `unknown` or proper types
@@ -46,6 +42,7 @@ Try to use names from [Open UI](https://open-ui.org/) for components and their p
 - Utility files: `camelCase` (e.g., `useTheme.ts`, `useClassNames.ts`)
 - Test files: `<Component>.test.tsx`
 - Story files: `<Component>.stories.tsx`
+- Style files: `<Component>.styles.ts`
 
 ### File Structure
 
@@ -75,6 +72,10 @@ components/src
 
 ## Component Development
 
+### Naming
+
+Try to use names from [Open UI](https://open-ui.org/) for components and their props.
+
 ### Component Release Phases
 
 Components go through three phases: **Alpha**, **Beta**, and **Stable**. See [Release Phases](/getting-started/release-phases) for user-facing documentation.
@@ -92,7 +93,16 @@ Components go through three phases: **Alpha**, **Beta**, and **Stable**. See [Re
 ```mdx
 ---
 title: MyComponent
-badge: alpha # or beta, or omit for stable
+badge: alpha # or beta, or new when it is stable
+---
+```
+
+**Marking component update for changes on stable components:**
+
+```mdx
+---
+title: MyComponent
+badge: updated
 ---
 ```
 
@@ -268,17 +278,15 @@ test('renders dialog', () => {
 
 ### Testing Style Application
 
-Use `toHaveClass` for specific style assertions, or `toMatchInlineSnapshot` for className testing:
+Use `toHaveClass` for specific style assertions:
 
 ```tsx
-test('accepts a variant with parts', () => {
-  render(<SectionMessage data-testid="messages" variant="warning" />);
+test('shows cursor correct', () => {
+  render(<Basic.Component />);
 
-  const container = screen.getByTestId('messages');
+  const button = screen.getByRole('button');
 
-  expect(container.className).toMatchInlineSnapshot(
-    `"grid auto-rows-min text-orange-700"`
-  );
+  expect(button).toHaveClass('cursor-progress!');
 });
 ```
 
@@ -297,6 +305,7 @@ To run these use either `ui` in your branch name or trigger it via Actions - Vis
 | Import stories for test fixtures                      | Create inline themes in tests            |
 | Use AAA pattern with blank lines                      | Mix assertions throughout                |
 | Run VRT when you changed the appearance of components | Run VRT when no visual changes were made |
+| Use `useState` from react                             | Don't use `useState` from storybook      |
 
 ## Writing Stories
 
@@ -342,6 +351,7 @@ export const Secondary = meta.story({
 - Expose available props as `meta.argTypes` with specific controls
 - Use `fn()` from `storybook/test` for callback props
 - Add `tags: ['component-test']` for stories that should run as tests
+- When importing components don't import from `'@marigold/components'` directly, causes issues - use relative path instead
 
 ### Reducing Boilerplate
 
