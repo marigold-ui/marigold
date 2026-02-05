@@ -190,6 +190,8 @@ export type Theme = {
     Underlay?: ComponentStyleFunction<string, string>;
     Calendar?: Record<
       | 'calendar'
+      | 'calendarContainer'
+      | 'calendarMonth'
       | 'calendarListboxButton'
       | 'calendarCell'
       | 'calendarControllers'

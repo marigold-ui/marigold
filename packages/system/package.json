@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@marigold/types": "workspace:*",
-    "@react-aria/i18n": "^3.12.14",
+    "@react-aria/i18n": "^3.12.15",
     "class-variance-authority": "0.7.1",
     "deepmerge": "4.3.1",
     "react-fast-compare": "3.2.2",
