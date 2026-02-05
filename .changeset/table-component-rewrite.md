@@ -68,6 +68,60 @@ The `emptyState` prop has been moved from the `Table` component to `Table.Body`.
 </Table>
 ```
 
+### Form Fields in Table Cells
+
+Inlining form fields directly in table cells is no longer supported. This approach broke accessibility patterns and keyboard navigation as it created conflicting focus management between the table's row selection and form inputs.
+
+**Migration Required:**
+
+```typescript
+// Before (old Table) - NOT ACCESSIBLE
+<Table>
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        <TextField />  {/* This breaks keyboard navigation */}
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+// After (new Table) - Use TableEditableCell
+<Table>
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.EditableCell>
+        {value => <TextField value={value} />}
+      </Table.EditableCell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### Column Width Values
+
+Tailwind CSS width classes are no longer supported on `Table.Column`. Column widths now use pixel values or CSS grid units, which provides better content-fitting behavior and more predictable layouts.
+
+**Migration Required:**
+
+```typescript
+// Before (old Table)
+<Table.Column width="w-32">Name</Table.Column>
+<Table.Column width="w-full">Description</Table.Column>
+
+// After (new Table)
+<Table.Column width="200px">Name</Table.Column>
+<Table.Column width="1fr">Description</Table.Column>  {/* Default: 1fr */}
+```
+
+By default, columns use `1fr` as their width, which distributes available space evenly. You can now specify exact pixel widths for columns that need fixed sizing, or use CSS grid units like `2fr` for proportional layouts.
+
 ## New Features
 
 The new `Table` component includes:
