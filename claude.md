@@ -139,6 +139,73 @@ const classNames = useClassNames({
 return <Button className={cn(classNames, fullWidth && 'w-full')} />;
 ```
 
+### Z-Index Management
+
+Z-index values are centralized and standardized across the design system to ensure consistent stacking order.
+
+**Architecture**:
+
+- Z-index **numeric values** are defined as CSS custom properties in `themes/theme-rui/src/theme.css`
+- Z-index **classes** are applied directly in component implementations (`packages/components/src/`), NOT in theme style files
+- This makes z-index theme-independent while keeping numeric values customizable
+
+**Z-Index Scale**:
+
+```css
+/* Content Layer (0-10) */
+--z-1: 1; /* Sticky headers (Table, Accordion, ListBox) */
+--z-10: 10; /* Focus states (Calendar) */
+
+/* Floating Layer (20-49) */
+--z-20: 20; /* Dropdowns (Multiselect, Select, ComboBox) */
+--z-30: 30; /* Popovers, Menus, Tooltips */
+
+/* Overlay Layer (50-79) */
+--z-50: 50; /* Modal overlays, Drawer overlays, Underlay */
+
+/* Notification Layer (80-99) */
+--z-80: 80; /* Toast notifications, ActionBar, Drawer close button */
+
+/* System Layer (100+) */
+--z-100: 100; /* Touch hitbox utility */
+```
+
+**Component Examples**:
+
+```typescript
+// ✅ Correct - z-index in component implementation
+const ToastProvider = () => (
+  <ToastRegion className={`${classNames.position} z-80 gap-2`}>
+    {children}
+  </ToastRegion>
+);
+
+// ✅ Correct - using cn() utility
+const Popover = () => (
+  <Popover className={cn('flex z-30', classNames)}>
+    {children}
+  </Popover>
+);
+
+// ❌ Wrong - z-index in theme style file
+export const Toast: ThemeComponent = {
+  toast: cva(['z-80', ...otherClasses]), // Don't do this
+};
+```
+
+**Rules**:
+
+- Always apply z-index classes in component implementations using Tailwind utilities (`z-1`, `z-30`, etc.)
+- Never add z-index classes to theme style files (`*.styles.ts`)
+- Use `cn()` utility to combine z-index with other classNames
+- Exception: Third-party libraries (like react-select) may require inline `zIndex` prop
+
+**Stacking Hierarchy**:
+
+- Toast/ActionBar (z-80) appear **above** modals (z-50)
+- Popovers/Menus/Tooltips (z-30) appear **below** modals (z-50)
+- This ensures notifications remain visible while modals properly block interactions
+
 ## Testing Patterns
 
 ### Story Play Functions
