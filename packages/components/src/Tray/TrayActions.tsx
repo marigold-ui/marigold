@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { cn, useClassNames } from '@marigold/system';
+import { cn } from '@marigold/system';
+import { useTrayContext } from './Context';
 
 // Props
 // ---------------
@@ -13,9 +14,7 @@ export interface TrayActionsProps {
 // Component
 // ---------------
 export const TrayActions = ({ children }: TrayActionsProps) => {
-  const classNames = useClassNames({
-    component: 'Tray',
-  });
+  const { classNames } = useTrayContext();
 
   return (
     <div className={cn('[grid-area:actions]', classNames.actions)}>

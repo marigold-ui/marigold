@@ -2,7 +2,8 @@ import { type ReactNode, useContext } from 'react';
 import type RAC from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
 import { useIsHidden } from '@react-aria/collections';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
+import { TrayContext } from './Context';
 import { TrayActions } from './TrayActions';
 import { TrayContent } from './TrayContent';
 import { TrayModal } from './TrayModal';
@@ -86,21 +87,33 @@ export const Tray = ({
   // If we are in a hidden tree, we still need to preserve our children.
   // This is important for components like Select that need to maintain state context.
   if (isHidden) {
-    return <>{children}</>;
+    return (
+      <TrayContext.Provider value={{ classNames }}>
+        {children}
+      </TrayContext.Provider>
+    );
   }
 
   return (
-    <TrayModal
-      open={openState}
-      dismissable={dismissable}
-      onOpenChange={onOpenChange}
-      keyboardDismissable={keyboardDismissable}
-    >
-      <Dialog {...props} className={classNames.container}>
-        <div className={classNames.dragHandle} />
-        {children}
-      </Dialog>
-    </TrayModal>
+    <TrayContext.Provider value={{ classNames }}>
+      <TrayModal
+        open={openState}
+        dismissable={dismissable}
+        onOpenChange={onOpenChange}
+        keyboardDismissable={keyboardDismissable}
+      >
+        <Dialog
+          {...props}
+          className={cn(
+            "group/tray [grid-template-areas:'drag'_'title'_'content'_'actions']",
+            classNames.container
+          )}
+        >
+          <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
+          {children}
+        </Dialog>
+      </TrayModal>
+    </TrayContext.Provider>
   );
 };
 

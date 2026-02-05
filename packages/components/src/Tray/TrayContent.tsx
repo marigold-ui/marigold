@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { cn, useClassNames } from '@marigold/system';
+import { cn } from '@marigold/system';
+import { useTrayContext } from './Context';
 
 // Props
 // ---------------
@@ -18,9 +19,7 @@ export interface TrayContentProps {
 // Component
 // ---------------
 export const TrayContent = ({ children, className }: TrayContentProps) => {
-  const classNames = useClassNames({
-    component: 'Tray',
-  });
+  const { classNames } = useTrayContext();
 
   return (
     <div

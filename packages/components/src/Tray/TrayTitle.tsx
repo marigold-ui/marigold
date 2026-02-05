@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Header, Heading } from 'react-aria-components';
-import { cn, useClassNames } from '@marigold/system';
+import { cn } from '@marigold/system';
+import { useTrayContext } from './Context';
 
 // Props
 // ---------------
@@ -14,9 +15,7 @@ export interface TrayTitleProps {
 // Component
 // ---------------
 export const TrayTitle = ({ children }: TrayTitleProps) => {
-  const classNames = useClassNames({
-    component: 'Tray',
-  });
+  const { classNames } = useTrayContext();
 
   return (
     <Header className={cn('[grid-area:title]', classNames.header)}>
