@@ -5,7 +5,11 @@ import { cn, useClassNames } from '@marigold/system';
 // ---------------
 export interface UnderlayProps extends Omit<
   RAC.ModalOverlayProps,
-  'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
+  | 'isOpen'
+  | 'isDismissable'
+  | 'isKeyboardDismissDisabled'
+  | 'className'
+  | 'render'
 > {
   variant?: string;
   size?: string;
