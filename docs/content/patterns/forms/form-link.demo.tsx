@@ -45,7 +45,7 @@ export default () => {
 
   return (
     <Stack space="group">
-      <Inline alignY="input" space="related">
+      <Inline alignY="input" space="related" noWrap>
         <Select
           label="Venue"
           selectedKey={selectedVenueId}

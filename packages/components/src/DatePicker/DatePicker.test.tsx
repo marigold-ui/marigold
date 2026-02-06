@@ -344,7 +344,7 @@ test('DatePicker supports width prop', () => {
 
   const picker = screen.getByTestId('picker');
 
-  expect(picker).toHaveClass('w-10');
+  expect(picker).toHaveClass('w-auto');
 });
 
 test('DatePicker supports data unavailable property', async () => {

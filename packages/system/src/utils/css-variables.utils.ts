@@ -12,6 +12,14 @@ import type { CSSProperties } from 'react';
 export const isScale = (value: string) => /^[0-9]+(\.[0-9]+)?$/.test(value);
 
 /**
+ * Checks if a value represents a fraction (e.g., "1/2", "2/3").
+ *
+ * @param value - The string to test for fraction format.
+ * @returns `true` if the string is a valid fraction, otherwise `false`.
+ */
+export const isFraction = (value: string) => /^[0-9]+\/[0-9]+$/.test(value);
+
+/**
  * Represents the numeric values found in the default Tailwind CSS spacing scale.
  *
  * Includes:
@@ -89,4 +97,42 @@ export const createSpacingVar = (name: string, value: string) => {
       ? `calc(var(--spacing) * ${value})`
       : `var(--spacing-${value})`,
   } as CSSProperties;
+};
+
+/**
+ * Generates a CSS custom property for width that uses either a calc expression or a
+ * fraction percentage.
+ *
+ * Supports:
+ * - Numeric scale (e.g., "4", "2.5"): Uses `--spacing` scale with calc() → `w-4`, `w-2.5`
+ * - Fractions (e.g., "1/2", "2/3"): Converts to percentage → `w-1/2`, `w-2/3`
+ * - CSS keywords (e.g., "fit", "min", "max"): Uses corresponding CSS values → `w-fit`, `w-min`, `w-max`
+ *
+ * @param name - The custom property name for width.
+ * @param value - Width value as a string (number, fraction, or keyword).
+ * @returns Object with the CSS custom property for width.
+ *
+ */
+export const createWidthVar = (name: string, value: string) => {
+  const widthKeywords: Record<string, string> = {
+    fit: 'fit-content',
+    min: 'min-content',
+    max: 'max-content',
+    full: '100%',
+    screen: '100vw',
+    auto: 'auto',
+  };
+
+  const resolvedValue =
+    widthKeywords[value] ||
+    (isScale(value) && `calc(var(--spacing) * ${value})`) ||
+    (isFraction(value) && `calc((${value.split('/').join(' / ')}) * 100%)`);
+
+  if (!resolvedValue) {
+    throw new Error(
+      `Unsupported width value: "${value}". Expected a keyword (${Object.keys(widthKeywords).join(', ')}), a scale number, or a fraction (e.g., "1/2").`
+    );
+  }
+
+  return { [`--${name}`]: resolvedValue } as CSSProperties;
 };
