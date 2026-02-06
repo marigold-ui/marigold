@@ -56,12 +56,18 @@ export const VenuesView = () => {
         <Table.Column isRowHeader>Name</Table.Column>
         <Table.Column>Type</Table.Column>
         <Table.Column>Address</Table.Column>
-        <Table.Column align="right">Capacity</Table.Column>
-        <Table.Column align="right">Price</Table.Column>
-        <Table.Column>Traits</Table.Column>
+        <Table.Column align="right" width={80}>
+          Capacity
+        </Table.Column>
+        <Table.Column align="right" maxWidth={180}>
+          Price
+        </Table.Column>
+        <Table.Column maxWidth={200}>Traits</Table.Column>
         <Table.Column>Amenities</Table.Column>
-        <Table.Column>Parking</Table.Column>
-        <Table.Column align="right">Rating</Table.Column>
+        <Table.Column maxWidth={200}>Parking</Table.Column>
+        <Table.Column align="right" width={60}>
+          Rating
+        </Table.Column>
       </Table.Header>
       <Table.Body emptyState={VenuesEmptyState}>
         {result.map(venue => (
@@ -108,7 +114,7 @@ export const VenuesView = () => {
               </Inline>
             </Table.Cell>
             <Table.Cell>
-              <Inline space="0.5" alignY="center">
+              <Inline space="0.5" alignY="center" alignX="right">
                 <NumericFormat value={venue.rating} minimumFractionDigits={1} />{' '}
                 <Star className="self-center" size={14} />
               </Inline>
