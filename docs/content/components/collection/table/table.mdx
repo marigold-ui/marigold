@@ -322,3 +322,86 @@ Mark the column that best identifies each row, typically a name, title, or ID co
 
 <StorybookHintMessage component={title} />
 <PropsTable component={title} />
+
+## Alternative components
+
+Choosing the right alternative to data tables is crucial for effectively displaying your data and enhancing user interaction. Depending on the type of data and the desired user experience, different components can offer different benefits. Here are some alternatives to data tables that might better suit your needs:
+
+<ul>
+  <li>
+    [SelectionList](/components/collection/selectlist): Displays a list of
+    interactive items, useful to create an actionable list of related items,
+    such as a list of users.
+  </li>
+  <li>
+    [Cards](/components/content/card): Helpful if the data needs to be displayed
+    with more visual hierarchy. Keep in mind that you can't compare data in this
+    way not as good as tables, because the eyes have to move much more.
+  </li>
+  <li>
+    [List](/components/content/list): When presenting a simple, linear
+    collection of items, often with less data per item. Easy to read and
+    navigate, especially for data that doesn’t require complex organization.
+  </li>
+  <li>
+    [Grid](/components/layout/grid): Layout in a table-like structure. This
+    gives you full control over the size of the columns and rows and allows you
+    to align them according to your needs.
+  </li>
+  <li>
+    [Columns](/components/layout/columns): Create columns in one row, useful if
+    you need to align content in a table-like way with fewer rows.
+  </li>
+</ul>
+
+Is there still not the right alternative for you please [get in touch](../../resources/get-in-touch) with us!
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Admin- & master mark',
+      href: '/patterns/admin-master-mark',
+      caption: 'Used for marking internal-only features.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M9 11l-6 6v3h9l3-3" />
+          <path d="M22 12l-4.6 4.6a2 2 0 01-2.8 0l-5.2-5.2a2 2 0 010-2.8L14 4" />
+        </svg>
+      ),
+    },
+    {
+      title: 'useAsyncListData',
+      href: '../hooks-and-utils/useAsyncListData',
+      caption: 'If you need to load async data into tables.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>
