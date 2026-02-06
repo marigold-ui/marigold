@@ -1,0 +1,232 @@
+---
+title: Autocomplete
+description: A searchfield that displays a dynamic list of suggestions.
+---
+
+The `<Autocomplete>` component is an input field that offers suggestions for the user's input as they type. These proposals are based on a predefined set of options.
+
+It also helps to reduce the effort and time required to input data and to avoid errors that can occur due to typos or misspellings. The suggestions are displayed in a combobox list, and the user can select one of the options or continue typing their own input.
+
+## Anatomy
+
+Autocomplete is made up of a form input field, label, and overlay of menu options. The label and description aren't required and may be visually hidden. The clear button is shown after typing starts.
+
+<ImageZoom
+  src="/autocomplete/autocomplete-anatomy.jpg"
+  alt="Anatomy of table"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+<ul>
+  <li>
+    <b>Label:</b> Descriptive text guiding the user on what information is
+    required in the input field.
+  </li>
+  <li>
+    <b>Input field:</b> A text box where users can enter or edit data.
+  </li>
+  <li>
+    <b>Help text:</b> Supplementary information displayed below the input field
+    to assist users in filling out the form correctly. Can also be an
+    errormessage.
+  </li>
+  <li>
+    <b>Clear button:</b> A button that allows users to quickly remove all text
+    from the input field.
+  </li>
+  <li>
+    <b>Dropdown arrow:</b> An icon indicating that more options are available;
+    clicking it reveals a list of selectable items.
+  </li>
+  <li>
+    <b>Overlay:</b> Hold a list of all possible options which can be selected.
+  </li>
+</ul>
+
+## Appearance
+
+<AppearanceDemo component={'Autocomplete'} />
+
+<AppearanceTable component={'Autocomplete'} />
+
+## Usage
+
+Use an autocomplete search field (also known as a predictive search) to help users find what they're looking for faster.
+An autocomplete search field displays suggestions as someone types into the field, just like the Google search bar.
+It is also suitable for fields where people know what they're looking for, e.g. country of birth, a particular event, or a particular city.
+
+<ComponentDemo name="autocomplete-basic" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>Use an `<Autocomplete>` instead of a long list.</DoDescription>
+  </Do>
+</GuidelineTiles>
+
+### Text label
+
+The label of the `<Autocomplete>` provides a clear and concise description of its purpose, making it easier for users to
+interact with the interface and understand it.
+Always display a label unless the `<Autocomplete>` is next to another component which already has a label.
+
+<GuidelineTiles>
+  <Do>
+    <DoFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/autocomplete/autocomplete-do-label.jpg"
+        alt="Use a clear and concise  text label to clarify the meaning."
+      />
+    </DoFigure>
+    <DoDescription>
+      Use a clear and concise text label to clarify the meaning.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/autocomplete/autocomplete-dont-label.jpg"
+        alt="Avoid using the Autocomplete without a label unless the Autocomplete is part of a complex scenario and its context is already set."
+      />
+    </DontFigure>
+    <DontDescription>
+      Avoid using the Autocomplete without a label unless the Autocomplete is
+      part of a complex scenario and its context is already set.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Item content
+
+Consider the width of the Autocomplete and keep the names of the options short and compact so that they fit. Long
+item
+names that occupy multiple lines are hard to perceive and should be avoided.
+
+<GuidelineTiles>
+  <Do>
+    <DoFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/autocomplete/autocomplete-do-content.jpg"
+        alt="Keep the description of the options as short as possible to improve readability."
+      />
+    </DoFigure>
+    <DoDescription>
+      Keep the description of the options as short as possible to improve
+      readability.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/autocomplete/autocomplete-dont-content.jpg"
+        alt="Avoid using lengthy option descriptions because the text can get truncated and users will find it difficult to read."
+      />
+    </DontFigure>
+    <DontDescription>
+      Avoid using lengthy option descriptions because the text can get truncated
+      and users will find it difficult to read.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Async Loading
+
+- Large datasets that would be inefficient to load all at once
+- API-backed search where results come from a server
+- Dynamic filtering where options change based on input
+
+The `useAsyncListData` hook provides built-in support for async loading, handling request states, cancellation, and filtering automatically. When implementing async loading.
+
+<ComponentDemo name="autocomplete-async" />
+
+### With sections
+
+When related options are present, organizing them into sections enhances clarity and usability. Grouping options provides additional context and helps users navigate choices more easily. This approach reduces complexity and allows for additional guidance when needed, ensuring a more intuitive experience.
+
+This can be achieved by wrapping the options in the `<Autocomplete.Section>` component. A header is required for each section, which is set using the `header` prop.
+
+<ComponentDemo name="autocomplete-section" />
+
+## Props
+
+<StorybookHintMessage component={'Autocomplete'} />
+
+### Autocomplete
+
+<AutoTypeTable path="Autocomplete" name="AutocompleteProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Combobox](/components/form/combobox): A text field that allows the user to
+    select values from a provided items array. Useful when there are mote than
+    15 options.
+  </li>
+  <li>
+    [Radio](/components/form/radio): Component which allows to select only one
+    option from a list. Use it if you have less than 5 options.
+  </li>
+  <li>
+    [Select](/components/form/select): A component with which you can choose
+    exactly one option from a list with predefined options.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form developement guide',
+      href: '../../patterns/form-implementation',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'useAsyncListData',
+      href: '/components/hooks-and-utils/useAsyncListData',
+      caption: 'Represents  usage of useAsyncListData .',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>

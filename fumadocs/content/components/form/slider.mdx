@@ -1,0 +1,159 @@
+---
+title: Slider
+description: Allows to make selections from a range of values.
+---
+
+The `<Slider>` is a form component that allows users to quickly select a value within a range. They should be used when the upper and lower bounds of the range are known and static.
+Sliders provide a visual indication of adjustable content, where the user can increase or decrease the value by moving the handle along a horizontal track.
+
+## Anatomy
+
+Sliders consist of a track element showing the range of available values, one or more thumbs showing the current values, an output displaying the current values textually, and an optional label.
+
+The thumbs can be dragged to allow a user to change their value. In addition, the track can be clicked to move the nearest thumb to that position.
+
+<ImageZoom
+  src="/slider/slider-anatomy.jpg"
+  alt="Anatomy of slider"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={'Slider'} />
+
+<AppearanceTable component={'Slider'} />
+
+## Usage
+
+A slider is useful when selecting a value or range within a continuous or evenly spaced numeric scale feels more natural through direct manipulation than by entering values manually. It is well suited for inputs where the approximate position on a scale matters more than exact precision, such as setting volume, adjusting brightness, or filtering results within a price or date range. By making the scale visible and interactive, a slider allows users to quickly explore and adjust values while maintaining a clear sense of their relative position.
+
+### Ranges
+
+Use the range feature of a slider when users need to select both a minimum and maximum value within the same scale, such as defining a price range, date span, or acceptable measurement limits. This approach works best when the range boundaries are equally important and the relationship between them is immediately clear in a single, continuous control.
+
+When multiple thumbs are rendered, each thumb should have an `aria-label`, which is provided via the `thumbLabels` prop.
+
+<ComponentDemo name="slider-range" />
+
+### Scale and Granularity
+
+Choose a scale that aligns with the way users think about the values they are adjusting. Always define a clear starting point and ending point (`), and select step intervals that feel natural within that range.
+
+If the user needs to work with very large value spans or make fine-tuned adjustments, a slider is not the best choice. In those cases, prefer using a different input method such as a [number field](/components/form/number-field).
+
+<ComponentDemo name="slider-granularity" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Use a slider for selecting a value with clear, evenly spaced steps.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Use a slider for entering precise values like 8,947.13.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### Value formatting
+
+Always format the slider value using an appropriate number format to improve clarity and ensure the displayed information is meaningful. This helps users immediately understand the context of what they are selecting, supports decision-making, and reduces potential confusion.
+
+You can define the format using the `formatOptions` prop. It supports all options available through [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat), and will automatically localize the number format based on the user's system settings.
+
+<ComponentDemo name="slider-format" />
+
+### Min and Max Values
+
+Set meaningful and realistic minimum and maximum values that reflect the task the user is trying to complete. These boundaries help users stay within a useful range and avoid invalid input.
+
+By default, the slider values reflect percentages between 0 and 100. A different scale can be used by using the `minValue` and `maxValue` props.
+
+<ComponentDemo name="slider-min-max" />
+
+### Usage in Forms
+
+The `name` attribute determines how the slider's value is submitted with the form. For a single-thumb slider, name accepts a string and will submit a single numeric value. For a two-thumb slider, name accepts a string tuple, allowing both the minimum and maximum values to be submitted as separate fields. This ensures that the form captures the full range selection without additional processing.
+
+<ComponentDemo name="slider-form" />
+
+## Props
+
+<StorybookHintMessage component={'Slider'} />
+
+### Slider
+
+<AutoTypeTable path="Slider" name="SliderProps" />
+
+## Alternative components
+
+There are alternative UI elements that can be used in place of sliders, depending on the specific use case and design goals. Some alternatives include:
+
+<ul>
+  <li>
+    [NumberField](/components/form/number-field): Instead of using a slider,
+    users can directly input the desired value into a numeric input field. This
+    approach provides precise control and is particularly useful when users need
+    to input specific or exact values.
+  </li>
+  <li>
+    [Combobox](/components/form/combobox): Can be used to present a predefined
+    set of options from which users can choose. This can be a suitable
+    alternative when there is a limited range of choices or discrete values to
+    select from.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form developement guide',
+      href: '../../patterns/form-implementation',
+      caption:
+        'This page should introduce you on how to build forms with Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Intl.NumberFormat',
+      href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat',
+      caption: 'Enables language-sensitive number formatting.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

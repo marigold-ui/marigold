@@ -10,7 +10,7 @@ type StringNumericLiteral =
   | '-Infinity'
   | '+Infinity';
 
-interface NumericFormatProps extends NumerFormatterOptions {
+export interface NumericFormatProps extends NumerFormatterOptions {
   /**
    * Value to be formatted.
    */

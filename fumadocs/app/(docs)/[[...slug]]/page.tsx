@@ -3,11 +3,14 @@ import { getMDXComponents } from '@/mdx-components';
 import {
   AlignmentsX,
   AlignmentsY,
+  AppearanceDemo,
+  AppearanceTable,
   BorderRadius,
   Center,
   ColorPalettes,
   ColorTokenTable,
   Columns,
+  ComponentDemo,
   Do,
   DoDescription,
   DoFigure,
@@ -25,6 +28,7 @@ import {
   Spacing,
   SpacingTokensTable,
   Stack,
+  StorybookHintMessage,
   TeaserList,
   TextAlign,
 } from '@/ui';
@@ -98,6 +102,11 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             TeaserList,
 
             FeedbackComponentsTable,
+
+            AppearanceDemo,
+            AppearanceTable,
+            ComponentDemo,
+            StorybookHintMessage,
           })}
         />
         {lastModified && (

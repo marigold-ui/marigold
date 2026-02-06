@@ -1,0 +1,60 @@
+---
+title: Inset
+description: Adds space around its children.
+---
+
+The `<Inset>` component is a layout component that acts as a container which adds spacing around its children.
+
+## Usage
+
+The component should be used whenever you need to add some whitespace around elements. For example, around a [`<Form>`](/form/form) or inside a [`<Card>`](/content/card/).
+
+### Equal spacing
+
+In order to add equal spacing to all sides use the `space` property like shown below. You can see that the rectangle has a distance of `2rem` to the parent div.
+
+<ComponentDemo name="inset-equal" />
+
+### Horizontal and vertical spacing
+
+A common use case is to give children of a content component some space, you can do this for example with wrapping an `<Inset>` around the card content like shown below.
+
+To set only horizontal or vertical spacing, or to define different values for each, use the `spaceX` property for horizontal spacing and the `spaceY` property for vertical spacing.
+
+<ComponentDemo name="inset-hv" />
+
+## Props
+
+<StorybookHintMessage component={'Inset'} />
+
+### Inset
+
+<AutoTypeTable path="Inset" name="InsetProps" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

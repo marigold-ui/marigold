@@ -5,7 +5,12 @@ import type { AriaRegionProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface StackProps extends SpaceProp<SpacingTokens>, AriaRegionProps {
+export interface StackProps extends AriaRegionProps {
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
   /**
    * Children of the component.
    */

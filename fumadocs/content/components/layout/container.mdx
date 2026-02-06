@@ -1,0 +1,80 @@
+---
+title: Container
+description: Keep content at an optimal reading width.
+---
+
+The `<Container>` component is designed to limit the width of its content, ensuring an optimal reading experience. By constraining the content width, it helps maintain readability and prevents text from becoming difficult to follow on wide screens.
+
+## Usage
+
+The `<Container>` component is ideal for situations where you need to limit the width of content to ensure better readability and layout consistency. Here are some common use cases where the `<Container>` component is particularly useful:
+
+- **Text-centric pages**: Pages that contain mostly text, such as FAQ pages, user guides, or terms of service, benefit from the `<Container>` component, as it ensures the text is easy to follow and comfortable to read.
+- **Hero sections**: Use the `<Container>` for hero banners with headlines and call-to-action buttons. Limiting the width keeps the focus on the main message, avoiding the visual dispersion that comes with overly wide text blocks.
+- **Centering content**: The `<Container>` is also useful when you need to center content on the page while ensuring it doesn't stretch too far, providing a consistent and polished appearance.
+
+To limit text length, use the `<Text>` and `<Headline>` components inside the `<Container>`. This will automatically adjust the content length to make it easier to read.
+
+<ComponentDemo name="container-appearance" />
+
+### Dynamic width
+
+The width of the `<Container>` is not fixed. It adjusts based on the font size to ensure the optimal reading length, which is determined by the number of characters per line. This results in the `<Container>` varying in size depending on its content.
+
+<ComponentDemo name="container-dynamic-width" />
+
+### Content length
+
+The length of the content within the `<Container>` can be adjusted using the `contentLength` property. This is useful when you want to customize the reading experience based on the type of content.
+
+For example, you might want to shorten the line length for smaller text blocks like quotes or testimonials, while allowing more characters per line for larger bodies of text, such as articles or blog posts. Adjusting `contentLength` helps to maintain readability and improve the overall user experience depending on the context.
+
+<ComponentDemo name="container-content-length" />
+
+### Complex layout
+
+The `<Container>` component can be combined with other layout components, such as `<Column>`, to create more complex and cohesive designs. This approach allows you to build immersive layouts while ensuring that text blocks remain readable.
+
+<ComponentDemo name="container-complex" />
+
+### Alignment
+
+Using the `align` and `alignItems` prop, the `<Container>` component lets you align text and other elements to the left, center, or right, giving you flexibility in arranging content. This is helpful when you need to make some parts of the layout stand out, like centering a hero section. Good alignment makes the page look organized and improves how users experience the site.
+
+<ComponentDemo name="container-alignment" />
+
+## Props
+
+<StorybookHintMessage component={'Container'} />
+
+### Container
+
+<AutoTypeTable path="Container" name="ContainerProps" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building layouts',
+      href: '../../foundations/layouts',
+      caption: 'Learn how to build layouts.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

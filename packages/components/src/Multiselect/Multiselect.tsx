@@ -25,10 +25,15 @@ import { Label } from '../Label/Label';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { X } from '../icons/X';
 
-interface MultipleSelectProps extends Pick<
+export interface MultipleSelectProps extends Pick<
   FieldBaseProps<'label'>,
-  'width' | 'size' | 'variant' | 'label' | 'description' | 'errorMessage'
+  'size' | 'variant' | 'label' | 'description' | 'errorMessage'
 > {
+  /**
+   * Sets the width of the field.
+   * @remarks `WidthProp`
+   */
+  width?: FieldBaseProps<'label'>['width'];
   /**
    * If the select should be disabled.
    *

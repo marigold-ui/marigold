@@ -1,0 +1,24 @@
+{
+  "pages": [
+    "---Application---",
+    "...application",
+    "---Layout---",
+    "...layout",
+    "---Actions---",
+    "...actions",
+    "---Form---",
+    "...form",
+    "---Collection---",
+    "...collection",
+    "---Navigation---",
+    "...navigation",
+    "---Overlay---",
+    "...overlay",
+    "---Content---",
+    "...content",
+    "---Formatters---",
+    "...formatters",
+    "---Hooks and Utils---",
+    "...hooks-and-utils"
+  ]
+}
