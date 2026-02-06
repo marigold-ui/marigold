@@ -4,7 +4,7 @@ caption: Display and interact with structured data in rows and columns.
 badge: updated
 ---
 
-The Table component displays structured data in a grid layout with rows and columns. It provides features for selecting, sorting, editing, and reordering data, making it ideal for applications that need to present and manipulate tabular information.
+The `<Table>` component displays structured data in a grid layout with rows and columns. It provides features for selecting, sorting, editing, and reordering data, making it ideal for applications that need to present and manipulate tabular information.
 
 Use tables when you need to display datasets where users benefit from seeing multiple records at once, comparing values across columns, or performing bulk operations on selected items. Tables work well for admin interfaces, data management screens, and dashboards where structured information needs to be organized and actionable.
 
@@ -156,6 +156,27 @@ Using too many visible actions at once can overwhelm users, make it hard to iden
 <ComponentDemo file="./table-action-menu.demo.tsx" />
 
 If you cannot place all row actions at the end of the row, be mindful of clarity and consistency. Actions should remain visually distinct from content and navigation, and be grouped where possible to support scannability. Apply consistent styling to each action and avoid placing them in unexpected locations, as this can increase cognitive load and make it harder for users to understand what they can do in each row.
+
+<GuidelineTiles>
+  <Do>
+    <Do.Description>
+      {/* prettier-ignore */}
+      <ul>
+        <li>Place row actions at the end of the row for consistent scannability.</li>
+        <li>Limit visible actions to 1–3 per row and group the rest in an ActionMenu.</li>
+      </ul>
+    </Do.Description>
+  </Do>
+  <Dont>
+    <Dont.Description>
+      {/* prettier-ignore */}
+      <ul>
+        <li>Don't display too many actions per row, as it creates visual clutter and overwhelms users.</li>
+        <li>Don't use icon-only buttons when the icon's meaning is ambiguous without a label.</li>
+      </ul>
+    </Dont.Description>
+  </Dont>
+</GuidelineTiles>
 
 ### Sorting columns
 
