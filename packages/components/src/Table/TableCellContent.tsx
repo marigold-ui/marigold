@@ -77,7 +77,7 @@ export const TableCellContent = ({
         textAlign[align || columnAlign || 'left'],
         verticalAlign[vAlign],
         overflow === 'truncate' ? 'truncate' : 'wrap-break-word',
-        selectable && 'cursor-text outline-none select-text',
+        selectable && 'cursor-text select-text',
         className
       )}
       tabIndex={selectable ? -1 : undefined}
