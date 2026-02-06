@@ -21,10 +21,12 @@ export type InsetProps =
       space?: never;
       /**
        * Horizontal alignment for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+       * @remarks `PaddingSpacePropX<Tokens>`
        */
       spaceX?: PaddingSpacePropX['spaceX'];
       /**
        * Vertical alignment for the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+       * @remarks `PaddingSpacePropY<Tokens>`
        */
       spaceY?: PaddingSpacePropY['spaceY'];
     })
@@ -32,6 +34,7 @@ export type InsetProps =
       children: ReactNode;
       /**
        * The space between the children. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+       * @remarks `PaddingSpaceProp<Tokens>`
        */
       space?: PaddingSpaceProp['space'];
       spaceX?: never;
