@@ -50,10 +50,23 @@ export type Props<T> = T extends ConfigSchema
   ? ConfigVariants<T> & ClassProp
   : ClassProp;
 
+/**
+ * Typed version of CVA's cva function using Marigold's type parameters.
+ * CVA restricts its generic parameters to internal use, so this interface
+ * describes its runtime behavior to bridge our generic wrapper.
+ */
+interface CreateStyles {
+  <T extends ConfigSchema>(config: CvaConfig<T>): (props?: Props<T>) => string;
+}
+
+const createStyles = _cva as unknown as CreateStyles;
+
 // Updated CVA wrapper with new signature
 export const cva = <T extends ConfigSchema>(config?: CvaConfig<T>) => {
+  const styleFn = config ? createStyles(config) : undefined;
+
   function styles(props?: Props<T>) {
-    return twMerge(_cva(config as any)(props as any));
+    return twMerge(styleFn ? styleFn(props) : '');
   }
   styles.variants = config?.variants;
 
