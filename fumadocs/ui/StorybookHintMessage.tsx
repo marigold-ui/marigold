@@ -15,7 +15,7 @@ export const StorybookHintMessage = ({ component }: { component: string }) => {
   };
 
   return (
-    <Card title="Storybook Hint Message">
+    <Card title="">
       <Aside space={4}>
         <div className="flex h-full items-center">
           <StorybookIcon />
