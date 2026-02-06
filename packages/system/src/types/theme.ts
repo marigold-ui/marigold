@@ -154,7 +154,10 @@ export type Theme = {
       | 'dragPreview'
       | 'dragPreviewCounter'
       | 'dropIndicator'
-      | 'editablePopover',
+      | 'editablePopover'
+      | 'editTrigger'
+      | 'editCancel'
+      | 'editSave',
       ComponentStyleFunction<string, string>
     >;
     LegacyTable?: Record<

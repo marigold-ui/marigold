@@ -5,7 +5,7 @@ import type {
   RefObject,
 } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { Cell, Popover, useTableOptions } from 'react-aria-components';
+import { Button, Cell, Popover, useTableOptions } from 'react-aria-components';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import {
@@ -14,7 +14,6 @@ import {
   nodeContains,
 } from '@react-aria/utils';
 import { textAlign, useSmallScreen } from '@marigold/system';
-import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
 import { Check } from '../icons/Check';
@@ -196,8 +195,7 @@ export const TableEditableCell = ({
 
   const cancelButton = (
     <Button
-      variant="ghost"
-      size="icon"
+      className={classNames.editCancel}
       onPress={handleCancel}
       aria-label={isSmallScreen ? undefined : stringFormatter.format('cancel')}
     >
@@ -207,10 +205,9 @@ export const TableEditableCell = ({
 
   const saveButton = (
     <Button
-      variant="ghost"
-      size="icon"
+      className={classNames.editSave}
       type="submit"
-      loading={saving}
+      isPending={saving}
       aria-label={isSmallScreen ? undefined : stringFormatter.format('save')}
     >
       {isSmallScreen ? stringFormatter.format('save') : <Check size={16} />}
@@ -234,8 +231,7 @@ export const TableEditableCell = ({
             {!disabled && (
               <div className="shrink-0 opacity-0 not-[@media_((hover:_hover)_and_(pointer:_fine))]:opacity-100 [.group\/editable-cell:has(:focus-visible)_&]:opacity-100 [[role=row]:hover_&]:opacity-100">
                 <Button
-                  variant="ghost"
-                  size="small"
+                  className={classNames.editTrigger}
                   aria-label={stringFormatter.format('edit')}
                   onPress={() => setOpen(true)}
                 >
