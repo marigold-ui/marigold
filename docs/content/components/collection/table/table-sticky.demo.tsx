@@ -6,7 +6,7 @@ export default () => {
     <Scrollable height="300px">
       <Table aria-label="Long scrollable table">
         <Table.Header sticky>
-          <Table.Column isRowHeader>Venue</Table.Column>
+          <Table.Column rowHeader>Venue</Table.Column>
           <Table.Column>City</Table.Column>
           <Table.Column>Capacity</Table.Column>
         </Table.Header>

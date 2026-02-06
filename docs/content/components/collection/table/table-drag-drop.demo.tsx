@@ -29,7 +29,7 @@ export default () => {
       dragAndDropHooks={dragAndDropHooks}
     >
       <Table.Header>
-        <Table.Column isRowHeader>Venue</Table.Column>
+        <Table.Column rowHeader>Venue</Table.Column>
         <Table.Column>City</Table.Column>
       </Table.Header>
       <Table.Body items={list.items}>

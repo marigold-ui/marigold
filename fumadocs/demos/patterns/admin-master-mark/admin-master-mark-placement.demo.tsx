@@ -69,7 +69,7 @@ export default () => (
     <Tabs.TabPanel id="events">
       <Table aria-label="Event List">
         <Table.Header>
-          <Table.Column isRowHeader>Name</Table.Column>
+          <Table.Column rowHeader>Name</Table.Column>
           <Table.Column>Date</Table.Column>
           <Table.Column>Location</Table.Column>
           <Table.Column>Status</Table.Column>

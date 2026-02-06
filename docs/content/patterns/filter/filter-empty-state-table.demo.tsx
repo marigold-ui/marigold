@@ -19,7 +19,7 @@ const Empty = () => (
 export default () => (
   <Table aria-label="Empty table">
     <Table.Header>
-      <Table.Column isRowHeader>Name</Table.Column>
+      <Table.Column rowHeader>Name</Table.Column>
       <Table.Column>Type</Table.Column>
       <Table.Column>Address</Table.Column>
       <Table.Column>Capacity</Table.Column>

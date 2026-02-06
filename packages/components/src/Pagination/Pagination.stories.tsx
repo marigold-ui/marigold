@@ -222,7 +222,7 @@ export const WithTable = meta.story({
         <Table aria-label="label" {...args}>
           <Table.Header>
             <Table.Column>ID</Table.Column>
-            <Table.Column isRowHeader>Name</Table.Column>
+            <Table.Column rowHeader>Name</Table.Column>
             <Table.Column>Email</Table.Column>
             <Table.Column>Role</Table.Column>
             <Table.Column>Status</Table.Column>

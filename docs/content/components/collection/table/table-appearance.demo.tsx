@@ -8,28 +8,28 @@ const columns = [
     key: 'name',
     width: '1fr',
     align: 'left',
-    isRowHeader: true,
+    rowHeader: true,
   },
   {
     name: 'Type',
     key: 'type',
     width: '1fr',
     align: 'left',
-    isRowHeader: false,
+    rowHeader: false,
   },
   {
     name: 'City',
     key: 'city',
     width: '1fr',
     align: 'left',
-    isRowHeader: false,
+    rowHeader: false,
   },
   {
     name: 'Capacity',
     key: 'capacity',
     width: 100,
     align: 'right',
-    isRowHeader: false,
+    rowHeader: false,
   },
 ] as const;
 
@@ -40,7 +40,7 @@ export default (props: TableProps) => (
         <Table.Column
           width={column.width}
           align={column.align}
-          isRowHeader={column.isRowHeader}
+          rowHeader={column.rowHeader}
         >
           {column.name}
         </Table.Column>

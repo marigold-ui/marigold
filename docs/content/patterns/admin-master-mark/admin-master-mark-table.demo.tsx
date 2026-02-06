@@ -3,7 +3,7 @@ import { Table } from '@marigold/components';
 export default () => (
   <Table aria-label="Event List">
     <Table.Header>
-      <Table.Column isRowHeader>Event Name</Table.Column>
+      <Table.Column rowHeader>Event Name</Table.Column>
       <Table.Column>Date</Table.Column>
       <Table.Column>Status</Table.Column>
     </Table.Header>

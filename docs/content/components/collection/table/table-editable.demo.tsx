@@ -40,7 +40,7 @@ export default () => {
   return (
     <Table aria-label="Editable venue data">
       <Table.Header>
-        <Table.Column isRowHeader>Venue</Table.Column>
+        <Table.Column rowHeader>Venue</Table.Column>
         <Table.Column>Amenities</Table.Column>
         <Table.Column width={100}>Rating</Table.Column>
       </Table.Header>

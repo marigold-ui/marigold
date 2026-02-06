@@ -4,7 +4,7 @@ import { Table, Text } from '@marigold/components';
 export default () => (
   <Table aria-label="Select venues" selectionMode="multiple">
     <Table.Header>
-      <Table.Column isRowHeader>Venue</Table.Column>
+      <Table.Column rowHeader>Venue</Table.Column>
       <Table.Column>Type</Table.Column>
       <Table.Column>City</Table.Column>
     </Table.Header>

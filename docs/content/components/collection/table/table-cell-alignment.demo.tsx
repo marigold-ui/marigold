@@ -16,7 +16,7 @@ export default () => {
   return (
     <Table aria-label="Venue bookings" verticalAlign="top">
       <Table.Header>
-        <Table.Column isRowHeader width={220}>
+        <Table.Column rowHeader width={220}>
           Venue
         </Table.Column>
         <Table.Column align="right">Nights</Table.Column>

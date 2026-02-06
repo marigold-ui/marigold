@@ -22,9 +22,14 @@ const ensureWidth = (
 
 // Props
 // ---------------
-type RemovedProps = 'className' | 'style' | 'children';
+type RemovedProps = 'className' | 'style' | 'children' | 'isRowHeader';
 
 export interface TableColumnProps extends Omit<RAC.ColumnProps, RemovedProps> {
+  /**
+   * Whether the column is a row header and should be announced by assistive technology during navigation.
+   * At least one column needs to be set as row header.
+   */
+  rowHeader?: RAC.ColumnProps['isRowHeader'];
   /**
    * The column header label.
    */
@@ -50,6 +55,7 @@ const TableColumn = ({
   align = 'left',
   width,
   minWidth,
+  rowHeader,
   ...props
 }: TableColumnProps) => {
   const { classNames } = useTableContext();
@@ -60,6 +66,7 @@ const TableColumn = ({
       width={width}
       // Enforces width to be applied if its static (non-fraction)
       minWidth={ensureWidth(width, minWidth)}
+      isRowHeader={rowHeader}
       // @ts-expect-error will be passed down
       align={align}
       {...props}

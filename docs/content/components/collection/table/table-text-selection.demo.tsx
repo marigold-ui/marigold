@@ -20,7 +20,7 @@ export default () => {
         allowTextSelection={allowTextSelection}
       >
         <Table.Header>
-          <Table.Column isRowHeader>Venue</Table.Column>
+          <Table.Column rowHeader>Venue</Table.Column>
           <Table.Column>Type</Table.Column>
         </Table.Header>
         <Table.Body>

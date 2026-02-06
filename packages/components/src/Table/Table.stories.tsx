@@ -151,7 +151,7 @@ export const Basic = meta.story({
   render: args => (
     <Table aria-label="label" {...args}>
       <Table.Header>
-        <Table.Column isRowHeader>Name</Table.Column>
+        <Table.Column rowHeader>Name</Table.Column>
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
@@ -220,10 +220,10 @@ export const DynamicData = meta.story({
   },
   render: args => {
     const columns = [
-      { name: 'Name', id: 'name', isRowHeader: true },
-      { name: 'Firstname', id: 'firstname', isRowHeader: false },
-      { name: 'House', id: 'house', isRowHeader: false },
-      { name: 'Year of birth', id: 'year', isRowHeader: false },
+      { name: 'Name', id: 'name', rowHeader: true },
+      { name: 'Firstname', id: 'firstname', rowHeader: false },
+      { name: 'House', id: 'house', rowHeader: false },
+      { name: 'Year of birth', id: 'year', rowHeader: false },
     ] as const;
 
     const rows = [
@@ -270,7 +270,7 @@ export const DynamicData = meta.story({
         >
           <Table.Header columns={columns}>
             {column => (
-              <Table.Column isRowHeader={column.isRowHeader} id={column.id}>
+              <Table.Column rowHeader={column.rowHeader} id={column.id}>
                 {column.name}
               </Table.Column>
             )}
@@ -335,7 +335,7 @@ export const WidthsAndOverflow = meta.story({
             overflow={overflow}
           >
             <Table.Header>
-              <Table.Column width={40} isRowHeader>
+              <Table.Column width={40} rowHeader>
                 ID
               </Table.Column>
               <Table.Column minWidth={100}>Name</Table.Column>
@@ -433,7 +433,7 @@ export const Empty = meta.story({
   render: args => (
     <Table aria-label="Example table for nested columns" {...args}>
       <Table.Header>
-        <Table.Column isRowHeader>First Name</Table.Column>
+        <Table.Column rowHeader>First Name</Table.Column>
         <Table.Column>Last Name</Table.Column>
         <Table.Column>Age</Table.Column>
         <Table.Column>Birthday</Table.Column>
@@ -476,14 +476,14 @@ export const Sorting = meta.story({
   tags: ['component-test'],
   render: args => {
     const columns = [
-      { name: 'Name', id: 'name', align: 'left', isRowHeader: true },
-      { name: 'Height', id: 'height', align: 'right', isRowHeader: false },
-      { name: 'Mass', id: 'mass', align: 'right', isRowHeader: false },
+      { name: 'Name', id: 'name', align: 'left', rowHeader: true },
+      { name: 'Height', id: 'height', align: 'right', rowHeader: false },
+      { name: 'Mass', id: 'mass', align: 'right', rowHeader: false },
       {
         name: 'Birth Year',
         id: 'birth_year',
         align: 'left',
-        isRowHeader: false,
+        rowHeader: false,
       },
     ] as const;
 
@@ -591,7 +591,7 @@ export const Sorting = meta.story({
           <Table.Header columns={columns}>
             {column => (
               <Table.Column
-                isRowHeader={column.isRowHeader}
+                rowHeader={column.rowHeader}
                 id={column.id}
                 align={column.align}
                 allowsSorting
@@ -673,7 +673,7 @@ export const WithActions = meta.story({
   render: args => (
     <Table aria-label="Table with actions" {...args}>
       <Table.Header>
-        <Table.Column isRowHeader>Name</Table.Column>
+        <Table.Column rowHeader>Name</Table.Column>
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
@@ -797,7 +797,7 @@ export const ScrollableAndSticky = meta.story({
         <Scrollable height="400px">
           <Table aria-label="Todos Table" selectionMode="multiple" {...args}>
             <Table.Header sticky>
-              <Table.Column isRowHeader>ID</Table.Column>
+              <Table.Column rowHeader>ID</Table.Column>
               <Table.Column>Title</Table.Column>
               <Table.Column>User</Table.Column>
               <Table.Column>Completed</Table.Column>
@@ -848,7 +848,7 @@ export const Links = meta.story({
     return (
       <Table aria-label="Table with links" {...args}>
         <Table.Header>
-          <Table.Column isRowHeader>Name</Table.Column>
+          <Table.Column rowHeader>Name</Table.Column>
           <Table.Column>Description</Table.Column>
           <Table.Column>URL</Table.Column>
         </Table.Header>
@@ -939,7 +939,7 @@ export const DragAndDrop = meta.story({
         {...args}
       >
         <Table.Header>
-          <Table.Column isRowHeader>Name</Table.Column>
+          <Table.Column rowHeader>Name</Table.Column>
           <Table.Column>Email</Table.Column>
           <Table.Column>Location</Table.Column>
         </Table.Header>
@@ -1009,7 +1009,7 @@ export const AllowTextSelection = meta.story({
           allowTextSelection={allowTextSelection}
         >
           <Table.Header>
-            <Table.Column isRowHeader>Name</Table.Column>
+            <Table.Column rowHeader>Name</Table.Column>
             <Table.Column>Email</Table.Column>
             <Table.Column>Location</Table.Column>
             <Table.Column>Status</Table.Column>
@@ -1099,7 +1099,7 @@ export const EditableCell = meta.story({
       <I18nProvider locale="en">
         <Table aria-label="Editable table" {...args}>
           <Table.Header>
-            <Table.Column isRowHeader>Name</Table.Column>
+            <Table.Column rowHeader>Name</Table.Column>
             <Table.Column>Email</Table.Column>
             <Table.Column>Location</Table.Column>
             <Table.Column>Status</Table.Column>
@@ -1198,11 +1198,11 @@ export const DynamicColumnsAndRows = meta.story({
   tags: ['component-test'],
   render: args => {
     const columns = [
-      { name: 'Name', id: 'name', isRowHeader: true },
-      { name: 'Email', id: 'email', isRowHeader: false },
-      { name: 'Handle', id: 'handle', isRowHeader: false },
-      { name: 'Location', id: 'location', isRowHeader: false },
-      { name: 'Status', id: 'status', isRowHeader: false },
+      { name: 'Name', id: 'name', rowHeader: true },
+      { name: 'Email', id: 'email', rowHeader: false },
+      { name: 'Handle', id: 'handle', rowHeader: false },
+      { name: 'Location', id: 'location', rowHeader: false },
+      { name: 'Status', id: 'status', rowHeader: false },
     ] as const;
 
     const [showColumns, setShowColumns] = useState([
@@ -1242,7 +1242,7 @@ export const DynamicColumnsAndRows = meta.story({
         <Table aria-label="Users" {...args}>
           <Table.Header columns={visibleColumns}>
             {column => (
-              <Table.Column isRowHeader={column.isRowHeader} id={column.id}>
+              <Table.Column rowHeader={column.rowHeader} id={column.id}>
                 {column.name}
               </Table.Column>
             )}
@@ -1377,7 +1377,7 @@ export const CellOverrideTableTruncate = meta.story({
   render: args => (
     <Table aria-label="Table with truncate default" {...args}>
       <Table.Header>
-        <Table.Column isRowHeader>Inherit Truncate</Table.Column>
+        <Table.Column rowHeader>Inherit Truncate</Table.Column>
         <Table.Column>Override to Wrap</Table.Column>
       </Table.Header>
       <Table.Body>
@@ -1413,7 +1413,7 @@ export const VerticalAlignment = meta.story({
   render: args => (
     <Table aria-label="Table with vertical alignment" {...args}>
       <Table.Header>
-        <Table.Column isRowHeader>Item</Table.Column>
+        <Table.Column rowHeader>Item</Table.Column>
         <Table.Column>Description</Table.Column>
       </Table.Header>
       <Table.Body>
