@@ -1396,7 +1396,6 @@ export const CellOverrideTableTruncate = meta.story({
     await step('Verify first cell uses table default (truncate)', async () => {
       const cell = canvas.getByText(/truncate behavior/);
       expect(cell).toHaveClass('truncate');
-      expect(cell).toHaveClass('max-w-0');
     });
 
     await step('Verify second cell overrides to wrap', async () => {

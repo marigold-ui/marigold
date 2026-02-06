@@ -77,7 +77,7 @@ export const TableCellContent = ({
       className={cn(
         textAlign[align || columnAlign || 'left'],
         verticalAlign[vAlign],
-        overflow === 'truncate' ? 'max-w-0 truncate' : 'wrap-break-word',
+        overflow === 'truncate' ? 'truncate' : 'wrap-break-word',
         selectable && 'cursor-text outline-none',
         className
       )}
