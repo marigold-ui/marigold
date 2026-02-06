@@ -124,7 +124,7 @@ const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
   const selectedKeys = [...state.selectionManager.selectedKeys];
 
   if (selectedKeys.length === 0) {
-    return <span className={classNames.emptyState}>{placeholder}</span>;
+    return <span>{placeholder}</span>;
   }
 
   const selectedItems: { id: Key; textValue: string }[] = [];
