@@ -42,7 +42,7 @@ const meta = preview.meta({
       control: {
         type: 'select',
       },
-      options: ['default', 'muted', 'grid'],
+      options: ['default', 'muted', 'grid', 'master', 'admin'],
       description: 'variant for the table',
     },
     size: {
