@@ -9,11 +9,11 @@ import {
 
 export default () => {
   const columns = [
-    { name: 'Name', key: 'name' },
-    { name: 'Gender', key: 'gender' },
-    { name: 'Skin Color', key: 'skin_color' },
-    { name: 'height', key: 'height' },
-    { name: 'Weight', key: 'mass' },
+    { id: 1, name: 'Name', key: 'name' },
+    { id: 2, name: 'Gender', key: 'gender' },
+    { id: 3, name: 'Skin Color', key: 'skin_color' },
+    { id: 4, name: 'height', key: 'height' },
+    { id: 5, name: 'Weight', key: 'mass' },
   ];
 
   const [result, setResult] = useState<{ [key: string]: string }[] | null>(
@@ -59,14 +59,14 @@ export default () => {
         )}
       </Autocomplete>
       {result === null ? null : result.length > 0 ? (
-        <Table aria-label="Character results" selectionMode="none" stretch>
+        <Table aria-label="Character results" selectionMode="none">
           <Table.Header columns={columns}>
             {column => <Table.Column>{(column as any).name}</Table.Column>}
           </Table.Header>
           <Table.Body items={result}>
             {item => (
-              <Table.Row key={(item as any).name}>
-                {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+              <Table.Row columns={columns}>
+                {column => <Table.Cell>{item[column.id]}</Table.Cell>}
               </Table.Row>
             )}
           </Table.Body>

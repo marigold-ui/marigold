@@ -144,6 +144,23 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Table?: Record<
+      | 'table'
+      | 'head'
+      | 'column'
+      | 'body'
+      | 'row'
+      | 'cell'
+      | 'dragHandle'
+      | 'dragPreview'
+      | 'dragPreviewCounter'
+      | 'dropIndicator'
+      | 'editablePopover'
+      | 'editTrigger'
+      | 'editCancel'
+      | 'editSave',
+      ComponentStyleFunction<string, string>
+    >;
+    LegacyTable?: Record<
       'table' | 'headerRow' | 'header' | 'thead' | 'body' | 'row' | 'cell',
       ComponentStyleFunction<string, string>
     >;

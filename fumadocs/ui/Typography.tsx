@@ -18,7 +18,7 @@ export const Headlines = () => {
   }
 
   return (
-    <Table aria-labelledby="typography table" stretch>
+    <Table aria-labelledby="typography table">
       <Table.Header>
         <Table.Column key={'level'}>Level</Table.Column>
         <Table.Column key={'example'}>Example</Table.Column>
@@ -49,7 +49,7 @@ export const Headlines = () => {
 
 export const FontSizes = () => {
   return (
-    <Table aria-labelledby="typography table" stretch>
+    <Table aria-labelledby="typography table">
       <Table.Header>
         <Table.Column key={'name'}>Name</Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>
@@ -78,7 +78,7 @@ export const FontSizes = () => {
 
 export const FontWeights = () => {
   return (
-    <Table aria-labelledby="typography table" stretch>
+    <Table aria-labelledby="typography table">
       <Table.Header>
         <Table.Column key={'name'}>Name</Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>
@@ -107,7 +107,7 @@ export const FontWeights = () => {
 
 export const FontStyle = () => {
   return (
-    <Table aria-labelledby="typography table" stretch>
+    <Table aria-labelledby="typography table">
       <Table.Header>
         <Table.Column key={'name'}>Name</Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>
@@ -136,7 +136,7 @@ export const FontStyle = () => {
 
 export const TextAlign = () => {
   return (
-    <Table aria-labelledby="typography table" stretch>
+    <Table aria-labelledby="typography table">
       <Table.Header>
         <Table.Column key={'name'}>Name</Table.Column>
         <Table.Column key={'value'}>Value</Table.Column>

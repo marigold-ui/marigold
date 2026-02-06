@@ -6,7 +6,7 @@ import { Delete, Edit } from '@marigold/icons';
 import { Headline } from '../Headline/Headline';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Stack } from '../Stack/Stack';
-import { Table } from '../Table/Table';
+import { Table } from '../legacy/Table/Table';
 import type { Selection } from '../types';
 import { ActionBar } from './ActionBar';
 
@@ -222,6 +222,7 @@ export const WithScrollableContent = meta.story({
                       width={
                         index === tableHeaders.length - 1 ? 'full' : 'auto'
                       }
+                      isRowHeader={index === 0}
                       key={index}
                     >
                       {header}

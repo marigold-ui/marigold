@@ -26,15 +26,14 @@ export const UserTable = () => (
     </Inline>
     <Table
       selectionMode="multiple"
-      stretch
       defaultSelectedKeys={[people[0].id, people[1].id]}
     >
       <Table.Header>
-        <Table.Column>Name</Table.Column>
+        <Table.Column rowHeader>Name</Table.Column>
         <Table.Column>Email</Table.Column>
         <Table.Column>Status</Table.Column>
         <Table.Column>Role</Table.Column>
-        <Table.Column align="right">&nbsp;</Table.Column>
+        <Table.Column alignX="right">&nbsp;</Table.Column>
       </Table.Header>
       <Table.Body>
         {people.map(person => (

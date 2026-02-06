@@ -2,10 +2,10 @@ import { Stack, Table, TextArea, useListData } from '@marigold/components';
 
 export default () => {
   const columns = [
-    { name: 'Name', key: 'name' },
-    { name: 'Firstname', key: 'firstname' },
-    { name: 'House', key: 'house' },
-    { name: 'Year of birth', key: 'year' },
+    { id: 'name', name: 'Name', key: 'name' },
+    { id: 'firstname', name: 'Firstname', key: 'firstname' },
+    { id: 'house', name: 'House', key: 'house' },
+    { id: 'year', name: 'Year of birth', key: 'year' },
   ];
 
   const rowData: { [key: string]: string }[] = [
@@ -62,10 +62,10 @@ export default () => {
         </Table.Header>
         <Table.Body items={list.items}>
           {item => (
-            <Table.Row key={item.id}>
-              {columnKey =>
-                columnKey !== 'house' ? (
-                  <Table.Cell>{item[columnKey]}</Table.Cell>
+            <Table.Row columns={columns}>
+              {column =>
+                column.id !== 'house' ? (
+                  <Table.Cell>{item[column.id]}</Table.Cell>
                 ) : (
                   <Table.Cell>
                     <TextArea
