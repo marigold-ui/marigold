@@ -29,6 +29,7 @@ describe('Basic Rendering', () => {
     render(<Basic.Component />);
 
     const table = screen.getByRole('grid');
+
     expect(table instanceof HTMLTableElement).toBeTruthy();
   });
 
@@ -58,6 +59,7 @@ describe('Basic Rendering', () => {
 
     // eslint-disable-next-line testing-library/no-node-access
     const totalCell = screen.getByText('Total').closest('td');
+
     expect(totalCell).toBeInTheDocument();
     expect(totalCell).toHaveAttribute('colspan', '4');
   });
@@ -68,8 +70,8 @@ describe('Data Handling', () => {
     render(<DynamicData.Component />);
 
     const checkboxes = screen.getAllByRole('checkbox');
-    expect(checkboxes.length).toBeGreaterThan(0);
 
+    expect(checkboxes.length).toBeGreaterThan(0);
     expect(screen.getByText('Harry')).toBeInTheDocument();
     expect(screen.getByText('Draco')).toBeInTheDocument();
   });
@@ -99,18 +101,20 @@ describe('Interactions', () => {
   test('supports sorting with sortable columns', () => {
     render(<Sorting.Component />);
 
-    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     const sortableHeaders = screen
       .getAllByRole('columnheader')
       .filter(header => header.getAttribute('aria-sort') !== null);
+
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     expect(sortableHeaders.length).toBeGreaterThan(0);
   });
 
   test('renders table with drag and drop support', () => {
     render(<DragAndDrop.Component />);
 
-    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
     const checkboxes = screen.getAllByRole('checkbox');
+
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
     expect(checkboxes.length).toBeGreaterThan(0);
   });
 });
@@ -119,8 +123,9 @@ describe('Content', () => {
   test('renders table with action menus', () => {
     render(<WithActions.Component />);
 
-    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
     const actionMenus = screen.getAllByRole('button', { name: /Actions/i });
+
+    expect(screen.getByText('Hans Müller')).toBeInTheDocument();
     expect(actionMenus.length).toBeGreaterThan(0);
   });
 
@@ -136,8 +141,8 @@ describe('Advanced Features', () => {
   test('renders scrollable table with sticky header', async () => {
     render(<ScrollableAndSticky.Component />);
 
-    // Wait for the async data to load
     const table = await screen.findByRole('grid');
+
     expect(table).toBeInTheDocument();
   });
 });
@@ -155,9 +160,9 @@ describe('Props and Variants', () => {
     render(<WidthsAndOverflow.Component />);
 
     const cells = screen.getAllByRole('gridcell');
-    // Story defaults to wrap mode
     // eslint-disable-next-line testing-library/no-node-access
     const innerDiv = cells[0].querySelector('div');
+
     expect(innerDiv).toHaveClass('wrap-break-word');
   });
 
@@ -167,17 +172,17 @@ describe('Props and Variants', () => {
     const cell = screen.getAllByRole('gridcell')[0];
     // eslint-disable-next-line testing-library/no-node-access
     const innerDiv = cell.querySelector('div');
+
     expect(innerDiv).toHaveClass('wrap-break-word');
   });
 
   test('applies verticalAlign prop to cells', () => {
-    // VerticalAlignment story has verticalAlign="top"
     render(<VerticalAlignment.Component />);
 
     const cells = screen.getAllByRole('gridcell');
-    // First cell should have align-top from table prop
     // eslint-disable-next-line testing-library/no-node-access
     const innerDiv = cells[0].querySelector('div');
+
     expect(innerDiv).toHaveClass('align-top');
   });
 
@@ -187,6 +192,7 @@ describe('Props and Variants', () => {
     const cell = screen.getAllByRole('gridcell')[0];
     // eslint-disable-next-line testing-library/no-node-access
     const innerDiv = cell.querySelector('div');
+
     expect(innerDiv).toHaveClass('align-middle');
   });
 
@@ -197,6 +203,7 @@ describe('Props and Variants', () => {
     const overrideCell = screen.getByText('Override').closest('td');
     // eslint-disable-next-line testing-library/no-node-access
     const innerDiv = overrideCell?.querySelector('div');
+
     expect(innerDiv).toHaveClass('align-bottom');
     expect(innerDiv).not.toHaveClass('align-top');
   });
@@ -207,6 +214,7 @@ describe('Accessibility', () => {
     render(<Basic.Component />);
 
     const table = screen.getByRole('grid', { name: 'label' });
+
     expect(table).toBeInTheDocument();
   });
 
@@ -214,6 +222,7 @@ describe('Accessibility', () => {
     render(<DynamicData.Component />);
 
     const checkboxes = screen.getAllByRole('checkbox');
+
     expect(checkboxes.length).toBeGreaterThan(0);
   });
 
@@ -221,6 +230,7 @@ describe('Accessibility', () => {
     render(<Basic.Component />);
 
     const grid = screen.getByRole('grid');
+
     expect(grid).toBeInstanceOf(HTMLTableElement);
   });
 });
@@ -234,6 +244,7 @@ describe('Cell Alignment', () => {
       .filter(cell => cell.textContent?.includes('€'));
     // eslint-disable-next-line testing-library/no-node-access
     const innerDiv = balanceCells[0].querySelector('div');
+
     expect(innerDiv).toHaveClass('text-right');
   });
 
@@ -244,6 +255,7 @@ describe('Cell Alignment', () => {
     const nameCell = cells[0];
     // eslint-disable-next-line testing-library/no-node-access
     const innerDiv = nameCell.querySelector('div');
+
     expect(innerDiv).toHaveClass('text-left');
   });
 
@@ -254,12 +266,9 @@ describe('Cell Alignment', () => {
     // eslint-disable-next-line testing-library/no-node-access
     const innerDiv = cell.querySelector('div');
 
-    // Outer cell should NOT have alignment/overflow classes
     expect(cell).not.toHaveClass('text-left');
     expect(cell).not.toHaveClass('align-middle');
     expect(cell).not.toHaveClass('wrap-break-word');
-
-    // Inner div should have all presentation classes
     expect(innerDiv).toHaveClass('text-left');
     expect(innerDiv).toHaveClass('align-middle');
     expect(innerDiv).toHaveClass('wrap-break-word');
@@ -269,12 +278,12 @@ describe('Cell Alignment', () => {
 describe('Sticky Header', () => {
   test('applies sticky class to header', async () => {
     render(<ScrollableAndSticky.Component />);
-
     await screen.findByRole('grid');
 
     const columnHeader = screen.getByRole('columnheader', { name: 'ID' });
     // eslint-disable-next-line testing-library/no-node-access
     const header = columnHeader.closest('thead');
+
     expect(header).toHaveClass('sticky');
     expect(header).toHaveClass('top-0');
   });
@@ -285,6 +294,7 @@ describe('Sticky Header', () => {
     const columnHeader = screen.getByRole('columnheader', { name: 'Name' });
     // eslint-disable-next-line testing-library/no-node-access
     const header = columnHeader.closest('thead');
+
     expect(header).not.toHaveClass('sticky');
   });
 });
@@ -293,8 +303,9 @@ describe('TableDragPreview Component', () => {
   test('renders single item with text and count', () => {
     render(<DragPreview.Component />);
 
-    expect(screen.getByText('Single Item')).toBeInTheDocument();
     const counters = screen.getAllByText('1');
+
+    expect(screen.getByText('Single Item')).toBeInTheDocument();
     expect(counters.length).toBeGreaterThan(0);
   });
 
@@ -302,8 +313,9 @@ describe('TableDragPreview Component', () => {
     render(<DragPreview.Component />);
 
     const items = screen.getAllByText('Item 1');
-    expect(items.length).toBeGreaterThan(0);
     const counters = screen.getAllByText('3');
+
+    expect(items.length).toBeGreaterThan(0);
     expect(counters.length).toBeGreaterThan(0);
   });
 
@@ -311,7 +323,7 @@ describe('TableDragPreview Component', () => {
     render(<DragPreview.Component />);
 
     const fallbackTexts = screen.getAllByText(/items/i);
-    // Should have at least 1 fallback text (either empty text or no text/plain)
+
     expect(fallbackTexts.length).toBeGreaterThan(0);
   });
 });
@@ -397,6 +409,7 @@ describe('TableDropIndicator Integration', () => {
     render(<DragAndDrop.Component />);
 
     const table = screen.getByRole('grid');
+
     expect(table).toBeInTheDocument();
   });
 
@@ -404,7 +417,8 @@ describe('TableDropIndicator Integration', () => {
     render(<DragAndDrop.Component />);
 
     const rows = screen.getAllByRole('row');
-    const dataRows = rows.slice(1); // Skip header row
+    const dataRows = rows.slice(1);
+
     expect(dataRows[0]).toHaveAttribute('draggable', 'true');
   });
 });
@@ -416,6 +430,7 @@ describe('renderDropIndicator Hook', () => {
       key: '1',
       dropPosition: 'before' as const,
     };
+
     const dropIndicator = renderDropIndicator!(target);
 
     expect(dropIndicator).toBeDefined();
@@ -428,6 +443,7 @@ describe('renderDropIndicator Hook', () => {
       key: 'test-key',
       dropPosition: 'before' as const,
     };
+
     const dropIndicator = renderDropIndicator!(target);
 
     expect(dropIndicator.props.target).toEqual(target);
@@ -439,11 +455,12 @@ describe('renderDropIndicator Hook', () => {
       key: '1',
       dropPosition: 'before' as const,
     };
-    const dropIndicator1 = renderDropIndicator!(itemTarget);
-    expect(dropIndicator1.props.target).toEqual(itemTarget);
-
     const rootTarget = { type: 'root' as const };
+
+    const dropIndicator1 = renderDropIndicator!(itemTarget);
     const dropIndicator2 = renderDropIndicator!(rootTarget);
+
+    expect(dropIndicator1.props.target).toEqual(itemTarget);
     expect(dropIndicator2.props.target).toEqual(rootTarget);
   });
 
@@ -453,6 +470,7 @@ describe('renderDropIndicator Hook', () => {
       key: '1',
       dropPosition: 'before' as const,
     };
+
     const dropIndicator = renderDropIndicator!(target);
 
     expect(dropIndicator.props.target).toEqual(target);
@@ -464,9 +482,9 @@ describe('renderDropIndicator Hook', () => {
       key: 'test-id',
       dropPosition: 'after' as const,
     };
+
     const dropIndicator = renderDropIndicator!(target);
 
-    // Verify it's a valid React element
     expect(dropIndicator).toHaveProperty('type');
     expect(dropIndicator).toHaveProperty('props');
     expect(dropIndicator.props).toHaveProperty('target');
@@ -478,6 +496,7 @@ describe('renderDropIndicator Hook', () => {
       key: 'complex-key',
       dropPosition: 'after' as const,
     };
+
     const dropIndicator = renderDropIndicator!(target);
 
     expect(dropIndicator.props.target.type).toBe('item');
@@ -516,11 +535,13 @@ describe('renderDropIndicator Function Signature', () => {
       key: '123',
       dropPosition: 'before',
     });
+
     expect(dropIndicator).toBeDefined();
   });
 
   test('accepts root target without key', () => {
     const dropIndicator = renderDropIndicator!({ type: 'root' });
+
     expect(dropIndicator).toBeDefined();
   });
 
@@ -530,6 +551,7 @@ describe('renderDropIndicator Function Signature', () => {
       key: 'item-1',
       dropPosition: 'before' as const,
     };
+
     const dropIndicator = renderDropIndicator!(complexTarget);
 
     expect(dropIndicator.props.target).toStrictEqual(complexTarget);
