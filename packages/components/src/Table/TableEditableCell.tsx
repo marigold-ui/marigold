@@ -199,7 +199,7 @@ export const TableEditableCell = ({
       onPress={handleCancel}
       aria-label={isSmallScreen ? undefined : stringFormatter.format('cancel')}
     >
-      {isSmallScreen ? stringFormatter.format('cancel') : <X size={16} />}
+      {isSmallScreen ? stringFormatter.format('cancel') : <X />}
     </Button>
   );
 
@@ -210,7 +210,7 @@ export const TableEditableCell = ({
       isPending={saving}
       aria-label={isSmallScreen ? undefined : stringFormatter.format('save')}
     >
-      {isSmallScreen ? stringFormatter.format('save') : <Check size={16} />}
+      {isSmallScreen ? stringFormatter.format('save') : <Check />}
     </Button>
   );
 
@@ -241,17 +241,16 @@ export const TableEditableCell = ({
             )}
           </div>
           {isSmallScreen ? (
-            <Dialog
-              aria-label={stringFormatter.format('editCell')}
-              open={open}
-              onOpenChange={handleOpenChange}
-            >
+            <Dialog open={open} onOpenChange={handleOpenChange}>
               <Form
                 unstyled
                 ref={handleFormRef}
                 action={action}
                 onSubmit={handleSubmit}
               >
+                <Dialog.Title>
+                  {stringFormatter.format('editCell')}
+                </Dialog.Title>
                 <Dialog.Content>
                   <FocusScope autoFocus restoreFocus>
                     {renderField()}
