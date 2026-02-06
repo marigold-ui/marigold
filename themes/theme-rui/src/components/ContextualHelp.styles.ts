@@ -25,7 +25,7 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
   container: cva({
     base: [
       'outline-none',
-      'ui-surface ui-elevation-overlay util-scrollbar',
+      'ui-surface shadow-elevation-overlay util-scrollbar',
       'p-5',
       'data-small:max-w-3xs data-medium:max-w-xs data-large:max-w-md',
     ],

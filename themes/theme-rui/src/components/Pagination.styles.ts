@@ -27,7 +27,7 @@ export const Pagination: ThemeComponent<'Pagination'> = {
     base: [
       ...button,
       'bg-background size-9',
-      'data-[selected=true]:ui-surface',
+      'data-[selected=true]:ui-surface data-[selected=true]:shadow-elevation-border',
     ],
   }),
   icon: cva({ base: 'h-4 w-4' }),

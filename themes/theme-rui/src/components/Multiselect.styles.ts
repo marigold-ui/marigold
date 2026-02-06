@@ -41,7 +41,7 @@ export const MultiSelect: ThemeComponent<'MultiSelect'> = {
   }),
   icon: cva({ base: 'left-1' }),
   listContainer: cva({
-    base: ['ui-surface ui-elevation-overlay mt-0.5 outline-0'],
+    base: ['ui-surface shadow-elevation-overlay mt-0.5 outline-0'],
   }),
   list: cva({ base: 'pointer-events-auto space-y-1 p-1' }),
   option: cva({

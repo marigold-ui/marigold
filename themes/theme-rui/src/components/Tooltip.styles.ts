@@ -3,7 +3,7 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Tooltip: ThemeComponent<'Tooltip'> = {
   container: cva({
     base: [
-      'relative z-50 max-w-70 rounded-md border px-3 py-1.5 text-sm',
+      'relative max-w-70 rounded-md border px-3 py-1.5 text-sm',
       'placement-top:mb-2',
       'placement-bottom:mt-2',
       'placement-right:ml-2',

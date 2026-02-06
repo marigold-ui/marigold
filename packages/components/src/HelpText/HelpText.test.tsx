@@ -1,40 +1,16 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Input, Label, TextField } from 'react-aria-components';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { HelpText } from './HelpText';
+import { Basic } from './HelpText.stories';
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    HelpText: {
-      container: cva({
-        base: '',
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'p-2',
-          },
-        },
-      }),
-      icon: cva({ base: 'size-3' }),
-    },
-  },
-};
+test('render nothing when no props provided', async () => {
+  render(<Basic.Component description={undefined} errorMessage={undefined} />);
 
-const { render } = setup({ theme });
-
-test('render nothing', async () => {
-  render(<HelpText data-testid="help-text" />);
-
-  const element = screen.queryByTestId('help-text');
-  expect(element).not.toBeInTheDocument();
+  // HelpText should render nothing when no description or errorMessage
+  expect(screen.queryByText(/./)).toBeNull();
 });
 
 test('render description', () => {
-  render(<HelpText description="This is a help text description" />);
+  render(<Basic.Component description="This is a help text description" />);
 
   const element = screen.getByText('This is a help text description');
   expect(element).toBeInTheDocument();
@@ -42,7 +18,7 @@ test('render description', () => {
 
 test('render description even if error message is defined', () => {
   render(
-    <HelpText
+    <Basic.Component
       description="This is a help text description"
       errorMessage="Something went wrong"
     />
@@ -55,24 +31,12 @@ test('render description even if error message is defined', () => {
   expect(error).not.toBeInTheDocument();
 });
 
-test('uses description base styles', () => {
-  render(
-    <HelpText
-      data-testid="help-text"
-      description="This is a help text description"
-    />
-  );
-
-  const element = screen.getByText('This is a help text description');
-  expect(element).toBeInTheDocument();
-});
-
 test('show error message when control is invalid', () => {
   render(
     <TextField isInvalid>
       <Label>Name</Label>
       <Input />
-      <HelpText errorMessage="This can't be right" />
+      <Basic.Component errorMessage="This can't be right" />
     </TextField>
   );
 
@@ -80,12 +44,12 @@ test('show error message when control is invalid', () => {
   expect(element).toBeInTheDocument();
 });
 
-test('show multiple error message when control is invalid', () => {
+test('show multiple error messages when control is invalid', () => {
   render(
     <TextField isInvalid>
       <Label>Name</Label>
       <Input />
-      <HelpText
+      <Basic.Component
         errorMessage={["This can't be right", 'Oh god, no! What did you do!?']}
       />
     </TextField>

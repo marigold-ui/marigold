@@ -3,7 +3,7 @@ import { buttonBase } from './Button.styles';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
   group: cva({
-    base: 'group inline-flex ui-surface',
+    base: 'group inline-flex ui-surface shadow-elevation-border',
     variants: {
       size: {
         default: 'text-sm',
@@ -20,7 +20,7 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       ...buttonBase,
 
       // ToggleButton-specific styles
-      'ui-surface',
+      'ui-surface shadow-elevation-border',
       'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
       'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
       'selected:[--ui-background-color:var(--color-input)] selected:shadow-none',

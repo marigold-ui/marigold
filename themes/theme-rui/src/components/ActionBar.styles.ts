@@ -4,7 +4,7 @@ import { cva } from '@marigold/system';
 export const ActionBar: ThemeComponent<'ActionBar'> = {
   container: cva({
     base: [
-      'relative z-50 w-fit',
+      'relative w-fit',
       'flex items-center justify-between justify-items-center gap-4',
       'px-6 py-3',
       'shadow-lg',

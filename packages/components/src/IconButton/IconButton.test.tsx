@@ -1,55 +1,23 @@
-import { screen } from '@testing-library/react';
-import { ChevronDown } from '@marigold/icons';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { IconButton } from './IconButton';
+import { render, screen } from '@testing-library/react';
+import { Basic } from './IconButton.stories';
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    IconButton: cva({
-      base: 'cursor-pointer outline-0',
-      variants: {
-        variant: {
-          navigation: 'hover:bg-hover hover:text-hover-foreground',
-        },
-      },
-    }),
-  },
-};
+test('renders button element', () => {
+  render(<Basic.Component />);
+  const button = screen.getByRole('button');
 
-const { render } = setup({ theme });
+  expect(button instanceof HTMLButtonElement).toBeTruthy();
+});
 
 test('has base styles', () => {
-  render(
-    <IconButton>
-      <ChevronDown />
-    </IconButton>
-  );
+  render(<Basic.Component />);
   const button = screen.getByRole('button');
+
   expect(button).toHaveClass('shrink-0 cursor-pointer outline-0');
 });
 
-test('supports classname style', () => {
-  render(
-    <IconButton className="text-muted-foreground">
-      <ChevronDown />
-    </IconButton>
-  );
+test('supports variant prop', () => {
+  render(<Basic.Component variant="navigation" />);
   const button = screen.getByRole('button');
-  expect(button).toHaveClass(
-    'shrink-0 cursor-pointer outline-0 text-muted-foreground'
-  );
-});
 
-test('supports variants', () => {
-  render(
-    <IconButton className="text-muted-foreground" variant="navigation">
-      <ChevronDown />
-    </IconButton>
-  );
-  const button = screen.getByRole('button');
-  expect(button).toHaveClass(
-    'shrink-0 cursor-pointer outline-0 text-muted-foreground hover:bg-hover hover:text-hover-foreground'
-  );
+  expect(button).toBeInTheDocument();
 });

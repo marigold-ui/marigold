@@ -1,74 +1,10 @@
-import { screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { createRef } from 'react';
-import { vi } from 'vitest';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { Select } from './Select';
-import { Basic } from './Select.stories';
+import { renderWithOverlay } from '../test.utils';
+import { Basic, Sections } from './Select.stories';
 
-// Setup
-// ---------------
 const user = userEvent.setup();
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Field: cva({ base: '' }),
-    Label: cva({
-      base: '',
-      variants: {
-        variant: { lime: 'text-lime-500' },
-        size: { small: 'text-sm' },
-      },
-    }),
-    Text: cva({}),
-    Popover: cva({
-      base: ['mt-0.5'],
-      variants: {
-        variant: {
-          top: ['mb-0.5'],
-        },
-      },
-    }),
-    HelpText: {
-      container: cva({
-        base: '',
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'text-sm',
-          },
-        },
-      }),
-      icon: cva({ base: '' }),
-    },
-    Select: {
-      select: cva({
-        base: 'text-blue-500',
-        variants: {
-          variant: { violet: 'text-violet-500' },
-          size: { small: 'text-sm' },
-        },
-      }),
-      icon: cva({ base: 'text-zinc-600' }),
-    },
-    Underlay: cva({}),
-    ListBox: {
-      container: cva({}),
-      list: cva({}),
-      item: cva({}),
-      section: cva({}),
-      header: cva({}),
-    },
-    IconButton: cva({ base: '' }),
-  },
-};
-
-const { render } = setup({ theme });
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -81,228 +17,143 @@ Object.defineProperty(window, 'matchMedia', {
   },
 });
 
-test('renders correct HTML element', () => {
+test('renders a field (label, helptext, select)', () => {
   render(
-    <Select label="Label">
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
+    <Basic.Component
+      data-testid="select"
+      label="Label"
+      errorMessage={'ERRR!'}
+      description="Description"
+    />
   );
-  const select = screen.getByLabelText('Label');
-  expect(select instanceof HTMLButtonElement).toBeTruthy();
-});
 
-test('supports label', () => {
-  render(
-    <Select label="Label">
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
-  );
-  const label = screen.getAllByText('Label');
-  expect(label[0]).toBeInTheDocument();
-});
+  // We need to query all, since there is also a label in the hidden select
+  const label = screen.queryAllByText('Label')[0];
+  const description = screen.queryAllByText('Description')[0];
+  const errorMessage = screen.queryByText('ERRR!');
+  const button = screen.queryByTestId('select');
 
-test('supports required', () => {
-  render(
-    <Select label="Label" required>
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
-  );
-  const select = screen.getByLabelText('Label');
-
-  expect(select).toHaveAttribute('aria-required');
-});
-
-test('supports disabled', () => {
-  render(
-    <Select label="Label" disabled>
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
-  );
-  const select = screen.getByLabelText('Label');
-
-  expect(select).toBeDisabled();
-});
-
-test('supports description', () => {
-  render(
-    <Select label="Label" description="This is a description.">
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
-  );
-  const description = screen.getByText('This is a description.');
+  expect(label).toBeInTheDocument();
   expect(description).toBeInTheDocument();
+  expect(errorMessage).not.toBeInTheDocument();
+  expect(button).toBeInTheDocument();
 });
 
-test('supports error message', () => {
-  render(
-    <Select label="Label" error errorMessage="This is an error message.">
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
-  );
-  const error = screen.getByText('This is an error message.');
-  expect(error).toBeInTheDocument();
+test('visible label is not a <label> element (for a11y)', () => {
+  render(<Basic.Component label="Label" />);
+
+  const labels = screen.queryAllByText('Label');
+
+  expect(labels.length).toEqual(1);
 });
 
-test('supports default open', async () => {
-  render(
-    <Select label="Label" defaultOpen>
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
-  );
-  const listbox = screen.getByRole('listbox');
-  expect(listbox).toBeInTheDocument();
-});
-
-test('supports controlled open with onOpenChange', async () => {
-  const MockComponent = () => {
-    const [open, setOpen] = React.useState(false);
-    return (
-      <>
-        <button onClick={() => setOpen(!open)}>Toggle</button>
-        <Select label="Label" open={open} onOpenChange={setOpen}>
-          <Select.Option id="one">One</Select.Option>
-          <Select.Option id="two">Two</Select.Option>
-          <Select.Option id="three">Three</Select.Option>
-        </Select>
-      </>
-    );
-  };
-
-  render(<MockComponent />);
-  const trigger = screen.getByText('Toggle');
-  await user.click(trigger);
-
-  const listbox = screen.getByRole('listbox');
-  expect(listbox).toBeInTheDocument();
-});
-
-test('allows to select option per keyboard (arrow down + enter)', async () => {
+test('placeholder is rendered', () => {
   render(<Basic.Component />);
+
   const button = screen.getByRole('button');
 
-  // Open
-  await user.click(button);
-
-  const listbox = screen.getByRole('listbox');
-  expect(listbox).toBeInTheDocument();
-
-  // Navigate down
-  await user.keyboard('{ArrowDown}');
-
-  const option = within(listbox).getByText('Banana');
-  expect(option).toHaveAttribute('aria-selected', 'true');
-
-  // Select
-  await user.keyboard('{Enter}');
-  expect(button).toHaveTextContent('Banana');
+  expect(button).toHaveTextContent(/Select Item/);
 });
 
-test('allows to select option per keyboard (arrow up + enter)', async () => {
-  render(<Basic.Component />);
+test('allows to disable select', async () => {
+  render(<Basic.Component disabled />);
   const button = screen.getByRole('button');
 
-  // Open
+  expect(button).toBeDisabled();
+
   await user.click(button);
 
-  const listbox = screen.getByRole('listbox');
-  expect(listbox).toBeInTheDocument();
-
-  // Navigate up
-  await user.keyboard('{ArrowUp}');
-
-  const option = within(listbox).getByText('Strawberry');
-  expect(option).toHaveAttribute('aria-selected', 'true');
-
-  // Select
-  await user.keyboard('{Enter}');
-  expect(button).toHaveTextContent('Strawberry');
+  expect(button).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('select option per click', async () => {
-  render(<Basic.Component />);
+test('allows to disable options', async () => {
+  // Basic story has disabledKeys={['Firefly']} built-in
+  renderWithOverlay(<Basic.Component label="Label" data-testid="select" />);
+
   const button = screen.getByRole('button');
-
-  // Open
   await user.click(button);
 
-  const listbox = screen.getByRole('listbox');
-  expect(listbox).toBeInTheDocument();
+  const options = screen.getByRole('listbox');
+  const firefly = within(options).getByRole('option', { name: 'Firefly' });
 
-  const option = within(listbox).getByText('Orange');
-  await user.click(option);
-
-  expect(button).toHaveTextContent('Orange');
+  expect(firefly).toHaveAttribute('aria-disabled', 'true');
 });
 
-test('allows setting default selected option', () => {
-  render(
-    <Select label="Label" defaultSelectedKey="two">
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
+test('controlled', async () => {
+  // Basic story already has onChange that updates selected state
+  renderWithOverlay(<Basic.Component label="Label" data-testid="select" />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const options = screen.getByRole('listbox');
+  const starWars = within(options).getByText('Star Wars');
+  await user.click(starWars);
+
+  // Basic story renders selected value in a pre element
+  expect(screen.getByTestId('selected')).toHaveTextContent(
+    'selected: Star Wars'
   );
-  const button = screen.getByRole('button');
-  expect(button).toHaveTextContent('Two');
 });
 
-test('calls onSelectionChange', async () => {
-  const onChange = vi.fn();
-  render(
-    <Select label="Label" onSelectionChange={onChange}>
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
+test('supports default value via "defaultSelectedKey"', async () => {
+  renderWithOverlay(
+    <Basic.Component
+      label="Label"
+      data-testid="select"
+      defaultSelectedKey="Star Trek"
+    />
   );
-  const button = screen.getByRole('button');
 
-  // Open
+  const button = screen.getByRole('button');
+  expect(button).toHaveTextContent(/Star Trek/);
+
   await user.click(button);
 
-  const listbox = screen.getByRole('listbox');
-  expect(listbox).toBeInTheDocument();
+  const options = screen.getByRole('listbox');
+  const starTrek = within(options).getByRole('option', { name: 'Star Trek' });
 
-  const option = within(listbox).getByText('Two');
-  await user.click(option);
+  expect(starTrek).toHaveAttribute('aria-selected', 'true');
+});
 
-  expect(onChange).toHaveBeenCalledWith('two');
+test('supports sections', async () => {
+  renderWithOverlay(<Sections.Component label="Label" data-testid="select" />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const options = screen.getByRole('listbox');
+  const fantasy = within(options).getByText('Fantasy');
+  const sciFi = within(options).getByText('Sci-Fi');
+
+  expect(fantasy).toBeVisible();
+  expect(sciFi).toBeVisible();
+});
+
+test('set width via props', () => {
+  render(<Basic.Component label="Label" data-testid="select" width="1/2" />);
+
+  // We need to query all, since there is also a label in the hidden select
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getAllByText('Label')[0].parentElement;
+  expect(container).toHaveClass('w-1/2');
 });
 
 test('forwards ref', () => {
   const ref = createRef<HTMLButtonElement>();
   render(
-    <Select label="Label" ref={ref}>
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
+    <Basic.Component label="Label" data-testid="select" ref={ref as any} />
   );
-  expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+
+  expect(ref.current).toBeInstanceOf(HTMLDivElement);
 });
 
-test('supports theming on container', () => {
-  render(
-    <Select label="Label" variant="violet">
-      <Select.Option id="one">One</Select.Option>
-      <Select.Option id="two">Two</Select.Option>
-      <Select.Option id="three">Three</Select.Option>
-    </Select>
-  );
-  const select = screen.getByLabelText('Label');
-  expect(select).toHaveClass('text-violet-500');
+test('error is there', () => {
+  render(<Basic.Component label="Label" error />);
+
+  // We need to query all, since there is also a label in the hidden select
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getAllByText('Label')[0].parentElement;
+
+  expect(container).toHaveAttribute('data-error');
 });

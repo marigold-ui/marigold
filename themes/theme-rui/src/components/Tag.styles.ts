@@ -11,7 +11,7 @@ export const Tag: ThemeComponent<'Tag'> = {
   tag: cva({
     base: [
       'relative inline-flex items-center gap-1.75',
-      'ui-surface',
+      'ui-surface shadow-elevation-border',
       'font-medium text-xs',
       'h-6 px-2 cursor-default',
       'selected:text-white selected:[--ui-background-color:var(--color-brand)]',
