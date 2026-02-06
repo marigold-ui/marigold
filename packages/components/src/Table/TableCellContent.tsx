@@ -78,6 +78,7 @@ export const TableCellContent = ({
 
   return (
     <div
+      data-cell-content=""
       className={cn(
         textAlign[align || columnAlign || 'left'],
         verticalAlign[vAlign],

@@ -35,7 +35,7 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'border-border not-last:border-b',
       'transition-[background-color]',
-      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
+      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
       'disabled:cursor-not-allowed',
       'data-selection-mode:cursor-pointer data-selection-mode:hover:bg-muted',
       'dragging:opacity-50 dragging:transform-gpu',
@@ -68,8 +68,8 @@ export const Table: ThemeComponent<'Table'> = {
     [
       'h-(--header-height) px-(--cell-x-padding) align-middle',
       'font-medium text-muted-foreground',
-      'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring',
-      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring', // This one is for the empty dragging header column
+      'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
+      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
       'aria-[sort]:hover:bg-muted aria-[sort]:hover:cursor-pointer aria-[sort]:hover:text-foreground',
     ],
     {
@@ -90,7 +90,9 @@ export const Table: ThemeComponent<'Table'> = {
   body: cva(['bg-background']),
   cell: cva([
     'px-(--cell-x-padding) py-(--cell-y-padding)',
-    'focus:outline-2 focus:-outline-offset-2 focus:outline-ring',
+    'focus:outline-2 focus:-outline-offset-2 focus:outline-ring/50',
+    'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/50',
+    '**:data-cell-content:outline-none',
   ]),
 
   // Drag and drop
