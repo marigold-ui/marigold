@@ -303,6 +303,21 @@ Text selection is disabled by default to avoid interaction complexity. When enab
   </Dont>
 </GuidelineTiles>
 
+### Row header
+
+By default, screen readers announce only the content of the focused cell when navigating a table with the keyboard. This can make it difficult for users to understand which row they are in, especially in tables with many columns.
+
+Setting `rowHeader` on a column tells assistive technology to announce that column's cell value alongside any other cell the user navigates to in the same row. For example, if a "Name" column is marked as a row header, a screen reader will announce "Name: Alice, Email: alice@example.com" instead of just "alice@example.com" when the user moves to the email cell.
+
+Mark the column that best identifies each row, typically a name, title, or ID column. Every table should have at least one row header to ensure users relying on assistive technology can orient themselves within the data.
+
+```tsx
+<Table.Header>
+  <Table.Column rowHeader>Name</Table.Column>
+  <Table.Column>Email</Table.Column>
+</Table.Header>
+```
+
 ## Props
 
 <StorybookHintMessage component={title} />
