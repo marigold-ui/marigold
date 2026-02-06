@@ -13,7 +13,7 @@ export const buttonBase = [
 export const Button: ThemeComponent<'Button'> = cva(
   [
     ...buttonBase,
-    'duration-150 active:scale-[0.97] pressed:scale-[0.97]',
+    'duration-150 active:scale-[0.97] pressed:not-expanded:scale-[0.97]',
     'pending:text-disabled-foreground pending:bg-disabled pending:cursor-not-allowed pending:border-none',
   ],
   {
@@ -21,7 +21,7 @@ export const Button: ThemeComponent<'Button'> = cva(
       variant: {
         primary: 'bg-brand text-brand-foreground hover:bg-brand/90',
         secondary: [
-          'ui-surface',
+          'ui-surface shadow-elevation-border',
           'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
           'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
           'expanded:[--ui-background-color:var(--color-hover)]',

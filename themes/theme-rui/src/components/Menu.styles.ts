@@ -2,8 +2,8 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva([
-    'ui-surface ui-elevation-overlay w-full',
-    'text-foreground z-50 overflow-hidden p-1 outline-none',
+    'ui-surface shadow-elevation-overlay w-full',
+    'text-foreground overflow-hidden p-1 outline-none',
   ]),
   item: cva(
     [

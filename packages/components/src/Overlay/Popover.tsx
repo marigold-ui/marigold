@@ -44,7 +44,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
             ref={ref}
             {...props}
             className={cn(
-              'fixed! top-auto! bottom-0! left-0! max-h-fit! w-full',
+              'fixed! top-auto! bottom-0! left-0! z-30 max-h-fit! w-full',
               classNames
             )}
           >
@@ -55,7 +55,7 @@ const _Popover = forwardRef<HTMLDivElement, PopoverProps>(
           <Popover
             ref={ref}
             {...props}
-            className={cn('flex', classNames)}
+            className={cn('z-30 flex', classNames)}
             placement={placement}
             offset={offset}
           >

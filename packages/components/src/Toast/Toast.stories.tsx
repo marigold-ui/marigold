@@ -139,7 +139,7 @@ export const ToggleToast = meta.story({
 export const ToastContentTest = meta.story({
   render: () => {
     return (
-      <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000 }}>
+      <div style={{ position: 'fixed', bottom: 16, right: 16 }}>
         <Toast
           toast={{
             content: {
