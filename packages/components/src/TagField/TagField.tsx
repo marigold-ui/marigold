@@ -138,17 +138,16 @@ const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
   return (
     <TagGroup
       aria-label="Selected items"
-      className="flex flex-1 flex-wrap items-center gap-1"
+      className={classNames.tagGroup}
       onRemove={
         disabled
           ? undefined
           : keys => {
-              const s = state as any;
-              if (Array.isArray(s.value)) {
-                s.setValue(
-                  s.value.filter((k: Key) => !(keys as Set<Key>).has(k))
-                );
+              const currentKeys = new Set(state.selectionManager.selectedKeys);
+              for (const key of keys) {
+                currentKeys.delete(key);
               }
+              state.selectionManager.setSelectedKeys(currentKeys);
             }
       }
     >

@@ -11,6 +11,7 @@ export const TagField: ThemeComponent<'TagField'> = {
     'group-invalid/field:ui-state-error',
     'has-focus:group-invalid/field:ring-destructive/20',
   ]),
+  tagGroup: cva('flex flex-1 flex-wrap items-center gap-1'),
   listItems: cva('flex flex-wrap gap-1'),
   button: cva([
     'util-touch-hitbox rounded-full [&_svg]:size-4',

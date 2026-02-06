@@ -152,7 +152,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     TagField?: Record<
-      'trigger' | 'listItems' | 'button' | 'container',
+      'trigger' | 'tagGroup' | 'listItems' | 'button' | 'container',
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;
