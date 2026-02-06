@@ -118,6 +118,22 @@ Option labels should be short and scannable so users can quickly identify the it
 
 For general guidance on labels, placeholders, and help text, refer to the [Form Fields](/foundations/form-fields) foundation page.
 
+### Accessibility
+
+The `<TagField>` supports full keyboard navigation through all its interactive parts.
+
+| Key                          | Description                                                                                                           |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `Tab`                        | Moves focus between the trigger, tags, add button, and other focusable elements.                                      |
+| `Enter`                      | Opens the popover when the trigger or add button is focused. Selects or deselects an option when focused in the list. |
+| `Space`                      | Opens the popover when the trigger or add button is focused.                                                          |
+| `Arrow Up` / `Arrow Down`    | Navigates between options in the dropdown list.                                                                       |
+| `Arrow Left` / `Arrow Right` | Navigates between tags in the trigger area.                                                                           |
+| `Escape`                     | Closes the popover and returns focus to the trigger.                                                                  |
+| `Backspace`                  | Removes a tag when its remove button is focused.                                                                      |
+
+When the popover opens, the search input receives focus automatically, allowing users to immediately start filtering options by typing.
+
 ## Props
 
 ### TagField
