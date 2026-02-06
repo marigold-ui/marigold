@@ -7,7 +7,7 @@ import './styles.css';
 
 const customViewports = {
   smallScreen: {
-    name: 'Small Screen (≤600px)',
+    name: 'Small Screen (600px)',
     styles: {
       width: '600px',
       height: '900px',
