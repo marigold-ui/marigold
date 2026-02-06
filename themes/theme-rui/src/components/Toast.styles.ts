@@ -3,7 +3,6 @@ import { ThemeComponent, cva } from '@marigold/system';
 export const Toast: ThemeComponent<'Toast'> = {
   toast: cva([
     'ui-surface shadow-elevation-overlay',
-    'z-50',
     'max-w-sm w-full pointer-events-auto overflow-hidden text-foreground',
     'grid grid-cols-[auto_1fr_auto_auto] grid-rows-[auto_auto] gap-x-1 gap-y-0',
     "[grid-template-areas:'icon_title_action_close''icon_description_action_close'] focus-visible:state-focus outline-none",
