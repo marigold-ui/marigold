@@ -292,7 +292,7 @@ export const Multiselect = ({
               position: 'absolute',
               top: '100%',
               width: '100%',
-              zIndex: 1,
+              zIndex: 20, // react-select requires inline style; matches z-20 token
             }),
             // Return empty object to reset react-select styles
             valueContainer: base => ({ ...base }),
