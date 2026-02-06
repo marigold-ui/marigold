@@ -1,9 +1,9 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { Basic } from './Calendar.stories';
+import { Basic, ThreeMonths, TwoMonths } from './Calendar.stories';
 
 describe('Calendar', () => {
   const user = userEvent.setup();
@@ -195,5 +195,138 @@ describe('Calendar', () => {
 
     expect(screen.queryByTestId('yearhOptions')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '2024' })).toBeInTheDocument();
+  });
+});
+
+describe('Calendar - Multi-month', () => {
+  const user = userEvent.setup();
+
+  test('renders two months with visibleDuration', () => {
+    render(<TwoMonths.Component />);
+
+    const grids = screen.getAllByRole('grid');
+    expect(grids).toHaveLength(2);
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/February 2025/i);
+    expect(calendar).toHaveTextContent(/March 2025/i);
+  });
+
+  test('renders three months with visibleDuration', () => {
+    render(<ThreeMonths.Component />);
+
+    const grids = screen.getAllByRole('grid');
+    expect(grids).toHaveLength(3);
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/May 2025/i);
+    expect(calendar).toHaveTextContent(/June 2025/i);
+    expect(calendar).toHaveTextContent(/July 2025/i);
+  });
+
+  test('navigation buttons appear on correct months', () => {
+    render(<TwoMonths.Component />);
+
+    const buttons = screen.getAllByRole('button');
+    const prevButton = buttons.find(b => b.getAttribute('slot') === 'previous');
+    const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
+
+    expect(prevButton).toBeInTheDocument();
+    expect(nextButton).toBeInTheDocument();
+  });
+
+  test('navigates forward with next button', async () => {
+    render(
+      <TwoMonths.Component defaultValue={new CalendarDate(2025, 1, 15)} />
+    );
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/January 2025/i);
+    expect(calendar).toHaveTextContent(/February 2025/i);
+
+    const buttons = screen.getAllByRole('button');
+    const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
+    expect(nextButton).toBeDefined();
+    await user.click(nextButton!);
+
+    expect(calendar).toHaveTextContent(/March 2025/i);
+    expect(calendar).toHaveTextContent(/April 2025/i);
+  });
+
+  test('navigates backward with previous button', async () => {
+    render(
+      <TwoMonths.Component defaultValue={new CalendarDate(2025, 3, 15)} />
+    );
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/March 2025/i);
+    expect(calendar).toHaveTextContent(/April 2025/i);
+
+    const buttons = screen.getAllByRole('button');
+    const prevButton = buttons.find(b => b.getAttribute('slot') === 'previous');
+    expect(prevButton).toBeDefined();
+    await user.click(prevButton!);
+
+    expect(calendar).toHaveTextContent(/January 2025/i);
+    expect(calendar).toHaveTextContent(/February 2025/i);
+  });
+
+  test('selects a date in the second month', async () => {
+    const onChange = vi.fn();
+    render(
+      <TwoMonths.Component
+        defaultValue={new CalendarDate(2025, 2, 15)}
+        onChange={onChange}
+      />
+    );
+
+    const grids = screen.getAllByRole('grid');
+    const secondGrid = grids[1];
+    const cells = within(secondGrid).getAllByRole('gridcell');
+    const day10Cell = cells.find(
+      cell =>
+        cell.textContent === '10' &&
+        cell.getAttribute('aria-disabled') !== 'true'
+    );
+
+    expect(day10Cell).toBeDefined();
+
+    const button =
+      day10Cell!.querySelector('span[role="button"], span[tabindex]') ||
+      day10Cell!.firstChild;
+    expect(button).toBeDefined();
+
+    await user.click(button as Element);
+    expect(onChange).toHaveBeenCalled();
+    expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2025, 3, 10));
+  });
+
+  test('does not show month/year dropdowns in multi-month view', () => {
+    render(<TwoMonths.Component />);
+
+    expect(screen.queryByTestId('month')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('year')).not.toBeInTheDocument();
+  });
+
+  test('single page behavior advances by one month', async () => {
+    render(
+      <Basic.Component
+        visibleDuration={{ months: 2 }}
+        pageBehavior="single"
+        defaultValue={new CalendarDate(2025, 1, 15)}
+      />
+    );
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/January 2025/i);
+    expect(calendar).toHaveTextContent(/February 2025/i);
+
+    const buttons = screen.getAllByRole('button');
+    const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
+    expect(nextButton).toBeDefined();
+    await user.click(nextButton!);
+
+    expect(calendar).toHaveTextContent(/February 2025/i);
+    expect(calendar).toHaveTextContent(/March 2025/i);
   });
 });

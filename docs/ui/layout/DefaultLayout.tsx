@@ -10,7 +10,7 @@ export const DefaultLayout = ({ children }: PropsWithChildren) => (
         'py-(--page-sub-nav-padding) xl:py-(--page-sub-nav-padding-xl)',
         'pl-(--page-padding-md) xl:pl-(--page-padding-xl)',
         'h-[calc(100vh-var(--page-header-height))] w-(--page-sub-nav-width) xl:w-(--page-sub-nav-width-xl)',
-        'fixed z-10 hidden overflow-hidden hover:overflow-y-auto md:block',
+        'fixed z-40 hidden overflow-hidden hover:overflow-y-auto md:block',
         'scrollbar-thin scrollbar-thumb-secondary-400 scrollbar-thumb-rounded-full scrollbar-track-transparent',
         'border-secondary-200 border-r',
       ].join(' ')}
