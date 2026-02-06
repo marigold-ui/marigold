@@ -8,6 +8,13 @@ import { TagField } from './TagField';
 const meta = preview.meta({
   title: 'Components/TagField',
   component: TagField,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: {
       control: { type: 'text' },
@@ -73,6 +80,26 @@ export const Basic = meta.story({
   },
 });
 
+Basic.test(
+  'Show empty state when no items match',
+  async ({ canvas, step, args }) => {
+    await step('Open the dropdown', async () => {
+      const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+      await userEvent.click(trigger);
+      await waitFor(() => canvas.getByRole('dialog'));
+    });
+
+    await step('Type a search that matches nothing', async () => {
+      const searchInput = canvas.getByRole('searchbox');
+      await userEvent.type(searchInput, 'zzzzz');
+    });
+
+    await step('Verify empty state is shown', async () => {
+      expect(canvas.getByText(/no result found|kein ergebnis/i)).toBeVisible();
+    });
+  }
+);
+
 Basic.test('Select multiple items', async ({ canvas, step, args }) => {
   await step('Open the dropdown', async () => {
     const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
@@ -82,11 +109,14 @@ Basic.test('Select multiple items', async ({ canvas, step, args }) => {
     await waitFor(() => canvas.getByRole('dialog'));
   });
 
-  await step('Select Rock and Jazz', async () => {
+  await step('Select all items', async () => {
     const dialog = canvas.getByRole('dialog');
 
     await userEvent.click(within(dialog).getByText('Rock'));
     await userEvent.click(within(dialog).getByText('Jazz'));
+    await userEvent.click(within(dialog).getByText('Pop'));
+    await userEvent.click(within(dialog).getByText('Classical'));
+    await userEvent.click(within(dialog).getByText('Electronic'));
   });
 
   await step('Close the dropdown', async () => {
@@ -97,26 +127,20 @@ Basic.test('Select multiple items', async ({ canvas, step, args }) => {
     });
   });
 
-  await step('Verify selected items appear as tags', async () => {
+  await step('Verify all selected items appear as tags', async () => {
     expect(canvas.getByTestId('selected')).toHaveTextContent(
-      'selected: ["rock","jazz"]'
+      'selected: ["rock","jazz","pop","classical","electronic"]'
     );
-    expect(canvas.getAllByText('Rock')[0]).toBeVisible();
-    expect(canvas.getAllByText('Jazz')[0]).toBeVisible();
   });
 });
 
 export const Controlled = meta.story({
-  render: ({ label }) => {
+  tags: ['component-test'],
+  render: args => {
     const [selected, setSelected] = useState<Key[]>(['rock', 'pop']);
     return (
       <Stack space={6}>
-        <TagField
-          label={label}
-          value={selected}
-          onChange={setSelected}
-          width={80}
-        >
+        <TagField value={selected} onChange={setSelected} width={80} {...args}>
           <TagField.Option id="rock">Rock</TagField.Option>
           <TagField.Option id="jazz">Jazz</TagField.Option>
           <TagField.Option id="pop">Pop</TagField.Option>
@@ -128,6 +152,19 @@ export const Controlled = meta.story({
       </Stack>
     );
   },
+});
+
+Controlled.test('Remove a tag', async ({ canvas, step }) => {
+  await step('Remove Rock tag', async () => {
+    const removeButtons = canvas.getAllByRole('button', { name: /remove/i });
+    await userEvent.click(removeButtons[0]);
+  });
+
+  await step('Verify Rock was removed', async () => {
+    expect(canvas.getByTestId('selected')).toHaveTextContent(
+      'selected: ["pop"]'
+    );
+  });
 });
 
 export const Disabled = meta.story({

@@ -1,5 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { renderWithOverlay } from '../test.utils';
 import { Basic, Controlled, Disabled, WithError } from './TagField.stories';
+
+const user = userEvent.setup();
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -74,4 +78,49 @@ test('set width via props', () => {
   const container = screen.getAllByText('Label')[0].parentElement;
 
   expect(container?.className).toContain('w-1/2');
+});
+
+test('popover width matches trigger width', async () => {
+  const original = Object.getOwnPropertyDescriptor(
+    HTMLElement.prototype,
+    'offsetWidth'
+  );
+
+  Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+    configurable: true,
+    get() {
+      return 300;
+    },
+  });
+
+  const originalRO = globalThis.ResizeObserver;
+  globalThis.ResizeObserver = class {
+    constructor(private cb: ResizeObserverCallback) {}
+    observe(target: Element) {
+      this.cb(
+        [] as unknown as ResizeObserverEntry[],
+        this as unknown as ResizeObserver
+      );
+    }
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver;
+
+  try {
+    renderWithOverlay(<Basic.Component label="Genres" />);
+
+    const button = screen.getByRole('button');
+    await user.click(button);
+
+    const dialog = screen.getByRole('dialog');
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const container = dialog.querySelector('[style*="tagfield-trigger-width"]');
+    expect(container).toHaveStyle('--tagfield-trigger-width: 300px');
+  } finally {
+    if (original) {
+      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', original);
+    }
+    globalThis.ResizeObserver = originalRO;
+  }
 });

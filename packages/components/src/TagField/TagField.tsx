@@ -1,5 +1,11 @@
 import type { Key, ReactNode, Ref } from 'react';
-import { forwardRef, useContext, useRef } from 'react';
+import {
+  forwardRef,
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import type RAC from 'react-aria-components';
 import {
   Autocomplete,
@@ -178,7 +184,20 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
   ref: Ref<HTMLDivElement>
 ) {
   const triggerRef = useRef<HTMLDivElement | null>(null);
+  const [triggerWidth, setTriggerWidth] = useState(0);
   const { contains } = useFilter({ sensitivity: 'base' });
+
+  useLayoutEffect(() => {
+    const el = triggerRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+
+    const observer = new ResizeObserver(() => {
+      setTriggerWidth(el.offsetWidth);
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const props: RAC.SelectProps<T, 'multiple'> = {
     selectionMode: 'multiple',
@@ -214,8 +233,8 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
         <div
           className={classNames.container}
           style={createVar({
-            'tagfield-trigger-width': triggerRef.current
-              ? `${triggerRef.current.offsetWidth}px`
+            'tagfield-trigger-width': triggerWidth
+              ? `${triggerWidth}px`
               : undefined,
           })}
         >
