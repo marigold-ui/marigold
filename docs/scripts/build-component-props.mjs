@@ -169,6 +169,7 @@ const transformTypeValue = async val => {
     'keyof NumberFormatOptionsSignDisplayRegistry',
     'T[]',
     'ReactNode | ReactNode[]',
+    'readonly Key[]',
   ];
   let text = val.type.name;
 
