@@ -500,3 +500,93 @@ export const WithImages = meta.story({
     });
   },
 });
+
+export const Mobile = meta.story({
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => {
+    return (
+      <Select
+        {...args}
+        label="Favorite character"
+        placeholder="Select your character"
+      >
+        <Select.Option id="mario">Mario</Select.Option>
+        <Select.Option id="luigi">Luigi</Select.Option>
+        <Select.Option id="peach">Peach</Select.Option>
+        <Select.Option id="toad">Toad</Select.Option>
+        <Select.Option id="yoshi">Yoshi</Select.Option>
+        <Select.Option id="bowser">Bowser</Select.Option>
+        <Select.Option id="wario">Wario</Select.Option>
+        <Select.Option id="waluigi">Waluigi</Select.Option>
+        <Select.Option id="daisy">Daisy</Select.Option>
+        <Select.Option id="rosalina">Rosalina</Select.Option>
+        <Select.Option id="donkey-kong">Donkey Kong</Select.Option>
+        <Select.Option id="diddy-kong">Diddy Kong</Select.Option>
+        <Select.Option id="birdo">Birdo</Select.Option>
+        <Select.Option id="koopa">Koopa Troopa</Select.Option>
+        <Select.Option id="shy-guy">Shy Guy</Select.Option>
+        <Select.Option id="boo">Boo</Select.Option>
+        <Select.Option id="goomba">Goomba</Select.Option>
+        <Select.Option id="hammer-bro">Hammer Bro</Select.Option>
+        <Select.Option id="lakitu">Lakitu</Select.Option>
+        <Select.Option id="blooper">Blooper</Select.Option>
+        <Select.Option id="king-boo">King Boo</Select.Option>
+        <Select.Option id="petey">Petey Piranha</Select.Option>
+        <Select.Option id="dry-bones">Dry Bones</Select.Option>
+        <Select.Option id="wiggler">Wiggler</Select.Option>
+        <Select.Option id="metal-mario">Metal Mario</Select.Option>
+        <Select.Option id="pink-gold-peach">Pink Gold Peach</Select.Option>
+        <Select.Option id="baby-mario">Baby Mario</Select.Option>
+        <Select.Option id="baby-luigi">Baby Luigi</Select.Option>
+        <Select.Option id="baby-peach">Baby Peach</Select.Option>
+        <Select.Option id="baby-daisy">Baby Daisy</Select.Option>
+        <Select.Option id="baby-rosalina">Baby Rosalina</Select.Option>
+        <Select.Option id="lemmy">Lemmy Koopa</Select.Option>
+        <Select.Option id="iggy">Iggy Koopa</Select.Option>
+        <Select.Option id="ludwig">Ludwig von Koopa</Select.Option>
+        <Select.Option id="roy">Roy Koopa</Select.Option>
+      </Select>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Open the tray', async () => {
+      await waitFor(async () => {
+        const button = canvas.getByLabelText(/Favorite character/i);
+
+        await userEvent.click(button);
+
+        expect(canvas.getByRole('dialog')).toBeInTheDocument();
+      });
+    });
+
+    await step('Verify dialog is visible', async () => {
+      const dialog = canvas.getByRole('dialog');
+
+      await waitFor(() => expect(dialog).toBeVisible());
+    });
+
+    await step('Select an option', async () => {
+      const dialog = canvas.getByRole('dialog');
+      const option = within(dialog).getByText('Peach');
+
+      await userEvent.click(option);
+
+      expect(option.parentElement).toHaveAttribute('aria-selected', 'true');
+    });
+
+    await step('Close select with Escape key', async () => {
+      const button = canvas.getByRole('button', {
+        name: /Favorite character/i,
+      });
+
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => {
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+
+      expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+  },
+});

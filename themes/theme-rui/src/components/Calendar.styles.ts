@@ -5,6 +5,8 @@ export const Calendar: ThemeComponent<'Calendar'> = {
     'ui-surface shadow-elevation-border p-2',
     // In a Popover
     'group-data-trigger/popover:shadow-elevation-overlay',
+    // In a Tray
+    'group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:p-0 group-[[role=dialog]]/tray:place-self-center',
   ]),
   calendarContainer: cva('flex gap-4'),
   calendarMonth: cva('min-w-[250px] flex-1'),
@@ -28,7 +30,7 @@ export const Calendar: ThemeComponent<'Calendar'> = {
   calendarHeader: cva([
     'size-9 rounded-lg p-0 text-xs font-medium text-muted-foreground/80',
   ]),
-  calendarGrid: cva('[&_td]:p-2'),
+  calendarGrid: cva('[&_td]:p-2 [&_td]:group-[[role=dialog]]/tray:p-0.75'),
   calendarListboxButton: cva([
     'rounded-md text-sm font-medium transition-[color,box-shadow]',
     'px-4 py-2',

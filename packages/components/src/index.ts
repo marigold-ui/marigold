@@ -271,5 +271,8 @@ export type { ToggleButtonProps } from './ToggleButton/ToggleButton';
 export { ToggleButtonGroup } from './ToggleButton/ToggleButtonGroup';
 export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
 
+export { Tray } from './Tray/Tray';
+export type { TrayProps } from './Tray/Tray';
+
 // Utility exports
 export * from './utils/form.utils';
