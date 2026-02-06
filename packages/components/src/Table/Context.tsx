@@ -7,7 +7,7 @@ export interface TableContextProps {
   size?: string;
   overflow?: 'truncate' | 'wrap';
   allowTextSelection?: boolean;
-  verticalAlign?: 'top' | 'middle' | 'bottom' | 'baseline';
+  alignY?: 'top' | 'middle' | 'bottom' | 'baseline';
 }
 
 export const TableContext = createContext<TableContextProps | null>(null);

@@ -107,9 +107,11 @@ Inlining form fields directly in table cells is no longer supported. This approa
 </Table>
 ```
 
-### Cell Alignment Prop
+### Cell Alignment Props
 
 The `align` prop on `Table.Column`, `Table.Cell`, and `Table.EditableCell` has been renamed to `alignX` for consistency with other Marigold layout components.
+
+Vertical alignment (`alignY`) is only available on the `Table` component itself, not on individual cells. It controls the vertical alignment of all cell content.
 
 **Migration Required:**
 
@@ -121,6 +123,11 @@ The `align` prop on `Table.Column`, `Table.Cell`, and `Table.EditableCell` has b
 // After
 <Table.Column alignX="right">Balance</Table.Column>
 <Table.Cell alignX="right">{value}</Table.Cell>
+
+// Vertical alignment (table-level only)
+<Table alignY="top">
+  {/* ... */}
+</Table>
 ```
 
 ### Column Width Values
@@ -161,7 +168,7 @@ The new `Table` component includes:
 ### Layout & Styling
 - **Text Overflow Control**: Choose between truncation and wrapping for cell content
 - **Text Selection**: Enable/disable text selection within table cells
-- **Cell Alignment**: Flexible horizontal (`alignX`) and vertical (`verticalAlign`) text alignment options
+- **Cell Alignment**: Flexible horizontal (`alignX`) and vertical (`alignY`) text alignment options
 - **Responsive Design**: Better handling of different viewport sizes
 - **Column Width Control**: Support for fixed and flexible column widths
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Cell } from 'react-aria-components';
-import { textAlign, verticalAlign } from '@marigold/system';
+import { textAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
 
@@ -24,11 +24,6 @@ export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
    * @default undefined (inherits from table)
    */
   overflow?: 'truncate' | 'wrap';
-  /**
-   * Vertical alignment of cell content. Overrides the table-level verticalAlign setting.
-   * @default undefined (inherits from table)
-   */
-  verticalAlign?: keyof typeof verticalAlign;
 }
 
 // Component
@@ -37,7 +32,6 @@ const TableCell = ({
   children,
   alignX,
   overflow: cellOverflow,
-  verticalAlign: cellVerticalAlign,
   ...props
 }: TableCellProps) => {
   const { classNames } = useTableContext();
@@ -49,7 +43,6 @@ const TableCell = ({
           columnIndex={columnIndex}
           alignX={alignX}
           cellOverflow={cellOverflow}
-          cellVerticalAlign={cellVerticalAlign}
         >
           {children}
         </TableCellContent>

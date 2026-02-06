@@ -176,7 +176,7 @@ describe('Props and Variants', () => {
     expect(innerDiv).toHaveClass('wrap-break-word');
   });
 
-  test('applies verticalAlign prop to cells', () => {
+  test('applies alignY prop to cells', () => {
     render(<VerticalAlignment.Component />);
 
     const cells = screen.getAllByRole('gridcell');
@@ -194,18 +194,6 @@ describe('Props and Variants', () => {
     const innerDiv = cell.querySelector('div');
 
     expect(innerDiv).toHaveClass('align-middle');
-  });
-
-  test('cell-level verticalAlign overrides table-level', () => {
-    render(<VerticalAlignment.Component verticalAlign="top" />);
-
-    // eslint-disable-next-line testing-library/no-node-access
-    const overrideCell = screen.getByText('Override').closest('td');
-    // eslint-disable-next-line testing-library/no-node-access
-    const innerDiv = overrideCell?.querySelector('div');
-
-    expect(innerDiv).toHaveClass('align-bottom');
-    expect(innerDiv).not.toHaveClass('align-top');
   });
 });
 

@@ -1408,7 +1408,7 @@ export const CellOverrideTableTruncate = meta.story({
 
 export const VerticalAlignment = meta.story({
   args: {
-    verticalAlign: 'top',
+    alignY: 'top',
   },
   render: args => (
     <Table aria-label="Table with vertical alignment" {...args}>
@@ -1427,10 +1427,10 @@ export const VerticalAlignment = meta.story({
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell verticalAlign="bottom">Override</Table.Cell>
+          <Table.Cell>Override</Table.Cell>
           <Table.Cell>
             <div className="h-20">
-              This row&apos;s first cell overrides with bottom alignment.
+              This row&apos;s first cell demonstrates table-level alignment.
             </div>
           </Table.Cell>
         </Table.Row>

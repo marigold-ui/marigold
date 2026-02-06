@@ -35,7 +35,7 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    * Controls vertical alignment of cell content.
    * @default 'middle'
    */
-  verticalAlign?: 'top' | 'middle' | 'bottom' | 'baseline';
+  alignY?: 'top' | 'middle' | 'bottom' | 'baseline';
 }
 
 const _Table = ({
@@ -43,7 +43,7 @@ const _Table = ({
   size,
   overflow = 'wrap',
   allowTextSelection = false,
-  verticalAlign = 'middle',
+  alignY = 'middle',
   ...props
 }: TableProps) => {
   const classNames = useClassNames({
@@ -59,9 +59,9 @@ const _Table = ({
       size,
       overflow,
       allowTextSelection,
-      verticalAlign,
+      alignY,
     }),
-    [classNames, variant, size, overflow, allowTextSelection, verticalAlign]
+    [classNames, variant, size, overflow, allowTextSelection, alignY]
   );
 
   return (

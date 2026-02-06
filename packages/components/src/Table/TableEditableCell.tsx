@@ -13,7 +13,7 @@ import {
   getOwnerDocument,
   nodeContains,
 } from '@react-aria/utils';
-import { textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
+import { textAlign, useSmallScreen } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
@@ -68,11 +68,6 @@ export interface TableEditableCellProps {
    * @default undefined (inherits from table)
    */
   overflow?: 'truncate' | 'wrap';
-  /**
-   * Vertical alignment of cell content. Overrides the table-level verticalAlign setting.
-   * @default undefined (inherits from table)
-   */
-  verticalAlign?: keyof typeof verticalAlign;
 }
 
 // EditableCellPopover
@@ -143,7 +138,6 @@ export const TableEditableCell = ({
   action,
   alignX,
   overflow: cellOverflow,
-  verticalAlign: cellVerticalAlign,
 }: TableEditableCellProps) => {
   const { classNames, allowTextSelection: tableAllowTextSelection } =
     useTableContext();
@@ -232,7 +226,6 @@ export const TableEditableCell = ({
               columnIndex={columnIndex}
               alignX={alignX}
               cellOverflow={cellOverflow}
-              cellVerticalAlign={cellVerticalAlign}
               className="min-w-0 flex-1"
               allowTextSelection={!hasSelection || tableAllowTextSelection}
             >

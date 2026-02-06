@@ -14,7 +14,7 @@ export default () => {
   );
 
   return (
-    <Table aria-label="Venue bookings" verticalAlign="top">
+    <Table aria-label="Venue bookings" alignY="top">
       <Table.Header>
         <Table.Column rowHeader width={220}>
           Venue

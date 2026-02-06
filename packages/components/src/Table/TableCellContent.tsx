@@ -28,10 +28,6 @@ export interface TableCellContentProps {
    */
   cellOverflow?: 'truncate' | 'wrap';
   /**
-   * Vertical alignment of cell content. Overrides the table-level verticalAlign setting.
-   */
-  cellVerticalAlign?: keyof typeof verticalAlign;
-  /**
    * The content of the cell.
    */
   children: ReactNode;
@@ -51,7 +47,6 @@ export const TableCellContent = ({
   columnIndex,
   alignX,
   cellOverflow,
-  cellVerticalAlign,
   children,
   className,
   allowTextSelection,
@@ -59,13 +54,12 @@ export const TableCellContent = ({
   const {
     overflow: tableOverflow,
     allowTextSelection: tableAllowTextSelection,
-    verticalAlign: tableVerticalAlign = 'middle',
+    alignY: tableAlignY = 'middle',
   } = useTableContext();
   const state = useContext(TableStateContext);
 
   // Cell-level overrides table-level
   const overflow = cellOverflow ?? tableOverflow;
-  const vAlign = cellVerticalAlign ?? tableVerticalAlign;
 
   // Cell-level overrides table-level
   const selectable = allowTextSelection ?? tableAllowTextSelection;
@@ -81,7 +75,7 @@ export const TableCellContent = ({
       data-cell-content=""
       className={cn(
         textAlign[alignX || columnAlign || 'left'],
-        verticalAlign[vAlign],
+        verticalAlign[tableAlignY],
         overflow === 'truncate' ? 'truncate' : 'wrap-break-word',
         selectable && 'cursor-text select-text',
         className
