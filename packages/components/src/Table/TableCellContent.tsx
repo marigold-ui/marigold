@@ -63,8 +63,7 @@ export const TableCellContent = ({
   const vAlign = cellVerticalAlign ?? tableVerticalAlign;
 
   // Determine if content should be selectable
-  const selectable =
-    allowTextSelection && state?.selectionManager.selectionMode !== 'none';
+  const selectable = allowTextSelection;
 
   // Get align prop from column
   const columnAlign = columnIndex
@@ -78,7 +77,7 @@ export const TableCellContent = ({
         textAlign[align || columnAlign || 'left'],
         verticalAlign[vAlign],
         overflow === 'truncate' ? 'truncate' : 'wrap-break-word',
-        selectable && 'cursor-text outline-none',
+        selectable && 'cursor-text outline-none select-text',
         className
       )}
       tabIndex={selectable ? -1 : undefined}

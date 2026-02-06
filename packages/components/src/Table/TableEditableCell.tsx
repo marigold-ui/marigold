@@ -260,7 +260,9 @@ export const TableEditableCell = ({
                 onSubmit={handleSubmit}
               >
                 <Dialog.Content>
-                  <FocusScope autoFocus>{renderField()}</FocusScope>
+                  <FocusScope autoFocus restoreFocus>
+                    {renderField()}
+                  </FocusScope>
                 </Dialog.Content>
                 <Dialog.Actions>
                   {cancelButton}
