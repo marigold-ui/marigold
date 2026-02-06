@@ -5,7 +5,7 @@ import type {
   RefObject,
 } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { Cell, Popover } from 'react-aria-components';
+import { Cell, Popover, useTableOptions } from 'react-aria-components';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import {
@@ -145,7 +145,10 @@ export const TableEditableCell = ({
   overflow: cellOverflow,
   verticalAlign: cellVerticalAlign,
 }: TableEditableCellProps) => {
-  const { classNames } = useTableContext();
+  const { classNames, allowTextSelection: tableAllowTextSelection } =
+    useTableContext();
+  const { selectionMode } = useTableOptions();
+  const hasSelection = selectionMode !== 'none';
   const isSmallScreen = useSmallScreen();
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
@@ -231,6 +234,7 @@ export const TableEditableCell = ({
               cellOverflow={cellOverflow}
               cellVerticalAlign={cellVerticalAlign}
               className="min-w-0 flex-1"
+              allowTextSelection={!hasSelection || tableAllowTextSelection}
             >
               {children}
             </TableCellContent>

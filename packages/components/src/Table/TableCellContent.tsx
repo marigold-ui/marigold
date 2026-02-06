@@ -39,6 +39,10 @@ export interface TableCellContentProps {
    * Optional additional classes to apply to the content wrapper.
    */
   className?: string;
+  /**
+   * Whether text selection is allowed. Overrides the table-level `allowTextSelection` setting.
+   */
+  allowTextSelection?: boolean;
 }
 
 // Component
@@ -50,10 +54,11 @@ export const TableCellContent = ({
   cellVerticalAlign,
   children,
   className,
+  allowTextSelection,
 }: TableCellContentProps) => {
   const {
     overflow: tableOverflow,
-    allowTextSelection,
+    allowTextSelection: tableAllowTextSelection,
     verticalAlign: tableVerticalAlign = 'middle',
   } = useTableContext();
   const state = useContext(TableStateContext);
@@ -62,8 +67,8 @@ export const TableCellContent = ({
   const overflow = cellOverflow ?? tableOverflow;
   const vAlign = cellVerticalAlign ?? tableVerticalAlign;
 
-  // Determine if content should be selectable
-  const selectable = allowTextSelection;
+  // Cell-level overrides table-level
+  const selectable = allowTextSelection ?? tableAllowTextSelection;
 
   // Get align prop from column
   const columnAlign = columnIndex
