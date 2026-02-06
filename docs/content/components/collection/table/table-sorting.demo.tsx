@@ -35,10 +35,10 @@ export default () => {
         <Table.Column id="name" allowsSorting rowHeader>
           Venue
         </Table.Column>
-        <Table.Column id="capacity" align="right" width={120} allowsSorting>
+        <Table.Column id="capacity" alignX="right" width={120} allowsSorting>
           Capacity
         </Table.Column>
-        <Table.Column id="rating" align="right" width={90} allowsSorting>
+        <Table.Column id="rating" alignX="right" width={90} allowsSorting>
           Rating
         </Table.Column>
         <Table.Column>Description</Table.Column>
@@ -49,10 +49,10 @@ export default () => {
             <Table.Cell>
               <Text weight="medium">{item.name}</Text>
             </Table.Cell>
-            <Table.Cell align="right">
+            <Table.Cell alignX="right">
               <NumericFormat value={item.capacity} />
             </Table.Cell>
-            <Table.Cell align="right">
+            <Table.Cell alignX="right">
               <NumericFormat
                 value={item.rating}
                 minimumFractionDigits={1}

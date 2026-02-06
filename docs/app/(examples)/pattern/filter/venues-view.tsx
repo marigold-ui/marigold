@@ -56,16 +56,16 @@ export const VenuesView = () => {
         <Table.Column rowHeader>Name</Table.Column>
         <Table.Column>Type</Table.Column>
         <Table.Column>Address</Table.Column>
-        <Table.Column align="right" width={80}>
+        <Table.Column alignX="right" width={80}>
           Capacity
         </Table.Column>
-        <Table.Column align="right" maxWidth={180}>
+        <Table.Column alignX="right" maxWidth={180}>
           Price
         </Table.Column>
         <Table.Column maxWidth={200}>Traits</Table.Column>
         <Table.Column>Amenities</Table.Column>
         <Table.Column maxWidth={200}>Parking</Table.Column>
-        <Table.Column align="right" width={60}>
+        <Table.Column alignX="right" width={60}>
           Rating
         </Table.Column>
       </Table.Header>

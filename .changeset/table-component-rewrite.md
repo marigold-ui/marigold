@@ -107,6 +107,22 @@ Inlining form fields directly in table cells is no longer supported. This approa
 </Table>
 ```
 
+### Cell Alignment Prop
+
+The `align` prop on `Table.Column`, `Table.Cell`, and `Table.EditableCell` has been renamed to `alignX` for consistency with other Marigold layout components.
+
+**Migration Required:**
+
+```typescript
+// Before
+<Table.Column align="right">Balance</Table.Column>
+<Table.Cell align="right">{value}</Table.Cell>
+
+// After
+<Table.Column alignX="right">Balance</Table.Column>
+<Table.Cell alignX="right">{value}</Table.Cell>
+```
+
 ### Column Width Values
 
 Tailwind CSS width classes are no longer supported on `Table.Column`. Column widths now use pixel values or CSS grid units, which provides better content-fitting behavior and more predictable layouts.
@@ -145,7 +161,7 @@ The new `Table` component includes:
 ### Layout & Styling
 - **Text Overflow Control**: Choose between truncation and wrapping for cell content
 - **Text Selection**: Enable/disable text selection within table cells
-- **Cell Alignment**: Flexible horizontal and vertical text alignment options
+- **Cell Alignment**: Flexible horizontal (`alignX`) and vertical (`verticalAlign`) text alignment options
 - **Responsive Design**: Better handling of different viewport sizes
 - **Column Width Control**: Support for fixed and flexible column widths
 

@@ -7,28 +7,28 @@ const columns = [
     name: 'Venue',
     key: 'name',
     width: '1fr',
-    align: 'left',
+    alignX: 'left',
     rowHeader: true,
   },
   {
     name: 'Type',
     key: 'type',
     width: '1fr',
-    align: 'left',
+    alignX: 'left',
     rowHeader: false,
   },
   {
     name: 'City',
     key: 'city',
     width: '1fr',
-    align: 'left',
+    alignX: 'left',
     rowHeader: false,
   },
   {
     name: 'Capacity',
     key: 'capacity',
     width: 100,
-    align: 'right',
+    alignX: 'right',
     rowHeader: false,
   },
 ] as const;
@@ -39,7 +39,7 @@ export default (props: TableProps) => (
       {column => (
         <Table.Column
           width={column.width}
-          align={column.align}
+          alignX={column.alignX}
           rowHeader={column.rowHeader}
         >
           {column.name}

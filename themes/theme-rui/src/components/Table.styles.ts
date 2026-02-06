@@ -90,7 +90,7 @@ export const Table: ThemeComponent<'Table'> = {
   body: cva(['bg-background']),
   cell: cva([
     'px-(--cell-x-padding) py-(--cell-y-padding)',
-    'focus:outline-2 focus:-outline-offset-2 focus:outline-ring/50',
+    'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
     'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/50',
     '**:data-cell-content:outline-none',
   ]),

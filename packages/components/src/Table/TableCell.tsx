@@ -18,7 +18,7 @@ export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
    * Horizontal text alignment of the cell content.
    * @default 'left'
    */
-  align?: keyof typeof textAlign;
+  alignX?: keyof typeof textAlign;
   /**
    * Text overflow behavior for this specific cell. Overrides the table-level overflow setting.
    * @default undefined (inherits from table)
@@ -35,7 +35,7 @@ export interface TableCellProps extends Omit<RAC.CellProps, RemovedProps> {
 // ---------------
 const TableCell = ({
   children,
-  align,
+  alignX,
   overflow: cellOverflow,
   verticalAlign: cellVerticalAlign,
   ...props
@@ -47,7 +47,7 @@ const TableCell = ({
       {({ columnIndex }) => (
         <TableCellContent
           columnIndex={columnIndex}
-          align={align}
+          alignX={alignX}
           cellOverflow={cellOverflow}
           cellVerticalAlign={cellVerticalAlign}
         >

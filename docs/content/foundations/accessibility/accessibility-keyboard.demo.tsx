@@ -100,9 +100,9 @@ export default () => {
           <Table.Header>
             <Table.Column rowHeader>Name</Table.Column>
             <Table.Column>Date</Table.Column>
-            <Table.Column align="right">Price</Table.Column>
-            <Table.Column align="right">Available Tickets</Table.Column>
-            <Table.Column align="right">Status</Table.Column>
+            <Table.Column alignX="right">Price</Table.Column>
+            <Table.Column alignX="right">Available Tickets</Table.Column>
+            <Table.Column alignX="right">Status</Table.Column>
           </Table.Header>
           <Table.Body items={items}>
             {item => (

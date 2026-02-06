@@ -14,7 +14,7 @@ export default () => (
     <Table.Header>
       <Table.Column rowHeader>Venue</Table.Column>
       <Table.Column>Address</Table.Column>
-      <Table.Column align="right">Rating</Table.Column>
+      <Table.Column alignX="right">Rating</Table.Column>
       <Table.Column>Action</Table.Column>
     </Table.Header>
     <Table.Body>

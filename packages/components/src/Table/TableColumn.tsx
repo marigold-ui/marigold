@@ -38,7 +38,7 @@ export interface TableColumnProps extends Omit<RAC.ColumnProps, RemovedProps> {
    * Horizontal text alignment of the column's content.
    * @default 'left'
    */
-  align?: keyof typeof textAlign;
+  alignX?: keyof typeof textAlign;
   /** The width of the column. */
   width?: RAC.ColumnProps['width'];
   /** The default width of the column. */
@@ -52,7 +52,7 @@ export interface TableColumnProps extends Omit<RAC.ColumnProps, RemovedProps> {
 // Component
 // ---------------
 const TableColumn = ({
-  align = 'left',
+  alignX = 'left',
   width,
   minWidth,
   rowHeader,
@@ -68,14 +68,14 @@ const TableColumn = ({
       minWidth={ensureWidth(width, minWidth)}
       isRowHeader={rowHeader}
       // @ts-expect-error will be passed down
-      align={align}
+      alignX={alignX}
       {...props}
     >
       {({ allowsSorting, sortDirection }) => (
         <div
           className={cn(
             'flex items-center gap-1',
-            alignment.horizontal.alignmentX[align]
+            alignment.horizontal.alignmentX[alignX]
           )}
         >
           {allowsSorting && sortDirection != null && (

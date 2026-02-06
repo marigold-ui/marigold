@@ -155,7 +155,7 @@ export const Basic = meta.story({
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
-        <Table.Column align="right">Balance</Table.Column>
+        <Table.Column alignX="right">Balance</Table.Column>
       </Table.Header>
       <Table.Body>
         {users.map(user => (
@@ -341,7 +341,7 @@ export const WidthsAndOverflow = meta.story({
               <Table.Column minWidth={100}>Name</Table.Column>
               <Table.Column width={100}>Status</Table.Column>
               <Table.Column minWidth={100}>Location</Table.Column>
-              <Table.Column minWidth={80} align="right">
+              <Table.Column minWidth={80} alignX="right">
                 Balance
               </Table.Column>
             </Table.Header>
@@ -358,7 +358,7 @@ export const WidthsAndOverflow = meta.story({
                     </Badge>
                   </Table.Cell>
                   <Table.Cell>{user.location}</Table.Cell>
-                  <Table.Cell align="right">
+                  <Table.Cell alignX="right">
                     <NumericFormat
                       value={user.balance}
                       style="currency"
@@ -369,7 +369,7 @@ export const WidthsAndOverflow = meta.story({
               ))}
               <Table.Row>
                 <Table.Cell colSpan={4}>Total</Table.Cell>
-                <Table.Cell align="right">
+                <Table.Cell alignX="right">
                   <NumericFormat
                     value={users
                       .slice(0, 5)
@@ -476,13 +476,13 @@ export const Sorting = meta.story({
   tags: ['component-test'],
   render: args => {
     const columns = [
-      { name: 'Name', id: 'name', align: 'left', rowHeader: true },
-      { name: 'Height', id: 'height', align: 'right', rowHeader: false },
-      { name: 'Mass', id: 'mass', align: 'right', rowHeader: false },
+      { name: 'Name', id: 'name', alignX: 'left', rowHeader: true },
+      { name: 'Height', id: 'height', alignX: 'right', rowHeader: false },
+      { name: 'Mass', id: 'mass', alignX: 'right', rowHeader: false },
       {
         name: 'Birth Year',
         id: 'birth_year',
-        align: 'left',
+        alignX: 'left',
         rowHeader: false,
       },
     ] as const;
@@ -593,7 +593,7 @@ export const Sorting = meta.story({
               <Table.Column
                 rowHeader={column.rowHeader}
                 id={column.id}
-                align={column.align}
+                alignX={column.alignX}
                 allowsSorting
               >
                 {column.name}
@@ -604,7 +604,7 @@ export const Sorting = meta.story({
             {item => (
               <Table.Row columns={columns}>
                 {column => (
-                  <Table.Cell align={column.align}>
+                  <Table.Cell alignX={column.alignX}>
                     {item[column.id]}
                   </Table.Cell>
                 )}
@@ -677,8 +677,8 @@ export const WithActions = meta.story({
         <Table.Column>Email</Table.Column>
         <Table.Column>Location</Table.Column>
         <Table.Column>Status</Table.Column>
-        <Table.Column align="right">Balance</Table.Column>
-        <Table.Column width={72} align="right">
+        <Table.Column alignX="right">Balance</Table.Column>
+        <Table.Column width={72} alignX="right">
           Actions
         </Table.Column>
       </Table.Header>
@@ -698,14 +698,14 @@ export const WithActions = meta.story({
             <Table.Cell>
               <Badge>{user.status}</Badge>
             </Table.Cell>
-            <Table.Cell align="right">
+            <Table.Cell alignX="right">
               <NumericFormat
                 style="currency"
                 currency="EUR"
                 value={user.balance}
               />
             </Table.Cell>
-            <Table.Cell align="right">
+            <Table.Cell alignX="right">
               <ActionMenu aria-label="Actions">
                 <ActionMenu.Item key="view">View</ActionMenu.Item>
                 <ActionMenu.Item key="edit">Edit</ActionMenu.Item>

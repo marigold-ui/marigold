@@ -33,7 +33,7 @@ export const UserTable = () => (
         <Table.Column>Email</Table.Column>
         <Table.Column>Status</Table.Column>
         <Table.Column>Role</Table.Column>
-        <Table.Column align="right">&nbsp;</Table.Column>
+        <Table.Column alignX="right">&nbsp;</Table.Column>
       </Table.Header>
       <Table.Body>
         {people.map(person => (

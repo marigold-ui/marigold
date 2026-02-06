@@ -9,7 +9,7 @@ export default () => {
           Venue
         </Table.Column>
         <Table.Column>Description</Table.Column>
-        <Table.Column width={75} align="right">
+        <Table.Column width={75} alignX="right">
           Rating
         </Table.Column>
       </Table.Header>

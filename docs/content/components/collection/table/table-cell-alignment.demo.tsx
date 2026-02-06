@@ -19,10 +19,10 @@ export default () => {
         <Table.Column rowHeader width={220}>
           Venue
         </Table.Column>
-        <Table.Column align="right">Nights</Table.Column>
-        <Table.Column align="right">Guests</Table.Column>
-        <Table.Column align="right">Price/Night</Table.Column>
-        <Table.Column align="right">Subtotal</Table.Column>
+        <Table.Column alignX="right">Nights</Table.Column>
+        <Table.Column alignX="right">Guests</Table.Column>
+        <Table.Column alignX="right">Price/Night</Table.Column>
+        <Table.Column alignX="right">Subtotal</Table.Column>
       </Table.Header>
       <Table.Body>
         {bookings.map(booking => (
@@ -35,16 +35,16 @@ export default () => {
                 </Text>
               </Stack>
             </Table.Cell>
-            <Table.Cell align="right">{booking.nights}</Table.Cell>
-            <Table.Cell align="right">{booking.guests}</Table.Cell>
-            <Table.Cell align="right">
+            <Table.Cell alignX="right">{booking.nights}</Table.Cell>
+            <Table.Cell alignX="right">{booking.guests}</Table.Cell>
+            <Table.Cell alignX="right">
               <NumericFormat
                 style="currency"
                 currency="USD"
                 value={booking.price.from}
               />
             </Table.Cell>
-            <Table.Cell align="right">
+            <Table.Cell alignX="right">
               <NumericFormat
                 style="currency"
                 currency="USD"
@@ -54,10 +54,10 @@ export default () => {
           </Table.Row>
         ))}
         <Table.Row>
-          <Table.Cell colSpan={4} align="right">
+          <Table.Cell colSpan={4} alignX="right">
             <Text weight="semibold">Total</Text>
           </Table.Cell>
-          <Table.Cell align="right">
+          <Table.Cell alignX="right">
             <Text weight="semibold">
               <NumericFormat style="currency" currency="USD" value={total} />
             </Text>

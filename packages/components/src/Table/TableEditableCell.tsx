@@ -62,7 +62,7 @@ export interface TableEditableCellProps {
    * Horizontal text alignment of the cell content.
    * @default 'left'
    */
-  align?: keyof typeof textAlign;
+  alignX?: keyof typeof textAlign;
   /**
    * Text overflow behavior for this specific cell. Overrides the table-level overflow setting.
    * @default undefined (inherits from table)
@@ -141,7 +141,7 @@ export const TableEditableCell = ({
   onCancel,
   disabled = false,
   action,
-  align,
+  alignX,
   overflow: cellOverflow,
   verticalAlign: cellVerticalAlign,
 }: TableEditableCellProps) => {
@@ -230,7 +230,7 @@ export const TableEditableCell = ({
           <div className="group/editable-cell flex items-center gap-1">
             <TableCellContent
               columnIndex={columnIndex}
-              align={align}
+              alignX={alignX}
               cellOverflow={cellOverflow}
               cellVerticalAlign={cellVerticalAlign}
               className="min-w-0 flex-1"

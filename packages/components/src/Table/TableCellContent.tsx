@@ -22,7 +22,7 @@ export interface TableCellContentProps {
   /**
    * Horizontal text alignment of the cell content.
    */
-  align?: keyof typeof textAlign;
+  alignX?: keyof typeof textAlign;
   /**
    * Text overflow behavior for this specific cell. Overrides the table-level overflow setting.
    */
@@ -49,7 +49,7 @@ export interface TableCellContentProps {
 // ---------------
 export const TableCellContent = ({
   columnIndex,
-  align,
+  alignX,
   cellOverflow,
   cellVerticalAlign,
   children,
@@ -70,17 +70,17 @@ export const TableCellContent = ({
   // Cell-level overrides table-level
   const selectable = allowTextSelection ?? tableAllowTextSelection;
 
-  // Get align prop from column
+  // Get alignX prop from column
   const columnAlign = columnIndex
     ? (state?.collection.columns[columnIndex].props
-        .align as keyof typeof textAlign)
+        .alignX as keyof typeof textAlign)
     : undefined;
 
   return (
     <div
       data-cell-content=""
       className={cn(
-        textAlign[align || columnAlign || 'left'],
+        textAlign[alignX || columnAlign || 'left'],
         verticalAlign[vAlign],
         overflow === 'truncate' ? 'truncate' : 'wrap-break-word',
         selectable && 'cursor-text select-text',
