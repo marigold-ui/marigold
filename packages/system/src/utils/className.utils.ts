@@ -1,50 +1,49 @@
-import { type ClassValue, type VariantProps, cva as _cva, cx } from 'cva';
+import { type ClassValue, type VariantProps, defineConfig } from 'cva';
 import { twMerge } from 'tailwind-merge';
 
-// Re-export types used externally
 export type { ClassValue, VariantProps };
-
-// Internal helper types
-type ClassProp = { className?: ClassValue; class?: ClassValue };
-type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
-
-// Config types for variant schema
 export type ConfigSchema = Record<string, Record<string, ClassValue>>;
-type ConfigVariants<T extends ConfigSchema> = {
-  [Variant in keyof T]?: StringToBoolean<keyof T[Variant]> | null | undefined;
-};
-type ConfigVariantsMulti<T extends ConfigSchema> = {
-  [Variant in keyof T]?:
-    | StringToBoolean<keyof T[Variant]>
-    | StringToBoolean<keyof T[Variant]>[]
-    | undefined;
-};
 
-interface CvaConfig<T extends ConfigSchema = ConfigSchema> {
+const { cva: _cva, cx } = defineConfig({
+  hooks: { onComplete: className => twMerge(className) },
+});
+
+/**
+ * Merge class names with Tailwind-aware conflict resolution.
+ * Accepts strings, arrays, and conditional values (falsy values are filtered out).
+ *
+ * @example
+ * cn('px-4', 'px-8') // => 'px-8'
+ * cn('text-sm', isLarge && 'text-lg') // => 'text-lg' (when isLarge is true)
+ */
+export const cn = cx;
+
+/**
+ * Create a variant-driven class name function with Tailwind-aware merging.
+ * Wraps cva to attach a `.variants` property used by `extendTheme`.
+ *
+ * @example
+ * const button = cva({
+ *   base: ['px-4 py-2'],
+ *   variants: {
+ *     variant: { primary: 'bg-blue-500', secondary: 'bg-gray-200' },
+ *     size: { sm: 'text-sm', lg: 'text-lg' },
+ *   },
+ *   defaultVariants: { variant: 'primary' },
+ * });
+ *
+ * button() // => 'px-4 py-2 bg-blue-500'
+ * button({ variant: 'secondary', size: 'lg' }) // => 'px-4 py-2 bg-gray-200 text-lg'
+ * button.variants // => { variant: { primary: '...', ... }, size: { ... } }
+ */
+export const cva = (config?: {
   base?: ClassValue;
-  variants?: T;
-  defaultVariants?: ConfigVariants<T>;
-  compoundVariants?: ((ConfigVariants<T> | ConfigVariantsMulti<T>) &
-    ClassProp)[];
-}
-
-type Props<T> = T extends ConfigSchema
-  ? ConfigVariants<T> & ClassProp
-  : ClassProp;
-
-export const cva = <T extends ConfigSchema>(config?: CvaConfig<T>) => {
-  const styleFn = config
-    ? (_cva(config as Parameters<typeof _cva>[0]) as (
-        props?: Props<T>
-      ) => string)
-    : undefined;
-
-  function styles(props?: Props<T>) {
-    return twMerge(styleFn ? styleFn(props) : '');
-  }
-  styles.variants = config?.variants;
-
-  return styles;
+  variants?: ConfigSchema;
+  defaultVariants?: Record<string, string>;
+  compoundVariants?: Record<string, unknown>[];
+}) => {
+  const fn = config
+    ? _cva(config as Parameters<typeof _cva>[0])
+    : ((() => '') as (...args: unknown[]) => string);
+  return Object.assign(fn, { variants: config?.variants });
 };
-
-export const cn = (...inputs: ClassValue[]) => twMerge(cx(inputs));
