@@ -29,15 +29,6 @@ export const getVariants = (fn: AnyFunction): ConfigSchema | undefined =>
  */
 export const cn = cx;
 
-// Internal types for CVA variant inference
-type StringToBoolean<T> = T extends 'true' | 'false' ? boolean : T;
-type CVAVariantSchema<V extends ConfigSchema> = {
-  [Variant in keyof V]?: StringToBoolean<keyof V[Variant]> | undefined;
-};
-type CVAClassProp =
-  | { class?: ClassValue; className?: never }
-  | { class?: never; className?: ClassValue };
-
 /**
  * Create a variant-driven class name function with Tailwind-aware merging.
  * Variant config is stored internally and accessible via `getVariants()`.
@@ -55,28 +46,15 @@ type CVAClassProp =
  * button() // => 'px-4 py-2 bg-blue-500'
  * button({ variant: 'secondary', size: 'lg' }) // => 'px-4 py-2 bg-gray-200 text-lg'
  */
-export function cva<V extends ConfigSchema>(config: {
-  base?: ClassValue;
-  variants: V;
-  defaultVariants?: Partial<CVAVariantSchema<V>>;
-  compoundVariants?: Array<Partial<CVAVariantSchema<V>> & CVAClassProp>;
-}): (props?: CVAVariantSchema<V> & CVAClassProp) => string;
-export function cva(config?: {
-  base?: ClassValue;
-}): (props?: CVAClassProp) => string;
-export function cva(
-  config?:
-    | {
-        base?: ClassValue;
-        variants?: ConfigSchema;
-        defaultVariants?: Record<string, string>;
-        compoundVariants?: Record<string, unknown>[];
-      }
-    | { base?: ClassValue }
-) {
-  const fn = config
-    ? _cva(config as Parameters<typeof _cva>[0])
+export const cva: typeof _cva & { (): () => string } = ((
+  ...args: Parameters<typeof _cva> | []
+) => {
+  const fn = args.length
+    ? _cva(args[0] as Parameters<typeof _cva>[0])
     : ((() => '') as (...args: unknown[]) => string);
-  variantStore.set(fn, (config as { variants?: ConfigSchema })?.variants);
+  variantStore.set(
+    fn,
+    (args[0] as { variants?: ConfigSchema } | undefined)?.variants
+  );
   return fn;
-}
+}) as typeof _cva & { (): () => string };
