@@ -1,5 +1,5 @@
 import { describe, expect, it, test } from 'vitest';
-import { cn, cva } from './className.utils';
+import { cn, cva, getVariants } from './className.utils';
 
 describe('cva', () => {
   test('cva (simple)', () => {
@@ -76,7 +76,7 @@ describe('cva', () => {
     expect(styles({ class: 'text-lg' })).toMatchInlineSnapshot(`"text-lg"`);
   });
 
-  test('cva exposes variants property', () => {
+  test('getVariants retrieves variant config', () => {
     const styles = cva({
       base: ['base'],
       variants: {
@@ -87,8 +87,8 @@ describe('cva', () => {
       },
     });
 
-    expect(styles.variants).toBeDefined();
-    expect(styles.variants?.size).toEqual({
+    expect(getVariants(styles)).toBeDefined();
+    expect(getVariants(styles)?.size).toEqual({
       sm: 'text-sm',
       lg: 'text-lg',
     });

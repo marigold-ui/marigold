@@ -1,5 +1,5 @@
 import { Theme } from '../types/theme';
-import { cva } from '../utils/className.utils';
+import { cva, getVariants } from '../utils/className.utils';
 
 export type StylesProps = {
   [K in keyof Theme['components']]: Partial<Theme['components'][K]>;
@@ -26,8 +26,8 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
           const variants = ['size', 'variant'].reduce((acc, variantItem) => {
             // @ts-expect-error any
             acc[variantItem] = {
-              ...newSlot?.variants?.[variantItem],
-              ...mergedSlot?.variants?.[variantItem],
+              ...getVariants(newSlot)?.[variantItem],
+              ...getVariants(mergedSlot)?.[variantItem],
             };
             return acc;
           }, {});
@@ -42,10 +42,11 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
     } else {
       const variants = ['size', 'variant'].reduce((acc, variantItem) => {
         // @ts-expect-error any
-        const newStylesVariants = newStyles[component].variants?.[variantItem];
-        const mergedStylesVariants =
-          // @ts-expect-error any
-          mergedStyles[component].variants?.[variantItem];
+        const newStylesVariants = getVariants(newStyles[component])?.[
+          variantItem
+        ];
+        const mergedStylesVariants = // @ts-expect-error any
+        getVariants(mergedStyles[component])?.[variantItem];
 
         if (newStylesVariants && mergedStylesVariants) {
           const dupVariants = Object.keys(newStylesVariants).filter(variant =>
@@ -59,9 +60,9 @@ export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
         // @ts-expect-error any
         acc[variantItem] = {
           // @ts-expect-error any
-          ...newStyles[component].variants?.[variantItem],
+          ...getVariants(newStyles[component])?.[variantItem],
           // @ts-expect-error any
-          ...mergedStyles[component].variants?.[variantItem],
+          ...getVariants(mergedStyles[component])?.[variantItem],
         };
         return acc;
       }, {});

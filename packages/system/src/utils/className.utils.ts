@@ -9,6 +9,16 @@ const { cva: _cva, cx } = defineConfig({
   hooks: { onComplete: className => twMerge(className) },
 });
 
+// Store variant config associated with each cva function without polluting the public API
+type AnyFunction = (...args: never[]) => unknown;
+const variantStore = new WeakMap<AnyFunction, ConfigSchema | undefined>();
+
+/**
+ * Retrieve the variant config for a cva function.
+ */
+export const getVariants = (fn: AnyFunction): ConfigSchema | undefined =>
+  variantStore.get(fn);
+
 /**
  * Merge class names with Tailwind-aware conflict resolution.
  * Accepts strings, arrays, and conditional values (falsy values are filtered out).
@@ -30,7 +40,7 @@ type CVAClassProp =
 
 /**
  * Create a variant-driven class name function with Tailwind-aware merging.
- * Wraps cva to attach a `.variants` property used by `extendTheme`.
+ * Variant config is stored internally and accessible via `getVariants()`.
  *
  * @example
  * const button = cva({
@@ -44,17 +54,16 @@ type CVAClassProp =
  *
  * button() // => 'px-4 py-2 bg-blue-500'
  * button({ variant: 'secondary', size: 'lg' }) // => 'px-4 py-2 bg-gray-200 text-lg'
- * button.variants // => { variant: { primary: '...', ... }, size: { ... } }
  */
 export function cva<V extends ConfigSchema>(config: {
   base?: ClassValue;
   variants: V;
   defaultVariants?: Partial<CVAVariantSchema<V>>;
   compoundVariants?: Array<Partial<CVAVariantSchema<V>> & CVAClassProp>;
-}): ((props?: CVAVariantSchema<V> & CVAClassProp) => string) & { variants: V };
+}): (props?: CVAVariantSchema<V> & CVAClassProp) => string;
 export function cva(config?: {
   base?: ClassValue;
-}): ((props?: CVAClassProp) => string) & { variants: undefined };
+}): (props?: CVAClassProp) => string;
 export function cva(
   config?:
     | {
@@ -68,7 +77,6 @@ export function cva(
   const fn = config
     ? _cva(config as Parameters<typeof _cva>[0])
     : ((() => '') as (...args: unknown[]) => string);
-  return Object.assign(fn, {
-    variants: (config as { variants?: ConfigSchema })?.variants,
-  });
+  variantStore.set(fn, (config as { variants?: ConfigSchema })?.variants);
+  return fn;
 }

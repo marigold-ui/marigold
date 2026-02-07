@@ -5,13 +5,16 @@ import {
   Table,
   Text,
   fontWeight,
+  getVariants,
   textAlign,
   textSize,
   textStyle,
 } from '@/ui';
 
 export const Headlines = () => {
-  const headline = ruiTheme.components.Headline?.variants;
+  const headline = ruiTheme.components.Headline
+    ? getVariants(ruiTheme.components.Headline)
+    : undefined;
 
   if (!headline) {
     return null;
@@ -25,7 +28,7 @@ export const Headlines = () => {
         <Table.Column key={'size'}>Styles</Table.Column>
       </Table.Header>
       <Table.Body>
-        {Object.entries(headline?.size).map(([level, value]) => (
+        {Object.entries(headline?.size ?? {}).map(([level, value]) => (
           <Table.Row key={level}>
             <Table.Cell>{level}</Table.Cell>
             <Table.Cell>
