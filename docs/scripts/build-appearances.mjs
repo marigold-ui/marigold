@@ -1,5 +1,6 @@
 // @ts-check
-import { fs, path } from 'zx';
+import ts from 'typescript';
+import { fs, glob, path } from 'zx';
 
 console.log('🎨 Generating appearances data...');
 
@@ -12,45 +13,126 @@ const sharedAppearances = {
   ToggleButtonGroup: 'ToggleButton',
 };
 
+/**
+ * Extract property name keys from a `variants` object literal in a cva() call.
+ * Returns `{ variant: string[], size: string[] }`.
+ */
+function extractVariantKeys(cvaArg) {
+  if (!cvaArg || !ts.isObjectLiteralExpression(cvaArg)) {
+    return { variant: [], size: [] };
+  }
+
+  const variantProp = cvaArg.properties.find(
+    p => ts.isPropertyAssignment(p) && p.name.getText() === 'variants'
+  );
+
+  if (
+    !variantProp ||
+    !ts.isPropertyAssignment(variantProp) ||
+    !ts.isObjectLiteralExpression(variantProp.initializer)
+  ) {
+    return { variant: [], size: [] };
+  }
+
+  const result = { variant: [], size: [] };
+
+  for (const prop of variantProp.initializer.properties) {
+    if (!ts.isPropertyAssignment(prop)) continue;
+    const name = prop.name.getText();
+    if (name !== 'variant' && name !== 'size') continue;
+
+    if (ts.isObjectLiteralExpression(prop.initializer)) {
+      result[name] = prop.initializer.properties
+        .filter(p => ts.isPropertyAssignment(p))
+        .map(p => {
+          // Handle both identifiers and string literals as keys
+          const keyNode = p.name;
+          if (ts.isStringLiteral(keyNode)) return keyNode.text;
+          if (ts.isComputedPropertyName(keyNode)) return keyNode.getText();
+          return keyNode.getText();
+        });
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Find all cva() call expressions in a node (recursively).
+ */
+function findCvaCalls(node) {
+  const calls = [];
+  function visit(n) {
+    if (
+      ts.isCallExpression(n) &&
+      ts.isIdentifier(n.expression) &&
+      n.expression.text === 'cva'
+    ) {
+      calls.push(n);
+    }
+    ts.forEachChild(n, visit);
+  }
+  visit(node);
+  return calls;
+}
+
 async function main() {
-  // Import the built theme and getVariants
-  const { default: theme } = await import('@marigold/theme-rui');
-  const { getVariants } = await import('@marigold/system');
+  const stylesDir = path.resolve(
+    import.meta.dirname,
+    '../../themes/theme-rui/src/components'
+  );
+  const files = await glob(`${stylesDir}/*.styles.ts`);
 
   /** @type {Record<string, { variant: string[], size: string[] }>} */
   const appearances = {};
 
-  for (const [name, styles] of Object.entries(theme.components)) {
-    if (typeof styles === 'function') {
-      // Single-slot component
-      const variants = getVariants(styles);
-      appearances[name] = {
-        variant: variants?.variant ? Object.keys(variants.variant) : [],
-        size: variants?.size ? Object.keys(variants.size) : [],
-      };
-    } else if (typeof styles === 'object' && styles !== null) {
-      // Multi-slot component: union variant/size keys across all slots
-      const variantKeys = new Set();
-      const sizeKeys = new Set();
+  for (const filePath of files) {
+    const source = await fs.readFile(filePath, 'utf-8');
+    const sourceFile = ts.createSourceFile(
+      path.basename(filePath),
+      source,
+      ts.ScriptTarget.Latest,
+      true
+    );
 
-      for (const slotFn of Object.values(styles)) {
-        const variants = getVariants(slotFn);
-        if (variants?.variant) {
-          for (const key of Object.keys(variants.variant)) {
-            variantKeys.add(key);
-          }
-        }
-        if (variants?.size) {
-          for (const key of Object.keys(variants.size)) {
-            sizeKeys.add(key);
-          }
-        }
+    // Find exported variable declarations (e.g. `export const Button = ...`)
+    for (const stmt of sourceFile.statements) {
+      if (
+        !ts.isVariableStatement(stmt) ||
+        !stmt.modifiers?.some(m => m.kind === ts.SyntaxKind.ExportKeyword)
+      ) {
+        continue;
       }
 
-      appearances[name] = {
-        variant: [...variantKeys],
-        size: [...sizeKeys],
-      };
+      for (const decl of stmt.declarationList.declarations) {
+        if (!ts.isIdentifier(decl.name) || !decl.initializer) continue;
+        const componentName = decl.name.text;
+
+        // Skip non-component exports (e.g. `buttonBase`)
+        if (componentName[0] !== componentName[0].toUpperCase()) continue;
+
+        if (ts.isCallExpression(decl.initializer)) {
+          // Single-slot: export const X = cva({...})
+          const arg = decl.initializer.arguments[0];
+          appearances[componentName] = extractVariantKeys(arg);
+        } else if (ts.isObjectLiteralExpression(decl.initializer)) {
+          // Multi-slot: export const X = { slot: cva({...}), ... }
+          const variantKeys = new Set();
+          const sizeKeys = new Set();
+
+          const cvaCalls = findCvaCalls(decl.initializer);
+          for (const call of cvaCalls) {
+            const keys = extractVariantKeys(call.arguments[0]);
+            for (const k of keys.variant) variantKeys.add(k);
+            for (const k of keys.size) sizeKeys.add(k);
+          }
+
+          appearances[componentName] = {
+            variant: [...variantKeys],
+            size: [...sizeKeys],
+          };
+        }
+      }
     }
   }
 

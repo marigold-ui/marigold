@@ -3,21 +3,10 @@ import { defineConfig } from 'cva';
 import { twMerge } from 'tailwind-merge';
 
 export type { ClassValue, VariantProps };
-export type ConfigSchema = Record<string, Record<string, ClassValue>>;
 
 const { cva: _cva, cx } = defineConfig({
   hooks: { onComplete: className => twMerge(className) },
 });
-
-// Store variant config associated with each cva function without polluting the public API
-type AnyFunction = (...args: never[]) => unknown;
-const variantStore = new WeakMap<AnyFunction, ConfigSchema | undefined>();
-
-/**
- * Retrieve the variant config for a cva function.
- */
-export const getVariants = (fn: AnyFunction): ConfigSchema | undefined =>
-  variantStore.get(fn);
 
 /**
  * Merge class names with Tailwind-aware conflict resolution.
@@ -31,7 +20,6 @@ export const cn = cx;
 
 /**
  * Create a variant-driven class name function with Tailwind-aware merging.
- * Variant config is stored internally and accessible via `getVariants()`.
  *
  * @example
  * const button = cva({
@@ -49,12 +37,7 @@ export const cn = cx;
 export const cva: typeof _cva & { (): () => string } = ((
   ...args: Parameters<typeof _cva> | []
 ) => {
-  const fn = args.length
+  return args.length
     ? _cva(args[0] as Parameters<typeof _cva>[0])
     : ((() => '') as (...args: unknown[]) => string);
-  variantStore.set(
-    fn,
-    (args[0] as { variants?: ConfigSchema } | undefined)?.variants
-  );
-  return fn;
 }) as typeof _cva & { (): () => string };
