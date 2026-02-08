@@ -1,7 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Collapsible: ThemeComponent<'Collapsible'> = {
-  container: cva(),
+  container: cva({}),
   trigger: cva({
     base: [
       'inline-flex gap-2 whitespace-nowrap rounded-md font-medium transition-[color,box-shadow,transform]',
@@ -24,5 +24,5 @@ export const Collapsible: ThemeComponent<'Collapsible'> = {
       size: 'default',
     },
   }),
-  content: cva(),
+  content: cva({}),
 };

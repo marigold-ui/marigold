@@ -17,5 +17,5 @@ export const Radio: ThemeComponent<'Radio'> = {
       'group-selected/radio:border-brand group-selected/radio:bg-brand group-selected/radio:text-brand-foreground',
     ],
   }),
-  group: cva(),
+  group: cva({}),
 };

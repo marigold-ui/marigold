@@ -31,6 +31,6 @@ export const ListBox: ThemeComponent<'ListBox'> = {
       size: 'small',
     },
   }),
-  section: cva(),
-  header: cva(),
+  section: cva({}),
+  header: cva({}),
 };
