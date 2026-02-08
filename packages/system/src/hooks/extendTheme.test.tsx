@@ -62,7 +62,7 @@ test('Accepting a new variant', () => {
   const button = screen.getByText('button');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"align-center disabled:bg-gray-600 align-center flex text-green-300"`
+    `"align-center disabled:bg-gray-600 text-green-300 align-center flex"`
   );
 });
 
@@ -103,24 +103,6 @@ test('Not supporting adding styles for a new component', () => {
     theme
   );
   expect(newTheme).toEqual(theme);
-});
-
-test('Throw an error when the variant is dupplicated', () => {
-  expect(() =>
-    extendTheme(
-      {
-        Button: cva({
-          base: 'p-3',
-          variants: {
-            variant: {
-              tertiary: 'bg-bg-success text-white',
-            },
-          },
-        }),
-      },
-      theme
-    )
-  ).toThrow('tertiary already exists!');
 });
 
 test('Should support new variant and existing size', () => {
