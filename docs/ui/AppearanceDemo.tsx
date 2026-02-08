@@ -50,7 +50,7 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
   }
 
   const Demo: ComponentType<any> = registry[name].demo;
-  let appearance = getAppearance(component, ruiTheme);
+  let appearance = getAppearance(component);
 
   /**
    * Exclude variants and sizes from the dropdown which are not desired in the demo.

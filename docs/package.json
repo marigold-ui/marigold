@@ -3,11 +3,12 @@
   "version": "16.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm registry && next dev --webpack",
-    "build": "pnpm registry && pnpm build:component-props && pnpm build:changelog && next build --webpack",
+    "dev": "pnpm registry && pnpm build:appearances && next dev --webpack",
+    "build": "pnpm registry && pnpm build:component-props && pnpm build:appearances && pnpm build:changelog && next build --webpack",
     "start": "next start",
     "registry": "zx ./scripts/build-registry.mjs",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
+    "build:appearances": "zx ./scripts/build-appearances.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs",
     "build:contentlayer": "pnpm contentlayer2 build"
   },

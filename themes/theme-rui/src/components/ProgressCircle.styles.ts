@@ -1,7 +1,8 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const ProgressCircle: ThemeComponent<'ProgressCircle'> = {
-  container: cva('stroke-foreground', {
+  container: cva({
+    base: 'stroke-foreground',
     variants: {
       variant: {
         default: '',
@@ -18,7 +19,7 @@ export const ProgressCircle: ThemeComponent<'ProgressCircle'> = {
       size: 'default',
     },
   }),
-  loader: cva('', {
+  loader: cva({
     variants: {
       variant: {
         default: '',
@@ -35,5 +36,5 @@ export const ProgressCircle: ThemeComponent<'ProgressCircle'> = {
       size: 'default',
     },
   }),
-  label: cva('text-current text-sm'),
+  label: cva({ base: 'text-current text-sm' }),
 };

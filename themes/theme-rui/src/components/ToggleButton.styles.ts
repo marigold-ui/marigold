@@ -2,7 +2,8 @@ import { ThemeComponent, cva } from '@marigold/system';
 import { buttonBase } from './Button.styles';
 
 export const ToggleButton: ThemeComponent<'ToggleButton'> = {
-  group: cva('group inline-flex ui-surface shadow-elevation-border', {
+  group: cva({
+    base: 'group inline-flex ui-surface shadow-elevation-border',
     variants: {
       size: {
         default: 'text-sm',
@@ -14,8 +15,8 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       size: 'default',
     },
   }),
-  button: cva(
-    [
+  button: cva({
+    base: [
       ...buttonBase,
 
       // ToggleButton-specific styles
@@ -29,31 +30,29 @@ export const ToggleButton: ThemeComponent<'ToggleButton'> = {
       'in-[.group]:first:rounded-l-surface',
       'in-[.group]:last:rounded-r-surface in-[.group]:last:border-r-0',
     ],
-    {
-      variants: {
-        size: {
-          default: 'text-sm',
-          small: 'text-xs',
-          icon: '',
-        },
+    variants: {
+      size: {
+        default: 'text-sm',
+        small: 'text-xs',
+        icon: '',
       },
-      defaultVariants: {
+    },
+    defaultVariants: {
+      size: 'default',
+    },
+    compoundVariants: [
+      {
         size: 'default',
+        class: 'h-button px-4 py-2 [&_svg]:size-4',
       },
-      compoundVariants: [
-        {
-          size: 'default',
-          class: 'h-button px-4 py-2 [&_svg]:size-4',
-        },
-        {
-          size: 'small',
-          class: 'h-button-small px-3 [&_svg]:size-3.5',
-        },
-        {
-          size: 'icon',
-          class: 'size-button [&_svg]:size-4',
-        },
-      ],
-    }
-  ),
+      {
+        size: 'small',
+        class: 'h-button-small px-3 [&_svg]:size-3.5',
+      },
+      {
+        size: 'icon',
+        class: 'size-button [&_svg]:size-4',
+      },
+    ],
+  }),
 };

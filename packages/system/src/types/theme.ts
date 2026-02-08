@@ -1,4 +1,4 @@
-import { ClassValue, ConfigSchema } from '../utils/className.utils';
+import { ClassValue } from '../utils/className.utils';
 
 export interface NestedStringObject {
   [key: string]: NestedStringObject | string;
@@ -17,7 +17,6 @@ export interface ComponentStyleFunction<
       className?: ClassValue;
     } & Partial<Additional>
   ): string;
-  variants: ConfigSchema | undefined;
 }
 
 export type Theme = {

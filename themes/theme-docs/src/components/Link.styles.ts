@@ -1,6 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Link: ThemeComponent<'Link'> = cva(['font-medium'], {
+export const Link: ThemeComponent<'Link'> = cva({
+  base: ['font-medium'],
   variants: {
     variant: {
       default:
