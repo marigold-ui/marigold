@@ -12,7 +12,7 @@ test('applies base styles', () => {
   render(<Basic.Component data-testid="input" />);
   const input = screen.getByTestId('input');
 
-  expect(input).toHaveClass('w-full');
+  expect(input).toHaveClass('flex-1');
 });
 
 test('supports placeholder prop', () => {

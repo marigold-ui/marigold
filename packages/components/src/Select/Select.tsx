@@ -114,8 +114,8 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
     >
       <Button
         className={cn(
-          'flex w-full items-center justify-between gap-1',
-          classNames.select
+          classNames.select,
+          'flex w-(--field-width) max-w-full min-w-0 items-center justify-between gap-1'
         )}
       >
         <SelectValue className="truncate text-nowrap [&_[slot=description]]:hidden" />
