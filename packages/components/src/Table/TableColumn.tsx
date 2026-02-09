@@ -22,7 +22,12 @@ const ensureWidth = (
 
 // Props
 // ---------------
-type RemovedProps = 'className' | 'style' | 'children' | 'isRowHeader';
+type RemovedProps =
+  | 'className'
+  | 'style'
+  | 'children'
+  | 'isRowHeader'
+  | 'render';
 
 export interface TableColumnProps extends Omit<RAC.ColumnProps, RemovedProps> {
   /**
