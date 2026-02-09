@@ -1,6 +1,6 @@
 import { type ReactNode, useContext } from 'react';
 import { TableStateContext } from 'react-aria-components';
-import { cn, textAlign, verticalAlign } from '@marigold/system';
+import { cn, textAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 
 // Helpers
@@ -54,7 +54,6 @@ export const TableCellContent = ({
   const {
     overflow: tableOverflow,
     allowTextSelection: tableAllowTextSelection,
-    alignY: tableAlignY = 'middle',
   } = useTableContext();
   const state = useContext(TableStateContext);
 
@@ -75,7 +74,6 @@ export const TableCellContent = ({
       data-cell-content=""
       className={cn(
         textAlign[alignX || columnAlign || 'left'],
-        verticalAlign[tableAlignY],
         overflow === 'truncate' ? 'truncate' : 'wrap-break-word',
         selectable && 'cursor-text select-text',
         className

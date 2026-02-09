@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type RAC from 'react-aria-components';
 import { Cell } from 'react-aria-components';
-import { textAlign } from '@marigold/system';
+import { cn, textAlign, verticalAlign } from '@marigold/system';
 import { useTableContext } from './Context';
 import { TableCellContent } from './TableCellContent';
 
@@ -34,10 +34,10 @@ const TableCell = ({
   overflow: cellOverflow,
   ...props
 }: TableCellProps) => {
-  const { classNames } = useTableContext();
+  const { classNames, alignY = 'middle' } = useTableContext();
 
   return (
-    <Cell className={classNames.cell} {...props}>
+    <Cell className={cn(classNames.cell, verticalAlign[alignY])} {...props}>
       {({ columnIndex }) => (
         <TableCellContent
           columnIndex={columnIndex}

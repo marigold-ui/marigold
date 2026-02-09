@@ -13,7 +13,7 @@ import {
   getOwnerDocument,
   nodeContains,
 } from '@react-aria/utils';
-import { textAlign, useSmallScreen } from '@marigold/system';
+import { cn, textAlign, useSmallScreen, verticalAlign } from '@marigold/system';
 import { Dialog } from '../Dialog/Dialog';
 import { Form } from '../Form/Form';
 import { Check } from '../icons/Check';
@@ -138,8 +138,11 @@ export const TableEditableCell = ({
   alignX,
   overflow: cellOverflow,
 }: TableEditableCellProps) => {
-  const { classNames, allowTextSelection: tableAllowTextSelection } =
-    useTableContext();
+  const {
+    classNames,
+    allowTextSelection: tableAllowTextSelection,
+    alignY = 'middle',
+  } = useTableContext();
   const { selectionMode } = useTableOptions();
   const hasSelection = selectionMode !== 'none';
   const isSmallScreen = useSmallScreen();
@@ -215,7 +218,7 @@ export const TableEditableCell = ({
   );
 
   return (
-    <Cell ref={cellRef} className={classNames.cell}>
+    <Cell ref={cellRef} className={cn(classNames.cell, verticalAlign[alignY])}>
       {({ columnIndex }) => (
         <>
           <div className="group/editable-cell flex items-center gap-1">

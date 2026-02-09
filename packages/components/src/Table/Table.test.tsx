@@ -180,20 +180,16 @@ describe('Props and Variants', () => {
     render(<VerticalAlignment.Component />);
 
     const cells = screen.getAllByRole('gridcell');
-    // eslint-disable-next-line testing-library/no-node-access
-    const innerDiv = cells[0].querySelector('div');
 
-    expect(innerDiv).toHaveClass('align-top');
+    expect(cells[0]).toHaveClass('align-top');
   });
 
   test('defaults to middle vertical alignment', () => {
     render(<Basic.Component />);
 
     const cell = screen.getAllByRole('gridcell')[0];
-    // eslint-disable-next-line testing-library/no-node-access
-    const innerDiv = cell.querySelector('div');
 
-    expect(innerDiv).toHaveClass('align-middle');
+    expect(cell).toHaveClass('align-middle');
   });
 });
 
@@ -255,10 +251,10 @@ describe('Cell Alignment', () => {
     const innerDiv = cell.querySelector('div');
 
     expect(cell).not.toHaveClass('text-left');
-    expect(cell).not.toHaveClass('align-middle');
+    expect(cell).toHaveClass('align-middle');
     expect(cell).not.toHaveClass('wrap-break-word');
     expect(innerDiv).toHaveClass('text-left');
-    expect(innerDiv).toHaveClass('align-middle');
+    expect(innerDiv).not.toHaveClass('align-middle');
     expect(innerDiv).toHaveClass('wrap-break-word');
   });
 });
