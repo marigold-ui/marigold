@@ -147,7 +147,7 @@
     0px 0.3px 0.3px oklch(0 0 0 / 0.19),
     0.1px 1.1px 1.2px -3px oklch(0 0 0 / 0.16);
 
-  /* Raised elevation - same as border for now */
+  /* Raised elevation - moderate shadow for cards, tiles, and containers */
   --shadow-elevation-raised:
     0px 0.3px 0.3px oklch(0 0 0 / 0.23),
     0px 1.4px 1.3px -2px oklch(0 0 0 / 0.17),
