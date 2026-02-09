@@ -143,8 +143,12 @@
 
   /* Border elevation - subtle shadow for input elements and cards */
   --shadow-elevation-border:
+    0px 0.6px 0.6px oklch(0 0 0 / 0.12),
+    0px 1px 1.1px -1.5px oklch(0 0 0 / 0.11),
+    0px 2.5px 2.6px -3px oklch(0 0 0 / 0.1);
+  /* --shadow-elevation-border:
     0 0.5px 1px oklch(from #000 l c h / 0.08),
-    0 1px 2px oklch(from #000 l c h / 0.06);
+    0 1px 2px oklch(from #000 l c h / 0.06); */
 
   /* Raised elevation - same as border for now */
   --shadow-elevation-raised:

@@ -22,8 +22,19 @@ const Base = ({
 export const Surface = meta.story({
   render: () => (
     <Stack space="group">
+      <Headline level="3">Shadow</Headline>
+      <Inline space="peer">
+        <Base className="rounded-lg">plain</Base>
+        <Base className="shadow-elevation-border rounded-lg">border</Base>
+        <Base className="shadow-elevation-raised rounded-lg">raised</Base>
+        <Base className="shadow-elevation-overlay rounded-lg">overlay</Base>
+        <Base className="shadow-elevation-overlay ui-state-error rounded-lg">
+          overlay / error
+        </Base>
+      </Inline>
       <Headline level="3">Surface</Headline>
       <Inline space="peer">
+        <Base className="ui-surface">plain</Base>
         <Base className="ui-surface shadow-elevation-border">border</Base>
         <Base className="ui-surface shadow-elevation-raised">raised</Base>
         <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
