@@ -105,7 +105,9 @@ export type { Scale, ScaleValue } from './utils/css-variables.utils';
 export {
   createVar,
   createSpacingVar,
+  createWidthVar,
   ensureCssVar,
+  isFraction,
   isScale,
   isValidCssCustomPropertyName,
 } from './utils/css-variables.utils';

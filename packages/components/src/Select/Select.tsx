@@ -137,7 +137,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
         <Tray.Trigger open={trayOpen} onOpenChange={setTrayOpen}>
           <IconButton
             className={cn(
-              'flex w-full items-center justify-between gap-1 overflow-hidden',
+              'flex w-(--field-width) max-w-full min-w-0 items-center justify-between gap-1 overflow-hidden',
               classNames.select
             )}
           >
@@ -158,7 +158,7 @@ const SelectBase = (forwardRef as forwardRefType)(function Select<
         <>
           <RACButton
             className={cn(
-              'flex w-full items-center justify-between gap-1',
+              'flex w-(--field-width) max-w-full min-w-0 items-center justify-between gap-1',
               classNames.select
             )}
           >

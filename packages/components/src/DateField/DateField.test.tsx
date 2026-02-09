@@ -30,9 +30,10 @@ test('renders correctly', () => {
 
   expect(dateField).toMatchInlineSnapshot(`
     <div
-      class="group/field flex flex-col w-full space-y-2"
+      class="group/field flex min-w-0 flex-col w-(--container-width) space-y-2"
       data-rac=""
       data-testid="dateField"
+      style="--container-width: 100%; --field-width: 100%;"
     >
       <span
         class="items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex"
@@ -43,7 +44,7 @@ test('renders correctly', () => {
       <div
         aria-describedby="react-aria-description-0 react-aria-_r_3_"
         aria-labelledby="react-aria-_r_1_"
-        class="ui-surface shadow-elevation-border h-input flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:ring-destructive/20"
+        class="ui-surface shadow-elevation-border h-input flex items-center disabled:ui-state-disabled group-read-only/field:ui-state-readonly has-focus:ui-state-focus has-invalid:ui-state-error has-focus:has-invalid:ring-destructive/20 w-(--field-width) max-w-full min-w-0 overflow-hidden"
         data-rac=""
         data-react-aria-pressable="true"
         id="react-aria-_r_0_"
