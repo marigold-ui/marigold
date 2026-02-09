@@ -239,6 +239,7 @@ const files = await globby([
   `!${componentsDir}/**/*.stories.tsx`,
   `!${componentsDir}/**/*.test.tsx`,
   `!${componentsDir}/**/*.ts`,
+  `!${componentsDir}/legacy/**/*.tsx`,
   `!${systemDir}/**/*.stories.tsx`,
   `!${systemDir}/**/*.test.tsx`,
   `!${systemDir}/**/*.ts`,
