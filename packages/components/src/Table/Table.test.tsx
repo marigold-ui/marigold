@@ -504,7 +504,6 @@ describe('Table Static Properties - Drop Indicator', () => {
   });
 
   test('Table has all drag and drop related exports', () => {
-    expect(Table.DragPreview).toBeDefined();
     expect(Table.renderDropIndicator).toBeDefined();
     expect(Table.renderDragPreview).toBeDefined();
   });

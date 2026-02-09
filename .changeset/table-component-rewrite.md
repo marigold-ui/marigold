@@ -179,7 +179,8 @@ This release adds several new subcomponents:
 - `Table.Column` - Define table columns with sorting, alignment, and width options
 - `Table.EditableCell` - Editable table cells with inline editing support
 - `Table.SelectableCell` - Checkbox cells for row selection
-- `Table.DragPreview` - Visual preview during drag operations
+- `Table.renderDropIndicator` - Render function for custom drop indicators
+- `Table.renderDragPreview` - Render function for custom drag previews
 
 ## New Icons
 

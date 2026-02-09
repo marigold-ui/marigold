@@ -9,7 +9,7 @@ import { TableContext } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
-import { TableDragPreview, renderDragPreview } from './TableDragPreview';
+import { renderDragPreview } from './TableDragPreview';
 import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
 import { TableHeader } from './TableHeader';
@@ -86,7 +86,6 @@ const Table = Object.assign(_Table, {
   EditableCell: TableEditableCell,
 
   // Drag and Drop
-  DragPreview: TableDragPreview,
   renderDropIndicator: renderDropIndicator,
   renderDragPreview: renderDragPreview,
 });

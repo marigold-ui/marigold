@@ -19,6 +19,7 @@ import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import type { Selection } from '../types';
 import { Table } from './Table';
+import { TableDragPreview } from './TableDragPreview';
 
 const meta = preview.meta({
   title: 'Components/Table',
@@ -1456,23 +1457,23 @@ export const DragPreview = meta.story({
         <Stack space={3} alignX="left">
           <div data-testid="single-item-preview">
             <Text weight="medium">Single item:</Text>
-            <Table.DragPreview items={singleItem} />
+            <TableDragPreview items={singleItem} />
           </div>
           <div data-testid="multiple-items-preview">
             <Text weight="medium">Multiple items:</Text>
-            <Table.DragPreview items={multipleItems} />
+            <TableDragPreview items={multipleItems} />
           </div>
           <div data-testid="empty-text-preview">
             <Text weight="medium">Empty text/plain:</Text>
-            <Table.DragPreview items={emptyTextItem} />
+            <TableDragPreview items={emptyTextItem} />
           </div>
           <div data-testid="no-text-preview">
             <Text weight="medium">No text/plain property:</Text>
-            <Table.DragPreview items={noTextItem} />
+            <TableDragPreview items={noTextItem} />
           </div>
           <div data-testid="variant-size-preview">
             <Text weight="medium">With variant and size:</Text>
-            <Table.DragPreview
+            <TableDragPreview
               items={multipleItems}
               variant="compact"
               size="small"
