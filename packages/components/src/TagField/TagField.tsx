@@ -164,7 +164,7 @@ const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
 
 // Component
 // ---------------
-const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
+const _TagField = (forwardRef as forwardRefType)(function TagField<
   T extends object,
 >(
   {
@@ -266,7 +266,7 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
   );
 });
 
-export const TagField = Object.assign(TagFieldBase, {
+export const TagField = Object.assign(_TagField, {
   Option: ListBox.Item,
   Section: ListBox.Section,
 });
