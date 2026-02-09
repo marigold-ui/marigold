@@ -37,7 +37,7 @@ const TableHeader = <T extends object>({
 
   return (
     <RACTableHeader
-      className={cn(classNames.head, sticky && 'sticky top-0')}
+      className={cn(classNames.head, sticky && 'sticky top-0 z-1')}
       {...props}
     >
       {allowsDragging && (

@@ -61,7 +61,7 @@ export const Table: ThemeComponent<'Table'> = {
   // <thead>
   head: cva([
     // for sticky header
-    'bg-background/90 z-1',
+    'bg-background/90',
     'border-border border-b',
   ]),
   column: cva(
