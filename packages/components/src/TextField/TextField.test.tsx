@@ -44,7 +44,7 @@ test('takes full width by default', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('My label is great.').parentElement;
-  expect(container).toHaveClass('w-full');
+  expect(container).toHaveClass('w-(--container-width)');
 });
 
 test('allows to set custom width', () => {
@@ -52,7 +52,7 @@ test('allows to set custom width', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('My label is great.').parentElement;
-  expect(container).toHaveClass('w-1/2');
+  expect(container).toHaveClass('w-(--container-width)');
 });
 
 test('supports disabled', () => {

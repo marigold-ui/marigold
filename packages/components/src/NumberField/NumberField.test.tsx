@@ -28,7 +28,7 @@ test('allows to set width via prop', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveClass('w-1/2');
+  expect(container).toHaveClass('w-(--container-width)');
 });
 
 test('supports disabled', () => {
