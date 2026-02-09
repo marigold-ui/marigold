@@ -9,5 +9,5 @@ export const getMDXComponents = (components?: MDXComponents): MDXComponents => {
     ...TabsComponents,
     ...components,
     AutoTypeTable,
-  };
+  } as MDXComponents;
 };
