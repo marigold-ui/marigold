@@ -18,7 +18,7 @@ A `<TagField>` consists of a label, a trigger area with tags and an add button, 
   src="/tag-field/tag-field-anatomy.svg"
   alt="Anatomy of TagField component"
   width={800}
-  height={550}
+  height={435}
   className="mx-auto block"
 />
 
@@ -27,16 +27,16 @@ A `<TagField>` consists of a label, a trigger area with tags and an add button, 
     <b>Label:</b> Descriptive text guiding the user on what to select.
   </li>
   <li>
-    <b>Trigger:</b> The container area that displays selected tags and the add
-    button. Clicking it opens the dropdown popover.
+    <b>Container:</b> The container area that displays selected tags and the
+    button.
   </li>
   <li>
     <b>Tag:</b> A removable chip representing a selected item. Users can click
     the remove icon to deselect.
   </li>
   <li>
-    <b>Add button:</b> An icon button that opens the dropdown popover to add
-    more selections.
+    <b>Button:</b> An icon button that opens the dropdown popover to add more
+    selections.
   </li>
   <li>
     <b>Search input:</b> A text field inside the popover that filters the
@@ -45,6 +45,10 @@ A `<TagField>` consists of a label, a trigger area with tags and an add button, 
   <li>
     <b>Popover:</b> The overlay container holding the search input and options
     list.
+  </li>
+  <li>
+    <b>Section:</b> A group of related options with a header label, used to
+    organize options into categories.
   </li>
   <li>
     <b>Option:</b> An individual selectable item in the dropdown list.
@@ -76,24 +80,6 @@ When the list of options becomes large or covers distinct categories, grouping t
 In some cases, certain options should be visible but not selectable. For example, an option may be temporarily unavailable or restricted based on the user's permissions. Use the `disabledKeys` prop to mark specific options as non-interactive while keeping them visible in the list.
 
 <ComponentDemo file="./tag-field-disabled-items.demo.tsx" />
-
-### Choosing the right component
-
-Use `<TagField>` when users need to select multiple items from a larger set of options and see their selections summarized as compact tags. For small lists with fewer than 10 items, consider using [checkboxes](/components/form/checkbox) instead, as they keep all options visible without requiring interaction. If users should only select a single value, use a [Select](/components/form/select) or [ComboBox](/components/form/combobox).
-
-<GuidelineTiles>
-  <Do>
-    <Do.Description>
-      Use TagField when the list has 10 or more options and users benefit from
-      search to narrow down their choices.
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Description>
-      Don't use TagField for single selection. Use a Select or ComboBox instead.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
 
 ### Keep option text concise
 
@@ -130,7 +116,7 @@ The `<TagField>` supports full keyboard navigation through all its interactive p
 | `Arrow Up` / `Arrow Down`    | Navigates between options in the dropdown list.                                                                       |
 | `Arrow Left` / `Arrow Right` | Navigates between tags in the trigger area.                                                                           |
 | `Escape`                     | Closes the popover and returns focus to the trigger.                                                                  |
-| `Backspace`                  | Removes a tag when its remove button is focused.                                                                      |
+| `Backspace`                  | Removes a tag when it is focused.                                                                                     |
 
 When the popover opens, the search input receives focus automatically, allowing users to immediately start filtering options by typing.
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    width="700"
-   height="340"
-   viewBox="0 0 700 340"
+   height="380"
+   viewBox="0 0 700 380"
    fill="none"
    version="1.1"
    xmlns="http://www.w3.org/2000/svg">
@@ -18,7 +18,7 @@
        font-weight="600"
        fill="#374151">Genres</text>
 
-    <!-- Trigger container -->
+    <!-- Container -->
     <rect
        x="0"
        y="12"
@@ -29,48 +29,49 @@
        stroke="#d1d5db"
        stroke-width="1.5" />
 
-    <!-- Tags inside trigger -->
+    <!-- Rock tag -->
     <rect
        x="10"
        y="22"
-       width="55"
+       width="62"
        height="28"
        rx="4"
        fill="#f3f4f6"
        stroke="#d1d5db" />
     <text
-       x="22"
+       x="20"
        y="41"
        font-family="sans-serif"
        font-size="12px"
        fill="#374151">Rock</text>
     <text
-       x="51"
-       y="40"
+       x="56"
+       y="41"
        font-family="sans-serif"
-       font-size="10px"
-       fill="#9ca3af">x</text>
+       font-size="11px"
+       fill="#9ca3af">&#xd7;</text>
 
+    <!-- Jazz tag -->
     <rect
-       x="72"
+       x="80"
        y="22"
-       width="48"
+       width="58"
        height="28"
        rx="4"
        fill="#f3f4f6"
        stroke="#d1d5db" />
     <text
-       x="82"
+       x="90"
        y="41"
        font-family="sans-serif"
        font-size="12px"
        fill="#374151">Jazz</text>
     <text
-       x="107"
-       y="40"
+       x="122"
+       y="41"
        font-family="sans-serif"
-       font-size="10px"
-       fill="#9ca3af">x</text>
+       font-size="11px"
+       fill="#9ca3af">&#xd7;</text>
 
     <!-- Plus button -->
     <rect
@@ -101,7 +102,7 @@
        x="0"
        y="95"
        width="300"
-       height="110"
+       height="155"
        rx="6"
        fill="#ffffff"
        stroke="#d1d5db"
@@ -123,64 +124,93 @@
        font-size="12px"
        fill="#9ca3af">Search...</text>
 
-    <!-- Options list -->
+    <!-- Section 1: Popular -->
     <text
        x="18"
-       y="157"
+       y="155"
+       font-family="sans-serif"
+       font-size="11px"
+       font-weight="600"
+       fill="#6b7280">Popular</text>
+    <text
+       x="26"
+       y="175"
        font-family="sans-serif"
        font-size="13px"
        fill="#374151">Pop</text>
     <text
-       x="18"
-       y="177"
+       x="26"
+       y="195"
        font-family="sans-serif"
        font-size="13px"
        fill="#374151">Classical</text>
+
+    <!-- Separator between sections -->
+    <line
+       x1="10"
+       y1="205"
+       x2="290"
+       y2="205"
+       stroke="#e5e7eb"
+       stroke-width="0.5" />
+
+    <!-- Section 2: Other -->
     <text
        x="18"
-       y="197"
+       y="220"
+       font-family="sans-serif"
+       font-size="11px"
+       font-weight="600"
+       fill="#6b7280">Other</text>
+    <text
+       x="26"
+       y="240"
        font-family="sans-serif"
        font-size="13px"
        fill="#374151">Electronic</text>
 
     <!-- Connector lines -->
     <g stroke="#9ca3af" stroke-width="1" stroke-dasharray="2, 2">
-      <!-- LABEL: horizontal from dot above trigger to label -->
+      <!-- LABEL -->
       <path d="M 50,-3 H 390" />
-      <!-- TRIGGER: horizontal from right edge to label -->
-      <path d="M 300,20 H 390" />
-      <!-- TAG: right edge then L-shape down to label -->
-      <path d="M 300,40 H 330 V 55 H 390" />
-      <!-- ADD BUTTON: from button through edge, L-shape down to label -->
-      <path d="M 279,37 H 340 V 85 H 390" />
-      <!-- SEARCH INPUT: horizontal from right edge to label -->
-      <path d="M 300,120 H 390" />
-      <!-- POPOVER: right edge then L-shape down to label -->
-      <path d="M 300,100 H 350 V 155 H 390" />
-      <!-- OPTION: horizontal from right edge to label -->
-      <path d="M 300,177 H 390" />
+      <!-- CONTAINER -->
+      <path d="M 300,18 H 390" />
+      <!-- BUTTON: straight horizontal from plus button -->
+      <path d="M 279,37 H 390" />
+      <!-- TAG: from Rock tag bottom edge, routed below button line -->
+      <path d="M 72,50 H 330 V 56 H 390" />
+      <!-- POPOVER -->
+      <path d="M 300,100 H 390" />
+      <!-- SEARCH INPUT -->
+      <path d="M 290,120 H 375 V 123 H 390" />
+      <!-- SECTION: from section header -->
+      <path d="M 65,151 H 360 V 150 H 390" />
+      <!-- OPTION: from option text -->
+      <path d="M 55,171 H 370 V 173 H 390" />
     </g>
 
     <!-- Labels on right side -->
     <g font-family="monospace" font-size="11px" fill="#6b7280" letter-spacing="0.05em">
       <text x="395" y="1" text-anchor="start">LABEL</text>
-      <text x="395" y="24" text-anchor="start">TRIGGER</text>
-      <text x="395" y="59" text-anchor="start">TAG</text>
-      <text x="395" y="89" text-anchor="start">ADD BUTTON</text>
-      <text x="395" y="124" text-anchor="start">SEARCH INPUT</text>
-      <text x="395" y="159" text-anchor="start">POPOVER</text>
-      <text x="395" y="181" text-anchor="start">OPTION</text>
+      <text x="395" y="22" text-anchor="start">CONTAINER</text>
+      <text x="395" y="41" text-anchor="start">BUTTON</text>
+      <text x="395" y="60" text-anchor="start">TAG</text>
+      <text x="395" y="104" text-anchor="start">POPOVER</text>
+      <text x="395" y="127" text-anchor="start">SEARCH INPUT</text>
+      <text x="395" y="154" text-anchor="start">SECTION</text>
+      <text x="395" y="177" text-anchor="start">OPTION</text>
     </g>
 
     <!-- Dots -->
     <g fill="#9ca3af">
       <circle cx="50" cy="-3" r="2.5" />
-      <circle cx="300" cy="20" r="2.5" />
-      <circle cx="300" cy="40" r="2.5" />
+      <circle cx="300" cy="18" r="2.5" />
       <circle cx="279" cy="37" r="2.5" />
-      <circle cx="300" cy="120" r="2.5" />
+      <circle cx="72" cy="50" r="2.5" />
       <circle cx="300" cy="100" r="2.5" />
-      <circle cx="300" cy="177" r="2.5" />
+      <circle cx="290" cy="120" r="2.5" />
+      <circle cx="65" cy="151" r="2.5" />
+      <circle cx="55" cy="171" r="2.5" />
     </g>
   </g>
 </svg>
