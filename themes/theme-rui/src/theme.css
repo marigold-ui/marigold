@@ -140,17 +140,18 @@
   /* ==================== */
   /*       ELEVATION      */
   /* ==================== */
+  /* Based on https://www.joshwcomeau.com/shadow-palette/ */
 
   /* Border elevation - subtle shadow for input elements and cards */
   --shadow-elevation-border:
-    0 0.5px 1px oklch(from #000 l c h / 0.08),
-    0 1px 2px oklch(from #000 l c h / 0.06);
+    0px 0.3px 0.3px oklch(0 0 0 / 0.19),
+    0.1px 1.1px 1.2px -3px oklch(0 0 0 / 0.16);
 
   /* Raised elevation - same as border for now */
   --shadow-elevation-raised:
-    0px 0.3px 0.3px oklch(0 0 0 / 0.19),
-    0px 1.5px 1.6px -1.5px oklch(0 0 0 / 0.17),
-    0px 6.2px 6.5px -3px oklch(0 0 0 / 0.15);
+    0px 0.3px 0.3px oklch(0 0 0 / 0.23),
+    0px 1.4px 1.3px -2px oklch(0 0 0 / 0.17),
+    0px 6.7px 6px -4px oklch(0 0 0 / 0.12);
 
   /* Overlay elevation - prominent shadow for modals, dialogs, popovers */
   --shadow-elevation-overlay:
