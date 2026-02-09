@@ -58,6 +58,7 @@ const meta = preview.meta({
     variant: 'default',
     size: 'default',
     selectionMode: 'none',
+    alignY: 'middle',
   },
 });
 
