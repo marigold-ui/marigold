@@ -140,7 +140,7 @@ export const Controlled = meta.story({
     const [selected, setSelected] = useState<Key[]>(['rock', 'pop']);
     return (
       <Stack space={6}>
-        <TagField value={selected} onChange={setSelected} width={80} {...args}>
+        <TagField {...args} value={selected} onChange={setSelected} width={80}>
           <TagField.Option id="rock">Rock</TagField.Option>
           <TagField.Option id="jazz">Jazz</TagField.Option>
           <TagField.Option id="pop">Pop</TagField.Option>
@@ -167,17 +167,6 @@ Controlled.test('Remove a tag', async ({ canvas, step }) => {
   });
 });
 
-export const Disabled = meta.story({
-  render: args => (
-    <TagField {...args} disabled defaultValue={['rock', 'jazz']}>
-      <TagField.Option id="rock">Rock</TagField.Option>
-      <TagField.Option id="jazz">Jazz</TagField.Option>
-      <TagField.Option id="pop">Pop</TagField.Option>
-      <TagField.Option id="classical">Classical</TagField.Option>
-    </TagField>
-  ),
-});
-
 export const WithError = meta.story({
   render: args => (
     <TagField {...args} error errorMessage="Please select at least one genre.">
@@ -191,14 +180,8 @@ export const WithError = meta.story({
 
 export const DisabledItems = meta.story({
   render: args => {
-    const [selected, setSelected] = useState<Key[]>([]);
     return (
-      <TagField
-        {...args}
-        value={selected}
-        onChange={setSelected}
-        disabledKeys={['classical', 'electronic']}
-      >
+      <TagField {...args} disabledKeys={['classical', 'electronic']}>
         <TagField.Option id="rock">Rock</TagField.Option>
         <TagField.Option id="jazz">Jazz</TagField.Option>
         <TagField.Option id="pop">Pop</TagField.Option>

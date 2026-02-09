@@ -19,7 +19,7 @@ import {
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { forwardRefType } from '@react-types/shared';
-import { type WidthProp, createVar, useClassNames } from '@marigold/system';
+import { type WidthProp, cn, createVar, useClassNames } from '@marigold/system';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
 import { SearchInput } from '../Input/SearchInput';
@@ -131,7 +131,7 @@ const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
   for (const key of selectedKeys) {
     const item = state.collection.getItem(key);
     if (item) {
-      selectedItems.push({ id: key, textValue: item.textValue ?? '' });
+      selectedItems.push({ id: key, textValue: item.textValue });
     }
   }
 
@@ -218,7 +218,13 @@ const TagFieldBase = (forwardRef as forwardRefType)(function TagField<
       size={size}
       {...props}
     >
-      <Group ref={triggerRef} className={classNames.trigger}>
+      <Group
+        ref={triggerRef}
+        className={cn(
+          'w-(--field-width) max-w-full min-w-0',
+          classNames.trigger
+        )}
+      >
         <TagDisplay
           placeholder={placeholder}
           classNames={classNames}
