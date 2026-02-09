@@ -156,7 +156,9 @@ export const Controlled = meta.story({
 
 Controlled.test('Remove a tag', async ({ canvas, step }) => {
   await step('Remove Rock tag', async () => {
-    const removeButtons = canvas.getAllByRole('button', { name: /remove/i });
+    const removeButtons = await canvas.findAllByRole('button', {
+      name: /remove|entfernen/i,
+    });
     await userEvent.click(removeButtons[0]);
   });
 
