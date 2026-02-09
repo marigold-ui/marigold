@@ -44,7 +44,7 @@
       linear-gradient(
         to bottom,
         var(--ui-border-color, var(--color-surface-border)),
-        oklch(from var(--ui-border-color, var(--color-surface-border)) calc(l - 0.1) c h)
+        oklch(from var(--ui-border-color, var(--color-surface-border)) calc(l - 0.15) c h)
       );
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
