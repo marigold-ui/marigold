@@ -92,7 +92,11 @@ const TableColumn = ({
               )}
             </span>
           )}
-          <Group className="outline-none" role="presentation" tabIndex={-1}>
+          <Group
+            className="cursor-default outline-none"
+            role="presentation"
+            tabIndex={-1}
+          >
             {props.children}
           </Group>
         </div>
