@@ -10,7 +10,7 @@ import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn } from './TableColumn';
 import { TableDragPreview, renderDragPreview } from './TableDragPreview';
-import { TableDropIndicator, renderDropIndicator } from './TableDropIndicator';
+import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
@@ -86,7 +86,6 @@ const Table = Object.assign(_Table, {
   EditableCell: TableEditableCell,
 
   // Drag and Drop
-  DropIndicator: TableDropIndicator,
   DragPreview: TableDragPreview,
   renderDropIndicator: renderDropIndicator,
   renderDragPreview: renderDragPreview,

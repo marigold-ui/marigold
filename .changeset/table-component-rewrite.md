@@ -180,7 +180,6 @@ This release adds several new subcomponents:
 - `Table.EditableCell` - Editable table cells with inline editing support
 - `Table.SelectableCell` - Checkbox cells for row selection
 - `Table.DragPreview` - Visual preview during drag operations
-- `Table.DropIndicator` - Visual indicator for valid drop targets
 
 ## New Icons
 

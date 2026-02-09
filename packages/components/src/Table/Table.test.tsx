@@ -503,13 +503,7 @@ describe('Table Static Properties - Drop Indicator', () => {
     expect(Table.renderDropIndicator).toBe(renderDropIndicator);
   });
 
-  test('Table.DropIndicator component is accessible', () => {
-    expect(Table.DropIndicator).toBeDefined();
-    expect(Table.DropIndicator).toBe(TableDropIndicator);
-  });
-
   test('Table has all drag and drop related exports', () => {
-    expect(Table.DropIndicator).toBeDefined();
     expect(Table.DragPreview).toBeDefined();
     expect(Table.renderDropIndicator).toBeDefined();
     expect(Table.renderDragPreview).toBeDefined();
