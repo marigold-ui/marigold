@@ -428,9 +428,6 @@ importers:
       '@react-aria/i18n':
         specifier: 3.12.15
         version: 3.12.15(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@react-types/shared':
-        specifier: ^3.33.0
-        version: 3.33.0(react@19.2.3)
       '@tanstack/react-query':
         specifier: ^5.62.0
         version: 5.90.20(react@19.2.3)
