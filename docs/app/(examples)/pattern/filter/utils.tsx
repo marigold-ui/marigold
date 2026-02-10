@@ -1,5 +1,11 @@
 import { venueTraits, venueTypes, venues } from '@/lib/data/venues';
-import { parseAsJson, useQueryState } from 'nuqs';
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsString,
+  useQueryState,
+  useQueryStates,
+} from 'nuqs';
 import type { FormEvent } from 'react';
 import { z } from 'zod';
 import { NumericFormat } from '@marigold/system';
@@ -25,23 +31,29 @@ export const getFormData = (e: FormEvent<HTMLFormElement>) => {
 
 // URL
 // ---------------
-const urlSchema = z.object({
-  type: z.number().optional(),
-  capacity: z.number().optional(),
-  price: z.number().optional(),
-  traits: z.array(z.string()).optional(),
-  rating: z.number().optional(),
-});
-
-export type VenueFilter = z.infer<typeof urlSchema>;
+export type VenueFilter = {
+  type: number | null;
+  capacity: number;
+  price: number;
+  traits: string[];
+  rating: number | null;
+};
 
 export const defaultFilter = {
-  type: undefined,
+  type: null,
   capacity: Math.max(...venues.map(venue => venue.capacity)),
   price: Math.max(...venues.map(venue => venue.price.to)),
   traits: venueTraits,
-  rating: undefined,
+  rating: null,
 } satisfies VenueFilter;
+
+const filterParsers = {
+  type: parseAsInteger,
+  capacity: parseAsInteger.withDefault(defaultFilter.capacity),
+  price: parseAsInteger.withDefault(defaultFilter.price),
+  traits: parseAsArrayOf(parseAsString).withDefault([...defaultFilter.traits]),
+  rating: parseAsInteger,
+};
 
 // Form
 // ---------------
@@ -60,21 +72,21 @@ const formSchema = z.object({
 // ---------------
 
 // URL -> Form
-export const toFormSchema = urlSchema.transform(data => ({
+export const toFormSchema = (data: VenueFilter) => ({
   type: String(data.type ?? ''),
-  capacity: data.capacity ?? defaultFilter.capacity,
-  price: data.price ?? defaultFilter.price,
-  traits: data.traits ?? defaultFilter.traits,
+  capacity: data.capacity,
+  price: data.price,
+  traits: data.traits,
   rating: String(data.rating ?? ''),
-})).parse;
+});
 
 // Form -> URL
 export const toUrlSchema = formSchema.transform(data => ({
-  type: data.type ? Number(data.type) : undefined,
-  capacity: data.capacity ? Number(data.capacity) : undefined,
-  price: data.price ? Number(data.price) : undefined,
-  traits: data.traits.length > 0 ? data.traits : undefined,
-  rating: data.rating ? Number(data.rating) : undefined,
+  type: data.type ? Number(data.type) : null,
+  capacity: data.capacity ? Number(data.capacity) : null,
+  price: data.price ? Number(data.price) : null,
+  traits: data.traits.length > 0 ? data.traits : null,
+  rating: data.rating ? Number(data.rating) : null,
 })).safeParse;
 
 // Value -> Display Format
@@ -116,17 +128,14 @@ export const toDisplayValue = {
 type FilterKeys = keyof typeof defaultFilter;
 
 export const useFilter = () => {
-  const [filter, setFilter] = useQueryState(
-    'filter',
-    parseAsJson(urlSchema.parse).withDefault(defaultFilter).withOptions({
-      history: 'push',
-    })
-  );
+  const [filter, setFilter] = useQueryStates(filterParsers, {
+    history: 'push',
+  });
 
   const removeFilter = (keys: Set<FilterKeys>) => {
-    const next = { ...filter };
+    const next: Record<string, null> = {};
     keys.forEach(key => {
-      next[key] = defaultFilter[key] as any;
+      next[key] = null;
     });
     setFilter(next);
   };

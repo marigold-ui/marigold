@@ -90,7 +90,7 @@ export const VenuesView = () => {
       return false;
 
     // Filter
-    if (filter.type !== undefined && filter.type !== venue.type) return false;
+    if (filter.type !== null && filter.type !== venue.type) return false;
     if (filter.capacity && filter.capacity < venue.capacity) return false;
     if (filter.price && filter.price < venue.price.to) return false;
     if (filter.rating && filter.rating > venue.rating) return false;
