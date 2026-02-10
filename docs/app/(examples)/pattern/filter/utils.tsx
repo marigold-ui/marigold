@@ -6,31 +6,8 @@ import {
   useQueryState,
   useQueryStates,
 } from 'nuqs';
-import type { FormEvent } from 'react';
-import { z } from 'zod';
 import { NumericFormat } from '@marigold/system';
 
-// Handling form data
-// ---------------
-export const getFormData = (e: FormEvent<HTMLFormElement>) => {
-  const data = new FormData(e.currentTarget);
-  const result: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {};
-
-  for (const [key, value] of data.entries()) {
-    if (result[key]) {
-      result[key] = Array.isArray(result[key])
-        ? [...(result[key] as FormDataEntryValue[]), value]
-        : [result[key] as FormDataEntryValue, value];
-    } else {
-      result[key] = value;
-    }
-  }
-
-  return result;
-};
-
-// URL
-// ---------------
 export type VenueFilter = {
   type: number | null;
   capacity: number;
@@ -55,41 +32,6 @@ const filterParsers = {
   rating: parseAsInteger,
 };
 
-// Form
-// ---------------
-// TODO: is this correct? are there no numbers???
-const formSchema = z.object({
-  type: z.string(),
-  capacity: z.string(),
-  price: z.string(),
-  traits: z
-    .union([z.string(), z.array(z.string())])
-    .transform(value => (Array.isArray(value) ? value : [value])),
-  rating: z.string(),
-});
-
-// Transform
-// ---------------
-
-// URL -> Form
-export const toFormSchema = (data: VenueFilter) => ({
-  type: String(data.type ?? ''),
-  capacity: data.capacity,
-  price: data.price,
-  traits: data.traits,
-  rating: String(data.rating ?? ''),
-});
-
-// Form -> URL
-export const toUrlSchema = formSchema.transform(data => ({
-  type: data.type ? Number(data.type) : null,
-  capacity: data.capacity ? Number(data.capacity) : null,
-  price: data.price ? Number(data.price) : null,
-  traits: data.traits.length > 0 ? data.traits : null,
-  rating: data.rating ? Number(data.rating) : null,
-})).safeParse;
-
-// Value -> Display Format
 export const toDisplayValue = {
   type: (value: number) => `Type: ${venueTypes[value] ?? 'Unknown'}`,
   capacity: (value: number) => (
@@ -123,8 +65,6 @@ export const toDisplayValue = {
   ),
 };
 
-// Hooks
-// ---------------
 type FilterKeys = keyof typeof defaultFilter;
 
 export const useFilter = () => {

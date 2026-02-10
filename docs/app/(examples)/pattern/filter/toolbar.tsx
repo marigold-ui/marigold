@@ -15,14 +15,7 @@ import {
   Tag,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
-import {
-  defaultFilter,
-  getFormData,
-  toFormSchema,
-  toUrlSchema,
-  useFilter,
-  useSearch,
-} from './utils';
+import { defaultFilter, useFilter, useSearch } from './utils';
 
 // Helper
 // ---------------
@@ -124,13 +117,14 @@ export const Toolbar = () => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { success, error, data } = toUrlSchema(getFormData(e));
-    if (!success) {
-      console.error('Invalid form data', error);
-      return;
-    }
-
-    setFilter(data);
+    const data = new FormData(e.currentTarget);
+    setFilter({
+      type: data.get('type') ? Number(data.get('type')) : null,
+      capacity: Number(data.get('capacity')) || defaultFilter.capacity,
+      price: Number(data.get('price')) || defaultFilter.price,
+      traits: data.getAll('traits') as string[],
+      rating: data.get('rating') ? Number(data.get('rating')) : null,
+    });
   };
 
   return (
@@ -146,7 +140,13 @@ export const Toolbar = () => {
             <Drawer.Content>
               <FilterForm
                 key={JSON.stringify(filter)}
-                state={toFormSchema(filter)}
+                state={{
+                  type: String(filter.type ?? ''),
+                  capacity: filter.capacity,
+                  price: filter.price,
+                  traits: filter.traits,
+                  rating: String(filter.rating ?? ''),
+                }}
               />
             </Drawer.Content>
             <Drawer.Actions>
