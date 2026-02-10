@@ -1,0 +1,66 @@
+---
+title: Toast
+description: Toasts are used to display brief messages or notifications that appear temporarily on the screen.
+badge: beta
+---
+
+A Toast is a small, temporary notification that appears on the screen to inform users about the outcome of an action or to provide brief feedback. Toasts are commonly used in applications to deliver messages such as success notifications, error alerts, or informational updates without interrupting the user's workflow.
+
+## Anatomy
+
+<ImageZoom
+  src="/toast/toast-anatomy.jpg"
+  alt="Anatomy of toast"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+## Appearance
+
+<AppearanceDemo component={'Toast'} />
+
+<AppearanceTable component={'Toast'} />
+## Usage
+
+The `<ToastProvider>` Component should be in the root of your application, so it can be used anywhere in your app. You can use the `addToast` function to add a Toast to the Toaster. The Toast will appear at the bottom right of the screen by default. with the position prop you can change the position of all Toasts.
+
+### Simple toast
+
+A Toast should be used when you want to give users quick, non-intrusive feedback after an action, such as saving, deleting, or uploading data. It appears on the edge of the screen and should remain visible for at least 5 seconds or until the user manually dismisses it. Because it doesn't interrupt the user's workflow, a Toast is ideal for success messages, notifications, or error alerts that don't need immediate interaction. The message should be clear, concise, and easy to read.
+
+<ComponentDemo name="toast-simple" />
+
+### Auto dismiss
+
+This Toast will automatically dismiss itself after a specified duration.
+This is useful for notifications that do not require user interaction and should disappear after a short time. The time is in milliseconds.
+
+<ComponentDemo name="toast-auto-dismiss" />
+
+### Programmatic dismiss
+
+`addToast` does return the key of the Toast, with this the Toast can be dismissed programmatically, by saving the key of the Toast and then using `removeToast`.
+
+<ComponentDemo name="toast-programmatic-dismiss" />
+
+### Close all toasts
+
+All Toasts can be dismissed with `clearToasts`.
+
+<ComponentDemo name="toast-close-all" />
+
+### Action
+
+Toasts can also include an action element, which is typically a button or link that allows the user to take a specific action related to the toast message. This is useful for scenarios where you want to provide users with a way to respond to the notification.
+
+To add an action element, use the `action` prop which accepts any React component (button, link, etc.).
+
+<ComponentDemo name="toast-action" />
+
+## Props
+
+<StorybookHintMessage component={'Toast'} />
+
+### Toast Provider
+
+<AutoTypeTable path="Toast/ToastProvider" name="ToastProviderProps" />

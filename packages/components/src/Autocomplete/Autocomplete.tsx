@@ -9,7 +9,7 @@ import {
 import type RAC from 'react-aria-components';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
@@ -101,14 +101,18 @@ type RemovedProps =
 export interface AutocompleteProps
   extends
     Omit<RAC.ComboBoxProps<object>, RemovedProps>,
-    Pick<
-      FieldBaseProps<'label'>,
-      'width' | 'label' | 'description' | 'errorMessage'
-    > {
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
    * The value of the input (uncontrolled).
    */
   defaultValue?: RAC.ComboBoxProps<object>['defaultInputValue'];
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default 'full'
+   * @remarks `WidthProp`
+   */
+  width?: WidthProp['width'];
 
   /**
    * The value of the input (controlled).
