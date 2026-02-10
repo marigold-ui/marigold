@@ -15,51 +15,32 @@ import {
   Tag,
 } from '@marigold/components';
 import { Filter } from '@marigold/icons';
-import { defaultFilter, useFilter, useSearch } from './utils';
+import { type VenueFilter, defaultFilter, useFilter, useSearch } from './utils';
 
 // Helper
 // ---------------
 const Search = () => {
   const [search, setSearch] = useSearch();
-
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    setSearch(data.get('q') as string);
-  };
-
   return (
-    <Form onSubmit={submit} unstyled>
-      <SearchField
-        aria-label="Search"
-        description="Search by venue name"
-        name="q"
-        width={64}
-        autoComplete="off"
-        defaultValue={search}
-        onSubmit={setSearch}
-        onClear={() => setSearch('')}
-      />
-      <Button variant="primary" type="submit">
-        Search
-      </Button>
-    </Form>
+    <SearchField
+      aria-label="Search"
+      description="Search by venue name"
+      width={64}
+      autoComplete="off"
+      defaultValue={search}
+      onSubmit={setSearch}
+      onClear={() => setSearch('')}
+    />
   );
 };
 
-interface FilterFormProps {
-  state: {
-    type: string;
-    capacity: number;
-    price: number;
-    traits: string[];
-    rating: string;
-  };
-}
-
-const FilterForm = ({ state }: FilterFormProps) => (
+const FilterForm = ({ filter }: { filter: VenueFilter }) => (
   <Stack space={12}>
-    <Radio.Group label="Venue Type" name="type" defaultValue={state.type}>
+    <Radio.Group
+      label="Venue Type"
+      name="type"
+      defaultValue={String(filter.type ?? '')}
+    >
       <Radio value="">All</Radio>
       {venueTypes.map((type, idx) => (
         <Radio key={type} value={`${idx}`}>
@@ -68,9 +49,9 @@ const FilterForm = ({ state }: FilterFormProps) => (
       ))}
     </Radio.Group>
     <NumberField
-      label="Min. Capacity"
+      label="Capacity larger than"
       name="capacity"
-      defaultValue={state.capacity}
+      defaultValue={filter.capacity}
       minValue={0}
       step={10}
     />
@@ -78,7 +59,7 @@ const FilterForm = ({ state }: FilterFormProps) => (
       label="Max. Price"
       thumbLabels="price"
       name="price"
-      defaultValue={state.price}
+      defaultValue={filter.price}
       step={100}
       maxValue={defaultFilter.price}
       formatOptions={{
@@ -91,7 +72,7 @@ const FilterForm = ({ state }: FilterFormProps) => (
       label="Traits"
       name="traits"
       selectionMode="multiple"
-      defaultSelectedKeys={state.traits}
+      defaultSelectedKeys={filter.traits}
     >
       {venueTraits.map(trait => (
         <Tag key={trait} id={trait}>
@@ -99,7 +80,11 @@ const FilterForm = ({ state }: FilterFormProps) => (
         </Tag>
       ))}
     </Tag.Group>
-    <Radio.Group label="Min. Rating" name="rating" defaultValue={state.rating}>
+    <Radio.Group
+      label="Min. Rating"
+      name="rating"
+      defaultValue={String(filter.rating ?? '')}
+    >
       <Radio value="">none</Radio>
       <Radio value="1">1</Radio>
       <Radio value="2">2</Radio>
@@ -138,16 +123,7 @@ export const Toolbar = () => {
           <Form onSubmit={onSubmit} unstyled>
             <Drawer.Title>Filter</Drawer.Title>
             <Drawer.Content>
-              <FilterForm
-                key={JSON.stringify(filter)}
-                state={{
-                  type: String(filter.type ?? ''),
-                  capacity: filter.capacity,
-                  price: filter.price,
-                  traits: filter.traits,
-                  rating: String(filter.rating ?? ''),
-                }}
-              />
+              <FilterForm key={JSON.stringify(filter)} filter={filter} />
             </Drawer.Content>
             <Drawer.Actions>
               <Button slot="close">Close</Button>

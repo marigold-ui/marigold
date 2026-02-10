@@ -91,14 +91,12 @@ export const VenuesView = () => {
 
     // Filter
     if (filter.type !== null && filter.type !== venue.type) return false;
-    if (filter.capacity && filter.capacity < venue.capacity) return false;
+    if (filter.capacity && venue.capacity < filter.capacity) return false;
     if (filter.price && filter.price < venue.price.to) return false;
     if (filter.rating && filter.rating > venue.rating) return false;
     if (
       Array.isArray(filter.traits) &&
-      !filter.traits.some(trait =>
-        (venue.traits as any as string[]).includes(trait)
-      )
+      !venue.traits.some(t => filter.traits.includes(t))
     )
       return false;
 

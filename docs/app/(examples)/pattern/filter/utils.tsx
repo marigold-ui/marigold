@@ -6,6 +6,7 @@ import {
   useQueryState,
   useQueryStates,
 } from 'nuqs';
+import type { ReactNode } from 'react';
 import { NumericFormat } from '@marigold/system';
 
 export type VenueFilter = {
@@ -16,9 +17,11 @@ export type VenueFilter = {
   rating: number | null;
 };
 
+export type FilterKey = keyof VenueFilter;
+
 export const defaultFilter = {
   type: null,
-  capacity: Math.max(...venues.map(venue => venue.capacity)),
+  capacity: 0,
   price: Math.max(...venues.map(venue => venue.price.to)),
   traits: venueTraits,
   rating: null,
@@ -32,47 +35,64 @@ const filterParsers = {
   rating: parseAsInteger,
 };
 
-export const toDisplayValue = {
-  type: (value: number) => `Type: ${venueTypes[value] ?? 'Unknown'}`,
-  capacity: (value: number) => (
-    <>
-      Min Capacity: <NumericFormat value={value} />
-    </>
-  ),
-  price: (value: number) => (
-    <>
-      Max. Price:{' '}
-      <NumericFormat
-        style="currency"
-        value={value}
-        currency="EUR"
-        maximumFractionDigits={0}
-      />
-    </>
-  ),
-  traits: (value: string[]) => (
-    <>
-      Traits:{' '}
-      {value.length <= 3
-        ? value.join(', ')
-        : `${value.slice(0, 2).join(', ')} (+${value.length - 2} more)`}
-    </>
-  ),
-  rating: (value: number) => (
-    <>
-      Min. Rating: <NumericFormat value={value} minimumFractionDigits={1} />
-    </>
-  ),
+export const isDefault = (key: FilterKey, value: unknown): boolean => {
+  const def = defaultFilter[key];
+  if (Array.isArray(value) && Array.isArray(def)) {
+    return value.length === def.length;
+  }
+  return `${value}` === `${def}`;
 };
 
-type FilterKeys = keyof typeof defaultFilter;
+export const toDisplayValue = (
+  key: FilterKey,
+  filter: VenueFilter
+): ReactNode => {
+  switch (key) {
+    case 'type':
+      return `Type: ${venueTypes[filter.type!] ?? 'Unknown'}`;
+    case 'capacity':
+      return (
+        <>
+          Capacity larger than: <NumericFormat value={filter.capacity} />
+        </>
+      );
+    case 'price':
+      return (
+        <>
+          Max. Price:{' '}
+          <NumericFormat
+            style="currency"
+            value={filter.price}
+            currency="EUR"
+            maximumFractionDigits={0}
+          />
+        </>
+      );
+    case 'traits':
+      return (
+        <>
+          Traits:{' '}
+          {filter.traits.length <= 3
+            ? filter.traits.join(', ')
+            : `${filter.traits.slice(0, 2).join(', ')} (+${filter.traits.length - 2} more)`}
+        </>
+      );
+    case 'rating':
+      return (
+        <>
+          Min. Rating:{' '}
+          <NumericFormat value={filter.rating!} minimumFractionDigits={1} />
+        </>
+      );
+  }
+};
 
 export const useFilter = () => {
   const [filter, setFilter] = useQueryStates(filterParsers, {
     history: 'push',
   });
 
-  const removeFilter = (keys: Set<FilterKeys>) => {
+  const removeFilter = (keys: Set<FilterKey>) => {
     const next: Record<string, null> = {};
     keys.forEach(key => {
       next[key] = null;
