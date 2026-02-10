@@ -26,7 +26,7 @@ import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { Tag } from '../TagGroup/Tag';
-import { Plus } from '../icons/Plus';
+import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
 
 // Props
@@ -231,7 +231,7 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
           disabled={disabled}
         />
         <IconButton className={classNames.button}>
-          <Plus />
+          <ChevronsVertical />
         </IconButton>
       </Group>
       <Popover triggerRef={triggerRef}>

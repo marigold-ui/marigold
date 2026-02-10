@@ -65,10 +65,6 @@ A `<TagField>` consists of a label, a trigger area with tags and an add button, 
 
 The `<TagField>` works best when users need to select multiple items from a list of options (10+) and want to see their selections displayed compactly as tags. It combines filtering (typing to narrow down options) with visible selection feedback, saving space compared to checkboxes.
 
-### Controlling the selection
-
-When your application needs to know which items are selected, for example to filter a list or submit a form, use the `value` and `onChange` props to manage the selection state. This gives you full control over the selected items and lets you react to changes immediately.
-
 ### Organizing options into sections
 
 When the list of options becomes large or covers distinct categories, grouping them into sections helps users find what they are looking for. Use the `<TagField.Section>` component to wrap related options, providing a `header` for each group to add structure and context.

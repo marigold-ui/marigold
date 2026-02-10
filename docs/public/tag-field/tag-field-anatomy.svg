@@ -73,7 +73,7 @@
        font-size="11px"
        fill="#9ca3af">&#xd7;</text>
 
-    <!-- Plus button -->
+    <!-- Chevrons button -->
     <rect
        x="266"
        y="24"
@@ -82,12 +82,10 @@
        rx="4"
        fill="#ffffff"
        stroke="#d1d5db" />
-    <text
-       x="274"
-       y="42"
-       font-family="sans-serif"
-       font-size="16px"
-       fill="#6b7280">+</text>
+    <g transform="translate(272,29)" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <polyline points="2,6 5,3 8,6" />
+      <polyline points="2,10 5,13 8,10" />
+    </g>
 
     <!-- Help text -->
     <text
