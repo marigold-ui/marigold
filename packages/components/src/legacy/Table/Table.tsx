@@ -123,7 +123,7 @@ export const Table: Table = ({
            * Prevents wide tables from causing overlays to become scrollable on
            * small screens, ensuring overlays remain fixed as intended.
            */
-          'max-[600px]:[[aria-hidden="true"]_&]:overflow-hidden',
+          'max-[600px]:in-aria-hidden:overflow-hidden',
           stretch ? 'table w-full' : 'block',
           classNames.table
         )}
