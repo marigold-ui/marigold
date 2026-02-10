@@ -22,7 +22,6 @@ for (const item of demoPath) {
     name: '${name}',
     demo: dynamic(
       () => import('@/${item.replace('.tsx', '')}'),
-      { ssr: false }
     ),
     file: '${item}',
   },`;
