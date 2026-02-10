@@ -1,0 +1,169 @@
+---
+title: Marigold v16.2.0
+date: 2026-02-10
+type: Blog
+changed:
+  - components/content/card
+  - components/form/calendar
+  - components/form/filefield
+  - components/overlay/contextual-help
+  - components/form/textfield
+  - components/form/select
+  - components/form/textarea
+  - components/form/numberfield
+  - components/form/datefield
+---
+
+New year, new foundations! While the first weeks of 2026 are flying by, we've been heads-down building a stronger base for Marigold. This release brings a brand-new semantic spacing system, a refreshed surface styling, and several new components to help you build better interfaces faster.
+
+Marigold v16.2.0 is here with exciting new features, internal improvements, and important theme changes. Let's dive in!
+
+## Breaking Changes
+
+### Surface Styling Refactored
+
+The surface styling system has been completely refactored to use `background-clip` and `background-origin` for gradient borders. This improves contrast and depth across all surface-based components like inputs, cards, and dialogs.
+
+**Migration:**
+
+```css
+/* Before */
+.util-surface-raised
+
+/* After */
+.ui-surface /* uses raised elevation by default */
+.ui-surface.ui-elevation-overlay /* for overlays */
+```
+
+Deprecated utilities `util-focus-*` and `util-disabled` have been removed. Use the new state utilities instead: `ui-state-focus`, `ui-state-disabled`, `ui-state-error`, `ui-state-readonly`.
+
+### Semantic Spacing System
+
+A new relational spacing scale has been introduced that describes the strength of relationships between elements:
+
+| Token     | Value   | Use case                                    |
+| --------- | ------- | ------------------------------------------- |
+| `joined`  | 0.25rem | Elements attached as a single unit          |
+| `tight`   | 1rem    | Packed containers for high-density scanning |
+| `related` | 2rem    | Minimal separation for related pairs        |
+| `peer`    | 4rem    | Self-contained equals in the same flow      |
+| `group`   | 8rem    | Logical separation between content zones    |
+| `section` | 16rem   | Distinct layout sections                    |
+| `context` | 32rem   | Complete contextual shift                   |
+
+**Migration:**
+
+```tsx
+// Before
+<Stack space="fieldY">
+<Inline space="fieldX">
+
+// After
+<Stack space="peer">
+<Inline space="related">
+```
+
+### Card
+
+`<Card>` now uses semantic spacing. The `size="full"` prop has been replaced by the new `stretch` property. Additionally, cards now always take full width by default.
+
+```tsx
+// Before
+<Card size="full">...</Card>
+
+// After
+<Card stretch>...</Card>
+```
+
+### ContextualHelp
+
+Size variants have been removed from `<ContextualHelp>`. The component now has a single, improved default style.
+
+### TabList
+
+The `space` prop has been removed from `<TabList>`.
+
+## Components
+
+### ActionBar (alpha)
+
+A new `<ActionBar>` component for bulk operations on selected items. It appears as a floating toolbar when users select multiple items in tables or lists. It automatically shows the selection count and provides action buttons for common operations like edit, delete, or copy.
+
+```tsx
+<ActionBar selectedItemCount={3} onClearSelection={() => clearSelection()}>
+  <ActionBar.Button onPress={() => editItems()}>Edit</ActionBar.Button>
+  <ActionBar.Button onPress={() => deleteItems()}>Delete</ActionBar.Button>
+</ActionBar>
+```
+
+### EmptyState (beta)
+
+The new `<EmptyState>` component provides a standardized way to display placeholder content when a view has no data to show. Use it for empty lists, search results with no matches, or initial states.
+
+### ToggleButton & ToggleButtonGroup (alpha)
+
+New `<ToggleButton>` and `<ToggleButtonGroup>` components allow users to toggle between states or select from a group of options. These are ideal for toolbar-style controls, view switches, and filter toggles.
+
+### Calendar
+
+The `<Calendar>` component has been refactored with a new API. Two new props enable multi-month calendar views:
+
+- **`visibleDuration`**: Controls the number of visible months (1-3 months). Default: `{ months: 1 }`.
+- **`pageBehavior`**: Controls navigation strategy. `'single'` pages by one month, `'visible'` pages by the number of visible months.
+
+```tsx
+// Multi-month calendar for date range selection
+<Calendar visibleDuration={{ months: 2 }} pageBehavior="visible" />
+```
+
+### FileField
+
+The `<FileField>` component now supports a `name` prop, making it straightforward to include file uploads in standard HTML forms.
+
+### Width Prop on Input Components
+
+The `width` prop has been moved from `FieldBase` to individual input components (`TextField`, `Select`, `TextArea`, `DateField`, `NumberField`, `TimeField`, `FileField`). Labels and help text can now be wider than the actual input field, improving readability for fields with long descriptions.
+
+The width prop now handles two types of values differently:
+
+- **Fixed widths** (numeric scale values like `96`, `80`): The input has a fixed size while labels and help text can extend beyond it.
+- **Fraction widths** (like `"1/2"`, `"2/3"`): The entire field scales responsively based on the container width.
+
+```tsx
+<TextField
+  label="A label that can be longer than the input"
+  width={96}
+  description="Help text also extends beyond the input width"
+/>
+```
+
+### Layout Components
+
+`<Grid>`, `<Container>`, `<Columns>`, and `<Center>` now support semantic spacing tokens, aligning them with the new spacing system.
+
+## Design
+
+- Refactored elevation shadow system to use Tailwind's built-in `shadow-*` classes with theme-defined shadow variables (`shadow-elevation-border`, `shadow-elevation-raised`, `shadow-elevation-overlay`). This provides three clear elevation levels with better maintainability.
+- Z-index values have been moved from theme style files to component implementations, ensuring consistent stacking order across all themes. The stacking hierarchy remains unchanged: Toast notifications (`z-80`) above modals (`z-50`), modals above popovers/menus (`z-30`).
+- Updated Admin/Master badge styling.
+- Set table background color to white for improved readability.
+
+## Documentation
+
+- New comprehensive spacing guide explaining the semantic spacing system with visual examples.
+- Added documentation for the `onAction` prop.
+- Added examples showing how to use multiselection with forms.
+- Updated development guidelines.
+
+## Bug fixes
+
+- Fixed `<Button>` appearing as pressed when used to expand something (e.g., in accordions or dropdowns).
+- Fixed `<Checkbox>` focus styling that broke after the surface update.
+- Fixed a regression where `<Container>` no longer worked correctly with `<Breakout>`.
+- Fixed `<Drawer>` to take full height on small screens when positioned at top or bottom.
+- Correctly applied elevation shadows across all components.
+- Updated `react-aria` dependencies to February 2026 versions (`react-aria-components` 1.15.0, `react-stately` 3.44.0).
+
+---
+
+This is a feature-rich release with a stronger foundation for building consistent interfaces. As always, we welcome your feedback!
