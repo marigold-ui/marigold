@@ -1,3 +1,4 @@
+import { SidebarFolder } from '@/app/_components/SidebarFolder';
 import { SidebarSeparator } from '@/app/_components/SidebarSeparator';
 import { baseOptions } from '@/lib/layout.shared';
 import { source } from '@/lib/source';
@@ -11,6 +12,7 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
       sidebar={{
         components: {
           Separator: SidebarSeparator,
+          Folder: SidebarFolder,
         },
       }}
     >
