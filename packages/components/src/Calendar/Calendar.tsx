@@ -49,6 +49,7 @@ export interface CalendarProps extends Omit<
   /**
    * Sets the width of the calendar. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default fit
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
   /**
