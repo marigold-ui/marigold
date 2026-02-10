@@ -35,14 +35,14 @@ function findDemoFiles(dir, fileList = []) {
  * Build the registry file
  */
 async function buildRegistry() {
-  const demosDir = path.join(rootDir, 'demos');
+  const contentDir = path.join(rootDir, 'content');
 
-  if (!fs.existsSync(demosDir)) {
-    console.error('❌ Demos directory not found!');
+  if (!fs.existsSync(contentDir)) {
+    console.error('❌ Content directory not found!');
     process.exit(1);
   }
 
-  const demoFiles = findDemoFiles(demosDir);
+  const demoFiles = findDemoFiles(contentDir);
 
   console.log('📑 Building demo registry...');
 

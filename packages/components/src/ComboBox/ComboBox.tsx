@@ -36,13 +36,14 @@ type RemovedProps =
 export interface ComboBoxProps
   extends
     Omit<RAC.ComboBoxProps<any>, RemovedProps>,
-    Pick<
-      FieldBaseProps<'label'>,
-      'width' | 'label' | 'description' | 'errorMessage'
-    > {
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
 
+  /**
+   * @remarks `WidthProp`
+   */
+  width?: FieldBaseProps<'label'>['width'];
   /**
    * If `true`, the input is disabled.
    * @default false
