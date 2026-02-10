@@ -1,6 +1,6 @@
 ---
 title: Marigold v16.2.0
-date: 2026-02-10
+date: 2026-02-17
 type: Blog
 changed:
   - components/content/card
@@ -124,9 +124,10 @@ The `<FileField>` component now supports a `name` prop, making it straightforwar
 
 The `width` prop has been moved from `FieldBase` to individual input components (`TextField`, `Select`, `TextArea`, `DateField`, `NumberField`, `TimeField`, `FileField`). Labels and help text can now be wider than the actual input field, improving readability for fields with long descriptions.
 
-The width prop now handles two types of values differently:
+The width prop now handles three types of values:
 
 - **Fixed widths** (numeric scale values like `96`, `80`): The input has a fixed size while labels and help text can extend beyond it.
+- **Keyword widths** (`"fit"`, `"full"`, `"max"`): The input sizes itself based on the keyword, e.g. `"fit"` shrinks to fit its content, `"full"` takes full available width, and `"max"` uses its maximum content width.
 - **Fraction widths** (like `"1/2"`, `"2/3"`): The entire field scales responsively based on the container width.
 
 ```tsx
@@ -151,9 +152,8 @@ The width prop now handles two types of values differently:
 ## Documentation
 
 - New comprehensive spacing guide explaining the semantic spacing system with visual examples.
-- Added documentation for the `onAction` prop.
+- Added documentation for the `onAction` prop from `<Combobox>`.
 - Added examples showing how to use multiselection with forms.
-- Updated development guidelines.
 
 ## Bug fixes
 
