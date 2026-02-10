@@ -62,22 +62,15 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
-  render: args => {
-    const [selected, setSelected] = useState<Key[]>([]);
-    return (
-      <Stack space={6}>
-        <TagField {...args} value={selected} onChange={setSelected}>
-          <TagField.Option id="rock">Rock</TagField.Option>
-          <TagField.Option id="jazz">Jazz</TagField.Option>
-          <TagField.Option id="pop">Pop</TagField.Option>
-          <TagField.Option id="classical">Classical</TagField.Option>
-          <TagField.Option id="electronic">Electronic</TagField.Option>
-        </TagField>
-        <hr />
-        <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
-      </Stack>
-    );
-  },
+  render: args => (
+    <TagField {...args}>
+      <TagField.Option id="rock">Rock</TagField.Option>
+      <TagField.Option id="jazz">Jazz</TagField.Option>
+      <TagField.Option id="pop">Pop</TagField.Option>
+      <TagField.Option id="classical">Classical</TagField.Option>
+      <TagField.Option id="electronic">Electronic</TagField.Option>
+    </TagField>
+  ),
 });
 
 Basic.test(
@@ -100,40 +93,6 @@ Basic.test(
   }
 );
 
-Basic.test('Select multiple items', async ({ canvas, step, args }) => {
-  await step('Open the dropdown', async () => {
-    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
-
-    await userEvent.click(trigger);
-
-    await waitFor(() => canvas.getByRole('dialog'));
-  });
-
-  await step('Select all items', async () => {
-    const dialog = canvas.getByRole('dialog');
-
-    await userEvent.click(within(dialog).getByText('Rock'));
-    await userEvent.click(within(dialog).getByText('Jazz'));
-    await userEvent.click(within(dialog).getByText('Pop'));
-    await userEvent.click(within(dialog).getByText('Classical'));
-    await userEvent.click(within(dialog).getByText('Electronic'));
-  });
-
-  await step('Close the dropdown', async () => {
-    await userEvent.click(document.body);
-
-    await waitFor(() => {
-      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
-    });
-  });
-
-  await step('Verify all selected items appear as tags', async () => {
-    expect(canvas.getByTestId('selected')).toHaveTextContent(
-      'selected: ["rock","jazz","pop","classical","electronic"]'
-    );
-  });
-});
-
 export const Controlled = meta.story({
   tags: ['component-test'],
   render: args => {
@@ -152,6 +111,38 @@ export const Controlled = meta.story({
       </Stack>
     );
   },
+});
+
+Controlled.test('Select multiple items', async ({ canvas, step, args }) => {
+  await step('Open the dropdown', async () => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await userEvent.click(trigger);
+
+    await waitFor(() => canvas.getByRole('dialog'));
+  });
+
+  await step('Select all items', async () => {
+    const dialog = canvas.getByRole('dialog');
+
+    await userEvent.click(within(dialog).getByText('Jazz'));
+    await userEvent.click(within(dialog).getByText('Classical'));
+    await userEvent.click(within(dialog).getByText('Electronic'));
+  });
+
+  await step('Close the dropdown', async () => {
+    await userEvent.click(document.body);
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
+  await step('Verify all selected items appear as tags', async () => {
+    expect(canvas.getByTestId('selected')).toHaveTextContent(
+      'selected: ["rock","pop","jazz","classical","electronic"]'
+    );
+  });
 });
 
 Controlled.test('Remove a tag', async ({ canvas, step }) => {
