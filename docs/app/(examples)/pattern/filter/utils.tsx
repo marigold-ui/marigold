@@ -6,7 +6,6 @@ import {
   useQueryState,
   useQueryStates,
 } from 'nuqs';
-import type { ReactNode } from 'react';
 import { NumericFormat } from '@marigold/system';
 
 export type VenueFilter = {
@@ -43,10 +42,7 @@ export const isDefault = (key: FilterKey, value: unknown): boolean => {
   return `${value}` === `${def}`;
 };
 
-export const toDisplayValue = (
-  key: FilterKey,
-  filter: VenueFilter
-): ReactNode => {
+export const toDisplayValue = (key: FilterKey, filter: VenueFilter) => {
   switch (key) {
     case 'type':
       return `Type: ${venueTypes[filter.type!] ?? 'Unknown'}`;
