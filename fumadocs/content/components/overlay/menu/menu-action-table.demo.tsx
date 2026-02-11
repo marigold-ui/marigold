@@ -35,9 +35,9 @@ export default () => {
   };
 
   return (
-    <Table aria-label="Data Table" size="compact" stretch>
+    <Table aria-label="Data Table" size="compact">
       <Table.Header>
-        <Table.Column>ID</Table.Column>
+        <Table.Column rowHeader>ID</Table.Column>
         <Table.Column>Event Name</Table.Column>
         <Table.Column>Status</Table.Column>
         <Table.Column>Action</Table.Column>

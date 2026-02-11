@@ -30,9 +30,9 @@ export default () => {
       <Table>
         <Table.Header>
           <Table.Column>Product</Table.Column>
-          <Table.Column align="right">Price</Table.Column>
-          <Table.Column align="right">Qty</Table.Column>
-          <Table.Column align="right">Total</Table.Column>
+          <Table.Column alignX="right">Price</Table.Column>
+          <Table.Column alignX="right">Qty</Table.Column>
+          <Table.Column alignX="right">Total</Table.Column>
         </Table.Header>
         <Table.Body>
           {products.map(p => (

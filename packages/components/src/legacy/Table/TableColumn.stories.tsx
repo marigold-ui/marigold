@@ -4,7 +4,7 @@ import { SortDescriptor } from '@react-types/shared';
 import { Table } from './Table';
 
 const meta = preview.meta({
-  title: 'Components/Table',
+  title: 'Legacy/Table',
   component: Table.Column,
   argTypes: {
     align: {
