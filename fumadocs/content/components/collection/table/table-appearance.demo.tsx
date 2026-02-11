@@ -34,7 +34,11 @@ const items: { [key: string]: string }[] = [
 export default (props: TableProps) => (
   <Table {...props}>
     <Table.Header columns={columns}>
-      {column => <Table.Column>{column.name}</Table.Column>}
+      {column => (
+        <Table.Column rowHeader={column.key === 'id'}>
+          {column.name}
+        </Table.Column>
+      )}
     </Table.Header>
     <Table.Body items={items}>
       {item => (

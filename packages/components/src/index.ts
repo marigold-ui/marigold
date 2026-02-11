@@ -221,7 +221,17 @@ export { Switch } from './Switch/Switch';
 export type { SwitchProps } from './Switch/Switch';
 
 export { Table } from './Table/Table';
-export type { TableProps } from './Table/Table';
+export type {
+  TableProps,
+  TableHeaderProps,
+  TableColumnProps,
+  TableBodyProps,
+  TableRowProps,
+  TableCellProps,
+  TableEditableCellProps,
+  TableDropIndicatorProps,
+  TableDragPreviewProps,
+} from './Table/Table';
 
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';

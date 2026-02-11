@@ -16,18 +16,18 @@ useState, Zustand, or a server sync.
 ```tsx
 function ChannelComposer({ channelId }: { channelId: string }) {
   // UI component knows about global state implementation
-  const state = useGlobalChannelState(channelId)
-  const { submit, updateInput } = useChannelSync(channelId)
+  const state = useGlobalChannelState(channelId);
+  const { submit, updateInput } = useChannelSync(channelId);
 
   return (
     <Composer.Frame>
       <Composer.Input
         value={state.input}
-        onChange={(text) => sync.updateInput(text)}
+        onChange={text => sync.updateInput(text)}
       />
       <Composer.Submit onPress={() => sync.submit()} />
     </Composer.Frame>
-  )
+  );
 }
 ```
 
@@ -39,11 +39,11 @@ function ChannelProvider({
   channelId,
   children,
 }: {
-  channelId: string
-  children: React.ReactNode
+  channelId: string;
+  children: React.ReactNode;
 }) {
-  const { state, update, submit } = useGlobalChannel(channelId)
-  const inputRef = useRef(null)
+  const { state, update, submit } = useGlobalChannel(channelId);
+  const inputRef = useRef(null);
 
   return (
     <Composer.Provider
@@ -53,7 +53,7 @@ function ChannelProvider({
     >
       {children}
     </Composer.Provider>
-  )
+  );
 }
 
 // UI component only knows about the context interface
@@ -66,7 +66,7 @@ function ChannelComposer() {
         <Composer.Submit />
       </Composer.Footer>
     </Composer.Frame>
-  )
+  );
 }
 
 // Usage
@@ -75,7 +75,7 @@ function Channel({ channelId }: { channelId: string }) {
     <ChannelProvider channelId={channelId}>
       <ChannelComposer />
     </ChannelProvider>
-  )
+  );
 }
 ```
 
@@ -84,8 +84,8 @@ function Channel({ channelId }: { channelId: string }) {
 ```tsx
 // Local state for ephemeral forms
 function ForwardMessageProvider({ children }) {
-  const [state, setState] = useState(initialState)
-  const forwardMessage = useForwardMessage()
+  const [state, setState] = useState(initialState);
+  const forwardMessage = useForwardMessage();
 
   return (
     <Composer.Provider
@@ -94,18 +94,18 @@ function ForwardMessageProvider({ children }) {
     >
       {children}
     </Composer.Provider>
-  )
+  );
 }
 
 // Global synced state for channels
 function ChannelProvider({ channelId, children }) {
-  const { state, update, submit } = useGlobalChannel(channelId)
+  const { state, update, submit } = useGlobalChannel(channelId);
 
   return (
     <Composer.Provider state={state} actions={{ update, submit }}>
       {children}
     </Composer.Provider>
-  )
+  );
 }
 ```
 
