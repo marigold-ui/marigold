@@ -47,7 +47,7 @@ const AppearancePicker = ({
         {value}
         <ChevronDown className="size-3 opacity-50" />
       </PopoverTrigger>
-      <PopoverContent align="start" className="min-w-[120px] p-1">
+      <PopoverContent align="start" className="min-w-30 p-1">
         {options.map(option => (
           <button
             key={option}
