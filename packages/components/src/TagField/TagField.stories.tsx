@@ -160,17 +160,6 @@ Controlled.test('Remove a tag', async ({ canvas, step }) => {
   });
 });
 
-export const WithError = meta.story({
-  render: args => (
-    <TagField {...args} error errorMessage="Please select at least one genre.">
-      <TagField.Option id="rock">Rock</TagField.Option>
-      <TagField.Option id="jazz">Jazz</TagField.Option>
-      <TagField.Option id="pop">Pop</TagField.Option>
-      <TagField.Option id="classical">Classical</TagField.Option>
-    </TagField>
-  ),
-});
-
 export const DisabledItems = meta.story({
   render: args => {
     return (

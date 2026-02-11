@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Basic, Controlled, WithError } from './TagField.stories';
+import { Basic, Controlled } from './TagField.stories';
 
 const user = userEvent.setup();
 
@@ -60,7 +60,9 @@ test('Selected Items are visible', () => {
 });
 
 test('error state shows error message', () => {
-  render(<WithError.Component />);
+  render(
+    <Basic.Component error errorMessage="Please select at least one genre." />
+  );
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getAllByText('Genres')[0].parentElement;
