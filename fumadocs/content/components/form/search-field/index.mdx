@@ -1,0 +1,118 @@
+---
+title: SearchField
+description: Component which allows user to enter and clear a search query.
+---
+
+The `<SearchField>` component offers a user-friendly input field specifically designed for search queries, often accompanied by a search icon or button to initiate the search action.
+
+## Anatomy
+
+A `<SearchField>` consists of an input element, a label, and an optional clear button.
+
+<ImageZoom
+  src="/search-field/search-field-anatomy.jpg"
+  alt="Anatomy of search field"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={'SearchField'} />
+
+<AppearanceTable component={'SearchField'} />
+
+## Usage
+
+The `<SearchField>` component is a versatile UI element that enables users to search for specific information within a given context or data set.
+
+### Placement
+
+The placement of a search field plays a critical role in its effectiveness and usability. A well-positioned search field ensures users can easily find and use it, enhancing their overall experience on a website or application.
+
+<GuidelineTiles>
+  <Do>
+    <DoFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/search-field/search-field-do-placement.jpg"
+        alt="Do: Position the search field prominently"
+      />
+    </DoFigure>
+    <DoDescription>Position the search field prominently.</DoDescription>
+  </Do>
+  <Dont>
+    <DontFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/search-field/search-field-dont-placement.jpg"
+        alt="Don't place the search field in an obscure location"
+      />
+    </DontFigure>
+    <DontDescription>
+      Don't place the search field in an obscure location.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Props
+
+<StorybookHintMessage component={'SearchField'} />
+
+### SearchField
+
+<AutoTypeTable path="SearchField" name="SearchFieldProps" />
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Form developement guide',
+      href: '../../patterns/form-implementation',
+      caption:
+        'This page should introduce you on how to build forms with Marigold.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Form Fields',
+      href: '../../foundations/form-fields',
+      caption:
+        'Here you can find a comprehensive guide for working with form fields.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 8.25V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18V8.25m-18 0V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6ZM7.5 6h.008v.008H7.5V6Zm2.25 0h.008v.008H9.75V6Z"
+          />
+        </svg>
+      ),
+    },
+  ]}
+/>

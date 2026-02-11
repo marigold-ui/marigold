@@ -25,13 +25,7 @@ import {
 
 // Props
 // ---------------
-export interface CardProps
-  extends
-    SpaceProp<SpacingTokens>,
-    PaddingRightProp,
-    PaddingLeftProp,
-    PaddingBottomProp,
-    PaddingTopProp {
+export interface CardProps {
   children?: ReactNode;
   variant?: string;
   size?: string;
@@ -43,19 +37,52 @@ export interface CardProps
   stretch?: boolean;
 
   /**
+   * Set the spacing between child elements. You can see allowed tokens [here](../../foundations/design-token#spacing).
+   * @remarks `SpaceProp<SpacingTokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
+
+  /**
    * Padding of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
+   * @remarks `PaddingSpaceProp`
    */
   p?: PaddingSpaceProp['space'];
 
   /**
    * Padding horizontal (left and right) of the component.
+   *  @remarks `PaddingSpacePropX`
    */
   px?: PaddingSpacePropX['spaceX'];
 
   /**
    * Padding vertical (top and bottom) of the component. You can see allowed tokens [here](../../foundations/design-token#spacing).
+   * @remarks `PaddingSpacePropY`
    */
   py?: PaddingSpacePropY['spaceY'];
+
+  /**
+   * Set the right padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   * @remarks `PaddingRightProp`
+   */
+  pr?: PaddingRightProp['pr'];
+
+  /**
+   * Set the left padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   * @remarks `PaddingLeftProp`
+   */
+  pl?: PaddingLeftProp['pl'];
+
+  /**
+   * Set the top padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   * @remarks `PaddingTopProp`
+   */
+  pt?: PaddingTopProp['pt'];
+
+  /**
+   * Set the bottom padding for the element. You can see allowed tokens [here](../../foundations/design-tokens?theme=core#spacing).
+   * @remarks `PaddingBottomProp`
+   */
+  pb?: PaddingBottomProp['pb'];
 }
 
 // Component
