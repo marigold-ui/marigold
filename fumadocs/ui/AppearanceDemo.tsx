@@ -1,6 +1,7 @@
 'use client';
 
 import { type RegistryKey, registry } from '@/.registry/demos';
+import { cn } from '@/lib/cn';
 import { getAppearance } from '@/lib/utils';
 import { ruiTheme } from '@/theme';
 import {
@@ -15,20 +16,7 @@ import {
   MarigoldProvider,
   OverlayContainerProvider,
 } from '@marigold/components';
-import { cn, cva } from '@marigold/system';
 import type { Theme } from '@marigold/system';
-
-// Styles
-// ---------------
-const styles = {
-  trigger: cva(
-    'inline-flex items-center gap-1.5 rounded-md border border-fd-border bg-fd-background px-3 py-1.5 text-xs font-medium text-fd-foreground disabled:opacity-50'
-  ),
-  option: cva(
-    'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs hover:bg-fd-accent'
-  ),
-  info: cva('flex items-center gap-0.5 text-xs text-neutral-500'),
-};
 
 // Picker
 // ---------------
@@ -51,7 +39,10 @@ const AppearancePicker = ({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger disabled={disabled} className={styles.trigger()}>
+      <PopoverTrigger
+        disabled={disabled}
+        className="border-fd-border bg-fd-background text-fd-foreground inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+      >
         <span className="opacity-60">{label}:</span>
         {value}
         <ChevronDown className="size-3 opacity-50" />
@@ -61,7 +52,7 @@ const AppearancePicker = ({
           <button
             key={option}
             type="button"
-            className={styles.option()}
+            className="hover:bg-fd-accent flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs"
             onClick={() => {
               onChange(option);
               setOpen(false);
@@ -170,7 +161,7 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
             disabled={appearance.size.length === 0}
           />
           {isVariantOrSizeMissing ? (
-            <div className={styles.info()}>
+            <div className="flex items-center gap-0.5 text-xs text-neutral-500">
               <Info size={14} />
               The selected theme does not has any options for
               {disabledAppearance}.
