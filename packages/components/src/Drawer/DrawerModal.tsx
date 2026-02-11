@@ -8,7 +8,7 @@ import type { NonModalProps } from '../Overlay/NonModal';
 const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
   <ModalOverlay
     {...props}
-    className="fixed inset-0 z-40 h-(--visual-viewport-height)"
+    className="fixed inset-0 z-50 h-(--visual-viewport-height)"
   >
     <Modal className="flex *:flex-1">{children}</Modal>
   </ModalOverlay>

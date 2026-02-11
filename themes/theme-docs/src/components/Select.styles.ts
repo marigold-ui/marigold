@@ -29,9 +29,11 @@ export const Select: ThemeComponent<'Select'> = {
         default: 'gap-2',
         floating: [
           'shadow-xs',
-          'col-span-full row-start-1 grid grid-cols-subgrid grid-rows-subgrid',
+          'col-span-full row-start-1 grid! grid-cols-subgrid grid-rows-subgrid',
           // selected value and caret get moved to 2nd col
-          '*:row-star-1 *:col-start-2 *:text-left',
+          '*:row-start-1 *:col-start-2 *:text-left',
+          // leave space for the chevron icon at the end
+          '[&>:first-child]:mr-6',
           // So the button gap is not used to separate label from selected value
           'gap-[inherit]',
         ],

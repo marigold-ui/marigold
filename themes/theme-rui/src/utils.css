@@ -21,10 +21,12 @@
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    /* 24x24px is WCAG before 2.2, to support 2.2 this needs to be 44x44px */
+    /* Touch target minimum 24x24px (WCAG 2.1 AA) */
+    /* For WCAG 2.2 compliance, update to 44x44px */
+    /* Uses z-100 to ensure hitbox is above content but below system overlays */
     min-height: 24px;
     min-width: 24px;
-    z-index: 9999;
+    z-index: 100;
   }
 }
 

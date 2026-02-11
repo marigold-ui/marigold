@@ -1,13 +1,14 @@
 'use client';
 
-import { Card, Inline, Stack, alignment, cn, paddingSpace } from '@/ui';
+import { Inline, Stack, alignment, cn, paddingSpace } from '@/ui';
+import { Card } from 'fumadocs-ui/components/card';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
 import { Rectangle } from './Rectangle';
 
 export const AlignmentsX = () => {
   return (
-    <Card>
+    <Card title="Alignments X">
       <Stack space={3}>
         {Object.entries(alignment.horizontal.alignmentX).map(([key]) => (
           <div className="h-full bg-slate-200 p-2" key={key}>
@@ -29,7 +30,7 @@ export const AlignmentsX = () => {
 
 export const AlignmentsY = () => {
   return (
-    <Card>
+    <Card title="Alignments Y">
       <Stack space={3}>
         {Object.entries(alignment.vertical.alignmentY).map(([key]) => (
           <div className="h-44 bg-slate-200 p-2" key={key}>
@@ -51,7 +52,7 @@ export const AlignmentsY = () => {
 };
 
 export const BorderRadius = () => (
-  <Card>
+  <Card title="Border Radius">
     <Inline space={8}>
       <Stack alignX="center" space={2}>
         <code className="before:content-none after:content-none">

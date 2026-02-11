@@ -13,7 +13,11 @@ import { SelectListContext } from './Context';
 import { SelectListAction } from './SelectListAction';
 import { SelectListItem } from './SelectListItem';
 
-type RemoveProps = 'style' | 'className' | 'onSelectionChange';
+type RemoveProps =
+  | 'style'
+  | 'className'
+  | 'onSelectionChange'
+  | 'dragAndDropHooks';
 
 export interface SelectListProps extends Omit<
   RAC.GridListProps<object>,

@@ -28,7 +28,7 @@
     "cmdk": "1.1.1",
     "contentlayer2": "0.5.8",
     "dayjs": "1.11.19",
-    "dotenv": "17.2.3",
+    "dotenv": "17.2.4",
     "eslint": "9.39.2",
     "eslint-config-next": "16.1.4",
     "github-slugger": "2.0.0",
