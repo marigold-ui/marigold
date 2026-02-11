@@ -3,8 +3,12 @@ import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface ColumnsProps
-  extends SpaceProp<SpacingTokens>, AriaRegionProps {
+export interface ColumnsProps extends AriaRegionProps {
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
   /**
    * The children of the component.
    */

@@ -1,0 +1,170 @@
+---
+title: Select
+description: Dropdown for selecting an option among different options.
+---
+
+The `<Select>` is a form component that allows you to select one or more elements from a list of predefined options. It should be used with other form components in a [`<Form>`](../form/form/).
+
+## Anatomy
+
+A select contains a pressable button element with a down arrow. The lists of options opens per default below the button, if there is no space for it, it will open above. An option represent a possible choice the user can select.
+
+Optional you have the choice to add a section to the options which helps divide the content of options in categories. You can have the possibility to add a supporting text as short description and/ or error message to the select itself. The description will be relplaced with the error message when an error throws.
+Also you can have a description for the options in the list.
+
+<ImageZoom
+  src="/select/select-anatomy.jpg"
+  alt="Anatomy of select"
+  width={800}
+  height={550}
+  className="mx-auto block"
+/>
+
+## Appearance
+
+<AppearanceDemo component={'Select'} />
+
+<AppearanceTable component={'Select'} />
+
+## Usage
+
+The select should be used within a form. It supports an optional description which can be used to provide more context about the field.
+
+As with all form components, the label should always describe what the user expects to achieve. If additional informations is required you can use the description to give a short information for displaying these, or you can provide a placeholder which should represent what is to select.
+
+### Number of options
+
+If there are very few options (e.g., 1-4), consider using a [radio group](../form/radio) instead. These can be easier for users to scan and select.
+
+A select is typically suitable for a moderate number of options (e.g., 5-15). This keeps the list manageable and quick to navigate.
+
+When there are too many options (e.g., more than 15-20), usability can suffer. Users might find it cumbersome to scroll through a long list. In such cases, consider alternative approaches like a [autocomplete](../form/autocomplete) or [combobox](../form/combobox).
+
+<GuidelineTiles>
+  <Do>
+    <DoFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/select/select-do-length.jpg"
+        alt="Use a radio group for 1-4 options"
+      />
+    </DoFigure>
+    <DoDescription>Use a around 5-15 options for the select.</DoDescription>
+  </Do>
+  <Dont>
+    <DontFigure>
+      <ImageZoom
+        width={700}
+        height={700}
+        src="/select/select-dont-length.jpg"
+        alt="Dont use less than three options"
+      />
+    </DontFigure>
+    <DontDescription>
+      Don't use a select if there are less than 4 or more than 15 options to
+      choose from.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+### With sections
+
+When related options are present, organizing them into sections enhances clarity and usability. Grouping options provides additional context and helps users navigate choices more easily. This approach reduces complexity and allows for additional guidance when needed, ensuring a more intuitive experience.
+
+This can be achieved by wrapping the options in the `<Select.Section>` component. A header is required for each section, which is set using the `header` prop.
+
+<ComponentDemo name="select-section" />
+
+### Item description
+
+If you need to have primary and secondary content shown within an option, you can use our [text component](../content/text) with the slot property and set it for the label and description to add a short description for secondary content, which provides more context for the certain selectable option.
+
+<ComponentDemo name="select-description" />
+
+### Disabled keys
+
+Sometimes depending on other settings it can be that a select needs to have disabled options to show up. For this case you can set keys disabled through the `disabledKeys` property.
+
+Keep in mind that you always should write information why a certain option is disabled near the disabled option.
+
+<ComponentDemo name="select-disabled-keys" />
+
+### Multiselection
+
+Sometimes you need to offer a way for users to select multiple options from a list, but you don't have much room in your layout. In these situations, enabling multiselection (`selectionMode="multiple"`) on the `<Select>` is an effective approach. A common use case for this is when filtering a list of products. For instance, a user could select both a specific brand and a particular feature, and the dropdown would neatly contain both selections.
+
+However, be mindful of the user experience when offering multiple selections. As more options are chosen, the display text will likely be truncated, hiding the full list of what's been selected. Note that for use cases requiring all selected options to be clearly visible, a dedicated [Multiselect](/components/form/multiselect) component might be a better choice.
+
+<ComponentDemo name="select-multiple" />
+
+### Additional visuals
+
+Icons or images can be added to options to provide immediate visual context and help users differentiate between items at a glance. Use these visual elements when they add meaningful value, such as representing different categories, user profiles, or status indicators.
+
+Visual elements are processed faster than text, reducing cognitive load and helping users make selections more quickly. However, ensure that options remain understandable even without the visuals for accessibility purposes.
+
+<ComponentDemo name="select-visuals" />
+
+## Props
+
+<StorybookHintMessage component={'Select'} />
+
+### Select
+
+<AutoTypeTable path="Select" name="SelectProps" />
+
+### Select.Option
+
+<AutoTypeTable path="ListBox/ListBoxItem" name="ListBoxItemProps" />
+
+### Select.Section
+
+<AutoTypeTable path="ListBox/ListBoxSection" name="SectionProps" />
+
+## Alternative components
+
+<ul>
+  <li>
+    [Autocomplete](/components/form/autocomplete): A searchfield that displays a
+    dynamic list of suggestions. Useful when there are more than 15 options and
+    you need to search for a specific value.
+  </li>
+  <li>
+    [Combobox](/components/form/combobox): A text field that allows the user to
+    select values from a provided items array. Useful when there are mote than
+    15 options.
+  </li>
+  <li>
+    [Radio](/components/form/radio): Component which allows to select only one
+    option from a list. Use it if you have less than 5 options.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Building forms',
+      href: '../../patterns/form-implementation',
+      caption: 'Learn how to build forms.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+          <path d="M18.375 2.625a2.121 2.121 0 113 3L12 15l-4 1 1-4z" />
+        </svg>
+      ),
+    },
+  ]}
+/>

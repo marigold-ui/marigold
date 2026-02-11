@@ -105,14 +105,7 @@ export const WithTable = meta.story({
               <Table aria-label="Todos Table" selectionMode="multiple">
                 <Table.Header>
                   {tableHeaders.map((header, index) => (
-                    <Table.Column
-                      width={
-                        index === tableHeaders.length - 1 ? 'full' : 'auto'
-                      }
-                      key={index}
-                    >
-                      {header}
-                    </Table.Column>
+                    <Table.Column key={index}>{header}</Table.Column>
                   ))}
                 </Table.Header>
                 <Table.Body>

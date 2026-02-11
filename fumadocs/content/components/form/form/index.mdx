@@ -1,0 +1,58 @@
+---
+title: Form
+description: Wrap your fields to submit user data and enable input validation.
+---
+
+The `<Form>` component acts as a container for a set of fields, enabling data transmission to a server. It operates like a standard HTML form, initiating either a request based on the specified `method` attribute.
+
+Additionally, the `<Form>` allows to validate user input and offers feedback for incorrect data entries, enhancing the overall resilience and user-friendliness of the form submission process. See the [Validation](/foundations/validation) guide to learn more about form validation.
+
+## Import
+
+```tsx
+import { Form } from '@marigold/components';
+```
+
+## Appearance
+
+<AppearanceTable component={'Form'} />
+
+## Props
+
+### Form
+
+<AutoTypeTable path="Form" name="FormProps" />
+
+## Examples
+
+### Setup
+
+This is a simple setup how to use a `<Form>`.
+
+<ComponentDemo name="form-base" />
+
+### Handling submission
+
+The `onSubmit` event is useful for custom form actions, such as calling a REST API, instead of relying on the native form submission. It triggeres when a user submits the form using the Enter key or clicks the submit button. The `onReset` event is triggered when a user presses a reset button (`[type=reset]`).
+
+<ComponentDemo name="form-submission" />
+
+### Server Errors
+
+The `<Form>` component handles passed errors, typically received from a server after form submission. To display validation errors, set the `validationErrors` prop as an object mapping each field's name prop to a string or array of strings representing errors. These errors appear to the user as soon as the `validationErrors` prop is set and are cleared when the user modifies the corresponding field's value.
+
+<ComponentDemo name="form-validation-errors" />
+
+For more information about form validation, see the [Validation](/foundations/validation) guide.
+
+### Focus Management
+
+As you can see in the previous server errors example, when a user submits a form with validation errors, the first invalid field is automatically focused. This behavior can be customized using `e.preventDefault` during the `onInvalid` event and manage the focus manually.
+
+<ComponentDemo name="form-focus-management" />
+
+<p />
+
+<Callout title="Want more?!" type="info">
+  You can find more examples and usages of the `<Form>` component on the [Validation](/foundations/validation) page.
+</Callout>
