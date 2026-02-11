@@ -160,16 +160,8 @@ Controlled.test('Remove a tag', async ({ canvas, step }) => {
   });
 });
 
-export const DisabledItems = meta.story({
-  render: args => {
-    return (
-      <TagField {...args} disabledKeys={['classical', 'electronic']}>
-        <TagField.Option id="rock">Rock</TagField.Option>
-        <TagField.Option id="jazz">Jazz</TagField.Option>
-        <TagField.Option id="pop">Pop</TagField.Option>
-        <TagField.Option id="classical">Classical</TagField.Option>
-        <TagField.Option id="electronic">Electronic</TagField.Option>
-      </TagField>
-    );
+export const DisabledItems = Basic.extend({
+  args: {
+    disabledKeys: ['classical', 'electronic'],
   },
 });
