@@ -42,10 +42,10 @@ const rows = [
 export default () => (
   <Table aria-label="Data Table" selectionMode="multiple" size="compact">
     <Table.Header>
-      <Table.Column>Event</Table.Column>
+      <Table.Column rowHeader>Event</Table.Column>
       <Table.Column>Date</Table.Column>
-      <Table.Column align="right">Price</Table.Column>
-      <Table.Column align="right">Ticket Number</Table.Column>
+      <Table.Column alignX="right">Price</Table.Column>
+      <Table.Column alignX="right">Ticket Number</Table.Column>
     </Table.Header>
     <Table.Body items={rows}>
       {rows.map(item => (

@@ -5,8 +5,8 @@ import { useTableColumnHeader } from '@react-aria/table';
 import { mergeProps } from '@react-aria/utils';
 import { GridNode } from '@react-types/grid';
 import { cn, width as twWidth, useStateProps } from '@marigold/system';
-import { SortDown } from '../icons/SortDown';
-import { SortUp } from '../icons/SortUp';
+import { SortDown } from '../../icons/SortDown';
+import { SortUp } from '../../icons/SortUp';
 import { useTableContext } from './Context';
 import { ColumnProps } from './Table';
 

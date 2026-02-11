@@ -54,16 +54,22 @@ export default () => {
       <Table
         aria-label="Example dynamic collection table"
         selectionMode="multiple"
-        stretch
         onSelectionChange={key => setSelectedKeys(new Set(key))}
       >
         <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
+          {column => (
+            <Table.Column rowHeader={column.key === 'id'}>
+              {column.name}
+            </Table.Column>
+          )}
         </Table.Header>
         <Table.Body items={rows}>
           {item => (
             <Table.Row>
-              {columnKey => <Table.Cell>{item[columnKey]}</Table.Cell>}
+              <Table.Cell>{item.id}</Table.Cell>
+              <Table.Cell>{item.event}</Table.Cell>
+              <Table.Cell>{item.date}</Table.Cell>
+              <Table.Cell>{item.status}</Table.Cell>
             </Table.Row>
           )}
         </Table.Body>

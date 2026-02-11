@@ -1,75 +1,65 @@
-import { ReactNode, useRef } from 'react';
-import { useFocusRing } from '@react-aria/focus';
-import { useHover } from '@react-aria/interactions';
-import { useTableRow } from '@react-aria/table';
-import { mergeProps } from '@react-aria/utils';
-import { GridNode } from '@react-types/grid';
-import { cn, useClassNames, useStateProps } from '@marigold/system';
+import type RAC from 'react-aria-components';
+import {
+  Button,
+  Cell,
+  Collection,
+  Row,
+  useTableOptions,
+} from 'react-aria-components';
+import { cn, useClassNames } from '@marigold/system';
+import { Checkbox } from '../Checkbox/Checkbox';
+import { GripVertical } from '../icons/GripVertical';
 import { useTableContext } from './Context';
-import { RowProps } from './Table';
 
-// Props
-// ---------------
-export interface TableRowProps extends RowProps {
-  row: GridNode<object>;
+type RemovedProps = 'className' | 'style';
+
+export interface TableRowProps<T extends object = object> extends Omit<
+  RAC.RowProps<T>,
+  RemovedProps
+> {
+  variant?: 'grid' | 'default' | 'muted' | (string & {});
+  size?: 'compact' | 'default' | 'spacious' | (string & {});
 }
 
-// Component
-// ---------------
-export const TableRow = ({ children, row }: TableRowProps) => {
-  const ref = useRef(null);
-  const { interactive, state, ...ctx } = useTableContext();
-
-  const { variant, size } = row.props;
-
+const TableRow = <T extends object>({
+  id,
+  columns,
+  children,
+  variant: variantProp,
+  size: sizeProp,
+  ...otherProps
+}: TableRowProps<T>) => {
+  let { selectionBehavior, allowsDragging } = useTableOptions();
+  const context = useTableContext();
   const classNames = useClassNames({
     component: 'Table',
-    variant: variant || ctx.variant,
-    size: size || ctx.size,
-  });
-
-  const { rowProps, isPressed } = useTableRow(
-    {
-      node: row,
-    },
-    state,
-    ref
-  );
-
-  const disabled = state.disabledKeys.has(row.key);
-  const selected = state.selectionManager.isSelected(row.key);
-
-  const { focusProps, isFocusVisible } = useFocusRing();
-  const { hoverProps, isHovered } = useHover({
-    isDisabled: disabled || !interactive,
-  });
-
-  const stateProps = useStateProps({
-    disabled,
-    selected,
-    hover: isHovered,
-    focusVisible: isFocusVisible,
-    active: isPressed,
+    variant: variantProp ?? context.variant,
+    size: sizeProp ?? context.size,
   });
 
   return (
-    <tr
-      ref={ref}
-      className={cn(
-        [
-          !interactive
-            ? 'cursor-text'
-            : disabled
-              ? 'cursor-default'
-              : 'cursor-pointer',
-        ],
-        classNames?.row
+    <Row id={id} className={cn('group/row', classNames.row)} {...otherProps}>
+      {allowsDragging && (
+        <Cell>
+          <Button
+            slot="drag"
+            className={cn(
+              'grid size-full place-items-center',
+              classNames.dragHandle
+            )}
+          >
+            <GripVertical />
+          </Button>
+        </Cell>
       )}
-      {...mergeProps(rowProps, focusProps, hoverProps)}
-      {...stateProps}
-      data-rac
-    >
-      {children as ReactNode}
-    </tr>
+      {selectionBehavior === 'toggle' && (
+        <Cell className={classNames.cell}>
+          <Checkbox slot="selection" />
+        </Cell>
+      )}
+      <Collection items={columns}>{children}</Collection>
+    </Row>
   );
 };
+
+export { TableRow };

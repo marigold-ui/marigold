@@ -218,56 +218,52 @@ export const WithTable = meta.story({
     const currentData = mockData.slice(startIndex, endIndex);
 
     return (
-      <div className="w-[800px]">
-        <Stack alignX="left" space={4}>
-          <Table aria-label="label" stretch {...args}>
-            <Table.Header>
-              <Table.Column>ID</Table.Column>
-              <Table.Column>Name</Table.Column>
-              <Table.Column>Email</Table.Column>
-              <Table.Column>Role</Table.Column>
-              <Table.Column>Status</Table.Column>
-            </Table.Header>
-            <Table.Body items={currentData}>
-              {item => (
-                <Table.Row key={item.id}>
-                  <Table.Cell>{item.id}</Table.Cell>
-                  <Table.Cell>{item.name}</Table.Cell>
-                  <Table.Cell>{item.email}</Table.Cell>
-                  <Table.Cell>{item.role}</Table.Cell>
-                  <Table.Cell>{item.status}</Table.Cell>
-                </Table.Row>
-              )}
-            </Table.Body>
-          </Table>
-          <Inline alignY="center" space={11}>
-            <Text fontSize="sm">
-              Showing {startIndex + 1} - {endIndex} of {mockData.length}
-            </Text>
-            <Split />
-            <Pagination
-              {...args}
-              totalItems={mockData.length}
-              pageSize={pageSize}
-              page={currentPage}
-              onChange={setCurrentPage}
-            />
-            <Split />
-            <Inline alignY="center" space={4}>
-              <Text fontSize="sm">Results per page</Text>
-              <Select
-                width={'fit'}
-                value={pageSize.toString()}
-                onChange={val => setPageSize(parseInt(`${val}`))}
-              >
-                <Select.Option id="10">10</Select.Option>
-                <Select.Option id="20">20</Select.Option>
-                <Select.Option id={'30'}>30</Select.Option>
-              </Select>
-            </Inline>
+      <Stack space={4}>
+        <Table aria-label="label" {...args}>
+          <Table.Header>
+            <Table.Column>ID</Table.Column>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Role</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body items={currentData}>
+            {item => (
+              <Table.Row key={item.id}>
+                <Table.Cell>{item.id}</Table.Cell>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell>{item.role}</Table.Cell>
+                <Table.Cell>{item.status}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+        <Inline alignY="center" alignX="between">
+          <Text fontSize="sm">
+            Showing {startIndex + 1} - {endIndex} of {mockData.length}
+          </Text>
+          <Pagination
+            {...args}
+            totalItems={mockData.length}
+            pageSize={pageSize}
+            page={currentPage}
+            onChange={setCurrentPage}
+          />
+          <Inline alignY="center" space={4}>
+            <Text fontSize="sm">Results per page</Text>
+            <Select
+              width={'fit'}
+              value={pageSize.toString()}
+              onChange={val => setPageSize(parseInt(`${val}`))}
+            >
+              <Select.Option id="10">10</Select.Option>
+              <Select.Option id="20">20</Select.Option>
+              <Select.Option id="30">30</Select.Option>
+            </Select>
           </Inline>
-        </Stack>
-      </div>
+        </Inline>
+      </Stack>
     );
   },
 });
