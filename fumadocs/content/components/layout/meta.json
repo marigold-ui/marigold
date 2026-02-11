@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "aside",
+    "aspect",
+    "breakout",
+    "center",
+    "columns",
+    "container",
+    "grid",
+    "inline",
+    "inset",
+    "scrollable",
+    "split",
+    "stack",
+    "tiles"
+  ]
+}

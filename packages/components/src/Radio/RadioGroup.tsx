@@ -77,6 +77,7 @@ export interface RadioGroupProps extends Omit<
   /**
    * Control the width of the field.
    * @default 100%
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
 

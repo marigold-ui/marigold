@@ -16,3 +16,8 @@ export * from './FeedbackComponentsTable';
 // Explicitly re-export from legacy to resolve ambiguity
 export { Table, type TableProps } from '@marigold/components/legacy';
 export * from '@marigold/components/legacy';
+
+export * from './AppearanceDemo';
+export * from './AppearanceTable';
+export * from './StorybookHintMessage';
+export * from './ComponentDemo';
