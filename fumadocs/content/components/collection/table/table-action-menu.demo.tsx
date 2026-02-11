@@ -12,9 +12,9 @@ import { Edit, Star } from '@marigold/icons';
 export default () => (
   <Table aria-label="Venue List">
     <Table.Header>
-      <Table.Column>Venue</Table.Column>
+      <Table.Column rowHeader>Venue</Table.Column>
       <Table.Column>Address</Table.Column>
-      <Table.Column align="right">Rating</Table.Column>
+      <Table.Column alignX="right">Rating</Table.Column>
       <Table.Column>Action</Table.Column>
     </Table.Header>
     <Table.Body>

@@ -2,13 +2,6 @@ import { useState } from 'react';
 import { Stack, Table, TextArea } from '@marigold/components';
 
 export default () => {
-  const columns = [
-    { name: 'Id', key: 'id' },
-    { name: 'Event', key: 'event' },
-    { name: 'Description', key: 'description' },
-    { name: 'Date', key: 'date' },
-  ];
-
   const rowData: { [key: string]: string }[] = [
     {
       id: '1234',
@@ -50,28 +43,28 @@ export default () => {
   return (
     <Stack space={3}>
       <Table aria-label="Example how to not use the table">
-        <Table.Header columns={columns}>
-          {column => <Table.Column>{column.name}</Table.Column>}
+        <Table.Header>
+          <Table.Column rowHeader>Id</Table.Column>
+          <Table.Column>Event</Table.Column>
+          <Table.Column>Description</Table.Column>
+          <Table.Column>Date</Table.Column>
         </Table.Header>
         <Table.Body items={data}>
           {item => (
             <Table.Row key={item.id}>
-              {columnKey =>
-                columnKey !== 'description' ? (
-                  <Table.Cell>{item[columnKey]}</Table.Cell>
-                ) : (
-                  <Table.Cell>
-                    <TextArea
-                      value={item.description}
-                      disabled={false}
-                      onChange={(value: string) =>
-                        handleChange(item.id, value, 'description')
-                      }
-                      aria-label={'description'}
-                    />
-                  </Table.Cell>
-                )
-              }
+              <Table.Cell>{item.id}</Table.Cell>
+              <Table.Cell>{item.event}</Table.Cell>
+              <Table.Cell>
+                <TextArea
+                  value={item.description}
+                  disabled={false}
+                  onChange={(value: string) =>
+                    handleChange(item.id, value, 'description')
+                  }
+                  aria-label={'description'}
+                />
+              </Table.Cell>
+              <Table.Cell>{item.date}</Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
