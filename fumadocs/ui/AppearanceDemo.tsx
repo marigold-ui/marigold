@@ -1,39 +1,70 @@
 'use client';
 
 import { type RegistryKey, registry } from '@/.registry/demos';
+import { cn } from '@/lib/cn';
 import { getAppearance } from '@/lib/utils';
 import { ruiTheme } from '@/theme';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from 'fumadocs-ui/components/ui/popover';
+import { Check, ChevronDown, Info } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { useState } from 'react';
 import {
   MarigoldProvider,
   OverlayContainerProvider,
-  Select,
 } from '@marigold/components';
-import { Info } from '@marigold/icons';
 import type { Theme } from '@marigold/system';
 
-// Helpers
+// Picker
 // ---------------
-function getLongestString(list: string[]) {
-  const sortedArray = list.sort((a, b) => b.length - a.length);
-  return sortedArray[0];
+interface AppearancePickerProps {
+  label: string;
+  options: string[];
+  value: string;
+  onChange: (val: string) => void;
+  disabled?: boolean;
 }
 
-const getSelectWidth = (options: string[]) => {
-  const length = (getLongestString(options) || '').length;
+const AppearancePicker = ({
+  label,
+  options,
+  value,
+  onChange,
+  disabled,
+}: AppearancePickerProps) => {
+  const [open, setOpen] = useState(false);
 
-  // Poor mans pattern matching
-  switch (true) {
-    case length < 10:
-      return 40;
-    case length >= 10 && length < 12:
-      return 44;
-    case length >= 12 && length < 14:
-      return 48;
-    default:
-      return 52;
-  }
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        disabled={disabled}
+        className="border-fd-border bg-fd-background text-fd-foreground inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+      >
+        <span className="opacity-60">{label}:</span>
+        {value}
+        <ChevronDown className="size-3 opacity-50" />
+      </PopoverTrigger>
+      <PopoverContent align="start" className="min-w-30 p-1">
+        {options.map(option => (
+          <button
+            key={option}
+            type="button"
+            className="hover:bg-fd-accent flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs"
+            onClick={() => {
+              onChange(option);
+              setOpen(false);
+            }}
+          >
+            <Check className={cn('size-3', option !== value && 'opacity-0')} />
+            {option}
+          </button>
+        ))}
+      </PopoverContent>
+    </Popover>
+  );
 };
 
 // Props
@@ -97,6 +128,11 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
   const isVariantOrSizeMissing =
     appearance.variant.length === 0 || appearance.size.length === 0;
 
+  const variantOptions =
+    appearance.variant.length === 0 ? ['default'] : appearance.variant;
+  const sizeOptions =
+    appearance.size.length === 0 ? ['default'] : appearance.size;
+
   return (
     <>
       <p>
@@ -106,56 +142,28 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
         on the active theme.
       </p>
 
-      <div
-        className={
-          'border-fd-primary/10 prose-no-margin relative overflow-hidden rounded-lg border'
-        }
-      >
-        <div className="absolute top-3 left-4 flex w-full flex-wrap gap-2">
-          <Select
+      <div className="border-fd-primary/10 prose-no-margin relative overflow-hidden rounded-lg border">
+        <div className="absolute top-3 left-4 z-10 flex w-full flex-wrap gap-2">
+          <AppearancePicker
             label="Variant"
-            variant="floating"
-            size="small"
-            width={getSelectWidth(appearance.variant)}
-            selectedKey={selected.variant}
-            onChange={(val: string) =>
-              setSelected({ variant: val, size: selected.size })
-            }
-            disabled={appearance.variant.length === 0 ? true : false}
-          >
-            {appearance.variant.length === 0 ? (
-              <Select.Option id="none">default</Select.Option>
-            ) : null}
-            {appearance.variant.map(v => (
-              <Select.Option key={v} id={v}>
-                {v}
-              </Select.Option>
-            ))}
-          </Select>
-          <Select
+            options={variantOptions}
+            value={selected.variant}
+            onChange={val => setSelected({ variant: val, size: selected.size })}
+            disabled={appearance.variant.length === 0}
+          />
+          <AppearancePicker
             label="Size"
-            variant="floating"
-            size="small"
-            width={getSelectWidth(appearance.size)}
-            selectedKey={selected.size}
-            onChange={(val: string) =>
+            options={sizeOptions}
+            value={selected.size}
+            onChange={val =>
               setSelected({ variant: selected.variant, size: val })
             }
-            disabled={appearance.size.length === 0 ? true : false}
-          >
-            {appearance.size.length === 0 ? (
-              <Select.Option id="none">default</Select.Option>
-            ) : null}
-            {appearance.size.map(v => (
-              <Select.Option key={v} id={v}>
-                {v}
-              </Select.Option>
-            ))}
-          </Select>
+            disabled={appearance.size.length === 0}
+          />
           {isVariantOrSizeMissing ? (
-            <div className="text-text-primary-muted flex items-center gap-0.5 text-xs">
+            <div className="flex items-center gap-0.5 text-xs text-neutral-500">
               <Info size={14} />
-              The selected theme does not has any options for{' '}
+              The selected theme does not has any options for
               {disabledAppearance}.
             </div>
           ) : null}

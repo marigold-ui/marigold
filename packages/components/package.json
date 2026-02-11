@@ -10,17 +10,29 @@
     "design system",
     "react"
   ],
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
-    "./*": {
-      "require": "./dist/*.js",
-      "import": "./dist/*.mjs"
+    "./legacy": {
+      "import": {
+        "types": "./dist/legacy.d.mts",
+        "default": "./dist/legacy.mjs"
+      },
+      "require": {
+        "types": "./dist/legacy.d.cts",
+        "default": "./dist/legacy.cjs"
+      }
     }
   },
   "sideEffects": false,
@@ -72,8 +84,8 @@
     "tsdown": "0.16.8"
   },
   "scripts": {
-    "build": "tsdown src/index.ts",
-    "watch": "tsdown src/index.ts --watch",
+    "build": "tsdown",
+    "watch": "tsdown --watch",
     "clean": "rm -rf node_modules && rm -rf dist"
   }
 }
