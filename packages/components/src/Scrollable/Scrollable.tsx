@@ -28,7 +28,7 @@ export const Scrollable = ({
   <div
     {...props}
     className={cn([
-      'sticky h-(--height) overflow-auto overscroll-none',
+      'sticky h-(--height) overflow-auto overscroll-auto',
       twWidth[width],
     ])}
     style={createVar({ height })}
