@@ -1,56 +1,32 @@
-import { ReactNode } from 'react';
-import { useTableRowGroup } from '@react-aria/table';
-import { TableBodyProps as BodyProps } from '@react-stately/table';
+import type RAC from 'react-aria-components';
+import { TableBody as RACTableBody } from 'react-aria-components';
+import { cn } from '@marigold/system';
 import { useTableContext } from './Context';
 
-export interface TableBodyProps extends Omit<
-  BodyProps<object>,
-  'children' | 'loadingState' | 'items'
+type RemovedProps = 'className' | 'style' | 'renderEmptyState';
+
+export interface TableBodyProps<T extends object = object> extends Omit<
+  RAC.TableBodyProps<T>,
+  RemovedProps
 > {
   /**
-   * The children of the component.
+   * Render function called when the table body has no items to display.
    */
-  children?: ReactNode;
-
-  /**
-   * The CSS classes to apply to the component.
-   */
-  className?: string;
-
-  /**
-   * Provides content to display when there are no rows in the table.
-   */
-  emptyState?: () => ReactNode;
+  emptyState?: RAC.TableBodyProps<T>['renderEmptyState'];
 }
 
-export const TableBody = ({
-  children = undefined,
-  className,
+const TableBody = <T extends object = object>({
   emptyState,
-}: TableBodyProps) => {
-  const { rowGroupProps } = useTableRowGroup();
-  const { state, classNames } = useTableContext();
-
-  if (state.collection.size === 0 && emptyState) {
-    return (
-      <tbody className={className} data-rac>
-        <tr className={classNames?.row} role="row" data-rac>
-          <td
-            className={classNames?.cell}
-            colSpan={state.collection.columnCount}
-            role="rowheader"
-            data-rac
-          >
-            {emptyState()}
-          </td>
-        </tr>
-      </tbody>
-    );
-  }
-
+  ...props
+}: TableBodyProps<T>) => {
+  const { classNames } = useTableContext();
   return (
-    <tbody {...rowGroupProps} className={className} data-rac>
-      {children}
-    </tbody>
+    <RACTableBody
+      {...props}
+      className={cn(classNames.body)}
+      renderEmptyState={emptyState}
+    />
   );
 };
+
+export { TableBody };
