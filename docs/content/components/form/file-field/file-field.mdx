@@ -20,26 +20,12 @@ A FileField consists of a label, a drop zone where users can drag files, a zone 
   className="mx-auto block"
 />
 
-<ul>
-  <li>
-    <b>Label:</b> Identifies what the file upload field is for.
-  </li>
-  <li>
-    <b>Drop zone:</b> The area where users can drag and drop files.
-  </li>
-  <li>
-    <b>Zone label:</b> Instructional text guiding users to drag files.
-  </li>
-  <li>
-    <b>Upload button:</b> Triggers the native file browser for selecting files.
-  </li>
-  <li>
-    <b>File item:</b> Displays information about an uploaded file.
-  </li>
-  <li>
-    <b>Remove button:</b> Allows users to remove a file from the list.
-  </li>
-</ul>
+- **Label:** Identifies what the file upload field is for.
+- **Drop zone:** The area where users can drag and drop files.
+- **Zone label:** Instructional text guiding users to drag files.
+- **Upload button:** Triggers the native file browser for selecting files.
+- **File item:** Displays information about an uploaded file.
+- **Remove button:** Allows users to remove a file from the list.
 
 ## Appearance
 
@@ -108,9 +94,10 @@ If there are specific requirements for the file (such as file type or size limit
 
 <StorybookHintMessage component={title} />
 
+### FileField
+
 <PropsTable component={title} />
 
-## Alternative components
+### FileField.Item
 
-- [TextField](/components/form/textfield): For text input rather than file uploads.
-- [Button](/components/actions/button): For triggering actions, can be used with custom file upload implementations.
+<PropsTable component="FileFieldItem" />
