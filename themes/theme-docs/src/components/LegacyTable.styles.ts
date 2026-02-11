@@ -1,6 +1,6 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Table: ThemeComponent<'Table'> = {
+export const LegacyTable: ThemeComponent<'LegacyTable'> = {
   table: cva([
     'w-full overflow-hidden rounded-lg bg-white/40 text-sm',
     'border-secondary-200 border-separate border-spacing-0 border',

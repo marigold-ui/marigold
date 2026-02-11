@@ -4,11 +4,11 @@ import { Badge, Inline, Stack, Table, Text } from '@marigold/components';
 export default () => (
   <Table>
     <Table.Header>
-      <Table.Column>Venue</Table.Column>
+      <Table.Column rowHeader>Venue</Table.Column>
       <Table.Column>Address</Table.Column>
       <Table.Column>Traits</Table.Column>
       <Table.Column>Capacity</Table.Column>
-      <Table.Column align="right">Rating</Table.Column>
+      <Table.Column alignX="right">Rating</Table.Column>
     </Table.Header>
     <Table.Body>
       {venues.slice(0, 5).map(item => (

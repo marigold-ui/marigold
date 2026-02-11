@@ -2,9 +2,9 @@ import { Stack, Table, Text } from '@marigold/components';
 
 export default () => {
   return (
-    <Table aria-label="Top aligned table" alignY="top" stretch>
+    <Table aria-label="Top aligned table" alignY="top">
       <Table.Header>
-        <Table.Column>Event</Table.Column>
+        <Table.Column rowHeader>Event</Table.Column>
         <Table.Column>Description</Table.Column>
         <Table.Column>Location</Table.Column>
       </Table.Header>
