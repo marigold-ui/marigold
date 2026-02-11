@@ -73,6 +73,16 @@ export type Theme = {
       | 'actions',
       ComponentStyleFunction<string, string>
     >;
+    Tray?: Record<
+      | 'overlay'
+      | 'container'
+      | 'dragHandle'
+      | 'header'
+      | 'title'
+      | 'content'
+      | 'actions',
+      ComponentStyleFunction<string, string>
+    >;
     Field?: ComponentStyleFunction<string, string>;
     Headline?: ComponentStyleFunction<string, string>;
     Popover?: ComponentStyleFunction<string, string>;
@@ -208,7 +218,14 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     DatePicker?: ComponentStyleFunction<string, string>;
-    ComboBox?: ComponentStyleFunction<string, string>;
+    ComboBox?: Record<
+      'icon' | 'mobileTrigger',
+      ComponentStyleFunction<string, string>
+    >;
+    Autocomplete?: Record<
+      'mobileTrigger',
+      ComponentStyleFunction<string, string>
+    >;
     Loader?: Record<
       'container' | 'loader' | 'label',
       ComponentStyleFunction<string, string>

@@ -1,5 +1,6 @@
 export { Accordion } from './Accordion.styles';
 export { ActionBar } from './ActionBar.styles';
+export { Autocomplete } from './Autocomplete.styles';
 export { Badge } from './Badge.styles';
 
 export { Button } from './Button.styles';
@@ -45,6 +46,7 @@ export { TextArea } from './TextArea.styles';
 export { Text } from './Text.styles';
 export { Toast } from './Toast.styles';
 export { Tooltip } from './Tooltip.styles';
+export { Tray } from './Tray.styles';
 export { Underlay } from './Underlay.styles';
 export { Loader } from './Loader.styles';
 export { Breadcrumbs } from './Breadcrumbs.styles';

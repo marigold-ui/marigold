@@ -410,3 +410,108 @@ export const OnAction: any = meta.story({
     await waitFor(() => expect(onActionMock).toHaveBeenCalledTimes(3));
   },
 });
+
+export const Mobile: any = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => (
+    <ComboBox {...args}>
+      <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+      <ComboBox.Option id="cat">Cat</ComboBox.Option>
+      <ComboBox.Option id="dog">Dog</ComboBox.Option>
+      <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+      <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+      <ComboBox.Option id="snake">Snake</ComboBox.Option>
+      <ComboBox.Option id="elephant">Elephant</ComboBox.Option>
+      <ComboBox.Option id="giraffe">Giraffe</ComboBox.Option>
+      <ComboBox.Option id="penguin">Penguin</ComboBox.Option>
+      <ComboBox.Option id="dolphin">Dolphin</ComboBox.Option>
+      <ComboBox.Option id="koala">Koala</ComboBox.Option>
+      <ComboBox.Option id="tiger">Tiger</ComboBox.Option>
+      <ComboBox.Option id="lion">Lion</ComboBox.Option>
+      <ComboBox.Option id="zebra">Zebra</ComboBox.Option>
+      <ComboBox.Option id="owl">Owl</ComboBox.Option>
+      <ComboBox.Option id="fox">Fox</ComboBox.Option>
+    </ComboBox>
+  ),
+});
+
+Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
+  const trigger = await canvas.findByRole('button');
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
+
+  await step('Verify tray content is visible', async () => {
+    const input = await canvas.findByRole('combobox');
+
+    await waitFor(() => expect(input).toBeVisible());
+  });
+
+  await step('Select option from list', async () => {
+    const option = await canvas.findByText('Dog');
+
+    await userEvent.click(option);
+  });
+
+  await step('Close select with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  await step('Verify selection is displayed in trigger', async () => {
+    await waitFor(() => expect(trigger).toHaveTextContent('Dog'));
+  });
+});
+
+Mobile.test(
+  'Mobile ComboBox keyboard navigation',
+  async ({ canvas, step }: any) => {
+    const trigger = await canvas.findByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Verify combobox input receives focus', async () => {
+      const input = await canvas.findByRole('combobox');
+
+      await waitFor(() => expect(input).toHaveFocus());
+    });
+
+    await step('Filter options by typing', async () => {
+      await userEvent.keyboard('cat');
+
+      await waitFor(() => expect(canvas.getByText('Cat')).toBeVisible());
+    });
+
+    await step('Navigate to option with arrow keys and select', async () => {
+      await userEvent.keyboard('{ArrowDown}');
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Close tray with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Verify selection is displayed in trigger', async () => {
+      await waitFor(() => expect(trigger).toHaveTextContent('Cat'));
+    });
+  }
+);
