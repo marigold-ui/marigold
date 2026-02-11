@@ -10,7 +10,7 @@ import {
 import { Edit, Star } from '@marigold/icons';
 
 export default () => (
-  <Table aria-label="Venue List" stretch>
+  <Table aria-label="Venue List">
     <Table.Header>
       <Table.Column>Venue</Table.Column>
       <Table.Column>Address</Table.Column>
