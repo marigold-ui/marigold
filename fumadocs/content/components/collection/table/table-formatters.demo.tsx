@@ -5,11 +5,11 @@ import { DateFormat, NumericFormat } from '@marigold/system';
 export default () => (
   <Table aria-label="Events Ticketing">
     <Table.Header>
-      <Table.Column>Event</Table.Column>
+      <Table.Column rowHeader>Event</Table.Column>
       <Table.Column>Date</Table.Column>
       <Table.Column>Location</Table.Column>
-      <Table.Column align="right">Price</Table.Column>
-      <Table.Column align="right">Ticket Number</Table.Column>
+      <Table.Column alignX="right">Price</Table.Column>
+      <Table.Column alignX="right">Ticket Number</Table.Column>
     </Table.Header>
     <Table.Body>
       <Table.Row key={1}>

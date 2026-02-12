@@ -20,15 +20,10 @@ export default () => {
     <>
       {!loading ? (
         <Scrollable height="300px">
-          <Table
-            aria-label="user Table"
-            selectionMode="multiple"
-            stickyHeader
-            stretch
-          >
-            <Table.Header>
+          <Table aria-label="user Table" selectionMode="multiple">
+            <Table.Header sticky>
               <Table.Column>Id</Table.Column>
-              <Table.Column>Name</Table.Column>
+              <Table.Column rowHeader>Name</Table.Column>
               <Table.Column>User</Table.Column>
             </Table.Header>
             <Table.Body>
