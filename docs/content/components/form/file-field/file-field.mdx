@@ -10,7 +10,7 @@ File uploads are commonly used in forms where users need to attach documents, im
 
 ## Anatomy
 
-A FileField consists of a label, a drop zone where users can drag files, a zone label providing instructions, and an upload button for browsing files. Once files are selected, they appear as file items in a list, each showing the file name, size, and a remove button.
+A `<FileField>` consists of a label, a drop zone where users can drag files, a zone label providing instructions, and an upload button for browsing files. Once files are selected, they appear as file items in a list, each showing the file name, size, and a remove button.
 
 <Image
   src="/file-field/file-field-anatomy.svg"
@@ -37,8 +37,6 @@ A FileField consists of a label, a drop zone where users can drag files, a zone 
 
 The `<FileField>` is useful whenever users need to attach files to a form or upload content to your application. It supports both drag and drop interaction and traditional file browsing, providing flexibility for different user preferences and device capabilities.
 
-### Uploading files
-
 When users need to attach a single file, such as a profile picture or a document, use the basic FileField. Users can either drag a file into the drop zone or click the upload button to browse their files.
 
 <ComponentDemo file="./file-field-basic.demo.tsx" />
@@ -47,9 +45,9 @@ When users need to attach a single file, such as a profile picture or a document
 
 When users need to upload several files at once, such as multiple photos for a gallery or supporting documents for an application, set the `multiple` prop to allow selecting and uploading multiple files.
 
-<ComponentDemo file="./file-field-multiple.demo.tsx" />
-
 This allows users to select multiple files in the file browser or drag several files into the drop zone at once.
+
+<ComponentDemo file="./file-field-multiple.demo.tsx" />
 
 ### Restricting file types
 
@@ -58,27 +56,6 @@ For specific use cases where only certain file types are appropriate, such as ac
 <ComponentDemo file="./file-field-restrict.demo.tsx" />
 
 The `accept` prop accepts an array of MIME types (like `'application/pdf'` or `'image/*'`) or file extensions (like `'.pdf'` or `'.jpg'`). Users will only be able to select files that match these criteria, and dropped files that don't match will be filtered out automatically.
-
-### Labeling
-
-Labels for file upload fields should clearly indicate what type of file is expected and its purpose. Keep labels concise while being descriptive about what the user should upload.
-
-<GuidelineTiles>
-  <Do>
-    <Do.Description>
-      Use specific labels that describe the file purpose, such as "Upload
-      resume" or "Profile picture".
-    </Do.Description>
-  </Do>
-  <Dont>
-    <Dont.Description>
-      Don't use vague labels like "Upload file" without context about what file
-      is needed.
-    </Dont.Description>
-  </Dont>
-</GuidelineTiles>
-
-If there are specific requirements for the file (such as file type or size limits), consider including this information in the label or adding a description field to provide guidance before users attempt to upload.
 
 ## Props
 
