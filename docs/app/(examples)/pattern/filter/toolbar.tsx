@@ -24,7 +24,6 @@ const Search = () => {
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    console.log(data);
     setSearch(data.get('q') as string);
   };
 
