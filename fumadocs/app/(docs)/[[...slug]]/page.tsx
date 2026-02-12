@@ -1,4 +1,3 @@
-import { PostList } from '@/components/PostList';
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
@@ -12,7 +11,6 @@ import {
   ColorTokenTable,
   Columns,
   ComponentDemo,
-  DateFormat,
   Do,
   DoDescription,
   DoFigure,
@@ -53,16 +51,12 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
   const MDX = page.data.body;
   const lastModified = page.data.lastModified;
 
-  // Disable TOC for all releases pages
-  const isReleasesPage = params.slug?.[0] === 'releases';
-  const toc = isReleasesPage ? false : page.data.toc;
-
   return (
     <DocsPage
       tableOfContent={{
         single: true,
       }}
-      toc={toc as any}
+      toc={page.data.toc}
       full={page.data.full}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
@@ -96,9 +90,6 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             AlignmentsY,
 
             IconList,
-            PostList,
-
-            DateFormat,
 
             Do,
             DoFigure,
