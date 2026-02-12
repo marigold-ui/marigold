@@ -21,16 +21,28 @@ import { type VenueFilter, defaultFilter, useFilter, useSearch } from './utils';
 // ---------------
 const Search = () => {
   const [search, setSearch] = useSearch();
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    console.log(data);
+    setSearch(data.get('q') as string);
+  };
+
   return (
-    <SearchField
-      aria-label="Search"
-      description="Search by venue name"
-      width={64}
-      autoComplete="off"
-      defaultValue={search}
-      onSubmit={setSearch}
-      onClear={() => setSearch('')}
-    />
+    <Form onSubmit={submit} unstyled>
+      <SearchField
+        aria-label="Search"
+        description="Search by venue name"
+        name="q"
+        width={64}
+        autoComplete="off"
+        defaultValue={search}
+        onClear={() => setSearch('')}
+      />
+      <Button variant="primary" type="submit">
+        Search
+      </Button>
+    </Form>
   );
 };
 
