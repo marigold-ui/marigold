@@ -172,25 +172,24 @@ const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
 
 // Dropdown Content
 // ---------------
-interface TagFieldDropdownProps<T extends object> {
-  items?: Iterable<T>;
-  children?: ReactNode | ((item: T) => ReactNode);
+interface TagFieldDropdownProps {
+  items?: Iterable<object>;
+  children?: ReactNode | ((item: object) => ReactNode);
   placeholder?: string;
   emptyState?: ReactNode;
-  filter: (string: string, substring: string) => boolean;
 }
 
-const TagFieldDropdown = <T extends object>({
+const TagFieldDropdown = ({
   items,
   children,
   placeholder,
   emptyState,
-  filter,
-}: TagFieldDropdownProps<T>) => {
+}: TagFieldDropdownProps) => {
+  const { contains } = useFilter({ sensitivity: 'base' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   return (
-    <Autocomplete filter={filter}>
+    <Autocomplete filter={contains}>
       <SearchField aria-label="Search" autoFocus>
         <SearchInput placeholder={placeholder} />
       </SearchField>
@@ -232,7 +231,6 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
 ) {
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const [triggerWidth, setTriggerWidth] = useState(0);
-  const { contains } = useFilter({ sensitivity: 'base' });
   const isSmallScreen = useSmallScreen();
 
   useLayoutEffect(() => {
@@ -291,7 +289,6 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
               items={items}
               placeholder={placeholder}
               emptyState={emptyState}
-              filter={contains}
             >
               {children}
             </TagFieldDropdown>
@@ -314,7 +311,6 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
               items={items}
               placeholder={placeholder}
               emptyState={emptyState}
-              filter={contains}
             >
               {children}
             </TagFieldDropdown>
