@@ -1,9 +1,5 @@
+import appearances from '@/.registry/appearances.json';
 import type { Theme } from '@marigold/system';
-
-interface ConfigSchema {
-  variant?: Record<string, unknown>;
-  size?: Record<string, unknown>;
-}
 
 interface NestedStringObject {
   [key: string]: NestedStringObject | string;
@@ -24,56 +20,17 @@ export const iterateTokens = (colors: NestedStringObject, prefix = '') => {
   return list;
 };
 
-const getKeys = (schema: ConfigSchema) => {
-  return {
-    variant: schema?.variant ? Object.keys(schema?.variant) : [],
-    size: schema?.size ? Object.keys(schema?.size) : [],
-  };
-};
-
-const getKeysFromSlots = (o: {
-  [slot: string]: { variants: ConfigSchema };
-}) => {
-  let v = new Set<string>();
-  let s = new Set<string>();
-
-  Object.values(o).forEach(value => {
-    v = new Set([...v, ...Object.keys(value.variants?.variant ?? {})]);
-    s = new Set([...s, ...Object.keys(value.variants?.size ?? {})]);
-  });
-
-  return { variant: [...v], size: [...s] };
-};
-
 /**
- * Come components don't have their own styles (e.g LinkButton uses Button styles)
- */
-const getSharedAppearance = (name: string, theme: Theme) => {
-  switch (name) {
-    case 'LinkButton':
-      return theme.components.Button;
-    case 'ToggleButtonGroup':
-      return theme.components.ToggleButton;
-    default:
-      return null;
-  }
-};
-
-/**
- * Get variants and sizes (= apperances) from a component
+ * Get variants and sizes (= appearances) from a component.
+ * Reads from build-time generated appearances.json.
  */
 export const getAppearance = (
-  name: keyof Theme['components'] | (string & {}),
-  theme: Theme
+  name: keyof Theme['components'] | (string & {})
 ) => {
-  const styles =
-    (theme.components as any)[name] || getSharedAppearance(name, theme) || {};
-  const appearances =
-    'variants' in styles
-      ? getKeys(styles.variants as ConfigSchema)
-      : getKeysFromSlots(styles);
-
-  return appearances;
+  const entry = (
+    appearances as Record<string, { variant: string[]; size: string[] }>
+  )[name];
+  return entry ?? { variant: [], size: [] };
 };
 
 export const wait = (ms: number) => {
