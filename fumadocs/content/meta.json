@@ -1,3 +1,9 @@
 {
-  "pages": ["getting-started", "foundations", "components", "patterns"]
+  "pages": [
+    "getting-started",
+    "foundations",
+    "components",
+    "patterns",
+    "releases"
+  ]
 }

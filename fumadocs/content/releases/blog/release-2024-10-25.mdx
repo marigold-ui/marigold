@@ -1,0 +1,166 @@
+---
+title: Marigold v10.0.0
+date: 2024-10-25
+type: Blog
+changed:
+  - components/overlay/dialog
+  - component/form/select
+  - component/form/combobox
+  - component/form/autocomplete
+  - component/content/sectionmessage
+  - component/form/datepicker
+---
+
+Hi Marigold users! Following our recent heads-up about Marigold Version 10.0, we're excited to share the details of this major release. With this update, we're introducing some breaking changes alongside new features and improvements.
+
+Previously, we informed you that this release is crucial for enhancing flexibility and accessibility within Marigold. Now, let's dive deeper into what you can expect.
+
+## Breaking Change
+
+### Dialog
+
+We've restructured the `<Dialog>` component for greater customization and usability. These updates allow the dialog to be more customizable and compatible with existing styles from the core system. It simplifies the component structure, making it easier for you to implement.
+
+- Renamed: `<Dialog.Headline>` is now `<Dialog.Title>`.
+- New Subcomponents: Introduced `<Dialog.Content>` and `<Dialog.Actions>` for better organization and flexibility.
+- Grid Layout: The internal dialog layout now uses grid areas to ensure consistent ordering and alignment.
+
+#### What you have to do:
+
+Update existing `<Dialog>` component implementations to adopt the new structure.
+
+**Before v10:**
+
+```tsx
+<Dialog>
+  <Stack space={2}>
+    <Inline alignY="center" space={2}>
+      <Exclamation color="text-warning" />
+      <Headline level={3}>This page has unsaved changes</Headline>
+    </Inline>
+    <Text>
+      If you leave this page now, your changes will be lost. Would you like to
+      save your changes first?
+    </Text>
+    <Inline alignX="right">
+      <Button variant="text">Leave without saving</Button>
+      <Button variant="primary">Save and leave page</Button>
+    </Inline>
+  </Stack>
+</Dialog>
+```
+
+**With v10:**
+
+```tsx
+<Dialog>
+  <Dialog.Title>
+    <Inline alignY="center" space={2}>
+      <Exclamation color="text-warning" />
+      <Headline level={3}>This page has unsaved changes</Headline>
+    </Inline>
+  </Dialog.Title>
+  <Dialog.Content>
+    If you leave this page now, your changes will be lost. Would you like to
+    save your changes first?
+  </Dialog.Content>
+  <Dialog.Actions>
+    <Button variant="text">Leave without saving</Button>
+    <Button variant="primary">Save and leave page</Button>
+  </Dialog.Actions>
+</Dialog>
+```
+
+### Select
+
+We've streamlined the usage of the `Section` component, removing the need for a generic reusable `<Header>` and simplifying it into a prop for better clarity and ease of use. No need for the extra Header anymore. Instead you can do `<Select.Section header="My header">`.
+
+Hint `<Autocomplete>` and `<ComboBox>` share the same API!
+
+**Before v10:**
+
+```tsx
+<Select>
+  <Select.Section>
+    <Header>Fantasy</Header>
+    <Select.Option id="harry-potter">Harry Potter</Select.Option>
+    <Select.Option id="lord-of-the-rings">Lord of the Rings</Select.Option>
+  </Select.Section>
+  <Select.Section>
+    <Header>Sci-Fi</Header>
+    <Select.Option id="star-wars">Start Wars</Select.Option>
+    <Select.Option id="star-trek">Star Trek</Select.Option>
+  </Select.Section>
+</Select>
+```
+
+**With v10:**
+
+```tsx
+<Select>
+  <Select.Section header="Fantasy">
+    <Select.Option id="harry-potter">Harry Potter</Select.Option>
+    <Select.Option id="lord-of-the-rings">Lord of the Rings</Select.Option>
+  </Select.Section>
+  <Select.Section header="Sci-Fi">
+    <Select.Option id="star-wars">Start Wars</Select.Option>
+    <Select.Option id="star-trek">Star Trek</Select.Option>
+  </Select.Section>
+</Select>
+```
+
+### Autocomplete and ComboBox
+
+We wanted to align the naming between select, autocomplete and combobox. All selectable options are called options instead of items. Update all `<Autocomplete.Item>` and `<ComboBox.Item>` to `<Autocomplete.Option>` and `<ComboBox.Option>`.
+
+### DatePicker
+
+Renamed the `isDateUnavailable` prop to `dateUnavailable` to align with our code guidelines. Variables starting with "is" usually indicate a boolean value, which isn't true for this prop.
+
+## Improvements
+
+### Components
+
+- **Autocomplete and Combobox**: Based on the feedback from DSTSUP-89 these components now support sections like the `<Select>` does. The API is the same for every component. Thanks Rahul!
+- **Dialog**: The size can now be defined via the `size` prop, instead of being defined by the content of the dialog.
+- **Checkbox Group:** The `<Checkbox.Group>` can now be used as a compound component, aligning it with the structure of other components.
+- **DatePicker:** Based on the feedback from DSTSUP-94, added styles for unavailable dates to both b2b and core theme. Thanks Daniel!
+- **SectionMessage**: Based on the feedback, added possibility to dimiss a `<SectionMessage>`. This is now aligned with our feedback message pattern. Thanks Laura for the suggestion!
+- **XLoader**: The loader now supports to be displayed as a full-screen overlay or as inline loading indicator. Thanks Robert and Indre for the suggestions!
+
+### Types
+
+- **Selection**: We now expose `Selection` type for easy usage with `<Table>` and other components.
+
+```tsx
+const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+
+<Table onSelectionChange={setSelectedKeys}>{/* ... */}</Table>;
+```
+
+### Accessibility
+
+- **Accessibility page:** Added a [dedicated page](/foundations/accessibility) about Accessibility in our documentation.
+- **ARIA Role for Layout Components:** Layout components can now be marked as regions, improving accessibility by helping assistive technologies identify key sections of the page. Read more about this on our [accessibility page](/foundations/accessibility#dynamic-content).
+- **Accessible ARIA Labeling:** `<Text>` and `<Headline>` components now support ARIA labeling props (aria-label, id, etc.) without causing type errors.
+
+### Documentation
+
+We've introduced several updates to enhance the usability and structure of our documentation:
+
+- **Release Blog:** We now have a release blog, you are currently reading, to keep users informed about recent changes, new features, and important announcements, ensuring they are always up-to-date with the latest information.
+- **New Landing Page:** As you may already saw, we provided a new landing page for our documentation. With this user-friendly landing page, we can effectively helps visitors orient themselves, understand the purpose of the design system, and the user can easily navigate to relevant sections.
+- **Streamlined Structure:** We also cleaned up the documentation structure, we reduced old content, structured the navigation and tidy up related pages according the new structure.
+- **Component Pages:** Of course we also provided more updated guidelines for component pages, like `<SectionMessage>` or `<MarigoldProvider>`.
+- **Guidelines:** Added a new page about form fields with some general usage guidelines.
+- **Patterns:** Added a new pattern for how to use loading states.
+
+## Bug fixes
+
+- **Focus Fixes:** We've addressed an issue where the focus ring wasn't displaying correctly for `<Checkbox>`, ensuring that it now shows up properly when used in a table context.
+- **Menu Accessibility:** Fixed the issue of passing the aria-label to the menu button, instead its now passed to the menu itself.
+- **Label:** Fixed the disabled color for label in b2b theme, now the label uses the regular text color. Thanks Daniel!
+
+---
+
+Thanks for reading, and we hope you enjoy the new features in Marigold 10.0! Be sure to check out the updated documentation for more details, and as always, we're here if you need help.
