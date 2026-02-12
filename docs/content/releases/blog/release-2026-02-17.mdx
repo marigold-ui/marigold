@@ -5,9 +5,12 @@ type: Blog
 changed:
   - components/content/card
   - components/content/table
+  - components/content/text
+  - components/content/headline
   - components/form/calendar
   - components/form/filefield
   - components/form/tagfield
+  - components/form/selectlist
   - components/overlay/contextual-help
   - components/form/textfield
   - components/form/select
@@ -118,6 +121,10 @@ import { Table } from '@marigold/components/legacy';
 
 The `<Multiselect>` component has been deprecated in favor of the new `<TagField>` component. See the TagField section below for details.
 
+### SelectList
+
+The `dragAndDropHooks` prop has been removed from `<SelectList>`.
+
 ### TabList
 
 The `space` prop has been removed from `<TabList>`.
@@ -143,7 +150,7 @@ The new `<Table>` component is a full rewrite with modern features including sor
 </Table>
 ```
 
-### TagField
+### TagField (beta)
 
 The new `<TagField>` component replaces `<Multiselect>`. It provides a multi-select field that displays selected items as removable tags with a searchable dropdown. It supports controlled/uncontrolled selection, disabled state, error state, disabled keys, sections, and custom empty states.
 
@@ -204,13 +211,17 @@ The width prop now handles three types of values:
 
 `<DatePicker>`, `<Menu>`, `<Autocomplete>`, `<Combobox>`, and `<Select>` now use an internal `<Tray>` component on mobile devices, providing a better touch experience with a bottom-sheet style overlay.
 
+### Text & Headline
+
+The `<Text>` and `<Headline>` components now support a `lineHeight` prop, giving you direct control over line height without needing custom styles.
+
 ### Form
 
 The `<Form>` component now supports ref forwarding.
 
 ### Layout Components
 
-`<Grid>`, `<Container>`, `<Columns>`, and `<Center>` now support semantic spacing tokens, aligning them with the new spacing system.
+`<Grid>`, `<Container>`, `<Columns>`, `<Tiles>`, and `<Center>` now support semantic spacing tokens, aligning them with the new spacing system.
 
 ## Design
 
@@ -232,6 +243,7 @@ The `<Form>` component now supports ref forwarding.
 - Fixed a regression where `<Container>` no longer worked correctly with `<Breakout>`.
 - Fixed `<Drawer>` to take full height on small screens when positioned at top or bottom.
 - Correctly applied elevation shadows across all components.
+- Fixed `<NumberField>` stepper visuals when disabled via `min`/`max` constraints.
 - Fixed `<Scrollable>` so scrolling works as expected when pointer hovers over it.
 - Updated `react-aria` dependencies to February 2026 versions (`react-aria-components` 1.15.0, `react-stately` 3.44.0).
 
