@@ -28,5 +28,5 @@ export const Input: ThemeComponent<'Input'> = {
     'text-muted-foreground disabled:text-disabled-foreground',
     'disabled:text-gray-50',
   ]),
-  action: cva(['text-muted-foreground pr-1']),
+  action: cva(['text-muted-foreground pr-1 right-2']),
 };

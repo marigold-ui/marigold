@@ -4,6 +4,8 @@ export const Menu: ThemeComponent<'Menu'> = {
   container: cva([
     'ui-surface shadow-elevation-overlay w-full',
     'text-foreground overflow-hidden p-1 outline-none',
+    // In a Tray
+    'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
   ]),
   item: cva(
     [

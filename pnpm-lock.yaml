@@ -528,6 +528,9 @@ importers:
       '@react-aria/calendar':
         specifier: ^3.9.4
         version: 3.9.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@react-aria/collections':
+        specifier: 3.0.2
+        version: 3.0.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-aria/focus':
         specifier: ^3.21.4
         version: 3.21.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -579,6 +582,9 @@ importers:
       '@react-types/table':
         specifier: ^3.13.5
         version: 3.13.5(react@19.2.3)
+      motion:
+        specifier: 12.23.26
+        version: 12.23.26(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-aria-components:
         specifier: ^1.15.0
         version: 1.15.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
