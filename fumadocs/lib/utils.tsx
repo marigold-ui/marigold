@@ -1,4 +1,9 @@
-import type { ConfigSchema, Theme } from '@marigold/system';
+import type { Theme } from '@marigold/system';
+
+interface ConfigSchema {
+  variant?: Record<string, unknown>;
+  size?: Record<string, unknown>;
+}
 
 interface NestedStringObject {
   [key: string]: NestedStringObject | string;

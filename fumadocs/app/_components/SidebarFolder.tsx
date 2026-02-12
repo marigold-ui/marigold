@@ -1,4 +1,5 @@
 'use client';
+import { cn } from '@/lib/cn';
 import { usePathname } from 'fumadocs-core/framework';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import {
@@ -10,22 +11,6 @@ import {
   useFolderDepth,
 } from 'fumadocs-ui/components/sidebar/base';
 import { ComponentProps, type ReactNode } from 'react';
-import { cva } from '@marigold/system';
-import { cn } from '@marigold/system';
-
-const itemVariants = cva({
-  base: 'relative flex flex-row items-center gap-2 rounded-lg p-2 text-start text-fd-muted-foreground wrap-anywhere [&_svg]:size-4 [&_svg]:shrink-0',
-  variants: {
-    variant: {
-      link: 'transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-fd-primary/10 data-[active=true]:text-fd-primary data-[active=true]:hover:transition-colors',
-      button:
-        'transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none',
-    },
-    highlight: {
-      true: "data-[active=true]:before:content-[''] data-[active=true]:before:bg-fd-primary data-[active=true]:before:absolute data-[active=true]:before:w-px data-[active=true]:before:inset-y-2.5 data-[active=true]:before:start-2.5",
-    },
-  },
-});
 
 const getItemOffset = (depth: number) => {
   return `calc(${2 + 3 * depth} * var(--spacing))`;
@@ -42,7 +27,10 @@ const StyledSidebarFolderLink = ({
   return (
     <BaseSidebarFolderLink
       className={cn(
-        itemVariants({ variant: 'link', highlight: depth > 1 }),
+        'text-fd-muted-foreground relative flex flex-row items-center gap-2 rounded-lg p-2 text-start wrap-anywhere [&_svg]:size-4 [&_svg]:shrink-0',
+        'hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 data-[active=true]:bg-fd-primary/10 data-[active=true]:text-fd-primary transition-colors hover:transition-none data-[active=true]:hover:transition-colors',
+        depth > 1 &&
+          "data-[active=true]:before:bg-fd-primary data-[active=true]:before:absolute data-[active=true]:before:inset-y-2.5 data-[active=true]:before:start-2.5 data-[active=true]:before:w-px data-[active=true]:before:content-['']",
         'w-full',
         className
       )}
@@ -66,7 +54,9 @@ const StyledSidebarFolderTrigger = ({
   return (
     <BaseSidebarFolderTrigger
       className={cn(
-        itemVariants({ variant: collapsible ? 'button' : undefined }),
+        'text-fd-muted-foreground relative flex flex-row items-center gap-2 rounded-lg p-2 text-start wrap-anywhere [&_svg]:size-4 [&_svg]:shrink-0',
+        collapsible &&
+          'hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 transition-colors hover:transition-none',
         'w-full',
         className
       )}
