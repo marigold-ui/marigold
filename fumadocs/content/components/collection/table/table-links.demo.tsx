@@ -2,9 +2,9 @@ import { venues } from '@/lib/data/venues';
 import { Link, Table } from '@marigold/components';
 
 export default () => (
-  <Table aria-label="Event Links Table" stretch>
+  <Table aria-label="Event Links Table">
     <Table.Header>
-      <Table.Column>Venue</Table.Column>
+      <Table.Column rowHeader>Venue</Table.Column>
       <Table.Column>Address</Table.Column>
       <Table.Column>Rating</Table.Column>
     </Table.Header>

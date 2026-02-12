@@ -5,6 +5,7 @@ export interface asyncData {
   height: string;
   mass: string;
   birth_year: string;
+  created: string;
 }
 
 export default () => {
@@ -61,35 +62,34 @@ export default () => {
       aria-label="Example table with client side sorting"
       sortDescriptor={list.sortDescriptor}
       onSortChange={list.sort}
-      stretch
     >
       <Table.Header>
-        <Table.Column key="name" allowsSorting width="2/5">
+        <Table.Column id="name" allowsSorting rowHeader>
           Name
         </Table.Column>
-        <Table.Column key="height" allowsSorting>
+        <Table.Column id="height" allowsSorting>
           Height
         </Table.Column>
-        <Table.Column key="mass" allowsSorting>
+        <Table.Column id="mass" allowsSorting>
           Mass
         </Table.Column>
-        <Table.Column key="birth_year" allowsSorting>
+        <Table.Column id="birth_year" allowsSorting>
           Birth Year
         </Table.Column>
-        <Table.Column key="created" allowsSorting>
+        <Table.Column id="created" allowsSorting>
           Created
         </Table.Column>
       </Table.Header>
       <Table.Body items={list.items}>
         {item => (
-          <Table.Row key={(item as any).name}>
-            {columnKey => (
-              <Table.Cell>
-                {columnKey === 'created'
-                  ? `${new Date((item as any).created).toLocaleDateString()} ${new Date((item as any).created).toLocaleTimeString()}`
-                  : (item as any)[columnKey]}
-              </Table.Cell>
-            )}
+          <Table.Row key={item.name} id={item.name}>
+            <Table.Cell>{item.name}</Table.Cell>
+            <Table.Cell>{item.height}</Table.Cell>
+            <Table.Cell>{item.mass}</Table.Cell>
+            <Table.Cell>{item.birth_year}</Table.Cell>
+            <Table.Cell>
+              {`${new Date(item.created).toLocaleDateString()} ${new Date(item.created).toLocaleTimeString()}`}
+            </Table.Cell>
           </Table.Row>
         )}
       </Table.Body>

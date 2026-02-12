@@ -8,7 +8,7 @@ export default () => (
       <Table.Column>Address</Table.Column>
       <Table.Column>Traits</Table.Column>
       <Table.Column>Capacity</Table.Column>
-      <Table.Column align="right">Rating</Table.Column>
+      <Table.Column alignX="right">Rating</Table.Column>
     </Table.Header>
     <Table.Body>
       {venues.slice(0, 5).map(item => (

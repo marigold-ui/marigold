@@ -1,6 +1,7 @@
 import { CalendarDate } from '@internationalized/date';
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
+import { expect, spyOn, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
 import { Stack } from '../Stack/Stack';
@@ -210,3 +211,108 @@ export const WithError: any = meta.story({
     </I18nProvider>
   ),
 });
+
+export const Mobile: any = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => (
+    <I18nProvider locale="de-DE">
+      <DatePicker
+        label="Pick a date"
+        defaultValue={new CalendarDate(2025, 8, 1)}
+        {...args}
+      />
+    </I18nProvider>
+  ),
+});
+
+Mobile.test(
+  'Mobile DatePicker interaction',
+  async ({ canvas, step, userEvent }: any) => {
+    // Mock releasePointerCapture to handle invalid pointer IDs in Firefox tests
+    const releasePointerCaptureMock = spyOn(
+      Element.prototype,
+      'releasePointerCapture'
+    ).mockImplementation(() => {});
+
+    const trigger = canvas.getByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+    });
+
+    await step('Verify tray content is visible', async () => {
+      const dialog = await canvas.findByRole('dialog');
+
+      await waitFor(() => expect(dialog).toBeVisible());
+    });
+
+    await step('Verify calendar is visible', async () => {
+      const calendar = await canvas.findByRole('grid');
+
+      await waitFor(() => expect(calendar).toBeVisible());
+    });
+
+    await step('Select a date from calendar', async () => {
+      const dateButton = await canvas.findByRole('button', { name: /15/i });
+
+      await userEvent.click(dateButton);
+    });
+
+    await step('Close tray with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() => {
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    await step('Verify date is displayed in input', async () => {
+      const input = canvas.getByRole('group');
+
+      await waitFor(() => expect(input).toHaveTextContent('15'));
+    });
+
+    releasePointerCaptureMock.mockRestore();
+  }
+);
+
+Mobile.test(
+  'Mobile DatePicker keyboard navigation',
+  async ({ canvas, step, userEvent }: any) => {
+    const trigger = canvas.getByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Verify calendar grid is visible', async () => {
+      const calendar = await canvas.findByRole('grid');
+
+      await waitFor(() => expect(calendar).toBeVisible());
+    });
+
+    await step('Navigate calendar with arrow keys', async () => {
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{ArrowDown}');
+    });
+
+    await step('Select date with Enter key', async () => {
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Close tray with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+  }
+);

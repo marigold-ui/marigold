@@ -1,17 +1,13 @@
 import { Table } from '@marigold/components';
 
 export default () => (
-  <Table aria-label="Example table for nested columns" stretch variant="grid">
+  <Table aria-label="Example table for nested columns" variant="grid">
     <Table.Header>
-      <Table.Column title="Name" align="center">
-        <Table.Column isRowHeader>First Name</Table.Column>
-        <Table.Column isRowHeader>Last Name</Table.Column>
-      </Table.Column>
-      <Table.Column title="Information" align="center">
-        <Table.Column>Birthday</Table.Column>
-        <Table.Column align="right" width={5}>
-          Age
-        </Table.Column>
+      <Table.Column rowHeader>First Name</Table.Column>
+      <Table.Column rowHeader>Last Name</Table.Column>
+      <Table.Column>Birthday</Table.Column>
+      <Table.Column alignX="right" width={5}>
+        Age
       </Table.Column>
     </Table.Header>
     <Table.Body>

@@ -7,7 +7,7 @@ import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { ComboBox } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useClassNames } from '@marigold/system';
+import { useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
@@ -17,6 +17,7 @@ import { Popover } from '../Overlay/Popover';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
+import { MobileComboBox } from './MobileCombobox';
 
 // Props
 // ---------------
@@ -146,33 +147,50 @@ const _ComboBox = forwardRef<HTMLInputElement, ComboBoxProps>(
       isInvalid: error,
       defaultInputValue: defaultValue,
       inputValue: value,
-
       onInputChange: onChange,
       ...rest,
     };
 
     const classNames = useClassNames({ component: 'ComboBox', variant, size });
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
+    const isSmallScreen = useSmallScreen();
+
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
-        <Input
-          action={
-            <IconButton className={classNames}>
-              {loading ? <ProgressCircle /> : <ChevronsVertical size="16" />}
-            </IconButton>
-          }
-        />
-        <Popover>
-          <ListBox
-            renderEmptyState={() =>
-              emptyState ?? (
-                <Center>{stringFormatter.format('noResultsFound')}</Center>
-              )
-            }
+        {isSmallScreen ? (
+          <MobileComboBox
+            placeholder={rest.placeholder}
+            label={rest.label}
+            emptyState={emptyState}
           >
             {children}
-          </ListBox>
-        </Popover>
+          </MobileComboBox>
+        ) : (
+          <>
+            <Input
+              action={
+                <IconButton className={classNames.icon}>
+                  {loading ? (
+                    <ProgressCircle />
+                  ) : (
+                    <ChevronsVertical size="16" />
+                  )}
+                </IconButton>
+              }
+            />
+            <Popover>
+              <ListBox
+                renderEmptyState={() =>
+                  emptyState ?? (
+                    <Center>{stringFormatter.format('noResultsFound')}</Center>
+                  )
+                }
+              >
+                {children}
+              </ListBox>
+            </Popover>
+          </>
+        )}
       </FieldBase>
     );
   }

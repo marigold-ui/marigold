@@ -163,7 +163,7 @@ const transformTypeValue = async val => {
     'number | number[]',
     'CellElement | CellElement[] | CellRenderer',
     '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
-    '"Accordion" | "ActionBar" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | ... 35 more ... | "ToggleButton"',
+    '"Accordion" | "ActionBar" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Tray" | ... 39 more ... | "ToggleButton"',
     'string | { [slot in keyof ThemeComponent<C>]?: string; }',
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
@@ -171,6 +171,7 @@ const transformTypeValue = async val => {
     'T[]',
     'ReactNode | ReactNode[]',
     'Key | readonly Key[] | null',
+    'readonly Key[]',
   ];
   let text = val.type.name;
 
@@ -240,6 +241,7 @@ const files = await globby([
   `!${componentsDir}/**/*.stories.tsx`,
   `!${componentsDir}/**/*.test.tsx`,
   `!${componentsDir}/**/*.ts`,
+  `!${componentsDir}/legacy/**/*.tsx`,
   `!${systemDir}/**/*.stories.tsx`,
   `!${systemDir}/**/*.test.tsx`,
   `!${systemDir}/**/*.ts`,
