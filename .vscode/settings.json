@@ -15,25 +15,5 @@
   },
   "npm.packageManager": "pnpm",
   "tailwindCSS.classFunctions": ["cva", "cx", "cn"],
-  "tailwindCSS.experimental.configFile": "./themes/theme-rui/src/styles.css",
-  "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#1d2d68",
-    "activityBar.background": "#1d2d68",
-    "activityBar.foreground": "#e7e7e7",
-    "activityBar.inactiveForeground": "#e7e7e799",
-    "activityBarBadge.background": "#ae314c",
-    "activityBarBadge.foreground": "#e7e7e7",
-    "commandCenter.border": "#e7e7e799",
-    "sash.hoverBorder": "#1d2d68",
-    "statusBar.background": "#121c40",
-    "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#1d2d68",
-    "statusBarItem.remoteBackground": "#121c40",
-    "statusBarItem.remoteForeground": "#e7e7e7",
-    "titleBar.activeBackground": "#121c40",
-    "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#121c4099",
-    "titleBar.inactiveForeground": "#e7e7e799"
-  },
-  "peacock.color": "#121c40"
+  "tailwindCSS.experimental.configFile": "./themes/theme-rui/src/styles.css"
 }

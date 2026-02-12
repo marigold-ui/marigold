@@ -5,6 +5,8 @@ export const ListBox: ThemeComponent<'ListBox'> = {
     base: [
       'bg-bg-surface-overlay border-border rounded-sm border drop-shadow-lg',
       'w-full',
+      // In a Tray
+      'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none group-[[role=dialog]]/tray:drop-shadow-none',
     ],
   }),
   list: cva({

@@ -12,3 +12,7 @@ export * from './DosAndDonts';
 export * from './RelativeTime';
 export * from './TeaserCard';
 export * from './FeedbackComponentsTable';
+export * from './AppearanceDemo';
+export * from './AppearanceTable';
+export * from './StorybookHintMessage';
+export * from './ComponentDemo';

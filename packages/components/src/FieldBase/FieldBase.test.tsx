@@ -40,10 +40,11 @@ test('render Field with label and helptext', () => {
   );
 
   const label = screen.getByText('Label');
-  expect(label).toBeInTheDocument();
   const description = screen.getByText('This is a helpful text');
-  expect(description).toBeInTheDocument();
   const error = screen.queryByText('Something went wrong');
+
+  expect(label).toBeInTheDocument();
+  expect(description).toBeInTheDocument();
   expect(error).not.toBeInTheDocument();
 });
 
@@ -61,6 +62,8 @@ test('render Field with label and errorMessage', () => {
   expect(label).toBeInTheDocument();
 
   const error = screen.getByText('Something went wrong');
+
+  expect(label).toBeInTheDocument();
   expect(error).toBeInTheDocument();
 });
 
@@ -76,12 +79,11 @@ test('render Field with label and errorMessage although description is set', () 
   );
 
   const label = screen.getByText('Label');
-  expect(label).toBeInTheDocument();
-
   const description = screen.queryByText('This is a helpful text');
-  expect(description).not.toBeInTheDocument();
-
   const error = screen.getByText('Something went wrong');
+
+  expect(label).toBeInTheDocument();
+  expect(description).not.toBeInTheDocument();
   expect(error).toBeInTheDocument();
 });
 
@@ -107,5 +109,32 @@ test('takes full width by default', () => {
 
   // eslint-disable-next-line testing-library/no-node-access
   const container = screen.getByText('Label').parentElement!;
-  expect(container).toHaveClass('w-full');
+  expect(container).toHaveClass('w-auto');
+});
+
+test('applies width variables for numeric width', () => {
+  render(<Basic.Component width={80} />);
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('This is the label').parentElement!;
+
+  expect(container.className).toContain('w-auto');
+  expect(container.style.getPropertyValue('--container-width')).toBe(
+    'calc(var(--spacing) * 80)'
+  );
+  expect(container.style.getPropertyValue('--field-width')).toBe(
+    'calc(var(--spacing) * 80)'
+  );
+});
+
+test('applies width variables for fraction width', () => {
+  render(<Basic.Component width="1/2" />);
+  // eslint-disable-next-line testing-library/no-node-access
+  const container = screen.getByText('This is the label').parentElement!;
+
+  expect(container.className).toContain('w-(--container-width)');
+  expect(container.className).not.toContain('w-auto');
+  expect(container.style.getPropertyValue('--container-width')).toBe(
+    'calc((1 / 2) * 100%)'
+  );
+  expect(container.style.getPropertyValue('--field-width')).toBe('100%');
 });

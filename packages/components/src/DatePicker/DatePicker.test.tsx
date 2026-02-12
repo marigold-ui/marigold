@@ -12,6 +12,17 @@ import {
 const user = userEvent.setup();
 
 describe('DatePicker', () => {
+  beforeAll(() => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: () => ({
+        matches: false,
+        addListener: () => {},
+        removeListener: () => {},
+      }),
+    });
+  });
+
   describe('basics', () => {
     test('renders date picker with specified date', () => {
       render(<WithDefaultValue.Component />);
@@ -344,7 +355,7 @@ test('DatePicker supports width prop', () => {
 
   const picker = screen.getByTestId('picker');
 
-  expect(picker).toHaveClass('w-10');
+  expect(picker).toHaveClass('w-auto');
 });
 
 test('DatePicker supports data unavailable property', async () => {

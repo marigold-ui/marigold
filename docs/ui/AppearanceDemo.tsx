@@ -7,29 +7,6 @@ import type { ComponentType } from 'react';
 import { useState } from 'react';
 import { Info } from '@marigold/icons';
 
-// Helpers
-// ---------------
-function getLongestString(list: string[]) {
-  const sortedArray = list.sort((a, b) => b.length - a.length);
-  return sortedArray[0];
-}
-
-const getSelectWidth = (options: string[]) => {
-  const length = (getLongestString(options) || '').length;
-
-  // Poor mans pattern matching
-  switch (true) {
-    case length < 10:
-      return 40;
-    case length >= 10 && length < 12:
-      return 44;
-    case length >= 12 && length < 14:
-      return 48;
-    default:
-      return 52;
-  }
-};
-
 // Props
 // ---------------
 export interface AppearanceDemoProps {
@@ -101,17 +78,17 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
       </p>
 
       <Card variant="content" p={0}>
-        <div className="absolute top-3 left-4 flex flex-wrap gap-2">
+        <div className="absolute top-3 right-4 left-4 flex flex-wrap gap-2">
           <Select
             label="Variant"
             variant="floating"
             size="small"
-            width={getSelectWidth(appearance.variant)}
-            selectedKey={selected.variant}
-            onChange={(val: string) =>
-              setSelected({ variant: val, size: selected.size })
+            width={48}
+            value={selected.variant}
+            onChange={val =>
+              setSelected({ variant: String(val), size: selected.size })
             }
-            disabled={appearance.variant.length === 0 ? true : false}
+            disabled={appearance.variant.length === 0}
           >
             {appearance.variant.length === 0 ? (
               <Select.Option id="none">default</Select.Option>
@@ -126,12 +103,12 @@ export const AppearanceDemo = ({ component, exclude }: AppearanceDemoProps) => {
             label="Size"
             variant="floating"
             size="small"
-            width={getSelectWidth(appearance.size)}
-            selectedKey={selected.size}
-            onChange={(val: string) =>
-              setSelected({ variant: selected.variant, size: val })
+            width={48}
+            value={selected.size}
+            onChange={val =>
+              setSelected({ variant: selected.variant, size: String(val) })
             }
-            disabled={appearance.size.length === 0 ? true : false}
+            disabled={appearance.size.length === 0}
           >
             {appearance.size.length === 0 ? (
               <Select.Option id="none">default</Select.Option>

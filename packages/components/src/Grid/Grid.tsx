@@ -28,8 +28,17 @@ const parseTemplateValue = (values: TemplateValue[]) =>
 
 // Props
 // ---------------
-export interface GridProps
-  extends SpaceProp<SpacingTokens>, HeightProp, AriaRegionProps {
+export interface GridProps extends AriaRegionProps {
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
+  /**
+   * The height of the grid container.
+   * @remarks `HeightProp<Tokens>`
+   */
+  height?: HeightProp['height'];
   /**
    * Specifies the named grid areas, much like `grid-template-areas`.
    */

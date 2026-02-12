@@ -75,9 +75,9 @@ export default () => (
         description="Street address of the venue"
         required
       />
-      <Inline space="related">
-        <TextField label="City" required />
+      <Inline space="related" alignY="input" noWrap>
         <TextField label="Postal Code" width={20} />
+        <TextField label="City" required />
       </Inline>
       <Accordion variant="card">
         <Accordion.Item id="location-details">

@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
 import { renderWithOverlay } from '../test.utils';
 import { Basic } from './ComboBox.stories';
 
@@ -10,13 +9,14 @@ const user = userEvent.setup();
  * We need to mock `matchMedia` because JSOM does not
  * implements it.
  */
-
-const mockMatchMedia = (matches: string[]) =>
-  vi.fn().mockImplementation(query => ({
-    matches: matches.includes(query),
-  }));
-
-window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: () => ({
+    matches: false,
+    addListener: () => {},
+    removeListener: () => {},
+  }),
+});
 
 test('renders an input', () => {
   renderWithOverlay(<Basic.Component />);
@@ -40,7 +40,7 @@ test('check classname slots', () => {
     `"shrink-0 outline-0 absolute cursor-pointer pr-1 text-muted-foreground/80 right-2"`
   );
   expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-full space-y-2"`
+    `"group/field flex min-w-0 flex-col w-auto space-y-2"`
   );
   expect(label.className).toMatchInlineSnapshot(
     `"items-center gap-1 text-sm font-medium leading-none text-foreground group-disabled/field:cursor-not-allowed group-disabled/field:text-disabled-foreground group-required/field:after:content-["*"] group-required/field:after:-ml-1 group-required/field:after:text-destructive inline-flex"`

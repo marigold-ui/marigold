@@ -13,7 +13,9 @@ export const AppearanceTable = ({ component }: AppearanceTableProps) => {
   return (
     <Table aria-labelledby="appearance table" variant="hover" stretch>
       <Table.Header>
-        <Table.Column key={'property'}>Property</Table.Column>
+        <Table.Column key={'property'} isRowHeader>
+          Property
+        </Table.Column>
         <Table.Column key={'type'}>Type</Table.Column>
         <Table.Column key={'description'}>Description</Table.Column>
       </Table.Header>

@@ -13,8 +13,11 @@ export const NumberField: ThemeComponent<'NumberField'> = {
   stepper: cva({
     base: [
       'w-8 h-full text-center shrink-0 grid palce-items-center',
+      'text-foreground',
       'disabled:text-disabled-foreground disabled:bg-disabled',
-      'border-input! first-of-type:border-r! last-of-type:border-l!',
+      'border-input!',
+      'first-of-type:border-r! first-of-type:rounded-l-[calc(var(--radius-lg)-1px)]',
+      'last-of-type:border-l! last-of-type:rounded-r-[calc(var(--radius-lg)-1px)]',
     ],
   }),
   input: cva({

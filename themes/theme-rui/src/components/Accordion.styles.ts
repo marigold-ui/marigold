@@ -18,7 +18,7 @@ export const Accordion: ThemeComponent<'Accordion'> = {
       variant: {
         default: ['bg-background border-b last:border-b-0 border-border'],
         card: [
-          'ui-surface shadow-elevation-border py-1 outline-none',
+          'ui-surface shadow-elevation-raised py-1 outline-none',
           // Show focus border when the trigger is focused
           'has-[[slot=trigger]:focus-visible]:ui-state-focus outline-none',
         ],

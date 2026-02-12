@@ -2,7 +2,6 @@ import { ruiTheme } from '@/theme';
 import {
   Headline,
   MarigoldProvider,
-  Table,
   Text,
   fontWeight,
   textAlign,
@@ -10,27 +9,27 @@ import {
   textStyle,
 } from '@/ui';
 
-const headlineSizes = [
-  'level-1',
-  'level-2',
-  'level-3',
-  'level-4',
-  'level-5',
-  'level-6',
-] as const;
-
 export const Headlines = () => {
+  const headline = ruiTheme.components.Headline?.variants;
+
+  if (!headline) {
+    return null;
+  }
+
   return (
-    <Table aria-labelledby="typography table" stretch>
-      <Table.Header>
-        <Table.Column key={'level'}>Level</Table.Column>
-        <Table.Column key={'example'}>Example</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        {headlineSizes.map(level => (
-          <Table.Row key={level}>
-            <Table.Cell>{level}</Table.Cell>
-            <Table.Cell>
+    <table aria-label="typography" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th>Example</th>
+          <th>Styles</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.entries(headline?.size).map(([level, value]) => (
+          <tr key={level}>
+            <td>{level}</td>
+            <td>
               <div>
                 <MarigoldProvider theme={ruiTheme}>
                   <div className="align-center flex bg-white">
@@ -40,126 +39,135 @@ export const Headlines = () => {
                   </div>
                 </MarigoldProvider>
               </div>
-            </Table.Cell>
-          </Table.Row>
+            </td>
+            <td>{value?.toString()}</td>
+          </tr>
         ))}
-      </Table.Body>
-    </Table>
+      </tbody>
+    </table>
   );
 };
 
 export const FontSizes = () => {
   return (
-    <Table aria-labelledby="typography table" stretch>
-      <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
-        <Table.Column key={'value'}>Value</Table.Column>
-        <Table.Column key={'example'}>Example</Table.Column>
-      </Table.Header>
-      <Table.Body>
+    <table aria-label="typography" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
         {Object.entries(textSize).map(([key, value]) => (
-          <Table.Row key={key}>
-            <Table.Cell>
+          <tr key={key}>
+            <td>
               <code className="before:content-none after:content-none">
                 {key}
               </code>
-            </Table.Cell>
-            <Table.Cell>{value}</Table.Cell>
-            <Table.Cell>
+            </td>
+            <td>{value}</td>
+            <td>
               <Text fontSize={key as keyof typeof textSize}>
                 Marigolds bloom with vibrant colors.
               </Text>
-            </Table.Cell>
-          </Table.Row>
+            </td>
+          </tr>
         ))}
-      </Table.Body>
-    </Table>
+      </tbody>
+    </table>
   );
 };
 
 export const FontWeights = () => {
   return (
-    <Table aria-labelledby="typography table" stretch>
-      <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
-        <Table.Column key={'value'}>Value</Table.Column>
-        <Table.Column key={'example'}>Example</Table.Column>
-      </Table.Header>
-      <Table.Body>
+    <table aria-label="typography" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
         {Object.entries(fontWeight).map(([key, value]) => (
-          <Table.Row key={key}>
-            <Table.Cell>
+          <tr key={key}>
+            <td>
               <code className="before:content-none after:content-none">
                 {key}
               </code>
-            </Table.Cell>
-            <Table.Cell>{value}</Table.Cell>
-            <Table.Cell>
+            </td>
+            <td>{value}</td>
+            <td>
               <Text weight={key as keyof typeof fontWeight}>
                 Marigolds bloom with vibrant colors.
               </Text>
-            </Table.Cell>
-          </Table.Row>
+            </td>
+          </tr>
         ))}
-      </Table.Body>
-    </Table>
+      </tbody>
+    </table>
   );
 };
 
 export const FontStyle = () => {
   return (
-    <Table aria-labelledby="typography table" stretch>
-      <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
-        <Table.Column key={'value'}>Value</Table.Column>
-        <Table.Column key={'example'}>Example</Table.Column>
-      </Table.Header>
-      <Table.Body>
+    <table aria-label="typography" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
         {Object.entries(textStyle).map(([key, value]) => (
-          <Table.Row key={key}>
-            <Table.Cell>
+          <tr key={key}>
+            <td>
               <code className="before:content-none after:content-none">
                 {key}
               </code>
-            </Table.Cell>
-            <Table.Cell>{value}</Table.Cell>
-            <Table.Cell>
+            </td>
+            <td>{value}</td>
+            <td>
               <Text fontStyle={key as keyof typeof textStyle}>
                 Marigolds bloom with vibrant colors.
               </Text>
-            </Table.Cell>
-          </Table.Row>
+            </td>
+          </tr>
         ))}
-      </Table.Body>
-    </Table>
+      </tbody>
+    </table>
   );
 };
 
 export const TextAlign = () => {
   return (
-    <Table aria-labelledby="typography table" stretch>
-      <Table.Header>
-        <Table.Column key={'name'}>Name</Table.Column>
-        <Table.Column key={'value'}>Value</Table.Column>
-        <Table.Column key={'example'}>Example</Table.Column>
-      </Table.Header>
-      <Table.Body>
+    <table aria-label="typography" style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
         {Object.entries(textAlign).map(([key, value]) => (
-          <Table.Row key={key}>
-            <Table.Cell>
+          <tr key={key}>
+            <td>
               <code className="before:content-none after:content-none">
                 {key}
               </code>
-            </Table.Cell>
-            <Table.Cell>{value}</Table.Cell>
-            <Table.Cell>
+            </td>
+            <td>{value}</td>
+            <td>
               <Text align={key as keyof typeof textAlign}>
                 Marigolds bloom with vibrant colors.
               </Text>
-            </Table.Cell>
-          </Table.Row>
+            </td>
+          </tr>
         ))}
-      </Table.Body>
-    </Table>
+      </tbody>
+    </table>
   );
 };

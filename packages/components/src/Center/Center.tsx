@@ -3,7 +3,13 @@ import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface CenterProps extends SpaceProp<SpacingTokens>, AriaRegionProps {
+export interface CenterProps extends AriaRegionProps {
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
+
   children?: ReactNode;
   /**
    * The maximum width of the container.
