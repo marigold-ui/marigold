@@ -14,7 +14,6 @@ parsers (`useQueryStates`).
 via `useQueryStates` — each filter field gets its own query parameter instead of a single `?filter={...}` blob
 - Remove all Zod dependencies and the manual `getFormData`, `toFormSchema`, `toUrlSchema` transform pipeline
 - Simplify the `FilterForm` to work directly with the `VenueFilter` type instead of a separate form schema
-- Simplify `Search` component by removing the wrapping `<Form>` and submit button — `SearchField` already handles
 `onSubmit`/`onClear`
 - Fix capacity filter logic (`venue.capacity < filter.capacity` instead of `filter.capacity < venue.capacity`)
 - Clean up the `toDisplayValue` from an object of typed functions to a single switch-based function
