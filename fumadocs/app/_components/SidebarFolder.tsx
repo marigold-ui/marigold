@@ -66,7 +66,7 @@ const StyledSidebarFolderTrigger = ({
   return (
     <BaseSidebarFolderTrigger
       className={cn(
-        itemVariants({ variant: collapsible ? 'button' : null }),
+        itemVariants({ variant: collapsible ? 'button' : undefined }),
         'w-full',
         className
       )}
