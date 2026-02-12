@@ -42,6 +42,7 @@ export { Table } from './Table.styles';
 export { LegacyTable } from './LegacyTable.styles';
 export { Tabs } from './Tabs.styles';
 export { Tag } from './Tag.styles';
+export { TagField } from './TagField.styles';
 export { TextArea } from './TextArea.styles';
 export { Text } from './Text.styles';
 export { Toast } from './Toast.styles';

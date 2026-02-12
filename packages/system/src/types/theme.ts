@@ -178,6 +178,10 @@ export type Theme = {
       'container' | 'tag' | 'listItems' | 'closeButton' | 'removeAll',
       ComponentStyleFunction<string, string>
     >;
+    TagField?: Record<
+      'trigger' | 'tagGroup' | 'listItems' | 'button' | 'container',
+      ComponentStyleFunction<string, string>
+    >;
     Text?: ComponentStyleFunction<string, string>;
     TextArea?: ComponentStyleFunction<string, string>;
     Tooltip?: Record<

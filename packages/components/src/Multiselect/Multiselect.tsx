@@ -204,6 +204,9 @@ const getClassNames = (
   valueContainer: () => classNames.valueContainer,
 });
 
+/**
+ * @deprecated Use `TagField` instead. Will be removed in a future major version.
+ */
 export const Multiselect = ({
   disabled,
   readOnly = false,

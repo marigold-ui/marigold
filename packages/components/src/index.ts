@@ -239,6 +239,9 @@ export type { TabsProps } from './Tabs/Tabs';
 export { Tag } from './TagGroup/Tag';
 export type { TagProps } from './TagGroup/Tag';
 
+export { TagField } from './TagField/TagField';
+export type { TagFieldProps } from './TagField/TagField';
+
 export { TagGroup } from './TagGroup/TagGroup';
 export type { TagGroupProps } from './TagGroup/TagGroup';
 
