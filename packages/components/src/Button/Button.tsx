@@ -16,6 +16,10 @@ export interface ButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
     | 'ghost'
     | 'link'
     | (string & {});
+
+  /**
+   * @internal
+   */
   size?: 'default' | 'small' | 'large' | 'icon' | (string & {});
 
   /**
