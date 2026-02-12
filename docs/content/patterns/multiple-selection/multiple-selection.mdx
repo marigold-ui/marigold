@@ -8,7 +8,7 @@ The purpose of this guide is to provide clear instructions and guidelines for se
 ## Different possibilities for multiple selection:
 
 - [Checkbox Group](#checkbox-group)
-- [Multiselect](#multiselect)
+- [Tag Field](#tag-field)
 - [Tag Group](#taggroup)
 - [SelectList](#selectlist)
 
@@ -30,21 +30,21 @@ It provides a familiar and straightforward interface for selecting multiple opti
 
 <ComponentDemo file="./multiselect-checkbox-group.demo.tsx" />
 
-## Multiselect
+## Tag Field
 
-Multiselect is a type of multiple selection interface that displays options in a list format with the ability to select multiple items.
+`<TagField>` is a type of multiple selection interface that displays options in a dropdown with a searchable list and shows selected items as tags.
 
-It allows users to choose multiple options by clicking on the items in the list and provides a comprehensive view of available options and the selected items.
+It allows users to choose multiple options from a filterable list and provides a clear overview of selected items as removable tags.
 
 ### When to use ?
 
-- It allows users to choose multiple options by clicking on the items in the list.
-- Multiselect is suitable when the number of options is large, and the selected options need to be visible within the selection interface.
-- It provides a comprehensive view of available options and the selected items.
+- Use `<TagField>` when the number of options is large and users benefit from searching/filtering.
+- `<TagField>` is suitable when selected options need to be visible within the selection interface as tags.
+- It provides a comprehensive view of selected items while keeping the full option list in a dropdown.
 
 ### Examples
 
-<ComponentDemo file="./multiselect-basic.demo.tsx" />
+<ComponentDemo file="./tagfield-basic.demo.tsx" />
 
 ## TagGroup
 

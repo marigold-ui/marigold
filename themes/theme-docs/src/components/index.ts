@@ -19,5 +19,6 @@ export * from './Select.styles';
 export * from './Tabs.styles';
 export * from './LegacyTable.styles';
 export * from './Text.styles';
+export * from './Tray.styles';
 export * from './Underlay.styles';
 export * from './Badge.styles';

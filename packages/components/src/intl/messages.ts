@@ -2,6 +2,7 @@ export const intlMessages = {
   'de-DE': {
     bulkActionsAriaLabel: 'Massenaktionen',
     cancel: 'Abbrechen',
+    close: 'Schließen',
     clearSelectionAriaLabel: 'Auswahl löschen',
     dropZoneLabel: 'Dateien hierher ziehen',
     edit: 'Bearbeiten',
@@ -24,6 +25,7 @@ export const intlMessages = {
   'en-US': {
     bulkActionsAriaLabel: 'Bulk Actions',
     cancel: 'Cancel',
+    close: 'Close',
     clearSelectionAriaLabel: 'Clear selection',
     dropZoneLabel: 'Drop files here',
     edit: 'Edit',
