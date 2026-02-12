@@ -4,8 +4,10 @@ date: 2026-02-17
 type: Blog
 changed:
   - components/content/card
+  - components/content/table
   - components/form/calendar
   - components/form/filefield
+  - components/form/tagfield
   - components/overlay/contextual-help
   - components/form/textfield
   - components/form/select
@@ -79,11 +81,71 @@ A new relational spacing scale has been introduced that describes the strength o
 
 Size variants have been removed from `<ContextualHelp>`. The component now has a single, improved default style.
 
+### Table
+
+The `<Table>` component has been completely rewritten with a modern API built on react-aria-components. The old implementation has been moved to `@marigold/components/legacy`.
+
+**Key migration points:**
+
+- `emptyState` prop moved from `<Table>` to `<Table.Body>`
+- `align` prop renamed to `alignX` on `<Table.Column>`, `<Table.Cell>`, and `<Table.EditableCell>`
+- Column widths now use pixel values or CSS grid units (e.g., `"200px"`, `"1fr"`) instead of Tailwind classes
+- Inlining form fields in cells is no longer supported — use `<Table.EditableCell>` instead
+
+```tsx
+// Before
+import { Table } from '@marigold/components';
+
+// After - Option 1: Use legacy export (temporary)
+import { Table } from '@marigold/components/legacy';
+
+// After - Option 2: Migrate to new Table API (recommended)
+<Table>
+  <Table.Header>
+    <Table.Column>Name</Table.Column>
+    <Table.Column>Email</Table.Column>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>John Doe</Table.Cell>
+      <Table.Cell>john@example.com</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### Multiselect Deprecated
+
+The `<Multiselect>` component has been deprecated in favor of the new `<TagField>` component. See the TagField section below for details.
+
 ### TabList
 
 The `space` prop has been removed from `<TabList>`.
 
 ## Components
+
+### Table
+
+The new `<Table>` component is a full rewrite with modern features including sorting, single/multiple row selection, row actions, editable cells via `<Table.EditableCell>`, drag and drop reordering, sticky headers, and empty state support. It is fully accessible with keyboard navigation and screen reader support.
+
+```tsx
+<Table selectionMode="multiple">
+  <Table.Header>
+    <Table.Column allowsSorting>Name</Table.Column>
+    <Table.Column allowsSorting>Email</Table.Column>
+  </Table.Header>
+  <Table.Body emptyState={<EmptyState>No data</EmptyState>}>
+    <Table.Row>
+      <Table.Cell>John Doe</Table.Cell>
+      <Table.Cell>john@example.com</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### TagField
+
+The new `<TagField>` component replaces `<Multiselect>`. It provides a multi-select field that displays selected items as removable tags with a searchable dropdown. It supports controlled/uncontrolled selection, disabled state, error state, disabled keys, sections, and custom empty states.
 
 ### ActionBar (alpha)
 
@@ -138,6 +200,14 @@ The width prop now handles three types of values:
 />
 ```
 
+### Mobile Tray
+
+`<DatePicker>`, `<Menu>`, `<Autocomplete>`, `<Combobox>`, and `<Select>` now use an internal `<Tray>` component on mobile devices, providing a better touch experience with a bottom-sheet style overlay.
+
+### Form
+
+The `<Form>` component now supports ref forwarding.
+
 ### Layout Components
 
 `<Grid>`, `<Container>`, `<Columns>`, and `<Center>` now support semantic spacing tokens, aligning them with the new spacing system.
@@ -162,6 +232,7 @@ The width prop now handles three types of values:
 - Fixed a regression where `<Container>` no longer worked correctly with `<Breakout>`.
 - Fixed `<Drawer>` to take full height on small screens when positioned at top or bottom.
 - Correctly applied elevation shadows across all components.
+- Fixed `<Scrollable>` so scrolling works as expected when pointer hovers over it.
 - Updated `react-aria` dependencies to February 2026 versions (`react-aria-components` 1.15.0, `react-stately` 3.44.0).
 
 ---
