@@ -56,7 +56,7 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
       tableOfContent={{
         single: true,
       }}
-      toc={page.data.toc}
+      toc={page.data.toc as any}
       full={page.data.full}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
