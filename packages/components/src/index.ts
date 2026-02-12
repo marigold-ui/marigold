@@ -239,6 +239,9 @@ export type { TabsProps } from './Tabs/Tabs';
 export { Tag } from './TagGroup/Tag';
 export type { TagProps } from './TagGroup/Tag';
 
+export { TagField } from './TagField/TagField';
+export type { TagFieldProps } from './TagField/TagField';
+
 export { TagGroup } from './TagGroup/TagGroup';
 export type { TagGroupProps } from './TagGroup/TagGroup';
 
@@ -280,6 +283,9 @@ export type { ToggleButtonProps } from './ToggleButton/ToggleButton';
 
 export { ToggleButtonGroup } from './ToggleButton/ToggleButtonGroup';
 export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
+
+export { Tray } from './Tray/Tray';
+export type { TrayProps } from './Tray/Tray';
 
 // Utility exports
 export * from './utils/form.utils';

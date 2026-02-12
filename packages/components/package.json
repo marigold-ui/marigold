@@ -50,6 +50,7 @@
     "@marigold/types": "workspace:*",
     "@react-aria/button": "^3.14.4",
     "@react-aria/calendar": "^3.9.4",
+    "@react-aria/collections": "3.0.2",
     "@react-aria/focus": "^3.21.4",
     "@react-aria/i18n": "^3.12.15",
     "@react-aria/interactions": "^3.27.0",
@@ -67,6 +68,7 @@
     "@react-stately/tree": "^3.9.5",
     "@react-types/shared": "^3.33.0",
     "@react-types/table": "^3.13.5",
+    "motion": "12.23.26",
     "react-aria-components": "^1.15.0",
     "react-stately": "^3.44.0"
   },
