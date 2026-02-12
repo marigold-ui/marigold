@@ -19,13 +19,21 @@ import {
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { forwardRefType } from '@react-types/shared';
-import { type WidthProp, cn, createVar, useClassNames } from '@marigold/system';
+import {
+  type WidthProp,
+  cn,
+  createVar,
+  useClassNames,
+  useSmallScreen,
+} from '@marigold/system';
+import { Button } from '../Button/Button';
 import { FieldBase } from '../FieldBase/FieldBase';
 import { IconButton } from '../IconButton/IconButton';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { Tag } from '../TagGroup/Tag';
+import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
 
@@ -162,6 +170,46 @@ const TagDisplay = ({ placeholder, classNames, disabled }: TagDisplayProps) => {
   );
 };
 
+// Dropdown Content
+// ---------------
+interface TagFieldDropdownProps<T extends object> {
+  items?: Iterable<T>;
+  children?: ReactNode | ((item: T) => ReactNode);
+  placeholder?: string;
+  emptyState?: ReactNode;
+  filter: (string: string, substring: string) => boolean;
+}
+
+const TagFieldDropdown = <T extends object>({
+  items,
+  children,
+  placeholder,
+  emptyState,
+  filter,
+}: TagFieldDropdownProps<T>) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+
+  return (
+    <Autocomplete filter={filter}>
+      <SearchField aria-label="Search" autoFocus>
+        <SearchInput placeholder={placeholder} />
+      </SearchField>
+      <ListBox
+        items={items}
+        renderEmptyState={() =>
+          emptyState ?? (
+            <div className="flex items-center">
+              {stringFormatter.format('noResultsFound')}
+            </div>
+          )
+        }
+      >
+        {children}
+      </ListBox>
+    </Autocomplete>
+  );
+};
+
 // Component
 // ---------------
 const _TagField = (forwardRef as forwardRefType)(function TagField<
@@ -185,6 +233,7 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const [triggerWidth, setTriggerWidth] = useState(0);
   const { contains } = useFilter({ sensitivity: 'base' });
+  const isSmallScreen = useSmallScreen();
 
   useLayoutEffect(() => {
     const el = triggerRef.current;
@@ -234,34 +283,44 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
           <ChevronsVertical />
         </IconButton>
       </Group>
-      <Popover triggerRef={triggerRef}>
-        <div
-          className={classNames.container}
-          style={createVar({
-            'tagfield-trigger-width': triggerWidth
-              ? `${triggerWidth}px`
-              : undefined,
-          })}
-        >
-          <Autocomplete filter={contains}>
-            <SearchField aria-label="Search" autoFocus>
-              <SearchInput placeholder={placeholder} />
-            </SearchField>
-            <ListBox
+      {isSmallScreen ? (
+        <Tray>
+          <Tray.Title>{rest.label}</Tray.Title>
+          <Tray.Content className="flex flex-col gap-2">
+            <TagFieldDropdown
               items={items}
-              renderEmptyState={() =>
-                emptyState ?? (
-                  <div className="flex items-center">
-                    {stringFormatter.format('noResultsFound')}
-                  </div>
-                )
-              }
+              placeholder={placeholder}
+              emptyState={emptyState}
+              filter={contains}
             >
               {children}
-            </ListBox>
-          </Autocomplete>
-        </div>
-      </Popover>
+            </TagFieldDropdown>
+          </Tray.Content>
+          <Tray.Actions>
+            <Button slot="close">{stringFormatter.format('close')}</Button>
+          </Tray.Actions>
+        </Tray>
+      ) : (
+        <Popover triggerRef={triggerRef}>
+          <div
+            className={classNames.container}
+            style={createVar({
+              'tagfield-trigger-width': triggerWidth
+                ? `${triggerWidth}px`
+                : undefined,
+            })}
+          >
+            <TagFieldDropdown
+              items={items}
+              placeholder={placeholder}
+              emptyState={emptyState}
+              filter={contains}
+            >
+              {children}
+            </TagFieldDropdown>
+          </div>
+        </Popover>
+      )}
     </FieldBase>
   );
 });
