@@ -201,6 +201,7 @@ Mobile.test('Open tray and select an item', async ({ canvas, step, args }) => {
 
   await step('Verify selected item appears as tag', async () => {
     const tagGroup = canvas.getByRole('grid', { name: /selected items/i });
+
     expect(within(tagGroup).getByText('Rock')).toBeVisible();
   });
 });
