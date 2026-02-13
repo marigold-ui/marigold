@@ -21,13 +21,15 @@ changed:
 
 New year, new foundations! While the first weeks of 2026 are flying by, we've been heads-down building a stronger base for Marigold. This release brings a brand-new semantic spacing system, a refreshed surface styling, and several new components to help you build better interfaces faster.
 
-Marigold v17.0.0 is here with exciting new features, internal improvements, and important theme changes. Let's dive in!
+Marigold v17.0.0 is here, so let's dive in!
 
 ## Breaking Changes
 
 ### Surface Styling Refactored
 
-The surface styling system has been completely refactored to use `background-clip` and `background-origin` for gradient borders. This improves contrast and depth across all surface-based components like inputs, cards, and dialogs.
+The surface styling system has been completely refactored. This improves contrast and depth across all surface-based components like inputs, cards, and dialogs.
+
+Shadow elevation is now independent of the surface styling itself, making it more reusable. To add a shadow based on the elevation level, use the regular Tailwind `shadow-*` class with the elevation tokens (e.g. `shadow-elevation-raised`, `shadow-elevation-overlay`).
 
 **Migration:**
 
@@ -36,8 +38,7 @@ The surface styling system has been completely refactored to use `background-cli
 .util-surface-raised
 
 /* After */
-.ui-surface /* uses raised elevation by default */
-.ui-surface.ui-elevation-overlay /* for overlays */
+.ui-surface.shadow-elevation-raised
 ```
 
 Deprecated utilities `util-focus-*` and `util-disabled` have been removed. Use the new state utilities instead: `ui-state-focus`, `ui-state-disabled`, `ui-state-error`, `ui-state-readonly`.
