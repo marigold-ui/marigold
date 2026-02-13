@@ -45,7 +45,7 @@ import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-const Page = async (props: PageProps<'/[[...slug]]'>) => {
+const Page = async (props: PageProps<'/[...slug]'>) => {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
@@ -129,11 +129,13 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
 };
 
 export const generateStaticParams = async () => {
-  return source.generateParams();
+  const params = await source.generateParams();
+  // Filter out empty slugs (root path) - handled by home page
+  return params.filter(param => param.slug && param.slug.length > 0);
 };
 
 export const generateMetadata = async (
-  props: PageProps<'/[[...slug]]'>
+  props: PageProps<'/[...slug]'>
 ): Promise<Metadata> => {
   const params = await props.params;
   const page = source.getPage(params.slug);

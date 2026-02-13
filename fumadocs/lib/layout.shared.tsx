@@ -6,5 +6,21 @@ export const baseOptions = (): BaseLayoutProps => {
     nav: {
       title: <SiteLogo />,
     },
+
+    links: [
+      {
+        text: 'Getting Started',
+        url: '/getting-started/installation',
+        on: 'nav',
+      },
+      { text: 'Foundations ', url: '/foundations/accessibility', on: 'nav' },
+      {
+        text: 'Components',
+        url: '/components/application/provider',
+        on: 'nav',
+      },
+      { text: 'Patterns', url: '/patterns/admin-master-mark', on: 'nav' },
+      { text: 'Releases', url: '/releases/blog-overview', on: 'nav' },
+    ],
   };
 };

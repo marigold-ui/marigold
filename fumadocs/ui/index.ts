@@ -16,3 +16,6 @@ export * from './AppearanceDemo';
 export * from './AppearanceTable';
 export * from './StorybookHintMessage';
 export * from './ComponentDemo';
+export * from './BlurFade';
+export * from './ShinyText';
+export * from './Rectangle';

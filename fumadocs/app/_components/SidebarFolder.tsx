@@ -1,5 +1,4 @@
 'use client';
-import { usePathname } from 'fumadocs-core/framework';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import {
   SidebarFolder as BaseSidebarFolder,
@@ -9,6 +8,7 @@ import {
   useFolder,
   useFolderDepth,
 } from 'fumadocs-ui/components/sidebar/base';
+import { useTreePath } from 'fumadocs-ui/contexts/tree';
 import { ComponentProps, type ReactNode } from 'react';
 import { cva } from '@marigold/system';
 import { cn } from '@marigold/system';
@@ -112,15 +112,14 @@ export const SidebarFolder = ({
   item: PageTree.Folder;
   children: ReactNode;
 }) => {
-  const pathname = usePathname();
-  const isActive = item.index ? pathname === item.index.url : false;
+  const path = useTreePath();
 
   if (item.index) {
     return (
       <BaseSidebarFolder
         collapsible={false}
         defaultOpen={true}
-        active={isActive}
+        active={path.includes(item)}
         {...props}
       >
         <StyledSidebarFolderLink
@@ -135,11 +134,11 @@ export const SidebarFolder = ({
     );
   }
 
-  // Regular folder without index file - render as collapsible folder
   return (
     <BaseSidebarFolder
       collapsible={item.collapsible}
       defaultOpen={item.defaultOpen}
+      active={path.includes(item)}
       {...props}
     >
       <StyledSidebarFolderTrigger>
