@@ -66,7 +66,13 @@ const _Table = ({
 
   return (
     <TableContext.Provider value={ctx}>
-      <ResizableTableContainer className="w-full">
+      <ResizableTableContainer
+        className="w-full"
+        style={{
+          paddingBottom: 'var(--action-bar-height, 0px)',
+          scrollPaddingBottom: 'var(--action-bar-height, 0px)',
+        }}
+      >
         <RACTable
           className={cn('group/table', classNames.table)}
           selectionBehavior="toggle"

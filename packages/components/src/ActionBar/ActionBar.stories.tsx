@@ -1,14 +1,16 @@
 import { Copy } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Delete, Edit } from '@marigold/icons';
 import { Headline } from '../Headline/Headline';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Stack } from '../Stack/Stack';
-import { Table } from '../legacy/Table/Table';
+import { Table } from '../Table/Table';
 import type { Selection } from '../types';
 import { ActionBar } from './ActionBar';
+import { ActionBarContainer } from './ActionBarContainer';
+import { useActionBarTrigger } from './useActionBarTrigger';
 
 const meta = preview.meta({
   title: 'Components/ActionBar',
@@ -113,19 +115,30 @@ export const WithoutClearButton = meta.story({
   ),
 });
 
+const rows = [
+  { id: '1', name: 'Charizard', type: 'Fire, Flying', level: '67' },
+  { id: '2', name: 'Blastoise', type: 'Water', level: '56' },
+  { id: '3', name: 'Venusaur', type: 'Grass, Poison', level: '83' },
+  { id: '4', name: 'Pikachu', type: 'Electric', level: '100' },
+];
+
+const columns = [
+  { name: 'Name', id: 'name' as const, rowHeader: true },
+  { name: 'Type', id: 'type' as const, rowHeader: false },
+  { name: 'Level', id: 'level' as const, rowHeader: false },
+];
+
 export const WithTable = meta.story({
   parameters: {
     controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
   },
   render: () => {
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['2']));
-
-    const rows = [
-      { id: '1', name: 'Charizard', type: 'Fire, Flying', level: '67' },
-      { id: '2', name: 'Blastoise', type: 'Water', level: '56' },
-      { id: '3', name: 'Venusaur', type: 'Grass, Poison', level: '83' },
-      { id: '4', name: 'Pikachu', type: 'Electric', level: '100' },
-    ];
+    const {
+      selectedKeys,
+      onSelectionChange,
+      selectedItemCount,
+      clearSelection,
+    } = useActionBarTrigger({ defaultSelectedKeys: new Set(['2']) });
 
     return (
       <div className="w-125">
@@ -133,36 +146,27 @@ export const WithTable = meta.story({
           <Table
             aria-label="Table with action bar"
             selectionMode="multiple"
-            stretch={true}
             selectedKeys={selectedKeys}
-            onSelectionChange={keys =>
-              setSelectedKeys(
-                keys === 'all' ? new Set(rows.map(r => r.id)) : keys
-              )
-            }
+            onSelectionChange={onSelectionChange}
           >
-            <Table.Header>
-              <Table.Column key="name" isRowHeader>
-                Name
-              </Table.Column>
-              <Table.Column key="type">Type</Table.Column>
-              <Table.Column key="level">Level</Table.Column>
+            <Table.Header columns={columns}>
+              {column => (
+                <Table.Column rowHeader={column.rowHeader} id={column.id}>
+                  {column.name}
+                </Table.Column>
+              )}
             </Table.Header>
             <Table.Body items={rows}>
               {item => (
-                <Table.Row key={item.id}>
-                  <Table.Cell>{item.name}</Table.Cell>
-                  <Table.Cell>{item.type}</Table.Cell>
-                  <Table.Cell>{item.level}</Table.Cell>
+                <Table.Row columns={columns}>
+                  {column => <Table.Cell>{item[column.id]}</Table.Cell>}
                 </Table.Row>
               )}
             </Table.Body>
           </Table>
           <ActionBar
-            selectedItemCount={
-              selectedKeys === 'all' ? 'all' : selectedKeys.size
-            }
-            onClearSelection={() => setSelectedKeys(new Set())}
+            selectedItemCount={selectedItemCount}
+            onClearSelection={clearSelection}
           >
             <ActionBar.Button onPress={() => alert('Edit selected items')}>
               <Edit />
@@ -183,88 +187,131 @@ export const WithTable = meta.story({
   },
 });
 
-export const WithScrollableContent = meta.story({
-  render: args => {
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(
-      new Set(['delectus aut autem-1'])
-    );
-    const [todos, setTodos] = useState<
-      { userId: string; id: string; title: string; completed: boolean }[]
-    >([]);
-    useEffect(() => {
-      fetch('https://jsonplaceholder.typicode.com/todos')
-        .then(res => res.json())
-        .then(data => setTodos(data));
-    }, []);
-    const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
+export const WithActionBarContainer = meta.story({
+  parameters: {
+    controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
+  },
+  render: () => {
+    const {
+      selectedKeys,
+      onSelectionChange,
+      selectedItemCount,
+      clearSelection,
+    } = useActionBarTrigger();
 
     return (
-      <>
-        <Headline level={3}>My Headline</Headline>
-        {tableHeaders.length ? (
-          <Stack space={4} alignX="center">
-            <Scrollable height="200px" {...args}>
-              <Table
-                aria-label="Todos Table"
-                selectionMode="multiple"
-                selectedKeys={selectedKeys}
-                onSelectionChange={keys =>
-                  setSelectedKeys(
-                    keys === 'all'
-                      ? new Set(todos.map(r => `${r.title}-${r.id}`))
-                      : keys
-                  )
-                }
-              >
-                <Table.Header>
-                  {tableHeaders.map((header, index) => (
-                    <Table.Column
-                      width={
-                        index === tableHeaders.length - 1 ? 'full' : 'auto'
-                      }
-                      isRowHeader={index === 0}
-                      key={index}
-                    >
-                      {header}
-                    </Table.Column>
-                  ))}
-                </Table.Header>
-                <Table.Body items={todos}>
-                  {todo => (
-                    <Table.Row key={`${todo.title}-${todo.id}`}>
-                      <Table.Cell>{todo.id}</Table.Cell>
-                      <Table.Cell>{todo.userId}</Table.Cell>
-                      <Table.Cell>{todo.title}</Table.Cell>
-                      <Table.Cell>{JSON.stringify(todo.completed)}</Table.Cell>
-                    </Table.Row>
-                  )}
-                </Table.Body>
-              </Table>
-            </Scrollable>
+      <div className="w-125">
+        <ActionBarContainer
+          actionBar={
             <ActionBar
-              selectedItemCount={
-                selectedKeys === 'all' ? 'all' : selectedKeys.size
-              }
-              onClearSelection={() => setSelectedKeys(new Set())}
+              selectedItemCount={selectedItemCount}
+              onClearSelection={clearSelection}
             >
-              <ActionBar.Button onPress={() => alert('Edit selected items')}>
+              <ActionBar.Button onPress={() => alert('Edit')}>
                 <Edit />
                 <span>Edit</span>
               </ActionBar.Button>
-              <ActionBar.Button onPress={() => alert('Copy selected items')}>
+              <ActionBar.Button onPress={() => alert('Copy')}>
                 <Copy />
                 <span>Copy</span>
               </ActionBar.Button>
-              <ActionBar.Button onPress={() => alert('Delete selected items')}>
+              <ActionBar.Button onPress={() => alert('Delete')}>
                 <Delete />
                 <span>Delete</span>
               </ActionBar.Button>
             </ActionBar>
-          </Stack>
-        ) : (
-          'Loading data ⬇️ ...... '
-        )}
-      </>
+          }
+        >
+          <Table
+            aria-label="Table with ActionBarContainer"
+            selectionMode="multiple"
+            selectedKeys={selectedKeys}
+            onSelectionChange={onSelectionChange}
+          >
+            <Table.Header columns={columns}>
+              {column => (
+                <Table.Column rowHeader={column.rowHeader} id={column.id}>
+                  {column.name}
+                </Table.Column>
+              )}
+            </Table.Header>
+            <Table.Body items={rows}>
+              {item => (
+                <Table.Row columns={columns}>
+                  {column => <Table.Cell>{item[column.id]}</Table.Cell>}
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
+        </ActionBarContainer>
+      </div>
+    );
+  },
+});
+
+export const WithScrollableContent = meta.story({
+  render: () => {
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['1']));
+
+    const manyRows = Array.from({ length: 20 }, (_, i) => ({
+      id: `${i + 1}`,
+      name: `Pokemon ${i + 1}`,
+      type: ['Fire', 'Water', 'Grass', 'Electric'][i % 4],
+      level: `${Math.floor(Math.random() * 100)}`,
+    }));
+
+    const selectedItemCount =
+      selectedKeys === 'all' ? ('all' as const) : selectedKeys.size;
+
+    return (
+      <div className="w-125">
+        <Headline level={3}>Scrollable Table with ActionBar</Headline>
+        <ActionBarContainer
+          actionBar={
+            <ActionBar
+              selectedItemCount={selectedItemCount}
+              onClearSelection={() => setSelectedKeys(new Set())}
+            >
+              <ActionBar.Button onPress={() => alert('Edit')}>
+                <Edit />
+                <span>Edit</span>
+              </ActionBar.Button>
+              <ActionBar.Button onPress={() => alert('Delete')}>
+                <Delete />
+                <span>Delete</span>
+              </ActionBar.Button>
+            </ActionBar>
+          }
+        >
+          <Scrollable height="300px">
+            <Table
+              aria-label="Scrollable Table"
+              selectionMode="multiple"
+              selectedKeys={selectedKeys}
+              onSelectionChange={setSelectedKeys}
+            >
+              <Table.Header columns={columns}>
+                {column => (
+                  <Table.Column rowHeader={column.rowHeader} id={column.id}>
+                    {column.name}
+                  </Table.Column>
+                )}
+              </Table.Header>
+              <Table.Body items={manyRows}>
+                {item => (
+                  <Table.Row columns={columns}>
+                    {column => (
+                      <Table.Cell>
+                        {item[column.id as keyof typeof item]}
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
+          </Scrollable>
+        </ActionBarContainer>
+      </div>
     );
   },
 });

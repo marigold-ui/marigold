@@ -12,6 +12,10 @@ export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
 export { ActionButton } from './ActionBar/ActionButton';
 export type { ActionButtonProps } from './ActionBar/ActionButton';
+export { ActionBarContainer } from './ActionBar/ActionBarContainer';
+export type { ActionBarContainerProps } from './ActionBar/ActionBarContainer';
+export { useActionBarTrigger } from './ActionBar/useActionBarTrigger';
+export type { UseActionBarTriggerProps } from './ActionBar/useActionBarTrigger';
 
 export { Aside } from './Aside/Aside';
 export type { AsideProps } from './Aside/Aside';

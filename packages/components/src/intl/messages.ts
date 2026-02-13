@@ -1,5 +1,6 @@
 export const intlMessages = {
   'de-DE': {
+    actionsAvailable: 'Aktionen verfügbar.',
     bulkActionsAriaLabel: 'Massenaktionen',
     cancel: 'Abbrechen',
     close: 'Schließen',
@@ -23,6 +24,7 @@ export const intlMessages = {
     uploadLabel: 'Hochladen',
   },
   'en-US': {
+    actionsAvailable: 'Actions available.',
     bulkActionsAriaLabel: 'Bulk Actions',
     cancel: 'Cancel',
     close: 'Close',

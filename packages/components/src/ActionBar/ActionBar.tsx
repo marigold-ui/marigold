@@ -1,10 +1,18 @@
-import type { ReactNode } from 'react';
+import type {
+  ForwardRefExoticComponent,
+  KeyboardEvent,
+  ReactNode,
+} from 'react';
+import { forwardRef, useRef, useState } from 'react';
+import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useEnterAnimation, useExitAnimation } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Text } from '../Text/Text';
 import { intlMessages } from '../intl/messages';
 import { ActionButton } from './ActionButton';
+import type { ActionButtonProps } from './ActionButton';
 
 export interface ActionBarProps {
   /**
@@ -40,55 +48,94 @@ export interface ActionBarProps {
   size?: string;
 }
 
-export const ActionBar = ({
-  children,
-  id,
-  onClearSelection,
-  selectedItemCount = 0,
-  variant,
-  size,
-}: ActionBarProps) => {
-  const classNames = useClassNames({
-    component: 'ActionBar',
-    variant,
-    size,
-  });
-  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+interface ActionBarComponent extends ForwardRefExoticComponent<
+  ActionBarProps & React.RefAttributes<HTMLDivElement>
+> {
+  Button: typeof ActionButton;
+}
 
-  // Hide ActionBar when no items are selected
-  const isHidden = selectedItemCount === 0;
+const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
+  (
+    { children, id, onClearSelection, selectedItemCount = 0, variant, size },
+    forwardedRef
+  ) => {
+    const classNames = useClassNames({
+      component: 'ActionBar',
+      variant,
+      size,
+    });
+    const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-  const countText =
-    selectedItemCount === 'all'
-      ? 'All items selected'
-      : `${selectedItemCount} selected`;
+    // Internal ref for animations (forwarded ref may be null)
+    const internalRef = useRef<HTMLDivElement>(null);
+    const ref = (forwardedRef ??
+      internalRef) as React.RefObject<HTMLDivElement | null>;
 
-  if (isHidden) {
-    return null;
+    const isOpen = selectedItemCount !== 0;
+    const isExiting = useExitAnimation(ref, isOpen);
+    const isEntering = useEnterAnimation(ref);
+
+    // Retain last count so we don't flash "0 selected" during exit animation
+    const [lastCount, setLastCount] = useState(selectedItemCount);
+    if (selectedItemCount !== 0 && selectedItemCount !== lastCount) {
+      setLastCount(selectedItemCount);
+    }
+
+    // Nothing to render
+    if (!isOpen && !isExiting) {
+      return null;
+    }
+
+    const countText =
+      lastCount === 'all' ? 'All items selected' : `${lastCount} selected`;
+
+    const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'Escape' && onClearSelection) {
+        e.preventDefault();
+        onClearSelection();
+      }
+    };
+
+    return (
+      <FocusScope restoreFocus>
+        <div
+          ref={ref}
+          id={id}
+          className={cn('z-30', classNames.container)}
+          role="toolbar"
+          aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+          onKeyDown={handleKeyDown}
+          data-entering={isEntering || undefined}
+          data-exiting={isExiting || undefined}
+        >
+          <div className={classNames.count}>
+            <Text>{countText}</Text>
+          </div>
+
+          <div className={classNames.actions}>{children}</div>
+
+          {onClearSelection && (
+            <CloseButton
+              aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+              onPress={onClearSelection}
+              className={classNames.clearButton}
+            />
+          )}
+        </div>
+
+        {/* Screen reader announcement when ActionBar appears */}
+        {!isExiting && (
+          <div className="sr-only" role="status" aria-live="polite">
+            {stringFormatter.format('actionsAvailable')}
+          </div>
+        )}
+      </FocusScope>
+    );
   }
+);
 
-  return (
-    <div
-      id={id}
-      className={cn('z-30', classNames.container)}
-      role="toolbar"
-      aria-label={stringFormatter.format('bulkActionsAriaLabel')}
-    >
-      <div className={classNames.count}>
-        <Text>{countText}</Text>
-      </div>
-
-      <div className={classNames.actions}>{children}</div>
-
-      {onClearSelection && (
-        <CloseButton
-          aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-          onPress={onClearSelection}
-          className={classNames.clearButton}
-        />
-      )}
-    </div>
-  );
-};
-
+const ActionBar = _ActionBar as ActionBarComponent;
 ActionBar.Button = ActionButton;
+
+export { ActionBar };
+export type { ActionButtonProps };
