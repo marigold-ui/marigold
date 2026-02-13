@@ -45,7 +45,7 @@ Deprecated utilities `util-focus-*` and `util-disabled` have been removed. Use t
 
 ### Card
 
-`<Card>` now uses semantic spacing. The `size="full"` prop has been replaced by the new `stretch` property. Cards no longer take full width by default, preventing them from accidentally stretching to fill their container.
+`<Card>` now uses semantic spacing. The `size="full"` prop has been replaced by the new `stretch` property. Cards no longer take full width by default, preventing them from accidentally stretching to fill their container. See the [Card documentation](/components/content/card) for details.
 
 ```tsx
 // Before
@@ -57,7 +57,7 @@ Deprecated utilities `util-focus-*` and `util-disabled` have been removed. Use t
 
 ### ContextualHelp
 
-Size variants have been removed from `<ContextualHelp>`. The component now has a single, improved default style.
+Size variants have been removed from `<ContextualHelp>`. The component now has a single, improved default style. See the [ContextualHelp documentation](/components/overlay/contextual-help) for details.
 
 ### Table
 
@@ -107,11 +107,11 @@ The `<Multiselect>` component has been deprecated in favor of the new `<TagField
 
 ### SelectList
 
-The `dragAndDropHooks` prop has been removed from `<SelectList>`. The component currently does not support drag and drop.
+The `dragAndDropHooks` prop has been removed from `<SelectList>`. The component currently does not support drag and drop. See the [SelectList documentation](/components/collection/selectlist) for details.
 
 ### TabList
 
-The `space` prop has been removed from `<TabList>`. Tab spacing is now controlled entirely through the theme, making it consistent across your application and aligned with the new semantic spacing system.
+The `space` prop has been removed from `<TabList>`. Tab spacing is now controlled entirely through the theme, making it consistent across your application and aligned with the new semantic spacing system. See the [Tabs documentation](/components/navigation/tabs) for details.
 
 ## Components
 
@@ -119,7 +119,7 @@ The `space` prop has been removed from `<TabList>`. Tab spacing is now controlle
 
 The new `<Table>` component is a full rewrite with modern features including sorting, single/multiple row selection, row actions, editable cells via `<Table.EditableCell>`, drag and drop reordering, sticky headers, and empty state support.
 
-It also supports text selection within cells even when row selection modes are active, so users can copy cell content without triggering row selection. It is fully accessible with keyboard navigation and screen reader support.
+It also supports text selection within cells even when row selection modes are active, so users can copy cell content without triggering row selection. It is fully accessible with keyboard navigation and screen reader support. See the [Table documentation](/components/collection/table) for the full API.
 
 ```tsx
 <Table selectionMode="multiple">
@@ -142,7 +142,7 @@ The new `<TagField>` component replaces `<Multiselect>`. It provides a multi-sel
 
 ### ActionBar (alpha)
 
-A new `<ActionBar>` component for bulk operations on selected items. It appears as a floating toolbar when users select multiple items in tables or lists. It automatically shows the selection count and provides action buttons for common operations like edit, delete, or copy.
+A new `<ActionBar>` component for bulk operations on selected items. It appears as a floating toolbar when users select multiple items in tables or lists. It automatically shows the selection count and provides action buttons for common operations like edit, delete, or copy. See the [ActionBar documentation](/components/actions/actionbar) for usage examples.
 
 ```tsx
 <ActionBar selectedItemCount={3} onClearSelection={() => clearSelection()}>
@@ -153,7 +153,7 @@ A new `<ActionBar>` component for bulk operations on selected items. It appears 
 
 ### EmptyState (beta)
 
-The new `<EmptyState>` component provides a standardized way to display placeholder content when a view has no data to show. Use it for empty lists, search results with no matches, or initial states.
+The new `<EmptyState>` component provides a standardized way to display placeholder content when a view has no data to show. Use it for empty lists, search results with no matches, or initial states. See the [EmptyState documentation](/components/content/empty-state) for usage examples.
 
 ### ToggleButton (alpha)
 
@@ -175,9 +175,11 @@ The `<Calendar>` component has been refactored with a new API. Two new props ena
 <Calendar visibleDuration={{ months: 2 }} pageBehavior="visible" />
 ```
 
+See the [Calendar documentation](/components/form/calendar) for more examples.
+
 ### FileField
 
-The `<FileField>` component now supports a `name` prop, making it straightforward to include file uploads in standard HTML forms.
+The `<FileField>` component now supports a `name` prop, making it straightforward to include file uploads in standard HTML forms. See the [FileField documentation](/components/form/file-field) for details.
 
 ### Width Prop on Input Components
 
@@ -203,11 +205,11 @@ The width prop now handles three types of values:
 
 ### Text & Headline
 
-The `<Text>` and `<Headline>` components now support a `lineHeight` prop, giving you direct control over line height without needing custom styles.
+The `<Text>` and `<Headline>` components now support a `lineHeight` prop, giving you direct control over line height without needing custom styles. See the [Text](/components/content/text) and [Headline](/components/content/headline) documentation for details.
 
 ### Form
 
-The `<Form>` component now supports ref forwarding.
+The `<Form>` component now supports ref forwarding. See the [Form documentation](/components/form/form) for details.
 
 ### Layout Components
 
