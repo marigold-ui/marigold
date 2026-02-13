@@ -38,7 +38,6 @@ const options: Option[] = [
 
 export const StatusSelect = () => {
   return (
-    // @ts-expect-error - Select generic type is lost when exported via Object.assign
     <Select
       label="Status"
       defaultSelectedKey="on-sale"
