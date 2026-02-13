@@ -3,7 +3,6 @@ import path from 'node:path';
 import { getAllMdxFiles, parseMdxToMarkdown } from './parser';
 
 const CONTENT_DIR = path.resolve(__dirname, '../../content');
-const PROPS_JSON = path.resolve(__dirname, '../../.registry/props.json');
 const OUTPUT_DIR = path.resolve(__dirname, './output');
 
 interface BuildStats {
@@ -17,7 +16,6 @@ async function build(): Promise<void> {
   console.log('Starting Markdown documentation build...');
   console.log(`Content: ${CONTENT_DIR}`);
   console.log(`Output: ${OUTPUT_DIR}`);
-  console.log(`Props: ${PROPS_JSON}\n`);
 
   const stats: BuildStats = { total: 0, success: 0, failed: 0, errors: [] };
 
@@ -32,7 +30,6 @@ async function build(): Promise<void> {
       const result = await parseMdxToMarkdown({
         filePath,
         contentDir: CONTENT_DIR,
-        propsJsonPath: PROPS_JSON,
       });
 
       const outputPath = path.join(
@@ -50,7 +47,6 @@ async function build(): Promise<void> {
     }
   }
 
-  // Summary
   console.log('\n' + '='.repeat(50));
   console.log('Build Summary');
   console.log('='.repeat(50));
@@ -64,28 +60,6 @@ async function build(): Promise<void> {
   }
 
   console.log('\nBuild complete.\n');
-
-  // Create index
-  await createIndex(mdxFiles);
-}
-
-async function createIndex(files: string[]): Promise<void> {
-  const index = files.map(f => {
-    const slug = f
-      .replace('.mdx', '')
-      .split('/')
-      .filter((p, i, arr) => i !== arr.length - 1 || p !== arr[i - 1])
-      .join('/');
-
-    return {
-      file: f,
-      slug,
-      outputFile: slug.replace(/\//g, '-') + '.md',
-    };
-  });
-
-  const indexPath = path.join(OUTPUT_DIR, '_index.json');
-  await fs.writeFile(indexPath, JSON.stringify(index, null, 2), 'utf-8');
 }
 
 build().catch(err => {
