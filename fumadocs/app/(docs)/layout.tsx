@@ -8,7 +8,8 @@ const Layout = ({ children }: LayoutProps<'/'>) => {
   return (
     <DocsLayout
       tree={source.getPageTree()}
-      {...baseOptions()}
+      // We need the nav only
+      nav={baseOptions().nav}
       sidebar={{
         components: {
           Separator: SidebarSeparator,
