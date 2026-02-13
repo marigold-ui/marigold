@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ComboBox, Stack, Text } from '@marigold/components';
 
 export default () => {
+  const [inputValue, setInputValue] = useState('');
   const [lastAction, setLastAction] = useState<string | null>(null);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
 
@@ -10,8 +11,20 @@ export default () => {
       <ComboBox
         label="Projects"
         menuTrigger="focus"
+        value={inputValue}
+        onChange={setInputValue}
+        allowsCustomValue
         onSelectionChange={key => setSelectedKey(key as string)}
       >
+        {inputValue.length > 0 && (
+          <ComboBox.Option
+            id="create"
+            textValue={`Create ${inputValue}`}
+            onAction={() => setLastAction(`Creating "${inputValue}"...`)}
+          >
+            Create "{inputValue}"
+          </ComboBox.Option>
+        )}
         <ComboBox.Section key="actions" header="Actions">
           <ComboBox.Option
             id="new"
