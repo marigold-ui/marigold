@@ -20,12 +20,12 @@ function simplifyType(typeText: string): string {
 
 function cleanDescription(desc: string): string {
   return desc
-    .replace(/&#xA;/g, ' ')
+    .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
     .replace(/&#x27;/g, "'")
+    .replace(/&#xA;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
