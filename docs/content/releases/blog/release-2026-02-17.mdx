@@ -43,48 +43,6 @@ Shadow elevation is now independent of the surface styling itself, making it mor
 
 Deprecated utilities `util-focus-*` and `util-disabled` have been removed. Use the new state utilities instead: `ui-state-focus`, `ui-state-disabled`, `ui-state-error`, `ui-state-readonly`.
 
-### Semantic Spacing System
-
-A new semantic spacing system has been introduced that describes the relationship between elements rather than using abstract numeric values. This makes spacing decisions more intentional and consistent across your UI, since the token name tells you _why_ a certain amount of space is used, not just _how much_. For a deep dive, check out the [Spacing guide](/foundations/spacing).
-
-The system covers two distinct roles:
-
-**Relation (Space)** defines the connection between sibling elements using gaps and margins. The tighter the space, the stronger the relationship.
-
-| Token     | Value   | Use case                                    |
-| --------- | ------- | ------------------------------------------- |
-| `joined`  | 0.25rem | Elements attached as a single unit          |
-| `tight`   | 1rem    | Packed containers for high-density scanning |
-| `related` | 2rem    | Minimal separation for related pairs        |
-| `peer`    | 4rem    | Self-contained equals in the same flow      |
-| `group`   | 8rem    | Logical separation between content zones    |
-| `section` | 16rem   | Distinct layout sections                    |
-| `context` | 32rem   | Complete contextual shift                   |
-
-**Inset (Padding)** defines the internal breathing room of a container. It acts as a density dial, from compact scanning to spacious focus areas.
-
-| Token     | Use case                                       |
-| --------- | ---------------------------------------------- |
-| `tight`   | Data table cells, dense tooltips               |
-| `snug`    | Chips, badges, compact toolbar items           |
-| `regular` | Buttons, standard cards, input fields          |
-| `relaxed` | Modals, generous cards, alert banners          |
-| `loose`   | Hero sections, onboarding slides, empty states |
-
-Inset tokens also support _squish_ (vertical compression) and _stretch_ (horizontal compression) modifiers for optical corrections, e.g. `--spacing-squish-regular` or `--spacing-stretch-snug`.
-
-**Migration from the alpha form spacing tokens:**
-
-```tsx
-// Before
-<Stack space="fieldY">
-<Inline space="fieldX">
-
-// After
-<Stack space="peer">
-<Inline space="related">
-```
-
 ### Card
 
 `<Card>` now uses semantic spacing. The `size="full"` prop has been replaced by the new `stretch` property. Cards no longer take full width by default, preventing them from accidentally stretching to fill their container.
@@ -246,6 +204,48 @@ The `<Form>` component now supports ref forwarding.
 - Z-index values have been moved from theme style files to component implementations, ensuring consistent stacking order across all themes. The stacking hierarchy remains unchanged: Toast notifications (`z-80`) above modals (`z-50`), modals above popovers/menus (`z-30`).
 - Updated Admin/Master badge styling.
 - Set table background color to white for improved readability.
+
+### Semantic Spacing System
+
+A new semantic spacing system has been introduced that describes the relationship between elements rather than using abstract numeric values. This makes spacing decisions more intentional and consistent across your UI, since the token name tells you _why_ a certain amount of space is used, not just _how much_. For a deep dive, check out the [Spacing guide](/foundations/spacing).
+
+The system covers two distinct roles:
+
+**Relation (Space)** defines the connection between sibling elements using gaps and margins. The tighter the space, the stronger the relationship.
+
+| Token     | Value   | Use case                                    |
+| --------- | ------- | ------------------------------------------- |
+| `joined`  | 0.25rem | Elements attached as a single unit          |
+| `tight`   | 1rem    | Packed containers for high-density scanning |
+| `related` | 2rem    | Minimal separation for related pairs        |
+| `peer`    | 4rem    | Self-contained equals in the same flow      |
+| `group`   | 8rem    | Logical separation between content zones    |
+| `section` | 16rem   | Distinct layout sections                    |
+| `context` | 32rem   | Complete contextual shift                   |
+
+**Inset (Padding)** defines the internal breathing room of a container. It acts as a density dial, from compact scanning to spacious focus areas.
+
+| Token     | Use case                                       |
+| --------- | ---------------------------------------------- |
+| `tight`   | Data table cells, dense tooltips               |
+| `snug`    | Chips, badges, compact toolbar items           |
+| `regular` | Buttons, standard cards, input fields          |
+| `relaxed` | Modals, generous cards, alert banners          |
+| `loose`   | Hero sections, onboarding slides, empty states |
+
+Inset tokens also support _squish_ (vertical compression) and _stretch_ (horizontal compression) modifiers for optical corrections, e.g. `--spacing-squish-regular` or `--spacing-stretch-snug`.
+
+The previous alpha form spacing tokens (`fieldX`, `fieldY`, etc.) have been replaced:
+
+```tsx
+// Before
+<Stack space="fieldY">
+<Inline space="fieldX">
+
+// After
+<Stack space="peer">
+<Inline space="related">
+```
 
 ## Documentation
 
