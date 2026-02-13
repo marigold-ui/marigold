@@ -117,7 +117,9 @@ The `space` prop has been removed from `<TabList>`. Tab spacing is now controlle
 
 ### Table
 
-The new `<Table>` component is a full rewrite with modern features including sorting, single/multiple row selection, row actions, editable cells via `<Table.EditableCell>`, drag and drop reordering, sticky headers, and empty state support. It is fully accessible with keyboard navigation and screen reader support.
+The new `<Table>` component is a full rewrite with modern features including sorting, single/multiple row selection, row actions, editable cells via `<Table.EditableCell>`, drag and drop reordering, sticky headers, and empty state support.
+
+It also supports text selection within cells even when row selection modes are active, so users can copy cell content without triggering row selection. It is fully accessible with keyboard navigation and screen reader support.
 
 ```tsx
 <Table selectionMode="multiple">
