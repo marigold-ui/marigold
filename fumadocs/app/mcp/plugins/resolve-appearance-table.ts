@@ -1,6 +1,6 @@
+import { Project, SyntaxKind } from 'ts-morph';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { MdxJsxElement, getJsxAttr } from './shared';
@@ -13,28 +13,75 @@ interface AppearanceData {
   size: string[];
 }
 
-type AppearancesMap = Record<string, AppearanceData>;
+let project: Project | null = null;
 
-function loadAppearances(): AppearancesMap {
-  try {
-    const jsonPath = path.join(__dirname, '..', 'appearances.json');
-    const content = fs.readFileSync(jsonPath, 'utf-8');
-    return JSON.parse(content);
-  } catch {
-    return {};
+function getProject(): Project {
+  if (!project) {
+    project = new Project({
+      tsConfigFilePath: path.join(__dirname, '../../../../tsconfig.json'),
+    });
   }
+  return project;
 }
 
-const appearances = loadAppearances();
-
-const SHARED_APPEARANCES: Record<string, string> = {
-  LinkButton: 'Button',
-  ToggleButtonGroup: 'ToggleButton',
-};
+function extractStringLiterals(typeString: string): string[] {
+  const literals: string[] = [];
+  const regex = /['"]([^'"]+)['"]/g;
+  let match;
+  while ((match = regex.exec(typeString)) !== null) {
+    literals.push(match[1]);
+  }
+  return literals;
+}
 
 function getAppearance(name: string): AppearanceData {
-  const componentName = SHARED_APPEARANCES[name] || name;
-  return appearances[componentName] || { variant: [], size: [] };
+  try {
+    const componentPath = path.join(
+      __dirname,
+      `../../../../packages/components/src/${name}/${name}.tsx`
+    );
+
+    const proj = getProject();
+    const sourceFile = proj.getSourceFile(componentPath);
+
+    if (!sourceFile) return { variant: [], size: [] };
+
+    const exportedDecl = sourceFile
+      .getExportedDeclarations()
+      .get(`${name}Props`)?.[0];
+
+    if (
+      !exportedDecl ||
+      !exportedDecl.isKind(SyntaxKind.InterfaceDeclaration)
+    ) {
+      return { variant: [], size: [] };
+    }
+
+    const type = exportedDecl.getType();
+    const props = type.getProperties();
+
+    const appearanceData: AppearanceData = { variant: [], size: [] };
+
+    props.forEach((prop: any) => {
+      const propName = prop.getName();
+      if (propName === 'variant' || propName === 'size') {
+        const typeStr = prop
+          .getTypeAtLocation(sourceFile)
+          .getText()
+          .replace(/\s+/g, ' ');
+        const values = extractStringLiterals(typeStr);
+        if (propName === 'variant') {
+          appearanceData.variant = values;
+        } else {
+          appearanceData.size = values;
+        }
+      }
+    });
+
+    return appearanceData;
+  } catch {
+    return { variant: [], size: [] };
+  }
 }
 
 function createTableRow(
@@ -69,7 +116,7 @@ export function remarkResolveAppearanceTable(
     visit(
       tree,
       'mdxJsxFlowElement',
-      (node: MdxJsxElement, index, parent: Parent | undefined) => {
+      (node: MdxJsxElement, index: any, parent: Parent | undefined) => {
         if (node.name !== 'AppearanceTable') return;
         if (!parent || typeof index !== 'number') return;
 
