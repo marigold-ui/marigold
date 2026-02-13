@@ -45,7 +45,7 @@ Deprecated utilities `util-focus-*` and `util-disabled` have been removed. Use t
 
 ### Semantic Spacing System
 
-A new relational spacing scale has been introduced that describes the strength of relationships between elements:
+A new relational spacing scale has been introduced that describes the relationship between elements rather than using abstract numeric values. This makes spacing decisions more intentional and consistent across your UI, since the token name tells you _why_ a certain amount of space is used, not just _how much_.
 
 | Token     | Value   | Use case                                    |
 | --------- | ------- | ------------------------------------------- |
@@ -57,7 +57,7 @@ A new relational spacing scale has been introduced that describes the strength o
 | `section` | 16rem   | Distinct layout sections                    |
 | `context` | 32rem   | Complete contextual shift                   |
 
-**Migration:**
+**Migration from the alpha form spacing tokens:**
 
 ```tsx
 // Before
