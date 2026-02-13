@@ -70,23 +70,32 @@ The `<Table>` component has been completely rewritten with a modern API built on
 - Column widths now use pixel values or CSS grid units (e.g., `"200px"`, `"1fr"`) instead of Tailwind classes to allow for a more precise sizing
 - Inlining form fields in cells is no longer supported, use `<Table.EditableCell>` instead
 
+If you're not ready to migrate yet, swap the import to the legacy export:
+
 ```tsx
-// Before
-import { Table } from '@marigold/components';
-
-// After - Option 1: Use legacy export (temporary)
 import { Table } from '@marigold/components/legacy';
+```
 
-// After - Option 2: Migrate to new Table API (recommended)
-<Table>
+When you're ready, migrate to the new API (recommended):
+
+```tsx
+<Table selectionMode="multiple" sortDescriptor={sort} onSortChange={setSort}>
   <Table.Header>
-    <Table.Column>Name</Table.Column>
-    <Table.Column>Email</Table.Column>
+    <Table.Column allowsSorting width="1fr">
+      Name
+    </Table.Column>
+    <Table.Column allowsSorting width="1fr">
+      Email
+    </Table.Column>
+    <Table.Column width="200px">Role</Table.Column>
   </Table.Header>
-  <Table.Body>
+  <Table.Body emptyState={<EmptyState />}>
     <Table.Row>
       <Table.Cell>John Doe</Table.Cell>
       <Table.Cell>john@example.com</Table.Cell>
+      <Table.EditableCell>
+        <Select defaultSelectedKey="admin">...</Select>
+      </Table.EditableCell>
     </Table.Row>
   </Table.Body>
 </Table>
