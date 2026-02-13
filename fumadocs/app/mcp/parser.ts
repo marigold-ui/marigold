@@ -16,10 +16,6 @@ import {
   remarkSimplifyJsx,
 } from './plugins';
 
-// ============================================================================
-// Types
-// ============================================================================
-
 export interface ParseMdxOptions {
   filePath: string;
   contentDir: string;
@@ -31,11 +27,6 @@ export interface ParsedDocument {
   markdown: string;
   slug: string;
 }
-
-// ============================================================================
-// Helpers
-// ============================================================================
-
 function createSlug(filePath: string): string {
   const parts = filePath.replace('.mdx', '').split('/');
 
@@ -46,10 +37,6 @@ function createSlug(filePath: string): string {
 
   return parts.join('/');
 }
-
-// ============================================================================
-// Parser
-// ============================================================================
 
 export async function parseMdxToMarkdown(
   options: ParseMdxOptions
@@ -82,7 +69,6 @@ export async function parseMdxToMarkdown(
       fence: '`',
       fences: true,
       listItemIndent: 'one',
-      // Minimize escaping for cleaner output
       rule: '-',
       ruleRepetition: 3,
       ruleSpaces: false,
@@ -93,22 +79,13 @@ export async function parseMdxToMarkdown(
 
   const result = await processor.process(content);
 
-  // Clean up excessive whitespace and optimize for token efficiency
   let markdown = String(result);
 
-  // Reduce multiple blank lines to single blank line
   markdown = markdown.replace(/\n{3,}/g, '\n\n');
 
-  // Remove trailing whitespace from lines
   markdown = markdown.replace(/[ \t]+$/gm, '');
 
-  // Optimize tables: remove alignment padding (keeps structure, reduces tokens)
-  // This converts padded tables like:
-  //   | Prop     | Type      | Default |
-  // to compact tables:
-  //   | Prop | Type | Default |
   markdown = markdown.replace(/^(\|[^\n]+\|)$/gm, match => {
-    // Split by unescaped pipes only (not \|)
     const parts = match.split(/(?<!\\)\|/);
     return parts.map(cell => cell.trim()).join(' | ');
   });
