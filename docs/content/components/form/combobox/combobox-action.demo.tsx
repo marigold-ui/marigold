@@ -10,10 +10,10 @@ export default () => {
     <Stack space={4}>
       <ComboBox
         label="Projects"
-        menuTrigger="focus"
         value={inputValue}
         onChange={setInputValue}
         allowsCustomValue
+        allowsEmptyCollection
         onSelectionChange={key => setSelectedKey(key as string)}
       >
         {inputValue.length > 0 && (
@@ -22,7 +22,7 @@ export default () => {
             textValue={`Create ${inputValue}`}
             onAction={() => setLastAction(`Creating "${inputValue}"...`)}
           >
-            Create "{inputValue}"
+            Create new &quot;{inputValue}&quot; Project
           </ComboBox.Option>
         )}
         <ComboBox.Section key="actions" header="Actions">
