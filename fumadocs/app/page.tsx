@@ -46,7 +46,7 @@ const Page = () => {
                 </Link>
                 <Link
                   className="border-text-primary rounded-xs border-2 px-8 py-3.5 leading-none hover:bg-slate-100 dark:border-white dark:text-white dark:hover:bg-white/10"
-                  href="/components"
+                  href="/components/application/provider"
                 >
                   Explore Components
                 </Link>
