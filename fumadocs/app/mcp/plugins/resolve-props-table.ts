@@ -19,13 +19,17 @@ function simplifyType(typeText: string): string {
 }
 
 function cleanDescription(desc: string): string {
+  const entities: Record<string, string> = {
+    amp: '&',
+    lt: '<',
+    gt: '>',
+    quot: '"',
+    '#x27': "'",
+    '#xA': ' ',
+  };
+
   return desc
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#x27;/g, "'")
-    .replace(/&#xA;/g, ' ')
+    .replace(/&([a-z#0-9]+);/gi, (match, entity) => entities[entity] || match)
     .replace(/\s+/g, ' ')
     .trim();
 }
