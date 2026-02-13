@@ -26,7 +26,6 @@ export const SystemSection = () => {
                     label="Ticket Name"
                     defaultValue="Platinum Package"
                   />
-                  {/* @ts-expect-error - Select generic type is lost when exported via Object.assign */}
                   <Select label="Ticket Type" defaultSelectedKey="vip">
                     <Select.Option id="general">
                       General Admission
