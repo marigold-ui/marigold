@@ -181,7 +181,7 @@ See the [Calendar documentation](/components/form/calendar) for more examples.
 
 The `<FileField>` component has been promoted from alpha to beta. It now supports a `name` prop, making it straightforward to include file uploads in standard HTML forms. The component also has a new dedicated [documentation page](/components/form/file-field).
 
-### Width Prop on Input Components
+### Width Prop on Fields
 
 The `width` prop has been moved from `FieldBase` to individual input components (`TextField`, `Select`, `TextArea`, `DateField`, `NumberField`, `TimeField`, `FileField`). Labels and help text can now be wider than the actual input field, improving readability for fields with long descriptions.
 
@@ -201,7 +201,9 @@ The width prop now handles three types of values:
 
 ### Mobile Tray
 
-`<DatePicker>`, `<Menu>`, `<Autocomplete>`, `<Combobox>`, and `<Select>` now use an internal `<Tray>` component on mobile devices, providing a better touch experience with a bottom-sheet style overlay.
+On mobile devices, dropdowns and popovers can feel cramped and hard to interact with. To address this, `<DatePicker>`, `<Menu>`, `<Autocomplete>`, `<Combobox>`, and `<Select>` now automatically switch to a bottom-sheet style `<Tray>` overlay on small viewports.
+
+The tray slides up from the bottom of the screen with a smooth animation, can be swiped down to dismiss, and gives content the full width of the screen. This provides a significantly better touch experience compared to small floating popovers. The switch between tray and popover happens automatically based on viewport size, so no changes are needed in your code.
 
 ### Text & Headline
 
