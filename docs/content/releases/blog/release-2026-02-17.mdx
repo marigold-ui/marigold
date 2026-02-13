@@ -181,6 +181,31 @@ See the [Calendar documentation](/components/form/calendar) for more examples.
 
 The `<FileField>` component has been promoted from alpha to beta. It now supports a `name` prop, making it straightforward to include file uploads in standard HTML forms. The component also has a new dedicated [documentation page](/components/form/file-field).
 
+### Mobile Tray
+
+On mobile devices, dropdowns and popovers can feel cramped and hard to interact with. To address this, `<DatePicker>`, `<Menu>`, `<Autocomplete>`, `<Combobox>`, and `<Select>` now automatically switch to a bottom-sheet style `<Tray>` overlay on small viewports.
+
+The tray slides up from the bottom of the screen with a smooth animation, can be swiped down to dismiss, and gives content the full width of the screen. This provides a significantly better touch experience compared to small floating popovers. The switch between tray and popover happens automatically based on viewport size, so no changes are needed in your code.
+
+### Text & Headline
+
+The `<Text>` and `<Headline>` components now support a `lineHeight` prop, giving you direct control over line height without needing custom styles. See the [Text](/components/content/text) and [Headline](/components/content/headline) documentation for details.
+
+### Form
+
+The `<Form>` component now supports ref forwarding. See the [Form documentation](/components/form/form) for details.
+
+### Layout Components
+
+`<Grid>`, `<Container>`, `<Columns>`, `<Tiles>`, and `<Center>` now support semantic spacing tokens, aligning them with the new spacing system (see below).
+
+## Design
+
+- Refactored elevation shadow system to use Tailwind's built-in `shadow-*` classes with theme-defined shadow variables (`shadow-elevation-border`, `shadow-elevation-raised`, `shadow-elevation-overlay`). This provides three clear elevation levels with better maintainability.
+- Z-index values have been moved from theme style files to component implementations, ensuring consistent stacking order across all themes. The stacking hierarchy remains unchanged: Toast notifications (`z-80`) above modals (`z-50`), modals above popovers/menus (`z-30`).
+- Updated Admin/Master badge styling.
+- Set table background color to white for improved readability.
+
 ### Width Prop on Fields
 
 The `width` prop has been moved from `FieldBase` to individual input components (`TextField`, `Select`, `TextArea`, `DateField`, `NumberField`, `TimeField`, `FileField`). Labels and help text can now be wider than the actual input field, improving readability for fields with long descriptions.
@@ -198,31 +223,6 @@ The width prop now handles three types of values:
   description="Help text also extends beyond the input width"
 />
 ```
-
-### Mobile Tray
-
-On mobile devices, dropdowns and popovers can feel cramped and hard to interact with. To address this, `<DatePicker>`, `<Menu>`, `<Autocomplete>`, `<Combobox>`, and `<Select>` now automatically switch to a bottom-sheet style `<Tray>` overlay on small viewports.
-
-The tray slides up from the bottom of the screen with a smooth animation, can be swiped down to dismiss, and gives content the full width of the screen. This provides a significantly better touch experience compared to small floating popovers. The switch between tray and popover happens automatically based on viewport size, so no changes are needed in your code.
-
-### Text & Headline
-
-The `<Text>` and `<Headline>` components now support a `lineHeight` prop, giving you direct control over line height without needing custom styles. See the [Text](/components/content/text) and [Headline](/components/content/headline) documentation for details.
-
-### Form
-
-The `<Form>` component now supports ref forwarding. See the [Form documentation](/components/form/form) for details.
-
-### Layout Components
-
-`<Grid>`, `<Container>`, `<Columns>`, `<Tiles>`, and `<Center>` now support semantic spacing tokens, aligning them with the new spacing system.
-
-## Design
-
-- Refactored elevation shadow system to use Tailwind's built-in `shadow-*` classes with theme-defined shadow variables (`shadow-elevation-border`, `shadow-elevation-raised`, `shadow-elevation-overlay`). This provides three clear elevation levels with better maintainability.
-- Z-index values have been moved from theme style files to component implementations, ensuring consistent stacking order across all themes. The stacking hierarchy remains unchanged: Toast notifications (`z-80`) above modals (`z-50`), modals above popovers/menus (`z-30`).
-- Updated Admin/Master badge styling.
-- Set table background color to white for improved readability.
 
 ### Semantic Spacing System
 
