@@ -10,7 +10,8 @@
     "postinstall": "fumadocs-mdx && pnpm run build:registry",
     "lint": "eslint",
     "build:registry": "node scripts/build-registry.mjs && node scripts/build-appearances.mjs",
-    "build:changelog": "zx ./scripts/build-changelog.mjs"
+    "build:changelog": "zx ./scripts/build-changelog.mjs",
+    "build:md-docs": "pnpm tsx app/mcp/build.ts"
   },
   "dependencies": {
     "@internationalized/date": "^3.11.0",
@@ -38,7 +39,13 @@
     "react-use": "^17.6.0",
     "tailwind-merge": "^3.4.0",
     "zod": "4.3.6",
-    "zod-form-data": "3.0.1"
+    "zod-form-data": "3.0.1",
+    "unist-util-visit": "^5.0.0",
+    "unified": "^11.0.5",
+    "remark-parse": "^11.0.0",
+    "remark-mdx": "^3.1.0",
+    "remark-gfm": "^4.0.1",
+    "remark-stringify": "^11.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",

@@ -1,0 +1,196 @@
+{
+  "Accordion": {
+    "variant": [],
+    "size": []
+  },
+  "ActionBar": {
+    "variant": [],
+    "size": []
+  },
+  "Badge": {
+    "variant": ["default", "inverted", "success", "info", "warning", "error"],
+    "size": []
+  },
+  "Button": {
+    "variant": [
+      "primary",
+      "secondary",
+      "ghost",
+      "destructive",
+      "destructive-ghost",
+      "link"
+    ],
+    "size": ["default", "small", "large", "icon"]
+  },
+  "Calendar": {
+    "variant": [],
+    "size": []
+  },
+  "Card": {
+    "variant": ["default", "hovering"],
+    "size": []
+  },
+  "Checkbox": {
+    "variant": [],
+    "size": []
+  },
+  "DateField": {
+    "variant": [],
+    "size": []
+  },
+  "DatePicker": {
+    "variant": [],
+    "size": []
+  },
+  "Dialog": {
+    "variant": [],
+    "size": [
+      "default",
+      "small",
+      "xsmall",
+      "medium",
+      "large",
+      "xlarge",
+      "fullscreen"
+    ]
+  },
+  "Divider": {
+    "variant": [],
+    "size": []
+  },
+  "Drawer": {
+    "variant": [],
+    "size": []
+  },
+  "EmptyState": {
+    "variant": [],
+    "size": []
+  },
+  "Headline": {
+    "variant": [],
+    "size": []
+  },
+  "Link": {
+    "variant": ["default", "secondary"],
+    "size": []
+  },
+  "LinkButton": {
+    "variant": [
+      "primary",
+      "secondary",
+      "ghost",
+      "destructive",
+      "destructive-ghost",
+      "link"
+    ],
+    "size": ["default", "small", "large", "icon"]
+  },
+  "List": {
+    "variant": [],
+    "size": []
+  },
+  "Loader": {
+    "variant": [],
+    "size": ["default", "large"]
+  },
+  "Menu": {
+    "variant": ["default", "ghost"],
+    "size": []
+  },
+  "NumberField": {
+    "variant": [],
+    "size": []
+  },
+  "Pagination": {
+    "variant": [],
+    "size": []
+  },
+  "Radio": {
+    "variant": [],
+    "size": []
+  },
+  "SearchField": {
+    "variant": [],
+    "size": []
+  },
+  "SectionMessage": {
+    "variant": ["info", "warning", "error", "success"],
+    "size": []
+  },
+  "Select": {
+    "variant": [],
+    "size": []
+  },
+  "SelectList": {
+    "variant": [],
+    "size": []
+  },
+  "Slider": {
+    "variant": [],
+    "size": []
+  },
+  "Switch": {
+    "variant": [],
+    "size": []
+  },
+  "Table": {
+    "variant": ["lineSeparated", "alternateRowColor"],
+    "size": ["default", "compact"]
+  },
+  "Tabs": {
+    "variant": [],
+    "size": []
+  },
+  "Tag": {
+    "variant": ["default", "info", "success", "warning", "error"],
+    "size": []
+  },
+  "Text": {
+    "variant": [],
+    "size": []
+  },
+  "TextArea": {
+    "variant": [],
+    "size": []
+  },
+  "TextField": {
+    "variant": [],
+    "size": []
+  },
+  "Toast": {
+    "variant": ["info", "warning", "error", "success"],
+    "size": []
+  },
+  "ToggleButton": {
+    "variant": ["checkedGhost"],
+    "size": ["default", "small", "large", "icon"]
+  },
+  "ToggleButtonGroup": {
+    "variant": ["checkedGhost"],
+    "size": ["default", "small", "large", "icon"]
+  },
+  "Tooltip": {
+    "variant": [],
+    "size": []
+  },
+  "Autocomplete": {
+    "variant": [],
+    "size": []
+  },
+  "Combobox": {
+    "variant": [],
+    "size": []
+  },
+  "ComboBox": {
+    "variant": [],
+    "size": []
+  },
+  "Multiselect": {
+    "variant": [],
+    "size": []
+  },
+  "FileField": {
+    "variant": [],
+    "size": []
+  }
+}

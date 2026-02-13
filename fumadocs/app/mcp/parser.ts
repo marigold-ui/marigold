@@ -5,7 +5,6 @@ import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import ruiTheme from '@marigold/theme-rui';
 import {
   parseFrontmatter,
   remarkRemoveFrontmatter,
@@ -24,7 +23,6 @@ import {
 export interface ParseMdxOptions {
   filePath: string;
   contentDir: string;
-  propsJsonPath: string;
 }
 
 export interface ParsedDocument {
@@ -56,7 +54,7 @@ function createSlug(filePath: string): string {
 export async function parseMdxToMarkdown(
   options: ParseMdxOptions
 ): Promise<ParsedDocument> {
-  const { filePath, contentDir, propsJsonPath } = options;
+  const { filePath, contentDir } = options;
 
   const absolutePath = path.join(contentDir, filePath);
   let content = await fs.readFile(absolutePath, 'utf-8');
@@ -68,14 +66,10 @@ export async function parseMdxToMarkdown(
     .use(remarkParse)
     .use(remarkMdx)
     .use(remarkGfm)
-    .use(remarkResolveComponentDemo, { contentDir, filePath })
-    .use(remarkResolvePropsTable, {
-      propsJsonPath,
-      frontmatterTitle: frontmatter.title,
-    })
+    .use(remarkResolveComponentDemo)
+    .use(remarkResolvePropsTable)
     .use(remarkResolveAppearanceDemo)
     .use(remarkResolveAppearanceTable, {
-      theme: ruiTheme,
       frontmatterTitle: frontmatter.title,
     })
     .use(remarkResolveDesignTokens)
