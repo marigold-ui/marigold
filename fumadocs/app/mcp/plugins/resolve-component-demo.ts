@@ -1,19 +1,11 @@
 import type { Code } from 'mdast';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import fs from 'node:fs';
-import path from 'node:path';
+import { registry } from '../../../.registry/demos';
 import { MdxJsxElement, getJsxAttr } from './shared';
 
-let registryCache: Record<string, any> | null = null;
-
-const registryPath = path.resolve(__dirname, '../../../.registry/demos.json');
-
 function getRegistry(): Record<string, any> {
-  if (!registryCache) {
-    registryCache = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
-  }
-  return registryCache!;
+  return registry;
 }
 
 export function remarkResolveComponentDemo() {
