@@ -55,14 +55,14 @@ const Page = async (props: PageProps<'/[...slug]'>) => {
 
   // Disable TOC for all releases pages
   const isReleasesPage = params.slug?.[0] === 'releases';
-  const toc = isReleasesPage ? false : page.data.toc;
+  const toc = isReleasesPage ? undefined : page.data.toc;
 
   return (
     <DocsPage
       tableOfContent={{
         single: true,
       }}
-      toc={toc as any}
+      toc={toc}
       full={page.data.full}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
