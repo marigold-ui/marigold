@@ -1,5 +1,81 @@
 # @marigold/docs
 
+## 17.0.0
+
+### Minor Changes
+
+- 0c00d1d: refa(DST-1001): Added a set of relational spacing tokens for future use. Provided documentation explaining the semantic spacing system.
+
+### Patch Changes
+
+- c929d52: docs(DST-1199): Clean up docs
+- 01e6bdb: [DST-1157]: introduce new `<ActionBar>` alpha component
+- 63f1603: style([DST-1143]): Improve ContextualHelp sizes
+
+  **Breaking Change**: Sizes have been removed, the default has a new style.
+
+- 59ed05f: feat([DST-900]): Introduce Internal `<Tray>` Component for Mobile Support. `<DatePicker>`, `<Menu>`, `<Autocomplete>`, `<Combobox>` and `<Select>` have a new mobile experience.
+- 8dd0455: feat([DSTSUP-222]): Introduce `<EmptyState>` Component as beta
+- 1469268: [DST-1088]: add docs for `onAction` prop
+- 8bbb28d: docs: Add `<FielField>` docs
+- 5e54522: docs(DST-1202): Improve filter code examples
+
+  # Description
+
+  Simplify the filter pattern example by replacing the Zod-based JSON-in-URL approach with nuqs' built-in typed query state
+  parsers (`useQueryStates`).
+
+  **Key changes:**
+  - Replace `parseAsJson` + Zod schemas with individual `nuqs` parsers (`parseAsInteger`, `parseAsArrayOf`, `parseAsString`)
+    via `useQueryStates` — each filter field gets its own query parameter instead of a single `?filter={...}` blob
+  - Remove all Zod dependencies and the manual `getFormData`, `toFormSchema`, `toUrlSchema` transform pipeline
+  - Simplify the `FilterForm` to work directly with the `VenueFilter` type instead of a separate form schema
+    `onSubmit`/`onClear`
+  - Fix capacity filter logic (`venue.capacity < filter.capacity` instead of `filter.capacity < venue.capacity`)
+  - Clean up the `toDisplayValue` from an object of typed functions to a single switch-based function
+
+- c735343: docs: extends action demo with "create" functionality
+- b8bab20: docs([DST-1201]): Fix AppearanceDemo Select
+- b7c64cc: fix(Checkbox): Correctly apply focus styling on checkboxes
+- 8a70185: refa(DST-974): Refactoring width property on `FieldBase` and Form Elements like `Input`, `TextArea`, `DateInput` and `Select`. Labels and HelpText can now be wider as the actual input field.
+- Updated dependencies [d8ce791]
+- Updated dependencies [34c785a]
+- Updated dependencies [96e145a]
+- Updated dependencies [196172e]
+- Updated dependencies [f756051]
+- Updated dependencies [2e3f7d2]
+- Updated dependencies [cfa9b99]
+- Updated dependencies [00a3c81]
+- Updated dependencies [cc61968]
+- Updated dependencies [01e6bdb]
+- Updated dependencies [2244030]
+- Updated dependencies [6c071f0]
+- Updated dependencies [44d01a6]
+- Updated dependencies [63f1603]
+- Updated dependencies [a0564dc]
+- Updated dependencies [282b330]
+- Updated dependencies [7928a23]
+- Updated dependencies [5a90757]
+- Updated dependencies [0c00d1d]
+- Updated dependencies [0c00d1d]
+- Updated dependencies [4645c5d]
+- Updated dependencies [59ed05f]
+- Updated dependencies [8dd0455]
+- Updated dependencies [1469268]
+- Updated dependencies [196172e]
+- Updated dependencies [31a4e38]
+- Updated dependencies [f916a20]
+- Updated dependencies [726239d]
+- Updated dependencies [1bd9f27]
+- Updated dependencies [b8bab20]
+- Updated dependencies [b7c64cc]
+- Updated dependencies [8a70185]
+  - @marigold/components@17.0.0
+  - @marigold/theme-rui@5.0.0
+  - @marigold/system@17.0.0
+  - @marigold/theme-docs@4.1.0
+  - @marigold/icons@1.3.31
+
 ## 16.1.0
 
 ### Patch Changes
