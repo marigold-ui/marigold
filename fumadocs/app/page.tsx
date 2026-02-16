@@ -1,9 +1,9 @@
+import { getLatestPost } from '@/lib/blog';
 import { baseOptions } from '@/lib/layout.shared';
 import Link from 'fumadocs-core/link';
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
 import Image from 'next/image';
 import { AnimatedShinyText } from '@/ui/ShinyText';
-import { getLatestPost } from './(home)/_components/LatestPost';
 
 const Page = () => {
   const latestPost = getLatestPost();
