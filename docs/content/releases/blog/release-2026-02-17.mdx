@@ -140,6 +140,15 @@ It also supports text selection within cells even when row selection modes are a
 
 The new `<TagField>` component replaces `<Multiselect>`. It provides a multi-select field that displays selected items as removable tags with a searchable dropdown. It supports controlled/uncontrolled selection, disabled state, error state, disabled keys, sections, and custom empty states. Check out the [TagField documentation](/components/form/tag-field) for usage examples.
 
+```tsx
+<TagField label="Genres">
+  <TagField.Option id="rock">Rock</TagField.Option>
+  <TagField.Option id="jazz">Jazz</TagField.Option>
+  <TagField.Option id="pop">Pop</TagField.Option>
+  <TagField.Option id="classical">Classical</TagField.Option>
+</TagField>
+```
+
 ### ActionBar (alpha)
 
 A new `<ActionBar>` component for bulk operations on selected items. It appears as a floating toolbar when users select multiple items in tables or lists. It automatically shows the selection count and provides action buttons for common operations like edit, delete, or copy. See the [ActionBar documentation](/components/actions/actionbar) for usage examples.
@@ -155,13 +164,37 @@ A new `<ActionBar>` component for bulk operations on selected items. It appears 
 
 The new `<EmptyState>` component provides a standardized way to display placeholder content when a view has no data to show. Use it for empty lists, search results with no matches, or initial states. See the [EmptyState documentation](/components/content/empty-state) for usage examples.
 
+```tsx
+<EmptyState
+  title="No items found"
+  description="There are currently no items to display."
+  action={
+    <Button variant="primary" size="small">
+      Browse Products
+    </Button>
+  }
+/>
+```
+
 ### ToggleButton (alpha)
 
 The new `<ToggleButton>` component allows users to toggle between two states, such as on/off or active/inactive. Ideal for toolbar-style controls and filter toggles. See the [ToggleButton documentation](/components/actions/toggle-button) for usage examples.
 
+```tsx
+<ToggleButton>Pin to dashboard</ToggleButton>
+```
+
 ### ToggleButtonGroup (alpha)
 
 The new `<ToggleButtonGroup>` component lets users select from a group of toggle options. It supports single and multiple selection modes, making it great for view switches and segmented controls. See the [ToggleButtonGroup documentation](/components/actions/toggle-button-group) for usage examples.
+
+```tsx
+<ToggleButton.Group selectionMode="multiple" defaultSelectedKeys={['bold']}>
+  <ToggleButton id="bold">Bold</ToggleButton>
+  <ToggleButton id="italic">Italic</ToggleButton>
+  <ToggleButton id="underline">Underline</ToggleButton>
+</ToggleButton.Group>
+```
 
 ### Calendar
 
