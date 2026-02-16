@@ -1,5 +1,4 @@
 import { baseOptions } from '@/lib/layout.shared';
-import { Center, Inline } from '@/ui';
 import Link from 'fumadocs-core/link';
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
 import Image from 'next/image';
@@ -14,7 +13,7 @@ const Page = () => {
         {/* Hero */}
         <div className="grid h-[calc(100dvh-var(--page-header-height))] max-w-(--breakpoint-lg) place-items-center text-center">
           <div className="-mx-(--page-padding-md) md:mx-0">
-            <Center>
+            <div className="flex justify-center">
               {latestPost && (
                 <Link
                   href={latestPost.slug}
@@ -25,7 +24,7 @@ const Page = () => {
                   </AnimatedShinyText>
                 </Link>
               )}
-            </Center>
+            </div>
             <h1 className="pt-0.5 text-6xl font-extrabold text-balance lg:text-8xl">
               Cultivate beautiful user interfaces
             </h1>
@@ -34,24 +33,20 @@ const Page = () => {
               tools that let product teams focus on core challenges while
               creating unified, accessible applications.
             </p>
-            <Center>
-              <Inline data-toggle data-toggle-target="#foobar" space={6}>
-                <Link
-                  className="bg-text-primary rounded-xs px-8 py-3.5 leading-none text-white transition-all hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
-                  href="/getting-started/installation"
-                >
-                  <span className="inline-block translate-y-px">
-                    Get started
-                  </span>
-                </Link>
-                <Link
-                  className="border-text-primary rounded-xs border-2 px-8 py-3.5 leading-none hover:bg-slate-100 dark:border-white dark:text-white dark:hover:bg-white/10"
-                  href="/components/application/provider"
-                >
-                  Explore Components
-                </Link>
-              </Inline>
-            </Center>
+            <div className="flex justify-center gap-6">
+              <Link
+                className="bg-text-primary rounded-xs px-8 py-3.5 leading-none text-white transition-all hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+                href="/getting-started/installation"
+              >
+                <span className="inline-block translate-y-px">Get started</span>
+              </Link>
+              <Link
+                className="border-text-primary rounded-xs border-2 px-8 py-3.5 leading-none hover:bg-slate-100 dark:border-white dark:text-white dark:hover:bg-white/10"
+                href="/components/application/provider"
+              >
+                Explore Components
+              </Link>
+            </div>
           </div>
         </div>
 
