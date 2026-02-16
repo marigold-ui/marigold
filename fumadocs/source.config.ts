@@ -15,6 +15,8 @@ const customFrontmatterSchema = frontmatterSchema.extend({
     .date()
     .transform(d => d.toISOString().split('T')[0])
     .optional(),
+  /** Status badge shown in sidebar (e.g. "new", "beta", "alpha", "updated") */
+  badge: z.string().optional(),
 });
 
 // Define blog collection for release blog posts

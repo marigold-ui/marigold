@@ -1,4 +1,5 @@
 'use client';
+import type { ItemWithBadge } from '@/lib/badge-plugin';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import {
   SidebarFolder as BaseSidebarFolder,
@@ -114,6 +115,10 @@ export const SidebarFolder = ({
 }) => {
   const path = useTreePath();
 
+  const indexBadge = item.index
+    ? (item.index as ItemWithBadge).badge
+    : undefined;
+
   if (item.index) {
     return (
       <BaseSidebarFolder
@@ -128,6 +133,11 @@ export const SidebarFolder = ({
         >
           {item.icon}
           {item.name}
+          {indexBadge && (
+            <span className="bg-fd-muted text-fd-muted-foreground ml-1.5 shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium tracking-wide uppercase">
+              {indexBadge}
+            </span>
+          )}
         </StyledSidebarFolderLink>
         <StyledSidebarFolderContent>{children}</StyledSidebarFolderContent>
       </BaseSidebarFolder>
