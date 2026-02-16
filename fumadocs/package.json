@@ -59,6 +59,7 @@
     "fumadocs-typescript": "^5.1.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
+    "tsx": "4.21.0" ,
     "typescript": "^5.9.3",
     "zx": "8.8.5"
   }
