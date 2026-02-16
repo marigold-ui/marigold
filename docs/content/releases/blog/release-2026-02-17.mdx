@@ -201,7 +201,7 @@ The `<Form>` component now supports ref forwarding. See the [Form documentation]
 
 ## Design
 
-- Refactored elevation shadow system to use Tailwind's built-in `shadow-*` classes with theme-defined shadow variables (`shadow-elevation-border`, `shadow-elevation-raised`, `shadow-elevation-overlay`). This provides three clear elevation levels with better maintainability.
+- Refactored elevation shadow system to use Tailwind's built-in `shadow-*` classes with theme-defined shadow variables. This provides three clear elevation levels with better maintainability.
 - Z-index values have been moved from theme style files to component implementations, ensuring consistent stacking order across all themes. The stacking hierarchy remains unchanged: Toast notifications (`z-80`) above modals (`z-50`), modals above popovers/menus (`z-30`).
 - Updated Admin/Master badge styling.
 - Set table background color to white for improved readability.
@@ -268,9 +268,10 @@ The previous alpha form spacing tokens (`fieldX`, `fieldY`, etc.) have been repl
 
 ## Documentation
 
-- New comprehensive spacing guide explaining the semantic spacing system with visual examples.
-- Added documentation for the `onAction` prop from `<Combobox>`.
-- Added examples showing how to use multiselection with forms.
+- New comprehensive [spacing guide](/foundations/spacing) explaining the semantic spacing system with visual examples.
+- Added documentation for the `onAction` prop on [`<Combobox>`](/components/form/combobox).
+- Added examples showing how to use multiselection with [forms](/patterns/forms).
+- New dedicated documentation page for [`<FileField>`](/components/form/file-field).
 
 ## Bug fixes
 
@@ -281,6 +282,9 @@ The previous alpha form spacing tokens (`fieldX`, `fieldY`, etc.) have been repl
 - Correctly applied elevation shadows across all components.
 - Fixed `<NumberField>` stepper visuals when disabled via `min`/`max` constraints.
 - Fixed `<Scrollable>` so scrolling works as expected when pointer hovers over it.
+
+## Dependency Updates
+
 - Updated `react-aria` dependencies to February 2026 versions (`react-aria-components` 1.15.0, `react-stately` 3.44.0).
 
 ---
