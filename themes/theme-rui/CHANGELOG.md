@@ -1,5 +1,13 @@
 # @marigold/theme-rui
 
+## 5.0.1
+
+### Patch Changes
+
+- fb32888: Add `ui.css` with reusable UI component utilities (input, surface, state styles) to the theme build output.
+  - @marigold/system@17.0.1
+  - @marigold/components@17.0.1
+
 ## 5.0.0
 
 ### Major Changes
