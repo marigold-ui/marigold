@@ -52,7 +52,7 @@
     "storybook": "^10.1.11",
     "storybook-addon-test-codegen": "3.0.1",
     "tailwindcss": "4.1.18",
-    "turbo": "2.5.8",
+    "turbo": "2.8.8",
     "typescript": "5.9.3",
     "vite": "7.1.12",
     "vite-tsconfig-paths": "5.1.4",
