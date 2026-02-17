@@ -1,5 +1,6 @@
 import { getAllBlogPosts } from '@/lib/blog';
-import { DateFormat, Headline, Link, Stack } from '@/ui';
+import { DateFormat } from '@/ui';
+import Link from 'fumadocs-core/link';
 
 export const PostList = () => {
   const sortedPosts = getAllBlogPosts();
@@ -9,24 +10,24 @@ export const PostList = () => {
   }
 
   return (
-    <Stack space={12}>
+    <div className="flex flex-col gap-12">
       {sortedPosts.map(post => (
         <div key={post.slug}>
-          <Headline level={2}>
-            <Link href={post.slug}>
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+            <Link href={post.slug} className="no-underline">
               {post.title} - <DateFormat value={post.date} dateStyle="medium" />
             </Link>
-          </Headline>
+          </h2>
           {post.introduction && (
-            <Stack space={2} alignX="left">
+            <div className="flex flex-col gap-2">
               <p style={{ whiteSpace: 'pre-wrap' }}>
                 {post.introduction.trim()}
               </p>
               <Link href={post.slug}>▶︎ Read more</Link>
-            </Stack>
+            </div>
           )}
         </div>
       ))}
-    </Stack>
+    </div>
   );
 };
