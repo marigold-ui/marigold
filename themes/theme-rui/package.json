@@ -59,6 +59,6 @@
     "tailwindcss-react-aria-components": "^2.0.1"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/global.css src/utils.css src/variants.css dist/"
+    "build": "cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/global.css src/utils.css src/variants.css src/ui.css dist/"
   }
 }
