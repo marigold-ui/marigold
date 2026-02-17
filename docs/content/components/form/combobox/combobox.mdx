@@ -63,6 +63,8 @@ The below examples will display the suggestions when the input field is focused.
 
 The `<ComboBox.Option>` component supports an `onAction` prop that triggers a callback when the user performs an action on an item. This is useful for triggering side effects such as navigating to a detail view or opening an edit modal.
 
+By combining controlled input (`value`/`onChange`) with `allowsCustomValue` and a conditional `<ComboBox.Option>`, you can offer a dynamic "Create new" option that reflects what the user has typed. This is a common pattern for comboboxes that allow creating new entries inline.
+
 <SectionMessage variant="info">
   <SectionMessage.Title>`onAction` vs `onSelectionChange`</SectionMessage.Title>
   <SectionMessage.Content>
