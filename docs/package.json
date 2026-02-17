@@ -54,7 +54,7 @@
     "simple-git": "3.30.0",
     "tailwind-scrollbar": "4.0.2",
     "tailwindcss": "4.1.18",
-    "zod": "4.1.13",
+    "zod": "4.3.6",
     "zod-form-data": "3.0.1",
     "zx": "8.8.5"
   },
