@@ -1,5 +1,12 @@
 # @marigold/theme-docs
 
+## 4.1.1
+
+### Patch Changes
+
+- @marigold/system@17.0.1
+- @marigold/components@17.0.1
+
 ## 4.1.0
 
 ### Minor Changes
