@@ -1,31 +1,15 @@
 /* eslint-disable testing-library/no-node-access */
 import { CalendarDate } from '@internationalized/date';
-import { composeStories } from '@storybook/react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import * as stories from '../Calendar/Calendar.stories';
-
-const { Basic } = composeStories(stories);
-
-const keyCodes = {
-  Enter: 13,
-  ' ': 32,
-  PageUp: 33,
-  PageDown: 34,
-  End: 35,
-  Home: 36,
-  ArrowLeft: 37,
-  ArrowUp: 38,
-  ArrowRight: 39,
-  ArrowDown: 40,
-};
+import { Basic, ThreeMonths, TwoMonths } from './Calendar.stories';
 
 describe('Calendar', () => {
   const user = userEvent.setup();
 
   test('renders with default value', () => {
-    render(<Basic defaultValue={new CalendarDate(2019, 6, 5)} />);
+    render(<Basic.Component defaultValue={new CalendarDate(2019, 6, 5)} />);
 
     const gridCells = screen
       .getAllByRole('gridcell')
@@ -42,7 +26,7 @@ describe('Calendar', () => {
   });
 
   test('renders with a value', () => {
-    render(<Basic value={new CalendarDate(2019, 6, 5)} />);
+    render(<Basic.Component value={new CalendarDate(2019, 6, 5)} />);
 
     const gridCells = screen
       .getAllByRole('gridcell')
@@ -59,7 +43,7 @@ describe('Calendar', () => {
   });
 
   test('focus the selected date if autofocus is set', () => {
-    render(<Basic value={new CalendarDate(2019, 2, 3)} autoFocus />);
+    render(<Basic.Component value={new CalendarDate(2019, 2, 3)} autoFocus />);
 
     const cell = screen.getByLabelText('selected', { exact: false });
     const grid = screen.getByRole('grid');
@@ -72,7 +56,7 @@ describe('Calendar', () => {
 
   test('constrains the visible region depending on the minValue', () => {
     render(
-      <Basic
+      <Basic.Component
         value={new CalendarDate(2019, 2, 3)}
         minValue={new CalendarDate(2019, 2, 1)}
       />
@@ -85,7 +69,7 @@ describe('Calendar', () => {
   });
 
   test('shows era for BC dates', () => {
-    render(<Basic value={new CalendarDate('BC', 5, 2, 3)} />);
+    render(<Basic.Component value={new CalendarDate('BC', 5, 2, 3)} />);
 
     const cell = screen.getByLabelText('selected', { exact: false });
 
@@ -95,10 +79,10 @@ describe('Calendar', () => {
     );
   });
 
-  test("Doesn't select a date on keydown Enter/Space if readOnly", () => {
+  test("Doesn't select a date on keydown Enter/Space if readOnly", async () => {
     const onChange = vi.fn();
     render(
-      <Basic
+      <Basic.Component
         defaultValue={new CalendarDate(2019, 6, 5)}
         autoFocus
         onChange={onChange}
@@ -108,22 +92,15 @@ describe('Calendar', () => {
 
     let selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
-    const activeElement = document.activeElement as Element;
 
-    fireEvent.keyDown(activeElement, {
-      key: 'ArrowLeft',
-      keyCode: keyCodes.ArrowLeft,
-    });
-    fireEvent.keyDown(activeElement, { key: 'Enter', keyCode: keyCodes.Enter });
+    await user.keyboard('{ArrowLeft}');
+    await user.keyboard('{Enter}');
     selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).not.toHaveBeenCalled();
 
-    fireEvent.keyDown(activeElement, {
-      key: 'ArrowLeft',
-      keyCode: keyCodes.ArrowLeft,
-    });
-    fireEvent.keyDown(activeElement, { key: ' ', keyCode: keyCodes[' '] });
+    await user.keyboard('{ArrowLeft}');
+    await user.keyboard('{ }');
     selectedDate = screen.getByLabelText('selected', { exact: false });
     expect(selectedDate.textContent).toBe('5');
     expect(onChange).not.toHaveBeenCalled();
@@ -132,7 +109,10 @@ describe('Calendar', () => {
   test('selects a date on click (uncontrolled)', async () => {
     const onChange = vi.fn();
     render(
-      <Basic defaultValue={new CalendarDate(2019, 6, 5)} onChange={onChange} />
+      <Basic.Component
+        defaultValue={new CalendarDate(2019, 6, 5)}
+        onChange={onChange}
+      />
     );
     const newDate = screen.getByText('17');
     await user.click(newDate);
@@ -145,7 +125,12 @@ describe('Calendar', () => {
 
   test('selects a date on click (controlled)', async () => {
     const onChange = vi.fn();
-    render(<Basic value={new CalendarDate(2019, 6, 5)} onChange={onChange} />);
+    render(
+      <Basic.Component
+        value={new CalendarDate(2019, 6, 5)}
+        onChange={onChange}
+      />
+    );
 
     const newDate = screen.getByText('17');
     await user.click(newDate);
@@ -157,7 +142,7 @@ describe('Calendar', () => {
   });
 
   test('renders month selection', async () => {
-    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+    render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
     expect(screen.queryByTestId('monthOptions')).not.toBeInTheDocument();
 
@@ -168,7 +153,7 @@ describe('Calendar', () => {
   });
 
   test('select a month', async () => {
-    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+    render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
     const monthSelection = screen.getByRole('button', { name: 'Jan' });
     await user.click(monthSelection);
@@ -184,7 +169,7 @@ describe('Calendar', () => {
     // Mock scrollIntoView to prevent errors in JSDOM
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
-    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+    render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
     expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
 
@@ -198,7 +183,7 @@ describe('Calendar', () => {
     // Mock scrollIntoView to prevent errors in JSDOM
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
-    render(<Basic value={new CalendarDate(2025, 1, 1)} />);
+    render(<Basic.Component value={new CalendarDate(2025, 1, 1)} />);
 
     expect(screen.queryByTestId('yearOptions')).not.toBeInTheDocument();
 
@@ -210,5 +195,138 @@ describe('Calendar', () => {
 
     expect(screen.queryByTestId('yearhOptions')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: '2024' })).toBeInTheDocument();
+  });
+});
+
+describe('Calendar - Multi-month', () => {
+  const user = userEvent.setup();
+
+  test('renders two months with visibleDuration', () => {
+    render(<TwoMonths.Component />);
+
+    const grids = screen.getAllByRole('grid');
+    expect(grids).toHaveLength(2);
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/February 2025/i);
+    expect(calendar).toHaveTextContent(/March 2025/i);
+  });
+
+  test('renders three months with visibleDuration', () => {
+    render(<ThreeMonths.Component />);
+
+    const grids = screen.getAllByRole('grid');
+    expect(grids).toHaveLength(3);
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/May 2025/i);
+    expect(calendar).toHaveTextContent(/June 2025/i);
+    expect(calendar).toHaveTextContent(/July 2025/i);
+  });
+
+  test('navigation buttons appear on correct months', () => {
+    render(<TwoMonths.Component />);
+
+    const buttons = screen.getAllByRole('button');
+    const prevButton = buttons.find(b => b.getAttribute('slot') === 'previous');
+    const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
+
+    expect(prevButton).toBeInTheDocument();
+    expect(nextButton).toBeInTheDocument();
+  });
+
+  test('navigates forward with next button', async () => {
+    render(
+      <TwoMonths.Component defaultValue={new CalendarDate(2025, 1, 15)} />
+    );
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/January 2025/i);
+    expect(calendar).toHaveTextContent(/February 2025/i);
+
+    const buttons = screen.getAllByRole('button');
+    const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
+    expect(nextButton).toBeDefined();
+    await user.click(nextButton!);
+
+    expect(calendar).toHaveTextContent(/March 2025/i);
+    expect(calendar).toHaveTextContent(/April 2025/i);
+  });
+
+  test('navigates backward with previous button', async () => {
+    render(
+      <TwoMonths.Component defaultValue={new CalendarDate(2025, 3, 15)} />
+    );
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/March 2025/i);
+    expect(calendar).toHaveTextContent(/April 2025/i);
+
+    const buttons = screen.getAllByRole('button');
+    const prevButton = buttons.find(b => b.getAttribute('slot') === 'previous');
+    expect(prevButton).toBeDefined();
+    await user.click(prevButton!);
+
+    expect(calendar).toHaveTextContent(/January 2025/i);
+    expect(calendar).toHaveTextContent(/February 2025/i);
+  });
+
+  test('selects a date in the second month', async () => {
+    const onChange = vi.fn();
+    render(
+      <TwoMonths.Component
+        defaultValue={new CalendarDate(2025, 2, 15)}
+        onChange={onChange}
+      />
+    );
+
+    const grids = screen.getAllByRole('grid');
+    const secondGrid = grids[1];
+    const cells = within(secondGrid).getAllByRole('gridcell');
+    const day10Cell = cells.find(
+      cell =>
+        cell.textContent === '10' &&
+        cell.getAttribute('aria-disabled') !== 'true'
+    );
+
+    expect(day10Cell).toBeDefined();
+
+    const button =
+      day10Cell!.querySelector('span[role="button"], span[tabindex]') ||
+      day10Cell!.firstChild;
+    expect(button).toBeDefined();
+
+    await user.click(button as Element);
+    expect(onChange).toHaveBeenCalled();
+    expect(onChange.mock.calls[0][0]).toEqual(new CalendarDate(2025, 3, 10));
+  });
+
+  test('does not show month/year dropdowns in multi-month view', () => {
+    render(<TwoMonths.Component />);
+
+    expect(screen.queryByTestId('month')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('year')).not.toBeInTheDocument();
+  });
+
+  test('single page behavior advances by one month', async () => {
+    render(
+      <Basic.Component
+        visibleDuration={{ months: 2 }}
+        pageBehavior="single"
+        defaultValue={new CalendarDate(2025, 1, 15)}
+      />
+    );
+
+    const calendar = screen.getByRole('application');
+    expect(calendar).toHaveTextContent(/January 2025/i);
+    expect(calendar).toHaveTextContent(/February 2025/i);
+
+    const buttons = screen.getAllByRole('button');
+    const nextButton = buttons.find(b => b.getAttribute('slot') === 'next');
+    expect(nextButton).toBeDefined();
+    await user.click(nextButton!);
+
+    expect(calendar).toHaveTextContent(/February 2025/i);
+    expect(calendar).toHaveTextContent(/March 2025/i);
   });
 });

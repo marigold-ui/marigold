@@ -1,9 +1,14 @@
 import { Children, ReactNode } from 'react';
-import type { GapSpaceProp } from '@marigold/system';
-import { cn, createVar, gapSpace } from '@marigold/system';
+import type { SpaceProp, SpacingTokens } from '@marigold/system';
+import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
-export interface ColumnsProps extends GapSpaceProp, AriaRegionProps {
+export interface ColumnsProps extends AriaRegionProps {
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
   /**
    * The children of the component.
    */
@@ -33,26 +38,24 @@ export const Columns = ({
 }: ColumnsProps) => {
   if (Children.count(children) !== columns.length) {
     throw new Error(
-      `Columns: expected ${columns.length} children, got ${Children.count(
-        children
-      )}`
+      `Columns: expected ${columns.length} children, got ${Children.count(children)}`
     );
   }
 
   return (
     <div
       className={cn(
-        'flex flex-wrap items-stretch',
-        stretch && 'h-full',
-        gapSpace[space]
+        'flex flex-wrap items-stretch gap-(--space)',
+        stretch && 'h-full'
       )}
+      style={createSpacingVar('space', `${space}`)}
       {...props}
     >
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
             columns[idx] === 'fit' ? 'flex h-fit w-fit' : 'flex-(--columnSize)',
-            'basis-[calc((var(--collapseAt)_-_100%)_*_999)]'
+            'basis-[calc((var(--collapseAt)-100%)*999)]'
           )}
           style={createVar({
             collapseAt,

@@ -154,6 +154,7 @@ const transformTypeValue = async val => {
     '(number | "fit")[]',
     'TemplateValue[]',
     'Key | Key[] | null',
+    'Key | readonly Key[] | null',
     '0 | "auto" | "full" | "fit" | "min" | "max" | "screen" | "svh" | "lvh" | "dvh" | "px" | "0.5" | 1 | "1.5" | 2 | "2.5" | 3 | "3.5" | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 14 | 16 | 20 | 24 | 28 | ... 38 more ...',
     '{ vertical?: { alignY?: "none" | "center" | "top" | "bottom"; alignX?: "none" | "left" | "center" | "right"; } | undefined; horizontal?: { alignX?: "none" | "left" | "center" | "right" | undefined; alignY?: "none" | ... 3 more ... | undefined; } | undefined; } | undefined',
     '{ input?: string; action?: string; } | undefined',
@@ -162,13 +163,15 @@ const transformTypeValue = async val => {
     'number | number[]',
     'CellElement | CellElement[] | CellRenderer',
     '"none" | "auto" | "default" | "pointer" | "wait" | "text" | "move" | "help" | "notAllowed" | "progress" | "cell" | "crosshair" | "vertical" | "alias" | "copy" | "noDrop" | "grap" | ... 8 more ...',
-    '"Accordion" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Field" | "Headline" | ... 32 more ... | "FileField"',
+    '"Accordion" | "ActionBar" | "Badge" | "Breadcrumbs" | "Button" | "Card" | "CloseButton" | "Collapsible" | "ContextualHelp" | "DateField" | "Dialog" | "Divider" | "Drawer" | "Tray" | ... 39 more ... | "ToggleButton"',
     'string | { [slot in keyof ThemeComponent<C>]?: string; }',
     'keyof NumberFormatOptionsCurrencyDisplayRegistry',
     'boolean | keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false"',
     'keyof NumberFormatOptionsSignDisplayRegistry',
     'T[]',
     'ReactNode | ReactNode[]',
+    'Key | readonly Key[] | null',
+    'readonly Key[]',
   ];
   let text = val.type.name;
 
@@ -238,6 +241,7 @@ const files = await globby([
   `!${componentsDir}/**/*.stories.tsx`,
   `!${componentsDir}/**/*.test.tsx`,
   `!${componentsDir}/**/*.ts`,
+  `!${componentsDir}/legacy/**/*.tsx`,
   `!${systemDir}/**/*.stories.tsx`,
   `!${systemDir}/**/*.test.tsx`,
   `!${systemDir}/**/*.ts`,

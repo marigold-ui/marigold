@@ -1,27 +1,31 @@
-import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Key } from 'react-aria-components';
+import { Form, Key } from 'react-aria-components';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
+import { Button } from '../Button/Button';
 import { Inline } from '../Inline/Inline';
 import { Inset } from '../Inset/Inset';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Select } from './Select';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Select',
   component: Select,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: {
       control: {
         type: 'text',
       },
       description: 'Set the select label',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Select for favorite:' },
-      },
     },
     placeholder: {
       control: {
@@ -40,30 +44,18 @@ const meta = {
         type: 'boolean',
       },
       description: 'Disable the select',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     required: {
       control: {
         type: 'boolean',
       },
       description: 'Require the select',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     error: {
       control: {
         type: 'boolean',
       },
       description: 'Set error state',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     errorMessage: {
       control: {
@@ -81,15 +73,15 @@ const meta = {
   args: {
     label: 'Favorite',
     error: false,
+    errorMessage: 'Whoops.',
     required: false,
     disabled: false,
     width: 64,
   },
-} satisfies Meta<typeof Select>;
+});
 
-export default meta;
-
-export const Basic: StoryObj<typeof Select> = {
+export const Basic = meta.story({
+  tags: ['component-test'],
   render: args => {
     const [selected, setSelected] = useState<any>('');
     return (
@@ -155,32 +147,44 @@ export const Basic: StoryObj<typeof Select> = {
       expect(canvas.getByText('selected: Star Wars')).toBeVisible();
     });
   },
-};
+});
 
-export const Multiple: StoryObj<typeof Select> = {
+export const Multiple = meta.story({
+  tags: ['component-test'],
   // No args here, it breaks the types
   render: ({ label }) => {
     const [selected, setSelected] = useState<Key[]>([]);
     return (
-      <Stack space={6}>
-        <Select
-          label={label}
-          selectionMode="multiple"
-          value={selected}
-          onChange={setSelected}
-          width={64}
-        >
-          <Select.Option id="Harry Potter">Harry Potter</Select.Option>
-          <Select.Option id="Lord of the Rings">
-            Lord of the Rings
-          </Select.Option>
-          <Select.Option id="Star Wars">Star Wars</Select.Option>
-          <Select.Option id="Star Trek">Star Trek</Select.Option>
-          <Select.Option id="Firefly">Firefly</Select.Option>
-        </Select>
-        <hr />
-        <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
-      </Stack>
+      <Form
+        onSubmit={e => {
+          e.preventDefault();
+          const formData = new FormData(e.currentTarget);
+          setSelected(formData.getAll('favorite') as Key[]);
+        }}
+      >
+        <Stack space={6} alignX="left">
+          <Select
+            label={label}
+            name="favorite"
+            selectionMode="multiple"
+            defaultValue={selected}
+            width={64}
+          >
+            <Select.Option id="Harry Potter">Harry Potter</Select.Option>
+            <Select.Option id="Lord of the Rings">
+              Lord of the Rings
+            </Select.Option>
+            <Select.Option id="Star Wars">Star Wars</Select.Option>
+            <Select.Option id="Star Trek">Star Trek</Select.Option>
+            <Select.Option id="Firefly">Firefly</Select.Option>
+          </Select>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+          <hr />
+          <pre data-testid="selected">selected: {JSON.stringify(selected)}</pre>
+        </Stack>
+      </Form>
     );
   },
   play: async ({ args, canvas, userEvent }) => {
@@ -196,14 +200,15 @@ export const Multiple: StoryObj<typeof Select> = {
     await userEvent.click(within(options).getByText('Firefly'));
 
     await userEvent.click(document.body);
+    await userEvent.click(canvas.getByRole('button', { name: /submit/i }));
 
     expect(canvas.getByTestId('selected')).toHaveTextContent(
       'selected: ["Star Wars","Firefly"]'
     );
   },
-};
+});
 
-export const LongItems: StoryObj<typeof Select> = {
+export const LongItems = meta.story({
   render: args => {
     return (
       <Inset space={24}>
@@ -250,9 +255,9 @@ export const LongItems: StoryObj<typeof Select> = {
       expect(button).toHaveAttribute('aria-expanded', 'false');
     });
   },
-};
+});
 
-export const LotsOfOptions: StoryObj<typeof Select> = {
+export const LotsOfOptions = meta.story({
   render: args => {
     return (
       <Inset space={24}>
@@ -300,9 +305,9 @@ export const LotsOfOptions: StoryObj<typeof Select> = {
       </Inset>
     );
   },
-};
+});
 
-export const Sections: StoryObj<typeof Select> = {
+export const Sections = meta.story({
   render: args => (
     <Select {...args}>
       <Select.Section header="Fantasy">
@@ -329,9 +334,9 @@ export const Sections: StoryObj<typeof Select> = {
       </Select.Section>
     </Select>
   ),
-};
+});
 
-export const SelectedScroll: StoryObj<typeof Select> = {
+export const SelectedScroll = meta.story({
   render: args => {
     return (
       <Select disabledKeys={['Firefly']} open {...args}>
@@ -382,9 +387,9 @@ export const SelectedScroll: StoryObj<typeof Select> = {
       </Select>
     );
   },
-};
+});
 
-export const WithBadges: StoryObj<typeof Select> = {
+export const WithBadges = meta.story({
   render: args => (
     <Select
       {...args}
@@ -429,7 +434,7 @@ export const WithBadges: StoryObj<typeof Select> = {
       </Select.Option>
     </Select>
   ),
-};
+});
 
 const people = [
   {
@@ -452,7 +457,7 @@ const people = [
   },
 ];
 
-export const WithImages: StoryObj<typeof Select> = {
+export const WithImages = meta.story({
   render: args => (
     <Select
       {...args}
@@ -494,4 +499,94 @@ export const WithImages: StoryObj<typeof Select> = {
       expect(description).toBeInTheDocument();
     });
   },
-};
+});
+
+export const Mobile = meta.story({
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => {
+    return (
+      <Select
+        {...args}
+        label="Favorite character"
+        placeholder="Select your character"
+      >
+        <Select.Option id="mario">Mario</Select.Option>
+        <Select.Option id="luigi">Luigi</Select.Option>
+        <Select.Option id="peach">Peach</Select.Option>
+        <Select.Option id="toad">Toad</Select.Option>
+        <Select.Option id="yoshi">Yoshi</Select.Option>
+        <Select.Option id="bowser">Bowser</Select.Option>
+        <Select.Option id="wario">Wario</Select.Option>
+        <Select.Option id="waluigi">Waluigi</Select.Option>
+        <Select.Option id="daisy">Daisy</Select.Option>
+        <Select.Option id="rosalina">Rosalina</Select.Option>
+        <Select.Option id="donkey-kong">Donkey Kong</Select.Option>
+        <Select.Option id="diddy-kong">Diddy Kong</Select.Option>
+        <Select.Option id="birdo">Birdo</Select.Option>
+        <Select.Option id="koopa">Koopa Troopa</Select.Option>
+        <Select.Option id="shy-guy">Shy Guy</Select.Option>
+        <Select.Option id="boo">Boo</Select.Option>
+        <Select.Option id="goomba">Goomba</Select.Option>
+        <Select.Option id="hammer-bro">Hammer Bro</Select.Option>
+        <Select.Option id="lakitu">Lakitu</Select.Option>
+        <Select.Option id="blooper">Blooper</Select.Option>
+        <Select.Option id="king-boo">King Boo</Select.Option>
+        <Select.Option id="petey">Petey Piranha</Select.Option>
+        <Select.Option id="dry-bones">Dry Bones</Select.Option>
+        <Select.Option id="wiggler">Wiggler</Select.Option>
+        <Select.Option id="metal-mario">Metal Mario</Select.Option>
+        <Select.Option id="pink-gold-peach">Pink Gold Peach</Select.Option>
+        <Select.Option id="baby-mario">Baby Mario</Select.Option>
+        <Select.Option id="baby-luigi">Baby Luigi</Select.Option>
+        <Select.Option id="baby-peach">Baby Peach</Select.Option>
+        <Select.Option id="baby-daisy">Baby Daisy</Select.Option>
+        <Select.Option id="baby-rosalina">Baby Rosalina</Select.Option>
+        <Select.Option id="lemmy">Lemmy Koopa</Select.Option>
+        <Select.Option id="iggy">Iggy Koopa</Select.Option>
+        <Select.Option id="ludwig">Ludwig von Koopa</Select.Option>
+        <Select.Option id="roy">Roy Koopa</Select.Option>
+      </Select>
+    );
+  },
+  play: async ({ canvas, step }) => {
+    await step('Open the tray', async () => {
+      await waitFor(async () => {
+        const button = canvas.getByLabelText(/Favorite character/i);
+
+        await userEvent.click(button);
+
+        expect(canvas.getByRole('dialog')).toBeInTheDocument();
+      });
+    });
+
+    await step('Verify dialog is visible', async () => {
+      const dialog = canvas.getByRole('dialog');
+
+      await waitFor(() => expect(dialog).toBeVisible());
+    });
+
+    await step('Select an option', async () => {
+      const dialog = canvas.getByRole('dialog');
+      const option = within(dialog).getByText('Peach');
+
+      await userEvent.click(option);
+
+      expect(option.parentElement).toHaveAttribute('aria-selected', 'true');
+    });
+
+    await step('Close select with Escape key', async () => {
+      const button = canvas.getByRole('button', {
+        name: /Favorite character/i,
+      });
+
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => {
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+
+      expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+  },
+});

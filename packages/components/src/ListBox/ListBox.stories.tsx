@@ -1,14 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '.storybook/preview';
 import { ListBox } from './ListBox';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ListBox',
-} satisfies Meta<typeof ListBox>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <ListBox
       aria-labelledby="listbox"
@@ -23,9 +20,9 @@ export const Basic: Story = {
       <ListBox.Item id="four">Four</ListBox.Item>
     </ListBox>
   ),
-};
+});
 
-export const WithSections: Story = {
+export const WithSections = meta.story({
   render: args => (
     <ListBox aria-labelledby="listbox" {...args}>
       <ListBox.Section header="Veggies">
@@ -45,4 +42,4 @@ export const WithSections: Story = {
       </ListBox.Section>
     </ListBox>
   ),
-};
+});

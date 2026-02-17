@@ -1,8 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Tabs, TabsProps } from './Tabs';
+import preview from '.storybook/preview';
+import { Tabs } from './Tabs';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Tabs',
+  component: Tabs,
   argTypes: {
     disabled: {
       control: { type: 'boolean' },
@@ -20,11 +21,9 @@ const meta = {
         'Select whether tabs are activated automatically on focus or manually.',
     },
   },
-} satisfies Meta<TabsProps>;
+});
 
-export default meta;
-
-export const Basic: StoryObj<typeof Tabs> = {
+export const Basic = meta.story({
   render: args => {
     return (
       <Tabs aria-label="tabs" {...args}>
@@ -47,9 +46,9 @@ export const Basic: StoryObj<typeof Tabs> = {
       </Tabs>
     );
   },
-};
+});
 
-export const WithDisabledKeys: StoryObj<typeof Tabs> = {
+export const WithDisabledKeys = meta.story({
   render: args => {
     return (
       <Tabs aria-label="tabs" disabledKeys={['private']} {...args}>
@@ -80,9 +79,9 @@ export const WithDisabledKeys: StoryObj<typeof Tabs> = {
       </Tabs>
     );
   },
-};
+});
 
-export const WithSelectedTab: StoryObj<typeof Tabs> = {
+export const WithSelectedTab = meta.story({
   render: args => {
     return (
       <Tabs aria-label="tabs" selectedKey={'settings'} {...args}>
@@ -112,4 +111,4 @@ export const WithSelectedTab: StoryObj<typeof Tabs> = {
       </Tabs>
     );
   },
-};
+});

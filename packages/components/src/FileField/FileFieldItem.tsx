@@ -1,4 +1,7 @@
 import { ReactNode } from 'react';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { cn, useClassNames } from '@marigold/system';
+import { intlMessages } from '../intl/messages';
 import { CloseButton } from './../CloseButton/CloseButton';
 
 export interface FileFieldItemProps {
@@ -10,10 +13,19 @@ export interface FileFieldItemProps {
 }
 
 export const FileFieldItem = ({ children, onRemove }: FileFieldItemProps) => {
+  const classNames = useClassNames({
+    component: 'FileField',
+  });
+  const stringFormatter = useLocalizedStringFormatter(intlMessages, 'marigold');
   return (
-    <div className="bg-background border-input flex items-center justify-between gap-2 rounded-lg border p-2 pe-3">
+    <div className={cn('grid', classNames.item)}>
       {children}
-      <CloseButton aria-label="Remove file" onPress={onRemove} />
+      <div className={cn('[grid-area:remove]', classNames.itemRemove)}>
+        <CloseButton
+          aria-label={stringFormatter.format('removeFile')}
+          onPress={onRemove}
+        />
+      </div>
     </div>
   );
 };

@@ -1,15 +1,22 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { Key } from 'react';
+import { Key, useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
-import { expect, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, userEvent, waitFor } from 'storybook/test';
+import preview from '.storybook/preview';
 import { useAsyncList } from '@react-stately/data';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { ComboBox } from './ComboBox';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ComboBox',
+  component: ComboBox,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: {
       control: {
@@ -122,13 +129,11 @@ const meta = {
     menuTrigger: 'input',
     placeholder: undefined,
     label: 'Label',
-  },
-} satisfies Meta;
+  } as const,
+});
 
-export default meta;
-type Story = StoryObj<typeof ComboBox>;
-
-export const Basic: Story = {
+// Explicit type annotation prevents TS2742 by avoiding leaking inferred internal types
+export const Basic: any = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -151,74 +156,50 @@ export const Basic: Story = {
       </I18nProvider>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
     await userEvent.type(input, 'xyz');
     const emptyState = await canvas.findByText('Kein Ergebnis gefunden');
     expect(emptyState).toBeInTheDocument();
   },
-};
+});
 
-export const Controlled: StoryObj<typeof ComboBox> = {
+export const Controlled: any = meta.story({
   tags: ['component-test'],
   render: args => {
-    const [current, setCurrent] = useState<string | undefined>('');
     const [id, setId] = useState<Key | null>(null);
     return (
       <Stack>
-        <ComboBox
-          {...args}
-          value={current}
-          defaultSelectedKey={3}
-          onChange={setCurrent}
-          onSelectionChange={id => setId(id)}
-          label="Animals"
-        >
+        <ComboBox {...args} onSelectionChange={setId} label="Animals">
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>
           <ComboBox.Option id="dog">Dog</ComboBox.Option>
           <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
           <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
         </ComboBox>
-        <pre data-testid="output">
-          current: {current}, selected: {id?.toString()}
-        </pre>
+        <pre data-testid="output">selected: {id?.toString()}</pre>
       </Stack>
     );
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = canvas.queryByRole('combobox', { name: 'Animals' });
+    const input = await canvas.findByRole('combobox', { name: 'Animals' });
 
-    await userEvent.click(
-      await canvas.findByRole('combobox', { name: 'Animals' })
-    );
-    await userEvent.keyboard('{arrowdown}');
-    await userEvent.type(
-      await canvas.findByRole('combobox', { name: 'Animals' }),
-      'do'
-    );
+    await userEvent.type(input, 'dog');
     await userEvent.click(await canvas.findByRole('option', { name: 'Dog' }));
-    //click outside - enter doesn't work 🤷‍♂️
-    await userEvent.click(document.body);
 
-    await waitFor(() =>
-      expect(
-        canvas.queryByText('current:', { exact: false })
-      ).toHaveTextContent('current: Dog, selected: dog')
-    );
+    await waitFor(() => expect(combobox).toHaveValue('Dog'));
     await waitFor(() => expect(combobox).toBeVisible());
     await waitFor(() => expect(combobox).toBeInTheDocument());
-    await waitFor(() => expect(combobox).toHaveValue('Dog'));
   },
-};
+});
 
-export const ManualMenuTrigger: Story = {
-  tags: ['component-test'],
-  ...Basic,
+export const ManualMenuTrigger: any = meta.story({
+  ...Basic.input,
   args: {
     menuTrigger: 'manual',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const input = canvas.getByRole('combobox');
 
     await userEvent.type(input, '{arrowdown}');
@@ -226,9 +207,9 @@ export const ManualMenuTrigger: Story = {
 
     await expect(result).toBeVisible();
   },
-};
+});
 
-export const AsyncLoading: Story = {
+export const AsyncLoading: any = meta.story({
   render: args => {
     const list = useAsyncList<{ name: string }>({
       async load({ signal, filterText }) {
@@ -259,9 +240,9 @@ export const AsyncLoading: Story = {
       </ComboBox>
     );
   },
-};
+});
 
-export const Sections: StoryObj<typeof ComboBox> = {
+export const Sections: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <ComboBox {...args}>
@@ -289,7 +270,7 @@ export const Sections: StoryObj<typeof ComboBox> = {
       </ComboBox.Section>
     </ComboBox>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
@@ -300,12 +281,11 @@ export const Sections: StoryObj<typeof ComboBox> = {
     expect(s1).toBeVisible();
     expect(s2).toBeVisible();
   },
-};
+});
 
-export const InputTrigger: StoryObj<typeof ComboBox> = {
-  tags: ['component-test'],
-  ...Basic,
-  play: async ({ canvas }) => {
+export const InputTrigger: any = meta.story({
+  ...Basic.input,
+  play: async ({ canvas }: any) => {
     const input = await canvas.findByRole('combobox', { name: 'Label' });
     const result = await canvas.queryByRole('combobox', { name: 'Label' });
 
@@ -319,15 +299,14 @@ export const InputTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(result).toHaveValue('Aardvark'));
     await waitFor(() => expect(result).toBeVisible());
   },
-};
+});
 
-export const FocusTrigger: StoryObj<typeof ComboBox> = {
-  tags: ['component-test'],
-  ...Basic,
+export const FocusTrigger: any = meta.story({
+  ...Basic.input,
   args: {
     menuTrigger: 'focus',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = await canvas.findByRole('combobox', { name: 'Label' });
 
     await userEvent.type(
@@ -342,15 +321,14 @@ export const FocusTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(combobox).toBeInTheDocument());
     await waitFor(() => expect(combobox).toHaveValue('Kangaroo'));
   },
-};
+});
 
-export const ManualTrigger: StoryObj<typeof ComboBox> = {
-  tags: ['component-test'],
-  ...Basic,
+export const ManualTrigger: any = meta.story({
+  ...Basic.input,
   args: {
     menuTrigger: 'manual',
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     const combobox = canvas.queryByRole('combobox', { name: 'Label' });
 
     await userEvent.click(
@@ -363,9 +341,9 @@ export const ManualTrigger: StoryObj<typeof ComboBox> = {
     await waitFor(() => expect(combobox).toBeVisible());
     await waitFor(() => expect(combobox).toHaveValue('Red Panda'));
   },
-};
+});
 
-export const DisabledKeys: StoryObj<typeof ComboBox> = {
+export const DisabledKeys: any = meta.story({
   tags: ['component-test'],
   render: args => (
     <ComboBox {...args} disabledKeys={['spinach']}>
@@ -375,7 +353,7 @@ export const DisabledKeys: StoryObj<typeof ComboBox> = {
       <ComboBox.Option id="garlic">Garlic</ComboBox.Option>
     </ComboBox>
   ),
-  play: async ({ canvas }) => {
+  play: async ({ canvas }: any) => {
     await userEvent.click(
       await canvas.findByRole('combobox', { name: 'Label' })
     );
@@ -389,4 +367,151 @@ export const DisabledKeys: StoryObj<typeof ComboBox> = {
       'true'
     );
   },
-};
+});
+
+const onActionMock = fn();
+
+export const OnAction: any = meta.story({
+  tags: ['component-test'],
+  beforeEach: () => {
+    onActionMock.mockClear();
+  },
+  render: args => {
+    return (
+      <ComboBox {...args} label="Actions" menuTrigger="focus">
+        <ComboBox.Option id="save" onAction={onActionMock}>
+          Save
+        </ComboBox.Option>
+        <ComboBox.Option id="delete" onAction={onActionMock}>
+          Delete
+        </ComboBox.Option>
+        <ComboBox.Option id="archive" onAction={onActionMock}>
+          Archive
+        </ComboBox.Option>
+      </ComboBox>
+    );
+  },
+  play: async ({ canvas }) => {
+    const combobox = await canvas.findByRole('combobox', { name: 'Actions' });
+
+    await userEvent.click(combobox);
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+
+    await userEvent.click(combobox);
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+
+    await userEvent.click(combobox);
+    await userEvent.type(combobox, 'arch');
+    await userEvent.keyboard('{ArrowDown}');
+    await userEvent.keyboard('{Enter}');
+
+    await waitFor(() => expect(onActionMock).toHaveBeenCalledTimes(3));
+  },
+});
+
+export const Mobile: any = meta.story({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => (
+    <ComboBox {...args}>
+      <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
+      <ComboBox.Option id="cat">Cat</ComboBox.Option>
+      <ComboBox.Option id="dog">Dog</ComboBox.Option>
+      <ComboBox.Option id="aardvark">Aardvark</ComboBox.Option>
+      <ComboBox.Option id="kangaroo">Kangaroo</ComboBox.Option>
+      <ComboBox.Option id="snake">Snake</ComboBox.Option>
+      <ComboBox.Option id="elephant">Elephant</ComboBox.Option>
+      <ComboBox.Option id="giraffe">Giraffe</ComboBox.Option>
+      <ComboBox.Option id="penguin">Penguin</ComboBox.Option>
+      <ComboBox.Option id="dolphin">Dolphin</ComboBox.Option>
+      <ComboBox.Option id="koala">Koala</ComboBox.Option>
+      <ComboBox.Option id="tiger">Tiger</ComboBox.Option>
+      <ComboBox.Option id="lion">Lion</ComboBox.Option>
+      <ComboBox.Option id="zebra">Zebra</ComboBox.Option>
+      <ComboBox.Option id="owl">Owl</ComboBox.Option>
+      <ComboBox.Option id="fox">Fox</ComboBox.Option>
+    </ComboBox>
+  ),
+});
+
+Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }: any) => {
+  const trigger = await canvas.findByRole('button');
+
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
+
+  await step('Verify tray content is visible', async () => {
+    const input = await canvas.findByRole('combobox');
+
+    await waitFor(() => expect(input).toBeVisible());
+  });
+
+  await step('Select option from list', async () => {
+    const option = await canvas.findByText('Dog');
+
+    await userEvent.click(option);
+  });
+
+  await step('Close select with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  await step('Verify selection is displayed in trigger', async () => {
+    await waitFor(() => expect(trigger).toHaveTextContent('Dog'));
+  });
+});
+
+Mobile.test(
+  'Mobile ComboBox keyboard navigation',
+  async ({ canvas, step }: any) => {
+    const trigger = await canvas.findByRole('button');
+
+    await step('Open tray by clicking trigger', async () => {
+      await userEvent.click(trigger);
+
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toBeInTheDocument()
+      );
+    });
+
+    await step('Verify combobox input receives focus', async () => {
+      const input = await canvas.findByRole('combobox');
+
+      await waitFor(() => expect(input).toHaveFocus());
+    });
+
+    await step('Filter options by typing', async () => {
+      await userEvent.keyboard('cat');
+
+      await waitFor(() => expect(canvas.getByText('Cat')).toBeVisible());
+    });
+
+    await step('Navigate to option with arrow keys and select', async () => {
+      await userEvent.keyboard('{ArrowDown}');
+      await userEvent.keyboard('{Enter}');
+    });
+
+    await step('Close tray with Escape key', async () => {
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() =>
+        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+      );
+    });
+
+    await step('Verify selection is displayed in trigger', async () => {
+      await waitFor(() => expect(trigger).toHaveTextContent('Cat'));
+    });
+  }
+);

@@ -4,15 +4,17 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@marigold/*": ["./packages/*/src", "./themes/*/src"]
+      "@marigold/*": ["./packages/*/src", "./themes/*/src"],
+      ".storybook/*": ["./.storybook/*"]
     },
     "types": ["vitest/globals"]
   },
   "exclude": [
     "coverage/*",
-    "vitest.config.ts",
     "**/node_modules/*",
     "**/dist/**/*",
-    "**/scripts/template/*"
+    "**/scripts/template/*",
+    "vitest.config.shared.ts",
+    "vite.config.ts"
   ]
 }

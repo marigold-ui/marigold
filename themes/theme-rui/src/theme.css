@@ -1,10 +1,8 @@
 @import './utils.css';
+@import './ui.css';
 
-/*
-    TODO: how to do normalization so we doesn't break everything?
-    TODO: omit "background" in the naming convention? (https://ui.shadcn.com/docs/theming#convention)
-    TODO: create component styles files and compile to CSS classes?
-*/
+/* custom variants */
+@import './variants.css';
 
 /*
     - create tokens if we think:
@@ -135,6 +133,35 @@
   /* ==================== */
   /*        SURFACE       */
   /* ==================== */
+  --color-surface: var(--color-white);
+  --color-surface-border: var(--color-stone-300);
+  --radius-surface: var(--radius-lg);
+
+  /* ==================== */
+  /*       ELEVATION      */
+  /* ==================== */
+  /* Based on https://www.joshwcomeau.com/shadow-palette/ */
+
+  /* Border elevation - subtle shadow for input elements and cards */
+  --shadow-elevation-border:
+    0px 0.3px 0.3px oklch(0 0 0 / 0.19),
+    0.1px 1.1px 1.2px -3px oklch(0 0 0 / 0.16);
+
+  /* Raised elevation - moderate shadow for cards, tiles, and containers */
+  --shadow-elevation-raised:
+    0px 0.3px 0.3px oklch(0 0 0 / 0.23),
+    0px 1.4px 1.3px -2px oklch(0 0 0 / 0.17),
+    0px 6.7px 6px -4px oklch(0 0 0 / 0.12);
+
+  /* Overlay elevation - prominent shadow for modals, dialogs, popovers */
+  --shadow-elevation-overlay:
+    0px 0.1px 0.1px oklch(0 0 0 / 0.32),
+    0px 1px 0.9px -1.3px oklch(0 0 0 / 0.26),
+    -0.1px 4px 3.6px -2.7px oklch(0 0 0 / 0.2),
+    -0.2px 12px 10.8px -4px oklch(0 0 0 / 0.14);
+
+  /* ---- OLD (to be removed when updating docs) --- */
+
   --surface-sunken: var(--color-muted);
   --surface-sunken-shadow: 0 0 #0000;
 
@@ -161,12 +188,37 @@
   --spacing-button-small: 2rem;
   --spacing-button-large: 2.5rem;
 
-  /* spacing between elements */
-  --spacing-container: 50rem; /* e.g. form container */
-  --spacing-section: 3.5rem; /* e.g. between form sections */
-  --spacing-fieldY: 2rem; /* e.g. between fields vertically */
-  --spacing-fieldX: 1.25rem; /* e.g. between fields horizontally */
-  --spacing-group: 1rem; /* e.g. between related fields to group them */
+  --spacing-container: 50rem;
+
+  /* RELATIONAL SPACING */
+
+  --spacing-joined: --spacing(0.25);
+  --spacing-tight: --spacing(1);
+  --spacing-related: --spacing(2);
+  --spacing-peer: --spacing(4);
+  --spacing-group: --spacing(8);
+  --spacing-section: --spacing(16);
+  --spacing-context: --spacing(32);
+
+  /* INSET SPACING */
+
+  --spacing-square-tight: --spacing(1);
+  --spacing-square-snug: --spacing(2);
+  --spacing-square-regular: --spacing(3);
+  --spacing-square-relaxed: --spacing(4);
+  --spacing-square-loose: --spacing(6);
+
+  --spacing-squish-tight: --spacing(1) --spacing(2);
+  --spacing-squish-snug: --spacing(1.5) --spacing(2);
+  --spacing-squish-regular: --spacing(2) --spacing(3);
+  --spacing-squish-relaxed: --spacing(2) --spacing(4);
+  --spacing-squish-loose: --spacing(4) --spacing(6);
+
+  --spacing-stretch-tight: --spacing(2) --spacing(1);
+  --spacing-stretch-snug: --spacing(2) --spacing(1.5);
+  --spacing-stretch-regular: --spacing(3) --spacing(2);
+  --spacing-stretch-relaxed: --spacing(4) --spacing(2);
+  --spacing-stretch-loose: --spacing(6) --spacing(4);
 
   /* ==================== */
   /*       ANIMATION      */

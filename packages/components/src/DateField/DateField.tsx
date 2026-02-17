@@ -21,7 +21,8 @@ type RemovedProps =
   | 'style';
 
 export interface DateFieldProps
-  extends Omit<RAC.DateFieldProps<DateValue>, RemovedProps>,
+  extends
+    Omit<RAC.DateFieldProps<DateValue>, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
   size?: string;
@@ -82,6 +83,7 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
       isReadOnly: readOnly,
       isInvalid: error,
       isRequired: required,
+      onChange,
       ...rest,
     };
     return (
@@ -92,7 +94,7 @@ const _DateField = forwardRef<HTMLInputElement, DateFieldProps>(
         ref={ref}
         {...props}
       >
-        <DateInputWithPasteWrapper onChange={onChange} action={action} />
+        <DateInputWithPasteWrapper action={action} />
       </FieldBase>
     );
   }
@@ -106,19 +108,13 @@ interface DateInputWithPasteWrapperProps {
 }
 
 const DateInputWithPasteWrapper = ({
-  onChange,
   ...props
 }: DateInputWithPasteWrapperProps) => {
   const ctx = useContext(DateFieldStateContext);
 
   const onPaste = (date: CalendarDate) => {
-    if (onChange) {
-      onChange(date);
-    }
     ctx?.setValue(date);
   };
 
   return <DateInput onPaste={onPaste} {...props} />;
 };
-
-// 02.02.2020

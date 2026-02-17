@@ -5,8 +5,9 @@ import type {
   ReactNode,
 } from 'react';
 import { forwardRef } from 'react';
-import type { WidthProp } from '@marigold/system';
-import { cn, width as twWidth, useClassNames } from '@marigold/system';
+import { createWidthVar, isFraction } from '@marigold/system';
+import { type WidthProp } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import type { DistributiveOmit, FixedForwardRef } from '@marigold/types';
 import type { HelpTextProps } from '../HelpText/HelpText';
 import { HelpText } from '../HelpText/HelpText';
@@ -17,8 +18,7 @@ const fixedForwardRef = forwardRef as FixedForwardRef;
 // Props
 // ---------------
 export interface FieldBaseProps<T extends ElementType>
-  extends WidthProp,
-    Pick<HelpTextProps, 'description' | 'errorMessage'> {
+  extends WidthProp, Pick<HelpTextProps, 'description' | 'errorMessage'> {
   as?: T;
   /**
    * Specifies the label of the field.
@@ -47,7 +47,7 @@ const _FieldBase = <T extends ElementType>(
     label,
     size,
     variant,
-    width = 'full',
+    width,
     description,
     errorMessage,
     className,
@@ -59,16 +59,33 @@ const _FieldBase = <T extends ElementType>(
     size,
   });
 
+  const isFractionWidth = width ? isFraction(`${width}`) : false;
+
   return (
     <Component
       ref={ref}
       className={cn(
-        'group/field',
-        'flex flex-col',
-        twWidth[width],
+        'group/field flex min-w-0 flex-col',
+        /**
+         * Width handling strategy:
+         * - For fixed widths (numeric scale values) and keyword widths (fit, full): Use `w-auto` to prevent layout shifts
+         * - For fraction widths (e.g., "1/2", "2/3"): Use the corresponding Tailwind class
+         *   (e.g., `w-1/2`) which allows the field to properly respond to its container's width
+         */
+        width && !isFractionWidth ? 'w-auto' : `w-(--container-width)`,
         classNames,
         className
       )}
+      style={
+        {
+          /* Setting CSS variables for container-width, fallback when no width is provided */
+          ...createWidthVar('container-width', width ? `${width}` : 'full'),
+          ...createWidthVar(
+            'field-width',
+            width && !isFractionWidth ? `${width}` : 'full'
+          ),
+        } as React.CSSProperties
+      }
       data-required={props.isRequired ? true : undefined}
       data-error={props.isInvalid ? true : undefined}
       {...rest}

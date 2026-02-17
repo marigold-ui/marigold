@@ -1,0 +1,25 @@
+---
+title: useAsyncListData
+description: Hook that returns async data
+---
+
+We use the `useAsyncListData` hook from [`react-spectrum stately package`](https://github.com/adobe/react-spectrum/tree/main/packages/%40react-stately). It extends the `useListData` which is also from `react-spectrum`.
+
+It supports async loading, pagination, sorting and filtering.
+It also manages loading and error states, supports abortable requests and works with any data fetchig library or the built-in browser fetch API.
+
+More information can be found in the [react-spectrum documentation](https://react-spectrum.adobe.com/react-stately/useAsyncList.html).
+
+## Import
+
+```tsx
+import { useAsyncListData } from '@marigold/components';
+```
+
+## Examples
+
+### Async Table
+
+This is an example from the [`<Table>`](/components/table/) component. The data will be loaded asynchronously.
+
+<ComponentDemo name="async" />

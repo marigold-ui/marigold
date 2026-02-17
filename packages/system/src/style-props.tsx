@@ -267,6 +267,15 @@ export const whiteSpace = {
   breakSpaces: 'whitespace-break-spaces',
 };
 
+export const lineHeight = {
+  none: 'leading-none',
+  tight: 'leading-tight',
+  snug: 'leading-snug',
+  normal: 'leading-normal',
+  relaxed: 'leading-relaxed',
+  loose: 'leading-loose',
+} as const;
+
 export const gapSpace = {
   0: 'gap-0',
   '0.5': 'gap-0.5',
@@ -615,10 +624,16 @@ export const placeItems = {
 } as const;
 
 export const textAlign = {
-  none: undefined,
   left: 'text-left',
   center: 'text-center',
   right: 'text-right',
+} as const;
+
+export const verticalAlign = {
+  top: 'align-top',
+  middle: 'align-middle',
+  bottom: 'align-bottom',
+  baseline: 'align-baseline',
 } as const;
 
 export const aspect = {
@@ -697,6 +712,13 @@ export type WhiteSpaceProps = {
    * Set how white space inside the element is handled.
    */
   whiteSpace?: keyof typeof whiteSpace;
+};
+
+export type LineHeightProp = {
+  /**
+   * Set the line height for the text element.
+   */
+  lineHeight?: keyof typeof lineHeight;
 };
 
 export type FontWeightProp = {
@@ -781,6 +803,13 @@ export type TextAlignProp = {
    * Set the text alignment for the element.
    */
   align?: keyof typeof textAlign;
+};
+
+export type VerticalAlignProp = {
+  /**
+   * Set the vertical alignment for the element.
+   */
+  verticalAlign?: keyof typeof verticalAlign;
 };
 
 export type WidthProp = {

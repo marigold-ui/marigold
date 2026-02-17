@@ -1,58 +1,25 @@
 import { render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Badge } from './Badge';
+import { Basic } from './Badge.stories';
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Badge: cva('p-2', {
-      variants: {
-        variant: {
-          one: ['rounded-xs'],
-          two: ['rounded-md'],
-        },
-      },
-    }),
-  },
-};
-
-test('renders as a "div" element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Badge data-testid="badge" />
-    </ThemeProvider>
-  );
+test('renders correctly', () => {
+  render(<Basic.Component data-testid="badge" />);
 
   const badge = screen.getByTestId('badge');
-  expect(badge instanceof HTMLDivElement).toBeTruthy();
+
+  expect(badge).toMatchInlineSnapshot(`
+    <div
+      class="inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:state-focus outline-none has-[svg]:gap-1 bg-info-muted text-info-muted-foreground"
+      data-testid="badge"
+    >
+      Status
+    </div>
+  `);
 });
 
-test('uses base styling classes form "Badge" in theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Badge data-testid="badge" />
-    </ThemeProvider>
-  );
-  const badge = screen.getByTestId('badge');
-  expect(badge).toHaveClass('p-2');
-});
+test('shows the lock svg', () => {
+  render(<Basic.Component data-testid="badge" variant="master" />);
 
-test('supports "Badge" variants from theme', () => {
-  const { rerender } = render(
-    <ThemeProvider theme={theme}>
-      <Badge variant="one" data-testid="badge" />
-    </ThemeProvider>
-  );
+  const svgs = screen.getAllByTestId('lock-icon');
 
-  let badge = screen.getByTestId('badge');
-  expect(badge).toHaveClass('rounded-xs');
-
-  rerender(
-    <ThemeProvider theme={theme}>
-      <Badge variant="two" data-testid="badge" />
-    </ThemeProvider>
-  );
-
-  badge = screen.getByTestId('badge');
-  expect(badge).toHaveClass('rounded-md');
+  expect(svgs.length).toBe(1);
 });

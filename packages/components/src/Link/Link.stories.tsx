@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '.storybook/preview';
 import { Text } from '../Text/Text';
 import { Link } from './Link';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Link',
   component: Link,
   argTypes: {
@@ -44,20 +44,17 @@ const meta = {
     disabled: false,
     href: 'https://marigold-ui.io',
   },
-} satisfies Meta<typeof Link>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Link target="_blank" {...args}>
       Visit Marigold Docs
     </Link>
   ),
-};
+});
 
-export const Inline: Story = {
+export const Inline = meta.story({
   render: args => (
     <Text>
       To set up Tailwind CSS, please refer to the{' '}
@@ -68,4 +65,4 @@ export const Inline: Story = {
       with the following informations
     </Text>
   ),
-};
+});

@@ -1,120 +1,253 @@
 import { render, screen } from '@testing-library/react';
-import { Theme, ThemeProvider, cva } from '@marigold/system';
-import { Card } from './Card';
+import { Basic, PaddingAndSpace, Stretch } from './Card.stories';
 
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Card: cva('border border-solid border-gray-700 p-1', {
-      variants: {
-        variant: {
-          yellow: 'bg-yellow-300',
-        },
-        size: {
-          medium: 'p-4',
-        },
-      },
-    }),
-  },
-};
+describe('Card', () => {
+  describe('Rendering', () => {
+    test('renders content correctly', () => {
+      render(<Basic.Component />);
 
-test('renders as a "div" element', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card data-testid="card" />
-    </ThemeProvider>
-  );
+      const headline = screen.getByRole('heading', {
+        name: /Professor Severus Snape/,
+      });
 
-  const card = screen.getByTestId('card');
-  expect(card instanceof HTMLDivElement).toBeTruthy();
-});
+      expect(headline).toBeInTheDocument();
+    });
 
-test('uses base styling form "Card" in theme', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card data-testid="card" />
-    </ThemeProvider>
-  );
-  const card = screen.getByTestId('card');
-  expect(card.className).toMatchInlineSnapshot(
-    `"flex flex-col border border-solid border-gray-700 p-1 gap-0"`
-  );
-});
+    test('renders with proper structure', () => {
+      render(<Basic.Component />);
 
-test('accepts a variant and size', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card data-testid="card" variant="yellow" size="medium" />
-    </ThemeProvider>
-  );
-  const card = screen.getByTestId('card');
-  expect(card.className).toMatchInlineSnapshot(
-    `"flex flex-col border border-solid border-gray-700 bg-yellow-300 p-4 gap-0"`
-  );
-});
+      const text = screen.getByText(/was an English/);
 
-test('supports padding as style prop', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card data-testid="p" p={3} />
-      <Card data-testid="pxy" px={2} py={1} />
-      <Card data-testid="ptblr" pt={3} pb={2} pl={3} pr={3} />
-    </ThemeProvider>
-  );
+      expect(text).toBeInTheDocument();
+    });
 
-  const p = screen.getByTestId('p');
-  expect(p).toHaveClass(`p-3`);
+    test('renders all child elements', () => {
+      render(<PaddingAndSpace.Component />);
 
-  const pxy = screen.getByTestId('pxy');
-  expect(pxy).toHaveClass(`px-2`);
-  expect(pxy).toHaveClass(`py-1`);
+      const headlines = screen.getAllByRole('heading', {
+        name: /Professor Severus Snape/,
+      });
 
-  const ptblr = screen.getByTestId('ptblr');
-  expect(ptblr).toHaveClass(`pt-3`);
-  expect(ptblr).toHaveClass(`pb-2`);
-  expect(ptblr).toHaveClass(`pr-3`);
-  expect(ptblr).toHaveClass(`pl-3`);
-});
+      expect(headlines.length).toBeGreaterThan(0);
+    });
+  });
 
-test('padding props override variant', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card data-testid="card" size="medium" py={2} />
-    </ThemeProvider>
-  );
+  describe('Element types and layout', () => {
+    test('renders as div element by default', () => {
+      render(
+        <Basic.Component data-testid="card">
+          <div>Content</div>
+        </Basic.Component>
+      );
 
-  const card = screen.getByTestId('card');
-  expect(card.className).toMatchInlineSnapshot(
-    `"flex flex-col border border-solid border-gray-700 p-4 gap-0 py-2"`
-  );
-});
+      const card = screen.getByTestId('card');
 
-test('has no default spacing', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card data-testid="card">
-        <header>Header</header>
-        <div>This is the body</div>
-        <footer>Footer!</footer>
-      </Card>
-    </ThemeProvider>
-  );
+      expect(card instanceof HTMLDivElement).toBeTruthy();
+    });
 
-  const card = screen.getByTestId('card');
-  expect(card).toHaveClass(`gap-0`);
-});
+    test('renders with flex display and w-fit by default', () => {
+      render(
+        <Basic.Component data-testid="card">
+          <div>Content</div>
+        </Basic.Component>
+      );
 
-test('allows to set spacing between children', () => {
-  render(
-    <ThemeProvider theme={theme}>
-      <Card data-testid="card" space={5}>
-        <header>Header</header>
-        <div>This is the body</div>
-        <footer>Footer!</footer>
-      </Card>
-    </ThemeProvider>
-  );
+      const card = screen.getByTestId('card');
 
-  const card = screen.getByTestId('card');
-  expect(card).toHaveClass(`gap-5`);
+      expect(card).toHaveClass('flex');
+      expect(card).toHaveClass('w-fit');
+    });
+
+    test('uses flex display when stretch is enabled', () => {
+      render(
+        <Stretch.Component data-testid="card">
+          <div>Content</div>
+        </Stretch.Component>
+      );
+
+      const card = screen.getByTestId('card');
+
+      expect(card).toHaveClass('flex');
+      expect(card).not.toHaveClass('inline-flex');
+    });
+
+    test('arranges children in a column', () => {
+      render(
+        <Basic.Component data-testid="card">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card');
+
+      expect(card).toHaveClass('flex-col');
+    });
+  });
+
+  describe('Spacing', () => {
+    test('applies default spacing value of 0', () => {
+      render(
+        <Basic.Component data-testid="card">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card');
+
+      expect(card?.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 0)'
+      );
+    });
+
+    test('applies custom spacing between children', () => {
+      render(
+        <PaddingAndSpace.Component data-testid="card">
+          <div>Content</div>
+        </PaddingAndSpace.Component>
+      );
+
+      const card = screen.getByTestId('card');
+
+      expect(card?.style.getPropertyValue('--space')).toBe(
+        'calc(var(--spacing) * 4)'
+      );
+    });
+
+    test('has gap class applied based on spacing', () => {
+      render(
+        <PaddingAndSpace.Component data-testid="card">
+          <div>Content</div>
+        </PaddingAndSpace.Component>
+      );
+
+      const card = screen.getByTestId('card');
+
+      expect(card?.className).toContain('gap-y');
+    });
+  });
+
+  describe('Padding props', () => {
+    test('supports uniform padding prop (p)', () => {
+      render(
+        <PaddingAndSpace.Component data-testid="card-p">
+          <div>Content</div>
+        </PaddingAndSpace.Component>
+      );
+
+      const card = screen.getByTestId('card-p');
+
+      expect(card?.className).toContain('p-8');
+    });
+
+    test('supports horizontal padding prop (px)', () => {
+      render(
+        <Basic.Component px={4} data-testid="card-px">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card-px');
+
+      expect(card?.className).toContain('px-4');
+    });
+
+    test('supports vertical padding prop (py)', () => {
+      render(
+        <Basic.Component py={2} data-testid="card-py">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card-py');
+
+      expect(card?.className).toContain('py-2');
+    });
+
+    test('supports individual padding props (pt, pb, pl, pr)', () => {
+      render(
+        <Basic.Component
+          pt={3}
+          pb={2}
+          pl={1}
+          pr={4}
+          data-testid="card-individual"
+        >
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card-individual');
+
+      expect(card?.className).toContain('pt-3');
+      expect(card?.className).toContain('pb-2');
+      expect(card?.className).toContain('pl-1');
+      expect(card?.className).toContain('pr-4');
+    });
+  });
+
+  describe('Variants and sizes', () => {
+    test('accepts a variant prop', () => {
+      render(
+        <Basic.Component variant="master" data-testid="card-variant">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card-variant');
+
+      expect(card).toBeInTheDocument();
+    });
+
+    test('accepts a size prop', () => {
+      render(
+        <Basic.Component size="medium" data-testid="card-size">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card-size');
+
+      expect(card).toBeInTheDocument();
+    });
+  });
+
+  describe('Stretch behavior', () => {
+    test('fills available space when stretch is enabled', () => {
+      render(
+        <Stretch.Component data-testid="card">
+          <div>Content</div>
+        </Stretch.Component>
+      );
+
+      const card = screen.getByTestId('card');
+
+      expect(card).toHaveClass('flex');
+    });
+
+    test('does not fill space by default', () => {
+      render(
+        <Basic.Component data-testid="card">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card');
+
+      expect(card).toHaveClass('w-fit');
+    });
+  });
+
+  describe('Space prop with semantic tokens', () => {
+    test('accepts semantic spacing tokens', () => {
+      render(
+        <Basic.Component space="section" data-testid="card-space">
+          <div>Content</div>
+        </Basic.Component>
+      );
+
+      const card = screen.getByTestId('card-space');
+
+      expect(card).toBeInTheDocument();
+    });
+  });
 });

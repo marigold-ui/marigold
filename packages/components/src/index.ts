@@ -8,6 +8,11 @@ export type { AccordionProps } from './Accordion/Accordion';
 export { AccordionItem } from './Accordion/AccordionItem';
 export type { DisclosureProps } from './Accordion/AccordionItem';
 
+export { ActionBar } from './ActionBar/ActionBar';
+export type { ActionBarProps } from './ActionBar/ActionBar';
+export { ActionButton } from './ActionBar/ActionButton';
+export type { ActionButtonProps } from './ActionBar/ActionButton';
+
 export { Aside } from './Aside/Aside';
 export type { AsideProps } from './Aside/Aside';
 
@@ -87,6 +92,9 @@ export type { DividerProps } from './Divider/Divider';
 
 export { Drawer } from './Drawer/Drawer';
 export type { DrawerProps } from './Drawer/Drawer';
+
+export { EmptyState } from './EmptyState/EmptyState';
+export type { EmptyStateProps } from './EmptyState/EmptyState';
 
 export { FieldBase } from './FieldBase/FieldBase';
 export type { FieldBaseProps } from './FieldBase/FieldBase';
@@ -213,13 +221,26 @@ export { Switch } from './Switch/Switch';
 export type { SwitchProps } from './Switch/Switch';
 
 export { Table } from './Table/Table';
-export type { TableProps } from './Table/Table';
+export type {
+  TableProps,
+  TableHeaderProps,
+  TableColumnProps,
+  TableBodyProps,
+  TableRowProps,
+  TableCellProps,
+  TableEditableCellProps,
+  TableDropIndicatorProps,
+  TableDragPreviewProps,
+} from './Table/Table';
 
 export { Tabs } from './Tabs/Tabs';
 export type { TabsProps } from './Tabs/Tabs';
 
 export { Tag } from './TagGroup/Tag';
 export type { TagProps } from './TagGroup/Tag';
+
+export { TagField } from './TagField/TagField';
+export type { TagFieldProps } from './TagField/TagField';
 
 export { TagGroup } from './TagGroup/TagGroup';
 export type { TagGroupProps } from './TagGroup/TagGroup';
@@ -256,6 +277,15 @@ export { VisuallyHidden } from './VisuallyHidden/VisuallyHidden';
 
 export { Loader } from './Loader/Loader';
 export type { LoaderProps, LoaderVisualType } from './Loader/Loader';
+
+export { ToggleButton } from './ToggleButton/ToggleButton';
+export type { ToggleButtonProps } from './ToggleButton/ToggleButton';
+
+export { ToggleButtonGroup } from './ToggleButton/ToggleButtonGroup';
+export type { ToggleButtonGroupProps } from './ToggleButton/ToggleButtonGroup';
+
+export { Tray } from './Tray/Tray';
+export type { TrayProps } from './Tray/Tray';
 
 // Utility exports
 export * from './utils/form.utils';

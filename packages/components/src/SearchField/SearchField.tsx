@@ -19,7 +19,8 @@ type RemovedProps =
   | 'defaultValue';
 
 export interface SearchFieldProps
-  extends Omit<RAC.SearchFieldProps, RemovedProps>,
+  extends
+    Omit<RAC.SearchFieldProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
    * Action element to display in the search field.
@@ -32,6 +33,7 @@ export interface SearchFieldProps
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default full
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
 

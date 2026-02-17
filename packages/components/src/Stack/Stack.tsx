@@ -1,13 +1,16 @@
 import { Children, ReactNode } from 'react';
-import type { SpaceProp } from '@marigold/system';
+import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { alignment, cn, createSpacingVar } from '@marigold/system';
 import type { AriaRegionProps } from '@marigold/types';
 
 // Props
 // ---------------
-export interface StackProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
-    AriaRegionProps {
+export interface StackProps extends AriaRegionProps {
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
   /**
    * Children of the component.
    */
@@ -41,7 +44,7 @@ export interface StackProps
 // ---------------
 export const Stack = ({
   children,
-  space = 0,
+  space = '0',
   stretch = false,
   alignX = 'stretch',
   alignY,

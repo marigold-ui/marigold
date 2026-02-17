@@ -1,34 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
+import { Form } from '../Form/Form';
 import { Menu } from '../Menu/Menu';
+import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
-import {
-  ConfirmationDialog,
-  type ConfirmationDialogProps,
-} from './ConfirmationDialog';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import { Dialog } from './Dialog';
 
-interface DialogStoryArgs {
-  dismissable?: boolean;
-  keyboardDismissable?: boolean;
-  size?: 'xsmall' | 'small' | 'medium';
-}
-
-const meta: Meta<DialogStoryArgs> = {
+const meta = preview.meta({
   title: 'Components/Dialog',
   component: Dialog,
+  decorators: [
+    Story => (
+      <div id="storybook-root">
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
-    dismissable: {
-      control: { type: 'boolean' },
-      description: 'Set dismissable',
-    },
-    keyboardDismissable: {
-      control: { type: 'boolean' },
-      description: 'Set keyboardDismissable',
-    },
     size: {
       control: {
         type: 'radio',
@@ -45,12 +37,9 @@ const meta: Meta<DialogStoryArgs> = {
     keyboardDismissable: true,
     size: 'small',
   },
-};
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: ({ size, ...args }) => (
     <Dialog.Trigger {...args}>
       <Button variant="primary">Open</Button>
@@ -80,9 +69,9 @@ export const Basic: Story = {
       expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
     );
   },
-};
+});
 
-export const Form: Story = {
+export const WithForm = meta.story({
   render: ({ size, ...args }) => {
     return (
       <Dialog.Trigger {...args}>
@@ -109,9 +98,54 @@ export const Form: Story = {
       </Dialog.Trigger>
     );
   },
-};
+});
 
-export const OpenFromMenu: Story = {
+export const WithFormValidation = meta.story({
+  render: ({ size, ...args }) => {
+    const [code, setCode] = useState('');
+
+    return (
+      <Stack alignX="left" space={8}>
+        <Dialog.Trigger {...args} dismissable={false}>
+          <Button variant="primary">Open</Button>
+          <Dialog size={size}>
+            {({ close }) => (
+              <>
+                <Dialog.Title>Please enter validation code</Dialog.Title>
+                <Dialog.Content>
+                  <Form
+                    id="code-form"
+                    onSubmit={e => {
+                      e.preventDefault();
+                      const formData = new FormData(e.currentTarget);
+                      setCode(formData.get('code') as string);
+                      close();
+                    }}
+                  >
+                    <TextField label="Code" name="code" required />
+                  </Form>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button slot="close" variant="secondary">
+                    Cancel
+                  </Button>
+                  <Button variant="primary" type="submit" form="code-form">
+                    Submit
+                  </Button>
+                </Dialog.Actions>
+              </>
+            )}
+          </Dialog>
+        </Dialog.Trigger>
+        <pre>
+          <code>Entered code: {code}</code>
+        </pre>
+      </Stack>
+    );
+  },
+});
+
+export const OpenFromMenu = meta.story({
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [open, setDialogOpen] = useState(false);
@@ -157,9 +191,9 @@ export const OpenFromMenu: Story = {
       </>
     );
   },
-};
+});
 
-export const Confirmation: StoryObj<ConfirmationDialogProps> = {
+export const Confirmation = meta.story({
   render: ({ ...args }) => (
     <ConfirmationDialog.Trigger {...args}>
       <Button>Open</Button>
@@ -168,9 +202,9 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
       </ConfirmationDialog>
     </ConfirmationDialog.Trigger>
   ),
-};
+});
 
-export const VeryLongContent: Story = {
+export const VeryLongContent = meta.story({
   tags: ['component-test'],
   render: args => {
     const { size, ...triggerArgs } = args;
@@ -338,4 +372,4 @@ export const VeryLongContent: Story = {
     dialogContent.scrollTop = dialogContent.scrollHeight;
     expect(dialogContent.scrollTop).toBeGreaterThan(0);
   },
-};
+});

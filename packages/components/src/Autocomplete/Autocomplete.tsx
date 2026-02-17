@@ -9,13 +9,14 @@ import {
 import type RAC from 'react-aria-components';
 import { ComboBox, ComboBoxStateContext, Key } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Center } from '../Center/Center';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
 import { intlMessages } from '../intl/messages';
+import { MobileAutocomplete } from './MobileAutocomplete';
 
 // Search Input (we can't use our SearchField because of FieldBase)
 //----------------
@@ -41,6 +42,11 @@ interface AutocompleteInputProps {
   ref?: Ref<HTMLInputElement> | undefined;
 
   loading?: boolean;
+
+  /**
+   * Focuses the input per default
+   */
+  autoFocus?: boolean;
 }
 
 const AutocompleteInput = ({
@@ -48,6 +54,7 @@ const AutocompleteInput = ({
   onSubmit,
   onClear,
   ref,
+  autoFocus,
 }: AutocompleteInputProps) => {
   const state = useContext(ComboBoxStateContext);
   // needed to get the triggerwidth on the right button
@@ -57,6 +64,7 @@ const AutocompleteInput = ({
     <SearchInput
       ref={ref}
       loading={loading}
+      autoFocus={autoFocus}
       className={{
         action: cn(
           state?.inputValue === '' ? 'invisible' : 'visible',
@@ -99,15 +107,20 @@ type RemovedProps =
   | 'slot';
 
 export interface AutocompleteProps
-  extends Omit<RAC.ComboBoxProps<object>, RemovedProps>,
-    Pick<
-      FieldBaseProps<'label'>,
-      'width' | 'label' | 'description' | 'errorMessage'
-    > {
+  extends
+    Omit<RAC.ComboBoxProps<object>, RemovedProps>,
+    Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
    * The value of the input (uncontrolled).
    */
   defaultValue?: RAC.ComboBoxProps<object>['defaultInputValue'];
+
+  /**
+   * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
+   * @default 'full'
+   * @remarks `WidthProp`
+   */
+  width?: WidthProp['width'];
 
   /**
    * The value of the input (controlled).
@@ -162,7 +175,6 @@ export interface AutocompleteProps
    * @default false
    */
   loading?: boolean;
-
   variant?: string;
   size?: string;
   placeholder?: string;
@@ -179,10 +191,9 @@ export interface AutocompleteProps
   onSubmit?: (value: string | number | null, key: Key | null) => void;
 }
 
-interface AutocompleteComponent
-  extends ForwardRefExoticComponent<
-    AutocompleteProps & RefAttributes<HTMLInputElement>
-  > {
+interface AutocompleteComponent extends ForwardRefExoticComponent<
+  AutocompleteProps & RefAttributes<HTMLInputElement>
+> {
   /**
    * Options for the Combobox.
    */
@@ -229,26 +240,48 @@ const _Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     };
 
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
+    const isSmallScreen = useSmallScreen();
 
     return (
       <FieldBase as={ComboBox} ref={ref} {...props}>
-        <AutocompleteInput
-          loading={loading}
-          onSubmit={onSubmit}
-          onClear={onClear}
-          ref={ref}
-        />
-        <Popover>
-          <ListBox
-            renderEmptyState={() =>
-              emptyState ?? (
-                <Center>{stringFormatter.format('noResultsFound')}</Center>
-              )
+        {isSmallScreen ? (
+          <MobileAutocomplete
+            placeholder={rest.placeholder}
+            label={rest.label}
+            emptyState={emptyState}
+            input={
+              <AutocompleteInput
+                loading={loading}
+                onSubmit={onSubmit}
+                onClear={onClear}
+                ref={ref}
+                autoFocus
+              />
             }
           >
             {children}
-          </ListBox>
-        </Popover>
+          </MobileAutocomplete>
+        ) : (
+          <>
+            <AutocompleteInput
+              loading={loading}
+              onSubmit={onSubmit}
+              onClear={onClear}
+              ref={ref}
+            />
+            <Popover>
+              <ListBox
+                renderEmptyState={() =>
+                  emptyState ?? (
+                    <Center>{stringFormatter.format('noResultsFound')}</Center>
+                  )
+                }
+              >
+                {children}
+              </ListBox>
+            </Popover>
+          </>
+        )}
       </FieldBase>
     );
   }

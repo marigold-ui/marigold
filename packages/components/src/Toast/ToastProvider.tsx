@@ -12,17 +12,22 @@ export const queue = new ToastQueue<ToastContentProps>({
   // Wrap state updates in a CSS view transition.
   wrapUpdate(fn) {
     if ('startViewTransition' in document) {
-      document.startViewTransition(() => {
+      const transition = document.startViewTransition(() => {
         flushSync(fn);
       });
+      // Catch and suppress ViewTransition errors (e.g., when another transition is already running)
+      transition.ready.catch(() => {});
+      transition.finished.catch(() => {});
     } else {
       fn();
     }
   },
 });
 
-export interface ToastProviderProps
-  extends Omit<RAC.ToastRegionProps<object>, RemovedProps> {
+export interface ToastProviderProps extends Omit<
+  RAC.ToastRegionProps<object>,
+  RemovedProps
+> {
   position?: ToastPosition;
 }
 
@@ -41,7 +46,7 @@ const ToastProvider = ({ position = 'bottom-right' }: ToastProviderProps) => {
     component: 'Toast',
   });
   return (
-    <ToastRegion queue={queue} className={`${classNames[position]} z-50 gap-2`}>
+    <ToastRegion queue={queue} className={`${classNames[position]} z-80 gap-2`}>
       {({ toast }) => <Toast toast={toast} />}
     </ToastRegion>
   );

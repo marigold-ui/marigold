@@ -11,16 +11,17 @@ import { ListBoxContext } from './Context';
 import { ListBoxItem } from './ListBoxItem';
 import { Section } from './ListBoxSection';
 
-export interface ListBoxProps
-  extends Omit<RAC.ListBoxProps<object>, 'className' | 'style'> {
+export interface ListBoxProps extends Omit<
+  RAC.ListBoxProps<object>,
+  'className' | 'style'
+> {
   variant?: string;
   size?: string;
 }
 
-interface ListBoxComponent
-  extends ForwardRefExoticComponent<
-    ListBoxProps & RefAttributes<HTMLUListElement>
-  > {
+interface ListBoxComponent extends ForwardRefExoticComponent<
+  ListBoxProps & RefAttributes<HTMLUListElement>
+> {
   Item: typeof ListBoxItem;
   Section: typeof Section;
 }
@@ -37,10 +38,7 @@ const _ListBox = forwardRef<HTMLUListElement, ListBoxProps>(
         <div className={classNames.container}>
           <ListBox
             {...props}
-            className={cn(
-              'overflow-y-auto sm:max-h-[75vh] lg:max-h-[45vh]',
-              classNames.list
-            )}
+            className={cn('overflow-y-auto', classNames.list)}
             ref={ref as Ref<HTMLDivElement>}
             {...listBoxProps}
           >

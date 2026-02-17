@@ -1,10 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
-import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import * as stories from './Checkbox.stories';
-
-const { Basic } = composeStories(stories);
+import { Basic } from './Checkbox.stories';
 
 // There is no real accesible way to get to the element that acts as checkbox
 const getVisibleCheckbox = () => {
@@ -16,7 +13,7 @@ const getVisibleCheckbox = () => {
 // Tests
 // ---------------
 test('renders label and (hidden) checkbox', () => {
-  render(<Basic label="With Label" />);
+  render(<Basic.Component label="With Label" />);
 
   const label = screen.getByText('With Label');
   const checkbox = screen.getByLabelText('With Label');
@@ -28,7 +25,7 @@ test('renders label and (hidden) checkbox', () => {
 });
 
 test('allows to render without label', () => {
-  render(<Basic aria-label="No Label" />);
+  render(<Basic.Component aria-label="No Label" />);
 
   const checkbox = screen.getByLabelText('No Label');
 
@@ -39,7 +36,7 @@ test('allows to render without label', () => {
 });
 
 test('check if all slot class names are applied correctly', () => {
-  render(<Basic label="With Label" />);
+  render(<Basic.Component label="With Label" />);
 
   const label = screen.getByText('With Label');
 
@@ -47,15 +44,15 @@ test('check if all slot class names are applied correctly', () => {
     `"group/checkbox flex items-center data-disabled:cursor-not-allowed cursor-pointer read-only:cursor-default gap-2"`
   );
   expect(getVisibleCheckbox()?.className).toMatchInlineSnapshot(
-    `"grow-0 basis-4 items-center justify-center p-px bg-white border-solid grid size-4 shrink-0 place-content-center rounded border border-input shadow-xs group-focus-visible/checkbox:util-focus-ring outline-none group-disabled/checkbox:group-selected/checkbox:bg-disabled group-disabled/checkbox:border-disabled! group-disabled/checkbox:text-disabled-foreground group-disabled/checkbox:cursor-not-allowed group-selected/checkbox:border-brand group-selected/checkbox:bg-brand group-selected/checkbox:text-brand-foreground group-[indeterminate]/checkbox:border-brand group-[indeterminate]/checkbox:bg-brand group-[indeterminate]/checkbox:text-brand-foreground"`
+    `"grow-0 basis-4 items-center justify-center p-px bg-white border-solid grid size-4 shrink-0 place-content-center rounded border border-input shadow-xs group-focus-visible/checkbox:ui-state-focus group-focus-visible/checkbox:border-(--ui-border-color) outline-none group-disabled/checkbox:group-selected/checkbox:bg-disabled group-disabled/checkbox:border-disabled! group-disabled/checkbox:text-disabled-foreground group-disabled/checkbox:cursor-not-allowed group-selected/checkbox:border-brand group-selected/checkbox:bg-brand group-selected/checkbox:text-brand-foreground group-[indeterminate]/checkbox:border-brand group-[indeterminate]/checkbox:bg-brand group-[indeterminate]/checkbox:text-brand-foreground"`
   );
   expect(label.className).toMatchInlineSnapshot(
-    `"flex items-center gap-1 text-sm leading-4 group-[&]/checkboxgroup:font-normal font-medium text-foregroun group-disabled/checkbox:text-disabled-foreground"`
+    `"flex items-center gap-1 text-sm leading-4 group-[&]/checkboxgroup:font-normal font-medium text-foreground group-disabled/checkbox:text-disabled-foreground"`
   );
 });
 
 test('correct class name is set on size small', () => {
-  render(<Basic label="With Label" size="small" />);
+  render(<Basic.Component label="With Label" size="small" />);
 
   const label = screen.getByText('With Label');
 
@@ -65,7 +62,7 @@ test('correct class name is set on size small', () => {
 });
 
 test('support default checked', () => {
-  render(<Basic label="With Label" defaultChecked />);
+  render(<Basic.Component label="With Label" defaultChecked />);
 
   const input = screen.getByLabelText<HTMLInputElement>('With Label');
 
@@ -73,7 +70,7 @@ test('support default checked', () => {
 });
 
 test('supports indeterminate state', () => {
-  render(<Basic label="With Label" indeterminate />);
+  render(<Basic.Component label="With Label" indeterminate />);
 
   const input = screen.getByLabelText<HTMLInputElement>('With Label');
 
@@ -82,7 +79,7 @@ test('supports indeterminate state', () => {
 
 test('forwards ref', () => {
   const ref = createRef<HTMLLabelElement>();
-  render(<Basic label="Check it" ref={ref} />);
+  render(<Basic.Component label="Check it" ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });

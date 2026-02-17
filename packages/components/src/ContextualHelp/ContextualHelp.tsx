@@ -8,11 +8,11 @@ import {
 import {
   Button,
   Dialog,
-  Popover,
   DialogTrigger as RACDialogTrigger,
 } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
+import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
 import { Info } from '../icons/Info';
 import { intlMessages } from '../intl/messages';
@@ -24,10 +24,9 @@ const icons = {
   info: Info,
 };
 
-interface ContextualHelpComponent
-  extends ForwardRefExoticComponent<
-    ContextualHelpProps & RefAttributes<HTMLInputElement>
-  > {
+interface ContextualHelpComponent extends ForwardRefExoticComponent<
+  ContextualHelpProps & RefAttributes<HTMLInputElement>
+> {
   /**
    * Options for the Combobox.
    */
@@ -38,8 +37,10 @@ interface ContextualHelpComponent
 }
 
 type RemovedProps = 'isOpen';
-interface DialogTriggerProps
-  extends Omit<ComponentProps<typeof RACDialogTrigger>, RemovedProps> {
+interface DialogTriggerProps extends Omit<
+  ComponentProps<typeof RACDialogTrigger>,
+  RemovedProps
+> {
   open?: boolean;
 }
 
@@ -65,7 +66,7 @@ type Placement =
  */
 export interface ContextualHelpProps {
   /** Size of the button and popover. */
-  size?: 'small' | 'medium' | 'large';
+  size?: string;
 
   /** Content rendered inside the popover. */
   children: ReactNode;
@@ -141,15 +142,18 @@ export const _ContextualHelp = forwardRef<
           <Icon size={20} />
         </Button>
 
-        <Popover
-          placement={placement}
-          offset={offset}
-          className={classNames.popover}
-          {...{
-            [`data-${width ?? 'medium'}`]: true,
-          }}
-        >
-          <Dialog className={classNames.container}>{children}</Dialog>
+        <Popover placement={placement} offset={offset}>
+          <Dialog
+            className={cn(
+              "grid [grid-template-areas:'title'_'content']",
+              classNames.container
+            )}
+            {...{
+              [`data-${width ?? 'medium'}`]: true,
+            }}
+          >
+            {children}
+          </Dialog>
         </Popover>
       </DialogTrigger>
     );

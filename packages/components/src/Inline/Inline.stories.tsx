@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
@@ -8,7 +8,7 @@ import { TextField } from '../TextField/TextField';
 import { Block } from '../__internal__/Block';
 import { Inline } from './Inline';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Inline',
   component: Inline,
   argTypes: {
@@ -51,12 +51,9 @@ const meta = {
   args: {
     noWrap: undefined,
   },
-} satisfies Meta<typeof Inline>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   args: {
     space: 2,
@@ -75,9 +72,9 @@ export const Basic: Story = {
       <Block>Löffelstiel!</Block>
     </Inline>
   ),
-};
+});
 
-export const InputButtonAlignment: Story = {
+export const InputButtonAlignment = meta.story({
   tags: ['component-test'],
   args: {
     alignY: 'input',
@@ -108,9 +105,9 @@ export const InputButtonAlignment: Story = {
       </Stack>
     );
   },
-};
+});
 
-export const Nested: Story = {
+export const Nested = meta.story({
   args: {
     space: 4,
   },
@@ -130,4 +127,4 @@ export const Nested: Story = {
       </Inline>
     </Inline>
   ),
-};
+});

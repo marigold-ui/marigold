@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Inline } from '../Inline/Inline';
 import { Select } from '../Select/Select';
 import { Split } from '../Split/Split';
@@ -9,7 +9,7 @@ import { Table } from '../Table/Table';
 import { Text } from '../Text/Text';
 import { Pagination, PaginationProps } from './Pagination';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Pagination',
   component: Pagination,
   argTypes: {
@@ -45,12 +45,9 @@ const meta = {
     pageSize: 10,
     defaultPage: undefined,
   },
-} satisfies Meta<typeof Pagination>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -115,9 +112,9 @@ export const Basic: Story = {
       await expect(pageButton).toHaveAttribute('data-selected', 'true');
     });
   },
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: ({ totalItems, pageSize, ...rest }: Partial<PaginationProps>) => {
     const [basicPage, setBasicPage] = useState(1);
 
@@ -135,9 +132,9 @@ export const Controlled: Story = {
       </div>
     );
   },
-};
+});
 
-export const OnePage: Story = {
+export const OnePage = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
@@ -145,16 +142,16 @@ export const OnePage: Story = {
     totalItems: 10,
     pageSize: 10,
   },
-};
+});
 
-export const OneHundredPages: Story = {
+export const OneHundredPages = meta.story({
   args: {
     totalItems: 1000,
     defaultPage: 93,
   },
-};
+});
 
-export const NoData: Story = {
+export const NoData = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
@@ -162,9 +159,9 @@ export const NoData: Story = {
     totalItems: 0,
     pageSize: 10,
   },
-};
+});
 
-export const FullScreenSize: Story = {
+export const FullScreenSize = meta.story({
   render: ({ pageSize, ...rest }: Partial<PaginationProps>) => (
     <div className="w-[900px]">
       <Inline alignY="center">
@@ -190,9 +187,9 @@ export const FullScreenSize: Story = {
       </Inline>
     </div>
   ),
-};
+});
 
-export const WithTable: Story = {
+export const WithTable = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
@@ -221,61 +218,57 @@ export const WithTable: Story = {
     const currentData = mockData.slice(startIndex, endIndex);
 
     return (
-      <div className="w-[800px]">
-        <Stack alignX="left" space={4}>
-          <Table aria-label="label" stretch {...args}>
-            <Table.Header>
-              <Table.Column>ID</Table.Column>
-              <Table.Column>Name</Table.Column>
-              <Table.Column>Email</Table.Column>
-              <Table.Column>Role</Table.Column>
-              <Table.Column>Status</Table.Column>
-            </Table.Header>
-            <Table.Body items={currentData}>
-              {item => (
-                <Table.Row key={item.id}>
-                  <Table.Cell>{item.id}</Table.Cell>
-                  <Table.Cell>{item.name}</Table.Cell>
-                  <Table.Cell>{item.email}</Table.Cell>
-                  <Table.Cell>{item.role}</Table.Cell>
-                  <Table.Cell>{item.status}</Table.Cell>
-                </Table.Row>
-              )}
-            </Table.Body>
-          </Table>
-          <Inline alignY="center" space={11}>
-            <Text fontSize="sm">
-              Showing {startIndex + 1} - {endIndex} of {mockData.length}
-            </Text>
-            <Split />
-            <Pagination
-              {...args}
-              totalItems={mockData.length}
-              pageSize={pageSize}
-              page={currentPage}
-              onChange={setCurrentPage}
-            />
-            <Split />
-            <Inline alignY="center" space={4}>
-              <Text fontSize="sm">Results per page</Text>
-              <Select
-                width={'fit'}
-                value={pageSize.toString()}
-                onChange={val => setPageSize(parseInt(`${val}`))}
-              >
-                <Select.Option id="10">10</Select.Option>
-                <Select.Option id="20">20</Select.Option>
-                <Select.Option id={'30'}>30</Select.Option>
-              </Select>
-            </Inline>
+      <Stack space={4}>
+        <Table aria-label="label" {...args}>
+          <Table.Header>
+            <Table.Column>ID</Table.Column>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Role</Table.Column>
+            <Table.Column>Status</Table.Column>
+          </Table.Header>
+          <Table.Body items={currentData}>
+            {item => (
+              <Table.Row key={item.id}>
+                <Table.Cell>{item.id}</Table.Cell>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell>{item.role}</Table.Cell>
+                <Table.Cell>{item.status}</Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table>
+        <Inline alignY="center" alignX="between">
+          <Text fontSize="sm">
+            Showing {startIndex + 1} - {endIndex} of {mockData.length}
+          </Text>
+          <Pagination
+            {...args}
+            totalItems={mockData.length}
+            pageSize={pageSize}
+            page={currentPage}
+            onChange={setCurrentPage}
+          />
+          <Inline alignY="center" space={4}>
+            <Text fontSize="sm">Results per page</Text>
+            <Select
+              width={'fit'}
+              value={pageSize.toString()}
+              onChange={val => setPageSize(parseInt(`${val}`))}
+            >
+              <Select.Option id="10">10</Select.Option>
+              <Select.Option id="20">20</Select.Option>
+              <Select.Option id="30">30</Select.Option>
+            </Select>
           </Inline>
-        </Stack>
-      </div>
+        </Inline>
+      </Stack>
     );
   },
-};
+});
 
-export const WithButtonLabels: Story = {
+export const WithButtonLabels = meta.story({
   parameters: {
     controls: { exclude: ['totalItems', 'pageSize'] },
   },
@@ -284,9 +277,9 @@ export const WithButtonLabels: Story = {
     defaultPage: 5,
     controlLabels: ['Previous', 'Next'],
   },
-};
+});
 
-export const DisabledPreviousButton: Story = {
+export const DisabledPreviousButton = meta.story({
   tags: ['component-test'],
   args: {
     defaultPage: 2,
@@ -300,9 +293,9 @@ export const DisabledPreviousButton: Story = {
     await expect(previousButton).not.toHaveAttribute('data-selected', 'true');
     await expect(previousButton).toHaveAttribute('disabled');
   },
-};
+});
 
-export const DisabledNextButton: Story = {
+export const DisabledNextButton = meta.story({
   tags: ['component-test'],
   args: {
     defaultPage: 9,
@@ -316,9 +309,9 @@ export const DisabledNextButton: Story = {
     await expect(nextButton).not.toHaveAttribute('data-selected', 'true');
     await expect(nextButton).toHaveAttribute('disabled');
   },
-};
+});
 
-export const UseOnChange: Story = {
+export const UseOnChange = meta.story({
   tags: ['component-test'],
   args: {
     onChange: fn(),
@@ -331,4 +324,4 @@ export const UseOnChange: Story = {
 
     await expect(args.onChange).toHaveBeenCalledWith(2);
   },
-};
+});

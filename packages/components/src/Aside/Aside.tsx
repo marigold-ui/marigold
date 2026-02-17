@@ -1,16 +1,21 @@
 import { Children } from 'react';
 import type { ReactElement } from 'react';
-import type { SpaceProp } from '@marigold/system';
+import type { SpaceProp, SpacingTokens } from '@marigold/system';
 import { cn, createSpacingVar, createVar } from '@marigold/system';
 import type { AriaRegionProps, NonZeroPercentage } from '@marigold/types';
 
-export interface AsideProps
-  extends SpaceProp<'section' | 'fieldY' | 'container' | 'group'>,
-    AriaRegionProps {
+export interface AsideProps extends AriaRegionProps {
   /**
    * The children of the component.
    */
   children: [ReactElement, ReactElement];
+
+  /**
+   * Set the spacing between child elements.
+   * @remarks `SpacingTokens<Tokens>`
+   */
+  space?: SpaceProp<SpacingTokens>['space'];
+
   /**
    * The side of the aside content.
    * @default left
@@ -23,6 +28,7 @@ export interface AsideProps
   /**
    * At what percentage of the content's width should the other content wrap beneath it
    * @default 50%
+   * @remarks `NonZeroPercentage`
    */
   wrap?: NonZeroPercentage;
 }

@@ -1,11 +1,11 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import { expect, userEvent } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Multiselect } from './Multiselect';
 
-const meta: Meta<typeof Multiselect> = {
+const meta = preview.meta({
   title: 'Components/Multiselect',
   component: Multiselect,
   argTypes: {
@@ -97,10 +97,7 @@ const meta: Meta<typeof Multiselect> = {
     disabled: false,
     width: 'full',
   },
-};
-
-export default meta;
-type Story = StoryObj<typeof meta>;
+});
 
 const ticketCategories = [
   { value: 'general', label: 'General Admission' },
@@ -116,7 +113,7 @@ const ticketPriorities = [
   { value: 'critical', label: 'Critical Issue' },
 ];
 
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => (
     <Multiselect
@@ -175,9 +172,9 @@ export const Basic: Story = {
       await expect(input).toHaveAttribute('aria-expanded', 'false');
     });
   },
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [current, setCurrent] = useState<string>('');
     const [selectedItems, setSelectedItems] = useState<Array<object>>([]);
@@ -210,7 +207,7 @@ export const Controlled: Story = {
       </Stack>
     );
   },
-};
+});
 
 const ticketTypes = [
   { value: '1', label: 'Login Issue' },
@@ -223,7 +220,7 @@ const ticketTypes = [
   { value: '8', label: 'API Integration' },
 ];
 
-export const EmptyResult: Story = {
+export const EmptyResult = meta.story({
   render: args => {
     return (
       <Multiselect
@@ -242,4 +239,4 @@ export const EmptyResult: Story = {
     const result = await canvas.getByText('no result found');
     expect(result).toBeInTheDocument();
   },
-};
+});

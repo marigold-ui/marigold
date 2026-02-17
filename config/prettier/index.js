@@ -1,4 +1,5 @@
 module.exports = {
+  printWidth: 80,
   arrowParens: 'avoid',
   singleQuote: true,
   trailingComma: 'es5',
@@ -12,6 +13,7 @@ module.exports = {
     '^node:(.*)$',
     '^react/(.*)$',
     '^next/(.*)$',
+    '^\\.storybook/(.*)$',
     '^@react-aria/(.*)$',
     '^@react-stately/(.*)$',
     '^@react-types/(.*)$',

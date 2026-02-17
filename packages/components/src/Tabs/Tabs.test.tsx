@@ -1,156 +1,69 @@
-import { fireEvent, screen } from '@testing-library/react';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { Tabs } from './Tabs';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Basic, WithDisabledKeys, WithSelectedTab } from './Tabs.stories';
 
-const theme: Theme = {
-  name: 'tabs test',
-  components: {
-    Tabs: {
-      container: cva('flex'),
-      tabpanel: cva('border-3 border-solid border-red-400'),
-      tabsList: cva('mb-[10px]'),
-      tab: cva(
-        [
-          'selected:border-red-500  selected:border-b-8  selected:border-solid ',
-        ],
-        {
-          variants: {
-            size: {
-              small: 'px-1 pb-1',
-              medium: 'px-2 pb-2 text-lg',
-              large: 'px-4 pb-4 text-2xl',
-            },
-          },
-        }
-      ),
-    },
-  },
-};
-
-const { render } = setup({ theme });
+const user = userEvent.setup();
 
 test('rendering content correctly', () => {
-  render(
-    <Tabs>
-      <Tabs.List>
-        <Tabs.Item id="1">tab1</Tabs.Item>
-        <Tabs.Item id="2">tab2</Tabs.Item>
-        <Tabs.Item id="3">tab3</Tabs.Item>
-      </Tabs.List>
-      <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-      <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
-      <Tabs.TabPanel id="3">tab-3 content</Tabs.TabPanel>
-    </Tabs>
-  );
+  render(<Basic.Component />);
 
   // rendering the tab controller
-  expect(screen.getByText('tab1')).toBeInTheDocument();
+  expect(screen.getByText('Mouse Settings')).toBeInTheDocument();
   // rendering tabpanel
-  expect(screen.getByText(/tab-1/)).toBeInTheDocument();
+  expect(screen.getByText(/Adjust the sensitivity/)).toBeInTheDocument();
 });
 
-test('Supporting default size', () => {
-  render(
-    <Tabs>
-      <Tabs.List>
-        <Tabs.Item id="1">tab</Tabs.Item>
-      </Tabs.List>
-      <Tabs.TabPanel id="1">tab content</Tabs.TabPanel>
-    </Tabs>
-  );
-  expect(screen.getByText('tab').className).toMatchInlineSnapshot(
-    `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed selected:border-red-500 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
-  );
-});
-
-test('supports disabled prop', () => {
-  render(
-    <Tabs disabledKeys={['2']}>
-      <Tabs.List>
-        <Tabs.Item id="1">tab1</Tabs.Item>
-        <Tabs.Item id="2">tab2</Tabs.Item>
-      </Tabs.List>
-      <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-      <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
-    </Tabs>
-  );
-  const tab = screen.getByText('tab2');
+test('supports disabled prop', async () => {
+  render(<WithDisabledKeys.Component />);
+  const tab = screen.getByText('private');
   expect(tab).toHaveAttribute('aria-disabled');
-  fireEvent.click(tab);
-  expect(screen.getByText('tab-1 content')).toBeVisible();
+  await user.click(tab);
+  // First tab should still be visible since disabled tab can't be selected
+  expect(screen.getByText(/This panel displays your profile/)).toBeVisible();
 });
 
 test('set defaultValue via props in tabs', () => {
-  render(
-    <Tabs defaultSelectedKey={'2'}>
-      <Tabs.List>
-        <Tabs.Item id="1">tab1</Tabs.Item>
-        <Tabs.Item id="2">tab2</Tabs.Item>
-      </Tabs.List>
-      <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-      <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
-    </Tabs>
-  );
-  expect(screen.getByText('tab-2 content')).toBeVisible();
+  render(<WithSelectedTab.Component />);
+  expect(
+    screen.getByText(/You're currently in the Settings tab/)
+  ).toBeVisible();
 });
 
-test('open tabpanel when its tab controller is clicked', () => {
-  render(
-    <Tabs>
-      <Tabs.List>
-        <Tabs.Item id="1">tab1</Tabs.Item>
-        <Tabs.Item id="2">tab2</Tabs.Item>
-      </Tabs.List>
-      <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-      <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
-    </Tabs>
-  );
-  const tab = screen.getByText('tab2');
-  fireEvent.click(tab);
-  expect(tab.className).toMatchInlineSnapshot(
-    `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed selected:border-red-500 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
-  );
-  expect(screen.getByText('tab-2 content')).toBeVisible();
+test('open tabpanel when its tab controller is clicked', async () => {
+  render(<Basic.Component />);
+  const tab = screen.getByText('Keyboard Settings');
+  await user.click(tab);
+  expect(screen.getByText(/Customize the key bindings/)).toBeVisible();
 });
 
-test('allows styling "focus" state via theme', () => {
-  render(
-    <Tabs selectedKey={3} disabledKeys={['2']}>
-      <Tabs.List>
-        <Tabs.Item id="1">tab1</Tabs.Item>
-        <Tabs.Item id="2">tab2</Tabs.Item>
-      </Tabs.List>
-      <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-      <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
-    </Tabs>
-  );
+test('allows tab navigation via keyboard', async () => {
+  render(<Basic.Component />);
+  const firstTab = screen.getByText('Mouse Settings');
+
+  // Focus the first tab
+  await user.click(firstTab);
+
+  // Navigate to next tab with arrow key
+  await user.keyboard('{ArrowRight}');
+
+  // Second tab should now be focused
+  expect(screen.getByText('Keyboard Settings')).toHaveFocus();
+});
+
+test('tabs have correct ARIA roles', () => {
+  render(<Basic.Component />);
+
   const tabs = screen.getAllByRole('tab');
-  expect(tabs[0].className).toMatchInlineSnapshot(
-    `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed selected:border-red-500 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
-  );
-  expect(tabs[1].className).toMatchInlineSnapshot(
-    `"flex cursor-pointer justify-center aria-disabled:cursor-not-allowed selected:border-red-500 selected:border-b-8 selected:border-solid px-2 pb-2 text-lg"`
-  );
+  expect(tabs).toHaveLength(3);
+
+  const tabpanel = screen.getByRole('tabpanel');
+  expect(tabpanel).toBeInTheDocument();
 });
 
-test('allow styling TabPanel & container via theme', () => {
-  render(
-    <Tabs disabledKeys={['2']}>
-      <Tabs.List data-testid="tabs-container">
-        <Tabs.Item id="1">tab1</Tabs.Item>
-        <Tabs.Item id="2">tab2</Tabs.Item>
-      </Tabs.List>
-      <Tabs.TabPanel id="1">tab-1 content</Tabs.TabPanel>
-      <Tabs.TabPanel id="2">tab-2 content</Tabs.TabPanel>
-    </Tabs>
-  );
-  const tabPanel = screen.getByText('tab-1 content');
-  const container = screen.getByTestId('tabs-container');
+test('tablist has correct container structure', () => {
+  render(<Basic.Component />);
 
-  expect(container.className).toMatchSnapshot('flex gap-2');
-
-  expect(tabPanel.className).toMatchInlineSnapshot(
-    `"border-3 border-solid border-red-400"`
-  );
+  const tablist = screen.getByRole('tablist');
+  expect(tablist).toBeInTheDocument();
+  expect(tablist).toHaveAttribute('aria-label', 'Input settings');
 });

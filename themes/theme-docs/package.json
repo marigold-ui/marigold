@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-docs",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "Marigold Docs Theme",
   "license": "MIT",
   "keywords": [
@@ -42,11 +42,13 @@
   },
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "4.1.17",
+    "@tailwindcss/postcss": "4.1.18",
+    "cross-env": "^7.0.3",
     "cssnano": "7.1.2",
     "postcss-cli": "11.0.1",
     "postcss-prefix-selector": "2.1.1",
-    "tailwindcss": "4.1.17",
+    "shx": "^0.3.4",
+    "tailwindcss": "4.1.18",
     "tsdown": "0.16.8"
   },
   "dependencies": {
@@ -58,6 +60,6 @@
     "tailwindcss-react-aria-components": "2.0.1"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && cp src/theme.css dist/theme.css"
+    "build": "cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css dist/theme.css"
   }
 }

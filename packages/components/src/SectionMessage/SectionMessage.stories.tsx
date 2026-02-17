@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { SectionMessage } from './SectionMessage';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/SectionMessage',
   component: SectionMessage,
   argTypes: {
@@ -26,12 +26,9 @@ const meta = {
   args: {
     closeButton: false,
   },
-} satisfies Meta<typeof SectionMessage>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <SectionMessage closeButton {...args}>
       <SectionMessage.Title>Danger Zone!</SectionMessage.Title>
@@ -40,9 +37,9 @@ export const Basic: Story = {
       </SectionMessage.Content>
     </SectionMessage>
   ),
-};
+});
 
-export const MultiLineTitle: Story = {
+export const MultiLineTitle = meta.story({
   render: args => (
     <div className="w-60">
       <SectionMessage {...args}>
@@ -55,9 +52,9 @@ export const MultiLineTitle: Story = {
       </SectionMessage>
     </div>
   ),
-};
+});
 
-export const LongMessage: Story = {
+export const LongMessage = meta.story({
   render: args => (
     <SectionMessage {...args}>
       <SectionMessage.Title>Danger Zone!</SectionMessage.Title>
@@ -74,9 +71,9 @@ export const LongMessage: Story = {
       </SectionMessage.Content>
     </SectionMessage>
   ),
-};
+});
 
-export const ControlledSectionMessage: Story = {
+export const ControlledSectionMessage = meta.story({
   render: args => {
     const [deleteSuccessful, setDeleteSuccessful] = useState<boolean>(false);
 
@@ -100,4 +97,4 @@ export const ControlledSectionMessage: Story = {
       </Stack>
     );
   },
-};
+});

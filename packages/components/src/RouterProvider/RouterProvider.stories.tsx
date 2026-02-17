@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
+import preview from '.storybook/preview';
 import { RouterProvider } from './RouterProvider';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/RouterProvider',
   component: RouterProvider,
   argTypes: {
@@ -19,10 +19,7 @@ const meta = {
     },
   },
   args: {},
-} satisfies Meta<typeof RouterProvider>;
-
-export default meta;
-type Story = StoryObj<typeof RouterProvider>;
+});
 
 function CustomTab(props: any) {
   return (
@@ -35,12 +32,12 @@ function CustomTab(props: any) {
   );
 }
 
-export const Basic: Story = {
-  render: args => {
+export const Basic = meta.story({
+  render: () => {
     const [url, setUrl] = useState<string>('/FoR');
     return (
       <>
-        <RouterProvider {...args} navigate={setUrl}>
+        <RouterProvider navigate={setUrl}>
           <Tabs selectedKey={url}>
             <TabList
               aria-label="History of Ancient Rome"
@@ -70,4 +67,4 @@ export const Basic: Story = {
       </>
     );
   },
-};
+});

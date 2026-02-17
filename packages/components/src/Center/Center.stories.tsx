@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '.storybook/preview';
 import { Ticket } from '@marigold/icons';
 import { Button } from '../Button/Button';
 import { Headline } from '../Headline/Headline';
@@ -6,7 +6,7 @@ import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Center } from './Center';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Center',
   component: Center,
   argTypes: {
@@ -35,20 +35,17 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof Center>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Center maxWidth="xxlarge" {...args}>
       <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
     </Center>
   ),
-};
+});
 
-export const Children: Story = {
+export const Children = meta.story({
   render: args => (
     <Center {...args} space={2}>
       <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
@@ -56,9 +53,9 @@ export const Children: Story = {
       <div className="h-28 w-1/2 border border-slate-300 bg-slate-200" />
     </Center>
   ),
-};
+});
 
-export const Nested: Story = {
+export const Nested = meta.story({
   render: args => (
     <Center {...args}>
       <div className="size-[40px] bg-blue-700">
@@ -68,9 +65,9 @@ export const Nested: Story = {
       </div>
     </Center>
   ),
-};
+});
 
-export const Complex: Story = {
+export const Complex = meta.story({
   render: args => (
     <Stack space={3}>
       <Headline level={2}>Star Wars - The Empire Strikes Back</Headline>
@@ -91,4 +88,4 @@ export const Complex: Story = {
       </Text>
     </Stack>
   ),
-};
+});

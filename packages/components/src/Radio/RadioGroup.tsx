@@ -44,8 +44,10 @@ type RemovedProps =
   | 'isRequired'
   | 'isSelected';
 
-export interface RadioGroupProps
-  extends Omit<RAC.RadioGroupProps, RemovedProps> {
+export interface RadioGroupProps extends Omit<
+  RAC.RadioGroupProps,
+  RemovedProps
+> {
   variant?: string;
   size?: string;
 
@@ -75,6 +77,7 @@ export interface RadioGroupProps
   /**
    * Control the width of the field.
    * @default 100%
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
 

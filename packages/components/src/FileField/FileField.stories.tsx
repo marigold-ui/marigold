@@ -1,10 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { expect } from 'storybook/test';
+import preview from '.storybook/preview';
 import { I18nProvider } from '@react-aria/i18n';
+import { Button } from '../Button/Button';
+import { Form } from '../Form/Form';
 import { makeFile } from './../test.utils';
 import { FileField } from './FileField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/FileField',
   component: FileField,
   argTypes: {
@@ -49,13 +52,9 @@ const meta = {
     multiple: false,
     accept: [],
   },
-} satisfies Meta<typeof FileField>;
+});
 
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: args => {
     return (
@@ -81,9 +80,9 @@ export const Basic: Story = {
       canvas.queryByRole('button', { name: 'Upload' })
     ).toHaveTextContent('Upload');
   },
-};
+});
 
-export const UploadFile: Story = {
+export const UploadFile = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Single Upload',
@@ -103,9 +102,9 @@ export const UploadFile: Story = {
 
     await expect(canvas.queryByText('a.pdf', { exact: true })).toBeVisible();
   },
-};
+});
 
-export const MultipleFileUpload: Story = {
+export const MultipleFileUpload = meta.story({
   tags: ['component-test'],
   args: {
     label: 'Multifile Upload',
@@ -129,25 +128,67 @@ export const MultipleFileUpload: Story = {
     await expect(canvas.getByText('5.00 MB')).toBeInTheDocument();
     await expect(canvas.getByText('0.50 MB')).toBeInTheDocument();
   },
-};
+});
 
-export const Disabled: Story = {
+export const Disabled = meta.story({
   args: {
     label: 'Disabled',
     disabled: true,
   },
-  /*
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.queryByRole('button', { name: 'Hochladen' })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.queryByRole('button', { name: 'Hochladen' })
-    ).toBeDisabled();
-    await expect(canvas.queryByTestId('dropzone')).toHaveAttribute(
-      'data-disabled',
-      'true'
+});
+
+export const InForm = meta.story({
+  tags: ['component-test'],
+  args: {
+    label: 'Upload attachment',
+    name: 'attachment',
+    multiple: true,
+  },
+  render: args => {
+    const [submitted, setSubmitted] = useState<string[]>([]);
+    return (
+      <I18nProvider locale="en-US">
+        <Form
+          onSubmit={e => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const files = formData.getAll('attachment') as File[];
+            setSubmitted(files.map(f => `${f.name} (${f.size} bytes)`));
+          }}
+        >
+          <FileField {...args} />
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
+          {submitted.length > 0 && (
+            <div data-testid="submitted-files">
+              <strong>Submitted files:</strong>
+              <ul>
+                {submitted.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </Form>
+      </I18nProvider>
     );
   },
-  */
-};
+  play: async ({ canvas, userEvent }) => {
+    const input = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+
+    const file = makeFile('report.pdf', 'application/pdf', 1024 * 1024);
+    await userEvent.upload(input, file);
+
+    const submitButton = canvas.getByRole('button', { name: 'Submit' });
+    await userEvent.click(submitButton);
+
+    const result = canvas.getByTestId('submitted-files');
+    await expect(result).toBeInTheDocument();
+    await expect(
+      canvas.getByText('report.pdf (1048576 bytes)')
+    ).toBeInTheDocument();
+  },
+});

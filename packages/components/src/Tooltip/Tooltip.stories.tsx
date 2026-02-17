@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
-import { Tooltip, TooltipProps } from './Tooltip';
+import { Tooltip } from './Tooltip';
 
-const meta: Meta<TooltipProps> = {
+const meta = preview.meta({
   title: 'Components/Tooltip',
   component: Tooltip,
   argTypes: {
@@ -60,15 +60,12 @@ const meta: Meta<TooltipProps> = {
       description: 'The size of the tooltip',
     },
   },
-};
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => {
     return (
-      <div className="ms-auto me-auto flex w-[min(100%_-_3rem,60ch)] gap-2 pt-32">
+      <div className="ms-auto me-auto flex w-[min(100%-3rem,60ch)] gap-2 pt-32">
         <Tooltip.Trigger>
           <Button variant="primary">Hover me!</Button>
           <Tooltip {...args}>Look at this tooltip!</Tooltip>
@@ -83,4 +80,4 @@ export const Basic: Story = {
       </div>
     );
   },
-};
+});

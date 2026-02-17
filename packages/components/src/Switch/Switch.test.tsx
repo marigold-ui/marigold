@@ -1,10 +1,10 @@
-import { composeStories } from '@storybook/react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { vi } from 'vitest';
-import * as stories from './Switch.stories';
+import { Basic } from './Switch.stories';
 
-const { Basic } = composeStories(stories);
+const user = userEvent.setup();
 
 const getSwitchParts = () => {
   const label: HTMLLabelElement = screen.getByText('Label');
@@ -21,7 +21,7 @@ const getSwitchParts = () => {
 };
 
 test('supports base styling', () => {
-  render(<Basic label="Label" />);
+  render(<Basic.Component label="Label" />);
   const { label, container, track, thumb } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
@@ -32,29 +32,29 @@ test('supports base styling', () => {
   );
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:util-focus-borderless-ring outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 
 test('supports a custom variant', () => {
-  render(<Basic variant="custom" label="Label" />);
+  render(<Basic.Component variant="custom" label="Label" />);
   const { track, thumb } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:util-focus-borderless-ring outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 
 test('supports a size', () => {
-  render(<Basic size="medium" label="Label" />);
+  render(<Basic.Component size="medium" label="Label" />);
   const { track } = getSwitchParts();
 
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
 });
 
 test('takes full width by default', () => {
-  render(<Basic label="Label" />);
+  render(<Basic.Component label="Label" />);
 
   const { container } = getSwitchParts();
   expect(container.className).toMatchInlineSnapshot(
@@ -63,7 +63,7 @@ test('takes full width by default', () => {
 });
 
 test('allows to set width via prop', () => {
-  render(<Basic width={10} label="Label" />);
+  render(<Basic.Component width={10} label="Label" />);
   const { label } = getSwitchParts();
 
   expect(label.className).toMatchInlineSnapshot(
@@ -72,51 +72,51 @@ test('allows to set width via prop', () => {
 });
 
 test('supports disabled prop', () => {
-  render(<Basic disabled label="Label" />);
+  render(<Basic.Component disabled label="Label" />);
   const { input, thumb, track } = getSwitchParts();
 
   expect(input).toBeDisabled();
   expect(track.className).toMatchInlineSnapshot(`"relative"`);
   expect(thumb.className).toMatchInlineSnapshot(
-    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:util-focus-borderless-ring outline-none"`
+    `"flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full transition-colors border-2 border-transparent group-disabled/switch:bg-disabled group-disabled/switch:text-disabled-foreground group-selected/switch:group-disabled/switch:bg-disabled group-selected/switch:group-disabled/switch:text-disabled-foreground group-selected/switch:bg-brand bg-input group-focus-visible/switch:ui-state-focus outline-none"`
   );
 });
 
 test('renders hidden <input> element', () => {
-  render(<Basic label="Label" />);
+  render(<Basic.Component label="Label" />);
   const { input } = getSwitchParts();
 
   expect(input instanceof HTMLInputElement).toBeTruthy();
 });
 
-test('supports default selected', () => {
-  render(<Basic defaultSelected label="Label" />);
+test('supports default selected', async () => {
+  render(<Basic.Component defaultSelected label="Label" />);
 
   const { input } = getSwitchParts();
 
   expect(input.checked).toBeTruthy();
-  fireEvent.click(input);
+  await user.click(input);
   expect(input.checked).toBeFalsy();
 });
 
-test('supports controlled component usage', () => {
+test('supports controlled component usage', async () => {
   const onChange = vi.fn();
-  render(<Basic onChange={onChange} label="Label" />);
+  render(<Basic.Component onChange={onChange} label="Label" />);
 
   const { input } = getSwitchParts();
 
-  fireEvent.click(input);
+  await user.click(input);
   expect(onChange).toHaveBeenCalledWith(true);
   expect(input.checked).toBeTruthy();
 
-  fireEvent.click(input);
+  await user.click(input);
   expect(onChange).toHaveBeenCalledWith(false);
   expect(input.checked).toBeFalsy();
 });
 
 test('forwards ref', () => {
   const ref = createRef<HTMLLabelElement>();
-  render(<Basic ref={ref} label="Label" />);
+  render(<Basic.Component ref={ref} label="Label" />);
 
   expect(ref.current).toBeInstanceOf(HTMLLabelElement);
 });

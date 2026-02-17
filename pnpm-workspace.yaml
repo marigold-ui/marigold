@@ -1,5 +1,7 @@
 packages:
   - config/*
+  - .storybook
   - docs
+  - fumadocs
   - packages/*
   - themes/*

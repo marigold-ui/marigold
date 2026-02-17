@@ -22,7 +22,7 @@ test('should have classNames', () => {
   const scroll = screen.getByTestId('scroll');
 
   expect(scroll.className).toMatchInlineSnapshot(
-    `"sticky h-(--height) overflow-auto overscroll-none w-full"`
+    `"sticky h-(--height) overflow-auto overscroll-auto w-full"`
   );
   expect(scroll).toBeValid();
 });
@@ -35,6 +35,6 @@ test('support width and height prop', () => {
   );
   const scroll = screen.getByTestId('scroll');
   expect(scroll.className).toMatchInlineSnapshot(
-    `"sticky h-(--height) overflow-auto overscroll-none w-1/2"`
+    `"sticky h-(--height) overflow-auto overscroll-auto w-1/2"`
   );
 });

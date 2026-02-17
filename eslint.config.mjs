@@ -39,7 +39,11 @@ export default defineConfig([
       'packages/types/src/**',
       '**/.cache',
       'public/**',
-      '**/config/storybook/.storybook/main.ts',
+      '.storybook/main.ts',
+      '.storybook/vitest.setup.ts',
+      'fumadocs/.source/**',
+      'fumadocs/.registry/**',
+      '.claude/**',
     ],
   },
 ]);

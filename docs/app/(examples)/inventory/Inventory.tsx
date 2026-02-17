@@ -44,12 +44,12 @@ const venue = venues.find(v => v.id === '9')!;
 export const Inventory = () => (
   <Form autoComplete="off">
     <Columns columns={[1, 1, 1]} space={8} collapseAt="800px">
-      <Stack space="fieldY">
+      <Stack space="peer">
         <Headline level="4">Shipping Address</Headline>
         <TextField label="Full name" required />
         <TextField label="Street" required />
-        <Inline space="fieldX" noWrap>
-          <TextField label="ZIP code" required maxLength={5} width="1/4" />
+        <Inline space="tight" noWrap>
+          <TextField label="Zip code" required maxLength={5} width="1/4" />
           <TextField label="City" required />
         </Inline>
         <ComboBox
@@ -108,13 +108,13 @@ export const Inventory = () => (
           label="Delivery Instructions"
           description="Tricky delivery spot? Add a gate code, building access info, or a safe place to leave your package."
         />
-        <Inline alignY="center" space="fieldX">
+        <Inline alignY="center" space="tight">
           <Button variant="primary">Submit</Button>
           <Button>Cancel</Button>
         </Inline>
       </Stack>
       <Stack space={6}>
-        <Card space={6}>
+        <Card space={6} stretch>
           <Inline noWrap space={5}>
             <img
               src={venue.image}
@@ -164,7 +164,7 @@ export const Inventory = () => (
           <Badge variant="error">on sale</Badge>
           <Badge variant="info">recommended</Badge>
         </Inline>
-        <Inline space="fieldX" noWrap>
+        <Inline space="related" noWrap>
           <SearchField
             aria-label="Search products"
             placeholder="Search products..."

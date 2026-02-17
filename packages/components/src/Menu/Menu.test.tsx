@@ -1,17 +1,9 @@
-import { composeStories } from '@storybook/react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SVGProps } from 'react';
 import { vi } from 'vitest';
-import * as stories from './Menu.stories';
-
-const { Basic, BasicActionMenu, MenuSection } = composeStories(stories, {
-  decorators: Story => (
-    <div id="storybook-root">
-      <Story />
-    </div>
-  ),
-});
+import { renderWithOverlay } from '../test.utils';
+import { Basic, BasicActionMenu, MenuSection } from './Menu.stories';
 
 /**
  * We need to mock `matchMedia` because JSOM does not
@@ -21,6 +13,8 @@ const { Basic, BasicActionMenu, MenuSection } = composeStories(stories, {
 const mockMatchMedia = (matches: string[]) =>
   vi.fn().mockImplementation(query => ({
     matches: matches.includes(query),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
   }));
 
 window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
@@ -28,7 +22,7 @@ window.matchMedia = mockMatchMedia(['(max-width: 600px)']);
 const user = userEvent.setup();
 
 test('renders the button but no menu by default', () => {
-  render(<Basic />);
+  renderWithOverlay(<Basic.Component />);
   const button = screen.queryByText('Hogwarts Houses');
   const gryffindor = screen.queryByText('Gryffindor');
   const hufflepuff = screen.queryByText('Hufflepuff');
@@ -43,7 +37,7 @@ test('renders the button but no menu by default', () => {
 });
 
 test('renders action menu', async () => {
-  render(<BasicActionMenu />);
+  renderWithOverlay(<BasicActionMenu.Component />);
   const button = screen.getByRole('button');
 
   expect(button).toBeInTheDocument();
@@ -55,14 +49,16 @@ test('renders action menu', async () => {
 
 test('supports onOpenChange property', async () => {
   const onOpenChange = vi.fn();
-  render(<Basic data-testid="menu" onOpenChange={() => onOpenChange()} />);
+  renderWithOverlay(
+    <Basic.Component data-testid="menu" onOpenChange={() => onOpenChange()} />
+  );
   expect(onOpenChange).toBeCalledTimes(0);
   await user.click(screen.getByRole('button'));
   expect(onOpenChange).toBeCalledTimes(1);
 });
 
 test('supports Menu with sections', async () => {
-  render(<MenuSection aria-label="Menu with sections" />);
+  renderWithOverlay(<MenuSection.Component aria-label="Menu with sections" />);
 
   const button = screen.getByRole('button');
   await user.click(button);
@@ -78,8 +74,8 @@ test('pass "aria-label" to button (when you use a menu with only an icon)', () =
     </svg>
   );
 
-  render(
-    <Basic
+  renderWithOverlay(
+    <Basic.Component
       data-testid="menu"
       aria-label="Descriptive label for the button"
       label={<Icon />}

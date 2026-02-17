@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Link } from '@marigold/components';
+import { useRef } from 'react';
+import preview from '.storybook/preview';
 import { Autocomplete } from '../Autocomplete/Autocomplete';
 import { Button } from '../Button/Button';
 import { Calendar } from '../Calendar/Calendar';
@@ -9,6 +9,7 @@ import { Columns } from '../Columns/Columns';
 import { ComboBox } from '../ComboBox/ComboBox';
 import { DateField } from '../DateField/DateField';
 import { Inline } from '../Inline/Inline';
+import { Link } from '../Link/Link';
 import { Radio } from '../Radio/Radio';
 import { Select } from '../Select/Select';
 import { SelectList } from '../SelectList/SelectList';
@@ -16,17 +17,14 @@ import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { TextField } from '../TextField/TextField';
-import { Form, FormProps } from './Form';
+import { Form } from './Form';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Form',
   component: Form,
-} satisfies Meta<FormProps>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => {
     return (
       <Form {...args}>
@@ -48,18 +46,18 @@ export const Basic: Story = {
       </Form>
     );
   },
-};
+});
 
-export const Horizontal: Story = {
+export const Horizontal = meta.story({
   render: () => (
     <Inline space={4} alignY="bottom">
       <TextField label="Name" width={72} />
       <Button variant="primary">Save</Button>
     </Inline>
   ),
-};
+});
 
-export const Selected: Story = {
+export const Selected = meta.story({
   render: args => {
     return (
       <Form {...args}>
@@ -159,4 +157,35 @@ export const Selected: Story = {
       </Form>
     );
   },
+});
+
+const FormWithRef = () => {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  return (
+    <Stack space={4}>
+      <Form ref={formRef} data-testid="form-with-ref">
+        <Stack space={5}>
+          <TextField label="Name" name="name" />
+          <TextField label="Email" type="email" name="email" />
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Stack>
+      </Form>
+      <Button
+        onPress={() => {
+          if (formRef.current) {
+            formRef.current.reset();
+          }
+        }}
+      >
+        Reset Form
+      </Button>
+    </Stack>
+  );
 };
+
+export const WithRef = meta.story({
+  render: () => <FormWithRef />,
+});

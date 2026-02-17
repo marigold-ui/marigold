@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Checkbox } from './Checkbox';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Checkbox',
   component: Checkbox,
   argTypes: {
@@ -74,12 +74,9 @@ const meta = {
     error: false,
     required: false,
   },
-} satisfies Meta<typeof Checkbox>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -89,9 +86,9 @@ export const Basic: Story = {
 
     expect(checkbox).toBeChecked();
   },
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   tags: ['component-test'],
   args: {
     onChange: fn(),
@@ -105,9 +102,9 @@ export const Controlled: Story = {
     await userEvent.click(input);
     expect(args.onChange).toHaveBeenCalledWith(false);
   },
-};
+});
 
-export const ReadOnly: Story = {
+export const ReadOnly = meta.story({
   tags: ['component-test'],
   args: {
     defaultChecked: true,
@@ -122,9 +119,9 @@ export const ReadOnly: Story = {
 
     await expect(checkbox.checked).toBeTruthy();
   },
-};
+});
 
-export const WithDescription: Story = {
+export const WithDescription = meta.story({
   args: {
     description: 'This is a description',
   },
@@ -140,4 +137,4 @@ export const WithDescription: Story = {
     expect(description).toBeInTheDocument();
     expect(checkboxDescribedBy).toBe(helpTextId);
   },
-};
+});

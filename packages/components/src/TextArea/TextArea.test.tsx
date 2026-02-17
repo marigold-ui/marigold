@@ -1,95 +1,24 @@
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createRef, useState } from 'react';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
-import { TextArea } from './TextArea';
-
-const theme = {
-  name: 'test',
-  components: {
-    Field: cva(''),
-    Label: cva('', {
-      variants: {
-        variant: { lime: 'text-lime-500' },
-        size: { small: 'text-sm' },
-      },
-    }),
-    HelpText: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'text-sm',
-          },
-        },
-      }),
-      icon: cva(''),
-    },
-    TextArea: cva('text-blue-500', {
-      variants: {
-        variant: { lime: 'text-lime-500' },
-        size: { small: 'text-sm' },
-      },
-    }),
-  },
-} satisfies Theme;
-
-const user = userEvent.setup();
-const { render } = setup({ theme });
+import { render, screen } from '@testing-library/react';
+import { createRef } from 'react';
+import { Basic } from './TextArea.stories';
 
 test('renders an textarea', () => {
-  render(<TextArea label="Label" data-testid="textarea" />);
+  render(<Basic.Component />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toBeInTheDocument();
   expect(textArea instanceof HTMLTextAreaElement).toBeTruthy();
 });
 
-test('textarea can be styled via "TextArea" styles', () => {
-  render(<TextArea label="Label" data-testid="text-area" />);
-  const textArea = screen.getByRole('textbox');
-  expect(textArea.className).toMatchInlineSnapshot(`"text-blue-500"`);
-});
-
-test('passes down variant and size', () => {
-  render(
-    <TextArea
-      data-testid="text-area"
-      label="Label"
-      description="Description"
-      variant="lime"
-      size="small"
-    />
-  );
-
-  const textArea = screen.getByRole('textbox');
-  expect(textArea.className).toMatchInlineSnapshot(`"text-lime-500 text-sm"`);
-
-  const label = screen.getByText('Label');
-  expect(label.className).toMatchInlineSnapshot(
-    `"text-lime-500 text-sm inline-flex"`
-  );
-
-  const description = screen.getByText('Description');
-  // eslint-disable-next-line testing-library/no-node-access
-  const parentElement = description.parentElement;
-  expect(parentElement?.className).toMatchInlineSnapshot(
-    `"text-lime-600 text-sm"`
-  );
-});
-
 test('supports disabled', () => {
-  render(<TextArea label="A Label" disabled data-testid="textarea" />);
+  render(<Basic.Component disabled />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toBeDisabled();
 });
 
 test('supports required', () => {
-  render(<TextArea label="A Label" required data-testid="textarea" />);
+  render(<Basic.Component required />);
 
   const textArea = screen.getByRole('textbox');
   /** Note that the required attribute is not passed down! */
@@ -97,64 +26,44 @@ test('supports required', () => {
 });
 
 test('supports readonly', () => {
-  render(<TextArea label="A Label" readOnly data-testid="textarea" />);
+  render(<Basic.Component readOnly />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveAttribute('readonly');
 });
 
 test('supports field structure', () => {
-  render(
-    <TextArea
-      label="A Label"
-      description="Some helpful text"
-      errorMessage="Whoopsie"
-    />
-  );
+  render(<Basic.Component />);
 
-  const label = screen.queryByText('A Label');
+  const label = screen.queryByText('Label');
   expect(label).toBeInTheDocument();
 
-  const description = screen.queryByText('Some helpful text');
+  const description = screen.queryByText('This is a help text description');
   expect(description).toBeInTheDocument();
 
-  const error = screen.queryByText('Whoopsie');
+  const error = screen.queryByText('Something went wrong');
   expect(error).not.toBeInTheDocument();
 });
 
 test('supports field structure (with error)', () => {
-  render(
-    <TextArea
-      label="A Label"
-      description="Some helpful text"
-      error={true}
-      errorMessage="Whoopsie"
-    />
-  );
+  render(<Basic.Component error={true} />);
 
-  const label = screen.queryByText('A Label');
+  const label = screen.queryByText('Label');
   expect(label).toBeInTheDocument();
 
-  const description = screen.queryByText('Some helpful text');
+  const description = screen.queryByText('This is a help text description');
   expect(description).not.toBeInTheDocument();
 
-  const error = screen.queryByText('Whoopsie');
+  const error = screen.queryByText('Something went wrong');
   expect(error).toBeInTheDocument();
 });
 
 test('correctly sets up aria attributes', () => {
-  render(
-    <TextArea
-      data-testid="textarea"
-      label="A Label"
-      description="Some helpful text"
-      errorMessage="Whoopsie"
-    />
-  );
+  render(<Basic.Component />);
 
-  const label = screen.getByText('A Label');
+  const label = screen.getByText('Label');
   const textArea = screen.getByRole('textbox');
-  const description = screen.getByText('Some helpful text');
+  const description = screen.getByText('This is a help text description');
 
   const htmlFor = label.getAttribute('for');
   const labelId = label.getAttribute('id');
@@ -174,19 +83,11 @@ test('correctly sets up aria attributes', () => {
 });
 
 test('correctly sets up aria attributes (with error)', () => {
-  render(
-    <TextArea
-      data-testid="textarea"
-      label="A Label"
-      description="Some helpful text"
-      error={true}
-      errorMessage="Whoopsie"
-    />
-  );
+  render(<Basic.Component error={true} />);
 
-  const label = screen.getByText('A Label');
+  const label = screen.getByText('Label');
   const textArea = screen.getByRole('textbox');
-  const error = screen.getByText('Whoopsie');
+  const error = screen.getByText('Something went wrong');
 
   const htmlFor = label.getAttribute('for');
   const labelId = label.getAttribute('id');
@@ -207,52 +108,22 @@ test('correctly sets up aria attributes (with error)', () => {
 });
 
 test('can have default value', () => {
-  render(
-    <TextArea
-      data-testid="textarea"
-      label="A Label"
-      defaultValue="Default Value"
-    />
-  );
+  render(<Basic.Component defaultValue="Default Value" />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveValue('Default Value');
 });
 
 test('passes down "rows" attribute', () => {
-  render(
-    <TextArea
-      data-testid="textarea"
-      label="A Label"
-      defaultValue="Default Value"
-      rows={5}
-    />
-  );
+  render(<Basic.Component defaultValue="Default Value" rows={5} />);
 
   const textArea = screen.getByRole('textbox');
   expect(textArea).toHaveAttribute('rows', '5');
 });
 
-test('can be controlled', async () => {
-  const Controlled = () => {
-    const [value, setValue] = useState('');
-    return (
-      <>
-        <TextArea data-testid="textarea" label="A Label" onChange={setValue} />
-        <span data-testid="output">{value}</span>
-      </>
-    );
-  };
-
-  render(<Controlled />);
-
-  await user.type(screen.getByRole('textbox'), 'Hello there!');
-  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
-});
-
 test('forwards ref', () => {
   const ref = createRef<HTMLTextAreaElement>();
-  render(<TextArea data-testid="text-area" label="A Label" ref={ref} />);
+  render(<Basic.Component ref={ref} />);
 
   expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);
 });

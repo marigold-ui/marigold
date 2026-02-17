@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '.storybook/preview';
 import { alignment } from '@marigold/system';
 import { Card } from '../Card/Card';
 import { Container } from '../Container/Container';
@@ -8,7 +8,7 @@ import { Text } from '../Text/Text';
 import { Block } from '../__internal__/Block';
 import { Stack } from './Stack';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Stack',
   component: Stack,
   argTypes: {
@@ -40,12 +40,9 @@ const meta = {
         'Stretch to fill space (vertical AND horizontal, useful if you want to change y alignment)',
     },
   },
-} satisfies Meta<typeof Stack>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   args: {
     space: 4,
   },
@@ -68,9 +65,9 @@ export const Basic: Story = {
       </Stack>
     </div>
   ),
-};
+});
 
-export const Nested: Story = {
+export const Nested = meta.story({
   render: args => (
     <Block>
       <Stack {...args}>
@@ -119,9 +116,9 @@ export const Nested: Story = {
       </Stack>
     </Block>
   ),
-};
+});
 
-export const Stretch: Story = {
+export const Stretch = meta.story({
   args: {
     space: 8,
     stretch: true,
@@ -137,18 +134,18 @@ export const Stretch: Story = {
       </div>
     </Block>
   ),
-};
+});
 
-export const AsList: Story = {
+export const AsList = meta.story({
   render: args => (
     <Stack {...args} asList>
       <Block>first</Block>
       <Block>second</Block>
     </Stack>
   ),
-};
+});
 
-export const WithInline: Story = {
+export const WithInline = meta.story({
   args: {
     space: 4,
     alignX: 'center',
@@ -164,9 +161,9 @@ export const WithInline: Story = {
       </Inline>
     </Stack>
   ),
-};
+});
 
-export const WithCards: Story = {
+export const WithCards = meta.story({
   args: {
     space: 8,
   },
@@ -193,4 +190,4 @@ export const WithCards: Story = {
       </Card>
     </Stack>
   ),
-};
+});

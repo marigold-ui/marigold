@@ -1,12 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
 import { expect, fn, userEvent } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Facebook } from '@marigold/icons';
-import { Container } from '../Container/Container';
 import { Stack } from '../Stack/Stack';
 import { Button } from './Button';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Button',
   component: Button,
   argTypes: {
@@ -77,12 +76,9 @@ const meta = {
     size: 'default',
     loading: false,
   },
-} satisfies Meta<typeof Button>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   tags: ['component-test'],
   args: {
     onPress: fn(),
@@ -94,9 +90,9 @@ export const Basic: Story = {
     await expect(args.onPress).toHaveBeenCalled();
     await expect(canvas.getByText('Button')).toHaveTextContent('Button');
   },
-};
+});
 
-export const ButtonVariants: Story = {
+export const ButtonVariants = meta.story({
   tags: ['component-test'],
   parameters: {
     controls: { exclude: ['variant', 'children', 'loading'] },
@@ -105,26 +101,24 @@ export const ButtonVariants: Story = {
     onPress: fn(),
   },
   render: args => (
-    <Container>
-      <Stack space={4} alignX="left">
-        <Button {...args} variant="primary">
-          Primary
-        </Button>
-        <Button {...args}>Secondary</Button>
-        <Button {...args} variant="destructive">
-          Destructive
-        </Button>
-        <Button {...args} variant="destructive-ghost">
-          Destructive Ghost
-        </Button>
-        <Button {...args} variant="ghost">
-          Ghost
-        </Button>
-        <Button {...args} variant="link">
-          Link
-        </Button>
-      </Stack>
-    </Container>
+    <Stack space={4} alignX="left">
+      <Button {...args} variant="primary">
+        Primary
+      </Button>
+      <Button {...args}>Secondary</Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="destructive">
+        Destructive
+      </Button>
+      <Button {...args} variant="destructive-ghost">
+        Destructive Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+    </Stack>
   ),
   play: async ({ args, canvas }) => {
     await userEvent.click(canvas.getByText('Primary'));
@@ -135,30 +129,30 @@ export const ButtonVariants: Story = {
 
     await expect(args.onPress).toHaveBeenCalledTimes(5);
   },
-};
+});
 
-export const WithIcon: Story = {
+export const WithIcon = meta.story({
   render: ({ children, ...args }) => (
     <Button {...args}>
       <Facebook size={30} data-testid="facebook" />
       {children}
     </Button>
   ),
-};
+});
 
-export const OnPress: Story = {
+export const OnPress = meta.story({
   args: {
     onPress: () => alert('Button clicked.'),
   },
-};
+});
 
-export const FullWidth: Story = {
+export const FullWidth = meta.story({
   args: {
     fullWidth: true,
   },
-};
+});
 
-export const Loading: Story = {
+export const Loading = meta.story({
   parameters: {
     controls: { exclude: ['loading'] },
   },
@@ -184,9 +178,9 @@ export const Loading: Story = {
       </Button>
     );
   },
-};
+});
 
-export const LoadingWithIcon: Story = {
+export const LoadingWithIcon = meta.story({
   parameters: {
     controls: { exclude: ['loading'] },
   },
@@ -212,4 +206,4 @@ export const LoadingWithIcon: Story = {
       </Button>
     );
   },
-};
+});

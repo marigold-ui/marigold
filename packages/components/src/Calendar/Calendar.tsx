@@ -8,6 +8,7 @@ import {
   useClassNames,
 } from '@marigold/system';
 import { CalendarGrid } from './CalendarGrid';
+import { CalendarHeader } from './CalendarHeader';
 import { CalendarListBox } from './CalendarListBox';
 import { CalendarContext } from './Context';
 import MonthControls from './MonthControls';
@@ -21,8 +22,6 @@ import {
 // Props
 // ---------------
 type RemovedProps =
-  | 'visibleDuration'
-  | 'pageBehavior'
   | 'isDateUnavailable'
   | 'isDisabled'
   | 'isReadOnly'
@@ -31,8 +30,10 @@ type RemovedProps =
   | 'className'
   | 'style';
 
-export interface CalendarProps
-  extends Omit<RAC.CalendarProps<DateValue>, RemovedProps> {
+export interface CalendarProps extends Omit<
+  RAC.CalendarProps<DateValue>,
+  RemovedProps
+> {
   /**
    * Disables the Calendar.
    * @default false
@@ -48,18 +49,31 @@ export interface CalendarProps
   /**
    * Sets the width of the calendar. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default fit
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
   /**
    * Callback that is called for each date of the calendar. If it returns true, then the date is unavailable.
    */
   dateUnavailable?: RAC.CalendarProps<DateValue>['isDateUnavailable'];
+  /**
+   * The number of months to display at once. Up to 3 months are supported.
+   * @default { months: 1 }
+   */
+  visibleDuration?: { months: number };
+  /**
+   * Controls how the calendar pages when navigating.
+   * - 'single': Page by one month at a time
+   * - 'visible': Page by the number of visible months
+   * @default 'visible'
+   */
+  pageBehavior?: 'single' | 'visible';
 }
 
 type ViewMapKeys = 'month' | 'year';
+
 // Component
 // ---------------
-
 const _Calendar = ({
   disabled,
   readOnly,
@@ -67,18 +81,23 @@ const _Calendar = ({
   variant,
   width = 'fit',
   dateUnavailable,
-  minValue: _minValue,
-  maxValue: _maxValue,
+  minValue,
+  maxValue,
+  visibleDuration = { months: 1 },
+  pageBehavior = 'visible',
   ...rest
 }: CalendarProps) => {
-  const minValue = _minValue;
-  const maxValue = _maxValue;
+  const visibleMonths = visibleDuration?.months ?? 1;
+  const isMultiMonth = visibleMonths > 1;
+
   const props: RAC.CalendarProps<DateValue> = {
     isDisabled: disabled,
     isReadOnly: readOnly,
     isDateUnavailable: dateUnavailable,
     minValue,
     maxValue,
+    visibleDuration,
+    pageBehavior,
     ...rest,
   };
 
@@ -105,11 +124,55 @@ const _Calendar = ({
     ),
   } satisfies { [key in ViewMapKeys]: React.JSX.Element };
 
+  if (isMultiMonth) {
+    return (
+      <CalendarContext.Provider
+        value={{
+          classNames,
+          visibleMonths,
+          minValue,
+          maxValue,
+          disabled,
+        }}
+      >
+        <Calendar
+          className={cn(
+            'relative flex min-h-[350px] flex-col',
+            twWidth[width],
+            classNames.calendar
+          )}
+          {...props}
+        >
+          <div className={cn('flex gap-4', classNames.calendarContainer)}>
+            {[...Array(visibleMonths).keys()].map(i => (
+              <div key={i} className={cn('flex-1', classNames.calendarMonth)}>
+                <CalendarHeader
+                  monthOffset={i}
+                  showPrevious={i === 0}
+                  showNext={i === visibleMonths - 1}
+                />
+                <CalendarGrid offset={{ months: i }} />
+              </div>
+            ))}
+          </div>
+        </Calendar>
+      </CalendarContext.Provider>
+    );
+  }
+
   return (
-    <CalendarContext.Provider value={{ classNames }}>
+    <CalendarContext.Provider
+      value={{
+        classNames,
+        visibleMonths,
+        minValue,
+        maxValue,
+        disabled,
+      }}
+    >
       <Calendar
         className={cn(
-          'relative flex min-h-[350px] flex-col rounded-xs p-4',
+          'relative flex min-h-[350px] flex-col',
           twWidth[width],
           classNames.calendar
         )}

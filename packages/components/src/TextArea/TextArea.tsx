@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import type RAC from 'react-aria-components';
 import { TextArea, TextField } from 'react-aria-components';
-import { WidthProp, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
 
 // Props
@@ -18,7 +18,8 @@ type RemovedProps =
   | 'defaultValue';
 
 export interface TextAreaProps
-  extends Omit<RAC.TextFieldProps, RemovedProps>,
+  extends
+    Omit<RAC.TextFieldProps, RemovedProps>,
     Pick<RAC.TextAreaProps, 'rows'>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   variant?: string;
@@ -107,7 +108,11 @@ const _TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 
     return (
       <FieldBase as={TextField} {...props} variant={variant} size={size}>
-        <TextArea className={classNames} ref={ref} rows={rows} />
+        <TextArea
+          className={cn(classNames, 'w-(--field-width) max-w-full min-w-0')}
+          ref={ref}
+          rows={rows}
+        />
       </FieldBase>
     );
   }

@@ -1,27 +1,25 @@
-import type { StoryObj } from '@storybook/react';
-import { expect } from 'storybook/test';
+import { expect, fn } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Stack } from '../Stack/Stack';
-import {
-  ConfirmationDialog,
-  ConfirmationDialogProps,
-} from './ConfirmationDialog';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import { useConfirmation } from './useConfirmation';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/ConfirmationDialog',
-  component: ConfirmationDialog.Trigger,
-};
+  component: ConfirmationDialog,
+});
 
-export default meta;
-
-export const Confirmation: StoryObj<ConfirmationDialogProps> = {
-  render: ({ ...args }) => (
-    <ConfirmationDialog.Trigger {...args}>
+export const Confirmation = meta.story({
+  args: {
+    title: 'Confirmation',
+    confirmationLabel: 'Confirm',
+    children: 'Are you sure you want to proceed with this action?',
+  },
+  render: args => (
+    <ConfirmationDialog.Trigger>
       <Button>Open</Button>
-      <ConfirmationDialog title="Confirmation" confirmationLabel="Confirm">
-        Are you sure you want to proceed with this action?
-      </ConfirmationDialog>
+      <ConfirmationDialog {...args}>{args.children}</ConfirmationDialog>
     </ConfirmationDialog.Trigger>
   ),
   play: async ({ canvas }) => {
@@ -35,9 +33,39 @@ export const Confirmation: StoryObj<ConfirmationDialogProps> = {
 
     await canvas.getByRole('button', { name: 'Confirm' }).click();
   },
-};
+});
 
-export const UseConfirmation: StoryObj = {
+export const WithCallbacks = meta.story({
+  args: {
+    title: 'Confirm Dialog',
+    confirmationLabel: 'Confirm',
+    children: 'Are you sure you want to do this?',
+    onConfirm: fn(),
+    onCancel: fn(),
+  },
+  render: args => (
+    <ConfirmationDialog.Trigger defaultOpen>
+      <ConfirmationDialog {...args}>{args.children}</ConfirmationDialog>
+    </ConfirmationDialog.Trigger>
+  ),
+});
+
+export const WithAutoFocus = meta.story({
+  args: {
+    title: 'Confirm Dialog',
+    confirmationLabel: 'Confirm',
+    children: 'Are you sure you want to do this?',
+    autoFocusButton: 'action',
+  },
+  render: args => (
+    <ConfirmationDialog.Trigger>
+      <Button>Open</Button>
+      <ConfirmationDialog {...args}>{args.children}</ConfirmationDialog>
+    </ConfirmationDialog.Trigger>
+  ),
+});
+
+export const UseConfirmation = meta.story({
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const confirm = useConfirmation();
@@ -69,4 +97,4 @@ export const UseConfirmation: StoryObj = {
       </Stack>
     );
   },
-};
+});

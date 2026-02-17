@@ -3,11 +3,14 @@ import { cn, useClassNames } from '@marigold/system';
 
 // Props
 // ---------------
-export interface UnderlayProps
-  extends Omit<
-    RAC.ModalOverlayProps,
-    'isOpen' | 'isDismissable' | 'isKeyboardDismissDisabled' | 'className'
-  > {
+export interface UnderlayProps extends Omit<
+  RAC.ModalOverlayProps,
+  | 'isOpen'
+  | 'isDismissable'
+  | 'isKeyboardDismissDisabled'
+  | 'className'
+  | 'render'
+> {
   variant?: string;
   size?: string;
   open?: boolean;
@@ -37,7 +40,7 @@ export const Underlay = ({
     <ModalOverlay
       className={({ isEntering, isExiting }) =>
         cn(
-          'fixed inset-0 z-40 grid place-items-center overflow-y-auto',
+          'fixed inset-0 z-50 grid place-items-center overflow-y-auto',
           isEntering ? 'animate-in fade-in duration-300 ease-out' : '',
           isExiting ? 'animate-out fade-out duration-200 ease-in' : '',
           classNames

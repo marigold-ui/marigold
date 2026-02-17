@@ -1,0 +1,10 @@
+{
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": true
+  }
+}

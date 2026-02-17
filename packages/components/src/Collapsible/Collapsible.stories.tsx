@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
 import type { ReactNode } from 'react';
 import { expect } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Collapsible } from './Collapsible';
 import { More } from './More';
 
-const meta: Meta<typeof Collapsible> = {
+const meta = preview.meta({
   title: 'Components/Collapsible',
   component: Collapsible,
   argTypes: {
@@ -15,12 +15,11 @@ const meta: Meta<typeof Collapsible> = {
   },
   args: {
     children: 'This is the content of the collapsible component.',
-  },
-};
+    showCount: false,
+  } as const,
+});
 
-export default meta;
-
-export const Basic: StoryObj<typeof meta> = {
+export const Basic = meta.story({
   tags: ['component-test'],
   render: ({ children, ...args }) => (
     <Collapsible {...args}>
@@ -45,9 +44,9 @@ export const Basic: StoryObj<typeof meta> = {
       ).not.toBeVisible();
     });
   },
-};
+});
 
-export const ShowMore: StoryObj<typeof More> = {
+export const ShowMore = meta.story({
   render: ({ children = <p>Test Content</p>, ...args }) => (
     <More {...args}>{children as ReactNode}</More>
   ),
@@ -68,4 +67,4 @@ export const ShowMore: StoryObj<typeof More> = {
       ).not.toBeVisible();
     });
   },
-};
+});

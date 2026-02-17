@@ -1,14 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import { I18nProvider } from 'react-aria-components';
-import { useState } from 'storybook/preview-api';
 import { expect } from 'storybook/test';
+import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
 import { Stack } from '../Stack/Stack';
 import { Slider } from './Slider';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Slider',
   component: Slider,
   argTypes: {
@@ -70,17 +69,14 @@ const meta = {
   args: {
     description: 'This is a help text description',
   },
-} satisfies Meta<typeof Slider>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   args: { label: 'Label' },
   render: args => <Slider {...args} />,
-};
+});
 
-export const ValueFormatting: Story = {
+export const ValueFormatting = meta.story({
   args: { label: 'Price' },
   render: args => (
     <I18nProvider locale="en-US">
@@ -103,9 +99,9 @@ export const ValueFormatting: Story = {
     expect(canvas.queryAllByRole('status')[0]).toHaveTextContent('€0.00');
     expect(canvas.queryAllByRole('status')[1]).toHaveTextContent('0%');
   },
-};
+});
 
-export const MultipleThumbs: Story = {
+export const MultipleThumbs = meta.story({
   render: args => (
     <Slider
       label="Range"
@@ -121,9 +117,9 @@ export const MultipleThumbs: Story = {
     expect(slider[0]).toHaveValue('20');
     expect(slider[1]).toHaveValue('40');
   },
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   args: { label: 'Cookies to buy' },
   render: args => {
     const [value, setValue] = useState<number | number[]>(25);
@@ -135,9 +131,9 @@ export const Controlled: Story = {
       </Stack>
     );
   },
-};
+});
 
-export const MultiThumbsControlled: Story = {
+export const MultiThumbsControlled = meta.story({
   args: { label: 'Tickets for sale' },
   render: args => {
     const [value, setValue] = useState<number | number[]>([25, 75]);
@@ -151,9 +147,9 @@ export const MultiThumbsControlled: Story = {
       </Stack>
     );
   },
-};
+});
 
-export const Forms: Story = {
+export const Forms = meta.story({
   args: { label: 'Opacity' },
   render: args => {
     const handleSubmit = (e: FormEvent) => {
@@ -173,9 +169,9 @@ export const Forms: Story = {
       </Form>
     );
   },
-};
+});
 
-export const MultiThumbsForm: Story = {
+export const MultiThumbsForm = meta.story({
   args: { label: 'Age' },
   render: args => {
     const handleSubmit = (e: FormEvent) => {
@@ -203,14 +199,14 @@ export const MultiThumbsForm: Story = {
       </Form>
     );
   },
-};
+});
 
-export const Disabled: Story = {
+export const Disabled = meta.story({
   args: { label: 'Disabled' },
   render: args => <Slider {...args} defaultValue={20} disabled />,
-};
+});
 
-export const MultiThumbsDisabled: Story = {
+export const MultiThumbsDisabled = meta.story({
   args: { label: 'Disabled' },
   render: args => (
     <Slider
@@ -221,9 +217,9 @@ export const MultiThumbsDisabled: Story = {
       disabled
     />
   ),
-};
+});
 
-export const Steps: Story = {
+export const Steps = meta.story({
   render: args => (
     <Stack space={4}>
       <Slider
@@ -242,9 +238,9 @@ export const Steps: Story = {
       />
     </Stack>
   ),
-};
+});
 
-export const MinAndMaxValue: Story = {
+export const MinAndMaxValue = meta.story({
   args: { label: 'Budget' },
   render: args => <Slider {...args} minValue={50} maxValue={100} />,
-};
+});

@@ -1,9 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'storybook/preview-api';
+import { useState } from 'react';
+import preview from '.storybook/preview';
 import { SearchField } from './SearchField';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/SearchField',
+  component: SearchField,
   argTypes: {
     label: {
       control: {
@@ -63,16 +64,13 @@ const meta = {
     readOnly: false,
     disabled: false,
   },
-} satisfies Meta<typeof SearchField>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => <SearchField {...args} required label="search field" />,
-};
+});
 
-export const Controlled: Story = {
+export const Controlled = meta.story({
   render: args => {
     const [value, setValue] = useState('');
     return (
@@ -92,4 +90,4 @@ export const Controlled: Story = {
       </>
     );
   },
-};
+});

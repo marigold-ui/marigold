@@ -51,7 +51,8 @@ type RemovedProps =
   | 'isReadOnly';
 
 export interface CheckboxGroupProps
-  extends Omit<RAC.CheckboxGroupProps, RemovedProps>,
+  extends
+    Omit<RAC.CheckboxGroupProps, RemovedProps>,
     Pick<FieldBaseProps<'label'>, 'label' | 'description' | 'errorMessage'> {
   /**
    * The children of the component
@@ -63,6 +64,7 @@ export interface CheckboxGroupProps
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    *
    * @default full
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
   /**

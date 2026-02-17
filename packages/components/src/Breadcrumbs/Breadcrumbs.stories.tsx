@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '.storybook/preview';
 import { Breadcrumbs } from './Breadcrumbs';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Breadcrumbs',
   component: Breadcrumbs,
   argTypes: {
@@ -26,12 +26,9 @@ const meta = {
     disabled: false,
     children: [],
   },
-} satisfies Meta<typeof Breadcrumbs>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Basic: Story = {
+export const Basic = meta.story({
   render: args => (
     <Breadcrumbs {...args}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
@@ -43,9 +40,9 @@ export const Basic: Story = {
       </Breadcrumbs.Item>
     </Breadcrumbs>
   ),
-};
+});
 
-export const Collapsed: Story = {
+export const Collapsed = meta.story({
   render: args => (
     <Breadcrumbs {...args} maxVisibleItems={3}>
       <Breadcrumbs.Item href="https://marigold-ui.io">Home</Breadcrumbs.Item>
@@ -60,9 +57,9 @@ export const Collapsed: Story = {
       </Breadcrumbs.Item>
     </Breadcrumbs>
   ),
-};
+});
 
-export const ManyItems: Story = {
+export const ManyItems = meta.story({
   render: args => (
     <Breadcrumbs {...args} maxVisibleItems={3}>
       {[...Array(30).keys()].map(i => (
@@ -72,4 +69,4 @@ export const ManyItems: Story = {
       ))}
     </Breadcrumbs>
   ),
-};
+});

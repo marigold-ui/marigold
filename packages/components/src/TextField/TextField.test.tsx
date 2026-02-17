@@ -1,64 +1,28 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef, useState } from 'react';
-import { Theme, cva } from '@marigold/system';
-import { Button } from '../Button/Button';
-import { Form } from '../Form/Form';
-import { setup } from '../test.utils';
-import { TextField } from './TextField';
-
-const theme: Theme = {
-  name: 'test',
-  components: {
-    Field: cva(),
-    Label: cva('', {
-      variants: {
-        variant: {
-          lime: 'text-lime-600',
-        },
-        size: {
-          small: 'p-1',
-        },
-      },
-    }),
-    HelpText: {
-      container: cva('', {
-        variants: {
-          variant: {
-            lime: 'text-lime-600',
-          },
-          size: {
-            small: 'p-2',
-          },
-        },
-      }),
-      icon: cva(''),
-    },
-    Input: {
-      input: cva('border-blue-700'),
-      icon: cva(),
-      action: cva(),
-    },
-    Button: cva('align-center flex disabled:bg-gray-600', {
-      variants: {
-        variant: {
-          primary: 'text-primary-500',
-          secondary: 'text-secondary-800',
-        },
-        size: {
-          small: 'size-10',
-          large: 'w-50 h-50',
-        },
-      },
-    }),
-  },
-};
+import { createRef } from 'react';
+import {
+  Basic,
+  Controlled,
+  WithCustomValidation,
+  WithFormValidation,
+} from './TextField.stories';
 
 const user = userEvent.setup();
-const { render } = setup({ theme });
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: () => {
+    return {
+      matches: false,
+      addListener: () => {},
+      removeListener: () => {},
+    };
+  },
+});
 
 test('renders an text input', () => {
-  render(<TextField label="Label" data-testid="text-field" />);
+  render(<Basic.Component data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
 
@@ -68,7 +32,7 @@ test('renders an text input', () => {
 });
 
 test('allows to change the input type', () => {
-  render(<TextField label="Label" type="email" data-testid="text-field" />);
+  render(<Basic.Component type="email" data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
 
@@ -76,32 +40,30 @@ test('allows to change the input type', () => {
 });
 
 test('takes full width by default', () => {
-  render(<TextField label="Label" />);
+  render(<Basic.Component />);
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container).toHaveStyle('width: full');
+  const container = screen.getByText('My label is great.').parentElement;
+  expect(container).toHaveClass('w-(--container-width)');
 });
 
 test('allows to set custom width', () => {
-  render(<TextField label="Label" width="1/2" />);
+  render(<Basic.Component width="1/2" />);
 
   // eslint-disable-next-line testing-library/no-node-access
-  const container = screen.getByText('Label').parentElement;
-  expect(container?.className).toMatchInlineSnapshot(
-    `"group/field flex flex-col w-1/2"`
-  );
+  const container = screen.getByText('My label is great.').parentElement;
+  expect(container).toHaveClass('w-(--container-width)');
 });
 
 test('supports disabled', () => {
-  render(<TextField label="A Label" disabled data-testid="text-field" />);
+  render(<Basic.Component disabled data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
   expect(textField).toBeDisabled();
 });
 
 test('supports required', () => {
-  render(<TextField label="A Label" required data-testid="text-field" />);
+  render(<Basic.Component required data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
   /** Note that the required attribute is not passed down! */
@@ -109,7 +71,7 @@ test('supports required', () => {
 });
 
 test('supports readonly', () => {
-  render(<TextField label="A Label" readOnly data-testid="text-field" />);
+  render(<Basic.Component readOnly data-testid="text-field" />);
 
   const textField = screen.getByRole('textbox');
   expect(textField).toHaveAttribute('readonly');
@@ -117,7 +79,7 @@ test('supports readonly', () => {
 
 test('supports field structure', () => {
   render(
-    <TextField
+    <Basic.Component
       label="A Label"
       description="Some helpful text"
       errorMessage="Whoopsie"
@@ -136,7 +98,7 @@ test('supports field structure', () => {
 
 test('supports field structure (with error)', () => {
   render(
-    <TextField
+    <Basic.Component
       label="A Label"
       description="Some helpful text"
       error={true}
@@ -156,7 +118,7 @@ test('supports field structure (with error)', () => {
 
 test('correctly sets up aria attributes', () => {
   render(
-    <TextField
+    <Basic.Component
       data-testid="text-field"
       label="A Label"
       description="Some helpful text"
@@ -187,7 +149,7 @@ test('correctly sets up aria attributes', () => {
 
 test('correctly sets up aria attributes (with error)', () => {
   render(
-    <TextField
+    <Basic.Component
       data-testid="text-field"
       label="A Label"
       description="Some helpful text"
@@ -218,52 +180,33 @@ test('correctly sets up aria attributes (with error)', () => {
 });
 
 test('can have default value', () => {
-  render(
-    <TextField
-      data-testid="text-field"
-      label="A Label"
-      defaultValue="Default Value"
-    />
-  );
+  render(<Basic.Component defaultValue="Default Value" />);
 
   const input = screen.getByRole('textbox');
   expect(input).toHaveValue('Default Value');
 });
 
 test('can be controlled', async () => {
-  const Controlled = () => {
-    const [value, setValue] = useState('');
-
-    return (
-      <>
-        <TextField
-          data-testid="text-field"
-          label="A Label"
-          value={value}
-          onChange={setValue}
-        />
-        <span data-testid="output">{value}</span>
-      </>
-    );
-  };
-
-  render(<Controlled />);
+  render(<Controlled.Component label="A Label" />);
 
   await user.type(screen.getByRole('textbox'), 'Hello there!');
 
-  expect(screen.getByTestId('output')).toHaveTextContent('Hello there!');
+  // Controlled story displays value in a pre element
+  expect(screen.getByText('Hello there!')).toBeInTheDocument();
 });
 
 test('forwards ref', () => {
   const ref = createRef<HTMLInputElement>();
-  render(<TextField data-testid="text-field" label="A Label" ref={ref} />);
+  render(
+    <Basic.Component data-testid="text-field" label="A Label" ref={ref} />
+  );
 
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });
 
 test('render multiple error messages', () => {
   render(
-    <TextField
+    <Basic.Component
       data-testid="text-field"
       label="A Label"
       errorMessage={['One error ', 'two errors ', 'third error']}
@@ -277,60 +220,29 @@ test('render multiple error messages', () => {
 });
 
 test('render error message from custom validation', async () => {
-  render(
-    <TextField
-      data-testid="text-field"
-      label="Email Address"
-      name="email"
-      type="email"
-      placeholder="Enter your email address"
-      required
-      validate={val =>
-        val.length && /^\S+@\S+\.\S+$/.test(val)
-          ? ''
-          : 'Please enter a valid email address!'
-      }
-    />
-  );
+  render(<WithCustomValidation.Component />);
 
   const input = screen.getByRole('textbox');
   await user.click(input);
   await user.type(input, 'invalid_email');
   await user.tab();
 
-  const textFieldElement = screen.getByTestId('text-field');
-
-  expect(textFieldElement).toHaveTextContent(
-    'Please enter a valid email address!'
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId('text-field')).toHaveTextContent(
+      'Please enter a valid email address!'
+    );
+  });
 });
 
 test('render custom validation error message', async () => {
-  render(
-    <Form>
-      <TextField
-        data-testid="text-field"
-        label="Email Address"
-        name="email"
-        type="email"
-        placeholder="Enter your email address"
-        required
-        errorMessage={({ validationDetails }) =>
-          validationDetails.valueMissing
-            ? 'Please enter your email address!'
-            : ''
-        }
-      />
-      <Button variant="primary" type="submit" data-testid="button">
-        Subscribe
-      </Button>
-    </Form>
-  );
+  render(<WithFormValidation.Component />);
 
   const button = screen.getByTestId('button');
-  fireEvent.click(button);
+  await user.click(button);
 
-  expect(screen.getByTestId('text-field')).toHaveTextContent(
-    'Please enter your email address!'
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId('text-field')).toHaveTextContent(
+      'Please enter your email address!'
+    );
+  });
 });

@@ -15,8 +15,10 @@ import { DrawerTrigger } from './DrawerTrigger';
 
 // Props
 // ---------------
-export interface DrawerProps
-  extends Omit<DialogProps, 'className' | 'style' | 'isOpen' | 'role'> {
+export interface DrawerProps extends Omit<
+  DialogProps,
+  'className' | 'style' | 'isOpen' | 'role'
+> {
   size?: 'xsmall' | 'small' | 'medium' | (string & {});
   variant?: string;
   /**
@@ -110,7 +112,7 @@ export const Drawer = ({
             <CloseButton
               aria-label="dismiss drawer"
               style={{ '--i': 0 } as CSSProperties}
-              className={classNames.closeButton}
+              className={cn('z-80', classNames.closeButton)}
               onPress={ctx?.close}
             />
           )}

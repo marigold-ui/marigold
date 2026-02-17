@@ -1,32 +1,24 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '.storybook/preview';
 import { Headline } from '../Headline/Headline';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
 import { Tiles } from './Tiles';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Tiles',
+  component: Tiles,
   argTypes: {
     space: {
       control: {
         type: 'text',
       },
-      description: 'Responsive Style Value',
-      table: {
-        defaultValue: {
-          summary: 'none',
-        },
-      },
+      description: 'Space between tiles',
     },
     tilesWidth: {
       control: {
         type: 'text',
       },
-      description: 'Responsive Style Value',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '300px' },
-      },
+      description: 'Minimum width for each tile',
     },
     stretch: {
       control: {
@@ -39,18 +31,19 @@ const meta = {
       control: {
         type: 'boolean',
       },
-      description:
-        'Specifies the size of an implicitly-created grid row track or pattern of tracks.',
+      description: 'Makes all tiles have the same height as the tallest tile',
     },
   },
   args: {
+    space: 4,
     tilesWidth: '300px',
-  },
-} satisfies Meta;
+    stretch: false,
+    equalHeight: false,
+    children: undefined,
+  } as const,
+});
 
-export default meta;
-
-export const Basic: StoryObj<typeof Tiles> = {
+export const Basic = meta.story({
   render: args => (
     <Tiles {...args}>
       <div className="border-border-brand border bg-orange-100 p-1">
@@ -106,9 +99,9 @@ export const Basic: StoryObj<typeof Tiles> = {
       </div>
     </Tiles>
   ),
-};
+});
 
-export const DifferentHeights: StoryObj<typeof Tiles> = {
+export const DifferentHeights = meta.story({
   render: args => (
     <Tiles {...args}>
       <div className="border border-slate-300 bg-slate-100">
@@ -144,4 +137,4 @@ export const DifferentHeights: StoryObj<typeof Tiles> = {
       </div>
     </Tiles>
   ),
-};
+});

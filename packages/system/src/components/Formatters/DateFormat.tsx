@@ -1,6 +1,6 @@
 import { DateFormatterOptions, useDateFormatter } from '@react-aria/i18n';
 
-interface DateFormatProps extends DateFormatterOptions {
+export interface DateFormatProps extends DateFormatterOptions {
   /**
    * Value to be formatted.
    */

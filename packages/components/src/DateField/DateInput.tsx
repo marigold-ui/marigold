@@ -2,7 +2,7 @@ import { CalendarDate } from '@internationalized/date';
 import { ReactElement } from 'react';
 import type RAC from 'react-aria-components';
 import { DateInput, Group } from 'react-aria-components';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { DateSegment } from './DateSegment';
 
 type RemovedProps = 'style' | 'className' | 'children';
@@ -106,8 +106,17 @@ const _DateInput = ({
   };
 
   return (
-    <Group className={classNames.field} onPaste={handlePaste}>
-      <DateInput className="flex flex-1 items-center" {...props}>
+    <Group
+      className={cn(
+        classNames.field,
+        'w-(--field-width) max-w-full min-w-0 overflow-hidden'
+      )}
+      onPaste={handlePaste}
+    >
+      <DateInput
+        className={cn('flex flex-1 items-center', classNames.input)}
+        {...props}
+      >
         {segment => (
           <DateSegment className={classNames.segment} segment={segment} />
         )}

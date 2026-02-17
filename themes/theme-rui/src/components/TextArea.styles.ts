@@ -1,16 +1,10 @@
 import { type ThemeComponent, cva } from '@marigold/system';
-import {
-  inputContainer,
-  inputDisabled,
-  inputInvalid,
-  inputReadOnly,
-} from './Input.styles';
 
 export const TextArea: ThemeComponent<'TextArea'> = cva([
-  inputContainer,
-  inputInvalid,
-  'focus:util-focus-ring outline-none',
-  inputDisabled,
-  inputReadOnly,
-  'invalid:text-destructive',
+  'inline-flex',
+  'ui-surface shadow-elevation-border ui-input h-[initial]',
+  'disabled:ui-state-disabled',
+  'group-read-only/field:ui-state-readonly',
+  'invalid:ui-state-error',
+  'focus:ui-state-focus outline-none',
 ]);

@@ -33,13 +33,14 @@
       "@marigold/*": ["../packages/*/src", "../themes/*/src"],
       "@/registry/*": ["./.registry/*"],
       "contentlayer/generated": ["./.contentlayer/generated"],
+      ".storybook/*": ["../.storybook/*"],
       // cva does not export types officially; map deep import for TS
       "class-variance-authority/dist/types": [
         "../packages/system/node_modules/class-variance-authority/dist/types"
       ]
     },
     "strict": false,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "react", "react-dom"]
   },
   "include": [
     "**/*.ts",

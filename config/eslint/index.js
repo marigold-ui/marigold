@@ -50,10 +50,7 @@ export default [
         ecmaVersion: 2024,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
-        project: [
-          './../../tsconfig.json',
-          './../storybook/.storybook/tsconfig.json',
-        ],
+        project: ['./../../tsconfig.json'],
         tsconfigRootDir: __dirname,
       },
     },
@@ -61,6 +58,7 @@ export default [
     rules: {
       ...typescript.configs.recommended.rules,
       'no-case-declarations': 'off', // TypeScript has better type checking, not needed
+      'no-undef': 'off', // TypeScript handles this better, see: https://typescript-eslint.io/troubleshooting/faqs/eslint
       '@typescript-eslint/no-explicit-any': 'off', // Allow explicit any
       '@typescript-eslint/no-unused-vars': 'warn', // Replace JS no-unused-vars rule
     },
@@ -90,7 +88,8 @@ export default [
       '*.min.js',
       '*.css',
       '*.md',
-      'vitest.config.ts',
+      'vitest.config.shared.ts',
+      'vite.config.ts',
     ],
   },
 ];

@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import preview from '.storybook/preview';
 import { alignment, cn } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
 import { Grid } from './Grid';
 
-const meta = {
+const meta = preview.meta({
   title: 'Components/Grid',
   component: Grid,
   argTypes: {
@@ -27,12 +27,9 @@ const meta = {
       description: 'Height of the grid container.',
     },
   },
-} satisfies Meta<typeof Grid>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const HolyGrail = {
+export const HolyGrail = meta.story({
   render: () => (
     <Grid
       areas={['header header', 'sidebar main', 'footer footer']}
@@ -55,9 +52,9 @@ export const HolyGrail = {
       </Grid.Area>
     </Grid>
   ),
-};
+});
 
-export const Bento = {
+export const Bento = meta.story({
   render: () => {
     const Teaser = ({
       className,
@@ -111,7 +108,7 @@ export const Bento = {
         </Grid.Area>
         <Grid.Area name="social-media">
           <Teaser
-            className="object-none object-left-top"
+            className="object-none object-top-left"
             alt="social media"
             src="https://www.reservix.net/app/uploads/resized/2023/12/Marketing-Expertise-collage-V2-1000x750-c-center.png"
           />
@@ -131,9 +128,9 @@ export const Bento = {
       </Grid>
     );
   },
-};
+});
 
-export const Content: Story = {
+export const Content = meta.story({
   args: {
     areas: ['label value', 'action description'],
     columns: ['150px', 'auto'],
@@ -157,4 +154,4 @@ export const Content: Story = {
       </Grid.Area>
     </Grid>
   ),
-};
+});

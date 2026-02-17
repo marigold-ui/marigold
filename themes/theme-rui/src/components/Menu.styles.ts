@@ -2,11 +2,14 @@ import { ThemeComponent, cva } from '@marigold/system';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva([
-    'text-foreground z-50 overflow-hidden rounded-md p-1 outline-none',
+    'ui-surface shadow-elevation-overlay w-full',
+    'text-foreground overflow-hidden p-1 outline-none',
+    // In a Tray
+    'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
   ]),
   item: cva(
     [
-      'relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none text-nowrap',
+      'relative flex cursor-pointer items-center gap-2 rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap',
       'disabled:text-disabled-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
     ],
@@ -23,21 +26,21 @@ export const Menu: ThemeComponent<'Menu'> = {
     }
   ),
   section: cva(
-    'text-muted-foreground px-2 py-1.5 text-xs font-medium border-t border-t-border in-first:border-t-0'
+    'text-muted-foreground p-2 text-xs font-medium border-t border-t-border in-first:border-t-0'
   ),
   button: cva(
     [
-      'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow]',
-      '[&_svg]:shrink-0 [&_svg]:pointer-events-none',
-      'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+      'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium',
+      'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
       'cursor-pointer',
+      '[&_svg]:shrink-0 [&_svg]:pointer-events-none',
     ],
     {
       variants: {
         variant: {
-          default:
-            'border border-input bg-background shadow-xs hover:bg-hover hover:text-foreground expanded:bg-hover',
-          ghost: 'hover:bg-hover hover:text-foreground expanded:bg-hover',
+          default: 'ui-surface expanded:bg-hover',
+          ghost:
+            'hover:bg-hover hover:text-foreground expanded:bg-hover rounded-surface',
         },
         size: {
           default: 'h-button px-4 py-2 [&_svg]:size-4',

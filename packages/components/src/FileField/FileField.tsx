@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import RAC, { DropZone } from 'react-aria-components';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { WidthProp, useClassNames } from '@marigold/system';
+import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, type FieldBaseProps } from '../FieldBase/FieldBase';
 import { intlMessages } from '../intl/messages';
 import { FileFieldItem } from './FileFieldItem';
@@ -16,7 +16,8 @@ type RemovedProps =
   | 'isRequired';
 
 export interface FileFieldProps
-  extends Omit<RAC.DropZoneProps, RemovedProps>,
+  extends
+    Omit<RAC.DropZoneProps, RemovedProps>,
     Pick<FieldBaseProps<'input'>, 'label'> {
   variant?: string;
   size?: string;
@@ -24,6 +25,7 @@ export interface FileFieldProps
   /**
    * Sets the width of the field. You can see allowed tokens here: https://tailwindcss.com/docs/width
    * @default full
+   * @remarks `WidthProp`
    */
   width?: WidthProp['width'];
 
@@ -42,6 +44,11 @@ export interface FileFieldProps
    * Whether multiple files can be selected.
    */
   multiple?: RAC.FileTriggerProps['allowsMultiple'];
+
+  /**
+   * The name of the field for form submission.
+   */
+  name?: string;
 }
 
 // Component
@@ -52,29 +59,43 @@ export const FileField = ({
   multiple = false,
   width,
   label,
+  name,
   ...props
 }: FileFieldProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const dropZoneLabel = stringFormatter.format('dropZoneLabel');
   const buttonLabel = stringFormatter.format('uploadLabel');
 
+  const syncHiddenInput = (newFiles: File[] | null) => {
+    if (!hiddenInputRef.current || !name || typeof DataTransfer === 'undefined')
+      return;
+    const dt = new DataTransfer();
+    newFiles?.forEach(f => dt.items.add(f));
+    hiddenInputRef.current.files = dt.files;
+  };
+
   const handleSelect: RAC.FileTriggerProps['onSelect'] = files => {
     const list = files ? Array.from(files) : [];
-    setFiles(normalizeAndLimitFiles(list, { accept, multiple }));
+    const normalized = normalizeAndLimitFiles(list, { accept, multiple });
+    setFiles(normalized);
+    syncHiddenInput(normalized);
   };
 
   const handleDrop: RAC.DropZoneProps['onDrop'] = async e => {
     try {
       const filePromises = e.items
         .filter(isFileDropItem)
-        .map(item => (item as any).getFile());
+        .map(item => (item as RAC.FileDropItem).getFile());
       const raw = await Promise.all(filePromises);
       const files = raw.filter(Boolean) as File[];
-
-      setFiles(normalizeAndLimitFiles(files, { accept, multiple }));
+      const normalized = normalizeAndLimitFiles(files, { accept, multiple });
+      setFiles(normalized);
+      syncHiddenInput(normalized);
     } catch {
-      // swallow errors from reading dropped items
+      // Intentionally ignore - dropped files that can't be read are skipped.
+      // User sees no file appear, which is acceptable UX for invalid drops.
     }
   };
 
@@ -89,10 +110,9 @@ export const FileField = ({
   });
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    /* @ts-expect-error */
+    /* @ts-expect-error type intrinsic elements ("div") are not working correctly */
     <FieldBase
-      as={'div'}
+      as="div"
       width={width}
       label={label}
       className={classNames.container}
@@ -117,18 +137,34 @@ export const FileField = ({
       {files?.map((file, index) => (
         <FileField.Item
           key={index}
-          onRemove={() =>
-            setFiles(prev => (prev ?? []).filter((_, i) => i !== index))
-          }
+          onRemove={() => {
+            const updated = (files ?? []).filter((_, i) => i !== index);
+            setFiles(updated);
+            syncHiddenInput(updated);
+          }}
         >
-          <div className={classNames.item}>
-            <p className={classNames.itemLabel}>{file.name}</p>
-            <p className={classNames.itemDescription}>
-              {(file.size / 1024 / 1024).toFixed(2)} MB
-            </p>
+          <div className={cn('[grid-area:label]', classNames.itemLabel)}>
+            {file.name}
+          </div>
+          <div
+            className={cn(
+              '[grid-area:description]',
+              classNames.itemDescription
+            )}
+          >
+            {(file.size / 1024 / 1024).toFixed(2)} MB
           </div>
         </FileField.Item>
       ))}
+      {name && (
+        <input
+          type="file"
+          ref={hiddenInputRef}
+          name={name}
+          hidden
+          multiple={multiple}
+        />
+      )}
     </FieldBase>
   );
 };

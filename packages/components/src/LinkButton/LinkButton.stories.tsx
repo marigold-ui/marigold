@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { LinkButton, LinkButtonProps } from './LinkButton';
+import preview from '.storybook/preview';
+import { LinkButton } from './LinkButton';
 
-const meta: Meta<LinkButtonProps> = {
+const meta = preview.meta({
   title: 'Components/LinkButton',
   component: LinkButton,
   argTypes: {
@@ -24,10 +24,6 @@ const meta: Meta<LinkButtonProps> = {
     children: 'Link Button',
     href: 'https://marigold-ui.io',
   },
-};
+});
 
-export default meta;
-
-type Story = StoryObj<LinkButtonProps>;
-
-export const Basic: Story = {};
+export const Basic: any = meta.story();
