@@ -165,3 +165,43 @@ export const DisabledItems = Basic.extend({
     disabledKeys: ['classical', 'electronic'],
   },
 });
+
+export const Mobile = Basic.extend({
+  tags: ['component-test'],
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+});
+
+Mobile.test('Open tray and select an item', async ({ canvas, step, args }) => {
+  await step('Open the tray', async () => {
+    const trigger = canvas.getByLabelText(new RegExp(`${args.label}`, 'i'));
+
+    await userEvent.click(trigger);
+    await waitFor(() => canvas.getByRole('dialog'));
+  });
+
+  await step('Select an item', async () => {
+    const dialog = canvas.getByRole('dialog');
+
+    await userEvent.click(within(dialog).getByText('Rock'));
+  });
+
+  await step('Close the tray', async () => {
+    const closeButton = canvas.getByRole('button', {
+      name: /close|schließen/i,
+    });
+
+    await userEvent.click(closeButton);
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
+  await step('Verify selected item appears as tag', async () => {
+    const tagGroup = canvas.getByRole('grid', { name: /selected items/i });
+
+    expect(within(tagGroup).getByText('Rock')).toBeVisible();
+  });
+});

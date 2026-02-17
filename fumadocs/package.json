@@ -1,6 +1,6 @@
 {
   "name": "fumadocs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "pnpm run registry:build && pnpm run build:changelog && next build",
@@ -31,7 +31,7 @@
     "lucide-react": "^0.562.0",
     "motion": "12.23.26",
     "next": "16.1.5",
-    "nuqs": "2.8.6",
+    "nuqs": "2.8.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "7.68.0",
