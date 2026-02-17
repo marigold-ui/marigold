@@ -30,7 +30,7 @@ jobs:
           cdxgen -r -o sbom.json
 
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         id: upload-artifact
         with:
           name: sbom
