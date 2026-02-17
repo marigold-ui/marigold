@@ -119,12 +119,17 @@ export const SidebarFolder = ({
     ? (item.index as ItemWithBadge).badge
     : undefined;
 
+  // Simple check: if folder is in path, or if any folder in path matches by name
+  const isActive =
+    path.includes(item) ||
+    path.some(node => node.type === 'folder' && node.name === item.name);
+
   if (item.index) {
     return (
       <BaseSidebarFolder
         collapsible={false}
         defaultOpen={true}
-        active={path.includes(item)}
+        active={isActive}
         {...props}
       >
         <StyledSidebarFolderLink
@@ -148,7 +153,7 @@ export const SidebarFolder = ({
     <BaseSidebarFolder
       collapsible={item.collapsible}
       defaultOpen={item.defaultOpen}
-      active={path.includes(item)}
+      active={isActive}
       {...props}
     >
       <StyledSidebarFolderTrigger>
