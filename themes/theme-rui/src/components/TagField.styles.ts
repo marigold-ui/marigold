@@ -13,14 +13,7 @@ export const TagField: ThemeComponent<'TagField'> = {
   ]),
   tagGroup: cva('flex flex-1 flex-wrap items-center gap-1'),
   listItems: cva('flex flex-wrap gap-1'),
-  button: cva([
-    'util-touch-hitbox rounded-full [&_svg]:size-4',
-    'shrink-0 cursor-pointer outline-0',
-    'flex items-center justify-center',
-    'hover:bg-hover size-6',
-    'focus:ui-state-focus',
-    'disabled:ui-state-disabled',
-  ]),
+  button: cva(''),
   container: cva([
     'ui-surface shadow-elevation-border group/tagfield',
     'flex flex-col overflow-hidden gap-1.5 p-2',
