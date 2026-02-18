@@ -288,7 +288,7 @@ export const IntegratedWithTable = meta.story({
         defaultSelectedKeys={
           new Set(['fritz.schneider@example.de', 'klaus.becker@example.de'])
         }
-        actionBar={_selectedKeys => (
+        actionBar={() => (
           <ActionBar>
             <ActionBar.Button onPress={() => alert('Edit')}>
               <Edit />
