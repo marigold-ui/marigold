@@ -341,18 +341,21 @@
   }
 
   /* animation action bar */
-  --animate-actionbar-in: actionbar-in 200ms var(--ease-out-expo);
-  --animate-actionbar-out: actionbar-in 150ms reverse;
+  --animate-actionbar-in: actionbar-in var(--fade-in-duration)
+    var(--ease-out-cubic);
+  --animate-actionbar-out: actionbar-in var(--fade-out-duration) reverse;
 
   @keyframes actionbar-in {
     from {
       opacity: 0;
-      transform: translateY(100%);
+      transform: scale(0.9);
+      filter: blur(6px);
     }
 
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: scale(1);
+      filter: blur(0);
     }
   }
 

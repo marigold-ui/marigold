@@ -55,22 +55,27 @@ interface ActionBarComponent extends ForwardRefExoticComponent<
   Button: typeof ActionButton;
 }
 
-const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
+// Inner
+// ---------------
+interface ActionBarInnerProps {
+  id?: string;
+  children?: ReactNode;
+  onClearSelection?: () => void;
+  lastCount: number | 'all';
+  isExiting: boolean;
+  variant?: string;
+  size?: string;
+}
+
+const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
   (
-    {
-      children,
-      id,
-      onClearSelection: onClearSelectionProp,
-      selectedItemCount: selectedItemCountProp,
-      variant,
-      size,
-    },
+    { id, children, onClearSelection, lastCount, isExiting, variant, size },
     forwardedRef
   ) => {
-    const context = useActionBarContext();
-    const selectedItemCount =
-      selectedItemCountProp ?? context?.selectedItemCount ?? 0;
-    const onClearSelection = onClearSelectionProp ?? context?.onClearSelection;
+    const internalRef = useRef<HTMLDivElement>(null);
+    const ref = (forwardedRef ??
+      internalRef) as React.RefObject<HTMLDivElement | null>;
+    const isEntering = useEnterAnimation(ref);
 
     const classNames = useClassNames({
       component: 'ActionBar',
@@ -78,26 +83,6 @@ const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
       size,
     });
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
-
-    // Internal ref for animations (forwarded ref may be null)
-    const internalRef = useRef<HTMLDivElement>(null);
-    const ref = (forwardedRef ??
-      internalRef) as React.RefObject<HTMLDivElement | null>;
-
-    const isOpen = selectedItemCount !== 0;
-    const isExiting = useExitAnimation(ref, isOpen);
-    const isEntering = useEnterAnimation(ref);
-
-    // Retain last count so we don't flash "0 selected" during exit animation
-    const [lastCount, setLastCount] = useState(selectedItemCount);
-    if (selectedItemCount !== 0 && selectedItemCount !== lastCount) {
-      setLastCount(selectedItemCount);
-    }
-
-    // Nothing to render
-    if (!isOpen && !isExiting) {
-      return null;
-    }
 
     const countText =
       lastCount === 'all' ? 'All items selected' : `${lastCount} selected`;
@@ -143,6 +128,60 @@ const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
           </div>
         )}
       </FocusScope>
+    );
+  }
+);
+
+// Outer
+// ---------------
+const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
+  (
+    {
+      children,
+      id,
+      onClearSelection: onClearSelectionProp,
+      selectedItemCount: selectedItemCountProp,
+      variant,
+      size,
+    },
+    forwardedRef
+  ) => {
+    const context = useActionBarContext();
+    const selectedItemCount =
+      selectedItemCountProp ?? context?.selectedItemCount ?? 0;
+    const onClearSelection = onClearSelectionProp ?? context?.onClearSelection;
+
+    // Internal ref for exit animation
+    const internalRef = useRef<HTMLDivElement>(null);
+    const ref = (forwardedRef ??
+      internalRef) as React.RefObject<HTMLDivElement | null>;
+
+    const isOpen = selectedItemCount !== 0;
+    const isExiting = useExitAnimation(ref, isOpen);
+
+    // Retain last count so we don't flash "0 selected" during exit animation
+    const [lastCount, setLastCount] = useState(selectedItemCount);
+    if (selectedItemCount !== 0 && selectedItemCount !== lastCount) {
+      setLastCount(selectedItemCount);
+    }
+
+    // Nothing to render
+    if (!isOpen && !isExiting) {
+      return null;
+    }
+
+    return (
+      <ActionBarInner
+        ref={ref}
+        id={id}
+        onClearSelection={onClearSelection}
+        lastCount={lastCount}
+        isExiting={isExiting}
+        variant={variant}
+        size={size}
+      >
+        {children}
+      </ActionBarInner>
     );
   }
 );
