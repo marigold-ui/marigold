@@ -177,7 +177,7 @@ export const FullScreenSize = meta.story({
         <Select
           width={40}
           aria-label="Page size"
-          defaultSelectedKey="10"
+          defaultValue="10"
           label="Results per page"
         >
           <Select.Option id="10">10</Select.Option>

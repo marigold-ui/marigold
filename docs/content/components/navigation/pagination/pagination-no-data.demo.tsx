@@ -16,7 +16,7 @@ export default (paginationProps: PaginationProps) => (
       <Split />
       <Inline alignY="center" space={4}>
         <Text fontSize="sm">Results per page</Text>
-        <Select width={'fit'} aria-label="Page size" defaultSelectedKey="5">
+        <Select width={'fit'} aria-label="Page size" defaultValue="5">
           <Select.Option id="5">5</Select.Option>
           <Select.Option id="10">10</Select.Option>
         </Select>

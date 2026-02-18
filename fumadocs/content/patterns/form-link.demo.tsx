@@ -50,7 +50,7 @@ export default () => {
       <Inline alignY="input" space="related">
         <Select
           label="Venue"
-          selectedKey={selectedVenueId}
+          value={selectedVenueId}
           onChange={handleVenueChange}
           width={96}
         >
@@ -81,7 +81,7 @@ export default () => {
           label="Country"
           placeholder="Select country"
           width={40}
-          selectedKey={country}
+          value={country}
           onChange={key => setCountry(key as string)}
         >
           {uniqueCountries.map(country => (

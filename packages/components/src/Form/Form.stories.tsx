@@ -94,11 +94,7 @@ export const Selected = meta.story({
             />
           </Stack>
           <Stack space={5}>
-            <Select
-              label="Department"
-              width={40}
-              defaultSelectedKey={'engineering'}
-            >
+            <Select label="Department" width={40} defaultValue={'engineering'}>
               <Select.Option id="engineering">Engineering</Select.Option>
               <Select.Option id="design">Design</Select.Option>
               <Select.Option id="product">Product</Select.Option>
