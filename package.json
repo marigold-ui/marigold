@@ -8,9 +8,9 @@
   "engines": {
     "node": "22.x"
   },
-  "packageManager": "pnpm@10.21.0",
+  "packageManager": "pnpm@10.29.3",
   "dependencies": {
-    "@babel/core": "7.28.6",
+    "@babel/core": "7.29.0",
     "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.29.8",
     "@eslint/eslintrc": "3.3.3",
@@ -29,7 +29,7 @@
     "@tanstack/react-query": "5.90.21",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
-    "@testing-library/react": "16.3.1",
+    "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",
     "@types/node": "24.9.2",
     "@vitejs/plugin-react": "5.1.2",
@@ -42,7 +42,7 @@
     "eslint": "9.39.2",
     "eslint-plugin-storybook": "10.2.8",
     "husky": "9.1.7",
-    "playwright": "1.57.0",
+    "playwright": "1.58.2",
     "postcss-import": "16.1.1",
     "postcss-loader": "8.2.0",
     "prettier": "3.8.1",
@@ -52,7 +52,7 @@
     "storybook": "^10.1.11",
     "storybook-addon-test-codegen": "3.0.1",
     "tailwindcss": "4.1.18",
-    "turbo": "2.5.8",
+    "turbo": "2.8.8",
     "typescript": "5.9.3",
     "vite": "7.1.12",
     "vite-tsconfig-paths": "5.1.4",
