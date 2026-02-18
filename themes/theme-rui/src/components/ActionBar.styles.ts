@@ -11,8 +11,8 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
     'rounded-lg font-medium transition-colors',
     'focus-visible:util-focus-ring outline-none disabled:util-disabled',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-    'entering:animate-actionbar-in',
-    'exiting:animate-animate-actionbar-out',
+    'entering:animate-fade-in-up',
+    'exiting:animate-fade-out',
   ]),
   count: cva(['flex items-center', 'text-sm font-medium', 'whitespace-nowrap']),
   actions: cva([
