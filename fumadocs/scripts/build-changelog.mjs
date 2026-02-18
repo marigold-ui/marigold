@@ -132,6 +132,8 @@ const addFrontmatter = (sourceText, releases) => {
   }
 };
 
+const escapeRegExp = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 const adjustContent = (sourceText, releases) => {
   const regex = /## (\d{1,2}\.\d{1,2}\.\d{1,2})/gm;
   let match;
@@ -158,10 +160,7 @@ const adjustContent = (sourceText, releases) => {
   // Apply replacements - replace from end to start to maintain positions
   replacements.reverse().forEach(({ version, newContent }) => {
     // Replace with regex that handles both \n and \r\n
-    const pattern = new RegExp(
-      `## ${version.replace(/\./g, '\\.')}(\\r?\\n)`,
-      'g'
-    );
+    const pattern = new RegExp(`## ${escapeRegExp(version)}(\\r?\\n)`, 'g');
     sourceText = sourceText.replace(pattern, `${newContent}$1`);
   });
 
