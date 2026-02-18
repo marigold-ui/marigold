@@ -20,22 +20,22 @@
     "@marigold/prettier-config": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
     "@parcel/watcher": "2.5.6",
-    "@storybook/addon-a11y": "^10.1.11",
-    "@storybook/addon-docs": "^10.1.11",
-    "@storybook/addon-vitest": "10.1.11",
-    "@storybook/cli": "^10.1.11",
-    "@storybook/react-vite": "^10.1.11",
-    "@tailwindcss/vite": "4.1.17",
+    "@storybook/addon-a11y": "^10.2.8",
+    "@storybook/addon-docs": "^10.2.8",
+    "@storybook/addon-vitest": "10.2.8",
+    "@storybook/cli": "^10.2.8",
+    "@storybook/react-vite": "^10.2.8",
+    "@tailwindcss/vite": "4.1.18",
     "@tanstack/react-query": "5.90.21",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",
     "@types/node": "24.9.2",
-    "@vitejs/plugin-react": "5.1.2",
-    "@vitest/browser-playwright": "4.0.17",
-    "@vitest/coverage-v8": "4.0.17",
-    "@vitest/ui": "4.0.17",
+    "@vitejs/plugin-react": "5.1.4",
+    "@vitest/browser-playwright": "4.0.18",
+    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/ui": "4.0.18",
     "all-contributors-cli": "6.26.1",
     "autoprefixer": "10.4.24",
     "concurrently": "9.2.1",
@@ -49,14 +49,14 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-select": "5.10.2",
-    "storybook": "^10.1.11",
+    "storybook": "^10.2.8",
     "storybook-addon-test-codegen": "3.0.1",
     "tailwindcss": "4.1.18",
     "turbo": "2.8.8",
     "typescript": "5.9.3",
-    "vite": "7.1.12",
+    "vite": "7.3.1",
     "vite-tsconfig-paths": "6.1.1",
-    "vitest": "4.0.17",
+    "vitest": "4.0.18",
     "zx": "8.8.5"
   },
   "scripts": {
@@ -89,6 +89,6 @@
     "postinstall": "pnpm build"
   },
   "devDependencies": {
-    "@vitest/coverage-istanbul": "4.0.17"
+    "@vitest/coverage-istanbul": "4.0.18"
   }
 }
