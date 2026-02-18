@@ -45,10 +45,10 @@
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "4.1.18",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "cssnano": "7.1.2",
     "postcss-cli": "11.0.1",
-    "shx": "^0.3.4",
+    "shx": "^0.4.0",
     "tailwindcss": "4.1.18",
     "tsdown": "0.16.8"
   },
