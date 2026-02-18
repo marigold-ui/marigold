@@ -1,3 +1,4 @@
+import { PostList } from '@/components/PostList';
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import {
@@ -11,6 +12,7 @@ import {
   ColorTokenTable,
   Columns,
   ComponentDemo,
+  DateFormat,
   Do,
   DoDescription,
   DoFigure,
@@ -43,7 +45,7 @@ import { createRelativeLink } from 'fumadocs-ui/mdx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-const Page = async (props: PageProps<'/[[...slug]]'>) => {
+const Page = async (props: PageProps<'/[...slug]'>) => {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
@@ -51,12 +53,16 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
   const MDX = page.data.body;
   const lastModified = page.data.lastModified;
 
+  // Disable TOC for all releases pages
+  const isReleasesPage = params.slug?.[0] === 'releases';
+  const toc = isReleasesPage ? undefined : page.data.toc;
+
   return (
     <DocsPage
       tableOfContent={{
         single: true,
       }}
-      toc={page.data.toc}
+      toc={toc}
       full={page.data.full}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
@@ -90,6 +96,9 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
             AlignmentsY,
 
             IconList,
+            PostList,
+
+            DateFormat,
 
             Do,
             DoFigure,
@@ -120,11 +129,13 @@ const Page = async (props: PageProps<'/[[...slug]]'>) => {
 };
 
 export const generateStaticParams = async () => {
-  return source.generateParams();
+  const params = await source.generateParams();
+  // Filter out empty slugs (root path) - handled by home page
+  return params.filter(param => param.slug && param.slug.length > 0);
 };
 
 export const generateMetadata = async (
-  props: PageProps<'/[[...slug]]'>
+  props: PageProps<'/[...slug]'>
 ): Promise<Metadata> => {
   const params = await props.params;
   const page = source.getPage(params.slug);

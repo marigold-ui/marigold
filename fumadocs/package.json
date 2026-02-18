@@ -3,13 +3,14 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "build": "pnpm run registry:build && next build",
+    "build": "pnpm run registry:build && pnpm run build:changelog && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
     "postinstall": "fumadocs-mdx && pnpm run registry:build",
     "lint": "eslint",
-    "registry:build": "node scripts/build-registry.mjs"
+    "registry:build": "node scripts/build-registry.mjs",
+    "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
     "@internationalized/date": "^3.11.0",
@@ -19,12 +20,15 @@
     "@marigold/system": "workspace:*",
     "@marigold/theme-docs": "workspace:*",
     "@marigold/theme-rui": "workspace:*",
+    "@octokit/core": "7.0.6",
     "@react-aria/i18n": "3.12.15",
     "@tanstack/react-query": "^5.62.0",
     "dayjs": "^1.11.13",
+    "dotenv": "17.2.4",
     "fumadocs-core": "^16.5.0",
     "fumadocs-mdx": "14.2.7",
     "fumadocs-ui": "16.4.10",
+    "motion": "12.23.26",
     "lucide-react": "^0.564.0",
     "next": "16.1.6",
     "nuqs": "2.8.8",
@@ -47,6 +51,7 @@
     "fumadocs-typescript": "^5.1.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "zx": "8.8.5"
   }
 }

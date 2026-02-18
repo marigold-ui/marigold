@@ -1,5 +1,5 @@
 'use client';
-import { usePathname } from 'fumadocs-core/framework';
+import type { ItemWithBadge } from '@/lib/badge-plugin';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import {
   SidebarFolder as BaseSidebarFolder,
@@ -9,6 +9,7 @@ import {
   useFolder,
   useFolderDepth,
 } from 'fumadocs-ui/components/sidebar/base';
+import { useTreePath } from 'fumadocs-ui/contexts/tree';
 import { ComponentProps, type ReactNode } from 'react';
 import { cva } from '@marigold/system';
 import { cn } from '@marigold/system';
@@ -112,8 +113,16 @@ export const SidebarFolder = ({
   item: PageTree.Folder;
   children: ReactNode;
 }) => {
-  const pathname = usePathname();
-  const isActive = item.index ? pathname === item.index.url : false;
+  const path = useTreePath();
+
+  const indexBadge = item.index
+    ? (item.index as ItemWithBadge).badge
+    : undefined;
+
+  // Simple check: if folder is in path, or if any folder in path matches by name
+  const isActive =
+    path.includes(item) ||
+    path.some(node => node.type === 'folder' && node.name === item.name);
 
   if (item.index) {
     return (
@@ -129,17 +138,22 @@ export const SidebarFolder = ({
         >
           {item.icon}
           {item.name}
+          {indexBadge && (
+            <span className="bg-fd-muted text-fd-muted-foreground ml-1.5 shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium tracking-wide uppercase">
+              {indexBadge}
+            </span>
+          )}
         </StyledSidebarFolderLink>
         <StyledSidebarFolderContent>{children}</StyledSidebarFolderContent>
       </BaseSidebarFolder>
     );
   }
 
-  // Regular folder without index file - render as collapsible folder
   return (
     <BaseSidebarFolder
       collapsible={item.collapsible}
       defaultOpen={item.defaultOpen}
+      active={isActive}
       {...props}
     >
       <StyledSidebarFolderTrigger>
