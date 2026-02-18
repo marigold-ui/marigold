@@ -1,6 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
-import { useCallback, useRef, useState } from 'react';
-import { useResizeObserver } from '@react-aria/utils';
+import type { ReactNode } from 'react';
+import { useCallback, useState } from 'react';
 import type { Selection } from '../types';
 import { ActionBarContext } from './ActionBarContext';
 import { useActionBarTrigger } from './useActionBarTrigger';
@@ -38,8 +37,8 @@ export interface UseActionBarContainerReturn {
   /** Measured height of the ActionBar in pixels. */
   actionBarHeight: number;
 
-  /** Wraps children in the positioning container with the ActionBar overlay. */
-  renderContainerWithActionBar: (children: ReactNode) => ReactNode;
+  /** The ActionBar overlay element to render as a sibling, or `null` when no actionBar. */
+  actionBarOverlay: ReactNode;
 }
 
 export const useActionBarContainer = ({
@@ -55,8 +54,6 @@ export const useActionBarContainer = ({
   });
 
   const [actionBarHeight, setActionBarHeight] = useState(0);
-  const [scrollbarWidth, setScrollbarWidth] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const actionBarRef = useCallback((node: HTMLDivElement | null) => {
     if (node) {
@@ -66,79 +63,31 @@ export const useActionBarContainer = ({
     }
   }, []);
 
-  const updateScrollbarWidth = useCallback(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const scrollable =
-      el.querySelector('[class*="overflow"]') ||
-      el.querySelector('[style*="overflow"]') ||
-      el.firstElementChild;
-
-    if (scrollable && scrollable instanceof HTMLElement) {
-      const width = scrollable.clientWidth
-        ? scrollable.offsetWidth - scrollable.clientWidth
-        : 0;
-      setScrollbarWidth(width);
-    }
-  }, []);
-
-  // Determine the actual ActionBar content to render
-  let renderedActionBar: ReactNode = null;
+  let actionBarOverlay: ReactNode = null;
 
   if (actionBar) {
     const rendered = actionBar(trigger.selectedKeys);
-    renderedActionBar = (
-      <ActionBarContext
-        value={{
-          selectedItemCount: trigger.selectedItemCount,
-          onClearSelection: trigger.clearSelection,
-        }}
+    actionBarOverlay = (
+      <div
+        ref={actionBarRef}
+        className="absolute inset-x-0 bottom-0 flex justify-center"
       >
-        {rendered}
-      </ActionBarContext>
+        <ActionBarContext
+          value={{
+            selectedItemCount: trigger.selectedItemCount,
+            onClearSelection: trigger.clearSelection,
+          }}
+        >
+          {rendered}
+        </ActionBarContext>
+      </div>
     );
   }
-
-  // Only observe when there's an ActionBar
-  useResizeObserver({
-    ref: actionBar ? containerRef : undefined,
-    onResize: updateScrollbarWidth,
-  });
-
-  const renderContainerWithActionBar = useCallback(
-    (children: ReactNode) => {
-      const style: CSSProperties & Record<string, string> = {
-        '--action-bar-height': actionBarHeight ? `${actionBarHeight}px` : '0px',
-      };
-
-      return (
-        <div
-          ref={containerRef}
-          className="relative overflow-clip"
-          style={style}
-        >
-          {children}
-
-          {renderedActionBar && (
-            <div
-              ref={actionBarRef}
-              className="absolute inset-x-0 bottom-0 flex justify-center"
-              style={{ insetInlineEnd: scrollbarWidth || undefined }}
-            >
-              {renderedActionBar}
-            </div>
-          )}
-        </div>
-      );
-    },
-    [actionBarHeight, renderedActionBar, actionBarRef, scrollbarWidth]
-  );
 
   return {
     selectedKeys: trigger.selectedKeys,
     onSelectionChange: trigger.onSelectionChange,
     actionBarHeight,
-    renderContainerWithActionBar,
+    actionBarOverlay,
   };
 };

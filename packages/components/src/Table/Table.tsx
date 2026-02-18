@@ -64,18 +64,6 @@ const _Table = ({
     size,
   });
 
-  const {
-    selectedKeys,
-    onSelectionChange,
-    actionBarHeight,
-    renderContainerWithActionBar,
-  } = useActionBarContainer({
-    selectedKeys: selectedKeysProp as Selection | undefined,
-    defaultSelectedKeys: defaultSelectedKeysProp as Selection | undefined,
-    onSelectionChange: onSelectionChangeProp,
-    actionBar,
-  });
-
   const ctx = useMemo(
     () => ({
       classNames,
@@ -88,23 +76,24 @@ const _Table = ({
     [classNames, variant, size, overflow, allowTextSelection, alignY]
   );
 
-  const table = (
+  const { selectedKeys, onSelectionChange, actionBarHeight, actionBarOverlay } =
+    useActionBarContainer({
+      selectedKeys: selectedKeysProp as Selection | undefined,
+      defaultSelectedKeys: defaultSelectedKeysProp as Selection | undefined,
+      onSelectionChange: onSelectionChangeProp,
+      actionBar,
+    });
+
+  return (
     <TableContext.Provider value={ctx}>
       <ResizableTableContainer
-        className="w-full"
-        style={
-          actionBar
-            ? {
-                paddingBottom: actionBarHeight ? `${actionBarHeight}px` : '0px',
-                scrollPaddingBottom: actionBarHeight
-                  ? `${actionBarHeight}px`
-                  : '0px',
-              }
-            : {
-                paddingBottom: 'var(--action-bar-height, 0px)',
-                scrollPaddingBottom: 'var(--action-bar-height, 0px)',
-              }
-        }
+        className={cn('w-full', actionBar && 'relative overflow-clip')}
+        style={{
+          paddingBottom: actionBarHeight ? `${actionBarHeight}px` : undefined,
+          scrollPaddingBottom: actionBarHeight
+            ? `${actionBarHeight}px`
+            : undefined,
+        }}
       >
         <RACTable
           className={cn('group/table', classNames.table)}
@@ -114,15 +103,10 @@ const _Table = ({
           onSelectionChange={onSelectionChange}
           {...props}
         />
+        {actionBarOverlay}
       </ResizableTableContainer>
     </TableContext.Provider>
   );
-
-  if (actionBar) {
-    return renderContainerWithActionBar(table);
-  }
-
-  return table;
 };
 
 const Table = Object.assign(_Table, {
