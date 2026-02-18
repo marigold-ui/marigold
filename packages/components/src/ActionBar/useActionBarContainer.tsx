@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
-import { useCallback, useState } from 'react';
+import type { ReactNode, RefObject } from 'react';
+import { useRef, useState } from 'react';
+import { useResizeObserver } from '@react-aria/utils';
 import type { Selection } from '../types';
 import { ActionBarContext } from './ActionBarContext';
 import { useActionBarTrigger } from './useActionBarTrigger';
@@ -55,13 +56,14 @@ export const useActionBarContainer = ({
 
   const [actionBarHeight, setActionBarHeight] = useState(0);
 
-  const actionBarRef = useCallback((node: HTMLDivElement | null) => {
-    if (node) {
-      setActionBarHeight(node.offsetHeight);
-    } else {
-      setActionBarHeight(0);
-    }
-  }, []);
+  const actionBarRef: RefObject<HTMLDivElement | null> = useRef(null);
+
+  useResizeObserver({
+    ref: actionBarRef,
+    onResize: () => {
+      setActionBarHeight(actionBarRef.current?.offsetHeight ?? 0);
+    },
+  });
 
   let actionBarOverlay: ReactNode = null;
 
