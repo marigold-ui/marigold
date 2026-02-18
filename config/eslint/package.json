@@ -20,7 +20,7 @@
     "directory": "config/eslint"
   },
   "dependencies": {
-    "@babel/core": "7.28.6",
+    "@babel/core": "7.29.0",
     "@babel/eslint-parser": "^7.28.4",
     "@babel/plugin-syntax-flow": "^7.24.7",
     "@babel/plugin-transform-react-jsx": "^7.24.7",
@@ -37,7 +37,7 @@
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-testing-library": "7.15.4",
-    "globals": "16.5.0",
+    "globals": "17.3.0",
     "prettier": "3.8.1"
   },
   "peerDependencies": {
