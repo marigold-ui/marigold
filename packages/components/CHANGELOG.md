@@ -1,5 +1,11 @@
 # @marigold/components
 
+## 17.0.1
+
+### Patch Changes
+
+- @marigold/system@17.0.1
+
 ## 17.0.0
 
 ### Major Changes
