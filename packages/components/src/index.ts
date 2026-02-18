@@ -12,11 +12,11 @@ export { ActionBar } from './ActionBar/ActionBar';
 export type { ActionBarProps } from './ActionBar/ActionBar';
 export { ActionButton } from './ActionBar/ActionButton';
 export type { ActionButtonProps } from './ActionBar/ActionButton';
-export { useActionBarContainer } from './ActionBar/useActionBarContainer';
+export { useActionBar } from './ActionBar/useActionBar';
 export type {
-  UseActionBarContainerProps,
-  UseActionBarContainerReturn,
-} from './ActionBar/useActionBarContainer';
+  UseActionBarProps,
+  UseActionBarReturn,
+} from './ActionBar/useActionBar';
 
 export { Aside } from './Aside/Aside';
 export type { AsideProps } from './Aside/Aside';

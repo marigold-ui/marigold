@@ -6,7 +6,7 @@ import {
   ResizableTableContainer,
 } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
-import { useActionBarContainer } from '../ActionBar/useActionBarContainer';
+import { useActionBar } from '../ActionBar/useActionBar';
 import type { Selection } from '../types';
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
@@ -77,7 +77,7 @@ const _Table = ({
   );
 
   const { selectedKeys, onSelectionChange, actionBarHeight, actionBarOverlay } =
-    useActionBarContainer({
+    useActionBar({
       selectedKeys: selectedKeysProp as Selection | undefined,
       defaultSelectedKeys: defaultSelectedKeysProp as Selection | undefined,
       onSelectionChange: onSelectionChangeProp,

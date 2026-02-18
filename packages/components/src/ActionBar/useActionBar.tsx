@@ -4,7 +4,7 @@ import { useResizeObserver } from '@react-aria/utils';
 import type { Selection } from '../types';
 import { ActionBarContext } from './ActionBarContext';
 
-export interface UseActionBarContainerProps {
+export interface UseActionBarProps {
   /**
    * The controlled set of selected keys.
    */
@@ -27,7 +27,7 @@ export interface UseActionBarContainerProps {
   actionBar?: (selectedKeys: Selection) => ReactNode;
 }
 
-export interface UseActionBarContainerReturn {
+export interface UseActionBarReturn {
   /** Pass to Table's `selectedKeys` prop. */
   selectedKeys: Selection;
 
@@ -41,12 +41,12 @@ export interface UseActionBarContainerReturn {
   actionBarOverlay: ReactNode;
 }
 
-export const useActionBarContainer = ({
+export const useActionBar = ({
   selectedKeys: controlledKeys,
   defaultSelectedKeys,
   onSelectionChange,
   actionBar,
-}: UseActionBarContainerProps): UseActionBarContainerReturn => {
+}: UseActionBarProps): UseActionBarReturn => {
   // Selection state (controlled/uncontrolled)
   const isControlled = controlledKeys !== undefined;
   const [internalKeys, setInternalKeys] = useState<Selection>(
