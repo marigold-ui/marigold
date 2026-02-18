@@ -81,9 +81,7 @@ export const ComponentName = ({
 ### Test File (`ComponentName.test.tsx`)
 
 ```typescript
-import { screen } from '@testing-library/react';
-import { Theme, cva } from '@marigold/system';
-import { setup } from '../test.utils';
+import { render, screen } from '@testing-library/react';
 import { Basic } from './ComponentName.stories';
 
 describe('ComponentName', () => {
@@ -151,9 +149,10 @@ export const Disabled = meta.story({
 ### Theme Styles (`ComponentName.styles.ts`)
 
 ```typescript
-import { cva } from '@marigold/system';
+import { type ThemeComponent, cva } from '@marigold/system';
 
-export const ComponentName = cva('', {
+export const ComponentName: ThemeComponent<'ComponentName'> = cva({
+  base: '',
   variants: {
     variant: {
       default: '',
@@ -192,9 +191,10 @@ Examples:
 - [ ] Props interface extends appropriate RAC props with `Omit`
 - [ ] Internal react-aria props are renamed to user-friendly names
 - [ ] Component is exported with named export
-- [ ] Test file imports component directly (not from stories)
-- [ ] Stories use `satisfies Meta` pattern
-- [ ] Theme styles use `cva` from `@marigold/system`
+- [ ] Test file imports stories (e.g., `<Basic.Component />`)
+- [ ] Stories use `preview.meta()` and `meta.story()` pattern
+- [ ] Theme styles use `cva` from `@marigold/system` with object syntax (`cva({ base, variants })`)
+- [ ] Theme styles are typed with `ThemeComponent<'ComponentName'>`
 - [ ] All files use TypeScript with strict typing
 - [ ] No `any` types used
 
