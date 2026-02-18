@@ -34,7 +34,7 @@ jobs:
           SB_URL: '${{ github.event.deployment_status.environment_url }}'
       - name: Upload Accessibility Report
         id: artifact-upload-step
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: accessibility-report
           path: ./config/storybook/artifacts/accessibilityReport.html
