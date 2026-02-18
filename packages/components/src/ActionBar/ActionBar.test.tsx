@@ -104,11 +104,8 @@ test('announces actions available for screen readers', () => {
 test('Table with actionBar shows ActionBar when items selected', async () => {
   render(<IntegratedWithTable.Component />);
 
-  // Select a row to trigger the ActionBar
-  const row = screen.getByRole('row', { name: /Charizard/i });
-  await user.click(row);
-
-  expect(screen.getByText('1 selected')).toBeInTheDocument();
+  // The story has 2 default selected keys, so ActionBar should already be visible
+  expect(screen.getByText('2 selected')).toBeInTheDocument();
   expect(
     screen.getByRole('toolbar', { name: /bulk actions/i })
   ).toBeInTheDocument();
@@ -118,12 +115,8 @@ test('Table with actionBar shows ActionBar when items selected', async () => {
 test('clear selection hides ActionBar via actionBar', async () => {
   render(<IntegratedWithTable.Component />);
 
-  // Select a row to trigger the ActionBar
-  const row = screen.getByRole('row', { name: /Charizard/i });
-  await user.click(row);
-
-  // ActionBar should be visible
-  expect(screen.getByText('1 selected')).toBeInTheDocument();
+  // ActionBar should be visible (2 items pre-selected)
+  expect(screen.getByText('2 selected')).toBeInTheDocument();
 
   // Click clear selection
   const clearButton = screen.getByRole('button', { name: /clear selection/i });

@@ -1,9 +1,8 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode, RefObject } from 'react';
-import { useRef, useState } from 'react';
 import { useResizeObserver } from '@react-aria/utils';
 import type { Selection } from '../types';
 import { ActionBarContext } from './ActionBarContext';
-import { useActionBarTrigger } from './useActionBarTrigger';
 
 export interface UseActionBarContainerProps {
   /**
@@ -48,12 +47,41 @@ export const useActionBarContainer = ({
   onSelectionChange,
   actionBar,
 }: UseActionBarContainerProps): UseActionBarContainerReturn => {
-  const trigger = useActionBarTrigger({
-    selectedKeys: controlledKeys,
-    defaultSelectedKeys,
-    onSelectionChange,
+  // Selection state (controlled/uncontrolled)
+  const isControlled = controlledKeys !== undefined;
+  const [internalKeys, setInternalKeys] = useState<Selection>(
+    defaultSelectedKeys ?? new Set()
+  );
+
+  const selectedKeys = isControlled ? controlledKeys : internalKeys;
+
+  const onSelectionChangeRef = useRef(onSelectionChange);
+  useEffect(() => {
+    onSelectionChangeRef.current = onSelectionChange;
   });
 
+  const handleSelectionChange = useCallback(
+    (keys: Selection) => {
+      if (!isControlled) {
+        setInternalKeys(keys);
+      }
+      onSelectionChangeRef.current?.(keys);
+    },
+    [isControlled]
+  );
+
+  const clearSelection = useCallback(() => {
+    handleSelectionChange(new Set());
+  }, [handleSelectionChange]);
+
+  const selectedItemCount: number | 'all' =
+    selectedKeys === 'all'
+      ? 'all'
+      : selectedKeys instanceof Set
+        ? selectedKeys.size
+        : 0;
+
+  // ActionBar height measurement
   const [actionBarHeight, setActionBarHeight] = useState(0);
 
   const actionBarRef: RefObject<HTMLDivElement | null> = useRef(null);
@@ -68,7 +96,7 @@ export const useActionBarContainer = ({
   let actionBarOverlay: ReactNode = null;
 
   if (actionBar) {
-    const rendered = actionBar(trigger.selectedKeys);
+    const rendered = actionBar(selectedKeys);
     actionBarOverlay = (
       <div
         ref={actionBarRef}
@@ -77,8 +105,8 @@ export const useActionBarContainer = ({
       >
         <ActionBarContext
           value={{
-            selectedItemCount: trigger.selectedItemCount,
-            onClearSelection: trigger.clearSelection,
+            selectedItemCount,
+            onClearSelection: clearSelection,
           }}
         >
           {rendered}
@@ -88,8 +116,8 @@ export const useActionBarContainer = ({
   }
 
   return {
-    selectedKeys: trigger.selectedKeys,
-    onSelectionChange: trigger.onSelectionChange,
+    selectedKeys,
+    onSelectionChange: handleSelectionChange,
     actionBarHeight,
     actionBarOverlay,
   };
