@@ -87,11 +87,13 @@ const _Table = ({
   return (
     <TableContext.Provider value={ctx}>
       <ResizableTableContainer
-        className={cn('w-full', actionBar && 'relative overflow-clip')}
+        className={cn('w-full')}
         style={{
-          paddingBottom: actionBarHeight ? `${actionBarHeight}px` : undefined,
+          paddingBottom: actionBarHeight
+            ? `calc(${actionBarHeight}px + var(--actionbar-offset, 8px))`
+            : undefined,
           scrollPaddingBottom: actionBarHeight
-            ? `${actionBarHeight}px`
+            ? `calc(${actionBarHeight}px + var(--actionbar-offset, 8px))`
             : undefined,
         }}
       >

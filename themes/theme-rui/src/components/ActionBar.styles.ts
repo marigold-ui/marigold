@@ -6,7 +6,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
     'relative w-fit',
     'flex items-center justify-between justify-items-center gap-4',
     'px-6 py-3',
-    'shadow-lg',
+    'shadow-elevation-overlay',
     'bg-brand text-brand-foreground border-brand',
     'rounded-lg font-medium transition-colors',
     'focus-visible:util-focus-ring outline-none disabled:util-disabled',

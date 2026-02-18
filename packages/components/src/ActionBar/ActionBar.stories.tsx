@@ -285,6 +285,9 @@ export const IntegratedWithTable = meta.story({
       <Table
         aria-label="User accounts"
         selectionMode="multiple"
+        defaultSelectedKeys={
+          new Set(['fritz.schneider@example.de', 'klaus.becker@example.de'])
+        }
         actionBar={_selectedKeys => (
           <ActionBar>
             <ActionBar.Button onPress={() => alert('Edit')}>
@@ -311,7 +314,7 @@ export const IntegratedWithTable = meta.story({
         </Table.Header>
         <Table.Body>
           {users.map(user => (
-            <Table.Row key={user.email}>
+            <Table.Row key={user.email} id={user.email}>
               <Table.Cell>
                 <Stack space="0.5">
                   <Text weight="medium">{user.name}</Text>

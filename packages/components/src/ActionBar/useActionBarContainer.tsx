@@ -72,7 +72,8 @@ export const useActionBarContainer = ({
     actionBarOverlay = (
       <div
         ref={actionBarRef}
-        className="absolute inset-x-0 bottom-0 flex justify-center"
+        className="sticky flex justify-center"
+        style={{ bottom: 'var(--actionbar-offset, 8px)' }}
       >
         <ActionBarContext
           value={{
