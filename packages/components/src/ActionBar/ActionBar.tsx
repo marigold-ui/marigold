@@ -11,6 +11,7 @@ import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Text } from '../Text/Text';
 import { intlMessages } from '../intl/messages';
+import { useActionBarContext } from './ActionBarContext';
 import { ActionButton } from './ActionButton';
 import type { ActionButtonProps } from './ActionButton';
 
@@ -56,9 +57,21 @@ interface ActionBarComponent extends ForwardRefExoticComponent<
 
 const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
   (
-    { children, id, onClearSelection, selectedItemCount = 0, variant, size },
+    {
+      children,
+      id,
+      onClearSelection: onClearSelectionProp,
+      selectedItemCount: selectedItemCountProp,
+      variant,
+      size,
+    },
     forwardedRef
   ) => {
+    const context = useActionBarContext();
+    const selectedItemCount =
+      selectedItemCountProp ?? context?.selectedItemCount ?? 0;
+    const onClearSelection = onClearSelectionProp ?? context?.onClearSelection;
+
     const classNames = useClassNames({
       component: 'ActionBar',
       variant,

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import type RAC from 'react-aria-components';
 import {
@@ -5,6 +6,8 @@ import {
   ResizableTableContainer,
 } from 'react-aria-components';
 import { cn, useClassNames } from '@marigold/system';
+import { useActionBarContainer } from '../ActionBar/useActionBarContainer';
+import type { Selection } from '../types';
 import { TableContext } from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
@@ -36,6 +39,11 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    * @default 'middle'
    */
   alignY?: 'top' | 'middle' | 'bottom' | 'baseline';
+  /**
+   * Render function that receives the current selection and returns an ActionBar.
+   * When provided, the Table manages selection wiring and ActionBar positioning automatically.
+   */
+  actionBar?: (selectedKeys: Selection) => ReactNode;
 }
 
 const _Table = ({
@@ -44,12 +52,28 @@ const _Table = ({
   overflow = 'wrap',
   allowTextSelection = false,
   alignY = 'middle',
+  actionBar,
+  selectedKeys: selectedKeysProp,
+  defaultSelectedKeys: defaultSelectedKeysProp,
+  onSelectionChange: onSelectionChangeProp,
   ...props
 }: TableProps) => {
   const classNames = useClassNames({
     component: 'Table',
     variant,
     size,
+  });
+
+  const {
+    selectedKeys,
+    onSelectionChange,
+    actionBarHeight,
+    renderContainerWithActionBar,
+  } = useActionBarContainer({
+    selectedKeys: selectedKeysProp as Selection | undefined,
+    defaultSelectedKeys: defaultSelectedKeysProp as Selection | undefined,
+    onSelectionChange: onSelectionChangeProp,
+    actionBar,
   });
 
   const ctx = useMemo(
@@ -64,23 +88,41 @@ const _Table = ({
     [classNames, variant, size, overflow, allowTextSelection, alignY]
   );
 
-  return (
+  const table = (
     <TableContext.Provider value={ctx}>
       <ResizableTableContainer
         className="w-full"
-        style={{
-          paddingBottom: 'var(--action-bar-height, 0px)',
-          scrollPaddingBottom: 'var(--action-bar-height, 0px)',
-        }}
+        style={
+          actionBar
+            ? {
+                paddingBottom: actionBarHeight ? `${actionBarHeight}px` : '0px',
+                scrollPaddingBottom: actionBarHeight
+                  ? `${actionBarHeight}px`
+                  : '0px',
+              }
+            : {
+                paddingBottom: 'var(--action-bar-height, 0px)',
+                scrollPaddingBottom: 'var(--action-bar-height, 0px)',
+              }
+        }
       >
         <RACTable
           className={cn('group/table', classNames.table)}
           selectionBehavior="toggle"
+          selectedKeys={selectedKeys}
+          defaultSelectedKeys={actionBar ? undefined : defaultSelectedKeysProp}
+          onSelectionChange={onSelectionChange}
           {...props}
         />
       </ResizableTableContainer>
     </TableContext.Provider>
   );
+
+  if (actionBar) {
+    return renderContainerWithActionBar(table);
+  }
+
+  return table;
 };
 
 const Table = Object.assign(_Table, {

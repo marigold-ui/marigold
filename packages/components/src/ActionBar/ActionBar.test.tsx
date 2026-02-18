@@ -1,14 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { act, renderHook } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, test, vi } from 'vitest';
 import {
   AllSelected,
   Basic,
+  IntegratedWithTable,
   NoSelection,
   WithoutClearButton,
 } from './ActionBar.stories';
-import { useActionBarTrigger } from './useActionBarTrigger';
 
 const user = userEvent.setup();
 
@@ -101,79 +100,37 @@ test('announces actions available for screen readers', () => {
   expect(announcement).toHaveTextContent('Actions available.');
 });
 
-// useActionBarTrigger hook tests
-test('useActionBarTrigger: uncontrolled - starts with empty selection', () => {
-  const { result } = renderHook(() => useActionBarTrigger());
+// actionBar integration tests (using stories for theme provider)
+test('Table with actionBar shows ActionBar when items selected', async () => {
+  render(<IntegratedWithTable.Component />);
 
-  expect(result.current.selectedItemCount).toBe(0);
-  expect(result.current.isOpen).toBe(false);
+  // Select a row to trigger the ActionBar
+  const row = screen.getByRole('row', { name: /Charizard/i });
+  await user.click(row);
+
+  expect(screen.getByText('1 selected')).toBeInTheDocument();
+  expect(
+    screen.getByRole('toolbar', { name: /bulk actions/i })
+  ).toBeInTheDocument();
+  expect(screen.getByText('Edit')).toBeInTheDocument();
 });
 
-test('useActionBarTrigger: uncontrolled - starts with defaultSelectedKeys', () => {
-  const { result } = renderHook(() =>
-    useActionBarTrigger({ defaultSelectedKeys: new Set(['1', '2']) })
-  );
+test('clear selection hides ActionBar via actionBar', async () => {
+  render(<IntegratedWithTable.Component />);
 
-  expect(result.current.selectedItemCount).toBe(2);
-  expect(result.current.isOpen).toBe(true);
-});
+  // Select a row to trigger the ActionBar
+  const row = screen.getByRole('row', { name: /Charizard/i });
+  await user.click(row);
 
-test('useActionBarTrigger: uncontrolled - onSelectionChange updates state', () => {
-  const { result } = renderHook(() => useActionBarTrigger());
+  // ActionBar should be visible
+  expect(screen.getByText('1 selected')).toBeInTheDocument();
 
-  act(() => {
-    result.current.onSelectionChange(new Set(['1', '2', '3']));
-  });
+  // Click clear selection
+  const clearButton = screen.getByRole('button', { name: /clear selection/i });
+  await user.click(clearButton);
 
-  expect(result.current.selectedItemCount).toBe(3);
-  expect(result.current.isOpen).toBe(true);
-});
-
-test('useActionBarTrigger: clearSelection resets selection', () => {
-  const { result } = renderHook(() =>
-    useActionBarTrigger({ defaultSelectedKeys: new Set(['1']) })
-  );
-
-  expect(result.current.isOpen).toBe(true);
-
-  act(() => {
-    result.current.clearSelection();
-  });
-
-  expect(result.current.selectedItemCount).toBe(0);
-  expect(result.current.isOpen).toBe(false);
-});
-
-test('useActionBarTrigger: controlled - uses provided selectedKeys', () => {
-  const { result } = renderHook(() =>
-    useActionBarTrigger({ selectedKeys: new Set(['1', '2']) })
-  );
-
-  expect(result.current.selectedItemCount).toBe(2);
-  expect(result.current.isOpen).toBe(true);
-});
-
-test('useActionBarTrigger: controlled - calls onSelectionChange callback', () => {
-  const onSelectionChange = vi.fn();
-  const { result } = renderHook(() =>
-    useActionBarTrigger({
-      selectedKeys: new Set(['1']),
-      onSelectionChange,
-    })
-  );
-
-  act(() => {
-    result.current.onSelectionChange(new Set(['1', '2']));
-  });
-
-  expect(onSelectionChange).toHaveBeenCalledWith(new Set(['1', '2']));
-});
-
-test('useActionBarTrigger: handles "all" selection', () => {
-  const { result } = renderHook(() =>
-    useActionBarTrigger({ selectedKeys: 'all' })
-  );
-
-  expect(result.current.selectedItemCount).toBe('all');
-  expect(result.current.isOpen).toBe(true);
+  // ActionBar should be hidden
+  expect(
+    screen.queryByRole('toolbar', { name: /bulk actions/i })
+  ).not.toBeInTheDocument();
 });
