@@ -81,9 +81,6 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
     });
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    const countText =
-      lastCount === 'all' ? 'All items selected' : `${lastCount} selected`;
-
     const { keyboardProps } = useKeyboard({
       onKeyDown: e => {
         if (e.key === 'Escape' && onClearSelection) {
@@ -111,7 +108,11 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
             />
           )}
 
-          <div className={classNames.count}>{countText}</div>
+          <div className={classNames.count}>
+            {lastCount === 'all'
+              ? stringFormatter.format('selectedAll')
+              : stringFormatter.format('selectedCount', { count: lastCount })}
+          </div>
 
           <Toolbar
             className={classNames.actions}
