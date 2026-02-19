@@ -1,12 +1,9 @@
-import type {
-  ForwardRefExoticComponent,
-  KeyboardEvent,
-  ReactNode,
-} from 'react';
+import type { ForwardRefExoticComponent, ReactNode } from 'react';
 import { forwardRef, useRef, useState } from 'react';
 import { Toolbar } from 'react-aria-components';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
+import { useKeyboard } from '@react-aria/interactions';
 import { useEnterAnimation, useExitAnimation } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
@@ -87,49 +84,50 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
     const countText =
       lastCount === 'all' ? 'All items selected' : `${lastCount} selected`;
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-      if (e.key === 'Escape' && onClearSelection) {
-        e.preventDefault();
-        onClearSelection();
-      }
-    };
+    const { keyboardProps } = useKeyboard({
+      onKeyDown: e => {
+        if (e.key === 'Escape' && onClearSelection) {
+          e.preventDefault();
+          onClearSelection();
+        }
+      },
+    });
 
     return (
-      <div
-        ref={ref}
-        id={id}
-        onKeyDown={handleKeyDown}
-        data-entering={isEntering || undefined}
-        data-exiting={isExiting || undefined}
-      >
-        <FocusScope restoreFocus>
-          <div className={cn('z-30', classNames.container)}>
-            {onClearSelection && (
-              <CloseButton
-                aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-                onPress={onClearSelection}
-                className={classNames.clearButton}
-              />
-            )}
-
-            <div className={classNames.count}>{countText}</div>
-
-            <Toolbar
-              className={classNames.actions}
-              aria-label={stringFormatter.format('bulkActionsAriaLabel')}
-            >
-              {children}
-            </Toolbar>
-          </div>
-
-          {/* Screen reader announcement when ActionBar appears */}
-          {!isExiting && (
-            <div className="sr-only" role="status" aria-live="polite">
-              {stringFormatter.format('actionsAvailable')}
-            </div>
+      <FocusScope restoreFocus>
+        <div
+          ref={ref}
+          id={id}
+          {...keyboardProps}
+          className={cn('z-30', classNames.container)}
+          data-entering={isEntering || undefined}
+          data-exiting={isExiting || undefined}
+        >
+          {onClearSelection && (
+            <CloseButton
+              aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+              onPress={onClearSelection}
+              className={classNames.clearButton}
+            />
           )}
-        </FocusScope>
-      </div>
+
+          <div className={classNames.count}>{countText}</div>
+
+          <Toolbar
+            className={classNames.actions}
+            aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+          >
+            {children}
+          </Toolbar>
+        </div>
+
+        {/* Screen reader announcement when ActionBar appears */}
+        {!isExiting && (
+          <div className="sr-only" role="status" aria-live="polite">
+            {stringFormatter.format('actionsAvailable')}
+          </div>
+        )}
+      </FocusScope>
     );
   }
 );
