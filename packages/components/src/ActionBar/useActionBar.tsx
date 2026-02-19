@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ReactNode, RefObject } from 'react';
-import { useResizeObserver } from '@react-aria/utils';
+import type { ReactNode } from 'react';
 import type { Selection } from '../types';
 import { ActionBarContext } from './ActionBarContext';
 
@@ -84,34 +83,25 @@ export const useActionBar = ({
   // ActionBar height measurement
   const [actionBarHeight, setActionBarHeight] = useState(0);
 
-  const actionBarRef: RefObject<HTMLDivElement | null> = useRef(null);
-
-  useResizeObserver({
-    ref: actionBarRef,
-    onResize: () => {
-      setActionBarHeight(actionBarRef.current?.offsetHeight ?? 0);
-    },
-  });
+  const onHeightChange = useCallback(
+    (height: number) => setActionBarHeight(height),
+    []
+  );
 
   let actionBarOverlay: ReactNode = null;
 
   if (actionBar) {
     const rendered = actionBar(selectedKeys);
     actionBarOverlay = (
-      <div
-        ref={actionBarRef}
-        className="sticky mx-auto w-fit"
-        style={{ bottom: 'var(--actionbar-offset, 8px)' }}
+      <ActionBarContext
+        value={{
+          selectedItemCount,
+          onClearSelection: clearSelection,
+          onHeightChange,
+        }}
       >
-        <ActionBarContext
-          value={{
-            selectedItemCount,
-            onClearSelection: clearSelection,
-          }}
-        >
-          {rendered}
-        </ActionBarContext>
-      </div>
+        {rendered}
+      </ActionBarContext>
     );
   }
 

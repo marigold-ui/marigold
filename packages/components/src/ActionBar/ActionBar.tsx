@@ -1,10 +1,14 @@
 import type { ForwardRefExoticComponent, ReactNode } from 'react';
-import { forwardRef, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Toolbar } from 'react-aria-components';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useKeyboard } from '@react-aria/interactions';
-import { useEnterAnimation, useExitAnimation } from '@react-aria/utils';
+import {
+  useEnterAnimation,
+  useExitAnimation,
+  useResizeObserver,
+} from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { intlMessages } from '../intl/messages';
@@ -96,7 +100,8 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
           ref={ref}
           id={id}
           {...keyboardProps}
-          className={cn('z-30', classNames.container)}
+          className={cn(classNames.container, 'sticky z-30 mx-auto')}
+          style={{ bottom: 'var(--actionbar-offset, 8px)' }}
           data-entering={isEntering || undefined}
           data-exiting={isExiting || undefined}
         >
@@ -151,6 +156,7 @@ const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
     const selectedItemCount =
       selectedItemCountProp ?? context?.selectedItemCount ?? 0;
     const onClearSelection = onClearSelectionProp ?? context?.onClearSelection;
+    const onHeightChange = context?.onHeightChange;
 
     // Internal ref for exit animation
     const internalRef = useRef<HTMLDivElement>(null);
@@ -160,6 +166,21 @@ const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
     const isOpen = selectedItemCount !== 0;
     const isExiting = useExitAnimation(ref, isOpen);
 
+    // Report measured height back to useActionBar via context
+    useResizeObserver({
+      ref,
+      onResize: () => {
+        onHeightChange?.(ref.current?.offsetHeight ?? 0);
+      },
+    });
+
+    const shouldRender = isOpen || isExiting;
+    useEffect(() => {
+      if (!shouldRender) {
+        onHeightChange?.(0);
+      }
+    }, [shouldRender, onHeightChange]);
+
     // Retain last count so we don't flash "0 selected" during exit animation
     const [lastCount, setLastCount] = useState(selectedItemCount);
     if (selectedItemCount !== 0 && selectedItemCount !== lastCount) {
@@ -167,7 +188,7 @@ const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
     }
 
     // Nothing to render
-    if (!isOpen && !isExiting) {
+    if (!shouldRender) {
       return null;
     }
 
