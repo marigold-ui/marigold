@@ -248,8 +248,9 @@
   --fade-in-duration: 0.25s;
   --fade-out-duration: 0.15s;
 
-  --animate-fade-in: fade-in var(--fade-in-duration) var(--ease-out-cubic);
-  --animate-fade-out: fade-in var(--fade-out-duration) reverse;
+  --animate-fade-in: fade-in var(--fade-in-duration) var(--ease-out-cubic)
+    forwards;
+  --animate-fade-out: fade-in var(--fade-out-duration) reverse forwards;
 
   @keyframes fade-in {
     from {
@@ -262,7 +263,8 @@
     }
   }
 
-  --animate-fade-in-up: fade-in-up var(--fade-in-duration) var(--ease-out-cubic);
+  --animate-fade-in-up: fade-in-up var(--fade-in-duration) var(--ease-out-cubic)
+    forwards;
 
   @keyframes fade-in-up {
     from {
@@ -337,25 +339,6 @@
 
     to {
       transform: translateY(0);
-    }
-  }
-
-  /* animation action bar */
-  --animate-actionbar-in: actionbar-in var(--fade-in-duration)
-    var(--ease-out-cubic);
-  --animate-actionbar-out: actionbar-in var(--fade-out-duration) reverse;
-
-  @keyframes actionbar-in {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-      filter: blur(6px);
-    }
-
-    to {
-      opacity: 1;
-      transform: scale(1);
-      filter: blur(0);
     }
   }
 
