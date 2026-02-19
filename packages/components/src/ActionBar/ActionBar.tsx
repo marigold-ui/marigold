@@ -115,24 +115,26 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
           data-entering={isEntering || undefined}
           data-exiting={isExiting || undefined}
         >
-          {onClearSelection && (
-            <CloseButton
-              aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-              onPress={onClearSelection}
-              className={classNames.clearButton}
-            />
-          )}
+          <div className={classNames.selection}>
+            {onClearSelection && (
+              <CloseButton
+                aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+                onPress={onClearSelection}
+                className={classNames.clearButton}
+              />
+            )}
 
-          <div className={classNames.count}>
-            {lastCount === 'all'
-              ? stringFormatter.format('selectedAll')
-              : stringFormatter.format('selectedCount', {
-                  count: lastCount,
-                })}
+            <div className={classNames.count}>
+              {lastCount === 'all'
+                ? stringFormatter.format('selectedAll')
+                : stringFormatter.format('selectedCount', {
+                    count: lastCount,
+                  })}
+            </div>
           </div>
 
           <Toolbar
-            className={classNames.actions}
+            className={classNames.toolbar}
             aria-label={stringFormatter.format('bulkActionsAriaLabel')}
           >
             {children}

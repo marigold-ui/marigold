@@ -14,8 +14,9 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
     'entering:animate-fade-in-up',
     'exiting:animate-fade-out',
   ]),
+  selection: cva(['flex items-center gap-4']),
   count: cva(['flex items-center', 'text-sm font-medium', 'whitespace-nowrap']),
-  actions: cva([
+  toolbar: cva([
     'flex items-center gap-2',
     'flex-1 justify-center',
     'overflow-x-auto',
