@@ -245,33 +245,61 @@
   --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
   --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
 
-  --fade-in-duration: 0.1s;
-  --fade-out-duration: 0.1s;
+  --fade-in-duration: 0.25s;
+  --fade-out-duration: 0.15s;
 
-  --animate-fade-in: fade-in var(--fade-in-duration) var(--ease-out-cubic)
-    forwards;
-  --animate-fade-out: fade-in var(--fade-out-duration) reverse forwards;
+  --animate-fade-in: fade-in var(--fade-in-duration) var(--ease-out-cubic);
+  --animate-fade-out: fade-in var(--fade-out-duration) reverse;
 
   @keyframes fade-in {
     from {
       opacity: 0;
+      filter: blur(6px);
     }
     to {
       opacity: 1;
+      filter: blur(0);
     }
   }
 
-  --animate-fade-in-up: fade-in-up var(--fade-in-duration) var(--ease-out-cubic)
-    forwards;
+  --animate-fade-in-up: fade-in-up var(--fade-in-duration) var(--ease-out-cubic);
 
   @keyframes fade-in-up {
     from {
       opacity: 0;
+      filter: blur(6px);
       transform: translateY(15px);
     }
     to {
       opacity: 1;
+      filter: blur(0);
       transform: translateY(0);
+    }
+  }
+
+  /* ActionBar enter/exit */
+  --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
+  --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(16px);
     }
   }
 
