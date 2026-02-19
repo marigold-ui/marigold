@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import type { ForwardRefExoticComponent, ReactNode } from 'react';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Toolbar } from 'react-aria-components';
@@ -78,27 +79,6 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
       internalRef) as React.RefObject<HTMLDivElement | null>;
     const isEntering = useEnterAnimation(ref);
 
-    const contentRef = useRef<HTMLDivElement>(null);
-    const [contentWidth, setContentWidth] = useState<number | undefined>(
-      undefined
-    );
-
-    useResizeObserver({
-      ref: contentRef,
-      onResize: () => {
-        const content = contentRef.current;
-        const container = ref.current;
-        if (content && container) {
-          const w = content.scrollWidth;
-          if (w > 0) {
-            const cs = getComputedStyle(container);
-            const px = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-            setContentWidth(w + px);
-          }
-        }
-      },
-    });
-
     const classNames = useClassNames({
       component: 'ActionBar',
       variant,
@@ -106,7 +86,9 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
     });
     const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
-    const { keyboardProps } = useKeyboard({
+    const {
+      keyboardProps: { onKeyDown, onKeyUp },
+    } = useKeyboard({
       onKeyDown: e => {
         if (e.key === 'Escape' && onClearSelection) {
           e.preventDefault();
@@ -117,25 +99,23 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
 
     return (
       <FocusScope restoreFocus>
-        <div
+        <motion.div
+          layout
           ref={ref}
           id={id}
-          {...keyboardProps}
-          className={cn(
-            classNames.container,
-            'sticky z-30 mx-auto transition-[width] duration-200 ease-in-out'
-          )}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
+          className={cn(classNames.container, 'sticky z-30 mx-auto w-max')}
           style={{
             bottom: 'var(--actionbar-offset, 8px)',
-            width: contentWidth,
+          }}
+          transition={{
+            layout: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 },
           }}
           data-entering={isEntering || undefined}
           data-exiting={isExiting || undefined}
         >
-          <div
-            ref={contentRef}
-            className="flex w-max shrink-0 items-center gap-4"
-          >
+          <div className="flex w-max shrink-0 items-center gap-4">
             {onClearSelection && (
               <CloseButton
                 aria-label={stringFormatter.format('clearSelectionAriaLabel')}
@@ -159,7 +139,7 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
               {children}
             </Toolbar>
           </div>
-        </div>
+        </motion.div>
 
         {/* Screen reader announcement when ActionBar appears */}
         {!isExiting && (

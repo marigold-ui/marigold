@@ -8,7 +8,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
     'px-6 py-3',
     'shadow-elevation-overlay',
     'bg-brand text-brand-foreground border-brand',
-    'rounded-lg font-medium transition-colors',
+    'rounded-full font-medium transition-colors',
     'focus-visible:util-focus-ring outline-none disabled:util-disabled',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
     'entering:animate-fade-in-up',
