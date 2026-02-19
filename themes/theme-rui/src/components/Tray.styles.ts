@@ -8,7 +8,7 @@ export const Tray: ThemeComponent<'Tray'> = {
     base: [
       'w-full border-0 inset-shadow-black inset-shadow-sm/20',
       'relative grid-rows-[auto_auto_1fr_auto] max-h-[95vh] rounded-b-none',
-      'ui-surface ui-elevation-overlay',
+      'ui-surface shadow-elevation-overlay',
       'outline-hidden grid',
       "after:absolute after:inset-x-0 after:top-full after:h-screen after:bg-background after:content-['']",
     ],

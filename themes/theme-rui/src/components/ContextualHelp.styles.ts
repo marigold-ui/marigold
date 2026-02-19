@@ -4,7 +4,7 @@ export const ContextualHelp: ThemeComponent<'ContextualHelp'> = {
   trigger: cva({
     base: [
       'inline-flex items-center justify-center rounded-full transition-[color,box-shadow]',
-      'hover:util-focus-ring hover:text-foreground',
+      'hover:ui-state-focus hover:text-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0',
       'focus-visible:ui-state-focus outline-none',
       'cursor-pointer util-touch-hitbox',

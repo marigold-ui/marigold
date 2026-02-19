@@ -15,7 +15,7 @@ export const Tabs: ThemeComponent<'Tabs'> = {
     base: [
       'text-text-primary-muted aria-selected:text-text-primary px-2 py-1 text-sm font-medium',
       'aria-selected:border-border-primary -m-px border-b-2 border-transparent',
-      'focus:outline-hidden focus-visible:state-focus-borderless',
+      'focus:outline-hidden focus-visible:ui-state-focus',
     ],
   }),
 };

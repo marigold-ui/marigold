@@ -10,6 +10,7 @@ import type RAC from 'react-aria-components';
 import {
   Autocomplete,
   Group,
+  Button as RACButton,
   Select as ReactAriaSelect,
   SearchField,
   SelectStateContext,
@@ -28,7 +29,6 @@ import {
 } from '@marigold/system';
 import { Button } from '../Button/Button';
 import { FieldBase } from '../FieldBase/FieldBase';
-import { IconButton } from '../IconButton/IconButton';
 import { SearchInput } from '../Input/SearchInput';
 import { ListBox } from '../ListBox/ListBox';
 import { Popover } from '../Overlay/Popover';
@@ -268,18 +268,19 @@ const _TagField = (forwardRef as forwardRefType)(function TagField<
       <Group
         ref={triggerRef}
         className={cn(
-          'w-(--field-width) max-w-full min-w-0',
+          'grid w-(--field-width) max-w-full min-w-0',
           classNames.trigger
         )}
       >
-        <TagDisplay
-          placeholder={placeholder}
-          classNames={classNames}
-          disabled={disabled}
-        />
-        <IconButton className={classNames.button}>
-          <ChevronsVertical />
-        </IconButton>
+        <RACButton className="col-start-1 row-start-1 h-full w-full cursor-pointer opacity-0" />
+        <div className="pointer-events-none col-start-1 row-start-1 flex flex-1 items-center justify-between gap-1 **:[[role=row]]:pointer-events-auto">
+          <TagDisplay
+            placeholder={placeholder}
+            classNames={classNames}
+            disabled={disabled}
+          />
+          <ChevronsVertical className="size-4 shrink-0" aria-hidden="true" />
+        </div>
       </Group>
       {isSmallScreen ? (
         <Tray>
