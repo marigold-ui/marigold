@@ -281,65 +281,67 @@ export const IntegratedWithTable = meta.story({
     controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
   },
   render: () => (
-    <Scrollable height="400px">
-      <Table
-        aria-label="User accounts"
-        selectionMode="multiple"
-        defaultSelectedKeys={
-          new Set(['fritz.schneider@example.de', 'klaus.becker@example.de'])
-        }
-        actionBar={() => (
-          <ActionBar>
-            <ActionBar.Button onPress={() => alert('Edit')}>
-              <Edit />
-              <span>Edit</span>
-            </ActionBar.Button>
-            <ActionBar.Button onPress={() => alert('Copy')}>
-              <Copy />
-              <span>Copy</span>
-            </ActionBar.Button>
-            <ActionBar.Button onPress={() => alert('Delete')}>
-              <Delete />
-              <span>Delete</span>
-            </ActionBar.Button>
-          </ActionBar>
-        )}
-      >
-        <Table.Header sticky>
-          <Table.Column rowHeader>Name</Table.Column>
-          <Table.Column>Email</Table.Column>
-          <Table.Column>Location</Table.Column>
-          <Table.Column>Status</Table.Column>
-          <Table.Column alignX="right">Balance</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          {users.map(user => (
-            <Table.Row key={user.email} id={user.email}>
-              <Table.Cell>
-                <Stack space="0.5">
-                  <Text weight="medium">{user.name}</Text>
-                  <Text size="xs" color="muted-foreground">
-                    {user.handle}
-                  </Text>
-                </Stack>
-              </Table.Cell>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.location}</Table.Cell>
-              <Table.Cell>
-                <Badge>{user.status}</Badge>
-              </Table.Cell>
-              <Table.Cell>
-                <NumericFormat
-                  style="currency"
-                  currency="EUR"
-                  value={user.balance}
-                />
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-    </Scrollable>
+    <div className="border border-black">
+      <Scrollable height="400px">
+        <Table
+          aria-label="User accounts"
+          selectionMode="multiple"
+          defaultSelectedKeys={
+            new Set(['fritz.schneider@example.de', 'klaus.becker@example.de'])
+          }
+          actionBar={() => (
+            <ActionBar>
+              <ActionBar.Button onPress={() => alert('Edit')}>
+                <Edit />
+                <span>Edit</span>
+              </ActionBar.Button>
+              <ActionBar.Button onPress={() => alert('Copy')}>
+                <Copy />
+                <span>Copy</span>
+              </ActionBar.Button>
+              <ActionBar.Button onPress={() => alert('Delete')}>
+                <Delete />
+                <span>Delete</span>
+              </ActionBar.Button>
+            </ActionBar>
+          )}
+        >
+          <Table.Header sticky>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Location</Table.Column>
+            <Table.Column>Status</Table.Column>
+            <Table.Column alignX="right">Balance</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {users.map(user => (
+              <Table.Row key={user.email} id={user.email}>
+                <Table.Cell>
+                  <Stack space="0.5">
+                    <Text weight="medium">{user.name}</Text>
+                    <Text size="xs" color="muted-foreground">
+                      {user.handle}
+                    </Text>
+                  </Stack>
+                </Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.location}</Table.Cell>
+                <Table.Cell>
+                  <Badge>{user.status}</Badge>
+                </Table.Cell>
+                <Table.Cell>
+                  <NumericFormat
+                    style="currency"
+                    currency="EUR"
+                    value={user.balance}
+                  />
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </Scrollable>
+    </div>
   ),
 });
 
