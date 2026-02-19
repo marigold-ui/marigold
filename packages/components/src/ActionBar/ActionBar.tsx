@@ -78,6 +78,27 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
       internalRef) as React.RefObject<HTMLDivElement | null>;
     const isEntering = useEnterAnimation(ref);
 
+    const contentRef = useRef<HTMLDivElement>(null);
+    const [contentWidth, setContentWidth] = useState<number | undefined>(
+      undefined
+    );
+
+    useResizeObserver({
+      ref: contentRef,
+      onResize: () => {
+        const content = contentRef.current;
+        const container = ref.current;
+        if (content && container) {
+          const w = content.scrollWidth;
+          if (w > 0) {
+            const cs = getComputedStyle(container);
+            const px = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+            setContentWidth(w + px);
+          }
+        }
+      },
+    });
+
     const classNames = useClassNames({
       component: 'ActionBar',
       variant,
@@ -100,31 +121,44 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
           ref={ref}
           id={id}
           {...keyboardProps}
-          className={cn(classNames.container, 'sticky z-30 mx-auto')}
-          style={{ bottom: 'var(--actionbar-offset, 8px)' }}
+          className={cn(
+            classNames.container,
+            'sticky z-30 mx-auto transition-[width] duration-200 ease-in-out'
+          )}
+          style={{
+            bottom: 'var(--actionbar-offset, 8px)',
+            width: contentWidth,
+          }}
           data-entering={isEntering || undefined}
           data-exiting={isExiting || undefined}
         >
-          {onClearSelection && (
-            <CloseButton
-              aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-              onPress={onClearSelection}
-              className={classNames.clearButton}
-            />
-          )}
-
-          <div className={classNames.count}>
-            {lastCount === 'all'
-              ? stringFormatter.format('selectedAll')
-              : stringFormatter.format('selectedCount', { count: lastCount })}
-          </div>
-
-          <Toolbar
-            className={classNames.actions}
-            aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+          <div
+            ref={contentRef}
+            className="flex w-max shrink-0 items-center gap-4"
           >
-            {children}
-          </Toolbar>
+            {onClearSelection && (
+              <CloseButton
+                aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+                onPress={onClearSelection}
+                className={classNames.clearButton}
+              />
+            )}
+
+            <div className={classNames.count}>
+              {lastCount === 'all'
+                ? stringFormatter.format('selectedAll')
+                : stringFormatter.format('selectedCount', {
+                    count: lastCount,
+                  })}
+            </div>
+
+            <Toolbar
+              className={classNames.actions}
+              aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+            >
+              {children}
+            </Toolbar>
+          </div>
         </div>
 
         {/* Screen reader announcement when ActionBar appears */}
