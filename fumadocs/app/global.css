@@ -26,5 +26,7 @@
     --page-padding: 0.75rem;
     --page-padding-md: 2rem;
     --page-padding-xl: 3rem;
+    --page-header-height: 56px;
+    --breakpoint-lg: 1024px;
   }
 }

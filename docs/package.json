@@ -61,8 +61,8 @@
   },
   "devDependencies": {
     "@internationalized/date": "3.11.0",
-    "@types/node": "24.9.2",
-    "@types/react": "19.2.7",
+    "@types/node": "24.10.13",
+    "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.9.3",
@@ -71,8 +71,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "19.2.2",
-      "@types/react-dom": "19.2.2"
+      "@types/react": "19.2.14",
+      "@types/react-dom": "19.2.3"
     }
   }
 }
