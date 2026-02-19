@@ -1,5 +1,20 @@
 # @marigold/components
 
+## 17.1.0
+
+### Minor Changes
+
+- fd1b092: feat(DST-1219): Improve click area of `<TagField>`
+
+  Improves the click area of the TagField component so that clicking
+  anywhere on the field (not just the chevron button) opens the dropdown.
+
+### Patch Changes
+
+- a3042ed: fix(DST-1220): Update to use ui classes instead of util classes in components
+- Updated dependencies [fd1b092]
+  - @marigold/system@17.1.0
+
 ## 17.0.1
 
 ### Patch Changes
