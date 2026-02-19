@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, test, vi } from 'vitest';
 import {
@@ -6,8 +6,11 @@ import {
   Basic,
   IntegratedWithTable,
   NoSelection,
+  SelectAllTable,
+  WithActionButtonPress,
   WithoutClearButton,
 } from './ActionBar.stories';
+import { useActionBar } from './useActionBar';
 
 const user = userEvent.setup();
 
@@ -126,4 +129,134 @@ test('clear selection hides ActionBar via actionBar', async () => {
   expect(
     screen.queryByRole('toolbar', { name: /bulk actions/i })
   ).not.toBeInTheDocument();
+});
+
+// useActionBar hook tests
+test('useActionBar returns empty Set when no args provided', () => {
+  const { result } = renderHook(() => useActionBar({}));
+
+  expect(result.current.selectedKeys).toEqual(new Set());
+  expect(result.current.actionBarOverlay).toBeNull();
+});
+
+test('useActionBar initializes from defaultSelectedKeys', () => {
+  const initial = new Set(['a', 'b']);
+  const { result } = renderHook(() =>
+    useActionBar({ defaultSelectedKeys: initial })
+  );
+
+  expect(result.current.selectedKeys).toEqual(new Set(['a', 'b']));
+});
+
+test('useActionBar uncontrolled state updates via onSelectionChange', () => {
+  const { result } = renderHook(() => useActionBar({}));
+
+  act(() => {
+    result.current.onSelectionChange(new Set(['x']));
+  });
+
+  expect(result.current.selectedKeys).toEqual(new Set(['x']));
+});
+
+test('useActionBar controlled mode uses provided selectedKeys', () => {
+  const controlled = new Set(['c']);
+  const { result } = renderHook(() =>
+    useActionBar({ selectedKeys: controlled })
+  );
+
+  expect(result.current.selectedKeys).toBe(controlled);
+
+  // Calling onSelectionChange should NOT change selectedKeys in controlled mode
+  act(() => {
+    result.current.onSelectionChange(new Set(['d']));
+  });
+
+  expect(result.current.selectedKeys).toBe(controlled);
+});
+
+test('useActionBar fires onSelectionChange callback', () => {
+  const onChange = vi.fn();
+  const { result } = renderHook(() =>
+    useActionBar({ onSelectionChange: onChange })
+  );
+
+  act(() => {
+    result.current.onSelectionChange(new Set(['a']));
+  });
+
+  expect(onChange).toHaveBeenCalledWith(new Set(['a']));
+});
+
+test('useActionBar actionBarOverlay is non-null when actionBar prop is provided', () => {
+  const { result } = renderHook(() =>
+    useActionBar({ actionBar: () => <div>bar</div> })
+  );
+
+  expect(result.current.actionBarOverlay).not.toBeNull();
+});
+
+// ActionBar.Button test
+test('ActionBar.Button fires onPress when clicked', async () => {
+  const onPress = vi.fn();
+
+  render(<WithActionButtonPress.Component onClearSelection={onPress} />);
+
+  const editButton = screen.getByText('Edit').closest('button')!;
+  await user.click(editButton);
+
+  expect(onPress).toHaveBeenCalledTimes(1);
+});
+
+// Interactive Table integration tests
+test('clicking a row checkbox increments selection count', async () => {
+  render(<IntegratedWithTable.Component />);
+
+  // Start with 2 selected
+  expect(screen.getByText('2 selected')).toBeInTheDocument();
+
+  // Find an unselected row checkbox and click it
+  const checkboxes = screen.getAllByRole('checkbox');
+  // First checkbox is select-all, then each row has a checkbox
+  // Rows with pre-selected keys will already be checked
+  const uncheckedCheckbox = checkboxes.find(
+    cb => !(cb as HTMLInputElement).checked && cb !== checkboxes[0]
+  )!;
+  await user.click(uncheckedCheckbox);
+
+  expect(screen.getByText('3 selected')).toBeInTheDocument();
+});
+
+test('deselecting all rows hides ActionBar', async () => {
+  render(<IntegratedWithTable.Component />);
+
+  expect(screen.getByText('2 selected')).toBeInTheDocument();
+
+  // Find and uncheck the two pre-selected row checkboxes
+  const checkboxes = screen.getAllByRole('checkbox');
+  const checkedBoxes = checkboxes.filter(
+    cb => (cb as HTMLInputElement).checked && cb !== checkboxes[0]
+  );
+
+  for (const cb of checkedBoxes) {
+    await user.click(cb);
+  }
+
+  expect(
+    screen.queryByRole('toolbar', { name: /bulk actions/i })
+  ).not.toBeInTheDocument();
+});
+
+test('select-all checkbox selects all rows and shows "All items selected"', async () => {
+  render(<SelectAllTable.Component />);
+
+  // Initially no ActionBar visible
+  expect(
+    screen.queryByRole('toolbar', { name: /bulk actions/i })
+  ).not.toBeInTheDocument();
+
+  // Click select-all checkbox (first checkbox)
+  const selectAll = screen.getAllByRole('checkbox')[0];
+  await user.click(selectAll);
+
+  expect(screen.getByText('All items selected')).toBeInTheDocument();
 });

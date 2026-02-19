@@ -361,3 +361,57 @@ export const NoSelection = meta.story({
     </div>
   ),
 });
+
+export const WithActionButtonPress = meta.story({
+  args: {
+    selectedItemCount: 1,
+    onClearSelection: fn(),
+  },
+  render: args => (
+    <ActionBar {...args}>
+      <ActionBar.Button onPress={args.onClearSelection}>
+        <Edit />
+        <span>Edit</span>
+      </ActionBar.Button>
+    </ActionBar>
+  ),
+});
+
+const selectAllUsers = [
+  { name: 'Alice', email: 'alice@example.com' },
+  { name: 'Bob', email: 'bob@example.com' },
+  { name: 'Carol', email: 'carol@example.com' },
+];
+
+export const SelectAllTable = meta.story({
+  parameters: {
+    controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
+  },
+  render: () => (
+    <Table
+      aria-label="Select all test"
+      selectionMode="multiple"
+      actionBar={() => (
+        <ActionBar>
+          <ActionBar.Button>
+            <Edit />
+            <span>Edit</span>
+          </ActionBar.Button>
+        </ActionBar>
+      )}
+    >
+      <Table.Header>
+        <Table.Column rowHeader>Name</Table.Column>
+        <Table.Column>Email</Table.Column>
+      </Table.Header>
+      <Table.Body>
+        {selectAllUsers.map(u => (
+          <Table.Row key={u.email} id={u.email}>
+            <Table.Cell>{u.name}</Table.Cell>
+            <Table.Cell>{u.email}</Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
+  ),
+});

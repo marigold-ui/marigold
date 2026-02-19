@@ -4,12 +4,12 @@ import type {
   ReactNode,
 } from 'react';
 import { forwardRef, useRef, useState } from 'react';
+import { Toolbar } from 'react-aria-components';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useEnterAnimation, useExitAnimation } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
-import { Text } from '../Text/Text';
 import { intlMessages } from '../intl/messages';
 import { useActionBarContext } from './ActionBarContext';
 import { ActionButton } from './ActionButton';
@@ -95,39 +95,41 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
     };
 
     return (
-      <FocusScope restoreFocus>
-        <div
-          ref={ref}
-          id={id}
-          className={cn('z-30', classNames.container)}
-          role="toolbar"
-          aria-label={stringFormatter.format('bulkActionsAriaLabel')}
-          onKeyDown={handleKeyDown}
-          data-entering={isEntering || undefined}
-          data-exiting={isExiting || undefined}
-        >
-          <div className={classNames.count}>
-            <Text>{countText}</Text>
+      <div
+        ref={ref}
+        id={id}
+        onKeyDown={handleKeyDown}
+        data-entering={isEntering || undefined}
+        data-exiting={isExiting || undefined}
+      >
+        <FocusScope restoreFocus>
+          <div className={cn('z-30', classNames.container)}>
+            {onClearSelection && (
+              <CloseButton
+                aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+                onPress={onClearSelection}
+                className={classNames.clearButton}
+              />
+            )}
+
+            <div className={classNames.count}>{countText}</div>
+
+            <Toolbar
+              className={classNames.actions}
+              aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+            >
+              {children}
+            </Toolbar>
           </div>
 
-          <div className={classNames.actions}>{children}</div>
-
-          {onClearSelection && (
-            <CloseButton
-              aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-              onPress={onClearSelection}
-              className={classNames.clearButton}
-            />
+          {/* Screen reader announcement when ActionBar appears */}
+          {!isExiting && (
+            <div className="sr-only" role="status" aria-live="polite">
+              {stringFormatter.format('actionsAvailable')}
+            </div>
           )}
-        </div>
-
-        {/* Screen reader announcement when ActionBar appears */}
-        {!isExiting && (
-          <div className="sr-only" role="status" aria-live="polite">
-            {stringFormatter.format('actionsAvailable')}
-          </div>
-        )}
-      </FocusScope>
+        </FocusScope>
+      </div>
     );
   }
 );
