@@ -9,7 +9,7 @@ export const ActionBar: ThemeComponent<'ActionBar'> = {
     'shadow-lg',
     'bg-brand text-brand-foreground border-brand',
     'rounded-lg font-medium transition-colors',
-    'focus-visible:util-focus-ring outline-none disabled:util-disabled',
+    'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   ]),
   count: cva(['flex items-center', 'text-sm font-medium', 'whitespace-nowrap']),

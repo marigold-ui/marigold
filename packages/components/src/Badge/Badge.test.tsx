@@ -8,7 +8,7 @@ test('renders correctly', () => {
 
   expect(badge).toMatchInlineSnapshot(`
     <div
-      class="inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:state-focus outline-none has-[svg]:gap-1 bg-info-muted text-info-muted-foreground"
+      class="inline-flex items-center justify-center rounded-full px-2 text-xs font-medium leading-normal transition-colors focus-visible:ui-state-focus outline-none has-[svg]:gap-1 bg-info-muted text-info-muted-foreground"
       data-testid="badge"
     >
       Status
