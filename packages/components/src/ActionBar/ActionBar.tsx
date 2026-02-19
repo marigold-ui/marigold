@@ -115,30 +115,28 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
           data-entering={isEntering || undefined}
           data-exiting={isExiting || undefined}
         >
-          <div className="flex w-max shrink-0 items-center gap-4">
-            {onClearSelection && (
-              <CloseButton
-                aria-label={stringFormatter.format('clearSelectionAriaLabel')}
-                onPress={onClearSelection}
-                className={classNames.clearButton}
-              />
-            )}
+          {onClearSelection && (
+            <CloseButton
+              aria-label={stringFormatter.format('clearSelectionAriaLabel')}
+              onPress={onClearSelection}
+              className={classNames.clearButton}
+            />
+          )}
 
-            <div className={classNames.count}>
-              {lastCount === 'all'
-                ? stringFormatter.format('selectedAll')
-                : stringFormatter.format('selectedCount', {
-                    count: lastCount,
-                  })}
-            </div>
-
-            <Toolbar
-              className={classNames.actions}
-              aria-label={stringFormatter.format('bulkActionsAriaLabel')}
-            >
-              {children}
-            </Toolbar>
+          <div className={classNames.count}>
+            {lastCount === 'all'
+              ? stringFormatter.format('selectedAll')
+              : stringFormatter.format('selectedCount', {
+                  count: lastCount,
+                })}
           </div>
+
+          <Toolbar
+            className={classNames.actions}
+            aria-label={stringFormatter.format('bulkActionsAriaLabel')}
+          >
+            {children}
+          </Toolbar>
         </motion.div>
 
         {/* Screen reader announcement when ActionBar appears */}
