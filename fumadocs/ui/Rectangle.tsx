@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn';
 import type { ReactNode } from 'react';
 
 const variants = {
@@ -10,6 +11,7 @@ export interface RectangleProps {
   width?: string;
   children?: ReactNode;
   variant?: keyof typeof variants;
+  className?: string;
 }
 
 export const Rectangle = ({
@@ -17,9 +19,13 @@ export const Rectangle = ({
   height,
   width = '100%',
   variant = 'default',
+  className,
 }: RectangleProps) => (
   <div
-    className={`${variants[variant]} flex rounded-xs border-2 border-dashed`}
+    className={cn(
+      `${variants[variant]} flex rounded-xs border-2 border-dashed`,
+      className
+    )}
     style={{ height: height, width: width }}
   >
     {children}

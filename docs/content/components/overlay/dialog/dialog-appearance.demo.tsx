@@ -21,7 +21,7 @@ export default (props: DialogProps) => (
           </Text>
           <Columns columns={[1, 'fit']} space={2}>
             <TextField label="Email address" type="email" />
-            <Select label="Role" width={36} defaultSelectedKey={'view'}>
+            <Select label="Role" width={36} defaultValue={'view'}>
               <Select.Option id="view">Viewer</Select.Option>
               <Select.Option id="comment">Commentator</Select.Option>
               <Select.Option id="edit">Editor</Select.Option>

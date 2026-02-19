@@ -30,7 +30,7 @@ const options = [
 ];
 
 export const StatusSelect = () => (
-  <Select label="Status" defaultSelectedKey="on-sale" width={44}>
+  <Select label="Status" defaultValue="on-sale" width={44}>
     {options.map(o => (
       <Select.Option key={o.id} id={o.id}>
         <Inline space={2} alignY="center">
