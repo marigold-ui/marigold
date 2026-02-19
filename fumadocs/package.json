@@ -3,13 +3,13 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "build": "pnpm run registry:build && pnpm run build:changelog && next build",
+    "build": "pnpm run build:registry && pnpm run build:changelog && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
-    "postinstall": "fumadocs-mdx && pnpm run registry:build",
+    "postinstall": "fumadocs-mdx && pnpm run build:registry",
     "lint": "eslint",
-    "registry:build": "node scripts/build-registry.mjs && node scripts/build-appearances.mjs",
+    "build:registry": "node scripts/build-registry.mjs && node scripts/build-appearances.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs"
   },
   "dependencies": {
