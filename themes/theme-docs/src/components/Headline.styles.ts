@@ -1,6 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Headline: ThemeComponent<'Headline'> = cva('*:no-underline', {
+export const Headline: ThemeComponent<'Headline'> = cva({
+  base: '*:no-underline',
   variants: {
     size: {
       'level-1':

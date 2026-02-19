@@ -53,6 +53,9 @@ export default mergeConfig(
               },
             }),
           ],
+          optimizeDeps: {
+            include: ['@storybook/react-dom-shim'],
+          },
           test: {
             name: 'storybook-tests',
             // Exclude themes from storybook browser tests - they don't have

@@ -83,6 +83,16 @@ test('allows removing a tag', async () => {
   expect(screen.getByTestId('selected')).toHaveTextContent('selected: ["pop"]');
 });
 
+test('clicking the field area opens the dropdown', async () => {
+  render(<Basic.Component label="Label" />);
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  const listbox = screen.getByRole('listbox');
+  expect(listbox).toBeInTheDocument();
+});
+
 test('set width via props', () => {
   render(<Basic.Component label="Label" width="1/2" />);
 

@@ -6,7 +6,8 @@ import { StylesProps, extendTheme } from './extendTheme';
 import { ThemeProvider } from './useTheme';
 
 const styles: StylesProps = {
-  Button: cva('align-center flex', {
+  Button: cva({
+    base: 'align-center flex',
     variants: {
       size: {
         medium: 'size-15',
@@ -18,7 +19,8 @@ const styles: StylesProps = {
 const theme: Theme = {
   name: 'test',
   components: {
-    Button: cva('align-center flex disabled:bg-gray-600', {
+    Button: cva({
+      base: 'align-center flex disabled:bg-gray-600',
       variants: {
         variant: {
           primary: 'text-primary-500',
@@ -31,23 +33,21 @@ const theme: Theme = {
       },
     }),
     Tabs: {
-      container: cva('flex'),
-      tabpanel: cva('border-3 border-solid border-red-400'),
-      tabsList: cva('mb-2.5'),
-      tab: cva(
-        [
+      container: cva({ base: 'flex' }),
+      tabpanel: cva({ base: 'border-3 border-solid border-red-400' }),
+      tabsList: cva({ base: 'mb-2.5' }),
+      tab: cva({
+        base: [
           'selected:border-red-500  selected:border-b-8  selected:border-solid ',
         ],
-        {
-          variants: {
-            size: {
-              small: 'px-1 pb-1',
-              medium: 'px-2 pb-2 text-lg',
-              large: 'px-4 pb-4 text-2xl',
-            },
+        variants: {
+          size: {
+            small: 'px-1 pb-1',
+            medium: 'px-2 pb-2 text-lg',
+            large: 'px-4 pb-4 text-2xl',
           },
-        }
-      ),
+        },
+      }),
     },
   },
 };
@@ -62,7 +62,7 @@ test('Accepting a new variant', () => {
   const button = screen.getByText('button');
 
   expect(button.className).toMatchInlineSnapshot(
-    `"align-center disabled:bg-gray-600 align-center flex text-green-300"`
+    `"align-center disabled:bg-gray-600 text-green-300 align-center flex"`
   );
 });
 
@@ -70,7 +70,7 @@ test('Accepting styles for component with multiple slots', () => {
   const newTheme = extendTheme(
     {
       Tabs: {
-        tabpanel: cva('bg-bg-accent rounded-md p-3 text-white'),
+        tabpanel: cva({ base: 'bg-bg-accent rounded-md p-3 text-white' }),
       },
     },
     theme
@@ -105,42 +105,23 @@ test('Not supporting adding styles for a new component', () => {
   expect(newTheme).toEqual(theme);
 });
 
-test('Throw an error when the variant is dupplicated', () => {
-  expect(() =>
-    extendTheme(
-      {
-        Button: cva('p-3', {
-          variants: {
-            variant: {
-              tertiary: 'bg-bg-success text-white',
-            },
-          },
-        }),
-      },
-      theme
-    )
-  ).toThrow('tertiary already exists!');
-});
-
 test('Should support new variant and existing size', () => {
   const newTheme = extendTheme(
     {
       Tabs: {
-        container: cva('flex'),
-        tabpanel: cva('border-3 border-solid border-red-400'),
-        tabsList: cva('mb-2.5'),
-        tab: cva(
-          [
+        container: cva({ base: 'flex' }),
+        tabpanel: cva({ base: 'border-3 border-solid border-red-400' }),
+        tabsList: cva({ base: 'mb-2.5' }),
+        tab: cva({
+          base: [
             'selected:border-red-500  selected:border-b-8  selected:border-solid ',
           ],
-          {
-            variants: {
-              variant: {
-                sunken: 'bg-slate-400 font-bold',
-              },
+          variants: {
+            variant: {
+              sunken: 'bg-slate-400 font-bold',
             },
-          }
-        ),
+          },
+        }),
       },
     },
     theme

@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { type VariantProps, cn, cva } from '@marigold/system';
 
-const styles = cva([], {
+const styles = cva({
+  base: [],
   variants: {
     variant: {
       default: [

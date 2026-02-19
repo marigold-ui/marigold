@@ -9,7 +9,8 @@ import { ThemeProvider, useTheme } from './useTheme';
 const theme = {
   name: 'test',
   components: {
-    Button: cva('border-none p-1', {
+    Button: cva({
+      base: 'border-none p-1',
       variants: {
         variant: {
           primary: 'bg-primary-700',

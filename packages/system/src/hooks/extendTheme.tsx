@@ -1,80 +1,50 @@
-import { Theme } from '../types/theme';
-import { cva } from '../utils/className.utils';
+import type { Theme } from '../types/theme';
+import { cn } from '../utils/className.utils';
 
 export type StylesProps = {
   [K in keyof Theme['components']]: Partial<Theme['components'][K]>;
 };
 
+type StyleFn = (props?: Record<string, unknown>) => string;
+
+/**
+ * Compose two style functions into one. The new function's styles
+ * are applied on top of the existing function's styles via `cn` (twMerge),
+ * so Tailwind conflicts are resolved with "new wins".
+ */
+const composeStyleFns =
+  (newFn: StyleFn, existingFn: StyleFn): StyleFn =>
+  (props?) =>
+    cn(existingFn(props), newFn(props));
+
 export const extendTheme = (newStyles: StylesProps, theme: Theme) => {
-  const mergedStyles = { ...theme.components };
-  Object.keys(newStyles).forEach(component => {
-    // @ts-expect-error any
-    const componentStyles = newStyles[component];
+  const mergedComponents = { ...theme.components };
 
-    // @ts-expect-error any
-    const mergedComponentStyles = mergedStyles[component];
+  for (const key of Object.keys(newStyles)) {
+    const component = key as keyof typeof mergedComponents;
+    const existing = mergedComponents[component];
+    if (!existing) continue;
 
-    if (!mergedComponentStyles) return mergedStyles;
+    const incoming = newStyles[component] as StyleFn | Record<string, StyleFn>;
 
-    // @ts-expect-error any
-    if (typeof newStyles[component] !== 'function') {
-      const mergeSlotStyles = Object.keys(componentStyles).reduce(
-        (acc, slot) => {
-          const newSlot = componentStyles[slot];
-          const mergedSlot = mergedComponentStyles[slot];
-
-          const variants = ['size', 'variant'].reduce((acc, variantItem) => {
-            // @ts-expect-error any
-            acc[variantItem] = {
-              ...newSlot?.variants?.[variantItem],
-              ...mergedSlot?.variants?.[variantItem],
-            };
-            return acc;
-          }, {});
-          acc[slot] = cva([mergedSlot(), newSlot()], { variants });
-          return acc;
-        },
-        { ...mergedComponentStyles }
+    if (typeof incoming === 'function') {
+      // @ts-expect-error — dynamic component key loses type narrowing
+      mergedComponents[component] = composeStyleFns(
+        incoming,
+        existing as StyleFn
       );
-
-      // @ts-expect-error any
-      mergedStyles[component] = mergeSlotStyles;
     } else {
-      const variants = ['size', 'variant'].reduce((acc, variantItem) => {
-        // @ts-expect-error any
-        const newStylesVariants = newStyles[component].variants?.[variantItem];
-        const mergedStylesVariants =
-          // @ts-expect-error any
-          mergedStyles[component].variants?.[variantItem];
+      const existingSlots = existing as Record<string, StyleFn>;
+      const merged = { ...existingSlots };
 
-        if (newStylesVariants && mergedStylesVariants) {
-          const dupVariants = Object.keys(newStylesVariants).filter(variant =>
-            Object.keys(mergedStylesVariants).includes(variant)
-          );
-          if (dupVariants.length) {
-            throw new Error(dupVariants.join() + ' already exists!');
-          }
-        }
+      for (const slot of Object.keys(incoming)) {
+        merged[slot] = composeStyleFns(incoming[slot], existingSlots[slot]);
+      }
 
-        // @ts-expect-error any
-        acc[variantItem] = {
-          // @ts-expect-error any
-          ...newStyles[component].variants?.[variantItem],
-          // @ts-expect-error any
-          ...mergedStyles[component].variants?.[variantItem],
-        };
-        return acc;
-      }, {});
-
-      // @ts-expect-error any any
-      mergedStyles[component] = cva(
-        [mergedComponentStyles(), componentStyles()],
-        {
-          variants,
-        }
-      );
+      // @ts-expect-error — dynamic component key loses type narrowing
+      mergedComponents[component] = merged;
     }
-  });
+  }
 
-  return { ...theme, components: { ...mergedStyles } };
+  return { ...theme, components: { ...mergedComponents } };
 };
