@@ -250,12 +250,14 @@ This is how a style file with slots look like.
 
 ```tsx
 const Input: ThemeComponent<'Input'> = {
-  icon: cva('left-2'),
-  action: cva('right-0'),
-  input: cva([
-    'leading-2',
-    'read-only:focus:border-border-light read-only:focus:outline-hidden',
-  ]),
+  icon: cva({ base: 'left-2' }),
+  action: cva({ base: 'right-0' }),
+  input: cva({
+    base: [
+      'leading-2',
+      'read-only:focus:border-border-light read-only:focus:outline-hidden',
+    ],
+  }),
 };
 ```
 
@@ -263,7 +265,8 @@ To prevent overwriting base styles through variants and sizes we should add `def
 
 ```tsx
 export const Select: ThemeComponent<'Select'> = {
-  icon: cva('text-secondary-400', {
+  icon: cva({
+    base: 'text-secondary-400',
     variants: {
       variant: {
         default: '',

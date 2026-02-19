@@ -1,6 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Label: ThemeComponent<'Label'> = cva('', {
+export const Label: ThemeComponent<'Label'> = cva({
+  base: '',
   variants: {
     variant: {
       default: '',

@@ -1,6 +1,7 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
-export const Field: ThemeComponent<'Field'> = cva('grid gap-y-0.5', {
+export const Field: ThemeComponent<'Field'> = cva({
+  base: 'grid gap-y-0.5',
   variants: {
     variant: {
       default: '',

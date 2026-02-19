@@ -1,58 +1,56 @@
 import { ThemeComponent, cva } from '@marigold/system';
 
 export const Menu: ThemeComponent<'Menu'> = {
-  container: cva([
-    'ui-surface shadow-elevation-overlay w-full',
-    'text-foreground overflow-hidden p-1 outline-none',
-    // In a Tray
-    'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
-  ]),
-  item: cva(
-    [
+  container: cva({
+    base: [
+      'ui-surface shadow-elevation-overlay w-full',
+      'text-foreground overflow-hidden p-1 outline-none',
+      // In a Tray
+      'group-[[role=dialog]]/tray:border-0 group-[[role=dialog]]/tray:shadow-none',
+    ],
+  }),
+  item: cva({
+    base: [
       'relative flex cursor-pointer items-center gap-2 rounded-[calc(var(--radius-surface)-3px)] p-2 text-sm outline-hidden select-none text-nowrap',
       'disabled:text-disabled-foreground',
       '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
     ],
-    {
-      variants: {
-        variant: {
-          default: 'text-foreground focus:bg-focus [&_svg]:opacity-60',
-          destructive: 'text-destructive focus:bg-destructive/10',
-        },
+    variants: {
+      variant: {
+        default: 'text-foreground focus:bg-focus [&_svg]:opacity-60',
+        destructive: 'text-destructive focus:bg-destructive/10',
       },
-      defaultVariants: {
-        variant: 'default',
-      },
-    }
-  ),
-  section: cva(
-    'text-muted-foreground p-2 text-xs font-medium border-t border-t-border in-first:border-t-0'
-  ),
-  button: cva(
-    [
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }),
+  section: cva({
+    base: 'text-muted-foreground p-2 text-xs font-medium border-t border-t-border in-first:border-t-0',
+  }),
+  button: cva({
+    base: [
       'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium',
       'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
       'cursor-pointer',
       '[&_svg]:shrink-0 [&_svg]:pointer-events-none',
     ],
-    {
-      variants: {
-        variant: {
-          default: 'ui-surface expanded:bg-hover',
-          ghost:
-            'hover:bg-hover hover:text-foreground expanded:bg-hover rounded-surface',
-        },
-        size: {
-          default: 'h-button px-4 py-2 [&_svg]:size-4',
-          small: 'h-button-small px-3 text-xs [&_svg]:size-3.5',
-          large: 'h-button-large px-8 [&_svg]:size-5',
-          icon: 'size-button [&_svg]:size-4',
-        },
+    variants: {
+      variant: {
+        default: 'ui-surface expanded:bg-hover',
+        ghost:
+          'hover:bg-hover hover:text-foreground expanded:bg-hover rounded-surface',
       },
-      defaultVariants: {
-        variant: 'default',
-        size: 'default',
+      size: {
+        default: 'h-button px-4 py-2 [&_svg]:size-4',
+        small: 'h-button-small px-3 text-xs [&_svg]:size-3.5',
+        large: 'h-button-large px-8 [&_svg]:size-5',
+        icon: 'size-button [&_svg]:size-4',
       },
-    }
-  ),
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }),
 };

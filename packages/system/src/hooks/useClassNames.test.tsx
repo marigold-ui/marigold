@@ -8,7 +8,8 @@ import { ThemeProvider } from './useTheme';
 const theme: Theme = {
   name: 'test-theme',
   components: {
-    Button: cva('align-center flex', {
+    Button: cva({
+      base: 'align-center flex',
       variants: {
         variant: {
           primary: 'text-primary-500',
@@ -21,7 +22,8 @@ const theme: Theme = {
       },
     }),
     HelpText: {
-      container: cva('inline', {
+      container: cva({
+        base: 'inline',
         variants: {
           variant: {
             primary: 'text-primary-500',
@@ -31,7 +33,8 @@ const theme: Theme = {
           },
         },
       }),
-      icon: cva('block', {
+      icon: cva({
+        base: 'block',
         variants: {
           variant: {
             primary: 'text-secondary-800',

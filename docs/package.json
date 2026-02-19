@@ -3,10 +3,10 @@
   "version": "17.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm registry && next dev --webpack",
-    "build": "pnpm registry && pnpm build:component-props && pnpm build:changelog && next build --webpack",
+    "dev": "pnpm build:registry && next dev --webpack",
+    "build": "pnpm build:registry && pnpm build:component-props && pnpm build:changelog && next build --webpack",
     "start": "next start",
-    "registry": "zx ./scripts/build-registry.mjs",
+    "build:registry": "zx ./scripts/build-registry.mjs && node ./scripts/build-appearances.mjs",
     "build:component-props": "zx ./scripts/build-component-props.mjs",
     "build:changelog": "zx ./scripts/build-changelog.mjs",
     "build:contentlayer": "pnpm contentlayer2 build"

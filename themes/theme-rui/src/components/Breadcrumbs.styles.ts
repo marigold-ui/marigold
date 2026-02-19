@@ -2,28 +2,26 @@ import type { ThemeComponent } from '@marigold/system';
 import { cva } from '@marigold/system';
 
 export const Breadcrumbs: ThemeComponent<'Breadcrumbs'> = {
-  container: cva(
-    [
+  container: cva({
+    base: [
       'flex flex-wrap items-center gap-1.5 wrap-break-word text-sm sm:gap-2.5 text-muted-foreground',
     ],
-    {
-      variants: {
-        variant: {
-          default: '',
-        },
-        size: {
-          small: 'text-xs',
-          default: 'text-sm',
-          large: 'text-base',
-        },
+    variants: {
+      variant: {
+        default: '',
       },
-      defaultVariants: {
-        variant: 'default',
-        size: 'default',
+      size: {
+        small: 'text-xs',
+        default: 'text-sm',
+        large: 'text-base',
       },
-    }
-  ),
-  item: cva('inline-flex items-center  gap-1.5 sm:gap-2.5'),
-  link: cva('transition-colors hover:text-foreground cursor-pointer'),
-  current: cva('font-normal text-foreground'),
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }),
+  item: cva({ base: 'inline-flex items-center  gap-1.5 sm:gap-2.5' }),
+  link: cva({ base: 'transition-colors hover:text-foreground cursor-pointer' }),
+  current: cva({ base: 'font-normal text-foreground' }),
 };
