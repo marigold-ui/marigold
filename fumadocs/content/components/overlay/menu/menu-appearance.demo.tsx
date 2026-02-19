@@ -6,7 +6,7 @@ export default (props: MenuProps) => {
   return (
     <Menu
       label={props.size === 'icon' ? <MenuIcon /> : 'Ticket options'}
-      onAction={action => alert(`Action: ${action}`)}
+      onAction={action => alert(`Action: ${String(action)}`)}
       {...props}
     >
       <Menu.Item id="view">View Ticket Details</Menu.Item>

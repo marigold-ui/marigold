@@ -1,6 +1,6 @@
 {
   "name": "@marigold/components",
-  "version": "17.0.1",
+  "version": "17.1.0",
   "description": "Components for the Marigold Design System",
   "license": "MIT",
   "keywords": [
@@ -68,7 +68,7 @@
     "@react-stately/tree": "^3.9.5",
     "@react-types/shared": "^3.33.0",
     "@react-types/table": "^3.13.5",
-    "motion": "12.23.26",
+    "motion": "12.34.0",
     "react-aria-components": "^1.15.0",
     "react-stately": "^3.44.0"
   },
@@ -79,10 +79,10 @@
   "devDependencies": {
     "@marigold/icons": "workspace:*",
     "@marigold/tsconfig": "workspace:*",
-    "@types/react": "19.2.7",
-    "lucide-react": "0.555.0",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "@types/react": "19.2.14",
+    "lucide-react": "0.564.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "tsdown": "0.16.8"
   },
   "scripts": {

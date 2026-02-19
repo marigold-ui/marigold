@@ -99,7 +99,7 @@ export const Table: ThemeComponent<'Table'> = {
   dragHandle: cva([
     'text-muted-foreground rounded size-4',
     '[&_svg]:size-4',
-    'focus-visible:util-focus-ring outline-none',
+    'focus-visible:ui-state-focus outline-none',
   ]),
   dragPreview: cva([
     'px-4 py-3 bg-brand rounded-lg shadow-lg',
@@ -118,7 +118,7 @@ export const Table: ThemeComponent<'Table'> = {
 
   // Editable cell
   editablePopover: cva([
-    'ui-surface ui-elevation-overlay',
+    'ui-surface shadow-elevation-overlay',
     'flex items-start justify-center gap-1 pl-1 pr-1 py-1',
   ]),
   editTrigger: cva([
