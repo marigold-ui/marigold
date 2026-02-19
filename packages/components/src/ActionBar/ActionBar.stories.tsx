@@ -1,5 +1,5 @@
 import { Copy } from 'lucide-react';
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Delete, Edit } from '@marigold/icons';
 import { NumericFormat } from '@marigold/system';
@@ -77,6 +77,7 @@ export const Basic = meta.story({
 });
 
 export const AllSelected = meta.story({
+  tags: ['component-test'],
   args: {
     selectedItemCount: 'all',
   },
@@ -92,9 +93,16 @@ export const AllSelected = meta.story({
       </ActionBar.Button>
     </ActionBar>
   ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('All items selected')).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('toolbar', { name: /bulk actions/i })
+    ).toBeInTheDocument();
+  },
 });
 
 export const WithoutClearButton = meta.story({
+  tags: ['component-test'],
   args: {
     selectedItemCount: 4,
     onClearSelection: undefined,
@@ -111,6 +119,14 @@ export const WithoutClearButton = meta.story({
       </ActionBar.Button>
     </ActionBar>
   ),
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByRole('toolbar', { name: /bulk actions/i })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('button', { name: /clear selection/i })
+    ).not.toBeInTheDocument();
+  },
 });
 
 const users = [
@@ -277,6 +293,7 @@ const users = [
 ];
 
 export const IntegratedWithTable = meta.story({
+  tags: ['component-test'],
   parameters: {
     controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
   },
@@ -343,9 +360,35 @@ export const IntegratedWithTable = meta.story({
       </Scrollable>
     </div>
   ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('2 selected')).toBeInTheDocument();
+
+    const checkboxes = canvas.getAllByRole('checkbox');
+    // Skip the select-all checkbox (index 0), find first unchecked row checkbox
+    const uncheckedCheckbox = checkboxes
+      .slice(1)
+      .find(cb => !(cb as HTMLInputElement).checked)!;
+    await userEvent.click(uncheckedCheckbox);
+
+    await waitFor(() => {
+      expect(canvas.getByText('3 selected')).toBeInTheDocument();
+    });
+
+    const clearButton = canvas.getByRole('button', {
+      name: /clear selection/i,
+    });
+    await userEvent.click(clearButton);
+
+    await waitFor(() => {
+      expect(
+        canvas.queryByRole('toolbar', { name: /bulk actions/i })
+      ).not.toBeInTheDocument();
+    });
+  },
 });
 
 export const NoSelection = meta.story({
+  tags: ['component-test'],
   render: args => (
     <div>
       <p>No items selected no action bar will show up</p>
@@ -362,9 +405,15 @@ export const NoSelection = meta.story({
       </ActionBar>
     </div>
   ),
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.queryByRole('toolbar', { name: /bulk actions/i })
+    ).not.toBeInTheDocument();
+  },
 });
 
 export const WithActionButtonPress = meta.story({
+  tags: ['component-test'],
   args: {
     selectedItemCount: 1,
     onClearSelection: fn(),
@@ -377,6 +426,12 @@ export const WithActionButtonPress = meta.story({
       </ActionBar.Button>
     </ActionBar>
   ),
+  play: async ({ args, canvas }) => {
+    const editButton = canvas.getByRole('button', { name: /edit/i });
+    await userEvent.click(editButton);
+
+    await expect(args.onClearSelection).toHaveBeenCalled();
+  },
 });
 
 const selectAllUsers = [
@@ -386,6 +441,7 @@ const selectAllUsers = [
 ];
 
 export const SelectAllTable = meta.story({
+  tags: ['component-test'],
   parameters: {
     controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
   },
@@ -416,4 +472,16 @@ export const SelectAllTable = meta.story({
       </Table.Body>
     </Table>
   ),
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.queryByRole('toolbar', { name: /bulk actions/i })
+    ).not.toBeInTheDocument();
+
+    const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
+    await userEvent.click(selectAllCheckbox);
+
+    await waitFor(() => {
+      expect(canvas.getByText('All items selected')).toBeInTheDocument();
+    });
+  },
 });
