@@ -100,7 +100,7 @@ export const useActionBar = ({
     actionBarOverlay = (
       <div
         ref={actionBarRef}
-        className="sticky flex justify-center"
+        className="sticky mx-auto w-fit"
         style={{ bottom: 'var(--actionbar-offset, 8px)' }}
       >
         <ActionBarContext
