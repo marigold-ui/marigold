@@ -1,5 +1,24 @@
 # @marigold/docs
 
+## 17.1.0
+
+### Minor Changes
+
+- fd1b092: feat(DST-1219): Improve click area of `<TagField>`
+
+  Improves the click area of the TagField component so that clicking
+  anywhere on the field (not just the chevron button) opens the dropdown.
+
+### Patch Changes
+
+- Updated dependencies [fd1b092]
+- Updated dependencies [a3042ed]
+  - @marigold/components@17.1.0
+  - @marigold/system@17.1.0
+  - @marigold/theme-rui@5.1.0
+  - @marigold/theme-docs@4.1.2
+  - @marigold/icons@1.3.33
+
 ## 17.0.1
 
 ### Patch Changes

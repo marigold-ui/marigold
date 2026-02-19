@@ -1,5 +1,15 @@
 # @marigold/theme-docs
 
+## 4.1.2
+
+### Patch Changes
+
+- a3042ed: fix(DST-1220): Update to use ui classes instead of util classes in components
+- Updated dependencies [fd1b092]
+- Updated dependencies [a3042ed]
+  - @marigold/components@17.1.0
+  - @marigold/system@17.1.0
+
 ## 4.1.1
 
 ### Patch Changes
