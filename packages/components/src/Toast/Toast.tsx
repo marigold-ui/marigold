@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { UNSTABLE_ToastContent as RAC_ToastContent } from 'react-aria-components';
 import { UNSTABLE_Toast as RAC_Toast, Text } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { Stack } from '../Stack/Stack';
@@ -8,6 +9,7 @@ import { CircleAlert } from '../icons/CircleAlert';
 import { CircleCheck } from '../icons/CircleCheck';
 import { Info } from '../icons/Info';
 import { TriangleAlert } from '../icons/TriangleAlert';
+import { intlMessages } from '../intl/messages';
 
 const icons = {
   success: CircleCheck,
@@ -28,6 +30,7 @@ export interface ToastProps {
 }
 
 export const Toast = ({ toast }: ToastProps) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'Toast',
     variant: toast.content.variant,
@@ -58,7 +61,7 @@ export const Toast = ({ toast }: ToastProps) => {
       </RAC_ToastContent>
       <CloseButton
         className={classNames.closeButton}
-        aria-label="Close toast"
+        aria-label={stringFormatter.format('close')}
         slot="close"
       ></CloseButton>
     </RAC_Toast>

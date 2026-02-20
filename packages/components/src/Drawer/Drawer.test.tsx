@@ -119,7 +119,7 @@ test('able to show a close button', async () => {
   const button = screen.getByRole('button', { name: 'Open Drawer' });
   await user.click(button);
 
-  expect(screen.getByLabelText('dismiss drawer')).toBeInTheDocument();
+  expect(screen.getByLabelText('Dismiss drawer')).toBeInTheDocument();
 });
 
 test('able to close via close button', async () => {
@@ -131,7 +131,7 @@ test('able to close via close button', async () => {
   const drawer = screen.getByText('Drawer Title');
   expect(drawer).toBeInTheDocument();
 
-  const close = screen.getByLabelText('dismiss drawer');
+  const close = screen.getByLabelText('Dismiss drawer');
   await user.click(close);
 
   expect(drawer).not.toBeInTheDocument();

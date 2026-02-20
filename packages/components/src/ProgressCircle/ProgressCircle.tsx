@@ -1,6 +1,8 @@
 import type RAC from 'react-aria-components';
 import { ProgressBar } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { SVG, cn, useClassNames } from '@marigold/system';
+import { intlMessages } from '../intl/messages';
 
 export interface ProgressCircleProps extends RAC.ProgressBarProps {
   /**
@@ -69,8 +71,13 @@ export const ProgressCircle = ({
   size = '16',
   ...props
 }: ProgressCircleProps) => {
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   return (
-    <ProgressBar {...props} aria-label="loading" isIndeterminate>
+    <ProgressBar
+      {...props}
+      aria-label={stringFormatter.format('loadingMessage')}
+      isIndeterminate
+    >
       <ProgressCircleSvg size={size} />
     </ProgressBar>
   );

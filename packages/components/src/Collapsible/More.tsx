@@ -45,12 +45,12 @@ export const More = ({
       <Collapsible.Content>{children}</Collapsible.Content>
       <Collapsible.Trigger onPress={() => setIsExpanded(!isExpanded)}>
         {isExpanded
-          ? stringFormatter
-              .format(showCount ? 'showLessCount' : 'showLess')
-              .replace('{count}', count)
-          : stringFormatter
-              .format(showCount ? 'showMoreCount' : 'showMore')
-              .replace('{count}', count)}
+          ? stringFormatter.format(showCount ? 'showLessCount' : 'showLess', {
+              count,
+            })
+          : stringFormatter.format(showCount ? 'showMoreCount' : 'showMore', {
+              count,
+            })}
       </Collapsible.Trigger>
     </Collapsible>
   );
