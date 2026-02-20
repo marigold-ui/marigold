@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Selection } from '../types';
 import { ActionBarContext } from './ActionBarContext';
@@ -54,19 +54,14 @@ export const useActionBar = ({
 
   const selectedKeys = isControlled ? controlledKeys : internalKeys;
 
-  const onSelectionChangeRef = useRef(onSelectionChange);
-  useEffect(() => {
-    onSelectionChangeRef.current = onSelectionChange;
-  });
-
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
       if (!isControlled) {
         setInternalKeys(keys);
       }
-      onSelectionChangeRef.current?.(keys);
+      onSelectionChange?.(keys);
     },
-    [isControlled]
+    [isControlled, onSelectionChange]
   );
 
   const clearSelection = useCallback(() => {
