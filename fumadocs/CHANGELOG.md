@@ -1,5 +1,17 @@
 # fumadocs
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [95c22b6]
+- Updated dependencies [b115fda]
+  - @marigold/components@17.2.0
+  - @marigold/system@17.2.0
+  - @marigold/theme-docs@4.2.0
+  - @marigold/theme-rui@5.2.0
+  - @marigold/icons@1.3.34
+
 ## 0.0.3
 
 ### Patch Changes
