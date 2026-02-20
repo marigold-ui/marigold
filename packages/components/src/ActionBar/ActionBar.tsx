@@ -1,10 +1,11 @@
 import { motion } from 'motion/react';
 import type { ForwardRefExoticComponent, ReactNode } from 'react';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 import { Toolbar } from 'react-aria-components';
 import { FocusScope } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useKeyboard } from '@react-aria/interactions';
+import { useIsSSR } from '@react-aria/ssr';
 import {
   useEnterAnimation,
   useExitAnimation,
@@ -171,6 +172,7 @@ const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
       selectedItemCountProp ?? context?.selectedItemCount ?? 0;
     const onClearSelection = onClearSelectionProp ?? context?.onClearSelection;
     const onHeightChange = context?.onHeightChange;
+    const isSSR = useIsSSR();
 
     // Internal ref for exit animation
     const internalRef = useRef<HTMLDivElement>(null);
@@ -179,6 +181,7 @@ const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
 
     const isOpen = selectedItemCount !== 0;
     const isExiting = useExitAnimation(ref, isOpen);
+    const shouldRender = !isSSR && (isOpen || isExiting);
 
     // Report measured height back to useActionBar via context
     useResizeObserver({
@@ -188,11 +191,9 @@ const _ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(
       },
     });
 
-    const shouldRender = isOpen || isExiting;
-    useEffect(() => {
-      if (!shouldRender) {
-        onHeightChange?.(0);
-      }
+    useLayoutEffect(() => {
+      if (shouldRender) return;
+      onHeightChange?.(0);
     }, [shouldRender, onHeightChange]);
 
     // Retain last count so we don't flash "0 selected" during exit animation
