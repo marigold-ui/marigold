@@ -38,5 +38,5 @@ test('has aria label', () => {
 
   const progressCircle = screen.getByRole('progressbar');
 
-  expect(progressCircle).toHaveAttribute('aria-label', 'Loading');
+  expect(progressCircle).toHaveAttribute('aria-label', 'Loading...');
 });
