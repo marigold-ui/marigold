@@ -1,5 +1,12 @@
 # @marigold/icons
 
+## 1.3.34
+
+### Patch Changes
+
+- Updated dependencies [b115fda]
+  - @marigold/system@17.2.0
+
 ## 1.3.33
 
 ### Patch Changes
