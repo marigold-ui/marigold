@@ -106,10 +106,10 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
           id={id}
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
-          className={cn(classNames.container, 'sticky z-30 mx-auto w-max')}
-          style={{
-            bottom: 'var(--actionbar-offset, 8px)',
-          }}
+          className={cn(
+            classNames.container,
+            'sticky bottom-(--actionbar-offset,8px) z-30 mx-auto w-max'
+          )}
           transition={{
             layout: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 },
           }}
