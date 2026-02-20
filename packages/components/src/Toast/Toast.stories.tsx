@@ -65,7 +65,7 @@ export const Basic = meta.story({
     });
     await step('Close the toast', async () => {
       const closeButton = canvas.getByRole('button', {
-        name: 'Close toast',
+        name: 'Close',
       });
       await userEvent.click(closeButton);
       // Wait briefly to allow the toast to disappear

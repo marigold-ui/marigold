@@ -60,8 +60,8 @@ export const ActionBar = ({
 
   const countText =
     selectedItemCount === 'all'
-      ? 'All items selected'
-      : `${selectedItemCount} selected`;
+      ? stringFormatter.format('allItemsSelected')
+      : stringFormatter.format('selectedCount', { count: selectedItemCount });
 
   if (isHidden) {
     return null;
