@@ -61,7 +61,7 @@ export const Basic = meta.story({
     });
 
     await step('Click on the next button', async () => {
-      const nextButton = canvas.getByLabelText('Page next');
+      const nextButton = canvas.getByLabelText('Next page');
 
       await userEvent.click(nextButton);
 
@@ -72,7 +72,7 @@ export const Basic = meta.story({
     });
 
     await step('Click on the previous button', async () => {
-      const prevButton = canvas.getByLabelText('Page previous');
+      const prevButton = canvas.getByLabelText('Previous page');
 
       await userEvent.click(prevButton);
 
@@ -286,7 +286,7 @@ export const DisabledPreviousButton = meta.story({
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const previousButton = canvas.getByLabelText('Page previous');
+    const previousButton = canvas.getByLabelText('Previous page');
 
     await userEvent.click(previousButton);
 
@@ -302,7 +302,7 @@ export const DisabledNextButton = meta.story({
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const nextButton = canvas.getByLabelText('Page next');
+    const nextButton = canvas.getByLabelText('Next page');
 
     await userEvent.click(nextButton);
 
