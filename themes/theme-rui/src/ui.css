@@ -51,6 +51,39 @@
   border: 1px solid transparent;
 }
 
+/*
+ * Dark/inverted counterpart to "ui-surface". Use for primary-colored surfaces,
+ * tooltips, action bars, and other components that sit on a dark background.
+ *
+ * Inspired by the depth layering pattern in research.md (cosscom default button):
+ * a white inset highlight at the top edge simulates a light source from above.
+ *
+ * Same --ui-background-color and --ui-border-color hooks apply for overriding.
+ */
+@utility ui-surface-inverted {
+  @apply rounded-surface relative transition-[background,border,box-shadow];
+
+  /* White inset highlight at top — light source illusion */
+  --tw-inset-shadow: inset 0 1px oklch(1 0 0 / 0.16);
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-shadow, 0 0 #0000);
+
+  /* prettier-ignore */
+  background:
+    linear-gradient(
+      to bottom,
+      var(--ui-background-color, var(--color-brand)),
+      var(--ui-background-color, var(--color-brand))
+    ),
+    linear-gradient(
+      to bottom,
+      oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.12) c h),
+      oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.04) c h)
+    );
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  border: 1px solid transparent;
+}
+
 /* ========================= */
 /*           State           */
 /* ========================= */

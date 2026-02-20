@@ -86,3 +86,38 @@ export const Surface = meta.story({
     </Stack>
   ),
 });
+
+export const InvertedSurface = meta.story({
+  render: () => (
+    <Stack space="group">
+      <Headline level="3">Inverted Surface</Headline>
+      <Inline space="peer">
+        <Base className="ui-surface-inverted text-brand-foreground">plain</Base>
+        <Base className="ui-surface-inverted shadow-elevation-border text-brand-foreground">
+          border
+        </Base>
+        <Base className="ui-surface-inverted shadow-elevation-raised text-brand-foreground">
+          raised
+        </Base>
+        <Base className="ui-surface-inverted shadow-elevation-overlay text-brand-foreground">
+          overlay
+        </Base>
+      </Inline>
+      <Headline level="3">Inverted Surface States</Headline>
+      <Inline space="peer">
+        <Base className="ui-surface-inverted ui-state-focus text-brand-foreground">
+          focus
+        </Base>
+        <Base className="ui-surface-inverted ui-state-disabled text-brand-foreground">
+          disabled
+        </Base>
+        <Base className="ui-surface-inverted ui-state-error text-brand-foreground">
+          error
+        </Base>
+        <Base className="ui-surface-inverted ui-state-readonly text-brand-foreground">
+          readonly
+        </Base>
+      </Inline>
+    </Stack>
+  ),
+});
