@@ -1,4 +1,4 @@
-import { ClassValue, ConfigSchema } from '../utils/className.utils';
+import { ClassValue } from '../utils/className.utils';
 
 export interface NestedStringObject {
   [key: string]: NestedStringObject | string;
@@ -17,7 +17,6 @@ export interface ComponentStyleFunction<
       className?: ClassValue;
     } & Partial<Additional>
   ): string;
-  variants: ConfigSchema | undefined;
 }
 
 export type Theme = {
@@ -179,7 +178,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     TagField?: Record<
-      'trigger' | 'tagGroup' | 'listItems' | 'button' | 'container',
+      'trigger' | 'tagGroup' | 'listItems' | 'container',
       ComponentStyleFunction<string, string>
     >;
     Text?: ComponentStyleFunction<string, string>;

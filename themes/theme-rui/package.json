@@ -1,6 +1,6 @@
 {
   "name": "@marigold/theme-rui",
-  "version": "4.0.2",
+  "version": "5.1.0",
   "description": "Marigold RUI Theme",
   "license": "MIT",
   "keywords": [
@@ -45,12 +45,12 @@
   "devDependencies": {
     "@marigold/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "4.1.18",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "cssnano": "7.1.2",
     "postcss-cli": "11.0.1",
-    "shx": "^0.3.4",
+    "shx": "^0.4.0",
     "tailwindcss": "4.1.18",
-    "tsdown": "0.16.8"
+    "tsdown": "0.20.3"
   },
   "dependencies": {
     "@marigold/components": "workspace:*",
@@ -59,6 +59,6 @@
     "tailwindcss-react-aria-components": "^2.0.1"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/global.css src/utils.css src/variants.css dist/"
+    "build": "cross-env NODE_ENV=production tsdown && postcss -o dist/styles.css src/styles.css && shx cp src/theme.css src/global.css src/utils.css src/variants.css src/ui.css dist/"
   }
 }

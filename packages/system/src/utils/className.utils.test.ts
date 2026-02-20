@@ -3,11 +3,12 @@ import { cn, cva } from './className.utils';
 
 describe('cva', () => {
   test('cva (simple)', () => {
-    expect(cva(['text-sm'])()).toMatchInlineSnapshot(`"text-sm"`);
+    expect(cva({ base: ['text-sm'] })()).toMatchInlineSnapshot(`"text-sm"`);
   });
 
   test('cva (variants)', () => {
-    const styles = cva(['text-sm'], {
+    const styles = cva({
+      base: ['text-sm'],
       variants: {
         variant: {
           blue: 'text-blue-500',
@@ -26,7 +27,8 @@ describe('cva', () => {
   });
 
   test('cva with multiple variants', () => {
-    const styles = cva(['px-4'], {
+    const styles = cva({
+      base: ['px-4'],
       variants: {
         variant: {
           primary: 'bg-blue-500 text-white',
@@ -49,7 +51,8 @@ describe('cva', () => {
   });
 
   test('cva with default variants', () => {
-    const styles = cva(['base-class'], {
+    const styles = cva({
+      base: ['base-class'],
       variants: {
         color: {
           red: 'text-red-500',
@@ -68,26 +71,9 @@ describe('cva', () => {
   });
 
   test('cva with class prop override', () => {
-    const styles = cva(['text-sm']);
+    const styles = cva({ base: ['text-sm'] });
 
     expect(styles({ class: 'text-lg' })).toMatchInlineSnapshot(`"text-lg"`);
-  });
-
-  test('cva exposes variants property', () => {
-    const styles = cva(['base'], {
-      variants: {
-        size: {
-          sm: 'text-sm',
-          lg: 'text-lg',
-        },
-      },
-    });
-
-    expect(styles.variants).toBeDefined();
-    expect(styles.variants?.size).toEqual({
-      sm: 'text-sm',
-      lg: 'text-lg',
-    });
   });
 });
 

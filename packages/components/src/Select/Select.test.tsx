@@ -96,12 +96,12 @@ test('controlled', async () => {
   );
 });
 
-test('supports default value via "defaultSelectedKey"', async () => {
+test('supports default value via "defaultValue"', async () => {
   renderWithOverlay(
     <Basic.Component
       label="Label"
       data-testid="select"
-      defaultSelectedKey="Star Trek"
+      defaultValue="Star Trek"
     />
   );
 

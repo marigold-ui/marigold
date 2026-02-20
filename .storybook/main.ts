@@ -22,4 +22,13 @@ export default defineMain({
     experimentalTestSyntax: true,
   },
   staticDirs: ['./assets'],
+  viteFinal: config => {
+    config.optimizeDeps ??= {};
+    config.optimizeDeps.include ??= [];
+    config.optimizeDeps.include.push(
+      'react-select',
+      '@storybook/react-dom-shim'
+    );
+    return config;
+  },
 });

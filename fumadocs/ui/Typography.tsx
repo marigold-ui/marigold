@@ -9,24 +9,26 @@ import {
   textStyle,
 } from '@/ui';
 
+const headlineSizes = [
+  'level-1',
+  'level-2',
+  'level-3',
+  'level-4',
+  'level-5',
+  'level-6',
+] as const;
+
 export const Headlines = () => {
-  const headline = ruiTheme.components.Headline?.variants;
-
-  if (!headline) {
-    return null;
-  }
-
   return (
     <table aria-label="typography" style={{ width: '100%' }}>
       <thead>
         <tr>
           <th>Level</th>
           <th>Example</th>
-          <th>Styles</th>
         </tr>
       </thead>
       <tbody>
-        {Object.entries(headline?.size).map(([level, value]) => (
+        {headlineSizes.map(level => (
           <tr key={level}>
             <td>{level}</td>
             <td>
@@ -40,7 +42,6 @@ export const Headlines = () => {
                 </MarigoldProvider>
               </div>
             </td>
-            <td>{value?.toString()}</td>
           </tr>
         ))}
       </tbody>

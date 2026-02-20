@@ -1,0 +1,325 @@
+---
+title: Marigold v17.0.0
+date: 2026-02-17
+type: Blog
+changed:
+  - components/content/card
+  - components/content/table
+  - components/content/text
+  - components/content/headline
+  - components/form/calendar
+  - components/form/filefield
+  - components/form/tagfield
+  - components/form/selectlist
+  - components/overlay/contextual-help
+  - components/form/textfield
+  - components/form/select
+  - components/form/textarea
+  - components/form/numberfield
+  - components/form/datefield
+---
+
+New year, new foundations! While the first weeks of 2026 are flying by, we've been heads-down building a stronger base for Marigold. This release brings a brand-new semantic spacing system, a refreshed surface styling, and several new components to help you build better interfaces faster.
+
+Marigold v17.0.0 is here, so let's dive in!
+
+## Breaking Changes
+
+### Surface Styling Refactored
+
+The surface styling system has been completely refactored. This improves contrast and depth across all surface-based components like inputs, cards, and dialogs.
+
+Shadow elevation is now independent of the surface styling itself, making it more reusable. To add a shadow based on the elevation level, use the regular Tailwind `shadow-*` class with the elevation tokens (e.g. `shadow-elevation-raised`, `shadow-elevation-overlay`).
+
+**Migration:**
+
+```css
+/* Before */
+.util-surface-raised
+
+/* After */
+.ui-surface.shadow-elevation-raised
+```
+
+Deprecated utilities `util-focus-*` and `util-disabled` have been removed. Use the new state utilities instead: `ui-state-focus`, `ui-state-disabled`, `ui-state-error`, `ui-state-readonly`.
+
+### Card
+
+`<Card>` now uses semantic spacing. The `size="full"` prop has been replaced by the new `stretch` property. Cards no longer take full width by default, preventing them from accidentally stretching to fill their container. See the [Card documentation](/components/content/card) for details.
+
+```tsx
+// Before
+<Card size="full">...</Card>
+
+// After
+<Card stretch>...</Card>
+```
+
+### ContextualHelp
+
+Size variants have been removed from `<ContextualHelp>`. The component now has a single, improved default style. See the [ContextualHelp documentation](/components/overlay/contextual-help) for details.
+
+### Table
+
+The `<Table>` component has been completely rewritten with a modern API built on react-aria-components. The old implementation has been moved to `@marigold/components/legacy`.
+
+**Key migration points:**
+
+- `emptyState` prop moved from `<Table>` to `<Table.Body>`
+- `align` prop renamed to `alignX` on `<Table.Column>`, `<Table.Cell>`, and `<Table.EditableCell>`
+- Column widths now use pixel values or CSS grid units (e.g., `"200px"`, `"1fr"`) instead of Tailwind classes to allow for a more precise sizing
+- Inlining form fields in cells is no longer supported, use `<Table.EditableCell>` instead
+
+If you're not ready to migrate yet, swap the import to the legacy export:
+
+```tsx
+import { Table } from '@marigold/components/legacy';
+```
+
+When you're ready, migrate to the new API (recommended):
+
+```tsx
+<Table selectionMode="multiple" sortDescriptor={sort} onSortChange={setSort}>
+  <Table.Header>
+    <Table.Column allowsSorting width="1fr">
+      Name
+    </Table.Column>
+    <Table.Column allowsSorting width="1fr">
+      Email
+    </Table.Column>
+    <Table.Column width="200px">Role</Table.Column>
+  </Table.Header>
+  <Table.Body emptyState={<EmptyState />}>
+    <Table.Row>
+      <Table.Cell>John Doe</Table.Cell>
+      <Table.Cell>john@example.com</Table.Cell>
+      <Table.EditableCell>
+        <Select defaultSelectedKey="admin">...</Select>
+      </Table.EditableCell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### Multiselect Deprecated
+
+The `<Multiselect>` component has been deprecated in favor of the new `<TagField>` component. See the TagField section below for details. For migration guidance, refer to the [TagField documentation](/components/form/tag-field).
+
+### SelectList
+
+The `dragAndDropHooks` prop has been removed from `<SelectList>`. The component currently does not support drag and drop. See the [SelectList documentation](/components/collection/selectlist) for details.
+
+### TabList
+
+The `space` prop has been removed from `<TabList>`. Tab spacing is now controlled entirely through the theme, making it consistent across your application and aligned with the new semantic spacing system. See the [Tabs documentation](/components/navigation/tabs) for details.
+
+## Components
+
+### Table
+
+The new `<Table>` component is a full rewrite with modern features including sorting, single/multiple row selection, row actions, editable cells via `<Table.EditableCell>`, drag and drop reordering, sticky headers, and empty state support.
+
+It also supports text selection within cells even when row selection modes are active, so users can copy cell content without triggering row selection. It is fully accessible with keyboard navigation and screen reader support. See the [Table documentation](/components/collection/table) for the full API.
+
+```tsx
+<Table selectionMode="multiple">
+  <Table.Header>
+    <Table.Column allowsSorting>Name</Table.Column>
+    <Table.Column allowsSorting>Email</Table.Column>
+  </Table.Header>
+  <Table.Body emptyState={<EmptyState>No data</EmptyState>}>
+    <Table.Row>
+      <Table.Cell>John Doe</Table.Cell>
+      <Table.Cell>john@example.com</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### TagField (beta)
+
+The new `<TagField>` component replaces `<Multiselect>`. It provides a multi-select field that displays selected items as removable tags with a searchable dropdown. It supports controlled/uncontrolled selection, disabled state, error state, disabled keys, sections, and custom empty states. Check out the [TagField documentation](/components/form/tag-field) for usage examples.
+
+```tsx
+<TagField label="Genres">
+  <TagField.Option id="rock">Rock</TagField.Option>
+  <TagField.Option id="jazz">Jazz</TagField.Option>
+  <TagField.Option id="pop">Pop</TagField.Option>
+  <TagField.Option id="classical">Classical</TagField.Option>
+</TagField>
+```
+
+### ActionBar (alpha)
+
+A new `<ActionBar>` component for bulk operations on selected items. It appears as a floating toolbar when users select multiple items in tables or lists. It automatically shows the selection count and provides action buttons for common operations like edit, delete, or copy. See the [ActionBar documentation](/components/actions/actionbar) for usage examples.
+
+```tsx
+<ActionBar selectedItemCount={3} onClearSelection={() => clearSelection()}>
+  <ActionBar.Button onPress={() => editItems()}>Edit</ActionBar.Button>
+  <ActionBar.Button onPress={() => deleteItems()}>Delete</ActionBar.Button>
+</ActionBar>
+```
+
+### EmptyState (beta)
+
+The new `<EmptyState>` component provides a standardized way to display placeholder content when a view has no data to show. Use it for empty lists, search results with no matches, or initial states. See the [EmptyState documentation](/components/content/empty-state) for usage examples.
+
+```tsx
+<EmptyState
+  title="No items found"
+  description="There are currently no items to display."
+  action={
+    <Button variant="primary" size="small">
+      Browse Products
+    </Button>
+  }
+/>
+```
+
+### ToggleButton (alpha)
+
+The new `<ToggleButton>` component allows users to toggle between two states, such as on/off or active/inactive. Ideal for toolbar-style controls and filter toggles. See the [ToggleButton documentation](/components/actions/toggle-button) for usage examples.
+
+```tsx
+<ToggleButton>Pin to dashboard</ToggleButton>
+```
+
+### ToggleButtonGroup (alpha)
+
+The new `<ToggleButtonGroup>` component lets users select from a group of toggle options. It supports single and multiple selection modes, making it great for view switches and segmented controls. See the [ToggleButtonGroup documentation](/components/actions/toggle-button-group) for usage examples.
+
+```tsx
+<ToggleButton.Group selectionMode="multiple" defaultSelectedKeys={['bold']}>
+  <ToggleButton id="bold">Bold</ToggleButton>
+  <ToggleButton id="italic">Italic</ToggleButton>
+  <ToggleButton id="underline">Underline</ToggleButton>
+</ToggleButton.Group>
+```
+
+### Calendar
+
+The `<Calendar>` component has been refactored with a new API. Two new props enable multi-month calendar views:
+
+- **`visibleDuration`**: Controls the number of visible months (1-3 months). Default: `{ months: 1 }`.
+- **`pageBehavior`**: Controls navigation strategy. `'single'` pages by one month, `'visible'` pages by the number of visible months.
+
+```tsx
+// Multi-month calendar for date range selection
+<Calendar visibleDuration={{ months: 2 }} pageBehavior="visible" />
+```
+
+See the [Calendar documentation](/components/form/calendar) for more examples.
+
+### FileField (beta)
+
+The `<FileField>` component has been promoted from alpha to beta. It now supports a `name` prop, making it straightforward to include file uploads in standard HTML forms. The component also has a new dedicated [documentation page](/components/form/file-field).
+
+### Mobile Tray
+
+On mobile devices, dropdowns and popovers can feel cramped and hard to interact with. To address this, `<DatePicker>`, `<Menu>`, `<Autocomplete>`, `<Combobox>`, and `<Select>` now automatically switch to a bottom-sheet style `<Tray>` overlay on small viewports.
+
+The tray slides up from the bottom of the screen with a smooth animation, can be swiped down to dismiss, and gives content the full width of the screen. This provides a significantly better touch experience compared to small floating popovers. The switch between tray and popover happens automatically based on viewport size, so no changes are needed in your code.
+
+### Text & Headline
+
+The `<Text>` and `<Headline>` components now support a `lineHeight` prop, giving you direct control over line height without needing custom styles. See the [Text](/components/content/text) and [Headline](/components/content/headline) documentation for details.
+
+### Form
+
+The `<Form>` component now supports ref forwarding. See the [Form documentation](/components/form/form) for details.
+
+### Layout Components
+
+`<Grid>`, `<Container>`, `<Columns>`, `<Tiles>`, and `<Center>` now support semantic spacing tokens, aligning them with the new spacing system (see below).
+
+## Design
+
+- Refactored elevation shadow system to use Tailwind's built-in `shadow-*` classes with theme-defined shadow variables. This provides three clear elevation levels with better maintainability.
+- Z-index values have been moved from theme style files to component implementations, ensuring consistent stacking order across all themes. The stacking hierarchy remains unchanged: Toast notifications (`z-80`) above modals (`z-50`), modals above popovers/menus (`z-30`).
+- Updated Admin/Master badge styling.
+- Set table background color to white for improved readability.
+
+### Width Prop on Fields
+
+The `width` prop has been moved from `FieldBase` to individual input components (`TextField`, `Select`, `TextArea`, `DateField`, `NumberField`, `TimeField`, `FileField`). Labels and help text can now be wider than the actual input field, improving readability for fields with long descriptions.
+
+The width prop now handles three types of values:
+
+- **Fixed widths** (numeric scale values like `96`, `80`): The input has a fixed size while labels and help text can extend beyond it.
+- **Keyword widths** (`"fit"`, `"full"`, `"max"`): The input sizes itself based on the keyword, e.g. `"fit"` shrinks to fit its content, `"full"` takes full available width, and `"max"` uses its maximum content width.
+- **Fraction widths** (like `"1/2"`, `"2/3"`): The entire field scales responsively based on the container width.
+
+```tsx
+<TextField
+  label="A label that can be longer than the input"
+  width={96}
+  description="Help text also extends beyond the input width"
+/>
+```
+
+### Semantic Spacing System
+
+A new semantic spacing system has been introduced that describes the relationship between elements rather than using abstract numeric values. This makes spacing decisions more intentional and consistent across your UI, since the token name tells you _why_ a certain amount of space is used, not just _how much_. For a deep dive, check out the [Spacing guide](/foundations/spacing).
+
+The system covers two distinct roles:
+
+**Relation (Space)** defines the connection between sibling elements using gaps and margins. The tighter the space, the stronger the relationship.
+
+| Token     | Value   | Use case                                    |
+| --------- | ------- | ------------------------------------------- |
+| `joined`  | 0.25rem | Elements attached as a single unit          |
+| `tight`   | 1rem    | Packed containers for high-density scanning |
+| `related` | 2rem    | Minimal separation for related pairs        |
+| `peer`    | 4rem    | Self-contained equals in the same flow      |
+| `group`   | 8rem    | Logical separation between content zones    |
+| `section` | 16rem   | Distinct layout sections                    |
+| `context` | 32rem   | Complete contextual shift                   |
+
+**Inset (Padding)** defines the internal breathing room of a container. It acts as a density dial, from compact scanning to spacious focus areas.
+
+| Token     | Use case                                       |
+| --------- | ---------------------------------------------- |
+| `tight`   | Data table cells, dense tooltips               |
+| `snug`    | Chips, badges, compact toolbar items           |
+| `regular` | Buttons, standard cards, input fields          |
+| `relaxed` | Modals, generous cards, alert banners          |
+| `loose`   | Hero sections, onboarding slides, empty states |
+
+Inset tokens also support _squish_ (vertical compression) and _stretch_ (horizontal compression) modifiers for optical corrections, e.g. `--spacing-squish-regular` or `--spacing-stretch-snug`.
+
+The previous alpha form spacing tokens (`fieldX`, `fieldY`, etc.) have been replaced:
+
+```tsx
+// Before
+<Stack space="fieldY">
+<Inline space="fieldX">
+
+// After
+<Stack space="peer">
+<Inline space="related">
+```
+
+## Documentation
+
+- New comprehensive [spacing guide](/foundations/spacing) explaining the semantic spacing system with visual examples.
+- Added documentation for the `onAction` prop on [`<Combobox>`](/components/form/combobox).
+- Added examples showing how to use multiselection with [forms](/patterns/forms).
+- New dedicated documentation page for [`<FileField>`](/components/form/file-field).
+
+## Bug fixes
+
+- Fixed `<Button>` appearing as pressed when used to expand something (e.g., in accordions or dropdowns).
+- Fixed `<Checkbox>` focus styling that broke after the surface update.
+- Fixed a regression where `<Container>` no longer worked correctly with `<Breakout>`.
+- Fixed `<Drawer>` to take full height on small screens when positioned at top or bottom.
+- Correctly applied elevation shadows across all components.
+- Fixed `<NumberField>` stepper visuals when disabled via `min`/`max` constraints.
+- Fixed `<Scrollable>` so scrolling works as expected when pointer hovers over it.
+
+## Dependency Updates
+
+- Updated `react-aria` dependencies to February 2026 versions (`react-aria-components` 1.15.0, `react-stately` 3.44.0).
+
+---
+
+This is a feature-rich release with a stronger foundation for building consistent interfaces. As always, we welcome your feedback!

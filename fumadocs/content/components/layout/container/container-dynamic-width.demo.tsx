@@ -10,7 +10,7 @@ export default () => {
     <Stack space={8}>
       <Select
         label="Font size"
-        selectedKey={fontSize}
+        value={fontSize}
         onChange={(val: FontSizes) => setFontSize(val)}
         width={52}
       >
