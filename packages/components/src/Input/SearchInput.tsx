@@ -5,20 +5,9 @@ import { cn } from '@marigold/system';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { Search } from '../icons/Search';
 import { X } from '../icons/X';
+import { intlMessages } from '../intl/messages';
 import type { InputProps } from './Input';
 import { Input } from './Input';
-
-const intlMessages = {
-  'de-DE': {
-    'Clear search': 'Suche zurücksetzen',
-  },
-  'en-US': {
-    'Clear search': 'Clear search',
-  },
-  'fr-FR': {
-    'Clear search': 'Effacer la recherche',
-  },
-};
 
 // Props
 // ---------------
@@ -56,7 +45,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             <Button
               className={className?.action}
               onPress={() => onClear?.()}
-              aria-label={stringFormatter.format('Clear search')}
+              aria-label={stringFormatter.format('clearSearch')}
               excludeFromTabOrder={true}
               preventFocusOnPress={true}
             >
