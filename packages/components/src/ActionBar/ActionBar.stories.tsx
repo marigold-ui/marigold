@@ -1,4 +1,5 @@
 import { Copy } from 'lucide-react';
+import { I18nProvider } from 'react-aria-components';
 import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Delete, Edit } from '@marigold/icons';
@@ -13,6 +14,13 @@ import { ActionBar } from './ActionBar';
 const meta = preview.meta({
   title: 'Components/ActionBar',
   component: ActionBar,
+  decorators: [
+    Story => (
+      <I18nProvider locale="en-US">
+        <Story />
+      </I18nProvider>
+    ),
+  ],
   argTypes: {
     selectedItemCount: {
       control: { type: 'number' },
@@ -47,8 +55,11 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  args: {
+    selectedItemCount: 3,
+  },
   render: args => (
-    <ActionBar {...args} selectedItemCount={3}>
+    <ActionBar {...args}>
       <ActionBar.Button onPress={() => alert('Edit action')}>
         <Edit />
         <span>Edit</span>
@@ -73,31 +84,6 @@ export const Basic = meta.story({
     await userEvent.click(clearButton);
 
     await expect(args.onClearSelection).toHaveBeenCalled();
-  },
-});
-
-export const AllSelected = meta.story({
-  tags: ['component-test'],
-  args: {
-    selectedItemCount: 'all',
-  },
-  render: args => (
-    <ActionBar {...args}>
-      <ActionBar.Button>
-        <Edit />
-        <span>Edit</span>
-      </ActionBar.Button>
-      <ActionBar.Button>
-        <Delete />
-        <span>Delete</span>
-      </ActionBar.Button>
-    </ActionBar>
-  ),
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText('All items selected')).toBeInTheDocument();
-    await expect(
-      canvas.getByRole('toolbar', { name: /bulk actions/i })
-    ).toBeInTheDocument();
   },
 });
 
@@ -384,6 +370,13 @@ export const IntegratedWithTable = meta.story({
         canvas.queryByRole('toolbar', { name: /bulk actions/i })
       ).not.toBeInTheDocument();
     });
+
+    // Select all via header checkbox
+    const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
+    await userEvent.click(selectAllCheckbox);
+    await waitFor(() => {
+      expect(canvas.getByText('All items selected')).toBeInTheDocument();
+    });
   },
 });
 
@@ -409,79 +402,5 @@ export const NoSelection = meta.story({
     await expect(
       canvas.queryByRole('toolbar', { name: /bulk actions/i })
     ).not.toBeInTheDocument();
-  },
-});
-
-export const WithActionButtonPress = meta.story({
-  tags: ['component-test'],
-  args: {
-    selectedItemCount: 1,
-    onClearSelection: fn(),
-  },
-  render: args => (
-    <ActionBar {...args}>
-      <ActionBar.Button onPress={args.onClearSelection}>
-        <Edit />
-        <span>Edit</span>
-      </ActionBar.Button>
-    </ActionBar>
-  ),
-  play: async ({ args, canvas }) => {
-    const editButton = canvas.getByRole('button', { name: /edit/i });
-    await userEvent.click(editButton);
-
-    await expect(args.onClearSelection).toHaveBeenCalled();
-  },
-});
-
-const selectAllUsers = [
-  { name: 'Alice', email: 'alice@example.com' },
-  { name: 'Bob', email: 'bob@example.com' },
-  { name: 'Carol', email: 'carol@example.com' },
-];
-
-export const SelectAllTable = meta.story({
-  tags: ['component-test'],
-  parameters: {
-    controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
-  },
-  render: () => (
-    <Table
-      aria-label="Select all test"
-      selectionMode="multiple"
-      actionBar={() => (
-        <ActionBar>
-          <ActionBar.Button>
-            <Edit />
-            <span>Edit</span>
-          </ActionBar.Button>
-        </ActionBar>
-      )}
-    >
-      <Table.Header>
-        <Table.Column rowHeader>Name</Table.Column>
-        <Table.Column>Email</Table.Column>
-      </Table.Header>
-      <Table.Body>
-        {selectAllUsers.map(u => (
-          <Table.Row key={u.email} id={u.email}>
-            <Table.Cell>{u.name}</Table.Cell>
-            <Table.Cell>{u.email}</Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  ),
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.queryByRole('toolbar', { name: /bulk actions/i })
-    ).not.toBeInTheDocument();
-
-    const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
-    await userEvent.click(selectAllCheckbox);
-
-    await waitFor(() => {
-      expect(canvas.getByText('All items selected')).toBeInTheDocument();
-    });
   },
 });

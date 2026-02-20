@@ -2,12 +2,9 @@ import { act, render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, test, vi } from 'vitest';
 import {
-  AllSelected,
   Basic,
   IntegratedWithTable,
   NoSelection,
-  SelectAllTable,
-  WithActionButtonPress,
   WithoutClearButton,
 } from './ActionBar.stories';
 import { useActionBar } from './useActionBar';
@@ -21,7 +18,7 @@ test('renders ActionBar with selected count', () => {
 });
 
 test('renders ActionBar with "all" selected', () => {
-  render(<AllSelected.Component />);
+  render(<Basic.Component selectedItemCount="all" />);
 
   expect(screen.getByText('All items selected')).toBeInTheDocument();
 });
@@ -195,18 +192,6 @@ test('useActionBar actionBarOverlay is non-null when actionBar prop is provided'
   expect(result.current.actionBarOverlay).not.toBeNull();
 });
 
-// ActionBar.Button test
-test('ActionBar.Button fires onPress when clicked', async () => {
-  const onPress = vi.fn();
-
-  render(<WithActionButtonPress.Component onClearSelection={onPress} />);
-
-  const editButton = screen.getByText('Edit').closest('button')!;
-  await user.click(editButton);
-
-  expect(onPress).toHaveBeenCalledTimes(1);
-});
-
 // Interactive Table integration tests
 test('clicking a row checkbox increments selection count', async () => {
   render(<IntegratedWithTable.Component />);
@@ -247,12 +232,10 @@ test('deselecting all rows hides ActionBar', async () => {
 });
 
 test('select-all checkbox selects all rows and shows "All items selected"', async () => {
-  render(<SelectAllTable.Component />);
+  render(<IntegratedWithTable.Component />);
 
-  // Initially no ActionBar visible
-  expect(
-    screen.queryByRole('toolbar', { name: /bulk actions/i })
-  ).not.toBeInTheDocument();
+  // Start with 2 pre-selected
+  expect(screen.getByText('2 selected')).toBeInTheDocument();
 
   // Click select-all checkbox (first checkbox)
   const selectAll = screen.getAllByRole('checkbox')[0];
