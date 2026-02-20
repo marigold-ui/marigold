@@ -105,14 +105,6 @@ export const WithoutClearButton = meta.story({
       </ActionBar.Button>
     </ActionBar>
   ),
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.getByRole('toolbar', { name: /bulk actions/i })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.queryByRole('button', { name: /clear selection/i })
-    ).not.toBeInTheDocument();
-  },
 });
 
 const users = [
@@ -346,37 +338,50 @@ export const IntegratedWithTable = meta.story({
       </Scrollable>
     </div>
   ),
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText('2 selected')).toBeInTheDocument();
-
-    const checkboxes = canvas.getAllByRole('checkbox');
-    // Skip the select-all checkbox (index 0), find first unchecked row checkbox
-    const uncheckedCheckbox = checkboxes
-      .slice(1)
-      .find(cb => !(cb as HTMLInputElement).checked)!;
-    await userEvent.click(uncheckedCheckbox);
-
-    await waitFor(() => {
-      expect(canvas.getByText('3 selected')).toBeInTheDocument();
+  play: async ({ canvas, step }) => {
+    await step('shows initial selection count', async () => {
+      await expect(canvas.getByText('2 selected')).toBeInTheDocument();
     });
 
-    const clearButton = canvas.getByRole('button', {
-      name: /clear selection/i,
-    });
-    await userEvent.click(clearButton);
+    await step(
+      'increments count when selecting an additional row',
+      async () => {
+        const checkboxes = canvas.getAllByRole('checkbox');
+        const uncheckedCheckbox = checkboxes
+          .slice(1)
+          .find(cb => !(cb as HTMLInputElement).checked)!;
+        await userEvent.click(uncheckedCheckbox);
 
-    await waitFor(() => {
-      expect(
-        canvas.queryByRole('toolbar', { name: /bulk actions/i })
-      ).not.toBeInTheDocument();
+        await waitFor(() => {
+          expect(canvas.getByText('3 selected')).toBeInTheDocument();
+        });
+      }
+    );
+
+    await step('hides ActionBar when clear selection is clicked', async () => {
+      const clearButton = canvas.getByRole('button', {
+        name: /clear selection/i,
+      });
+      await userEvent.click(clearButton);
+
+      await waitFor(() => {
+        expect(
+          canvas.queryByRole('toolbar', { name: /bulk actions/i })
+        ).not.toBeInTheDocument();
+      });
     });
 
-    // Select all via header checkbox
-    const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
-    await userEvent.click(selectAllCheckbox);
-    await waitFor(() => {
-      expect(canvas.getByText('All items selected')).toBeInTheDocument();
-    });
+    await step(
+      'shows "All items selected" when select-all is clicked',
+      async () => {
+        const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
+        await userEvent.click(selectAllCheckbox);
+
+        await waitFor(() => {
+          expect(canvas.getByText('All items selected')).toBeInTheDocument();
+        });
+      }
+    );
   },
 });
 

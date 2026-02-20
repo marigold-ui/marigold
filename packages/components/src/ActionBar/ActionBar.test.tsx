@@ -230,16 +230,3 @@ test('deselecting all rows hides ActionBar', async () => {
     screen.queryByRole('toolbar', { name: /bulk actions/i })
   ).not.toBeInTheDocument();
 });
-
-test('select-all checkbox selects all rows and shows "All items selected"', async () => {
-  render(<IntegratedWithTable.Component />);
-
-  // Start with 2 pre-selected
-  expect(screen.getByText('2 selected')).toBeInTheDocument();
-
-  // Click select-all checkbox (first checkbox)
-  const selectAll = screen.getAllByRole('checkbox')[0];
-  await user.click(selectAll);
-
-  expect(screen.getByText('All items selected')).toBeInTheDocument();
-});
