@@ -52,11 +52,8 @@
 }
 
 /*
- * Dark/inverted counterpart to "ui-surface". Use for primary-colored surfaces,
- * tooltips, action bars, and other components that sit on a dark background.
- *
- * Inspired by the depth layering pattern in research.md (cosscom default button):
- * a white inset highlight at the top edge simulates a light source from above.
+ * High-contrast counterpart to "ui-surface". Use for primary-colored surfaces,
+ * tooltips, action bars, and other components that stand out against the page background.
  *
  * Same --ui-background-color and --ui-border-color hooks apply for overriding.
  */
@@ -110,7 +107,11 @@
  * Applies a consistent visual style for disabled elements.
  */
 @utility ui-state-disabled {
-  @apply text-disabled-foreground bg-disabled cursor-not-allowed;
+  --ui-background-color: var(--color-disabled);
+  --ui-border-color: var(--color-disabled);
+  --tw-inset-shadow: 0 0 #0000;
+  border-color: oklch(from var(--color-disabled) calc(l - 0.06) c h);
+  @apply text-disabled-foreground cursor-not-allowed;
 }
 
 /*

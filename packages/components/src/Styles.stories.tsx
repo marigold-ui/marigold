@@ -108,15 +108,7 @@ export const InvertedSurface = meta.story({
         <Base className="ui-surface-inverted ui-state-focus text-brand-foreground">
           focus
         </Base>
-        <Base className="ui-surface-inverted ui-state-disabled text-brand-foreground">
-          disabled
-        </Base>
-        <Base className="ui-surface-inverted ui-state-error text-brand-foreground">
-          error
-        </Base>
-        <Base className="ui-surface-inverted ui-state-readonly text-brand-foreground">
-          readonly
-        </Base>
+        <Base className="ui-surface-inverted ui-state-disabled">disabled</Base>
       </Inline>
     </Stack>
   ),
