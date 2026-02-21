@@ -73,6 +73,14 @@ export const Surface = meta.story({
         <Base className="ui-surface ui-state-error">error</Base>
         <Base className="ui-surface ui-state-readonly">readonly</Base>
       </Inline>
+      <Inline space="peer">
+        <Base className="ui-surface-contrast ui-state-focus">
+          contrast / focus
+        </Base>
+        <Base className="ui-surface-contrast ui-state-disabled">
+          contrast / disabled
+        </Base>
+      </Inline>
       <Headline level="3">Input</Headline>
       <Inline space="peer">
         <input
