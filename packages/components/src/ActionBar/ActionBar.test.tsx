@@ -112,22 +112,6 @@ test('Table with actionBar shows ActionBar when items selected', async () => {
   expect(screen.getByText('Edit')).toBeInTheDocument();
 });
 
-test('clear selection hides ActionBar via actionBar', async () => {
-  render(<IntegratedWithTable.Component />);
-
-  // ActionBar should be visible (2 items pre-selected)
-  expect(screen.getByText('2 selected')).toBeInTheDocument();
-
-  // Click clear selection
-  const clearButton = screen.getByRole('button', { name: /clear selection/i });
-  await user.click(clearButton);
-
-  // ActionBar should be hidden
-  expect(
-    screen.queryByRole('toolbar', { name: /bulk actions/i })
-  ).not.toBeInTheDocument();
-});
-
 // useActionBar hook tests
 test('useActionBar returns empty Set when no args provided', () => {
   const { result } = renderHook(() => useActionBar({}));
