@@ -2,13 +2,14 @@ import type { ReactNode } from 'react';
 import RAC, { Button } from 'react-aria-components';
 import { useClassNames } from '@marigold/system';
 
-type RemovedProps = 'isDisabled' | 'className' | 'style';
-
-export interface ActionButtonProps extends Omit<RAC.ButtonProps, RemovedProps> {
+export interface ActionButtonProps {
   /**
    * Children of the component (icon and/or text)
    */
   children?: ReactNode;
+  /**
+   * Handler called when the button is pressed.
+   */
   onPress?: RAC.ButtonProps['onPress'];
 }
 

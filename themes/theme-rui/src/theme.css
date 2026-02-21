@@ -267,13 +267,39 @@
   @keyframes fade-in-up {
     from {
       opacity: 0;
-      transform: translateY(15px);
       filter: blur(6px);
+      transform: translateY(15px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
       filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  /* ActionBar enter/exit */
+  --animate-slide-in: slide-in 0.25s var(--ease-out-quart) forwards;
+  --animate-slide-out: slide-out 0.2s var(--ease-out-quart) forwards;
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(16px);
     }
   }
 
