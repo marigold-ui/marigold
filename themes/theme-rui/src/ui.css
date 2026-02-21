@@ -75,14 +75,14 @@
   background:
       linear-gradient(
         to bottom,
-        /* oklch(from var(--ui-background-color, var(--color-brand)) calc(l + 0.13) c h), */
+        /* oklch(from var(--ui-background-color, var(--color-brand)) calc(l + 0.05) c h), */
         var(--ui-background-color, var(--color-brand)),
         var(--ui-background-color, var(--color-brand))
       ),
       linear-gradient(
         to bottom,
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.38) c h),
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.12) c h)
+        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.25) c h),
+        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.15) c h)
       );
 
   background-clip: padding-box, border-box;
