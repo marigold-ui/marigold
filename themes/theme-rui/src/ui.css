@@ -24,12 +24,9 @@
 /*          Surface          */
 /* ========================= */
 
-/*
- * The "ui-surface" utility defines visual surfaces with distinct background colors.
- * Apply elevation levels to them when needed (uses raised as default).
- * 
- * This utility uses background-clip and background-origin with gradient borders.
- * The gradient border transitions from top (lighter) to bottom (darker).
+/* 
+ * Use for interactive UI elements like inputs, selects, and cards. Anything that
+ * sits on the page background and needs a clear visual boundary. 
  */
 @utility ui-surface {
   @apply rounded-surface relative transition-[background,border,box-shadow];
@@ -52,18 +49,9 @@
   border: 1px solid transparent;
 }
 
-/*
- * The "ui-surface-contrast" utility defines a visually contrasting surface
- * (e.g. ActionBar, toolbars) that stands out against the page background.
- * It uses the brand color as the background with brand-foreground text.
- * Combine with elevation utilities as needed.
- *
- * Unlike ui-surface (solid white body), this utility renders a subtle top-to-bottom
- * gradient on the body for depth, and a diagonal rim-light border that mimics
- * light catching the upper edge of a raised dark surface.
- *
- * Supports the same --ui-background-color and --ui-border-color custom props
- * as ui-surface for state overrides.
+/* 
+ * Use when the surface must stand out against the page. Toolbars, action bars,
+ * or anything that uses the brand color to signal prominence.
  */
 @utility ui-surface-contrast {
   @apply rounded-surface relative transition-[background,border,box-shadow];
