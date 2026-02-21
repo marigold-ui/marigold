@@ -46,6 +46,7 @@
         var(--ui-border-color, var(--color-surface-border)),
         oklch(from var(--ui-border-color, var(--color-surface-border)) calc(l - 0.1) c h)
       );
+
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
   border: 1px solid transparent;
@@ -68,21 +69,22 @@
   @apply rounded-surface relative transition-[background,border,box-shadow];
   @apply text-brand-foreground;
 
+  @apply inset-shadow-[0_1px_0_0_rgb(255_255_255/0.2),0_25px_30px_-15px_rgb(255_255_255/0.2)];
+
   /* prettier-ignore */
   background:
-      /* Body: dark-grey-to-brand gradient — light source from above gives depth */
       linear-gradient(
         to bottom,
-        oklch(from var(--ui-background-color, var(--color-brand)) calc(l + 0.13) c h),
+        /* oklch(from var(--ui-background-color, var(--color-brand)) calc(l + 0.13) c h), */
+        var(--ui-background-color, var(--color-brand)),
         var(--ui-background-color, var(--color-brand))
       ),
-      /* Border: strong diagonal rim-light — stone-500 catch-light fades to near-invisible at bottom-right */
       linear-gradient(
-        150deg,
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.38) c h) 0%,
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.12) c h) 45%,
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.01) c h) 100%
+        to bottom,
+        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.38) c h),
+        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.12) c h)
       );
+
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
   border: 1px solid transparent;
@@ -99,7 +101,7 @@
 @utility ui-surface-dark {
   @apply rounded-surface relative transition-[background,border,box-shadow];
   @apply text-brand-foreground;
-  @apply inset-shadow-[0_1px_0_0_rgb(255_255_255/0.2),0_25px_30px_-15px_rgb(255_255_255/0.12)];
+  @apply inset-shadow-[0_1px_0_0_rgb(255_255_255/0.2),0_25px_30px_-15px_rgb(255_255_255/0.2)];
 
   /* prettier-ignore */
   background:
@@ -110,8 +112,8 @@
       ),
       linear-gradient(
         to bottom,
-        var(--ui-border-color, var(--color-brand)),
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l - 0.05) c h)
+        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.35) c h),
+        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.15) c h)
       );
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
