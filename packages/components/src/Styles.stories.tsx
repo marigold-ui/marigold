@@ -36,6 +36,34 @@ export const Surface = meta.story({
         <Base className="ui-surface shadow-elevation-raised">raised</Base>
         <Base className="ui-surface shadow-elevation-overlay">overlay</Base>
       </Inline>
+      <Headline level="3">Surface Contrast</Headline>
+      <Inline space="peer">
+        <Base className="ui-surface-contrast">plain</Base>
+        <Base className="ui-surface-contrast shadow-elevation-border">
+          border
+        </Base>
+        <Base className="ui-surface-contrast shadow-elevation-raised">
+          raised
+        </Base>
+        <Base className="ui-surface-contrast shadow-elevation-overlay">
+          overlay
+        </Base>
+      </Inline>
+      <Headline level="3">Surface Dark</Headline>
+      <Inline space="peer">
+        <Base className="ui-surface-dark">plain</Base>
+        <Base className="ui-surface-dark shadow-elevation-border">border</Base>
+        <Base className="ui-surface-dark shadow-elevation-raised">raised</Base>
+        <Base className="ui-surface-dark shadow-elevation-overlay">
+          overlay
+        </Base>
+      </Inline>
+      <Inline space="peer">
+        <Base className="ui-surface-dark ui-state-focus">focus</Base>
+        <Base className="ui-surface-dark ui-state-disabled">disabled</Base>
+        <Base className="ui-surface-dark ui-state-error">error</Base>
+        <Base className="ui-surface-dark ui-state-readonly">readonly</Base>
+      </Inline>
       <Headline level="3">UI State</Headline>
       <Inline space="peer">
         <Base className="ui-surface shadow-elevation-border ui-state-error">
