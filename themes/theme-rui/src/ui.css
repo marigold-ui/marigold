@@ -90,36 +90,6 @@
   border: 1px solid transparent;
 }
 
-/*
- * The "ui-surface-dark" utility defines a dark glass-like surface
- * (e.g. dark cards, panels, elevated dark containers).
- * It uses stone-950 as background with a subtle inner rim-light shadow.
- *
- * Supports the same --ui-background-color and --ui-border-color custom props
- * as ui-surface for state overrides.
- */
-@utility ui-surface-dark {
-  @apply rounded-surface relative transition-[background,border,box-shadow];
-  @apply text-brand-foreground;
-  @apply inset-shadow-[0_1px_0_0_rgb(255_255_255/0.2),0_25px_30px_-15px_rgb(255_255_255/0.2)];
-
-  /* prettier-ignore */
-  background:
-      linear-gradient(
-        to bottom,
-        var(--ui-background-color, var(--color-brand)),
-        var(--ui-background-color, var(--color-brand))
-      ),
-      linear-gradient(
-        to bottom,
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.35) c h),
-        oklch(from var(--ui-border-color, var(--color-brand)) calc(l + 0.15) c h)
-      );
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  border: 1px solid transparent;
-}
-
 /* ========================= */
 /*           State           */
 /* ========================= */
