@@ -57,11 +57,11 @@
   @apply rounded-surface relative transition-[background,border,box-shadow];
   @apply text-brand-foreground;
 
-  @apply inset-shadow-[0_1px_0_0_oklch(from_var(--ui-background-color,var(--color-brand))_calc(l+0.4)_c_h)];
+  @apply inset-shadow-[0_1px_0_0_var(--ui-highlight-color,oklch(from_var(--color-brand)_calc(l+0.4)_c_h))];
 
   /* prettier-ignore */
   background:
-      radial-gradient(ellipse 120% 60% at 50% -25%, oklch(from var(--ui-background-color, var(--color-brand)) calc(l + 0.5) c h), transparent 90%),
+      radial-gradient(ellipse 120% 60% at 50% -25%, var(--ui-highlight-color, oklch(from var(--color-brand) calc(l + 0.5) c h)), transparent 90%),
       linear-gradient(
         to bottom,
         var(--ui-background-color, var(--color-brand)),
@@ -104,7 +104,10 @@
  * Applies a consistent visual style for disabled elements.
  */
 @utility ui-state-disabled {
-  @apply text-disabled-foreground bg-disabled cursor-not-allowed;
+  @apply text-disabled-foreground cursor-not-allowed inset-shadow-none;
+  @apply border-[oklch(from_var(--color-disabled)_calc(l-0.05)_c_h)];
+  --ui-background-color: var(--color-disabled);
+  --ui-highlight-color: transparent;
 }
 
 /*
