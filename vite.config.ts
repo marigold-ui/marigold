@@ -54,7 +54,10 @@ export default mergeConfig(
             }),
           ],
           optimizeDeps: {
-            include: ['@storybook/react-dom-shim'],
+            include: [
+              '@storybook/react-dom-shim',
+              'storybook/internal/channels',
+            ],
           },
           test: {
             name: 'storybook-tests',
