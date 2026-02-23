@@ -8,6 +8,7 @@ export const buttonBase = [
   '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
   'cursor-pointer',
+  'border border-transparent',
 ] as const;
 
 export const Button: ThemeComponent<'Button'> = cva({
