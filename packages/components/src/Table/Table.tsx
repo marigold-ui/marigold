@@ -87,7 +87,7 @@ const _Table = ({
   return (
     <TableContext.Provider value={ctx}>
       <ResizableTableContainer
-        className={cn('w-full')}
+        className="w-full"
         style={{
           paddingBottom: actionBarHeight
             ? `calc(${actionBarHeight}px + var(--actionbar-offset, 8px))`
