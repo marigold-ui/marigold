@@ -27,6 +27,7 @@ const parser = docgen.withCustomConfig('./tsconfig.json', {
     ],
   },
   customComponentTypes: [
+    'ActionBarComponent',
     'AutocompleteComponent',
     'CheckboxComponent',
     'ComboBoxComponent',
