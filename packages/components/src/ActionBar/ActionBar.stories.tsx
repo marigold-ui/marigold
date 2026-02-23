@@ -350,6 +350,7 @@ export const IntegratedWithTable = meta.story({
         const uncheckedCheckbox = checkboxes
           .slice(1)
           .find(cb => !(cb as HTMLInputElement).checked)!;
+
         await userEvent.click(uncheckedCheckbox);
 
         await waitFor(() => {
@@ -362,6 +363,7 @@ export const IntegratedWithTable = meta.story({
       const clearButton = canvas.getByRole('button', {
         name: /clear selection/i,
       });
+
       await userEvent.click(clearButton);
 
       await waitFor(() => {
@@ -375,6 +377,7 @@ export const IntegratedWithTable = meta.story({
       'shows "All items selected" when select-all is clicked',
       async () => {
         const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
+
         await userEvent.click(selectAllCheckbox);
 
         await waitFor(() => {
