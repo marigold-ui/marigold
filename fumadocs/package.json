@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "private": true,
   "scripts": {
-    "build": "pnpm run build:registry && pnpm run build:changelog && next build",
+    "build": "pnpm run build:registry && pnpm run build:changelog && pnpm run build:md-docs && next build",
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
@@ -59,7 +59,7 @@
     "fumadocs-typescript": "^5.1.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
-    "tsx": "4.21.0" ,
+    "tsx": "4.21.0",
     "typescript": "^5.9.3",
     "zx": "8.8.5"
   }
