@@ -1,4 +1,5 @@
 import { ThemeComponent, cva } from '@marigold/system';
+import { buttonBase } from './Button.styles';
 
 export const Menu: ThemeComponent<'Menu'> = {
   container: cva({
@@ -30,27 +31,57 @@ export const Menu: ThemeComponent<'Menu'> = {
   }),
   button: cva({
     base: [
-      'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium',
-      'focus-visible:ui-state-focus outline-none disabled:ui-state-disabled',
-      'cursor-pointer',
-      '[&_svg]:shrink-0 [&_svg]:pointer-events-none',
+      ...buttonBase,
+      'duration-150 active:scale-[0.97] pressed:not-aria-expanded:scale-[0.97]',
+      'pending:ui-state-disabled',
     ],
     variants: {
       variant: {
-        default: 'ui-surface expanded:bg-hover',
-        ghost:
-          'hover:bg-hover hover:text-foreground expanded:bg-hover rounded-surface',
+        default: [
+          'ui-surface shadow-elevation-border',
+          'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
+          'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
+          'pending:[--ui-background-color:var(--color-disabled)] pending:border-0 pending:shadow-none',
+          'expanded:[--ui-background-color:var(--color-hover)]',
+        ],
+        ghost: 'hover:bg-hover hover:text-foreground',
       },
       size: {
-        default: 'h-button px-4 py-2 [&_svg]:size-4',
-        small: 'h-button-small px-3 text-xs [&_svg]:size-3.5',
-        large: 'h-button-large px-8 [&_svg]:size-5',
-        icon: 'size-button [&_svg]:size-4',
+        default: 'text-sm',
+        small: 'text-xs',
+        large: '',
+        icon: '',
       },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
     },
+    compoundVariants: [
+      {
+        variant: ['default', 'ghost'],
+        class: 'items-center justify-center',
+      },
+      {
+        variant: ['default', 'ghost'],
+        size: 'default',
+        class: 'h-button p-squish-relaxed [&_svg]:size-4',
+      },
+      {
+        variant: ['default', 'ghost'],
+        size: 'small',
+        class: 'h-button-small px-3 [&_svg]:size-3.5',
+      },
+      {
+        variant: ['default', 'ghost'],
+        size: 'large',
+        class: 'h-button-large px-8 [&_svg]:size-5',
+      },
+      {
+        variant: ['default', 'ghost'],
+        size: 'icon',
+        class: 'size-button [&_svg]:size-4',
+      },
+    ],
   }),
 };
