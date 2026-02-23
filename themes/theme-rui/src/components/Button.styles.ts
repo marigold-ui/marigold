@@ -25,8 +25,6 @@ export const Button: ThemeComponent<'Button'> = cva({
       secondary: [
         'ui-surface shadow-elevation-border',
         'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-        'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
-        'pending:[--ui-background-color:var(--color-disabled)] pending:border-0 pending:shadow-none',
         'expanded:[--ui-background-color:var(--color-hover)]',
       ],
       ghost: 'hover:bg-hover hover:text-foreground',

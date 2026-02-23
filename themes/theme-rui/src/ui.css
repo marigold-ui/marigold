@@ -104,9 +104,10 @@
  * Applies a consistent visual style for disabled elements.
  */
 @utility ui-state-disabled {
-  @apply text-disabled-foreground cursor-not-allowed inset-shadow-none;
+  @apply text-disabled-foreground cursor-not-allowed;
   background: var(--color-disabled);
   background-clip: border-box;
+  box-shadow: none;
 }
 
 /*
