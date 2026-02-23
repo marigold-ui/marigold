@@ -5,7 +5,7 @@ const button = [
   'focus-visible:ui-state-focus outline-none',
   'disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground',
   '[&_svg]:pointer-events-none [&_svg]:shrink-0',
-  'hover:bg-hover hover:text-hover-foreground',
+  'hover:bg-current/10',
   'cursor-pointer',
 ];
 
