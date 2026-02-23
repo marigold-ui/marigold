@@ -25,8 +25,6 @@ export const UNWRAP_COMPONENTS = new Set([
   'Inset',
   'Split',
   'div',
-  'ul',
-  'li',
 ]);
 
 export const VARIANT_EMOJI: Record<string, string> = {

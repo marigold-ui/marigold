@@ -1,7 +1,6 @@
 import type { Node, Parent } from 'unist';
 import { SKIP, visit } from 'unist-util-visit';
 import {
-  HTML_TABLE_ELEMENTS,
   REMOVE_COMPONENTS,
   REMOVE_SUB_COMPONENTS,
   UNWRAP_COMPONENTS,
@@ -11,7 +10,6 @@ import {
 import {
   MdxJsxElement,
   extractText,
-  findJsxElements,
   flattenChildren,
   getJsxAttr,
 } from './shared';
@@ -227,22 +225,31 @@ export function remarkSimplifyJsx() {
             const items: { title: string; href: string; caption?: string }[] =
               [];
 
-            const titleMatches = expr.matchAll(/title:\s*['"]([^'"]+)['"]/g);
-            const hrefMatches = expr.matchAll(/href:\s*['"]([^'"]+)['"]/g);
-            const captionMatches = expr.matchAll(
-              /caption:\s*['"]([^'"]+)['"]/g
+            // Parse each object in the array individually to keep caption aligned
+            const objectMatches = expr.matchAll(
+              /\{[^}]*title:\s*['"]([^'"]+)['"][^}]*href:\s*['"]([^'"]+)['"][^}]*(?:caption:\s*['"]([^'"]+)['"])?[^}]*\}/g
             );
 
-            const titles = [...titleMatches].map(m => m[1]);
-            const hrefs = [...hrefMatches].map(m => m[1]);
-            const captions = [...captionMatches].map(m => m[1]);
-
-            for (let i = 0; i < titles.length; i++) {
+            for (const match of objectMatches) {
               items.push({
-                title: titles[i],
-                href: hrefs[i] || '',
-                caption: captions[i],
+                title: match[1],
+                href: match[2],
+                caption: match[3],
               });
+            }
+
+            // Fallback: also try href before title order
+            if (items.length === 0) {
+              const altMatches = expr.matchAll(
+                /\{[^}]*href:\s*['"]([^'"]+)['"][^}]*title:\s*['"]([^'"]+)['"][^}]*(?:caption:\s*['"]([^'"]+)['"])?[^}]*\}/g
+              );
+              for (const match of altMatches) {
+                items.push({
+                  title: match[2],
+                  href: match[1],
+                  caption: match[3],
+                });
+              }
             }
 
             if (items.length > 0) {
@@ -282,16 +289,70 @@ export function remarkSimplifyJsx() {
       if (name === 'Badge') {
         const text = extractText(node);
         if (text) {
-          (parent.children as Node[])[index] = {
-            type: 'text',
-            value: `(${text})`,
-          } as Node;
+          const textNode = { type: 'text', value: `(${text})` } as Node;
+          // Flow elements need a paragraph wrapper; inline elements can be bare text
+          if (node.type === 'mdxJsxFlowElement') {
+            (parent.children as Node[])[index] = {
+              type: 'paragraph',
+              children: [textNode],
+            } as Node;
+          } else {
+            (parent.children as Node[])[index] = textNode;
+          }
         } else {
           (parent.children as Node[]).splice(index, 1);
           return [SKIP, index];
         }
         return;
       }
+
+      // Convert JSX <ul>/<ol>/<li> to proper markdown list nodes
+      if (name === 'ul' || name === 'ol') {
+        const listItems = (node.children || []).map(child => {
+          const liNode = child as MdxJsxElement;
+          if (liNode.name === 'li') {
+            const liChildren =
+              liNode.children && liNode.children.length > 0
+                ? liNode.children
+                : [
+                    {
+                      type: 'paragraph',
+                      children: [{ type: 'text', value: extractText(liNode) }],
+                    },
+                  ];
+            return { type: 'listItem', children: liChildren };
+          }
+          return { type: 'listItem', children: [child] };
+        });
+
+        (parent.children as Node[])[index] = {
+          type: 'list',
+          ordered: name === 'ol',
+          children: listItems,
+        } as Node;
+        return;
+      }
+
+      if (name === 'li') {
+        const liChildren =
+          node.children && node.children.length > 0
+            ? node.children
+            : [
+                {
+                  type: 'paragraph',
+                  children: [{ type: 'text', value: extractText(node) }],
+                },
+              ];
+        (parent.children as Node[])[index] = {
+          type: 'listItem',
+          children: liChildren,
+        } as Node;
+        return;
+      }
+
+      // Fallback: remove any unknown JSX components to prevent raw MDX noise
+      (parent.children as Node[]).splice(index, 1);
+      return [SKIP, index];
     };
 
     visit(

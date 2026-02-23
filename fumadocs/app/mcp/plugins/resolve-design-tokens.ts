@@ -4,6 +4,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { MdxJsxElement, getJsxAttr } from './shared';
 
+// Note: this plugin is async — only works with processor.process(), not processSync().
+
 interface TokenData {
   textSize: Record<string, string>;
   fontWeight: Record<string, string>;
@@ -34,18 +36,18 @@ async function loadAllTokens(): Promise<TokenData> {
   const theme = await import('@marigold/theme-rui');
 
   const headlineStyles: Record<string, string> = {};
-  const variants = theme.default.components?.Headline?.variants?.size;
+  const headlineComponent = theme.default.components?.Headline as
+    | { variants?: { size?: Record<string, unknown> } }
+    | undefined;
+  const variants = headlineComponent?.variants?.size;
   if (variants) {
     for (const [level, value] of Object.entries(variants)) {
       headlineStyles[level] = String(value);
     }
   }
 
-  const colorTablePath = path.resolve(__dirname, '../../../ui/ColorTable.tsx');
-  const colorTokensPath = path.resolve(
-    __dirname,
-    '../../../ui/ColorTokens.tsx'
-  );
+  const colorTablePath = path.resolve(process.cwd(), 'ui/ColorTable.tsx');
+  const colorTokensPath = path.resolve(process.cwd(), 'ui/ColorTokens.tsx');
 
   const [colorTableTsx, colorTokensTsx] = await Promise.all([
     fs.readFile(colorTablePath, 'utf-8'),
@@ -95,7 +97,7 @@ async function loadAllTokens(): Promise<TokenData> {
       : [];
   };
 
-  const tokenPath = path.resolve(__dirname, '../../../ui/Token.tsx');
+  const tokenPath = path.resolve(process.cwd(), 'ui/Token.tsx');
   const tokenTsx = await fs.readFile(tokenPath, 'utf-8');
 
   const borderRadius: Record<string, string> = {};
@@ -180,7 +182,7 @@ function buildGenerators(tokens: TokenData) {
         ['Name', 'Value'],
         Object.keys(tokens.paddingSpace)
           .sort((a, b) => parseFloat(a) - parseFloat(b))
-          .map(k => [k, `${parseFloat(k) * 4}px`])
+          .map(k => [k, tokens.paddingSpace[k] ?? `${parseFloat(k) * 4}px`])
       ),
     BorderRadius: () =>
       table(['Name', 'Value'], Object.entries(tokens.borderRadius)),
@@ -253,9 +255,14 @@ export function remarkResolveDesignTokens() {
           const sections: Node[] = [];
 
           const itemsAttr = getJsxAttr(node, 'items');
-          const tabLabels: string[] = itemsAttr
-            ? JSON.parse(itemsAttr.replace(/'/g, '"'))
-            : [];
+          let tabLabels: string[] = [];
+          if (itemsAttr) {
+            try {
+              tabLabels = JSON.parse(itemsAttr.replace(/'/g, '"'));
+            } catch {
+              // Fall back to numbered tabs if parsing fails (e.g. apostrophes in labels)
+            }
+          }
 
           const tabChildren = (node.children || []).filter(
             (child: Node) => (child as MdxJsxElement).name === 'Tab'

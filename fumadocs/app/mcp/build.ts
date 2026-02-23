@@ -3,7 +3,7 @@ import path from 'node:path';
 import { getAllMdxFiles, parseMdxToMarkdown } from './parser';
 
 const CONTENT_DIR = path.resolve(__dirname, '../../content');
-const OUTPUT_DIR = path.resolve(__dirname, './output');
+const OUTPUT_DIR = path.resolve(__dirname, './out');
 
 interface BuildStats {
   total: number;
@@ -20,6 +20,14 @@ async function build(): Promise<void> {
   const stats: BuildStats = { total: 0, success: 0, failed: 0, errors: [] };
 
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
+
+  // Clean stale outputs from previous builds
+  const existingFiles = await fs.readdir(OUTPUT_DIR);
+  await Promise.all(
+    existingFiles
+      .filter(f => f.endsWith('.md'))
+      .map(f => fs.unlink(path.join(OUTPUT_DIR, f)))
+  );
 
   const mdxFiles = await getAllMdxFiles(CONTENT_DIR);
   stats.total = mdxFiles.length;

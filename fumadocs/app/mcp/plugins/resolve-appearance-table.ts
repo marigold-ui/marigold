@@ -1,27 +1,12 @@
 import { Project, SyntaxKind } from 'ts-morph';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { getComponentPath, getSharedProject } from './project';
 import { MdxJsxElement, getJsxAttr } from './shared';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 interface AppearanceData {
   variant: string[];
   size: string[];
-}
-
-let project: Project | null = null;
-
-function getProject(): Project {
-  if (!project) {
-    project = new Project({
-      tsConfigFilePath: path.join(__dirname, '../../../../tsconfig.json'),
-    });
-  }
-  return project;
 }
 
 function extractStringLiterals(typeString: string): string[] {
@@ -36,13 +21,18 @@ function extractStringLiterals(typeString: string): string[] {
 
 function getAppearance(name: string): AppearanceData {
   try {
-    const componentPath = path.join(
-      __dirname,
-      `../../../../packages/components/src/${name}/${name}.tsx`
-    );
+    const componentPath = getComponentPath(name);
+    const proj = getSharedProject();
 
-    const proj = getProject();
-    const sourceFile = proj.getSourceFile(componentPath);
+    // Use addSourceFileAtPath to ensure the file is loaded into the project
+    let sourceFile;
+    try {
+      sourceFile =
+        proj.getSourceFile(componentPath) ??
+        proj.addSourceFileAtPath(componentPath);
+    } catch {
+      return { variant: [], size: [] };
+    }
 
     if (!sourceFile) return { variant: [], size: [] };
 

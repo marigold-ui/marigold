@@ -10,7 +10,10 @@ export function parseFrontmatter(content: string): Record<string, string> {
     const colonIndex = line.indexOf(':');
     if (colonIndex > -1) {
       const key = line.slice(0, colonIndex).trim();
-      const value = line.slice(colonIndex + 1).trim();
+      const value = line
+        .slice(colonIndex + 1)
+        .trim()
+        .replace(/^['"]|['"]$/g, '');
       frontmatter[key] = value;
     }
   }
@@ -18,7 +21,7 @@ export function parseFrontmatter(content: string): Record<string, string> {
   return frontmatter;
 }
 
-export function remarkRemoveFrontmatter(frontmatter: Record<string, string>) {
+export function remarkInjectTitle(frontmatter: Record<string, string>) {
   return (tree: Node & { children?: Node[] }) => {
     if (!tree.children || !frontmatter.title) return;
 

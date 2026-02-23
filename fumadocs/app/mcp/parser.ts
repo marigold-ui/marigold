@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {
   parseFrontmatter,
-  remarkRemoveFrontmatter,
+  remarkInjectTitle,
   remarkResolveAppearanceDemo,
   remarkResolveAppearanceTable,
   remarkResolveComponentDemo,
@@ -28,7 +28,7 @@ export interface ParsedDocument {
   slug: string;
 }
 function createSlug(filePath: string): string {
-  const parts = filePath.replace('.mdx', '').split('/');
+  const parts = filePath.replace(/\.mdx$/, '').split('/');
 
   // Handle grouped pages (e.g., button/button.mdx -> button)
   if (parts.at(-1) === parts.at(-2)) {
@@ -61,7 +61,7 @@ export async function parseMdxToMarkdown(
     })
     .use(remarkResolveDesignTokens)
     .use(remarkSimplifyJsx)
-    .use(remarkRemoveFrontmatter, frontmatter)
+    .use(remarkInjectTitle, frontmatter)
     .use(remarkStringify, {
       bullet: '-',
       emphasis: '*',

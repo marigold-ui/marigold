@@ -1,10 +1,7 @@
-import { Project } from 'ts-morph';
 import type { Node, Parent } from 'unist';
 import { visit } from 'unist-util-visit';
-import { resolve } from 'node:path';
+import { getComponentPath, getSharedProject } from './project';
 import { MdxJsxElement, getJsxAttr } from './shared';
-
-let proj: Project | null = null;
 
 function simplifyType(typeText: string): string {
   typeText = typeText.replace(/import\([^)]+\)\./g, '');
@@ -35,10 +32,7 @@ function cleanDescription(desc: string): string {
 }
 
 export function remarkResolvePropsTable() {
-  if (!proj)
-    proj = new Project({
-      tsConfigFilePath: resolve(__dirname, '../../../../tsconfig.json'),
-    });
+  const proj = getSharedProject();
 
   return (tree: Node) => {
     visit(
@@ -52,12 +46,9 @@ export function remarkResolvePropsTable() {
         if (!path || !name) return;
 
         try {
-          const file = resolve(
-            __dirname,
-            `../../../../packages/components/src/${path}/${path}.tsx`
-          );
+          const file = getComponentPath(path);
 
-          const sf = proj!.addSourceFileAtPath(file);
+          const sf = proj.getSourceFile(file) ?? proj.addSourceFileAtPath(file);
           const exports = sf.getExportedDeclarations();
           const decl = exports.get(name)?.[0];
 
@@ -115,7 +106,7 @@ export function remarkResolvePropsTable() {
                     },
                     {
                       type: 'tableCell',
-                      children: [{ type: 'html', value: description }],
+                      children: [{ type: 'text', value: description }],
                     },
                   ],
                 };
