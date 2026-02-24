@@ -7,6 +7,7 @@ export const buttonBase = [
   'whitespace-nowrap rounded-surface font-medium transition-[color,box-shadow,transform]',
   '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   'ui-interactive',
+  'border border-transparent',
 ] as const;
 
 export const Button: ThemeComponent<'Button'> = cva({
@@ -17,12 +18,13 @@ export const Button: ThemeComponent<'Button'> = cva({
   ],
   variants: {
     variant: {
-      primary: 'bg-brand text-brand-foreground hover:bg-brand/90',
+      primary: [
+        'ui-surface-contrast',
+        'hover:[--ui-background-color:oklch(from_var(--color-brand)_calc(l-0.05)_c_h)]',
+      ],
       secondary: [
         'ui-surface shadow-elevation-border',
         'hover:[--ui-background-color:var(--color-hover)] hover:text-foreground',
-        'disabled:border-0 disabled:shadow-none disabled:[--ui-background-color:var(--color-disabled)]',
-        'pending:[--ui-background-color:var(--color-disabled)] pending:border-0 pending:shadow-none',
         'expanded:[--ui-background-color:var(--color-hover)]',
       ],
       ghost: 'hover:bg-current/10',
