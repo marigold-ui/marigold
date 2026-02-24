@@ -131,6 +131,23 @@ export const ButtonVariants = meta.story({
   },
 });
 
+export const GhostOnBackground = meta.story({
+  render: args => (
+    <Stack space={4}>
+      <div className="bg-brand text-brand-foreground flex items-center justify-center rounded p-8">
+        <Button {...args} variant="ghost">
+          Ghost on Dark
+        </Button>
+      </div>
+      <div className="bg-background text-foreground flex items-center justify-center rounded border p-8">
+        <Button {...args} variant="ghost">
+          Ghost on Light
+        </Button>
+      </div>
+    </Stack>
+  ),
+});
+
 export const WithIcon = meta.story({
   render: ({ children, ...args }) => (
     <Button {...args}>

@@ -26,10 +26,10 @@ export const Button: ThemeComponent<'Button'> = cva({
         'pending:[--ui-background-color:var(--color-disabled)] pending:border-0 pending:shadow-none',
         'expanded:[--ui-background-color:var(--color-hover)]',
       ],
-      ghost: 'hover:bg-hover hover:text-foreground',
+      ghost: 'hover:bg-current/10',
       destructive:
         'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-      'destructive-ghost': 'text-destructive hover:bg-destructive/10',
+      'destructive-ghost': 'text-destructive hover:bg-current/8',
       link: 'text-link util-touch-hitbox',
     },
     size: {

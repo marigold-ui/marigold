@@ -1,11 +1,9 @@
 import { createContext, useContext } from 'react';
+import type { ComponentClassNames } from '@marigold/system';
 
 export const TabContext = createContext<{
-  classNames: {
-    container: string;
-    tabsList: string;
-    tab: string;
-    tabpanel: string;
-  };
-}>({} as any);
+  classNames: ComponentClassNames<'Tabs'>;
+}>({
+  classNames: {} as ComponentClassNames<'Tabs'>,
+});
 export const useTabContext = () => useContext(TabContext);

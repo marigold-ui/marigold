@@ -1,18 +1,26 @@
 import { Copy } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { expect, fn, userEvent } from 'storybook/test';
+import { I18nProvider } from 'react-aria-components';
+import { expect, fn, userEvent, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Delete, Edit } from '@marigold/icons';
-import { Headline } from '../Headline/Headline';
+import { NumericFormat } from '@marigold/system';
+import { Badge } from '../Badge/Badge';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Stack } from '../Stack/Stack';
-import { Table } from '../legacy/Table/Table';
-import type { Selection } from '../types';
+import { Table } from '../Table/Table';
+import { Text } from '../Text/Text';
 import { ActionBar } from './ActionBar';
 
 const meta = preview.meta({
   title: 'Components/ActionBar',
   component: ActionBar,
+  decorators: [
+    Story => (
+      <I18nProvider locale="en-US">
+        <Story />
+      </I18nProvider>
+    ),
+  ],
   argTypes: {
     selectedItemCount: {
       control: { type: 'number' },
@@ -47,8 +55,11 @@ const meta = preview.meta({
 
 export const Basic = meta.story({
   tags: ['component-test'],
+  args: {
+    selectedItemCount: 3,
+  },
   render: args => (
-    <ActionBar {...args} selectedItemCount={3}>
+    <ActionBar {...args}>
       <ActionBar.Button onPress={() => alert('Edit action')}>
         <Edit />
         <span>Edit</span>
@@ -76,25 +87,8 @@ export const Basic = meta.story({
   },
 });
 
-export const AllSelected = meta.story({
-  args: {
-    selectedItemCount: 'all',
-  },
-  render: args => (
-    <ActionBar {...args}>
-      <ActionBar.Button>
-        <Edit />
-        <span>Edit</span>
-      </ActionBar.Button>
-      <ActionBar.Button>
-        <Delete />
-        <span>Delete</span>
-      </ActionBar.Button>
-    </ActionBar>
-  ),
-});
-
 export const WithoutClearButton = meta.story({
+  tags: ['component-test'],
   args: {
     selectedItemCount: 4,
     onClearSelection: undefined,
@@ -113,163 +107,289 @@ export const WithoutClearButton = meta.story({
   ),
 });
 
-export const WithTable = meta.story({
+const users = [
+  {
+    name: 'Hans Müller',
+    email: 'hans.mueller@example.de',
+    handle: '@schnitzelmeister',
+    location: 'Berlin, BE',
+    status: 'active',
+    balance: 1250.75,
+  },
+  {
+    name: 'Fritz Schneider',
+    email: 'fritz.schneider@example.de',
+    handle: '@wurstwhiz',
+    location: 'München, BY',
+    status: 'inactive',
+    balance: 980.5,
+  },
+  {
+    name: 'Klaus Becker',
+    email: 'klaus.becker@example.de',
+    handle: '@pretzelpirate',
+    location: 'Hamburg, HH',
+    status: 'suspended',
+    balance: 0.0,
+  },
+  {
+    name: 'Helga Fischer',
+    email: 'helga.fischer@example.de',
+    handle: '@bavarianbanter',
+    location: 'Stuttgart, BW',
+    status: 'active',
+    balance: 2300.1,
+  },
+  {
+    name: 'Ursula Weber',
+    email: 'ursula.weber@example.de',
+    handle: '@bratwurstbabe',
+    location: 'Frankfurt, HE',
+    status: 'active',
+    balance: 150.25,
+  },
+  {
+    name: 'Dieter Koch',
+    email: 'dieter.koch@example.de',
+    handle: '@sauerkrautsmile',
+    location: 'Düsseldorf, NW',
+    status: 'inactive',
+    balance: 450.6,
+  },
+  {
+    name: 'Ingrid Richter',
+    email: 'ingrid.richter@example.de',
+    handle: '@schnitzeljester',
+    location: 'Dortmund, NW',
+    status: 'active',
+    balance: 1025.0,
+  },
+  {
+    name: 'Werner Hoffmann',
+    email: 'werner.hoffmann@example.de',
+    handle: '@krankenclown',
+    location: 'Leipzig, SN',
+    status: 'suspended',
+    balance: 0.0,
+  },
+  {
+    name: 'Gisela Braun',
+    email: 'gisela.braun@example.de',
+    handle: '@ludwiglaughs',
+    location: 'Bremen, HB',
+    status: 'active',
+    balance: 750.85,
+  },
+  {
+    name: 'Matthias Wolf',
+    email: 'matthias.wolf@example.de',
+    handle: '@funktastisch',
+    location: 'Dresden, SN',
+    status: 'inactive',
+    balance: 500.0,
+  },
+  {
+    name: 'Petra Zimmermann',
+    email: 'petra.zimmermann@example.de',
+    handle: '@zwiebelzauber',
+    location: 'Hannover, NI',
+    status: 'active',
+    balance: 1875.3,
+  },
+  {
+    name: 'Jürgen Krause',
+    email: 'juergen.krause@example.de',
+    handle: '@kartoffelkönig',
+    location: 'Nürnberg, BY',
+    status: 'active',
+    balance: 620.0,
+  },
+  {
+    name: 'Monika Lehmann',
+    email: 'monika.lehmann@example.de',
+    handle: '@lebkuchenlady',
+    location: 'Köln, NW',
+    status: 'inactive',
+    balance: 310.45,
+  },
+  {
+    name: 'Ralf Schäfer',
+    email: 'ralf.schaefer@example.de',
+    handle: '@rheinrocker',
+    location: 'Bonn, NW',
+    status: 'active',
+    balance: 2100.0,
+  },
+  {
+    name: 'Sabine Hartmann',
+    email: 'sabine.hartmann@example.de',
+    handle: '@schwarzwaldfee',
+    location: 'Freiburg, BW',
+    status: 'suspended',
+    balance: 0.0,
+  },
+  {
+    name: 'Thomas Lang',
+    email: 'thomas.lang@example.de',
+    handle: '@technotom',
+    location: 'Essen, NW',
+    status: 'active',
+    balance: 890.15,
+  },
+  {
+    name: 'Claudia Neumann',
+    email: 'claudia.neumann@example.de',
+    handle: '@currywurstqueen',
+    location: 'Potsdam, BB',
+    status: 'active',
+    balance: 1540.6,
+  },
+  {
+    name: 'Andreas Fuchs',
+    email: 'andreas.fuchs@example.de',
+    handle: '@foxyfuchs',
+    location: 'Mainz, RP',
+    status: 'inactive',
+    balance: 275.0,
+  },
+  {
+    name: 'Birgit Schröder',
+    email: 'birgit.schroeder@example.de',
+    handle: '@bierbotschafterin',
+    location: 'Rostock, MV',
+    status: 'active',
+    balance: 1680.9,
+  },
+  {
+    name: 'Markus Vogel',
+    email: 'markus.vogel@example.de',
+    handle: '@vogelvibes',
+    location: 'Kiel, SH',
+    status: 'active',
+    balance: 420.75,
+  },
+];
+
+export const IntegratedWithTable = meta.story({
+  tags: ['component-test'],
   parameters: {
     controls: { exclude: ['selectedItemCount', 'onClearSelection'] },
   },
-  render: () => {
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['2']));
-
-    const rows = [
-      { id: '1', name: 'Charizard', type: 'Fire, Flying', level: '67' },
-      { id: '2', name: 'Blastoise', type: 'Water', level: '56' },
-      { id: '3', name: 'Venusaur', type: 'Grass, Poison', level: '83' },
-      { id: '4', name: 'Pikachu', type: 'Electric', level: '100' },
-    ];
-
-    return (
-      <div className="w-125">
-        <Stack space={4} alignX="center">
-          <Table
-            aria-label="Table with action bar"
-            selectionMode="multiple"
-            stretch={true}
-            selectedKeys={selectedKeys}
-            onSelectionChange={keys =>
-              setSelectedKeys(
-                keys === 'all' ? new Set(rows.map(r => r.id)) : keys
-              )
-            }
-          >
-            <Table.Header>
-              <Table.Column key="name" isRowHeader>
-                Name
-              </Table.Column>
-              <Table.Column key="type">Type</Table.Column>
-              <Table.Column key="level">Level</Table.Column>
-            </Table.Header>
-            <Table.Body items={rows}>
-              {item => (
-                <Table.Row key={item.id}>
-                  <Table.Cell>{item.name}</Table.Cell>
-                  <Table.Cell>{item.type}</Table.Cell>
-                  <Table.Cell>{item.level}</Table.Cell>
-                </Table.Row>
-              )}
-            </Table.Body>
-          </Table>
-          <ActionBar
-            selectedItemCount={
-              selectedKeys === 'all' ? 'all' : selectedKeys.size
-            }
-            onClearSelection={() => setSelectedKeys(new Set())}
-          >
-            <ActionBar.Button onPress={() => alert('Edit selected items')}>
-              <Edit />
-              <span>Edit</span>
-            </ActionBar.Button>
-            <ActionBar.Button onPress={() => alert('Copy selected items')}>
-              <Copy />
-              <span>Copy</span>
-            </ActionBar.Button>
-            <ActionBar.Button onPress={() => alert('Delete selected items')}>
-              <Delete />
-              <span>Delete</span>
-            </ActionBar.Button>
-          </ActionBar>
-        </Stack>
-      </div>
-    );
-  },
-});
-
-export const WithScrollableContent = meta.story({
-  render: args => {
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(
-      new Set(['delectus aut autem-1'])
-    );
-    const [todos, setTodos] = useState<
-      { userId: string; id: string; title: string; completed: boolean }[]
-    >([]);
-    useEffect(() => {
-      fetch('https://jsonplaceholder.typicode.com/todos')
-        .then(res => res.json())
-        .then(data => setTodos(data));
-    }, []);
-    const tableHeaders = todos.length ? Object.keys(todos[0]) : [];
-
-    return (
-      <>
-        <Headline level={3}>My Headline</Headline>
-        {tableHeaders.length ? (
-          <Stack space={4} alignX="center">
-            <Scrollable height="200px" {...args}>
-              <Table
-                aria-label="Todos Table"
-                selectionMode="multiple"
-                selectedKeys={selectedKeys}
-                onSelectionChange={keys =>
-                  setSelectedKeys(
-                    keys === 'all'
-                      ? new Set(todos.map(r => `${r.title}-${r.id}`))
-                      : keys
-                  )
-                }
-              >
-                <Table.Header>
-                  {tableHeaders.map((header, index) => (
-                    <Table.Column
-                      width={
-                        index === tableHeaders.length - 1 ? 'full' : 'auto'
-                      }
-                      isRowHeader={index === 0}
-                      key={index}
-                    >
-                      {header}
-                    </Table.Column>
-                  ))}
-                </Table.Header>
-                <Table.Body items={todos}>
-                  {todo => (
-                    <Table.Row key={`${todo.title}-${todo.id}`}>
-                      <Table.Cell>{todo.id}</Table.Cell>
-                      <Table.Cell>{todo.userId}</Table.Cell>
-                      <Table.Cell>{todo.title}</Table.Cell>
-                      <Table.Cell>{JSON.stringify(todo.completed)}</Table.Cell>
-                    </Table.Row>
-                  )}
-                </Table.Body>
-              </Table>
-            </Scrollable>
-            <ActionBar
-              selectedItemCount={
-                selectedKeys === 'all' ? 'all' : selectedKeys.size
-              }
-              onClearSelection={() => setSelectedKeys(new Set())}
-            >
-              <ActionBar.Button onPress={() => alert('Edit selected items')}>
+  render: () => (
+    <div className="border border-black">
+      <Scrollable height="400px">
+        <Table
+          aria-label="User accounts"
+          selectionMode="multiple"
+          defaultSelectedKeys={
+            new Set(['fritz.schneider@example.de', 'klaus.becker@example.de'])
+          }
+          actionBar={() => (
+            <ActionBar>
+              <ActionBar.Button onPress={() => alert('Edit')}>
                 <Edit />
                 <span>Edit</span>
               </ActionBar.Button>
-              <ActionBar.Button onPress={() => alert('Copy selected items')}>
+              <ActionBar.Button onPress={() => alert('Copy')}>
                 <Copy />
                 <span>Copy</span>
               </ActionBar.Button>
-              <ActionBar.Button onPress={() => alert('Delete selected items')}>
+              <ActionBar.Button onPress={() => alert('Delete')}>
                 <Delete />
                 <span>Delete</span>
               </ActionBar.Button>
             </ActionBar>
-          </Stack>
-        ) : (
-          'Loading data ⬇️ ...... '
-        )}
-      </>
+          )}
+        >
+          <Table.Header sticky>
+            <Table.Column rowHeader>Name</Table.Column>
+            <Table.Column>Email</Table.Column>
+            <Table.Column>Location</Table.Column>
+            <Table.Column>Status</Table.Column>
+            <Table.Column alignX="right">Balance</Table.Column>
+          </Table.Header>
+          <Table.Body>
+            {users.map(user => (
+              <Table.Row key={user.email} id={user.email}>
+                <Table.Cell>
+                  <Stack space="0.5">
+                    <Text weight="medium">{user.name}</Text>
+                    <Text size="xs" color="muted-foreground">
+                      {user.handle}
+                    </Text>
+                  </Stack>
+                </Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.location}</Table.Cell>
+                <Table.Cell>
+                  <Badge>{user.status}</Badge>
+                </Table.Cell>
+                <Table.Cell>
+                  <NumericFormat
+                    style="currency"
+                    currency="EUR"
+                    value={user.balance}
+                  />
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </Scrollable>
+    </div>
+  ),
+  play: async ({ canvas, step }) => {
+    await step('shows initial selection count', async () => {
+      await expect(canvas.getByText('2 selected')).toBeInTheDocument();
+    });
+
+    await step(
+      'increments count when selecting an additional row',
+      async () => {
+        const checkboxes = canvas.getAllByRole('checkbox');
+        const uncheckedCheckbox = checkboxes
+          .slice(1)
+          .find(cb => !(cb as HTMLInputElement).checked)!;
+
+        await userEvent.click(uncheckedCheckbox);
+
+        await waitFor(() => {
+          expect(canvas.getByText('3 selected')).toBeInTheDocument();
+        });
+      }
+    );
+
+    await step('hides ActionBar when clear selection is clicked', async () => {
+      const clearButton = canvas.getByRole('button', {
+        name: /clear selection/i,
+      });
+
+      await userEvent.click(clearButton);
+
+      await waitFor(() => {
+        expect(
+          canvas.queryByRole('toolbar', { name: /bulk actions/i })
+        ).not.toBeInTheDocument();
+      });
+    });
+
+    await step(
+      'shows "All items selected" when select-all is clicked',
+      async () => {
+        const selectAllCheckbox = canvas.getAllByRole('checkbox')[0];
+
+        await userEvent.click(selectAllCheckbox);
+
+        await waitFor(() => {
+          expect(canvas.getByText('All items selected')).toBeInTheDocument();
+        });
+      }
     );
   },
 });
 
 export const NoSelection = meta.story({
+  tags: ['component-test'],
   render: args => (
     <div>
       <p>No items selected no action bar will show up</p>
@@ -286,4 +406,9 @@ export const NoSelection = meta.story({
       </ActionBar>
     </div>
   ),
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.queryByRole('toolbar', { name: /bulk actions/i })
+    ).not.toBeInTheDocument();
+  },
 });

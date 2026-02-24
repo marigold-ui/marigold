@@ -2,10 +2,12 @@ import type { CSSProperties } from 'react';
 import { useContext, useRef } from 'react';
 import type { DialogProps } from 'react-aria-components';
 import { Dialog, OverlayTriggerStateContext } from 'react-aria-components';
+import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import type { AriaLandmarkRole } from '@react-aria/landmark';
 import { useLandmark } from '@react-aria/landmark';
 import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { CloseButton } from '../CloseButton/CloseButton';
+import { intlMessages } from '../intl/messages';
 import { DrawerContext } from './Context';
 import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
@@ -71,6 +73,7 @@ export const Drawer = ({
   ...props
 }: DrawerProps) => {
   const ref = useRef<HTMLElement | null>(null);
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({
     component: 'Drawer',
     variant,
@@ -110,7 +113,7 @@ export const Drawer = ({
         >
           {closeButton && (
             <CloseButton
-              aria-label="dismiss drawer"
+              aria-label={stringFormatter.format('dismissDrawer')}
               style={{ '--i': 0 } as CSSProperties}
               className={cn('z-80', classNames.closeButton)}
               onPress={ctx?.close}
