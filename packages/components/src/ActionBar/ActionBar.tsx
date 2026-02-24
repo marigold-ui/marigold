@@ -12,7 +12,8 @@ import {
   useResizeObserver,
 } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
-import { CloseButton } from '../CloseButton/CloseButton';
+import { IconButton } from '../IconButton/IconButton';
+import { X } from '../icons/X';
 import { intlMessages } from '../intl/messages';
 import { useActionBarContext } from './ActionBarContext';
 import { ActionButton } from './ActionButton';
@@ -118,11 +119,13 @@ const ActionBarInner = forwardRef<HTMLDivElement, ActionBarInnerProps>(
         >
           <div className={classNames.selection}>
             {onClearSelection && (
-              <CloseButton
+              <IconButton
                 aria-label={stringFormatter.format('clearSelectionAriaLabel')}
                 onPress={onClearSelection}
                 className={classNames.clearButton}
-              />
+              >
+                <X />
+              </IconButton>
             )}
 
             <div className={classNames.count}>
